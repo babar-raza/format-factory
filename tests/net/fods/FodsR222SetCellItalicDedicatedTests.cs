@@ -35,6 +35,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.SetCellItalic(sheet, -1, 0, true));
     }
@@ -43,6 +44,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.SetCellItalic(sheet, 0, -1, true));
     }
@@ -55,6 +57,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_True_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellItalic(sheet, 0, 0, true));
         Assert.Null(ex);
@@ -64,6 +67,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_False_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellItalic(sheet, 0, 0, false));
         Assert.Null(ex);
@@ -73,6 +77,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_True_GetReturnsTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellItalic(sheet, 0, 0, true);
         Assert.True(FodsDocument.GetCellItalic(sheet, 0, 0));
@@ -82,6 +87,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_False_GetReturnsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellItalic(sheet, 0, 0, false);
         Assert.False(FodsDocument.GetCellItalic(sheet, 0, 0));
@@ -91,6 +97,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_DifferentCells_Independent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellItalic(sheet, 0, 0, true);
         FodsDocument.SetCellItalic(sheet, 0, 1, false);
@@ -102,6 +109,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void SetCellItalic_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("S");
         int before = doc.SheetCount;
         FodsDocument.SetCellItalic(sheet, 0, 0, true);
@@ -116,6 +124,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void DogfoodPipeline_ToggleItalic_FinalStateCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellItalic(sheet, 0, 0, true);
         FodsDocument.SetCellItalic(sheet, 0, 0, false);
@@ -127,6 +136,7 @@ public class FodsR222SetCellItalicDedicatedTests
     public void DogfoodPipeline_BoldAndItalicIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellBold(sheet, 0, 0, true);
         FodsDocument.SetCellItalic(sheet, 0, 0, true);

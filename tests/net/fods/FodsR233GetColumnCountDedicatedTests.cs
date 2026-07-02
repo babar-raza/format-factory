@@ -29,6 +29,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnCount(null!));
     }
 
@@ -36,6 +37,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnCount("   "));
     }
 
@@ -43,6 +45,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnCount("NoSuchSheet"));
     }
 
@@ -54,6 +57,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_EmptySheet_ReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.Equal(0, doc.GetColumnCount(sheetName));
     }
@@ -62,6 +66,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.True(doc.GetColumnCount(sheetName) >= 0);
     }
@@ -70,6 +75,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int sheetsBefore = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetColumnCount(sheetName);
@@ -80,6 +86,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_TwoSheetsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         string sheet1 = doc.GetSheetNames()[0];
         string sheet2 = "Sheet2";
@@ -94,6 +101,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void GetColumnCount_AfterSetCellValue_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 4, "Value");
         Assert.True(doc.GetColumnCount(sheetName) >= 0);
@@ -107,6 +115,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void DogfoodPipeline_SetMultipleColumns_CountNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         for (int c = 0; c < 5; c++)
             doc.SetCellValue(sheetName, 0, c, $"Col{c}");
@@ -117,6 +126,7 @@ public class FodsR233GetColumnCountDedicatedTests
     public void DogfoodPipeline_ClearSheet_ColumnCountReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "A");
         doc.SetCellValue(sheetName, 0, 1, "B");

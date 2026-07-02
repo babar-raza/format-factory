@@ -24,6 +24,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     private static FodsDocument BuildDoc(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);
@@ -45,6 +46,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void RenameSheet_NewNameAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var orig = doc.GetSheetNames()[0];
         doc.RenameSheet(orig, "Renamed");
         Assert.Contains("Renamed", doc.GetSheetNames());
@@ -54,6 +56,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void RenameSheet_OldNameNoLongerExists()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var orig = doc.GetSheetNames()[0];
         doc.RenameSheet(orig, "NewName");
         Assert.DoesNotContain(orig, doc.GetSheetNames());
@@ -63,6 +66,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void RenameSheet_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         var before = doc.SheetCount;
         var first = doc.GetSheetNames()[0];
@@ -74,6 +78,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void RenameSheet_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() =>
             doc.RenameSheet("NonExistentSheet", "NewName"));
     }
@@ -138,6 +143,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void CopySheet_NonexistentSource_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() =>
             doc.CopySheet("NonExistentSource", "CopyName"));
     }
@@ -150,6 +156,7 @@ public class FodsR167RenameSheetAndCopySheetTests
     public void Dogfood_RenameInsertCopyGetSheetNames_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var first = doc.GetSheetNames()[0];
 
         // Rename

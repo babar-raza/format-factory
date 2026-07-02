@@ -28,6 +28,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyleName(null!, 0, 0));
     }
 
@@ -35,6 +36,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyleName("   ", 0, 0));
     }
 
@@ -42,6 +44,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyleName("NoSuchSheet", 0, 0));
     }
 
@@ -49,6 +52,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyleName(sheetName, -1, 0));
     }
@@ -61,6 +65,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_ValidCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Styled");
         string style = doc.GetCellStyleName(sheetName, 0, 0);
@@ -71,6 +76,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Value");
@@ -82,6 +88,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Data");
         string first = doc.GetCellStyleName(sheetName, 0, 0);
@@ -93,6 +100,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void GetCellStyleName_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Item");
         string style = doc.GetCellStyleName(sheetName, 0, 0);
@@ -107,6 +115,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void DogfoodPipeline_SetCellValue_GetStyleName_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Header");
         string style = doc.GetCellStyleName(sheetName, 0, 0);
@@ -117,6 +126,7 @@ public class FodsR441GetCellStyleNameDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellValue(sheetName, 0, 0, "Row1");
         doc.SetCellValue(sheetName, 1, 0, "Row2");

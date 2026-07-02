@@ -44,6 +44,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = TempPath("null");
         Assert.ThrowsAny<Exception>(() => doc.ExportToJson(null!, path));
     }
@@ -52,6 +53,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = TempPath("ws");
         Assert.ThrowsAny<Exception>(() => doc.ExportToJson("   ", path));
     }
@@ -60,6 +62,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_NonexistentSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = TempPath("nosheet");
         Assert.ThrowsAny<Exception>(() => doc.ExportToJson("DoesNotExist", path));
     }
@@ -72,6 +75,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_ValidSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = TempPath("valid");
         var ex = Record.Exception(() => doc.ExportToJson("Sheet1", path));
         Assert.Null(ex);
@@ -81,6 +85,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_OutputFileExists()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = TempPath("exists");
         doc.ExportToJson("Sheet1", path);
         Assert.True(File.Exists(path));
@@ -90,6 +95,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_DataSheet_NonEmptyFile()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.AddRow("Data", new[] { "name", "score" });
         doc.AddRow("Data", new[] { "Alice", "95" });
@@ -103,6 +109,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void ExportToJson_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string path = TempPath("count");
         doc.ExportToJson("Sheet1", path);
@@ -117,6 +124,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void DogfoodPipeline_ExportDataSheet_FileExists()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Inventory");
         doc.AddRow("Inventory", new[] { "item", "qty", "price" });
         doc.AddRow("Inventory", new[] { "widget", "100", "9.99" });
@@ -130,6 +138,7 @@ public class FodsR288ExportToJsonDedicatedTests : IDisposable
     public void DogfoodPipeline_TwoSheetsTwoFiles_BothExist()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Alpha");
         doc.AddSheet("Beta");
         string pathA = TempPath("alpha");

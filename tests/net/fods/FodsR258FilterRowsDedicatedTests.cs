@@ -31,6 +31,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.FilterRows(null!, 0, "val"));
     }
 
@@ -38,6 +39,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.FilterRows("   ", 0, "val"));
     }
 
@@ -45,6 +47,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_NullValue_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.FilterRows(sheetName, 0, (string)null!));
     }
@@ -57,6 +60,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Name");
         doc.SetCellValue(sheetName, 1, 0, "Alice");
@@ -68,6 +72,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_NoMatch_ReturnsSmallResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Name");
         doc.SetCellValue(sheetName, 1, 0, "Alice");
@@ -81,6 +86,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_SingleMatch_ContainsRow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Name");
         doc.SetCellValue(sheetName, 1, 0, "Alice");
@@ -95,6 +101,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Col");
         doc.SetCellValue(sheetName, 1, 0, "X");
@@ -107,6 +114,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void FilterRows_CalledTwice_SameResultSize()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Dept");
         doc.SetCellValue(sheetName, 1, 0, "Eng");
@@ -125,6 +133,7 @@ public class FodsR258FilterRowsDedicatedTests
     public void DogfoodPipeline_AddDataRows_FilterByDept_VerifyCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Header row
         doc.AddRow(sheetName, new[] { "Name", "Dept" });

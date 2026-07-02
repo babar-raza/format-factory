@@ -31,6 +31,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.DeleteColumn(null!, 0));
     }
 
@@ -38,6 +39,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.DeleteColumn("   ", 0));
     }
 
@@ -45,6 +47,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.DeleteColumn("NoSuch", 0));
     }
 
@@ -52,6 +55,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_NegativeIndex_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("S");
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.DeleteColumn(sheet.Name!, -1));
     }
@@ -64,6 +68,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_ValidColumn_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("S");
         doc.InsertRow(sheet.Name!, 0);
         FodsDocument.SetCellValue(sheet, 0, 0, "A");
@@ -76,6 +81,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("S");
         doc.InsertRow(sheet.Name!, 0);
         FodsDocument.SetCellValue(sheet, 0, 0, "A");
@@ -88,6 +94,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_OtherSheetsNotAffected()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet1 = doc.AddSheet("Sheet1");
         var sheet2 = doc.AddSheet("Sheet2");
         doc.InsertRow(sheet1.Name!, 0);
@@ -107,6 +114,7 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DogfoodPipeline_AddThenDelete_Balanced()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("S");
         doc.InsertRow(sheet.Name!, 0);
         FodsDocument.SetCellValue(sheet, 0, 0, "X");

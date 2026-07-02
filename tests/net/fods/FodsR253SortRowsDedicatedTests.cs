@@ -28,6 +28,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortRows(null!, "Name", ascending: true));
     }
 
@@ -35,6 +36,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortRows("   ", "Name", ascending: true));
     }
 
@@ -42,6 +44,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortRows("NoSuchSheet", "Name", ascending: true));
     }
 
@@ -53,6 +56,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_AscendingSort_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Score" });
         doc.AddRow(sheetName, new[] { "Charlie", "85" });
@@ -66,6 +70,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_DescendingSort_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Score" });
         doc.AddRow(sheetName, new[] { "Charlie", "85" });
@@ -78,6 +83,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_RowCountPreserved()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Value" });
         doc.AddRow(sheetName, new[] { "Zebra", "10" });
@@ -92,6 +98,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Col" });
@@ -105,6 +112,7 @@ public class FodsR253SortRowsDedicatedTests
     public void SortRows_CalledTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Label", "Data" });
         doc.AddRow(sheetName, new[] { "Zeta", "1" });
@@ -122,6 +130,7 @@ public class FodsR253SortRowsDedicatedTests
     public void DogfoodPipeline_AddDataRows_SortAscending_RowCountStable()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Product", "Price" });
         doc.AddRow(sheetName, new[] { "Widget", "9.99" });

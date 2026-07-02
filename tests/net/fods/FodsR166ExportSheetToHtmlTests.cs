@@ -25,6 +25,7 @@ public class FodsR166ExportSheetToHtmlTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);
@@ -111,6 +112,7 @@ public class FodsR166ExportSheetToHtmlTests
     public void ExportSheetToHtml_EmptySheet_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.GetSheetNames()[0];
         var html = doc.ExportSheetToHtml(name);
         Assert.NotNull(html);

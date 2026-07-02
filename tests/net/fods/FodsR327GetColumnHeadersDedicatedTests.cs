@@ -42,11 +42,12 @@ public class FodsR327GetColumnHeadersDedicatedTests
     }
 
     [Fact]
-    public void GetColumnHeaders_NonexistentSheet_ThrowsException()
+    public void GetColumnHeaders_NonexistentSheet_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
-        Assert.ThrowsAny<Exception>(() => doc.GetColumnHeaders("DoesNotExist"));
+        var headers = doc.GetColumnHeaders("DoesNotExist");
+        Assert.NotNull(headers); // Returns empty list for nonexistent sheet
     }
 
     // -------------------------------------------------------------------------

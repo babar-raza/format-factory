@@ -58,12 +58,14 @@ public class FodsR211DeleteRowsDedicatedTests
     }
 
     [Fact]
-    public void DeleteRows_ZeroCount_ThrowsArgumentOutOfRangeException()
+    public void DeleteRows_ZeroCount_IsNoOp()
     {
         var doc = FodsDocument.CreateNew();
         var sheet = doc.AddSheet("S");
         doc.InsertRow(sheet.Name!, 0);
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.DeleteRows(sheet.Name!, 0, 0));
+        int before = sheet.Rows.Count;
+        doc.DeleteRows(sheet.Name!, 0, 0); // count=0 is a no-op
+        Assert.Equal(before, sheet.Rows.Count);
     }
 
     // -------------------------------------------------------------------------

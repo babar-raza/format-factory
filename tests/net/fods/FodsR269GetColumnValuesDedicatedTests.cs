@@ -29,6 +29,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnValues(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnValues("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnValues("NoSuchSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_NegativeColumnIndex_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetColumnValues(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_EmptySheet_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var result = doc.GetColumnValues(sheetName, 0);
         Assert.NotNull(result);
@@ -71,6 +76,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_AfterSetCellValue_NonEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Alpha");
         doc.SetCellValue(sheetName, 1, 0, "Beta");
@@ -83,6 +89,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "V1");
         int before = doc.SheetCount;
@@ -94,6 +101,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void GetColumnValues_CalledTwice_SameCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "X");
         doc.SetCellValue(sheetName, 1, 0, "Y");
@@ -110,6 +118,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void DogfoodPipeline_AddRowsWithData_ColumnValuesNonEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Score" });
         doc.AddRow(sheetName, new[] { "Alice", "95" });
@@ -124,6 +133,7 @@ public class FodsR269GetColumnValuesDedicatedTests
     public void DogfoodPipeline_MultiColumn_CorrectColumnReturned()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Department" });
         doc.AddRow(sheetName, new[] { "Alice", "Engineering" });

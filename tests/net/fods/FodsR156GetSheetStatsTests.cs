@@ -24,6 +24,7 @@ public class FodsR156GetSheetStatsTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] dataRows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet(doc.GetSheetNames()[0], sheetName);
         doc.InsertRowWithValues(sheetName, 0, headers);
         for (int r = 0; r < dataRows.Length; r++)
@@ -39,6 +40,7 @@ public class FodsR156GetSheetStatsTests
     public void GetSheetStats_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.GetSheetStats(null!));
     }
 
@@ -46,6 +48,7 @@ public class FodsR156GetSheetStatsTests
     public void GetSheetStats_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.GetSheetStats("   "));
     }
 
@@ -53,6 +56,7 @@ public class FodsR156GetSheetStatsTests
     public void GetSheetStats_NonexistentSheet_ReturnsZeroTuple()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var (rowCount, colCount, cellCount, nonEmpty) = doc.GetSheetStats("NoSuchSheet");
         Assert.Equal(0, rowCount);
         Assert.Equal(0, colCount);
@@ -132,6 +136,7 @@ public class FodsR156GetSheetStatsTests
     public void Dogfood_CreateInsertRowsGetSheetStats_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         doc.InsertRowWithValues(sheetName, 0, new[] { "Product", "Qty", "Price" });

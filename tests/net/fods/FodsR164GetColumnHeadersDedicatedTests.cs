@@ -27,6 +27,7 @@ public class FodsR164GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_EmptyDocument_NoSheets_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var headers = doc.GetColumnHeaders();
         Assert.Empty(headers);
     }

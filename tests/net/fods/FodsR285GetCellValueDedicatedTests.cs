@@ -30,6 +30,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue(null!, 0, 0));
     }
 
@@ -37,6 +38,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("   ", 0, 0));
     }
 
@@ -44,6 +46,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_NonexistentSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("NoSheet", 0, 0));
     }
 
@@ -51,6 +54,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("Sheet1", -1, 0));
     }
 
@@ -58,6 +62,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("Sheet1", 0, -1));
     }
 
@@ -69,6 +74,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_AfterSetCellValue_ReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "TestValue");
         string value = doc.GetCellValue("Sheet1", 0, 0);
         Assert.Equal("TestValue", value);
@@ -78,6 +84,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "data");
         int before = doc.SheetCount;
         doc.GetCellValue("Sheet1", 0, 0);
@@ -88,6 +95,7 @@ public class FodsR285GetCellValueDedicatedTests
     public void GetCellValue_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 1, 2, "consistent");
         string first = doc.GetCellValue("Sheet1", 1, 2);
         string second = doc.GetCellValue("Sheet1", 1, 2);

@@ -26,6 +26,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     private static FodsDocument BuildSingleSheetDoc(string sheetName)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet(doc.GetSheetNames()[0], sheetName);
         doc.InsertRowWithValues(sheetName, 0, new[] { "A", "B", "C" });
         doc.InsertRowWithValues(sheetName, 1, new[] { "10", "20", "30" });
@@ -40,6 +41,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     public void GetCellDataType_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.GetCellDataType(null!, 0, 0));
     }
 
@@ -61,6 +63,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     public void GetCellDataType_NonexistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Null(doc.GetCellDataType("NoSuchSheet", 0, 0));
     }
 
@@ -89,6 +92,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     public void GetCellFormula_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.GetCellFormula(null!, 0, 0));
     }
 
@@ -110,6 +114,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     public void GetCellFormula_NonexistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Null(doc.GetCellFormula("NoSuchSheet", 0, 0));
     }
 
@@ -138,6 +143,7 @@ public class FodsR157GetCellDataTypeAndFormulaTests
     public void Dogfood_SetFormula_GetFormula_SetValue_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         doc.InsertRowWithValues(sheetName, 0, new[] { "X", "Y", "Sum" });
         doc.InsertRowWithValues(sheetName, 1, new[] { "5", "10", "" });

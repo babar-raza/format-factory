@@ -29,6 +29,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_NullSheet_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentNullException>(() =>
             FodsDocument.SetCellFontName(null!, 0, 0, "Arial"));
     }
@@ -37,6 +38,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellFontName(sheet, -1, 0, "Arial"));
@@ -46,6 +48,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellFontName(sheet, 0, -1, "Arial"));
@@ -55,6 +58,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_NullName_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentNullException>(() =>
             FodsDocument.SetCellFontName(sheet, 0, 0, null!));
@@ -68,6 +72,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_ValidName_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellFontName(sheet, 0, 0, "Arial"));
         Assert.Null(ex);
@@ -77,6 +82,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_GetReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontName(sheet, 0, 0, "Times New Roman");
         var name = FodsDocument.GetCellFontName(sheet, 0, 0);
@@ -87,6 +93,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_DifferentCellsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontName(sheet, 0, 0, "Arial");
         FodsDocument.SetCellFontName(sheet, 1, 1, "Courier New");
@@ -98,6 +105,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontName(sheet, 0, 0, "Arial");
@@ -108,6 +116,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void SetCellFontName_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontName(sheet, 0, 0, "Arial");
         FodsDocument.SetCellFontName(sheet, 0, 0, "Verdana");
@@ -122,6 +131,7 @@ public class FodsR224SetCellFontNameDedicatedTests
     public void DogfoodPipeline_MultipleCells_EachPreservesFontName()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string[] fonts = { "Arial", "Calibri", "Helvetica", "Georgia", "Tahoma" };
         for (int i = 0; i < fonts.Length; i++)

@@ -25,6 +25,7 @@ public class FodsR194ExportSheetToJsonAndMarkdownTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Alice");
         doc.SetCellValue(0, 1, "Eng");
         doc.SetCellValue(0, 2, "95");
@@ -163,6 +164,7 @@ public class FodsR194ExportSheetToJsonAndMarkdownTests
     public void Dogfood_CreateSetCellsExportJsonMarkdownXml_Verify()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetNames()[0];
 
         // Set data

@@ -31,6 +31,7 @@ public class FodsR209ClearSheetDedicatedTests
     public void ClearSheet_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.ClearSheet(null!));
     }
 
@@ -38,6 +39,7 @@ public class FodsR209ClearSheetDedicatedTests
     public void ClearSheet_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.ClearSheet("   "));
     }
 
@@ -45,6 +47,7 @@ public class FodsR209ClearSheetDedicatedTests
     public void ClearSheet_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.ClearSheet("NoSuch"));
     }
 
@@ -56,6 +59,7 @@ public class FodsR209ClearSheetDedicatedTests
     public void ClearSheet_EmptySheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("Empty");
         var ex = Record.Exception(() => doc.ClearSheet(sheet.Name!));
         Assert.Null(ex);
@@ -86,6 +90,7 @@ public class FodsR209ClearSheetDedicatedTests
     public void ClearSheet_OtherSheetsNotAffected()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet1 = doc.GetSheetByName("Sheet1")!;
         var sheet2 = doc.AddSheet("Sheet2");
         FodsDocument.SetCellValue(sheet1, 0, 0, "A");

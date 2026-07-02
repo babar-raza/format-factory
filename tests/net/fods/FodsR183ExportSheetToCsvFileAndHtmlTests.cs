@@ -112,6 +112,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
     public void FodsCsvExporter_ExportSheetToCsvString_ContainsCommas()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(0, 0, "A");
         doc.SetCellValue(0, 1, "B");
@@ -124,6 +125,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
     public void FodsCsvExporter_ExportSheetToCsvString_ContainsCellValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(0, 0, "TestAlpha");
         doc.SetCellValue(0, 1, "TestBeta");
@@ -184,6 +186,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
     public void Dogfood_CreateSetCellExportHtmlCsvExport_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // Set some cell values

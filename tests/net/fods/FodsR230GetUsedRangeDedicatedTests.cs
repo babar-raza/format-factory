@@ -29,6 +29,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange(null!));
     }
 
@@ -36,6 +37,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("   "));
     }
 
@@ -43,6 +45,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("DoesNotExist"));
     }
 
@@ -54,6 +57,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_EmptySheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetUsedRange(sheetName));
         Assert.Null(ex);
@@ -63,6 +67,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_AfterSetCellValue_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Test");
         var ex = Record.Exception(() => doc.GetUsedRange(sheetName));
@@ -73,6 +78,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_AfterSetCellValue_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         var range = doc.GetUsedRange(sheetName);
@@ -83,6 +89,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int sheetsBefore = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetUsedRange(sheetName);
@@ -93,6 +100,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void GetUsedRange_ReturnTypeIsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         var range = doc.GetUsedRange(sheetName);
@@ -107,6 +115,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void DogfoodPipeline_MultiCellValues_RangeIsNonEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "A");
         doc.SetCellValue(sheetName, 1, 1, "B");
@@ -120,6 +129,7 @@ public class FodsR230GetUsedRangeDedicatedTests
     public void DogfoodPipeline_ClearSheet_RangeBecomesEmptyOrNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         doc.ClearSheet(sheetName);

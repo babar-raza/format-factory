@@ -28,6 +28,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn(null!, new[] { "A", "B" }));
     }
 
@@ -35,6 +36,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn("   ", new[] { "A", "B" }));
     }
 
@@ -42,6 +44,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn("NoSuchSheet", new[] { "A" }));
     }
 
@@ -53,6 +56,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_ValidValues_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.AddColumn(sheetName, new[] { "Header", "Val1", "Val2" }));
         Assert.Null(ex);
@@ -62,6 +66,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_GetColumnCountIncreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int before = doc.GetColumnCount(sheetName);
         doc.AddColumn(sheetName, new[] { "X", "Y", "Z" });
@@ -72,6 +77,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int before = doc.SheetCount;
         doc.AddColumn(sheetName, new[] { "A", "B" });
@@ -82,6 +88,7 @@ public class FodsR266AddColumnDedicatedTests
     public void AddColumn_MultipleColumns_CountGrows()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int start = doc.GetColumnCount(sheetName);
         doc.AddColumn(sheetName, new[] { "Col1Row1", "Col1Row2" });
@@ -97,6 +104,7 @@ public class FodsR266AddColumnDedicatedTests
     public void DogfoodPipeline_AddColumn_ValuesAccessibleViaCellValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, new[] { "Name", "Alice", "Bob" });
         // First column (col 0) should have the values we set
@@ -109,6 +117,7 @@ public class FodsR266AddColumnDedicatedTests
     public void DogfoodPipeline_AddTwoColumns_BothAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, new[] { "FirstCol" });
         doc.AddColumn(sheetName, new[] { "SecondCol" });

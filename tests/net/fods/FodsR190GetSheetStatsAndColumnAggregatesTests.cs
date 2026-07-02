@@ -24,6 +24,7 @@ public class FodsR190GetSheetStatsAndColumnAggregatesTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Alice");
         doc.SetCellValue(0, 1, "Eng");
         doc.SetCellValue(0, 2, "95");
@@ -143,6 +144,7 @@ public class FodsR190GetSheetStatsAndColumnAggregatesTests
     public void GetColumnAggregates_AllSameValue_MinEqualsMax()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "50");
         doc.SetCellValue(1, 0, "50");
@@ -160,6 +162,7 @@ public class FodsR190GetSheetStatsAndColumnAggregatesTests
     public void Dogfood_CreateSetGetSheetStatsGetColumnAggregates_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // Set 2x3 data

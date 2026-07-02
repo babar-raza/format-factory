@@ -21,6 +21,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_OldNameNoLongerExists()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet("Sheet1", "Report");
 
         Assert.DoesNotContain("Sheet1", doc.GetSheetNames());
@@ -30,6 +31,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_NewNameAppearsInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet("Sheet1", "Summary");
 
         Assert.Contains("Summary", doc.GetSheetNames());
@@ -39,6 +41,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.SheetCount;
         doc.RenameSheet("Sheet1", "Renamed");
 
@@ -49,6 +52,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_DataPreservedAfterRename()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Alpha", "Beta" });
 
         doc.RenameSheet("Sheet1", "DataSheet");
@@ -63,6 +67,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_GetSheetByNewName_ReturnsSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet("Sheet1", "MySheet");
 
         var sheet = doc.GetSheetByName("MySheet");
@@ -73,6 +78,7 @@ public class FodsR130RenameAndCopySheetTests
     public void RenameSheet_GetSheetByOldName_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet("Sheet1", "MySheet");
 
         var sheet = doc.GetSheetByName("Sheet1");
@@ -85,6 +91,7 @@ public class FodsR130RenameAndCopySheetTests
     public void CopySheet_NewSheetExistsInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "X", "Y" });
 
         doc.CopySheet("Sheet1", "Sheet1Copy");
@@ -96,6 +103,7 @@ public class FodsR130RenameAndCopySheetTests
     public void CopySheet_OriginalSheetStillExists()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "A", "B" });
 
         doc.CopySheet("Sheet1", "CopyOfSheet1");
@@ -107,6 +115,7 @@ public class FodsR130RenameAndCopySheetTests
     public void CopySheet_SheetCountIncreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.SheetCount;
 
         doc.CopySheet("Sheet1", "Sheet1_Dup");
@@ -118,6 +127,7 @@ public class FodsR130RenameAndCopySheetTests
     public void CopySheet_CopiedSheetHasSameData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Orig1", "Orig2", "Orig3" });
 
         doc.CopySheet("Sheet1", "Clone");
@@ -134,6 +144,7 @@ public class FodsR130RenameAndCopySheetTests
     public void DogfoodPipeline_RenameThenCopy_BothSheetsAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "v1", "v2" });
 
         // Rename source

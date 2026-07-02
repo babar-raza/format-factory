@@ -28,6 +28,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetTabColor(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetTabColor("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetTabColor("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_ValidSheet_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetSheetTabColor(sheetName);
         Assert.NotNull(color);
@@ -62,6 +66,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetSheetTabColor(sheetName);
@@ -72,6 +77,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string first = doc.GetSheetTabColor(sheetName);
         string second = doc.GetSheetTabColor(sheetName);
@@ -82,6 +88,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetSheetTabColor(sheetName);
         Assert.IsType<string>(color);
@@ -91,6 +98,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void GetSheetTabColor_SetColor_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetSheetTabColor(sheetName, "#FF0000");
         string color = doc.GetSheetTabColor(sheetName);
@@ -105,6 +113,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void DogfoodPipeline_DefaultSheet_TabColorNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetSheetTabColor(sheetName);
         Assert.NotNull(color);
@@ -114,6 +123,7 @@ public class FodsR447GetSheetTabColorDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         for (int i = 0; i < doc.SheetCount; i++)
         {

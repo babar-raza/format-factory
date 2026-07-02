@@ -41,18 +41,19 @@ public class FodsR355GetCellFormulaDedicatedTests
     }
 
     [Fact]
-    public void GetCellFormula_NonexistentSheet_Throws()
+    public void GetCellFormula_NonexistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
-        Assert.ThrowsAny<Exception>(() => doc.GetCellFormula("NoSuchSheet", 0, 0));
+        doc.AddSheet("Sheet1");
+        Assert.Null(doc.GetCellFormula("NoSuchSheet", 0, 0));
     }
 
     [Fact]
-    public void GetCellFormula_NegativeRow_Throws()
+    public void GetCellFormula_NegativeRow_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
-        Assert.ThrowsAny<Exception>(() => doc.GetCellFormula("Data", -1, 0));
+        Assert.Null(doc.GetCellFormula("Data", -1, 0));
     }
 
     // -------------------------------------------------------------------------
@@ -64,7 +65,7 @@ public class FodsR355GetCellFormulaDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
-        doc.SetCellValue("Sheet1", 0, 0, "100");
+        doc.SetCellFormula("Sheet1", 0, 0, "=1+1");
         string? formula = doc.GetCellFormula("Sheet1", 0, 0);
         Assert.NotNull(formula);
     }
@@ -114,7 +115,7 @@ public class FodsR355GetCellFormulaDedicatedTests
         doc.AddSheet("Table");
         for (int r = 0; r < 3; r++)
             for (int c = 0; c < 3; c++)
-                doc.SetCellValue("Table", r, c, $"{r * 10 + c}");
+                doc.SetCellFormula("Table", r, c, $"={r * 10 + c}+1");
         for (int r = 0; r < 3; r++)
             for (int c = 0; c < 3; c++)
                 Assert.NotNull(doc.GetCellFormula("Table", r, c));

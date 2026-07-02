@@ -29,6 +29,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_EmptySheet_ReturnsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var result = doc.ExportSheetToMarkdown();
         Assert.NotNull(result);
     }
@@ -37,6 +38,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_OneRow_ContainsHeaderText()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Score");
         var result = doc.ExportSheetToMarkdown();
@@ -48,6 +50,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_TwoRows_ContainsSeparatorRow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Header");
         doc.SetCellValue(1, 0, "Data");
         var result = doc.ExportSheetToMarkdown();
@@ -59,6 +62,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_TwoRows_ContainsDataRow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(1, 0, "Alice");
         var result = doc.ExportSheetToMarkdown();
@@ -69,6 +73,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_TwoRows_ContainsPipeDelimiters()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Col1");
         doc.SetCellValue(0, 1, "Col2");
         doc.SetCellValue(1, 0, "A");
@@ -85,6 +90,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_NamedSheet_NonexistentThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.ExportSheetToMarkdown("NoSuchSheet"));
     }
 
@@ -92,6 +98,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_NamedSheet_EmptySheetReturnsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Report");
         var result = doc.ExportSheetToMarkdown("Report");
         Assert.NotNull(result);
@@ -101,6 +108,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void ExportSheetToMarkdown_NamedSheet_TwoRowsContainsData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "ColHeader");
         doc.SetCellValue("Data", 1, 0, "CellValue");
@@ -117,6 +125,7 @@ public class FodsR197ExportSheetToMarkdownDedicatedTests
     public void DogfoodPipeline_SetDataThenExport_AllCellsPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Price");
         doc.SetCellValue(1, 0, "Widget");

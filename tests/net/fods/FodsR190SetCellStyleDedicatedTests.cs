@@ -33,6 +33,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentException>(() => doc.SetCellStyle(null!, 0, 0, "bold"));
     }
@@ -41,6 +42,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentException>(() => doc.SetCellStyle("   ", 0, 0, "bold"));
     }
@@ -49,6 +51,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_NullStyleName_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentNullException>(() => doc.SetCellStyle(sheetName, 0, 0, null!));
@@ -58,6 +61,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_NonexistentSheet_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentException>(() => doc.SetCellStyle("NoSuchSheet", 0, 0, "bold"));
     }
@@ -66,6 +70,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellStyle(sheetName, -1, 0, "bold"));
@@ -75,6 +80,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Data");
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellStyle(sheetName, 0, -1, "bold"));
@@ -88,6 +94,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_ValidCall_DoesNotThrow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Data");
         // Should complete without throwing
@@ -98,6 +105,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void SetCellStyle_EmptyStyleName_DoesNotThrow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Data");
         doc.SetCellStyle(sheetName, 0, 0, string.Empty);
@@ -111,6 +119,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void DogfoodPipeline_SetStyleOnMultipleCells_NoThrow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Header1");
         doc.SetCellValue(0, 1, "Header2");
@@ -123,6 +132,7 @@ public class FodsR190SetCellStyleDedicatedTests
     public void DogfoodPipeline_SetThenOverwriteStyle_DoesNotThrow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Value");
         doc.SetCellStyle(sheetName, 0, 0, "style-one");

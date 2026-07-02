@@ -24,13 +24,13 @@ public class FodsR331GetCellFormulaDedicatedTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void GetCellFormula_NonFormulaCell_ReturnsNonNull()
+    public void GetCellFormula_NonFormulaCell_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "plain text");
         string? formula = doc.GetCellFormula("Sheet1", 0, 0);
-        Assert.NotNull(formula);
+        Assert.Null(formula);
     }
 
     [Fact]

@@ -72,7 +72,6 @@ public sealed partial class FodsDocument
             "  office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
             "  office:version=\"1.3\">" +
             "  <office:body><office:spreadsheet>" +
-            "    <table:table table:name=\"Sheet1\"><table:table-row><table:table-cell/></table:table-row></table:table>" +
             "  </office:spreadsheet></office:body>" +
             "</office:document>";
         var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit };
@@ -255,7 +254,9 @@ public sealed partial class FodsDocument
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         var sheet = GetSheetByName(sheetName)
-            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row), "Row index must be non-negative.");
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col), "Column index must be non-negative.");
         return GetCellValue(sheet, row, col);
     }
 
@@ -384,7 +385,7 @@ public sealed partial class FodsDocument
 
         var existing = GetSheetByName(name);
         if (existing != null)
-            return existing;
+            throw new InvalidOperationException($"A sheet named '{name}' already exists.");
 
         var body = _doc.Root?.Element(NsOffice + "body");
         var spreadsheet = body?.Element(NsOffice + "spreadsheet");
@@ -430,6 +431,7 @@ public sealed partial class FodsDocument
         var sheet = GetSheetByName(oldName);
         if (sheet is null)
             throw new InvalidOperationException($"No sheet named '{oldName}' exists.");
+        if (oldName == newName) return; // no-op
         if (GetSheetByName(newName) != null)
             throw new InvalidOperationException($"A sheet named '{newName}' already exists.");
 
@@ -475,7 +477,7 @@ public sealed partial class FodsDocument
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         if (count < 0)
-            throw new ArgumentOutOfRangeException(nameof(count), "Count must not be negative.");
+            throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative.");
         if (count == 0) return;
 
         var sheet = GetSheetByName(sheetName)
@@ -540,8 +542,10 @@ public sealed partial class FodsDocument
     /// </summary>
     public IReadOnlyList<string> GetColumnHeaders(string sheetName)
     {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         var sheet = GetSheetByName(sheetName);
-        if (sheet == null) return Array.Empty<string>();
+        if (sheet is null) return Array.Empty<string>();
         return GetColumnHeadersFromSheet(sheet);
     }
 
@@ -847,18 +851,26 @@ public sealed partial class FodsDocument
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         ArgumentNullException.ThrowIfNull(styleName);
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
 
         var sheet = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"Sheet '{sheetName}' not found.", nameof(sheetName));
 
-        if (row < 0 || row >= sheet.Rows.Count)
+        // Allow appending only the next row (row == Rows.Count); anything beyond throws.
+        if (row > sheet.Rows.Count)
             throw new ArgumentOutOfRangeException(nameof(row),
                 $"Row {row} is out of range (sheet has {sheet.Rows.Count} rows).");
+        if (row == sheet.Rows.Count)
+            sheet.Element.Add(new XElement(NsTable + "table-row"));
 
         var r = sheet.Rows[row];
-        if (col < 0 || col >= r.Cells.Count)
+        // Allow appending only the next cell (col == r.Cells.Count); anything beyond throws.
+        if (col > r.Cells.Count)
             throw new ArgumentOutOfRangeException(nameof(col),
                 $"Column {col} is out of range (row has {r.Cells.Count} cells).");
+        if (col == r.Cells.Count)
+            r.Element.Add(new XElement(NsTable + "table-cell"));
 
         r.Cells[col].Element.SetAttributeValue(NsTable + "style-name", styleName);
     }

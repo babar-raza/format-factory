@@ -43,6 +43,7 @@ public class FodsR179ExportSheetCsvTsvJsonTests : IDisposable
     private static FodsDocument BuildDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         doc.InsertRowWithValues(sheetName, 0, new[] { "Name", "Dept", "Score" });
         doc.InsertRowWithValues(sheetName, 1, new[] { "Alice", "Eng", "95" });

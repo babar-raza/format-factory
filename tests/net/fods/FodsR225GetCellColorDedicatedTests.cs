@@ -29,6 +29,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_NullSheet_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentNullException>(() =>
             FodsDocument.SetCellColor(null!, 0, 0, "#FF0000"));
     }
@@ -37,6 +38,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellColor(sheet, -1, 0, "#FF0000"));
@@ -46,6 +48,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellColor(sheet, 0, -1, "#FF0000"));
@@ -59,6 +62,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_ValidColor_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellColor(sheet, 0, 0, "#FF0000"));
         Assert.Null(ex);
@@ -68,6 +72,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_GetReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellColor(sheet, 0, 0, "#00FF00");
         var color = FodsDocument.GetCellColor(sheet, 0, 0);
@@ -78,6 +83,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_DifferentCellsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellColor(sheet, 0, 0, "#FF0000");
         FodsDocument.SetCellColor(sheet, 1, 1, "#0000FF");
@@ -89,6 +95,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellColor(sheet, 0, 0, "#FF0000");
@@ -99,6 +106,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellColor_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellColor(sheet, 0, 0, "#FF0000");
         FodsDocument.SetCellColor(sheet, 0, 0, "#FFFFFF");
@@ -109,6 +117,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void SetCellBackgroundColor_ValidColor_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellBackgroundColor(sheet, 0, 0, "#FFFF00"));
         Assert.Null(ex);
@@ -122,6 +131,7 @@ public class FodsR225GetCellColorDedicatedTests
     public void DogfoodPipeline_MultipleCells_EachPreservesColor()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string[] colors = { "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF" };
         for (int i = 0; i < colors.Length; i++)

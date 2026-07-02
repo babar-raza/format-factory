@@ -29,6 +29,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_NullSheet_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentNullException>(() =>
             FodsDocument.SetCellBorder(null!, 0, 0, "thin solid #000000"));
     }
@@ -37,6 +38,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellBorder(sheet, -1, 0, "thin solid #000000"));
@@ -46,6 +48,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellBorder(sheet, 0, -1, "thin solid #000000"));
@@ -59,6 +62,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_ValidBorder_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellBorder(sheet, 0, 0, "thin solid #000000"));
         Assert.Null(ex);
@@ -68,6 +72,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_GetReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellBorder(sheet, 0, 0, "thin solid #FF0000");
         var border = FodsDocument.GetCellBorder(sheet, 0, 0);
@@ -78,6 +83,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_DifferentCellsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellBorder(sheet, 0, 0, "thin solid #000000");
         FodsDocument.SetCellBorder(sheet, 1, 1, "thick dashed #FF0000");
@@ -89,6 +95,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellBorder(sheet, 0, 0, "thin solid #000000");
@@ -99,6 +106,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellBorder(sheet, 0, 0, "thin solid #000000");
         FodsDocument.SetCellBorder(sheet, 0, 0, "thick solid #FFFFFF");
@@ -109,6 +117,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void SetCellBorder_EmptyString_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellBorder(sheet, 0, 0, ""));
         Assert.Null(ex);
@@ -122,6 +131,7 @@ public class FodsR226SetCellBorderDedicatedTests
     public void DogfoodPipeline_MultipleCells_EachPreservesBorder()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string[] borders = {
             "thin solid #000000",

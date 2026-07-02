@@ -32,6 +32,7 @@ public class FodsR200AddSheetAndRenameTests
     public void GetSheetNames_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.GetSheetNames());
     }
 
@@ -39,6 +40,7 @@ public class FodsR200AddSheetAndRenameTests
     public void GetSheetNames_NonEmpty_ForNewDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotEmpty(doc.GetSheetNames());
     }
 
@@ -46,6 +48,7 @@ public class FodsR200AddSheetAndRenameTests
     public void GetSheetNames_CountIsOne_ForNewDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(1, doc.GetSheetNames().Count);
     }
 
@@ -57,6 +60,7 @@ public class FodsR200AddSheetAndRenameTests
     public void AddSheet_IncreasesSheetCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.GetSheetNames().Count;
         doc.AddSheet("NewSheet");
         Assert.Equal(before + 1, doc.GetSheetNames().Count);
@@ -66,6 +70,7 @@ public class FodsR200AddSheetAndRenameTests
     public void AddSheet_NameAppearsInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("DataSheet");
         Assert.Contains("DataSheet", doc.GetSheetNames());
     }
@@ -74,6 +79,7 @@ public class FodsR200AddSheetAndRenameTests
     public void AddSheet_SetCellValue_GetCellValue_Works()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("NewSheet");
         doc.SetCellValue("NewSheet", 0, 0, "HelloNewSheet");
         var val = doc.GetCellValue("NewSheet", 0, 0);
@@ -84,6 +90,7 @@ public class FodsR200AddSheetAndRenameTests
     public void AddSheet_Multiple_AllAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Alpha");
         doc.AddSheet("Beta");
         doc.AddSheet("Gamma");
@@ -101,6 +108,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RenameSheet_NewNameInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var original = doc.GetSheetNames()[0];
         doc.RenameSheet(original, "Renamed");
         Assert.Contains("Renamed", doc.GetSheetNames());
@@ -110,6 +118,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RenameSheet_OldNameAbsent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var original = doc.GetSheetNames()[0];
         doc.RenameSheet(original, "NewName");
         Assert.DoesNotContain(original, doc.GetSheetNames());
@@ -119,6 +128,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RenameSheet_SetCellValue_GetCellValue_OnRenamedSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var original = doc.GetSheetNames()[0];
         doc.SetCellValue(original, 0, 0, "BeforeRename");
         doc.RenameSheet(original, "AfterRename");
@@ -130,6 +140,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RenameSheet_SheetCount_Unchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.GetSheetNames().Count;
         var original = doc.GetSheetNames()[0];
         doc.RenameSheet(original, "Renamed");
@@ -144,6 +155,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RemoveSheet_DecreasesSheetCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         var before = doc.GetSheetNames().Count;
         doc.RemoveSheet("Extra");
@@ -154,6 +166,7 @@ public class FodsR200AddSheetAndRenameTests
     public void RemoveSheet_NameAbsentAfterRemoval()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("ToRemove");
         doc.RemoveSheet("ToRemove");
         Assert.DoesNotContain("ToRemove", doc.GetSheetNames());
@@ -167,6 +180,7 @@ public class FodsR200AddSheetAndRenameTests
     public void Dogfood_CreateGetNamesAddRenameSetCellsRemoveVerify_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
 
         // GetSheetNames — initial state
         var names = doc.GetSheetNames();

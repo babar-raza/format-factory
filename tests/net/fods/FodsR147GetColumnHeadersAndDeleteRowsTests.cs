@@ -31,6 +31,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     {
         // CreateNew produces a doc with one empty sheet
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var headers = doc.GetColumnHeaders();
         Assert.NotNull(headers);
         Assert.Empty(headers);
@@ -40,6 +41,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void GetColumnHeaders_AfterSetCellValueInFirstRow_ReturnsHeaderValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Score");
         var headers = doc.GetColumnHeaders();
@@ -51,6 +53,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void GetColumnHeaders_ReturnsReadOnlyList()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "ID");
         var headers = doc.GetColumnHeaders();
         Assert.IsAssignableFrom<IReadOnlyList<string>>(headers);
@@ -64,6 +67,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void GetColumnHeaders_NonexistentSheetName_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var headers = doc.GetColumnHeaders("NoSuchSheet");
         Assert.NotNull(headers);
         Assert.Empty(headers);
@@ -73,6 +77,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void GetColumnHeaders_NamedSheet_ReturnsFirstRowValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // The default sheet name in CreateNew — discover it
         var sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(0, 0, "Department");
@@ -88,6 +93,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void DeleteRows_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.DeleteRows(null!, 0, 1));
     }
 
@@ -95,6 +101,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void DeleteRows_EmptySheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.DeleteRows(string.Empty, 0, 1));
     }
 
@@ -102,6 +109,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void DeleteRows_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.DeleteRows("NoSuchSheet", 0, 1));
     }
 
@@ -109,6 +117,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void DeleteRows_NegativeCount_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.DeleteRows(sheetName, 0, -1));
     }
@@ -121,6 +130,7 @@ public class FodsR147GetColumnHeadersAndDeleteRowsTests
     public void DogfoodPipeline_SetCells_GetHeaders_DeleteRows_VerifiesState()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // Row 0: headers; Row 1: data; Row 2: data
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Price");

@@ -30,6 +30,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellType(null!, 0, 0));
     }
 
@@ -37,6 +38,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellType("   ", 0, 0));
     }
 
@@ -44,6 +46,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_NonexistentSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellType("NoSheet", 0, 0));
     }
 
@@ -51,6 +54,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellType("Sheet1", -1, 0));
     }
 
@@ -58,6 +62,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellType("Sheet1", 0, -1));
     }
 
@@ -69,6 +74,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_AfterSetCellValue_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "some text");
         string type = doc.GetCellType("Sheet1", 0, 0);
         Assert.NotNull(type);
@@ -78,6 +84,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         doc.SetCellValue("Sheet1", 0, 0, "text");
         doc.GetCellType("Sheet1", 0, 0);
@@ -88,6 +95,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void GetCellType_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "stable");
         string first = doc.GetCellType("Sheet1", 0, 0);
         string second = doc.GetCellType("Sheet1", 0, 0);
@@ -102,6 +110,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void DogfoodPipeline_SetValueAndGetType_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 1, 2, "FormatFactory");
         string cellType = doc.GetCellType("Data", 1, 2);
@@ -112,6 +121,7 @@ public class FodsR289GetCellTypeDedicatedTests
     public void DogfoodPipeline_TwoCellsDifferentContent_BothNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "text value");
         doc.SetCellValue("Sheet1", 0, 1, "123");
         string type0 = doc.GetCellType("Sheet1", 0, 0);

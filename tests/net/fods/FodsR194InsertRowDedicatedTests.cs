@@ -33,6 +33,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.InsertRow(null!, 0));
     }
 
@@ -40,6 +41,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.InsertRow("   ", 0));
     }
 
@@ -47,6 +49,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.InsertRow("NoSuchSheet", 0));
     }
 
@@ -54,6 +57,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_NegativeRowIndex_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.InsertRow(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_RowIndexAboveCount_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         // No rows exist, so index > 0 is OOB
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.InsertRow(sheetName, 5));
@@ -75,6 +80,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_ValidInsert_IncrementsRowCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "A");
         var before = doc.GetRowCount(sheetName);
@@ -86,6 +92,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_AtZero_ShiftsExistingRowsDown()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "OriginalRow");
         doc.InsertRow(sheetName, 0);
@@ -97,6 +104,7 @@ public class FodsR194InsertRowDedicatedTests
     public void InsertRow_AtCount_AppendsRow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Existing");
         var count = doc.GetRowCount(sheetName);
@@ -112,6 +120,7 @@ public class FodsR194InsertRowDedicatedTests
     public void DogfoodPipeline_InsertThenVerify_RowCountIncremented()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Header");
         doc.SetCellValue(1, 0, "Data");
@@ -124,6 +133,7 @@ public class FodsR194InsertRowDedicatedTests
     public void DogfoodPipeline_InsertPreservesExistingCellData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.Sheets[0].Name;
         doc.SetCellValue(0, 0, "Row0Data");
         doc.InsertRow(sheetName, 0); // push existing to index 1

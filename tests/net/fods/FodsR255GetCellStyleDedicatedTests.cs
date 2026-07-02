@@ -29,6 +29,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyle(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyle(sheetName, -1, 0));
     }
@@ -58,6 +62,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetCellStyle(sheetName, 0, -1));
     }
@@ -70,6 +75,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetCellStyle(sheetName, 0, 0));
         Assert.Null(ex);
@@ -79,6 +85,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_PlainCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "PlainText");
         var style = doc.GetCellStyle(sheetName, 0, 0);
@@ -89,6 +96,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         _ = doc.GetCellStyle(sheetName, 0, 0);
@@ -99,6 +107,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void GetCellStyle_CalledTwice_NonNullBothTimes()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         var style1 = doc.GetCellStyle(sheetName, 0, 0);
@@ -115,6 +124,7 @@ public class FodsR255GetCellStyleDedicatedTests
     public void DogfoodPipeline_SetCellValue_GetStyle_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Header");
         doc.SetCellValue(sheetName, 0, 1, "Value");

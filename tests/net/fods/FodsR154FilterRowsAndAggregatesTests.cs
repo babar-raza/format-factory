@@ -27,8 +27,7 @@ public class FodsR154FilterRowsAndAggregatesTests
         string[] headers, string[][] dataRows)
     {
         var doc = FodsDocument.CreateNew();
-        // Rename the default sheet
-        doc.RenameSheet(doc.GetSheetNames()[0], sheetName);
+        doc.AddSheet(sheetName);
 
         // Insert header row at index 0
         doc.InsertRowWithValues(sheetName, 0, headers);

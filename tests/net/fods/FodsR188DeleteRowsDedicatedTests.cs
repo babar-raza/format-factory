@@ -32,6 +32,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_NullOrWhitespaceSheetName_ThrowsArgumentException(string sheetName)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.DeleteRows(sheetName, 0, 1));
     }
 
@@ -39,6 +40,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_NegativeCount_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.DeleteRows("Data", 0, -1));
     }
@@ -47,6 +49,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.DeleteRows("NoSheet", 0, 1));
     }
 
@@ -54,6 +57,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_NegativeStartRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Row0");
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.DeleteRows("Data", -1, 1));
@@ -67,6 +71,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_CountZero_NoOp()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Row0");
         var before = doc.GetRowCount("Data");
@@ -82,6 +87,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_ValidDelete_ReducesRowCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Row0");
         doc.SetCellValue("Data", 1, 0, "Row1");
@@ -95,6 +101,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_DeleteFirst_RemainingRowsShiftUp()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "First");
         doc.SetCellValue("Data", 1, 0, "Second");
@@ -106,6 +113,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DeleteRows_DeleteAll_RowCountBecomesZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "A");
         doc.SetCellValue("Data", 1, 0, "B");
@@ -122,6 +130,7 @@ public class FodsR188DeleteRowsDedicatedTests
     public void DogfoodPipeline_AddRowsDeleteMiddle_BoundaryRowsPreserved()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Report");
         doc.SetCellValue("Report", 0, 0, "Header");
         doc.SetCellValue("Report", 1, 0, "ToDelete");

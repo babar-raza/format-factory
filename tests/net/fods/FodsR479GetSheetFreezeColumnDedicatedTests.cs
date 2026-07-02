@@ -25,6 +25,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeColumn(null!));
     }
 
@@ -32,6 +33,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeColumn("   "));
     }
 
@@ -39,6 +41,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeColumn("NoSuchSheet"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_ValidSheet_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         int val = doc.GetSheetFreezeColumn(sheet);
         Assert.True(val >= 0);
@@ -59,6 +63,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheet = doc.GetSheetNames()[0];
         _ = doc.GetSheetFreezeColumn(sheet);
@@ -69,6 +74,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         int first = doc.GetSheetFreezeColumn(sheet);
         int second = doc.GetSheetFreezeColumn(sheet);
@@ -79,6 +85,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void GetSheetFreezeColumn_IsInt()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetFreezeColumn(sheet);
         Assert.IsType<int>(result);
@@ -92,6 +99,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         Assert.True(doc.GetSheetFreezeColumn(sheet) >= 0);
     }
@@ -100,6 +108,7 @@ public class FodsR479GetSheetFreezeColumnDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         foreach (string sheet in doc.GetSheetNames())
         {

@@ -29,6 +29,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_NullSheet_ThrowsArgumentNullException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentNullException>(() =>
             FodsDocument.SetCellFontSize(null!, 0, 0, 12));
     }
@@ -37,6 +38,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellFontSize(sheet, -1, 0, 12));
@@ -46,6 +48,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             FodsDocument.SetCellFontSize(sheet, 0, -1, 12));
@@ -55,6 +58,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_NegativeSize_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.ThrowsAny<Exception>(() =>
             FodsDocument.SetCellFontSize(sheet, 0, 0, -1));
@@ -68,6 +72,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_ValidSize_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var ex = Record.Exception(() => FodsDocument.SetCellFontSize(sheet, 0, 0, 14));
         Assert.Null(ex);
@@ -77,6 +82,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_GetReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontSize(sheet, 0, 0, 18);
         var size = FodsDocument.GetCellFontSize(sheet, 0, 0);
@@ -87,6 +93,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_DifferentCellsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontSize(sheet, 0, 0, 10);
         FodsDocument.SetCellFontSize(sheet, 1, 1, 20);
@@ -98,6 +105,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontSize(sheet, 0, 0, 16);
@@ -108,6 +116,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void SetCellFontSize_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellFontSize(sheet, 0, 0, 12);
         FodsDocument.SetCellFontSize(sheet, 0, 0, 24);
@@ -122,6 +131,7 @@ public class FodsR223SetCellFontSizeDedicatedTests
     public void DogfoodPipeline_MultipleCells_EachPreservesSize()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         int[] sizes = { 8, 10, 12, 14, 16 };
         for (int i = 0; i < sizes.Length; i++)

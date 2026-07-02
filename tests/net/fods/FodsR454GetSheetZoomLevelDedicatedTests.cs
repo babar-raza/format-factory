@@ -28,6 +28,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetZoomLevel(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetZoomLevel("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetZoomLevel("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_ValidSheet_ReturnsPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int zoom = doc.GetSheetZoomLevel(sheetName);
         Assert.True(zoom > 0);
@@ -62,6 +66,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetSheetZoomLevel(sheetName);
@@ -72,6 +77,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int first = doc.GetSheetZoomLevel(sheetName);
         int second = doc.GetSheetZoomLevel(sheetName);
@@ -82,6 +88,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_IsInt()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object result = doc.GetSheetZoomLevel(sheetName);
         Assert.IsType<int>(result);
@@ -91,6 +98,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void GetSheetZoomLevel_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetSheetZoomLevel(sheetName, 150);
         int zoom = doc.GetSheetZoomLevel(sheetName);
@@ -105,6 +113,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void DogfoodPipeline_DefaultSheet_ZoomLevelPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int zoom = doc.GetSheetZoomLevel(sheetName);
         Assert.True(zoom > 0);
@@ -114,6 +123,7 @@ public class FodsR454GetSheetZoomLevelDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         doc.AddSheet("Sheet3");
         for (int i = 0; i < doc.SheetCount; i++)

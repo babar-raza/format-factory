@@ -43,6 +43,7 @@ public class FodsR181AddSheetAndManagementTests
     public void AddSheet_IncrementsSheetCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var initial = doc.SheetCount;
         doc.AddSheet("NewSheet");
         Assert.Equal(initial + 1, doc.SheetCount);
@@ -52,6 +53,7 @@ public class FodsR181AddSheetAndManagementTests
     public void AddSheet_NameAppearInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("ExtraSheet");
         var names = doc.GetSheetNames();
         Assert.Contains("ExtraSheet", names);
@@ -61,6 +63,7 @@ public class FodsR181AddSheetAndManagementTests
     public void AddSheet_GetSheetByName_FindsNewSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("TargetSheet");
         var sheet = doc.GetSheetByName("TargetSheet");
         Assert.NotNull(sheet);
@@ -70,6 +73,7 @@ public class FodsR181AddSheetAndManagementTests
     public void AddSheet_SetCellValue_GetCellValue_Round_Trips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("DataSheet");
         doc.SetCellValue(0, 0, "TestValue");
         Assert.Equal("TestValue", doc.GetCellValue(0, 0));
@@ -79,6 +83,7 @@ public class FodsR181AddSheetAndManagementTests
     public void AddSheet_Multiple_SheetCountCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var initial = doc.SheetCount;
         doc.AddSheet("SheetA");
         doc.AddSheet("SheetB");
@@ -93,6 +98,7 @@ public class FodsR181AddSheetAndManagementTests
     public void RemoveSheet_DecrementsSheetCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("ToRemove");
         var before = doc.SheetCount;
         doc.RemoveSheet("ToRemove");
@@ -103,6 +109,7 @@ public class FodsR181AddSheetAndManagementTests
     public void RemoveSheet_RemovedNameNotInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("DropMe");
         doc.RemoveSheet("DropMe");
         var names = doc.GetSheetNames();
@@ -117,6 +124,7 @@ public class FodsR181AddSheetAndManagementTests
     public void RenameSheet_ChangesSheetName()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("OldName");
         doc.RenameSheet("OldName", "NewName");
         var names = doc.GetSheetNames();
@@ -128,6 +136,7 @@ public class FodsR181AddSheetAndManagementTests
     public void RenameSheet_GetSheetByName_FindsRenamedSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Alpha");
         doc.RenameSheet("Alpha", "Beta");
         var sheet = doc.GetSheetByName("Beta");
@@ -142,6 +151,7 @@ public class FodsR181AddSheetAndManagementTests
     public void CopySheet_CreatesNewSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.SheetCount;
         doc.CopySheet(doc.GetSheetNames()[0], "CopiedSheet");
         Assert.Equal(before + 1, doc.SheetCount);
@@ -151,6 +161,7 @@ public class FodsR181AddSheetAndManagementTests
     public void CopySheet_NewNameInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var srcName = doc.GetSheetNames()[0];
         doc.CopySheet(srcName, "CopiedVersion");
         var names = doc.GetSheetNames();
@@ -165,6 +176,7 @@ public class FodsR181AddSheetAndManagementTests
     public void GetSheetNames_AfterMultipleOps_CountIsCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("S1");
         doc.AddSheet("S2");
         doc.RemoveSheet("S1");
@@ -182,6 +194,7 @@ public class FodsR181AddSheetAndManagementTests
     public void Dogfood_CreateAddSetCopyrRenameGetNames_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
 
         // Add a data sheet
         doc.AddSheet("DataSheet");

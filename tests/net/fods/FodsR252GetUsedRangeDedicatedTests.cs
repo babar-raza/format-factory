@@ -28,6 +28,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_EmptySheet_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var range = doc.GetUsedRange(sheetName);
         Assert.NotNull(range);
@@ -62,6 +66,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_AfterAddRow_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "A", "B", "C" });
         var range = doc.GetUsedRange(sheetName);
@@ -72,6 +77,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_AfterAddRow_RowCountPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "X", "Y" });
         doc.AddRow(sheetName, new[] { "P", "Q" });
@@ -86,6 +92,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         _ = doc.GetUsedRange(sheetName);
@@ -96,6 +103,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void GetUsedRange_CalledTwice_ConsistentResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "A", "B" });
         var range1 = doc.GetUsedRange(sheetName);
@@ -112,6 +120,7 @@ public class FodsR252GetUsedRangeDedicatedTests
     public void DogfoodPipeline_AddRowsAndColumn_RangeExpands()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var rangeBefore = doc.GetUsedRange(sheetName);
         doc.AddRow(sheetName, new[] { "Name", "Score", "Grade" });

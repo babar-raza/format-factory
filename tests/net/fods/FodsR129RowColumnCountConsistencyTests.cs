@@ -20,6 +20,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_EmptySheet_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(0, doc.GetRowCount("Sheet1"));
     }
 
@@ -27,6 +28,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_AfterInsertRowWithValues_Increases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "a", "b", "c" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "d", "e", "f" });
 
@@ -37,6 +39,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_MatchesSheetRowsCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "row1c1", "row1c2" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "row2c1", "row2c2" });
         doc.InsertRowWithValues("Sheet1", 2, new[] { "row3c1", "row3c2" });
@@ -51,6 +54,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_AfterDeleteRows_Decreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "a" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "b" });
         doc.InsertRowWithValues("Sheet1", 2, new[] { "c" });
@@ -66,6 +70,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_AfterClearSheet_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "x", "y" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "z", "w" });
 
@@ -80,6 +85,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetColumnCount_EmptySheet_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(0, doc.GetColumnCount("Sheet1"));
     }
 
@@ -87,6 +93,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetColumnCount_SingleRowThreeCols_IsThree()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "A", "B", "C" });
 
         Assert.Equal(3, doc.GetColumnCount("Sheet1"));
@@ -98,6 +105,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetColumnCount_AfterClearSheet_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "X", "Y", "Z" });
 
         doc.ClearSheet("Sheet1");
@@ -111,6 +119,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void GetRowCount_AfterInsertRow_Increases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "a" });
         var beforeCount = doc.GetRowCount("Sheet1");
 
@@ -124,6 +133,7 @@ public class FodsR129RowColumnCountConsistencyTests
     public void DogfoodPipeline_MutationSequence_CountsStayConsistent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
 
         // Add 3 rows
         doc.InsertRowWithValues("Sheet1", 0, new[] { "r1", "c1", "d1" });

@@ -23,6 +23,7 @@ public class FodsR206GetRowValuesAndInsertRowDeepTests
     private static FodsDocument CreateThreeRowDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Alice");
         doc.SetCellValue("Sheet1", 0, 1, "Eng");
         doc.SetCellValue("Sheet1", 0, 2, "95");
@@ -137,6 +138,7 @@ public class FodsR206GetRowValuesAndInsertRowDeepTests
     public void InsertRowWithValues_Multiple_CountCorrect()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Row A", "Val 1" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "Row B", "Val 2" });
         doc.InsertRowWithValues("Sheet1", 2, new[] { "Row C", "Val 3" });

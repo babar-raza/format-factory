@@ -29,6 +29,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn(null!, "Col1"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn("   ", "Col1"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn("NoSuchSheet", "Col1"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_NullColumnName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "Col1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn(sheet, null!));
@@ -59,6 +63,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_NonexistentColumn_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn(sheet, "NoSuchCol"));
     }
@@ -71,6 +76,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "ToDelete");
         var ex = Record.Exception(() => doc.DeleteColumn(sheet, "ToDelete"));
@@ -81,6 +87,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_ColumnCountDecreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "ToDelete");
         int before = doc.GetColumnCount(sheet);
@@ -93,6 +100,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DeleteColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "ToDelete");
         int before = doc.SheetCount;
@@ -108,6 +116,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DogfoodPipeline_AddThenDelete_CountRestores()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int baseline = doc.GetColumnCount(sheet);
         doc.AddColumn(sheet, "Temp");
@@ -119,6 +128,7 @@ public class FodsR311DeleteColumnDedicatedTests
     public void DogfoodPipeline_DeleteOneOfMultiple_OthersRemain()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "ColA");
         doc.AddColumn(sheet, "ColB");

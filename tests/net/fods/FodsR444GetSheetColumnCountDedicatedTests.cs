@@ -27,6 +27,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetColumnCount(null!));
     }
 
@@ -34,6 +35,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetColumnCount("   "));
     }
 
@@ -41,6 +43,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetColumnCount("NoSuchSheet"));
     }
 
@@ -52,6 +55,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_ValidSheet_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int count = doc.GetSheetColumnCount(sheetName);
         Assert.True(count >= 0);
@@ -61,6 +65,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetSheetColumnCount(sheetName);
@@ -71,6 +76,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int first = doc.GetSheetColumnCount(sheetName);
         int second = doc.GetSheetColumnCount(sheetName);
@@ -81,6 +87,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void GetSheetColumnCount_IsInteger()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int count = doc.GetSheetColumnCount(sheetName);
         Assert.IsType<int>(count);
@@ -94,6 +101,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int count = doc.GetSheetColumnCount(sheetName);
         Assert.True(count >= 0);
@@ -103,6 +111,7 @@ public class FodsR444GetSheetColumnCountDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         for (int i = 0; i < doc.SheetCount; i++)
         {

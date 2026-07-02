@@ -38,6 +38,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.GetCellStyle(sheet, -1, 0));
     }
@@ -46,6 +47,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.GetCellStyle(sheet, 0, -1));
     }
@@ -58,6 +60,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_DefaultCell_ReturnsNullOrDefault()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var style = FodsDocument.GetCellStyle(sheet, 0, 0);
         // Default cell has null or empty style name
@@ -68,6 +71,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_AfterSetStyle_ReturnsSameStyle()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellStyle(sheet, 0, 0, "Bold");
         var style = FodsDocument.GetCellStyle(sheet, 0, 0);
@@ -78,6 +82,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_DifferentCells_DifferentStyles()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellStyle(sheet, 0, 0, "Bold");
         FodsDocument.SetCellStyle(sheet, 0, 1, "Italic");
@@ -89,6 +94,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_ReturnsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellStyle(sheet, 0, 0, "Default");
         var style = FodsDocument.GetCellStyle(sheet, 0, 0);
@@ -99,6 +105,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void GetCellStyle_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellStyle(sheet, 0, 0, "First");
         FodsDocument.SetCellStyle(sheet, 0, 0, "Second");
@@ -113,6 +120,7 @@ public class FodsR212GetCellStyleDedicatedTests
     public void DogfoodPipeline_MultiCell_StylesIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string[] styles = { "Bold", "Italic", "Underline" };
         for (int i = 0; i < 3; i++)

@@ -26,6 +26,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Price");
         doc.SetCellValue(1, 0, "Widget");
@@ -43,6 +44,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     public void HasSheet_TrueForDefaultSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var defaultName = doc.GetSheetNames()[0];
         Assert.True(doc.HasSheet(defaultName));
     }
@@ -51,6 +53,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     public void HasSheet_FalseForNonExistentSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(doc.HasSheet("NonExistentSheet_R185"));
     }
 
@@ -58,6 +61,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     public void HasSheet_TrueForAddedSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("NewSheet");
         Assert.True(doc.HasSheet("NewSheet"));
     }
@@ -66,6 +70,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     public void HasSheet_FalseAfterRemoveSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("ToRemove");
         doc.RemoveSheet("ToRemove");
         Assert.False(doc.HasSheet("ToRemove"));
@@ -189,6 +194,7 @@ public class FodsR185HasSheetAndGetUsedRangeTests
     public void Dogfood_SetCellHasSheetGetUsedRangeExportJsonMarkdown_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // HasSheet

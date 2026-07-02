@@ -91,6 +91,7 @@ public class FodsR152PdfExportResultPropertiesTests
     public void DogfoodPipeline_ExportToPdf_ResultPropertiesValid()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Quarter");
         doc.SetCellValue(0, 1, "Revenue");
         doc.SetCellValue(1, 0, "Q1");

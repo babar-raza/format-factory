@@ -28,6 +28,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetPrintArea(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetPrintArea("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetPrintArea("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_ValidSheet_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string area = doc.GetSheetPrintArea(sheetName);
         Assert.NotNull(area);
@@ -62,6 +66,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetSheetPrintArea(sheetName);
@@ -72,6 +77,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string first = doc.GetSheetPrintArea(sheetName);
         string second = doc.GetSheetPrintArea(sheetName);
@@ -82,6 +88,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object area = doc.GetSheetPrintArea(sheetName);
         Assert.IsType<string>(area);
@@ -91,6 +98,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void GetSheetPrintArea_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetSheetPrintArea(sheetName, "A1:D10");
         string area = doc.GetSheetPrintArea(sheetName);
@@ -105,6 +113,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void DogfoodPipeline_DefaultSheet_PrintAreaNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string area = doc.GetSheetPrintArea(sheetName);
         Assert.NotNull(area);
@@ -114,6 +123,7 @@ public class FodsR451GetSheetPrintAreaDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         doc.AddSheet("Sheet3");
         for (int i = 0; i < doc.SheetCount; i++)

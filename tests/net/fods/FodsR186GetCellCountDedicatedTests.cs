@@ -27,6 +27,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_EmptyFirstSheet_ReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Empty");
         // If no cells set, row count may be 0
         // Default sheet may have rows — test that we can still call it
@@ -42,6 +43,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_AfterSetCellValue_PositiveCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         var count = doc.GetCellCount();
         Assert.True(count > 0);
@@ -51,6 +53,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_MultipleRowsMultipleCells_SummedCorrectly()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "R0C0");
         doc.SetCellValue(0, 1, "R0C1");
         doc.SetCellValue(1, 0, "R1C0");
@@ -63,6 +66,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.True(doc.GetCellCount() >= 0);
     }
 
@@ -70,6 +74,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_AfterAddSheet_OnlyFirstSheetCounted()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // Add data to first sheet (index 0)
         doc.SetCellValue(0, 0, "FirstSheet");
         var countBefore = doc.GetCellCount();
@@ -85,6 +90,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void GetCellCount_AdditionalCellIncreasesCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         var before = doc.GetCellCount();
         doc.SetCellValue(0, 1, "B"); // add a new cell in same row
@@ -100,6 +106,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void DogfoodPipeline_AddCellsThenCount_CountPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Score");
         doc.SetCellValue(1, 0, "Alice");
@@ -112,6 +119,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void DogfoodPipeline_ClearSheet_CountBecomesZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Data");
         doc.SetCellValue(1, 0, "More");
         var sheets = doc.GetSheetNames();
@@ -123,6 +131,7 @@ public class FodsR186GetCellCountDedicatedTests
     public void DogfoodPipeline_GetCellCount_NonNegativeAfterAnyOp()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "X");
         doc.SetCellValue(0, 1, "Y");
         var sheets = doc.GetSheetNames();

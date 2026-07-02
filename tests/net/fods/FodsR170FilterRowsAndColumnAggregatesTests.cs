@@ -24,6 +24,7 @@ public class FodsR170FilterRowsAndColumnAggregatesTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);

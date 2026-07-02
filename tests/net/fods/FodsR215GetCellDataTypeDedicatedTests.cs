@@ -38,6 +38,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_NegativeRow_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.GetCellDataType(sheet, -1, 0));
     }
@@ -46,6 +47,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_NegativeCol_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => FodsDocument.GetCellDataType(sheet, 0, -1));
     }
@@ -58,6 +60,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_EmptyCell_ReturnsNullOrEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var type = FodsDocument.GetCellDataType(sheet, 0, 0);
         // Empty cell returns null or empty/unknown type
@@ -68,6 +71,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_StringValue_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Hello");
         var type = FodsDocument.GetCellDataType(sheet, 0, 0);
@@ -80,6 +84,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_StringValue_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "SomeText");
         var type = FodsDocument.GetCellDataType(sheet, 0, 0);
@@ -91,6 +96,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void GetCellDataType_DifferentCells_CalledIndependently()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Text");
         FodsDocument.SetCellValue(sheet, 0, 1, "123");
@@ -108,6 +114,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void DogfoodPipeline_SetMultipleCells_TypesConsistentlyReturned()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string[] values = { "Alpha", "Beta", "Gamma" };
         for (int i = 0; i < values.Length; i++)
@@ -133,6 +140,7 @@ public class FodsR215GetCellDataTypeDedicatedTests
     public void DogfoodPipeline_SetValue_TypeNonNullAfterSet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "DataValue");
         var typeBefore = FodsDocument.GetCellDataType(sheet, 0, 0);

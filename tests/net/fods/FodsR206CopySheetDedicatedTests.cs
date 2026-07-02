@@ -29,6 +29,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_NullSourceName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.CopySheet(null!, "NewSheet"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_WhitespaceSourceName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.CopySheet("   ", "NewSheet"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_NullNewName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentException>(() => doc.CopySheet(sheet.Name!, null!));
     }
@@ -51,6 +54,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_NonexistentSource_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.CopySheet("NoSuch", "Copy"));
     }
 
@@ -58,6 +62,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_DuplicateNewName_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.Sheets[0].Name!;
         Assert.Throws<InvalidOperationException>(() => doc.CopySheet(name, name));
     }
@@ -70,6 +75,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_ValidCopy_SheetCountIncrements()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.SheetCount;
         var name = doc.Sheets[0].Name!;
         doc.CopySheet(name, "CopiedSheet");
@@ -80,6 +86,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_ValidCopy_ReturnsFodsSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.Sheets[0].Name!;
         var result = doc.CopySheet(name, "CopiedSheet");
         Assert.IsType<FodsSheet>(result);
@@ -89,6 +96,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_CopiedSheet_HasNewName()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.Sheets[0].Name!;
         var copy = doc.CopySheet(name, "MyNewSheet");
         Assert.Equal("MyNewSheet", copy.Name);
@@ -98,6 +106,7 @@ public class FodsR206CopySheetDedicatedTests
     public void CopySheet_OriginalSheetUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         string origName = sheet.Name!;
         FodsDocument.SetCellValue(sheet, 0, 0, "OriginalValue");
@@ -116,6 +125,7 @@ public class FodsR206CopySheetDedicatedTests
     public void DogfoodPipeline_CopyTwice_ThreeSheets()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.Sheets[0].Name!;
         doc.CopySheet(name, "Copy1");
         doc.CopySheet(name, "Copy2");

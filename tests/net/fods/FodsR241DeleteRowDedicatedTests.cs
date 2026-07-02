@@ -29,6 +29,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteRow(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteRow("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteRow("NoSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_NegativeRowIndex_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.DeleteRow(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_ValidDelete_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "A", "B", "C" });
         var ex = Record.Exception(() => doc.DeleteRow(sheetName, 0));
@@ -72,6 +77,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_RowCountDecreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Row1A" });
         doc.AddRow(sheetName, new[] { "Row2A" });
@@ -85,6 +91,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "X" });
         int before = doc.SheetCount;
@@ -96,6 +103,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DeleteRow_DeleteRowZero_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "FirstRow" });
         var ex = Record.Exception(() => doc.DeleteRow(sheetName, 0));
@@ -110,6 +118,7 @@ public class FodsR241DeleteRowDedicatedTests
     public void DogfoodPipeline_AddThenDelete_CountDecreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Row1" });
         doc.AddRow(sheetName, new[] { "Row2" });

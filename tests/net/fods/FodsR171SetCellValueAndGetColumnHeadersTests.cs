@@ -24,6 +24,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);
@@ -128,6 +129,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     public void HasSheet_ExistingSheet_IsTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var name = doc.GetSheetNames()[0];
         Assert.True(doc.HasSheet(name));
     }
@@ -136,6 +138,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     public void HasSheet_NonexistentSheet_IsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(doc.HasSheet("NonExistentSheet"));
     }
 
@@ -143,6 +146,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     public void HasSheet_AfterAddSheet_IsTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("NewSheet");
         Assert.True(doc.HasSheet("NewSheet"));
     }
@@ -151,6 +155,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     public void HasSheet_AfterRemoveSheet_IsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Temp");
         doc.RemoveSheet("Temp");
         Assert.False(doc.HasSheet("Temp"));
@@ -164,6 +169,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
     public void Dogfood_SetValueGetHeadersHasSheet_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // Verify sheet exists

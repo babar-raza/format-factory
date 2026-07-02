@@ -50,6 +50,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
         {
             // Fall back to a created doc if fixture doesn't exist
             var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
             return doc;
         }
         return FodsDocument.Load(path);
@@ -63,6 +64,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void MimeType_IsNotNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.MimeType);
     }
 
@@ -70,6 +72,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void MimeType_ContainsSpreadsheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Contains("spreadsheet", doc.MimeType, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -81,6 +84,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void OdfVersion_IsNotNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.OdfVersion);
     }
 
@@ -88,6 +92,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void OdfVersion_IsNonEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrEmpty(doc.OdfVersion));
     }
 
@@ -99,6 +104,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void LoadStream_FromSavedFile_ReturnsDocument()
     {
         var orig = FodsDocument.CreateNew();
+        orig.AddSheet("Sheet1");
         orig.InsertRowWithValues(
             orig.GetSheetNames()[0], 0, new[] { "Name", "Score" });
 
@@ -114,6 +120,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void LoadStream_SheetCountPositive()
     {
         var orig = FodsDocument.CreateNew();
+        orig.AddSheet("Sheet1");
         var path = TempFile("sheets.fods");
         orig.Save(path);
 
@@ -130,6 +137,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void GetSheetByIndex_Zero_ReturnsFirstSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByIndex(0);
         Assert.NotNull(sheet);
     }
@@ -138,6 +146,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void GetSheetByIndex_OutOfRange_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByIndex(999);
         Assert.Null(sheet);
     }
@@ -150,6 +159,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void GetSheetByName_ValidName_ReturnsSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var firstName = doc.GetSheetNames()[0];
         var sheet = doc.GetSheetByName(firstName);
         Assert.NotNull(sheet);
@@ -159,6 +169,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void GetSheetByName_InvalidName_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByName("NoSuchSheet_XYZ");
         Assert.Null(sheet);
     }
@@ -171,6 +182,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void SheetCount_PositiveForNewDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.True(doc.SheetCount > 0);
     }
 
@@ -178,6 +190,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void SheetCount_AfterAddSheet_Increases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.SheetCount;
         doc.AddSheet("NewSheet");
         Assert.Equal(before + 1, doc.SheetCount);
@@ -187,6 +200,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void GetSheetNames_CountMatchesSheetCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         Assert.Equal(doc.SheetCount, doc.GetSheetNames().Count);
     }
@@ -199,6 +213,7 @@ public class FodsR178MimeTypeAndStreamLoadTests : IDisposable
     public void Dogfood_CreateSaveLoadStreamVerify()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         doc.InsertRowWithValues(sheetName, 0, new[] { "Product", "Qty", "Price" });

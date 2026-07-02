@@ -28,6 +28,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowCount(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowCount("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowCount("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_EmptySheet_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int count = doc.GetRowCount(sheetName);
         Assert.True(count >= 0);
@@ -62,6 +66,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_AfterAddRow_Increases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int before = doc.GetRowCount(sheetName);
         doc.AddRow(sheetName, new[] { "A", "B", "C" });
@@ -73,6 +78,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "X" });
         int before = doc.SheetCount;
@@ -84,6 +90,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void GetRowCount_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Row1" });
         doc.AddRow(sheetName, new[] { "Row2" });
@@ -100,6 +107,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void DogfoodPipeline_AddFiveRows_CountAtLeastFive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Header", "Value" });
         doc.AddRow(sheetName, new[] { "R1", "10" });
@@ -114,6 +122,7 @@ public class FodsR268GetRowCountDedicatedTests
     public void DogfoodPipeline_TwoSheets_IndependentCounts()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet1 = doc.GetSheetNames()[0];
         doc.AddSheet("Sheet2");
         string sheet2 = "Sheet2";

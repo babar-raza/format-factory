@@ -42,6 +42,7 @@ public class FodsR165LoadStreamAndGetSheetTests : IDisposable
     private FodsDocument BuildAndSave(string path)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var first = doc.GetSheetNames()[0];
         doc.RenameSheet(first, "Alpha");
         doc.InsertRowWithValues("Alpha", 0, new[] { "Key", "Value" });
@@ -187,6 +188,7 @@ public class FodsR165LoadStreamAndGetSheetTests : IDisposable
     public void Dogfood_CreateSaveLoadStreamGetSheet_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var firstName = doc.GetSheetNames()[0];
         doc.RenameSheet(firstName, "Inventory");
         doc.InsertRowWithValues("Inventory", 0, new[] { "Item", "Qty" });

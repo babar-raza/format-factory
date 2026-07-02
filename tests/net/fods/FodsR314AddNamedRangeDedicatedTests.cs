@@ -29,6 +29,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_NullName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.AddNamedRange(null!, sheet, 0, 0, 1, 1));
     }
@@ -37,6 +38,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_WhitespaceName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.AddNamedRange("   ", sheet, 0, 0, 1, 1));
     }
@@ -45,6 +47,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddNamedRange("Range1", null!, 0, 0, 1, 1));
     }
 
@@ -52,6 +55,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddNamedRange("Range1", "NoSuchSheet", 0, 0, 1, 1));
     }
 
@@ -59,6 +63,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_NegativeStartRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.AddNamedRange("Range1", sheet, -1, 0, 1, 1));
     }
@@ -71,6 +76,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         var ex = Record.Exception(() => doc.AddNamedRange("SalesRange", sheet, 0, 0, 5, 3));
         Assert.Null(ex);
@@ -80,6 +86,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.SheetCount;
         doc.AddNamedRange("MyRange", sheet, 0, 0, 2, 2);
@@ -90,6 +97,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void AddNamedRange_CalledTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddNamedRange("Range1", sheet, 0, 0, 1, 1);
         var ex = Record.Exception(() => doc.AddNamedRange("Range2", sheet, 2, 0, 3, 1));
@@ -104,6 +112,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void DogfoodPipeline_AddNamedRangeOnDefaultSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         var ex = Record.Exception(() => doc.AddNamedRange("DataRange", sheet, 1, 0, 10, 4));
         Assert.Null(ex);
@@ -113,6 +122,7 @@ public class FodsR314AddNamedRangeDedicatedTests
     public void DogfoodPipeline_AddMultipleNamedRanges_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         var ex = Record.Exception(() =>
         {

@@ -43,6 +43,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_NullFilePath_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ExportToHtml(null!));
     }
 
@@ -50,6 +51,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_WhitespaceFilePath_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ExportToHtml("   "));
     }
 
@@ -61,6 +63,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = GetTempPath();
         var ex = Record.Exception(() => doc.ExportToHtml(path));
         Assert.Null(ex);
@@ -70,6 +73,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_FileExistsAfterExport()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path = GetTempPath();
         doc.ExportToHtml(path);
         Assert.True(File.Exists(path));
@@ -79,6 +83,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_FileNonEmptyAfterExport()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellValue(sheet, 0, 0, "Header");
         string path = GetTempPath();
@@ -90,6 +95,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         doc.ExportToHtml(GetTempPath());
         Assert.Equal(before, doc.SheetCount);
@@ -99,6 +105,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void ExportToHtml_ExportTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.ExportToHtml(GetTempPath());
         var ex = Record.Exception(() => doc.ExportToHtml(GetTempPath()));
         Assert.Null(ex);
@@ -112,6 +119,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void DogfoodPipeline_ExportSheetWithData_FileCreated()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellValue(sheet, 0, 0, "Product");
         doc.SetCellValue(sheet, 0, 1, "Price");
@@ -127,6 +135,7 @@ public class FodsR318ExportToHtmlDedicatedTests : IDisposable
     public void DogfoodPipeline_ExportToDifferentPaths_BothCreated()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string path1 = GetTempPath();
         string path2 = GetTempPath();
         doc.ExportToHtml(path1);

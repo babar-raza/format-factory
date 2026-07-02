@@ -25,6 +25,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetRightToLeft(null!));
     }
 
@@ -32,6 +33,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetRightToLeft("   "));
     }
 
@@ -39,6 +41,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetRightToLeft("NoSuchSheet"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_ValidSheet_ReturnsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetRightToLeft(sheet);
         Assert.IsType<bool>(result);
@@ -59,6 +63,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheet = doc.GetSheetNames()[0];
         _ = doc.GetSheetRightToLeft(sheet);
@@ -69,6 +74,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         bool first = doc.GetSheetRightToLeft(sheet);
         bool second = doc.GetSheetRightToLeft(sheet);
@@ -79,6 +85,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void GetSheetRightToLeft_IsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetRightToLeft(sheet);
         Assert.IsType<bool>(result);
@@ -92,6 +99,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetSheetRightToLeft(sheet));
         Assert.Null(ex);
@@ -101,6 +109,7 @@ public class FodsR481GetSheetRightToLeftDedicatedTests
     public void DogfoodPipeline_MultipleSheets_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         foreach (string sheet in doc.GetSheetNames())
         {

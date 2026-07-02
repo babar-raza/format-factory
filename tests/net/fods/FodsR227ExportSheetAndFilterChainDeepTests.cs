@@ -27,6 +27,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
     private static FodsDocument CreateDataDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Reports");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Score");
@@ -123,6 +124,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
     public void FilterRows_AllMatch()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("All");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Group");
@@ -205,6 +207,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
     public void Dogfood_CreateDoc_ExportSheetToJson_FilterRows_GetRowValues_Mutation_Pipeline()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sales");
         doc.SetCellValue(0, 0, "Agent");
         doc.SetCellValue(0, 1, "Amount");

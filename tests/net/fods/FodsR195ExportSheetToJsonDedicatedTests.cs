@@ -31,6 +31,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_EmptySheet_ReturnsJsonArray()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var json = doc.ExportSheetToJson();
         // Should return "[]" for empty or header-only sheet
         Assert.NotNull(json);
@@ -42,6 +43,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_OneRow_ReturnsEmptyArray()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Age");
         var json = doc.ExportSheetToJson();
@@ -54,6 +56,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_TwoRows_ReturnsOneObject()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Age");
         doc.SetCellValue(1, 0, "Alice");
@@ -67,6 +70,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_HeadersMatchFirstRow()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Price");
         doc.SetCellValue(1, 0, "Widget");
@@ -82,6 +86,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_ReturnsValidJsonString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Key");
         doc.SetCellValue(1, 0, "Value");
         var json = doc.ExportSheetToJson();
@@ -98,6 +103,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_NamedSheet_NonexistentThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.ExportSheetToJson("NoSuchSheet"));
     }
 
@@ -105,6 +111,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_NamedSheet_EmptyReturnsJsonArray()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Report");
         var json = doc.ExportSheetToJson("Report");
         var arr = JsonSerializer.Deserialize<JsonElement>(json);
@@ -115,6 +122,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void ExportSheetToJson_NamedSheet_TwoRowsReturnsObject()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Col");
         doc.SetCellValue("Data", 1, 0, "Val");
@@ -131,6 +139,7 @@ public class FodsR195ExportSheetToJsonDedicatedTests
     public void DogfoodPipeline_SetDataThenExport_AllFieldsPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "ID");
         doc.SetCellValue(0, 1, "Name");
         doc.SetCellValue(1, 0, "1");

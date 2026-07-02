@@ -25,6 +25,7 @@ public class FodsR197SortRowsAndMergeCellsTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Carol"); doc.SetCellValue(0, 1, "Eng");   doc.SetCellValue(0, 2, "88");
         doc.SetCellValue(1, 0, "Alice"); doc.SetCellValue(1, 1, "Eng");   doc.SetCellValue(1, 2, "95");
         doc.SetCellValue(2, 0, "Bob");   doc.SetCellValue(2, 1, "Finance"); doc.SetCellValue(2, 2, "82");
@@ -166,6 +167,7 @@ public class FodsR197SortRowsAndMergeCellsTests
     public void Dogfood_CreateSetSortMergeGetColumnVerify_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
 
         // SetCells (unsorted)

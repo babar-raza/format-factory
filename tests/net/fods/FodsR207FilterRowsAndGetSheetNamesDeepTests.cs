@@ -24,6 +24,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     private static FodsDocument CreateMultiRowDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Alice");
         doc.SetCellValue("Sheet1", 0, 1, "Eng");
         doc.SetCellValue("Sheet1", 0, 2, "95");
@@ -103,6 +104,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_NonNull()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.GetSheetNames());
     }
 
@@ -110,6 +112,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_ContainsDefaultSheet()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         Assert.True(names.Count >= 1);
     }
@@ -118,6 +121,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_AfterAddSheet_IncludesNew()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Q1Data");
         var names = doc.GetSheetNames();
         Assert.Contains("Q1Data", names);
@@ -127,6 +131,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_AfterAddSheet_CountIncremented()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         var before = doc.GetSheetNames().Count;
         doc.AddSheet("NewSheet");
         Assert.Equal(before + 1, doc.GetSheetNames().Count);
@@ -136,6 +141,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_AfterRenameSheet_Updated()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("OldName");
         doc.RenameSheet("OldName", "NewName");
         var names = doc.GetSheetNames();
@@ -147,6 +153,7 @@ public class FodsR207FilterRowsAndGetSheetNamesDeepTests
     public void GetSheetNames_AfterRemoveSheet_Excluded()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Temp");
         doc.RemoveSheet("Temp");
         var names = doc.GetSheetNames();

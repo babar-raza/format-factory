@@ -28,6 +28,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellProtection(null!, 0, 0));
     }
 
@@ -35,6 +36,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellProtection("   ", 0, 0));
     }
 
@@ -42,6 +44,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellProtection("NoSuchSheet", 0, 0));
     }
 
@@ -49,6 +52,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellProtection(sheetName, -1, 0));
     }
@@ -61,6 +65,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_ValidCell_ReturnsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         bool protection = doc.GetCellProtection(sheetName, 0, 0);
         Assert.IsType<bool>(protection);
@@ -70,6 +75,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellProtection(sheetName, 0, 0);
@@ -80,6 +86,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         bool first = doc.GetCellProtection(sheetName, 0, 0);
         bool second = doc.GetCellProtection(sheetName, 0, 0);
@@ -90,6 +97,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_SetProtectionTrue_ReturnsTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellProtection(sheetName, 0, 0, true);
         Assert.True(doc.GetCellProtection(sheetName, 0, 0));
@@ -99,6 +107,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void GetCellProtection_SetProtectionFalse_ReturnsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellProtection(sheetName, 0, 0, false);
         Assert.False(doc.GetCellProtection(sheetName, 0, 0));
@@ -112,6 +121,7 @@ public class FodsR446GetCellProtectionDedicatedTests
     public void DogfoodPipeline_DefaultCell_ProtectionIsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         bool protection = doc.GetCellProtection(sheetName, 0, 0);
         Assert.IsType<bool>(protection);

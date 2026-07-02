@@ -41,6 +41,7 @@ public class FodsR146CsvExporterStringAndAllSheetsTests
     public void ExportSheetToCsvString_EmptySheet_ReturnsEmptyOrWhitespaceString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var csv = FodsCsvExporter.ExportSheetToCsvString(sheet);
         Assert.NotNull(csv);
@@ -114,6 +115,7 @@ public class FodsR146CsvExporterStringAndAllSheetsTests
     public void DogfoodPipeline_CreateNew_SetCell_ExportSheetToCsvString_ContainsValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // Set a value in the first sheet using the document's SetCellValue helper
         doc.SetCellValue(0, 0, "Revenue");
         doc.SetCellValue(0, 1, "42000");

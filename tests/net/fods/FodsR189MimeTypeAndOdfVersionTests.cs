@@ -41,6 +41,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Price");
         doc.SetCellValue(1, 0, "Widget");
@@ -56,6 +57,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void MimeType_IsNonNull_OnCreateNew()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // MimeType may be null for in-memory docs without file context
         // Just verify it's accessible
         _ = doc.MimeType;
@@ -78,6 +80,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void OdfVersion_Accessible_OnCreateNew()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         _ = doc.OdfVersion; // verify accessible
     }
 
@@ -89,6 +92,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void MaxFileSizeBytes_Default_IsPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.True(doc.MaxFileSizeBytes > 0);
     }
 
@@ -96,6 +100,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void MaxFileSizeBytes_Default_AtLeastOneMB()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.True(doc.MaxFileSizeBytes >= 1024 * 1024); // >= 1MB
     }
 
@@ -107,6 +112,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void SheetCount_AfterCreateNew_IsOne()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(1, doc.SheetCount);
     }
 
@@ -114,6 +120,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void SheetCount_AfterAddSheet_IsTwo()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Second");
         Assert.Equal(2, doc.SheetCount);
     }
@@ -122,6 +129,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void SheetCount_AfterMultipleAddSheets()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("A");
         doc.AddSheet("B");
         doc.AddSheet("C");
@@ -173,6 +181,7 @@ public class FodsR189MimeTypeAndOdfVersionTests
     public void Dogfood_CreateSetCellsExportJsonMarkdownSheetCount_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(1, doc.SheetCount);
 
         // Set cells

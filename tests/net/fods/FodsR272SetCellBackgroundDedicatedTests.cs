@@ -30,6 +30,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellBackground(null!, 0, 0, "Red"));
     }
 
@@ -37,6 +38,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellBackground("   ", 0, 0, "Blue"));
     }
 
@@ -44,6 +46,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellBackground("NoSuchSheet", 0, 0, "Green"));
     }
 
@@ -51,6 +54,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellBackground(sheetName, -1, 0, "Yellow"));
     }
@@ -59,6 +63,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellBackground(sheetName, 0, -1, "Yellow"));
     }
@@ -71,6 +76,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.SetCellBackground(sheetName, 0, 0, "LightBlue"));
         Assert.Null(ex);
@@ -80,6 +86,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int before = doc.SheetCount;
         doc.SetCellBackground(sheetName, 0, 0, "Yellow");
@@ -90,6 +97,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_SetTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellBackground(sheetName, 0, 0, "Red");
         var ex = Record.Exception(() => doc.SetCellBackground(sheetName, 0, 0, "Blue"));
@@ -100,6 +108,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void SetCellBackground_MultipleCells_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellBackground(sheetName, 0, 0, "Red");
         doc.SetCellBackground(sheetName, 1, 1, "Green");
@@ -116,6 +125,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void DogfoodPipeline_SetBackground_CellValueUnaffected()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Important Data");
         doc.SetCellBackground(sheetName, 0, 0, "Orange");
@@ -128,6 +138,7 @@ public class FodsR272SetCellBackgroundDedicatedTests
     public void DogfoodPipeline_TwoCellsBackground_SheetAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Header1", "Header2" });
         doc.SetCellBackground(sheetName, 0, 0, "LightGray");

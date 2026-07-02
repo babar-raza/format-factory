@@ -25,6 +25,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowHeaders(null!));
     }
 
@@ -32,6 +33,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowHeaders("   "));
     }
 
@@ -39,6 +41,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowHeaders("NoSuchSheet"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_ValidSheet_ReturnsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetShowHeaders(sheet);
         Assert.IsType<bool>(result);
@@ -59,6 +63,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheet = doc.GetSheetNames()[0];
         _ = doc.GetSheetShowHeaders(sheet);
@@ -69,6 +74,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         bool first = doc.GetSheetShowHeaders(sheet);
         bool second = doc.GetSheetShowHeaders(sheet);
@@ -79,6 +85,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void GetSheetShowHeaders_IsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetShowHeaders(sheet);
         Assert.IsType<bool>(result);
@@ -92,6 +99,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetSheetShowHeaders(sheet));
         Assert.Null(ex);
@@ -101,6 +109,7 @@ public class FodsR483GetSheetShowHeadersDedicatedTests
     public void DogfoodPipeline_MultipleSheets_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         foreach (string sheet in doc.GetSheetNames())
         {

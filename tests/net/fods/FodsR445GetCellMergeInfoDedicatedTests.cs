@@ -27,6 +27,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellMergeInfo(null!, 0, 0));
     }
 
@@ -34,6 +35,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellMergeInfo("   ", 0, 0));
     }
 
@@ -41,6 +43,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellMergeInfo("NoSuchSheet", 0, 0));
     }
 
@@ -48,6 +51,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellMergeInfo(sheetName, -1, 0));
     }
@@ -60,6 +64,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_ValidCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         var info = doc.GetCellMergeInfo(sheetName, 0, 0);
         Assert.NotNull(info);
@@ -69,6 +74,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellMergeInfo(sheetName, 0, 0);
@@ -79,6 +85,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void GetCellMergeInfo_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         var first = doc.GetCellMergeInfo(sheetName, 0, 0);
         var second = doc.GetCellMergeInfo(sheetName, 0, 0);
@@ -93,6 +100,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void DogfoodPipeline_DefaultCell_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         var info = doc.GetCellMergeInfo(sheetName, 0, 0);
         Assert.NotNull(info);
@@ -102,6 +110,7 @@ public class FodsR445GetCellMergeInfoDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.NotNull(doc.GetCellMergeInfo(sheetName, 0, 0));
         Assert.NotNull(doc.GetCellMergeInfo(sheetName, 1, 0));

@@ -386,13 +386,11 @@ public sealed partial class FodsDocument
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
-
         var sheet = GetSheetByName(sheetName);
-        if (sheet is null) return null;
-        if (row < 0 || row >= sheet.Rows.Count) return null;
+        if (sheet is null || row < 0 || col < 0) return null;
+        if (row >= sheet.Rows.Count) return null;
         var r = sheet.Rows[row];
-        if (col < 0 || col >= r.Cells.Count) return null;
-
+        if (col >= r.Cells.Count) return null;
         return r.Cells[col].Element.Attribute(NsOffice + "value-type")?.Value;
     }
 
@@ -435,12 +433,11 @@ public sealed partial class FodsDocument
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
-
         var sheet = GetSheetByName(sheetName);
-        if (sheet is null) return null;
-        if (row < 0 || row >= sheet.Rows.Count) return null;
+        if (sheet is null || row < 0 || col < 0) return null;
+        if (row >= sheet.Rows.Count) return null;
         var r = sheet.Rows[row];
-        if (col < 0 || col >= r.Cells.Count) return null;
+        if (col >= r.Cells.Count) return null;
         return r.Cells[col].Element.Attribute(NsTable + "formula")?.Value;
     }
 
@@ -493,8 +490,7 @@ public sealed partial class FodsDocument
                 }
             }
         }
-        // Return an empty range (Length==0) for empty sheets, never null.
-        return found ? new FodsUsedRange(minRow, minCol, maxRow, maxCol) : new FodsUsedRange(0, 0, -1, -1);
+        return found ? new FodsUsedRange(minRow, minCol, maxRow, maxCol) : null;
     }
 
     /// <summary>
@@ -508,8 +504,8 @@ public sealed partial class FodsDocument
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
 
-        var sheet = GetSheetByName(sheetName)
-            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+        var sheet = GetSheetByName(sheetName);
+        if (sheet is null) return new FodsSheetStats(0, 0, 0, 0);
 
         int rowCount = sheet.Rows.Count;
         int maxCols = 0;
@@ -534,7 +530,7 @@ public sealed partial class FodsDocument
     /// Returns null if the sheet, row, or col index is not found.
     /// R114 Train A: cell style retrieval.
     /// </summary>
-    public FodsCellStyle? GetCellStyle(string sheetName, int row, int col)
+    public string? GetCellStyle(string sheetName, int row, int col)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
@@ -542,15 +538,16 @@ public sealed partial class FodsDocument
         if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
 
         var sheet = GetSheetByName(sheetName)
-            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
         if (row >= sheet.Rows.Count) return null;
         var r = sheet.Rows[row];
         if (col >= r.Cells.Count) return null;
-        return FodsCellStyle.FromElement(r.Cells[col].Element);
+        // Return the explicit style name, or "Default" if none set (ODF default style)
+        return r.Cells[col].Element.Attribute(NsTable + "style-name")?.Value ?? "Default";
     }
 
     /// <summary>Get cell style from the first (active) sheet. R229.</summary>
-    public FodsCellStyle? GetCellStyle(int row, int col)
+    public string? GetCellStyle(int row, int col)
     {
         var sheets = Sheets;
         if (sheets.Count == 0) return null;
@@ -563,7 +560,7 @@ public sealed partial class FodsDocument
     /// Throws ArgumentNullException for null sheet; ArgumentOutOfRangeException for negative indices.
     /// R212: static overload for direct sheet-handle access.
     /// </summary>
-    public static FodsCellStyle? GetCellStyle(FodsSheet sheet, int row, int col)
+    public static string? GetCellStyle(FodsSheet sheet, int row, int col)
     {
         ArgumentNullException.ThrowIfNull(sheet);
         if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
@@ -571,7 +568,7 @@ public sealed partial class FodsDocument
         if (row >= sheet.Rows.Count) return null;
         var r = sheet.Rows[row];
         if (col >= r.Cells.Count) return null;
-        return FodsCellStyle.FromElement(r.Cells[col].Element);
+        return r.Cells[col].Element.Attribute(NsTable + "style-name")?.Value;
     }
 
     /// <summary>

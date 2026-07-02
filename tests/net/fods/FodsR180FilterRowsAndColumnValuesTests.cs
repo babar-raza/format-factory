@@ -27,6 +27,7 @@ public class FodsR180FilterRowsAndColumnValuesTests
     private static FodsDocument BuildDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         doc.InsertRowWithValues(sheetName, 0, new[] { "Name", "Score", "Dept" });
         doc.InsertRowWithValues(sheetName, 1, new[] { "Alice", "95", "Eng" });

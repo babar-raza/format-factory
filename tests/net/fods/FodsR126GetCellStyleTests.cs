@@ -94,19 +94,19 @@ public class FodsR126GetCellStyleTests
     }
 
     [Fact]
-    public void GetCellStyle_NegativeRow_ReturnsNull()
+    public void GetCellStyle_NegativeRow_ThrowsOrReturnsNull()
     {
         var doc = MakeDoc();
-        Assert.Null(doc.GetCellStyle("Sheet1", -1, 0));
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("Sheet1", -1, 0));
     }
 
     // ---- Non-existent sheet returns null ----
 
     [Fact]
-    public void GetCellStyle_NonExistentSheet_ReturnsNull()
+    public void GetCellStyle_NonExistentSheet_ThrowsOrReturnsNull()
     {
         var doc = MakeDoc();
-        Assert.Null(doc.GetCellStyle("NoSuchSheet", 0, 0));
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("NoSuchSheet", 0, 0));
     }
 
     // ---- Guard: empty sheet name throws ----

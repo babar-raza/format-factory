@@ -29,6 +29,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetStats(null!));
     }
 
@@ -36,6 +37,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetStats("   "));
     }
 
@@ -43,6 +45,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetStats("NoSuchSheet"));
     }
 
@@ -54,6 +57,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_EmptySheet_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var stats = doc.GetSheetStats(sheetName);
         Assert.NotNull(stats);
@@ -63,6 +67,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_EmptySheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetSheetStats(sheetName));
         Assert.Null(ex);
@@ -72,6 +77,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetSheetStats(sheetName);
@@ -82,6 +88,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_EmptySheet_RowCountIsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var stats = doc.GetSheetStats(sheetName);
         Assert.Equal(0, stats.RowCount);
@@ -91,6 +98,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_EmptySheet_ColumnCountIsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var stats = doc.GetSheetStats(sheetName);
         Assert.Equal(0, stats.ColumnCount);
@@ -100,6 +108,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void GetSheetStats_EmptySheet_CellCountIsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var stats = doc.GetSheetStats(sheetName);
         Assert.Equal(0, stats.CellCount);
@@ -113,6 +122,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void DogfoodPipeline_SetValues_StatsReflectData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "A");
         doc.SetCellValue(sheetName, 0, 1, "B");
@@ -127,6 +137,7 @@ public class FodsR234GetSheetStatsDedicatedTests
     public void DogfoodPipeline_ClearSheet_StatsShowZeros()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         doc.ClearSheet(sheetName);

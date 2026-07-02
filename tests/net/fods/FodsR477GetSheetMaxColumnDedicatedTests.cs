@@ -25,6 +25,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetMaxColumn(null!));
     }
 
@@ -32,6 +33,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetMaxColumn("   "));
     }
 
@@ -39,6 +41,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetMaxColumn("NoSuchSheet"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_ValidSheet_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         int val = doc.GetSheetMaxColumn(sheet);
         Assert.True(val >= 0);
@@ -59,6 +63,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheet = doc.GetSheetNames()[0];
         _ = doc.GetSheetMaxColumn(sheet);
@@ -69,6 +74,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         int first = doc.GetSheetMaxColumn(sheet);
         int second = doc.GetSheetMaxColumn(sheet);
@@ -79,6 +85,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void GetSheetMaxColumn_IsInt()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetMaxColumn(sheet);
         Assert.IsType<int>(result);
@@ -92,6 +99,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         Assert.True(doc.GetSheetMaxColumn(sheet) >= 0);
     }
@@ -100,6 +108,7 @@ public class FodsR477GetSheetMaxColumnDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         foreach (string sheet in doc.GetSheetNames())
         {

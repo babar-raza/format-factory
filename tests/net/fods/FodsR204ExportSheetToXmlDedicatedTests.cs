@@ -28,6 +28,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_EmptySheet_ContainsTableElement()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("Empty");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
         Assert.Contains("<table", xml);
@@ -37,6 +38,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_ReturnsNonNullString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
         Assert.NotNull(xml);
@@ -46,6 +48,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_SheetNameInAttribute()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("MyData");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
         Assert.Contains("name=\"MyData\"", xml);
@@ -55,6 +58,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_OneRow_ContainsRowElement()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Value");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
@@ -65,6 +69,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_OneCell_CellElementWithValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Hello");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
@@ -75,6 +80,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_XmlSpecialChars_Escaped()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "<br/>");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
@@ -85,6 +91,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_TwoRowsData_BothRowsPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Row1");
         FodsDocument.SetCellValue(sheet, 1, 0, "Row2");
@@ -97,6 +104,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void ExportSheetToXml_ContainsClosingTableTag()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("Test");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);
         Assert.Contains("</table>", xml);
@@ -110,6 +118,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void DogfoodPipeline_MultiCellGrid_AllValuesPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Name");
         FodsDocument.SetCellValue(sheet, 0, 1, "Age");
@@ -126,6 +135,7 @@ public class FodsR204ExportSheetToXmlDedicatedTests
     public void DogfoodPipeline_NamedSheet_SheetNameInOutput()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("Reports");
         FodsDocument.SetCellValue(sheet, 0, 0, "Q1");
         var xml = FodsDocumentExporter.ExportSheetToXml(sheet);

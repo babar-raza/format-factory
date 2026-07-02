@@ -25,6 +25,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowGrid(null!));
     }
 
@@ -32,6 +33,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowGrid("   "));
     }
 
@@ -39,6 +41,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetShowGrid("NoSuchSheet"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_ValidSheet_ReturnsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetShowGrid(sheet);
         Assert.IsType<bool>(result);
@@ -59,6 +63,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheet = doc.GetSheetNames()[0];
         _ = doc.GetSheetShowGrid(sheet);
@@ -69,6 +74,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         bool first = doc.GetSheetShowGrid(sheet);
         bool second = doc.GetSheetShowGrid(sheet);
@@ -79,6 +85,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void GetSheetShowGrid_IsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         object result = doc.GetSheetShowGrid(sheet);
         Assert.IsType<bool>(result);
@@ -92,6 +99,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void DogfoodPipeline_DefaultSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.GetSheetShowGrid(sheet));
         Assert.Null(ex);
@@ -101,6 +109,7 @@ public class FodsR482GetSheetShowGridDedicatedTests
     public void DogfoodPipeline_MultipleSheets_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         foreach (string sheet in doc.GetSheetNames())
         {

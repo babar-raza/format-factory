@@ -26,6 +26,7 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
     private static FodsDocument CreateDataDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Score");
@@ -59,6 +60,7 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
     public void GetRowCount_EmptyDoc_ZeroOrMinimal()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Empty");
         Assert.True(doc.GetRowCount() >= 0);
     }
@@ -216,6 +218,7 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
     public void Dogfood_CreateDoc_GetRowCount_GetColumnStats_GetColumnValues_Mutation_Pipeline()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sales");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Revenue");

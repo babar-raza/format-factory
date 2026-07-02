@@ -24,6 +24,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Name");
         doc.SetCellValue("Data", 0, 1, "Score");
@@ -51,6 +52,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void GetCellDataType_AfterSetCellValue_NonEmpty()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Hello world");
         var dataType = doc.GetCellDataType("Sheet1", 0, 0);
         Assert.NotNull(dataType);
@@ -60,6 +62,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void GetCellDataType_NumericString_ReturnsSomeType()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Numbers");
         doc.SetCellValue("Numbers", 0, 0, "42");
         var dataType = doc.GetCellDataType("Numbers", 0, 0);
@@ -85,6 +88,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void SetCellFormula_ThenGetCellFormula_MatchesSet()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Calc");
         doc.SetCellValue("Calc", 0, 0, "10");
         doc.SetCellValue("Calc", 1, 0, "20");
@@ -98,6 +102,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void SetCellFormula_MultipleFormulas_AllRetrievable()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Multi");
         doc.SetCellFormula("Multi", 0, 0, "=1+1");
         doc.SetCellFormula("Multi", 1, 0, "=2*3");
@@ -111,6 +116,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void GetCellFormula_PlainValueCell_EmptyOrNull()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Plain");
         doc.SetCellValue("Plain", 0, 0, "Just text");
         var formula = doc.GetCellFormula("Plain", 0, 0);
@@ -126,6 +132,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void SetCellStyle_ThenGetCellStyle_MatchesSet()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Styled");
         doc.SetCellValue("Styled", 0, 0, "Header");
         doc.SetCellStyle("Styled", 0, 0, "ce1");
@@ -137,6 +144,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void SetCellStyle_MultipleCells_IndependentStyles()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Styles");
         doc.SetCellValue("Styles", 0, 0, "A");
         doc.SetCellValue("Styles", 0, 1, "B");
@@ -150,6 +158,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void SetCellStyle_OverwritePrevious_LastWins()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Overwrite");
         doc.SetCellValue("Overwrite", 0, 0, "Cell");
         doc.SetCellStyle("Overwrite", 0, 0, "ce1");
@@ -165,6 +174,7 @@ public class FodsR210GetCellDataTypeAndFormulaDeepTests
     public void Dogfood_CreateFromArray_SetFormula_GetFormula_SetStyle_GetStyle_Verify_Pipeline()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Report");
 
         // Populate data

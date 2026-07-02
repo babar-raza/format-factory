@@ -29,6 +29,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddSheet(null!));
     }
 
@@ -36,6 +37,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddSheet("   "));
     }
 
@@ -47,6 +49,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_ValidName_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var ex = Record.Exception(() => doc.AddSheet("NewSheet"));
         Assert.Null(ex);
     }
@@ -55,6 +58,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_SheetCountIncreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         doc.AddSheet("ExtraSheet");
         Assert.True(doc.SheetCount > before);
@@ -64,6 +68,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_NewSheetAccessibleViaGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("MyNewSheet");
         var names = doc.GetSheetNames();
         Assert.Contains("MyNewSheet", names);
@@ -73,6 +78,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_NewSheetAccessibleViaGetRowCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("DataSheet");
         var ex = Record.Exception(() => doc.GetRowCount("DataSheet"));
         Assert.Null(ex);
@@ -82,6 +88,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_TwoSheets_SheetCountIncreasedByTwo()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         doc.AddSheet("SheetAlpha");
         doc.AddSheet("SheetBeta");
@@ -92,6 +99,7 @@ public class FodsR256AddSheetDedicatedTests
     public void AddSheet_BothNamesInGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("FirstNew");
         doc.AddSheet("SecondNew");
         var names = doc.GetSheetNames();
@@ -107,6 +115,7 @@ public class FodsR256AddSheetDedicatedTests
     public void DogfoodPipeline_AddSheet_DataIsolatedFromOriginal()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string original = doc.GetSheetNames()[0];
         doc.AddRow(original, new[] { "OriginalData" });
         doc.AddSheet("IsolatedSheet");

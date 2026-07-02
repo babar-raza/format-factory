@@ -28,6 +28,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ClearSheet(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ClearSheet("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ClearSheet("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_ValidSheet_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.ClearSheet(sheetName));
         Assert.Null(ex);
@@ -62,6 +66,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "A", "B" });
         int before = doc.SheetCount;
@@ -73,6 +78,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_SheetStillAccessibleAfterClear()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Data" });
         doc.ClearSheet(sheetName);
@@ -84,6 +90,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void ClearSheet_RowCountDecreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "R1", "R2" });
         doc.AddRow(sheetName, new[] { "R3", "R4" });
@@ -102,6 +109,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void DogfoodPipeline_AddDataThenClear_RowCountReduced()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Name", "Score" });
         doc.AddRow(sheetName, new[] { "Alice", "95" });
@@ -118,6 +126,7 @@ public class FodsR275ClearSheetDedicatedTests
     public void DogfoodPipeline_ClearTwice_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "A" });
         doc.ClearSheet(sheetName);

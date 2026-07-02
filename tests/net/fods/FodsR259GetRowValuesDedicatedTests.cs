@@ -29,6 +29,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowValues(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowValues("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetRowValues("NoSuchSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_NegativeRowIndex_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetRowValues(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_RowWithValues_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Hello");
         doc.SetCellValue(sheetName, 0, 1, "World");
@@ -73,6 +78,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_ValuesMatchSet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Alpha");
         doc.SetCellValue(sheetName, 0, 1, "Beta");
@@ -89,6 +95,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Test");
         int before = doc.SheetCount;
@@ -100,6 +107,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void GetRowValues_CalledTwice_SameResultSize()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "X");
         doc.SetCellValue(sheetName, 0, 1, "Y");
@@ -116,6 +124,7 @@ public class FodsR259GetRowValuesDedicatedTests
     public void DogfoodPipeline_AddRowThenGetRowValues_MatchesOriginal()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var rowData = new[] { "Name", "Dept", "Salary" };
         doc.AddRow(sheetName, rowData);

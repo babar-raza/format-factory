@@ -27,6 +27,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int count = doc.GetNamedRangeCount();
         Assert.True(count >= 0);
     }
@@ -35,6 +36,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_IncreasesAfterAddNamedRange()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.GetNamedRangeCount();
         doc.AddNamedRange("TestRange", sheet, 0, 0, 5, 5);
@@ -46,6 +48,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         _ = doc.GetNamedRangeCount();
         Assert.Equal(before, doc.SheetCount);
@@ -55,6 +58,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddNamedRange("Range1", sheet, 0, 0, 2, 2);
         int first = doc.GetNamedRangeCount();
@@ -66,6 +70,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_AddTwoRanges_IncreasedByAtLeastTwo()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.GetNamedRangeCount();
         doc.AddNamedRange("RangeA", sheet, 0, 0, 2, 2);
@@ -78,6 +83,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void GetNamedRangeCount_NewDocument_AtLeastZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.True(doc.GetNamedRangeCount() >= 0);
     }
 
@@ -89,6 +95,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void DogfoodPipeline_AddNamedRange_CountIncreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.GetNamedRangeCount();
         doc.AddNamedRange("DataRange", sheet, 1, 0, 10, 4);
@@ -100,6 +107,7 @@ public class FodsR315GetNamedRangeCountDedicatedTests
     public void DogfoodPipeline_MultipleRanges_AccumulatedCorrectly()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.GetNamedRangeCount();
         doc.AddNamedRange("R1", sheet, 0, 0, 1, 1);

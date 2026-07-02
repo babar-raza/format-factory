@@ -48,15 +48,15 @@ public class FodsR179GetCellStyleDedicatedTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void GetCellStyle_NonexistentSheet_ReturnsNull()
+    public void GetCellStyle_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
-        Assert.Null(doc.GetCellStyle("NoSuchSheet", 0, 0));
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("NoSuchSheet", 0, 0));
     }
 
     [Fact]
-    public void GetCellStyle_NegativeRow_ReturnsNull()
+    public void GetCellStyle_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
@@ -65,7 +65,7 @@ public class FodsR179GetCellStyleDedicatedTests
     }
 
     [Fact]
-    public void GetCellStyle_NegativeCol_ReturnsNull()
+    public void GetCellStyle_NegativeCol_Throws()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");

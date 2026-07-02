@@ -23,6 +23,7 @@ public class FodsR173SortRowsAndMergeCellsTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);
@@ -86,6 +87,7 @@ public class FodsR173SortRowsAndMergeCellsTests
     public void SortRows_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() =>
             doc.SortRows("NoSuchSheet", 0, ascending: true));
     }
@@ -135,6 +137,7 @@ public class FodsR173SortRowsAndMergeCellsTests
     public void GetUsedRange_Static_EmptySheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByIndex(0);
         Assert.NotNull(sheet);
         var range = FodsDocument.GetUsedRange(sheet!);

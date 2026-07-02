@@ -26,6 +26,7 @@ public class FodsR122GetCellDataTypeTests
     public void GetCellDataType_EmptySheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Empty");
         var result = doc.GetCellDataType("Empty", 0, 0);
         Assert.Null(result);
@@ -102,6 +103,7 @@ public class FodsR122GetCellDataTypeTests
     public void DogfoodPipeline_MultiSheetCellTypeInspection()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var s1 = doc.AddSheet("Analysis");
         FodsDocument.SetCellValue(s1, 0, 0, "Label");
         FodsDocument.SetCellValue(s1, 0, 1, "Amount");

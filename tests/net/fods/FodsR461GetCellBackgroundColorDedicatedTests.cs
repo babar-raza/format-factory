@@ -29,6 +29,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBackgroundColor(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBackgroundColor("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBackgroundColor("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellBackgroundColor(sheetName, -1, 0));
     }
@@ -62,6 +66,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_ValidCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetCellBackgroundColor(sheetName, 0, 0);
         Assert.NotNull(color);
@@ -71,6 +76,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellBackgroundColor(sheetName, 0, 0);
@@ -81,6 +87,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string first = doc.GetCellBackgroundColor(sheetName, 0, 0);
         string second = doc.GetCellBackgroundColor(sheetName, 0, 0);
@@ -91,6 +98,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object color = doc.GetCellBackgroundColor(sheetName, 0, 0);
         Assert.IsType<string>(color);
@@ -100,6 +108,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void GetCellBackgroundColor_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellBackgroundColor(sheetName, 0, 0, "#FFFFFF");
         string color = doc.GetCellBackgroundColor(sheetName, 0, 0);
@@ -114,6 +123,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void DogfoodPipeline_DefaultCell_BackgroundColorNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetCellBackgroundColor(sheetName, 0, 0);
         Assert.NotNull(color);
@@ -123,6 +133,7 @@ public class FodsR461GetCellBackgroundColorDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         for (int row = 0; row < 3; row++)
         {

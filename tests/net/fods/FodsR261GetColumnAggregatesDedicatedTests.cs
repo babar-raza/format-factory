@@ -29,6 +29,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnAggregates(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetColumnAggregates("   ", 0));
     }
 
@@ -47,6 +49,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_EmptySheet_ReturnsZeroOrEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Should not throw; result should reflect empty data
         var ex = Record.Exception(() => doc.GetColumnAggregates(sheetName, 0));
@@ -57,6 +60,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_SingleNumericCell_CountPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Skip row 0 (header), put numeric in row 1
         doc.SetCellValue(sheetName, 0, 0, "Score");
@@ -70,6 +74,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 1, 0, "100");
         int before = doc.SheetCount;
@@ -81,6 +86,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_CalledTwice_SameCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         doc.SetCellValue(sheetName, 1, 0, "10");
@@ -94,6 +100,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void GetColumnAggregates_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Header");
         doc.SetCellValue(sheetName, 1, 0, "50");
@@ -109,6 +116,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void DogfoodPipeline_AddNumericData_VerifyAggregatesNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddRow(sheetName, new[] { "Product", "Price" });
         doc.AddRow(sheetName, new[] { "Widget", "9" });
@@ -124,6 +132,7 @@ public class FodsR261GetColumnAggregatesDedicatedTests
     public void DogfoodPipeline_SumAndCountRelationship()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Header row at 0 is skipped by aggregation
         doc.SetCellValue(sheetName, 0, 0, "Amount");

@@ -29,6 +29,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn(null!, "OldCol", "NewCol"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn("   ", "OldCol", "NewCol"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn("NoSuchSheet", "OldCol", "NewCol"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_NullOldName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "Col1");
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn(sheet, null!, "NewCol"));
@@ -59,6 +63,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_NullNewName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "Col1");
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn(sheet, "Col1", null!));
@@ -68,6 +73,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_NonexistentColumn_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.RenameColumn(sheet, "NoSuchCol", "NewCol"));
     }
@@ -80,6 +86,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "OldName");
         var ex = Record.Exception(() => doc.RenameColumn(sheet, "OldName", "NewName"));
@@ -90,6 +97,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "Col1");
         int before = doc.SheetCount;
@@ -101,6 +109,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void RenameColumn_ColumnCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "Col1");
         int before = doc.GetColumnCount(sheet);
@@ -116,6 +125,7 @@ public class FodsR310RenameColumnDedicatedTests
     public void DogfoodPipeline_AddColumnThenRename_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddColumn(sheet, "OriginalName");
         var ex = Record.Exception(() => doc.RenameColumn(sheet, "OriginalName", "UpdatedName"));

@@ -1001,7 +1001,7 @@ public sealed partial class FodsDocument
         _ = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
         var style = GetCellStyle(sheetName, row, col);
-        return style?.StyleName ?? string.Empty;
+        return style ?? string.Empty;
     }
 
     // -------------------------------------------------------------------------
@@ -1247,7 +1247,7 @@ public sealed partial class FodsDocument
         if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
         if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
         _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return _cellFontSizes.TryGetValue((sheetName, row, col), out var sz) ? sz : 0.0;
+        return _cellFontSizes.TryGetValue((sheetName, row, col), out var sz) ? sz : 10.0;
     }
 
     /// <summary>R376: Set the font size for the specified cell (double overload).</summary>
@@ -1368,9 +1368,17 @@ public sealed partial class FodsDocument
     // GetCellBackgroundColor alias (R382)
     // -------------------------------------------------------------------------
 
-    /// <summary>R382: Return the background color of the cell (alias for GetCellBackground).</summary>
-    public string? GetCellBackgroundColor(string sheetName, int row, int col)
-        => GetCellBackground(sheetName, row, col);
+    /// <summary>R382: Return the background color of the cell (reads from XML attribute set by SetCellBackgroundColor).
+    /// Returns "transparent" if no background color has been set. Throws if the sheet does not exist or indices are negative.</summary>
+    public string GetCellBackgroundColor(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+        var color = GetCellColor(sheetName, row, col);
+        return color is { Length: > 0 } ? color : "transparent";
+    }
 
     // -------------------------------------------------------------------------
     // GetCellMergeStatus (R383)

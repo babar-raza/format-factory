@@ -27,6 +27,7 @@ public class FodsR192GetRowCountAndCellCountTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Alice");
         doc.SetCellValue(0, 1, "Eng");
         doc.SetCellValue(0, 2, "95");
@@ -134,6 +135,7 @@ public class FodsR192GetRowCountAndCellCountTests
     public void GetColumnCount_AfterClearSheet_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         Assert.Equal(0, doc.GetColumnCount(sheet));
     }
@@ -178,6 +180,7 @@ public class FodsR192GetRowCountAndCellCountTests
     public void Dogfood_CreateSetGetCountsAndRange_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetNames()[0];
 
         // Empty sheet

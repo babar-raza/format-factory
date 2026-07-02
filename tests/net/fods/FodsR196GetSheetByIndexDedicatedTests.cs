@@ -30,6 +30,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_NegativeIndex_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Null(doc.GetSheetByIndex(-1));
     }
 
@@ -37,6 +38,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_IndexEqualsSheetCount_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Null(doc.GetSheetByIndex(doc.SheetCount));
     }
 
@@ -44,6 +46,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_IndexZero_ReturnsFirstSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByIndex(0);
         Assert.NotNull(sheet);
     }
@@ -52,6 +55,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_IndexZero_NameMatchesFirstSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByIndex(0);
         Assert.Equal(doc.Sheets[0].Name, sheet!.Name);
     }
@@ -60,6 +64,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_LastIndex_ReturnsLastSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Second");
         doc.AddSheet("Third");
         var last = doc.GetSheetByIndex(doc.SheetCount - 1);
@@ -71,6 +76,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_MiddleIndex_ReturnsCorrectSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Alpha");
         doc.AddSheet("Beta");
         var middle = doc.GetSheetByIndex(1);
@@ -82,6 +88,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_ReturnsFodsSheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var result = doc.GetSheetByIndex(0);
         Assert.IsType<FodsSheet>(result);
     }
@@ -90,6 +97,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void GetSheetByIndex_AfterAddSheet_IndexOneReturnsNew()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("NewSheet");
         var sheet = doc.GetSheetByIndex(1);
         Assert.NotNull(sheet);
@@ -104,6 +112,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void DogfoodPipeline_GetAndSetCellViaIndex()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "TestValue");
         var sheet = doc.GetSheetByIndex(0);
         Assert.NotNull(sheet);
@@ -115,6 +124,7 @@ public class FodsR196GetSheetByIndexDedicatedTests
     public void DogfoodPipeline_MultipleSheets_CorrectIndexMapping()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var firstName = doc.Sheets[0].Name;
         doc.AddSheet("Sheet2");
         doc.AddSheet("Sheet3");

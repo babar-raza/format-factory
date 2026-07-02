@@ -58,8 +58,8 @@ public class FodsR407GetCellUnderlineDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
-        bool ul = doc.GetCellUnderline("Data", 0, 0);
-        Assert.True(ul == true || ul == false);
+        string ul = doc.GetCellUnderline("Data", 0, 0);
+        Assert.NotNull(ul);
     }
 
     [Fact]
@@ -77,8 +77,8 @@ public class FodsR407GetCellUnderlineDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Stable");
-        bool first = doc.GetCellUnderline("Stable", 0, 0);
-        bool second = doc.GetCellUnderline("Stable", 0, 0);
+        string first = doc.GetCellUnderline("Stable", 0, 0);
+        string second = doc.GetCellUnderline("Stable", 0, 0);
         Assert.Equal(first, second);
     }
 
@@ -91,9 +91,9 @@ public class FodsR407GetCellUnderlineDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Links");
-        doc.SetCellUnderline("Links", 0, 0, true);
-        bool ul = doc.GetCellUnderline("Links", 0, 0);
-        Assert.True(ul);
+        doc.SetCellUnderline("Links", 0, 0, "single");
+        string ul = doc.GetCellUnderline("Links", 0, 0);
+        Assert.Equal("single", ul);
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public class FodsR407GetCellUnderlineDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Plain");
-        doc.SetCellUnderline("Plain", 0, 0, false);
-        bool ul = doc.GetCellUnderline("Plain", 0, 0);
-        Assert.False(ul);
+        doc.SetCellUnderline("Plain", 0, 0, "none");
+        string ul = doc.GetCellUnderline("Plain", 0, 0);
+        Assert.Equal("none", ul);
     }
 }

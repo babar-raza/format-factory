@@ -30,6 +30,7 @@ public class FodsR161ClearSheetInsertRowAndMarkdownTests
         string[][] dataRows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         if (doc.GetSheetNames().Count > 0)
             doc.RenameSheet(doc.GetSheetNames()[0], sheetName);
         else
@@ -60,6 +61,7 @@ public class FodsR161ClearSheetInsertRowAndMarkdownTests
     public void ClearSheet_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ClearSheet("NoSuchSheet"));
     }
 
@@ -154,6 +156,7 @@ public class FodsR161ClearSheetInsertRowAndMarkdownTests
     public void MimeType_IsNotNullOrEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrEmpty(doc.MimeType));
     }
 
@@ -161,6 +164,7 @@ public class FodsR161ClearSheetInsertRowAndMarkdownTests
     public void OdfVersion_IsNotNullOrEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrEmpty(doc.OdfVersion));
     }
 
@@ -172,6 +176,7 @@ public class FodsR161ClearSheetInsertRowAndMarkdownTests
     public void Dogfood_InsertClearInsertMarkdown_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         doc.InsertRowWithValues(sheetName, 0, new[] { "Product", "Price" });

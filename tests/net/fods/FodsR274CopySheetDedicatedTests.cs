@@ -30,6 +30,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_NullFromSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.CopySheet(null!, "NewSheet"));
     }
 
@@ -37,6 +38,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_WhitespaceFromSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.CopySheet("   ", "NewSheet"));
     }
 
@@ -44,6 +46,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_NonexistentFromSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.CopySheet("NoSuchSheet", "NewSheet"));
     }
 
@@ -51,6 +54,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_NullNewSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.CopySheet(source, null!));
     }
@@ -63,6 +67,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_ValidCopy_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.CopySheet(source, "CopiedSheet"));
         Assert.Null(ex);
@@ -72,6 +77,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_SheetCountIncreasesBy1()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         int before = doc.SheetCount;
         doc.CopySheet(source, "MyCopy");
@@ -82,6 +88,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_NewSheetAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         doc.CopySheet(source, "CopySheet1");
         var names = doc.GetSheetNames();
@@ -92,6 +99,7 @@ public class FodsR274CopySheetDedicatedTests
     public void CopySheet_OriginalSheetStillAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         doc.CopySheet(source, "AnotherCopy");
         // Original sheet should still be accessible
@@ -107,6 +115,7 @@ public class FodsR274CopySheetDedicatedTests
     public void DogfoodPipeline_CopySheetWithData_NewSheetAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         doc.AddRow(source, new[] { "Name", "Score" });
         doc.AddRow(source, new[] { "Alice", "95" });
@@ -121,6 +130,7 @@ public class FodsR274CopySheetDedicatedTests
     public void DogfoodPipeline_BothSheetsAccessibleAfterCopy()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string source = doc.GetSheetNames()[0];
         doc.SetCellValue(source, 0, 0, "Original Data");
         doc.CopySheet(source, "CopiedData");

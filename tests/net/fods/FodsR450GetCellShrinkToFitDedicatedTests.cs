@@ -29,6 +29,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellShrinkToFit(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellShrinkToFit("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellShrinkToFit("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellShrinkToFit(sheetName, -1, 0));
     }
@@ -62,6 +66,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_ValidCell_ReturnsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         bool result = doc.GetCellShrinkToFit(sheetName, 0, 0);
         Assert.IsType<bool>(result);
@@ -71,6 +76,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellShrinkToFit(sheetName, 0, 0);
@@ -81,6 +87,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         bool first = doc.GetCellShrinkToFit(sheetName, 0, 0);
         bool second = doc.GetCellShrinkToFit(sheetName, 0, 0);
@@ -91,6 +98,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_SetTrue_ReturnsTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellShrinkToFit(sheetName, 0, 0, true);
         Assert.True(doc.GetCellShrinkToFit(sheetName, 0, 0));
@@ -100,6 +108,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void GetCellShrinkToFit_SetFalse_ReturnsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellShrinkToFit(sheetName, 0, 0, false);
         Assert.False(doc.GetCellShrinkToFit(sheetName, 0, 0));
@@ -113,6 +122,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void DogfoodPipeline_DefaultCell_IsBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object result = doc.GetCellShrinkToFit(sheetName, 0, 0);
         Assert.IsType<bool>(result);
@@ -122,6 +132,7 @@ public class FodsR450GetCellShrinkToFitDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllBool()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         for (int row = 0; row < 3; row++)
         {

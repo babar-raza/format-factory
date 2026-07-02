@@ -27,6 +27,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_EmptyFirstSheet_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var headers = doc.GetColumnHeaders();
         Assert.Empty(headers);
     }
@@ -35,6 +36,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_SingleCellFirstRow_ReturnsSingleHeader()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         var headers = doc.GetColumnHeaders();
         Assert.Single(headers);
@@ -45,6 +47,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_MultipleColumns_AllReturned()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "ID");
         doc.SetCellValue(0, 1, "Name");
         doc.SetCellValue(0, 2, "Score");
@@ -59,6 +62,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_ReturnsIReadOnlyList()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         var headers = doc.GetColumnHeaders();
         Assert.IsAssignableFrom<System.Collections.Generic.IReadOnlyList<string>>(headers);
@@ -72,6 +76,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_NamedSheet_NonexistentReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var headers = doc.GetColumnHeaders("NoSuchSheet");
         Assert.Empty(headers);
     }
@@ -80,6 +85,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_NamedSheet_EmptySheetReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Empty");
         var headers = doc.GetColumnHeaders("Empty");
         Assert.Empty(headers);
@@ -89,6 +95,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_NamedSheet_SingleHeader()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Report");
         doc.SetCellValue("Report", 0, 0, "Column1");
         var headers = doc.GetColumnHeaders("Report");
@@ -100,6 +107,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void GetColumnHeaders_NamedSheet_MultipleHeaders()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "First");
         doc.SetCellValue("Data", 0, 1, "Second");
@@ -117,6 +125,7 @@ public class FodsR189GetColumnHeadersDedicatedTests
     public void DogfoodPipeline_SetHeadersThenRetrieve_AllPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Qty");
         doc.SetCellValue(0, 2, "Price");

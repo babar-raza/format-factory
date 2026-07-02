@@ -29,6 +29,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetDistinctValues(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetDistinctValues("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetDistinctValues("NoSuchSheet", 0));
     }
 
@@ -54,6 +57,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_EmptySheet_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var result = doc.GetDistinctValues(sheetName, 0);
         Assert.NotNull(result);
@@ -64,6 +68,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_AllSameValues_ReturnsOne()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Eng");
         doc.SetCellValue(sheetName, 1, 0, "Eng");
@@ -77,6 +82,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_WithDuplicates_Deduplicates()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Eng");
         doc.SetCellValue(sheetName, 1, 0, "Finance");
@@ -92,6 +98,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "A");
         doc.SetCellValue(sheetName, 1, 0, "B");
@@ -104,6 +111,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void GetDistinctValues_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "X");
         doc.SetCellValue(sheetName, 1, 0, "Y");
@@ -121,6 +129,7 @@ public class FodsR257GetDistinctValuesDedicatedTests
     public void DogfoodPipeline_AddDataRowsWithRepeatedDepts_VerifyDistinctCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Add header + 5 data rows with 3 distinct departments
         doc.AddRow(sheetName, new[] { "Name", "Dept" });

@@ -29,6 +29,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortSheet(null!, 0, true));
     }
 
@@ -36,6 +37,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortSheet("   ", 0, true));
     }
 
@@ -43,6 +45,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SortSheet("NoSuchSheet", 0, true));
     }
 
@@ -50,6 +53,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_NegativeColumnIndex_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.SortSheet(sheet, -1, true));
     }
@@ -62,6 +66,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_AscendingSort_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddRow(sheet);
         doc.SetCellValue(sheet, 0, 0, "B");
@@ -75,6 +80,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_DescendingSort_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddRow(sheet);
         doc.SetCellValue(sheet, 0, 0, "A");
@@ -88,6 +94,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.SheetCount;
         doc.SortSheet(sheet, 0, true);
@@ -98,6 +105,7 @@ public class FodsR316SortSheetDedicatedTests
     public void SortSheet_SortTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SortSheet(sheet, 0, true);
         var ex = Record.Exception(() => doc.SortSheet(sheet, 0, false));
@@ -112,6 +120,7 @@ public class FodsR316SortSheetDedicatedTests
     public void DogfoodPipeline_AddRowsThenSort_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.AddRow(sheet);
         doc.SetCellValue(sheet, 0, 0, "Zebra");

@@ -22,6 +22,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_SetCellValue_PersistsThroughReload()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Hello");
         doc.SetCellValue("Sheet1", 1, 0, "World");
         doc.SetCellValue("Sheet1", 0, 1, "42");
@@ -41,6 +42,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_AddSheet_PersistsThroughReload()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.RemoveSheet("Sheet1");
         doc.AddSheet("Alpha");
         doc.AddSheet("Beta");
@@ -63,6 +65,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_RemoveSheet_PersistsThroughReload()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.RemoveSheet("Sheet1");
         doc.AddSheet("Keep");
         doc.AddSheet("Remove");
@@ -83,6 +86,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_SetCellFormula_PersistsThroughReload()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "10");
         doc.SetCellValue("Sheet1", 1, 0, "20");
         doc.SetCellFormula("Sheet1", 2, 0, "=SUM(A1:A2)");
@@ -103,6 +107,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_SetCellFontColor_DoesNotPersist_KnownGap()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellFontColor("Sheet1", 0, 0, "#FF0000");
 
         // Verify in-memory mutation works
@@ -124,6 +129,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_MultipleMutations_AllPersist()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Data");
         doc.SetCellValue("Data", 0, 0, "Name");
         doc.SetCellValue("Data", 0, 1, "Score");
@@ -151,6 +157,7 @@ public class FodsRoundtripMutationTests
     {
         // First roundtrip
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Original");
         string xml1 = doc.ToFodsXml();
         var reloaded1 = FodsDocument.LoadFromXml(xml1);
@@ -171,6 +178,7 @@ public class FodsRoundtripMutationTests
     public void Roundtrip_EmptyAndNonEmptyCells_Preserved()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "HasValue");
         // Row 1 col 0 intentionally left empty
 

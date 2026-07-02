@@ -29,6 +29,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellFormula(null!, 0, 0, "=A1+B1"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellFormula("   ", 0, 0, "=A1+B1"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellFormula("NoSheet", 0, 0, "=A1+B1"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellFormula(sheetName, -1, 0, "=A1+B1"));
     }
@@ -58,6 +62,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellFormula(sheetName, 0, -1, "=A1+B1"));
     }
@@ -70,6 +75,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_ValidFormula_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.SetCellFormula(sheetName, 0, 0, "=1+1"));
         Assert.Null(ex);
@@ -79,6 +85,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellFormula(sheetName, 0, 0, "=1+1");
@@ -89,6 +96,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_GetFormulaReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellFormula(sheetName, 0, 0, "=SUM(A1:A3)");
         var result = doc.GetCellFormulaValue(sheetName, 0, 0);
@@ -99,6 +107,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void SetCellFormula_SetTwice_GetReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellFormula(sheetName, 0, 0, "=1+1");
         doc.SetCellFormula(sheetName, 0, 0, "=2+2");
@@ -114,6 +123,7 @@ public class FodsR239SetCellFormulaDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         string[] formulas = { "=1+1", "=2*3", "=10-4", "=SUM(1,2,3)" };
         for (int i = 0; i < formulas.Length; i++)

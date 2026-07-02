@@ -33,6 +33,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void SetCellValue_PersistsValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "TestValue");
         var row = doc.GetRowValues(sheet, 0);
@@ -43,6 +44,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void SetCellValue_OverwritesExisting()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "Original");
         doc.SetCellValue(0, 0, "Overwritten");
@@ -55,6 +57,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void SetCellValue_MultipleRows_AllPersist()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "Row0");
         doc.SetCellValue(1, 0, "Row1");
@@ -72,6 +75,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetRowValues_ReturnsList()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         doc.SetCellValue(0, 1, "B");
         var sheet = DefaultSheet(doc);
@@ -83,6 +87,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetRowValues_CountMatchesColumnsSet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         doc.SetCellValue(0, 1, "B");
         doc.SetCellValue(0, 2, "C");
@@ -95,6 +100,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetRowValues_ContainsExpectedValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Dept");
         doc.SetCellValue(0, 2, "Score");
@@ -109,6 +115,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetRowValues_AfterDeleteRows_RowShifts()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "Row0");
         doc.SetCellValue(1, 0, "Row1");
@@ -127,6 +134,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetColumnValues_ReturnsList()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "A");
         doc.SetCellValue(1, 0, "B");
         var sheet = DefaultSheet(doc);
@@ -138,6 +146,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetColumnValues_CountMatchesRowsSet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 2, "95");
         doc.SetCellValue(1, 2, "82");
         doc.SetCellValue(2, 2, "88");
@@ -150,6 +159,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetColumnValues_ContainsExpectedValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 1, "Eng");
         doc.SetCellValue(1, 1, "Finance");
         doc.SetCellValue(2, 1, "Eng");
@@ -163,6 +173,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void GetColumnValues_AfterSetCellValueOverwrite_Correct()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.SetCellValue(0, 0, "Original");
         doc.SetCellValue(0, 0, "Updated");
@@ -179,6 +190,7 @@ public class FodsR193SetCellValueAndGetRowValuesTests
     public void Dogfood_CreateSetGetRowColFilter_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
 
         // Set data

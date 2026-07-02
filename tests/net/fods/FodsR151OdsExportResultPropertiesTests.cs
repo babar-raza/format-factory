@@ -92,6 +92,7 @@ public class FodsR151OdsExportResultPropertiesTests
     public void DogfoodPipeline_ExportToOds_ResultPropertiesNonZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Product");
         doc.SetCellValue(0, 1, "Revenue");
         doc.SetCellValue(1, 0, "Widget");

@@ -28,6 +28,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() =>
             doc.MergeCells(null!, 0, 0, 1, 2));
     }
@@ -36,6 +37,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_EmptySheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() =>
             doc.MergeCells(string.Empty, 0, 0, 1, 2));
     }
@@ -44,6 +46,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() =>
             doc.MergeCells("   ", 0, 0, 1, 2));
     }
@@ -56,6 +59,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_RowSpanZero_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             doc.MergeCells(sheetName, 0, 0, 0, 1));
@@ -65,6 +69,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_ColSpanZero_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             doc.MergeCells(sheetName, 0, 0, 1, 0));
@@ -74,6 +79,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_RowSpanNegative_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             doc.MergeCells(sheetName, 0, 0, -1, 1));
@@ -83,6 +89,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_ColSpanNegative_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             doc.MergeCells(sheetName, 0, 0, 1, -2));
@@ -96,6 +103,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void MergeCells_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() =>
             doc.MergeCells("DoesNotExist", 0, 0, 1, 2));
     }
@@ -108,6 +116,7 @@ public class FodsR150MergeCellsDedicatedTests
     public void DogfoodPipeline_SetCellValue_MergeCells_AnchorCellRetainsValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // Populate a 2x2 grid

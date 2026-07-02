@@ -32,6 +32,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void MergeCells_NullSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.MergeCells(null!, 0, 0, 1, 2));
     }
 
@@ -39,6 +40,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void MergeCells_WhitespaceSheetName_ThrowsArgumentException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.MergeCells("   ", 0, 0, 1, 2));
     }
 
@@ -46,6 +48,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void MergeCells_RowSpanZero_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.MergeCells(sheet.Name!, 0, 0, 0, 1));
     }
@@ -54,6 +57,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void MergeCells_ColSpanZero_ThrowsArgumentOutOfRangeException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(() => doc.MergeCells(sheet.Name!, 0, 0, 1, 0));
     }
@@ -62,6 +66,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void MergeCells_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.MergeCells("NoSuchSheet", 0, 0, 1, 2));
     }
 
@@ -114,6 +119,7 @@ public class FodsR205MergeCellsDedicatedTests
     public void DogfoodPipeline_RowSpanNegative_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         Assert.Throws<ArgumentOutOfRangeException>(
             () => doc.MergeCells(sheet.Name!, 0, 0, -1, 1));

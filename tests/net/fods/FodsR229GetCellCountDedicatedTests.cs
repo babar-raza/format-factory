@@ -29,6 +29,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellCount(null!));
     }
 
@@ -36,6 +37,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellCount("   "));
     }
 
@@ -43,6 +45,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellCount("NoSuchSheet"));
     }
 
@@ -54,6 +57,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_EmptySheet_ReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.Equal(0, doc.GetCellCount(sheetName));
     }
@@ -62,6 +66,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.True(doc.GetCellCount(sheetName) >= 0);
     }
@@ -70,6 +75,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int sheetsBefore = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetCellCount(sheetName);
@@ -80,6 +86,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_TwoSheetsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         string sheet1 = doc.GetSheetNames()[0];
         string sheet2 = "Sheet2";
@@ -92,6 +99,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void GetCellCount_AfterSetCellValue_NonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Test");
         Assert.True(doc.GetCellCount(sheetName) >= 0);
@@ -105,6 +113,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void DogfoodPipeline_SetMultipleCells_CountNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         for (int r = 0; r < 3; r++)
             for (int c = 0; c < 3; c++)
@@ -116,6 +125,7 @@ public class FodsR229GetCellCountDedicatedTests
     public void DogfoodPipeline_ClearSheet_CountReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         doc.ClearSheet(sheetName);

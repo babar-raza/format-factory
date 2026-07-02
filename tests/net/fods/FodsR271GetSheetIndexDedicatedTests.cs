@@ -28,6 +28,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetIndex(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetIndex("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetIndex("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_FirstSheet_ReturnsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string firstSheet = doc.GetSheetNames()[0];
         int index = doc.GetSheetIndex(firstSheet);
         Assert.Equal(0, index);
@@ -62,6 +66,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_SecondSheet_ReturnsOne()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("SecondSheet");
         int index = doc.GetSheetIndex("SecondSheet");
         Assert.Equal(1, index);
@@ -71,6 +76,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int before = doc.SheetCount;
         doc.GetSheetIndex(sheetName);
@@ -81,6 +87,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void GetSheetIndex_CalledTwice_SameResult()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         int first = doc.GetSheetIndex(sheetName);
         int second = doc.GetSheetIndex(sheetName);
@@ -95,6 +102,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void DogfoodPipeline_ThreeSheets_VerifyIndices()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet0 = doc.GetSheetNames()[0];
         doc.AddSheet("SheetB");
         doc.AddSheet("SheetC");
@@ -107,6 +115,7 @@ public class FodsR271GetSheetIndexDedicatedTests
     public void DogfoodPipeline_GetSheetIndexConsistentWithGetSheetNames()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Extra");
         var names = doc.GetSheetNames();
         for (int i = 0; i < names.Count; i++)

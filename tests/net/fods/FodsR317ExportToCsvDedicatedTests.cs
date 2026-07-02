@@ -44,6 +44,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ExportToCsv(null!, GetTempPath()));
     }
 
@@ -51,6 +52,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ExportToCsv("   ", GetTempPath()));
     }
 
@@ -58,6 +60,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.ExportToCsv("NoSuchSheet", GetTempPath()));
     }
 
@@ -65,6 +68,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_NullFilePath_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.ExportToCsv(sheet, null!));
     }
@@ -73,6 +77,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_WhitespaceFilePath_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.ExportToCsv(sheet, "   "));
     }
@@ -85,6 +90,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         string path = GetTempPath();
         var ex = Record.Exception(() => doc.ExportToCsv(sheet, path));
@@ -95,6 +101,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_FileExistsAfterExport()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         string path = GetTempPath();
         doc.ExportToCsv(sheet, path);
@@ -105,6 +112,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.SheetCount;
         doc.ExportToCsv(sheet, GetTempPath());
@@ -115,6 +123,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void ExportToCsv_ExportedFileNonEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellValue(sheet, 0, 0, "Data");
         string path = GetTempPath();
@@ -130,6 +139,7 @@ public class FodsR317ExportToCsvDedicatedTests : IDisposable
     public void DogfoodPipeline_ExportSheetWithData_FileCreated()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellValue(sheet, 0, 0, "Name");
         doc.SetCellValue(sheet, 0, 1, "Score");

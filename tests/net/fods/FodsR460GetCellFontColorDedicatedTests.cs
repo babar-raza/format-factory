@@ -29,6 +29,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellFontColor(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellFontColor("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellFontColor("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellFontColor(sheetName, -1, 0));
     }
@@ -62,6 +66,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_ValidCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetCellFontColor(sheetName, 0, 0);
         Assert.NotNull(color);
@@ -71,6 +76,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellFontColor(sheetName, 0, 0);
@@ -81,6 +87,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string first = doc.GetCellFontColor(sheetName, 0, 0);
         string second = doc.GetCellFontColor(sheetName, 0, 0);
@@ -91,6 +98,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object color = doc.GetCellFontColor(sheetName, 0, 0);
         Assert.IsType<string>(color);
@@ -100,6 +108,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void GetCellFontColor_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellFontColor(sheetName, 0, 0, "#FF0000");
         string color = doc.GetCellFontColor(sheetName, 0, 0);
@@ -114,6 +123,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void DogfoodPipeline_DefaultCell_FontColorNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string color = doc.GetCellFontColor(sheetName, 0, 0);
         Assert.NotNull(color);
@@ -123,6 +133,7 @@ public class FodsR460GetCellFontColorDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         for (int row = 0; row < 3; row++)
         {

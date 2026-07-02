@@ -29,6 +29,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn(null!, "ColA", new[] { "V1" }));
     }
 
@@ -36,6 +37,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn("   ", "ColA", new[] { "V1" }));
     }
 
@@ -43,6 +45,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.AddColumn("NoSuchSheet", "ColA", new[] { "V1" }));
     }
 
@@ -50,6 +53,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_NullColumnName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.AddColumn(sheetName, null!, new[] { "V1" }));
     }
@@ -62,6 +66,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.AddColumn(sheetName, "NewCol", new[] { "A", "B", "C" }));
         Assert.Null(ex);
@@ -71,6 +76,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_HasColumnReturnsTrueAfterAdd()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, "Revenue", new[] { "100", "200" });
         Assert.True(doc.HasColumn(sheetName, "Revenue"));
@@ -80,6 +86,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, "ColX", new[] { "1", "2" });
@@ -90,6 +97,7 @@ public class FodsR251AddColumnDedicatedTests
     public void AddColumn_TwoColumns_BothHasColumnTrue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, "Alpha", new[] { "A1", "A2" });
         doc.AddColumn(sheetName, "Beta", new[] { "B1", "B2" });
@@ -105,6 +113,7 @@ public class FodsR251AddColumnDedicatedTests
     public void DogfoodPipeline_AddColumn_GetStringColumnValuesReturnsData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.AddColumn(sheetName, "Product", new[] { "Widget", "Gadget", "Gizmo" });
         Assert.True(doc.HasColumn(sheetName, "Product"));

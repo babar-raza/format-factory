@@ -29,6 +29,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellStyle(null!, 0, 0, "bold"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellStyle("   ", 0, 0, "bold"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellStyle("NoSuchSheet", 0, 0, "bold"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.SetCellStyle(sheet, -1, 0, "bold"));
     }
@@ -58,6 +62,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         Assert.ThrowsAny<Exception>(() => doc.SetCellStyle(sheet, 0, -1, "bold"));
     }
@@ -70,6 +75,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         var ex = Record.Exception(() => doc.SetCellStyle(sheet, 0, 0, "bold"));
         Assert.Null(ex);
@@ -79,6 +85,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         int before = doc.SheetCount;
         doc.SetCellStyle(sheet, 0, 0, "italic");
@@ -89,6 +96,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void SetCellStyle_SetTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellStyle(sheet, 0, 0, "bold");
         var ex = Record.Exception(() => doc.SetCellStyle(sheet, 0, 0, "italic"));
@@ -103,6 +111,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void DogfoodPipeline_SetBoldStyle_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         doc.SetCellValue(sheet, 0, 0, "Header");
         var ex = Record.Exception(() => doc.SetCellStyle(sheet, 0, 0, "bold"));
@@ -113,6 +122,7 @@ public class FodsR309SetCellStyleDedicatedTests
     public void DogfoodPipeline_SetStyleOnMultipleCells_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheet = doc.GetSheetNames().First();
         var ex = Record.Exception(() =>
         {

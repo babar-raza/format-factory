@@ -21,6 +21,7 @@ public class FodsR131DocumentMetadataTests
     public void MimeType_CreateNew_IsNotNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.MimeType);
     }
 
@@ -28,6 +29,7 @@ public class FodsR131DocumentMetadataTests
     public void MimeType_CreateNew_ContainsSpreadsheet()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Contains("spreadsheet", doc.MimeType, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -35,6 +37,7 @@ public class FodsR131DocumentMetadataTests
     public void MimeType_CreateNew_ContainsOasis()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Contains("oasis", doc.MimeType, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -42,6 +45,7 @@ public class FodsR131DocumentMetadataTests
     public void MimeType_IsStableAcrossAccesses()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var first  = doc.MimeType;
         var second = doc.MimeType;
         Assert.Equal(first, second);
@@ -53,6 +57,7 @@ public class FodsR131DocumentMetadataTests
     public void MimeType_AfterInsertRow_Unchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var before = doc.MimeType;
 
         doc.InsertRowWithValues("Sheet1", 0, new[] { "A", "B", "C" });
@@ -66,6 +71,7 @@ public class FodsR131DocumentMetadataTests
     public void OdfVersion_CreateNew_IsNotNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.OdfVersion);
     }
 
@@ -73,6 +79,7 @@ public class FodsR131DocumentMetadataTests
     public void OdfVersion_CreateNew_IsNonEmptyString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrWhiteSpace(doc.OdfVersion),
             "OdfVersion should be a non-empty version string");
     }
@@ -81,6 +88,7 @@ public class FodsR131DocumentMetadataTests
     public void OdfVersion_IsStableAcrossAccesses()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var first  = doc.OdfVersion;
         var second = doc.OdfVersion;
         Assert.Equal(first, second);
@@ -92,6 +100,7 @@ public class FodsR131DocumentMetadataTests
     public void OdfVersion_AfterClearSheet_Unchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "x", "y" });
         var before = doc.OdfVersion;
 
@@ -106,6 +115,7 @@ public class FodsR131DocumentMetadataTests
     public void DogfoodPipeline_MimeTypeAndOdfVersion_BothStableAfterMutations()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var mimeTypeBefore   = doc.MimeType;
         var odfVersionBefore = doc.OdfVersion;
 

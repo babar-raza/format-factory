@@ -28,6 +28,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeRows(null!));
     }
 
@@ -35,6 +36,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeRows("   "));
     }
 
@@ -42,6 +44,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetSheetFreezeRows("NoSuchSheet"));
     }
 
@@ -53,6 +56,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_ValidSheet_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int rows = doc.GetSheetFreezeRows(sheetName);
         Assert.True(rows >= 0);
@@ -62,6 +66,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetSheetFreezeRows(sheetName);
@@ -72,6 +77,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int first = doc.GetSheetFreezeRows(sheetName);
         int second = doc.GetSheetFreezeRows(sheetName);
@@ -82,6 +88,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_IsInt()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object result = doc.GetSheetFreezeRows(sheetName);
         Assert.IsType<int>(result);
@@ -91,6 +98,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void GetSheetFreezeRows_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetSheetFreezeRows(sheetName, 3);
         int rows = doc.GetSheetFreezeRows(sheetName);
@@ -105,6 +113,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void DogfoodPipeline_DefaultSheet_FreezeRowsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int rows = doc.GetSheetFreezeRows(sheetName);
         Assert.True(rows >= 0);
@@ -114,6 +123,7 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
     public void DogfoodPipeline_MultipleSheets_AllNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.AddSheet("Sheet2");
         doc.AddSheet("Sheet3");
         for (int i = 0; i < doc.SheetCount; i++)

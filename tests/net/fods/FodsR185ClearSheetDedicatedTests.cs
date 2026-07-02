@@ -30,6 +30,7 @@ public class FodsR185ClearSheetDedicatedTests
     public void ClearSheet_NullOrWhitespaceSheetName_ThrowsArgumentException(string sheetName)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.ClearSheet(sheetName));
     }
 
@@ -37,6 +38,7 @@ public class FodsR185ClearSheetDedicatedTests
     public void ClearSheet_NonexistentSheet_ThrowsInvalidOperationException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.ClearSheet("NoSuchSheet"));
     }
 
@@ -117,6 +119,7 @@ public class FodsR185ClearSheetDedicatedTests
     public void DogfoodPipeline_ClearDefaultSheet_EmptyThenRefill()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         // Default sheet always exists; fill and clear it
         var sheets = doc.GetSheetNames();
         Assert.NotEmpty(sheets);

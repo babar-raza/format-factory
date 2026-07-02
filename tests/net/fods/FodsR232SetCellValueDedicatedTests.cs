@@ -29,6 +29,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellValue(null!, 0, 0, "Val"));
     }
 
@@ -36,6 +37,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellValue("   ", 0, 0, "Val"));
     }
 
@@ -43,6 +45,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.SetCellValue("NoSheet", 0, 0, "Val"));
     }
 
@@ -50,6 +53,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellValue(sheetName, -1, 0, "Val"));
     }
@@ -58,6 +62,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.SetCellValue(sheetName, 0, -1, "Val"));
     }
@@ -70,6 +75,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_ValidString_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.SetCellValue(sheetName, 0, 0, "Hello"));
         Assert.Null(ex);
@@ -79,6 +85,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_GetCellValue_ReturnsSetValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Format Factory");
         Assert.Equal("Format Factory", doc.GetCellValue(sheetName, 0, 0));
@@ -88,6 +95,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_NumericString_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var ex = Record.Exception(() => doc.SetCellValue(sheetName, 0, 0, "42.5"));
         Assert.Null(ex);
@@ -97,6 +105,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Test");
@@ -107,6 +116,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void SetCellValue_DifferentCellsIndependent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Alpha");
         doc.SetCellValue(sheetName, 1, 1, "Beta");
@@ -122,6 +132,7 @@ public class FodsR232SetCellValueDedicatedTests
     public void DogfoodPipeline_SetGridValues_EachCellCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         for (int r = 0; r < 3; r++)
             for (int c = 0; c < 3; c++)

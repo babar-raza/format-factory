@@ -45,6 +45,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var path = TempPath();
         File.WriteAllText(path, "A,B\n1,2\n");
         Assert.ThrowsAny<Exception>(() => doc.ImportFromCsv(null!, path));
@@ -54,6 +55,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var path = TempPath();
         File.WriteAllText(path, "A,B\n1,2\n");
         Assert.ThrowsAny<Exception>(() => doc.ImportFromCsv("   ", path));
@@ -63,6 +65,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var path = TempPath();
         File.WriteAllText(path, "A,B\n1,2\n");
         Assert.ThrowsAny<Exception>(() => doc.ImportFromCsv("Ghost", path));
@@ -72,6 +75,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_NullPath_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.ImportFromCsv(sheetName, null!));
     }
@@ -80,6 +84,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_NonexistentCsv_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() =>
             doc.ImportFromCsv(sheetName, "/no/such/file_xyz.csv"));
@@ -93,6 +98,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_ValidImport_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var path = TempPath();
         File.WriteAllText(path, "Name,Score\nAlice,95\nBob,87\n");
@@ -104,6 +110,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_AfterImport_RowCountPositive()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var path = TempPath();
         File.WriteAllText(path, "Col1,Col2\nVal1,Val2\nVal3,Val4\n");
@@ -115,6 +122,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         var path = TempPath();
@@ -127,6 +135,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void ImportFromCsv_ImportTwice_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var path = TempPath();
         File.WriteAllText(path, "X\n1\n");
@@ -143,6 +152,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
     public void DogfoodPipeline_ExportThenImport_RowCountNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Name");
         doc.SetCellValue(sheetName, 0, 1, "Value");
@@ -151,6 +161,7 @@ public class FodsR248ImportFromCsvDedicatedTests : IDisposable
         var path = TempPath();
         doc.ExportSheetToCsv(sheetName, path);
         var doc2 = FodsDocument.CreateNew();
+        doc2.AddSheet("Sheet1");
         string sheet2 = doc2.GetSheetNames()[0];
         doc2.ImportFromCsv(sheet2, path);
         Assert.True(doc2.GetRowCount(sheet2) >= 0);

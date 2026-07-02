@@ -18,6 +18,7 @@ public class FodsR132ExportSheetByNameTests
     private static FodsDocument BuildTwoSheetDoc()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
 
         // Sheet1 — product inventory
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 0, "SKU");
@@ -43,6 +44,7 @@ public class FodsR132ExportSheetByNameTests
     public void ExportSheetToHtml_NamedSheet_ContainsTableTag()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 0, "Item");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 1, "Value");
 
@@ -54,6 +56,7 @@ public class FodsR132ExportSheetByNameTests
     public void ExportSheetToHtml_NamedSheet_ContainsCellValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 0, "Alpha");
         FodsDocument.SetCellValue(doc.Sheets[0], 1, 0, "Beta");
 
@@ -100,6 +103,7 @@ public class FodsR132ExportSheetByNameTests
     public void GetColumnHeaders_NamedSheet_ReturnsFirstRowValues()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 0, "Name");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 1, "Email");
         FodsDocument.SetCellValue(doc.Sheets[0], 0, 2, "Phone");

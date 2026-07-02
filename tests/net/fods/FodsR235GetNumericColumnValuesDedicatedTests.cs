@@ -29,6 +29,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetNumericColumnValues(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetNumericColumnValues("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_NonExistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetNumericColumnValues("NoSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_NegativeColumn_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetNumericColumnValues(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_EmptySheet_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var values = doc.GetNumericColumnValues(sheetName, 0);
         Assert.NotNull(values);
@@ -72,6 +77,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetNumericColumnValues(sheetName, 0);
@@ -82,6 +88,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void GetNumericColumnValues_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var result = doc.GetNumericColumnValues(sheetName, 0);
         Assert.NotNull(result);
@@ -95,6 +102,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void DogfoodPipeline_NumericValues_AllInResults()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "10");
         doc.SetCellValue(sheetName, 1, 0, "20");
@@ -110,6 +118,7 @@ public class FodsR235GetNumericColumnValuesDedicatedTests
     public void DogfoodPipeline_MixedValues_OnlyNumericReturned()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "100");
         doc.SetCellValue(sheetName, 1, 0, "NotANumber");

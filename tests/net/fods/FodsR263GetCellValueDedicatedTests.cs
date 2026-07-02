@@ -29,6 +29,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_NegativeRow_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue(sheetName, -1, 0));
     }
@@ -58,6 +62,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetCellValue(sheetName, 0, -1));
     }
@@ -70,6 +75,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_AfterSetCellValue_ReturnsValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "HelloCell");
         var val = doc.GetCellValue(sheetName, 0, 0);
@@ -80,6 +86,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_SetTwice_ReturnsLatest()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 1, 1, "First");
         doc.SetCellValue(sheetName, 1, 1, "Second");
@@ -91,6 +98,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void GetCellValue_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Test");
         int before = doc.SheetCount;
@@ -106,6 +114,7 @@ public class FodsR263GetCellValueDedicatedTests
     public void DogfoodPipeline_SetMultipleCells_RetrieveEachCorrectly()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Alpha");
         doc.SetCellValue(sheetName, 0, 1, "Beta");

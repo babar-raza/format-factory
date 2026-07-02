@@ -41,6 +41,7 @@ public class FodsR205ExportSheetToCsvDeepTests : IDisposable
     private static FodsDocument CreatePopulatedDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Name");
         doc.SetCellValue("Sheet1", 0, 1, "Dept");
         doc.SetCellValue("Sheet1", 0, 2, "Score");
@@ -162,6 +163,7 @@ public class FodsR205ExportSheetToCsvDeepTests : IDisposable
     {
         // Create document
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Product");
         doc.SetCellValue("Sheet1", 0, 1, "Price");
         doc.SetCellValue("Sheet1", 0, 2, "Quantity");

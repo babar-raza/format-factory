@@ -29,6 +29,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetStringColumnValues(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetStringColumnValues("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetStringColumnValues("NoSuchSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_NegativeCol_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         Assert.ThrowsAny<Exception>(() => doc.GetStringColumnValues(sheetName, -1));
     }
@@ -62,6 +66,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_EmptySheet_ReturnsEmpty()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var values = doc.GetStringColumnValues(sheetName, 0);
         Assert.NotNull(values);
@@ -72,6 +77,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_AfterDataSet_NonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Hello");
         var values = doc.GetStringColumnValues(sheetName, 0);
@@ -82,6 +88,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void GetStringColumnValues_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetNames()[0];
         doc.GetStringColumnValues(sheetName, 0);
@@ -96,6 +103,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void DogfoodPipeline_StringValues_AllReturned()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Alpha");
         doc.SetCellValue(sheetName, 1, 0, "Beta");
@@ -111,6 +119,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void DogfoodPipeline_MixedValues_OnlyNonNumericOrAllStrings()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Text");
         doc.SetCellValue(sheetName, 1, 0, "42");
@@ -125,6 +134,7 @@ public class FodsR237GetStringColumnValuesDedicatedTests
     public void DogfoodPipeline_MultipleColumns_Independent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "ColA");
         doc.SetCellValue(sheetName, 0, 1, "ColB");

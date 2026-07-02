@@ -28,6 +28,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellTextRotation(null!, 0, 0));
     }
 
@@ -35,6 +36,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellTextRotation("   ", 0, 0));
     }
 
@@ -42,6 +44,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellTextRotation("NoSuchSheet", 0, 0));
     }
 
@@ -49,6 +52,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellTextRotation(sheetName, -1, 0));
     }
@@ -61,6 +65,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_ValidCell_ReturnsNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int rotation = doc.GetCellTextRotation(sheetName, 0, 0);
         Assert.True(rotation >= 0);
@@ -70,6 +75,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellTextRotation(sheetName, 0, 0);
@@ -80,6 +86,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int first = doc.GetCellTextRotation(sheetName, 0, 0);
         int second = doc.GetCellTextRotation(sheetName, 0, 0);
@@ -90,6 +97,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void GetCellTextRotation_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellTextRotation(sheetName, 0, 0, 45);
         int rotation = doc.GetCellTextRotation(sheetName, 0, 0);
@@ -104,6 +112,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void DogfoodPipeline_DefaultCell_TextRotationNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         int rotation = doc.GetCellTextRotation(sheetName, 0, 0);
         Assert.True(rotation >= 0);
@@ -113,6 +122,7 @@ public class FodsR449GetCellTextRotationDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNegative()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         for (int row = 0; row < 3; row++)
         {

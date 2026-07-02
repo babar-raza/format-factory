@@ -24,6 +24,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     private static FodsDocument CreatePopulatedDoc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Product");
         doc.SetCellValue("Sheet1", 0, 1, "Price");
         doc.SetCellValue("Sheet1", 1, 0, "Widget A");
@@ -101,10 +102,12 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void ToFodsXml_LengthIncreasesWithMoreData()
     {
         var docSmall = FodsDocument.CreateEmpty();
+        docSmall.AddSheet("Sheet1");
         docSmall.SetCellValue("Sheet1", 0, 0, "A");
         var xmlSmall = docSmall.ToFodsXml();
 
         var docLarge = FodsDocument.CreateEmpty();
+        docLarge.AddSheet("Sheet1");
         for (var i = 0; i < 10; i++)
             docLarge.SetCellValue("Sheet1", i, 0, $"Value {i}");
         var xmlLarge = docLarge.ToFodsXml();
@@ -120,6 +123,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void OdfVersion_NonNull()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.OdfVersion);
     }
 
@@ -127,6 +131,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void OdfVersion_NonEmpty()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrWhiteSpace(doc.OdfVersion));
     }
 
@@ -134,6 +139,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void OdfVersion_ContainsVersionNumber()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         // Should contain a version number like "1.3" or "1.2"
         Assert.True(doc.OdfVersion.Contains("1") || doc.OdfVersion.Contains("2"));
     }
@@ -146,6 +152,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void MimeType_NonNull()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         Assert.NotNull(doc.MimeType);
     }
 
@@ -153,6 +160,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void MimeType_NonEmpty()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         Assert.False(string.IsNullOrWhiteSpace(doc.MimeType));
     }
 
@@ -160,6 +168,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     public void MimeType_ContainsSpreadsheetOrCalc()
     {
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         var mt = doc.MimeType.ToLowerInvariant();
         Assert.True(mt.Contains("spreadsheet") || mt.Contains("calc") || mt.Contains("oasis"));
     }
@@ -173,6 +182,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     {
         // Create document with data
         var doc = FodsDocument.CreateEmpty();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue("Sheet1", 0, 0, "Name");
         doc.SetCellValue("Sheet1", 0, 1, "Score");
         doc.SetCellValue("Sheet1", 1, 0, "Alice");

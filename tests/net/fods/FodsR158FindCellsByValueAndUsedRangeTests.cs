@@ -25,6 +25,7 @@ public class FodsR158FindCellsByValueAndUsedRangeTests
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] dataRows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.RenameSheet(doc.GetSheetNames()[0], sheetName);
         doc.InsertRowWithValues(sheetName, 0, headers);
         for (int r = 0; r < dataRows.Length; r++)
@@ -40,6 +41,7 @@ public class FodsR158FindCellsByValueAndUsedRangeTests
     public void FindCellsByValue_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<ArgumentException>(() => doc.FindCellsByValue(null!, "x"));
     }
 
@@ -47,6 +49,7 @@ public class FodsR158FindCellsByValueAndUsedRangeTests
     public void FindCellsByValue_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Throws<InvalidOperationException>(() => doc.FindCellsByValue("NoSuchSheet", "x"));
     }
 
@@ -110,6 +113,7 @@ public class FodsR158FindCellsByValueAndUsedRangeTests
     public void GetUsedRange_EmptySheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var range = doc.GetUsedRange();
         Assert.Null(range);
     }
@@ -118,6 +122,7 @@ public class FodsR158FindCellsByValueAndUsedRangeTests
     public void GetUsedRange_NonexistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var range = doc.GetUsedRange("NoSuchSheet");
         Assert.Null(range);
     }

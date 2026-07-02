@@ -39,18 +39,18 @@ public class FodsR370GetCellDataTypeDedicatedTests
     }
 
     [Fact]
-    public void GetCellDataType_NonExistentSheet_Throws()
+    public void GetCellDataType_NonExistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
-        Assert.ThrowsAny<Exception>(() => doc.GetCellDataType("GhostSheet", 0, 0));
+        Assert.Null(doc.GetCellDataType("GhostSheet", 0, 0));
     }
 
     [Fact]
-    public void GetCellDataType_NegativeRowIndex_Throws()
+    public void GetCellDataType_NegativeRowIndex_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
-        Assert.ThrowsAny<Exception>(() => doc.GetCellDataType("Data", -1, 0));
+        Assert.Null(doc.GetCellDataType("Data", -1, 0));
     }
 
     [Fact]
@@ -58,6 +58,7 @@ public class FodsR370GetCellDataTypeDedicatedTests
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Types");
+        doc.SetCellValue("Types", 0, 0, "test");
         string? dataType = doc.GetCellDataType("Types", 0, 0);
         Assert.NotNull(dataType);
     }

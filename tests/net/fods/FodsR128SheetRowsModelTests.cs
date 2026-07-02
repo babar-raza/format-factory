@@ -21,6 +21,7 @@ public class FodsR128SheetRowsModelTests
     public void SheetRows_EmptySheet_HasZeroRows()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetByName("Sheet1")!;
         Assert.Empty(sheet.Rows);
     }
@@ -29,6 +30,7 @@ public class FodsR128SheetRowsModelTests
     public void SheetRows_AfterSetCellValue_HasRows()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         FodsDocument.SetCellValue(doc.GetSheetByName("Sheet1")!, 0, 0, "A");
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -39,6 +41,7 @@ public class FodsR128SheetRowsModelTests
     public void SheetRows_CountMatchesGetRowCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "r1c1", "r1c2" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "r2c1", "r2c2" });
         doc.InsertRowWithValues("Sheet1", 2, new[] { "r3c1", "r3c2" });
@@ -53,6 +56,7 @@ public class FodsR128SheetRowsModelTests
     public void RowCells_SingleValue_HasAtLeastOneCell()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Hello" });
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -64,6 +68,7 @@ public class FodsR128SheetRowsModelTests
     public void RowCells_ThreeValues_HasThreeCells()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "A", "B", "C" });
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -76,6 +81,7 @@ public class FodsR128SheetRowsModelTests
     public void CellValue_MatchesSetCellValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         FodsDocument.SetCellValue(doc.GetSheetByName("Sheet1")!, 0, 0, "TestValue");
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -87,6 +93,7 @@ public class FodsR128SheetRowsModelTests
     public void CellValue_MultipleColumns_AllCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Alpha", "Beta", "Gamma" });
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -102,6 +109,7 @@ public class FodsR128SheetRowsModelTests
     public void CellIsCovered_NormalCell_IsFalse()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Normal" });
 
         var sheet = doc.GetSheetByName("Sheet1")!;
@@ -114,6 +122,7 @@ public class FodsR128SheetRowsModelTests
     public void MultiRowIteration_AllCellsAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "R0C0", "R0C1" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "R1C0", "R1C1" });
 
@@ -130,6 +139,7 @@ public class FodsR128SheetRowsModelTests
     public void DogfoodPipeline_ModelValuesMatchGetCellValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.InsertRowWithValues("Sheet1", 0, new[] { "Name", "Score" });
         doc.InsertRowWithValues("Sheet1", 1, new[] { "Alice", "95" });
         doc.InsertRowWithValues("Sheet1", 2, new[] { "Bob", "87" });

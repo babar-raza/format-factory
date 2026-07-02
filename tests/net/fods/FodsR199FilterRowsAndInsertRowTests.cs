@@ -26,6 +26,7 @@ public class FodsR199FilterRowsAndInsertRowTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Alice"); doc.SetCellValue(0, 1, "Eng"); doc.SetCellValue(0, 2, "95");
         doc.SetCellValue(1, 0, "Bob"); doc.SetCellValue(1, 1, "Finance"); doc.SetCellValue(1, 2, "82");
         doc.SetCellValue(2, 0, "Carol"); doc.SetCellValue(2, 1, "Eng"); doc.SetCellValue(2, 2, "88");
@@ -123,6 +124,7 @@ public class FodsR199FilterRowsAndInsertRowTests
     public void InsertRowWithValues_MultipleRows_AllRetrievable()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = DefaultSheet(doc);
         doc.InsertRowWithValues(sheet, 0, new List<string> { "X", "Y" });
         doc.InsertRowWithValues(sheet, 1, new List<string> { "A", "B" });
@@ -171,6 +173,7 @@ public class FodsR199FilterRowsAndInsertRowTests
     public void Dogfood_CreateSetInsertRowFilterGetRowValuesVerify_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.GetSheetNames()[0];
 
         // Set initial rows

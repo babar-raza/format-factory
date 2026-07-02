@@ -29,6 +29,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_EmptySheet_ReturnsEmptyString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("Empty");
         var tsv = FodsDocumentExporter.ExportSheetToTsv(sheet);
         Assert.Equal(string.Empty, tsv);
@@ -38,6 +39,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_SingleCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Hello");
         var tsv = FodsDocumentExporter.ExportSheetToTsv(sheet);
@@ -48,6 +50,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_SingleCell_ContainsValue()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "TestValue");
         var tsv = FodsDocumentExporter.ExportSheetToTsv(sheet);
@@ -58,6 +61,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_TwoColumnsOneRow_SeparatedByTab()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Col1");
         FodsDocument.SetCellValue(sheet, 0, 1, "Col2");
@@ -69,6 +73,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_TwoRows_BothLinesPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Row1");
         FodsDocument.SetCellValue(sheet, 1, 0, "Row2");
@@ -81,6 +86,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_TabInValue_ReplacedWithSpace()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "A\tB");
         var tsv = FodsDocumentExporter.ExportSheetToTsv(sheet);
@@ -94,6 +100,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_TwoColumnsValues_BothInOutput()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Alpha");
         FodsDocument.SetCellValue(sheet, 0, 1, "Beta");
@@ -106,6 +113,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void ExportSheetToTsv_ViaGetSheetByName_Works()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.AddSheet("DataSheet");
         FodsDocument.SetCellValue(sheet, 0, 0, "Named");
         var retrieved = doc.GetSheetByName("DataSheet");
@@ -122,6 +130,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void DogfoodPipeline_MultiCellData_AllValuesPresent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         FodsDocument.SetCellValue(sheet, 0, 0, "Name");
         FodsDocument.SetCellValue(sheet, 0, 1, "Score");
@@ -142,6 +151,7 @@ public class FodsR202ExportSheetToTsvDedicatedTests
     public void DogfoodPipeline_ThreeRowsThreeCols_StructureCorrect()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheet = doc.Sheets[0];
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++)

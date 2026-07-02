@@ -29,6 +29,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_NullSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBorderStyle(null!, 0, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_WhitespaceSheetName_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBorderStyle("   ", 0, 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_NonexistentSheet_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.GetCellBorderStyle("NoSuchSheet", 0, 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_NegativeRow_Throws()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         Assert.ThrowsAny<Exception>(() => doc.GetCellBorderStyle(sheetName, -1, 0));
     }
@@ -62,6 +66,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_ValidCell_ReturnsNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string style = doc.GetCellBorderStyle(sheetName, 0, 0);
         Assert.NotNull(style);
@@ -71,6 +76,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         int before = doc.SheetCount;
         string sheetName = doc.GetSheetName(0);
         _ = doc.GetCellBorderStyle(sheetName, 0, 0);
@@ -81,6 +87,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_Idempotent()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string first = doc.GetCellBorderStyle(sheetName, 0, 0);
         string second = doc.GetCellBorderStyle(sheetName, 0, 0);
@@ -91,6 +98,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_IsString()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         object style = doc.GetCellBorderStyle(sheetName, 0, 0);
         Assert.IsType<string>(style);
@@ -100,6 +108,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void GetCellBorderStyle_AfterSet_RoundTrips()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         doc.SetCellBorderStyle(sheetName, 0, 0, "solid");
         string style = doc.GetCellBorderStyle(sheetName, 0, 0);
@@ -114,6 +123,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void DogfoodPipeline_DefaultCell_BorderStyleNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         string style = doc.GetCellBorderStyle(sheetName, 0, 0);
         Assert.NotNull(style);
@@ -123,6 +133,7 @@ public class FodsR457GetCellBorderStyleDedicatedTests
     public void DogfoodPipeline_MultipleCells_AllNonNull()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetName(0);
         for (int row = 0; row < 3; row++)
         {

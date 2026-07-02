@@ -27,6 +27,7 @@ public class FodsR191GetColumnHeadersAndInsertRowTests
     private static FodsDocument CreateWithData()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         doc.SetCellValue(0, 0, "Name");
         doc.SetCellValue(0, 1, "Dept");
         doc.SetCellValue(0, 2, "Score");
@@ -187,6 +188,7 @@ public class FodsR191GetColumnHeadersAndInsertRowTests
     public void Dogfood_CreateSetInsertRowWithValuesDeleteGetRowCount_Pipeline()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var sheetName = doc.GetSheetNames()[0];
 
         // Set initial data

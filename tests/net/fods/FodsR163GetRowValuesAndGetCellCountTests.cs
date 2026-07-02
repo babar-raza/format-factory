@@ -42,6 +42,7 @@ public class FodsR163GetRowValuesAndGetCellCountTests : IDisposable
     private static FodsDocument BuildSheet(string sheetName, string[] headers, string[][] rows)
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         var names = doc.GetSheetNames();
         if (names.Count > 0)
             doc.RenameSheet(names[0], sheetName);
@@ -109,6 +110,7 @@ public class FodsR163GetRowValuesAndGetCellCountTests : IDisposable
     public void GetCellCount_EmptyDoc_IsZero()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.Equal(0, doc.GetCellCount());
     }
 

@@ -29,6 +29,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_NullSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn(null!, 0));
     }
 
@@ -36,6 +37,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_WhitespaceSheetName_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn("   ", 0));
     }
 
@@ -43,6 +45,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_NonexistentSheet_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn("NoSuchSheet", 0));
     }
 
@@ -50,6 +53,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_NegativeColumnIndex_ThrowsException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "ColA");
         Assert.ThrowsAny<Exception>(() => doc.DeleteColumn(sheetName, -1));
@@ -63,6 +67,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_ValidCall_NoException()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "ColA");
         doc.SetCellValue(sheetName, 0, 1, "ColB");
@@ -74,6 +79,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_SheetCountUnchanged()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Header");
         doc.SetCellValue(sheetName, 0, 1, "Col2");
@@ -86,6 +92,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DeleteColumn_GetColumnCountDecreases()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "A");
         doc.SetCellValue(sheetName, 0, 1, "B");
@@ -104,6 +111,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DogfoodPipeline_AddColumns_DeleteOne_VerifyCount()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         // Add 3 columns via AddColumn
         doc.AddColumn(sheetName, "ColA", new[] { "1", "2", "3" });
@@ -119,6 +127,7 @@ public class FodsR264DeleteColumnDedicatedTests
     public void DogfoodPipeline_DeleteThenSheetStillAccessible()
     {
         var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "First");
         doc.SetCellValue(sheetName, 0, 1, "Second");
