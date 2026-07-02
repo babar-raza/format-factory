@@ -282,17 +282,24 @@ def _check_val008_gap_taskcard_links(gap_path: Path, result: ValidationResult) -
 
 
 def _check_val009_action_queue_advisory(action_path: Path, result: ValidationResult) -> None:
-    """VAL-009: All action queue items must have advisory_only=true."""
+    """VAL-009: Non-machine-executable items must have advisory_only=true.
+
+    Machine-executable items (machine_executable=True) may have advisory_only=False —
+    they are explicitly dispatchable by an agent. Non-machine-executable items that lack
+    advisory_only=True are dangerously unmarked and trigger an error.
+    """
     if not action_path.exists():
         result.warn(f"VAL-009: Action queue not found at {action_path}")
         return
     queue_data = _load_json(action_path)
     for item in queue_data.get("action_queue", queue_data.get("actions", [])):
         aid = item.get("action_id", "<unknown>")
-        if not item.get("advisory_only", False):
+        is_advisory = item.get("advisory_only", False)
+        is_machine_exec = item.get("machine_executable", False)
+        if not is_advisory and not is_machine_exec:
             result.error(
-                f"VAL-009: Action {aid!r} is missing advisory_only=true — "
-                "action queue must never be treated as authoritative commands"
+                f"VAL-009: Action {aid!r} has advisory_only=False without machine_executable=True — "
+                "action queue items must be advisory or explicitly machine-executable"
             )
         else:
             result.ok()

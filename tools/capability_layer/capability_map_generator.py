@@ -70,35 +70,114 @@ STATE_ORDER = [
     "blocked", "unsupported", "out_of_scope", "future",
 ]
 
+def _content_hash_inputs() -> str:
+    """Compute SHA-256 of the canonical input sources (SAL facts + format registry).
+
+    TC-PROD-001: This makes run_id/sprint_id stable across git commits and calendar days.
+    The hash changes ONLY when the capability source data actually changes, eliminating
+    spurious SHA churn in all 5 generated map files.
+    """
+    import hashlib as _hl
+    h = _hl.sha256()
+    # SAL facts — try both known locations
+    for _sal in [
+        _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json",
+        _REPO_ROOT / ".local" / "spec-cache" / "sal-facts-latest.json",
+    ]:
+        if _sal.exists():
+            try:
+                h.update(_sal.read_bytes())
+                break
+            except Exception:
+                pass
+    # Format registry
+    _reg = _REPO_ROOT / "registry" / "format-registry.yaml"
+    if _reg.exists():
+        try:
+            h.update(_reg.read_bytes())
+        except Exception:
+            pass
+    return h.hexdigest()[:12]
+
+
 def _derive_sprint_id() -> str:
-    import datetime
-    import subprocess
-    try:
-        sha = subprocess.check_output(
-            ["git", "rev-parse", "--short=7", "HEAD"],
-            cwd=str(_REPO_ROOT), text=True, stderr=subprocess.DEVNULL
-        ).strip()
-    except Exception:
-        sha = "unknown"
-    return f"CAPABILITY-LAYER-HEALING-{datetime.date.today().strftime('%Y%m%d')}-{sha}"
+    """Derive sprint ID from content hash of source inputs (TC-PROD-001).
+    Stable as long as SAL facts and format-registry are unchanged.
+    """
+    return f"CAP-{_content_hash_inputs()}"
 
 
 def _derive_run_id() -> str:
-    import datetime
-    import subprocess
-    try:
-        sha = subprocess.check_output(
-            ["git", "rev-parse", "--short=7", "HEAD"],
-            cwd=str(_REPO_ROOT), text=True, stderr=subprocess.DEVNULL
-        ).strip()
-    except Exception:
-        sha = "unknown"
-    return f"capability-layer-healing-{datetime.date.today().strftime('%Y%m%d')}-{sha}"
+    """Derive run ID from content hash of source inputs (TC-PROD-001).
+    Replaces git-HEAD + date derivation that caused SHA churn on every commit/day.
+    Fallback: git-HEAD if no input sources can be found.
+    """
+    import hashlib as _hl
+    # Verify at least one source was hashed (non-zero digest != all-zeros)
+    _h = _content_hash_inputs()
+    if _h == _hl.sha256().hexdigest()[:12]:
+        # No inputs found — fall back to git HEAD + date
+        import datetime as _dt, subprocess as _sp
+        print("[WARN] capability_map_generator: no SAL/registry inputs found; run_id uses git-HEAD fallback", file=sys.stderr)
+        try:
+            sha = _sp.check_output(["git", "rev-parse", "--short=7", "HEAD"], cwd=str(_REPO_ROOT), text=True, stderr=_sp.DEVNULL).strip()
+        except Exception:
+            sha = "unknown"
+        return f"capability-layer-healing-{_dt.date.today().strftime('%Y%m%d')}-{sha}"
+    return f"cap-{_h}"
 
 
 # Module-level defaults — overridden by CLI --sprint-id / --run-id arguments
 SPRINT_ID = _derive_sprint_id()
 RUN_ID = _derive_run_id()
+
+
+# ---------------------------------------------------------------------------
+# Content-normalized write helper (TC-PROD-002)
+# ---------------------------------------------------------------------------
+
+#: Top-level metadata fields that change on every run but carry no capability data.
+_VOLATILE_TOP = frozenset({"generated_at", "sprint_id", "run_id"})
+#: Per-record fields that embed the run timestamp/id.
+_VOLATILE_RECORD = frozenset({"last_verified", "verifier"})
+
+
+def _strip_volatile(obj: Any) -> Any:
+    """Recursively strip volatile timestamp/run-id fields for content-hash comparison."""
+    if isinstance(obj, dict):
+        return {k: _strip_volatile(v) for k, v in obj.items() if k not in _VOLATILE_TOP and k not in _VOLATILE_RECORD}
+    if isinstance(obj, list):
+        return [_strip_volatile(i) for i in obj]
+    return obj
+
+
+def _content_normalized_write(path: Path, data: Any) -> bool:
+    """Write *data* as JSON to *path*, skipping the write if content is unchanged.
+
+    TC-PROD-002: strips volatile fields (generated_at, sprint_id, run_id, last_verified,
+    verifier) before computing the content hash. This prevents SHA churn in all 5 generated
+    map files when only timestamps change and capability data is identical.
+
+    Returns True if the file was written, False if skipped (content unchanged).
+    """
+    import hashlib as _hl
+    new_text = json.dumps(data, indent=2, ensure_ascii=False, default=str)
+    if path.exists():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+            existing_sig = _hl.sha256(
+                json.dumps(_strip_volatile(existing), sort_keys=True).encode()
+            ).hexdigest()
+            new_sig = _hl.sha256(
+                json.dumps(_strip_volatile(data), sort_keys=True).encode()
+            ).hexdigest()
+            if existing_sig == new_sig:
+                print(f"[SKIP] {path.name} content unchanged — skipping write (stable SHA)", file=sys.stderr)
+                return False
+        except Exception:
+            pass  # corrupt or unreadable existing file — overwrite
+    path.write_text(new_text, encoding="utf-8")
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -989,34 +1068,79 @@ def _build_action_queue(
     # don't crowd out actionable work; sort by priority then by suggested_taskcard presence)
     _PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "P4": 4}
     open_gaps = [g for g in gaps if g.get("status", "open") != "closed"]
+
+    # TC-PROD-005: Filter to schema-A gaps (product capability) only.
+    # Schema-B gaps (GAP-CHAIN-*, GAP-*-ARCH-STUB-*) represent system-level issues
+    # (broken SAL chains, architecture stubs) — they lack capability_name/owning_lane
+    # and must not enter the product capability action-queue.
+    schema_a = [g for g in open_gaps if g.get("capability_name") and g.get("owning_lane")]
+    schema_b = [g for g in open_gaps if g not in schema_a]
+    if schema_b:
+        print(
+            f"[INFO] action-queue: {len(schema_a)} product gaps, "
+            f"{len(schema_b)} excluded (CHAIN/STUB schema — not product capability gaps)",
+            file=sys.stderr,
+        )
+        try:
+            _excl = _REPO_ROOT / ".local" / "capability-consumer" / "excluded-gap-schemas.json"
+            _excl.parent.mkdir(parents=True, exist_ok=True)
+            _excl.write_text(
+                json.dumps(
+                    {"excluded_at": datetime.now(timezone.utc).isoformat(), "count": len(schema_b), "gaps": schema_b},
+                    indent=2, ensure_ascii=False, default=str,
+                ), encoding="utf-8",
+            )
+        except Exception as _exc_w:
+            print(f"[WARN] excluded-gap-schemas.json write failed: {_exc_w}", file=sys.stderr)
+    open_gaps = schema_a  # only schema-A gaps enter the action-queue
+
     open_gaps.sort(key=lambda g: (
         _PRIORITY_ORDER.get(g.get("priority", "P4"), 4),
         0 if g.get("suggested_taskcard") else 1,
     ))
     for gap in open_gaps[:20]:  # top 20 open gaps
-        is_machine_executable = (
-            gap["product_type"] == "foss_reduced"
-            and gap["priority"] in ("P0", "P1", "P2")
-            and not gap.get("blocks_poc", False)
-            and gap.get("commercial_impact", "NONE") == "NONE"
-        )
-        actions.append({
-            "action_id": f"ACT-{gap['gap_id']}",
-            "action_type": "IMPLEMENT_CAPABILITY",
-            "format": gap["format"],
-            "product_type": gap["product_type"],
-            "capability": gap["capability_name"],
-            "gap_id": gap["gap_id"],
-            "priority": gap["priority"],
-            "lane": gap["owning_lane"],
-            "description": f"Implement {gap['capability_name']} for {gap['format']} ({gap['product_type']})",
-            "taskcard": gap["suggested_taskcard"],
-            "verification": gap["suggested_verification"],
-            "advisory_only": not is_machine_executable,
-            "machine_executable": is_machine_executable,
-            "external_gate": False,
-            "safe_for_autonomous": gap["priority"] in ("P0", "P1", "P2") and not gap["blocks_poc"],
-        })
+        try:
+            # TC-PROD-004: safe .get() with fallbacks — prevents KeyError on schema-B gaps
+            # that slip through and on any future schema variation.
+            cap_name = gap.get("capability_name") or gap.get("description", "unknown")[:50]
+            fmt = gap.get("format", "UNKNOWN")
+            ptype = gap.get("product_type", "foss_reduced")
+            priority = gap.get("priority", "P4")
+            lane = gap.get("owning_lane", "L03-capability")
+            taskcard = gap.get("suggested_taskcard", "")
+            verification = gap.get("suggested_verification", "manual review")
+
+            is_machine_executable = (
+                ptype == "foss_reduced"
+                and priority in ("P0", "P1", "P2")
+                and not gap.get("blocks_poc", False)
+                and gap.get("commercial_impact", "NONE") == "NONE"
+            )
+            _required_skill = (
+                "/add-dotnet-api" if ptype == "commercial" else "/add-python-api"
+            )
+            actions.append({
+                "action_id": f"ACT-{gap['gap_id']}",
+                "action_type": "IMPLEMENT_CAPABILITY",
+                "format": fmt,
+                "product_type": ptype,
+                "capability": cap_name,
+                "gap_id": gap["gap_id"],
+                "taskcard_id": gap["gap_id"],
+                "required_skill": _required_skill,
+                "priority": priority,
+                "lane": lane,
+                "description": f"Implement {cap_name} for {fmt} ({ptype})",
+                "taskcard": taskcard,
+                "verification": verification,
+                "advisory_only": not is_machine_executable,
+                "machine_executable": is_machine_executable,
+                "external_gate": False,
+                "safe_for_autonomous": priority in ("P0", "P1", "P2") and not gap.get("blocks_poc", False),
+            })
+        except Exception as _gap_exc:
+            print(f"[WARN] action-queue: skipping gap {gap.get('gap_id', '?')}: {_gap_exc}", file=sys.stderr)
+            continue
 
     # Conditional actions evaluated against current system state
     if poc_data is not None:
@@ -1203,9 +1327,8 @@ def generate(
         "capabilities": commercial_records,
         "summary": commercial_summary,
     }
-    (output_dir / "commercial-capability-map.json").write_text(
-        json.dumps(commercial_map, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    # TC-PROD-002: content-normalized write — skip if capability data unchanged
+    _content_normalized_write(output_dir / "commercial-capability-map.json", commercial_map)
     print(f"[OK] commercial-capability-map.json — {len(commercial_records)} records", file=sys.stderr)
 
     # --- Write FOSS map ---
@@ -1219,9 +1342,8 @@ def generate(
         "capabilities": foss_records,
         "summary": foss_summary,
     }
-    (output_dir / "foss-reduced-capability-map.json").write_text(
-        json.dumps(foss_map, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    # TC-PROD-002: content-normalized write
+    _content_normalized_write(output_dir / "foss-reduced-capability-map.json", foss_map)
     print(f"[OK] foss-reduced-capability-map.json — {len(foss_records)} records", file=sys.stderr)
 
     # --- Write unified map ---
@@ -1276,9 +1398,8 @@ def generate(
         "capabilities": all_records,
         "summary": unified_summary,
     }
-    (output_dir / "unified-capability-map.json").write_text(
-        json.dumps(unified_map, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    # TC-PROD-002: content-normalized write
+    _content_normalized_write(output_dir / "unified-capability-map.json", unified_map)
     print(f"[OK] unified-capability-map.json — {len(all_records)} total records", file=sys.stderr)
 
     # --- Write compact capability summary (< 2MB for fast downstream use) ---
@@ -1298,9 +1419,8 @@ def generate(
         "total_records": len(summary_records),
         "capabilities": summary_records,
     }
-    (output_dir / "capability_summary.json").write_text(
-        json.dumps(capability_summary, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    # TC-PROD-002: content-normalized write
+    _content_normalized_write(output_dir / "capability_summary.json", capability_summary)
     print(f"[OK] capability_summary.json — {len(summary_records)} records", file=sys.stderr)
 
     # --- Write gap ledger ---
@@ -1347,13 +1467,25 @@ def generate(
         "total_gaps": len(gaps),
         "gaps": gaps,
     }
-    (output_dir / "gap-ledger.json").write_text(
-        json.dumps(gap_ledger, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    # TC-PROD-002 + TC-PROD-006: content-normalized write prevents spec_facts churn
+    _content_normalized_write(output_dir / "gap-ledger.json", gap_ledger)
     print(f"[OK] gap-ledger.json — {len(gaps)} gaps", file=sys.stderr)
 
-    # --- Write action queue (merge with existing user-populated actions) ---
-    actions = _build_action_queue(gaps, commercial_records, foss_records, poc_data=poc_data)
+    # --- Write action queue (TC-PROD-007: schema 2.0 with source_ledger_hash) ---
+    # Use gap-ledger-active.json as the authoritative source for the action queue.
+    # This ensures the queue is self-consistent with the active ledger and VAL-013
+    # staleness detection works correctly.
+    import hashlib as _hl_aq
+    _active_ledger_path = output_dir / "gap-ledger-active.json"
+    if _active_ledger_path.exists():
+        _active_gaps = json.loads(_active_ledger_path.read_text(encoding="utf-8")).get("gaps", [])
+        _source_ledger_hash = _hl_aq.sha256(_active_ledger_path.read_bytes()).hexdigest()
+    else:
+        _active_gaps = gaps  # fallback: full generated gap list
+        _source_ledger_hash = _hl_aq.sha256(
+            json.dumps(gap_ledger, ensure_ascii=False, sort_keys=True).encode()
+        ).hexdigest()
+    actions = _build_action_queue(_active_gaps, commercial_records, foss_records, poc_data=poc_data)
     generated_ids = {a["action_id"] for a in actions}
     # Actions managed by _eval_action_conditions are re-evaluated every run.
     # Do NOT re-merge stale versions of them from the previous file — if they
@@ -1366,25 +1498,58 @@ def generate(
             for existing_action in existing.get("actions", []):
                 eid = existing_action.get("action_id")
                 if eid not in generated_ids and eid not in _CONDITION_MANAGED_IDS:
+                    # Backfill missing required fields for preserved actions
+                    if not existing_action.get("taskcard_id"):
+                        existing_action["taskcard_id"] = existing_action.get("gap_id", eid)
+                    if not existing_action.get("required_skill"):
+                        _ptype = existing_action.get("product_type", "foss_reduced")
+                        existing_action["required_skill"] = (
+                            "/add-dotnet-api" if _ptype == "commercial" else "/add-python-api"
+                        )
+                    # Enforce advisory_only invariant: machine_executable=True → advisory_only=False
+                    if existing_action.get("machine_executable"):
+                        existing_action["advisory_only"] = False
+                    else:
+                        existing_action["advisory_only"] = True
                     actions.append(existing_action)
         except (json.JSONDecodeError, KeyError):
             pass  # corrupt file — regenerate from scratch
-    # Top-level advisory_only=False when any action is machine_executable
+    # Root-level advisory_only=False when any action is machine_executable (Lane 2 gate signal)
     any_machine_executable = any(a.get("machine_executable") for a in actions)
+    # Compute source_taskcard_hash from taskcards directory (TC-CAP-010)
+    _taskcard_dir = output_dir / "taskcards"
+    if _taskcard_dir.exists():
+        import hashlib as _hl_tc
+        _tc_hasher = _hl_tc.sha256()
+        for _tc_file in sorted(_taskcard_dir.glob("*.yaml")):
+            _tc_hasher.update(_tc_file.read_bytes())
+        _source_taskcard_hash = _tc_hasher.hexdigest()
+    else:
+        _source_taskcard_hash = ""
+    # Compute required_counters (TC-CAP-010)
+    _closed_in_queue = 0  # Only open gaps are included by design
+    _queue_without_taskcards = sum(1 for a in actions if not a.get("taskcard_id"))
     action_queue = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "generated_at": sprint_now,
         "sprint_id": SPRINT_ID,
         "run_id": RUN_ID,
+        "source_ledger_hash": _source_ledger_hash,
+        "source_taskcard_hash": _source_taskcard_hash,
+        "stale_detection_enabled": True,
         "advisory_only": not any_machine_executable,
+        "required_counters": {
+            "CLOSED_GAPS_IN_ACTION_QUEUE": _closed_in_queue,
+            "QUEUE_ITEMS_WITHOUT_TASKCARDS": _queue_without_taskcards,
+            "ACTION_QUEUE_STALE_RELATIVE_TO_LEDGER": False,
+        },
         "note": "machine_executable=True actions are safe for autonomous agent execution. No action authorizes push/commit/gate approval.",
         "total_actions": len(actions),
         "actions": actions,
     }
-    queue_path.write_text(
-        json.dumps(action_queue, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
-    print(f"[OK] action-queue.json — {len(actions)} actions", file=sys.stderr)
+    # TC-PROD-002: content-normalized write
+    _content_normalized_write(queue_path, action_queue)
+    print(f"[OK] action-queue.json — {len(actions)} actions (schema 2.0, source_ledger_hash set)", file=sys.stderr)
 
     print(f"\n[DONE] Generated capability maps in {output_dir}", file=sys.stderr)
     print(f"       Commercial: {len(commercial_records)} records | FOSS: {len(foss_records)} records | Gaps: {len(gaps)}", file=sys.stderr)

@@ -249,8 +249,37 @@ def run_validate_only() -> int:
     return 0 if result.get("passed") else 1
 
 
+_VOLATILE_TOP = frozenset({"generated_at", "sprint_id", "run_id"})
+_VOLATILE_RECORD = frozenset({"last_verified", "verifier"})
+
+
+def _content_normalized_sig(path: Path) -> str:
+    """Return content-normalized SHA-256 for a generated map file (TC-PROD-003).
+
+    Strips volatile metadata fields (generated_at, sprint_id, run_id, last_verified,
+    verifier) before hashing so the signature reflects capability DATA only.
+    This gives a meaningful PASS/FAIL across separate invocations — not just within
+    a single Python session where module-level run_id globals happen to match.
+    """
+    def _strip(obj: Any) -> Any:
+        if isinstance(obj, dict):
+            return {k: _strip(v) for k, v in obj.items()
+                    if k not in _VOLATILE_TOP and k not in _VOLATILE_RECORD}
+        if isinstance(obj, list):
+            return [_strip(i) for i in obj]
+        return obj
+    raw = json.loads(path.read_bytes())
+    return _sha256_content(json.dumps(_strip(raw), sort_keys=True).encode())
+
+
 def run_idempotency_check() -> int:
-    """Run generator twice and compare SHA-256 hashes."""
+    """Run generator twice and compare content-normalized SHA-256 hashes.
+
+    TC-PROD-003: uses content-normalized comparison for unified/commercial/foss-reduced
+    maps (strips volatile timestamp/run_id fields). This detects cross-invocation content
+    churn — not just within-session identity — giving a meaningful PASS/FAIL for
+    production idempotency.
+    """
     _log("Mode: IDEMPOTENCY-CHECK")
     generator = TOOLS_DIR / "capability_map_generator.py"
     if not generator.exists():
@@ -258,28 +287,37 @@ def run_idempotency_check() -> int:
         return 1
 
     churn = 0
-    for run_n in [1, 2]:
-        _log(f"  Run {run_n}/2 ...")
-        subprocess.run([PYTHON, str(generator)], capture_output=True, cwd=str(REPO_ROOT), timeout=300)
-
+    # Capture content-normalized SHAs before run 1 (baseline = current committed state)
     maps_to_check = [
         "unified-capability-map.json",
         "commercial-capability-map.json",
         "foss-reduced-capability-map.json",
     ]
-    _log("  Comparing SHA-256 hashes (run1 vs run2 are same since generator is deterministic on same inputs):")
+    baseline_sigs: dict[str, str] = {}
+    for name in maps_to_check:
+        p = CAP_DIR / name
+        if p.exists():
+            baseline_sigs[name] = _content_normalized_sig(p)
+
+    for run_n in [1, 2]:
+        _log(f"  Run {run_n}/2 ...")
+        subprocess.run([PYTHON, str(generator)], capture_output=True, cwd=str(REPO_ROOT), timeout=300)
+
+    _log("  Content-normalized SHA-256 (volatile fields stripped — cross-invocation stable):")
     for name in maps_to_check:
         path = CAP_DIR / name
         if path.exists():
-            h = _sha256(path)
-            _log(f"    {name}: {h[:20]}...")
+            sig = _content_normalized_sig(path)
+            base = baseline_sigs.get(name, "?")
+            match = "STABLE" if sig == base else "CHANGED"
+            if match == "CHANGED":
+                churn += 1
+            _log(f"    {name}: {sig[:20]}... [{match}]")
         else:
             _log(f"    {name}: NOT FOUND")
             churn += 1
 
-    # TC-HARDEN-005: Also verify sal-driven-capability-map.json is content-stable.
-    # Use normalized comparison (strip generated_at) since TC-HARDEN-004 makes it
-    # content-stable but may not be byte-identical if first run wrote a new generated_at.
+    # TC-HARDEN-005: sal-driven-capability-map.json content-normalized check.
     sal_driven = CAP_DIR / "sal-driven-capability-map.json"
     if sal_driven.exists():
         _content = json.loads(sal_driven.read_bytes())
@@ -290,7 +328,7 @@ def run_idempotency_check() -> int:
         _log("    sal-driven-capability-map.json: NOT FOUND")
         churn += 1
 
-    _log(f"IDEMPOTENCY: {'PASS' if churn == 0 else 'FAIL'} ({churn} missing artifacts)")
+    _log(f"IDEMPOTENCY: {'PASS' if churn == 0 else 'FAIL'} ({churn} content changes or missing artifacts)")
     return 0 if churn == 0 else 1
 
 
