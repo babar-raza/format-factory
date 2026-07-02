@@ -43,7 +43,7 @@ The system is organized into 11 independent layers, each with defined boundaries
 | L09 | State | `.local/supervisor/`, `reports/supervisor/` | Continuation signals, plan locks, session state |
 | L11 | Supervisor | `tools/supervisor/` | Sprint orchestration, grading, next-work generation |
 | L12 | Governance | `tools/supervisor/governance_validators*.py` | 101 programmatic validators |
-| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | 104 registered skill definitions and routing |
+| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | 120 registered skill definitions and routing |
 
 Layer contracts and audit results: `reports/layer-audit-2026-06-26/`.
 
@@ -155,6 +155,8 @@ All packages: `publish_status: local_only_not_published`, `publication_authorize
 
 `commercial_product_ready: false` for all entries — requires Gate 11 G11-G EXECUTION approval (Babar Raza only) and full spec-parity verification.
 
+> **Note:** 7 additional .NET source projects (CSV, HTML, Markdown, NDJSON, TSV, TXT, ZST) exist in `src/net/` at various implementation stages but are not on the commercial release track. See `registry/parity-matrix.yaml` for per-format parity status.
+
 Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .NET product.
 
 ---
@@ -251,7 +253,7 @@ format-factory enforces quality through layered governance:
 - **101 programmatic validators** across 11 modules (`tools/supervisor/governance_validators*.py`) — deterministic checks on every sprint declaration. They enforce declaration schema, evidence existence, spec-fact references, QName compliance, architecture rules, analytics separation, lane ownership, package manifests, oracle obligations, and README freshness.
 - **Gate contracts** (`registry/gate-contract-registry.yaml`) — each of the 11 gates has formal acceptance criteria. Gates 1-10 are policy-based (agent can satisfy with evidence). Gate 11 G11-G requires human business authority (Babar Raza).
 - **Source size policy** — maximum 800 LOC / 60 functions per production file, tracked in `registry/source-structure-baseline.json` with write-once `baseline_loc_cap` ceilings.
-- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 104 skills). Ad-hoc execution is detected and flagged.
+- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 120 skills). Ad-hoc execution is detected and flagged.
 - **Contradiction detection** — the supervisor pipeline detects contradictions between declared state and repository truth (`reports/supervisor/contradictions.json`). Critical contradictions block autonomous continuation.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and [AGENTS.md](AGENTS.md) for agent operating contracts.
@@ -290,8 +292,8 @@ Key implementation files:
 | Tests | 1,609+ passing (0 failures) as of last sprint 2026-06-25. See `reports/supervisor/session-resume.md` |
 | Governance validators | 101 across 11 modules |
 | Oracle verification | All 20 Python FOSS formats VERIFIED (73/73 cases PASS) |
-| Spec parity (FODS) | PARTIAL — 3/12 qnames have Compat/ facades |
-| Spec parity (FODT) | BLOCKED — SAL cache missing FODT ODF 1.3 facts |
+| Spec parity (FODS) | PARTIAL — 12/12 QName facades complete (TC-SP-002, 2026-06-25); behavioral parity partial (Python read-only; .NET has 23 mutation methods) |
+| Spec parity (FODT) | VERIFIED — SAL cache repaired (4,936 facts), 8/8 behavioral QNames have Compat/ facades (TC-SP-004/005, 2026-06-25) |
 | Autonomous loop | ACTIVE — fully autonomous sprint execution with tool integration |
 
 For canonical per-format status, see:
@@ -398,7 +400,7 @@ Agents must read `CLAUDE.md` and `AGENTS.md` before starting any work. Fresh cha
 ## Known Limitations
 
 - **Not commercially released:** All Python packages are `local_only_not_published`. All .NET products are `commercial_product_ready: false`. Gate 11 G11-G EXECUTION (commercial release) requires Babar Raza's business authority.
-- **Spec parity incomplete:** FODS has partial spec parity (3/12 QNames with Compat facades). FODT SAL cache is incomplete for ODF 1.3 facts.
+- **Spec parity incomplete (FODS):** FODS spec QName facades are complete (12/12 as of TC-SP-002, 2026-06-25); behavioral parity is partial — Python is read-only with CSV export; .NET provides a full mutation API (23 methods, 6 export formats). FODT spec parity is VERIFIED as of 2026-06-25 (TC-SP-004/005, SAL cache repaired with 4,936 ODF 1.3 facts).
 - **No PyPI/NuGet publication:** Packages are installable locally via `packaging/python/build-local-packages.py` but not published to any public registry.
 - **Four formats have no product code:** ORA, PAM, XPM, ZPAQ are at OBLIGATION_CREATED status with no source implementation.
 - **Test counts fluctuate:** Per-sprint test counts vary as test files are added. There is no single stable cumulative count.
@@ -418,13 +420,13 @@ For a plain-English assessment of where the project stands — what works, what 
 
 **Phase ratings:** 7 Green (governance, QName, product implementation, testing, evidence, autonomy, onboarding) | 7 Yellow (discovery, SAL, capability, feature planning, code generation, healing, docs) | 1 Orange (packaging/publication) | 0 Red
 
-**Verdict:** Working, repeatable, well-governed system. Not commercially released. 20 formats prove the pipeline works. Strongest: governance enforcement (101 validators), repeatability (840 sprints, 3,232 evidence bundles), oracle verification (73/73 PASS). Weakest: production readiness (no published packages, no external users). Pipeline is agent-orchestrated — AI agents perform the engineering work; human oversight applies only at commercial release gates.
+**Verdict:** Working, repeatable, well-governed system. Not commercially released. 20 formats prove the pipeline works. Strongest: governance enforcement (101 validators), repeatability (840 sprints, 3,187+ evidence bundles), oracle verification (73/73 PASS). Weakest: production readiness (no published packages, no external users). Pipeline is agent-orchestrated — AI agents perform the engineering work; human oversight applies only at commercial release gates.
 <!-- END:SYSTEM-STATUS-SUMMARY -->
 
 ---
 
 <!-- BEGIN:PROJECT-STATUS-REF generated=2026-06-29 source=PROJECT_STATUS.md -->
-**Quick numbers:** 20 active formats | 73/73 oracle cases | 101 validators | 104 skills | 840 sprints | 14,635 SAL facts | 3,232 evidence bundles
+**Quick numbers:** 20 active formats | 73/73 oracle cases | 101 validators | 120 skills | 840 sprints | 14,645 SAL facts | 3,187 evidence bundles
 
 For the full auto-generated project status with per-format details, see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 Re-generate: `python tools/docs/generate_project_status.py`
