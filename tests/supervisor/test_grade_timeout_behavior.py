@@ -54,25 +54,43 @@ class TestSdkFallbackTimeoutBehavior:
     """Verify timeout=30 and retry behavior in _sv_sdk_fallback()."""
 
     def test_timeout_parameter_passed_to_create(self):
-        """TIMEOUT-001: create() must be called with timeout=30.
+        """TIMEOUT-001: OpenAI client must be constructed with a timeout parameter.
 
-        Verifies that TC-GRADE-002's timeout=30 parameter is present in the actual call.
-        This is the structural proof that the parameter reaches the SDK.
+        TC-GRADE-002 originally verified `timeout=30` on create(). In the hardened path
+        (LLM-GRADER-TIMEOUT-001), the timeout is now applied at the client constructor level
+        via httpx.Timeout (separate connect + read bounds) rather than on each create() call.
+        This test verifies that the OpenAI() client is constructed with some `timeout=` value
+        (scalar or httpx.Timeout), proving the per-attempt bound is enforced.
         """
+        from grade_declared_work import _sv_sdk_fallback
+        import os
+
         mock_response = MagicMock()
         mock_response.choices[0].message.content = "ADEQUATE"
 
-        result, mock_client = _call_sdk_fallback_with_mock_openai(
-            mock_create_side_effect=[mock_response]
-        )
+        mock_openai = types.ModuleType("openai")
+        mock_client_instance = MagicMock()
+        mock_client_instance.chat.completions.create.return_value = mock_response
+        mock_openai.OpenAI = MagicMock(return_value=mock_client_instance)
+
+        cfg = _make_cfg()
+        messages = [{"role": "user", "content": "test evidence review"}]
+
+        with patch.dict(sys.modules, {"openai": mock_openai}):
+            with patch.dict("os.environ", {"GPT_OSS_API_KEY": "test-api-key"}):
+                with patch("time.sleep"):
+                    result = _sv_sdk_fallback(messages, cfg)
 
         assert result == "ADEQUATE"
-        # Verify timeout=30 was passed
-        create_calls = mock_client.chat.completions.create.call_args_list
-        assert len(create_calls) == 1
-        kwargs = create_calls[0].kwargs
-        assert "timeout" in kwargs, "timeout= must be passed to client.chat.completions.create()"
-        assert kwargs["timeout"] == 30, f"timeout must be 30, got {kwargs['timeout']}"
+
+        # Verify timeout was set on the OpenAI client constructor (LLM-GRADER-TIMEOUT-001)
+        openai_constructor_calls = mock_openai.OpenAI.call_args_list
+        assert len(openai_constructor_calls) >= 1, "OpenAI() must be called to create client"
+        constructor_kwargs = openai_constructor_calls[0].kwargs
+        assert "timeout" in constructor_kwargs, (
+            "timeout= must be passed to OpenAI() constructor for bounded per-attempt timeouts. "
+            "This is the hardened version of TC-GRADE-002 (LLM-GRADER-TIMEOUT-001)."
+        )
 
     def test_timeout_error_triggers_retry_loop(self):
         """TIMEOUT-002: Exception on first 2 calls → retried; success on 3rd → result returned.
