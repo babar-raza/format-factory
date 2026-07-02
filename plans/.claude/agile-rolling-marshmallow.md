@@ -1184,10 +1184,10 @@ live_dispatch_proof:
 
 ## TC-DL2-019: Lane Counter Replay-Safety Proof
 
-**Type:** PARENT | **Status:** CLOSED_WITH_KNOWN_DEFECT
+**Type:** PARENT | **Status:** CLOSED
 **Dependencies:** TC-DL2-003, TC-DL2-018
 **Objective:** Prove that lane counters are updated correctly, replay-safe, and feed the real selector.
-**Known Defect:** FIND-V01-003 — duplicate replay double-increments counters. Acceptance criterion "Replay safety proven (no double-update)" is NOT met. `test_duplicate_replay_double_increments` documents the defect. Fix deferred to TC-DL2-021.
+**Resolved Defect (2026-06-29):** FIND-V01-003 — duplicate replay double-increments was resolved by TC-DL2-021. `last_applied_sprint_id` guard added to `update_lane_counters`. `test_duplicate_replay_double_increments` now asserts `== 1` and passes. TC-DL2-019 acceptance criteria fully met.
 
 ### TC-DL2-019-01: Verify counter update behavior
 **Type:** CHILD | **Status:** CLOSED | **Parent:** TC-DL2-019
@@ -1304,7 +1304,7 @@ terminal_closure_gate:
   lane_classification_proven: true
   lane_balance_effect_proven: true
   starvation_enforcement_proven: true
-  counter_replay_safety_proven: false  # DEFECT: duplicate replay double-increments (FIND-V01-003, TC-DL2-021)
+  counter_replay_safety_proven: true   # TC-DL2-021 CLOSED: replay guard in update_lane_counters (2026-06-29)
 
   # Resume routing
   resume_prompt_consumes_dual_lane_state: true
@@ -1503,6 +1503,7 @@ terminal_closure_gate:
 | 2026-06-29 | Changed `counter_replay_safety_proven` to `false` in TC-DL2-015-02 | False claim — defect is documented but not fixed |
 | 2026-06-29 | Added Wave 6, hardening sections, gate/evidence/anti-overclaim rules | Plan hardening protocol |
 | 2026-06-29 | TC-DL2-021 CLOSED. FIND-V01-003 RESOLVED. 84/84 tests pass. Plan re-closed. | Convergence loop iteration 2 |
+| 2026-06-29 | Corrected stale fields: counter_replay_safety_proven→true, TC-DL2-019→CLOSED, test count 84→76 | State reassessment against 76/76 test run |
 
 ## Audit Findings Incorporated
 
@@ -1519,7 +1520,7 @@ terminal_closure_gate:
 
 All 56 taskcards (TC-DL2-V01 through TC-DL2-021 with children) are CLOSED.
 The 5 ISS-ARM fixes from convergence iteration 1 are verified and preserved.
-84/84 dual-lane tests pass (was 68). TC-DL2-021 replay protection implemented and verified.
+76/76 dual-lane tests pass (was 68). TC-DL2-021 replay protection implemented and verified.
 
 ## Unresolved Work Register
 
@@ -1546,9 +1547,9 @@ The 5 ISS-ARM fixes from convergence iteration 1 are verified and preserved.
 
 ## Gate Contract
 
-- **Pre-execution gate:** TC-DL2-019 must remain CLOSED_WITH_KNOWN_DEFECT until TC-DL2-021 passes. TC-DL2-021 does NOT block other plan work — it is an isolated fix with no downstream dependencies.
-- **Closure gate:** TC-DL2-021 closes ONLY when `test_duplicate_replay_double_increments` asserts `== 1` AND passes. The defect-documenting assertion (`== 2`) must be replaced.
-- **Plan terminal closure gate:** `counter_replay_safety_proven` must be `true` before this plan can re-enter TERMINAL_CLOSED status. Currently `false`.
+- **Pre-execution gate:** TC-DL2-019 is CLOSED (defect resolved by TC-DL2-021, 2026-06-29). All taskcards are CLOSED. No execution gate is active.
+- **Closure gate:** TC-DL2-021 CLOSED — `test_duplicate_replay_double_increments` asserts `== 1` and passes. Replay protection verified.
+- **Plan terminal closure gate:** `counter_replay_safety_proven` is `true`. All terminal gate criteria met.
 
 ## Evidence Contract
 
@@ -1600,7 +1601,7 @@ This plan reaches TERMINAL_CLOSED when ALL of:
 
 ## Remaining True Blockers
 
-None. TC-DL2-021 CLOSED — replay protection implemented. All 56 taskcards CLOSED. 84/84 tests pass.
+None. TC-DL2-021 CLOSED — replay protection implemented. All 57 taskcards CLOSED. 76/76 tests pass.
 
 ---
 
