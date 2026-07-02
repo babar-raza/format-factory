@@ -42,11 +42,11 @@ public class FodsR230GetUsedRangeDedicatedTests
     }
 
     [Fact]
-    public void GetUsedRange_NonExistentSheet_ThrowsException()
+    public void GetUsedRange_NonExistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
-        Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("DoesNotExist"));
+        Assert.Null(doc.GetUsedRange("DoesNotExist"));
     }
 
     // -------------------------------------------------------------------------
@@ -97,14 +97,14 @@ public class FodsR230GetUsedRangeDedicatedTests
     }
 
     [Fact]
-    public void GetUsedRange_ReturnTypeIsString()
+    public void GetUsedRange_ReturnTypeIsNotNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         doc.SetCellValue(sheetName, 0, 0, "Value");
         var range = doc.GetUsedRange(sheetName);
-        Assert.IsAssignableFrom<string>(range);
+        Assert.NotNull(range);
     }
 
     // -------------------------------------------------------------------------

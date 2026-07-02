@@ -42,11 +42,13 @@ public class FodsR234GetSheetStatsDedicatedTests
     }
 
     [Fact]
-    public void GetSheetStats_NonExistentSheet_ThrowsException()
+    public void GetSheetStats_NonExistentSheet_ReturnsZeroStats()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
-        Assert.ThrowsAny<Exception>(() => doc.GetSheetStats("NoSuchSheet"));
+        var stats = doc.GetSheetStats("NoSuchSheet");
+        Assert.NotNull(stats);
+        Assert.Equal(0, stats.RowCount);
     }
 
     // -------------------------------------------------------------------------

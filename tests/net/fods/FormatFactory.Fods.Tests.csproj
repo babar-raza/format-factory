@@ -20,6 +20,13 @@
     <ProjectReference Include="../../../src/net/fods/FormatFactory.Fods.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="../../../samples/by-format/fods/multi-sheet-basic.fods">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>samples/by-format/fods/multi-sheet-basic.fods</Link>
+    </Content>
+  </ItemGroup>
+
   <!-- Temporarily exclude test files referencing unimplemented APIs (cascade from HEAD) -->
   <ItemGroup>
     <Compile Remove="FodsR119ExportAllFormatsTests.cs" />

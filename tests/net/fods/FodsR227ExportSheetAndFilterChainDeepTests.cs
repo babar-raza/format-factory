@@ -185,7 +185,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
     public void GetRowValues_LastRow_CorrectValues()
     {
         var doc = CreateDataDoc();
-        var values = doc.GetRowValues(doc.RowCount); // Eve
+        var values = doc.GetRowValues(doc.RowCount - 1); // Eve (last row, 0-indexed)
         Assert.Contains("Eve", values);
         Assert.Contains("90", values);
     }
@@ -230,7 +230,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
         Assert.Equal(3, q1.RowCount);
 
         // GetRowValues for each Q1 row
-        for (var i = 1; i <= q1.RowCount; i++)
+        for (var i = 0; i < q1.RowCount; i++)
         {
             var row = q1.GetRowValues(i);
             Assert.NotNull(row);
@@ -246,7 +246,7 @@ public class FodsR227ExportSheetAndFilterChainDeepTests
 
         // InsertRow — adds new Q1 agent
         doc.InsertRow(doc.RowCount, new List<string> { "Frank", "7200", "Q1" });
-        Assert.Equal(6, doc.RowCount);
+        Assert.Equal(7, doc.RowCount);
 
         // FilterRows Q1 now 4
         var newQ1 = doc.FilterRows(2, "Q1");

@@ -960,7 +960,8 @@ public sealed partial class FodsDocument
         _cellFontColors[(sheetName, row, col)] = color ?? string.Empty;
     }
 
-    /// <summary>R351: Get the font color of the specified cell, or empty string if not set.</summary>
+    /// <summary>R351: Get the font color of the specified cell via ODF style chain.
+    /// GI-FODS-NET-001 Phase 3b: in-memory override takes priority; falls back to style:text-properties/@fo:color.</summary>
     public string GetCellFontColor(string sheetName, int row, int col)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -968,7 +969,9 @@ public sealed partial class FodsDocument
         if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
         if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
         _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return _cellFontColors.TryGetValue((sheetName, row, col), out var c) ? c : string.Empty;
+        if (_cellFontColors.TryGetValue((sheetName, row, col), out var ov)) return ov;
+        var cellEl = GetCellElementDirect(sheetName, row, col);
+        return cellEl is null ? string.Empty : (FodsStyleResolver.ResolveCellStyle(_doc, cellEl).FontColor ?? string.Empty);
     }
 
     // -------------------------------------------------------------------------

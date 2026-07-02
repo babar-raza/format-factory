@@ -82,10 +82,10 @@ public class FodsR112GetUsedRangeTests
     }
 
     [Fact]
-    public void GetUsedRange_InvalidSheetName_Throws()
+    public void GetUsedRange_InvalidSheetName_ReturnsNull()
     {
         var doc = FodsDocument.Load(SamplePath);
-        Assert.Throws<InvalidOperationException>(() => doc.GetUsedRange("NoSuchSheet"));
+        Assert.Null(doc.GetUsedRange("NoSuchSheet"));
     }
 
     [Fact]

@@ -94,7 +94,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
     {
         var doc = CreatePopulatedDoc();
         var xml = doc.ToFodsXml();
-        var loaded = FodsDocument.Load(xml);
+        var loaded = FodsDocument.LoadFromXml(xml);
         Assert.Equal(doc.GetRowCount("Sheet1"), loaded.GetRowCount("Sheet1"));
     }
 
@@ -206,7 +206,7 @@ public class FodsR208ToFodsXmlAndOdfVersionDeepTests
         Assert.Contains("<", xml);
 
         // Load from XML
-        var loaded = FodsDocument.Load(xml);
+        var loaded = FodsDocument.LoadFromXml(xml);
         Assert.NotNull(loaded);
         Assert.Equal(doc.GetRowCount("Sheet1"), loaded.GetRowCount("Sheet1"));
 

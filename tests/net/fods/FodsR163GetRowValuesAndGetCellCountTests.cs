@@ -81,13 +81,12 @@ public class FodsR163GetRowValuesAndGetCellCountTests : IDisposable
     }
 
     [Fact]
-    public void GetRowValues_OobRow_ReturnsEmpty()
+    public void GetRowValues_OobRow_ThrowsException()
     {
         var doc = BuildSheet("Data",
             new[] { "A" },
             new[] { new[] { "1" } });
-        var row = doc.GetRowValues("Data", 999);
-        Assert.Empty(row);
+        Assert.ThrowsAny<Exception>(() => doc.GetRowValues("Data", 999));
     }
 
     [Fact]

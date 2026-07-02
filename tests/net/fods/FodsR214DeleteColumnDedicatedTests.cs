@@ -94,7 +94,6 @@ public class FodsR214DeleteColumnDedicatedTests
     public void DeleteColumn_OtherSheetsNotAffected()
     {
         var doc = FodsDocument.CreateNew();
-        doc.AddSheet("Sheet1");
         var sheet1 = doc.AddSheet("Sheet1");
         var sheet2 = doc.AddSheet("Sheet2");
         doc.InsertRow(sheet1.Name!, 0);

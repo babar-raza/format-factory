@@ -198,6 +198,7 @@ public class FodsR205ExportSheetToCsvDeepTests : IDisposable
         doc.SetCellValue("Sheet1", 1, 1, "12.99"); // Widget A price changed
         var updatedCsv = doc.ExportSheetToCsv("Sheet1");
         Assert.Contains("12.99", updatedCsv);
-        Assert.DoesNotContain("9.99", updatedCsv);
+        // Note: "19.99" (Widget B) contains "9.99" as substring, so we check 12.99 was applied
+        Assert.DoesNotContain(",9.99,", updatedCsv);
     }
 }

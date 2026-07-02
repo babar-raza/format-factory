@@ -66,7 +66,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
     {
         var doc = LoadFixture();
         var html = doc.ExportSheetToHtml();
-        Assert.Contains("html", html, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("<table", html, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
         var doc = LoadFixture();
         var sheetName = doc.GetSheetNames()[0];
         var html = doc.ExportSheetToHtml(sheetName);
-        Assert.Contains("html", html, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("<table", html, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -198,7 +198,7 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
         // Export to HTML
         var html = doc.ExportSheetToHtml();
         Assert.False(string.IsNullOrEmpty(html));
-        Assert.Contains("html", html, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("<table", html, StringComparison.OrdinalIgnoreCase);
 
         // Export to CSV string via exporter
         var sheet = doc.GetSheetByName(sheetName)!;

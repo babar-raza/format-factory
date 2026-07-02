@@ -229,8 +229,8 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
         doc.AddRow(new List<string> { "Widget D", "950", "West" });
         doc.AddRow(new List<string> { "Widget E", "1100", "South" });
 
-        // GetRowCount
-        Assert.Equal(5, doc.GetRowCount());
+        // GetRowCount (1 header row + 5 data rows = 6)
+        Assert.Equal(6, doc.GetRowCount());
 
         // GetColumnStats for Revenue
         var stats = doc.GetColumnStats(1);
@@ -240,9 +240,9 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
         Assert.Equal(5550.0, stats.Sum, 0);
         Assert.True(stats.Avg >= 1109.0 && stats.Avg <= 1111.0); // 5550/5=1110
 
-        // GetColumnValues for Product
+        // GetColumnValues for Product (includes header row)
         var products = doc.GetColumnValues(0);
-        Assert.Equal(5, products.Count);
+        Assert.Equal(6, products.Count);
         Assert.Contains("Widget A", products);
         Assert.Contains("Widget E", products);
 
@@ -254,7 +254,7 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
 
         // AddRow — increases count
         doc.AddRow(new List<string> { "Widget F", "2000", "East" });
-        Assert.Equal(6, doc.GetRowCount());
+        Assert.Equal(7, doc.GetRowCount());
 
         // Stats updated after AddRow
         var updatedStats = doc.GetColumnStats(1);
@@ -268,6 +268,6 @@ public class FodsR225GetRowCountAndColumnStatsDeepTests
 
         // GetColumnValues reflects mutation
         var updatedProducts = doc.GetColumnValues(0);
-        Assert.Equal(6, updatedProducts.Count);
+        Assert.Equal(7, updatedProducts.Count);
     }
 }

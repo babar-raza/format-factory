@@ -116,8 +116,10 @@ public class FodsR180FilterRowsAndColumnValuesTests
     [Fact]
     public void GetCellDataType_ReturnsNonNull()
     {
-        var doc = BuildDoc();
-        var sheet = GetSheetName(doc);
+        var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
+        var sheet = doc.GetSheetNames()[0];
+        doc.SetCellValue(sheet, 0, 0, "Alice");
         var dataType = doc.GetCellDataType(sheet, 0, 0);
         Assert.NotNull(dataType);
     }

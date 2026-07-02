@@ -59,7 +59,7 @@ public class FodsR171SetCellValueAndGetColumnHeadersTests
             new[] { "Name", "Score" },
             new[] { new[] { "Alice", "95" } });
         doc.SetCellValue(0, 0, "ChangedName");
-        Assert.Equal("95", doc.GetCellValue(0, 1)); // Score unchanged
+        Assert.Equal("95", doc.GetCellValue(1, 1)); // Data row Score unchanged
     }
 
     [Fact]

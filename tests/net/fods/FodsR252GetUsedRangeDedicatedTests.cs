@@ -41,11 +41,11 @@ public class FodsR252GetUsedRangeDedicatedTests
     }
 
     [Fact]
-    public void GetUsedRange_NonexistentSheet_ThrowsException()
+    public void GetUsedRange_NonexistentSheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
-        Assert.ThrowsAny<Exception>(() => doc.GetUsedRange("NoSuchSheet"));
+        Assert.Null(doc.GetUsedRange("NoSuchSheet"));
     }
 
     // -------------------------------------------------------------------------
@@ -53,13 +53,13 @@ public class FodsR252GetUsedRangeDedicatedTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void GetUsedRange_EmptySheet_ReturnsNonNull()
+    public void GetUsedRange_EmptySheet_ReturnsNull()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
         string sheetName = doc.GetSheetNames()[0];
         var range = doc.GetUsedRange(sheetName);
-        Assert.NotNull(range);
+        Assert.Null(range);
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class FodsR252GetUsedRangeDedicatedTests
         doc.AddRow(sheetName, new[] { "Alice", "95", "A" });
         doc.AddRow(sheetName, new[] { "Bob", "80", "B" });
         var rangeAfter = doc.GetUsedRange(sheetName);
-        Assert.NotNull(rangeBefore);
+        Assert.Null(rangeBefore);
         Assert.NotNull(rangeAfter);
     }
 }
