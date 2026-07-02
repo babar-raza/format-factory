@@ -518,3 +518,12 @@ TRUE_EXTERNAL_GATEs that are pre-classified (no exhaustion needed):
 | 2026-07-02 | TC-EXEC-003 git commit included as governed SCM Agent task | AGENTS.md §AG4.1 |
 | 2026-07-02 | TC-EXEC-004 reads TC-0015/0016/0020 before advancing | Prevents advancing without knowing acceptance criteria |
 | 2026-07-02 | TC-EXEC-008 includes lifecycle_audit before terminal close | Per CLAUDE.md machinery plan audit rule |
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-02T08:34:30.931368+00:00"
+  locked_by: "e832837e0867"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
