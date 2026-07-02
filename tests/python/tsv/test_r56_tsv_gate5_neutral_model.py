@@ -40,7 +40,7 @@ class TestTsvNeutralModelSchema:
         result = parse_tsv_strict(p)
         required = {"format", "path", "row_count", "column_count", "headers", "rows", "has_header", "delimiter"}
         missing = required - set(result.keys())
-        assert not missing, f"Missing keys in neutral model: {missing}"
+        assert not bool(missing), f"Missing keys in neutral model: {missing}"
 
     def test_format_key_is_tsv(self, tmp_path):
         p = _write_tsv(tmp_path, "a.tsv", "x\ty\n1\t2\n")

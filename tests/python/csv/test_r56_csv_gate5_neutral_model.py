@@ -39,7 +39,7 @@ class TestCsvNeutralModelSchema:
         result = parse_csv_strict(p)
         required = {"format", "path", "row_count", "column_count", "headers", "rows", "has_header", "delimiter"}
         missing = required - set(result.keys())
-        assert not missing, f"Missing keys in neutral model: {missing}"
+        assert not bool(missing), f"Missing keys in neutral model: {missing}"
 
     def test_format_key_is_csv(self, tmp_path):
         p = _write_csv(tmp_path, "a.csv", "x,y\n1,2\n")

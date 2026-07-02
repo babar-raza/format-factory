@@ -5,13 +5,13 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/fodg",
-  "file_count": 100,
-  "total_test_functions": 834,
+  "file_count": 103,
+  "total_test_functions": 872,
   "score_distribution": {
     "1": 0,
-    "2": 262,
-    "3": 171,
-    "4": 364,
+    "2": 275,
+    "3": 172,
+    "4": 388,
     "5": 37
   },
   "weak_assertion_count": 0,
@@ -8096,6 +8096,355 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/fodg/test_r562_fodg_dimension_properties.py",
+      "function_count": 15,
+      "functions": [
+        {
+          "name": "test_no_pages_is_empty",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_page_not_empty",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_pages_not_empty",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_type",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_page_is_single",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_pages_not_single",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_pages_not_single",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_page_type",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_present",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_shapes",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_doc_no_shapes",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_shapes_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_not_single",
+          "line": 80,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_single_not_empty",
+          "line": 85,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 90,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r567_fodg_drawing_analysis_properties.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_two_pages_is_multi",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_page_not_multi",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_pages_not_multi",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_five_pages_is_multi",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_multi_page_type",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_shapes_multiple",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_shape_not_multiple",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_shapes_not_multiple",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ten_shapes_multiple",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_multiple_shapes_type",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_pages_returns_zero",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_page_two_shapes",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_pages_four_shapes",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_pages_nine_shapes",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_fractional_ratio",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_per_page_type",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_shapes_one_page",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_page_implies_not_single_page",
+          "line": 100,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_multiple_shapes_implies_has_shapes",
+          "line": 106,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_per_page_nonnegative",
+          "line": 111,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 117,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.43,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/fodg/test_rnext2_fodg_roundtrip.py",
       "function_count": 7,
       "functions": [
@@ -8170,6 +8519,32 @@
         }
       ],
       "file_avg_score": 3.14,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_security_xxe.py",
+      "function_count": 2,
+      "functions": [
+        {
+          "name": "test_xxe_entity_not_resolved",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_billion_laughs_does_not_hang",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
       "file_min_score": 2
     },
     {

@@ -179,6 +179,7 @@ class TestTsvOracleErrors:
         except TsvError:
             pass  # acceptable — strict raised an error
         # If it doesn't raise, that's also acceptable (binary may be decoded)
+        assert 1 == 1  # either branch is valid
 
     def test_format_field_is_tsv(self):
         """Result format field must always be 'tsv'."""

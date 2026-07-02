@@ -57,7 +57,8 @@ def test_append_empty_string():
 def test_append_type_error_model():
     try:
         append_paragraph("not a dict", "text")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -66,7 +67,8 @@ def test_append_type_error_text():
     model = create_abw([])
     try:
         append_paragraph(model, 42)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 

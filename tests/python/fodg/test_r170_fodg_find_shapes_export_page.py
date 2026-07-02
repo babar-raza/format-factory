@@ -41,7 +41,7 @@ class TestFindShapesByTextPattern:
     def test_result_has_required_keys(self):
         model = _make_model()
         results = find_shapes_by_text_pattern(model, "world")
-        assert results
+        assert results is not None
         r = results[0]
         assert "page_idx" in r
         assert "shape_idx" in r

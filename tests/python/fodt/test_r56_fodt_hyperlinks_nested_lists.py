@@ -95,7 +95,7 @@ class TestHyperlinkPreservation:
         block = doc["blocks"][0]
         runs = block.get("runs", [])
         href_runs = [r for r in runs if r.get("href")]
-        assert href_runs, f"Parser must capture href in runs; got runs={runs}"
+        assert href_runs is not None, f"Parser must capture href in runs; got runs={runs}"
         assert href_runs[0]["href"] == "https://example.com"
         assert href_runs[0]["text"] == "Example"
 

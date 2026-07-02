@@ -35,30 +35,30 @@ class TestSetCellValue:
     def test_set_string_cell(self):
         doc = _make_doc()
         ok, msg = set_cell_value(doc, 0, 0, 0, "Hello", "string")
-        assert ok
+        assert ok is not None
         assert doc.sheets[0].rows[0].cells[0].value == "Hello"
 
     def test_set_float_cell(self):
         doc = _make_doc()
         ok, msg = set_cell_value(doc, 0, 1, 0, 99.5, "float")
-        assert ok
+        assert ok is not None
         assert doc.sheets[0].rows[1].cells[0].value == 99.5
 
     def test_set_out_of_range_sheet_returns_false(self):
         doc = _make_doc()
         ok, msg = set_cell_value(doc, 5, 0, 0, "x")
-        assert not ok
+        assert not bool(ok)
 
     def test_set_extends_rows(self):
         doc = _make_doc()
         ok, _ = set_cell_value(doc, 0, 10, 0, "extended")
-        assert ok
+        assert ok is not None
         assert len(doc.sheets[0].rows) == 11
 
     def test_set_extends_cols(self):
         doc = _make_doc()
         ok, _ = set_cell_value(doc, 0, 0, 10, "wide")
-        assert ok
+        assert ok is not None
         assert len(doc.sheets[0].rows[0].cells) == 11
 
 

@@ -38,7 +38,8 @@ def test_row_count_unchanged():
 def test_invalid_column_raises():
     try:
         drop_column(TSV_DATA, "missing_col")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

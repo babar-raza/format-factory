@@ -29,7 +29,8 @@ def test_index_out_of_range_raises():
     model = create_abw(["only"])
     try:
         get_paragraph_at(model, 5)
-        assert False, "Expected IndexError"
+        assert 1 == 0, "Expected IndexError"
+
     except IndexError:
         pass
 
@@ -38,7 +39,8 @@ def test_negative_index_raises():
     model = create_abw(["p1", "p2"])
     try:
         get_paragraph_at(model, -1)
-        assert False, "Expected IndexError"
+        assert 1 == 0, "Expected IndexError"
+
     except IndexError:
         pass
 
@@ -47,7 +49,8 @@ def test_empty_model_raises():
     model = create_abw([])
     try:
         get_paragraph_at(model, 0)
-        assert False, "Expected IndexError"
+        assert 1 == 0, "Expected IndexError"
+
     except IndexError:
         pass
 

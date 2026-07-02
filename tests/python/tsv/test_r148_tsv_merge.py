@@ -33,7 +33,8 @@ def test_mismatched_headers_raises():
     tsv_c = b"city\tpop\nLondon\t9M\n"
     try:
         merge_tsv(TSV_A, tsv_c)
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

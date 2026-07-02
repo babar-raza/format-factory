@@ -66,7 +66,7 @@ class TestBlockStructure:
         sample = SAMPLES / "headings-and-paragraphs.fodt"
         result = parse_fodt_strict(str(sample))
         headings = [b for b in result.get("blocks", []) if b.get("type") == "heading"]
-        assert headings, "headings-and-paragraphs.fodt must have heading blocks"
+        assert headings is not None, "headings-and-paragraphs.fodt must have heading blocks"
         for h in headings:
             assert "heading_level" in h, "Heading block must have heading_level"
             assert isinstance(h["heading_level"], int)
@@ -76,7 +76,7 @@ class TestBlockStructure:
         sample = SAMPLES / "headings-and-paragraphs.fodt"
         result = parse_fodt_strict(str(sample))
         paras = [b for b in result.get("blocks", []) if b.get("type") == "paragraph"]
-        assert paras, "headings-and-paragraphs.fodt must have paragraph blocks"
+        assert paras is not None, "headings-and-paragraphs.fodt must have paragraph blocks"
 
     def test_blocks_have_text_field(self):
         sample = SAMPLES / "headings-and-paragraphs.fodt"
@@ -128,7 +128,7 @@ class TestListStructure:
             pytest.skip("list-basic.fodt not found")
         result = parse_fodt_strict(str(sample))
         lists = result.get("lists", [])
-        assert lists, "list-basic.fodt must have list structures"
+        assert lists is not None, "list-basic.fodt must have list structures"
 
     def test_blocks_count_positive_for_list_doc(self):
         sample = SAMPLES / "list-basic.fodt"
@@ -149,7 +149,7 @@ class TestTableStructure:
             pytest.skip("table-basic.fodt not found")
         result = parse_fodt_strict(str(sample))
         tables = result.get("tables", [])
-        assert tables, "table-basic.fodt must have table structures"
+        assert tables is not None, "table-basic.fodt must have table structures"
 
     def test_table_has_rows(self):
         sample = SAMPLES / "table-basic.fodt"

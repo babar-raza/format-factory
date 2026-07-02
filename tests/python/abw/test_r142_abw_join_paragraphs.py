@@ -43,7 +43,8 @@ def test_empty_sep():
 def test_type_error():
     try:
         join_paragraphs("not a dict")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 

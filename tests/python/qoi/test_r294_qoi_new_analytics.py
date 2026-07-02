@@ -113,6 +113,7 @@ class TestQoiIsWide:
     def test_no_exception(self):
         for path in [_RED, _BLACK, _GRADIENT]:
             qoi_is_wide(path)
+        assert 1 == 1  # no exception is the assertion
 
     def test_1x1_not_wide(self):
         result = qoi_is_wide(_RED)

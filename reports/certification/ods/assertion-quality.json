@@ -5,13 +5,13 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/ods",
-  "file_count": 107,
-  "total_test_functions": 1034,
+  "file_count": 110,
+  "total_test_functions": 1073,
   "score_distribution": {
     "1": 0,
-    "2": 293,
-    "3": 252,
-    "4": 397,
+    "2": 306,
+    "3": 253,
+    "4": 422,
     "5": 92
   },
   "weak_assertion_count": 0,
@@ -9561,6 +9561,389 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/ods/test_r562_ods_dimension_properties.py",
+      "function_count": 18,
+      "functions": [
+        {
+          "name": "test_no_sheets_is_empty",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_not_empty",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sheets_not_empty",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_type",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_sheet_is_single",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_sheets_not_single",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_not_single",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_sheet_type",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_sheets_is_multi",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_not_multi",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_sheets_not_multi",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_many_sheets_is_multi",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_multi_sheet_type",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_not_single_not_multi",
+          "line": 85,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_single_not_empty_not_multi",
+          "line": 91,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_multi_not_empty_not_single",
+          "line": 97,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_alias_ods_doc_has_properties",
+          "line": 103,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 110,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.11,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/ods/test_r566_ods_workbook_properties.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_no_sheets",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sheets",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_sheets_type",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_sheets_inverse_of_is_empty",
+          "line": 55,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_no_sheets_zero_rows",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_five_rows",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_combined",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_sheets_zero_rows",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_row_count_type",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_sheets_zero_max",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_returns_max",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_zero_rows",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_sheet_rows_type",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_consistent_with_sheets",
+          "line": 107,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_has_sheets_implies_not_is_empty",
+          "line": 114,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_implies_zero_rows",
+          "line": 119,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_alias_has_properties",
+          "line": 125,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 132,
+          "assertion_count": 5,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/ods/test_r62_ods_stats.py",
       "function_count": 15,
       "functions": [
@@ -10355,6 +10738,23 @@
       ],
       "file_avg_score": 3.5,
       "file_min_score": 2
+    },
+    {
+      "file": "tests/python/ods/test_security_xxe.py",
+      "function_count": 1,
+      "functions": [
+        {
+          "name": "test_xxe_entity_not_resolved",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 3
     },
     {
       "file": "tests/python/ods/test_spec_compat_layer.py",

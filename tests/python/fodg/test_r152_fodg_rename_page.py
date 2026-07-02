@@ -36,7 +36,8 @@ def test_other_page_unchanged():
 def test_out_of_range_raises():
     try:
         rename_page(_model(), 99, "X")
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 

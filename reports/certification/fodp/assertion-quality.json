@@ -5,17 +5,17 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/fodp",
-  "file_count": 31,
-  "total_test_functions": 339,
+  "file_count": 36,
+  "total_test_functions": 403,
   "score_distribution": {
     "1": 0,
-    "2": 81,
-    "3": 73,
-    "4": 152,
+    "2": 102,
+    "3": 78,
+    "4": 190,
     "5": 33
   },
   "weak_assertion_count": 0,
-  "overall_avg_score": 3.4,
+  "overall_avg_score": 3.38,
   "overall_min_score": 2,
   "files": [
     {
@@ -814,6 +814,80 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/fodp/test_fodp_roundtrip.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_json_export_roundtrip_minimal",
+          "line": 25,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_json_export_roundtrip_two_slides",
+          "line": 37,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            3,
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_json_export_roundtrip_title_only",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_txt_export_preserves_text",
+          "line": 62,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_csv_export_has_headers",
+          "line": 76,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_double_load_consistency",
+          "line": 86,
+          "assertion_count": 5,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/fodp/test_fodp_spec_qname.py",
       "function_count": 7,
       "functions": [
@@ -946,6 +1020,185 @@
       ],
       "file_avg_score": 3.67,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodp/test_r1224_fodp_shape_analysis_properties.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_no_slides_no_shapes",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_slides_with_zero_shapes",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_shape_has_shapes",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_shapes_has_shapes",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_not_shape_heavy",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_five_per_slide_not_heavy",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_six_per_slide_is_heavy",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_crosses_threshold",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_below_threshold",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_slides_false",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_slide_no_shapes_false",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_slide_with_shape_true",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_slide_with_shapes_false",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_slide_no_shapes_false",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.47,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/fodp/test_r177_fodp_total_text_length.py",
@@ -2840,6 +3093,367 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/fodp/test_r562_fodp_dimension_properties.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_no_slides_is_empty",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_slide_not_empty",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_slides_not_empty",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_type",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_slide_is_single",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_slides_not_single",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_slides_not_single",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_page_type",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_slides_is_multi",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_slide_not_multi",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_slides_not_multi",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_multi_page_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_not_single_not_multi",
+          "line": 80,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_single_not_empty_not_multi",
+          "line": 86,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_multi_not_empty_not_single",
+          "line": 92,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 98,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.12,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodp/test_r567_fodp_presentation_analysis_properties.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_one_style_has_styles",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_styles_has_styles",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_styles_no_styles",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_styles_type",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_styles_consistent_with_styles_count",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_no_slides_zero_shapes",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_slide_three_shapes",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_slides_summed",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_shapes_across_slides",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_shape_count_type",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_total_shape_count_nonnegative",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_slides_returns_zero",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_slide_two_shapes",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_slides_four_shapes",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_fractional_average",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_slides_varied",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_shapes_per_slide_type",
+          "line": 108,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_nonnegative",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_styles_consistent",
+          "line": 119,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_total_shape_count_le_expected_max",
+          "line": 124,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 129,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.48,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/fodp/test_r76_fodp_advancement.py",
       "function_count": 8,
       "functions": [
@@ -3231,6 +3845,32 @@
         }
       ],
       "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodp/test_security_xxe.py",
+      "function_count": 2,
+      "functions": [
+        {
+          "name": "test_xxe_entity_not_resolved",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_billion_laughs_does_not_hang",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
       "file_min_score": 2
     },
     {

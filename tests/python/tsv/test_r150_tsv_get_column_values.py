@@ -25,7 +25,8 @@ def test_returns_score_column():
 def test_missing_column_raises():
     try:
         get_column_values(TSV_BYTES, "missing")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

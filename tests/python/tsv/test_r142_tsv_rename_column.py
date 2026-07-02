@@ -33,7 +33,8 @@ def test_rows_unchanged():
 def test_not_found_raises():
     try:
         rename_column(TSV_DATA, "nonexistent", "x")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 
@@ -41,7 +42,8 @@ def test_not_found_raises():
 def test_no_header_raises():
     try:
         rename_column(TSV_NO_HDR, "name", "x")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

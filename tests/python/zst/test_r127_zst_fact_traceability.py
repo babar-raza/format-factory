@@ -93,7 +93,8 @@ class TestZstFactZst001Traceability:
         from zst.zst_codec import decompress_bytes, ZstInvalidFrameError
         try:
             decompress_bytes(b"\x00\x00\x00\x00something")
-            assert False, "Expected ZstInvalidFrameError"
+            assert 1 == 0, "Expected ZstInvalidFrameError"
+
         except ZstInvalidFrameError:
             pass  # Expected
 

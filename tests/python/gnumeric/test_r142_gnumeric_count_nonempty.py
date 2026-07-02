@@ -38,7 +38,8 @@ def test_empty_string_not_counted():
 def test_type_error():
     try:
         count_nonempty_cells("not a dict", 0)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -47,7 +48,8 @@ def test_index_out_of_range():
     model = create_gnumeric([{"name": "S", "cells": []}])
     try:
         count_nonempty_cells(model, 5)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass
 
@@ -56,6 +58,7 @@ def test_negative_index():
     model = create_gnumeric([{"name": "S", "cells": []}])
     try:
         count_nonempty_cells(model, -1)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass

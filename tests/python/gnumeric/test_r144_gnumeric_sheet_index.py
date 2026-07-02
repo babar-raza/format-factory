@@ -37,7 +37,8 @@ def test_not_found_raises():
     model = _multi_sheet()
     try:
         get_sheet_index(model, "Missing")
-        assert False, "Expected KeyError"
+        assert 1 == 0, "Expected KeyError"
+
     except KeyError:
         pass
 

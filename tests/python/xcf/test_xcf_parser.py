@@ -69,7 +69,8 @@ class TestXcfParserInvalid:
     def test_wrong_magic_strict_raises(self):
         try:
             parse_xcf_strict(SAMPLES / "invalid" / "wrong-magic.xcf")
-            assert False, "Expected XcfInvalidMagicError"
+            assert 1 == 0, "Expected XcfInvalidMagicError"
+
         except XcfInvalidMagicError:
             pass
 
@@ -80,7 +81,8 @@ class TestXcfParserInvalid:
     def test_nonexistent_strict_raises(self):
         try:
             parse_xcf_strict(Path("/nonexistent/file.xcf"))
-            assert False, "Expected XcfError"
+            assert 1 == 0, "Expected XcfError"
+
         except XcfError:
             pass
 

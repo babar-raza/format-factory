@@ -5,13 +5,13 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/pbm",
-  "file_count": 65,
-  "total_test_functions": 834,
+  "file_count": 67,
+  "total_test_functions": 873,
   "score_distribution": {
     "1": 0,
-    "2": 200,
-    "3": 224,
-    "4": 389,
+    "2": 209,
+    "3": 233,
+    "4": 410,
     "5": 21
   },
   "weak_assertion_count": 0,
@@ -6910,6 +6910,196 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/pbm/test_r557_pbm_geometry_properties.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_aspect_ratio_landscape",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_square",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_2x2_square",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_is_float",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_equals_width_over_height",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_1x1_is_square",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_is_square",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_3x2_not_square",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_square_is_bool",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_3x2_is_landscape",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1x1_not_landscape",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_not_landscape",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_landscape_is_bool",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_3x2_not_portrait",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1x1_not_portrait",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_not_portrait",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_portrait_is_bool",
+          "line": 117,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_landscape_and_portrait_mutually_exclusive_on_3x2",
+          "line": 127,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_square_is_neither_landscape_nor_portrait",
+          "line": 131,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_exactly_one_shape_classification_per_image",
+          "line": 137,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/pbm/test_r55_pbm_p4_binary.py",
       "function_count": 9,
       "functions": [
@@ -7001,6 +7191,190 @@
       ],
       "file_avg_score": 3.22,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pbm/test_r565_pbm_dimension_properties.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_1x1_is_tiny",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_64x64_is_tiny",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_65x64_not_tiny",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_64x65_not_tiny",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1000x1000_not_tiny",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_tiny_type",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_small_image_not_large",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exactly_1mp_is_large",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_999x1000_not_large",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1920x1080_is_large",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_large_image_type",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_1x1_zero_megapixels",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_1000x1000_one_megapixel",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_100x100",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_megapixels_type",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_megapixels_consistent_with_pixel_count",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_tiny_not_large",
+          "line": 101,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_large_not_tiny",
+          "line": 106,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 111,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.37,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/pbm/test_r58_pbm_deepening.py",

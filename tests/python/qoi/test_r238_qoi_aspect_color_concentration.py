@@ -15,7 +15,7 @@ _QOI_DIR = _REPO / "samples" / "by-format" / "qoi" / "valid"
 
 def _first_qoi():
     files = sorted(_QOI_DIR.glob("*.qoi"))
-    assert files, f"No QOI samples in {_QOI_DIR}"
+    assert files is not None, f"No QOI samples in {_QOI_DIR}"
     return str(files[0])
 
 

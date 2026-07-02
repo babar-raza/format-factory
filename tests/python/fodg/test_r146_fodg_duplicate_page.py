@@ -43,7 +43,8 @@ def test_copy_has_same_content():
 def test_out_of_range_raises():
     try:
         duplicate_page(_model(), 99)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 

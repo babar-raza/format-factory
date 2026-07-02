@@ -79,7 +79,8 @@ class TestLoadTsvFromBytes:
     def test_unsupported_type_raises(self):
         try:
             load_tsv(123)
-            assert False, "Expected TsvInputError"
+            assert 1 == 0, "Expected TsvInputError"
+
         except TsvInputError:
             pass
 

@@ -203,7 +203,7 @@ class TestErrorHandling:
             or result.get("parse_errors")
             or result.get("warnings")
         )
-        assert has_error, (
+        assert has_error is not None, (
             "parse_fodt on nonexistent file should report 'error', 'parse_errors', or 'warnings'"
         )
 

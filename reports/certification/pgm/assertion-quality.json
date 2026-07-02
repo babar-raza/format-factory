@@ -5,14 +5,14 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/pgm",
-  "file_count": 58,
-  "total_test_functions": 824,
+  "file_count": 61,
+  "total_test_functions": 867,
   "score_distribution": {
     "1": 0,
-    "2": 195,
-    "3": 196,
-    "4": 415,
-    "5": 18
+    "2": 208,
+    "3": 205,
+    "4": 435,
+    "5": 19
   },
   "weak_assertion_count": 0,
   "overall_avg_score": 3.31,
@@ -1430,6 +1430,84 @@
       ],
       "file_avg_score": 3.6,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_sample_roundtrip.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_from_file_loads_sample",
+          "line": 27,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_spec_qname_matches_registry",
+          "line": 34,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_sample_model_typed_properties",
+          "line": 39,
+          "assertion_count": 5,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_to_dict_keys",
+          "line": 48,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_reload_preserves_dimensions",
+          "line": 57,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_edit_operation_set_pixel_gray_value",
+          "line": 70,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            5,
+            4,
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/pgm/test_pgm_spec_qname.py",
@@ -6931,6 +7009,198 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/pgm/test_r558_pgm_geometry_properties.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_landscape_3x1_ratio",
+          "line": 15,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_square_2x2_ratio",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_square_1x1_ratio",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_type",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_positive",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_square_2x2",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_square_1x1",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_landscape_not_square",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_square_type",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_landscape_3x1",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_square_not_landscape",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_square_1x1_not_landscape",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_landscape_type",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_landscape_not_portrait",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_square_not_portrait",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1x1_not_portrait",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_portrait_type",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_landscape_mutual_exclusion",
+          "line": 91,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_square_mutual_exclusion",
+          "line": 97,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_consistent_with_orientation",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/pgm/test_r55_pgm_p5_binary.py",
       "function_count": 9,
       "functions": [
@@ -7024,6 +7294,171 @@
       ],
       "file_avg_score": 3.44,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r565_pgm_depth_properties.py",
+      "function_count": 17,
+      "functions": [
+        {
+          "name": "test_maxval_255_not_high_depth",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval_256_is_high_depth",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval_65535_is_high_depth",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval_1_not_high_depth",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_high_depth_type",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_1x1_is_tiny",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_64x64_is_tiny",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_65x1_not_tiny",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_100x100_not_tiny",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_tiny_type",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_1x1_megapixels",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_1000x1000_is_one_megapixel",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_megapixels_type",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_megapixels_consistent_with_pixel_count",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_standard_8bit_not_high_depth",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_16bit_is_high_depth",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 101,
+          "assertion_count": 5,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.12,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/pgm/test_r58_pgm_deepening.py",

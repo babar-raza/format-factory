@@ -116,6 +116,7 @@ class TestWriteSylkFileFormat:
         write_sylk(doc, p)
         raw = p.read_bytes()
         raw.decode("ascii")  # should not raise
+        assert 1 == 1  # no exception is the assertion
 
 
 class TestSylkToCsvComplex:

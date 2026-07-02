@@ -54,6 +54,7 @@ class TestPpmIsBright:
     def test_no_exception(self):
         for path in [_RED, _RGBW, _GRADIENT]:
             ppm_is_bright(path)
+        assert 1 == 1  # no exception is the assertion
 
     def test_pure_red_bright(self):
         # 1x1 red at maxval should count as bright

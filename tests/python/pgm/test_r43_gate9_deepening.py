@@ -35,7 +35,7 @@ class TestPgmGate9StructuralInvariants:
                 expected = result["width"] * result["height"]
                 if result["pixel_count"] != expected:
                     failed.append(f"{f.name}: pixel_count={result['pixel_count']} != {expected}")
-        assert not failed, f"pixel_count invariant violated: {failed}"
+        assert not bool(failed), f"pixel_count invariant violated: {failed}"
 
     def test_all_valid_magic_is_p2(self):
         if not VALID.exists():
@@ -77,7 +77,7 @@ class TestPgmGate9FieldCompleteness:
         for f in sorted(VALID.glob("*.pgm")):
             result = parse_pgm(str(f))
             missing = self.REQUIRED_FIELDS - set(result.keys())
-            assert not missing, f"{f.name}: missing fields {missing}"
+            assert not bool(missing), f"{f.name}: missing fields {missing}"
             break  # one sample sufficient for completeness
 
     def test_gradient_2x2_field_completeness(self):
@@ -86,7 +86,7 @@ class TestPgmGate9FieldCompleteness:
             pytest.skip("2x2-gradient.pgm not found")
         result = parse_pgm(str(sample))
         missing = self.REQUIRED_FIELDS - set(result.keys())
-        assert not missing, f"Missing fields: {missing}"
+        assert not bool(missing), f"Missing fields: {missing}"
         assert result["ok"] is True
         assert result["width"] == 2
         assert result["height"] == 2

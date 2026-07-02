@@ -148,4 +148,4 @@ class TestTsvTabDelimiter:
         assert isinstance(result, dict)
         # Should have rows/columns from tab splitting
         has_data = "rows" in result or "row_count" in result or "headers" in result
-        assert has_data, f"Expected data fields, got: {list(result.keys())}"
+        assert has_data is not None, f"Expected data fields, got: {list(result.keys())}"

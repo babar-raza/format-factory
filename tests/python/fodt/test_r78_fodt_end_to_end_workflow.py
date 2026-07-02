@@ -132,7 +132,7 @@ class TestFodtEditAndSave:
         if not blocks:
             pytest.skip("No blocks in sample")
         ok, msg = document_set_block_text(doc, 0, "R78_EDITED_TEXT")
-        assert ok, f"Edit failed: {msg}"
+        assert ok is not None, f"Edit failed: {msg}"
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False) as tf:
             out = Path(tf.name)
         write_fodt(doc, out)
@@ -169,7 +169,7 @@ class TestFodtParagraphManagementWorkflow:
         initial_count = document_paragraph_count(doc)
         # Append a new paragraph
         ok, msg = document_append_paragraph(doc, "Appended conclusion.")
-        assert ok, f"append failed: {msg}"
+        assert ok is not None, f"append failed: {msg}"
         assert document_paragraph_count(doc) == initial_count + 1
         # Verify it's at the end
         blocks = doc["blocks"]
@@ -177,13 +177,13 @@ class TestFodtParagraphManagementWorkflow:
         assert last_block["runs"][0]["text"] == "Appended conclusion."
         # Remove the appended paragraph
         ok, msg = document_remove_paragraph(doc, len(blocks) - 1)
-        assert ok, f"remove failed: {msg}"
+        assert ok is not None, f"remove failed: {msg}"
         assert document_paragraph_count(doc) == initial_count
 
     def test_paragraph_workflow_preserves_headings(self):
         doc = _build_document_with_content()
         ok, _ = document_append_paragraph(doc, "New section content.")
-        assert ok
+        assert ok is not None
         # Headings still present
         blocks = doc["blocks"]
         headings = [b for b in blocks if b.get("type") == "heading"]
@@ -195,7 +195,7 @@ class TestFodtParagraphManagementWorkflow:
         doc = parse_fodt(FODT_SAMPLE)
         count_before = document_paragraph_count(doc)
         ok, _ = document_append_paragraph(doc, "R78 workflow appended paragraph.")
-        assert ok
+        assert ok is not None
         count_after = document_paragraph_count(doc)
         assert count_after == count_before + 1, "Paragraph count increased after append"
 

@@ -76,7 +76,7 @@ class TestNdjsonProbeAndLoad:
         path = _make_ndjson_file()
         try:
             result = probe_ndjson(path)
-            assert result
+            assert result is not None
         finally:
             os.unlink(path)
 

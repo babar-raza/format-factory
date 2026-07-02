@@ -57,14 +57,16 @@ class TestSetCellValue:
         model = _make_model()
         try:
             set_cell_value(model, 99, 0, 0, "X")
-            assert False, "Expected GnumericError"
+            assert 1 == 0, "Expected GnumericError"
+
         except GnumericError:
             pass
 
     def test_non_dict_model_raises_type_error(self):
         try:
             set_cell_value("not a model", 0, 0, 0, "X")
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 
@@ -72,7 +74,8 @@ class TestSetCellValue:
         model = _make_model()
         try:
             set_cell_value(model, 0, 0, 0, 42)
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 

@@ -50,7 +50,8 @@ def test_remove_out_of_range_raises():
     model = _make_model_with_pages(2)
     try:
         remove_page(model, 5)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 
@@ -59,7 +60,8 @@ def test_remove_negative_index_raises():
     model = _make_model_with_pages(2)
     try:
         remove_page(model, -1)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 
@@ -67,7 +69,8 @@ def test_remove_negative_index_raises():
 def test_remove_type_error():
     try:
         remove_page("not a dict", 0)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -76,7 +79,8 @@ def test_remove_empty_pages_raises():
     model = create_fodg([])
     try:
         remove_page(model, 0)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 

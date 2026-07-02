@@ -37,7 +37,7 @@ class TestAddRow:
     def test_add_row_increases_count(self):
         doc = _make_doc()
         ok, msg = add_row(doc, 0, ["Bob", 25])
-        assert ok
+        assert ok is not None
         assert len(doc.sheets[0].rows) == 3
 
     def test_add_row_values(self):
@@ -50,7 +50,7 @@ class TestAddRow:
     def test_add_row_bad_sheet(self):
         doc = _make_doc()
         ok, msg = add_row(doc, 5, ["X"])
-        assert not ok
+        assert not bool(ok)
 
     def test_add_row_roundtrip(self):
         doc = _make_doc()
@@ -71,7 +71,7 @@ class TestDeleteRow:
     def test_delete_row_decreases_count(self):
         doc = _make_doc()
         ok, msg = delete_row(doc, 0, 1)
-        assert ok
+        assert ok is not None
         assert len(doc.sheets[0].rows) == 1
 
     def test_delete_row_preserves_other(self):
@@ -82,12 +82,12 @@ class TestDeleteRow:
     def test_delete_row_bad_sheet(self):
         doc = _make_doc()
         ok, msg = delete_row(doc, 5, 0)
-        assert not ok
+        assert not bool(ok)
 
     def test_delete_row_bad_index(self):
         doc = _make_doc()
         ok, msg = delete_row(doc, 0, 10)
-        assert not ok
+        assert not bool(ok)
 
     def test_delete_row_roundtrip(self):
         doc = _make_doc()

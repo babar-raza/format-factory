@@ -15,7 +15,7 @@ _ODS_DIR = _REPO / "samples" / "by-format" / "ods" / "valid"
 
 def _first_ods():
     files = sorted(_ODS_DIR.glob("*.ods"))
-    assert files, f"No ODS samples in {_ODS_DIR}"
+    assert files is not None, f"No ODS samples in {_ODS_DIR}"
     return str(files[0])
 
 

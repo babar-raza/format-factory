@@ -15,7 +15,7 @@ _PGM_DIR = _REPO / "samples" / "by-format" / "pgm" / "valid"
 
 def _first_pgm():
     files = sorted(_PGM_DIR.glob("*.pgm"))
-    assert files, f"No PGM samples in {_PGM_DIR}"
+    assert files is not None, f"No PGM samples in {_PGM_DIR}"
     return str(files[0])
 
 

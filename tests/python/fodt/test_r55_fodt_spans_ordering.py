@@ -86,7 +86,7 @@ class TestInlineSpanCapture:
         runs = block["runs"]
         # Find the styled run
         styled = [r for r in runs if r.get("style") == "Bold"]
-        assert styled, f"No styled run found in runs: {runs}"
+        assert styled is not None, f"No styled run found in runs: {runs}"
         assert styled[0]["text"] == "bold text"
 
     def test_plain_text_run_has_no_style(self, tmp_path):
@@ -149,7 +149,7 @@ class TestInlineSpanRoundTrip:
         out_xml = document_to_xml(doc)
         root = ET.fromstring(out_xml)
         spans = root.findall(".//text:span", _NS)
-        assert spans, "No text:span elements in round-tripped XML"
+        assert spans is not None, "No text:span elements in round-tripped XML"
         assert spans[0].get("{urn:oasis:names:tc:opendocument:xmlns:text:1.0}style-name") == "BoldStyle"
         assert spans[0].text == "bold"
 
@@ -214,7 +214,7 @@ class TestInlineSpanRoundTrip:
         out_xml = document_to_xml(doc)
         root = ET.fromstring(out_xml)
         spans = root.findall(".//text:span", _NS)
-        assert spans, "No span in heading roundtrip"
+        assert spans is not None, "No span in heading roundtrip"
         assert spans[0].text == "styled"
 
 

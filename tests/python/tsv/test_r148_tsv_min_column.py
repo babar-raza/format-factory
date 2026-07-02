@@ -23,7 +23,8 @@ def test_returns_float():
 def test_invalid_column_raises():
     try:
         min_column_tsv(TSV_DATA, "nonexistent")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

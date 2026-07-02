@@ -34,7 +34,7 @@ class TestPbmGate9StructuralInvariants:
                 expected = result["width"] * result["height"]
                 if result["pixel_count"] != expected:
                     failed.append(f"{f.name}: pixel_count={result['pixel_count']} != {expected}")
-        assert not failed, f"pixel_count invariant violated: {failed}"
+        assert not bool(failed), f"pixel_count invariant violated: {failed}"
 
     def test_all_valid_magic_is_p1(self):
         if not VALID.exists():
@@ -66,7 +66,7 @@ class TestPbmGate9FieldCompleteness:
             pytest.skip("1x1-black.pbm not found")
         result = parse_pbm(str(sample))
         missing = self.REQUIRED_FIELDS - set(result.keys())
-        assert not missing, f"Missing fields: {missing}"
+        assert not bool(missing), f"Missing fields: {missing}"
         assert result["ok"] is True
         assert result["width"] == 1
         assert result["height"] == 1
@@ -79,7 +79,7 @@ class TestPbmGate9FieldCompleteness:
         for f in sorted(VALID.glob("*.pbm")):
             result = parse_pbm(str(f))
             missing = self.REQUIRED_FIELDS - set(result.keys())
-            assert not missing, f"{f.name}: missing fields {missing}"
+            assert not bool(missing), f"{f.name}: missing fields {missing}"
 
 
 class TestPbmGate9InvalidSamples:

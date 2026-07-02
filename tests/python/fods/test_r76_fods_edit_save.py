@@ -140,7 +140,7 @@ class TestWorkbookWarningsForUnsupportedEdit:
         assert isinstance(warnings, list)
         # Plain cell should have no or minimal warnings
         formula_warning = any("formula" in w.lower() for w in warnings)
-        assert not formula_warning
+        assert not bool(formula_warning)
 
     def test_warns_for_formula_cell(self):
         wb = parse_fods(REPO_ROOT / "samples" / "by-format" / "fods" / "formula-basic.fods")

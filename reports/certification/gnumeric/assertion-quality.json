@@ -5,13 +5,13 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/gnumeric",
-  "file_count": 115,
-  "total_test_functions": 1079,
+  "file_count": 118,
+  "total_test_functions": 1118,
   "score_distribution": {
     "1": 0,
-    "2": 284,
-    "3": 249,
-    "4": 452,
+    "2": 295,
+    "3": 255,
+    "4": 474,
     "5": 94
   },
   "weak_assertion_count": 0,
@@ -10067,6 +10067,377 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/gnumeric/test_r560_gnumeric_dimension_properties.py",
+      "function_count": 17,
+      "functions": [
+        {
+          "name": "test_zero_cells_is_empty",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_cell_not_empty",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_many_cells_not_empty",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_type",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_sheet_is_single",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_sheets_not_single",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_not_single",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_sheet_type",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_sheets_is_multi",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_sheets_is_multi",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_not_multi",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_multi_sheet_type",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_sheet_mutual_exclusion",
+          "line": 86,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_multi_sheet_mutual_exclusion",
+          "line": 91,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_empty_consistent_with_cell_count",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_from_file_minimal_spreadsheet",
+          "line": 101,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_empty_sheet",
+          "line": 107,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.12,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/gnumeric/test_r564_gnumeric_workbook_properties.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_no_cells",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_cell",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_many_cells",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_workbook_no_cells",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_cells_type",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_cells_inverse_of_is_empty",
+          "line": 53,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_no_sheets_returns_zero",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_10_cells",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_two_sheets_20_cells",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_three_sheets_9_cells",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_avg_cells_per_sheet_type",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_consistent_with_counts",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_no_sheets_not_sparse",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_sheet_with_cells_not_sparse",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_sheet_with_no_cells_is_sparse",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sheets_no_cells_is_sparse",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_sparse_type",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_cells_implies_not_sparse",
+          "line": 108,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_is_sparse_implies_no_cells",
+          "line": 113,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_empty_workbook_no_cells_not_sparse",
+          "line": 118,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 124,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.43,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/gnumeric/test_rnext_gnumeric_analytics.py",
       "function_count": 12,
       "functions": [
@@ -10607,6 +10978,23 @@
       ],
       "file_avg_score": 3.14,
       "file_min_score": 2
+    },
+    {
+      "file": "tests/python/gnumeric/test_security_xxe.py",
+      "function_count": 1,
+      "functions": [
+        {
+          "name": "test_xxe_entity_not_resolved",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 3
     },
     {
       "file": "tests/python/gnumeric/test_spec_compat_layer.py",

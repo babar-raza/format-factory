@@ -39,7 +39,8 @@ def test_swap_first_and_last():
 def test_out_of_range_raises():
     try:
         swap_pages(_model(), 0, 99)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 

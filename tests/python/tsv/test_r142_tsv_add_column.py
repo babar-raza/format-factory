@@ -28,7 +28,8 @@ def test_row_count_unchanged():
 def test_wrong_values_length_raises():
     try:
         add_column(TSV_DATA, "x", ["only_one"])
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

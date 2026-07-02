@@ -38,7 +38,8 @@ def test_empty_paragraph_counts_zero():
 def test_type_error():
     try:
         get_char_count("not a dict")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 

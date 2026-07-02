@@ -5,17 +5,17 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/zst",
-  "file_count": 87,
-  "total_test_functions": 1159,
+  "file_count": 93,
+  "total_test_functions": 1223,
   "score_distribution": {
     "1": 0,
-    "2": 306,
-    "3": 404,
-    "4": 426,
+    "2": 311,
+    "3": 422,
+    "4": 467,
     "5": 23
   },
   "weak_assertion_count": 0,
-  "overall_avg_score": 3.14,
+  "overall_avg_score": 3.17,
   "overall_min_score": 2,
   "files": [
     {
@@ -160,6 +160,61 @@
       ],
       "file_avg_score": 3.33,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/zst/test_pbt_zst.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_compress_decompress_roundtrip",
+          "line": 15,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_compressed_smaller_or_has_framing",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_double_compress_decompress",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_compression_levels_all_roundtrip",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_max_output_size_respected",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/zst/test_r100_zst_probe_workflow.py",
@@ -8735,6 +8790,456 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/zst/test_r556_zst_skippable_frames.py",
+      "function_count": 26,
+      "functions": [
+        {
+          "name": "test_valid_skippable_magic_low",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_valid_skippable_magic_high",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_valid_skippable_magic_mid",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zstandard_frame_is_not_skippable",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_bytes_is_not_skippable",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_too_short_is_not_skippable",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_random_bytes_not_skippable",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_magic_just_below_range_not_skippable",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_magic_just_above_range_not_skippable",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_skippable_frame",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_skippable_frames_empty",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_skippable_frames_random",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_skippable_frames",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_count_empty",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_frame_count",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_frames_count",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_frames_count",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_skippable_in_random_bytes",
+          "line": 115,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_payload_frame",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_frame_extraction",
+          "line": 128,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_two_frames_extraction",
+          "line": 136,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_empty_stream_returns_empty_list",
+          "line": 146,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_no_skippable_returns_empty_list",
+          "line": 150,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_payload_frame",
+          "line": 154,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_binary_payload_preserved",
+          "line": 161,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_different_magic_values_all_extracted",
+          "line": 168,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.77,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/zst/test_r564_zst_frame_properties.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_one_frame_is_single",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_frames_not_single",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_frames_not_single",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_frame_type",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_frame_inverse_of_has_multiple",
+          "line": 46,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_multi_frame_inverse",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_zero_decompressed_size",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exactly_1024_bytes",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_512_bytes_is_half_kb",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_2048_bytes_is_2_kb",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_decompressed_size_kb_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent_with_decompressed_size",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_small_file_not_large",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exactly_1mb_is_large",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_just_under_1mb_not_large",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_not_large",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_large_type",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_2mb_is_large",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_doc_single_frame_false",
+          "line": 110,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_single_frame_not_empty",
+          "line": 115,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 120,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.48,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/zst/test_r73_zst_advancement.py",
       "function_count": 11,
       "functions": [
@@ -9600,6 +10105,51 @@
       ],
       "file_avg_score": 3.09,
       "file_min_score": 2
+    },
+    {
+      "file": "tests/python/zst/test_security_decompression.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_decompression_bomb_limit_enforced",
+          "line": 15,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_default_max_output_bytes_is_reasonable",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_max_output_size_zero_disables_guard",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_invalid_magic_rejected",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 3
     },
     {
       "file": "tests/python/zst/test_spec_compat_layer.py",
@@ -10910,6 +11460,50 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/zst/test_zst_property_based.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_compress_decompress_roundtrip",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_validate_roundtrip_agrees",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_compression_is_deterministic",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_compressed_starts_with_magic",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 3
+    },
+    {
       "file": "tests/python/zst/test_zst_r33_expansion.py",
       "function_count": 37,
       "functions": [
@@ -11309,6 +11903,50 @@
       ],
       "file_avg_score": 3.2,
       "file_min_score": 2
+    },
+    {
+      "file": "tests/python/zst/test_zst_security.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_decompression_bomb_rejected",
+          "line": 10,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_decompression_within_limit_succeeds",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_decompression_default_limit_allows_normal_data",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_zero_limit_disables_guard",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 3
     },
     {
       "file": "tests/python/zst/test_zst_spec_qname.py",

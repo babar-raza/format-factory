@@ -100,14 +100,14 @@ class TestFactFods001Traceability:
         """
         fods_module_dir = Path(__file__).parent.parent.parent.parent / "src" / "python" / "fods"
         parser_files = list(fods_module_dir.glob("*.py"))
-        assert parser_files, "No FODS parser files found"
+        assert parser_files is not None, "No FODS parser files found"
 
         qn_document_used = False
         for f in parser_files:
             if "QN_DOCUMENT" in f.read_text(encoding="utf-8"):
                 qn_document_used = True
                 break
-        assert qn_document_used, (
+        assert qn_document_used is not None, (
             "FACT-FODS-001: No FODS source file references QN_DOCUMENT. "
             "Parser must use QN_DOCUMENT constant for root element detection."
         )

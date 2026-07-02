@@ -29,7 +29,8 @@ def test_empty_values_return_zero():
 def test_missing_column_raises():
     try:
         max_column_tsv(TSV_BYTES, "missing")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

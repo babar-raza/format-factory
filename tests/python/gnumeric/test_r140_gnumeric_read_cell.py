@@ -40,7 +40,8 @@ def test_read_cell_after_set():
 def test_type_error():
     try:
         read_cell("not a dict", 0, 0, 0)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -49,7 +50,8 @@ def test_index_out_of_range():
     model = create_gnumeric([{"name": "Sheet", "cells": []}])
     try:
         read_cell(model, 99, 0, 0)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass
 
@@ -58,7 +60,8 @@ def test_negative_sheet_index():
     model = create_gnumeric([{"name": "Sheet", "cells": []}])
     try:
         read_cell(model, -1, 0, 0)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass
 

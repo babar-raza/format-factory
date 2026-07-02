@@ -37,7 +37,8 @@ def test_headers_preserved():
 def test_invalid_column_raises():
     try:
         sort_rows(TSV_DATA, "nonexistent")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

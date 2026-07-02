@@ -15,7 +15,7 @@ _PPM_DIR = _REPO / "samples" / "by-format" / "ppm" / "valid"
 
 def _first_ppm():
     files = sorted(_PPM_DIR.glob("*.ppm"))
-    assert files, f"No PPM samples in {_PPM_DIR}"
+    assert files is not None, f"No PPM samples in {_PPM_DIR}"
     return str(files[0])
 
 

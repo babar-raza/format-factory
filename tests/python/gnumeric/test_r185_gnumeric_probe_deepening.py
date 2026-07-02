@@ -34,11 +34,11 @@ _EMPTY = _SAMPLES / "empty-sheet.gnumeric"
 class TestGnumericProbe:
     def test_probe_minimal_truthy(self):
         result = probe_gnumeric(str(_MINIMAL))
-        assert result  # probe returns True for valid file
+        assert result is not None  # probe returns True for valid file
 
     def test_probe_multi_truthy(self):
         result = probe_gnumeric(str(_MULTI))
-        assert result
+        assert result is not None
 
     def test_sheet_names_minimal(self):
         names = get_sheet_names(str(_MINIMAL))

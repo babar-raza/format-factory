@@ -5,13 +5,13 @@
     "tool": "assertion_quality_scorer"
   },
   "target": "tests/python/fods",
-  "file_count": 100,
-  "total_test_functions": 1440,
+  "file_count": 105,
+  "total_test_functions": 1486,
   "score_distribution": {
     "1": 0,
-    "2": 402,
-    "3": 469,
-    "4": 478,
+    "2": 418,
+    "3": 477,
+    "4": 500,
     "5": 91
   },
   "weak_assertion_count": 0,
@@ -1148,6 +1148,32 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/fods/test_fods_property_based.py",
+      "function_count": 2,
+      "functions": [
+        {
+          "name": "test_parse_never_crashes_on_valid_fods",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_sheet_count",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/fods/test_fods_pywrite_deepening.py",
       "function_count": 10,
       "functions": [
@@ -1952,6 +1978,53 @@
       ],
       "file_avg_score": 3.1,
       "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fods/test_pbt_fods.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_single_cell_roundtrip",
+          "line": 63,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_row_count_matches",
+          "line": 84,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_multi_sheet_count",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_parse_idempotent",
+          "line": 133,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
     },
     {
       "file": "tests/python/fods/test_public_api.py",
@@ -10036,6 +10109,376 @@
       "file_min_score": 2
     },
     {
+      "file": "tests/python/fods/test_r562_fods_dimension_properties.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_no_sheets_is_empty",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_not_empty",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sheets_not_empty",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_type",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_sheet_is_single",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_sheets_not_single",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_not_single",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_sheet_type",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_sheets_is_multi",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_sheet_not_multi",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_sheets_not_multi",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_multi_sheet_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_not_single_not_multi",
+          "line": 80,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_single_not_empty_not_multi",
+          "line": 86,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_multi_not_empty_not_single",
+          "line": 92,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_minimal",
+          "line": 98,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.12,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fods/test_r568_fods_workbook_analysis_properties.py",
+      "function_count": 22,
+      "functions": [
+        {
+          "name": "test_one_sheet_has_sheets",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sheets_has_sheets",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_workbook_no_sheets",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_sheets_type",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_sheets_consistent_with_sheet_count",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_workbook_zero_rows",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_sheet_three_rows",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_summed",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_rows_in_sheet",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_row_count_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_three_sheets_varying_rows",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_workbook_returns_zero",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_sheet_max_equals_rows",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_sheets_returns_max",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_sheets_returns_max",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_equal_sheets_returns_value",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_sheet_rows_type",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_ge_avg",
+          "line": 108,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_sheets_implies_not_empty",
+          "line": 115,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_total_row_count_ge_max_when_multi_sheet",
+          "line": 120,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_max_sheet_rows_le_total_row_count",
+          "line": 124,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_from_file_multi_sheet",
+          "line": 129,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            4,
+            2,
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.36,
+      "file_min_score": 2
+    },
+    {
       "file": "tests/python/fods/test_r57_fods_stats.py",
       "function_count": 19,
       "functions": [
@@ -13643,6 +14086,32 @@
         }
       ],
       "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fods/test_security_xxe.py",
+      "function_count": 2,
+      "functions": [
+        {
+          "name": "test_xxe_entity_not_resolved",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_billion_laughs_does_not_hang",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
       "file_min_score": 2
     },
     {

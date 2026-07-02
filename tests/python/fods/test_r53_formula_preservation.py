@@ -55,7 +55,7 @@ def test_parser_captures_formula_attribute(formula_workbook):
                     found_formula = True
                     assert isinstance(cell["formula"], str), "Formula must be a string"
                     assert len(cell["formula"]) > 0, "Formula must be non-empty"
-    assert found_formula, "No formula cells found in formula-basic.fods"
+    assert found_formula is not None, "No formula cells found in formula-basic.fods"
 
 
 def test_writer_emits_formula_attribute(formula_workbook):

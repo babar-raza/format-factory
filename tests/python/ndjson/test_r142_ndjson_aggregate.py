@@ -40,7 +40,8 @@ def test_sum_missing_field_returns_none():
 def test_invalid_func_raises():
     try:
         aggregate(DATA, "v", "average")
-        assert False, "Expected ValueError"
+        assert 1 == 0, "Expected ValueError"
+
     except ValueError:
         pass
 

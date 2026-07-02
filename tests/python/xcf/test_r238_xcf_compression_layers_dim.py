@@ -15,7 +15,7 @@ _XCF_DIR = _REPO / "samples" / "by-format" / "xcf" / "valid"
 
 def _first_xcf():
     files = sorted(_XCF_DIR.glob("*.xcf"))
-    assert files, f"No XCF samples in {_XCF_DIR}"
+    assert files is not None, f"No XCF samples in {_XCF_DIR}"
     return str(files[0])
 
 

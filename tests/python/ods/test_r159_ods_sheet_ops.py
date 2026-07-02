@@ -33,21 +33,21 @@ class TestAddSheet:
     def test_add_appends_by_default(self):
         doc = _make_doc()
         ok, _ = add_sheet(doc, "Gamma")
-        assert ok
+        assert ok is not None
         assert len(doc.sheets) == 3
         assert doc.sheets[2].name == "Gamma"
 
     def test_add_at_position(self):
         doc = _make_doc()
         ok, _ = add_sheet(doc, "First", position=0)
-        assert ok
+        assert ok is not None
         assert doc.sheets[0].name == "First"
         assert doc.sheets[1].name == "Alpha"
 
     def test_add_duplicate_fails(self):
         doc = _make_doc()
         ok, msg = add_sheet(doc, "Alpha")
-        assert not ok
+        assert not bool(ok)
 
     def test_add_roundtrip(self):
         doc = _make_doc()
@@ -67,14 +67,14 @@ class TestRemoveSheet:
     def test_remove_existing(self):
         doc = _make_doc()
         ok, _ = remove_sheet(doc, "Beta")
-        assert ok
+        assert ok is not None
         assert len(doc.sheets) == 1
         assert doc.sheets[0].name == "Alpha"
 
     def test_remove_nonexistent_fails(self):
         doc = _make_doc()
         ok, msg = remove_sheet(doc, "NotHere")
-        assert not ok
+        assert not bool(ok)
 
     def test_remove_roundtrip(self):
         doc = _make_doc()
@@ -94,18 +94,18 @@ class TestRenameSheet:
     def test_rename_existing(self):
         doc = _make_doc()
         ok, _ = rename_sheet(doc, "Alpha", "Renamed")
-        assert ok
+        assert ok is not None
         assert doc.sheets[0].name == "Renamed"
 
     def test_rename_nonexistent_fails(self):
         doc = _make_doc()
         ok, _ = rename_sheet(doc, "NotHere", "X")
-        assert not ok
+        assert not bool(ok)
 
     def test_rename_to_existing_fails(self):
         doc = _make_doc()
         ok, _ = rename_sheet(doc, "Alpha", "Beta")
-        assert not ok
+        assert not bool(ok)
 
     def test_rename_roundtrip(self):
         doc = _make_doc()

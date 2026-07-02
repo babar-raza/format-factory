@@ -38,7 +38,8 @@ def test_not_found_returns_none():
 def test_no_header_raises():
     try:
         get_row_by_key(TSV_NO_HEADER, "name", "Alice")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 
@@ -46,7 +47,8 @@ def test_no_header_raises():
 def test_unknown_column_raises():
     try:
         get_row_by_key(TSV_DATA, "unknown_col", "x")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

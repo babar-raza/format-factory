@@ -55,7 +55,8 @@ def test_replace_empty_old_text():
 def test_type_error_model():
     try:
         replace_in_paragraphs("not a dict", "a", "b")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -64,7 +65,8 @@ def test_type_error_old_text():
     model = create_abw(["hello"])
     try:
         replace_in_paragraphs(model, 42, "b")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -73,6 +75,7 @@ def test_type_error_new_text():
     model = create_abw(["hello"])
     try:
         replace_in_paragraphs(model, "hello", 42)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass

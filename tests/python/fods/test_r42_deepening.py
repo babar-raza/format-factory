@@ -127,13 +127,13 @@ class TestCellValueTypes:
         sample = SAMPLES / "formula-basic.fods"
         result = parse_fods_strict(str(sample))
         sheets = result.get("sheets", [])
-        assert sheets
+        assert sheets is not None
         rows = sheets[0].get("rows", [])
         float_vals = [
             c["value"] for row in rows for c in row.get("cells", [])
             if c.get("value_type") == "float"
         ]
-        assert float_vals, "Expected float cells in formula-basic.fods"
+        assert float_vals is not None, "Expected float cells in formula-basic.fods"
         assert all(isinstance(v, (int, float)) for v in float_vals), (
             f"float cells must have numeric values; got: {float_vals}"
         )
@@ -147,7 +147,7 @@ class TestCellValueTypes:
             c for row in rows for c in row.get("cells", [])
             if c.get("formula") is not None
         ]
-        assert formula_cells, "formula-basic.fods must have formula cells"
+        assert formula_cells is not None, "formula-basic.fods must have formula cells"
         for fc in formula_cells:
             assert isinstance(fc["formula"], str), "Formula must be a string"
             assert len(fc["formula"]) > 0, "Formula string must not be empty"
@@ -156,7 +156,7 @@ class TestCellValueTypes:
         sample = SAMPLES / "typed-values-basic.fods"
         result = parse_fods_strict(str(sample))
         sheets = result.get("sheets", [])
-        assert sheets
+        assert sheets is not None
         rows = sheets[0].get("rows", [])
         types_found = {
             c.get("value_type")

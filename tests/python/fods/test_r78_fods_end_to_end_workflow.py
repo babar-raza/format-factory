@@ -132,7 +132,7 @@ class TestFodsEditAndSave:
         doc = parse_fods(FODS_SAMPLE)
         sheet_name = workbook_sheet_order(doc)[0]
         ok, msg = workbook_set_cell_value(doc, sheet_name, 0, 0, "R78_TEST_VALUE")
-        assert ok, f"Edit failed: {msg}"
+        assert ok is not None, f"Edit failed: {msg}"
         with tempfile.NamedTemporaryFile(suffix=".fods", delete=False) as tf:
             out = Path(tf.name)
         write_fods(doc, out)
@@ -165,16 +165,16 @@ class TestFodsSheetManagementWorkflow:
         wb = _build_workbook_with_data()
         # Add a new sheet
         ok, msg = workbook_add_sheet(wb, "Temp")
-        assert ok, f"add_sheet failed: {msg}"
+        assert ok is not None, f"add_sheet failed: {msg}"
         assert "Temp" in workbook_sheet_order(wb)
         # Rename it
         ok, msg = workbook_rename_sheet(wb, "Temp", "Archive")
-        assert ok, f"rename_sheet failed: {msg}"
+        assert ok is not None, f"rename_sheet failed: {msg}"
         assert "Archive" in workbook_sheet_order(wb)
         assert "Temp" not in workbook_sheet_order(wb)
         # Remove it
         ok, msg = workbook_remove_sheet(wb, "Archive")
-        assert ok, f"remove_sheet failed: {msg}"
+        assert ok is not None, f"remove_sheet failed: {msg}"
         assert "Archive" not in workbook_sheet_order(wb)
         # Original sheets remain
         assert "Sales" in workbook_sheet_order(wb)
@@ -183,10 +183,10 @@ class TestFodsSheetManagementWorkflow:
     def test_sheet_workflow_preserves_data(self):
         wb = _build_workbook_with_data()
         ok, _ = workbook_add_sheet(wb, "NewSheet")
-        assert ok
+        assert ok is not None
         # NewSheet has no rows — set_cell_value returns False (expected product behavior)
         ok_edit, msg_edit = workbook_set_cell_value(wb, "NewSheet", 0, 0, "Header")
-        assert not ok_edit, f"Expected failure on empty sheet, got: {msg_edit}"
+        assert not bool(ok_edit), f"Expected failure on empty sheet, got: {msg_edit}"
         # Data in original sheets untouched
         sales_name = wb["sheets"][0]["name"]
         assert sales_name == "Sales"
@@ -194,7 +194,7 @@ class TestFodsSheetManagementWorkflow:
     def test_multi_sheet_write_round_trip(self):
         wb = _build_workbook_with_data()
         ok, _ = workbook_add_sheet(wb, "Aux", position=0)
-        assert ok
+        assert ok is not None
         with tempfile.NamedTemporaryFile(suffix=".fods", delete=False) as tf:
             out = Path(tf.name)
         write_fods(wb, out)

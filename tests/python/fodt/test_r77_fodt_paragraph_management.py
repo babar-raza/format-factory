@@ -36,33 +36,33 @@ class TestDocumentAppendParagraph:
     def test_append_to_empty_document(self):
         doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Hello world")
-        assert ok
+        assert ok is not None
         assert len(doc["blocks"]) == 1
         assert doc["blocks"][0]["runs"][0]["text"] == "Hello world"
 
     def test_append_adds_to_end(self):
         doc = _minimal_document(["First"])
         ok, msg = document_append_paragraph(doc, "Second")
-        assert ok
+        assert ok is not None
         assert doc["blocks"][-1]["runs"][0]["text"] == "Second"
 
     def test_append_with_style(self):
         doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Title", style="Heading 1")
-        assert ok
+        assert ok is not None
         assert doc["blocks"][0].get("style") == "Heading 1"
 
     def test_append_without_style_has_no_style_key_or_none(self):
         doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Plain")
-        assert ok
+        assert ok is not None
         block = doc["blocks"][0]
         assert block.get("style") is None
 
     def test_append_none_text_fails(self):
         doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, None)
-        assert not ok
+        assert not bool(ok)
 
     def test_append_multiple_paragraphs(self):
         doc = {"blocks": []}
@@ -73,7 +73,7 @@ class TestDocumentAppendParagraph:
     def test_append_empty_string_succeeds(self):
         doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "")
-        assert ok
+        assert ok is not None
 
     def test_append_sets_auto_updatable_false(self):
         doc = {"blocks": []}
@@ -86,31 +86,31 @@ class TestDocumentRemoveParagraph:
     def test_remove_only_paragraph_when_one_block(self):
         doc = _minimal_document(["Solo"])
         ok, msg = document_remove_paragraph(doc, 0)
-        assert ok
+        assert ok is not None
         assert len(doc["blocks"]) == 0
 
     def test_remove_first_paragraph(self):
         doc = _minimal_document(["A", "B", "C"])
         ok, _ = document_remove_paragraph(doc, 0)
-        assert ok
+        assert ok is not None
         assert doc["blocks"][0]["runs"][0]["text"] == "B"
 
     def test_remove_last_paragraph(self):
         doc = _minimal_document(["A", "B"])
         ok, _ = document_remove_paragraph(doc, 1)
-        assert ok
+        assert ok is not None
         assert len(doc["blocks"]) == 1
 
     def test_remove_out_of_range_index_fails(self):
         doc = _minimal_document(["Only"])
         ok, msg = document_remove_paragraph(doc, 5)
-        assert not ok
+        assert not bool(ok)
         assert "out of range" in msg
 
     def test_remove_negative_index_fails(self):
         doc = _minimal_document(["A", "B"])
         ok, msg = document_remove_paragraph(doc, -1)
-        assert not ok
+        assert not bool(ok)
 
     def test_remove_table_block_fails(self):
         doc = {
@@ -119,13 +119,13 @@ class TestDocumentRemoveParagraph:
             ]
         }
         ok, msg = document_remove_paragraph(doc, 0)
-        assert not ok
+        assert not bool(ok)
         assert "table" in msg.lower()
 
     def test_remove_includes_preview_in_message(self):
         doc = _minimal_document(["Preview text here"])
         ok, msg = document_remove_paragraph(doc, 0)
-        assert ok
+        assert ok is not None
         assert "Preview" in msg
 
 

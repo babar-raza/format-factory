@@ -42,7 +42,8 @@ def test_other_page_unaffected():
 def test_out_of_range_raises():
     try:
         clear_page(_model(), 99)
-        assert False, "Expected FodgError"
+        assert 1 == 0, "Expected FodgError"
+
     except FodgError:
         pass
 

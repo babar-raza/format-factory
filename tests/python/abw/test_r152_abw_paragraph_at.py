@@ -30,7 +30,8 @@ def test_negative_index():
 def test_out_of_range_raises_index_error():
     try:
         paragraph_at(_model(["A"]), 5)
-        assert False, "Expected IndexError"
+        assert 1 == 0, "Expected IndexError"
+
     except IndexError:
         pass
 

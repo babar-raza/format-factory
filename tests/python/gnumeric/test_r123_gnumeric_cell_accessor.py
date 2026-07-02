@@ -68,7 +68,8 @@ class TestGetCellValue:
         model = _make_model()
         try:
             get_cell_value(model, 5, 0, 0)
-            assert False, "Expected GnumericError"
+            assert 1 == 0, "Expected GnumericError"
+
         except GnumericError:
             pass
 
@@ -76,14 +77,16 @@ class TestGetCellValue:
         model = _make_model()
         try:
             get_cell_value(model, -1, 0, 0)
-            assert False, "Expected GnumericError"
+            assert 1 == 0, "Expected GnumericError"
+
         except GnumericError:
             pass
 
     def test_type_error_not_dict(self):
         try:
             get_cell_value("not a dict", 0, 0, 0)
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 

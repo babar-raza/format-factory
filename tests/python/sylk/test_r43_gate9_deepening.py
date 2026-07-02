@@ -67,7 +67,7 @@ class TestSylkGate9FieldCompleteness:
             pytest.skip("minimal-2x2.slk not found")
         result = parse_sylk(str(sample))
         missing = self.REQUIRED_FIELDS - set(result.keys())
-        assert not missing, f"Missing fields: {missing}"
+        assert not bool(missing), f"Missing fields: {missing}"
         assert result["ok"] is True
         assert result["rows"] == 2
         assert result["cols"] == 2
@@ -79,7 +79,7 @@ class TestSylkGate9FieldCompleteness:
         for f in sorted(VALID.glob("*.slk")):
             result = parse_sylk(str(f))
             missing = self.REQUIRED_FIELDS - set(result.keys())
-            assert not missing, f"{f.name}: missing fields {missing}"
+            assert not bool(missing), f"{f.name}: missing fields {missing}"
 
 
 class TestSylkGate9InvalidSamples:

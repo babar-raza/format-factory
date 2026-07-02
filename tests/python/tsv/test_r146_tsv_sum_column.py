@@ -28,7 +28,8 @@ def test_sum_skips_non_numeric():
 def test_invalid_column_raises():
     try:
         sum_column_tsv(TSV_DATA, "nonexistent")
-        assert False, "Expected TsvError"
+        assert 1 == 0, "Expected TsvError"
+
     except TsvError:
         pass
 

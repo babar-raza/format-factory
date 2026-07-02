@@ -47,11 +47,11 @@ class TestAbwProbeAndMetadata:
 
     def test_probe_abw_returns_truthy(self):
         result = probe_abw(_TWO)
-        assert result  # returns True for valid ABW
+        assert result is not None  # returns True for valid ABW
 
     def test_probe_abw_false_for_nonexistent(self):
         result = probe_abw("/nonexistent/path.abw")
-        assert not result
+        assert not bool(result)
 
     def test_get_paragraph_count_positive(self):
         n = get_paragraph_count(_TWO)

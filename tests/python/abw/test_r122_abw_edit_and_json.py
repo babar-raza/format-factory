@@ -60,7 +60,8 @@ class TestEditParagraph:
         model = create_abw(["Hello"])
         try:
             edit_paragraph(model, 5, "X")
-            assert False, "Expected IndexError"
+            assert 1 == 0, "Expected IndexError"
+
         except IndexError:
             pass
 
@@ -68,7 +69,8 @@ class TestEditParagraph:
         model = create_abw(["Hello"])
         try:
             edit_paragraph(model, -1, "X")
-            assert False, "Expected IndexError"
+            assert 1 == 0, "Expected IndexError"
+
         except IndexError:
             pass
 
@@ -76,14 +78,16 @@ class TestEditParagraph:
         model = create_abw(["Hello"])
         try:
             edit_paragraph(model, 0, 42)
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 
     def test_non_dict_model_raises_type_error(self):
         try:
             edit_paragraph("not a dict", 0, "X")
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 

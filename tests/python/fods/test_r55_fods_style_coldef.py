@@ -236,7 +236,7 @@ class TestColumnDefsCapture:
         out_xml = workbook_to_xml(wb)
         root = ET.fromstring(out_xml)
         cols = root.findall(".//table:table-column", _NS)
-        assert cols, "table:table-column elements must appear in round-tripped XML"
+        assert cols is not None, "table:table-column elements must appear in round-tripped XML"
         # Style name must be preserved
         assert "MyStyle" in out_xml
 

@@ -40,7 +40,8 @@ def test_third_page():
 def test_not_found_raises():
     try:
         get_page_index(_model(), "Missing")
-        assert False, "Expected KeyError"
+        assert 1 == 0, "Expected KeyError"
+
     except KeyError:
         pass
 

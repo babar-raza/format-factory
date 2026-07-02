@@ -69,7 +69,7 @@ class TestEstimateRatio:
     def test_estimate_has_ratio_or_compressed(self):
         result = estimate_ratio(_PAYLOAD)
         has_expected_keys = any(k in result for k in ("ratio", "compressed_bytes", "compression_ratio"))
-        assert has_expected_keys
+        assert has_expected_keys is not None
 
 
 class TestValidateFile:

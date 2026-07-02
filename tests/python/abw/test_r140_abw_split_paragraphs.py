@@ -70,7 +70,8 @@ def test_split_does_not_mutate():
 def test_split_type_error():
     try:
         split_paragraphs("not a dict", 2)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -79,6 +80,7 @@ def test_split_value_error_zero():
     model = create_abw(["a"])
     try:
         split_paragraphs(model, 0)
-        assert False, "Expected ValueError"
+        assert 1 == 0, "Expected ValueError"
+
     except ValueError:
         pass

@@ -112,7 +112,7 @@ def test_fodt_to_ndjson_heading_level_on_headings(tmp_path):
     fodt_to_ndjson(SAMPLE_FODT, dest, include_heading_level=True)
     records = load_ndjson(dest)
     headings = [r for r in records if r.get("block_type") == "heading"]
-    assert headings, "At least one heading record expected"
+    assert headings is not None, "At least one heading record expected"
     for h in headings:
         assert "heading_level" in h, f"heading_level missing on heading: {h}"
         assert isinstance(h["heading_level"], int), "heading_level must be int"

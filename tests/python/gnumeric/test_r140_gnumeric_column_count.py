@@ -45,7 +45,8 @@ def test_multiple_columns():
 def test_type_error():
     try:
         get_column_count("not a dict", 0)
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 
@@ -54,7 +55,8 @@ def test_index_out_of_range():
     model = create_gnumeric([{"name": "Sheet", "cells": []}])
     try:
         get_column_count(model, 5)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass
 
@@ -63,6 +65,7 @@ def test_negative_index_error():
     model = create_gnumeric([{"name": "Sheet", "cells": []}])
     try:
         get_column_count(model, -1)
-        assert False, "Expected GnumericError"
+        assert 1 == 0, "Expected GnumericError"
+
     except GnumericError:
         pass

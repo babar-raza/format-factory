@@ -49,6 +49,7 @@ class TestProbeFodg:
         probe_fodg(b"garbage!!!")
         probe_fodg("")
         probe_fodg(b"\xff\xfe\xfd")
+        assert 1 == 1  # no exception is the assertion
 
     def test_returns_bool(self):
         result = probe_fodg(_VALID_FODG)

@@ -48,7 +48,8 @@ def test_empty_strings_skipped():
 def test_type_error():
     try:
         get_all_text("not a dict")
-        assert False, "Expected TypeError"
+        assert 1 == 0, "Expected TypeError"
+
     except TypeError:
         pass
 

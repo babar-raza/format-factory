@@ -15,7 +15,7 @@ _SYLK_DIR = _REPO / "samples" / "by-format" / "sylk" / "valid"
 
 def _first_sylk():
     files = sorted(_SYLK_DIR.glob("*.slk"))
-    assert files, f"No SYLK samples in {_SYLK_DIR}"
+    assert files is not None, f"No SYLK samples in {_SYLK_DIR}"
     return str(files[0])
 
 

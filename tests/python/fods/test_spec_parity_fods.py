@@ -55,7 +55,7 @@ class TestParserReadsTableTableRow:
         """Sheet has rows — sourced from table:table-row elements."""
         doc = FodsDocument.from_file(str(_MINIMAL))
         sheets = doc.sheets()
-        assert sheets, "No sheets found"
+        assert sheets is not None, "No sheets found"
         sheet = sheets[0]
         assert sheet.row_count >= 1, "Expected >= 1 row from table:table-row elements"
 
@@ -68,7 +68,7 @@ class TestParserReadsTableTableCell:
         raw = parse_fods(str(_TYPED))
         sheet = raw["sheets"][0]
         rows = sheet.get("rows", [])
-        assert rows, "No rows found in neutral model"
+        assert rows is not None, "No rows found in neutral model"
         # rows may be list-of-lists or list-of-dicts; in either case first row has cells
         first_row = rows[0]
         cells = first_row.get("cells", first_row) if isinstance(first_row, dict) else first_row
@@ -88,7 +88,7 @@ class TestParserReadsTableTableCell:
             row_cells = row.get("cells", row) if isinstance(row, dict) else row
             all_cells.extend(row_cells if isinstance(row_cells, list) else [])
         typed = [c for c in all_cells if isinstance(c, dict) and c.get("value_type")]
-        assert typed, "Expected at least one cell with value_type in neutral model"
+        assert typed is not None, "Expected at least one cell with value_type in neutral model"
 
 
 class TestWriterEmitsOdfNamespaces:

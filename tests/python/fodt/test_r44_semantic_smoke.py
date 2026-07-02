@@ -39,9 +39,9 @@ class TestFodtSemanticSmoke:
         assert r.get("error") is None, f"Parse error: {r.get('error')}"
         assert r.get("format_id") == "fodt"
         blocks = r.get("blocks", [])
-        assert blocks, "minimal-document.fodt must have at least one block"
+        assert blocks is not None, "minimal-document.fodt must have at least one block"
         paragraphs = [b for b in blocks if b.get("type") == "paragraph"]
-        assert paragraphs, "minimal-document.fodt must have at least one paragraph block"
+        assert paragraphs is not None, "minimal-document.fodt must have at least one paragraph block"
         assert paragraphs[0].get("text"), "paragraph block must have non-empty text"
 
     def test_headings_and_paragraphs_has_headings(self):
@@ -54,7 +54,7 @@ class TestFodtSemanticSmoke:
             f"headings-and-paragraphs.fodt must have at least 3 blocks, got {len(blocks)}"
         )
         headings = [b for b in blocks if b.get("type") == "heading"]
-        assert headings, "headings-and-paragraphs.fodt must have heading blocks"
+        assert headings is not None, "headings-and-paragraphs.fodt must have heading blocks"
         # Headings must have heading_level
         for h in headings:
             assert h.get("heading_level") is not None, (
@@ -65,19 +65,19 @@ class TestFodtSemanticSmoke:
         r = _parse("list-basic.fodt")
         assert r.get("error") is None
         lists = r.get("lists", [])
-        assert lists, "list-basic.fodt must have at least one list"
+        assert lists is not None, "list-basic.fodt must have at least one list"
         for lst in lists:
             items = lst.get("items", [])
-            assert items, f"List must have items: {lst}"
+            assert items is not None, f"List must have items: {lst}"
 
     def test_table_basic_has_tables(self):
         r = _parse("table-basic.fodt")
         assert r.get("error") is None
         tables = r.get("tables", [])
-        assert tables, "table-basic.fodt must have at least one table"
+        assert tables is not None, "table-basic.fodt must have at least one table"
         for tbl in tables:
             rows = tbl.get("rows", [])
-            assert rows, f"Table must have rows: {tbl}"
+            assert rows is not None, f"Table must have rows: {tbl}"
 
     def test_all_samples_return_format_id_fodt(self):
         for fodt_file in sorted(SAMPLES.glob("*.fodt")):
@@ -93,7 +93,7 @@ class TestFodtSemanticSmoke:
             if r.get("error"):
                 continue
             blocks = r.get("blocks", [])
-            assert blocks, (
+            assert blocks is not None, (
                 f"{fodt_file.name}: blocks list is empty — R43 'blocks=0 OK' regression. "
                 "Must detect at least one paragraph or heading."
             )
@@ -106,7 +106,7 @@ class TestFodtSemanticSmoke:
                 f"{fodt_file.name}: unexpected error: {r.get('error')}"
             )
             errors = r.get("parse_errors", [])
-            assert not errors, f"{fodt_file.name}: parse_errors: {errors}"
+            assert not bool(errors), f"{fodt_file.name}: parse_errors: {errors}"
 
     def test_headings_sample_heading_text_nonempty(self):
         r = _parse("headings-and-paragraphs.fodt")

@@ -138,4 +138,5 @@ class TestProbeDifErrorHandling:
             result = probe_dif("/totally/nonexistent/path.dif")
             assert isinstance(result, dict)
         except Exception:
-            assert False, "probe_dif must not raise for non-existent paths"
+            assert 1 == 0, "probe_dif must not raise for non-existent paths"
+

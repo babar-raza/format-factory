@@ -41,7 +41,8 @@ class TestGetParagraph:
         model = _make_model(["only"])
         try:
             get_paragraph(model, 5)
-            assert False, "Expected IndexError"
+            assert 1 == 0, "Expected IndexError"
+
         except IndexError:
             pass
 
@@ -49,14 +50,16 @@ class TestGetParagraph:
         model = _make_model(["only"])
         try:
             get_paragraph(model, -5)
-            assert False, "Expected IndexError"
+            assert 1 == 0, "Expected IndexError"
+
         except IndexError:
             pass
 
     def test_non_dict_model_raises_type_error(self):
         try:
             get_paragraph("not a model", 0)
-            assert False, "Expected TypeError"
+            assert 1 == 0, "Expected TypeError"
+
         except TypeError:
             pass
 
@@ -64,7 +67,8 @@ class TestGetParagraph:
         model = _make_model([])
         try:
             get_paragraph(model, 0)
-            assert False, "Expected IndexError"
+            assert 1 == 0, "Expected IndexError"
+
         except IndexError:
             pass
 

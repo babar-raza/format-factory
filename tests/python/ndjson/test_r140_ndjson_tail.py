@@ -48,7 +48,8 @@ def test_tail_empty_source():
 def test_tail_negative_raises():
     try:
         tail(FIVE_RECORDS, -1)
-        assert False, "Expected ValueError"
+        assert 1 == 0, "Expected ValueError"
+
     except ValueError:
         pass
 
