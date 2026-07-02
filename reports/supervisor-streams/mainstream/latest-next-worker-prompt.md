@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-R1226-MEGA-TRAIN-001
-# Generated: 2026-07-02T12:58:30.001930
-# Source: Supervisor autonomous-cycle review of r1225-odt-composition-props-20260702
+# FORMAT-FACTORY-R1234-MEGA-TRAIN-001
+# Generated: 2026-07-02T22:02:58.017994
+# Source: Supervisor autonomous-cycle review of BULK-PROPERTIES-R1233-R1291
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -26,8 +26,8 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R1226-MEGA-TRAIN-001
-- Prior sprint: r1225-odt-composition-props-20260702
+- Sprint ID: FORMAT-FACTORY-R1234-MEGA-TRAIN-001
+- Prior sprint: BULK-PROPERTIES-R1233-R1291
 - Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -599,35 +599,37 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 162x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 164x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 129x, last: r556-zst-skippable)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 94x, last: r556-zst-skippable)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 96x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 130x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 132x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 219x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 6x, last: r556-zst-skippable)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 341x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 337x, last: r1224-fodp-shape-props-20260702)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 343x, last: tc-warn-001-through-003)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 365x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 25x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 27x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 5x, last: r561-csv-tsv-ndjson-odt)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 7x, last: convergence-test-repair-20260624-999bb7)
 - ESCALATED FAILURE (GRADING_FALSE_POSITIVE): Item declared completed but no evidence found. Provide evidence at declared paths. (seen 110x, last: FORMAT-FACTORY-LAYER-AUDIT-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 14x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 9x, last: r561-csv-tsv-ndjson-odt)
-- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 26x, last: system-healing-product-acquisition-unblock-20260625)
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 35x, last: ff-gates-advancement-20260702)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dotnet_loc_cap_failed (seen 5x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 47x, last: r1224-fodp-shape-props-20260702)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 69x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dependency_direction_failed (seen 5x, last: r560-xcf-gnumeric-abw-dif)
-- WARNING: 25 unresolved failures in failure memory
+- ESCALATED FAILURE (OVERCLAIM_FAILURE): Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a planning markdown document; no actual execution artifacts (e.g., git commit logs, diff outputs, or build reports) are provided.', 'No concrete proof that the dirty working tree was audited, changes were committed, or that product gaps were selected and validated.', 'Missing the required product‑gap selection file (e.g., selected-product-gaps.json) or any verification that it was created/used.', 'No build or installation evidence to satisfy mandatory outcomes such as package artifacts built or dogfood export path advanced.', 'Claims are listed with dispositions but lack supporting data (e.g., test results, command output, screenshots) to verify those dispositions.'] (seen 3x, last: ff-gates-advancement-20260702)
+- WARNING: 26 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 500x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 503x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 - **TEST_FAILURE** (seen 340x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
+- **TEST_FAILURE** (seen 4x): Sprint ended with 2 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
 ## Spec-Parity Requirements (from skill registry)
 

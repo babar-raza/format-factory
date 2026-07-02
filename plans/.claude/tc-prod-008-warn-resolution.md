@@ -277,6 +277,6 @@ exact_next_action: Run capability_pipeline.py --validate-only
 
 ## 8. Final Taskcard Status Summary (Machine-Parseable)
 
-| TC-WARN-001 | not_attempted |
-| TC-WARN-002 | not_attempted |
-| TC-WARN-003 | not_attempted |
+| TC-WARN-001 | CLOSED |
+| TC-WARN-002 | CLOSED |
+| TC-WARN-003 | CLOSED |

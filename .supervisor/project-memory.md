@@ -16160,7 +16160,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +6348
 - test_delta_from: 9
 
-## Entry: r1224-fodp-shape-props-20260702
+## Entry: r1224-fodp-shape-props-20260702 [STALE]
 - timestamp: 2026-07-02T12:55:13.558996
 - verdict: ACCEPTED_WITH_WARNINGS
 - test_count: 402
@@ -16172,3 +16172,29 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: -5955
 - test_delta_from: 6357
+
+## Entry: R1264-R1269-BATCH
+- timestamp: 2026-07-02T20:57:14.552431
+- verdict: ACCEPTED
+- test_count: 109
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1264-r1269-batch\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 81
+- bundle_validation_pass: True
+- test_delta: -293
+- test_delta_from: 402
+
+## Entry: BULK-PROPERTIES-R1233-R1291
+- timestamp: 2026-07-02T22:05:10.502981
+- verdict: ACCEPTED
+- test_count: 1775
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 96
+- bundle_validation_pass: True
+- test_delta: +1666
+- test_delta_from: 109

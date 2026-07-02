@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-07-02T12:55:12.595177
+Timestamp: 2026-07-02T22:05:09.394790
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1224-fodp-shape-props-20260702\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 62
-Bundle mtime: 2026-07-02T12:54:12.249404
-Bundle size: 535074 bytes
+Entry count: 96
+Bundle mtime: 2026-07-02T22:03:42.370317
+Bundle size: 360675 bytes

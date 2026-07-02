@@ -1,0 +1,1062 @@
+schema_version: "1.0"
+incident_id: GI-FODS-NET-001
+total_methods_reviewed: 123
+# Note: original plan estimated 102; actual count from file reading is 123
+# (74 constant-zero + 40 dict-backed + 4 A/delegating + 2 C/aliases + 3 E/private)
+
+methods:
+
+  # =====================================================================
+  # Category E — Private guard helpers (keep, move to FodsDocumentAccessor)
+  # =====================================================================
+
+  - method: RequireSheet
+    visibility: private
+    category: E
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: guard_helper
+    roundtrip_gap: false
+    current_backing: none
+    notes: Move to FodsDocumentAccessor.cs; check if already exists there before adding
+
+  - method: RequireNonNegativeRow
+    visibility: private
+    category: E
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: guard_helper
+    roundtrip_gap: false
+    current_backing: none
+
+  - method: RequireNonNegativeCol
+    visibility: private
+    category: E
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: guard_helper
+    roundtrip_gap: false
+    current_backing: none
+
+  # =====================================================================
+  # Category A — DOM-computed or delegating (keep, move to accessor)
+  # =====================================================================
+
+  - method: GetSheetName
+    visibility: public
+    category: A
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: "delegates to GetSheetNames()[index]"
+    roundtrip_gap: false
+    current_backing: delegates_GetSheetNames
+    test_files: []  # no dedicated test file found for this signature
+    notes: Useful index-based overload. Move alongside GetSheetNames() in accessor.
+
+  - method: SetSheetName
+    visibility: public
+    category: A
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: "delegates to RenameSheet(oldName, name)"
+    roundtrip_gap: false
+    current_backing: delegates_RenameSheet
+    notes: Useful index-based overload. Move alongside RenameSheet() in accessor.
+
+  - method: GetSheetMaxRow
+    visibility: public
+    category: A
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: "sheet.Rows.Count — real DOM count"
+    roundtrip_gap: false
+    current_backing: live_dom
+    test_files: [FodsR476GetSheetMaxRowDedicatedTests.cs]
+
+  - method: GetSheetMaxColumn
+    visibility: public
+    category: A
+    disposition: KEEP_MOVE_TO_ACCESSOR
+    odf_basis: "sheet.Rows.Max(r => r.Cells.Count) — real DOM computation"
+    roundtrip_gap: false
+    current_backing: live_dom
+    test_files: [FodsR477GetSheetMaxColumnDedicatedTests.cs]
+
+  # =====================================================================
+  # Category C — Alias delegates (keep, move alongside B peers)
+  # =====================================================================
+
+  - method: GetSheetFreezeRow
+    visibility: public
+    category: C
+    disposition: KEEP_AS_ALIAS
+    odf_basis: alias_for_GetSheetFreezeRows
+    roundtrip_gap: true  # inherits from peer
+    test_files: [FodsR478GetSheetFreezeRowDedicatedTests.cs]
+
+  - method: GetSheetFreezeColumn
+    visibility: public
+    category: C
+    disposition: KEEP_AS_ALIAS
+    odf_basis: alias_for_GetSheetFreezeColumns
+    roundtrip_gap: true  # inherits from peer
+    test_files: [FodsR479GetSheetFreezeColumnDedicatedTests.cs]
+
+  # =====================================================================
+  # Category D — Constant-zero public APIs (74 methods)
+  # Disposition: REMOVE_WITH_TESTS
+  # Phase: 3f (after Lane 4d test disposal is complete)
+  # =====================================================================
+
+  - method: GetHyperlinkCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_COMPUTABLE_REPLACEMENT
+    odf_basis: "computable: count text:a elements inside table:table-cell"
+    constant_return: 0
+    roundtrip_gap: not_applicable
+    test_files: [FodsR497GetHyperlinkCountDedicatedTests.cs]
+    notes: Replace with DOM scan; do not return 0
+
+  - method: GetCommentCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE  # ODF annotations are rare; no easy DOM scan
+    constant_return: 0
+    roundtrip_gap: not_applicable
+    test_files: []
+
+  - method: GetGroupCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+    roundtrip_gap: not_applicable
+
+  - method: GetFormulaCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_COMPUTABLE_REPLACEMENT
+    odf_basis: "computable: count table:table-cell[@table:formula] attributes"
+    constant_return: 0
+    roundtrip_gap: not_applicable
+    notes: Replace with DOM scan; do not return 0
+
+  - method: GetMergedCellCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_COMPUTABLE_REPLACEMENT
+    odf_basis: "computable: count cells with @table:number-columns-spanned>1 or @table:number-rows-spanned>1"
+    constant_return: 0
+    roundtrip_gap: not_applicable
+    notes: Replace with DOM scan
+
+  - method: GetImageCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE  # images in ODF are draw:image; FODS parsing doesn't expose
+    constant_return: 0
+
+  - method: GetShapeCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetChartCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetMacroCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE  # macros are not a standard ODF element
+    constant_return: 0
+
+  - method: GetNavigatorCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFormulaErrorCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSharedFormulaCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetAlignmentCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetAnnotationCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetBooleanStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetBorderCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetButtonCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE  # UI widget; not an ODF table concept
+    constant_return: 0
+
+  - method: GetCellAddressCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetCellStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetChartStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetCheckBoxCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetColorScaleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetColumnGroupCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetColumnStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetComboBoxCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetConnectionCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetConsolidationCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetCurrencyStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetCustomPropertyCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDataBarCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDataPilotCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDatabaseRangeCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDateStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDocumentProtectionCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetDrawingStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetEventHandlerCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetExternalDataConnectionCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetExternalLinkCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFillCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFontCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFontFaceCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFractionStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetFrameCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetGraphicStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetGroupBoxCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetIconSetCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetLabelRangeCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetListBoxCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetNumberFormatCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetNumberStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetPageStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetPercentageStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetPresentationStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetProgressBarCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetProtectedRangeCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetProtectionCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetQueryTableCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetRadioButtonCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetRowGroupCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetRowStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetScenarioCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetScientificStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetScrollBarCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSliderCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSortCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSortStateCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSparklineGroupCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSpinnerCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetTableStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetTextBoxCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetTextStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetTimeStyleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetValidationRuleCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  - method: GetSheetViewCount
+    visibility: public
+    category: D
+    disposition: REMOVE_WITH_TESTS
+    odf_basis: NONE
+    constant_return: 0
+
+  # =====================================================================
+  # Category B — ODF-grounded getters/setters (backed by detached dicts)
+  # Disposition: IMPLEMENT_FROM_XML
+  # =====================================================================
+
+  - method: GetSheetFreezeRows
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "office:settings/config:config-item-set/config:config-item-map-named/config:config-item-map-entry/config:config-item[@config:name='HorizontalSplitPosition'] (when HorizontalSplitMode=2)"
+    roundtrip_gap: true
+    current_backing: _sheetFreezeRows Dictionary<string,int>
+    default_value: 0
+    test_files: [FodsR452GetSheetFreezeRowsDedicatedTests.cs]
+    phase: 3c
+
+  - method: SetSheetFreezeRows
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write config:config-item HorizontalSplitPosition + HorizontalSplitMode=2"
+    roundtrip_gap: true
+    current_backing: _sheetFreezeRows Dictionary<string,int>
+    phase: 3c
+
+  - method: GetSheetFreezeColumns
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "config:config-item[@config:name='VerticalSplitPosition'] (when VerticalSplitMode=2)"
+    roundtrip_gap: true
+    current_backing: _sheetFreezeColumns Dictionary<string,int>
+    default_value: 0
+    test_files: [FodsR453GetSheetFreezeColumnsDedicatedTests.cs]
+    phase: 3c
+
+  - method: SetSheetFreezeColumns
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write config:config-item VerticalSplitPosition + VerticalSplitMode=2"
+    roundtrip_gap: true
+    current_backing: _sheetFreezeColumns Dictionary<string,int>
+    phase: 3c
+
+  - method: GetSheetZoomLevel
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "config:config-item[@config:name='ZoomValue']"
+    roundtrip_gap: true
+    current_backing: _sheetZoomLevel Dictionary<string,int>
+    default_value: 100
+    test_files: [FodsR480GetSheetZoomLevelDedicatedTests.cs, FodsR454GetSheetZoomLevelDedicatedTests.cs]
+    phase: 3c
+
+  - method: SetSheetZoomLevel
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write config:config-item ZoomValue"
+    roundtrip_gap: true
+    current_backing: _sheetZoomLevel Dictionary<string,int>
+    phase: 3c
+
+  - method: GetSheetPrintArea
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:named-range[@table:print-range='true'] or sheet:print-ranges attribute"
+    roundtrip_gap: true
+    current_backing: _sheetPrintArea Dictionary<string,string>
+    default_value: ""
+    test_files: [FodsR451GetSheetPrintAreaDedicatedTests.cs, FodsR484GetSheetPrintAreaDedicatedTests.cs]
+    phase: 3c
+
+  - method: SetSheetPrintArea
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write table:print-ranges attribute on table:table"
+    roundtrip_gap: true
+    current_backing: _sheetPrintArea Dictionary<string,string>
+    phase: 3c
+
+  - method: GetSheetProtectionPassword
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table/@table:protection-key"
+    roundtrip_gap: true
+    current_backing: _sheetProtectionPasswords Dictionary<string,string>
+    default_value: ""
+    test_files: []
+    phase: 3c
+
+  - method: SetSheetProtectionPassword
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write table:table/@table:protection-key"
+    roundtrip_gap: true
+    current_backing: _sheetProtectionPasswords Dictionary<string,string>
+    phase: 3c
+
+  - method: GetSheetVisibility
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table/@table:display (boolean false = hidden)"
+    roundtrip_gap: true
+    current_backing: _sheetVisibility Dictionary<string,string>
+    default_value: "visible"
+    test_files: []
+    phase: 3c
+    notes: ODF uses boolean display attribute; API returns string "visible"/"hidden" — mapping required
+
+  - method: SetSheetVisibility
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write table:table/@table:display"
+    roundtrip_gap: true
+    current_backing: _sheetVisibility Dictionary<string,string>
+    phase: 3c
+
+  - method: GetSheetRightToLeft
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "sheet style → style:table-properties/@style:writing-mode (rtl or ltr)"
+    roundtrip_gap: true
+    current_backing: _sheetRightToLeft Dictionary<string,bool>
+    default_value: false
+    test_files: [FodsR481GetSheetRightToLeftDedicatedTests.cs]
+    phase: 3b
+    notes: getter only; no setter in incident file
+
+  - method: GetSheetShowGrid
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "config:config-item[@config:name='ShowGrid'] (default true)"
+    roundtrip_gap: true
+    current_backing: _sheetShowGrid Dictionary<string,bool>
+    default_value: true
+    test_files: [FodsR482GetSheetShowGridDedicatedTests.cs]
+    phase: 3c
+    notes: getter only; no setter in incident file
+
+  - method: GetSheetShowHeaders
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "config:config-item[@config:name='HasColumnRowHeaders'] (default true)"
+    roundtrip_gap: true
+    current_backing: _sheetShowHeaders Dictionary<string,bool>
+    default_value: true
+    test_files: [FodsR483GetSheetShowHeadersDedicatedTests.cs]
+    phase: 3c
+    notes: getter only; no setter in incident file
+
+  - method: GetCellColumnWidth
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table-column style → style:table-column-properties/@style:column-width"
+    roundtrip_gap: true
+    current_backing: "delegates GetColumnWidth (committed anti-pattern in FodsDocumentAccessor)"
+    default_value: 64.0
+    test_files: [FodsR442GetColumnWidthDedicatedTests.cs, FodsR473GetColumnWidthDedicatedTests.cs]
+    phase: 3d
+
+  - method: GetCellRowHeight
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table-row style → style:table-row-properties/@style:row-height"
+    roundtrip_gap: true
+    current_backing: "delegates GetRowHeight (committed anti-pattern in FodsDocumentAccessor)"
+    default_value: 20.0
+    test_files: [FodsR443GetRowHeightDedicatedTests.cs, FodsR474GetRowHeightDedicatedTests.cs]
+    phase: 3d
+
+  - method: GetCellBorderStyle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:table-cell-properties/@fo:border"
+    roundtrip_gap: true
+    current_backing: _cellBorderStyles Dictionary<(Sheet,Row,Col),string>
+    default_value: ""
+    test_files: [FodsR457GetCellBorderStyleDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellBorderStyle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:table-cell-properties/@fo:border"
+    roundtrip_gap: true
+    current_backing: _cellBorderStyles
+    phase: 3e
+
+  - method: GetCellFontStyle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:text-properties/@fo:font-style"
+    roundtrip_gap: true
+    current_backing: _cellFontStyles Dictionary<(Sheet,Row,Col),string>
+    default_value: "normal"
+    test_files: []
+    phase: 3b
+
+  - method: SetCellFontStyle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:text-properties/@fo:font-style"
+    roundtrip_gap: true
+    current_backing: _cellFontStyles
+    phase: 3e
+
+  - method: GetCellHorizontalAlignment
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:paragraph-properties/@fo:text-align"
+    roundtrip_gap: true
+    current_backing: _cellHAlign Dictionary<(Sheet,Row,Col),string>
+    default_value: "start"
+    test_files: [FodsR455GetCellHorizontalAlignmentDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellHorizontalAlignment
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:paragraph-properties/@fo:text-align"
+    roundtrip_gap: true
+    current_backing: _cellHAlign
+    phase: 3e
+
+  - method: GetCellVerticalAlignment
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:table-cell-properties/@style:vertical-align"
+    roundtrip_gap: true
+    current_backing: _cellVAlign Dictionary<(Sheet,Row,Col),string>
+    default_value: "bottom"
+    test_files: [FodsR456GetCellVerticalAlignmentDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellVerticalAlignment
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:table-cell-properties/@style:vertical-align"
+    roundtrip_gap: true
+    current_backing: _cellVAlign
+    phase: 3e
+
+  - method: GetCellIndentLevel
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:paragraph-properties/@fo:margin-left (parse cm/pt value)"
+    roundtrip_gap: true
+    current_backing: _cellIndentLevel Dictionary<(Sheet,Row,Col),int>
+    default_value: 0
+    test_files: [FodsR448GetCellIndentDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellIndentLevel
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:paragraph-properties/@fo:margin-left"
+    roundtrip_gap: true
+    current_backing: _cellIndentLevel
+    phase: 3e
+
+  - method: GetCellRotationAngle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:table-cell-properties/@style:rotation-angle"
+    roundtrip_gap: true
+    current_backing: _cellRotationAngle Dictionary<(Sheet,Row,Col),int>
+    default_value: 0
+    test_files: [FodsR449GetCellTextRotationDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellRotationAngle
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:table-cell-properties/@style:rotation-angle"
+    roundtrip_gap: true
+    current_backing: _cellRotationAngle
+    phase: 3e
+
+  - method: GetCellMergeInfo
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table-cell/@table:number-rows-spanned + @table:number-columns-spanned"
+    roundtrip_gap: false  # merge already persists via MergeCells() in committed code
+    current_backing: _cellMergeInfo Dictionary<(Sheet,Row,Col),string>
+    default_value: "none"
+    test_files: [FodsR445GetCellMergeInfoDedicatedTests.cs]
+    phase: 3b
+    notes: The underlying ODF attributes are already written by MergeCells(); this getter just needs to read them instead of checking the dict.
+
+  - method: GetCellMergeSpan
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "table:table-cell/@table:number-columns-spanned"
+    roundtrip_gap: false
+    current_backing: _cellMergeSpan Dictionary<(Sheet,Row,Col),int>
+    default_value: 1
+    test_files: []
+    phase: 3b
+
+  - method: SetCellMergeSpan
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write table:table-cell/@table:number-columns-spanned"
+    roundtrip_gap: false
+    current_backing: _cellMergeSpan
+    phase: 3e
+    notes: Prefer delegating to existing MergeCells() API; avoid duplication
+
+  - method: GetCellShrinkToFit
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:table-cell-properties/@style:shrink-to-fit"
+    roundtrip_gap: true
+    current_backing: _cellShrinkToFit Dictionary<(Sheet,Row,Col),bool>
+    default_value: false
+    test_files: [FodsR450GetCellShrinkToFitDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellShrinkToFit
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:table-cell-properties/@style:shrink-to-fit"
+    roundtrip_gap: true
+    current_backing: _cellShrinkToFit
+    phase: 3e
+
+  - method: GetCellUnderline
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:text-properties/@style:text-underline-style"
+    roundtrip_gap: true
+    current_backing: _cellUnderline Dictionary<(Sheet,Row,Col),string>
+    default_value: "none"
+    test_files: [FodsR407GetCellUnderlineDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellUnderline
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:text-properties/@style:text-underline-style"
+    roundtrip_gap: true
+    current_backing: _cellUnderline
+    phase: 3e
+
+  - method: GetCellStrikethrough
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:text-properties/@style:text-line-through-style"
+    roundtrip_gap: true
+    current_backing: _cellStrikethrough Dictionary<(Sheet,Row,Col),bool>
+    default_value: false
+    test_files: []
+    phase: 3b
+
+  - method: SetCellStrikethrough
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:text-properties/@style:text-line-through-style"
+    roundtrip_gap: true
+    current_backing: _cellStrikethrough
+    phase: 3e
+
+  - method: GetCellProtection
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "cell style → style:table-cell-properties/@style:cell-protect"
+    roundtrip_gap: true
+    current_backing: _cellProtection Dictionary<(Sheet,Row,Col),bool>
+    default_value: false
+    test_files: [FodsR446GetCellProtectionDedicatedTests.cs]
+    phase: 3b
+
+  - method: SetCellProtection
+    visibility: public
+    category: B
+    disposition: IMPLEMENT_FROM_XML
+    odf_basis: "write cell style → style:table-cell-properties/@style:cell-protect"
+    roundtrip_gap: true
+    current_backing: _cellProtection
+    phase: 3e
+
+# =====================================================================
+# Summary counters
+# =====================================================================
+summary:
+  total_methods_reviewed: 123
+  category_E_keep: 3
+  category_A_keep: 4
+  category_C_keep: 2
+  category_D_remove: 74
+  category_D_with_replacement: 3  # GetFormulaCount, GetMergedCellCount, GetHyperlinkCount
+  category_B_implement_from_xml: 40
+  roundtrip_gap_methods: 40  # all Category B
+  completion_counter_INCIDENT_METHODS_NOT_REVIEWED: 0

@@ -1,24 +1,26 @@
-- item_id: WI-R1225-ODT-COMP-001
-  item_title: Add is_heading_heavy, is_content_rich, heading_ratio to OdtModelDocument
+- item_id: WI-R1233-CSV
+  item_title: Add R1233/R1253/R1273/R1289 properties to CSV models.py
   declared_status: completed
   supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - src/python/odt/models.py
-  - tests/python/odt/test_r1225_odt_composition_properties.py
-  tests_supporting: &id001
-  - tests/python/odt/test_r1225_odt_composition_properties.py
+  - src/python/csv/models.py
+  tests_supporting:
+  - tests/python/csv/test_r1233_csv_scale_properties.py
+  - tests/python/csv/test_r1253_csv_density_shape_properties.py
+  - tests/python/csv/test_r1273_csv_extended_grid_analysis_properties.py
+  - tests/python/csv/test_r1289_csv_grid_shape_fill_properties.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
+  - Test content verified (4 files)
   acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-  tests_evidence_verified: *id001
   purpose_check:
-    item_type: PRODUCT_SOURCE_PATCH_BOUNDED
+    item_type: ''
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
@@ -32,16 +34,866 @@
     deficiencies: []
     llm_used: false
     intermediate_verified: true
-    source: intermediate_content_check
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\csv\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7410 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\csv\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:03.646913+00:00'
+    _from_cache: true
+- item_id: WI-R1234-TSV
+  item_title: Add R1234/R1254/R1274/R1290 properties to TSV models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/tsv/models.py
+  tests_supporting:
+  - tests/python/tsv/test_r1234_tsv_scale_properties.py
+  - tests/python/tsv/test_r1254_tsv_density_shape_properties.py
+  - tests/python/tsv/test_r1274_tsv_extended_grid_analysis_properties.py
+  - tests/python/tsv/test_r1290_tsv_grid_shape_fill_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (4 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\tsv\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7248 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\tsv\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:03.746341+00:00'
+    _from_cache: true
+- item_id: WI-R1235-XCF
+  item_title: Add R1235/R1255/R1275/R1291 properties to XCF models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/xcf/models.py
+  tests_supporting:
+  - tests/python/xcf/test_r1235_xcf_pixel_size_properties.py
+  - tests/python/xcf/test_r1255_xcf_layer_density_canvas_ratio_properties.py
+  - tests/python/xcf/test_r1275_xcf_canvas_geometry_ratio_properties.py
+  - tests/python/xcf/test_r1291_xcf_scale_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (4 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\xcf\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (6831 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\xcf\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:03.844829+00:00'
+    _from_cache: true
+- item_id: WI-R1236-ODS
+  item_title: Add R1236/R1256/R1276 properties to ODS models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/ods/models.py
+  tests_supporting:
+  - tests/python/ods/test_r1236_ods_sheet_scale_properties.py
+  - tests/python/ods/test_r1256_ods_density_shape_properties.py
+  - tests/python/ods/test_r1276_ods_workbook_structure_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ods\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7669 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ods\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:03.946967+00:00'
+    _from_cache: true
+- item_id: WI-R1237-PBM
+  item_title: Add R1237/R1257/R1277 properties to PBM models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/pbm/models.py
+  tests_supporting:
+  - tests/python/pbm/test_r1237_pbm_encoding_dimension_properties.py
+  - tests/python/pbm/test_r1257_pbm_geometry_ratio_properties.py
+  - tests/python/pbm/test_r1277_pbm_scale_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\pbm\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5495 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\pbm\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.050394+00:00'
+    _from_cache: true
+- item_id: WI-R1238-PGM
+  item_title: Add R1238/R1258/R1278 properties to PGM models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/pgm/models.py
+  tests_supporting:
+  - tests/python/pgm/test_r1238_pgm_encoding_size_properties.py
+  - tests/python/pgm/test_r1258_pgm_geometry_ratio_properties.py
+  - tests/python/pgm/test_r1278_pgm_scale_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\pgm\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5890 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\pgm\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.143907+00:00'
+    _from_cache: true
+- item_id: WI-R1239-PPM
+  item_title: Add R1239/R1259/R1279 properties to PPM models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/ppm/models.py
+  tests_supporting:
+  - tests/python/ppm/test_r1239_ppm_encoding_size_properties.py
+  - tests/python/ppm/test_r1259_ppm_geometry_ratio_properties.py
+  - tests/python/ppm/test_r1279_ppm_scale_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ppm\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5913 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ppm\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.248348+00:00'
+    _from_cache: true
+- item_id: WI-R1240-FODT
+  item_title: Add R1240/R1260/R1280 properties to FODT models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/fodt/models.py
+  tests_supporting:
+  - tests/python/fodt/test_r1240_fodt_structure_classification_properties.py
+  - tests/python/fodt/test_r1260_fodt_scale_content_balance_properties.py
+  - tests/python/fodt/test_r1280_fodt_content_balance_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (8882 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.341366+00:00'
+    _from_cache: true
+- item_id: WI-R1241-NDJSON
+  item_title: Add R1241/R1261/R1281 properties to NDJSON models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/ndjson/models.py
+  tests_supporting:
+  - tests/python/ndjson/test_r1241_ndjson_object_shape_properties.py
+  - tests/python/ndjson/test_r1261_ndjson_key_distribution_properties.py
+  - tests/python/ndjson/test_r1281_ndjson_record_type_distribution_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ndjson\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7239 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ndjson\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.430907+00:00'
+    _from_cache: true
+- item_id: WI-R1242-TOML
+  item_title: Add R1242/R1262/R1282 properties to TOML models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/toml/models.py
+  tests_supporting:
+  - tests/python/toml/test_r1242_toml_size_value_type_properties.py
+  - tests/python/toml/test_r1262_toml_value_type_distribution_properties.py
+  - tests/python/toml/test_r1282_toml_value_type_inventory_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\toml\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (6814 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\toml\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.525137+00:00'
+    _from_cache: true
+- item_id: WI-R1243-QOI
+  item_title: Add R1243/R1263/R1283 properties to QOI models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/qoi/models.py
+  tests_supporting:
+  - tests/python/qoi/test_r1243_qoi_edge_channel_properties.py
+  - tests/python/qoi/test_r1263_qoi_canvas_geometry_properties.py
+  - tests/python/qoi/test_r1283_qoi_scale_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\qoi\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (6347 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\qoi\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.628688+00:00'
+    _from_cache: true
+- item_id: WI-R1244-ODT
+  item_title: Add R1244/R1264 properties to ODT models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/odt/models.py
+  tests_supporting:
+  - tests/python/odt/test_r1244_odt_scale_content_balance_properties.py
+  - tests/python/odt/test_r1264_odt_content_balance_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (2 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
     checks:
     - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\odt\models.py
       exists: true
       content_ok: true
-      detail: 'non-empty (4567 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\odt\models.py'
+      detail: 'non-empty (5752 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\odt\models.py'
       check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\python\odt\test_r1225_odt_composition_properties.py
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.722310+00:00'
+    _from_cache: true
+- item_id: WI-R1245-FODS
+  item_title: Add R1245/R1265 properties to FODS models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/fods/models.py
+  tests_supporting:
+  - tests/python/fods/test_r1245_fods_workbook_scale_properties.py
+  - tests/python/fods/test_r1265_fods_sheet_distribution_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (2 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\models.py
       exists: true
       content_ok: true
-      detail: valid (23 test functions with assertions)
-      check_type: python_test_content
-    summary: 2/2 evidence files passed content check
+      detail: 'non-empty (10557 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.818510+00:00'
+    _from_cache: true
+- item_id: WI-R1246-FODG
+  item_title: Add R1246/R1266 properties to FODG models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/fodg/models.py
+  tests_supporting:
+  - tests/python/fodg/test_r1246_fodg_density_complexity_properties.py
+  - tests/python/fodg/test_r1266_fodg_shape_distribution_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (2 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodg\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (4885 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodg\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:04.909904+00:00'
+    _from_cache: true
+- item_id: WI-R1247-FODP
+  item_title: Add R1247/R1267 properties to FODP models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/fodp/models.py
+  tests_supporting:
+  - tests/python/fodp/test_r1247_fodp_scale_content_properties.py
+  - tests/python/fodp/test_r1267_fodp_slide_shape_distribution_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (2 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodp\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5657 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodp\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.004814+00:00'
+    _from_cache: true
+- item_id: WI-R1248-GNUMERIC
+  item_title: Add R1248/R1268/R1284 properties to GNUMERIC models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/gnumeric/models.py
+  tests_supporting:
+  - tests/python/gnumeric/test_r1248_gnumeric_metadata_content_properties.py
+  - tests/python/gnumeric/test_r1268_gnumeric_cell_distribution_properties.py
+  - tests/python/gnumeric/test_r1284_gnumeric_sheet_richness_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\gnumeric\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (6773 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\gnumeric\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.106287+00:00'
+    _from_cache: true
+- item_id: WI-R1249-DIF
+  item_title: Add R1249/R1269/R1285 properties to DIF models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/dif/models.py
+  tests_supporting:
+  - tests/python/dif/test_r1249_dif_scale_geometry_properties.py
+  - tests/python/dif/test_r1269_dif_extended_grid_analysis_properties.py
+  - tests/python/dif/test_r1285_dif_grid_density_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\dif\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5955 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\dif\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.195582+00:00'
+    _from_cache: true
+- item_id: WI-R1250-SYLK
+  item_title: Add R1250/R1270/R1286 properties to SYLK models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/sylk/models.py
+  tests_supporting:
+  - tests/python/sylk/test_r1250_sylk_geometry_composition_properties.py
+  - tests/python/sylk/test_r1270_sylk_cell_type_distribution_properties.py
+  - tests/python/sylk/test_r1286_sylk_cell_type_homogeneity_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\sylk\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7211 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\sylk\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.290810+00:00'
+    _from_cache: true
+- item_id: WI-R1251-ABW
+  item_title: Add R1251/R1271/R1287 properties to ABW models.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/abw/models.py
+  tests_supporting:
+  - tests/python/abw/test_r1251_abw_scale_density_properties.py
+  - tests/python/abw/test_r1271_abw_content_balance_properties.py
+  - tests/python/abw/test_r1287_abw_document_structure_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (5813 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.396644+00:00'
+    _from_cache: true
+- item_id: WI-R1252-ZST-VERIFY
+  item_title: Verify R1252/R1272/R1288 ZST properties already pass (pre-existing)
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - src/python/zst/models.py
+  tests_supporting:
+  - tests/python/zst/test_r1252_zst_compression_quality_properties.py
+  - tests/python/zst/test_r1272_zst_compression_quality_analysis_properties.py
+  - tests/python/zst/test_r1288_zst_frame_compression_classification_properties.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (3 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_verify
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\zst\models.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7012 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\zst\models.py'
+      check_type: nonzero_existence
+    summary: 1/1 evidence files passed content check
+    _cached_at: '2026-07-02T16:58:05.494041+00:00'
+    _from_cache: true

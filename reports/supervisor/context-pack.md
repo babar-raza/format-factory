@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-07-02T12:58:34.365057
+# Generated: 2026-07-02T22:03:30.821700
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | d10f75dc |
+| Git HEAD | 3a1c85a5 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
-| Latest sprint | R1225 |
-| Sprint ID | r1225-odt-composition-props-20260702... |
+| Latest sprint | R1233 |
+| Sprint ID | BULK-PROPERTIES-R1233-R1291... |
 | Autonomous continue | True |
-| Iteration | 4/12 |
+| Iteration | 9/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 117 |
-| Ledger entries | 2436 total (901 governed) |
+| Ledger entries | 2444 total (901 governed) |
 
 ## .NET Test Counts (POC Matrix)
 

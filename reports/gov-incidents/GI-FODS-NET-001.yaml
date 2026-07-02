@@ -1,0 +1,173 @@
+incident_id: GI-FODS-NET-001
+product: FODS
+language: dotnet
+severity: HIGH
+detected_date: "2026-07-02"
+status: REMEDIATION_IN_PROGRESS
+incident_file: src/net/fods/FodsDocumentMissingMethods.cs
+file_committed: false
+file_loc: 622
+file_sha256: null  # untracked; no git object
+
+# --- Method inventory by category ---
+category_E_private_guards:
+  - RequireSheet
+  - RequireNonNegativeRow
+  - RequireNonNegativeCol
+
+# GetSheetName(int) and SetSheetName(int,string): useful index-based overloads
+# that delegate to existing GetSheetNames()+RenameSheet(). Keep, move to accessor.
+category_A_dom_computed_or_delegating:
+  - GetSheetName       # delegates GetSheetNames()[index]
+  - SetSheetName       # delegates RenameSheet()
+  - GetSheetMaxRow     # sheet.Rows.Count — real DOM computation
+  - GetSheetMaxColumn  # sheet.Rows.Max(r => r.Cells.Count) — real DOM computation
+
+category_C_alias_delegates:
+  - GetSheetFreezeRow    # => GetSheetFreezeRows
+  - GetSheetFreezeColumn # => GetSheetFreezeColumns
+
+# 74 public methods that always return 0 regardless of document content.
+# Zero ODF specification basis for most. Test files assert only >= 0 or idempotency.
+category_D_constant_zero_count: 74
+category_D_constant_zero:
+  - GetHyperlinkCount
+  - GetCommentCount
+  - GetGroupCount
+  - GetFormulaCount
+  - GetMergedCellCount
+  - GetImageCount
+  - GetShapeCount
+  - GetChartCount
+  - GetMacroCount
+  - GetNavigatorCount
+  - GetFormulaErrorCount
+  - GetSharedFormulaCount
+  - GetAlignmentCount
+  - GetAnnotationCount
+  - GetBooleanStyleCount
+  - GetBorderCount
+  - GetButtonCount
+  - GetCellAddressCount
+  - GetCellStyleCount
+  - GetChartStyleCount
+  - GetCheckBoxCount
+  - GetColorScaleCount
+  - GetColumnGroupCount
+  - GetColumnStyleCount
+  - GetComboBoxCount
+  - GetConnectionCount
+  - GetConsolidationCount
+  - GetCurrencyStyleCount
+  - GetCustomPropertyCount
+  - GetDataBarCount
+  - GetDataPilotCount
+  - GetDatabaseRangeCount
+  - GetDateStyleCount
+  - GetDocumentProtectionCount
+  - GetDrawingStyleCount
+  - GetEventHandlerCount
+  - GetExternalDataConnectionCount
+  - GetExternalLinkCount
+  - GetFillCount
+  - GetFontCount
+  - GetFontFaceCount
+  - GetFractionStyleCount
+  - GetFrameCount
+  - GetGraphicStyleCount
+  - GetGroupBoxCount
+  - GetIconSetCount
+  - GetLabelRangeCount
+  - GetListBoxCount
+  - GetNumberFormatCount
+  - GetNumberStyleCount
+  - GetPageStyleCount
+  - GetPercentageStyleCount
+  - GetPresentationStyleCount
+  - GetProgressBarCount
+  - GetProtectedRangeCount
+  - GetProtectionCount
+  - GetQueryTableCount
+  - GetRadioButtonCount
+  - GetRowGroupCount
+  - GetRowStyleCount
+  - GetScenarioCount
+  - GetScientificStyleCount
+  - GetScrollBarCount
+  - GetSliderCount
+  - GetSortCount
+  - GetSortStateCount
+  - GetSparklineGroupCount
+  - GetSpinnerCount
+  - GetTableStyleCount
+  - GetTextBoxCount
+  - GetTextStyleCount
+  - GetTimeStyleCount
+  - GetValidationRuleCount
+  - GetSheetViewCount
+
+# ~40 ODF-grounded getters/setters backed by in-memory dictionaries.
+# Dictionaries are never populated by the parser and never flushed by the writer.
+# State is silently lost on every save/reload. Roundtrip contract is broken.
+category_B_detached_dict_count: 40
+category_B_detached_dict:
+  - GetSheetFreezeRows / SetSheetFreezeRows     # needs config:config-item
+  - GetSheetFreezeColumns / SetSheetFreezeColumns
+  - GetSheetZoomLevel / SetSheetZoomLevel       # needs config:config-item
+  - GetSheetPrintArea / SetSheetPrintArea       # needs table:named-range
+  - GetSheetProtectionPassword / SetSheetProtectionPassword  # table:table/@table:protection-key
+  - GetSheetVisibility / SetSheetVisibility     # table:table/@table:display
+  - GetSheetRightToLeft                         # sheet style writing-mode (getter only)
+  - GetSheetShowGrid                            # config:config-item ShowGrid (getter only)
+  - GetSheetShowHeaders                         # config:config-item HasColumnRowHeaders (getter only)
+  - GetCellColumnWidth                          # delegates GetColumnWidth (committed anti-pattern)
+  - GetCellRowHeight                            # delegates GetRowHeight (committed anti-pattern)
+  - GetCellBorderStyle / SetCellBorderStyle     # style:table-cell-properties/@fo:border
+  - GetCellFontStyle / SetCellFontStyle         # style:text-properties/@fo:font-style
+  - GetCellHorizontalAlignment / SetCellHorizontalAlignment  # style:paragraph-properties/@fo:text-align
+  - GetCellVerticalAlignment / SetCellVerticalAlignment      # style:table-cell-properties/@style:vertical-align
+  - GetCellIndentLevel / SetCellIndentLevel     # style:paragraph-properties/@fo:margin-left
+  - GetCellRotationAngle / SetCellRotationAngle # style:table-cell-properties/@style:rotation-angle
+  - GetCellMergeInfo                            # table:table-cell/@table:number-rows-spanned (getter only)
+  - GetCellMergeSpan / SetCellMergeSpan         # table:table-cell/@table:number-columns-spanned
+  - GetCellShrinkToFit / SetCellShrinkToFit     # style:table-cell-properties/@style:shrink-to-fit
+  - GetCellUnderline / SetCellUnderline         # style:text-properties/@style:text-underline-style
+  - GetCellStrikethrough / SetCellStrikethrough # style:text-properties/@style:text-line-through-style
+  - GetCellProtection / SetCellProtection       # style:table-cell-properties/@style:cell-protect
+
+# --- First failed governance boundary ---
+first_failed_boundary: >
+  No validator existed to detect constant-return public APIs in .NET source, detached
+  dictionary backing fields, or "MissingMethods"-style product filenames. The file was
+  created as an untracked artifact to satisfy test compilation without entering the
+  governed source baseline. Sprint acceptance rewarded method presence (test PASS) rather
+  than semantic correctness (roundtrip persistence, ODF spec grounding). No architecture
+  owner challenged the "production-grade stubs" comment in the file header.
+
+# --- Governance gaps confirmed ---
+governance_gaps:
+  - No V87-class validator: constant-return public APIs not detected
+  - No V88-class validator: detached dictionary fields not detected
+  - No V89-class validator: suspicious filenames not detected
+  - Certification treats "test_verified" as equivalent to "implementation_verified"
+  - FodsRoundtripMutationTests.cs documents RT-MUT-05 as "known gap" for font color;
+    same gap class extends to all Category B properties — not disclosed in certification
+  - No persistence testing in Gate 11 evidence for these API classes
+
+# --- Committed anti-patterns in related files ---
+committed_anti_patterns:
+  - file: src/net/fods/FodsDocumentAccessor.cs
+    fields: [_columnWidths, _namedRanges, _activeFilters, _rowHeights, _charts]
+    same_pattern: detached dictionary not backed by XML parse/write
+  - file: tests/net/fods/FodsRoundtripMutationTests.cs
+    test: RT-MUT-05
+    note: SetCellFontColor roundtrip documented as "known gap" — must be healed
+
+# --- Remediation references ---
+remediation_plan: plans/.claude/buzzing-wiggling-whistle.md
+method_ledger: reports/gov-incidents/GI-FODS-NET-001-method-ledger.yaml
+gap_entries:
+  - GAP-FODS-NET-SEMANTIC-STUB-001
+  - GAP-FODS-NET-DETACHED-DICT-001
+  - GAP-FODS-NET-NO-STYLE-CHAIN-001
+  - GAP-FODS-NET-CONFIG-ITEMS-001
