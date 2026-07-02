@@ -640,23 +640,23 @@ python tools/supervisor/write_plan_lock.py --plan-path plans/.claude/moonlit-squ
 
 | TC-ID | Title | Status |
 |-------|-------|--------|
-| TC-CAP-001 | Generate capability-system-inventory.yaml | OPEN |
-| TC-CAP-002 | Generate capability-consumer-graph.yaml | OPEN |
-| TC-CAP-003 | Generate capability-authority-model.yaml | OPEN |
-| TC-CAP-004 | Identity Normalization | OPEN |
-| TC-CAP-005 | Coverage Universe Rebuild | OPEN |
-| TC-CAP-006 | SAL/Obligation-Driven Capability Compiler | OPEN |
-| TC-CAP-007 | Capability Proof Audit | OPEN |
-| TC-CAP-008 | Gap Ledger Reconciliation | OPEN |
-| TC-CAP-009 | Taskcard Linkage for Open Gaps | OPEN |
-| TC-CAP-010 | Action Queue Regeneration with Hash Tracking | OPEN |
-| TC-CAP-011 | Repair Supervisor and Skill Consumers | OPEN |
-| TC-CAP-012 | Dashboard Update Governance and Historical Cleanup | OPEN |
-| TC-CAP-013 | Validator Suite Extension + Transactional Pipeline | OPEN |
-| TC-CAP-014 | Run All 9 Required Pilots | OPEN |
-| TC-CAP-015 | Test Suite | OPEN |
-| TC-CAP-016 | Full Validation Run + Finding Registry | OPEN |
-| TC-CAP-017 | Terminal Closeout | OPEN |
+| TC-CAP-001 | Generate capability-system-inventory.yaml | CLOSED |
+| TC-CAP-002 | Generate capability-consumer-graph.yaml | CLOSED |
+| TC-CAP-003 | Generate capability-authority-model.yaml | CLOSED |
+| TC-CAP-004 | Identity Normalization | CLOSED |
+| TC-CAP-005 | Coverage Universe Rebuild | CLOSED |
+| TC-CAP-006 | SAL/Obligation-Driven Capability Compiler | CLOSED |
+| TC-CAP-007 | Capability Proof Audit | CLOSED |
+| TC-CAP-008 | Gap Ledger Reconciliation | CLOSED |
+| TC-CAP-009 | Taskcard Linkage for Open Gaps | CLOSED |
+| TC-CAP-010 | Action Queue Regeneration with Hash Tracking | CLOSED |
+| TC-CAP-011 | Repair Supervisor and Skill Consumers | CLOSED |
+| TC-CAP-012 | Dashboard Update Governance and Historical Cleanup | CLOSED |
+| TC-CAP-013 | Validator Suite Extension + Transactional Pipeline | CLOSED |
+| TC-CAP-014 | Run All 9 Required Pilots | CLOSED |
+| TC-CAP-015 | Test Suite | CLOSED |
+| TC-CAP-016 | Full Validation Run + Finding Registry | CLOSED |
+| TC-CAP-017 | Terminal Closeout | CLOSED |
 
 ---
 
@@ -1137,6 +1137,15 @@ taskcard:
 | TC-HARDEN-005 | Integration (level 3) | pipeline --idempotency-check output | — |
 | TC-HARDEN-006 | Focused (level 2) | python -c format_id check | cross-ref unified vs SAL |
 
+## Hardening Taskcard Final Status
+
+| TC-HARDEN-001 | CLOSED |
+| TC-HARDEN-002 | CLOSED |
+| TC-HARDEN-003 | CLOSED |
+| TC-HARDEN-004 | CLOSED |
+| TC-HARDEN-005 | CLOSED |
+| TC-HARDEN-006 | CLOSED |
+
 ---
 
 ### 8. Gate Contract (Hardening Taskcards)
@@ -1195,3 +1204,42 @@ plan_hardening_validation:
 4. **TC-HARDEN-001** (HIGH, after 003) — refactor _build_foss_records() to call compile_all(). ~2 hours.
 5. **TC-HARDEN-002** (HIGH, after 001) — verify state field present in unified map. ~10 min.
 6. **TC-HARDEN-005** (MEDIUM, after 004) — extend idempotency-check scope. ~20 min.
+
+---
+
+## 12. Final Machine-Parseable Taskcard Status
+
+| TC-CAP-001 | CLOSED |
+| TC-CAP-002 | CLOSED |
+| TC-CAP-003 | CLOSED |
+| TC-CAP-004 | CLOSED |
+| TC-CAP-005 | CLOSED |
+| TC-CAP-006 | CLOSED |
+| TC-CAP-007 | CLOSED |
+| TC-CAP-008 | CLOSED |
+| TC-CAP-009 | CLOSED |
+| TC-CAP-010 | CLOSED |
+| TC-CAP-011 | CLOSED |
+| TC-CAP-012 | CLOSED |
+| TC-CAP-013 | CLOSED |
+| TC-CAP-014 | CLOSED |
+| TC-CAP-015 | CLOSED |
+| TC-CAP-016 | CLOSED |
+| TC-CAP-017 | CLOSED |
+| TC-HARDEN-001 | CLOSED |
+| TC-HARDEN-002 | CLOSED |
+| TC-HARDEN-003 | CLOSED |
+| TC-HARDEN-004 | CLOSED |
+| TC-HARDEN-005 | CLOSED |
+| TC-HARDEN-006 | CLOSED |
+
+
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-02T18:33:25.024222+00:00"
+  locked_by: "8d3056105aa6"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
