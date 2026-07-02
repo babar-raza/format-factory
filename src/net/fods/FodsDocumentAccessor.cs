@@ -968,25 +968,26 @@ public sealed partial class FodsDocument
     /// <summary>
     /// GI-FODS-NET-001 Phase 3c — navigate office:settings to find a config:config-item
     /// for the given sheet name and item name.
-    /// ODF path: office:settings/config:config-item-set/config:config-item-map-named
-    ///           /config:config-item-map-entry[@config:name=sheetName]
-    ///           /config:config-item[@config:name=itemName]
+    /// ODF real-world nesting (e.g. LibreOffice):
+    ///   office:settings/config:config-item-set/config:config-item-map-indexed
+    ///     /config:config-item-map-entry/config:config-item-map-named
+    ///     /config:config-item-map-entry[@config:name=sheetName]
+    ///     /config:config-item[@config:name=itemName]
+    /// We use Descendants to handle any depth of wrapping.
     /// </summary>
     private string? GetSheetConfigItem(string sheetName, string itemName)
     {
         var settings = _doc.Root?.Element(NsOffice + "settings");
         if (settings is null) return null;
-        foreach (var itemSet in settings.Elements(NsConfig + "config-item-set"))
+        // Find all config:config-item-map-named elements anywhere inside office:settings
+        foreach (var mapNamed in settings.Descendants(NsConfig + "config-item-map-named"))
         {
-            foreach (var mapNamed in itemSet.Elements(NsConfig + "config-item-map-named"))
+            foreach (var entry in mapNamed.Elements(NsConfig + "config-item-map-entry"))
             {
-                foreach (var entry in mapNamed.Elements(NsConfig + "config-item-map-entry"))
-                {
-                    if (entry.Attribute(NsConfig + "name")?.Value != sheetName) continue;
-                    var item = entry.Elements(NsConfig + "config-item")
-                        .FirstOrDefault(ci => ci.Attribute(NsConfig + "name")?.Value == itemName);
-                    if (item is not null) return item.Value;
-                }
+                if (entry.Attribute(NsConfig + "name")?.Value != sheetName) continue;
+                var item = entry.Elements(NsConfig + "config-item")
+                    .FirstOrDefault(ci => ci.Attribute(NsConfig + "name")?.Value == itemName);
+                if (item is not null) return item.Value;
             }
         }
         return null;
