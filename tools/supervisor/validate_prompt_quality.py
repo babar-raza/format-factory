@@ -153,6 +153,13 @@ def validate_prompt_quality(
     })
 
     # Check 9: No executable unauthorized mutation instructions
+    import sys as _sys
+    from pathlib import Path as _Path
+    _supervisor_dir = str(_Path(__file__).resolve().parent)
+    _repo_root = str(_Path(__file__).resolve().parents[2])
+    for _p in (_supervisor_dir, _repo_root):
+        if _p not in _sys.path:
+            _sys.path.insert(0, _p)
     from tools.supervisor.autonomy_route_decider import check_prompt_for_unsafe_instructions
     check9 = check_prompt_for_unsafe_instructions(prompt_text)
     checks.append({

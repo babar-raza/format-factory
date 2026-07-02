@@ -771,9 +771,9 @@ validation_commands:
       python tools/playbook/validate_playbook.py
       --schema schemas/playbook/acquisition-playbook.schema.json
       --input acquisition-packs/_families/odf-flat/playbook.yaml
-      --kind family_playbook
+      --kind acquisition-playbook
       --format-id odf-flat
-    purpose: "Validate family playbook against schema."
+    purpose: "Validate family playbook against schema. Note: --kind acquisition-playbook is the correct CLI value for all playbook types (controls schema selection, not playbook_kind field)."
     expected_exit_code: 0
   - command: "grep -n 'inherited_gate_approval: false' acquisition-packs/_families/odf-flat/reuse-policy.md"
     purpose: "Confirm no inherited gate approval."

@@ -20,8 +20,8 @@ from anti_skip_checker import (
 # --- Lane B: Severity mapping tests ---
 
 class TestSeverityMapping:
-    def test_severity_map_has_18_entries(self):
-        assert len(SEVERITY_MAP) == 18  # R111: +wrong_stream_next_sprint
+    def test_severity_map_has_19_entries(self):
+        assert len(SEVERITY_MAP) == 19  # R111: +wrong_stream_next_sprint R113: +odf_spec_linkage
 
     def test_critical_severities(self):
         critical = [k for k, v in SEVERITY_MAP.items() if v == "critical"]
@@ -38,6 +38,7 @@ class TestSeverityMapping:
         assert "test_count_regression" in high
         assert "stale_evidence_manifest" in high
         assert "missing_changed_files" in high
+        assert "odf_spec_linkage" in high  # R113: ODF items need spec refs
 
     def test_medium_severities(self):
         medium = [k for k, v in SEVERITY_MAP.items() if v == "medium"]
@@ -195,7 +196,7 @@ class TestRunAllChecks16:
             repo_root=tmp_path,
             sample_outputs_dir=sample_dir,
         )
-        assert result["total_checks"] == 17  # 18th requires next_sprint_text
+        assert result["total_checks"] == 18  # 19th requires next_sprint_text; 18th=detect_odf_spec_linkage (R113)
         assert "impact" in result
         assert isinstance(result["impact"], dict)
 

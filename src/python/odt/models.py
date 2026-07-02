@@ -103,6 +103,25 @@ class OdtModelDocument:
         """Total number of text blocks (paragraphs + headings)."""
         return self.paragraph_count + self.heading_count
 
+    # Document composition analysis properties (FACT-ODT-001)
+
+    @property
+    def is_heading_heavy(self) -> bool:
+        """True if headings outnumber paragraphs (heading_count > paragraph_count)."""
+        return self.heading_count > self.paragraph_count
+
+    @property
+    def is_content_rich(self) -> bool:
+        """True if the document has more than 10 total blocks (paragraphs + headings)."""
+        return self.total_block_count > 10
+
+    @property
+    def heading_ratio(self) -> float:
+        """Fraction of total blocks that are headings. Returns 0.0 if no blocks."""
+        if self.total_block_count == 0:
+            return 0.0
+        return self.heading_count / self.total_block_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

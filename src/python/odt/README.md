@@ -4,7 +4,7 @@ Parse and write ODT (OpenDocument Text) files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T23:12:18+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-02T08:03:04+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-odt
 ```
@@ -35,13 +35,13 @@ write_odt(model["paragraphs"], "copy.odt")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T23:12:18+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-02T08:03:04+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T23:12:18+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T08:03:04+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | OpenDocument Text |
@@ -54,11 +54,11 @@ Apache-2.0
 | Spec | OASIS Open Document Format TC ODF 1.3 (ISO/IEC 26300-3:2021) |
 | QName coverage | 3/3 implemented |
 | Source files | 19 |
-| Test files | 35 |
+| Test files | 37 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T23:12:18+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T08:03:04+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

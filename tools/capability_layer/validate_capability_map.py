@@ -268,15 +268,28 @@ def _check_val007_pilot_artifacts(result: ValidationResult) -> None:
 
 
 def _check_val008_gap_taskcard_links(gap_path: Path, result: ValidationResult) -> None:
-    """VAL-008 (advisory): Gap ledger entries should reference a taskcard_id."""
+    """VAL-008 (advisory): Gap ledger entries should reference a taskcard_id.
+
+    Only checks OPEN (actionable) gaps. OPEN_BLOCKED, DEFERRED_BY_DESIGN, CLOSED,
+    SUPERSEDED, and ARCHIVED gaps cannot receive new taskcards until their blockers
+    are resolved — skipping them prevents false-positive warnings.
+    """
+    # Statuses where a missing suggested_taskcard is NOT a warning
+    _SKIP_STATUSES = frozenset({
+        "OPEN_BLOCKED", "DEFERRED_BY_DESIGN", "CLOSED", "SUPERSEDED",
+        "ARCHIVED", "CLOSED_VERIFIED", "CLOSED_BY", "WONT_FIX",
+    })
     if not gap_path.exists():
         result.warn(f"VAL-008: Gap ledger not found at {gap_path}")
         return
     gap_data = _load_json(gap_path)
     for gap in gap_data.get("gaps", gap_data.get("gap_entries", [])):
         gid = gap.get("gap_id", "<unknown>")
+        if gap.get("status") in _SKIP_STATUSES:
+            result.ok()  # blocked/deferred/closed — not actionable, skip
+            continue
         if not gap.get("suggested_taskcard"):
-            result.warn(f"VAL-008: Gap {gid!r} has no suggested_taskcard")
+            result.warn(f"VAL-008: Gap {gid!r} (status={gap.get('status')!r}) has no suggested_taskcard")
         else:
             result.ok()
 
@@ -311,12 +324,12 @@ def _check_val010_evidence_includes_capability(result: ValidationResult) -> None
     if not evidence_dir.exists():
         result.warn("VAL-010: .local/evidences/ directory not found — no active declaration")
         return
-    # Find most recent declaration
-    declarations = sorted(evidence_dir.glob("*/evidence-declaration.yaml"))
+    # Find most recently modified declaration (by mtime, not filename sort)
+    declarations = list(evidence_dir.glob("*/evidence-declaration.yaml"))
     if not declarations:
         result.warn("VAL-010: No evidence-declaration.yaml files found in .local/evidences/")
         return
-    latest = declarations[-1]
+    latest = max(declarations, key=lambda p: p.stat().st_mtime)
     content = latest.read_text(encoding="utf-8")
     if "capability" not in content.lower():
         result.warn(
