@@ -2812,3 +2812,430 @@ class TestPlansRootPolicy:
         validator = self._get_validator()
         result = validator({}, repo_root=tmp_path)
         assert result["result"] == "PASS"
+
+
+# ---------------------------------------------------------------------------
+# V92-V99 — TC-PB-009, FF-PLAYBOOK-SYSTEM-001: Playbook governance drift guards
+# ---------------------------------------------------------------------------
+
+_MINIMAL_VALID_CONTRACT = """\
+<!--
+playbook_contract:
+  playbook_id: test-playbook
+  title: "Test Playbook"
+  version: "1.0"
+  status: ACTIVE
+  owner_layer: product_source
+  authority: TASK_TEMPLATE
+  evidence_requirements:
+    - test_results
+  rollback: "Revert source change"
+  limitations:
+    - "No gate approval authority"
+  allowed_paths:
+    - "src/python/<format>/"
+-->
+# Test Playbook
+"""
+
+
+def _write_minimal_registry(tmp_path, entries):
+    """Write a minimal playbook-registry.yaml to tmp_path."""
+    import yaml
+    registry_dir = tmp_path / "playbooks"
+    registry_dir.mkdir(parents=True, exist_ok=True)
+    reg = {
+        "playbook_registry": {
+            "version": "1.0",
+            "entries": entries,
+        }
+    }
+    (registry_dir / "playbook-registry.yaml").write_text(
+        yaml.dump(reg), encoding="utf-8"
+    )
+
+
+def _write_contract_md(tmp_path, contract_yaml_body):
+    """Write a Markdown file with playbook_contract front-matter to tmp_path/playbooks/format-factory/."""
+    pb_dir = tmp_path / "playbooks" / "format-factory"
+    pb_dir.mkdir(parents=True, exist_ok=True)
+    content = f"<!--\n{contract_yaml_body}\n-->\n# Test\n"
+    (pb_dir / "test-playbook.md").write_text(content, encoding="utf-8")
+
+
+class TestV92PlaybookRegistryEntries:
+    """V92: Active playbook registry entries must resolve to files on disk."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_registry_entries
+        return validate_playbook_registry_entries
+
+    def test_pass_all_entries_resolve(self, tmp_path):
+        """PASS when all ACTIVE entries point to existing files."""
+        real_file = tmp_path / "playbooks" / "format-factory" / "my-playbook.md"
+        real_file.parent.mkdir(parents=True, exist_ok=True)
+        real_file.write_text("# Playbook", encoding="utf-8")
+        _write_minimal_registry(tmp_path, [
+            {
+                "playbook_id": "my-playbook",
+                "status": "ACTIVE",
+                "canonical_path": "playbooks/format-factory/my-playbook.md",
+            }
+        ])
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_missing_file(self, tmp_path):
+        """WARN when an ACTIVE entry points to a missing file."""
+        _write_minimal_registry(tmp_path, [
+            {
+                "playbook_id": "ghost-playbook",
+                "status": "ACTIVE",
+                "canonical_path": "playbooks/format-factory/ghost-playbook.md",
+            }
+        ])
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+        assert "ghost-playbook" in result["items"][0]
+
+    def test_warn_registry_not_found(self, tmp_path):
+        """WARN (not error) when playbook-registry.yaml is absent."""
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_inactive_entries_ignored(self, tmp_path):
+        """PASS when the only entry with missing file is INACTIVE."""
+        _write_minimal_registry(tmp_path, [
+            {
+                "playbook_id": "deprecated-playbook",
+                "status": "DEPRECATED",
+                "canonical_path": "playbooks/format-factory/ghost.md",
+            }
+        ])
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+
+class TestV93PlaybookHasVersion:
+    """V93: Active playbook contract must have a version field."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_has_version
+        return validate_playbook_has_version
+
+    def test_pass_has_version(self, tmp_path):
+        """PASS when all active contracts have a version field."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+        ))
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_missing_version(self, tmp_path):
+        """WARN when an active contract lacks version."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  status: ACTIVE\n"
+        ))
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) >= 1
+
+    def test_warn_no_contracts(self, tmp_path):
+        """WARN when playbooks/format-factory/ directory is absent."""
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+
+
+class TestV94PlaybookHasOwner:
+    """V94: Active playbook contract must have owner_layer field."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_has_owner
+        return validate_playbook_has_owner
+
+    def test_pass_has_owner(self, tmp_path):
+        """PASS when all active contracts have owner_layer."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  owner_layer: product_source\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_missing_owner(self, tmp_path):
+        """WARN when an active contract lacks owner_layer."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestV95PlaybookHasEvidenceContract:
+    """V95: Active playbook must have evidence_requirements field."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_has_evidence_contract
+        return validate_playbook_has_evidence_contract
+
+    def test_pass_has_evidence_requirements(self, tmp_path):
+        """PASS when all active contracts have evidence_requirements."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  evidence_requirements:\n"
+            "    - test_results\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_missing_evidence_requirements(self, tmp_path):
+        """WARN when an active contract lacks evidence_requirements."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestV96PlaybookHasRollback:
+    """V96: Active playbook must have rollback field."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_has_rollback
+        return validate_playbook_has_rollback
+
+    def test_pass_has_rollback(self, tmp_path):
+        """PASS when all active contracts have rollback."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  rollback: 'Revert source change'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_missing_rollback(self, tmp_path):
+        """WARN when an active contract lacks rollback."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestV97PlaybookNotOverridingGate:
+    """V97: Playbook limitations must include gate-override prohibition."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_not_overriding_gate
+        return validate_playbook_not_overriding_gate
+
+    def test_pass_gate_prohibition_present(self, tmp_path):
+        """PASS when limitations includes gate approval prohibition."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  limitations:\n"
+            "    - 'No gate approval authority'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_gate_prohibition_missing(self, tmp_path):
+        """WARN when limitations list has no gate-approval prohibition text."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  limitations:\n"
+            "    - 'Sprint task templates only'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) >= 1
+
+    def test_warn_no_limitations_field(self, tmp_path):
+        """WARN when limitations field is absent entirely."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestV98PlaybookHasNoDeprecatedPaths:
+    """V98: Playbook allowed_paths must not reference non-existent directories."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_has_no_deprecated_paths
+        return validate_playbook_has_no_deprecated_paths
+
+    def test_pass_all_paths_exist(self, tmp_path):
+        """PASS when all concrete allowed_paths exist in repo root."""
+        real_dir = tmp_path / "src" / "python" / "tsv"
+        real_dir.mkdir(parents=True)
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  allowed_paths:\n"
+            "    - 'src/python/tsv/'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_pass_parameterized_paths_skipped(self, tmp_path):
+        """PASS for parameterized paths (containing < >) even if dir doesn't exist."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  allowed_paths:\n"
+            "    - 'src/python/<format>/'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_warn_stale_concrete_path(self, tmp_path):
+        """WARN when a concrete allowed_path does not exist."""
+        _write_contract_md(tmp_path, (
+            "playbook_contract:\n"
+            "  playbook_id: test-playbook\n"
+            "  version: '1.0'\n"
+            "  status: ACTIVE\n"
+            "  allowed_paths:\n"
+            "    - 'src/python/deleted-format/'\n"
+        ))
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) >= 1
+
+
+class TestV99PlaybookCoverageReportCurrent:
+    """V99: Coverage universe report must be newer than playbook template files."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_playbook_coverage_report_current
+        return validate_playbook_coverage_report_current
+
+    def test_pass_coverage_newer_than_templates(self, tmp_path):
+        """PASS when coverage universe report is newer than all templates."""
+        import os, time
+        pb_dir = tmp_path / "playbooks" / "format-factory"
+        pb_dir.mkdir(parents=True)
+        template = pb_dir / "test-playbook.md"
+        template.write_text("# Test", encoding="utf-8")
+        # Make template older than coverage report
+        old_time = time.time() - 100
+        os.utime(str(template), (old_time, old_time))
+
+        coverage_dir = tmp_path / "reports" / "playbooks"
+        coverage_dir.mkdir(parents=True)
+        coverage = coverage_dir / "playbook-coverage-universe.yaml"
+        coverage.write_text("meta:\n  generated: 2026-07-02\n", encoding="utf-8")
+        # coverage is newer (current time)
+
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_template_newer_than_coverage(self, tmp_path):
+        """WARN when a template is newer than the coverage report."""
+        import os, time
+        pb_dir = tmp_path / "playbooks" / "format-factory"
+        pb_dir.mkdir(parents=True)
+        coverage_dir = tmp_path / "reports" / "playbooks"
+        coverage_dir.mkdir(parents=True)
+
+        coverage = coverage_dir / "playbook-coverage-universe.yaml"
+        coverage.write_text("meta:\n  generated: 2026-07-01\n", encoding="utf-8")
+        # Make coverage report older
+        old_time = time.time() - 100
+        os.utime(str(coverage), (old_time, old_time))
+
+        # Template is freshly written (newer)
+        template = pb_dir / "new-template.md"
+        template.write_text("# New Template", encoding="utf-8")
+
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any("new-template" in item for item in result["items"])
+
+    def test_warn_coverage_report_missing(self, tmp_path):
+        """WARN (not error) when coverage universe YAML is absent."""
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_pass_no_templates_dir(self, tmp_path):
+        """PASS when playbooks/format-factory/ dir is absent (nothing to check freshness of)."""
+        coverage_dir = tmp_path / "reports" / "playbooks"
+        coverage_dir.mkdir(parents=True)
+        (coverage_dir / "playbook-coverage-universe.yaml").write_text(
+            "meta:\n  generated: 2026-07-02\n", encoding="utf-8"
+        )
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"

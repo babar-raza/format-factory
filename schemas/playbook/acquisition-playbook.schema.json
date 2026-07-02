@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://format-factory.internal/schemas/playbook/acquisition-playbook.schema.json",
   "title": "AcquisitionPlaybook",
-  "description": "Schema for format-factory acquisition playbooks. Playbooks are execution aids only — they are NOT evidence authority, cannot approve gates, cannot replace DEC-034 independent verification, and cannot replace human approval. See docs/playbook-layer.md for full policy.",
+  "description": "Schema for format-factory acquisition playbooks. Playbooks are execution aids only \u00e2\u20ac\u201d they are NOT evidence authority, cannot approve gates, cannot replace DEC-034 independent verification, and cannot replace human approval. See docs/playbook-layer.md for full policy.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -29,7 +29,9 @@
     "schema_version": {
       "type": "string",
       "description": "Semantic version of this schema document.",
-      "enum": ["1.0"]
+      "enum": [
+        "1.0"
+      ]
     },
     "playbook_id": {
       "type": "string",
@@ -51,15 +53,22 @@
     },
     "playbook_kind": {
       "type": "string",
-      "enum": ["format_playbook", "family_playbook", "documentation_example"],
+      "enum": [
+        "format_playbook",
+        "family_playbook",
+        "documentation_example"
+      ],
       "description": "Kind of playbook. documentation_example must not be used for execution."
     },
     "not_for_execution": {
       "type": "boolean",
-      "description": "Documentation-only safety marker. When true, this playbook is not executable and must not be replayed, applied, or used to approve gates. Required when status is documentation_example_only or playbook_kind is documentation_example. Does not authorize any behavior — it restricts behavior."
+      "description": "Documentation-only safety marker. When true, this playbook is not executable and must not be replayed, applied, or used to approve gates. Required when status is documentation_example_only or playbook_kind is documentation_example. Does not authorize any behavior \u00e2\u20ac\u201d it restricts behavior."
     },
     "source_format_if_derived": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "If this playbook derives from another format's playbook, the source format_id. Null if original."
     },
     "status": {
@@ -90,7 +99,12 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["gate_number", "gate_name", "status", "covered_by_operations"],
+        "required": [
+          "gate_number",
+          "gate_name",
+          "status",
+          "covered_by_operations"
+        ],
         "properties": {
           "gate_number": {
             "type": "integer",
@@ -102,11 +116,18 @@
           },
           "status": {
             "type": "string",
-            "enum": ["covered", "partial", "not_covered", "deferred"]
+            "enum": [
+              "covered",
+              "partial",
+              "not_covered",
+              "deferred"
+            ]
           },
           "covered_by_operations": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "List of operation_ids covering this gate."
           },
           "notes": {
@@ -128,11 +149,23 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["contract_path", "purpose"],
+        "required": [
+          "contract_path",
+          "purpose"
+        ],
         "properties": {
-          "contract_path": {"type": "string"},
-          "purpose": {"type": "string"},
-          "gate": {"type": ["integer", "null"]}
+          "contract_path": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "gate": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
         }
       }
     },
@@ -142,12 +175,24 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["command", "purpose", "expected_exit_code"],
+        "required": [
+          "command",
+          "purpose",
+          "expected_exit_code"
+        ],
         "properties": {
-          "command": {"type": "string"},
-          "purpose": {"type": "string"},
-          "expected_exit_code": {"type": "integer"},
-          "notes": {"type": "string"}
+          "command": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "expected_exit_code": {
+            "type": "integer"
+          },
+          "notes": {
+            "type": "string"
+          }
         }
       }
     },
@@ -166,21 +211,38 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["approval_type", "description", "mandatory"],
+        "required": [
+          "approval_type",
+          "description",
+          "mandatory"
+        ],
         "properties": {
           "approval_type": {
             "type": "string",
-            "enum": ["dec034_independent_verification", "human_gate_approval", "human_sprint_authorization"]
+            "enum": [
+              "dec034_independent_verification",
+              "human_gate_approval",
+              "human_sprint_authorization"
+            ]
           },
-          "description": {"type": "string"},
-          "mandatory": {"type": "boolean"},
-          "gate": {"type": ["integer", "null"]}
+          "description": {
+            "type": "string"
+          },
+          "mandatory": {
+            "type": "boolean"
+          },
+          "gate": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
         }
       }
     },
     "forbidden_uses": {
       "type": "array",
-      "description": "Explicit list of forbidden uses for this playbook.",
+      "description": "Must include at minimum: automatic_gate_approval, spec_or_legal_authority, replacing_dec034, replacing_human_approval.",
       "items": {
         "type": "string",
         "enum": [
@@ -194,8 +256,18 @@
           "llm_fallback_authority"
         ]
       },
-      "minItems": 4,
-      "description": "Must include at minimum: automatic_gate_approval, spec_or_legal_authority, replacing_dec034, replacing_human_approval."
+      "minItems": 4
+    },
+    "last_verified_revision": {
+      "type": "string",
+      "description": "Git revision hash at last verification of this playbook"
+    },
+    "pilots_completed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of completed pilot IDs that verified this playbook"
     }
   },
   "definitions": {
@@ -270,7 +342,9 @@
         },
         "target_paths": {
           "type": "array",
-          "items": {"type": "string"},
+          "items": {
+            "type": "string"
+          },
           "description": "Paths that this operation reads or writes."
         },
         "input_dependencies": {
@@ -278,11 +352,20 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["path", "required"],
+            "required": [
+              "path",
+              "required"
+            ],
             "properties": {
-              "path": {"type": "string"},
-              "required": {"type": "boolean"},
-              "description": {"type": "string"}
+              "path": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
@@ -291,12 +374,23 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["path", "description"],
+            "required": [
+              "path",
+              "description"
+            ],
             "properties": {
-              "path": {"type": "string"},
-              "description": {"type": "string"},
-              "checksum_required": {"type": "boolean"},
-              "format": {"type": "string"}
+              "path": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "checksum_required": {
+                "type": "boolean"
+              },
+              "format": {
+                "type": "string"
+              }
             }
           }
         },
@@ -305,12 +399,24 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["command", "purpose", "expected_exit_code"],
+            "required": [
+              "command",
+              "purpose",
+              "expected_exit_code"
+            ],
             "properties": {
-              "command": {"type": "string"},
-              "purpose": {"type": "string"},
-              "expected_exit_code": {"type": "integer"},
-              "notes": {"type": "string"}
+              "command": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "expected_exit_code": {
+                "type": "integer"
+              },
+              "notes": {
+                "type": "string"
+              }
             }
           }
         },
@@ -319,7 +425,10 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["artifact_type", "required"],
+            "required": [
+              "artifact_type",
+              "required"
+            ],
             "properties": {
               "artifact_type": {
                 "type": "string",
@@ -332,9 +441,15 @@
                   "validation_log"
                 ]
               },
-              "required": {"type": "boolean"},
-              "path": {"type": "string"},
-              "notes": {"type": "string"}
+              "required": {
+                "type": "boolean"
+              },
+              "path": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
             }
           }
         },
@@ -353,11 +468,20 @@
         },
         "reuse_level": {
           "type": "string",
-          "enum": ["none", "full", "adapt", "guide", "new"],
+          "enum": [
+            "none",
+            "full",
+            "adapt",
+            "guide",
+            "new"
+          ],
           "description": "How this operation reuses another format or family operation. none = not applicable; full = identical procedure; adapt = same structure, format-specific adjustments; guide = reference only; new = no reuse."
         },
         "format_specific_overrides": {
-          "type": ["object", "null"],
+          "type": [
+            "object",
+            "null"
+          ],
           "description": "Format-specific overrides to base family operation, if any. Null if no overrides."
         },
         "provenance": {
@@ -389,11 +513,19 @@
     "review_queue_policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["severity_threshold_blocks_apply", "auto_resolve_allowed"],
+      "required": [
+        "severity_threshold_blocks_apply",
+        "auto_resolve_allowed"
+      ],
       "properties": {
         "severity_threshold_blocks_apply": {
           "type": "string",
-          "enum": ["high", "blocker", "medium", "low"],
+          "enum": [
+            "high",
+            "blocker",
+            "medium",
+            "low"
+          ],
           "description": "Minimum severity that blocks apply mode. Should be 'high' or 'blocker'."
         },
         "auto_resolve_allowed": {
@@ -402,7 +534,12 @@
         },
         "required_owner_for_resolution": {
           "type": "string",
-          "enum": ["agent", "independent_verifier", "human", "main_sprint_owner"],
+          "enum": [
+            "agent",
+            "independent_verifier",
+            "human",
+            "main_sprint_owner"
+          ],
           "description": "Who must resolve items at or above the severity threshold."
         },
         "notes": {
@@ -413,7 +550,11 @@
     "reuse_policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["family_reuse_allowed", "inherited_gate_approval", "reuse_requires_explicit_classification"],
+      "required": [
+        "family_reuse_allowed",
+        "inherited_gate_approval",
+        "reuse_requires_explicit_classification"
+      ],
       "properties": {
         "family_reuse_allowed": {
           "type": "boolean",
@@ -422,15 +563,22 @@
         "inherited_gate_approval": {
           "type": "boolean",
           "description": "MUST be false. Gate approval cannot be inherited from a family playbook.",
-          "enum": [false]
+          "enum": [
+            false
+          ]
         },
         "reuse_requires_explicit_classification": {
           "type": "boolean",
           "description": "Whether each reused operation must have a reuse_level classification.",
-          "enum": [true]
+          "enum": [
+            true
+          ]
         },
         "source_family_playbook": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "ID of the source family playbook, if any reuse occurs."
         },
         "notes": {
@@ -441,7 +589,11 @@
     "provenance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["created_by_sprint", "created_at", "last_modified_sprint"],
+      "required": [
+        "created_by_sprint",
+        "created_at",
+        "last_modified_sprint"
+      ],
       "properties": {
         "created_by_sprint": {
           "type": "string",
@@ -460,7 +612,10 @@
           "format": "date"
         },
         "source_commit": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "Git commit hash at time of creation."
         },
         "notes": {
