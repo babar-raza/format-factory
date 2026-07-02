@@ -127,6 +127,66 @@ class QoiDocument:
         """True if the colorspace is linear light (colorspace == 1)."""
         return self.colorspace == 1
 
+    # Edge length and channel classification properties (FACT-QOI-001 R1243)
+
+    @property
+    def long_edge(self) -> int:
+        """Maximum of width and height."""
+        return max(self.width, self.height)
+
+    @property
+    def short_edge(self) -> int:
+        """Minimum of width and height."""
+        return min(self.width, self.height)
+
+    @property
+    def is_rgba(self) -> bool:
+        """True if channels == 4 (RGBA)."""
+        return self.channels == 4
+
+    # Canvas geometry and density properties (FACT-QOI-001 R1263)
+
+    @property
+    def edge_ratio(self) -> float:
+        """long_edge / short_edge; 1.0 if short_edge is 0."""
+        if self.short_edge == 0:
+            return 1.0
+        return self.long_edge / self.short_edge
+
+    @property
+    def is_narrow(self) -> bool:
+        """True if edge_ratio > 3.0."""
+        return self.edge_ratio > 3.0
+
+    @property
+    def bytes_per_pixel_estimate(self) -> int:
+        """Estimated bytes per pixel (= channels: 3 for RGB, 4 for RGBA)."""
+        return self.channels
+
+    # Scale and density classification properties (FACT-QOI-001 R1283)
+
+    @property
+    def is_banner(self) -> bool:
+        """True if is_narrow and is_landscape (wide strip)."""
+        return self.is_narrow and self.is_landscape
+
+    @property
+    def is_tall_strip(self) -> bool:
+        """True if is_narrow and is_portrait (tall strip)."""
+        return self.is_narrow and self.is_portrait
+
+    @property
+    def pixel_density_class(self) -> str:
+        """'micro' if long_edge<=64; 'small' if <=256; 'medium' if <=1024; 'large' otherwise."""
+        le = self.long_edge
+        if le <= 64:
+            return "micro"
+        if le <= 256:
+            return "small"
+        if le <= 1024:
+            return "medium"
+        return "large"
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

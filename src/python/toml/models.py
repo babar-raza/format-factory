@@ -129,6 +129,65 @@ class TomlDocument:
         """Number of top-level keys whose value is an array (list)."""
         return sum(1 for v in self._doc().values() if isinstance(v, list))
 
+    # Size and value type properties (FACT-TOML-001 R1242)
+
+    @property
+    def is_large(self) -> bool:
+        """True if key_count > 20."""
+        return self.key_count > 20
+
+    @property
+    def has_numbers(self) -> bool:
+        """True if any top-level value is int or float (not bool)."""
+        return any(
+            isinstance(v, (int, float)) and not isinstance(v, bool)
+            for v in self._doc().values()
+        )
+
+    @property
+    def has_strings(self) -> bool:
+        """True if any top-level value is a str."""
+        return any(isinstance(v, str) for v in self._doc().values())
+
+    # Value type distribution properties (FACT-TOML-001 R1262)
+
+    @property
+    def has_mixed_values(self) -> bool:
+        """True if more than one distinct Python type exists at top level."""
+        types = {type(v) for v in self._doc().values()}
+        return len(types) > 1
+
+    @property
+    def string_key_count(self) -> int:
+        """Number of top-level string values."""
+        return sum(1 for v in self._doc().values() if isinstance(v, str))
+
+    @property
+    def numeric_key_count(self) -> int:
+        """Number of top-level numeric (int/float, not bool) values."""
+        return sum(
+            1 for v in self._doc().values()
+            if isinstance(v, (int, float)) and not isinstance(v, bool)
+        )
+
+    # Value type inventory properties (FACT-TOML-001 R1282)
+
+    @property
+    def boolean_key_count(self) -> int:
+        """Number of top-level boolean values."""
+        return sum(1 for v in self._doc().values() if isinstance(v, bool))
+
+    @property
+    def list_key_count(self) -> int:
+        """Number of top-level list/array values."""
+        return sum(1 for v in self._doc().values() if isinstance(v, list))
+
+    @property
+    def max_array_length(self) -> int:
+        """Maximum length of any top-level list value; 0 if no lists."""
+        lengths = [len(v) for v in self._doc().values() if isinstance(v, list)]
+        return max(lengths) if lengths else 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

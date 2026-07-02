@@ -118,6 +118,85 @@ class XcfDocument:
         """True if the image type is RGB (image_type == 0)."""
         return self.image_type == 0
 
+    # Pixel count and image size properties (FACT-XCF-001 R1235)
+
+    @property
+    def pixel_count(self) -> int:
+        """Total number of canvas pixels (width * height)."""
+        return self.width * self.height
+
+    @property
+    def megapixels(self) -> float:
+        """Canvas size in megapixels (pixel_count / 1_000_000)."""
+        return self.pixel_count / 1_000_000.0
+
+    @property
+    def is_large_image(self) -> bool:
+        """True if pixel_count > 4,000,000."""
+        return self.pixel_count > 4_000_000
+
+    # Layer density and canvas ratio properties (FACT-XCF-001 R1255)
+
+    @property
+    def layers_per_megapixel(self) -> float:
+        """layer_count / megapixels; 0.0 if pixel_count == 0."""
+        if self.pixel_count == 0:
+            return 0.0
+        return self.layer_count / self.megapixels
+
+    @property
+    def is_grayscale_type(self) -> bool:
+        """True if image_type == 1 (RGBA/Grayscale in GIMP nomenclature)."""
+        return self.image_type == 1
+
+    @property
+    def long_edge(self) -> int:
+        """Maximum of width and height."""
+        return max(self.width, self.height)
+
+    # Canvas geometry ratio properties (FACT-XCF-001 R1275)
+
+    @property
+    def short_edge(self) -> int:
+        """Minimum of width and height."""
+        return min(self.width, self.height)
+
+    @property
+    def edge_ratio(self) -> float:
+        """long_edge / short_edge; 1.0 if short_edge is 0."""
+        if self.short_edge == 0:
+            return 1.0
+        return self.long_edge / self.short_edge
+
+    @property
+    def is_narrow(self) -> bool:
+        """True if edge_ratio > 3.0."""
+        return self.edge_ratio > 3.0
+
+    # Scale and density classification properties (FACT-XCF-001 R1291)
+
+    @property
+    def is_banner(self) -> bool:
+        """True if is_narrow and is_landscape (wide strip)."""
+        return self.is_narrow and self.is_landscape
+
+    @property
+    def is_tall_strip(self) -> bool:
+        """True if is_narrow and is_portrait (tall strip)."""
+        return self.is_narrow and self.is_portrait
+
+    @property
+    def pixel_density_class(self) -> str:
+        """'micro' if long_edge<=64; 'small' if <=256; 'medium' if <=1024; 'large' otherwise."""
+        le = self.long_edge
+        if le <= 64:
+            return "micro"
+        if le <= 256:
+            return "small"
+        if le <= 1024:
+            return "medium"
+        return "large"
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

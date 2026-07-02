@@ -91,6 +91,54 @@ class FodgDocument:
             return 0.0
         return self.shapes_total / self.page_count
 
+    # Density and complexity properties (FACT-FODG-001 R1246)
+
+    @property
+    def is_dense(self) -> bool:
+        """True if shapes_per_page > 10."""
+        return self.shapes_per_page > 10
+
+    @property
+    def is_complex(self) -> bool:
+        """True if has_shapes and is_multi_page."""
+        return self.has_shapes and self.is_multi_page
+
+    @property
+    def max_shapes_on_page(self) -> int:
+        """Maximum shape_count on any page; 0 if no pages."""
+        pages = self.pages
+        if not pages:
+            return 0
+        return max(p.get("shape_count", 0) for p in pages)
+
+    # Shape distribution properties (FACT-FODG-001 R1266)
+
+    @property
+    def min_shapes_on_page(self) -> int:
+        """Minimum shape_count on any page; 0 if no pages."""
+        pages = self.pages
+        if not pages:
+            return 0
+        return min(p.get("shape_count", 0) for p in pages)
+
+    @property
+    def shape_range(self) -> int:
+        """max_shapes_on_page - min_shapes_on_page; 0 if no pages."""
+        pages = self.pages
+        if not pages:
+            return 0
+        counts = [p.get("shape_count", 0) for p in pages]
+        return max(counts) - min(counts)
+
+    @property
+    def is_uniform_density(self) -> bool:
+        """True if all pages have the same shape count."""
+        pages = self.pages
+        if not pages:
+            return True
+        counts = [p.get("shape_count", 0) for p in pages]
+        return len(set(counts)) == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

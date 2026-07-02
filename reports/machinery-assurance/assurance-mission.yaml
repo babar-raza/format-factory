@@ -1,70 +1,66 @@
 assurance_mission:
-  mission_id: "MA-2026-07-02-R1227-NDJSON-TOML"
+  mission_id: "MA-2026-07-02-BULK-PROPERTIES-R1233-R1291"
   repository: "format-factory"
   branch: "main"
-  head: "ae504376531758fd5d365faa615798cfaf8bea56"
-  plan_path: "reports/supervisor/next-sprint.md"
-  plan_revision: "ff-gates-advancement-20260625 (sprint 761, avg quality 0.748)"
+  head: "1617630b"  # fix(readme-gov): re-sync fodt/ndjson/pgm/ppm/toml READMEs
+  plan_path: "plans/.claude/sorted-sprouting-flame.md (TC-PSG-* PENDING)"
+  plan_revision: "sorted-sprouting-flame IN_PROGRESS"
 
   machinery_roots:
-    - "tools/supervisor/"           # supervisor pipeline (autonomous cycle, check_continuation, etc.)
-    - "tools/capability_layer/"     # capability compilation pipeline
-    - "src/python/ndjson/"         # NDJSON product source (R1227 in-progress)
-    - "src/python/toml/"           # TOML product source (R1226 completed)
-    - ".supervisor/skill-registry.yaml"  # skill dispatch registry
-    - "tests/python/ndjson/"       # NDJSON product tests
-    - "tests/python/toml/"         # TOML product tests
+    - "src/python/*/models.py"           # Python FOSS domain models (primary repair target)
+    - "tools/supervisor/"                 # Supervisor pipeline
+    - "tools/docs/"                       # Status generator machinery
+    - "tools/supervisor/concurrency/"     # Concurrency hardening (COMPLETE per purrfect-weaving-squid)
+    - ".supervisor/skill-registry.yaml"   # Skill dispatch registry
 
   official_entry_points:
+    - ".venv/Scripts/pytest tests/python/"
     - "python tools/supervisor/check_continuation.py"
     - "python tools/supervisor/supervisor_loop.py autonomous-cycle"
-    - "python tools/supervisor/autonomous_cycle.py"
-    - ".venv/Scripts/pytest tests/"
-    - "/add-python-object-model-feature (skill)"
-    - "/add-roundtrip-test (skill)"
+    - "python tools/docs/generate_project_status.py"
 
   state_stores:
     - ".local/supervisor/continuation-signal.json"
     - ".local/supervisor/active-plan-lock.json"
-    - ".local/supervisor/next-work-items.json"
     - "reports/supervisor/next-sprint.md"
     - "reports/supervisor/approval-gates.md"
     - "reports/r90/product-code-change-ledger.json"
     - "registry/source-structure-baseline.json"
 
   output_roots:
-    - "src/python/ndjson/"         # NDJSON model, codec, __init__
-    - "src/python/toml/"           # TOML model, codec, __init__
-    - "tests/python/ndjson/"       # NDJSON tests
-    - "tests/python/toml/"         # TOML tests
-    - "reports/supervisor/"        # supervisor reports
-    - ".local/evidences/"          # evidence declarations
+    - "src/python/*/models.py"           # Python domain model source (REPAIR)
+    - "tests/python/**/test_r12*.py"     # New untracked R1233-R1291 tests (VALIDATE)
+    - "tools/docs/status_model.py"       # New status model (VALIDATE)
+    - "reports/machinery-assurance/"     # Assurance artifacts
+    - ".local/evidences/"                # Evidence declarations
 
   consumer_roots:
-    - "tests/python/ndjson/"       # tests consume ndjson package
-    - "tests/python/toml/"         # tests consume toml package
-    - ".venv/Lib/site-packages/ndjson/"  # installed non-editable package
-    - ".venv/Lib/site-packages/toml/"   # installed non-editable package
+    - "tests/python/**/"                 # Tests consume domain models
+    - ".venv/Lib/site-packages/*/"       # Installed packages (non-editable)
 
   governing_skills:
     - "/add-python-object-model-feature"
     - "/add-roundtrip-test"
-    - "/add-python-api"
     - "/post-sprint-audit"
     - "/plan-hardening"
 
   evidence_roots:
     - ".local/evidences/"
     - "reports/supervisor/evidence-review.json"
-    - "reports/supervisor/work-item-grades.json"
+    - "reports/machinery-assurance/"
 
   explicit_non_goals:
     - ".NET commercial track"
     - "Gate 11 execution approval"
     - "PyPI/NuGet publication"
-    - "Other format packages (fods, csv, tsv, etc.) unless they surface defects"
+    - "Sorted-sprouting-flame TC-PSG-003 through TC-PSG-007 (deferred to next session)"
 
-  current_work_in_progress:
-    - "R1227: NDJSON size classification properties (is_small, is_large, min_keys)"
-    - "Status: models.py modified, test file untracked, site-packages sync PENDING"
-    - "R1226: TOML classification properties — committed in ae504376 (preceding sprint)"
+  key_findings_at_mission_start:
+    - "1121+ test failures in untracked R1233-R1291 tests (missing model properties)"
+    - "XCF: ALL 876 tests PASS (complete implementation)"
+    - "NDJSON R1241, TOML R1242: PASS (properties implemented)"
+    - "CSV, TSV, ABW, ZST, ODS, ODT, DIF, GNUMERIC, SYLK, FODG, FODP, FODS, FODT, PBM, PGM, PPM, QOI: FAIL (missing properties)"
+    - "Concurrency machinery: COMPLETE (purrfect-weaving-squid, 42/42 PASS)"
+    - "status_model.py: EXISTS untracked (TC-PSG-002 deliverable)"
+    - "sorted-sprouting-flame: IN_PROGRESS, TC-PSG-001 through TC-PSG-005 PENDING"
+    - "SESSION_MISMATCH from check_continuation.py (expected — new session)"

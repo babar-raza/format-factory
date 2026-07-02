@@ -108,6 +108,54 @@ class FodpDocument:
         """True if the presentation has exactly one slide and at least one shape."""
         return self.page_count == 1 and self.total_shape_count > 0
 
+    # Scale and content classification properties (FACT-FODP-001 R1247)
+
+    @property
+    def is_large(self) -> bool:
+        """True if page_count > 20."""
+        return self.page_count > 20
+
+    @property
+    def has_titles(self) -> bool:
+        """True if any slide has a non-empty, non-whitespace title."""
+        return any(p.get("title", "").strip() for p in self.pages)
+
+    @property
+    def max_shapes_on_slide(self) -> int:
+        """Maximum shape_count on any slide; 0 if no slides."""
+        pages = self.pages
+        if not pages:
+            return 0
+        return max(p.get("shape_count", 0) for p in pages)
+
+    # Slide shape distribution properties (FACT-FODP-001 R1267)
+
+    @property
+    def min_shapes_on_slide(self) -> int:
+        """Minimum shape_count on any slide; 0 if no slides."""
+        pages = self.pages
+        if not pages:
+            return 0
+        return min(p.get("shape_count", 0) for p in pages)
+
+    @property
+    def slide_shape_range(self) -> int:
+        """max_shapes_on_slide - min_shapes_on_slide; 0 if no slides."""
+        pages = self.pages
+        if not pages:
+            return 0
+        counts = [p.get("shape_count", 0) for p in pages]
+        return max(counts) - min(counts)
+
+    @property
+    def has_uniform_slides(self) -> bool:
+        """True if all slides have the same shape count."""
+        pages = self.pages
+        if not pages:
+            return True
+        counts = [p.get("shape_count", 0) for p in pages]
+        return len(set(counts)) == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

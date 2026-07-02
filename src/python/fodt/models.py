@@ -163,6 +163,63 @@ class FodtDocument:
         """True if the document contains at least one table."""
         return self.table_count > 0
 
+    # Structure classification properties (FACT-FODT-001 R1240)
+
+    @property
+    def paragraph_count(self) -> int:
+        """Number of blocks with kind == 'paragraph'."""
+        return sum(1 for b in self._data.get("blocks", []) if b.get("kind") == "paragraph")
+
+    @property
+    def has_lists(self) -> bool:
+        """True if list_count > 0."""
+        return self.list_count > 0
+
+    @property
+    def is_complex(self) -> bool:
+        """True if has_tables or has_lists or has_headings."""
+        return self.has_tables or self.has_lists or self.has_headings
+
+    # Scale and content balance properties (FACT-FODT-001 R1260)
+
+    @property
+    def total_block_count(self) -> int:
+        """paragraph_count + heading_count."""
+        return self.paragraph_count + self.heading_count
+
+    @property
+    def heading_ratio(self) -> float:
+        """heading_count / total_block_count; 0.0 if no blocks."""
+        total = self.total_block_count
+        if total == 0:
+            return 0.0
+        return self.heading_count / total
+
+    @property
+    def is_outline_heavy(self) -> bool:
+        """True if heading_ratio > 0.3."""
+        return self.heading_ratio > 0.3
+
+    # Content balance and prose density properties (FACT-FODT-001 R1280)
+
+    @property
+    def paragraph_ratio(self) -> float:
+        """paragraph_count / total_block_count; 0.0 if no blocks."""
+        total = self.total_block_count
+        if total == 0:
+            return 0.0
+        return self.paragraph_count / total
+
+    @property
+    def has_balanced_content(self) -> bool:
+        """True if 0.1 <= heading_ratio <= 0.5."""
+        return 0.1 <= self.heading_ratio <= 0.5
+
+    @property
+    def is_prose_heavy(self) -> bool:
+        """True if paragraph_ratio > 0.8."""
+        return self.paragraph_ratio > 0.8
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying document dict."""
         return self._data

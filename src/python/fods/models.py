@@ -180,6 +180,49 @@ class FodsDocument:
         counts = [s.row_count for s in self.sheets()]
         return max(counts) if counts else 0
 
+    # Workbook scale properties (FACT-FODS-001 R1245)
+
+    @property
+    def is_large_workbook(self) -> bool:
+        """True if total_row_count > 10000."""
+        return self.total_row_count > 10000
+
+    @property
+    def has_many_sheets(self) -> bool:
+        """True if sheet_count > 5."""
+        return self.sheet_count > 5
+
+    @property
+    def avg_rows_per_sheet(self) -> float:
+        """total_row_count / sheet_count; 0.0 if no sheets."""
+        if self.sheet_count == 0:
+            return 0.0
+        return self.total_row_count / self.sheet_count
+
+    # Sheet distribution properties (FACT-FODS-001 R1265)
+
+    @property
+    def min_sheet_rows(self) -> int:
+        """Minimum row count in any sheet; 0 if no sheets."""
+        counts = [s.row_count for s in self.sheets()]
+        return min(counts) if counts else 0
+
+    @property
+    def sheet_row_range(self) -> int:
+        """max_sheet_rows - min_sheet_rows; 0 if no sheets."""
+        counts = [s.row_count for s in self.sheets()]
+        if not counts:
+            return 0
+        return max(counts) - min(counts)
+
+    @property
+    def is_uniform_sheet_size(self) -> bool:
+        """True if all sheets have the same row count."""
+        counts = [s.row_count for s in self.sheets()]
+        if not counts:
+            return True
+        return len(set(counts)) == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""
         return self._data

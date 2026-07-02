@@ -122,6 +122,42 @@ class OdtModelDocument:
             return 0.0
         return self.heading_count / self.total_block_count
 
+    # Scale and content balance properties (FACT-ODT-001 R1244)
+
+    @property
+    def is_large(self) -> bool:
+        """True if total_block_count > 50."""
+        return self.total_block_count > 50
+
+    @property
+    def has_only_paragraphs(self) -> bool:
+        """True if paragraph_count > 0 and heading_count == 0."""
+        return self.paragraph_count > 0 and self.heading_count == 0
+
+    @property
+    def paragraph_ratio(self) -> float:
+        """paragraph_count / total_block_count; 0.0 if no blocks."""
+        if self.total_block_count == 0:
+            return 0.0
+        return self.paragraph_count / self.total_block_count
+
+    # Content balance and structure properties (FACT-ODT-001 R1264)
+
+    @property
+    def is_outline_heavy(self) -> bool:
+        """True if heading_ratio > 0.3."""
+        return self.heading_ratio > 0.3
+
+    @property
+    def has_balanced_content(self) -> bool:
+        """True if heading_ratio is in [0.1, 0.5]."""
+        return 0.1 <= self.heading_ratio <= 0.5
+
+    @property
+    def is_prose_heavy(self) -> bool:
+        """True if paragraph_ratio > 0.8."""
+        return self.paragraph_ratio > 0.8
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

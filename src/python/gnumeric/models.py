@@ -109,6 +109,91 @@ class GnumericDocument:
         """True if the workbook has sheets but no cells."""
         return self.sheet_count > 0 and self.cell_count == 0
 
+    # Workbook scale properties (FACT-GNUMERIC-001 R1231)
+
+    @property
+    def is_large_workbook(self) -> bool:
+        """True if cell_count > 10000."""
+        return self.cell_count > 10000
+
+    @property
+    def has_many_sheets(self) -> bool:
+        """True if sheet_count > 5."""
+        return self.sheet_count > 5
+
+    @property
+    def is_cell_dense(self) -> bool:
+        """True if avg_cells_per_sheet > 1000."""
+        return self.avg_cells_per_sheet > 1000
+
+    # Metadata and content properties (FACT-GNUMERIC-001 R1248)
+
+    @property
+    def sheet_names(self) -> list[str]:
+        """Names of all sheets in document order."""
+        return [s.get("name", "") for s in self._data.get("sheets", [])]
+
+    @property
+    def max_cells_per_sheet(self) -> int:
+        """Maximum cell count in any single sheet; 0 if no sheets."""
+        sheets = self._data.get("sheets", [])
+        if not sheets:
+            return 0
+        return max(len(s.get("cell_grid", {})) for s in sheets)
+
+    @property
+    def is_valid(self) -> bool:
+        """True if source was a valid Gnumeric file (alias for is_gnumeric)."""
+        return self.is_gnumeric
+
+    # Cell distribution properties (FACT-GNUMERIC-001 R1268)
+
+    @property
+    def min_cells_per_sheet(self) -> int:
+        """Minimum cell count in any single sheet; 0 if no sheets."""
+        sheets = self._data.get("sheets", [])
+        if not sheets:
+            return 0
+        return min(len(s.get("cell_grid", {})) for s in sheets)
+
+    @property
+    def cell_count_range(self) -> int:
+        """max_cells_per_sheet - min_cells_per_sheet; 0 if no sheets."""
+        sheets = self._data.get("sheets", [])
+        if not sheets:
+            return 0
+        counts = [len(s.get("cell_grid", {})) for s in sheets]
+        return max(counts) - min(counts)
+
+    @property
+    def has_uniform_cell_distribution(self) -> bool:
+        """True if all sheets have the same cell count."""
+        sheets = self._data.get("sheets", [])
+        if not sheets:
+            return True
+        counts = [len(s.get("cell_grid", {})) for s in sheets]
+        return len(set(counts)) == 1
+
+    # Sheet richness and variance properties (FACT-GNUMERIC-001 R1284)
+
+    @property
+    def is_data_rich(self) -> bool:
+        """True if avg_cells_per_sheet > 500."""
+        return self.avg_cells_per_sheet > 500
+
+    @property
+    def sheet_cell_variance(self) -> float:
+        """cell_count_range / max_cells_per_sheet; 0.0 if max=0."""
+        mx = self.max_cells_per_sheet
+        if mx == 0:
+            return 0.0
+        return self.cell_count_range / mx
+
+    @property
+    def has_large_sheets(self) -> bool:
+        """True if max_cells_per_sheet > 1000."""
+        return self.max_cells_per_sheet > 1000
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

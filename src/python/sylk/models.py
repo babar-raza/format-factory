@@ -127,6 +127,78 @@ class SylkModelDocument:
             return 0.0
         return self.nonempty_cell_count / self.cell_count
 
+    # Grid density properties (FACT-SYLK-001 R1228)
+
+    @property
+    def is_dense(self) -> bool:
+        """True if fill_ratio > 0.8."""
+        return self.fill_ratio > 0.8
+
+    @property
+    def is_sparse(self) -> bool:
+        """True if fill_ratio < 0.2."""
+        return self.fill_ratio < 0.2
+
+    @property
+    def is_large_grid(self) -> bool:
+        """True if cell_count > 1000."""
+        return self.cell_count > 1000
+
+    # Geometry and type composition properties (FACT-SYLK-001 R1250)
+
+    @property
+    def is_square(self) -> bool:
+        """True if row_count == col_count and both positive."""
+        return self.row_count > 0 and self.row_count == self.col_count
+
+    @property
+    def has_mixed_types(self) -> bool:
+        """True if document contains both numeric and string cells."""
+        return self.has_numeric_cells and self.has_string_cells
+
+    @property
+    def numeric_ratio(self) -> float:
+        """numeric_cell_count / cell_count; 0.0 if no cells."""
+        if self.cell_count == 0:
+            return 0.0
+        return self.numeric_cell_count / self.cell_count
+
+    # Cell type distribution properties (FACT-SYLK-001 R1270)
+
+    @property
+    def string_ratio(self) -> float:
+        """string_cell_count / cell_count; 0.0 if no cells."""
+        if self.cell_count == 0:
+            return 0.0
+        return self.string_cell_count / self.cell_count
+
+    @property
+    def is_numeric_dominant(self) -> bool:
+        """True if numeric_ratio > 0.5."""
+        return self.numeric_ratio > 0.5
+
+    @property
+    def is_all_numeric(self) -> bool:
+        """True if nonempty cells exist and all non-empty cells are numeric."""
+        return self.nonempty_cell_count > 0 and self.numeric_cell_count == self.nonempty_cell_count
+
+    # Cell type homogeneity properties (FACT-SYLK-001 R1286)
+
+    @property
+    def is_all_string(self) -> bool:
+        """True if nonempty cells exist and all non-empty cells are string."""
+        return self.nonempty_cell_count > 0 and self.string_cell_count == self.nonempty_cell_count
+
+    @property
+    def has_single_type(self) -> bool:
+        """True if nonempty cells exist and all non-empty cells share one type."""
+        return self.nonempty_cell_count > 0 and (self.is_all_numeric or self.is_all_string)
+
+    @property
+    def is_string_dominant(self) -> bool:
+        """True if string_ratio > 0.5."""
+        return self.string_ratio > 0.5
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

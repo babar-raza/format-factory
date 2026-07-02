@@ -128,6 +128,75 @@ class NdjsonDocument:
         key_counts = [len(r) for r in self._records if isinstance(r, dict)]
         return min(key_counts) if key_counts else 0
 
+    # Object shape analysis properties (FACT-NDJSON-001)
+
+    @property
+    def has_uniform_keys(self) -> bool:
+        """True if all object records have the same number of keys.
+
+        Returns True if there are no object records (vacuously true).
+        """
+        key_counts = [len(r) for r in self._records if isinstance(r, dict)]
+        if not key_counts:
+            return True
+        return len(set(key_counts)) == 1
+
+    @property
+    def avg_keys(self) -> float:
+        """Average number of keys across object records. Returns 0.0 if no object records."""
+        key_counts = [len(r) for r in self._records if isinstance(r, dict)]
+        if not key_counts:
+            return 0.0
+        return sum(key_counts) / len(key_counts)
+
+    @property
+    def is_wide_objects(self) -> bool:
+        """True if the maximum key count in any object record exceeds 20."""
+        return self.max_keys > 20
+
+    # Key distribution analysis properties (FACT-NDJSON-001)
+
+    @property
+    def key_range(self) -> int:
+        """Difference between max_keys and min_keys. Returns 0 if no object records."""
+        return self.max_keys - self.min_keys
+
+    @property
+    def is_schema_consistent(self) -> bool:
+        """True if all object records have the same key set (same keys, not just count).
+
+        Returns True if there are no object records (vacuously true).
+        """
+        object_records = [r for r in self._records if isinstance(r, dict)]
+        if not object_records:
+            return True
+        first_keys = frozenset(object_records[0].keys())
+        return all(frozenset(r.keys()) == first_keys for r in object_records[1:])
+
+    @property
+    def object_count(self) -> int:
+        """Number of records that are JSON objects (dicts)."""
+        return sum(1 for r in self._records if isinstance(r, dict))
+
+    # Record type distribution properties (FACT-NDJSON-001)
+
+    @property
+    def array_count(self) -> int:
+        """Number of records that are JSON arrays (lists)."""
+        return sum(1 for r in self._records if isinstance(r, list))
+
+    @property
+    def scalar_count(self) -> int:
+        """Number of records that are scalar values (not dict or list)."""
+        return sum(1 for r in self._records if not isinstance(r, (dict, list)))
+
+    @property
+    def object_fraction(self) -> float:
+        """Fraction of records that are JSON objects. Returns 0.0 if no records."""
+        if self.record_count == 0:
+            return 0.0
+        return self.object_count / self.record_count
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)
