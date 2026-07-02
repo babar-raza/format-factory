@@ -129,4 +129,38 @@ public class FodsR442GetColumnWidthDedicatedTests
             Assert.True(doc.GetColumnWidth(sheetName, col) >= 0.0);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Type 3 — ODF semantic (fixture-based) — GI-FODS-NET-001 Phase 4c
+    // fods-column-widths.fods: col0=2.5cm≈70.87pt, col1=5cm≈141.73pt, col2=no style
+    // -------------------------------------------------------------------------
+
+    private static readonly string FixturesPath =
+        System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../../../tests/net/fods/Fixtures"));
+
+    [Fact]
+    public void GetColumnWidth_FromFixture_Col0_Returns2_5cmInPoints()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-column-widths.fods"));
+        double width = doc.GetColumnWidth("Sheet1", 0);
+        // 2.5cm * 28.3465 ≈ 70.87pt — allow ±0.1pt tolerance
+        Assert.InRange(width, 70.7, 71.0);
+    }
+
+    [Fact]
+    public void GetColumnWidth_FromFixture_Col1_Returns5cmInPoints()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-column-widths.fods"));
+        double width = doc.GetColumnWidth("Sheet1", 1);
+        // 5cm * 28.3465 ≈ 141.73pt — allow ±0.1pt tolerance
+        Assert.InRange(width, 141.6, 141.9);
+    }
+
+    [Fact]
+    public void GetColumnWidth_FromFixture_Col2_ReturnsZero_WhenNoStyle()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-column-widths.fods"));
+        double width = doc.GetColumnWidth("Sheet1", 2);
+        Assert.Equal(0.0, width);
+    }
 }

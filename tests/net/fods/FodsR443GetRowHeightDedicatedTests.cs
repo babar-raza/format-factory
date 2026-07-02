@@ -129,4 +129,29 @@ public class FodsR443GetRowHeightDedicatedTests
             Assert.True(doc.GetRowHeight(sheetName, row) >= 0.0);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Type 3 — ODF semantic (fixture-based) — GI-FODS-NET-001 Phase 4c
+    // fods-column-widths.fods: row0=ro1 style (0.8cm≈22.68pt), row1=no style→0.0
+    // -------------------------------------------------------------------------
+
+    private static readonly string FixturesPath =
+        System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../../../tests/net/fods/Fixtures"));
+
+    [Fact]
+    public void GetRowHeight_FromFixture_Row0_Returns0_8cmInPoints()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-column-widths.fods"));
+        double height = doc.GetRowHeight("Sheet1", 0);
+        // 0.8cm * 28.3465 ≈ 22.68pt — allow ±0.1pt tolerance
+        Assert.InRange(height, 22.6, 22.8);
+    }
+
+    [Fact]
+    public void GetRowHeight_FromFixture_Row1_ReturnsZero_WhenNoStyle()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-column-widths.fods"));
+        double height = doc.GetRowHeight("Sheet1", 1);
+        Assert.Equal(0.0, height);
+    }
 }

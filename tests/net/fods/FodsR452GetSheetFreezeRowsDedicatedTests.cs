@@ -132,4 +132,27 @@ public class FodsR452GetSheetFreezeRowsDedicatedTests
             Assert.True(doc.GetSheetFreezeRows(sheetName) >= 0);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Type 3 — ODF semantic (fixture-based) — GI-FODS-NET-001 Phase 4c
+    // fods-sheet-view-settings.fods: HorizontalSplitMode=2, HorizontalSplitPosition=2
+    // -------------------------------------------------------------------------
+
+    private static readonly string FixturesPath =
+        System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../../../tests/net/fods/Fixtures"));
+
+    [Fact]
+    public void GetSheetFreezeRows_FromFixture_Returns2_WhenHorizontalSplitPositionIs2()
+    {
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-sheet-view-settings.fods"));
+        Assert.Equal(2, doc.GetSheetFreezeRows("Sheet1"));
+    }
+
+    [Fact]
+    public void GetSheetFreezeRows_FromFixture_ReturnsZero_WhenNoSplitMode()
+    {
+        var doc = FodsDocument.CreateNew();
+        doc.AddSheet("Sheet1");
+        Assert.Equal(0, doc.GetSheetFreezeRows("Sheet1"));
+    }
 }

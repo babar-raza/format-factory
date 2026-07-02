@@ -143,4 +143,35 @@ public class FodsR455GetCellHorizontalAlignmentDedicatedTests
             }
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Type 3 — ODF semantic (fixture-based) — GI-FODS-NET-001 Phase 4c
+    // -------------------------------------------------------------------------
+
+    private static readonly string FixturesPath =
+        System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../../../tests/net/fods/Fixtures"));
+
+    [Fact]
+    public void GetCellHorizontalAlignment_FromFixture_ReturnsCenter_WhenStyleCe1Applied()
+    {
+        // fods-cell-styles.fods: Sheet1 row0 col0 has style ce1 with fo:text-align="center"
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-cell-styles.fods"));
+        Assert.Equal("center", doc.GetCellHorizontalAlignment("Sheet1", 0, 0));
+    }
+
+    [Fact]
+    public void GetCellHorizontalAlignment_FromFixture_ReturnsEnd_WhenStyleCe2Applied()
+    {
+        // fods-cell-styles.fods: Sheet1 row1 col0 has style ce2 with fo:text-align="end"
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-cell-styles.fods"));
+        Assert.Equal("end", doc.GetCellHorizontalAlignment("Sheet1", 1, 0));
+    }
+
+    [Fact]
+    public void GetCellHorizontalAlignment_FromFixture_ReturnsStart_WhenNoStyleApplied()
+    {
+        // fods-cell-styles.fods: Sheet1 row0 col1 has no explicit style → default "start"
+        var doc = FodsDocument.Load(System.IO.Path.Combine(FixturesPath, "fods-cell-styles.fods"));
+        Assert.Equal("start", doc.GetCellHorizontalAlignment("Sheet1", 0, 1));
+    }
 }
