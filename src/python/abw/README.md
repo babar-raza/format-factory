@@ -53,7 +53,7 @@ src/python/abw/
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T22:41:25+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-02T16:00:04+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-abw
 ```
@@ -61,7 +61,7 @@ pip install format-factory-abw
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T22:41:25+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T16:00:04+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | AbiWord Word Processing Document |
@@ -74,17 +74,17 @@ pip install format-factory-abw
 | Spec | AbiSource Project AWML 1.0 (outdated DTD) |
 | QName coverage | 0/3 implemented |
 | Source files | 19 |
-| Test files | 157 |
+| Test files | 161 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T22:41:25+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T16:00:04+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T22:41:25+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-02T16:00:04+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->

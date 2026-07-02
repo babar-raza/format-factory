@@ -52,7 +52,7 @@ src/python/fodp/
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-02T07:51:54+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-02T16:00:06+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-fodp
 ```
@@ -60,7 +60,7 @@ pip install format-factory-fodp
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T07:51:54+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T16:00:06+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Presentation |
@@ -73,17 +73,17 @@ pip install format-factory-fodp
 | Spec | OASIS ODF 1.3 |
 | QName coverage | 3/3 implemented |
 | Source files | 15 |
-| Test files | 36 |
+| Test files | 38 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T07:51:54+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T16:00:06+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-02T07:51:54+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-02T16:00:06+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
