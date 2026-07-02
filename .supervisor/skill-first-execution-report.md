@@ -15,20 +15,21 @@
 | 1 | inventory-commands | .supervisor/command-inventory.yaml | PASS (prompt-backed) |
 | 2 | detect-ad-hoc-execution | .supervisor/ad-hoc-execution-inventory.yaml | PASS (174 AD_HOC pre-policy, 7 GOVERNED) |
 | 3 | validate-skill-contracts | .supervisor/skill-contract-validation-results.yaml | **PASS** (0 FAIL, 0 WARN, 117 skills; re-run 2026-07-01 for full registry) |
-| 4 | normalize-skill-registry | .supervisor/skill-registry.yaml | PASS (65 skills — 62 active, 3 deprecated) |
+| 4 | normalize-skill-registry | .supervisor/skill-registry.yaml | PASS (117 active, 3 deprecated; re-run 2026-07-02 — was 62 active Jun 25) |
 | 5 | sync-skill-command-registry | .supervisor/skill-command-registry-sync-report.yaml | WARN (1 broken_pointer for deprecated check-mcp-status — acceptable) |
 | 6 | build-capability-routes | .supervisor/capability-routing-results.yaml | **PASS (30/30 ACTIVE — was 29/30)** |
-| 7 | detect-duplicate-skills | .supervisor/duplicate-skill-report.yaml | PASS (re-run 2026-07-01 for 100 active skills; 0 duplicates; 4 incorrect command_file refs fixed) |
+| 7 | detect-duplicate-skills | .supervisor/duplicate-skill-report.yaml | PASS (re-run 2026-07-02 for 117 active skills; 0 duplicates; 4 incorrect command_file refs fixed 2026-07-01) |
 | 8 | backfill-task-skill-ownership | .supervisor/taskcard-skill-backfill.yaml | PASS (updated 2026-06-29; 0 tasks missing skill binding) |
 | 9 | validate-mutation-guard | .supervisor/mutation-guard-results.yaml | PASS (V48 fires on RELEASE_GATE+architecture_only; blocks_sprint=True) |
 | 10 | run-skill-idempotency | .supervisor/skill-idempotency-proof.yaml | PASS (detect-ad-hoc-execution idempotent) |
 | 11 | collect-skill-execution-receipts | .supervisor/skill-execution-receipt-index.yaml | PASS (8 pilot receipts indexed; pilots A–H all PASS in reports/skill-first/pilots/) |
 | 12 | scan-residual-bypasses | .supervisor/residual-bypass-report.yaml | PASS (2 UNGOVERNED pre-policy; retroactive transcripts created) |
-| 13 | inventory-skills | .supervisor/skill-inventory.yaml | **PASS (65 skills — was 63)** |
+| 13 | inventory-skills | .supervisor/skill-inventory.yaml | **PASS (117 active, 120 total; re-run 2026-07-02 — was 65 skills Jun 25)** |
 
 **Overall:** PASS — capability routing 30/30 ACTIVE; 117 skills validated (Jul 01, 0 FAIL, 0 WARN); retroactive PDEP transcripts created
 
 > **CORRECTION (2026-07-01, TC-SFE2-000/convergence-iter-2):** Steps 7/8/9/11 were previously misclassified as "prompt-backed (SKIPPED)". All four steps ran during SKILL-FIRST-001 (2026-06-24) with complete Python inline implementations. Step 7 re-run 2026-07-01 for 100 active skills (was 62). Steps 8/9/11 artifacts confirmed PASS. SKILL-GAP-008 CLOSED (TC-SFE2-000-HOOK). SKILL-GAP-011 CLOSED (30/30 ACTIVE).
+> **CORRECTION (2026-07-02, TC-SRAR pilot rerun):** Steps 4/7/13 showed stale Jun-25 counts (65 skills) creating internal inconsistency with step 3 (117). Re-run 2026-07-02: step 4 = 117 active, step 7 = 117 checked (0 duplicates), step 13 = 117 active / 120 total. All three artifacts refreshed.
 
 ---
 
