@@ -1,0 +1,4993 @@
+{
+  "taxonomy_version": "1.0",
+  "generated_by": "TC-GI001-L4A-001",
+  "incident": "GI-FODS-NET-001",
+  "total_files": 654,
+  "summary": {
+    "Type1_guard_only": 249,
+    "Type2_in_memory": 402,
+    "Type3_odf_semantic": 0,
+    "Type4_persistence_roundtrip": 3,
+    "CategoryD_tests": 88,
+    "CategoryB_tests": 78
+  },
+  "notes": [
+    "Type1: Only guard-clause checks (null, negative index, ArgumentException). No semantic assertions.",
+    "Type2: Set* then Get* in same instance. No save/reload. Dict-backed state not tested for persistence.",
+    "Type3: Loads a Fixtures/*.fods file, asserts known ODF-grounded value. Target for Category B upgrade.",
+    "Type4: ToFodsXml() + LoadFromXml() roundtrip. Only 3 files currently.",
+    "CategoryD tests are candidates for deletion in Phase 3f (after Category D methods removed).",
+    "CategoryB tests are candidates for upgrade to Type3/Type4 in Phase 4c."
+  ],
+  "files": [
+    {
+      "file": "FodsC7C8RoundtripPreservationTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsC9ExportConversionReadinessTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsCreateEmptyRoundtripTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsCsvExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsDocumentEditTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsDocumentRoundtripTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsEditSaveTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsG11fMalformedXmlGuardTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsHtmlExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsJsonExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsMultiSheetHardeningTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsOdsExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsParserTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsPdfExporterTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsPngExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR100AddSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR100GetNumericColumnValuesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR101ExportSheetToMarkdownTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR101RemoveSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR102GetRowValuesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR103RenameSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR104CopySheetTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR104DogfoodCsvExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR104GetSheetByIndexTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR105DeleteRowsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR105DogfoodRowOpsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR105InsertRowTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR106ClearSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR106DogfoodSaveRoundtripTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR106GetColumnValuesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR107DogfoodCsvExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR107ExportSheetToCsvTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR107InsertRowWithValuesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR108DogfoodSaveEditRoundtripTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR108GetColumnCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR109DogfoodHasSheetRoundtripTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR109HasSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR110DogfoodCsvExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR110FindCellsByValueTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR110GetCellDataTypeTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR111DogfoodSaveRoundtripTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR111MergeCellsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR111SetCellFormulaTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR112CsvExportDogfoodTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR112GetUsedRangeTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR112SaveRoundtripDepthTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR113InsertRowDepthTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR113JsonDogfoodTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR113SortRowsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR114GetSheetStatsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR114SetCellStyleTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR115ExportCsvFileTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR115FilterRowsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR116ColumnAggregatesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR117XmlExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR118TsvExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR119ExportAllFormatsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR120SheetEnumerationTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR121FindCellsByValueTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR122GetCellDataTypeTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR123SortRowsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR124InsertRowWithValuesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR125GetCellFormulaTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR126GetCellStyleTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR127MultiSheetPipelineTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR128SheetRowsModelTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR129RowColumnCountConsistencyTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR130RenameAndCopySheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR131DocumentMetadataTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR132ExportSheetByNameTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR133ExportSheetJsonMarkdownNamedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR134ExportResultObjectTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR135OdsExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR136StreamLoadTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR137PdfExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR138PdfPathExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR139ParseResultMetadataTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR140PngPathExporterTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR141SpecTableCellTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR142SpecOfficeDocumentTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR143DocumentExceptionTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR144HtmlExportUtilsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR145ParseResultAndSheetInfoTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR146CsvExporterStringAndAllSheetsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR147GetColumnHeadersAndDeleteRowsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR148GetSheetByIndexTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR149GetSheetNamesAndSheetCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR150MergeCellsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR151OdsExportResultPropertiesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR152OdsExportBytesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR152PdfExportResultPropertiesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR153ParseExceptionAndResultTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR154FilterRowsAndAggregatesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR155GetRowValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR156GetCellCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR156GetSheetStatsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR157GetCellDataTypeAndFormulaTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR157GetColumnCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR158FindCellsByValueAndUsedRangeTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR158RemoveSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR159CopySheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR160SetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR161ClearSheetInsertRowAndMarkdownTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR161SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR162ExportJsonAndNumericColumnTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR162SortRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR163GetRowValuesAndGetCellCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR163RenameSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR164DeleteRowsAndColumnValuesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR164GetColumnHeadersDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR165DeleteRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR165LoadStreamAndGetSheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR166ExportSheetToHtmlTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR166MimeTypeAndOdfVersionTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR167MergeCellsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR167RenameSheetAndCopySheetTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR168GetSheetByIndexDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR169FindCellsAndGetUsedRangeTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR169GetSheetStatsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR170FilterRowsAndColumnAggregatesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR170HasSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR171GetNumericColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR171SetCellValueAndGetColumnHeadersTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR172ExportSheetToMarkdownDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR172SetCellFormulaAndStyleTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR173GetColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR173SortRowsAndMergeCellsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR174ExportAllFormatsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR174GetRowValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR175GetCellDataTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR175OdsExportTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR176CopySheetAndDeleteRowsTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR176ExportSheetToCsvFileDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR177FilterRowsDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR177GetRowValuesAndColumnCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR178GetColumnAggregatesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR178MimeTypeAndStreamLoadTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR179ExportSheetCsvTsvJsonTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR179GetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR180FilterRowsAndColumnValuesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR180GetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR181AddSheetAndManagementTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR181InsertRowDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR182InsertRowWithValuesAndSortTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR182SortRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR183ExportSheetToCsvFileAndHtmlTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR183RemoveSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR184GetRowValuesAndGetCellCountTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR184MergeCellsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR185ClearSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR185HasSheetAndGetUsedRangeTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR186FilterRowsAndGetColumnAggregatesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR186GetCellCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR187CopySheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR187ExportSheetToCsvAndGetCellDataTypeTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR188DeleteRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR188GetSheetByIndexAndColumnValuesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR189GetColumnHeadersDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR189MimeTypeAndOdfVersionTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR190GetSheetStatsAndColumnAggregatesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR190SetCellStyleDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR191ExportFirstSheetToCsvTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR191GetColumnHeadersAndInsertRowTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR192ExportAllSheetsToCsvTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR192GetRowCountAndCellCountTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR193RenameSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR193SetCellValueAndGetRowValuesTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR194ExportSheetToJsonAndMarkdownTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR194InsertRowDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR195ExportSheetToJsonDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR195MimeTypeAndStreamLoadTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR196GetCellStyleAndFormulaTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR196GetSheetByIndexDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR197ExportSheetToMarkdownDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR197HasColumnAndGetColumnTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR197SortRowsAndMergeCellsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR198GetColumnAggregatesAndSheetStatsTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR199FilterRowsAndInsertRowTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR200AddSheetAndRenameTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR201ToFodsXmlAndLoadStreamTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR202ExportSheetToTsvDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR202SaveToFileAndLoadTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR203DeleteRowsAndClearSheetTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR204ExportSheetToXmlDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR204GetColumnAggregatesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR205ExportSheetToCsvDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR205MergeCellsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR206CopySheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR206GetRowValuesAndInsertRowDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR207FilterRowsAndGetSheetNamesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR207SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR208SortRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR208ToFodsXmlAndOdfVersionDeepTests.cs",
+      "type": 4,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR209ClearSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR210GetCellDataTypeAndFormulaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR211DeleteRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR212GetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR212GetUsedRangeAndColumnCountDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR213HasColumnAndGetCellCountDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR214DeleteColumnDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR215ExportSheetToJsonAndMarkdownDeepTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR215GetCellDataTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR216ExportToCsvDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR216SaveAndLoadRoundTripDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR217AddColumnDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR218SetColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR219ExportSheetToCsvAndGetColumnAggregatesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR220SetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR221FilterRowsAndGetRowValuesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR221SetCellBoldDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR222InsertRowAndDeleteRowDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR222SetCellItalicDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR223GetColumnValuesAndDistinctDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR223SetCellFontSizeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontSize",
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR224SetCellFontNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontName",
+        "SetCellFontName"
+      ]
+    },
+    {
+      "file": "FodsR225GetCellColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetCellBackgroundColor"
+      ]
+    },
+    {
+      "file": "FodsR225GetRowCountAndColumnStatsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR226SetCellBorderDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR227ExportSheetAndFilterChainDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR228GetRowCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR229GetCellColorAndStyleDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR229GetCellCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR230GetUsedRangeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR231AddSheetAndSwitchSheetDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR232SetCellValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR233GetCellValueAndDocumentStatsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR233GetColumnCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR234GetSheetStatsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR235GetNumericColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR236ExportSheetToTsvAndHasColumnDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR237GetStringColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR237SetCellFormattingAndGetCellFormulaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR238GetCellFormulaValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR238SortRowsAndGetUsedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR239SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR240AddRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR241DeleteRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR241ExportToJsonAndFilterRowsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR242InsertRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR243GetColumnNamesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR243GetRowCountAndExportSheetToMarkdownDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR244RenameSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR245ClearSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR245GetSheetNamesAndDeleteRowDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR246ExportSheetToJsonDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR247ExportSheetToCsvDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR247SetColumnWidthAndGetCellStyleDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetColumnWidth",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR248ImportFromCsvDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR249GetFormulaAndSetFormulaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR249GetRowCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR250HasColumnDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR250MergeSheetAndCopyRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR251AddColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR251ExportSheetToCsvAndGetColumnNamesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR252GetUsedRangeDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR253DeleteColumnAndFilterRowsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR253SortRowsDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR254SetColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR255GetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR255SortSheetAndGetCellCountDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR256AddSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR256GetSheetCountAndExportToJsonDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR257GetColumnHeadersAndExportToJsonDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR257GetDistinctValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR258FilterRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR258GetRowCountAndInsertRowDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR259ClearSheetAndGetSheetStatsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR259GetRowValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR260GetNumericColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR261GetColumnAggregatesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR262RenameSheetAndGetCellRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR263GetCellValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR264DeleteColumnDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR264FreezeRowsAndGetNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR265AutoFilterAndGetFilteredRowsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR265SortRowsDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR266AddColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR267ExportToCsvDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR268GetRowCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR268GetSheetNamesAndAddSheetDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR269GetColumnValuesDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR270MergeSheetsAndGetCellCountDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR270SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR271GetSheetIndexDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR272SetCellBackgroundDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR273GetCellRangeAndExportDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR274CopySheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR275ClearSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR276ExportToMarkdownAndGetColumnHeadersDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR277RenameSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR278GetFormulasAndSetFormulaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR279DeleteRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR280SetCellCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR281AddRowToSheetAndDeleteRowDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR282GetColumnCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR283ClearCellAndIsCellEmptyDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR283SetColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR284SetRowHeightDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetRowHeight",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR285GetCellValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR286GetCellTypeAndSetCellColorDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR287InsertRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR288ExportToJsonDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR289GetCellTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR289GetColumnWidthAndSetColumnWidthDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "GetRowHeight",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR290SetSheetVisibleDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR291GetCellCommentAndSetCellCommentDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR292GetRowCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR293GetNamedRangesAndAddNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR294GetSheetNamesDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR295AddColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR295GetConditionalFormatsAndProtectionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR296SetCellColorDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR297SetCellFontDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR298GetAutoFilterRangeAndFreezeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR299MergeSheetsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR300DeleteSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR301GetChartCountAndAddChartDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR302SetCellBorderDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR303FreezePanesDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR303GetPageBreakCountAndPrintAreaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR304SetCellAlignmentDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR305SetCellWrappingDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR306GetNamedRangeCountAndAddNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR306SetCellNumberFormatDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR307GetCellValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR307GetCommentCountAndAddCommentDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCommentCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR308GetColumnCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR308GetDataValidationCountAndAddValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR309SetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR310GetHyperlinkCountAndAddHyperlinkDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetHyperlinkCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR310RenameColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR311DeleteColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR312GetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR313GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR313SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR314AddNamedRangeDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR315GetChartCountAndAddChartDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR315GetNamedRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR316SortSheetDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR317ExportToCsvDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR317GetPivotTableCountAndAddPivotTableDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR318ExportToHtmlDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR319ExportToJsonDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR320GetNamedRangeCountAndAddNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR320GetSheetNamesDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR321GetRowCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR322AddRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR322GetDataValidationCountAndAddDataValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR323DeleteRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR324GetCellCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR324GetSparklineCountAndAddSparklineDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR325MergeSheetsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR326ExportToXmlDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR327GetColumnHeadersDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR327GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR328FilterRowsDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR329GetCellStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR329GetChartCountAndAddChartDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR330GetCellNumberFormatDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR331GetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR331GetFilterCountAndAddFilterDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR332SetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR333GetCellCommentDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR333GetPivotTableCountAndAddPivotTableDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR334SetColumnWidthDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR335GetColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR335GetFreezePaneAndSplitPositionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR336SetRowHeightDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR337GetDataValidationCountAndAddDataValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR337GetRowHeightDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetRowHeight",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR338AddCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR339GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR340GetNamedRangeDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR340GetSheetProtectionAndSetSheetProtectionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR341GetGroupCountAndAddGroupDeepTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetGroupCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR342GetCellBackgroundDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR343GetFilterCountAndAddAutoFilterDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR344SetCellBorderDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR345GetCellFontDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR345GetPivotTableCountAndAddPivotTableDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR346SetCellFontSizeDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR347GetSparklineCountAndAddSparklineDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR347RenameSheetDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR348GetCellAlignmentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR349GetCellCommentCountAndAddCellCommentDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR349SetCellAlignmentDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR350SetCellFontColorDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "SetCellFontColor"
+      ]
+    },
+    {
+      "file": "FodsR351GetCellFontColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontColor",
+        "SetCellFontColor"
+      ]
+    },
+    {
+      "file": "FodsR352GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR353GetCellBorderDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR354GetDataValidationCountAndAddDataValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR355GetCellFormulaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR356GetCellCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR356GetPageBreakCountAndAddPageBreakDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR357GetCellStyleNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellStyleName"
+      ]
+    },
+    {
+      "file": "FodsR358GetSheetRowCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR359GetPrintAreaCountAndSetPrintAreaDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR359GetSheetColumnCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR360GetNamedRangeCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR361GetNamedRangeCountAndAddNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR362GetCellNumberFormatDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR363GetCellHyperlinkDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR364GetFreezeRowCountAndSetFreezePanesDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR365GetCellTooltipDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR366GetSheetProtectedDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR367GetSheetHiddenDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR367GetTabColorAndSetTabColorDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR368GetSheetTabColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetTabColor",
+        "SetSheetTabColor"
+      ]
+    },
+    {
+      "file": "FodsR369GetColumnWidthAndSetColumnWidthDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR370GetCellDataTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR371GetCellAlignmentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR372GetRowHeightAndSetRowHeightDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetRowHeight",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR373GetCellWrapTextDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR374GetCellFontColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontColor",
+        "SetCellFontColor"
+      ]
+    },
+    {
+      "file": "FodsR375GetCellBorderAndSetCellBorderDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR376GetCellFontSizeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontSize",
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR377GetCellFontNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontName",
+        "SetCellFontName"
+      ]
+    },
+    {
+      "file": "FodsR378GetCellAlignmentAndSetCellAlignmentDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR378GetCellFontBoldDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR379GetCellFontItalicDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR380GetCellFontSizeAndSetCellFontSizeDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontSize",
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR380GetCellFontUnderlineDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR381GetCellFontStrikethroughDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR382GetCellBackgroundColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBackgroundColor",
+        "SetCellBackgroundColor"
+      ]
+    },
+    {
+      "file": "FodsR382GetCellHyperlinkAndSetCellHyperlinkDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR383GetCellMergeStatusDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR384GetCellCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR384GetCellTextColorAndSetCellTextColorDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR385GetCellTooltipDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR386GetCellBackgroundColorAndSetCellBackgroundColorDeepTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBackgroundColor",
+        "SetCellBackgroundColor"
+      ]
+    },
+    {
+      "file": "FodsR386GetSheetProtectionDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR387GetCellNumberFormatDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR388GetCellCommentAndAddCellCommentDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR388GetCellTextRotationDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR389GetCellIndentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR390GetCellVerticalAlignDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR391GetNamedRangeAndSetNamedRangeDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR392GetNamedRangeDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR393GetCellErrorValueDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR394GetCellFormulaTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR395GetCellValidationAndSetCellValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR396GetCellValidationTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR397GetSheetRowCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR398GetCellUrlAndSetCellUrlDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR399GetCellUrlDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR400GetSheetProtectionAndSetSheetProtectionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR401GetSheetColumnCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR402GetCellHyperlinkDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR403GetCellFontNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontName",
+        "SetCellFontName"
+      ]
+    },
+    {
+      "file": "FodsR404GetCellFontSizeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontSize",
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR405GetCellBoldDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR405GetConditionalFormattingAndSetConditionalFormattingDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR406GetCellItalicDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR407GetCellCommentAuthorAndGetCellCommentDateDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR407GetCellUnderlineDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellUnderline",
+        "SetCellUnderline"
+      ]
+    },
+    {
+      "file": "FodsR408GetCellStrikethroughDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellStrikethrough",
+        "SetCellStrikethrough"
+      ]
+    },
+    {
+      "file": "FodsR409GetCellTextWrapDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR410GetAutoFilterStateAndSetAutoFilterDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR410GetCellHorizontalAlignDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR411GetSheetVisibilityDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetVisibility"
+      ]
+    },
+    {
+      "file": "FodsR412GetSheetTabColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetTabColor",
+        "SetSheetTabColor"
+      ]
+    },
+    {
+      "file": "FodsR413GetCellBackgroundColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBackgroundColor",
+        "SetCellBackgroundColor"
+      ]
+    },
+    {
+      "file": "FodsR413GetCellDataValidationAndSetCellDataValidationDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR414GetCellCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR415GetCellTooltipAndSetCellTooltipDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR416GetCellNumberFormatDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR417GetCellBorderStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBorderStyle",
+        "SetCellBorderStyle"
+      ]
+    },
+    {
+      "file": "FodsR417GetCellHyperlinkAndSetCellHyperlinkDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR418GetSheetRowCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR419GetSheetFreezePaneDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR420GetSheetZoomLevelDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetZoomLevel",
+        "SetSheetZoomLevel"
+      ]
+    },
+    {
+      "file": "FodsR421GetCellTextRotationDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR421GetSheetNameAndSetSheetNameDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR422GetCellVerticalAlignDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR423GetDocumentAuthorAndSetDocumentAuthorDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR423GetSheetPrintAreaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetPrintArea",
+        "SetSheetPrintArea"
+      ]
+    },
+    {
+      "file": "FodsR424GetDocumentTitleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR425GetDocumentAuthorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR425GetWorksheetProtectionAndSetWorksheetProtectionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR426GetDocumentDescriptionDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR427GetDocumentSubjectDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR428GetDocumentKeywordsAndSetDocumentKeywordsDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR428GetDocumentKeywordsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR429GetDocumentCategoryAndSetDocumentCategoryDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR429GetDocumentCategoryDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR430GetDocumentManagerDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR431GetCreationDateAndLastModifiedDateDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR431GetDocumentRevisionDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR432GetCellFormulaResultDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR433GetDocumentDescriptionAndSetDocumentDescriptionDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR434GetCellDataTypeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR435GetSheetVisibilityDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetVisibility"
+      ]
+    },
+    {
+      "file": "FodsR436GetSheetCountAndCellValueDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR437GetSheetCountAndDocumentTitleDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR438GetCellValueAndSetCellValueDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR439GetSheetCountAndCellValueDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR440GetCellValueAndDocumentTitleDeepTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR441GetCellStyleNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellStyleName"
+      ]
+    },
+    {
+      "file": "FodsR442GetColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR443GetRowHeightDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetRowHeight",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR444GetSheetColumnCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR445GetCellMergeInfoDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellMergeInfo"
+      ]
+    },
+    {
+      "file": "FodsR446GetCellProtectionDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellProtection",
+        "SetCellProtection"
+      ]
+    },
+    {
+      "file": "FodsR447GetSheetTabColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetTabColor",
+        "SetSheetTabColor"
+      ]
+    },
+    {
+      "file": "FodsR448GetCellIndentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR449GetCellTextRotationDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR450GetCellShrinkToFitDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellShrinkToFit",
+        "SetCellShrinkToFit"
+      ]
+    },
+    {
+      "file": "FodsR451GetSheetPrintAreaDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetPrintArea",
+        "SetSheetPrintArea"
+      ]
+    },
+    {
+      "file": "FodsR452GetSheetFreezeRowsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetFreezeRow",
+        "GetSheetFreezeRows",
+        "SetSheetFreezeRows"
+      ]
+    },
+    {
+      "file": "FodsR453GetSheetFreezeColumnsDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetFreezeColumn",
+        "GetSheetFreezeColumns",
+        "SetSheetFreezeColumns"
+      ]
+    },
+    {
+      "file": "FodsR454GetSheetZoomLevelDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetZoomLevel",
+        "SetSheetZoomLevel"
+      ]
+    },
+    {
+      "file": "FodsR455GetCellHorizontalAlignmentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellHorizontalAlignment",
+        "SetCellHorizontalAlignment"
+      ]
+    },
+    {
+      "file": "FodsR456GetCellVerticalAlignmentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellVerticalAlignment",
+        "SetCellVerticalAlignment"
+      ]
+    },
+    {
+      "file": "FodsR457GetCellBorderStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBorderStyle",
+        "SetCellBorderStyle"
+      ]
+    },
+    {
+      "file": "FodsR458GetCellFontSizeDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontSize",
+        "SetCellFontSize"
+      ]
+    },
+    {
+      "file": "FodsR459GetCellFontNameDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontName",
+        "SetCellFontName"
+      ]
+    },
+    {
+      "file": "FodsR460GetCellFontColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontColor",
+        "SetCellFontColor"
+      ]
+    },
+    {
+      "file": "FodsR461GetCellBackgroundColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellBackgroundColor",
+        "SetCellBackgroundColor"
+      ]
+    },
+    {
+      "file": "FodsR462GetCellNumberFormatDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR463GetCellCommentDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR464GetSheetTabColorDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetTabColor",
+        "SetSheetTabColor"
+      ]
+    },
+    {
+      "file": "FodsR465GetSheetVisibilityDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetVisibility",
+        "SetSheetVisibility"
+      ]
+    },
+    {
+      "file": "FodsR466GetCellWrapTextDedicatedTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR467GetCellIndentLevelDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellIndentLevel",
+        "SetCellIndentLevel"
+      ]
+    },
+    {
+      "file": "FodsR468GetCellRotationAngleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellRotationAngle",
+        "SetCellRotationAngle"
+      ]
+    },
+    {
+      "file": "FodsR469GetSheetProtectionPasswordDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetProtectionPassword",
+        "SetSheetProtectionPassword"
+      ]
+    },
+    {
+      "file": "FodsR470GetCellStrikethroughDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellStrikethrough",
+        "SetCellStrikethrough"
+      ]
+    },
+    {
+      "file": "FodsR471GetCellUnderlineDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellUnderline",
+        "SetCellUnderline"
+      ]
+    },
+    {
+      "file": "FodsR472GetCellFontStyleDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontStyle",
+        "SetCellFontStyle"
+      ]
+    },
+    {
+      "file": "FodsR473GetCellColumnWidthDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellColumnWidth",
+        "SetColumnWidth"
+      ]
+    },
+    {
+      "file": "FodsR474GetCellRowHeightDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellRowHeight",
+        "SetRowHeight"
+      ]
+    },
+    {
+      "file": "FodsR475GetCellMergeSpanDedicatedTests.cs",
+      "type": 2,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellMergeSpan",
+        "SetCellMergeSpan"
+      ]
+    },
+    {
+      "file": "FodsR476GetSheetMaxRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetMaxRow"
+      ]
+    },
+    {
+      "file": "FodsR477GetSheetMaxColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetMaxColumn"
+      ]
+    },
+    {
+      "file": "FodsR478GetSheetFreezeRowDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetFreezeRow"
+      ]
+    },
+    {
+      "file": "FodsR479GetSheetFreezeColumnDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetFreezeColumn"
+      ]
+    },
+    {
+      "file": "FodsR480GetSheetZoomLevelDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetZoomLevel"
+      ]
+    },
+    {
+      "file": "FodsR481GetSheetRightToLeftDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetRightToLeft"
+      ]
+    },
+    {
+      "file": "FodsR482GetSheetShowGridDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetShowGrid"
+      ]
+    },
+    {
+      "file": "FodsR483GetSheetShowHeadersDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetShowHeaders"
+      ]
+    },
+    {
+      "file": "FodsR484GetSheetPrintAreaDedicatedTests.cs",
+      "type": 1,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetSheetPrintArea"
+      ]
+    },
+    {
+      "file": "FodsR485GetNamedRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR486GetDataValidationCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR487GetConditionalFormatCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR488GetChartCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR489GetPivotTableCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR490GetFilterCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR491GetSortCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSortCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR492GetGroupCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetGroupCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR493GetMacroCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetMacroCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR494GetSharedFormulaCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSharedFormulaCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR495GetAnnotationCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetAnnotationCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR496GetShapeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetShapeCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR497GetHyperlinkCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetHyperlinkCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR498GetCommentCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCommentCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR499GetFormulaErrorCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFormulaErrorCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR500GetExternalLinkCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetExternalLinkCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR501GetExternalDataConnectionCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetExternalDataConnectionCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR502GetTableStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetTableStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR503GetCellStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCellStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR504GetColumnStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetColumnStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR505GetRowStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetRowStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR506GetPageStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetPageStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR507GetGraphicStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetGraphicStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR508GetNumberStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetNumberStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR509GetTextStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetTextStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR510GetDrawingStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDrawingStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR511GetPresentationStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetPresentationStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR512GetChartStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR513GetDateStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDateStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR514GetTimeStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetTimeStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR515GetBooleanStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetBooleanStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR516GetCurrencyStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCurrencyStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR517GetPercentageStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetPercentageStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR518GetFractionStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFractionStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR519GetScientificStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetScientificStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR520GetFontFaceCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFontFaceCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR521GetDatabaseRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDatabaseRangeCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR522GetLabelRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetLabelRangeCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR523GetDocumentProtectionCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDocumentProtectionCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR524GetSparklineGroupCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSparklineGroupCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR525GetDataPilotCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDataPilotCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR526GetConsolidationCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetConsolidationCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR527GetCellAddressCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCellAddressCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR528GetColumnGroupCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetColumnGroupCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR529GetRowGroupCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetRowGroupCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR530GetNamedRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR531GetDataBarCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetDataBarCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR532GetIconSetCountDedicatedTests.cs",
+      "type": 2,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetIconSetCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR533GetColorScaleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetColorScaleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR534GetConditionalFormatCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR535GetPivotTableCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR536GetSparklineCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR537GetValidationRuleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetValidationRuleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR538GetProtectedRangeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetProtectedRangeCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR539GetFilterCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR540GetSortStateCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSortStateCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR541GetScenarioCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetScenarioCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR542GetConsolidationCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetConsolidationCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR543GetSheetViewCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSheetViewCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR544GetTableStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetTableStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR545GetCellStyleCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCellStyleCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR546GetFontCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFontCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR547GetNumberFormatCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetNumberFormatCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR548GetBorderCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetBorderCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR549GetFillCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFillCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR550GetAlignmentCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetAlignmentCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR551GetProtectionCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetProtectionCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR552GetRowCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR553GetColumnCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR554GetCellCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR555GetMergedCellCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetMergedCellCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR556GetFormulaCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFormulaCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR557GetCommentCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCommentCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR558GetHyperlinkCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetHyperlinkCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR559GetImageCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetImageCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR560GetChartCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetChartCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR561GetMacroCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetMacroCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR562GetEventHandlerCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetEventHandlerCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR563GetConnectionCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetConnectionCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR564GetQueryTableCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetQueryTableCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR565GetCustomPropertyCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCustomPropertyCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR566GetShapeCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetShapeCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR567GetTextBoxCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetTextBoxCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR568GetButtonCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetButtonCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR569GetCheckBoxCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetCheckBoxCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR570GetListBoxCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetListBoxCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR571GetComboBoxCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetComboBoxCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR572GetSpinnerCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSpinnerCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR573GetSliderCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetSliderCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR574GetRadioButtonCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetRadioButtonCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR575GetScrollBarCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetScrollBarCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR576GetProgressBarCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetProgressBarCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR577GetGroupBoxCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetGroupBoxCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR578GetFrameCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetFrameCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR579GetNavigatorCountDedicatedTests.cs",
+      "type": 1,
+      "category_group": "D",
+      "category_d_apis": [
+        "GetNavigatorCount"
+      ],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR73MergedCellParityTest.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR86ExporterHardeningTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR87ProductDeepening.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR88MultiSheetCsvTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR89InMemoryCsvTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR91SetCellValueTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR92GetSheetNamesTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR93GetColumnHeadersTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR94ExportSheetToHtmlTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR95ExportSheetToJsonTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR96GetRowCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR97GetCellCountTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR98SaveAfterEditTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsR99ExportQualityTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsRealFileTests.cs",
+      "type": 4,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsRoundtripMutationTests.cs",
+      "type": 4,
+      "category_group": "B",
+      "category_d_apis": [],
+      "category_b_apis": [
+        "GetCellFontColor",
+        "SetCellFontColor"
+      ]
+    },
+    {
+      "file": "FodsRoundtripOracleTests.cs",
+      "type": 2,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    },
+    {
+      "file": "FodsStreamLoadTests.cs",
+      "type": 1,
+      "category_group": "Other",
+      "category_d_apis": [],
+      "category_b_apis": []
+    }
+  ]
+}
