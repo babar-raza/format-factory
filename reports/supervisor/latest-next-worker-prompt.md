@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-R1225-MEGA-TRAIN-001
-# Generated: 2026-07-02T12:51:33.405285
-# Source: Supervisor autonomous-cycle review of r1224-fodp-shape-props-20260702
+# FORMAT-FACTORY-R1226-MEGA-TRAIN-001
+# Generated: 2026-07-02T12:58:30.001930
+# Source: Supervisor autonomous-cycle review of r1225-odt-composition-props-20260702
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -26,11 +26,11 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R1225-MEGA-TRAIN-001
-- Prior sprint: r1224-fodp-shape-props-20260702
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Sprint ID: FORMAT-FACTORY-R1226-MEGA-TRAIN-001
+- Prior sprint: r1225-odt-composition-props-20260702
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Autonomous continue: True
 
 ---
 
@@ -607,7 +607,7 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 219x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 6x, last: r556-zst-skippable)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 341x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 336x, last: r1224-fodp-shape-props-20260702)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 337x, last: r1224-fodp-shape-props-20260702)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 25x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 5x, last: r561-csv-tsv-ndjson-odt)

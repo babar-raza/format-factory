@@ -1,0 +1,29 @@
+{
+  "skill_id": "verify-dogfood-path",
+  "skill_version": "1.2",
+  "executed_at": "2026-07-02",
+  "sprint": "ff-gates-advancement-exec-20260702",
+  "source_format": "ODT",
+  "target_format": "ODT",
+  "dogfood_lane": "ODT -> ODT roundtrip via odt_from_text (FF write backend)",
+  "dogfood_status": "IMPLEMENTED",
+  "library_import_check": "PASS (import odt succeeds in venv)",
+  "test_file": "tests/python/odt/test_r1226_odt_dogfood_roundtrip.py",
+  "r_number": "R1226",
+  "test_results": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "duration_seconds": 2.0
+  },
+  "dogfood_violations": [],
+  "external_library_check": "PASS (PIL/cv2/openpyxl/imageio/skimage absent from odt.odt_parser and odt.odt_writer)",
+  "evidence": {
+    "read_api": "parse_odt, odt_word_count, odt_paragraph_count, odt_total_text_length",
+    "write_api": "odt_from_text (FF write backend)",
+    "sample_source": "samples/by-format/odt/valid/minimal-document.odt",
+    "output_validated": "zipfile.is_zipfile=True, contains mimetype + content.xml, size >= 200 bytes"
+  },
+  "verdict": "IMPLEMENTED",
+  "notes": "First ODT dogfood test. No prior dogfood test existed for ODT. Proves full read+write pipeline clean of external dependencies."
+}

@@ -1,0 +1,100 @@
+close_task_result:
+  prompt_path: .supervisor/prompts/prompt4-close-task.md
+  prompt_hash: 3196a5bd52bd6e03
+  invocation_id: cert-integration-close-004
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  plan_id: lively-drifting-starfish
+  plan_revision: "4"
+  plan_hash: 8f3a294c6e6c18a8
+
+  # ── Closure Precondition Checks ──
+  preconditions:
+    plan_identity_matches: true
+    no_material_findings_remain: true
+    no_actionable_findings_remain: true
+    no_mandatory_taskcard_open: true
+    no_required_proof_gap: true
+    generated_outputs_fresh: true
+    validation_checks_pass: true
+    drift_checks_pass: true
+    regression_checks_pass: true
+    idempotency_checks_pass: true
+    evidence_records_exist: true
+    evidence_agrees_with_state: true
+
+  # ── Taskcard Status ──
+  taskcards_closed:
+    - TC-CERT-I-001  # Baseline capture
+    - TC-CERT-I-002  # Individual tool validation
+    - TC-CERT-I-003  # Integration tests
+    - TC-CERT-I-004  # Pilot re-execution (FODS/CSV/ZST)
+    - TC-CERT-I-005  # Report audit
+    - TC-CERT-I-006  # Gap reconciliation
+    - TC-CERT-I-007  # Supervisor wiring verification
+    - TC-CERT-I-008  # CERT-DASHBOARD-001 fix
+    - TC-CERT-I-009  # Recertification (20/20)
+    - TC-CERT-I-010  # L28 layer plan creation
+    - TC-CERT-I-011  # All 7 registry updates
+    - TC-CERT-I-012  # Report integrity audit
+    - TC-CERT-I-013  # Documentation (layer plan)
+    - TC-CERT-I-014  # Full portfolio re-audit
+    - TC-CERT-I-015  # Idempotency verification
+    - TC-CERT-I-016  # Skill registration (certification-dashboard)
+    - TC-CERT-I-017  # Governance validators V88+V89
+    - TC-CERT-I-018  # Fix test_tool_pipeline.py fixture cascade (9/9 pass)
+    - TC-CERT-I-019  # Fix test_assertion_scorer_exit_0_when_no_weak (clean fixture)
+    - TC-CERT-I-020  # Register remaining 8 certification tools as skills
+    # Layer tasks
+    - TC-CERT-L-001  # Layer plan creation
+    - TC-CERT-L-002  # Dashboard fix + 20/20 verification
+  taskcards_not_closed:
+    []
+  requirements_reconciled: true
+  queue_empty_and_valid: true
+  continuation_disabled: true
+
+  # ── Convergence Evidence ──
+  convergence_iterations: 1
+  iteration_1_findings: "TC-CERT-I-018/019/020 executed and closed; 9/9 tests pass; 9/9 skills registered"
+  final_audit_verdict: SPRINT_ALL_GREEN_VERIFIED
+  all_green_candidate_valid: true
+
+  # ── Test Results ──
+  test_results:
+    certification_pipeline_tests: "9 passed, 0 failed"
+    certification_report_integrity: "459 passed, 0 failed"
+    governance_validators_all: "163 passed, 0 failed"
+    total: "631 passed, 0 failed"
+    idempotency: PASS
+    regression: PASS
+
+  # ── Commit Status ──
+  commit_status: COMMITTED
+  commit_hash: 55918a8f
+  commit_message: "fix(certification): close TC-CERT-I-018/019/020 — all 9 pipeline tests pass, 9/9 skills registered"
+
+  # ── Changed Files ──
+  changed_files:
+    - tests/certification/test_tool_pipeline.py          # TC-CERT-I-018/019 fixes
+    - .claude/commands/certification-assertion-scorer.md  # TC-CERT-I-020
+    - .claude/commands/certification-dotnet-assertion-scorer.md  # TC-CERT-I-020
+    - .claude/commands/certification-exception-checker.md  # TC-CERT-I-020
+    - .claude/commands/certification-fix-weak-assertions.md  # TC-CERT-I-020
+    - .claude/commands/certification-generate-exception-tests.md  # TC-CERT-I-020
+    - .claude/commands/certification-generate-security-tests.md  # TC-CERT-I-020
+    - .claude/commands/certification-inventory-extractor.md  # TC-CERT-I-020
+    - .claude/commands/certification-stub-detector.md    # TC-CERT-I-020
+    - plans/.claude/lively-drifting-starfish.md          # Taskcards CLOSED, closeout criteria updated
+    - plans/master-plan.md                               # v6.4 entry
+    - reports/certification/certification-report.md      # Regenerated
+    - reports/certification-integration/final-all-green-candidate-v2.yaml  # All-green candidate
+
+  # ── Closure Record ──
+  closure_record_path: reports/certification-integration/close-task-result-v2.yaml
+  closure_record_valid: true
+  terminal_state_written: true
+  terminal_state_path: .local/supervisor/active-plan-lock.json
+
+  contradictions: []
+
+  verdict: CLOSE_TASK_ACCEPTED

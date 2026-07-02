@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-07-01T18:13:07.144317
-# Source: Supervisor autonomous-cycle review of ff-sprint-s428-dotnet-deepening-20260701
+# FORMAT-FACTORY-R1226-MEGA-TRAIN-001
+# Generated: 2026-07-02T12:58:30.001930
+# Source: Supervisor autonomous-cycle review of r1225-odt-composition-props-20260702
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -26,11 +26,11 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: ff-sprint-s428-dotnet-deepening-20260701
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Sprint ID: FORMAT-FACTORY-R1226-MEGA-TRAIN-001
+- Prior sprint: r1225-odt-composition-props-20260702
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Autonomous continue: True
 
 ---
 
@@ -599,33 +599,35 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 158x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 127x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 92x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 162x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 129x, last: r556-zst-skippable)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 94x, last: r556-zst-skippable)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 126x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 209x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 4x, last: ff-toml-r120-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 338x, last: system-healing-product-acquisition-unblock-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 311x, last: ff-sprint-s427-dotnet-deepening-20260701)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 130x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 219x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 6x, last: r556-zst-skippable)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 341x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 337x, last: r1224-fodp-shape-props-20260702)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 23x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 4x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 25x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 5x, last: r561-csv-tsv-ndjson-odt)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 7x, last: convergence-test-repair-20260624-999bb7)
 - ESCALATED FAILURE (GRADING_FALSE_POSITIVE): Item declared completed but no evidence found. Provide evidence at declared paths. (seen 110x, last: FORMAT-FACTORY-LAYER-AUDIT-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 4x, last: FORMAT-FACTORY-PQ-EXECUTE-001)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 6x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 14x, last: cert-integration-healing)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 9x, last: r561-csv-tsv-ndjson-odt)
 - ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 26x, last: system-healing-product-acquisition-unblock-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 38x, last: ff-sprint-s428-dotnet-deepening-20260701)
-- WARNING: 23 unresolved failures in failure memory
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dotnet_loc_cap_failed (seen 5x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 47x, last: r1224-fodp-shape-props-20260702)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dependency_direction_failed (seen 5x, last: r560-xcf-gnumeric-abw-dif)
+- WARNING: 25 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 484x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
-- **TEST_FAILURE** (seen 339x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
+- **SPRINT_CLOSEOUT_PATTERN** (seen 500x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **TEST_FAILURE** (seen 340x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
 ## Spec-Parity Requirements (from skill registry)
 

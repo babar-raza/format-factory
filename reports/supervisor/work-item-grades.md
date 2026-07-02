@@ -1,14 +1,14 @@
 # Work Item Grades
-Sprint: r1224-fodp-shape-props-20260702
-Generated: 2026-07-02T12:49:52.308190
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: r1225-odt-composition-props-20260702
+Generated: 2026-07-02T12:57:05.605488
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| WI-R1224-FODP-SHAPE-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-R1225-ODT-COMP-001 | ACCEPTED_VERIFIED |  |
 
 ## Summary
 - Accepted: 1
-- Rework: 1
+- Rework: 0
 - Overclaimed: 0
-- Autonomous Continue: False
+- Autonomous Continue: True

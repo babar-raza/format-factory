@@ -1,0 +1,28 @@
+{
+  "skill_id": "add-python-object-model-feature",
+  "invocation_id": "r563-sylk-toml-properties-001",
+  "sprint_id": "R563",
+  "formats": ["sylk", "toml"],
+  "feature_names": {
+    "sylk": ["numeric_cell_count", "string_cell_count", "nonempty_cell_count"],
+    "toml": ["is_flat", "has_booleans", "table_count"]
+  },
+  "spec_fact_refs": ["FACT-SYLK-008", "FACT-SYLK-016", "FACT-TOML-002", "FACT-TOML-004"],
+  "source_files": [
+    "src/python/sylk/models.py",
+    "src/python/toml/models.py"
+  ],
+  "test_files": [
+    "tests/python/sylk/test_r563_sylk_cell_type_properties.py",
+    "tests/python/toml/test_r563_toml_structural_properties.py"
+  ],
+  "test_count": 39,
+  "test_result": "39 passed, 0 failed",
+  "ledger_entries": [
+    "R563-GOVERNED-PYTHON-SYLK-CELL-TYPE-PROPS-001",
+    "R563-GOVERNED-PYTHON-TOML-STRUCTURAL-PROPS-001"
+  ],
+  "site_packages_synced": true,
+  "idempotency_key": "r563-sylk-toml-object-model-properties-20260702",
+  "invoked_at": "2026-07-02T04:00:00Z"
+}

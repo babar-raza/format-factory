@@ -1,7 +1,7 @@
 # Materialized Evidence Review
-# Run ID: r1224-fodp-shape-props-20260702
-# Sprint: r1224-fodp-shape-props-20260702
-# Generated: 2026-07-02T12:49:54.414923
+# Run ID: r1226-toml-class-props-20260702
+# Sprint: r1226-toml-class-props-20260702
+# Generated: 2026-07-02T13:03:43.919404
 
 ## Materialization Summary
 
@@ -13,10 +13,10 @@
 
 | Item | Grade | Note |
 |------|-------|------|
-| WI-R1224-FODP-SHAPE-001 | ACCEPTED | All 2 evidence path(s) verified |
+| WI-R1226-TOML-CLASS-001 | ACCEPTED | All 2 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\r1224-fodp-shape-props-20260702\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\r1226-toml-class-props-20260702\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\r1224-fodp-shape-props-20260702\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\r1226-toml-class-props-20260702\source-change-diffs.patch

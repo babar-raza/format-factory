@@ -1,0 +1,65 @@
+{
+  "skill_id": "add-roundtrip-test",
+  "invocation_batch": ["odt", "pgm", "qoi", "xcf"],
+  "language": "python",
+  "session": "22efecc290b9",
+  "plan_taskcard": "TC-TEST-001",
+  "results": [
+    {
+      "format_id": "odt",
+      "edit_operation": "ReplaceText",
+      "test_file": "tests/python/odt/test_odt_sample_roundtrip.py",
+      "test_count": 6,
+      "pass_count": 6,
+      "fail_count": 0,
+      "verdict": "PASS",
+      "roundtrip_verified": true,
+      "notes": "Full roundtrip via write_odt() + OdtModelDocument.from_file(). Edit operation ReplaceText verified in reloaded model."
+    },
+    {
+      "format_id": "pgm",
+      "edit_operation": "SetPixelGrayValue",
+      "test_file": "tests/python/pgm/test_pgm_sample_roundtrip.py",
+      "test_count": 6,
+      "pass_count": 6,
+      "fail_count": 0,
+      "verdict": "PASS",
+      "roundtrip_verified": true,
+      "notes": "Full roundtrip via write_pgm() + PgmDocument.from_file(). SetPixelGrayValue edit verified in reloaded parsed image."
+    },
+    {
+      "format_id": "qoi",
+      "edit_operation": "SetPixelColor",
+      "test_file": "tests/python/qoi/test_qoi_sample_roundtrip.py",
+      "test_count": 6,
+      "pass_count": 6,
+      "fail_count": 0,
+      "verdict": "PASS",
+      "roundtrip_verified": true,
+      "notes": "Full roundtrip via encode_qoi_to_file() + QoiDocument.from_file(). SetPixelColor (green channel) verified in reloaded image."
+    },
+    {
+      "format_id": "xcf",
+      "edit_operation": "N/A (read-only format)",
+      "test_file": "tests/python/xcf/test_xcf_sample_roundtrip.py",
+      "test_count": 8,
+      "pass_count": 8,
+      "fail_count": 0,
+      "verdict": "PASS",
+      "roundtrip_verified": false,
+      "notes": "XCF has no write support. Sample roundtrip proves parse/load and typed domain model properties from 3 real samples."
+    }
+  ],
+  "aggregate": {
+    "total_tests": 26,
+    "total_pass": 26,
+    "total_fail": 0,
+    "overall_verdict": "PASS"
+  },
+  "additional_deliverables": {
+    "named_lanes_manifest": "registry/test-layer-manifest.yaml",
+    "lanes_added": ["fast", "medium", "full"],
+    "layer_plan_updated": "plans/layers/test-infrastructure-layer.md",
+    "taskcard_status": "TC-TEST-001 moved to completed_taskcards, maturity promoted 4→5"
+  }
+}

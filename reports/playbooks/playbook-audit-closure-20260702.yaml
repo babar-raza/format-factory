@@ -1,0 +1,105 @@
+audit_closure:
+  audit_date: '2026-07-02'
+  auditor_plan: noble-fluttering-truffle
+  mission: FF-PLAYBOOK-AUDIT-001
+  plan_path: plans/.claude/noble-fluttering-truffle.md
+  repository_head: 459266ae35e33e4884d04277df8bc4589c66ec8b
+  source_mission: FF-PLAYBOOK-SYSTEM-001
+  source_plan_path: plans/.claude/bright-marinating-map.md
+  source_plan_sha256: 9155962ed8f70c85fac2420a95861e266a69ff9094a74687c78810343ec70b8f
+dimension_scores_1_to_5:
+  evidence_quality: 4
+  governance_enforcement: 5
+  idempotency: 5
+  implementation_correctness: 5
+  integration: 4
+  maintainability: 5
+  plan_coverage: 5
+  reliability: 5
+  scope_discipline: 5
+  taskcard_integrity: 5
+  test_quality: 5
+evidence_paths:
+- .local/evidences/playbook-audit-rerun-20260702/pilot1-taskcards.yaml
+- .local/evidences/playbook-audit-rerun-20260702/pilot2-taskcards.yaml
+- .local/evidences/playbook-audit-rerun-20260702/p8-run1.yaml
+- .local/evidences/playbook-audit-rerun-20260702/p8-run2.yaml
+- .local/evidences/playbook-audit-rerun-20260702/pilot-rerun-evidence.yaml
+- tests/supervisor/test_governance_validators.py (V92-V99 test classes appended)
+final_counters:
+  FAILED_REQUIRED_PILOTS: 0
+  FALSELY_CLOSED_TASKCARDS: 0
+  MATERIAL_SECOND_RUN_CHANGES: 0
+  OPEN_MANDATORY_TASKCARDS: 0
+  PILOTS_WITHOUT_RAW_EVIDENCE: 0
+  PLAN_REQUIREMENTS_NOT_REPRESENTED: 0
+  PLAYBOOK_GATE_AUTHORITY_VIOLATIONS: 0
+  PLAYBOOK_SYSTEM_INTEGRATION_GAPS: 0
+  REMAINING_LOCALLY_ACTIONABLE_FINDINGS: 0
+  REQUIRED_TESTS_NOT_EXECUTED: 0
+  REQUIRED_VALIDATORS_NOT_EXECUTED: 0
+  STALE_GENERATED_PLAYBOOK_ARTIFACTS: 0
+  TASKCARDS_WITHOUT_PLAYBOOK_PROVENANCE: 0
+  WEAK_TESTS_ACCEPTED_AS_PROOF: 0
+idempotency:
+  MATERIAL_SECOND_RUN_CHANGES: 0
+  STALE_GENERATED_PLAYBOOK_ARTIFACTS: 0
+  coverage_universe_sha_stable: true
+  registry_sha_stable: true
+  taskcard_stable_fields_identical: true
+  validator_results_stable: true
+known_discrepancies_resolved:
+- discrepancy: Plan body specified validators V86-V93 but implementation uses V92-V99
+  resolution: V86-V91 were already allocated to TC-LP-024 and other validators. V92-V99
+    is the correct non-conflicting numbering. File is at tools/supervisor/governance_validators_ext2.py
+    not tools/governance/ as plan specified. Not a code defect.
+  verdict: RESOLVED
+- discrepancy: Original pilot evidence files were declarative YAML, not real execution
+    logs
+  resolution: All 8 pilots reproved with real commands. Real stdout captured. Exit
+    codes recorded. Evidence in playbook-audit-rerun-20260702/.
+  verdict: HEALED
+- discrepancy: V92-V99 validators had zero test functions in test_governance_validators.py
+  resolution: Added 8 test classes (TestV92-TestV99) with 23 test functions. 186/186
+    governance tests pass.
+  verdict: HEALED
+pilot_results:
+  FAILED_REQUIRED_PILOTS: 0
+  P1_format_feature_expansion: PASS_6_taskcards_real_execution
+  P2_new_format_kickstart: PASS_8_taskcards_stop_conditions_enforced
+  P3_product_source_task: PASS_selector_routes_correctly
+  P4_odf_flat_validation: PASS_validation_pass_dryrun_17_conflicts_expected
+  P5_missing_skill_gap: PASS_gap_recorded_no_hard_block
+  P6_deprecated_rejection: PASS_unknown_type_returns_None
+  P7_coverage_backfill: PASS_audit_healing_sprint_in_registry_and_coverage_universe
+  P8_idempotency: PASS_stable_fields_identical_SHA_stable
+  PILOTS_WITHOUT_RAW_EVIDENCE: 0
+requirements_audited:
+  PLAN_REQUIREMENTS_NOT_REPRESENTED: 0
+  total_deliverables_checked: 35
+  total_taskcards: 15
+taskcard_verdicts:
+  FALSELY_CLOSED_TASKCARDS: 0
+  OPEN_MANDATORY_TASKCARDS: 0
+  TC-PB-001: COMPLETED_VERIFIED
+  TC-PB-002: COMPLETED_VERIFIED
+  TC-PB-003: COMPLETED_VERIFIED
+  TC-PB-004: COMPLETED_VERIFIED
+  TC-PB-005: COMPLETED_VERIFIED
+  TC-PB-006: COMPLETED_VERIFIED
+  TC-PB-007: COMPLETED_VERIFIED
+  TC-PB-008: COMPLETED_VERIFIED
+  TC-PB-009: IMPLEMENTED_WEAKLY_VERIFIED_at_plan_closure_then_COMPLETED_VERIFIED_after_audit
+  TC-PB-010: IMPLEMENTED_WEAKLY_VERIFIED_at_plan_closure_then_COMPLETED_VERIFIED_after_pilot_reproof
+  TC-PB-011: COMPLETED_VERIFIED
+  TC-PB-012: COMPLETED_VERIFIED
+  TC-PB-013: COMPLETED_VERIFIED
+  TC-PB-014: COMPLETED_VERIFIED
+  TC-PB-015: COMPLETED_VERIFIED
+test_results:
+  REQUIRED_TESTS_NOT_EXECUTED: 0
+  REQUIRED_VALIDATORS_NOT_EXECUTED: 0
+  WEAK_TESTS_ACCEPTED_AS_PROOF: 0
+  tests_playbook: 217 passed, 1 skipped
+  tests_supervisor_governance_validators: 186 passed (163 prior + 23 new V92-V99)
+verdict: PLAN_EXECUTION_FULLY_VERIFIED_HEALED_AND_CLOSED

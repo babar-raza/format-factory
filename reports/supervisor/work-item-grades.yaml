@@ -1,23 +1,22 @@
-- item_id: WI-R1224-FODP-SHAPE-001
-  item_title: Add has_shapes, is_shape_heavy, is_single_slide_with_shapes to FodpDocument
+- item_id: WI-R1225-ODT-COMP-001
+  item_title: Add is_heading_heavy, is_content_rich, heading_ratio to OdtModelDocument
   declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - src/python/fodp/models.py
-  - tests/python/fodp/test_r1224_fodp_shape_analysis_properties.py
-  tests_supporting: []
+  - src/python/odt/models.py
+  - tests/python/odt/test_r1225_odt_composition_properties.py
+  tests_supporting: &id001
+  - tests/python/odt/test_r1225_odt_composition_properties.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    WI-R1224-FODP-SHAPE-001'
+  next_prompt_instruction: ''
+  tests_evidence_verified: *id001
   purpose_check:
     item_type: PRODUCT_SOURCE_PATCH_BOUNDED
     has_gap_ref: null
@@ -33,18 +32,16 @@
     deficiencies: []
     llm_used: false
     intermediate_verified: true
-    source: intermediate_verify
+    source: intermediate_content_check
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodp\models.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\odt\models.py
       exists: true
       content_ok: true
-      detail: 'non-empty (4080 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodp\models.py'
+      detail: 'non-empty (4567 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\odt\models.py'
       check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\python\fodp\test_r1224_fodp_shape_analysis_properties.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\python\odt\test_r1225_odt_composition_properties.py
       exists: true
       content_ok: true
-      detail: valid (19 test functions with assertions)
+      detail: valid (23 test functions with assertions)
       check_type: python_test_content
     summary: 2/2 evidence files passed content check
-    _cached_at: '2026-07-02T07:46:33.477140+00:00'
-    _from_cache: true

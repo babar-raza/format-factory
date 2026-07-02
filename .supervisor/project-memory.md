@@ -11324,7 +11324,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 12
 
-## Entry: r373
+## Entry: r373 [STALE]
 - timestamp: 2026-06-17T01:53:17.970841
 - verdict: ACCEPTED
 - test_count: 48
@@ -11350,7 +11350,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: -36
 - test_delta_from: 48
 
-## Entry: r374
+## Entry: r374 [STALE]
 - timestamp: 2026-06-17T01:57:18.101166
 - verdict: ACCEPTED
 - test_count: 48
@@ -11376,7 +11376,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: -36
 - test_delta_from: 48
 
-## Entry: r375
+## Entry: r375 [STALE]
 - timestamp: 2026-06-17T02:03:19.414612
 - verdict: ACCEPTED
 - test_count: 48
@@ -15499,7 +15499,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +894
 - test_delta_from: 87
 
-## Entry: FORMAT-FACTORY-SPRINT-R118-20260625
+## Entry: FORMAT-FACTORY-SPRINT-R118-20260625 [STALE]
 - timestamp: 2026-06-25T00:35:09.999975
 - verdict: ACCEPTED
 - test_count: 44
@@ -15549,7 +15549,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_entry_count: 77
 - bundle_validation_pass: True
 
-## Entry: toml-gap-closure-r120-20260625
+## Entry: toml-gap-closure-r120-20260625 [STALE]
 - timestamp: 2026-06-25T14:15:07.280283
 - verdict: ACCEPTED
 - test_count: 181
@@ -15886,7 +15886,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +320
 - test_delta_from: 109
 
-## Entry: ff-sprint-s61-dotnet-r117r118-20260626
+## Entry: ff-sprint-s61-dotnet-r117r118-20260626 [STALE]
 - timestamp: 2026-06-25T20:49:09.539328
 - verdict: ACCEPTED
 - test_count: 115
@@ -16159,3 +16159,16 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: +6348
 - test_delta_from: 9
+
+## Entry: r1224-fodp-shape-props-20260702
+- timestamp: 2026-07-02T12:55:13.558996
+- verdict: ACCEPTED_WITH_WARNINGS
+- test_count: 402
+- fail_count: 1
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1224-fodp-shape-props-20260702\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: -5955
+- test_delta_from: 6357

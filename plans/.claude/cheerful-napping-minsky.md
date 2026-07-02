@@ -1627,3 +1627,173 @@ plan_hardening_validation:
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->
+
+---
+
+## POST-PILOT-RERUN HARDENING ADDENDUM (Rev 1.3 — 2026-07-02)
+
+**Trigger:** Second pilot rerun (post-commit 8431e35f) + deep audit of "What Did Not Improve" section.
+**Findings source:** Pilot rerun comparison, docs/_audit/traceability.md read, stub ref deep scan,
+git ls-files validation of bundle-metadata/ gitignore status.
+
+---
+
+### Sources Reviewed (Rev 1.3)
+
+| Source | Finding |
+|--------|---------|
+| Pilot rerun "What Did Not Improve" | 6 stubs marked VALID_DEFERRED — user pushback: retire them |
+| Pilot rerun "4 remaining refs in tools/evidence" | run031 contract not active in any pipeline → HISTORICAL_EVIDENCE confirmed |
+| docs/_audit/traceability.md | 4 stale stub refs: docs/specification-cache.md (L11), docs/current-state-and-evidence-authority.md (L14, L31), docs/playbook-layer.md (L17 — missed by TC-DOCS-018) |
+| git ls-files bundle-metadata/ | Empty → bundle-metadata/ is gitignored; no committed active refs there |
+| Stub ref scan (active committed files only) | Group A stubs (4) have 0 committed navigational refs. Group B stubs (2) have 1 committed file each (docs/_audit/traceability.md) |
+
+---
+
+### Claim and Evidence Audit (Rev 1.3)
+
+| Claim | Source | Disposition | Action |
+|-------|--------|-------------|--------|
+| "4 remaining refs are HISTORICAL/META — Correct as-is" | Rev 1.2 pilot summary | PARTIALLY_VERIFIED: run031 and run046_sprint_writer are HISTORICAL. But docs/_audit/traceability.md refs are NAVIGATIONAL, not historical. | TC-DOCS-025 |
+| "6 remaining stubs are VALID_DEFERRED" | Rev 1.2 pilot summary | CONTRADICTED: 4 stubs have 0 committed navigational refs (can retire immediately). 2 stubs have 1 committed navigational file (docs/_audit/traceability.md). All 6 are locally actionable. | TC-DOCS-024, TC-DOCS-025 |
+| docs/_audit/traceability.md refs to docs/playbook-layer.md (L17) | This audit (Rev 1.3) | ACTIONABLE_GAP: TC-DOCS-018 scope did not include this file. Stale ref remains. | TC-DOCS-025 |
+
+---
+
+### Findings (Rev 1.3)
+
+#### FINDING-024: Group A stubs have 0 committed navigational refs — immediate retirement possible
+**Stubs:** docs/acquisition-workflow.md, docs/architecture.md, docs/legal-and-licensing.md, docs/release-control.md
+**Root cause:** Active navigational refs were already migrated in DOCS-REORG-001 initial migration (438286c0). Stub refs that remain are all in stub_allowlist (meta) or plan file (meta).
+**Action:** Remove from stub_allowlist, delete files.
+**Taskcard:** TC-DOCS-024
+
+#### FINDING-025: Group B stubs have 1 committed navigational file (docs/_audit/traceability.md)
+**Stubs:** docs/specification-cache.md, docs/current-state-and-evidence-authority.md
+**Root cause:** docs/_audit/traceability.md uses old stub paths in 3 rows (L11, L14, L31). Also L17 has missed docs/playbook-layer.md ref from TC-DOCS-018 scope.
+**Action:** Update traceability.md (4 refs), then delete both stubs.
+**Taskcard:** TC-DOCS-025
+
+---
+
+### Taskcard Register (Rev 1.3)
+
+| TC-ID | Title | Status | Priority |
+|-------|-------|--------|----------|
+| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | OPEN | HIGH |
+| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | OPEN | HIGH |
+
+---
+
+#### TC-DOCS-024: Retire Group A Stubs
+
+```yaml
+taskcard:
+  id: TC-DOCS-024
+  title: "Retire 4 Group A stubs (acquisition-workflow, architecture, legal-and-licensing, release-control)"
+  priority: HIGH
+  status: OPEN
+  stubs_to_retire:
+    - path: docs/acquisition-workflow.md
+      canonical: docs/python-foss/acquisition-workflow.md
+      committed_navigational_refs: 0
+    - path: docs/architecture.md
+      canonical: docs/code-quality/architecture.md
+      committed_navigational_refs: 0
+    - path: docs/legal-and-licensing.md
+      canonical: docs/governance/legal-and-licensing.md
+      committed_navigational_refs: 0
+    - path: docs/release-control.md
+      canonical: docs/governance/release-control.md
+      committed_navigational_refs: 0
+  required_work:
+    - Remove all 4 from docs/governance/documentation-placement-policy.yaml stub_allowlist
+    - Delete all 4 stub files
+    - Run check_docs_placement.py --full (must PASS)
+    - grep 0 active navigational hits for each path in committed source
+  verification:
+    - check_docs_placement.py PASS
+    - docs/acquisition-workflow.md: NOT FOUND on disk
+    - docs/architecture.md: NOT FOUND on disk
+    - docs/legal-and-licensing.md: NOT FOUND on disk
+    - docs/release-control.md: NOT FOUND on disk
+  proof_level_target: 4
+  exact_next_action: "Edit documentation-placement-policy.yaml to remove all 4 from current_stubs, then delete the 4 stub files"
+```
+
+---
+
+#### TC-DOCS-025: Fix traceability.md refs + retire Group B stubs
+
+```yaml
+taskcard:
+  id: TC-DOCS-025
+  title: "Fix 4 stale refs in docs/_audit/traceability.md + retire 2 Group B stubs"
+  priority: HIGH
+  status: OPEN
+  stale_refs_to_fix:
+    - file: docs/_audit/traceability.md
+      line: 11
+      old: docs/specification-cache.md
+      new: docs/python-foss/specification-cache.md
+    - file: docs/_audit/traceability.md
+      line: 14
+      old: docs/current-state-and-evidence-authority.md
+      new: docs/governance/current-state-and-evidence-authority.md
+    - file: docs/_audit/traceability.md
+      line: 17
+      old: docs/playbook-layer.md
+      new: docs/governance/playbook-layer.md
+    - file: docs/_audit/traceability.md
+      line: 31
+      old: docs/current-state-and-evidence-authority.md
+      new: docs/governance/current-state-and-evidence-authority.md
+  stubs_to_retire:
+    - path: docs/specification-cache.md
+      canonical: docs/python-foss/specification-cache.md
+    - path: docs/current-state-and-evidence-authority.md
+      canonical: docs/governance/current-state-and-evidence-authority.md
+  required_work:
+    - Fix 4 stale refs in docs/_audit/traceability.md using replace_all
+    - Remove docs/specification-cache.md and docs/current-state-and-evidence-authority.md from stub_allowlist
+    - Delete both stub files
+    - Run check_docs_placement.py --full (must PASS)
+    - Verify 0 remaining stubs in stub_allowlist
+  verification:
+    - check_docs_placement.py PASS
+    - grep 0 hits for "docs/specification-cache.md" in docs/_audit/traceability.md
+    - grep 0 hits for "docs/current-state-and-evidence-authority.md" in docs/_audit/traceability.md
+    - grep 0 hits for "docs/playbook-layer.md" in docs/_audit/traceability.md
+    - stub_allowlist empty (all 6 stubs retired)
+  proof_level_target: 4
+  exact_next_action: "Edit docs/_audit/traceability.md with 4 replacements (replace_all), then retire 2 stubs"
+```
+
+---
+
+### Plan Hardening Validation (Rev 1.3)
+
+```yaml
+plan_hardening_validation_rev13:
+  claims_reviewed: 3
+  explicit_findings: 2
+  implied_findings: 1
+  contradictions: 2 (both resolved)
+  taskcards_added: 2
+  findings_without_taskcards: 0
+  verdict: PLAN_FILE_HARDENED_READY_FOR_EXECUTION
+```
+
+### Taskcard Status Summary (Full — TC-DOCS-001 through TC-DOCS-025)
+
+| TC-ID | Title | Status |
+|-------|-------|--------|
+| TC-DOCS-001 through TC-DOCS-017 | Initial migration taskcards | CLOSED |
+| TC-DOCS-018 | Fix broken refs to docs/playbook-layer.md | CLOSED |
+| TC-DOCS-019 | Update 4 governance files from docs/security.md stub | CLOSED |
+| TC-DOCS-020 | Fix frontmatter self-ref in spec-retrieval-strategy.md | CLOSED |
+| TC-DOCS-021 | Complete docs/security.md stub retirement (15 files + delete) | CLOSED |
+| TC-DOCS-022 | Fix 3 self-refs in docs/governance/playbook-layer.md body | CLOSED |
+| TC-DOCS-023 | Fix stale policy_doc_reference in test fixture | CLOSED |
+| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | OPEN |
+| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | OPEN |
