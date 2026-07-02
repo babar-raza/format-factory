@@ -2398,6 +2398,28 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as lc_err:
         print(f"  WARNING: Loop controller skipped: {lc_err}")
 
+    # TC-PSG-006: PROJECT_STATUS.md freshness check (advisory, non-blocking).
+    # If any status-relevant sources changed in this sprint, validate the structure.
+    print("
+=== STEP 8c: PROJECT_STATUS FRESHNESS CHECK ===")
+    try:
+        import subprocess as _subprocess
+        _validate_result = _subprocess.run(
+            ["python", "tools/docs/generate_project_status.py", "--validate"],
+            capture_output=True, text=True,
+            cwd=str(repo_root), timeout=30,
+        )
+        if _validate_result.returncode != 0:
+            print(
+                "  WARN: PROJECT_STATUS.md structural check failed "
+                "(non-blocking -- regenerate with: "
+                "python tools/docs/generate_project_status.py)"
+            )
+        else:
+            print("  PROJECT_STATUS.md structural check: PASS")
+    except Exception as _psg_err:
+        print(f"  WARNING: PROJECT_STATUS freshness check skipped (non-blocking): {_psg_err}")
+
     return manifest
 
 

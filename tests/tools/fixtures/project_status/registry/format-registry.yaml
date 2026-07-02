@@ -1,0 +1,26 @@
+formats:
+  - format_id: odf-shared
+    display_name: ODF Shared Infrastructure
+    family: odf
+    extensions: []
+  - format_id: csv
+    display_name: Comma-Separated Values (CSV)
+    family: cells
+    extensions: [.csv]
+    gates:
+      gate_1:
+        status: passed
+      gate_2:
+        status: passed
+  - format_id: dif
+    display_name: Data Interchange Format
+    family: cells
+    extensions: [.dif]
+    gates:
+      gate_1:
+        status: passed
+  - format_id: ora
+    display_name: OpenRaster Image
+    family: imaging
+    extensions: [.ora]
+    gates: {}

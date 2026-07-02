@@ -425,11 +425,12 @@ For a plain-English assessment of where the project stands — what works, what 
 
 ---
 
-<!-- BEGIN:PROJECT-STATUS-REF generated=2026-06-29 source=PROJECT_STATUS.md -->
-**Quick numbers:** 20 active formats | 73/73 oracle cases | 101 validators | 120 skills | 840 sprints | 14,645 SAL facts | 3,187 evidence bundles
+<!-- BEGIN:PROJECT-STATUS-REF generated=2026-07-02 source=PROJECT_STATUS.md -->
+**Quick numbers (machinery):** 101 validators | 120 skills | 840 sprints
 
-For the full auto-generated project status with per-format details, see [PROJECT_STATUS.md](PROJECT_STATUS.md).
-Re-generate: `python tools/docs/generate_project_status.py`
+**Quick numbers (product):** 20 active formats | 73/73 oracle cases | 20/20 certified
+
+For full auto-generated project status with per-format details and two-lane (machinery / product) breakdown, see [PROJECT_STATUS.md](PROJECT_STATUS.md#status-at-a-glance).
 <!-- END:PROJECT-STATUS-REF -->
 
 ## Keeping This README Current

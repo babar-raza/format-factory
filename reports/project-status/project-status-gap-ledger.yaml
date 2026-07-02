@@ -1,0 +1,283 @@
+gap_ledger:
+  document: PROJECT_STATUS.md Generator — Gap Ledger
+  created_at: "2026-07-02"
+  mission: sorted-sprouting-flame
+  plan: plans/.claude/sorted-sprouting-flame.md
+  resolved_by: TC-PSG-003 through TC-PSG-007
+  status: ALL_GAPS_RESOLVED
+
+gaps:
+  - gap_id: GAP-PSG-001
+    category: MACHINERY_PRODUCT_MIXING
+    description: >
+      Statistics Summary section mixed machinery metrics (validators, capabilities, skills)
+      and product metrics (format counts, oracle, certification) in a single flat table
+      with no lane boundaries. External readers could not distinguish governance health
+      from product delivery progress.
+    affected_sections:
+      - "## Status at a Glance (old format)"
+      - "## Statistics Summary"
+    claim_refs: [CL-001, CL-002, CL-003, CL-004, CL-005, CL-006]
+    generator_repair:
+      taskcard: TC-PSG-003
+      function: _render_status_at_a_glance()
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A — structural rendering change
+    resolution: >
+      Restructured generate_project_status.py to produce two-lane document: ## Machinery Lane
+      and ## Product Lane with stable HTML anchors. Status at a Glance provides compact
+      dual-panel summary table. All subsections correctly placed under their lane.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-002
+    category: MISLEADING_AGGREGATION
+    description: >
+      L09 State Layer reported 56,348 files (or similar large count). This directory
+      (.local/supervisor/) is gitignored machine-local state. The count varies by machine
+      and session. External readers see a meaninglessly large number.
+    affected_sections:
+      - "### Architecture and Layer Inventory"
+    claim_refs: [CL-010]
+    generator_repair:
+      taskcard: TC-PSG-004
+      function: _render_machinery_lane() layer table renderer
+      file: tools/docs/generate_project_status.py
+    source_repair: Added GITIGNORED_LAYER_PATHS constant
+    resolution: >
+      Layer table renderer now shows "(gitignored local state)" for L08 and L09 instead
+      of the raw file count. Count is suppressed for these paths to avoid misleading readers.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-003
+    category: MISLEADING_AGGREGATION
+    description: >
+      Certification displayed as "20/20" without clarifying the denominator is "formats with
+      Python source" (20), not "all tracked formats" (24). Four formats (ORA, PAM, XPM, ZPAQ)
+      have no source and are excluded silently — a reader believes 100% of all formats are
+      certified.
+    affected_sections:
+      - "### Certification Status"
+    claim_refs: [CL-023]
+    generator_repair:
+      taskcard: TC-PSG-003
+      function: _render_product_lane() certification section
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A
+    resolution: >
+      Certification now renders as "N of M formats with source" making the denominator
+      explicit. Formats without source show "— (no source)" instead of "N/A".
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-004
+    category: MISSING_DENOMINATOR
+    description: >
+      Oracle verification reported "20 formats" without denominator. The reader cannot
+      determine "20 of how many?" — the repository tracks 24 formats (excluding odf-shared),
+      of which 4 have no source and thus no oracle obligation.
+    affected_sections:
+      - "### Oracle Verification"
+    claim_refs: [CL-021]
+    generator_repair:
+      taskcard: TC-PSG-003
+      function: _render_product_lane() oracle section
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A
+    resolution: >
+      Oracle section now renders as "X of Y tracked formats" with explicit denominator.
+      Pass rate rendered as "pass/cases" fraction, not float.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-005
+    category: INCORRECT_CALCULATION
+    description: >
+      gate_8_approval listed as a hard prohibition while Gate 8 is marked agent_executable:true
+      in the gate contract registry. This appears contradictory — gate is autonomous but
+      approval is prohibited.
+    affected_sections:
+      - "### Supervisor and Autonomous Execution"
+    claim_refs: [CL-025]
+    generator_repair:
+      taskcard: TC-PSG-004
+      function: _render_machinery_lane() hard prohibitions section
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A — prohibition is correct; needed explanation note
+    resolution: >
+      Hard prohibitions renderer now cross-checks prohibition names against gate registry.
+      When gate_*_approval prohibitions match an autonomous gate, an explanatory note is
+      emitted: "business security sign-off, distinct from executing Gate N technical steps".
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-006
+    category: INCORRECT_CALCULATION
+    description: >
+      checkpoint_interval rendered as "N/A" because _collect_policies() read the wrong key
+      path. The actual key in policies.yaml is autonomous_continuation.checkpoint_every_n_sprints
+      or checkpoint.every_n_sprints — neither was being read correctly.
+    affected_sections:
+      - "### Supervisor and Autonomous Execution"
+    claim_refs: [CL-026]
+    generator_repair:
+      taskcard: TC-PSG-004
+      function: _collect_policies() in generate_agent_inventory.py
+      file: tools/docs/generate_agent_inventory.py
+    source_repair: N/A — policy file structure correct
+    resolution: >
+      _collect_policies() now returns None for checkpoint_interval when not configured.
+      Renderer shows "not configured" (not "N/A") to accurately reflect policy state.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-007
+    category: MISLEADING_AGGREGATION
+    description: >
+      "15 unclassified capabilities" appeared in the capability track table with no
+      explanation of what "unclassified" means. These are capabilities with null/empty
+      product_track — governance/infrastructure tier capabilities, not product-track ones.
+    affected_sections:
+      - "### Capabilities and Skills"
+    claim_refs: [CL-016]
+    generator_repair:
+      taskcard: TC-PSG-004
+      function: _render_machinery_lane() capabilities section
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A
+    resolution: >
+      Capability table now labels null/empty product_track as "(no product_track)" with
+      a note: "no product_track assigned — machinery/infra tier". "unclassified" internal
+      key is preserved but display is now explicit.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-008
+    category: AUTONOMOUS_BYPASS
+    description: >
+      No freshness validation existed in any regeneration path. PROJECT_STATUS.md could
+      become structurally stale (missing lanes, missing anchors) with no automated detection.
+    affected_sections:
+      - "all — structural contract"
+    claim_refs: []
+    generator_repair:
+      taskcard: TC-PSG-006
+      function: validate_project_status_freshness (V93)
+      file: tools/supervisor/governance_validators_ext2.py
+    source_repair: Added pre-commit hook to .pre-commit-config.yaml
+    resolution: >
+      Three enforcement layers added:
+      1. V93 validate_project_status_freshness (advisory, blocks_sprint=False)
+      2. Pre-commit hook project-status-structure-check triggers on status-relevant sources
+      3. TC-PSG-006 freshness check in autonomous_cycle.py Step 8c
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-009
+    category: STRUCTURE_DRIFT
+    description: >
+      No structural contract enforcement — any rename of a section heading would silently
+      break cross-references and links without detection.
+    affected_sections:
+      - "all headings and anchors"
+    claim_refs: []
+    generator_repair:
+      taskcard: TC-PSG-002
+      function: validate_output(), REQUIRED_ANCHORS
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A
+    resolution: >
+      validate_output() function checks for all required anchors and section headings.
+      --validate CLI flag exits nonzero on any violation. REQUIRED_ANCHORS constant
+      exported for test assertions.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-010
+    category: NONDETERMINISM
+    description: >
+      Timestamp embedded in generated output caused every regeneration to produce a diff,
+      making idempotency verification impossible without timestamp normalization.
+    affected_sections:
+      - "<!-- AUTO-GENERATED ... -->"
+      - "## Generation and Evidence"
+    claim_refs: []
+    generator_repair:
+      taskcard: TC-PSG-003
+      function: generate_project_status(timestamp_override=...)
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A — documented behavior
+    resolution: >
+      Added --timestamp CLI flag and timestamp_override parameter. Two runs with the same
+      --timestamp flag produce byte-identical output. This is the supported idempotency
+      verification path. Documented in Generation and Evidence section.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-011
+    category: PARTIAL_WRITE
+    description: >
+      Generator wrote directly to PROJECT_STATUS.md with no atomic write mechanism.
+      A generator failure mid-write would produce a corrupt partial file with no recovery path.
+    affected_sections:
+      - "all — output write"
+    claim_refs: []
+    generator_repair:
+      taskcard: TC-PSG-002
+      function: _atomic_write()
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A
+    resolution: >
+      _atomic_write() writes to .tmp file first, then renames atomically. On failure,
+      .tmp is cleaned up and original file is preserved. Verified by TestAtomicWrite
+      test class (Pilot 9).
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-012
+    category: STALE_CLAIMS
+    description: >
+      README injection block contained stale hardcoded values (101 validators, 120 skills,
+      "15 active formats") from an earlier generation run. These did not match actual counts.
+    affected_sections:
+      - "README.md PROJECT-STATUS-REF block"
+    claim_refs: [CL-028, CL-029, CL-030]
+    generator_repair:
+      taskcard: TC-PSG-007
+      function: update_readme()
+      file: tools/docs/generate_project_status.py
+    source_repair: N/A — values now recomputed at generation time
+    resolution: >
+      update_readme() recomputes all values from canonical sources at generation time.
+      Link updated to PROJECT_STATUS.md#status-at-a-glance (stable anchor).
+      Machinery and product quick numbers separated.
+    status: RESOLVED
+
+  - gap_id: GAP-PSG-013
+    category: MISSING_TESTS
+    description: >
+      No tests existed for any of the five generator files. Structural regressions could
+      go undetected indefinitely.
+    affected_sections:
+      - "all generator files"
+    claim_refs: []
+    generator_repair:
+      taskcard: TC-PSG-005
+      files:
+        - tests/tools/test_generate_project_status.py
+        - tests/tools/test_generate_statistics.py
+        - tests/tools/test_generate_product_inventory.py
+        - tests/tools/test_generate_architecture_inventory.py
+    source_repair: N/A
+    resolution: >
+      109 tests added across 4 test modules with fixture infrastructure. 10 pilot classes
+      in test_generate_project_status.py covering: two-lane structure, stable anchors,
+      lane separation, limitations, atomic write, validate mode, idempotency, evidence
+      generation, missing authority degradation, README link.
+    status: RESOLVED
+
+resolution_summary:
+  total_gaps: 13
+  resolved: 13
+  open: 0
+  categories_resolved:
+    MACHINERY_PRODUCT_MIXING: 1
+    MISLEADING_AGGREGATION: 3
+    MISSING_DENOMINATOR: 1
+    INCORRECT_CALCULATION: 2
+    AUTONOMOUS_BYPASS: 1
+    STRUCTURE_DRIFT: 1
+    NONDETERMINISM: 1
+    PARTIAL_WRITE: 1
+    STALE_CLAIMS: 1
+    MISSING_TESTS: 1

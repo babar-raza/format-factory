@@ -1,0 +1,220 @@
+project_status_mission:
+  mission_id: "sorted-sprouting-flame"
+  repository: "format-factory"
+  branch: "main"
+  head: "1617630b253c7f3813620794178d59ce5e55ebcd"
+  generated_document: "PROJECT_STATUS.md"
+  generator: "tools/docs/generate_project_status.py"
+  readme_reference: "README.md line 7, line 24, lines ~428-433 (injection block)"
+  generator_dependencies:
+    - "tools/docs/generate_statistics.py"
+    - "tools/docs/generate_product_inventory.py"
+    - "tools/docs/generate_architecture_inventory.py"
+    - "tools/docs/generate_agent_inventory.py"
+  canonical_sources:
+    - "registry/format-registry.yaml"
+    - ".governance/capabilities/registry.yaml"
+    - ".supervisor/skill-registry.yaml"
+    - ".supervisor/policies.yaml"
+    - "oracle/formats/*/reports/oracle-run-summary.json"
+    - "reports/certification/portfolio-certification-matrix.json"
+    - "reports/supervisor/maturity-trend.json"
+    - "tools/supervisor/governance_validators*.py"
+    - "registry/gate-contract-registry.yaml"
+    - "src/python/**/*.py"
+    - "src/net/**/*.cs"
+    - "tests/python/**/*.py"
+    - "tests/net/**/*.cs"
+    - "tests/supervisor/**/*.py"
+    - "tests/certification/**/*.py"
+    - ".claude/commands/*.md"
+    - "samples/by-format/*"
+    - "docs/**/*.md"
+    - "examples/python/*.py"
+    - "examples/net/*.csx"
+    - ".local/evidences/"
+    - ".local/supervisor/"
+    - "AGENTS.md"
+    - ".claude/settings.json"
+    - ".kilo/kilo.jsonc"
+    - "docs/governance/codex-adapter.md"
+  current_validators: []
+  current_tests:
+    - "tests/tools/test_migration_engine.py"
+    - "tests/tools/test_readme_sync.py"
+  regeneration_entry_points:
+    - "python tools/docs/generate_project_status.py"
+    - "python tools/docs/generate_project_status.py --update-readme"
+    - "python tools/docs/generate_project_status.py --dry-run"
+    - "python tools/docs/generate_project_status.py --json"
+
+# GENERATION PIPELINE STAGES (traced from generate_project_status.py)
+pipeline_stages:
+  - stage: "S01-COLLECT-STATISTICS"
+    function: "collect_statistics(repo_root)"
+    module: "tools/docs/generate_statistics.py"
+    purpose: "Count formats, source files, tests, validators, capabilities, skills, commands, oracle, sprints, evidence, samples, docs, examples, certification"
+    inputs:
+      - "registry/format-registry.yaml"
+      - "src/python/**/*.py"
+      - "src/net/**/*.cs"
+      - "tests/python/**/*.py"
+      - "tests/net/**/*.cs"
+      - "tests/supervisor/**/*.py"
+      - "tests/certification/**/*.py"
+      - "tools/supervisor/governance_validators*.py"
+      - ".governance/capabilities/registry.yaml"
+      - ".supervisor/skill-registry.yaml"
+      - ".claude/commands/*.md"
+      - "oracle/formats/*/reports/oracle-run-summary.json"
+      - "reports/supervisor/maturity-trend.json"
+      - ".local/evidences/"
+      - "samples/by-format/*"
+      - "docs/**/*.md"
+      - "examples/python/*.py"
+      - "examples/net/*.csx"
+      - "reports/certification/portfolio-certification-matrix.json"
+    outputs:
+      - "stats dict with keys: formats, source, tests, governance, oracle, infrastructure, certification"
+    authority: "canonical sources only — no hardcoded values"
+    fallback: "graceful degradation — returns 0 or empty for any missing source"
+    error_handling: "all reads wrapped in try/except — returns None/0 on failure"
+    freshness: "reads at generation time — no caching"
+    ordering: "independent — can run in any order"
+    tests: "NONE EXIST"
+    consumers:
+      - "_generate_limitations()"
+      - "render_statistics_markdown()"
+      - "update_readme()"
+    bypass_paths: []
+
+  - stage: "S02-COLLECT-PRODUCT-INVENTORY"
+    function: "collect_product_inventory(repo_root)"
+    module: "tools/docs/generate_product_inventory.py"
+    purpose: "Produce per-format table with family, Python/.NET file counts, oracle pass rate, certification, gate summary"
+    inputs:
+      - "registry/format-registry.yaml"
+      - "reports/certification/portfolio-certification-matrix.json"
+      - "src/python/{format_id}/**/*.py"
+      - "src/net/{format_id}/**/*.cs"
+      - "tests/python/{format_id}/**/*.py"
+      - "tests/net/{format_id}/**/*.cs"
+      - "oracle/formats/{format_id}/reports/oracle-run-summary.json"
+    outputs:
+      - "list[dict] — per-format inventory records"
+    authority: "canonical sources only"
+    fallback: "graceful — N/A for missing oracle/cert, 0 for missing source dirs"
+    error_handling: "try/except in _read_yaml/_read_json; _count_dir returns 0 if not is_dir"
+    freshness: "reads at generation time"
+    ordering: "independent"
+    tests: "NONE EXIST"
+    consumers:
+      - "render_product_inventory_markdown()"
+    bypass_paths: []
+
+  - stage: "S03-COLLECT-ARCHITECTURE"
+    function: "collect_architecture_inventory(repo_root)"
+    module: "tools/docs/generate_architecture_inventory.py"
+    purpose: "Layer inventory, governance validators (count+breakdown), capabilities (by track), skills (by status), gates"
+    inputs:
+      - "LAYER_DEFINITIONS constant (hardcoded in file)"
+      - "tools/supervisor/governance_validators*.py"
+      - ".governance/capabilities/registry.yaml"
+      - ".supervisor/skill-registry.yaml"
+      - "registry/gate-contract-registry.yaml"
+      - "directory tree paths from LAYER_DEFINITIONS"
+    outputs:
+      - "dict with keys: layers, validators, capabilities, skills, gates"
+    authority: "mixed — layer definitions are HARDCODED in source, not from a registry"
+    fallback: "graceful — missing files return 0 counts"
+    error_handling: "try/except wraps all reads"
+    freshness: "reads at generation time"
+    ordering: "independent"
+    tests: "NONE EXIST"
+    bypass_paths: []
+    issues:
+      - "LAYER_DEFINITIONS is hardcoded — no authoritative layer registry file"
+      - "L09 .local/supervisor/ rglob counts ALL gitignored state files (58K+)"
+      - "L08 .local/evidences/ rglob similarly counts gitignored local state"
+      - "MIXED LANE: renders Architecture + Validators + Capabilities + Skills + Gates as one section"
+
+  - stage: "S04-COLLECT-AGENTS"
+    function: "collect_agent_inventory(repo_root)"
+    module: "tools/docs/generate_agent_inventory.py"
+    purpose: "Agent roles (Claude/Codex/Kilo), orchestration model, decision boundaries, hard prohibitions, AGENTS.md section list"
+    inputs:
+      - "AGENTS.md"
+      - ".claude/settings.json"
+      - ".kilo/kilo.jsonc"
+      - "docs/governance/codex-adapter.md"
+      - ".supervisor/policies.yaml"
+      - ".claude/commands/*.md"
+      - "tools/supervisor/*.py"
+      - ".supervisor/skill-registry.yaml"
+    outputs:
+      - "dict with keys: agents_md_sections, config, policies, commands, supervisor_tools, skill_count"
+    authority: "canonical — reads from policies.yaml and AGENTS.md"
+    fallback: "graceful — missing files return empty/None"
+    error_handling: "try/except in all reads"
+    freshness: "reads at generation time"
+    ordering: "independent"
+    tests: "NONE EXIST"
+    bypass_paths: []
+    issues:
+      - "checkpoint_interval reads checkpoint.every_n_sprints then autonomous_continuation.checkpoint_every_n_sprints — both are None/empty so renders 'N/A'"
+      - "hard_prohibitions reads from policies.yaml correctly but gate_8_approval appears as prohibition while Gate 8 is marked agent-executable in gate table (misleading without explanation)"
+
+  - stage: "S05-ASSEMBLE"
+    function: "generate_project_status()"
+    module: "tools/docs/generate_project_status.py"
+    purpose: "Assemble all sections in order: header, statistics, product inventory, architecture, agents, limitations, footer"
+    inputs:
+      - "outputs of S01-S04"
+    outputs:
+      - "PROJECT_STATUS.md"
+    authority: "n/a — orchestrator"
+    fallback: "no guard against partial generation"
+    error_handling: "no atomic write — writes directly to target on success; partial write possible if exception mid-stream"
+    freshness: "timestamp embedded in output"
+    ordering: "fixed order in parts list"
+    tests: "NONE EXIST"
+    bypass_paths:
+      - "README injection block (update_readme) uses separate stats collection call — not shared with main generation"
+    issues:
+      - "NO ATOMIC WRITE — partial output possible on exception"
+      - "NO STRUCTURAL VALIDATION before writing"
+      - "NO --validate flag for contract verification"
+      - "NO stable explicit HTML anchors (uses heading-derived anchors only)"
+      - "NO generation evidence section (git revision, source map)"
+
+  - stage: "S06-RENDER-SECTIONS"
+    function: "render_*_markdown() functions"
+    module: "tools/docs/generate_*.py"
+    purpose: "Convert collected data to markdown strings"
+    inputs:
+      - "structured data from S01-S04"
+    outputs:
+      - "markdown strings for each section"
+    authority: "derived from S01-S04"
+    issues:
+      - "render_statistics_markdown() mixes machinery and product rows in a single flat table"
+      - "render_architecture_markdown() puts Validators + Capabilities + Skills + Gates under Architecture"
+      - "No lane separation in any renderer"
+
+  - stage: "S07-README-INJECT"
+    function: "update_readme()"
+    module: "tools/docs/generate_project_status.py"
+    purpose: "Inject PROJECT_STATUS summary block into README.md"
+    inputs:
+      - "stats dict"
+      - "README.md"
+    outputs:
+      - "README.md (modified)"
+    authority: "stats from canonical sources"
+    issues:
+      - "Separate stats collection call — stats may differ from main generation if sources change between calls"
+      - "README block currently shows 120 skills (correct as of 2026-07-02) but PROJECT_STATUS.md shows 102 (stale from 2026-06-29)"
+      - "Link uses PROJECT_STATUS.md without stable anchor"
+
+uninventoried_stages: 0
+unclassified_bypasses: 0

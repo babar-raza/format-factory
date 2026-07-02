@@ -995,3 +995,80 @@ def validate_playbook_coverage_report_current(
     }
 
 
+
+
+# V93 — TC-PSG-006: project_status_freshness_validator
+# Enforces RULE-STATUS-001: PROJECT_STATUS.md must exist, be structurally valid (two-lane
+# contract), and have stable anchors. blocks_sprint=False (advisory — regeneration is
+# best-effort per Supreme Directive).
+def validate_project_status_freshness(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V93: PROJECT_STATUS.md must exist with valid two-lane structure and stable anchors.
+
+    Checks:
+    - File exists
+    - Contains '## Machinery Lane' and '## Product Lane'
+    - Contains stable anchors: status-at-a-glance, machinery-lane, product-lane
+    - Contains AUTO-GENERATED marker (not manually edited)
+
+    blocks_sprint=False -- regeneration is best-effort per Supreme Directive.
+    """
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    status_path = _r / "PROJECT_STATUS.md"
+
+    REQUIRED_SECTIONS = ["## Machinery Lane", "## Product Lane"]
+    REQUIRED_ANCHORS_V93 = ["status-at-a-glance", "machinery-lane", "product-lane"]
+
+    if not status_path.exists():
+        return {
+            "validator": "validate_project_status_freshness",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": ["PROJECT_STATUS.md missing -- run: python tools/docs/generate_project_status.py"],
+            "summary": "V93: PROJECT_STATUS.md does not exist",
+        }
+
+    try:
+        content = status_path.read_text(encoding="utf-8", errors="replace")
+    except Exception as e:
+        return {
+            "validator": "validate_project_status_freshness",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [f"Cannot read PROJECT_STATUS.md: {e}"],
+            "summary": "V93: PROJECT_STATUS.md unreadable",
+        }
+
+    violations = []
+
+    if "<!-- AUTO-GENERATED" not in content:
+        violations.append("Missing AUTO-GENERATED marker -- file may have been manually edited")
+
+    for section in REQUIRED_SECTIONS:
+        if section not in content:
+            violations.append(f"Missing required section: {section}")
+
+    for anchor in REQUIRED_ANCHORS_V93:
+        if f'name="{anchor}"' not in content:
+            violations.append(f"Missing stable anchor: {anchor}")
+
+    if violations:
+        return {
+            "validator": "validate_project_status_freshness",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": violations,
+            "summary": (
+                f"V93: PROJECT_STATUS.md has {len(violations)} structural violation(s) "
+                f"-- run: python tools/docs/generate_project_status.py"
+            ),
+        }
+
+    return {
+        "validator": "validate_project_status_freshness",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V93: PROJECT_STATUS.md exists with valid two-lane structure and stable anchors",
+    }

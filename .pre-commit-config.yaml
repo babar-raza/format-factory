@@ -39,3 +39,21 @@ repos:
         always_run: false
         files: ^(\.supervisor/skill-registry\.yaml|\.claude/commands/command-registry\.yaml|\.supervisor/capability-routing-registry\.yaml|\.claude/commands/.*\.md|\.governance/capabilities/.*)$
         stages: [pre-commit]
+      - id: project-status-structure-check
+        name: Check PROJECT_STATUS.md structure
+        entry: python tools/docs/generate_project_status.py --validate
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: >
+          (?x)^(
+            registry/format-registry\.yaml|
+            \.governance/capabilities/registry\.yaml|
+            \.supervisor/skill-registry\.yaml|
+            oracle/formats/.*/reports/oracle-run-summary\.json|
+            reports/certification/portfolio-certification-matrix\.json|
+            reports/supervisor/maturity-trend\.json|
+            tools/supervisor/governance_validators.*\.py|
+            \.supervisor/policies\.yaml
+          )$
+        stages: [pre-commit]

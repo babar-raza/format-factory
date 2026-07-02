@@ -53,7 +53,7 @@ def _count_files(directory: Path, pattern: str, exclude: tuple[str, ...] = ()) -
 def _count_formats(repo_root: Path) -> dict:
     data = _read_yaml(repo_root / "registry" / "format-registry.yaml")
     if not data or not isinstance(data, dict):
-        return {"total": 0, "active": 0, "families": {}}
+        return {"total_in_registry": 0, "active_with_source": 0, "families": {}, "family_count": 0}
     formats = data.get("formats", [])
     families: dict[str, int] = {}
     active = 0
@@ -159,7 +159,7 @@ def _count_governance(repo_root: Path) -> dict:
 def _count_oracle(repo_root: Path) -> dict:
     oracle_dir = repo_root / "oracle" / "formats"
     if not oracle_dir.is_dir():
-        return {"formats": 0, "total_cases": 0, "total_pass": 0}
+        return {"formats_verified": 0, "total_cases": 0, "total_pass": 0, "pass_rate": "0/0"}
     formats_verified = 0
     total_cases = 0
     total_pass = 0

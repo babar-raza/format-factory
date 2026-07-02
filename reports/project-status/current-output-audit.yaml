@@ -1,0 +1,258 @@
+audit_metadata:
+  generated_at: "2026-07-02"
+  auditor: "sorted-sprouting-flame plan TC-PSG-001"
+  source_document: "PROJECT_STATUS.md"
+  document_generated_at: "2026-06-29T12:03:43+00:00"
+  document_lines: 283
+  document_head_at_generation: "UNKNOWN (not recorded in output)"
+  current_head: "1617630b253c7f3813620794178d59ce5e55ebcd"
+
+section_audit:
+  - section: "Statistics Summary"
+    intended_purpose: "Quick reference for key project metrics"
+    current_lane: "MIXED"
+    correct_lane: "SHARED_SUMMARY (split into machinery + product sub-tables)"
+    claims:
+      - "Formats Active (with source): 20"
+      - "Formats In registry: 25"
+      - "Formats Format families: 7"
+      - "Source Python files: 404"
+      - "Source .NET files: 80"
+      - "Tests Python: 2176"
+      - "Tests .NET: 2214"
+      - "Tests Supervisor + Certification: 386"
+      - "Tests Total: 4776"
+      - "Governance Validators: 92"
+      - "Governance Capabilities (active): 99"
+      - "Governance Registered skills: 102"
+      - "Governance Commands: 101"
+      - "Oracle Formats verified: 20"
+      - "Oracle Cases pass/total: 73/73"
+      - "Certification Certified formats: 20/20"
+      - "Sprints Autonomous cycles: 840"
+      - "Sprints Avg evidence quality: 0.756"
+      - "Evidence Evidence runs: 3178"
+      - "Samples Sample files: 177"
+      - "Documentation Doc files: 224"
+      - "Examples Python examples: 67"
+      - "Examples .NET examples: 4"
+    mixed_concerns:
+      - "Governance rows (validators, capabilities, skills, commands) are MACHINERY"
+      - "Format counts, source files, tests, oracle, certification are PRODUCT"
+      - "Infrastructure rows (sprints, evidence) are MACHINERY"
+      - "Samples, docs, examples are SHARED"
+    stale_or_unproven_claims:
+      - "Validators: 92 — STALE: actual 101 (11 modules, ext2 has 18 not 10, root_struct missing)"
+      - "Capabilities active: 99 — STALE: actual 100 (103 total)"
+      - "Registered skills: 102 — STALE: actual 120 (117 active, 3 deprecated)"
+      - "Commands: 101 — STALE: actual 116"
+      - "Evidence runs: 3178 — STALE: actual 3392 (as of 2026-07-02)"
+    missing_information:
+      - "No denominator for oracle: 20 of HOW MANY tracked formats?"
+      - "No denominator for certification: 20/20 means 20 of 20 formats WITH SOURCE, not all tracked"
+      - "No lane separation — external reader cannot tell what is machinery vs product progress"
+    structural_action: "SPLIT into machinery_summary and product_summary subsections"
+    required_generator_change: "Add render_machinery_stats_markdown() and render_product_stats_markdown() to generate_statistics.py"
+
+  - section: "Product Inventory"
+    intended_purpose: "Per-format breakdown of Python/.NET implementations, oracle, certification, gates"
+    current_lane: "PRODUCT"
+    correct_lane: "PRODUCT"
+    claims:
+      - "20 Python packages | 6 .NET projects | 24 formats tracked"
+      - "Per-format rows with file counts, oracle, certified status, gates"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "ORA, PAM, XPM, ZPAQ show 'N/A' for certified and oracle — correct behavior but unexplained to external reader"
+      - "No per-format test counts shown (data is collected but not rendered)"
+      - "No per-format maturity dimension"
+    missing_information:
+      - "Why are 4 formats N/A? (no source)"
+      - "Per-format test counts not shown"
+      - "Per-format maturity level not shown"
+      - "Gate detail: 'G1-G11' doesn't say which gates passed"
+    structural_action: "KEEP in Product Lane; add test counts column; add maturity column; change N/A to '— (no source)'; add footnote for denominator"
+    required_generator_change: "Update render_product_inventory_markdown() to add test_count and maturity columns"
+
+  - section: "Product Families"
+    intended_purpose: "Family-level rollup of format counts"
+    current_lane: "PRODUCT"
+    correct_lane: "PRODUCT"
+    claims: []
+    mixed_concerns: []
+    stale_or_unproven_claims: []
+    missing_information: []
+    structural_action: "KEEP in Product Lane; move under Product Lane section"
+    required_generator_change: "None — keep existing logic"
+
+  - section: "Architecture — Layer Inventory"
+    intended_purpose: "11 independent layers with file counts"
+    current_lane: "MACHINERY"
+    correct_lane: "MACHINERY"
+    claims:
+      - "L01 SAL: 30 files"
+      - "L02 QName: 21 files"
+      - "L03 Capability: 126 files"
+      - "L05 Oracle: 48 files"
+      - "L06 Product Source: 1685 files"
+      - "L07 Test: 10908 files"
+      - "L08 Evidence: 9700 files"
+      - "L09 State: 56348 files"
+      - "L11 Supervisor: 503 files"
+      - "L12 Governance: 14 files"
+      - "L13 Skills: 104 files"
+    mixed_concerns:
+      - "L06 and L07 are product layers embedded in machinery section (acceptable — they describe architecture not product progress)"
+    stale_or_unproven_claims:
+      - "L09 State: 56348 — STALE and MISLEADING: actual 58552 files, ALL gitignored .local/supervisor/ state"
+      - "L08 Evidence: 9700 — actual evidence files are gitignored local state (.local/evidences/)"
+      - "L12 Governance: 14 — this is the count of governance_validators*.py files, not total governance validators"
+    missing_information:
+      - "LAYER_DEFINITIONS is hardcoded in generate_architecture_inventory.py — no authoritative layer registry"
+      - "L09 and L08 file counts include gitignored local state — meaningless to external readers"
+    structural_action: "KEEP section in Machinery Lane; fix L09/L08 to not count gitignored state; label accordingly"
+    required_generator_change: "Add GITIGNORED_PATHS set in generate_architecture_inventory.py; for those paths use tracked file count only"
+
+  - section: "Governance Validators"
+    intended_purpose: "Count of governance validators by module"
+    current_lane: "MACHINERY (but embedded under Architecture section in render)"
+    correct_lane: "MACHINERY"
+    claims:
+      - "92 validators across 10 modules"
+      - "governance_validators.py: 50"
+      - "governance_validators_dotnet.py: 1"
+      - "governance_validators_ext.py: 15"
+      - "governance_validators_ext2.py: 10"
+      - "governance_validators_gate_auth.py: 2"
+      - "governance_validators_layers.py: 4"
+      - "governance_validators_ledger.py: 1"
+      - "governance_validators_sal.py: 3"
+      - "governance_validators_signal.py: 1"
+      - "governance_validators_spec.py: 5"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "92 validators — STALE: actual 101 (11 modules, governance_validators_root_struct.py missing, ext2 now has 18)"
+      - "10 modules — STALE: actual 11 (governance_validators_root_struct.py added)"
+      - "governance_validators_ext2.py: 10 — STALE: actual 18"
+    missing_information:
+      - "governance_validators_root_struct.py (1 validator) not listed"
+    structural_action: "MOVE to Machinery Lane explicitly as its own subsection"
+    required_generator_change: "None for count accuracy (already reads from source) — stale counts because doc not regenerated; regeneration will fix"
+
+  - section: "Capabilities"
+    intended_purpose: "Capability registry breakdown by product track"
+    current_lane: "MACHINERY (but embedded under Architecture render)"
+    correct_lane: "MACHINERY"
+    claims:
+      - "99 active of 102 total capabilities"
+      - "unclassified: 15"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "99 active — STALE: actual 100 active"
+      - "102 total — STALE: actual 103 total"
+    missing_information:
+      - "'unclassified' label unexplained — these are 15 capabilities with no product_track assigned (backfill-task-skill-ownership etc.)"
+      - "No explanation that these are infrastructure/machinery-tier skills"
+    structural_action: "MOVE to Machinery Lane → Capabilities and Skills subsection; label unclassified as '(no product_track)'"
+    required_generator_change: "Update _collect_capabilities() to label None product_track as '(no product_track)' not 'unclassified'"
+
+  - section: "Registered Skills"
+    intended_purpose: "Skill registry count by status"
+    current_lane: "MACHINERY (embedded under Architecture render)"
+    correct_lane: "MACHINERY"
+    claims:
+      - "102 skills registered"
+      - "active: 99"
+      - "deprecated: 3"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "102 skills — STALE: actual 120 (117 active, 3 deprecated)"
+      - "active: 99 — STALE: actual 117"
+    missing_information: []
+    structural_action: "MOVE to Machinery Lane → Capabilities and Skills subsection"
+    required_generator_change: "None for count (reads from registry) — stale due to doc not regenerated"
+
+  - section: "Gate Pipeline"
+    intended_purpose: "12 gates in acquisition pipeline with agent-executable status"
+    current_lane: "MIXED (embedded under Architecture render)"
+    correct_lane: "PRODUCT (gate pipeline governs product acquisition)"
+    claims:
+      - "12 gates"
+      - "GATE_0 through GATE_11"
+      - "GATE_11: No (human required)"
+    mixed_concerns:
+      - "Gate pipeline describes product acquisition workflow — belongs in Product Lane"
+    stale_or_unproven_claims: []
+    missing_information:
+      - "Gate table shows Gate 8 as 'Yes (agent-executable)' but hard prohibitions list gate_8_approval"
+      - "This contradiction is unexplained — gate_8_approval likely means the business security SIGN-OFF not the technical gate execution"
+    structural_action: "MOVE to Product Lane → Gate Progress subsection"
+    required_generator_change: "Update render_architecture_markdown() to separate gates from architecture; move gates to product lane renderer"
+
+  - section: "Agent Ecosystem"
+    intended_purpose: "AI agent roles, orchestration model, decision boundaries, AGENTS.md governance"
+    current_lane: "MACHINERY"
+    correct_lane: "MACHINERY"
+    claims:
+      - "Claude Code: Configured"
+      - "Codex: Adapter present"
+      - "Kilo: Configured"
+      - "Supervisor: Active"
+      - "102 registered skills"
+      - "101 command files"
+      - "199 Python modules in tools/supervisor/"
+      - "Max iterations: 12"
+      - "Checkpoint interval: N/A"
+      - "Supervisor advisory only"
+      - "Hard prohibitions list (6 items)"
+      - "AGENTS.md sections A through AH"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "102 registered skills — STALE: actual 120"
+      - "101 command files — STALE: actual 116"
+      - "199 supervisor modules — STALE: actual 203"
+      - "Checkpoint interval: N/A — MISLEADING: should be 'not configured'"
+    missing_information:
+      - "gate_8_approval prohibition vs Gate 8 agent-executable: unexplained contradiction"
+      - "No explanation of what 'gate_8_approval' prohibition means vs gate execution"
+    structural_action: "MOVE to Machinery Lane → Supervisor and Autonomous Execution subsection; fix checkpoint rendering"
+    required_generator_change: "Update _collect_policies() checkpoint fallback; add gate prohibition explanation note"
+
+  - section: "Known Limitations"
+    intended_purpose: "Current known constraints on the project"
+    current_lane: "MIXED"
+    correct_lane: "SPLIT into Machinery Limitations + Product Limitations + Release Limitations"
+    claims:
+      - "Formats without product source (4): ORA, ZPAQ, XPM, PAM"
+      - "Package publication: All Python packages are local-only; none published to PyPI"
+      - "Commercial .NET release: Gate 11 execution approval pending (Babar Raza)"
+      - "External users: No external users yet; all testing is internal"
+    mixed_concerns:
+      - "ORA/ZPAQ/XPM/PAM without source = PRODUCT limitation"
+      - "Package publication = RELEASE limitation"
+      - "Gate 11 pending = PRODUCT/RELEASE limitation"
+      - "External users = SHARED/RELEASE limitation"
+    stale_or_unproven_claims: []
+    missing_information:
+      - "No machinery-specific limitations listed (e.g., no authoritative layer registry, no end-to-end CI regeneration)"
+    structural_action: "SPLIT into ### Machinery Limitations, ### Product Limitations, ### Release Limitations"
+    required_generator_change: "Update _generate_limitations() to produce three subsections"
+
+  - section: "Header/Footer"
+    intended_purpose: "Generation metadata"
+    current_lane: "SHARED"
+    correct_lane: "SHARED (Generation and Evidence section)"
+    claims:
+      - "Generated: 2026-06-29T12:03:43+00:00"
+      - "Re-generate: python tools/docs/generate_project_status.py"
+    mixed_concerns: []
+    stale_or_unproven_claims:
+      - "No git HEAD revision in header — cannot trace to repository state"
+    missing_information:
+      - "No canonical source map listed"
+      - "No git HEAD revision"
+      - "No validation status"
+    structural_action: "ADD Generation and Evidence section with HEAD revision, source map, validation command"
+    required_generator_change: "Add _generate_evidence_section() to main generator; read HEAD via subprocess"
+
+uninventoried_sections: 0
