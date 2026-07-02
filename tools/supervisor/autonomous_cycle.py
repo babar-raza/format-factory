@@ -1120,6 +1120,9 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             safe_deficiencies = [d.encode("ascii", "replace").decode() for d in deficiencies[:2]]
             print(f"    [{g['item_id']}] {'; '.join(safe_deficiencies)}")
 
+    # Step 3b: Adoption compliance check
+    print("\n=== STEP 3b: ADOPTION COMPLIANCE CHECK ===")
+
     # R111+Fix1: Adoption compliance — BLOCKING for PRODUCT_SOURCE/PRODUCT_TEST items
     if adoption_result is not None:
         review["adoption_compliance"] = adoption_result
@@ -1523,6 +1526,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
     # Steps 4b+4c: Prompt quality, zero-task circuit breaker, completeness
     # Delegated to autonomous_cycle_extensions.py (TC-SGOV-008)
+    print("\n=== STEP 4b: PROMPT QUALITY VALIDATION ===")
     try:
         from autonomous_cycle_extensions import validate_prompt_and_work_items
         validate_prompt_and_work_items(
@@ -1576,12 +1580,26 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  [WARN] grading-history.jsonl append failed: {_hist_err}")
 
     # Step 6: Copy latest summaries — extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
+    # Also writes stream-local authority-map.json with STREAM_LOCAL authority model (R112)
+    print("\n=== STEP 6: COPY CYCLE SUMMARIES ===")
     try:
         from autonomous_cycle_extensions import copy_cycle_summaries
         copy_cycle_summaries(review, review_dir, repo_root, detected_stream,
                              run_id, sprint_id, timestamp, track, prompt_path)
     except Exception as _copy_err:
         print(f"  WARNING: Step 6 (copy summaries) failed: {_copy_err}")
+    # Write stream-local authority map for cross-stream isolation (R112)
+    try:
+        _auth_map = {
+            "authority": "STREAM_LOCAL",
+            "stream": detected_stream,
+            "sprint_id": sprint_id,
+            "run_id": run_id,
+        }
+        _auth_path = review_dir / "authority-map.json"
+        _auth_path.write_text(json.dumps(_auth_map, indent=2), encoding="utf-8")
+    except Exception as _auth_err:
+        print(f"  WARNING: authority-map.json write failed: {_auth_err}")
 
     # Step 7: Bridge to legacy format for session-resume/approval-gates/next-sprint
     print("\n=== STEP 7: BRIDGE TO LEGACY PACKET FORMAT ===")
