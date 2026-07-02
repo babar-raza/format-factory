@@ -1,0 +1,22 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "1.2",
+  "executed_at": "2026-07-02",
+  "sprint": "ff-gates-advancement-exec-20260702",
+  "format_id": "fods",
+  "package_name": "aspose_format_factory_fods",
+  "wheel_path": ".local/package-builds/python-foss/aspose-format-factory-fods/dist/aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
+  "package_version": "0.1.0.dev0",
+  "installed_version": "0.1.0",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_namespace": "fods",
+  "smoke_result": "PASS",
+  "smoke_calls": [
+    {"function": "parse_fods", "sample": "samples/by-format/fods/valid/simple.fods", "result": "dict with format_id=fods, 1 sheet"},
+    {"function": "workbook_to_csv", "input": "parsed workbook dict", "result": "22-char CSV output: Name,Value\\r\\nAlpha,42\\r\\n"}
+  ],
+  "report_path": "reports/r132-fods-install-proof-sprint4/package-install-proof.md",
+  "verdict": "PASS",
+  "notes": "Sprint 4 proof. Consistent PASS across R127/R128/R130/R132. workbook_to_csv takes parsed dict (not file path)."
+}
