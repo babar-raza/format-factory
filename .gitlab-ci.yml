@@ -60,7 +60,7 @@ security:
   image: python:3.11
   script:
     - pip install bandit
-    - bandit -r src/ -ll -q --skip B314  # B314: xml.etree usage is intentional (see docs/security.md)
+    - bandit -r src/ -ll -q --skip B314  # B314: xml.etree usage is intentional (see docs/governance/security.md)
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

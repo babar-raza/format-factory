@@ -27,7 +27,7 @@ jobs:
           python-version: "3.11"
       - run: pip install bandit
       - name: Security scan (bandit)
-        run: bandit -r src/ -ll -q --skip B314  # B314: xml.etree usage is intentional (see docs/security.md)
+        run: bandit -r src/ -ll -q --skip B314  # B314: xml.etree usage is intentional (see docs/governance/security.md)
 
   test-fast:
     if: github.event_name == 'pull_request'
