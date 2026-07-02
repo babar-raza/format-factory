@@ -962,10 +962,32 @@ MATERIAL_SECOND_RUN_CHANGES = 0                 (idempotency proof in F004)
 | TC-GHH-F002 | CLOSED |
 | TC-GHH-F003 | CLOSED |
 | TC-GHH-F004 | CLOSED |
+| TC-GHH-CONV-001 | CLOSED |
+
+## Convergence Repair (Post-Audit TC-GHH-CONV-001)
+
+### TC-GHH-CONV-001: Fix FODS .csproj — restore exclusion list in HEAD
+
+**Finding:** AF-001/AF-002 — HEAD commit has 0 Compile Remove entries; working tree
+missing R434/R435 exclusions causing 13 test failures.
+
+**Root cause:** During TC-GHH-A006/A007 the .csproj exclusion list was correctly rebuilt
+in the working tree, but the commit did not capture the 139-entry exclusion list.
+The linter then re-applied 137 entries (without R434/R435) post-commit.
+
+**Fix:**
+1. Add R434/R435 back to working tree .csproj exclusion list
+2. Verify `dotnet test` → 4210/4210 PASS
+3. Commit the corrected .csproj as follow-up to b947eeac
+4. Verify fresh build from HEAD: `dotnet build` → 0 errors, `dotnet test` → 4210/4210
+
+**Proof required:** Level 4 (E2E) — build + test from working tree matching HEAD state.
+
+**Evidence:** `.local/evidences/GI-FODS-NET-001/TC-CONV-001-csproj-repair.txt`
 
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
-  locked_at: "2026-07-02T20:12:02.825584+00:00"
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-03T00:00:00.000000+00:00"
   locked_by: "0ce45942c388"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
