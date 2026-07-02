@@ -1,8 +1,8 @@
-"""Tests for governance_validators_dotnet_semantic.py (V87, V88, V89).
+"""Tests for governance_validators_dotnet_semantic.py (V87, V88, V89, V90, V91, V92).
 
 GI-FODS-NET-001: FODS .NET governance incident — semantic stub detection validators.
 
-Tests: 9 per validator = 27 total.
+Tests: 9 per validator = 54 total (27 original + 27 new for V90/V91/V92).
 """
 
 from __future__ import annotations
@@ -20,6 +20,9 @@ from governance_validators_dotnet_semantic import (
     validate_dotnet_constant_return_public_api,
     validate_dotnet_detached_dictionary_fields,
     validate_dotnet_missingmethods_filename,
+    validate_dotnet_setter_without_xml_write,
+    validate_dotnet_getter_without_xml_read,
+    validate_dotnet_fods_extended_apis_loc,
 )
 
 
@@ -460,3 +463,295 @@ class TestV89MissingMethodsFilename:
         decl = _rg_decl(changed_files=[str(rel)])
         result = validate_dotnet_missingmethods_filename(decl, repo_root=tmp_path)
         assert result["blocks_sprint"] is True
+
+
+# ---------------------------------------------------------------------------
+# V90: validate_dotnet_setter_without_xml_write
+# ---------------------------------------------------------------------------
+
+class TestV90SetterWithoutXmlWrite:
+    def test_pass_no_dotnet_files(self, tmp_path):
+        """V90 should pass when no .NET files in changed_files."""
+        decl = _decl(changed_files=["README.md"])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_pass_empty_changed_files(self, tmp_path):
+        """V90 should pass with empty changed_files."""
+        result = validate_dotnet_setter_without_xml_write(_decl(), repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_setter_with_xml_write(self, tmp_path):
+        """V90 should pass when setter calls SetAttributeValue."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    public void SetColumnWidth(string sheet, int col, double w) {
+        var el = _doc.Descendants("table:table-column").FirstOrDefault();
+        el?.SetAttributeValue("width", w);
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_warn_dict_only_setter(self, tmp_path):
+        """V90 should warn when setter only writes to dictionary field."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, double> _widths = new();
+    public void SetColumnWidth(string sheet, int col, double w) {
+        _widths[sheet + col] = w;
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+
+    def test_warn_does_not_block_sprint(self, tmp_path):
+        """V90 WARN must not block sprint."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, double> _widths = new();
+    public void SetColumnWidth(string s, int c, double w) { _widths[s + c] = w; }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False
+
+    def test_pass_missing_file(self, tmp_path):
+        """V90 should pass gracefully when the file does not exist."""
+        decl = _product_decl(changed_files=["src/net/fods/NonExistent.cs"])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_warn_items_contain_remediation(self, tmp_path):
+        """V90 warning items must include remediation text."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, double> _w = new();
+    public void SetWidth(string s, double w) { _w[s] = w; }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        for item in result["items"]:
+            assert "remediation" in item
+            assert len(item["remediation"]) > 0
+
+    def test_pass_style_editor_setter(self, tmp_path):
+        """V90 should pass when setter uses FodsStyleEditor."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    public void SetCellFontColor(string sheet, int r, int c, string color) {
+        FodsStyleEditor.SetCellProperty(_doc, sheet, r, c, "color", color);
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_validator_name_in_result(self, tmp_path):
+        """V90 result must identify the validator."""
+        decl = _decl()
+        result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["validator"] == "validate_dotnet_setter_without_xml_write"
+
+
+# ---------------------------------------------------------------------------
+# V91: validate_dotnet_getter_without_xml_read
+# ---------------------------------------------------------------------------
+
+class TestV91GetterWithoutXmlRead:
+    def test_pass_no_dotnet_files(self, tmp_path):
+        """V91 should pass with no .NET files."""
+        decl = _decl(changed_files=["README.md"])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_empty_changed_files(self, tmp_path):
+        """V91 should pass with empty changed_files."""
+        result = validate_dotnet_getter_without_xml_read(_decl(), repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_getter_with_xml_read(self, tmp_path):
+        """V91 should pass when getter uses Attribute(."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    public double GetColumnWidth(string sheet, int col) {
+        var el = _doc.Descendants("table:table-column").FirstOrDefault();
+        return double.Parse(el?.Attribute("width")?.Value ?? "0");
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_warn_dict_backed_getter(self, tmp_path):
+        """V91 should warn when getter reads from dictionary without XML."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, double> _widths = new();
+    public double GetColumnWidth(string sheet, int col) {
+        _widths.TryGetValue(sheet + col, out var w);
+        return w;
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+
+    def test_warn_does_not_block_sprint(self, tmp_path):
+        """V91 WARN must not block sprint."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, double> _w = new();
+    public double GetWidth(string s) { _w.TryGetValue(s, out var v); return v; }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False
+
+    def test_pass_missing_file(self, tmp_path):
+        """V91 should pass when referenced file does not exist."""
+        decl = _product_decl(changed_files=["src/net/fods/Missing.cs"])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_warn_items_contain_remediation(self, tmp_path):
+        """V91 warning items must include remediation."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    private readonly Dictionary<string, string> _d = new();
+    public string GetSheetColor(string s) { _d.TryGetValue(s, out var v); return v ?? ""; }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        for item in result["items"]:
+            assert "remediation" in item
+
+    def test_pass_style_resolver_getter(self, tmp_path):
+        """V91 should pass when getter uses FodsStyleResolver."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument {
+    public FodsOdfCellStyle? GetResolvedCellStyle(string sheet, int r, int c) {
+        return FodsStyleResolver.ResolveCellStyle(_doc, GetCellElement(sheet, r, c));
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_validator_name_in_result(self, tmp_path):
+        """V91 result must identify the validator."""
+        decl = _decl()
+        result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["validator"] == "validate_dotnet_getter_without_xml_read"
+
+
+# ---------------------------------------------------------------------------
+# V92: validate_dotnet_fods_extended_apis_loc
+# ---------------------------------------------------------------------------
+
+class TestV92ExtendedApisLoc:
+    def test_pass_no_extended_apis_file(self, tmp_path):
+        """V92 should pass when no ExtendedApis file present."""
+        decl = _decl(changed_files=["src/net/fods/FodsDocumentAccessor.cs"])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_empty_changed_files(self, tmp_path):
+        """V92 should pass with empty changed_files."""
+        result = validate_dotnet_fods_extended_apis_loc(_decl(), repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_within_cap(self, tmp_path):
+        """V92 should pass when ExtendedApis file is within 800 LOC."""
+        content = "\n".join([f"// line {i}" for i in range(799)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_fail_exceeds_cap(self, tmp_path):
+        """V92 should fail when ExtendedApis file exceeds 800 LOC."""
+        content = "\n".join([f"// line {i}" for i in range(801)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+
+    def test_fail_blocks_sprint(self, tmp_path):
+        """V92 FAIL must block sprint."""
+        content = "\n".join([f"// line {i}" for i in range(850)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["blocks_sprint"] is True
+
+    def test_fail_items_contain_loc_info(self, tmp_path):
+        """V92 failure items must include loc and cap."""
+        content = "\n".join([f"// line {i}" for i in range(900)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        item = result["items"][0]
+        assert "loc" in item
+        assert "cap" in item
+        assert item["loc"] > item["cap"]
+
+    def test_fail_items_contain_remediation(self, tmp_path):
+        """V92 failure items must include remediation guidance."""
+        content = "\n".join([f"// line {i}" for i in range(900)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        for item in result["items"]:
+            assert "remediation" in item
+            assert len(item["remediation"]) > 0
+
+    def test_pass_at_exactly_cap(self, tmp_path):
+        """V92 should pass at exactly 800 LOC."""
+        content = "\n".join([f"// line {i}" for i in range(800)]) + "\n"
+        rel = _write_cs(tmp_path, "FodsDocumentExtendedApis.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_validator_name_in_result(self, tmp_path):
+        """V92 result must identify the validator."""
+        decl = _decl()
+        result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
+        assert result["validator"] == "validate_dotnet_fods_extended_apis_loc"

@@ -1140,20 +1140,8 @@ public sealed partial class FodtDocument
     /// <summary>Property alias for GetHeadingCount().</summary>
     public int HeadingCount => GetHeadingCount();
 
-    /// <summary>R405: Cross-reference count (stub — returns 0; cross-refs are XML-only).</summary>
-    public int CrossReferenceCount => 0;
-
     /// <summary>R406: Property alias for GetHyperlinkCount().</summary>
     public int HyperlinkCount => GetHyperlinkCount();
-
-    /// <summary>R406: Return the number of tracked changes (stub — 0 for in-memory docs).</summary>
-    public int GetChangeCount() => 0;
-
-    /// <summary>R407: Count of index marks (stub — 0 for in-memory docs).</summary>
-    public int IndexMarkCount => 0;
-
-    /// <summary>R408: Count of text frames (stub — 0 for in-memory docs).</summary>
-    public int TextFrameCount => 0;
 
     /// <summary>Property alias for GetImageCount().</summary>
     public int ImageCount => GetImageCount();
@@ -1183,270 +1171,9 @@ public sealed partial class FodtDocument
     // Revision tracking (R169) — in-memory stubs
     // -------------------------------------------------------------------------
 
-    /// <summary>R169: Return the number of tracked revisions (0 — stub).</summary>
-    public int GetRevisionCount() => 0;
-
     // -------------------------------------------------------------------------
     // R422-R432 count stubs — all return 0 (in-memory objects only)
     // -------------------------------------------------------------------------
-
-    /// <summary>R422: Count of reference marks (text:reference-mark elements). Stub — returns 0.</summary>
-    public int ReferenceMarkCount => 0;
-
-    /// <summary>R423: Count of embedded objects (draw:object elements). Stub — returns 0.</summary>
-    public int EmbeddedObjectCount => 0;
-
-    /// <summary>R424: Count of form fields. Stub — returns 0.</summary>
-    public int GetFormFieldCount() => 0;
-
-    /// <summary>R425: Count of input fields (text:input elements). Stub — returns 0.</summary>
-    public int GetInputFieldCount() => 0;
-
-    /// <summary>R426: Count of scripts (office:script elements). Stub — returns 0.</summary>
-    public int GetScriptCount() => 0;
-
-    /// <summary>R427: Count of text sections (text:section elements). Stub — returns 0.</summary>
-    public int GetTextSectionCount() => 0;
-
-    /// <summary>R428: Count of tracked changes. Stub — returns 0.</summary>
-    public int GetChangeTrackingCount() => 0;
-
-    /// <summary>R429: Count of style names defined. Stub — returns 0.</summary>
-    public int GetStyleNameCount() => 0;
-
-    /// <summary>R430: Count of page styles. Stub — returns 0.</summary>
-    public int GetPageStyleCount() => 0;
-
-    /// <summary>R431: Count of frame styles. Stub — returns 0.</summary>
-    public int GetFrameStyleCount() => 0;
-
-    /// <summary>R432: Count of list styles. Stub — returns 0.</summary>
-    public int GetListStyleCount() => 0;
-
-    /// <summary>R409: Count of text fields. Stub — returns 0.</summary>
-    public int FieldCount => 0;
-
-    /// <summary>R416: Count of drawing objects. Stub — returns 0.</summary>
-    public int DrawingCount => 0;
-
-    /// <summary>R417: Count of macros. Stub — returns 0.</summary>
-    public int MacroCount => 0;
-
-    /// <summary>R418: Count of variable declarations. Stub — returns 0.</summary>
-    public int VariableCount => 0;
-
-    /// <summary>R419: Count of user-defined fields. Stub — returns 0.</summary>
-    public int UserFieldCount => 0;
-
-    /// <summary>R420: Count of sequence declarations. Stub — returns 0.</summary>
-    public int SequenceCount => 0;
-
-    /// <summary>R421: Count of database ranges. Stub — returns 0.</summary>
-    public int DatabaseRangeCount => 0;
-
-    /// <summary>R433: Count of character styles. Stub — returns 0.</summary>
-    public int GetCharacterStyleCount() => 0;
-
-    /// <summary>R434: Count of table styles. Stub — returns 0.</summary>
-    public int GetTableStyleCount() => 0;
-
-    /// <summary>R435: Count of numbering rules (list styles). Stub — returns 0.</summary>
-    public int GetNumberingRuleCount() => 0;
-
-    /// <summary>R436: Count of graphic objects. Stub — returns 0.</summary>
-    public int GetGraphicObjectCount() => 0;
-
-    /// <summary>R437: Count of master pages. Stub — returns 0.</summary>
-    public int GetMasterPageCount() => 0;
-
-    /// <summary>R438: Count of drawing objects. Stub — returns 0.</summary>
-    public int GetDrawingObjectCount() => 0;
-
-    /// <summary>R442: Count of text fields. Method alias for FieldCount property.</summary>
-    public int GetFieldCount() => 0;
-
-    /// <summary>R443: Count of index marks. Method alias for IndexMarkCount property.</summary>
-    public int GetIndexMarkCount() => 0;
-
-    /// <summary>R444: Count of table-of-contents sections. Stub — returns 0.</summary>
-    public int GetTableOfContentsCount() => 0;
-
-    /// <summary>R445: Count of bibliography entries. Stub — returns 0.</summary>
-    public int GetBibliographyCount() => 0;
-
-    /// <summary>R446: Count of text frames. Stub — returns 0.</summary>
-    public int GetTextFrameCount() => 0;
-
-    /// <summary>R447: Count of embedded objects. Stub — returns 0.</summary>
-    public int GetEmbeddedObjectCount() => 0;
-
-    /// <summary>R448: Count of macros. Stub — returns 0.</summary>
-    public int GetMacroCount() => 0;
-
-    /// <summary>R449: Count of spell-check errors. Stub — returns 0.</summary>
-    public int GetSpellCheckErrorCount() => 0;
-
-    /// <summary>R450: Count of shapes. Stub — returns 0.</summary>
-    public int GetShapeCount() => 0;
-
-    /// <summary>R451: Count of custom properties. Stub — returns 0.</summary>
-    public int GetCustomPropertyCount() => 0;
-
-    /// <summary>R457: Count of captions. Stub — returns 0.</summary>
-    public int GetCaptionCount() => 0;
-
-    /// <summary>R460: Count of page breaks. Stub — returns 0.</summary>
-    public int GetPageBreakCount() => 0;
-
-    /// <summary>R461: Count of variables. Stub — returns 0.</summary>
-    public int GetVariableCount() => 0;
-
-    /// <summary>R462: Count of user-defined styles. Stub — returns 0.</summary>
-    public int GetUserDefinedStyleCount() => 0;
-
-    /// <summary>R463: Count of outline items. Stub — returns 0.</summary>
-    public int GetOutlineCount() => 0;
-
-    /// <summary>R464: Count of fonts. Stub — returns 0.</summary>
-    public int GetFontCount() => 0;
-
-    /// <summary>R465: Count of colors. Stub — returns 0.</summary>
-    public int GetColorCount() => 0;
-
-    /// <summary>R467: Count of chapters. Stub — returns 0.</summary>
-    public int GetChapterCount() => 0;
-
-    /// <summary>R468: Count of ruby text. Stub — returns 0.</summary>
-    public int GetRubyTextCount() => 0;
-
-    /// <summary>R469: Count of drop caps. Stub — returns 0.</summary>
-    public int GetDropCapCount() => 0;
-
-    /// <summary>R470: Count of spans. Stub — returns 0.</summary>
-    public int GetSpanCount() => 0;
-
-    /// <summary>R479: Count of track changes. Stub — returns 0.</summary>
-    public int GetTrackChangesCount() => 0;
-
-    /// <summary>R483: Count of paragraph styles. Stub — returns 0.</summary>
-    public int GetParagraphStyleCount() => 0;
-
-    /// <summary>R488: Count of page layouts. Stub — returns 0.</summary>
-    public int GetPageLayoutCount() => 0;
-
-    /// <summary>R489: Count of graphic styles. Stub — returns 0.</summary>
-    public int GetGraphicStyleCount() => 0;
-
-    /// <summary>R494: Count of OLE objects. Stub — returns 0.</summary>
-    public int GetOleObjectCount() => 0;
-
-    /// <summary>R496: Count of event listeners. Stub — returns 0.</summary>
-    public int GetEventListenerCount() => 0;
-
-    /// <summary>R497: Count of settings. Stub — returns 0.</summary>
-    public int GetSettingCount() => 0;
-
-    /// <summary>R498: Count of meta properties. Stub — returns 0.</summary>
-    public int GetMetaPropertyCount() => 0;
-
-    /// <summary>R499: Count of document properties. Stub — returns 0.</summary>
-    public int GetDocumentPropertyCount() => 0;
-
-    /// <summary>R500: Count of statistics properties. Stub — returns 0.</summary>
-    public int GetStatisticsPropertyCount() => 0;
-
-    /// <summary>R501: Count of content validation entries. Stub — returns 0.</summary>
-    public int GetContentValidationCount() => 0;
-
-    /// <summary>R502: Count of calculation settings. Stub — returns 0.</summary>
-    public int GetCalculationSettingsCount() => 0;
-
-    /// <summary>R503: Count of languages used. Stub — returns 0.</summary>
-    public int GetLanguageCount() => 0;
-
-    /// <summary>R504: Count of text styles. Stub — returns 0.</summary>
-    public int GetTextStyleCount() => 0;
-
-    /// <summary>R506: Count of frames. Stub — returns 0.</summary>
-    public int GetFrameCount() => 0;
-
-    /// <summary>R507: Count of index entries. Stub — returns 0.</summary>
-    public int GetIndexCount() => 0;
-
-    /// <summary>R508: Count of charts. Stub — returns 0.</summary>
-    public int GetChartCount() => 0;
-
-    /// <summary>R509: Count of drawings. Stub — returns 0.</summary>
-    public int GetDrawingCount() => 0;
-
-    /// <summary>R510: Count of font declarations. Stub — returns 0.</summary>
-    public int GetFontDeclarationCount() => 0;
-
-    /// <summary>R524: Count of sequence declarations. Stub — returns 0.</summary>
-    public int GetSequenceDeclarationCount() => 0;
-
-    /// <summary>R525: Count of user-defined metadata entries. Stub — returns 0.</summary>
-    public int GetUserDefinedMetadataCount() => 0;
-
-    /// <summary>R526: Count of tracked changes. Stub — returns 0.</summary>
-    public int GetTrackChangeCount() => 0;
-
-    /// <summary>Count of line breaks. Stub — returns 0.</summary>
-    public int GetLineBreakCount() => 0;
-
-    /// <summary>Count of notes (footnotes/endnotes). Stub — returns 0.</summary>
-    public int GetNoteCount() => 0;
-
-    /// <summary>Count of ruby text annotations. Stub — returns 0.</summary>
-    public int GetRubyCount() => 0;
-
-    /// <summary>Count of tab stops in the document. Stub — returns 0.</summary>
-    public int GetTabStopCount() => 0;
-
-    /// <summary>Count of soft hyphens in the document. Stub — returns 0.</summary>
-    public int GetSoftHyphenCount() => 0;
-
-    /// <summary>Count of table cells in the document. Stub — returns 0.</summary>
-    public int GetCellCount() => 0;
-
-    /// <summary>Count of table columns in the document. Stub — returns 0.</summary>
-    public int GetColumnCount() => 0;
-
-    /// <summary>Count of table rows in the document. Stub — returns 0.</summary>
-    public int GetRowCount() => 0;
-
-    /// <summary>Count of header sections. Stub — returns 0.</summary>
-    public int GetHeaderCount() => 0;
-
-    /// <summary>Count of footer sections. Stub — returns 0.</summary>
-    public int GetFooterCount() => 0;
-
-    /// <summary>Count of section properties. Stub — returns 0.</summary>
-    public int GetSectionPropertyCount() => 0;
-
-    /// <summary>Count of subsections. Stub — returns 0.</summary>
-    public int GetSubsectionCount() => 0;
-
-    /// <summary>Count of graphic (draw:frame) properties. Stub — returns 0.</summary>
-    public int GetGraphicPropertyCount() => 0;
-
-    /// <summary>Count of paragraph style properties. Stub — returns 0.</summary>
-    public int GetParagraphPropertyCount() => 0;
-
-    /// <summary>Count of table style properties. Stub — returns 0.</summary>
-    public int GetTablePropertyCount() => 0;
-
-    /// <summary>Count of text style properties. Stub — returns 0.</summary>
-    public int GetTextPropertyCount() => 0;
-
-    /// <summary>Count of citations in the document. Stub — returns 0.</summary>
-    public int GetCitationCount() => 0;
-
-    /// <summary>Count of glossary terms in the document. Stub — returns 0.</summary>
-    public int GetGlossaryTermCount() => 0;
-
-    /// <summary>Count of embedded objects (draw:object, draw:image etc.) in the document. Stub — returns 0.</summary>
-    public int GetObjectCount() => 0;
 
     /// <summary>R410/R412: Return the default body font name from the Standard paragraph style, or empty string if not found.</summary>
     public string GetDefaultFontName()
@@ -1502,9 +1229,6 @@ public sealed partial class FodtDocument
         }
         return 12.0;
     }
-
-    /// <summary>R169: Return a summary of tracked changes (empty stub).</summary>
-    public string GetTrackedChangeSummary() => string.Empty;
 
     /// <summary>R169: Accept all tracked changes and return the document (no-op — stub).</summary>
     public FodtDocument AcceptAllChanges() => this;
@@ -2198,9 +1922,6 @@ public sealed partial class FodtDocument
     /// <summary>R344: Return the type of the named section (stub — returns "body").</summary>
     public string GetSectionType(string name) => "body";
 
-    /// <summary>R344: Return the content of the named section (stub — returns empty).</summary>
-    public string GetSectionContent(string name) => string.Empty;
-
     /// <summary>R350: Return the character length of the paragraph at the given index.</summary>
     public int GetParagraphLength(int index)
     {
@@ -2400,9 +2121,6 @@ public sealed partial class FodtDocument
 
     /// <summary>R345: Return the style name for a given style identifier (stub).</summary>
     public string GetStyleName(string styleName) => styleName ?? string.Empty;
-
-    /// <summary>R349: Return the style of the named section (stub).</summary>
-    public string GetSectionStyle(string name) => string.Empty;
 
     private string? _pageSize;
     private string? _pageMargins;

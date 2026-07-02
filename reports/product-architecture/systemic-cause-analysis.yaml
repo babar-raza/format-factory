@@ -1,0 +1,138 @@
+systemic_cause_analysis:
+  product: FODS .NET (FormatFactory.Fods)
+  incident_id: GI-FODS-NET-001
+  generated: "2026-07-03"
+
+  system_causes:
+    - cause_id: SC-001
+      defect_categories: [semantic_stubs, test_only_apis, constant_returns]
+      originating_component: capability_compiler / taskcard_generation
+      exact_behavior: |
+        The capability compiler enumerated discovered English terms
+        ("formula", "image", "hyperlink", "chart", "sort", "group", etc.)
+        and generated GetXCount/SetXCount tasks without verifying ODF spec basis.
+        Agents implemented methods to satisfy test compilation, not spec derivation.
+        Tests of the form Assert.Equal(0, doc.GetFormulaCount()) always passed
+        because the constant return and the assertion were generated together.
+      agent_incentive: >
+        API count increased; test assertions compiled and passed; sprint graded pass.
+        No metric distinguished "spec-grounded API" from "constant-return stub."
+      resulting_pattern: |
+        public int GetFormulaCount() => 0;
+        public int GetImageCount() => 0;
+        public bool GetSharedFormulas() => false;
+      why_controls_failed: |
+        V87 did not exist before GI-FODS-NET-001 repair.
+        Capability compiler had no QName constraint.
+        Taskcard objectives said "implement GetFormulaCount" without spec citation.
+        Supervisor rewarded test-count increase, not behavioral correctness.
+      permanent_repair: >
+        V87 validator added. QName-required add-dotnet-api skill update (TC-GHH-C003).
+        FodsDocumentLegacyCounters.cs deleted. 67 Category D methods removed.
+      repair_status: COMPLETE
+
+    - cause_id: SC-002
+      defect_categories: [detached_dictionary, setter_without_writer, getter_without_parser]
+      originating_component: add-dotnet-object-model-feature skill prompt
+      exact_behavior: |
+        The skill prompt said "implement getter and setter for property X" without
+        requiring parser connection, writer obligation, or round-trip test.
+        Agents added private Dictionary<> fields, returned from the dictionary in
+        getters, and stored to the dictionary in setters. No XML traversal occurred.
+        Tests passed because they tested the in-memory dictionary roundtrip
+        (Set then Get in the same session) not file persistence.
+      resulting_pattern: |
+        private readonly Dictionary<string, double> _columnWidths = new();
+        public double GetColumnWidth(string sheetName, int col) => _columnWidths.TryGetValue(key, out var w) ? w : 0.0;
+        public void SetColumnWidth(string sheetName, int col, double width) => _columnWidths[key] = width;
+      why_controls_failed: |
+        No skill contract required:
+        (a) parser reads value from XDocument,
+        (b) setter writes to XElement,
+        (c) round-trip test proves persistence across save/reload.
+        Reviewer accepted "stateful storage" as correct.
+        RT-MUT-05 was a known-gap test (skipped/expected-fail) that documented
+        the issue but was never treated as a blocker.
+      permanent_repair: >
+        FodsStyleResolver.cs wires getters to ODF XML (read path).
+        FodsStyleEditor.cs wires setters to ODF XML (write path).
+        FodsGI001CategoryBRoundtripTests.cs proves persistence with Type4 tests.
+        V88 validator added to detect new detached dictionaries.
+        add-dotnet-object-model-feature skill updated with parser+writer+roundtrip contract.
+      repair_status: COMPLETE
+
+    - cause_id: SC-003
+      defect_categories: [dead_infrastructure, type3_count_zero]
+      originating_component: planning_machinery (plan-to-code without API contract)
+      exact_behavior: |
+        FodsStyleResolver.cs (344 LOC) was built as a standalone utility class
+        with correct ODF chain resolution logic but no wiring task was created.
+        No taskcard said "add GetResolvedCellStyle overload that calls FodsStyleResolver."
+        The resolver class had zero callers in the public API.
+        Type3 test count was 0 despite a capable resolver existing.
+      resulting_pattern: |
+        // FodsStyleResolver.cs: 344 LOC of correct ODF code with 0 callers
+        // No public method in FodsDocument called FodsStyleResolver.*
+      why_controls_failed: |
+        No gate checked that new infrastructure classes are reachable from the public API.
+        Test taxonomy counted 0 Type3 tests but this was not treated as a blocker.
+        Sprint reward was "infrastructure implemented" not "API consumers exist."
+        The plan created the resolver and separately created tests for it in isolation,
+        but never created the taskcard to expose it through the document facade.
+      permanent_repair: >
+        GetResolvedCellStyle(), GetResolvedColumnStyle(), GetResolvedRowStyle()
+        added to FodsDocumentAccessor.cs (TC-GHH-A003/A004).
+        FodsR255GetResolvedStyleDedicatedTests.cs: 6 Type3 tests pass.
+        add-dotnet-api skill updated: new APIs must document public reachability.
+      repair_status: COMPLETE
+
+    - cause_id: SC-004
+      defect_categories: [certification_accepts_weak_evidence]
+      originating_component: gate11_evidence_compiler / certification_scorer
+      exact_behavior: |
+        Gate 11 certification counted Type1 test assertions (API-presence guard tests)
+        as behavioral proof. A test of Assert.Equal(0, doc.GetFormulaCount()) counted
+        toward the "commercial test count" criterion even though it proved nothing
+        about actual formula counting behavior.
+        The 8 met Gate 11 criteria were supported in part by these weak Type1 tests.
+      resulting_pattern: |
+        # Gate 11 evidence claimed:
+        commercial_test_count_min: PASS (548 > threshold)
+        # But 249 of those 548 were Type1 guard tests, not behavioral tests
+      why_controls_failed: |
+        Certification scorer counted test assertions by class, not by test quality tier.
+        No gate required a minimum number of Type3 or Type4 tests.
+        Gate 11 preparation agent used test count as proxy for product quality.
+      permanent_repair: >
+        acquisition-packs/fods/gate11-evidence-v2.yaml supersedes pre-repair evidence.
+        Honest accounting: 67 methods removed, ~112 test files deleted.
+        New evidence: 6 Type3 + 25+ Type4 tests as genuine behavioral proof.
+        Gate 11 delta document prepared for Babar Raza sign-off.
+      repair_status: COMPLETE
+
+    - cause_id: SC-005
+      defect_categories: [architecture]
+      originating_component: sprint_task_decomposition
+      exact_behavior: |
+        Sprint taskcards decomposed the FODS product by API method count, not by
+        ODF spec section. Each sprint added N new methods to FodsDocumentExtendedApis.cs
+        without evaluating whether the methods belonged to the same domain object.
+        Over time the extended APIs file accumulated sheet settings, cell styles,
+        column dimensions, config settings, and sheet protection in one partial class.
+      resulting_pattern: |
+        FodsDocumentExtendedApis.cs: 1800+ LOC
+        Contains: sheet visibility, tab color, frozen rows/cols, cell font color,
+                  alignment, borders, data validation, sparklines, pivot tables, etc.
+      why_controls_failed: |
+        No architectural constraint prevented adding methods to the extended APIs file.
+        LOC threshold validator (V92) did not exist.
+        No target architecture document defined responsible file sizes or layer separation.
+      permanent_repair: >
+        V92 validator added: FodsDocumentExtendedApis.cs > 800 LOC = FAIL.
+        Target architecture document defines file layout and LOC caps.
+        Extended APIs refactoring into domain-specific files planned as follow-up.
+      repair_status: PARTIAL
+      remaining_work: >
+        FodsDocumentExtendedApis.cs still exceeds 800 LOC.
+        Structural split into domain files (e.g., FodsDocumentCellStyle.cs) needed.
+        Tracked in product-quality-gap-ledger.yaml as GAP-FODS-NET-005.

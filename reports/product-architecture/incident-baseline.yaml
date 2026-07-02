@@ -1,0 +1,68 @@
+product_quality_incident:
+  incident_id: GI-FODS-NET-001
+  repository: format-factory
+  branch: main
+  head: d3f437c5c1c1ee38624218635bed76c1b43c1f24
+  plan_path: plans/.claude/gleaming-rolling-hammock.md
+  example_product: src/net/fods/
+  product_roots: [src/net/fods/]
+  spec_sources: [OASIS ODF 1.3]
+  sal_sources: [.local/sal-output/sal-facts-fods.json]
+  qname_sources: [src/net/fods/Spec/]
+  capability_sources: [.governance/capabilities/registry.yaml]
+  generation_entry_points: [.supervisor/skill-registry.yaml]
+  skills:
+    - add-dotnet-api
+    - add-dotnet-object-model-feature
+    - add-roundtrip-test
+  task_sources: [plans/.claude/buzzing-wiggling-whistle.md]
+  certification_sources: [acquisition-packs/fods/]
+  evidence_roots: [reports/gov-incidents/]
+
+pre_repair_snapshot:
+  source_files: 23
+  source_lines_total: 9492
+  public_types: 38
+  public_methods_properties_approx: 421
+  test_files_total: 573
+  excluded_test_files: 145
+  type1_guard_only: 249
+  type2_in_memory: 402
+  type3_odf_semantic: 0
+  type4_roundtrip: 3
+  partial_class_files: 4
+  detached_dict_fields: 8
+  constant_zero_apis: 67
+  dead_code_lines: 445
+  gate11_criteria_met: 8
+  gate11_criteria_total: 31
+
+post_repair_snapshot:
+  source_files: 22
+  constant_zero_apis: 0
+  detached_dict_fields: 0
+  type3_odf_semantic: 6
+  type4_roundtrip_min: 25
+  excluded_test_files: 139
+  passing_tests: 4210
+  gate11_criteria_met: 8
+  deleted_files:
+    - src/net/fods/FodsDocumentLegacyCounters.cs
+  new_files:
+    - src/net/fods/FodsStyleResolver.cs
+    - src/net/fods/FodsStyleEditor.cs
+    - src/net/fods/Model/FodsOdfCellStyle.cs
+    - src/net/fods/Model/FodsOdfColumnStyle.cs
+    - src/net/fods/Model/FodsOdfRowStyle.cs
+    - tests/net/fods/FodsR255GetResolvedStyleDedicatedTests.cs
+    - tests/net/fods/FodsGI001CategoryBRoundtripTests.cs
+    - acquisition-packs/fods/gate11-evidence-v2.yaml
+
+repair_summary:
+  category_d_removed: 67
+  category_b_wired: 25
+  category_b_setters_via_style_editor: true
+  category_b_getters_via_style_resolver: true
+  roundtrip_proof: FodsGI001CategoryBRoundtripTests.cs
+  type3_proof: FodsR255GetResolvedStyleDedicatedTests.cs (6 tests pass)
+  rt_mut_05_inverted: true

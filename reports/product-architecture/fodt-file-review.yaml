@@ -1,0 +1,163 @@
+fodt_file_review:
+  product: FODT .NET (FormatFactory.Fodt)
+  incident_id: GI-FODT-NET-001
+  generated: "2026-07-03"
+  reviewer: gleaming-rolling-hammock TC-GHH-E001
+
+  summary:
+    total_source_files: 11
+    total_loc: 5577
+    category_d_constant_zero: 94
+    category_b_detached_dict: 9
+    category_a_dom_computed: ~150
+    category_c_aliases: ~80
+    category_e_private_helpers: ~40
+
+  files:
+    - file: FodtDocument.cs
+      loc: 778
+      intended_responsibility: Document lifecycle, load/save, core content operations
+      actual_responsibilities:
+        - Document creation and loading
+        - Paragraph, heading, table, list insert/remove
+        - Style management (font, bold, italic, etc.)
+        - Export orchestration
+      public_types: [FodtDocument, FodtParagraph]
+      parser_role: Delegates to FodtParser
+      writer_role: XDocument.Save via FodtWriter
+      disposition: KEEP
+      category_distribution:
+        A: 30
+        C: 10
+
+    - file: FodtDocumentAccessor.cs
+      loc: 284
+      intended_responsibility: DOM-computed query methods (counts from live XDocument)
+      actual_responsibilities:
+        - GetParagraphCount, GetHeadingCount, GetTableCount, GetImageCount (real ones)
+        - GetBookmarkCount, GetHyperlinkCount (real implementations)
+        - GetWordCount, GetCharacterCount
+      public_types: []
+      parser_role: Reads from XDocument
+      writer_role: None (read-only)
+      disposition: KEEP
+      category_distribution:
+        A: 13
+
+    - file: FodtDocumentExtendedApis.cs
+      loc: 2944
+      intended_responsibility: Extended ODF-backed APIs (export aliases, style, config)
+      actual_responsibilities:
+        - Export method aliases (Category C)
+        - Real ODF-backed style APIs (Category B)
+        - 94 constant-zero methods (Category D)
+        - Dictionary-backed properties (Category B — 9 dict fields)
+      public_types: []
+      parser_role: Partial (some real XML reads; most methods bypass parser)
+      writer_role: Partial (some SetAttributeValue; most dict-only)
+      disposition: NEEDS_REPAIR
+      category_distribution:
+        B: 50
+        C: 80
+        D: 94
+      remediation:
+        category_d: Move to FodtDocumentLegacyCounters.cs, then delete
+        category_b: Wire getters to ODF XML reads; setters to XElement writes (future work)
+        architecture: Split by domain after Category D removal
+
+    - file: FodtParser.cs
+      loc: 320
+      intended_responsibility: Parse FODT XML to XDocument + FodtParseResult model
+      actual_responsibilities:
+        - Load flat ODF text document XML
+        - Build FodtDocument model with paragraphs, headings, tables
+      parser_role: PRIMARY — XDocument.Load + model construction
+      writer_role: None
+      disposition: KEEP
+      category_distribution:
+        E: all
+
+    - file: FodtWriter.cs
+      loc: 55
+      intended_responsibility: Serialize XDocument to FODT XML
+      actual_responsibilities:
+        - XDocument.Save with formatting options
+      writer_role: PRIMARY
+      disposition: KEEP
+      category_distribution:
+        E: all
+
+    - file: FodtHtmlExporter.cs
+      loc: 197
+      intended_responsibility: Export FODT to HTML
+      writer_role: HTML serializer
+      disposition: KEEP
+
+    - file: FodtMarkdownExporter.cs
+      loc: 189
+      intended_responsibility: Export FODT to Markdown
+      disposition: KEEP
+
+    - file: FodtPdfExporter.cs
+      loc: 331
+      intended_responsibility: Export FODT to PDF (via HTML intermediate)
+      disposition: KEEP
+
+    - file: FodtPngExporter.cs
+      loc: 312
+      intended_responsibility: Export FODT to PNG (raster image via PDF)
+      disposition: KEEP
+
+    - file: FodtTxtExporter.cs
+      loc: 167
+      intended_responsibility: Export FODT to plain text
+      disposition: KEEP
+
+  category_d_methods:
+    count: 94
+    description: Public methods/properties returning constant 0, false, or empty string
+    examples:
+      - "public int CrossReferenceCount => 0;"
+      - "public int GetChangeCount() => 0;"
+      - "public int IndexMarkCount => 0;"
+      - "public int TextFrameCount => 0;"
+      - "public int GetRevisionCount() => 0;"
+      - "public int ReferenceMarkCount => 0;"
+      - "public int EmbeddedObjectCount => 0;"
+      - "public int GetFormFieldCount() => 0;"
+      - "public int GetScriptCount() => 0;"
+      - "public int GetTextSectionCount() => 0;"
+    remediation: Stage in FodtDocumentLegacyCounters.cs; delete after test cleanup
+    odf_basis: None — no SAL fact authorizes these as simple integer counts
+    status: PENDING_REMOVAL
+
+  category_b_dict_fields:
+    count: 9
+    description: private readonly Dictionary<> fields backing persistent document properties
+    examples:
+      - _fontSizes
+      - _fontColors
+      - _backgroundColors
+      - _cellWidths
+      - _cellHeights
+      - _columnAlignments
+      - _textIndents
+      - _listStyles
+      - _tableStyles
+    remediation: >
+      Wire to ODF XML reads/writes. Requires FodtStyleResolver (future — ODF text styles
+      share the same namespace as Calc styles). Scope FODT Category B to future sprint.
+    status: OPEN
+
+  v87_scan_result:
+    total_violations: 94
+    validator: tools/supervisor/governance_validators_dotnet_semantic.py V87
+    scan_date: "2026-07-03"
+    note: Confirmed by reports/gov-incidents/V87-scan-results-2026-07-02.yaml
+
+  disposition_summary:
+    category_a_keep: ~150
+    category_b_wire_future: ~50
+    category_c_keep: ~80
+    category_d_remove: 94
+    category_e_keep: all

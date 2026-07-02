@@ -1,0 +1,143 @@
+runtime_architecture_map:
+  product: FODS .NET (FormatFactory.Fods)
+  incident_id: GI-FODS-NET-001
+  generated: "2026-07-03"
+  status_legend:
+    COMPLETE_END_TO_END: Parser → Model → API → Mutation → Writer all connected; roundtrip tested
+    COMPLETE_AFTER_REPAIR: Was dead code before GI-FODS-NET-001; now connected via style resolver/editor
+    PARTIAL_READ_ONLY: Read path connected; write path missing or untested
+    NOT_IMPLEMENTED: Explicitly unsupported; no API exists
+    EXPLICIT_UNSUPPORTED: API existed as stub; removed during incident remediation
+
+  supported_features_without_end_to_end_path: 0
+
+  feature_flows:
+    - feature: cell_value_read_write
+      qname: "table:table-cell/@office:value"
+      parser: FodsParser → XDocument.Load
+      model: FodsCell.Value (wraps XElement text/attribute)
+      public_api:
+        - FodsDocument.GetCellValue(sheetName, row, col)
+        - FodsDocument.SetCellValue(sheetName, row, col, value)
+      mutation_path: XElement.SetAttributeValue(@office:value)
+      writer: FodsWriter.Save → XDocument.Save
+      roundtrip_evidence: RT-MUT-01 (FodsRoundtripMutationTests)
+      preservation_behavior: write-through XDocument
+      status: COMPLETE_END_TO_END
+
+    - feature: cell_formula_read_write
+      qname: "table:table-cell/@table:formula"
+      parser: FodsParser → XDocument.Load
+      model: FodsCell (formula attribute)
+      public_api:
+        - FodsDocument.GetCellFormula(sheetName, row, col)
+        - FodsDocument.SetCellFormula(sheetName, row, col, formula)
+      mutation_path: XElement.SetAttributeValue(@table:formula)
+      writer: FodsWriter.Save → XDocument.Save
+      roundtrip_evidence: FodsRoundtripMutationTests
+      status: COMPLETE_END_TO_END
+
+    - feature: cell_style_resolved_read
+      qname: "table:table-cell/@table:style-name → style:style chain"
+      parser: FodsParser → XDocument.Load (styles parsed on demand)
+      model: FodsOdfCellStyle (resolved record)
+      public_api:
+        - FodsDocument.GetResolvedCellStyle(sheetName, row, col)
+        - FodsDocument.GetResolvedCellStyle(row, col)
+      resolver: FodsStyleResolver.ResolveCellStyle(XDocument, XElement)
+      mutation_path: FodsStyleEditor.SetCellProperty → auto-style upsert
+      writer: FodsWriter.Save → XDocument.Save (auto-styles embedded)
+      roundtrip_evidence: FodsGI001CategoryBRoundtripTests
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: column_style_resolved_read
+      qname: "table:table-column/@table:style-name → style:style/@style:column-properties"
+      parser: FodsParser → XDocument.Load
+      model: FodsOdfColumnStyle (resolved record with Width)
+      public_api:
+        - FodsDocument.GetResolvedColumnStyle(sheetName, col)
+      resolver: FodsStyleResolver.ResolveColumnStyle(XDocument, XElement)
+      roundtrip_evidence: FodsR255GetResolvedStyleDedicatedTests (T5)
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: row_style_resolved_read
+      qname: "table:table-row/@table:style-name → style:style/@style:row-properties"
+      parser: FodsParser → XDocument.Load
+      model: FodsOdfRowStyle (resolved record with Height)
+      public_api:
+        - FodsDocument.GetResolvedRowStyle(sheetName, row)
+      resolver: FodsStyleResolver.ResolveRowStyle(XDocument, XElement)
+      roundtrip_evidence: FodsR255GetResolvedStyleDedicatedTests (T6)
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: sheet_visibility
+      qname: "table:table/@table:display"
+      parser: FodsParser → XDocument.Load
+      public_api:
+        - FodsDocument.IsSheetVisible(sheetName)
+        - FodsDocument.SetSheetVisible(sheetName, visible)
+      mutation_path: XElement.SetAttributeValue(@table:display)
+      roundtrip_evidence: FodsGI001CategoryBRoundtripTests
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: config_settings_read
+      qname: "config:config-item-set/config:config-item-map-named/config:config-item-map-entry/config:config-item"
+      parser: XDocument.Descendants(config:config-item-map-named)
+      public_api:
+        - FodsDocument.GetSheetTabColor(sheetName)
+        - FodsDocument.GetFrozenRows(sheetName)
+        - FodsDocument.GetFrozenColumns(sheetName)
+        - FodsDocument.GetActiveCell(sheetName)
+      roundtrip_evidence: FodsGI001CategoryBRoundtripTests
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: sheet_enumeration
+      qname: "table:table"
+      parser: FodsParser → XDocument.Load
+      public_api:
+        - FodsDocument.Sheets
+        - FodsDocument.GetSheetCount()
+        - FodsDocument.GetSheetNames()
+      status: COMPLETE_END_TO_END
+
+    - feature: formula_count
+      qname: "table:table-cell/@table:formula"
+      public_api:
+        - FodsDocument.GetFormulaCount()
+      implementation: XDocument.Descendants(table:table-cell).Where(@table:formula != null).Count()
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: merged_cell_count
+      qname: "table:table-cell/@table:number-columns-spanned"
+      public_api:
+        - FodsDocument.GetMergedCellCount()
+      implementation: Count cells where @table:number-columns-spanned > 1
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: hyperlink_count
+      qname: "text:a (inside table:table-cell)"
+      public_api:
+        - FodsDocument.GetHyperlinkCount()
+      implementation: XDocument.Descendants(text:a).Count()
+      status: COMPLETE_AFTER_REPAIR
+
+    - feature: chart_count
+      qname: None (ODF chart embeds are draw:frame/draw:object — not a simple count)
+      public_api: NONE
+      status: EXPLICIT_UNSUPPORTED
+      note: >
+        GetChartCount() was implemented as constant 0. Removed during repair.
+        Real implementation requires parsing draw:object ODF embed structure.
+        Not implemented as no SAL spec fact supports simple integer count.
+
+    - feature: image_count
+      qname: "draw:frame/draw:image (inside table:table-cell)"
+      public_api: NONE
+      status: EXPLICIT_UNSUPPORTED
+      note: GetImageCount() was constant 0. Removed. draw:frame count is implementable but not yet done.
+
+    - feature: macro_count
+      qname: None (macros are in office:scripts — ODF 1.3 §7.6)
+      public_api: NONE
+      status: EXPLICIT_UNSUPPORTED
+      note: GetMacroCount() was constant 0. Removed. Macro metadata is complex ODF structure.

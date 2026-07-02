@@ -1,0 +1,236 @@
+product_quality_gap_ledger:
+  product: FODS .NET (FormatFactory.Fods)
+  incident_id: GI-FODS-NET-001
+  generated: "2026-07-03"
+
+  gaps:
+    - gap_id: GAP-FODS-NET-001
+      semantic_key: constant_zero_public_api
+      product: FODS
+      language: dotnet
+      category: implementation_quality
+      severity: HIGH
+      affected_files:
+        - src/net/fods/FodsDocumentLegacyCounters.cs
+      affected_symbols:
+        - GetFormulaCount
+        - GetImageCount
+        - GetHyperlinkCount
+        - GetChartCount
+        - GetSortCount
+        - GetGroupCount
+        - GetMacroCount
+        - GetSharedFormulaCount
+        - GetAnnotationCount
+        - GetShapeCount
+        - GetFormulaErrorCount
+        - GetExternalLinkCount
+        - GetExternalDataConnectionCount
+        - GetTableStyleCount
+        - GetCellStyleCount
+        - GetColumnStyleCount
+        - GetRowStyleCount
+        - GetPageStyleCount
+        - GetGraphicStyleCount
+        - GetNumberStyleCount
+        - GetTextStyleCount
+        - GetDrawingStyleCount
+        - GetPresentationStyleCount
+        - GetChartStyleCount
+        - GetDateStyleCount
+        - GetTimeStyleCount
+        - GetBooleanStyleCount
+        - GetCurrencyStyleCount
+        - GetPercentageStyleCount
+        - GetFractionStyleCount
+        - GetScientificStyleCount
+        - GetFontFaceCount
+        - GetDatabaseRangeCount
+        - GetLabelRangeCount
+        - GetDocumentProtectionCount
+        - GetSparklineGroupCount
+        - GetDataPilotCount
+        - GetConsolidationCount
+        - GetCellAddressCount
+        - GetColumnGroupCount
+        - GetRowGroupCount
+        - GetDataBarCount
+        - GetIconSetCount
+        - GetColorScaleCount
+        - GetValidationRuleCount
+        - GetProtectedRangeCount
+        - GetSortStateCount
+        - GetScenarioCount
+        - GetSheetViewCount
+        - GetFontCount
+        - GetNumberFormatCount
+        - GetBorderCount
+        - GetFillCount
+        - GetAlignmentCount
+        - GetProtectionCount
+        - GetMergedCellCount
+        - GetCommentCount
+        - GetImageCount
+        - GetMacroCount
+        - GetEventHandlerCount
+        - GetConnectionCount
+        - GetQueryTableCount
+        - GetCustomPropertyCount
+        - GetTextBoxCount
+        - GetButtonCount
+        - GetCheckBoxCount
+        - GetListBoxCount
+        - GetComboBoxCount
+        - GetSpinnerCount
+        - GetSliderCount
+        - GetRadioButtonCount
+        - GetScrollBarCount
+        - GetProgressBarCount
+        - GetGroupBoxCount
+        - GetFrameCount
+        - GetNavigatorCount
+      symptom: "67 public methods returned constant 0/false/empty with no ODF spec basis"
+      root_cause_status: CONFIRMED
+      root_cause: SC-001
+      blast_radius: 67 methods removed, ~92 test files deleted
+      system_repair: V87 validator + QName-required add-dotnet-api skill (TC-GHH-C002/C003)
+      architecture_repair: FodsDocumentLegacyCounters.cs deleted (TC-GHH-A008)
+      implementation_repair: COMPLETE
+      test_repair: Type 1 tests deleted; not replaced (no ODF basis for most)
+      exceptions:
+        - GetFormulaCount reimplemented via XDocument scan for table:formula attribute
+        - GetMergedCellCount reimplemented via table:number-columns-spanned > 1
+        - GetHyperlinkCount reimplemented via text:a element count
+      certification_repair: gate11-evidence-v2.yaml prepared (TC-GHH-D002)
+      status: COMPLETE
+      next_action: NONE
+
+    - gap_id: GAP-FODS-NET-002
+      semantic_key: detached_dictionary_state
+      product: FODS
+      language: dotnet
+      category: state_and_persistence
+      severity: HIGH
+      affected_files:
+        - src/net/fods/FodsDocumentAccessor.cs
+        - src/net/fods/FodsDocumentExtendedApis.cs
+      affected_symbols:
+        - GetColumnWidth / SetColumnWidth (_columnWidths)
+        - GetRowHeight / SetRowHeight (_rowHeights)
+        - GetNamedRange / SetNamedRange (_namedRanges)
+        - GetActiveFilter / SetActiveFilter (_activeFilters)
+        - GetSheetProtection / SetSheetProtection (_sheetProtection)
+        - GetCellFontColor / SetCellFontColor
+        - GetCellHorizontalAlignment / SetCellHorizontalAlignment
+        - GetCellVerticalAlignment / SetCellVerticalAlignment
+        - GetCellBorderStyle / SetCellBorderStyle
+        - GetCellBackgroundColor / SetCellBackgroundColor
+        - GetCellFontSize / SetCellFontSize
+        - GetCellFontName / SetCellFontName
+        - GetCellBold / SetCellBold
+        - GetCellItalic / SetCellItalic
+        - GetCellUnderline / SetCellUnderline
+        - GetCellWrapText / SetCellWrapText
+        - GetCellNumberFormat / SetCellNumberFormat
+        - GetFrozenRows / SetFrozenRows
+        - GetFrozenColumns / SetFrozenColumns
+        - GetSheetTabColor / SetSheetTabColor
+        - GetActiveCell / SetActiveCell
+        - GetZoomLevel / SetZoomLevel
+        - GetSheetGridLinesVisible / SetSheetGridLinesVisible
+        - GetSheetRowHeadersVisible / SetSheetRowHeadersVisible
+        - GetSheetColumnHeadersVisible / SetSheetColumnHeadersVisible
+      symptom: >
+        ~25 property getters/setters backed by in-memory dictionaries never populated
+        by the parser and never flushed by the writer. State lost on every save/reload.
+      root_cause_status: CONFIRMED
+      root_cause: SC-002
+      blast_radius: 25 setter/getter pairs; Category B roundtrip tests added to prove repair
+      system_repair: V88/V90/V91 validators; add-dotnet-object-model-feature skill contract
+      architecture_repair: FodsStyleResolver.cs (read path) + FodsStyleEditor.cs (write path)
+      implementation_repair: COMPLETE
+      test_repair: FodsGI001CategoryBRoundtripTests.cs (Type4 persistence roundtrip)
+      status: COMPLETE
+      next_action: NONE
+
+    - gap_id: GAP-FODS-NET-003
+      semantic_key: dead_infrastructure_unconnected
+      product: FODS
+      language: dotnet
+      category: implementation_quality
+      severity: MEDIUM
+      affected_files:
+        - src/net/fods/FodsStyleResolver.cs
+        - src/net/fods/Model/FodsOdfCellStyle.cs
+        - src/net/fods/Model/FodsOdfColumnStyle.cs
+        - src/net/fods/Model/FodsOdfRowStyle.cs
+      symptom: >
+        FodsStyleResolver.cs (344 LOC) and model records existed but had zero
+        callers in the public API. Type3 test count was 0 despite capable resolver.
+      root_cause_status: CONFIRMED
+      root_cause: SC-003
+      system_repair: add-dotnet-api skill updated with public reachability requirement
+      implementation_repair: >
+        GetResolvedCellStyle(), GetResolvedColumnStyle(), GetResolvedRowStyle()
+        wired in FodsDocumentAccessor.cs (TC-GHH-A003/A004)
+      test_repair: FodsR255GetResolvedStyleDedicatedTests.cs (6 Type3 tests)
+      status: COMPLETE
+      next_action: NONE
+
+    - gap_id: GAP-FODS-NET-004
+      semantic_key: type3_coverage_zero
+      product: FODS
+      language: dotnet
+      category: testing
+      severity: MEDIUM
+      symptom: >
+        Zero Type3 ODF-semantic tests existed before repair. No test loaded a real
+        .fods file and verified ODF-derived style or attribute values.
+      root_cause: SC-003
+      implementation_repair: FodsR255GetResolvedStyleDedicatedTests.cs (6 tests)
+      status: COMPLETE
+      next_action: NONE
+
+    - gap_id: GAP-FODS-NET-005
+      semantic_key: extended_apis_loc_exceeded
+      product: FODS
+      language: dotnet
+      category: architecture
+      severity: MEDIUM
+      affected_files:
+        - src/net/fods/FodsDocumentExtendedApis.cs
+      symptom: >
+        FodsDocumentExtendedApis.cs exceeds 1800 LOC — well above the 800 LOC cap
+        defined in the target architecture. V92 will FAIL on any sprint that modifies
+        this file until it is split.
+      root_cause: SC-005
+      system_repair: V92 validator added (TC-GHH-C002)
+      implementation_repair: NOT_STARTED
+      status: OPEN
+      next_action: >
+        Split FodsDocumentExtendedApis.cs into domain-specific partial class files:
+        FodsDocumentCellStyleApis.cs (cell font/color/alignment/border/fill)
+        FodsDocumentSheetSettingsApis.cs (tab color, frozen rows/cols, grid lines, zoom)
+        This must happen before new content is added to the extended APIs file.
+      blocker: structural refactor required; safe window after all other healing complete
+
+    - gap_id: GAP-FODS-NET-006
+      semantic_key: class_b_reclassified_tests_still_failing
+      product: FODS
+      language: dotnet
+      category: testing
+      severity: LOW
+      affected_files:
+        - tests/net/fods/FodsR434GetCellDataTypeDedicatedTests.cs
+        - tests/net/fods/FodsR435GetSheetVisibilityDedicatedTests.cs
+      symptom: >
+        2 test files were reclassified as Class B (API exists but test fails).
+        GetCellDataType and GetSheetVisibility do not return ODF-grounded values.
+      root_cause: SC-001
+      implementation_repair: NOT_STARTED
+      status: OPEN
+      next_action: >
+        Implement GetCellDataType() to read office:value-type attribute from table:table-cell.
+        Implement GetSheetVisibility() to read table:display attribute from table:table.
+        Add Type3/Type4 tests proving ODF-grounded behavior.
+        Re-enable test files after implementation.

@@ -4,11 +4,11 @@
   "incident": "GI-FODS-NET-001",
   "total_files": 654,
   "summary": {
-    "Type1_guard_only": 249,
+    "Type1_guard_only": 161,
     "Type2_in_memory": 402,
     "Type3_odf_semantic": 6,
-    "Type4_persistence_roundtrip": 3,
-    "CategoryD_tests": 88,
+    "Type4_persistence_roundtrip": 25,
+    "CategoryD_tests": 0,
     "CategoryB_tests": 78
   },
   "notes": [
@@ -5023,6 +5023,57 @@
       "compile_remove_after": 147,
       "test_count_before": 4161,
       "test_count_after": 4210
+    },
+    {
+      "session": "gleaming-rolling-hammock",
+      "date": "2026-07-03",
+      "taskcards_closed": [
+        "TC-GHH-A001",
+        "TC-GHH-A002",
+        "TC-GHH-A003",
+        "TC-GHH-A004",
+        "TC-GHH-A005",
+        "TC-GHH-A006",
+        "TC-GHH-A007",
+        "TC-GHH-A008",
+        "TC-GHH-B001",
+        "TC-GHH-B002",
+        "TC-GHH-B003",
+        "TC-GHH-B004",
+        "TC-GHH-C001",
+        "TC-GHH-C002",
+        "TC-GHH-C003",
+        "TC-GHH-C004",
+        "TC-GHH-D001",
+        "TC-GHH-D002",
+        "TC-GHH-D003",
+        "TC-GHH-E001",
+        "TC-GHH-E002",
+        "TC-GHH-E003",
+        "TC-GHH-F001",
+        "TC-GHH-F002",
+        "TC-GHH-F003"
+      ],
+      "delta": {
+        "methods_removed_category_d": 67,
+        "test_files_deleted_category_d": 88,
+        "type3_tests_added": 6,
+        "type4_tests_added": 25,
+        "rt_mut_05_inverted": true,
+        "validators_added": [
+          "V87",
+          "V88",
+          "V89",
+          "V90",
+          "V91",
+          "V92"
+        ]
+      },
+      "final_test_counts": {
+        "total": 4210,
+        "passed": 4210,
+        "failed": 0
+      }
     }
   ]
 }

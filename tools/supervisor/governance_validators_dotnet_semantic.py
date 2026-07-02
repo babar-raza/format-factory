@@ -435,3 +435,310 @@ def validate_dotnet_missingmethods_filename(
         ),
         "blocks_sprint": True,
     }
+
+
+# ---------------------------------------------------------------------------
+# V90: validate_dotnet_setter_without_xml_write
+# ---------------------------------------------------------------------------
+
+# Detects Set* methods or property setters whose body does NOT contain
+# XML write patterns (SetAttributeValue, SetElementValue, FodsStyleEditor, etc.)
+_SET_METHOD_RE = re.compile(
+    r"public\s+(?:void\s+Set\w+|(?:\w+\??\s+)?set\s*\{)[^}]*\}",
+    re.DOTALL,
+)
+_XML_WRITE_PATTERNS = [
+    "SetAttributeValue(",
+    "SetElementValue(",
+    "FodsStyleEditor",
+    ".Add(",
+    ".Remove(",
+    "XElement(",
+    "new XElement",
+    "ReplaceWith(",
+]
+
+# Matches "public void SetXxx(" style
+_PUBLIC_SET_METHOD_RE = re.compile(
+    r"public\s+void\s+(Set\w+)\s*\([^)]*\)\s*\{([^}]*)\}",
+    re.DOTALL,
+)
+# Matches "set { ... }" inside a property
+_PROPERTY_SET_RE = re.compile(
+    r"set\s*\{([^}]*)\}",
+    re.DOTALL,
+)
+
+
+def _body_has_xml_write(body: str) -> bool:
+    """Return True if the method body contains an XML write pattern."""
+    for pat in _XML_WRITE_PATTERNS:
+        if pat in body:
+            return True
+    return False
+
+
+def _body_is_dict_only(body: str) -> bool:
+    """Return True if the body only writes to a dictionary field (no XML)."""
+    stripped = body.strip()
+    # Heuristic: body contains dict assignment patterns like _field[key] = value
+    # but no XML write
+    if re.search(r"_\w+\s*\[", stripped) and not _body_has_xml_write(body):
+        return True
+    return False
+
+
+def validate_dotnet_setter_without_xml_write(
+    declaration: dict,
+    repo_root: Path | None = None,
+) -> dict:
+    """V90 (WARN): Detect public Set* methods whose body does not contain XML write patterns.
+
+    Advisory — setter in abstract/builder context may be valid.
+    blocks_sprint: False.
+    """
+    _repo = repo_root or REPO_ROOT
+    changed_files = declaration.get("changed_files", [])
+    dotnet_files = _get_dotnet_source_files(changed_files)
+
+    if not dotnet_files:
+        return {
+            "validator": "validate_dotnet_setter_without_xml_write",
+            "result": "PASS",
+            "items": [],
+            "summary": "No .NET source files in changed_files — V90 skipped.",
+            "blocks_sprint": False,
+        }
+
+    warnings = []
+    for rel_path in dotnet_files:
+        full_path = _repo / rel_path
+        if not full_path.exists():
+            continue
+        try:
+            source = full_path.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            continue
+
+        for m in _PUBLIC_SET_METHOD_RE.finditer(source):
+            method_name = m.group(1)
+            body = m.group(2)
+            if _body_is_dict_only(body):
+                warnings.append({
+                    "file": rel_path,
+                    "method": method_name,
+                    "issue": "setter_without_xml_write",
+                    "severity": "WARN",
+                    "remediation": (
+                        f"'{method_name}' writes only to an in-memory dictionary. "
+                        "Setters for persistent document properties must call "
+                        "SetAttributeValue/FodsStyleEditor to update the XDocument."
+                    ),
+                })
+
+    if not warnings:
+        return {
+            "validator": "validate_dotnet_setter_without_xml_write",
+            "result": "PASS",
+            "items": [],
+            "summary": "V90: No dictionary-only setters detected.",
+            "blocks_sprint": False,
+        }
+
+    return {
+        "validator": "validate_dotnet_setter_without_xml_write",
+        "result": "WARN",
+        "items": warnings,
+        "summary": (
+            f"V90 (advisory): {len(warnings)} Set* method(s) write only to in-memory "
+            "dictionaries without XML write path."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+# ---------------------------------------------------------------------------
+# V91: validate_dotnet_getter_without_xml_read
+# ---------------------------------------------------------------------------
+
+_PUBLIC_GET_METHOD_RE = re.compile(
+    r"public\s+(?!\s*void)(?:\w+\??\s+)(Get\w+)\s*\([^)]*\)\s*\{([^}]*)\}",
+    re.DOTALL,
+)
+
+_XML_READ_KEYWORD_PATTERNS = [
+    "Attribute(",
+    "Element(",
+    "Elements(",
+    "Descendants(",
+    "FodsStyleResolver",
+    ".Value",
+    "XDocument.Load",
+    "XElement.Load",
+]
+
+
+def _body_is_field_backed(body: str) -> bool:
+    """Return True if the body only reads from a private field with no XML read."""
+    stripped = body.strip()
+    # Dictionary TryGetValue or direct field return with no XML read
+    has_dict_read = bool(
+        re.search(r"_\w+\s*\.", stripped) or "TryGetValue" in stripped
+    )
+    has_xml_read = any(p in body for p in _XML_READ_KEYWORD_PATTERNS)
+    return has_dict_read and not has_xml_read
+
+
+def validate_dotnet_getter_without_xml_read(
+    declaration: dict,
+    repo_root: Path | None = None,
+) -> dict:
+    """V91 (WARN): Detect public Get* methods whose body reads from a field without XML access.
+
+    Advisory — not all getters need XML (e.g., computed properties from parsed model).
+    blocks_sprint: False.
+    """
+    _repo = repo_root or REPO_ROOT
+    changed_files = declaration.get("changed_files", [])
+    dotnet_files = _get_dotnet_source_files(changed_files)
+
+    if not dotnet_files:
+        return {
+            "validator": "validate_dotnet_getter_without_xml_read",
+            "result": "PASS",
+            "items": [],
+            "summary": "No .NET source files in changed_files — V91 skipped.",
+            "blocks_sprint": False,
+        }
+
+    warnings = []
+    for rel_path in dotnet_files:
+        full_path = _repo / rel_path
+        if not full_path.exists():
+            continue
+        try:
+            source = full_path.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            continue
+
+        for m in _PUBLIC_GET_METHOD_RE.finditer(source):
+            method_name = m.group(1)
+            body = m.group(2)
+            if _body_is_field_backed(body):
+                warnings.append({
+                    "file": rel_path,
+                    "method": method_name,
+                    "issue": "getter_without_xml_read",
+                    "severity": "WARN",
+                    "remediation": (
+                        f"'{method_name}' reads from a private field with no XML access. "
+                        "If this is a persistent document property, the getter must "
+                        "read from the XDocument via Attribute()/FodsStyleResolver."
+                    ),
+                })
+
+    if not warnings:
+        return {
+            "validator": "validate_dotnet_getter_without_xml_read",
+            "result": "PASS",
+            "items": [],
+            "summary": "V91: No field-backed getters without XML read detected.",
+            "blocks_sprint": False,
+        }
+
+    return {
+        "validator": "validate_dotnet_getter_without_xml_read",
+        "result": "WARN",
+        "items": warnings,
+        "summary": (
+            f"V91 (advisory): {len(warnings)} Get* method(s) read from private fields "
+            "without any XML read path."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+# ---------------------------------------------------------------------------
+# V92: validate_dotnet_fods_extended_apis_loc
+# ---------------------------------------------------------------------------
+
+_EXTENDED_APIS_FILENAME = "FodsDocumentExtendedApis.cs"
+_EXTENDED_APIS_LOC_CAP = 800
+
+
+def validate_dotnet_fods_extended_apis_loc(
+    declaration: dict,
+    repo_root: Path | None = None,
+) -> dict:
+    """V92 (FAIL): FodsDocumentExtendedApis.cs must not exceed 800 LOC.
+
+    This file must be split before adding more content.
+    blocks_sprint: True on FAIL (structural governance cap).
+    """
+    _repo = repo_root or REPO_ROOT
+    changed_files = declaration.get("changed_files", [])
+    dotnet_files = _get_dotnet_source_files(changed_files)
+
+    # Find the extended APIs file in changed_files or scan src/net/fods/ directly
+    candidates = [
+        f for f in dotnet_files if f.endswith(_EXTENDED_APIS_FILENAME)
+    ]
+    if not candidates:
+        # Also check if it exists on disk (it may be unchanged but still violating)
+        for pattern in ["src/net/fods/FodsDocumentExtendedApis.cs",
+                        "src/net/fodt/FodtDocumentExtendedApis.cs"]:
+            p = _repo / pattern
+            if p.exists():
+                candidates.append(pattern)
+
+    if not candidates:
+        return {
+            "validator": "validate_dotnet_fods_extended_apis_loc",
+            "result": "PASS",
+            "items": [],
+            "summary": "V92: No ExtendedApis files found to check.",
+            "blocks_sprint": False,
+        }
+
+    violations = []
+    for rel_path in candidates:
+        full_path = _repo / rel_path
+        if not full_path.exists():
+            continue
+        try:
+            loc = sum(1 for _ in full_path.open(encoding="utf-8", errors="replace"))
+        except Exception:
+            continue
+        if loc > _EXTENDED_APIS_LOC_CAP:
+            violations.append({
+                "file": rel_path,
+                "loc": loc,
+                "cap": _EXTENDED_APIS_LOC_CAP,
+                "excess": loc - _EXTENDED_APIS_LOC_CAP,
+                "issue": "extended_apis_loc_exceeded",
+                "severity": "FAIL",
+                "remediation": (
+                    f"Split {_EXTENDED_APIS_FILENAME} ({loc} LOC) into domain-specific "
+                    f"partial class files before adding new methods. Cap: {_EXTENDED_APIS_LOC_CAP} LOC."
+                ),
+            })
+
+    if not violations:
+        return {
+            "validator": "validate_dotnet_fods_extended_apis_loc",
+            "result": "PASS",
+            "items": [],
+            "summary": f"V92: All ExtendedApis files within {_EXTENDED_APIS_LOC_CAP} LOC cap.",
+            "blocks_sprint": False,
+        }
+
+    return {
+        "validator": "validate_dotnet_fods_extended_apis_loc",
+        "result": "FAIL",
+        "items": violations,
+        "summary": (
+            f"V92: {len(violations)} ExtendedApis file(s) exceed {_EXTENDED_APIS_LOC_CAP} LOC. "
+            "Split required before adding more content. Blocks sprint."
+        ),
+        "blocks_sprint": True,
+    }

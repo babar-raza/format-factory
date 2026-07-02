@@ -1,0 +1,143 @@
+target_product_architecture:
+  product: FODS .NET
+  language: csharp
+  namespace: FormatFactory.Fods
+  root_document_type: FodsDocument (sealed)
+  generated: "2026-07-03"
+
+  namespace_hierarchy:
+    - namespace: FormatFactory.Fods
+      contains: [FodsDocument, FodsParser, FodsWriter, FodsParseResult]
+      responsibility: Document lifecycle (load, save, core sheet/cell operations)
+    - namespace: FormatFactory.Fods.Model
+      contains: [FodsSheet, FodsRow, FodsCell, FodsOdfCellStyle, FodsOdfColumnStyle, FodsOdfRowStyle]
+      responsibility: Typed ODF domain objects
+    - namespace: FormatFactory.Fods.Spec.Office
+      contains: [OfficeMeta, OfficeBody, OfficeSpreadsheet]
+      responsibility: Canonical QName-aligned Office namespace classes
+    - namespace: FormatFactory.Fods.Spec.Table
+      contains: [TableTable, TableTableRow, TableTableCell, TableTableColumn]
+      responsibility: Canonical QName-aligned Table namespace classes
+    - namespace: FormatFactory.Fods.Exceptions
+      contains: [FodsDocumentException, FodsParseException]
+      responsibility: Domain exception types
+
+  facade_policy: |
+    FodsDocument is a thin facade over XDocument. ALL persistent state must live
+    in the XDocument tree. No private dictionary fields may back persistent document
+    properties. In-memory-only caches are permitted only if the cache key and
+    lifecycle are explicitly documented with a comment.
+
+  mutability_policy: |
+    Every public setter MUST update the XDocument via FodsStyleEditor or direct
+    XElement manipulation. Every public getter MUST read from the XDocument
+    (direct attribute access or FodsStyleResolver). No getter may return a value
+    from a dictionary that the parser does not populate.
+
+  unsupported_feature_policy: |
+    If an ODF feature has no spec basis or cannot be read from the XML, the API
+    MUST NOT exist. Do not create GetXCount() returning 0 for features with zero
+    ODF XML basis. Explicitly unsupported features are documented in
+    current-runtime-map.yaml as EXPLICIT_UNSUPPORTED, not silently faked.
+
+  api_authorization_policy: |
+    Every public API must have:
+    1. A QName or ODF 1.3 spec citation authorizing the concept
+    2. An identified XDocument location where the value is read/written
+    3. At least one Type3 or Type4 test proving behavior
+
+  file_layout:
+    - file: FodsDocument.cs
+      max_loc: 800
+      responsibility: Factory methods, Save, core sheet/cell operations (AddSheet, AddRow, AddCell)
+    - file: FodsDocumentAccessor.cs
+      max_loc: 800
+      responsibility: Query methods — row/col/cell getters, stats, GetResolvedStyle*
+    - file: FodsDocumentExtendedApis.cs
+      max_loc: 800
+      responsibility: Sheet-level settings backed by ODF XML (visibility, tab color, frozen rows/cols)
+      current_loc: 1800
+      remediation_needed: true
+      remediation: Split into FodsDocumentCellStyleApis.cs and FodsDocumentSheetSettingsApis.cs
+    - file: FodsParser.cs
+      max_loc: 600
+      responsibility: Streaming parser, FodsParseResult
+    - file: FodsWriter.cs
+      max_loc: 400
+      responsibility: Serialization, XML formatting
+    - file: FodsStyleResolver.cs
+      max_loc: 500
+      responsibility: ODF style chain resolution (read path) — style:style → parent chain
+    - file: FodsStyleEditor.cs
+      max_loc: 500
+      responsibility: ODF style mutation (write path) — auto-style upsert
+    - file: Model/FodsSheet.cs
+      responsibility: Sheet model with Name, Rows, IsVisible
+    - file: Model/FodsRow.cs
+      responsibility: Row model with Cells, Height
+    - file: Model/FodsCell.cs
+      responsibility: Cell model with Value, Formula, StyleName, XElement reference
+    - file: Model/FodsOdfCellStyle.cs
+      responsibility: Typed resolved cell style record (FontName, FontSize, Bold, etc.)
+    - file: Model/FodsOdfColumnStyle.cs
+      responsibility: Typed resolved column style record (Width)
+    - file: Model/FodsOdfRowStyle.cs
+      responsibility: Typed resolved row style record (Height)
+    - file: Spec/FodsDocumentSpec.cs
+      responsibility: Canonical QName constants (office:document, table:table, etc.)
+    - file: Spec/FodsTableSpec.cs
+      responsibility: Canonical table QName constants
+    - file: Spec/FodsStyleSpec.cs
+      responsibility: Canonical style QName constants
+    - file: Spec/FodsCellSpec.cs
+      responsibility: Canonical cell QName constants
+    - file: Exceptions/FodsDocumentException.cs
+      responsibility: Base domain exception
+
+  forbidden_filenames:
+    - pattern: "*MissingMethods*.cs"
+      reason: Placeholder filename with no domain meaning
+    - pattern: "*Stubs*.cs"
+      reason: Stubs belong in test projects, not production source
+    - pattern: "*Helpers*.cs"
+      reason: Too generic; use domain-specific names
+    - pattern: "*Misc*.cs"
+      reason: Dumping ground filename
+    - pattern: "*LegacyCounters*.cs"
+      reason: Staging file pattern; never allowed in final state
+    - pattern: "FodsRNNN-in-src"
+      reason: Requirement-range filenames do not belong in source (tests/ only, temporarily)
+
+  forbidden_patterns:
+    - pattern: "public .* => 0;"
+      context: public method returning constant integer
+      allowed_exceptions: []
+    - pattern: "public .* => false;"
+      context: public method returning constant false
+      allowed_exceptions: []
+    - pattern: "private readonly Dictionary<"
+      context: in partial class files that implement persistent document properties
+      allowed_exceptions: [in-memory cache with documented lifecycle]
+    - pattern: "// TODO: implement later"
+      context: as sole method body
+      allowed_exceptions: []
+
+  required_quality_gates:
+    - gate: V87_no_constant_return_public_api
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: WARN
+    - gate: V88_no_detached_dictionary
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: WARN
+    - gate: V89_no_missing_methods_filename
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: FAIL
+    - gate: V90_setter_without_xml_write
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: WARN
+    - gate: V91_getter_without_xml_read
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: WARN
+    - gate: V92_extended_apis_loc_cap
+      tool: tools/supervisor/governance_validators_dotnet_semantic.py
+      severity: FAIL

@@ -1,0 +1,151 @@
+problem_taxonomy:
+  product: FODS .NET (FormatFactory.Fods)
+  incident_id: GI-FODS-NET-001
+  generated: "2026-07-03"
+
+  categories:
+    - id: ARCH-001
+      name: architecture
+      defects:
+        - monolithic_facade: >
+            FodsDocument was a 9492-LOC monolith split across 4 partial class files
+            but all methods lived in the root namespace with no domain separation.
+        - giant_partial_class: >
+            FodsDocumentExtendedApis.cs grew to 1800+ LOC handling sheet settings,
+            cell styles, column dimensions, and unrelated domain concerns.
+        - missing_domain_layers: >
+            No FodsStyleResolver existed until GI-FODS-NET-001 remediation.
+            No FodsStyleEditor existed until GI-FODS-NET-001 remediation.
+            Style resolution was ad-hoc per-method string lookups.
+      fods_evidence:
+        - "src/net/fods/FodsDocumentExtendedApis.cs: 1800+ LOC"
+        - "src/net/fods/FodsDocumentLegacyCounters.cs: deleted during repair"
+      status: PARTIALLY_HEALED
+
+    - id: SPEC-001
+      name: specification_and_qname
+      defects:
+        - no_runtime_qname_authority: >
+            At runtime, no code enforced that API return values derive from ODF spec QNames.
+            Methods like GetFormulaCount() returned 0 with no ODF basis.
+        - speculative_api: >
+            67 APIs were derived from discovered English terms (formula, image, hyperlink,
+            chart, sort, group, etc.) without verifying ODF 1.3 spec support.
+      fods_evidence:
+        - "src/net/fods/FodsDocumentLegacyCounters.cs: 67 methods, all returning 0 or false"
+        - "GetFormulaCount() => 0 — no table:formula attribute scan"
+        - "GetImageCount() => 0 — draw:frame elements are countable but were not implemented"
+      status: HEALED
+
+    - id: STATE-001
+      name: state_and_persistence
+      defects:
+        - detached_dictionary: >
+            ~8 private Dictionary<> fields (e.g., _columnWidths, _rowHeights, _namedRanges,
+            _activeFilters, _sheetProtection) were initialized empty and never populated
+            by the parser. Getters returned defaults; setters stored in memory only.
+        - setter_without_writer: >
+            SetColumnWidth(), SetRowHeight(), SetNamedRange() stored values in dictionaries
+            that FodsWriter never flushed to XML. State was lost on every save/reload.
+        - getter_without_parser: >
+            GetColumnWidth(), GetRowHeight() read from the same dictionaries the parser
+            never populated. Always returned default values regardless of file content.
+      fods_evidence:
+        - "src/net/fods/FodsDocumentAccessor.cs line 16: private readonly Dictionary<string, double> _columnWidths"
+        - "src/net/fods/FodsDocumentExtendedApis.cs line 43: private readonly Dictionary<string, string?> _sheetProtection"
+        - "RT-MUT-05 was a known-gap test proving SetColumnWidth did not persist"
+      status: HEALED
+
+    - id: API-001
+      name: api_design
+      defects:
+        - stringly_typed_domain: >
+            Sheet names, style names, and column widths passed as raw strings/doubles
+            with no domain type validation.
+        - aliases_for_tests: >
+            Several method names existed purely to satisfy test compilation rather than
+            model a real ODF concept.
+        - invalid_defaults: >
+            GetSheetVisibility() returned null string; GetCellDataType() returned empty string
+            when ODF XML has definitive attribute values.
+      fods_evidence:
+        - "FodsR434GetCellDataTypeDedicatedTests.cs: fails (GetCellDataType not ODF-grounded)"
+        - "FodsR435GetSheetVisibilityDedicatedTests.cs: fails (GetSheetVisibility not ODF-grounded)"
+      status: PARTIALLY_HEALED
+
+    - id: FILE-001
+      name: file_and_namespace
+      defects:
+        - requirement_range_files: >
+            80+ test files named FodsRNNN<Verb>DedicatedTests.cs where NNN is a sprint
+            requirement number, not an ODF concept. Meaningless as documentation.
+        - legacy_dumping_ground: >
+            FodsDocumentLegacyCounters.cs was a staging file for constant-zero methods
+            with no legitimate permanent purpose.
+      fods_evidence:
+        - "tests/net/fods/FodsR488 through FodsR579: 92 deleted files"
+        - "src/net/fods/FodsDocumentLegacyCounters.cs: deleted"
+      status: HEALED
+
+    - id: IMPL-001
+      name: implementation_quality
+      defects:
+        - constant_returns: >
+            67 public methods returned literal 0, false, or empty string as sole method body.
+        - semantic_stubs: >
+            Methods named after ODF concepts (GetFormulaCount, GetHyperlinkCount) that
+            performed no ODF XML traversal.
+        - empty_success: >
+            SetMacroCount(), SetAnnotationCount() accepted int parameters and silently
+            discarded them.
+      fods_evidence:
+        - "public int GetFormulaCount() => 0;"
+        - "public int GetImageCount() => 0;"
+        - "public bool GetSharedFormulas() => false;"
+      status: HEALED
+
+    - id: TEST-001
+      name: testing
+      defects:
+        - api_presence_tests: >
+            249 Type1 tests merely called a method and asserted the return value matched
+            its own constant (e.g., Assert.Equal(0, doc.GetFormulaCount())).
+        - no_roundtrip: >
+            Zero Type4 persistence tests existed before GI-FODS-NET-001 remediation.
+        - no_odf_semantic: >
+            Zero Type3 tests loaded real .fods fixtures and verified ODF-derived values.
+        - no_oracle: >
+            No test opened a known .fods file and compared specific cell/style values
+            against expected ODF content.
+      fods_evidence:
+        - "Type1 count: 249 (before repair)"
+        - "Type3 count: 0 (before repair) → 6 (after repair)"
+        - "Type4 count: 3 (before repair) → 25+ (after repair)"
+      status: HEALED
+
+    - id: GOV-001
+      name: governance
+      defects:
+        - quality_rules_prose_only: >
+            Before V87-V89, no machine-readable rule prevented constant-return methods,
+            detached dictionaries, or MissingMethods-style filenames.
+        - certification_accepts_weak_evidence: >
+            Gate 11 evidence included Type1 assertion counts that mapped to synthetic
+            guard tests, not behavioral proof.
+      fods_evidence:
+        - "tools/supervisor/governance_validators_dotnet_semantic.py: V87/V88/V89 added during repair"
+        - "acquisition-packs/fods/gate11-evidence-v2.yaml: v2 supersedes pre-repair evidence"
+      status: HEALED
+
+    - id: DOC-001
+      name: documentation_and_status
+      defects:
+        - inflated_capability_counts: >
+            Capability compiler reported 67 constant-zero APIs as "implemented capabilities"
+            inflating the product quality score.
+        - no_architecture_documentation: >
+            No file documented the intended layering, facade policy, or mutability contract.
+      fods_evidence:
+        - ".governance/capabilities/registry.yaml: 99 capabilities tracked at project level"
+        - "No architecture.md or design-decision record existed before gleaming-rolling-hammock"
+      status: IN_PROGRESS
