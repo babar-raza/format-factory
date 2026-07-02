@@ -27,6 +27,9 @@ V83: validate_primary_layer_classified — PRODUCT_SOURCE items should include p
 V84: validate_permanent_layer_plan_exists — if primary_layer_id present, plans/layers/<slug>.md must exist (TC-LP-024, WARN-only)
 V85: validate_prework_log_present — PRODUCT_SOURCE items should have a work_log_id in evidence (TC-LP-024, WARN-only)
 V86: validate_layer_task_registered — TC-* task_ids in declaration should appear in task-register.yaml (TC-LP-024, WARN-only)
+V87: validate_dotnet_constant_return_public_api — public Get* methods returning constants in src/net/ (WARN for PRODUCT_SOURCE; FAIL+blocks for RELEASE_GATE) — GI-FODS-NET-001
+V88: validate_dotnet_detached_dictionary_fields — Dictionary fields not wired to XML parse path (WARN-only advisory) — GI-FODS-NET-001
+V89: validate_dotnet_missingmethods_filename — *Missing*.cs or *Stub*.cs additions in src/net/ (FAIL+blocks) — GI-FODS-NET-001
 """
 from __future__ import annotations
 
@@ -397,6 +400,21 @@ def run_all_governance_validators(
             _v94(declaration, repo_root), _v95(declaration, repo_root),
             _v96(declaration, repo_root), _v97(declaration, repo_root),
             _v98(declaration, repo_root), _v99(declaration, repo_root),
+        ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V87-V89 (GI-FODS-NET-001): .NET semantic stub validators
+    try:
+        from governance_validators_dotnet_semantic import (  # noqa: PLC0415
+            validate_dotnet_constant_return_public_api as _v87,
+            validate_dotnet_detached_dictionary_fields as _v88,
+            validate_dotnet_missingmethods_filename as _v89,
+        )
+        results.extend([
+            _v87(declaration, repo_root),  # V87
+            _v88(declaration, repo_root),  # V88
+            _v89(declaration, repo_root),  # V89
         ])
     except Exception:
         pass  # Non-blocking on import failure

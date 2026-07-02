@@ -1,0 +1,16 @@
+schema_version: "1.0"
+description: >
+  V87 whitelist: public Get* methods that unconditionally return a constant literal
+  but are architecturally intentional (not semantic stubs). V87 skips these entries.
+  Add entries as FULLY_QUALIFIED_NAMESPACE.ClassName.MethodName or bare MethodName.
+  All entries require a justification comment.
+
+known_constant_return_ok:
+  # FodsDocument property defaults — init-only / schema-defined constants, not APIs.
+  # These are properties or methods where a constant is the correct architectural answer.
+  #
+  # (None at this time — the whitelist is empty intentionally to enforce strict review.
+  # Add here only when a constant return is architecturally proven and reviewed.)
+
+  # Example format:
+  # - "FormatFactory.Fods.FodsDocument.SomeMethod"  # justification: ...
