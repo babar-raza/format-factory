@@ -25,6 +25,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>samples/by-format/fods/multi-sheet-basic.fods</Link>
     </Content>
+    <Content Include="Fixtures\fods-cell-styles.fods">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fixtures\fods-column-widths.fods">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fixtures\fods-sheet-view-settings.fods">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <!-- Temporarily exclude test files referencing unimplemented APIs (cascade from HEAD) -->
@@ -37,19 +46,13 @@
     <Compile Remove="FodsR149GetSheetNamesAndSheetCountTests.cs" />
     <Compile Remove="FodsR152OdsExportBytesTests.cs" />
     <Compile Remove="FodsR175OdsExportTests.cs" />
-    <Compile Remove="FodsR177FilterRowsDedicatedTests.cs" />
-    <Compile Remove="FodsR182InsertRowWithValuesAndSortTests.cs" />
-    <Compile Remove="FodsR184GetRowValuesAndGetCellCountTests.cs" />
     <Compile Remove="FodsR195MimeTypeAndStreamLoadTests.cs" />
     <Compile Remove="FodsR196GetCellStyleAndFormulaTests.cs" />
     <Compile Remove="FodsR198GetColumnAggregatesAndSheetStatsTests.cs" />
     <Compile Remove="FodsR201ToFodsXmlAndLoadStreamTests.cs" />
     <Compile Remove="FodsR202SaveToFileAndLoadTests.cs" />
-    <Compile Remove="FodsR203DeleteRowsAndClearSheetTests.cs" />
     <Compile Remove="FodsR204GetColumnAggregatesDeepTests.cs" />
     <Compile Remove="FodsR207SetCellFormulaDedicatedTests.cs" />
-    <Compile Remove="FodsR212GetUsedRangeAndColumnCountDeepTests.cs" />
-    <Compile Remove="FodsR216ExportToCsvDedicatedTests.cs" />
     <Compile Remove="FodsR216SaveAndLoadRoundTripDeepTests.cs" />
     <Compile Remove="FodsR217AddColumnDedicatedTests.cs" />
     <Compile Remove="FodsR222InsertRowAndDeleteRowDeepTests.cs" />
@@ -139,25 +142,18 @@
     <Compile Remove="FodsR398GetCellUrlAndSetCellUrlDeepTests.cs" />
     <Compile Remove="FodsR399GetCellUrlDedicatedTests.cs" />
     <Compile Remove="FodsR400GetSheetProtectionAndSetSheetProtectionDeepTests.cs" />
-    <Compile Remove="FodsR405GetCellBoldDedicatedTests.cs" />
     <Compile Remove="FodsR405GetConditionalFormattingAndSetConditionalFormattingDeepTests.cs" />
-    <Compile Remove="FodsR406GetCellItalicDedicatedTests.cs" />
     <Compile Remove="FodsR407GetCellCommentAuthorAndGetCellCommentDateDeepTests.cs" />
-    <Compile Remove="FodsR407GetCellUnderlineDedicatedTests.cs" />
-    <Compile Remove="FodsR408GetCellStrikethroughDedicatedTests.cs" />
     <Compile Remove="FodsR409GetCellTextWrapDedicatedTests.cs" />
     <Compile Remove="FodsR410GetAutoFilterStateAndSetAutoFilterDeepTests.cs" />
     <Compile Remove="FodsR410GetCellHorizontalAlignDedicatedTests.cs" />
     <Compile Remove="FodsR411GetSheetVisibilityDedicatedTests.cs" />
     <Compile Remove="FodsR413GetCellDataValidationAndSetCellDataValidationDeepTests.cs" />
     <Compile Remove="FodsR415GetCellTooltipAndSetCellTooltipDeepTests.cs" />
-    <Compile Remove="FodsR417GetCellBorderStyleDedicatedTests.cs" />
     <Compile Remove="FodsR417GetCellHyperlinkAndSetCellHyperlinkDeepTests.cs" />
     <Compile Remove="FodsR419GetSheetFreezePaneDedicatedTests.cs" />
-    <Compile Remove="FodsR420GetSheetZoomLevelDedicatedTests.cs" />
     <Compile Remove="FodsR421GetSheetNameAndSetSheetNameDeepTests.cs" />
     <Compile Remove="FodsR423GetDocumentAuthorAndSetDocumentAuthorDeepTests.cs" />
-    <Compile Remove="FodsR423GetSheetPrintAreaDedicatedTests.cs" />
     <Compile Remove="FodsR424GetDocumentTitleDedicatedTests.cs" />
     <Compile Remove="FodsR425GetDocumentAuthorDedicatedTests.cs" />
     <Compile Remove="FodsR425GetWorksheetProtectionAndSetWorksheetProtectionDeepTests.cs" />
@@ -172,13 +168,21 @@
     <Compile Remove="FodsR431GetDocumentRevisionDedicatedTests.cs" />
     <Compile Remove="FodsR432GetCellFormulaResultDedicatedTests.cs" />
     <Compile Remove="FodsR433GetDocumentDescriptionAndSetDocumentDescriptionDeepTests.cs" />
-    <Compile Remove="FodsR434GetCellDataTypeDedicatedTests.cs" />
-    <Compile Remove="FodsR435GetSheetVisibilityDedicatedTests.cs" />
     <Compile Remove="FodsR436GetSheetCountAndCellValueDeepTests.cs" />
     <Compile Remove="FodsR437GetSheetCountAndDocumentTitleDeepTests.cs" />
     <Compile Remove="FodsR438GetCellValueAndSetCellValueDeepTests.cs" />
     <Compile Remove="FodsR439GetSheetCountAndCellValueDeepTests.cs" />
     <Compile Remove="FodsR440GetCellValueAndDocumentTitleDeepTests.cs" />
+    <Compile Remove="FodsR177FilterRowsDedicatedTests.cs" />
+    <Compile Remove="FodsR182InsertRowWithValuesAndSortTests.cs" />
+    <Compile Remove="FodsR184GetRowValuesAndGetCellCountTests.cs" />
+    <Compile Remove="FodsR203DeleteRowsAndClearSheetTests.cs" />
+    <Compile Remove="FodsR212GetUsedRangeAndColumnCountDeepTests.cs" />
+    <Compile Remove="FodsR216ExportToCsvDedicatedTests.cs" />
+    <Compile Remove="FodsR405GetCellBoldDedicatedTests.cs" />
+    <Compile Remove="FodsR406GetCellItalicDedicatedTests.cs" />
+    <Compile Remove="FodsR434GetCellDataTypeDedicatedTests.cs" />
+    <Compile Remove="FodsR435GetSheetVisibilityDedicatedTests.cs" />
   </ItemGroup>
 
 </Project>

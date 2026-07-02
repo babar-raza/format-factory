@@ -571,6 +571,63 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>
+    /// Resolve the full ODF style chain for a cell and return typed style properties.
+    /// Returns null if the row or column index is out of range.
+    /// Uses FodsStyleResolver for ODF-grounded resolution.
+    /// R114 Train B — ODF-semantic style retrieval.
+    /// </summary>
+    public FodsOdfCellStyle? GetResolvedCellStyle(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+        if (row >= sheet.Rows.Count) return null;
+        var r = sheet.Rows[row];
+        if (col >= r.Cells.Count) return null;
+        return FodsStyleResolver.ResolveCellStyle(_doc, r.Cells[col].Element);
+    }
+
+    /// <summary>GetResolvedCellStyle from the first (active) sheet.</summary>
+    public FodsOdfCellStyle? GetResolvedCellStyle(int row, int col)
+    {
+        var sheets = Sheets;
+        return sheets.Count == 0 ? null : GetResolvedCellStyle(sheets[0].Name!, row, col);
+    }
+
+    /// <summary>
+    /// Resolve the ODF column style for the given column index and return typed properties.
+    /// Returns null if the column element is not found. Uses FodsStyleResolver.
+    /// </summary>
+    public FodsOdfColumnStyle? GetResolvedColumnStyle(string sheetName, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName)
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+        var colEl = GetTableColumnElement(sheetName, col);
+        return colEl is null ? null : FodsStyleResolver.ResolveColumnStyle(_doc, colEl);
+    }
+
+    /// <summary>
+    /// Resolve the ODF row style for the given row index and return typed properties.
+    /// Returns null if the row index is out of range. Uses FodsStyleResolver.
+    /// </summary>
+    public FodsOdfRowStyle? GetResolvedRowStyle(string sheetName, int row)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+        if (row >= sheet.Rows.Count) return null;
+        return FodsStyleResolver.ResolveRowStyle(_doc, sheet.Rows[row].Element);
+    }
+
+    /// <summary>
     /// Set a cell's style-name attribute by explicit FodsSheet reference.
     /// Uses sequential-append semantics to create the row/cell if needed.
     /// R212: static overload for direct sheet-handle access.
@@ -2581,7 +2638,8 @@ public sealed partial class FodsDocument
         return w > 0 ? w : 64.0;
     }
 
-    /// <summary>R474: Return the row height for the given row. Delegates to GetRowHeight (default 20.0).</summary>
+    /// <summary>R474: Return the row height for the given row.
+    /// Delegates to GetRowHeight; applies 20.0pt fallback when no ODF row-height style is defined.</summary>
     public double GetCellRowHeight(string sheetName, int row)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -2589,7 +2647,8 @@ public sealed partial class FodsDocument
         if (row < 0) throw new ArgumentOutOfRangeException(nameof(row), "Row index must not be negative.");
         _ = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return GetRowHeight(sheetName, row);
+        var h = GetRowHeight(sheetName, row);
+        return h > 0 ? h : 20.0; // ODF default row height fallback
     }
 
     // =========================================================================
@@ -2773,14 +2832,14 @@ public sealed partial class FodsDocument
         return cellEl is null ? string.Empty : (FodsStyleResolver.ResolveCellStyle(_doc, cellEl).BorderStyle ?? string.Empty);
     }
 
-    /// <summary>R457: Set the border style string for the cell.</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R457: Set the border style for the cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellBorderStyle(string sheetName, int row, int col, string style)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
-        _cellBorderStyles[(sheetName, row, col)] = style ?? string.Empty;
+        var cellEl = GetCellElement(sheetName, row, col);
+        style ??= string.Empty;
+        _cellBorderStyles[(sheetName, row, col)] = style;
+        if (cellEl is not null && !string.IsNullOrEmpty(style))
+            FodsStyleEditor.SetCellBorderStyle(_doc, cellEl, style);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellFontStyles = new();
@@ -2817,14 +2876,14 @@ public sealed partial class FodsDocument
         return cellEl is null ? "start" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).HorizontalAlignment;
     }
 
-    /// <summary>R455: Set the horizontal alignment for the cell (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R455: Set the horizontal alignment for the cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellHorizontalAlignment(string sheetName, int row, int col, string alignment)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
-        _cellHAlign[(sheetName, row, col)] = alignment ?? "start";
+        var cellEl = GetCellElement(sheetName, row, col);
+        alignment ??= "start";
+        _cellHAlign[(sheetName, row, col)] = alignment;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellHorizontalAlignment(_doc, cellEl, alignment);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellVAlign = new();
@@ -2838,14 +2897,14 @@ public sealed partial class FodsDocument
         return cellEl is null ? "bottom" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).VerticalAlignment;
     }
 
-    /// <summary>R456: Set the vertical alignment for the cell (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R456: Set the vertical alignment for the cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellVerticalAlignment(string sheetName, int row, int col, string alignment)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
-        _cellVAlign[(sheetName, row, col)] = alignment ?? "bottom";
+        var cellEl = GetCellElement(sheetName, row, col);
+        alignment ??= "bottom";
+        _cellVAlign[(sheetName, row, col)] = alignment;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellVerticalAlignment(_doc, cellEl, alignment);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellIndentLevel = new();
@@ -2859,14 +2918,13 @@ public sealed partial class FodsDocument
         return cellEl is null ? 0 : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).IndentLevel;
     }
 
-    /// <summary>R467: Set the indent level for the cell (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R467: Set the indent level for the cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellIndentLevel(string sheetName, int row, int col, int level)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = GetCellElement(sheetName, row, col);
         _cellIndentLevel[(sheetName, row, col)] = level;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellIndentLevel(_doc, cellEl, level);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellRotationAngle = new();
@@ -2880,14 +2938,13 @@ public sealed partial class FodsDocument
         return cellEl is null ? 0 : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).RotationAngle;
     }
 
-    /// <summary>R468: Set the rotation angle for the cell (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R468: Set the rotation angle for the cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellRotationAngle(string sheetName, int row, int col, int angle)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = GetCellElement(sheetName, row, col);
         _cellRotationAngle[(sheetName, row, col)] = angle;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellRotationAngle(_doc, cellEl, angle);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellMergeInfo = new();
@@ -2943,14 +3000,13 @@ public sealed partial class FodsDocument
         return cellEl is not null && FodsStyleResolver.ResolveCellStyle(_doc, cellEl).ShrinkToFit;
     }
 
-    /// <summary>R450: Set the shrink-to-fit flag (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R450: Set the shrink-to-fit flag. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellShrinkToFit(string sheetName, int row, int col, bool shrink)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = GetCellElement(sheetName, row, col);
         _cellShrinkToFit[(sheetName, row, col)] = shrink;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellShrinkToFit(_doc, cellEl, shrink);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellUnderline = new();
@@ -2964,14 +3020,14 @@ public sealed partial class FodsDocument
         return cellEl is null ? "none" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).Underline;
     }
 
-    /// <summary>R471: Set the underline style (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R471: Set the underline style. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellUnderline(string sheetName, int row, int col, string style)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
-        _cellUnderline[(sheetName, row, col)] = style ?? "none";
+        var cellEl = GetCellElement(sheetName, row, col);
+        style ??= "none";
+        _cellUnderline[(sheetName, row, col)] = style;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellUnderline(_doc, cellEl, style);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellStrikethrough = new();
@@ -2987,14 +3043,13 @@ public sealed partial class FodsDocument
         return s != "none" && !string.IsNullOrEmpty(s);
     }
 
-    /// <summary>R470: Set the strikethrough flag (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R470: Set the strikethrough flag. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellStrikethrough(string sheetName, int row, int col, bool strikethrough)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = GetCellElement(sheetName, row, col);
         _cellStrikethrough[(sheetName, row, col)] = strikethrough;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellStrikethrough(_doc, cellEl, strikethrough);
     }
 
     private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellProtection = new();
@@ -3008,14 +3063,13 @@ public sealed partial class FodsDocument
         return cellEl is not null && FodsStyleResolver.ResolveCellStyle(_doc, cellEl).IsProtected;
     }
 
-    /// <summary>R446: Set the protection flag (in-memory; persisted via Phase 3e).</summary>
-    // TODO: GI-FODS-NET-001 Phase 3e — write via FodsStyleEditor to ODF XML
+    /// <summary>R446: Set the protection flag. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellProtection(string sheetName, int row, int col, bool protect)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = GetCellElement(sheetName, row, col);
         _cellProtection[(sheetName, row, col)] = protect;
+        if (cellEl is not null)
+            FodsStyleEditor.SetCellProtection(_doc, cellEl, protect);
     }
 
     // =========================================================================
