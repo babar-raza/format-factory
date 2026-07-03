@@ -121,21 +121,41 @@ class TestSemanticVerifyItem:
         # Nonexistent paths: adequate may be True or False depending on fallback logic
         assert result["llm_used"] is False
 
-    def test_fallback_never_downgrades(self):
-        """Without LLM, verifier returns adequate=False (SUP-RECT-004: LLM unavailable)."""
+    def test_fallback_weak_evidence_returns_false(self):
+        """Without LLM, weak (isinstance-only) test evidence returns adequate=False.
+
+        TC-FG-002b: intermediate_verify_item now uses AST analysis.
+        For WEAK_PROOF evidence (no exact/behavioral assertions), adequate=False.
+        This prevents false-green when LLM is unavailable.
+        """
+        import tempfile, os
         import grade_declared_work as gdw
         gdw._sv_gateway = None
         gdw._sv_config = None
-        with _disable_llm():
-            result = self._verifier()(
-                {"evidence_paths_found": ["tests/supervisor/test_llm_semantic_verification.py"]},
-                {"item_id": "X", "title": "Test item"},
-                _REPO,
-            )
-        # SUP-RECT-004: LLM unavailable → adequate=False with deficiency
+        # Write a weak test file (only isinstance assertions)
+        tmp = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".py", prefix="test_weak_", delete=False,
+            dir=_REPO / ".local" / "tmp" if (_REPO / ".local" / "tmp").exists() else None
+        )
+        try:
+            tmp.write("def test_type_only():\n    assert isinstance(result, list)\n")
+            tmp.close()
+            tmp_rel = str(Path(tmp.name).relative_to(_REPO))
+            with _disable_llm():
+                result = self._verifier()(
+                    {"evidence_paths_found": [tmp_rel]},
+                    {"item_id": "X", "title": "Test item"},
+                    _REPO,
+                )
+        finally:
+            try:
+                os.unlink(tmp.name)
+            except Exception:
+                pass
+        # TC-FG-002b: WEAK_PROOF evidence → adequate=False (prevents false-green)
         assert result["adequate"] is False
         assert result["stub_detected"] is False
-        assert "llm_verification_unavailable" in result.get("deficiencies", [])
+        assert result["llm_used"] is False
 
 
 class TestSemanticVerificationDowngradeOnly:

@@ -47,24 +47,63 @@ def _check_file_nonzero(path: Path) -> tuple[bool, str]:
     return True, f"non-empty ({size} bytes): {path}"
 
 
-def _check_python_test_content(path: Path) -> tuple[bool, str]:
-    """Check Python test file has real test functions and assertions."""
+def _check_python_test_content(path: Path) -> tuple[bool, str, dict]:
+    """Check Python test file using AST assertion-strength analysis (TC-FG-002b).
+
+    Returns (ok: bool, detail: str, ast_info: dict) where ast_info contains
+    strong_ratio, overall_classification, weak_tests, strong_tests from
+    proof_adequacy_contract.assess_proof_level.
+
+    Replaces the prior string-search fallback that returned adequate=True for
+    any file containing 'def test_' and 'assert'.
+    """
     try:
-        text = path.read_text(encoding="utf-8", errors="replace")
-    except Exception as e:
-        return False, f"read error: {e}"
-    has_test_fn = "def test_" in text
-    has_assert = "assert " in text or "assertEqual" in text or "assertIn" in text
-    has_stub = _is_stub_test(text)
-    if not has_test_fn:
-        return False, "no def test_ function found"
-    if not has_assert:
-        return False, "no assertion statements found"
-    if has_stub:
-        return False, "stub test detected (assert True / pass only)"
-    # Count actual test functions for confidence scoring
-    test_count = text.count("def test_")
-    return True, f"valid ({test_count} test functions with assertions)"
+        _supervisor_dir = Path(__file__).resolve().parent
+        import sys as _sys
+        if str(_supervisor_dir) not in _sys.path:
+            _sys.path.insert(0, str(_supervisor_dir))
+        from proof_adequacy_contract import assess_proof_level, STRONG_RATIO_THRESHOLD
+        assessment = assess_proof_level(str(path))
+    except Exception as _import_err:
+        # If AST analysis itself fails, fall back to conservative string-search
+        # but return adequate=False to avoid false-green (safer than adequate=True)
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+            has_test_fn = "def test_" in text
+            has_assert = "assert " in text or "assertEqual" in text
+            if not has_test_fn:
+                return False, "no def test_ function found", {}
+            if not has_assert:
+                return False, "no assertion statements found", {}
+            test_count = text.count("def test_")
+            # Conservative: return adequate=False when AST unavailable
+            return False, f"AST analysis unavailable ({_import_err}); {test_count} test functions found (manual review required)", {}
+        except Exception as e:
+            return False, f"read error: {e}", {}
+
+    classification = assessment.get("overall_classification", "NO_PROOF")
+    strong_ratio = assessment.get("strong_ratio", 0.0)
+    test_count = assessment.get("test_count", 0)
+    weak_tests = assessment.get("weak_tests", [])
+    strong_tests = assessment.get("strong_tests", [])
+
+    if test_count == 0:
+        return False, "no test functions found", assessment
+
+    weak_summary = ""
+    if weak_tests:
+        weak_summary = f"; weak: {', '.join(t['name'] for t in weak_tests[:3])}"
+
+    detail = (
+        f"{classification} ({test_count} tests, {len(strong_tests)} strong / "
+        f"{len(weak_tests)} weak, strong_ratio={strong_ratio:.2f}{weak_summary})"
+    )
+
+    # adequate=True when classification is STRONG_PROOF or PARTIAL_PROOF (has some strong assertions)
+    # adequate=False when WEAK_PROOF (all assertions are type/shape only) or NO_PROOF
+    # TC-FG-002b: WEAK_PROOF (strong_ratio=0.0) must NOT be adequate — prevents false-green
+    ok = classification in ("STRONG_PROOF", "PARTIAL_PROOF")
+    return ok, detail, assessment
 
 
 def _is_stub_test(text: str) -> bool:
@@ -141,8 +180,9 @@ def _check_single_file(path: Path) -> dict:
                 "detail": detail_nonzero, "check_type": "existence"}
 
     suffix = path.suffix.lower()
+    _ast_info: dict = {}
     if suffix == ".py" and "test_" in path.name:
-        ok, detail = _check_python_test_content(path)
+        ok, detail, _ast_info = _check_python_test_content(path)
         check_type = "python_test_content"
     elif suffix == ".yaml" or suffix == ".yml":
         ok, detail = _check_yaml_content(path)
@@ -158,13 +198,18 @@ def _check_single_file(path: Path) -> dict:
         ok, detail = True, detail_nonzero
         check_type = "nonzero_existence"
 
-    return {
+    result = {
         "path": str(path),
         "exists": True,
         "content_ok": ok,
         "detail": detail,
         "check_type": check_type,
     }
+    if _ast_info:
+        result["strong_ratio"] = _ast_info.get("strong_ratio", 0.0)
+        result["overall_classification"] = _ast_info.get("overall_classification", "")
+        result["weak_tests"] = _ast_info.get("weak_tests", [])
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -213,17 +258,37 @@ def intermediate_verify_item(
 
     deficiencies = [c["detail"] for c in checks if not c["content_ok"]]
 
+    # TC-FG-002b: propagate AST-based strong_ratio from test file checks
+    # Use the first test file's AST result if available
+    _test_checks = [c for c in checks if c.get("check_type") == "python_test_content"]
+    _strong_ratio = None
+    _overall_classification = None
+    _weak_tests = []
+    if _test_checks:
+        tc = _test_checks[0]
+        _strong_ratio = tc.get("strong_ratio")
+        _overall_classification = tc.get("overall_classification")
+        _weak_tests = tc.get("weak_tests", [])
+
     if ok_count == 0:
         adequate = False
         confidence = 0.0
     elif fail_count == 0:
-        adequate = True
-        confidence = 0.7  # Below LLM threshold (1.0) but above path-only (0.0)
+        # TC-FG-002b: confidence reflects assertion strength, not just file existence
+        if _overall_classification == "STRONG_PROOF":
+            adequate = True
+            confidence = 0.75
+        elif _overall_classification == "PARTIAL_PROOF":
+            adequate = True
+            confidence = 0.55
+        else:
+            adequate = True
+            confidence = 0.7  # legacy: non-test evidence or no AST info available
     else:
         adequate = ok_count > fail_count
         confidence = ok_count / len(checks) * 0.7
 
-    return {
+    result: dict = {
         "adequate": adequate,
         "confidence": confidence,
         "stub_detected": stub_detected,
@@ -234,6 +299,12 @@ def intermediate_verify_item(
         "checks": checks,
         "summary": f"{ok_count}/{len(checks)} evidence files passed content check",
     }
+    # TC-FG-002b: expose AST classification at top level for grade_declared_work.py grade-cap
+    if _strong_ratio is not None:
+        result["strong_ratio"] = _strong_ratio
+        result["overall_classification"] = _overall_classification
+        result["weak_tests"] = _weak_tests
+    return result
 
 
 def verify_declaration(declaration_path: Path) -> dict:

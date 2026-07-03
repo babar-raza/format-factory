@@ -1,0 +1,78 @@
+incident_id: FGI-PGM-HIST-001
+mission_id: FG-PREV-001
+
+timeline_events:
+  - event_id: EVT-001
+    timestamp: "2026-07-03T13:15:34.696487+00:00"
+    iteration: pgm-histogram-tests-20260703
+    stage: GRADE
+    action: >
+      grade_all() ran on TEST-PGM-BRIGHTNESS-HIST-001 via grade_declared_work.py.
+      LLM unavailable → fell through to grade_intermediate_verify.intermediate_verify_item().
+      String search: "def test_" in content AND "assert" in content → True.
+      intermediate_content_check returned adequate=True, confidence=0.7.
+    claims: ACCEPTED_VERIFIED
+    proof_available: >
+      file existence + "8 test functions with assertions" (string-search only)
+    findings_visible: none
+    findings_missed:
+      - test_return_type is proof level 2 (type-only, isinstance assertion)
+      - test_default_bins_is_4 is proof level 2 (shape-only, len assertion)
+      - strong_ratio=0.5 not computed — no AST analysis ran
+    state_transition: item_grade=ACCEPTED_VERIFIED (INCORRECT — should be ACCEPTED_WITH_LIMITATIONS)
+
+  - event_id: EVT-002
+    stage: SPRINT_VERDICT
+    action: >
+      Sprint verdict computed by autonomous_cycle.py.
+      GOV_BLOCK:validate_readme_freshness, V100, V102, V104 detected (README validators).
+      sprint_verdict = ACCEPTED_WITH_REWORK (correctly blocked by README validators).
+    claims: ACCEPTED_WITH_REWORK
+    findings_visible:
+      - GOV_BLOCK:validate_readme_freshness
+      - GOV_BLOCK:V100
+      - GOV_BLOCK:V102
+      - GOV_BLOCK:V104
+    findings_missed:
+      - proof-level inadequacy of ACCEPTED_VERIFIED item (test suite weak_ratio=0.5)
+    state_transition: sprint_verdict=ACCEPTED_WITH_REWORK (CORRECT for GOV_BLOCK reason)
+
+  - event_id: EVT-003
+    stage: CONTINUATION_CHECK
+    action: >
+      check_continuation.py ran. autonomous_continue=false because rework_items non-empty
+      (GOV_BLOCK items). Supervisor loop halted autonomy correctly.
+      However: item-level false-green (ACCEPTED_VERIFIED with weak assertions) was NOT
+      detected at this stage — it passed through silently.
+    claims: autonomous_continue=false (correct)
+    findings_visible:
+      - rework_items=[GOV_BLOCK:validate_readme_freshness, GOV_BLOCK:V100, GOV_BLOCK:V102, GOV_BLOCK:V104]
+    findings_missed:
+      - proof-level inadequacy of TEST-PGM-BRIGHTNESS-HIST-001 was not a rework_item
+    state_transition: autonomous_continue=false (CORRECT reason, but INSUFFICIENT scope)
+
+  - event_id: EVT-004
+    stage: PROVE_INVOCATION
+    action: >
+      Independent PROVE command (external re-evaluation, current conversation).
+      AST analysis performed on test_r259_pgm_brightness_histogram.py.
+      Identified test_return_type (isinstance) and test_default_bins_is_4 (len==4) as
+      proof level 2 (TYPE_ONLY / SHAPE_ONLY) — not detected by normal loop.
+    findings_visible:
+      - test_return_type: isinstance assertion = proof level 2
+      - test_default_bins_is_4: len assertion = proof level 2
+      - strong_ratio=0.5 (4 strong / 8 total)
+    state_transition: false_green_confirmed (FGI-PGM-HIST-001 declared)
+
+missed_findings_summary:
+  total: 2
+  classified:
+    - FMF-001: test_return_type — TYPE_OR_SHAPE_ONLY_PROOF — first_failing_boundary=GRADE_STAGE
+    - FMF-002: test_default_bins_is_4 — TYPE_OR_SHAPE_ONLY_PROOF — first_failing_boundary=GRADE_STAGE
+
+governance_note: >
+  Both missed findings were visible and discoverable before the item reached ACCEPTED_VERIFIED.
+  The failure occurred at the GRADE stage because the intermediate fallback path did not perform
+  AST assertion analysis. The findings were not discovered until PROVE_INVOCATION (EVT-004),
+  which ran outside the normal supervisor loop. The repair (TC-FG-002b) replaces the fallback
+  with a deterministic AssertionStrengthAnalyzer so future runs detect these findings at EVT-001.

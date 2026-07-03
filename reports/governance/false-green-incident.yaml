@@ -1,0 +1,108 @@
+incident_id: FGI-PGM-HIST-001
+mission_id: FG-PREV-001
+plan_id: wise-orbiting-yao
+plan_path: plans/.claude/wise-orbiting-yao.md
+affected_sprint: pgm-histogram-tests-20260703
+affected_item: TEST-PGM-BRIGHTNESS-HIST-001
+green_iteration: pgm-histogram-tests-20260703
+green_grade: ACCEPTED_VERIFIED
+
+false_green_class: TYPE_OR_SHAPE_ONLY_PROOF_MIXED_WITH_BEHAVIORAL
+
+false_green_evidence:
+  - field: acceptance_criteria_met
+    value: ["Evidence found", "No missing paths"]
+    issue: file-existence-only criteria — no behavioral assertion strength check performed
+  - field: semantic_verification.confidence
+    value: 0.7
+    issue: intermediate_content_check path — benefit-of-doubt threshold applied without behavioral verification
+  - field: semantic_verification.llm_used
+    value: false
+    issue: intermediate fallback ran (grade_intermediate_verify.intermediate_verify_item) — string-search only, no AST analysis
+  - field: semantic_verification.source
+    value: intermediate_content_check
+    issue: blanket adequate=true for any file containing 'def test_' and 'assert'
+
+root_cause_mechanism: >
+  When LLM is unavailable, grade_declared_work.py falls through to
+  grade_intermediate_verify.intermediate_verify_item(). That function does:
+    test_content_valid = "def test_" in content and "assert" in content
+  This is True for any test file. Combined with adequate=True → item promoted to
+  ACCEPTED_VERIFIED regardless of assertion strength. Grade cache then persists
+  result 7 days keyed by content hash. LLM was unavailable for this sprint run.
+
+weak_tests_not_flagged:
+  - name: test_return_type
+    assertion: assert isinstance(result, list)
+    proof_level: 2
+    classification: TYPE_ONLY
+    reason: verifies type but not values; passes any list-returning implementation
+  - name: test_default_bins_is_4
+    assertion: assert len(pgm_brightness_histogram(_1X1_WHITE)) == 4
+    proof_level: 2
+    classification: SHAPE_ONLY
+    reason: verifies count but not values; passes any 4-element list-returning implementation
+
+sound_tests_present:
+  - name: test_1x1_white_last_bin_gets_pixel
+    assertion: assert result == [0, 0, 0, 1]
+    proof_level: 3
+    classification: EXACT_BEHAVIORAL
+  - name: test_2x2_gradient_uniform_distribution
+    assertion: assert pgm_brightness_histogram(_2X2_GRADIENT) == [1, 1, 1, 1]
+    proof_level: 3
+    classification: EXACT_BEHAVIORAL
+  - name: test_custom_bins_256
+    assertion: result[0]==1, result[85]==1, result[170]==1, result[255]==1
+    proof_level: 3
+    classification: SUBSCRIPT_EXACT
+  - name: test_consistent_across_calls
+    assertion: assert pgm_brightness_histogram(_1X1_WHITE) == pgm_brightness_histogram(_1X1_WHITE)
+    proof_level: 3
+    classification: EXACT_BEHAVIORAL
+
+strong_ratio: 0.5
+total_tests: 8
+strong_tests: 4
+weak_tests: 4
+
+separate_correctly_caught_concern:
+  items:
+    - GOV_BLOCK:validate_readme_freshness
+    - GOV_BLOCK:V100
+    - GOV_BLOCK:V102
+    - GOV_BLOCK:V104
+  note: >
+    README validators blocked continuation correctly (sprint_verdict=ACCEPTED_WITH_REWORK,
+    autonomous_continue=false). These are NOT the false-green incident. They are a
+    SEPARATE, CORRECTLY CAUGHT governance concern and are NOT evidence of proof-adequacy
+    weakness.
+
+product_source_check_note: >
+  product_source_check.source_exists=false because the sprint was test-only (TEST item type).
+  No PRODUCT_SOURCE was declared. This is a scope note, not a missing implementation.
+
+terminal_state: reports/supervisor/maturity-signal.json
+evidence_roots:
+  - .local/evidences/pgm-histogram-tests-20260703-1fb74d0f/
+  - reports/supervisor/work-item-grades.json
+  - reports/supervisor/maturity-signal.json
+
+missed_findings:
+  - finding_id: FMF-001
+    test_name: test_return_type
+    category: TYPE_OR_SHAPE_ONLY_PROOF
+    visible_before_green: true
+    discoverable_before_green: true
+    discovery_method_required: AST assertion-strength analysis
+    first_failing_boundary: GRADE_STAGE
+    root_cause: grade_intermediate_verify fallback does not perform AST analysis
+
+  - finding_id: FMF-002
+    test_name: test_default_bins_is_4
+    category: TYPE_OR_SHAPE_ONLY_PROOF
+    visible_before_green: true
+    discoverable_before_green: true
+    discovery_method_required: AST assertion-strength analysis
+    first_failing_boundary: GRADE_STAGE
+    root_cause: grade_intermediate_verify fallback does not perform AST analysis

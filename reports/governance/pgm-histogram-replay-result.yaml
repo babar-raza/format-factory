@@ -1,0 +1,89 @@
+replay_id: FG-PREV-001-PGM-REPLAY-2026-07-03
+mission_id: FG-PREV-001
+plan_id: wise-orbiting-yao
+timestamp: "2026-07-03T00:00:00Z"
+requirement_id: TEST-PGM-BRIGHTNESS-HIST-001
+test_file: tests/python/pgm/test_r259_pgm_brightness_histogram.py
+
+proof_assessment:
+  overall_level: 3
+  strong_ratio: 0.5
+  overall_classification: STRONG_PROOF
+  test_count: 8
+  strong_tests:
+    - test_1x1_white_last_bin_gets_pixel
+    - test_2x2_gradient_uniform_distribution
+    - test_custom_bins_256
+    - test_consistent_across_calls
+  weak_tests:
+    - name: test_return_type
+      assertion: "assert isinstance(result, list)"
+      proof_level: 2
+      reason: TYPE assertion only
+    - name: test_default_bins_is_4
+      assertion: "assert len(f()) == 4"
+      proof_level: 2
+      reason: SHAPE assertion only
+    - name: test_sum_equals_pixel_count
+      assertion: "assert sum(f()) == N"
+      proof_level: 2
+      reason: SHAPE assertion only
+    - name: test_3x1_ramp_sum_equals_3
+      assertion: "assert sum(f()) == 3"
+      proof_level: 2
+      reason: SHAPE assertion only
+
+closure_challenge:
+  verdict: CLOSURE_CHALLENGE_PASSED
+  assessed_level: 3
+  required_level: 3
+  rationale: >
+    strong_ratio=0.5 meets STRONG_RATIO_THRESHOLD=0.5. 4 exact behavioral assertions
+    (assert result == [...]) anchor the test suite at level 3. Challenge PASSES because
+    the overall level meets the required ProofLevel.EXACT_BEHAVIOR_VERIFIED (3).
+    Weak tests are reported but not blocking — they are TYPE/SHAPE auxiliaries.
+  weak_tests_reported:
+    - test_return_type
+    - test_default_bins_is_4
+    - test_sum_equals_pixel_count
+    - test_3x1_ramp_sum_equals_3
+  new_findings: []
+
+before_after_proof:
+  verdict: NEW_FILE
+  baseline_revision: UNKNOWN
+  final_revision: HEAD
+  rationale: >
+    Test file did not exist at sprint baseline (pgm-histogram-tests-20260703).
+    This is a new test file — baseline_git_sha=UNKNOWN triggers NEW_FILE verdict.
+    NEW_FILE is always classified as IMPROVEMENT (no regression possible for new files).
+
+false_green_detection:
+  intermediate_verify_result_before_fix:
+    source: intermediate_content_check
+    adequate: true
+    confidence: 0.7
+    llm_used: false
+    detail: "valid (8 test functions with assertions)"
+    classification: BLANKET_STRING_SEARCH_ONLY
+  intermediate_verify_result_after_fix:
+    source: intermediate_content_check
+    adequate: true
+    confidence: 0.75
+    llm_used: false
+    overall_classification: STRONG_PROOF
+    strong_ratio: 0.5
+    weak_tests_detected:
+      - test_return_type
+      - test_default_bins_is_4
+  detection_improvement: >
+    Healed system correctly identifies 4 weak tests while still grading the item
+    ADEQUATE (strong_ratio=0.5 meets threshold). Grade is preserved as ACCEPTED_VERIFIED
+    but weak tests are now surfaced for human review rather than silently ignored.
+
+conclusion: >
+  The healed supervisor machinery correctly processes TEST-PGM-BRIGHTNESS-HIST-001.
+  The intermediate fallback now uses AST-based assertion analysis (proof_adequacy_contract.py)
+  instead of string search. The closure challenger independently validates the item.
+  The PGM histogram test suite is sound (4/8 strong) and the closure PASSES —
+  but the 4 weak tests are now visible and documented for future improvement.

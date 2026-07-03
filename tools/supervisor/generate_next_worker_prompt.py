@@ -933,6 +933,54 @@ def _run_capability_consumer(repo_root: Path, max_gaps: int = 3) -> list[dict]:
         return taskcards
 
 
+def detect_proof_gaps_for_empty_queue(
+    work_item_grades: list,
+    evidence_root: str,
+    max_proof_gap_cycles: int = 3,
+    current_proof_gap_cycle: int = 0,
+) -> list:
+    """TC-FG-007 Part B: Generate PROOF_GAP work items when queue would otherwise be empty.
+
+    Returns list of PROOF_GAP work items, or [] if max cycles reached.
+    Prevents infinite proof-gap loops via the cycle counter guard.
+    """
+    if current_proof_gap_cycle >= max_proof_gap_cycles:
+        print(f"  INFO: Proof gap detection skipped — max cycles ({max_proof_gap_cycles}) reached")
+        return []
+
+    try:
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sup = _Path(__file__).resolve().parent
+        if str(_sup) not in _sys.path:
+            _sys.path.insert(0, str(_sup))
+        from proof_adequacy_contract import infer_default_contract, proof_sufficient_for_closure
+    except Exception as _import_err:
+        print(f"  WARNING: proof_adequacy_contract unavailable for proof-gap guard: {_import_err}")
+        return []
+
+    gap_items = []
+    for item in work_item_grades:
+        if item.get("supervisor_grade") != "ACCEPTED_VERIFIED":
+            continue
+        try:
+            contract = infer_default_contract(item)
+            test_paths = item.get("tests_supporting", [])
+            sufficient, gaps = proof_sufficient_for_closure(contract, test_paths)
+            if not sufficient:
+                gap_items.append({
+                    "item_id": f"PROOF-GAP-{item.get('item_id', 'UNKNOWN')}",
+                    "title": f"Proof gap: {'; '.join(gaps[:2])}",
+                    "item_type": "PROOF_GAP",
+                    "priority": "HIGH",
+                    "parent_id": item.get("item_id", "UNKNOWN"),
+                    "gaps": gaps,
+                })
+        except Exception:
+            continue
+    return gap_items
+
+
 def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict | None = None,
                             work_groups: list | None = None) -> dict:
     """Generate next-work-items.yaml from review.
@@ -1161,6 +1209,37 @@ def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict |
                     _injected += 1
     except Exception:
         pass  # Non-blocking — fallback to existing behavior if routing fails
+
+    # TC-FG-007 Part B: proof-gap guard when queue would be empty
+    if len(items) == 0:
+        try:
+            _pg_cycle = review.get("proof_gap_cycle", 0)
+            _proof_gaps = detect_proof_gaps_for_empty_queue(
+                work_item_grades=review.get("item_grades", []),
+                evidence_root=review.get("evidence_root", ""),
+                current_proof_gap_cycle=_pg_cycle,
+            )
+            if _proof_gaps:
+                for _pg in _proof_gaps:
+                    items.append({
+                        "item_id": _pg["item_id"],
+                        "title": _pg["title"],
+                        "lane": "proof-gap",
+                        "priority": priority,
+                        "description": f"Proof gaps: {'; '.join(_pg.get('gaps', []))}",
+                        "acceptance_criteria": "Strong behavioral assertions added for all proof gaps",
+                        "verification_command": "",
+                        "evidence_expected": "Updated test file with exact value assertions",
+                        "source": "proof_gap_guard",
+                        "stop_reason_adjudication": "agent-owned",
+                        "human_required": False,
+                        "blocked_by": None,
+                        "external_gate": False,
+                    })
+                    priority += 1
+                print(f"  Proof-gap guard: {len(_proof_gaps)} gap task(s) injected into empty queue")
+        except Exception as _pgc_err:
+            print(f"  WARNING: Proof-gap guard skipped: {_pgc_err}")
 
     return {
         "run_id": review.get("run_id", "unknown"),

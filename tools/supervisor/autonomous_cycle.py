@@ -979,6 +979,43 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     review["git_head_at_review"] = _git_head_at_review  # TC-HARD-010: accurate HEAD at review time
     review["dag_validation"] = dag_validation_result
 
+    # TC-FG-004: Closure challenge — enforce proof adequacy before ACCEPTED_VERIFIED
+    try:
+        from closure_challenger import run_closure_challenge as _run_cc
+        import json as _json
+        _cc_results = []
+        for _item in review.get("item_grades", []):
+            if _item.get("supervisor_grade") == "ACCEPTED_VERIFIED":
+                _cc_result = _run_cc(
+                    item=_item,
+                    evidence_root=str(review_dir),
+                    repo_root=str(repo_root),
+                    proof_contracts=decl.get("proof_contracts"),
+                )
+                _cc_results.append(_cc_result)
+                if _cc_result["verdict"] == "CLOSURE_CHALLENGE_FOUND_REWORK":
+                    _item["supervisor_grade"] = "REWORK_REQUIRED"
+                    _item["required_rework"] = (
+                        f"Closure challenge found: {'; '.join(_cc_result['new_findings'])}"
+                    )
+                    review.setdefault("rework_items", []).append(
+                        f"CLOSURE_CHALLENGE:{_item['item_id']}"
+                    )
+                    review["critical_rework_count"] = review.get("critical_rework_count", 0) + 1
+                    if review.get("overall_verdict") in (
+                        "ACCEPTED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_REWORK"
+                    ):
+                        review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+                    if "autonomous_continue" in review:
+                        review["autonomous_continue"] = False
+        _cc_out = review_dir / "closure-challenge-results.json"
+        _cc_out.write_text(_json.dumps(_cc_results, indent=2, default=str))
+        _cc_rework = sum(1 for r in _cc_results if r["verdict"] == "CLOSURE_CHALLENGE_FOUND_REWORK")
+        print(f"  [TC-FG-004] Closure challenge: {len(_cc_results)} items challenged, "
+              f"{_cc_rework} found rework")
+    except Exception as _cc_err:
+        print(f"  WARNING: Closure challenge skipped (non-critical): {_cc_err}")
+
     # Step 2d2 post-grading: promote requirements authority failure to critical rework
     # Sprint 3: REQUIREMENT/READINESS/RELEASE_GATE failure is now a hard block.
     if _ra_failure_blocks:
@@ -2056,12 +2093,24 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  Maturity signal: reports/supervisor/maturity-signal.json")
         except Exception as _ms_err:
             print(f"  WARNING: Maturity signal emission skipped: {_ms_err}")
-        # TC-AMD-LLM-001: Adversarial check (non-blocking pilot)
+        # TC-FG-007 (healed TC-AMD-LLM-001): Adversarial check — HIGH risk now blocks rework
+        # iteration >= 3 gate removed; LLM-unavailable (None return) never blocks
         try:
             from adversarial_check import run_and_write as _adv_rw
-            _adv_high = _adv_rw(review, repo_root, sprint_id, signal.get("iteration", 0))
-            if _adv_high and signal.get("iteration", 0) >= 3:
-                continuation_warnings.append(f"adversarial_check_high_risk:{_adv_high}_findings")
+            _adv_result = _adv_rw(review, repo_root, sprint_id, signal.get("iteration", 0))
+            if _adv_result is not None and _adv_result >= 1:
+                # HIGH risk findings: add to rework_items (not just warnings)
+                review.setdefault("rework_items", []).append(
+                    f"ADVERSARIAL_HIGH_RISK:{_adv_result}_findings"
+                )
+                review["critical_rework_count"] = review.get("critical_rework_count", 0) + 1
+                if review.get("overall_verdict") in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS"):
+                    review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+                if "autonomous_continue" in review:
+                    review["autonomous_continue"] = False
+                continuation_warnings.append(f"adversarial_check_high_risk:{_adv_result}_findings")
+            elif _adv_result is None:
+                print("  INFO: Adversarial check skipped (LLM unavailable) — not blocking")
         except Exception as _ae:
             print(f"  WARNING: Adversarial check skip: {_ae}")
         # TC-SH-006: GOV_BLOCK auto-repair directive — extracted to extensions
