@@ -503,8 +503,10 @@ public sealed class CsvDocument
     public double GetMutualInformation(string col1, string col2) => GetColumnMutualInformation(col1, col2);
     /// <summary>Returns the auto-correlation of numeric values in the column at the given lag.</summary>
     public double GetColumnAutoCorrelation(string headerName, int lag = 1) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); int n = v.Length - lag; if (n <= 0) return 0.0; double m = v.Average(); double var = v.Sum(x => (x - m) * (x - m)); if (var == 0) return 0.0; return v.Take(n).Zip(v.Skip(lag), (a, b) => (a - m) * (b - m)).Sum() / var; }
-    /// <summary>Returns the partial correlation between col1 and col2 (approximated as first-order).</summary>
-    public double GetColumnPartialCorrelation(string col1, string col2) { var x = ParseNumericColumn(GetColumn(col1)).ToArray(); var y = ParseNumericColumn(GetColumn(col2)).ToArray(); int n = Math.Min(x.Length, y.Length); if (n < 3) return GetColumnCorrelation(col1, col2); double rxy = GetColumnCorrelation(col1, col2); return rxy; } // simplified: same as correlation for bivariate case
+    /// <summary>Returns the partial correlation between col1 and col2 (approximated as first-order bivariate).</summary>
+    public double GetColumnPartialCorrelation(string col1, string col2) { return GetColumnCorrelation(col1, col2); }
+    /// <summary>Returns the partial correlation between col1 and col2 controlling for controlCol (first-order partial).</summary>
+    public double GetColumnPartialCorrelation(string col1, string col2, string controlCol) { double rxy = GetColumnCorrelation(col1, col2); double rxz = GetColumnCorrelation(col1, controlCol); double ryz = GetColumnCorrelation(col2, controlCol); double denom = Math.Sqrt((1 - rxz * rxz) * (1 - ryz * ryz)); if (denom == 0) return 0.0; return (rxy - rxz * ryz) / denom; }
     /// <summary>Returns the linear regression slope (col2 ~ col1).</summary>
     public double GetLinearRegressionSlope(string col1, string col2) { var x = ParseNumericColumn(GetColumn(col1)).ToArray(); var y = ParseNumericColumn(GetColumn(col2)).ToArray(); int n = Math.Min(x.Length, y.Length); if (n == 0) return 0.0; double mx = x.Take(n).Average(), my = y.Take(n).Average(); double num = x.Take(n).Zip(y.Take(n), (a, b) => (a - mx) * (b - my)).Sum(); double den = x.Take(n).Sum(a => (a - mx) * (a - mx)); return den == 0 ? 0.0 : num / den; }
     /// <summary>Returns the linear regression intercept (col2 ~ col1).</summary>
@@ -532,15 +534,15 @@ public sealed class CsvDocument
     /// <summary>Returns the rank of a value within the sorted column (1-based).</summary>
     public int GetColumnRank(string headerName, double value) { var s = ParseNumericColumn(GetColumn(headerName)).OrderBy(v => v).ToList(); return s.TakeWhile(v => v < value).Count() + 1; }
     /// <summary>Returns the ordinal ranks of all numeric values in the column.</summary>
-    public List<int> GetColumnRankTransform(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); var sorted = v.OrderBy(x => x).ToList(); return v.Select(x => sorted.IndexOf(x) + 1).ToList(); }
+    public int[] GetColumnRankTransform(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); var sorted = v.OrderBy(x => x).ToList(); return v.Select(x => sorted.IndexOf(x) + 1).ToArray(); }
     /// <summary>Returns the IQR alias (interquartile range).</summary>
     public double GetColumnIQR(string headerName) => GetColumnThirdQuartile(headerName) - GetColumnFirstQuartile(headerName);
     /// <summary>Returns the IQR alias (non-column prefix).</summary>
     public double GetIQR(string col) => GetColumnThirdQuartile(col) - GetColumnFirstQuartile(col);
     /// <summary>Returns the cumulative sum of numeric values in the column.</summary>
-    public List<double> GetColumnCumulativeSum(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToList(); var res = new List<double>(v.Count); double acc = 0; foreach (var x in v) { acc += x; res.Add(acc); } return res; }
+    public double[] GetColumnCumulativeSum(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToList(); var res = new double[v.Count]; double acc = 0; for (int i = 0; i < v.Count; i++) { acc += v[i]; res[i] = acc; } return res; }
     /// <summary>Returns the cumulative sum alias.</summary>
-    public List<double> GetCumulativeSum(string col) => GetColumnCumulativeSum(col);
+    public double[] GetCumulativeSum(string col) => GetColumnCumulativeSum(col);
     /// <summary>Returns the moving average of numeric values in the column.</summary>
     public List<double> GetMovingAverage(string col, int window) { var v = ParseNumericColumn(GetColumn(col)).ToArray(); var res = new List<double>(); for (int i = 0; i < v.Length; i++) { int start = Math.Max(0, i - window + 1); res.Add(v.Skip(start).Take(i - start + 1).Average()); } return res; }
     /// <summary>Returns the running mean of numeric values in the column.</summary>
@@ -680,9 +682,15 @@ public sealed class CsvDocument
     public string ExportToXml() { var sb = new System.Text.StringBuilder(); sb.AppendLine("<rows>"); foreach (var row in Rows) { sb.Append("  <row>"); int cols = Math.Min(Headers?.Length ?? row.Length, row.Length); for (int i = 0; i < cols; i++) { string tag = Headers != null && i < Headers.Length ? _XmlTag(Headers[i]) : $"col{i}"; sb.Append($"<{tag}>{_XmlEsc(row[i])}</{tag}>"); } sb.AppendLine("</row>"); } sb.AppendLine("</rows>"); return sb.ToString(); }
     private static string _XmlEsc(string s) => s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
     private static string _XmlTag(string s) { var clean = new string(s.Select(c => char.IsLetterOrDigit(c) || c == '_' ? c : '_').ToArray()); return string.IsNullOrEmpty(clean) || char.IsDigit(clean[0]) ? "_" + clean : clean; }
+    /// <summary>Returns Q1, Q2 (median), Q3 for the named column.</summary>
+    public QuartilesResult GetColumnQuartiles(string headerName) => new(GetColumnFirstQuartile(headerName), GetColumnMedian(headerName), GetColumnThirdQuartile(headerName));
+
     /// <summary>Exports to Markdown table string.</summary>
     public string ExportToMarkdown() { var sb = new System.Text.StringBuilder(); if (Headers != null) { sb.AppendLine("| " + string.Join(" | ", Headers) + " |"); sb.AppendLine("| " + string.Join(" | ", Headers.Select(_ => "---")) + " |"); } foreach (var row in Rows) sb.AppendLine("| " + string.Join(" | ", row.Select(c => c.Replace("|", "\\|"))) + " |"); return sb.ToString(); }
 }
+
+/// <summary>Result of GetColumnQuartiles: the three quartile values Q1, Q2, Q3.</summary>
+public sealed record QuartilesResult(double Q1, double Q2, double Q3);
 
 /// <summary>
 /// Extension methods for string[] rows used inside CsvDocument.Filter predicates.
