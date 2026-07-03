@@ -28,11 +28,16 @@ namespace FormatFactory.Csv;
 /// MWP status: minimal viable product — production hardening is future work.
 /// commercial_product_ready: false
 /// </summary>
-public static class CsvWriter
+public class CsvWriter
 {
     // -------------------------------------------------------------------------
     // Public API
     // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Instance wrapper: serialize rows and write to a file path (delegates to WriteRowsToFile).
+    /// </summary>
+    public void WriteRows(IEnumerable<IEnumerable<string?>> rows, string path) => WriteRowsToFile(rows, path);
 
     /// <summary>
     /// Serialize <paramref name="rows"/> to a CSV string.

@@ -13,7 +13,7 @@ namespace FormatFactory.Csv;
 /// RFC 4180 compliant CSV reader.
 /// Supports quoted fields, embedded commas/newlines/quotes, BOM stripping.
 /// </summary>
-public static class CsvReader
+public class CsvReader
 {
     private const long MaxSizeBytes = 64 * 1024 * 1024; // 64 MB
 
@@ -40,6 +40,9 @@ public static class CsvReader
             throw new CsvReaderException($"Input exceeds maximum size of {MaxSizeBytes} bytes.");
         return ReadRows(content);
     }
+
+    /// <summary>Instance wrapper: read rows from a file path (delegates to ReadRowsFromFile).</summary>
+    public List<string[]> ReadRows(string path) => ReadRowsFromFile(path);
 
     /// <summary>Parse CSV from a file path.</summary>
     public static List<string[]> ReadRowsFromFile(string path)
