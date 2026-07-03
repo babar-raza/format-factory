@@ -6048,3 +6048,25 @@ PCG-PORTFOLIO-001/002/003 healed (moved from Deferred to CLOSED):
 **Verification:** All 23/23 scope_guard tests PASS. End-to-end scenario: scope guard violation, glob regression, delegation write, gate check, gap closure — all green.
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+---
+
+## §111 — logical-cuddling-naur: PGM Brightness Histogram Behavioral Tests (TERMINAL_CLOSED 2026-07-03)
+
+**Plan:** `plans/.claude/logical-cuddling-naur.md` | **Commit:** 8fac9d0b
+
+### Summary
+
+Sprint to add behavioral test coverage for `pgm_brightness_histogram` (grayscale_image.py:525, bins=4 default). Prior tests only had `isinstance`/`len > 0` guards — no bin-placement, sum==pixel_count, or custom-bins assertions.
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-FINAL-001 | `tests/python/pgm/test_r259_pgm_brightness_histogram.py` — 8 behavioral tests | CLOSED |
+| TC-FINAL-002 | PGM regression: 931/931 PGM tests pass, 26,896 total, 0 errors | CLOSED |
+| TC-FINAL-003 | Evidence declaration + supervisor closeout (run_id: pgm-histogram-tests-20260703-1fb74d0f) | CLOSED |
+
+**Gap closed:** GAP-PGM-FOSS-PGM_BRIGHT_HI-001 — behavioral proof for bin placement logic, default bin count, sum==pixel_count invariant, and custom bins (256) confirmed.
+
+**Tests verified:** `test_return_type`, `test_default_bins_is_4`, `test_1x1_white_last_bin_gets_pixel` ([0,0,0,1]), `test_2x2_gradient_uniform_distribution` ([1,1,1,1]), `test_sum_equals_pixel_count`, `test_custom_bins_256` (256 bins, result[0,85,170,255]==1), `test_3x1_ramp_sum_equals_3`, `test_consistent_across_calls` — all 8 PASS.
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
