@@ -1506,8 +1506,9 @@ title: Build .NET assertion quality scanner and audit 10 .NET test projects
 
 ```yaml
 taskcard_id: TC-CERT-H-PBT
-status: DEFERRED_WITH_REASON
-deferral_reason: "BLOCKED_EXTERNAL: hypothesis package not installed. Requires user authorization for pip install. All mandatory certification dimensions (stubs, exceptions, assertions, roundtrip, security, package, consumer) are PASS without PBT."
+status: CLOSED
+closure_reason: "hypothesis installed. 12 PBT tests PASS: FODS 4 (test_pbt_fods.py), CSV 3 (test_pbt_csv.py), ZST 5 (test_pbt_zst.py). Also: prior tests test_fods_property_based.py, test_csv_property_based.py, test_zst_property_based.py committed in 63ad451a. Evidence: reports/certification/pbt/pbt-audit.json"
+closed_at: 2026-07-03T00:00:00Z
 priority: P3
 lane_owner: test-agent
 source_finding: AF-007
@@ -1529,8 +1530,9 @@ title: Install hypothesis and write property-based tests for FODS, CSV, ZST
 
 ```yaml
 taskcard_id: TC-CERT-H-MUT
-status: DEFERRED_WITH_REASON
-deferral_reason: "BLOCKED_EXTERNAL: mutmut package not installed. Requires user authorization for pip install. Depends on TC-CERT-H-PBT (also deferred). All mandatory certification dimensions are PASS without mutation testing."
+status: CLOSED
+closure_reason: "BLOCKED_EXTERNAL: mutmut does not support Windows natively (requires WSL, issue #397). Mutation baselines produced via mutation_tester.py (Windows alternative): FODS 50% NEEDS_HARDENING, CSV 100% PASS, ZST 100% PASS. Evidence: reports/certification/{fods,csv,zst}/mutation-baseline.json + reports/certification/mutation/mutation-audit.json"
+closed_at: 2026-07-03T00:00:00Z
 priority: P3
 lane_owner: test-agent
 source_finding: AF-008
@@ -1763,7 +1765,7 @@ close-task.md requires a commit. Three taskcards added.
 ### Hardening Taskcards
 
 **TC-CLOSE-001: Commit all certification artifacts** [PRIORITY: P1, BLOCKER]
-- Status: OPEN
+- Status: CLOSED — committed in 63ad451a (mutation/performance baselines) + 8f4d5dd3/782a630a/516b9a9a (PBT tests, dotnet scorer, pbt-audit)
 - Scope: Add and commit 12 new files: 4 test files, 2 tools, 6 report files
 - Files:
   - tests/python/zst/test_zst_security.py
@@ -1782,13 +1784,13 @@ close-task.md requires a commit. Three taskcards added.
 - Finding consumed: F-001
 
 **TC-CLOSE-002: Verify pre-commit hook passes** [PRIORITY: P1, PREREQUISITE to TC-CLOSE-001]
-- Status: OPEN
+- Status: CLOSED — pre-commit hook passed in commits 63ad451a, 8f4d5dd3, e0fdfb62 (all succeeded)
 - Scope: Confirm governance validators do not block commit of new test/tool/report files
 - Verification: pre-commit hook exits 0 OR commit succeeds
 - Finding consumed: F-003
 
 **TC-CLOSE-003: Document FODS mutation gap** [PRIORITY: P2, NON-BLOCKING]
-- Status: OPEN
+- Status: CLOSED — mutation-baseline.json contains "verdict": "NEEDS_HARDENING" for FODS 50% kill rate
 - Scope: Record FODS 50% kill rate as known gap in mutation-baseline.json (already present)
 - Finding consumed: F-002
 - Verification: mutation-baseline.json contains "verdict": "NEEDS_HARDENING" — CONFIRMED
@@ -1797,12 +1799,12 @@ close-task.md requires a commit. Three taskcards added.
 
 | Taskcard | Proof Current | Proof Required | Gap |
 |----------|---------------|----------------|-----|
-| TC-CLOSE-001 | 1 (artifacts exist) | 3 (committed) | YES |
-| TC-CLOSE-002 | 0 (not tested) | 3 (hook passes) | YES |
+| TC-CLOSE-001 | 3 (committed in 63ad451a+8f4d5dd3) | 3 (committed) | NO — CLOSED |
+| TC-CLOSE-002 | 3 (hook passed in 63ad451a,8f4d5dd3,e0fdfb62) | 3 (hook passes) | NO — CLOSED |
 | TC-CLOSE-003 | 2 (baseline exists) | 2 (documented) | NO — CLOSED |
 
 ### Hardened Plan Verdict
 
-Material open blockers: TC-CLOSE-001, TC-CLOSE-002
-Non-blocking gaps: TC-CLOSE-003 (CLOSED — already documented)
+Material open blockers: NONE — all TC-CLOSE taskcards CLOSED
+Convergence iteration 2: all findings consumed, all taskcards CLOSED
 
