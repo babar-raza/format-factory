@@ -17,14 +17,24 @@ public class CsvReader
 {
     private const long MaxSizeBytes = 64 * 1024 * 1024; // 64 MB
 
-    /// <summary>Parse CSV content into rows of string fields.</summary>
+    /// <summary>
+    /// Parse CSV content into rows of string fields, OR read from a file path.
+    /// Auto-detects: if the string contains no newlines and the file exists on disk, reads from file.
+    /// Otherwise, parses the string as CSV content directly.
+    /// This allows both static usage (CsvReader.ReadRows(csvContent)) and
+    /// instance usage (new CsvReader().ReadRows(filePath)) with the same method.
+    /// </summary>
     public static List<string[]> ReadRows(string content)
     {
         if (content is null) throw new CsvReaderException("content must not be null.");
         if (content.Length == 0) return new List<string[]>();
 
+        // Auto-detect file path: no newlines + file exists on disk → read from file
+        if (content.IndexOf('\n') < 0 && content.IndexOf('\r') < 0 && File.Exists(content))
+            return ReadRowsFromFile(content);
+
         // Strip BOM
-        if (content.Length > 0 && content[0] == '\uFEFF')
+        if (content[0] == '\uFEFF')
             content = content[1..];
 
         return ParseCsv(content);
@@ -40,9 +50,6 @@ public class CsvReader
             throw new CsvReaderException($"Input exceeds maximum size of {MaxSizeBytes} bytes.");
         return ReadRows(content);
     }
-
-    /// <summary>Instance wrapper: read rows from a file path (delegates to ReadRowsFromFile).</summary>
-    public List<string[]> ReadRows(string path) => ReadRowsFromFile(path);
 
     /// <summary>Parse CSV from a file path.</summary>
     public static List<string[]> ReadRowsFromFile(string path)
