@@ -1,0 +1,18 @@
+{
+  "format": "zst",
+  "test_file": "tests/python/zst/test_zst_property.py",
+  "framework": "hypothesis",
+  "hypothesis_version": "6.155.7",
+  "run_date": "2026-07-03",
+  "tests": [
+    {"name": "test_compress_never_raises", "status": "PASS", "max_examples": 50},
+    {"name": "test_roundtrip_identity", "status": "PASS", "max_examples": 50},
+    {"name": "test_compressed_starts_with_magic", "status": "PASS", "max_examples": 30},
+    {"name": "test_compressed_output_is_nonempty", "status": "PASS", "max_examples": 30},
+    {"name": "test_decompressed_length_matches_original", "status": "PASS", "max_examples": 40}
+  ],
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "verdict": "PASS"
+}

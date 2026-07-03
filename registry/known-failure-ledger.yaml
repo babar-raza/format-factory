@@ -1,1117 +1,774 @@
-# Known Failure Ledger — Format Factory
-# Created: 2026-06-18
-# Sprint: format-factory-fullsuite-layering-20260618-001
-#
-# This ledger tracks pre-existing test failures that are expected under
-# specific environment conditions. Failures in this ledger do NOT block
-# taskcard closure. New failures (not in this ledger) DO require investigation.
-#
-# Usage: python tools/test_runner.py --layer N --known-failures registry/known-failure-ledger.yaml
-# Format: YAML with known_failures list of {test_id, reason, condition, mitigation}
-
 version: 1
-created_at: "2026-06-18"
-last_updated: "2026-06-23"
-source: "docs/code-quality/test-layering.md §Known Environment-Dependent Test Failures"
-
+created_at: '2026-06-18'
+last_updated: '2026-07-03'
+source: docs/code-quality/test-layering.md §Known Environment-Dependent Test Failures
 known_failures:
-  - test_id: "tests/evidence/test_auto_proof_bundle.py"
-    reason: "Requires clean git working tree. Fails on dirty working tree (uncommitted changes)."
-    condition: "dirty_working_tree"
-    mitigation: "Run pytest with --no-state flag, or commit/stash all changes before running L3."
-    layer: 3
-    first_documented: "pre-sprint (documented in docs/code-quality/test-layering.md)"
-    category: "environment_dependent"
-
-  - test_id: "tests/supervisor/test_r113_ai_learning_loop.py"
-    reason: "Makes real SSL/network calls; may timeout without internet connectivity or with slow network."
-    condition: "network_unavailable_or_slow"
-    mitigation: "Ensure stable internet connectivity, or run with --timeout=60 to bound the test."
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "network_dependent"
-
-  - test_id: "tests/python/tsv/test_rnext_tsv_max_field_length.py::TestTsvMaxFieldLength::test_header_is_longest"
-    reason: "Pre-existing TSV max_field_length boundary test failure. test_header_is_longest asserts a boundary condition not yet satisfied by the current TSV implementation. Not introduced by the layering sprint."
-    condition: "always"
-    mitigation: "No mitigation required — pre-existing gap test. Will pass once TSV max_field_length is fully implemented."
-    layer: 1
-    first_documented: "2026-06-18 (observed in Pilot A L1-TSV run; pilot-a-l1-tsv.json)"
-    category: "pre_existing_gap_test"
-
-  # -----------------------------------------------------------------------
-  # FODS gap-closure collection errors (TC-HYGIENE-FODS-001-A, 2026-06-21)
-  # 32 test files in tests/python/fods/ import functions that are planned
-  # in the FODS gap ledger but not yet implemented in src/python/fods/.
-  # These cause ImportError at pytest collection time (ERROR, not FAIL).
-  # Root cause: tests were written against capability gap IDs before the
-  # matching implementation was added to fods/__init__.py or fods/neutral_model.py.
-  # Mitigation: use `pytest --continue-on-collection-errors` or tools/test_runner.py
-  # -----------------------------------------------------------------------
-  - test_id: "tests/python/fods/test_r258_fods_total_text_length_col_count_variance.py"
-    reason: "ImportError: fods_total_text_length, fods_col_count_variance not implemented. Closes GAP-FODS-FOSS-FODS_TOTAL_T-001, GAP-FODS-FOSS-FODS_COLUMN_-001."
-    condition: "always"
-    mitigation: "Implement fods_total_text_length and fods_col_count_variance in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r259_fods_empty_row_ratio_avg_row_count_total_col.py"
-    reason: "ImportError: fods_empty_row_ratio, fods_avg_row_count, fods_total_col not implemented. Closes GAP-FODS-FOSS-FODS_EMPTY_R-001, GAP-FODS-FOSS-FODS_AVG_ROW-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r260_fods_sprint41_gaps.py"
-    reason: "ImportError: fods_has_numeric_cells, fods_max_row_cell_count, fods_min_cell_length not implemented. Closes GAP-FODS-FOSS-FODS_MAX_RO-001, GAP-FODS-FOSS-FODS_MIN_CE-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r261_fods_sprint42_gaps.py"
-    reason: "ImportError: fods_distinct_value_count, fods_empty_row_count not implemented. Closes GAP-FODS-FOSS-FODS_EMPTY_R-001, GAP-FODS-FOSS-FODS_DISTINC-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r263_fods_sprint45_gaps.py"
-    reason: "ImportError: fods_max_numeric_value, fods_min_numeric_value not implemented. Closes GAP-FODS-FOSS-FODS_MAX_NUM-001, GAP-FODS-FOSS-FODS_MIN_NUM-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r264_fods_sprint45_batch2.py"
-    reason: "ImportError: fods_max_cell_length not implemented. Closes GAP-FODS-FOSS-FODS_MAX_CEL-001."
-    condition: "always"
-    mitigation: "Implement fods_max_cell_length in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r265_fods_sprint50_gaps.py"
-    reason: "ImportError: fods_cell_count_variance, fods_row_width_variance not implemented. Closes GAP-FODS-FOSS-FODS_ROW_WID-001, GAP-FODS-FOSS-FODS_CELL_CO-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r266_fods_sprint52_gaps.py"
-    reason: "ImportError: fods_total_string_cells, fods_max_column_index not implemented. Closes GAP-FODS-FOSS-FODS_TOTAL_S-001, GAP-FODS-FOSS-FODS_MAX_COL-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r267_fods_sprint53_gaps.py"
-    reason: "ImportError: fods_cells_per_sheet_avg, fods_is_fully_numeric not implemented. Closes GAP-FODS-FOSS-FODS_IS_FULL-001, GAP-FODS-FOSS-FODS_CELLS_P-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r268_fods_sprint57_gaps.py"
-    reason: "ImportError: fods_row_to_sheet_ratio not implemented. Closes GAP-FODS-FOSS-FODS_ROW_TO_-001."
-    condition: "always"
-    mitigation: "Implement fods_row_to_sheet_ratio in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r269_fods_sprint57_gaps.py"
-    reason: "ImportError: fods_file_size_bytes, fods_max_sheet_row_count not implemented. Closes GAP-FODS-FOSS-FODS_MAX_SHE-001, GAP-FODS-FOSS-FODS_FILE_SI-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r270_fods_sprint59_gaps.py"
-    reason: "ImportError: fods_cell_type_variety not implemented. Closes GAP-FODS-FOSS-FODS_CELL_TY-001."
-    condition: "always"
-    mitigation: "Implement fods_cell_type_variety in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r271_fods_sprint61_gaps.py"
-    reason: "ImportError: fods_sheet_cell_variance not implemented. Closes GAP-FODS-FOSS-FODS_SHEET_C-001."
-    condition: "always"
-    mitigation: "Implement fods_sheet_cell_variance in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r272_fods_sprint65_gaps.py"
-    reason: "ImportError: fods_row_density_avg not implemented. Closes GAP-FODS-FOSS-FODS_ROW_DEN-001."
-    condition: "always"
-    mitigation: "Implement fods_row_density_avg in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r273_fods_sprint70_gaps.py"
-    reason: "ImportError: fods_cell_value_variance not implemented. Closes GAP-FODS-FOSS-FODS_CELL_VA-001."
-    condition: "always"
-    mitigation: "Implement fods_cell_value_variance in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r274_fods_sprint135_gaps.py"
-    reason: "ImportError: fods_cell_entropy, fods_value_variance not implemented. Closes GAP-FODS-FOSS-FODS_CELL_EN-001, GAP-FODS-FOSS-FODS_VALUE_V-001."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r284_fods_additional_gaps.py"
-    reason: "ImportError: fods_avg_numeric_value, fods_longest_row_index, fods_numeric_sum_all, fods_cell_to_sheet_ratio, fods_formula_cell_count, fods_sheet_row_variance, fods_total_text_length, fods_col_count_variance not implemented in fods package."
-    condition: "always"
-    mitigation: "Implement missing analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r284_fods_is_all_string_has_numeric_cells.py"
-    reason: "ImportError: fods_is_all_string, fods_has_numeric_cells not in fods.neutral_model."
-    condition: "always"
-    mitigation: "Implement fods_is_all_string, fods_has_numeric_cells in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r286_fods_gap_closure.py"
-    reason: "ImportError: fods_has_numeric_cells not in fods.neutral_model. Closes GAP-FODS-FOSS-FODS_HAS_NUM-001."
-    condition: "always"
-    mitigation: "Implement fods_has_numeric_cells in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r289_fods_has_only_one_column_formula_density.py"
-    reason: "ImportError: fods_has_only_one_column, fods_formula_density not in fods.neutral_model."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r290f_fods_analytics_deepening.py"
-    reason: "ImportError: fods_total_string_cells, fods_avg_cell_value_length, fods_max_column_index not in fods.neutral_model."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r290l_fods_analytics_deepening.py"
-    reason: "ImportError: analytics deepening functions not in fods.neutral_model."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r299_fods_cells_per_sheet_avg_is_fully_numeric.py"
-    reason: "ImportError: fods_cells_per_sheet_avg, fods_is_fully_numeric not in fods.neutral_model."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r300_fods_new_analytics.py"
-    reason: "ImportError: analytics functions planned for Sprint R300 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r305_fods_ratio_formula.py"
-    reason: "ImportError: fods ratio/formula analytics functions not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r307_fods_total_numeric_cell_count_avg_string_per_sheet.py"
-    reason: "ImportError: fods_total_numeric_cell_count, fods_avg_string_per_sheet not implemented."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r314_fods_numeric_cell_percentage_avg_rows_per_sheet.py"
-    reason: "ImportError: fods_numeric_cell_percentage, fods_avg_rows_per_sheet not implemented."
-    condition: "always"
-    mitigation: "Implement missing functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r319_fods_new_analytics.py"
-    reason: "ImportError: FODS analytics functions planned for Sprint R319 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r337_fods_new_analytics.py"
-    reason: "ImportError: FODS analytics functions planned for Sprint R337 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r355_fods_new_analytics.py"
-    reason: "ImportError: FODS analytics functions planned for Sprint R355 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r373_fods_new_analytics.py"
-    reason: "ImportError: FODS analytics functions planned for Sprint R373 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  - test_id: "tests/python/fods/test_r374_fods_new_analytics.py"
-    reason: "ImportError: FODS analytics functions planned for Sprint R374 not yet implemented."
-    condition: "always"
-    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-
-  # -----------------------------------------------------------------------
-  # CSV collection errors (TC-HARD-004d, 2026-06-21)
-  # 32 test files import functions not yet implemented in csv_parser.py / csv_analytics.py.
-  # These are pre-existing gaps — NOT regressions from the TC-HARD-004b monolith healing.
-  # Root cause: analytic functions were planned and tests written before implementation.
-  # Missing functions include: csv_is_wider_than_tall, csv_has_blank_headers,
-  # csv_has_only_one_row, csv_max_row_field_count, csv_has_only_numeric_row,
-  # csv_avg_field_length, csv_field_count_variance, csv_nonempty_column_count,
-  # csv_avg_string_field_length, csv_numeric_field_ratio, csv_file_size_bytes, and ~20 others.
-  # -----------------------------------------------------------------------
-  - test_id: "tests/python/csv/test_r258_csv_string_cell_count_avg_fields_variance.py"
-    reason: "ImportError: csv analytics functions not implemented. Pre-existing gap (TC-HARD-004d)."
-    condition: "always"
-    mitigation: "Implement missing csv_ analytics functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r259_csv_is_wider_than_tall.py"
-    reason: "ImportError: csv_is_wider_than_tall not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement csv_is_wider_than_tall in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r260_csv_max_col_name_length_has_blank_headers.py"
-    reason: "ImportError: csv_has_blank_headers not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement csv_has_blank_headers in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r260_csv_sprint41_gaps.py"
-    reason: "ImportError: csv sprint41 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv sprint41 functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r261_csv_has_only_one_row.py"
-    reason: "ImportError: csv_has_only_one_row not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement csv_has_only_one_row in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r262_csv_sprint41_batch4.py"
-    reason: "ImportError: csv sprint41 batch4 functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r263_csv_sprint45_gaps.py"
-    reason: "ImportError: csv sprint45 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r264_csv_sprint46_gaps.py"
-    reason: "ImportError: csv sprint46 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r265_csv_sprint50_gaps.py"
-    reason: "ImportError: csv sprint50 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r266_csv_sprint51_gaps.py"
-    reason: "ImportError: csv sprint51 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r267_csv_sprint53_gaps.py"
-    reason: "ImportError: csv sprint53 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r268_csv_sprint61_gaps.py"
-    reason: "ImportError: csv sprint61 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r269_csv_sprint63_gaps.py"
-    reason: "ImportError: csv sprint63 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r270_csv_sprint65_gaps.py"
-    reason: "ImportError: csv sprint65 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r271_csv_sprint66_gaps.py"
-    reason: "ImportError: csv sprint66 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r272_csv_sprint67_gaps.py"
-    reason: "ImportError: csv sprint67 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r273_csv_sprint70_gaps.py"
-    reason: "ImportError: csv sprint70 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r274_csv_sprint76_gaps.py"
-    reason: "ImportError: csv sprint76 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r283_csv_first_field_length_is_wider_than_tall.py"
-    reason: "ImportError: csv_first_field_length not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement csv_first_field_length in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r290_csv_numeric_range_has_only_one_row.py"
-    reason: "ImportError: csv analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r290m_csv_analytics_deepening.py"
-    reason: "ImportError: csv analytics deepening functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r292_csv_field_analytics.py"
-    reason: "ImportError: csv field analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r297_csv_numeric_field_ratio_value_sum.py"
-    reason: "ImportError: csv_numeric_field_ratio, csv_value_sum not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r303_csv_row_analytics.py"
-    reason: "ImportError: csv row analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r305_csv_nonempty_column_count_avg_string_field_length.py"
-    reason: "ImportError: csv_nonempty_column_count, csv_avg_string_field_length not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r312_csv_maxfield_numrow_analytics.py"
-    reason: "ImportError: csv_max_row_field_count, csv_has_only_numeric_row not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r313_csv_numeric_field_percentage_fields_per_row.py"
-    reason: "ImportError: csv_numeric_field_percentage, csv_fields_per_row not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r315_csv_new_analytics.py"
-    reason: "ImportError: new csv analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r322_csv_avg_field_length_string_field_percentage.py"
-    reason: "ImportError: csv_avg_field_length, csv_string_field_percentage not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r328_csv_new_analytics.py"
-    reason: "ImportError: new csv analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r345_csv_new_analytics.py"
-    reason: "ImportError: new csv analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_r362_csv_new_analytics.py"
-    reason: "ImportError: new csv analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/csv/test_rnext_csv_gap_closure_foss.py"
-    reason: "ImportError: csv gap closure foss functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing csv functions in src/python/csv/csv_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "csv_missing_analytics_TC-HARD-004d"
-
-  # -----------------------------------------------------------------------
-  # DIF collection errors (TC-HARD-004d, 2026-06-21)
-  # 30 test files import functions not yet implemented in dif_parser.py / dif_analytics.py.
-  # These are pre-existing gaps — NOT regressions from the TC-HARD-004c monolith healing.
-  # Root cause: analytic functions were planned and tests written before implementation.
-  # Missing functions include: dif_cells_per_tuple, dif_has_mixed_types, dif_max_column_sum,
-  # dif_numeric_sum_per_cell, dif_nonempty_column_count, dif_numeric_cell_percentage,
-  # dif_file_size_bytes, dif_numeric_range, dif_avg_cell_text_length, and ~20 others.
-  # -----------------------------------------------------------------------
-  - test_id: "tests/python/dif/test_r259_dif_is_wider_min_max_row_vectors_col_fill.py"
-    reason: "ImportError: dif analytics functions not implemented. Pre-existing gap (TC-HARD-004d)."
-    condition: "always"
-    mitigation: "Implement missing dif_ analytics functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r260_dif_sprint41_gaps.py"
-    reason: "ImportError: dif sprint41 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r261_dif_row_width_variance.py"
-    reason: "ImportError: dif_row_width_variance not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_row_width_variance in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r262_dif_sprint41_batch3.py"
-    reason: "ImportError: dif sprint41 batch3 functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r263_dif_sprint45_gaps.py"
-    reason: "ImportError: dif sprint45 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r264_dif_sprint45_batch2.py"
-    reason: "ImportError: dif sprint45 batch2 functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r265_dif_sprint47_gaps.py"
-    reason: "ImportError: dif sprint47 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r266_dif_sprint48_gaps.py"
-    reason: "ImportError: dif sprint48 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r268_dif_sprint52_gaps.py"
-    reason: "ImportError: dif sprint52 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r269_dif_sprint58_gaps.py"
-    reason: "ImportError: dif sprint58 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r270_dif_sprint63_gaps.py"
-    reason: "ImportError: dif sprint63 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r271_dif_sprint65_gaps.py"
-    reason: "ImportError: dif sprint65 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r272_dif_sprint74_gaps.py"
-    reason: "ImportError: dif sprint74 gap functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r281_dif_cells_per_tuple_is_wider_than_tall.py"
-    reason: "ImportError: dif_cells_per_tuple not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_cells_per_tuple in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r286_dif_gap_closure.py"
-    reason: "ImportError: dif gap closure functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r290_dif_has_mixed_types_nonempty_cell_count.py"
-    reason: "ImportError: dif_has_mixed_types not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_has_mixed_types in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r290f_dif_analytics_deepening.py"
-    reason: "ImportError: dif analytics deepening functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r290m_dif_analytics_deepening.py"
-    reason: "ImportError: dif analytics deepening functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r293_dif_field_analytics.py"
-    reason: "ImportError: dif field analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r298_dif_new_analytics.py"
-    reason: "ImportError: new dif analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r298_dif_numeric_range_value_sum.py"
-    reason: "ImportError: dif_numeric_range not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_numeric_range in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r308_dif_nonempty_column_count_avg_numeric_per_row.py"
-    reason: "ImportError: dif_nonempty_column_count not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_nonempty_column_count in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r308_dif_sum_string_analytics.py"
-    reason: "ImportError: dif_numeric_sum_per_cell, dif_has_string_rows not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r313_dif_new_analytics.py"
-    reason: "ImportError: new dif analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r313_dif_numeric_cell_percentage_cells_per_row.py"
-    reason: "ImportError: dif_numeric_cell_percentage not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement dif_numeric_cell_percentage in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r319_dif_maxnumericint_colexceedsnumeric_analytics.py"
-    reason: "ImportError: dif_max_numeric_int_value, dif_col_exceeds_numeric not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r322_dif_string_cell_percentage_avg_cells_per_tuple.py"
-    reason: "ImportError: dif_string_cell_percentage, dif_avg_cells_per_tuple not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r326_dif_new_analytics.py"
-    reason: "ImportError: new dif analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r343_dif_new_analytics.py"
-    reason: "ImportError: new dif analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  - test_id: "tests/python/dif/test_r361_dif_new_analytics.py"
-    reason: "ImportError: new dif analytics functions not implemented. Pre-existing gap."
-    condition: "always"
-    mitigation: "Implement missing dif functions in src/python/dif/dif_analytics.py"
-    layer: 1
-    first_documented: "2026-06-21"
-    category: "missing_implementation"
-    group: "dif_missing_analytics_TC-HARD-004d"
-
-  # -----------------------------------------------------------------------
-  # Gnumeric collection errors (2026-06-25)
-  # 14 test files import analytics functions not yet implemented in gnumeric_codec.py.
-  # These are pre-existing gaps from suspended product deepening rotation.
-  # Root cause: tests were written before the rotation was suspended (keen-dancing-hopper).
-  # Missing functions: gnumeric_sheet_name_lengths, gnumeric_longest_row_index,
-  # gnumeric_sheet_summary, gnumeric_numeric_cell_count, gnumeric_string_cell_count,
-  # gnumeric_row_count_file, gnumeric_column_count_file, gnumeric_cell_count_file,
-  # gnumeric_min_column_count, gnumeric_avg_column_count, gnumeric_cell_to_row_ratio,
-  # gnumeric_total_string_length, gnumeric_row_count_variance, gnumeric_empty_cell_count,
-  # gnumeric_nonempty_cell_count_file, gnumeric_total_cell_count.
-  # -----------------------------------------------------------------------
-  - test_id: "tests/python/gnumeric/test_gnumeric_gap_closure_foss.py"
-    reason: "ImportError: gnumeric_sheet_name_lengths, gnumeric_longest_row_index not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r181_gnumeric_sheet_summary.py"
-    reason: "ImportError: gnumeric_sheet_summary not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_sheet_summary in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r185_gnumeric_numeric_cell_count.py"
-    reason: "ImportError: gnumeric_numeric_cell_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_numeric_cell_count in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r185_gnumeric_probe_deepening.py"
-    reason: "ImportError: gnumeric_row_count_file, gnumeric_numeric_cell_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r203_gnumeric_string_cell_count.py"
-    reason: "ImportError: gnumeric_string_cell_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_string_cell_count in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r210_gnumeric_row_count_file.py"
-    reason: "ImportError: gnumeric_row_count_file not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_row_count_file in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r217_gnumeric_column_count_file.py"
-    reason: "ImportError: gnumeric_column_count_file not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_column_count_file in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r221_gnumeric_cell_count_file.py"
-    reason: "ImportError: gnumeric_cell_count_file not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_cell_count_file in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r265_gnumeric_min_col_avg_col.py"
-    reason: "ImportError: gnumeric_min_column_count, gnumeric_avg_column_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r279_gnumeric_cell_to_row_ratio_total_string_length.py"
-    reason: "ImportError: gnumeric_cell_to_row_ratio, gnumeric_total_string_length not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_r283_gnumeric_analytics_gaps.py"
-    reason: "ImportError: gnumeric_row_count_variance, gnumeric_sheet_name_lengths not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_rnext_gnumeric_empty_cell_count.py"
-    reason: "ImportError: gnumeric_empty_cell_count, gnumeric_numeric_cell_count, gnumeric_string_cell_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement missing gnumeric_ analytics functions in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_rnext_gnumeric_nonempty_cell_count_file.py"
-    reason: "ImportError: gnumeric_nonempty_cell_count_file not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_nonempty_cell_count_file in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  - test_id: "tests/python/gnumeric/test_rnext_gnumeric_total_cell_count.py"
-    reason: "ImportError: gnumeric_total_cell_count not implemented. Pre-existing gap (suspended rotation)."
-    condition: "always"
-    mitigation: "Implement gnumeric_total_cell_count in src/python/gnumeric/"
-    layer: 1
-    first_documented: "2026-06-25"
-    category: "missing_implementation"
-    group: "gnumeric_missing_analytics_suspended_rotation"
-
-  # TC-V4-L3-LEDGER-001 entries (added 2026-06-22, zesty-spinning-platypus v4)
-  # Discovered in L3 direct-path run: 2011 passed, 2 failed, 16 skipped in 79s
-
-  - test_id: "tests/evidence/test_format_completion_matrix.py::TestMatrixCompleteness::test_every_registry_format_has_matrix_entry"
-    reason: "Format completion matrix does not include formats added in recent sprints. Matrix is maintained manually and falls behind as new format specs are added."
-    condition: "always"
-    mitigation: "Update format-completion-matrix.yaml when new formats reach production status."
-    layer: 3
-    first_documented: "2026-06-22"
-    category: "maintenance_lag"
-    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
-
-  - test_id: "tests/evidence/test_python_package_matrix.py::test_source_modules_importable"
-    reason: "ImportError during import check — caused by pre-existing dirty state: fods/fods/ nested package deletion (git status shows D src/python/fods/fods/__init__.py etc). The nested package structure is being cleaned up; imports fail during transition."
-    condition: "dirty_working_tree_with_fods_nested_deletion"
-    mitigation: "Commit or stash the fods/fods/ deletion changes before running this test."
-    layer: 3
-    first_documented: "2026-06-22"
-    category: "environment_dependent"
-    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
-
-  # Network/LLM-calling tests in tests/supervisor/ that cannot run in interactive context
-  - test_id: "tests/supervisor/acceleration/test_r108_stream_prompt_autonomy.py"
-    reason: "Makes real LLM API calls via gateway_chat/litellm. Times out in interactive context without live API credentials."
-    condition: "no_llm_credentials_or_network"
-    mitigation: "Run in CI with LLM credentials, or mock gateway_chat. Tests are informational in local dev."
-    layer: 3
-    first_documented: "2026-06-22"
-    category: "network_dependent"
-    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
-
-  - test_id: "tests/supervisor/test_autonomous_cycle_e2e.py"
-    reason: "End-to-end cycle test calls generate_prompt which calls gateway_chat/litellm. Times out without live LLM API."
-    condition: "no_llm_credentials_or_network"
-    mitigation: "Run in CI with LLM credentials. Local dev use --ignore on this file."
-    layer: 3
-    first_documented: "2026-06-22"
-    category: "network_dependent"
-    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
-
-# Gap tests (collection errors, not test failures)
-# These are NOT failures — they are ImportErrors at collection time for
-# unimplemented functions. They are tracked separately.
+- test_id: tests/evidence/test_auto_proof_bundle.py
+  reason: Requires clean git working tree. Fails on dirty working tree (uncommitted
+    changes).
+  condition: dirty_working_tree
+  mitigation: Run pytest with --no-state flag, or commit/stash all changes before
+    running L3.
+  layer: 3
+  first_documented: pre-sprint (documented in docs/code-quality/test-layering.md)
+  category: environment_dependent
+- test_id: tests/supervisor/test_r113_ai_learning_loop.py
+  reason: Makes real SSL/network calls; may timeout without internet connectivity
+    or with slow network.
+  condition: network_unavailable_or_slow
+  mitigation: Ensure stable internet connectivity, or run with --timeout=60 to bound
+    the test.
+  layer: 3
+  first_documented: '2026-06-18'
+  category: network_dependent
+- test_id: tests/python/tsv/test_rnext_tsv_max_field_length.py::TestTsvMaxFieldLength::test_header_is_longest
+  reason: Pre-existing TSV max_field_length boundary test failure. test_header_is_longest
+    asserts a boundary condition not yet satisfied by the current TSV implementation.
+    Not introduced by the layering sprint.
+  condition: always
+  mitigation: No mitigation required — pre-existing gap test. Will pass once TSV max_field_length
+    is fully implemented.
+  layer: 1
+  first_documented: 2026-06-18 (observed in Pilot A L1-TSV run; pilot-a-l1-tsv.json)
+  category: pre_existing_gap_test
+- test_id: tests/python/csv/test_r258_csv_string_cell_count_avg_fields_variance.py
+  reason: 'ImportError: csv analytics functions not implemented. Pre-existing gap
+    (TC-HARD-004d).'
+  condition: always
+  mitigation: Implement missing csv_ analytics functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r259_csv_is_wider_than_tall.py
+  reason: 'ImportError: csv_is_wider_than_tall not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement csv_is_wider_than_tall in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r260_csv_max_col_name_length_has_blank_headers.py
+  reason: 'ImportError: csv_has_blank_headers not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement csv_has_blank_headers in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r260_csv_sprint41_gaps.py
+  reason: 'ImportError: csv sprint41 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv sprint41 functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r261_csv_has_only_one_row.py
+  reason: 'ImportError: csv_has_only_one_row not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement csv_has_only_one_row in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r262_csv_sprint41_batch4.py
+  reason: 'ImportError: csv sprint41 batch4 functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r263_csv_sprint45_gaps.py
+  reason: 'ImportError: csv sprint45 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r264_csv_sprint46_gaps.py
+  reason: 'ImportError: csv sprint46 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r265_csv_sprint50_gaps.py
+  reason: 'ImportError: csv sprint50 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r266_csv_sprint51_gaps.py
+  reason: 'ImportError: csv sprint51 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r267_csv_sprint53_gaps.py
+  reason: 'ImportError: csv sprint53 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r268_csv_sprint61_gaps.py
+  reason: 'ImportError: csv sprint61 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r269_csv_sprint63_gaps.py
+  reason: 'ImportError: csv sprint63 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r270_csv_sprint65_gaps.py
+  reason: 'ImportError: csv sprint65 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r271_csv_sprint66_gaps.py
+  reason: 'ImportError: csv sprint66 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r272_csv_sprint67_gaps.py
+  reason: 'ImportError: csv sprint67 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r273_csv_sprint70_gaps.py
+  reason: 'ImportError: csv sprint70 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r274_csv_sprint76_gaps.py
+  reason: 'ImportError: csv sprint76 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r283_csv_first_field_length_is_wider_than_tall.py
+  reason: 'ImportError: csv_first_field_length not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement csv_first_field_length in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r290_csv_numeric_range_has_only_one_row.py
+  reason: 'ImportError: csv analytics functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r290m_csv_analytics_deepening.py
+  reason: 'ImportError: csv analytics deepening functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r292_csv_field_analytics.py
+  reason: 'ImportError: csv field analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r297_csv_numeric_field_ratio_value_sum.py
+  reason: 'ImportError: csv_numeric_field_ratio, csv_value_sum not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r303_csv_row_analytics.py
+  reason: 'ImportError: csv row analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r305_csv_nonempty_column_count_avg_string_field_length.py
+  reason: 'ImportError: csv_nonempty_column_count, csv_avg_string_field_length not
+    implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r312_csv_maxfield_numrow_analytics.py
+  reason: 'ImportError: csv_max_row_field_count, csv_has_only_numeric_row not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r313_csv_numeric_field_percentage_fields_per_row.py
+  reason: 'ImportError: csv_numeric_field_percentage, csv_fields_per_row not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r315_csv_new_analytics.py
+  reason: 'ImportError: new csv analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r322_csv_avg_field_length_string_field_percentage.py
+  reason: 'ImportError: csv_avg_field_length, csv_string_field_percentage not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r328_csv_new_analytics.py
+  reason: 'ImportError: new csv analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r345_csv_new_analytics.py
+  reason: 'ImportError: new csv analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_r362_csv_new_analytics.py
+  reason: 'ImportError: new csv analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/csv/test_rnext_csv_gap_closure_foss.py
+  reason: 'ImportError: csv gap closure foss functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing csv functions in src/python/csv/csv_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: csv_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r259_dif_is_wider_min_max_row_vectors_col_fill.py
+  reason: 'ImportError: dif analytics functions not implemented. Pre-existing gap
+    (TC-HARD-004d).'
+  condition: always
+  mitigation: Implement missing dif_ analytics functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r260_dif_sprint41_gaps.py
+  reason: 'ImportError: dif sprint41 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r261_dif_row_width_variance.py
+  reason: 'ImportError: dif_row_width_variance not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement dif_row_width_variance in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r262_dif_sprint41_batch3.py
+  reason: 'ImportError: dif sprint41 batch3 functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r263_dif_sprint45_gaps.py
+  reason: 'ImportError: dif sprint45 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r264_dif_sprint45_batch2.py
+  reason: 'ImportError: dif sprint45 batch2 functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r265_dif_sprint47_gaps.py
+  reason: 'ImportError: dif sprint47 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r266_dif_sprint48_gaps.py
+  reason: 'ImportError: dif sprint48 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r268_dif_sprint52_gaps.py
+  reason: 'ImportError: dif sprint52 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r269_dif_sprint58_gaps.py
+  reason: 'ImportError: dif sprint58 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r270_dif_sprint63_gaps.py
+  reason: 'ImportError: dif sprint63 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r271_dif_sprint65_gaps.py
+  reason: 'ImportError: dif sprint65 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r272_dif_sprint74_gaps.py
+  reason: 'ImportError: dif sprint74 gap functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r281_dif_cells_per_tuple_is_wider_than_tall.py
+  reason: 'ImportError: dif_cells_per_tuple not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement dif_cells_per_tuple in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r286_dif_gap_closure.py
+  reason: 'ImportError: dif gap closure functions not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r290_dif_has_mixed_types_nonempty_cell_count.py
+  reason: 'ImportError: dif_has_mixed_types not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement dif_has_mixed_types in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r290f_dif_analytics_deepening.py
+  reason: 'ImportError: dif analytics deepening functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r290m_dif_analytics_deepening.py
+  reason: 'ImportError: dif analytics deepening functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r293_dif_field_analytics.py
+  reason: 'ImportError: dif field analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r298_dif_new_analytics.py
+  reason: 'ImportError: new dif analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r298_dif_numeric_range_value_sum.py
+  reason: 'ImportError: dif_numeric_range not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement dif_numeric_range in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r308_dif_nonempty_column_count_avg_numeric_per_row.py
+  reason: 'ImportError: dif_nonempty_column_count not implemented. Pre-existing gap.'
+  condition: always
+  mitigation: Implement dif_nonempty_column_count in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r308_dif_sum_string_analytics.py
+  reason: 'ImportError: dif_numeric_sum_per_cell, dif_has_string_rows not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r313_dif_new_analytics.py
+  reason: 'ImportError: new dif analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r313_dif_numeric_cell_percentage_cells_per_row.py
+  reason: 'ImportError: dif_numeric_cell_percentage not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement dif_numeric_cell_percentage in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r319_dif_maxnumericint_colexceedsnumeric_analytics.py
+  reason: 'ImportError: dif_max_numeric_int_value, dif_col_exceeds_numeric not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r322_dif_string_cell_percentage_avg_cells_per_tuple.py
+  reason: 'ImportError: dif_string_cell_percentage, dif_avg_cells_per_tuple not implemented.
+    Pre-existing gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r326_dif_new_analytics.py
+  reason: 'ImportError: new dif analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r343_dif_new_analytics.py
+  reason: 'ImportError: new dif analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/dif/test_r361_dif_new_analytics.py
+  reason: 'ImportError: new dif analytics functions not implemented. Pre-existing
+    gap.'
+  condition: always
+  mitigation: Implement missing dif functions in src/python/dif/dif_analytics.py
+  layer: 1
+  first_documented: '2026-06-21'
+  category: missing_implementation
+  group: dif_missing_analytics_TC-HARD-004d
+- test_id: tests/python/gnumeric/test_gnumeric_gap_closure_foss.py
+  reason: 'ImportError: gnumeric_sheet_name_lengths, gnumeric_longest_row_index not
+    implemented. Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r181_gnumeric_sheet_summary.py
+  reason: 'ImportError: gnumeric_sheet_summary not implemented. Pre-existing gap (suspended
+    rotation).'
+  condition: always
+  mitigation: Implement gnumeric_sheet_summary in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r185_gnumeric_numeric_cell_count.py
+  reason: 'ImportError: gnumeric_numeric_cell_count not implemented. Pre-existing
+    gap (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_numeric_cell_count in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r185_gnumeric_probe_deepening.py
+  reason: 'ImportError: gnumeric_row_count_file, gnumeric_numeric_cell_count not implemented.
+    Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r203_gnumeric_string_cell_count.py
+  reason: 'ImportError: gnumeric_string_cell_count not implemented. Pre-existing gap
+    (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_string_cell_count in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r210_gnumeric_row_count_file.py
+  reason: 'ImportError: gnumeric_row_count_file not implemented. Pre-existing gap
+    (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_row_count_file in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r217_gnumeric_column_count_file.py
+  reason: 'ImportError: gnumeric_column_count_file not implemented. Pre-existing gap
+    (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_column_count_file in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r221_gnumeric_cell_count_file.py
+  reason: 'ImportError: gnumeric_cell_count_file not implemented. Pre-existing gap
+    (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_cell_count_file in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r265_gnumeric_min_col_avg_col.py
+  reason: 'ImportError: gnumeric_min_column_count, gnumeric_avg_column_count not implemented.
+    Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r279_gnumeric_cell_to_row_ratio_total_string_length.py
+  reason: 'ImportError: gnumeric_cell_to_row_ratio, gnumeric_total_string_length not
+    implemented. Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_r283_gnumeric_analytics_gaps.py
+  reason: 'ImportError: gnumeric_row_count_variance, gnumeric_sheet_name_lengths not
+    implemented. Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_rnext_gnumeric_empty_cell_count.py
+  reason: 'ImportError: gnumeric_empty_cell_count, gnumeric_numeric_cell_count, gnumeric_string_cell_count
+    not implemented. Pre-existing gap (suspended rotation).'
+  condition: always
+  mitigation: Implement missing gnumeric_ analytics functions in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_rnext_gnumeric_nonempty_cell_count_file.py
+  reason: 'ImportError: gnumeric_nonempty_cell_count_file not implemented. Pre-existing
+    gap (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_nonempty_cell_count_file in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/python/gnumeric/test_rnext_gnumeric_total_cell_count.py
+  reason: 'ImportError: gnumeric_total_cell_count not implemented. Pre-existing gap
+    (suspended rotation).'
+  condition: always
+  mitigation: Implement gnumeric_total_cell_count in src/python/gnumeric/
+  layer: 1
+  first_documented: '2026-06-25'
+  category: missing_implementation
+  group: gnumeric_missing_analytics_suspended_rotation
+- test_id: tests/evidence/test_format_completion_matrix.py::TestMatrixCompleteness::test_every_registry_format_has_matrix_entry
+  reason: Format completion matrix does not include formats added in recent sprints.
+    Matrix is maintained manually and falls behind as new format specs are added.
+  condition: always
+  mitigation: Update format-completion-matrix.yaml when new formats reach production
+    status.
+  layer: 3
+  first_documented: '2026-06-22'
+  category: maintenance_lag
+  sprint: format-factory-fullsuite-layering-20260618-001 (v4 ledger update)
+- test_id: tests/evidence/test_python_package_matrix.py::test_source_modules_importable
+  reason: 'ImportError during import check — caused by pre-existing dirty state: fods/fods/
+    nested package deletion (git status shows D src/python/fods/fods/__init__.py etc).
+    The nested package structure is being cleaned up; imports fail during transition.'
+  condition: dirty_working_tree_with_fods_nested_deletion
+  mitigation: Commit or stash the fods/fods/ deletion changes before running this
+    test.
+  layer: 3
+  first_documented: '2026-06-22'
+  category: environment_dependent
+  sprint: format-factory-fullsuite-layering-20260618-001 (v4 ledger update)
+- test_id: tests/supervisor/acceleration/test_r108_stream_prompt_autonomy.py
+  reason: Makes real LLM API calls via gateway_chat/litellm. Times out in interactive
+    context without live API credentials.
+  condition: no_llm_credentials_or_network
+  mitigation: Run in CI with LLM credentials, or mock gateway_chat. Tests are informational
+    in local dev.
+  layer: 3
+  first_documented: '2026-06-22'
+  category: network_dependent
+  sprint: format-factory-fullsuite-layering-20260618-001 (v4 ledger update)
+- test_id: tests/supervisor/test_autonomous_cycle_e2e.py
+  reason: End-to-end cycle test calls generate_prompt which calls gateway_chat/litellm.
+    Times out without live LLM API.
+  condition: no_llm_credentials_or_network
+  mitigation: Run in CI with LLM credentials. Local dev use --ignore on this file.
+  layer: 3
+  first_documented: '2026-06-22'
+  category: network_dependent
+  sprint: format-factory-fullsuite-layering-20260618-001 (v4 ledger update)
 gap_test_notes:
-  description: >
-    Every format directory in tests/python/ contains gap tests — tests for functions
-    that are not yet implemented in the source. These cause ImportError at collection
-    time (ERROR, not FAIL). After HEAL-003 adds --continue-on-collection-errors,
+  description: 'Every format directory in tests/python/ contains gap tests — tests
+    for functions that are not yet implemented in the source. These cause ImportError
+    at collection time (ERROR, not FAIL). After HEAL-003 adds --continue-on-collection-errors,
     remaining tests in the directory still execute.
-  affected_formats:
-    - fods  # 32 collection errors (catalogued in known_failures above, 2026-06-21)
-    - csv   # 32 collection errors (catalogued in known_failures above, TC-HARD-004d 2026-06-21)
-    - dif   # 30 collection errors (catalogued in known_failures above, TC-HARD-004d 2026-06-21)
-    - gnumeric  # 14 collection errors (catalogued in known_failures above, 2026-06-25)
-    - tsv   # ~31 collection errors
-    - (all other formats have similar patterns)
-  mitigation: "--continue-on-collection-errors flag (now default in test_runner.py after HEAL-003)"
-  not_failures: true
 
-# -----------------------------------------------------------------------
-# Supervisor grader failures — environment-dependent (added 2026-06-23)
-# -----------------------------------------------------------------------
+    '
+  affected_formats:
+  - fods
+  - csv
+  - dif
+  - gnumeric
+  - tsv
+  - (all other formats have similar patterns)
+  mitigation: --continue-on-collection-errors flag (now default in test_runner.py
+    after HEAL-003)
+  not_failures: true
 supervisor_grader_failures:
-  # TC-HARDEN-004: test_fallback_never_downgrades pre-existing failure
-  # Confirmed pre-existing via git stash test against commit f92d73c4
-  # (one commit before TC-GRADE-001). Not introduced by any 2026-06-23 sprint.
-  - test_id: "tests/supervisor/test_llm_semantic_verification.py::TestSemanticVerifyItem::test_fallback_never_downgrades"
-    reason: >
-      Test asserts result['adequate'] is False when the LLM semantic_verify_item
-      is called with a declaration that should be downgraded by the LLM fallback.
-      However, when GPT_OSS_ENDPOINT / GPT_OSS_API_KEY / PROFESSIONALIZE_* are NOT
-      set, _get_sv_gateway() returns (None, None) and the function prints
-      '[LLM] No gateway available for semantic_verify_item, skipping semantic verification'
-      and returns adequate=True (from intermediate verify or path-only fallback).
-      Test assertion adequate=False fails because the semantic downgrade path is
-      not reachable without a real or mocked LLM gateway.
-    condition: "llm_gateway_unavailable_in_test_environment"
-    mitigation: >
-      To fix properly: mock _get_sv_gateway() to return a (gateway, config) pair
-      in the test so the downgrade assertion is reachable. Alternatively, update
-      test assertion to match actual behavior when gateway is absent.
-      Do NOT disable this test — it documents a real gap in LLM-free downgrade coverage.
-    layer: 2
-    first_documented: "2026-06-23 (confirmed pre-existing against f92d73c4)"
-    category: "environment_dependent"
-    blocks_regression: false
-    sprint_confirmed: "reactive-exploring-ullman (TC-HARDEN-004)"
+- test_id: tests/supervisor/test_llm_semantic_verification.py::TestSemanticVerifyItem::test_fallback_never_downgrades
+  reason: 'Test asserts result[''adequate''] is False when the LLM semantic_verify_item
+    is called with a declaration that should be downgraded by the LLM fallback. However,
+    when GPT_OSS_ENDPOINT / GPT_OSS_API_KEY / PROFESSIONALIZE_* are NOT set, _get_sv_gateway()
+    returns (None, None) and the function prints ''[LLM] No gateway available for
+    semantic_verify_item, skipping semantic verification'' and returns adequate=True
+    (from intermediate verify or path-only fallback). Test assertion adequate=False
+    fails because the semantic downgrade path is not reachable without a real or mocked
+    LLM gateway.
+
+    '
+  condition: llm_gateway_unavailable_in_test_environment
+  mitigation: 'To fix properly: mock _get_sv_gateway() to return a (gateway, config)
+    pair in the test so the downgrade assertion is reachable. Alternatively, update
+    test assertion to match actual behavior when gateway is absent. Do NOT disable
+    this test — it documents a real gap in LLM-free downgrade coverage.
+
+    '
+  layer: 2
+  first_documented: 2026-06-23 (confirmed pre-existing against f92d73c4)
+  category: environment_dependent
+  blocks_regression: false
+  sprint_confirmed: reactive-exploring-ullman (TC-HARDEN-004)

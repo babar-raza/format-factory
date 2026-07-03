@@ -1,0 +1,19 @@
+{
+  "format": "csv",
+  "test_file": "tests/python/csv_format/test_csv_property.py",
+  "framework": "hypothesis",
+  "hypothesis_version": "6.155.7",
+  "run_date": "2026-07-03",
+  "notes": "Uses newline='' when writing temp CSV files to avoid Windows CRLF double-encoding.",
+  "tests": [
+    {"name": "test_parse_csv_never_raises", "status": "PASS", "max_examples": 40},
+    {"name": "test_row_count_matches_input_row_count", "status": "PASS", "max_examples": 40},
+    {"name": "test_format_id_is_always_csv", "status": "PASS", "max_examples": 20},
+    {"name": "test_column_count_within_bounds", "status": "PASS", "max_examples": 30},
+    {"name": "test_parsing_is_deterministic", "status": "PASS", "max_examples": 20}
+  ],
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "verdict": "PASS"
+}

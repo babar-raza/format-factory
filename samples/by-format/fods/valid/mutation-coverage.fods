@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  mutation-coverage.fods
+  format-factory / samples/by-format/fods/
+
+  Sample ID: fods-mutation-coverage-01
+  Category: testing
+  Gate: 3
+  License: Apache-2.0
+  Provenance: project-owned synthetic (Apache-2.0, no external rights)
+  Generated: TC-MUT-001 (2026-07-03)
+
+  Purpose: Comprehensive sample for mutation-hardening tests (TC-MUT-001).
+  Covers the 15 surviving mutation targets in parser.py:
+    L201 (empty sheet row_count), L307 (col_idx after draw:frame),
+    L313 (is_covered), L327 (col_repeat default), L337 (covered cell warning),
+    L349/L350 (span defaults), L378 (col_idx in repeat loop),
+    L410 (bool true), L411 (bool false), L416 (date value), L421 (void value),
+    L429 (unknown value type text fallback), L457 (text:span collection)
+-->
+<office:document
+    xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    office:mimetype="application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+    office:version="1.3">
+  <office:body>
+    <office:spreadsheet>
+      <!--
+        Sheet1 "ValueTypes": row of diverse value types and structure.
+        Tests: L410, L411, L416, L421, L429, L457, L349, L350, L327, L378
+      -->
+      <table:table table:name="ValueTypes">
+        <table:table-row>
+          <!-- index=0: boolean true (L410: value must be Python True) -->
+          <table:table-cell office:value-type="boolean" office:boolean-value="true">
+            <text:p>TRUE</text:p>
+          </table:table-cell>
+          <!-- index=1: boolean false (L411: value must be Python False) -->
+          <table:table-cell office:value-type="boolean" office:boolean-value="false">
+            <text:p>FALSE</text:p>
+          </table:table-cell>
+          <!-- index=2: date value (L416: value must not be None) -->
+          <table:table-cell office:value-type="date" office:date-value="2026-07-03">
+            <text:p>2026-07-03</text:p>
+          </table:table-cell>
+          <!-- index=3: void cell (L421: value must be None) -->
+          <table:table-cell office:value-type="void"/>
+          <!-- index=4: string with text:span (L457: span text must be collected) -->
+          <table:table-cell office:value-type="string">
+            <text:p><text:span>span-text</text:span></text:p>
+          </table:table-cell>
+          <!-- index=5: unknown value type with text fallback (L429) -->
+          <table:table-cell office:value-type="custom-unknown">
+            <text:p>fallback-text</text:p>
+          </table:table-cell>
+          <!-- index=6: normal string, no col_span/row_span attrs (L349, L350, L327, L378) -->
+          <table:table-cell office:value-type="string">
+            <text:p>normal</text:p>
+          </table:table-cell>
+        </table:table-row>
+        <!--
+          Row with a covered cell (L313, L337)
+          First cell spans 2 columns, second is covered.
+        -->
+        <table:table-row>
+          <!-- index=0: main cell -->
+          <table:table-cell office:value-type="string"
+              table:number-columns-spanned="2">
+            <text:p>main</text:p>
+          </table:table-cell>
+          <!-- index=1: covered cell (is_covered must be True) -->
+          <table:covered-table-cell/>
+        </table:table-row>
+        <!--
+          Row with draw:frame as direct row child (L307)
+          draw:frame increments col_idx by 1, then the following cell is at index=1.
+        -->
+        <table:table-row>
+          <draw:frame/>
+          <!-- index=1 (after draw:frame consumed index=0) -->
+          <table:table-cell office:value-type="string">
+            <text:p>after-frame</text:p>
+          </table:table-cell>
+        </table:table-row>
+      </table:table>
+      <!--
+        Sheet2 "EmptySheet": no rows (L201: initial row_count must be 0, not -1)
+      -->
+      <table:table table:name="EmptySheet">
+      </table:table>
+    </office:spreadsheet>
+  </office:body>
+</office:document>

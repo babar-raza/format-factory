@@ -1,0 +1,19 @@
+{
+  "format": "fods",
+  "test_file": "tests/python/fods/test_fods_property.py",
+  "framework": "hypothesis",
+  "hypothesis_version": "6.155.7",
+  "run_date": "2026-07-03",
+  "tests": [
+    {"name": "test_parse_never_raises_on_valid_input", "status": "PASS", "max_examples": 30},
+    {"name": "test_sheet_count_equals_sheets_length", "status": "PASS", "max_examples": 30},
+    {"name": "test_row_count_equals_rows_length_per_sheet", "status": "PASS", "max_examples": 30},
+    {"name": "test_format_id_is_constant", "status": "PASS", "max_examples": 20},
+    {"name": "test_cell_index_matches_position", "status": "PASS", "max_examples": 30},
+    {"name": "test_sheet_count_matches_generated_count", "status": "PASS", "max_examples": 10}
+  ],
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "verdict": "PASS"
+}

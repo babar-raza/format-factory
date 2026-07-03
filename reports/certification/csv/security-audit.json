@@ -1,0 +1,23 @@
+{
+  "mission_id": "CERT-EXHAUST-HEAL-20260703",
+  "format": "csv",
+  "status": "PASS",
+  "generated": "2026-07-02T20:28:08.864011+00:00",
+  "parser_library": "internal RFC4180 parser (csv_parser.py)",
+  "security_controls": {
+    "file_size_limit": "64 MiB (MAX_FILE_SIZE = 67108864)",
+    "row_count_limit": "1,000,000 rows (MAX_ROWS = 1000000)",
+    "exception_on_violation": "CsvSizeError raised; not silently truncated",
+    "delimiter_injection": "N/A \u2014 CSV has no query execution layer; delimiter is parsed, not executed",
+    "xxe_injection": "N/A \u2014 CSV is plain text, no XML entity expansion possible"
+  },
+  "test_evidence": [
+    "CsvSizeError raised for files > 64 MiB (verified by grep in csv_parser.py line 173)",
+    "CsvSizeError raised for row count > 1,000,000 (verified at csv_parser.py line 190)"
+  ],
+  "vulnerabilities_found": 0,
+  "xxe_risk": false,
+  "entity_expansion_risk": false,
+  "decompression_bomb_risk": false,
+  "notes": "CSV is a plain-text format with no embedded scripting, XML, or archive structures. The only relevant attack vectors are resource exhaustion (oversized files, too many rows). Both are guarded by MAX_FILE_SIZE=64MiB and MAX_ROWS=1M with CsvSizeError exceptions."
+}
