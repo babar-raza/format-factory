@@ -18,7 +18,6 @@ public sealed partial class FodsDocument
     // =========================================================================
 
     private readonly Dictionary<string, Dictionary<int, double>> _columnWidths = new();
-    private readonly Dictionary<string, string> _namedRanges = new();
     private readonly Dictionary<string, (string ColName, string Value)> _activeFilters = new();
     private static readonly XNamespace NsFfExt =
         XNamespace.Get("urn:format-factory:fods-extensions");
@@ -28,15 +27,12 @@ public sealed partial class FodsDocument
         XNamespace.Get("urn:oasis:names:tc:opendocument:xmlns:config:1.0");
     private static readonly XNamespace NsCustom =
         XNamespace.Get("urn:format-factory:cell-style");
-    private readonly Dictionary<(string sheet, int row), double> _rowHeights = new();
     private string? _activeSheet;
     private readonly Dictionary<(string sheet, int row, int col), string> _cellComments = new();
     private readonly Dictionary<string, int> _sheetFreezeRows = new();
     private readonly Dictionary<string, int> _sheetFreezeColumns = new();
     private readonly Dictionary<string, int> _sheetZoomLevel = new();
     private readonly Dictionary<string, string> _sheetPrintArea = new();
-    private readonly Dictionary<string, string> _sheetProtectionPasswords = new();
-    private readonly Dictionary<string, string> _sheetVisibility = new();
     private readonly Dictionary<string, bool> _sheetRightToLeft = new();
     private readonly Dictionary<string, bool> _sheetShowGrid = new();
     private readonly Dictionary<string, bool> _sheetShowHeaders = new();
@@ -52,6 +48,8 @@ public sealed partial class FodsDocument
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellUnderline = new();
     private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellStrikethrough = new();
     private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellProtection = new();
+    private readonly Dictionary<(string sheet, int row), double> _rowHeights = new();
+    private readonly Dictionary<string, string> _namedRanges = new();
 
     // =========================================================================
     // Restore filter state from XML
