@@ -85,14 +85,14 @@ public class CsvR271GetColumnModeAndColumnRangeDeepTests : IDisposable
         var path = TempFile("mode_save.csv");
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
-        Assert.Equal(before, loaded.GetColumnMode("score"), precision: 6);
+        Assert.Equal(before, loaded.GetColumnMode("score"));
     }
 
     [Fact]
     public void GetColumnMode_Uniform_EqualsSingleValue()
     {
         var doc = CsvDocument.LoadFile(CreateUniformCsv());
-        Assert.Equal(75.0, doc.GetColumnMode("value"), precision: 3);
+        Assert.Equal("75", doc.GetColumnMode("value"));
     }
 
     // -------------------------------------------------------------------------
@@ -216,7 +216,7 @@ public class CsvR271GetColumnModeAndColumnRangeDeepTests : IDisposable
         Assert.True(maxPrice < 5000000); // sanity cap
 
         // Mode should be within the range
-        Assert.True(priceMode >= minPrice && priceMode <= maxPrice);
+        Assert.True(double.TryParse(priceMode, out var pmVal) && pmVal >= minPrice && pmVal <= maxPrice);
 
         // SaveToFile
         var outPath = TempFile("uk_hpi_out.csv");
@@ -227,7 +227,7 @@ public class CsvR271GetColumnModeAndColumnRangeDeepTests : IDisposable
         // LoadFile and verify
         var loaded = CsvDocument.LoadFile(outPath);
         Assert.Equal(doc.RowCount, loaded.RowCount);
-        Assert.Equal(priceMode, loaded.GetColumnMode("sale_price_gbp"), precision: 2);
+        Assert.Equal(priceMode, loaded.GetColumnMode("sale_price_gbp"));
         Assert.Equal(priceRange, loaded.GetColumnRange("sale_price_gbp"), precision: 2);
         Assert.Equal(maxPrice, loaded.GetColumnMax("sale_price_gbp"), precision: 2);
         Assert.Equal(minPrice, loaded.GetColumnMin("sale_price_gbp"), precision: 2);
