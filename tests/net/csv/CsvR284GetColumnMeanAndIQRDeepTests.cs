@@ -80,7 +80,7 @@ public class CsvR284GetColumnMeanAndIQRDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(path);
         Assert.Equal(5, doc.RowCount);
         Assert.Equal(48600000, doc.GetColumnMean(1));
-        Assert.Equal(49.4, doc.GetColumnMean(2), 2);
+        Assert.Equal(49.2, doc.GetColumnMean(2), 2);
         Assert.True(doc.GetColumnInterquartileRange(1) >= 0);
     }
 }

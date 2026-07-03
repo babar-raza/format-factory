@@ -192,4 +192,39 @@ public sealed class CsvDocument
             throw new ArgumentOutOfRangeException(nameof(index), $"Row index {index} is out of range [0, {Rows.Count}).");
         Rows.RemoveAt(index);
     }
+
+    // -------------------------------------------------------------------------
+    // Column Analytics API
+    // -------------------------------------------------------------------------
+
+    /// <summary>Alias for <see cref="SaveToFile"/> for API symmetry with LoadFile.</summary>
+    public void SaveFile(string path) => SaveToFile(path);
+
+    private static IEnumerable<double> ParseNumericColumn(List<string> values) =>
+        values
+            .Where(v => double.TryParse(v, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out _))
+            .Select(v => double.Parse(v, System.Globalization.CultureInfo.InvariantCulture));
+
+    /// <summary>Returns the minimum numeric value in the specified column.</summary>
+    public double GetColumnMin(int index) => ParseNumericColumn(GetColumn(index)).Min();
+
+    /// <summary>Returns the maximum numeric value in the specified column.</summary>
+    public double GetColumnMax(int index) => ParseNumericColumn(GetColumn(index)).Max();
+
+    /// <summary>Returns the sum of numeric values in the specified column.</summary>
+    public double GetColumnSum(int index) => ParseNumericColumn(GetColumn(index)).Sum();
+
+    /// <summary>Returns the arithmetic mean of numeric values in the specified column.</summary>
+    public double GetColumnMean(int index) => ParseNumericColumn(GetColumn(index)).Average();
+
+    /// <summary>Returns the interquartile range (Q3 - Q1) of numeric values in the specified column.</summary>
+    public double GetColumnInterquartileRange(int index)
+    {
+        var sorted = ParseNumericColumn(GetColumn(index)).OrderBy(x => x).ToArray();
+        if (sorted.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        int n = sorted.Length;
+        int q1Idx = (int)Math.Round((n - 1) * 0.25, MidpointRounding.ToEven);
+        int q3Idx = (int)Math.Round((n - 1) * 0.75, MidpointRounding.ToEven);
+        return sorted[q3Idx] - sorted[q1Idx];
+    }
 }
