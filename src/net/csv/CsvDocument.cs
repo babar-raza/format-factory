@@ -508,9 +508,9 @@ public sealed class CsvDocument
     /// <summary>Returns the ordinal ranks of all numeric values in the column.</summary>
     public List<int> GetColumnRankTransform(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); var sorted = v.OrderBy(x => x).ToList(); return v.Select(x => sorted.IndexOf(x) + 1).ToList(); }
     /// <summary>Returns the IQR alias (interquartile range).</summary>
-    public double GetColumnIQR(string headerName) => GetColumnInterquartileRange(headerName);
+    public double GetColumnIQR(string headerName) => GetColumnThirdQuartile(headerName) - GetColumnFirstQuartile(headerName);
     /// <summary>Returns the IQR alias (non-column prefix).</summary>
-    public double GetIQR(string col) => GetColumnInterquartileRange(col);
+    public double GetIQR(string col) => GetColumnThirdQuartile(col) - GetColumnFirstQuartile(col);
     /// <summary>Returns the cumulative sum of numeric values in the column.</summary>
     public List<double> GetColumnCumulativeSum(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToList(); var res = new List<double>(v.Count); double acc = 0; foreach (var x in v) { acc += x; res.Add(acc); } return res; }
     /// <summary>Returns the cumulative sum alias.</summary>
@@ -534,7 +534,7 @@ public sealed class CsvDocument
     /// <summary>Returns normalized column alias (non-column-prefix).</summary>
     public List<double> GetNormalizedColumn(string col) => GetColumnNormalizedValues(col);
     /// <summary>Returns the robust scaled (median ± IQR) values for the column.</summary>
-    public List<double> GetColumnRobustScaledValues(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); if (v.Length == 0) return new List<double>(); double med = _Median(v.OrderBy(x => x).ToArray()); double iqr = GetColumnInterquartileRange(headerName); return v.Select(x => iqr == 0 ? 0.0 : (x - med) / iqr).ToList(); }
+    public List<double> GetColumnRobustScaledValues(string headerName) { var v = ParseNumericColumn(GetColumn(headerName)).ToArray(); if (v.Length == 0) return new List<double>(); double med = _Median(v.OrderBy(x => x).ToArray()); double iqr = GetColumnThirdQuartile(headerName) - GetColumnFirstQuartile(headerName); return v.Select(x => iqr == 0 ? 0.0 : (x - med) / iqr).ToList(); }
     /// <summary>Returns the normality score (simple heuristic: |skewness| + |kurtosis - 3| normalized to 0–1).</summary>
     public double GetNormalityScore(string col) { try { double sk = Math.Abs(GetColumnSkewness(col)); double ku = Math.Abs(GetColumnKurtosis(col) - 3); return Math.Max(0, 1.0 - (sk + ku) / 10.0); } catch { return 0.5; } }
     /// <summary>Returns the outlier values (|z-score| > threshold) as a list.</summary>
