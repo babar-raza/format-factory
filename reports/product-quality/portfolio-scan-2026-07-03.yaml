@@ -106,8 +106,10 @@ new_portfolio_gaps:
     first_failed_boundary: validate_suspicious_filenames (V100)
     system_repair: "Same system repairs as FODS (already healed — skills/validators block new additions)"
     code_repair: "DECOMPOSE_THEN_REMOVE: migrate spec-grounded methods, remove test-shaped APIs"
-    status: OPEN
-    next_action: "Classify FodtDocumentExtendedApis.cs methods into domain buckets"
+    status: CLOSED
+    closed_by: TC-PQLM-022
+    closed_at: 2026-07-03
+    closure_note: "FodtDocumentEditing.cs verified at HEAD; V100 PASS; 4539 tests pass"
     backfill_scope: portfolio
 
   - gap_id: PCG-PORTFOLIO-002
@@ -124,8 +126,10 @@ new_portfolio_gaps:
     first_failed_boundary: validate_analytics_naming_enforced (V77)
     system_repair: "V77 already catches this pattern; analytics file naming enforced"
     code_repair: "RENAME: spreadsheet_document.py → ods_analytics.py + remove false spec_qname"
-    status: OPEN
-    next_action: "Rename in dedicated sprint using healed add-python-api skill"
+    status: CLOSED
+    closed_by: TC-PQLM-022
+    closed_at: 2026-07-03
+    closure_note: "ods_analytics.py verified at HEAD; V100 PASS; 4539 tests pass"
     backfill_scope: portfolio
 
   - gap_id: PCG-PORTFOLIO-003
@@ -141,8 +145,10 @@ new_portfolio_gaps:
     first_failed_boundary: validate_analytics_naming_enforced (V77)
     system_repair: "V77 already catches; healed machinery prevents recurrence"
     code_repair: "RENAME: spreadsheet_document.py → sylk_analytics.py"
-    status: OPEN
-    next_action: "Rename in dedicated sprint"
+    status: CLOSED
+    closed_by: TC-PQLM-022
+    closed_at: 2026-07-03
+    closure_note: "sylk_analytics.py verified at HEAD; V100 PASS; 4539 tests pass"
     backfill_scope: portfolio
 
 # ==========================================================================
@@ -154,11 +160,11 @@ scan_summary:
   formats_scanned_by_V100: 20       # V100 scans all src/python/ + src/net/
   formats_scanned_by_V101: 20
   confirmed_similar_cases: 3        # fodt ExtendedApis + ods/sylk analytics masquerade
-  confirmed_cases_healed: 0         # Tracked as gaps; full healing needs dedicated sprint
+  confirmed_cases_healed: 3         # TC-PQLM-022: all 3 healed; verified at HEAD 2026-07-03
   false_certifications_to_reopen: 0 # No active certifications for fodt/ods/sylk
   counters:
     PRODUCT_LIBRARIES_NOT_SCANNED: 0   # V100/V101 ran against all formats
-    CONFIRMED_SIMILAR_CASES_NOT_HEALED: 3  # PCG-PORTFOLIO-001/002/003 tracked; healing deferred
+    CONFIRMED_SIMILAR_CASES_NOT_HEALED: 0  # PCG-PORTFOLIO-001/002/003 healed by TC-PQLM-022
     FALSE_CERTIFICATIONS_NOT_REOPENED: 0   # No affected certifications active
 
 notes: >

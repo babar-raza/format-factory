@@ -116,13 +116,12 @@ format-factory/
 |   +-- python/
 |   |   +-- _readme.md                    [Phase 0] Directory orientation (see note below)
 |   |   +-- {format}/                     [Phase 4+] Python FOSS product per format (e.g. src/python/fods/)
-|   +-- net/                              [Phase 4+] .NET product — not created until Phase 4
-|   |   +-- {format}/                     [Phase 4+] .NET product workspace per format (e.g. src/net/fods/)
-|   +-- dotnet/
-|       +-- _readme.md                    [Phase 0] Transitional orientation — see note below
+|   +-- net/                              .NET product source — active (Phase 4+, formats present)
+|   |   +-- {format}/                     .NET product workspace per format (e.g. src/net/fods/)
+|   |   +-- _readme.md                    Canonical .NET path authority — see src/net/_readme.md
 |
-| NOTE: src/dotnet/ is a Phase 0 placeholder. The production .NET source will be created under
-| src/net/{format}/ in Phase 4+. The src/dotnet/ directory will not contain product source.
+| NOTE: src/dotnet/ does NOT exist in this repository — it was a Phase 0 design placeholder that
+| was never created as a product directory. .NET product source is at src/net/{format}/ (active).
 | src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE target
 | paths — they must not be created. Use format-first layout above.
 |
@@ -418,11 +417,11 @@ Claim verification matrix: `reports/machinery-truth/claim-verification-matrix-20
 src/
   python/{format}/         Python FOSS product — 20 formats (all installed)
   net/{format}/            .NET commercial product — fods/, fodt/, netpbm/ + shared libs
-  dotnet/_readme.md        Phase 0 placeholder ONLY — no product source here
+  (src/dotnet/ does NOT exist — was a Phase 0 design placeholder, never created)
 ```
 
-**CRITICAL:** The `.NET` product source is at `src/net/`, NOT `src/dotnet/` as the Phase 0
-design specified. `src/dotnet/` contains only a `_readme.md` orientation file.
+**CRITICAL:** The `.NET` product source is at `src/net/`, NOT `src/dotnet/`. The `src/dotnet/`
+directory does not exist in this repository. See `src/net/_readme.md` for the canonical layout.
 
 ### Corrected Governance Validator Count
 

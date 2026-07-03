@@ -2,15 +2,15 @@
   "schema_version": "1.0",
   "description": "Baseline test count snapshot for test_bare_pytest_count_near_baseline. Updated by sprint tooling whenever the count drifts beyond tolerance. Preferred over hard-coded constant because it is machine-readable and can be updated without touching test source.",
   "baseline": {
-    "total_tests": 152,
+    "total_tests": 229,
     "arithmetic_deepening_excluded": 10917,
     "full_suite_count": 46505,
     "tolerance": 50,
     "command": "python -m pytest --collect-only -q tests/test_health_check.py tests/python/test_pige_public_api_smoke.py tests/supervisor/test_governance_validators.py tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py tests/test_layer_assignment.py",
     "clean_command": "python -m pytest --collect-only -q --skip-arithmetic",
-    "measured_date": "2026-06-24",
+    "measured_date": "2026-07-03",
     "measured_by": "format-factory-fullsuite-layering-20260623-fslay02-convergence",
-    "reason": "update-9: fslay02 convergence hardening added tests. Fast-scan scope grew 89→152."
+    "reason": "update-10: PQLM-001 docstring additions grew test count 152\u2192229"
   },
   "update_policy": {
     "trigger": "abs(actual - baseline) >= tolerance",
@@ -68,7 +68,7 @@
     {
       "total_tests": 152,
       "measured_date": "2026-06-24",
-      "note": "update-9: fslay02 convergence — grader enforcement, shard ledger, exit-code masking, escalation date tests"
+      "note": "update-9: fslay02 convergence \u00e2\u20ac\u201d grader enforcement, shard ledger, exit-code masking, escalation date tests"
     }
   ]
 }
