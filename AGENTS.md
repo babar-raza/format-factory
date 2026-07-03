@@ -1073,6 +1073,15 @@ When credentials are unavailable or branch protection blocks the agent identity:
 `EXTERNAL_BLOCKER: git_push_credentials_unavailable` and record in the gap register. Never claim
 "human must push" as the universal default — classify the specific blocker.
 
+**AG4.2a Push Credentials (verified 2026-07-03).** Use these env-var-based push commands:
+
+- **GitHub** (`github` remote): `git push "https://${GH_TOKEN}@github.com/babar-raza/format-factory.git" main`
+  — `GH_TOKEN` is available in the shell environment.
+- **GitLab** (`origin` remote — `gitlab.recruitize.ai`): `git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
+  — `gl_username` and `gl_pat` are available in the shell environment. Note: GitLab host may be unreachable from CI runners; classify as `EXTERNAL_BLOCKER: gitlab_host_unreachable` if DNS fails.
+- **Do NOT** use `git push origin` or `git push github` directly — the GCM dialog blocks in headless mode.
+- **Do NOT** hardcode any token values in committed files (AGENTS.md §AC6).
+
 **AG4.3 Honest Blocker.** If git push cannot proceed: produce a push-ready manifest showing
 exactly what would be pushed, the exact credential/permission gap, and the remediation path.
 

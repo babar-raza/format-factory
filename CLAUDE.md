@@ -433,6 +433,11 @@ Apply the Human Task Conversion Rule (AGENTS.md §AG1) before treating any of th
   policy authorizes. Classify honestly: `EXTERNAL_BLOCKER: git_push_credentials_unavailable` or
   `EXTERNAL_BLOCKER: branch_protection_requires_unavailable_identity`. Never say "human must push"
   as a universal default.
+  **Verified push commands (2026-07-03):**
+  - GitHub: `git push "https://${GH_TOKEN}@github.com/babar-raza/format-factory.git" main`
+  - GitLab: `git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
+    (if GitLab host unreachable: classify as `EXTERNAL_BLOCKER: gitlab_host_unreachable`)
+  - Do NOT use `git push origin` or `git push github` directly (GCM dialog blocks headless mode).
 - **Gate 8 or Gate 11 EXECUTION approval:** Legitimate external gate — Babar Raza's business decision
   for commercial release. PREPARATION is always agent-owned (prepare packet, assess readiness, verify).
   Only the final commercial sign-off requires human business authority.
