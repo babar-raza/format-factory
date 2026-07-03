@@ -65,6 +65,16 @@ public class CsvReader
         return ReadRows(content);
     }
 
+    /// <summary>Instance method: parse CSV content or file path into a CsvDocument.</summary>
+    public CsvDocument Deserialize(string content)
+    {
+        var rows = ReadRows(content);
+        if (rows.Count == 0) return new CsvDocument(null, new List<string[]>());
+        var headers = rows[0];
+        var data = rows.Skip(1).ToList();
+        return new CsvDocument(headers, data);
+    }
+
     private static List<string[]> ParseCsv(string content)
     {
         var rows = new List<string[]>();

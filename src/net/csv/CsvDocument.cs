@@ -98,6 +98,13 @@ public sealed class CsvDocument
         return r[col];
     }
 
+    /// <summary>Get the cell value at the given zero-based row index and column name.</summary>
+    public string? GetCellValue(int row, string columnName)
+    {
+        var col = GetColumnIndex(columnName);
+        return GetCellValue(row, col);
+    }
+
     /// <summary>
     /// Returns a new CsvDocument containing only rows that match the predicate.
     /// Headers are preserved unchanged.

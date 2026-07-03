@@ -40,6 +40,15 @@ public class CsvWriter
     /// </summary>
     public static void WriteRows(IEnumerable<IEnumerable<string?>> rows, string path) => WriteRowsToFile(rows, path);
 
+    /// <summary>Instance method: serialize a CsvDocument to a CSV string.</summary>
+    public string Serialize(CsvDocument doc)
+    {
+        var allRows = new List<IEnumerable<string?>>();
+        if (doc.Headers != null) allRows.Add(doc.Headers);
+        allRows.AddRange(doc.Rows);
+        return WriteRows(allRows);
+    }
+
     /// <summary>
     /// Serialize <paramref name="rows"/> to a CSV string.
     /// </summary>

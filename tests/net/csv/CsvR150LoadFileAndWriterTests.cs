@@ -106,8 +106,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     public void CsvWriter_WriteRows_CreatesFile()
     {
         var path = TempFile("writer.csv");
-        var writer = new CsvWriter();
-        writer.WriteRows(new[] {
+        CsvWriter.WriteRows(new[] {
             new[] { "Name", "Score" },
             new[] { "Alice", "95" }
         }, path);
@@ -118,8 +117,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     public void CsvWriter_WriteRows_OutputReadableByLoadFile()
     {
         var path = TempFile("readable.csv");
-        var writer = new CsvWriter();
-        writer.WriteRows(new[] {
+        CsvWriter.WriteRows(new[] {
             new[] { "Name", "Score" },
             new[] { "Alice", "95" },
             new[] { "Bob", "82" }
@@ -137,8 +135,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     public void CsvReader_ReadRows_ReturnsRows()
     {
         var path = WriteThreeRowFile("reader.csv");
-        var reader = new CsvReader();
-        var rows = reader.ReadRows(path);
+        var rows = CsvReader.ReadRows(path);
         Assert.NotEmpty(rows);
     }
 
@@ -146,8 +143,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     public void CsvReader_ReadRows_FirstRowIsHeader()
     {
         var path = WriteThreeRowFile("firstrow.csv");
-        var reader = new CsvReader();
-        var rows = reader.ReadRows(path);
+        var rows = CsvReader.ReadRows(path);
         Assert.Contains("Name", rows[0]);
     }
 
@@ -155,8 +151,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     public void CsvReader_ReadRows_CountMatchesLines()
     {
         var path = WriteThreeRowFile("linecount.csv");
-        var reader = new CsvReader();
-        var rows = reader.ReadRows(path);
+        var rows = CsvReader.ReadRows(path);
         Assert.Equal(4, rows.Count); // header + 3 data rows
     }
 
@@ -191,8 +186,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     {
         // Write with CsvWriter
         var path1 = TempFile("dogfood.csv");
-        var writer = new CsvWriter();
-        writer.WriteRows(new[] {
+        CsvWriter.WriteRows(new[] {
             new[] { "Name", "Dept", "Score" },
             new[] { "Alice", "Eng", "95" },
             new[] { "Bob", "Finance", "82" },
@@ -201,8 +195,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
         }, path1);
 
         // Read with CsvReader
-        var reader = new CsvReader();
-        var rows = reader.ReadRows(path1);
+        var rows = CsvReader.ReadRows(path1);
         Assert.Equal(5, rows.Count);
 
         // Load with CsvDocument
