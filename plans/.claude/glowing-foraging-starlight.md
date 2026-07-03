@@ -662,13 +662,13 @@ python tools/supervisor/write_plan_lock.py \
 
 | TC-ID | Title | Status | Counters / Issue |
 |-------|-------|--------|-----------------|
-| TC-PQLM-000 | Pre-flight: Plan migration + stale lock cleanup | backlog | Unblocks all others |
-| TC-PQLM-020 | Fix `src/dotnet` → `src/net` in live authority files | backlog | System path confusion |
-| TC-PQLM-021 | FODS .NET Monolith Assessment + Reduction | backlog | SUSPICIOUS_DUMPING_GROUND_FILES, FILES_OUTSIDE_APPROVED_PRODUCT_LAYOUT |
-| TC-PQLM-022 | Portfolio Healing Verification + Execution | backlog | CONFIRMED_SIMILAR_CASES_NOT_HEALED |
-| TC-PQLM-023 | History Identifiers Resolution | backlog | PRODUCT_SOURCE_FILES_WITH_HISTORY_IDENTIFIERS |
-| TC-PQLM-024 | Undocumented API Baseline Formalization | backlog | PUBLIC_APIS_WITH_MISSING_OR_FALSE_DOCUMENTATION |
-| TC-PQLM-025 | Final Idempotency + Completion Gate | backlog | All 24 counters |
+| TC-PQLM-000 | Pre-flight: Plan migration + stale lock cleanup | CLOSED | Unblocks all others |
+| TC-PQLM-020 | Fix `src/dotnet` → `src/net` in live authority files | CLOSED | System path confusion |
+| TC-PQLM-021 | FODS .NET Monolith Assessment + Reduction | CLOSED | SUSPICIOUS_DUMPING_GROUND_FILES, FILES_OUTSIDE_APPROVED_PRODUCT_LAYOUT |
+| TC-PQLM-022 | Portfolio Healing Verification + Execution | CLOSED | CONFIRMED_SIMILAR_CASES_NOT_HEALED |
+| TC-PQLM-023 | History Identifiers Resolution | CLOSED | PRODUCT_SOURCE_FILES_WITH_HISTORY_IDENTIFIERS |
+| TC-PQLM-024 | Undocumented API Baseline Formalization | CLOSED | PUBLIC_APIS_WITH_MISSING_OR_FALSE_DOCUMENTATION |
+| TC-PQLM-025 | Final Idempotency + Completion Gate | CLOSED | All 24 counters |
 
 ---
 
@@ -730,3 +730,24 @@ Conditions:
 2. .NET SDK availability determines depth of TC-PQLM-021 verification (build vs. syntax-only)
 3. V102 grandfathering implementation depends on V102 code inspection in TC-PQLM-024 Step 3
 4. `logical-cuddling-naur.md` contents should be reviewed before superseding its lock (TC-PQLM-000 Step 2)
+
+
+## Lifecycle Audit Taskcard Status Summary
+
+| TC-ID | Status |
+|-------|--------|
+| TC-PQLM-000 | CLOSED |
+| TC-PQLM-020 | CLOSED |
+| TC-PQLM-021 | CLOSED |
+| TC-PQLM-022 | CLOSED |
+| TC-PQLM-023 | CLOSED |
+| TC-PQLM-024 | CLOSED |
+| TC-PQLM-025 | CLOSED |
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-03T15:06:00.066588+00:00"
+  locked_by: "d9872f18db54"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
