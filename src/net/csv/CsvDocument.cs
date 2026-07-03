@@ -105,6 +105,32 @@ public sealed class CsvDocument
         return GetCellValue(row, col);
     }
 
+    /// <summary>Set the cell value at the given zero-based row and column index.</summary>
+    public void SetCellValue(int row, int col, string value)
+    {
+        if (row < 0 || row >= Rows.Count) return;
+        var r = Rows[row];
+        if (col < 0 || col >= r.Length) return;
+        r[col] = value;
+    }
+
+    /// <summary>A row wrapper that allows column-name lookup via GetValue(string).</summary>
+    public sealed class CsvRow
+    {
+        private readonly string[] _values;
+        private readonly string[]? _headers;
+        internal CsvRow(string[] values, string[]? headers) { _values = values; _headers = headers; }
+        public string? GetValue(string colName)
+        {
+            if (_headers == null) return null;
+            for (int i = 0; i < _headers.Length; i++)
+                if (string.Equals(_headers[i], colName, StringComparison.OrdinalIgnoreCase) && i < _values.Length)
+                    return _values[i];
+            return null;
+        }
+        public string[] ToArray() => _values;
+    }
+
     /// <summary>
     /// Returns a new CsvDocument containing only rows that match the predicate.
     /// Headers are preserved unchanged.
@@ -113,6 +139,14 @@ public sealed class CsvDocument
     {
         if (predicate is null) throw new ArgumentNullException(nameof(predicate));
         return new CsvDocument(Headers, Rows.Where(predicate).ToList());
+    }
+
+    /// <summary>Filter rows using a CsvRow predicate that supports column-name lookup via GetValue(string).</summary>
+    public CsvDocument Filter(Func<CsvRow, bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        var hdrs = Headers;
+        return Filter((string[] r) => predicate(new CsvRow(r, hdrs)));
     }
 
     /// <summary>

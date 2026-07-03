@@ -49,6 +49,14 @@ public class CsvWriter
         return WriteRows(allRows);
     }
 
+    /// <summary>Serialize <paramref name="rows"/> with the given header row prepended, to a CSV string.</summary>
+    public static string WriteRows(IEnumerable<IEnumerable<string?>> rows, string[] headers)
+    {
+        var all = new List<IEnumerable<string?>> { headers };
+        all.AddRange(rows);
+        return WriteRows(all);
+    }
+
     /// <summary>
     /// Serialize <paramref name="rows"/> to a CSV string.
     /// </summary>
