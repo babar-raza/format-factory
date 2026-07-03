@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-03 (v6.8: PQLM-001 fancy-bubbling-truffle TERMINAL_CLOSED + whimsical-gathering-toucan TERMINAL_CLOSED; §107—§108 added)
+**Last updated:** 2026-07-03 (v6.9: PQLM-001 Phase 2 convergence closure — PCG-PORTFOLIO-001/002/003 healed; post-plan autonomous convergence COMPLETE)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -5954,9 +5954,20 @@ Full 22-phase product library healing mission on the FODS Python + .NET example 
 ### Deferred (not blocking PQLM-001)
 
 - PCG-001: FodsDocumentAccessor.cs decomposition (.NET rebuild sprint required)
-- PCG-PORTFOLIO-001/002/003: FODT/ODS/SYLK spreadsheet_document.py renames
+- PCG-002: FodsDocumentExtendedApis.cs V100 violation (tracked, not in PQLM-001 scope)
 
-**Final Verdict:** PRODUCT_CODE_SYSTEM_HEALED_AND_LIBRARIES_PRODUCTION_READY | TERMINAL_CLOSED
+### Phase 2 Convergence Closure (2026-07-03, commit e8476324)
+
+PCG-PORTFOLIO-001/002/003 healed (moved from Deferred to CLOSED):
+- PCG-PORTFOLIO-001: FodtDocumentExtendedApis.cs renamed to FodtDocumentEditing.cs; V100 PASS
+- PCG-PORTFOLIO-002: ODS spreadsheet_document.py renamed to ods_analytics.py; false spec_qname removed
+- PCG-PORTFOLIO-003: SYLK spreadsheet_document.py renamed to sylk_analytics.py; false spec_qname removed
+- 50 test import fixes (analytics function paths corrected from *_parser to *_analytics)
+- Governance test: V100-V109 added to _fs_scanners exclusion; canonical count updated 106->119
+- All 20 taskcards CLOSED; lifecycle audit PASS; CONFIRMED_SIMILAR_CASES_NOT_HEALED = 0
+- Post-plan convergence lifecycle: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
+
+**Final Verdict:** PRODUCT_CODE_SYSTEM_HEALED_AND_LIBRARIES_PRODUCTION_READY | TERMINAL_CLOSED | ACCEPTED_VERIFIED
 
 ---
 
