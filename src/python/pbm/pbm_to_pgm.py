@@ -17,7 +17,7 @@ Mapping convention:
 
 License: Apache-2.0
 Package: format-factory-pbm v0.1.0
-R85 Train M: Netpbm family dogfood export added
+R85 : Netpbm family dogfood export added
 """
 from __future__ import annotations
 

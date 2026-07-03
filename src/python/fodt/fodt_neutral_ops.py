@@ -25,7 +25,6 @@ def document_stats(document: dict[str, Any]) -> dict[str, Any]:
       total_text_length: int    (sum of text chars across all content)
       hyperlink_count: int      (runs with href attribute)
 
-    Added in R57 Train E as a new product capability.
     Useful for document triage and content extraction pipelines.
     """
     stats: dict[str, Any] = {
@@ -117,7 +116,6 @@ def document_heading_outline(document: dict[str, Any]) -> list[dict[str, Any]]:
     the blocks list. Only includes blocks with type == "heading".
 
     Useful for table-of-contents generation and document navigation.
-    Added in R59 Train G as a product deepening capability.
     """
     outline: list[dict[str, Any]] = []
     heading_index = 0
@@ -156,7 +154,6 @@ def document_word_count(document: dict[str, Any]) -> dict[str, Any]:
       table_words: int              (from table cells)
 
     Useful for content analysis and document triage.
-    Added in R60 Train G as a product deepening capability.
     """
     block_words = 0
     list_words = 0
@@ -213,7 +210,6 @@ def document_table_summary(document: dict[str, Any]) -> list[dict[str, Any]]:
     Respects content list (document-order) if present.
 
     Useful for table triage and structural analysis.
-    Added in R60 Train G as a product deepening capability.
     """
     tables = []
     content = document.get("content", [])
@@ -248,7 +244,6 @@ def document_text_content(document: dict[str, Any], separator: str = "\n") -> st
         separator: String inserted between content segments (default: newline).
 
     Useful for full-text extraction and search indexing pipelines.
-    Added in R59 Train G as a product deepening capability.
     """
     parts: list[str] = []
 
@@ -315,7 +310,6 @@ def document_list_stats(document: dict[str, Any]) -> dict[str, Any]:
         Each entry: {index, item_count, max_depth}
 
     Useful for document structure analysis and TOC generation.
-    Added in R61 Train G as a product deepening capability.
     """
     lists = document.get("lists", [])
     # Also check content list for embedded lists
@@ -365,7 +359,6 @@ def document_reading_level(document: dict[str, Any]) -> dict[str, Any]:
 
     Note: This is an estimation based on character/word counts only.
     It does not perform full syntactic analysis.
-    Added in R61 Train G as a product deepening capability.
     """
     text = document_text_content(document, separator=" ")
     if not text:
@@ -415,7 +408,6 @@ def document_hyperlink_count(document: dict[str, Any]) -> dict[str, Any]:
       total: int             — total hyperlink count across all blocks
       per_block: list[int]   — hyperlink count per top-level block (0 if none)
 
-    Added in R62 Train H as a product deepening capability
     (hyperlink xlink:type preservation).
     """
     blocks = document.get("blocks", [])
@@ -444,7 +436,6 @@ def document_footnote_count(document: dict[str, Any]) -> dict[str, Any]:
       has_notes: bool        — True if any notes are present
       note: str              — advisory message if notes detected
 
-    Added in R62 Train H as a product deepening capability
     (footnote/endnote detection warning).
     """
     blocks = document.get("blocks", [])
@@ -469,7 +460,7 @@ def document_footnote_count(document: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Document heading level distribution (R63 Train H — new capability)
+# Document heading level distribution
 # ---------------------------------------------------------------------------
 
 def document_heading_level_distribution(document: dict[str, Any]) -> dict[str, Any]:
@@ -483,7 +474,6 @@ def document_heading_level_distribution(document: dict[str, Any]) -> dict[str, A
 
     Useful for understanding document structure, validating heading hierarchy,
     and generating table-of-contents previews.
-    Added in R63 Train H as a product deepening capability (heading level distribution).
     """
     by_level: dict[int, int] = {}
     for block in document.get("blocks", []):
@@ -503,7 +493,7 @@ def document_heading_level_distribution(document: dict[str, Any]) -> dict[str, A
 
 
 # ---------------------------------------------------------------------------
-# Document table cell count (R63 Train H — new capability)
+# Document table cell count
 # ---------------------------------------------------------------------------
 
 def document_table_cell_count(document: dict[str, Any]) -> dict[str, Any]:
@@ -519,7 +509,6 @@ def document_table_cell_count(document: dict[str, Any]) -> dict[str, Any]:
         cell_count: int       — sum of cells in all rows of this table
         avg_cells_per_row: float
 
-    Added in R63 Train H as a product deepening capability (table cell density analysis).
     """
     tables = document.get("tables", [])
     per_table: list[dict[str, Any]] = []
@@ -543,7 +532,7 @@ def document_table_cell_count(document: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Document table cell span summary (R64 Train H — new capability)
+# Document table cell span summary
 # ---------------------------------------------------------------------------
 
 def document_table_cell_span_summary(document: dict[str, Any]) -> dict[str, Any]:
@@ -559,7 +548,6 @@ def document_table_cell_span_summary(document: dict[str, Any]) -> dict[str, Any]
         cells_with_rowspan: int    — cells with row span > 1
 
     Useful for table structure analysis and merge-cell detection.
-    Added in R64 Train H as a product deepening capability (table cell span analysis).
     """
     tables = document.get("tables", [])
     total_cells = 0
@@ -599,7 +587,7 @@ def document_table_cell_span_summary(document: dict[str, Any]) -> dict[str, Any]
 
 
 # ---------------------------------------------------------------------------
-# Document text field warnings (R64 Train H — new capability)
+# Document text field warnings
 # ---------------------------------------------------------------------------
 
 def document_text_field_warnings(document: dict[str, Any]) -> list[str]:
@@ -617,7 +605,6 @@ def document_text_field_warnings(document: dict[str, Any]) -> list[str]:
         Empty list if no text fields are detected.
 
     Useful for document auditing, template detection, and field replacement.
-    Added in R64 Train H as a product deepening capability (text field warnings).
     """
     warnings: list[str] = []
     seen_types: set[str] = set()
@@ -661,7 +648,7 @@ def document_text_field_warnings(document: dict[str, Any]) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Document footnote/endnote summary (R65 Train H — new capability)
+# Document footnote/endnote summary
 # ---------------------------------------------------------------------------
 
 def document_footnote_endnote_summary(document: dict[str, Any]) -> dict[str, Any]:
@@ -680,7 +667,6 @@ def document_footnote_endnote_summary(document: dict[str, Any]) -> dict[str, Any
         has_notes: bool           — True if any notes are present
 
     Useful for academic/legal document analysis and note preservation auditing.
-    Added in R65 Train H as a product deepening capability (footnote/endnote summary).
     """
     footnote_count = 0
     endnote_count = 0
@@ -712,7 +698,7 @@ def document_footnote_endnote_summary(document: dict[str, Any]) -> dict[str, Any
 
 
 # ---------------------------------------------------------------------------
-# Document image frame list (R65 Train H — new capability)
+# Document image frame list
 # ---------------------------------------------------------------------------
 
 def document_image_frame_list(document: dict[str, Any]) -> list[dict[str, Any]]:
@@ -729,7 +715,6 @@ def document_image_frame_list(document: dict[str, Any]) -> list[dict[str, Any]]:
         list[dict] — all image frames found. Empty list if none.
 
     Useful for image inventory, asset extraction, and document media auditing.
-    Added in R65 Train H as a product deepening capability (image frame inventory).
     """
     results: list[dict[str, Any]] = []
 
@@ -772,9 +757,8 @@ def document_paragraph_count(
 ) -> int:
     """Return the count of paragraph-type blocks in the document body.
 
-    Added in R77 Train J as a convenience utility for edit workflow verification.
     """
-    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"]
+ # R79 : fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"]
     blocks = document.get("blocks", [])
     return sum(1 for b in blocks if b.get("type", "paragraph") == "paragraph")
 

@@ -379,7 +379,7 @@ def get_capabilities() -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# R84 Train N: DIF CSV export
+# R84 : DIF CSV export
 # ---------------------------------------------------------------------------
 
 def get_cell_value(file_path: str | Path, row: int, col: int) -> Any:

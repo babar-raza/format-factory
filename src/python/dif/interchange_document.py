@@ -190,6 +190,7 @@ def sort_rows_by_column(
     doc = parse_dif_strict(file_path)
 
     def sort_key(row: "list[DifCell]") -> "tuple":
+        """Return a sort tuple for the row based on the target column value."""
         if col < 0 or col >= len(row):
             return (1, 0, "")
         v = row[col].value

@@ -303,7 +303,6 @@ def _build_model(root: ET.Element) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 2 additions (R130)
 # ---------------------------------------------------------------------------
 
 def search_paragraph(model: dict, query: str, *, case_sensitive: bool = True) -> list:
@@ -358,7 +357,7 @@ def get_paragraph(model: dict, index: int) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 3 additions (R135) — export_to_json, edit_paragraph, export_to_csv
+# additions (R135) — export_to_json, edit_paragraph, export_to_csv
 # ---------------------------------------------------------------------------
 
 def export_to_json(source) -> str:
@@ -434,7 +433,6 @@ def export_to_csv(source) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 4 additions (R136-R137)
 # ---------------------------------------------------------------------------
 
 def merge_abw(a: dict, b: dict) -> dict:
@@ -484,7 +482,6 @@ def split_paragraphs(model: dict, chunk_size: int) -> list:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 7 additions (R142)
 # ---------------------------------------------------------------------------
 
 def join_paragraphs(model: dict, sep: str = "\n") -> str:
@@ -507,7 +504,6 @@ def replace_in_paragraphs(model: dict, old: str, new: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 8 additions (R144)
 # ---------------------------------------------------------------------------
 
 def export_to_markdown(model: dict) -> str:
@@ -539,7 +535,6 @@ def reverse_paragraphs(model: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 10 additions (R148)
 # ---------------------------------------------------------------------------
 
 def word_wrap(model: dict, width: int) -> dict:
@@ -568,7 +563,6 @@ def has_paragraph(model: dict, text: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 11 additions (R150)
 # ---------------------------------------------------------------------------
 
 def first_paragraph(model: dict) -> str:
@@ -588,7 +582,6 @@ def last_paragraph(model: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 12 additions (R152)
 # ---------------------------------------------------------------------------
 
 def paragraph_at(model: dict, index: int) -> str:

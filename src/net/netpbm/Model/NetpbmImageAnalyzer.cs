@@ -28,7 +28,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Compute per-channel pixel statistics for PPM.
     /// Returns (R, G, B) where each is (Mean, Min, Max).
-    /// R89 Train H: PPM statistics API.
+    /// PPM statistics API.
     /// </summary>
     public ((double Mean, int Min, int Max) R, (double Mean, int Min, int Max) G, (double Mean, int Min, int Max) B) GetChannelStats()
     {
@@ -60,7 +60,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Compute the average brightness of the image as a value in [0.0, 1.0].
-    /// R96 Train N: image brightness metric for analysis pipeline.
+    /// image brightness metric for analysis pipeline.
     /// </summary>
     public double GetBrightness()
     {
@@ -89,7 +89,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Compute a histogram of pixel intensities.
-    /// R101 Train C: pixel distribution analysis for image quality pipeline.
+    /// pixel distribution analysis for image quality pipeline.
     /// </summary>
     public int[] GetHistogram()
     {
@@ -129,7 +129,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Return a flattened array of per-pixel brightness values (0.0–1.0).
-    /// R115 Train B: brightness map for image analysis pipeline.
+    /// brightness map for image analysis pipeline.
     /// </summary>
     public double[] GetBrightnessMap()
     {

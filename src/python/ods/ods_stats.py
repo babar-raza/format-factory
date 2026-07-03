@@ -4,7 +4,7 @@ ods_stats.py -- Statistics and analysis functions for ODS neutral model dicts.
 Works on the dict output of parse_ods(), not on file paths.
 All functions are pure: no I/O, no mutation.
 
-Added in R62 Train I (format track advancement).
+Added in R62 (format track advancement).
 
 License: Apache-2.0
 Package: format-factory-ods v0.1.0
@@ -21,7 +21,6 @@ def spreadsheet_stats(ods_doc: dict[str, Any]) -> dict[str, Any]:
     Returns:
         sheet_count (int), total_rows (int), total_cells (int),
         non_empty_cells (int), per_sheet (list[dict]).
-    Added in R62 Train I.
     """
     sheets = ods_doc.get("sheets", [])
     total_rows = 0
@@ -62,7 +61,6 @@ def spreadsheet_stats(ods_doc: dict[str, Any]) -> dict[str, Any]:
 def sheet_name_order(ods_doc: dict[str, Any]) -> list[str]:
     """Return the ordered list of sheet names from an ODS document dict.
 
-    Added in R62 Train I.
     """
     return [
         sheet.get("name", f"Sheet{i + 1}")
@@ -79,7 +77,6 @@ def ods_cell_type_distribution(ods_doc: dict) -> dict:
       total_cells: int
       empty_fraction: float     — fraction of cells that are empty
 
-    Added in R63 Train I (ODS format track advancement).
     """
     by_type: dict[str, int] = {}
     total = 0
@@ -116,7 +113,6 @@ def ods_sheet_name_list(ods_doc: dict) -> list[str]:
     Returns:
         list[str] — ordered sheet names. Empty list if no sheets.
 
-    Added in R64 Train I (ODS format track advancement).
     """
     sheets = ods_doc.get("sheets", [])
     return [sheet.get("name", "") for sheet in sheets]
@@ -134,7 +130,6 @@ def ods_formula_cell_count(ods_doc: dict[str, Any]) -> int:
         int — number of formula cells across all sheets. 0 if none.
 
     Useful for spreadsheet auditing and formula complexity assessment.
-    Added in R65 Train I (ODS format track advancement).
     """
     count = 0
     for sheet in ods_doc.get("sheets", []):
@@ -160,7 +155,6 @@ def ods_data_validation_count(ods_doc: dict[str, Any]) -> int:
         int -- number of data validation rules found. 0 if none.
 
     Useful for spreadsheet auditing and data integrity analysis.
-    Added in R66 Train I (ODS format track advancement).
     """
     count = 0
 

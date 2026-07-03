@@ -14,7 +14,7 @@ row count. Technology: Python stdlib only (no stdlib csv module needed).
 NOTE: Does NOT import the stdlib 'csv' module to avoid namespace collision
 with src/python/csv/ when running under conftest.py sys.path injection.
 
-R55 Train H: CSV Gate 4 prototype (TC-ACQN-CSV-001).
+R55 : CSV Gate 4 prototype (TC-ACQN-CSV-001).
 
 License: Apache-2.0
 spec_concept: RFC 4180 comma-separated values record/field

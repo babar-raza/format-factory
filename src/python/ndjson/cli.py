@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 def main() -> None:
+    """Entry point for the ff-ndjson command-line tool."""
     if len(sys.argv) < 2:
         print("Usage: ff-ndjson FILE.ndjson")
         print("       Inspect a Newline-Delimited JSON file.")

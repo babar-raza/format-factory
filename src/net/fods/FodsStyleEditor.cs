@@ -1,4 +1,4 @@
-// FormatFactory.Fods -- ODF Style Editor (GI-FODS-NET-001 Phase 3e)
+// FormatFactory.Fods -- ODF Style Editor ( 3e)
 // Implements the setter path: writes cell style properties to ODF XML
 // by creating or updating auto-style entries in office:automatic-styles.
 //

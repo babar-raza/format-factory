@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 def main() -> None:
+    """Entry point for the ff-fods command-line tool."""
     if len(sys.argv) < 2:
         print("Usage: ff-fods FILE.fods")
         print("       Inspect a Flat OpenDocument Spreadsheet file.")

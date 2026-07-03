@@ -10,7 +10,7 @@ Implements Gate 4 prototype + Gate 5 neutral model.
 Parses P3 (ASCII) and P6 (binary) PPM files.
 Technology: Python stdlib only (open/read/split).
 
-R55 Train F: P6 binary decode added (TC-BINARY-PPM-001).
+R55 : P6 binary decode added (TC-BINARY-PPM-001).
 
 License: Apache-2.0
 spec_concept: PPM P6 binary RGB pixel map
@@ -84,6 +84,7 @@ def _parse_netpbm_header_bytes(data: bytes, num_ints: int) -> tuple[list[int], i
     n = len(data)
 
     def skip_ws_and_comments() -> None:
+        """Advance i past whitespace and # comment lines."""
         nonlocal i
         while i < n:
             b = data[i:i+1]
@@ -330,7 +331,7 @@ def get_capabilities() -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# write_ppm — PPM P3 ASCII writer (R86 Train K)
+# write_ppm — PPM P3 ASCII writer
 # ---------------------------------------------------------------------------
 
 def write_ppm(
@@ -360,7 +361,6 @@ def write_ppm(
         ValueError: If pixel count mismatch, maxval out of range, or bad tuple.
         PpmSizeError: If dimensions exceed MAX_DIMENSION.
 
-    Added in R86 Train K as Netpbm write/roundtrip product advancement.
     """
     if width < 1 or height < 1:
         raise ValueError(f"Dimensions must be positive: got {width}x{height}")

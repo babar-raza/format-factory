@@ -33,7 +33,7 @@ public static class FodsDocumentExporter
     /// Export a sheet as an HTML table string.
     /// Rows become &lt;tr&gt; elements, cells become &lt;td&gt; elements.
     /// Empty cells produce empty &lt;td&gt; elements. Cell text is HTML-escaped.
-    /// R94 Train M: HTML export implementation.
+    /// HTML export implementation.
     /// </summary>
     public static string ExportSheetToHtml(FodsSheet sheet)
     {
@@ -62,7 +62,7 @@ public static class FodsDocumentExporter
     /// Export a sheet as a JSON array of row objects.
     /// The first row is treated as headers; subsequent rows become objects keyed by those headers.
     /// If the sheet has zero or one row, returns "[]".
-    /// R95 Train L: JSON export implementation.
+    /// JSON export implementation.
     /// </summary>
     public static string ExportSheetToJson(FodsSheet sheet)
     {
@@ -105,7 +105,7 @@ public static class FodsDocumentExporter
     /// The first row is treated as headers with a separator line beneath.
     /// Pipe characters in cell values are escaped as \|.
     /// Returns an empty string if the sheet has no rows.
-    /// R101 Train A: Markdown export implementation.
+    /// Markdown export implementation.
     /// </summary>
     public static string ExportSheetToMarkdown(FodsSheet sheet)
     {
@@ -162,7 +162,7 @@ public static class FodsDocumentExporter
     /// Each row becomes a line, cells are comma-separated, values containing
     /// commas/quotes/newlines are enclosed in double quotes with internal quotes
     /// doubled (RFC 4180).
-    /// R107 Wave 2: CSV export implementation.
+    /// CSV export implementation.
     /// </summary>
     public static string ExportSheetToCsv(FodsSheet sheet)
     {

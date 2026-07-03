@@ -256,7 +256,7 @@ def _validate_table_row(row: dict[str, Any], table_idx: int, row_idx: int) -> li
 
 
 # ---------------------------------------------------------------------------
-# Sprint 3 product advancement (FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING-SPRINT3-001)
+# product advancement (FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING--001)
 
 
 

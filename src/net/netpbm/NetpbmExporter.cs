@@ -108,7 +108,7 @@ public static class NetpbmExporter
     /// into R, G, B channels.
     ///
     /// Dogfood path: uses Format Factory NetpbmImage model exclusively.
-    /// R87 Train J / Train N: PGM → PPM dogfood export.
+    /// PGM to PPM dogfood export.
     /// </summary>
     public static NetpbmImage PgmToPpm(NetpbmImage pgm, int maxValue = 0)
     {
@@ -151,7 +151,7 @@ public static class NetpbmExporter
     /// gray = 0.299*R + 0.587*G + 0.114*B (standard BT.601 weights, integer approximation).
     ///
     /// Dogfood path: uses Format Factory NetpbmImage model exclusively.
-    /// R87 Train J: PPM → PGM grayscale export.
+    /// PPM → PGM grayscale export.
     /// </summary>
     public static NetpbmImage PpmToPgm(NetpbmImage ppm, int maxValue = 0)
     {

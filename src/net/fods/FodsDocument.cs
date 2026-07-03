@@ -58,7 +58,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Create a new, blank FODS document with no sheets.
     /// Call <see cref="AddSheet"/> to add sheets before using the document.
-    /// R114 Train A: blank document factory for programmatic construction.
+    /// blank document factory for programmatic construction.
     /// </summary>
     public static FodsDocument CreateNew()
     {
@@ -330,13 +330,13 @@ public sealed partial class FodsDocument
 
     /// <summary>
     /// Number of sheets in the document.
-    /// R92 Train B: convenience property.
+    /// convenience property.
     /// </summary>
     public int SheetCount => Sheets.Count;
 
     /// <summary>
     /// Get a sheet by name (case-sensitive). Returns null if not found.
-    /// R89 Train B: named sheet access.
+    /// named sheet access.
     /// </summary>
     public FodsSheet? GetSheetByName(string name)
     {
@@ -349,7 +349,7 @@ public sealed partial class FodsDocument
 
     /// <summary>
     /// Get a sheet by zero-based index. Returns null if the index is out of range.
-    /// R104 Wave 1: index-based sheet access (complements GetSheetByName).
+    /// index-based sheet access (complements GetSheetByName).
     /// </summary>
     public FodsSheet? GetSheetByIndex(int index)
     {
@@ -361,7 +361,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Return the names of all sheets in document order.
     /// Returns an empty list if the document has no sheets.
-    /// R92 Train L: sheet name enumeration.
+    /// sheet name enumeration.
     /// </summary>
     public IReadOnlyList<string> GetSheetNames()
     {
@@ -376,7 +376,7 @@ public sealed partial class FodsDocument
     /// Add a new empty sheet with the given name.
     /// The sheet is appended to the end of the spreadsheet body.
     /// Throws if a sheet with the same name already exists.
-    /// R100 Train B: sheet creation API.
+    /// sheet creation API.
     /// </summary>
     public FodsSheet AddSheet(string name)
     {
@@ -402,7 +402,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Remove a sheet by name from the spreadsheet body.
     /// Throws <see cref="InvalidOperationException"/> if no sheet with that name exists.
-    /// R101 Train B: sheet management completion (AddSheet exists, RemoveSheet was missing).
+    /// sheet management completion (AddSheet exists, RemoveSheet was missing).
     /// </summary>
     public void RemoveSheet(string name)
     {
@@ -419,7 +419,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Rename a sheet from <paramref name="oldName"/> to <paramref name="newName"/>.
     /// Throws if the old name is not found or the new name already exists.
-    /// R103 Train A: sheet renaming for workbook management.
+    /// sheet renaming for workbook management.
     /// </summary>
     public void RenameSheet(string oldName, string newName)
     {
@@ -441,7 +441,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Copy a sheet (deep clone) and add it with the given new name.
     /// Throws if the source sheet is not found or the new name already exists.
-    /// R104 Wave 1: sheet duplication for workbook templating.
+    /// sheet duplication for workbook templating.
     /// </summary>
     public FodsSheet CopySheet(string sourceName, string newName)
     {
@@ -470,7 +470,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Delete rows from a sheet by zero-based index range [startRow, startRow+count).
     /// Throws if the sheet is not found, or the range is out of bounds.
-    /// R105 Wave 2: row management for spreadsheet editing.
+    /// row management for spreadsheet editing.
     /// </summary>
     public void DeleteRows(string sheetName, int startRow, int count)
     {
@@ -499,7 +499,7 @@ public sealed partial class FodsDocument
     /// Insert an empty row at the given zero-based index in the named sheet.
     /// The new row contains no cells. Existing rows at and after the index shift down.
     /// Throws if the sheet is not found or the index is out of range.
-    /// R105 Wave 2: row insertion for spreadsheet editing.
+    /// row insertion for spreadsheet editing.
     /// </summary>
     public void InsertRow(string sheetName, int rowIndex)
     {
@@ -526,7 +526,7 @@ public sealed partial class FodsDocument
     /// Return the column headers from the first row of the first sheet.
     /// Assumes that row 0 contains header labels. Returns an empty list if the
     /// document has no sheets or the first row is empty.
-    /// R93 Train K: column header extraction.
+    /// column header extraction.
     /// </summary>
     public IReadOnlyList<string> GetColumnHeaders()
     {
@@ -538,7 +538,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Return the column headers from the first row of the named sheet.
     /// Returns an empty list if the sheet is not found or its first row is empty.
-    /// R93 Train K: column header extraction (named sheet overload).
+    /// column header extraction (named sheet overload).
     /// </summary>
     public IReadOnlyList<string> GetColumnHeaders(string sheetName)
     {
@@ -552,7 +552,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Return the column headers from the first row of <paramref name="sheet"/>.
     /// Returns an empty list if the first row is empty.
-    /// R93 Train K. Internal helper — use the instance overloads instead.
+ /// R93 . Internal helper — use the instance overloads instead.
     /// </summary>
     private static IReadOnlyList<string> GetColumnHeadersFromSheet(FodsSheet sheet)
     {
@@ -580,7 +580,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Get a cell value by zero-based row and column indices from the first sheet.
     /// Returns null if indices are out of range or cell is empty/covered.
-    /// R89 Train B: cell-level access.
+    /// cell-level access.
     /// </summary>
     public string? GetCellValue(int row, int col)
     {
@@ -592,7 +592,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Get a cell value by zero-based row and column indices from a specific sheet.
     /// Returns null if indices are out of range or cell is empty/covered.
-    /// R89 Train B: cell-level access.
+    /// cell-level access.
     /// </summary>
     public static string? GetCellValue(FodsSheet sheet, int row, int col)
     {
@@ -608,7 +608,7 @@ public sealed partial class FodsDocument
     /// Set a cell value by zero-based row and column indices on the first sheet.
     /// The row and column must exist within the sheet's existing DOM structure.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
-    /// R91 Train G: round-trip edit support.
+    /// round-trip edit support.
     /// </summary>
     public void SetCellValue(int row, int col, string value)
     {
@@ -622,7 +622,7 @@ public sealed partial class FodsDocument
     /// Set a cell value by zero-based row and column indices on a specific sheet.
     /// The row and column must exist within the sheet's existing DOM structure.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
-    /// R91 Train G: round-trip edit support.
+    /// round-trip edit support.
     /// </summary>
     public static void SetCellValue(FodsSheet sheet, int row, int col, string value)
     {
@@ -638,7 +638,7 @@ public sealed partial class FodsDocument
     /// Export a sheet as an HTML table string. Uses the first sheet if no sheet specified.
     /// Rows become &lt;tr&gt; elements, cells become &lt;td&gt; elements.
     /// Empty cells produce empty &lt;td&gt; elements. Cell text is HTML-escaped.
-    /// R94 Train M: HTML export for dogfood pipeline.
+    /// HTML export for dogfood pipeline.
     /// </summary>
     public string ExportSheetToHtml()
     {
@@ -650,7 +650,7 @@ public sealed partial class FodsDocument
 
     /// <summary>
     /// Export a named sheet as an HTML table string.
-    /// R94 Train M: HTML export for dogfood pipeline.
+    /// HTML export for dogfood pipeline.
     /// </summary>
     public string ExportSheetToHtml(string sheetName)
     {
@@ -662,7 +662,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Export a specific sheet as an HTML table string.
     /// Delegates to <see cref="FodsDocumentExporter.ExportSheetToHtml"/>.
-    /// R94 Train M: HTML export for dogfood pipeline.
+    /// HTML export for dogfood pipeline.
     /// </summary>
     public static string ExportSheetToHtml(FodsSheet sheet)
         => FodsDocumentExporter.ExportSheetToHtml(sheet);
@@ -670,12 +670,12 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Return the number of rows in the first sheet.
     /// Returns 0 if the document has no sheets.
-    /// R96 Train L: row count query for data inspection.
+    /// row count query for data inspection.
     /// </summary>
     /// <summary>
     /// Remove all rows from the named sheet, leaving it empty.
     /// Throws if the sheet is not found.
-    /// R106 Wave 2: sheet clearing for spreadsheet editing.
+    /// sheet clearing for spreadsheet editing.
     /// </summary>
     public void ClearSheet(string sheetName)
     {
@@ -698,7 +698,7 @@ public sealed partial class FodsDocument
     /// Insert a new row at the given index with the specified cell values.
     /// Creates a table-row element with table-cell elements containing text:p for each value.
     /// Null values produce empty cells. Existing rows at and after the index shift down.
-    /// R107 Wave 2: populated row insertion for spreadsheet editing workflows.
+    /// populated row insertion for spreadsheet editing workflows.
     /// </summary>
     public void InsertRowWithValues(string sheetName, int rowIndex, IReadOnlyList<string?> values)
     {
@@ -736,7 +736,7 @@ public sealed partial class FodsDocument
     /// Sets table:number-columns-spanned and table:number-rows-spanned on the top-left cell,
     /// and replaces spanned cells with table:covered-table-cell elements.
     /// ODF spec: §9.4.5 table:table-cell merge attributes.
-    /// R111 Wave 5: object-model depth for cell merge operations.
+    /// object-model depth for cell merge operations.
     /// </summary>
     public void MergeCells(string sheetName, int startRow, int startCol, int rowSpan, int colSpan)
     {
@@ -784,7 +784,7 @@ public sealed partial class FodsDocument
     /// Set a formula expression on a cell.
     /// Writes the table:formula attribute (e.g., "of:=SUM([.A1:.A10])") on the cell element.
     /// ODF spec: §9.4.6 table:formula attribute.
-    /// R111 Wave 5: object-model depth for formula editing workflows.
+    /// object-model depth for formula editing workflows.
     /// </summary>
     public void SetCellFormula(string sheetName, int row, int col, string formula)
     {
@@ -844,7 +844,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Set or replace the ODF table:style-name attribute on a cell.
     /// Throws if the sheet is not found or row/col indices are out of range.
-    /// R114 Train A: cell style management for formatting pipelines.
+    /// cell style management for formatting pipelines.
     /// </summary>
     public void SetCellStyle(string sheetName, int row, int col, string styleName)
     {

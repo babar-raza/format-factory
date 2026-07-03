@@ -173,6 +173,8 @@ def validate_history_identifiers_in_source(
                 continue
             if "test" in f.name.lower() or "spec" in f.name.lower():
                 continue
+            if "build" in f.parts or "__pycache__" in f.parts:
+                continue
             try:
                 content = f.read_text(encoding="utf-8", errors="replace")
                 for pat in _SPRINT_ID_PATTERNS:
@@ -225,7 +227,7 @@ def validate_undocumented_public_python_apis(
         }
 
     for f in src_dir.rglob("*.py"):
-        if "test" in f.parts or "__pycache__" in f.parts:
+        if "test" in f.parts or "__pycache__" in f.parts or "build" in f.parts:
             continue
         rel = f.relative_to(_r).as_posix()
         try:
@@ -349,7 +351,7 @@ def validate_constant_return_public_methods(
         }
 
     for f in src_dir.rglob("*.py"):
-        if "test" in f.parts or "__pycache__" in f.parts:
+        if "test" in f.parts or "__pycache__" in f.parts or "build" in f.parts:
             continue
         rel = f.relative_to(_r).as_posix()
         try:

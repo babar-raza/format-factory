@@ -180,7 +180,6 @@ def find_sheet_by_name(workbook: dict[str, Any], name: str) -> "dict[str, Any] |
     without iterating manually. Returns the full sheet dict from the
     neutral model (including rows and cells).
 
-    Added in R59 Train G as a product deepening capability.
     """
     for sheet in workbook.get("sheets", []):
         if sheet.get("name") == name:
@@ -225,7 +224,6 @@ def workbook_set_cell_value(
     Formula attributes (``formula``) are cleared when a new plain value is set.
     Style attributes and other metadata are preserved.
 
-    Added in R76 Train F as a product deepening capability (edit-and-save workflow).
     """
     if not isinstance(workbook, dict):
         return False, "workbook must be a dict"
@@ -286,7 +284,6 @@ def workbook_warnings_for_unsupported_edit(
 
     Returns a list of warning strings. Empty list means no unsupported features detected.
 
-    Added in R76 Train F as a product deepening capability (edit safety disclosure).
     """
     warnings: list[str] = []
 
@@ -321,7 +318,7 @@ def workbook_warnings_for_unsupported_edit(
 
 
 # ---------------------------------------------------------------------------
-# R77 Train I — Sheet management APIs
+# R77 — Sheet management APIs
 # ---------------------------------------------------------------------------
 
 
@@ -340,7 +337,6 @@ def workbook_add_sheet(
     Returns:
         (success, message) tuple.
 
-    Added in R77 Train I as a sheet-management product capability.
     """
     if not sheet_name or not sheet_name.strip():
         return False, "Sheet name must not be empty"
@@ -380,7 +376,6 @@ def workbook_rename_sheet(
     Returns:
         (success, message) tuple.
 
-    Added in R77 Train I as a sheet-management product capability.
     """
     if not new_name or not new_name.strip():
         return False, "New sheet name must not be empty"
@@ -417,7 +412,6 @@ def workbook_remove_sheet(
     Returns:
         (success, message) tuple.
 
-    Added in R77 Train I as a sheet-management product capability.
     """
     sheets = workbook.get("sheets", [])
 
@@ -454,7 +448,6 @@ def workbook_to_csv(
     Returns:
         CSV text string.
 
-    Added in R84 Train G as FODS product feature advancement.
     """
     import io
     import csv as _csv
@@ -513,7 +506,6 @@ def workbook_get_cell_value(
     Returns:
         Cell value (str, float, int, bool) or None.
 
-    Added in R84 Train G as FODS product feature advancement.
     """
     sheets = workbook.get("sheets", [])
     target = None

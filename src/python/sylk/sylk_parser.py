@@ -247,11 +247,11 @@ def get_capabilities() -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# R84 Train N: SYLK CSV export
+# R84 : SYLK CSV export
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-# R93 Train P: SYLK write capability
+# R93 : SYLK write capability
 # ---------------------------------------------------------------------------
 
 def write_sylk(doc: SylkDocument, file_path: str | Path) -> None:
@@ -268,7 +268,6 @@ def write_sylk(doc: SylkDocument, file_path: str | Path) -> None:
     Raises:
         SylkError: If file_path is invalid or write fails.
 
-    Added in R93 Train P.
     """
     path = Path(file_path)
     lines: list[str] = ["ID;P"]
@@ -301,7 +300,6 @@ def sylk_to_csv(file_path: str | Path) -> str:
     Raises:
         SylkError subclasses on parse failure.
 
-    Added in R84 Train N.
     """
     doc = parse_sylk_strict(file_path)
     if not doc.cells:

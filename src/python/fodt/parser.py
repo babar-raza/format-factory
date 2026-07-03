@@ -351,7 +351,7 @@ def _handle_text_child(
         ))
 
     elif tag == QN_TEXT_NOTE:
-        # R73 Train D: footnote/endnote detection (text:note element)
+ # R73 : footnote/endnote detection (text:note element)
         # note-class attribute is "footnote" or "endnote" per ODF 1.3
         note_class = elem.get(f"{{{NS_TEXT}}}note-class", "note")
         unsupported_features.add("footnote-endnote")
@@ -390,7 +390,7 @@ def _extract_table(table_elem: Any) -> "dict[str, Any]":
                 if p.tag == QN_TEXT_P:
                     cell_text_parts.append(_collect_text(p).strip())
             cell_dict: "dict[str, Any]" = {"text": " ".join(cell_text_parts)}
-            # R73 Train D: table cell span preservation (ODF 1.3 section 9.1.4)
+ # R73 : table cell span preservation (ODF 1.3 section 9.1.4)
             col_span = _safe_int_fodt(cell_elem.get(ATTR_TABLE_COL_SPAN, "1"), 1)
             row_span = _safe_int_fodt(cell_elem.get(ATTR_TABLE_ROW_SPAN, "1"), 1)
             if col_span > 1:

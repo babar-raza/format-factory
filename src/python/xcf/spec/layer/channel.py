@@ -25,6 +25,7 @@ class Channel:
 
     @property
     def name(self) -> str:
+        """Return the channel name."""
         return str(self._data.get("name", ""))
 
     @property

@@ -206,7 +206,7 @@ def _extract_pages(root: ET.Element) -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Model creation and serialization (Sprint 4, R133-R136)
+# Model creation and serialization (, R133-R136)
 # ---------------------------------------------------------------------------
 
 def create_fodg(pages_list: list[dict]) -> dict[str, Any]:
@@ -340,7 +340,7 @@ def get_page_by_name(model: dict[str, Any], name: str) -> "dict[str, Any] | None
 
 
 # ---------------------------------------------------------------------------
-# Sprint 5 additions (R138) — add_page, get_text_shapes
+# additions (R138) — add_page, get_text_shapes
 # ---------------------------------------------------------------------------
 
 def add_page(
@@ -405,7 +405,7 @@ def get_text_shapes(model: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 6 additions (R140) — remove_page, rename_page
+# additions (R140) — remove_page, rename_page
 # ---------------------------------------------------------------------------
 
 def remove_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
@@ -449,7 +449,6 @@ def rename_page(model: dict[str, Any], idx: int, name: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 7 additions (R142)
 # ---------------------------------------------------------------------------
 
 def get_all_text(model: dict[str, Any]) -> list[str]:
@@ -491,7 +490,6 @@ def get_page_text(model: dict[str, Any], page_idx: int) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 8 additions (R144)
 # ---------------------------------------------------------------------------
 
 def count_shapes(model: dict[str, Any]) -> int:
@@ -522,7 +520,6 @@ def export_to_json(model: dict[str, Any]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 9 additions (R146)
 # ---------------------------------------------------------------------------
 
 def duplicate_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
@@ -557,7 +554,6 @@ def get_page_index(model: dict[str, Any], name: str) -> int:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 10 additions (R148)
 # ---------------------------------------------------------------------------
 
 def clear_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
@@ -599,7 +595,6 @@ def swap_pages(model: dict[str, Any], idx1: int, idx2: int) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 11 additions (R150)
 # ---------------------------------------------------------------------------
 
 def page_names(model: dict[str, Any]) -> list[str]:

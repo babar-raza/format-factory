@@ -26,13 +26,16 @@ class FodtSpan:
 
     @property
     def text(self) -> str:
+        """Return the text content of this span."""
         return self._data.get("text", "")
 
     @property
     def style_name(self) -> str:
+        """Return the ODF style name applied to this span."""
         return self._data.get("style_name", "")
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying span data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:
@@ -50,25 +53,31 @@ class FodtParagraph:
 
     @property
     def kind(self) -> str:
+        """Return the block kind ('paragraph' or 'heading')."""
         return self._data.get("kind", "paragraph")
 
     @property
     def text(self) -> str:
+        """Return the plain text content of this paragraph."""
         return self._data.get("text", "")
 
     @property
     def style_name(self) -> str:
+        """Return the ODF paragraph style name."""
         return self._data.get("style_name", "")
 
     @property
     def outline_level(self) -> int | None:
+        """Return the heading outline level, or None for regular paragraphs."""
         return self._data.get("outline_level")
 
     @property
     def spans(self) -> list[FodtSpan]:
+        """Return the list of inline spans within this paragraph."""
         return [FodtSpan(s) for s in self._data.get("spans", [])]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying paragraph data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:
@@ -92,14 +101,17 @@ class FodtDocument:
 
     @property
     def format_id(self) -> str:
+        """Return the format identifier string (always 'fodt')."""
         return self._data.get("format_id", "fodt")
 
     @property
     def odf_version(self) -> str:
+        """Return the ODF version string from the document root."""
         return self._data.get("odf_version", "")
 
     @property
     def warnings(self) -> list[dict[str, Any]]:
+        """Return parse warnings accumulated during load."""
         return self._data.get("warnings", [])
 
     def paragraphs(self) -> list[_CompatParagraph]:
@@ -115,14 +127,17 @@ class FodtDocument:
 
     @property
     def block_count(self) -> int:
+        """Return the total number of content blocks (paragraphs and headings)."""
         return len(self._data.get("blocks", []))
 
     @property
     def table_count(self) -> int:
+        """Return the number of tables in the document."""
         return len(self._data.get("tables", []))
 
     @property
     def list_count(self) -> int:
+        """Return the number of lists in the document."""
         return len(self._data.get("lists", []))
 
     # Document dimension properties (FACT-FODT-001)

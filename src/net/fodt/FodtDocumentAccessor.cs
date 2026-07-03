@@ -14,7 +14,7 @@ public sealed partial class FodtDocument
     /// Return the total word count of the document.
     /// Words are sequences of non-whitespace characters separated by whitespace.
     /// Empty paragraphs contribute zero words. Headings are included.
-    /// R94 Train N: text analysis for document inspection.
+    /// text analysis for document inspection.
     /// </summary>
     public int GetWordCount()
     {
@@ -33,7 +33,7 @@ public sealed partial class FodtDocument
     /// Return the total character count of the document (all paragraphs including headings).
     /// Only counts non-whitespace and visible characters; whitespace is included.
     /// Empty paragraphs contribute zero characters.
-    /// R95 Train M: text analysis complement to GetWordCount.
+    /// text analysis complement to GetWordCount.
     /// </summary>
     public int GetCharCount()
     {
@@ -50,7 +50,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Return the total number of headings (text:h elements) in the document.
     /// Complements GetHeadingParagraphs() for quick count without materializing the list.
-    /// R96 Train M: document structure inspection.
+    /// document structure inspection.
     /// </summary>
     public int GetHeadingCount()
     {
@@ -66,14 +66,14 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Return the total number of paragraphs (including headings) in the document.
     /// Convenience alias for Paragraphs.Count without materializing the full list reference.
-    /// R97 Train M: document structure metric.
+    /// document structure metric.
     /// </summary>
     public int GetParagraphCount() => Paragraphs.Count;
 
     /// <summary>
     /// Return combined document statistics as a tuple.
     /// (WordCount, CharCount, ParagraphCount, HeadingCount)
-    /// R104 Wave 1: bulk statistics for document analysis.
+    /// bulk statistics for document analysis.
     /// </summary>
     public (int WordCount, int CharCount, int ParagraphCount, int HeadingCount) GetDocumentStats()
     {
@@ -96,7 +96,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Get the ODF style name (text:style-name attribute) of the paragraph at the given index.
     /// Returns null if the paragraph has no style-name attribute or the index is out of range.
-    /// R110 Wave 4: paragraph style inspection for formatting analysis.
+    /// paragraph style inspection for formatting analysis.
     /// </summary>
     public string? GetParagraphStyleName(int index)
     {
@@ -119,7 +119,7 @@ public sealed partial class FodtDocument
     /// Return the document outline as a list of (Level, Text) tuples from all heading elements.
     /// Level comes from text:outline-level (defaults to 1 if absent). Text is the heading text.
     /// Useful for generating table-of-contents or structural summaries.
-    /// R111 Wave 5: object-model depth for document structure analysis.
+    /// object-model depth for document structure analysis.
     /// </summary>
     public List<(int Level, string Text)> GetDocumentOutline()
     {
@@ -175,7 +175,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Return the style names of all paragraphs in document order.
     /// Returns an empty string for paragraphs without a style-name attribute.
-    /// R114 Train B: paragraph style inspection for formatting analysis.
+    /// paragraph style inspection for formatting analysis.
     /// </summary>
     public IReadOnlyList<string> GetParagraphStyles()
     {
@@ -190,7 +190,7 @@ public sealed partial class FodtDocument
     /// Export the document outline as a JSON string.
     /// Each entry includes paragraph index, style name, text, and heading level (0 if body paragraph).
     /// Heading level is read from text:outline-level attribute (set by <see cref="InsertHeading"/>).
-    /// R115 Train A: structured document outline for downstream pipeline integration.
+    /// structured document outline for downstream pipeline integration.
     /// </summary>
     public string ExportToOutlineJson()
     {
@@ -230,7 +230,7 @@ public sealed partial class FodtDocument
     /// Return paragraph indices whose style name or element type contains <paramref name="stylePattern"/>
     /// (case-insensitive substring match). For heading elements (text:h), the synthetic style
     /// "Heading" is used when no explicit style-name attribute is set.
-    /// R115 Train B: style-based paragraph filter for content extraction pipelines.
+    /// style-based paragraph filter for content extraction pipelines.
     /// </summary>
     public IReadOnlyList<int> FindParagraphsByStyle(string stylePattern)
     {
@@ -260,7 +260,7 @@ public sealed partial class FodtDocument
 
     /// <summary>
     /// Return a frequency map of words in the document body (case-insensitive, punctuation stripped).
-    /// Words shorter than minLength are excluded. R116 Train A: document word frequency analysis.
+ /// Words shorter than minLength are excluded. R116 : document word frequency analysis.
     /// </summary>
     public IReadOnlyDictionary<string, int> GetWordFrequency(int minLength = 1)
     {

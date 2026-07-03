@@ -4,7 +4,7 @@ csv_stats.py -- Statistics and analysis functions for CSV neutral model dicts.
 Works on the dict output of parse_csv(), not on file paths.
 All functions are pure: no I/O, no mutation.
 
-Added in R62 Train I (format track advancement).
+Added in R62 (format track advancement).
 
 License: Apache-2.0
 Package: format-factory-csv v0.1.0
@@ -22,7 +22,6 @@ def table_stats(csv_doc: dict[str, Any]) -> dict[str, Any]:
         row_count (int), column_count (int), has_header (bool),
         header_names (list[str] | None), non_empty_cells (int),
         total_cells (int), empty_cell_count (int).
-    Added in R62 Train I.
     """
     rows = csv_doc.get("rows", [])
     headers = csv_doc.get("headers")
@@ -55,7 +54,6 @@ def column_value_counts(csv_doc: dict[str, Any], column_index: int) -> dict[str,
 
     Returns a dict mapping value string → count.
     Empty cells are counted as empty string key "".
-    Added in R62 Train I.
     """
     rows = csv_doc.get("rows", [])
     counts: dict[str, int] = {}
@@ -78,7 +76,6 @@ def csv_row_length_distribution(csv_doc: dict) -> dict:
       is_uniform: bool           — True if all rows have same length
       total_rows: int
 
-    Added in R63 Train I (CSV format track advancement).
     """
     rows = csv_doc.get("rows", [])
     by_length: dict[int, int] = {}
@@ -109,7 +106,6 @@ def csv_field_type_summary(rows: list) -> dict[str, int]:
     Returns:
         dict with keys 'numeric', 'empty', 'text' mapping to int counts.
 
-    Added in R64 Train I (CSV format track advancement).
     """
     counts: dict[str, int] = {"numeric": 0, "empty": 0, "text": 0}
     for row in rows:
@@ -140,7 +136,6 @@ def csv_empty_row_count(rows: list) -> int:
         int — number of fully-empty rows. 0 if no rows or no empty rows.
 
     Useful for data quality assessment and sparse-data detection in CSV files.
-    Added in R65 Train I (CSV format track advancement).
     """
     count = 0
     for row in rows:
@@ -171,7 +166,6 @@ def csv_max_field_length(rows: list) -> int:
     Returns:
         int -- maximum field length in characters. 0 if no fields or empty rows.
 
-    Added in R66 Train I (CSV format track advancement).
     """
     max_len = 0
     for row in rows:

@@ -10,7 +10,7 @@ Implements Gate 4 prototype + Gate 5 neutral model.
 Parses P1 (ASCII) and P4 (binary) PBM files.
 Technology: Python stdlib only (open/read/split).
 
-R55 Train F: P4 binary decode added (TC-BINARY-PBM-001).
+R55 : P4 binary decode added (TC-BINARY-PBM-001).
 
 License: Apache-2.0
 spec_concept: PBM P4 binary bitmap pixel map
@@ -82,6 +82,7 @@ def _parse_netpbm_header_bytes(data: bytes, num_ints: int) -> tuple[list[int], i
     n = len(data)
 
     def skip_ws_and_comments() -> None:
+        """Advance i past whitespace and # comment lines."""
         nonlocal i
         while i < n:
             b = data[i:i+1]
@@ -262,7 +263,7 @@ def probe_pbm(file_path: str | Path) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# R73 Train G: image pixel statistics API
+# R73 : image pixel statistics API
 # ---------------------------------------------------------------------------
 
 def image_pixel_stats(file_path: str | Path) -> dict[str, Any]:
@@ -360,7 +361,6 @@ def write_pbm(
         ValueError: If pixels length does not match width * height.
         PbmSizeError: If dimensions exceed MAX_DIMENSION.
 
-    Added in R84 Train M as Netpbm write/roundtrip product advancement.
     """
     if width > MAX_DIMENSION or height > MAX_DIMENSION:
         raise PbmSizeError(f"Dimension {width}x{height} exceeds limit {MAX_DIMENSION}")

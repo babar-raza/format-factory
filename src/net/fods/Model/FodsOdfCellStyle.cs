@@ -1,4 +1,4 @@
-// FormatFactory.Fods -- ODF cell style property bag (GI-FODS-NET-001 Phase 3b)
+// FormatFactory.Fods -- ODF cell style property bag ( 3b)
 // Resolved from the ODF style chain via FodsStyleResolver.
 // ODF basis: ODF 1.3 §16 (Styles), §15.11 (Paragraph), §15.5 (Table cell)
 

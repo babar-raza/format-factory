@@ -27,17 +27,21 @@ class Block:
 
     @property
     def block_type(self) -> str:
+        """Return the Zstandard block type string."""
         return str(self._data.get("block_type", ""))
 
     @property
     def block_size(self) -> int:
+        """Return the block payload size in bytes."""
         return int(self._data.get("block_size", 0))
 
     @property
     def is_last(self) -> bool:
+        """Return True if this is the last block in the frame."""
         return bool(self._data.get("is_last", False))
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying block data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:

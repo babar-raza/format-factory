@@ -106,6 +106,7 @@ def fodt_to_html(path_or_model: "str | Path | dict[str, Any]") -> str:
     pending_list_items: list[str] = []
 
     def flush_list():
+        """Flush accumulated list items into a <ul> block and append to parts."""
         if pending_list_items:
             items = "".join(f"<li>{item}</li>" for item in pending_list_items)
             parts.append(f"<ul>{items}</ul>")

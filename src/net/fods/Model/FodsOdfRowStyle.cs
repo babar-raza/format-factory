@@ -1,4 +1,4 @@
-// FormatFactory.Fods -- ODF row style property bag (GI-FODS-NET-001 Phase 3b)
+// FormatFactory.Fods -- ODF row style property bag ( 3b)
 // ODF basis: ODF 1.3 §9.1.3 table:table-row, §15.9.3 style:row-height
 
 namespace FormatFactory.Fods;

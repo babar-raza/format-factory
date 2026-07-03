@@ -152,7 +152,7 @@ public static class FodsCsvExporter
     /// <summary>
     /// Load <paramref name="fodsPath"/> and export ALL sheets to individual CSV files
     /// in <paramref name="outputDirPath"/>, named {SheetName}.csv.
-    /// R88 Train H: multi-sheet CSV export.
+    /// multi-sheet CSV export.
     /// </summary>
     /// <param name="fodsPath">Path to the .fods source file.</param>
     /// <param name="outputDirPath">Directory where per-sheet CSV files are written.</param>
@@ -207,7 +207,7 @@ public static class FodsCsvExporter
 
     /// <summary>
     /// Export a single <see cref="FodsSheet"/> to a CSV string (no file I/O).
-    /// R89 Train I: in-memory CSV export.
+    /// in-memory CSV export.
     /// </summary>
     public static string ExportSheetToCsvString(FodsSheet sheet)
     {

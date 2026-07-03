@@ -1,4 +1,4 @@
-// FormatFactory.Fods -- ODF column style property bag (GI-FODS-NET-001 Phase 3b)
+// FormatFactory.Fods -- ODF column style property bag ( 3b)
 // ODF basis: ODF 1.3 §9.1.6 table:table-column, §15.9.1 style:column-width
 
 namespace FormatFactory.Fods;

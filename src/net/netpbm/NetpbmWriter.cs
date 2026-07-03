@@ -12,7 +12,7 @@ namespace FormatFactory.Netpbm;
 /// <summary>
 /// Writer for Netpbm image family.
 /// ASCII variants: PBM P1, PGM P2, PPM P3.
-/// Binary variants: PBM P4, PGM P5, PPM P6 (added R86 Train I).
+/// Binary variants: PBM P4, PGM P5, PPM P6 (added R86 ).
 /// </summary>
 public static class NetpbmWriter
 {
@@ -120,7 +120,7 @@ public static class NetpbmWriter
         return sb.ToString();
     }
 
-    // --- Binary writers (P4/P5/P6) — added R86 Train I ---
+ // --- Binary writers (P4/P5/P6) — added R86 ---
 
     private static byte[] BuildBinaryHeader(string magic, NetpbmImage image, bool includeMaxVal)
     {

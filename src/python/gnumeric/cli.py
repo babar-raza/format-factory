@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 def main() -> None:
+    """Entry point for the ff-gnumeric command-line tool."""
     if len(sys.argv) < 2:
         print("Usage: ff-gnumeric FILE.gnumeric")
         print("       Inspect a Gnumeric spreadsheet file.")

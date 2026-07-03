@@ -4,7 +4,7 @@ dif_stats.py -- Statistics and analysis functions for DIF neutral model dicts.
 Works on the dict output of parse_dif(), not on file paths.
 All functions are pure: no I/O, no mutation.
 
-Added in R62 Train I (format track advancement).
+Added in R62 (format track advancement).
 
 License: Apache-2.0
 Package: format-factory-dif v0.1.0
@@ -22,7 +22,6 @@ def dif_stats(dif_doc: dict[str, Any]) -> dict[str, Any]:
         row_count (int), vectors (int), tuples (int),
         total_cells (int), numeric_cells (int), string_cells (int),
         empty_cells (int), title (str).
-    Added in R62 Train I.
     """
     rows = dif_doc.get("rows", [])
     vectors = dif_doc.get("vectors", 0)
@@ -65,7 +64,6 @@ def dif_numeric_range(dif_doc: dict[str, Any]) -> dict[str, Any]:
 
     Returns: min_value (float | None), max_value (float | None),
              numeric_count (int).
-    Added in R62 Train I.
     """
     rows = dif_doc.get("rows", [])
     values: list[float] = []
@@ -100,7 +98,6 @@ def dif_vector_density(dif_doc: dict) -> dict:
       density: float             — non_empty_tuples / total_tuples
       avg_tuples_per_vector: float
 
-    Added in R63 Train I (DIF format track advancement).
     """
     vectors = dif_doc.get("vectors", [])
     total_tuples = 0
@@ -132,7 +129,6 @@ def dif_string_value_list(dif_doc: dict[str, Any]) -> list[str]:
     Returns:
         list[str] — all string values in row-major order. Empty list if none.
 
-    Added in R64 Train I (DIF format track advancement).
     """
     result: list[str] = []
     for row in dif_doc.get("rows", []):
@@ -156,7 +152,6 @@ def dif_empty_row_count(dif_doc: dict[str, Any]) -> int:
         int — number of fully-empty rows. 0 if no rows or no empty rows.
 
     Useful for data quality assessment and sparse-data detection in DIF files.
-    Added in R65 Train I (DIF format track advancement).
     """
     count = 0
     for row in dif_doc.get("rows", []):
@@ -182,7 +177,6 @@ def dif_string_cell_count(dif_doc: dict[str, Any]) -> int:
         int -- number of string cells found. 0 if none.
 
     Useful for content type assessment and format triage.
-    Added in R66 Train I (DIF format track advancement).
     """
     count = 0
     for row in dif_doc.get("rows", []):

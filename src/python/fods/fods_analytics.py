@@ -35,7 +35,6 @@ def workbook_stats(workbook: dict[str, Any]) -> dict[str, Any]:
       formula_cells: int    (cells with a table:formula attribute)
       per_sheet: list[dict] (per-sheet breakdown)
 
-    Added in R57 Train E as a new product capability.
     Useful for format triage and content assessment pipelines.
     """
     stats: dict[str, Any] = {
@@ -94,7 +93,6 @@ def workbook_type_distribution(workbook: dict[str, Any]) -> dict[str, Any]:
       total_cells: int
       per_sheet: list[dict]   — per-sheet breakdown with same by_type structure
 
-    Added in R59 Train G as a product deepening capability.
     """
     total_by_type: dict[str, int] = {}
     total_cells = 0
@@ -139,7 +137,6 @@ def workbook_sheet_summary(workbook: dict[str, Any]) -> list[dict[str, Any]]:
       formula_count: int    (cells with a formula attribute)
 
     Useful for quick structural overview without iterating all data.
-    Added in R60 Train G as a product deepening capability.
     """
     summary = []
     for sheet in workbook.get("sheets", []):
@@ -183,7 +180,6 @@ def workbook_empty_rows(workbook: dict[str, Any]) -> dict[str, Any]:
         Each entry: {name, index, empty_row_count, total_row_count}
 
     Useful for data quality assessment and sparse-data detection.
-    Added in R60 Train G as a product deepening capability.
     """
     total_empty = 0
     per_sheet = []
@@ -224,7 +220,6 @@ def workbook_formula_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
       value: Any               (cached value if present, else None)
 
     Useful for formula auditing, dependency analysis, and re-computation.
-    Added in R61 Train G as a product deepening capability.
     """
     results: list[dict[str, Any]] = []
     for sheet in workbook.get("sheets", []):
@@ -274,7 +269,6 @@ def workbook_cell_range(
 
     Useful for slicing tabular data, exporting ranges to CSV, and
     data pipeline integration.
-    Added in R61 Train G as a product deepening capability.
     """
     sheets = workbook.get("sheets", [])
     if sheet_index >= len(sheets):
@@ -310,7 +304,6 @@ def workbook_merged_cell_summary(workbook: dict[str, Any]) -> list[dict[str, Any
     Detects cells that carry a 'merge' or 'span' attribute.
     Returns an empty list if no merge annotations are found (most FODS files
     do not use cell merging).
-    Added in R62 Train H as a product deepening capability (merged cell metadata).
     """
     results: list[dict[str, Any]] = []
     for sheet_idx, sheet in enumerate(workbook.get("sheets", [])):
@@ -344,7 +337,6 @@ def workbook_sheet_order(workbook: dict[str, Any]) -> list[str]:
     Returns:
         List of sheet name strings in parse order.
         Returns empty list for empty workbooks.
-    Added in R62 Train H as a product deepening capability (sheet order preservation).
     """
     return [
         sheet.get("name", f"Sheet{i + 1}")
@@ -355,7 +347,7 @@ def workbook_sheet_order(workbook: dict[str, Any]) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Workbook numeric summary (R63 Train H — new capability)
+# Workbook numeric summary
 # ---------------------------------------------------------------------------
 
 def workbook_numeric_summary(workbook: dict[str, Any]) -> dict[str, Any]:
@@ -373,7 +365,6 @@ def workbook_numeric_summary(workbook: dict[str, Any]) -> dict[str, Any]:
 
     Returns workbook-level aggregate in 'total_numeric_cells', 'global_min',
     'global_max', 'global_sum'.
-    Added in R63 Train H as a product deepening capability (numeric range analysis).
     """
     per_sheet: list[dict[str, Any]] = []
     all_values: list[float] = []
@@ -411,7 +402,7 @@ def workbook_numeric_summary(workbook: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Workbook column width summary (R63 Train H — new capability)
+# Workbook column width summary
 # ---------------------------------------------------------------------------
 
 def workbook_column_count(workbook: dict[str, Any]) -> dict[str, Any]:
@@ -427,7 +418,6 @@ def workbook_column_count(workbook: dict[str, Any]) -> dict[str, Any]:
         row_count: int        — number of rows in the sheet
       total_sheets: int
 
-    Added in R63 Train H as a product deepening capability (column count / used range).
     """
     per_sheet: list[dict[str, Any]] = []
     for sheet in workbook.get("sheets", []):
@@ -453,7 +443,7 @@ def workbook_column_count(workbook: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Workbook row style summary (R64 Train H — new capability)
+# Workbook row style summary
 # ---------------------------------------------------------------------------
 
 def workbook_row_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]:
@@ -469,7 +459,6 @@ def workbook_row_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]
 
     Useful for understanding row-level formatting, conditional formatting
     detection, and style inventory across sheets.
-    Added in R64 Train H as a product deepening capability (row style metadata).
     """
     result: dict[str, list[str]] = {}
     for sheet in workbook.get("sheets", []):
@@ -486,7 +475,7 @@ def workbook_row_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]
 
 
 # ---------------------------------------------------------------------------
-# Workbook formula edit policy (R64 Train H — new capability)
+# Workbook formula edit policy
 # ---------------------------------------------------------------------------
 
 def workbook_formula_edit_policy(workbook: dict[str, Any]) -> dict[str, Any]:
@@ -503,7 +492,6 @@ def workbook_formula_edit_policy(workbook: dict[str, Any]) -> dict[str, Any]:
         policy: str               — 'all_editable' or 'mixed' or 'all_locked' or 'no_formulas'
 
     Useful for spreadsheet auditing and formula protection analysis.
-    Added in R64 Train H as a product deepening capability (formula edit policy).
     """
     total = 0
     locked = 0
@@ -539,7 +527,7 @@ def workbook_formula_edit_policy(workbook: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Workbook named range list (R65 Train H — new capability)
+# Workbook named range list
 # ---------------------------------------------------------------------------
 
 def workbook_named_range_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
@@ -557,7 +545,6 @@ def workbook_named_range_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
 
     Useful for understanding workbook structure, formula dependency analysis,
     and range-based data extraction.
-    Added in R65 Train H as a product deepening capability (named range inventory).
     """
     results: list[dict[str, Any]] = []
 
@@ -588,7 +575,7 @@ def workbook_named_range_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Workbook column style summary (R65 Train H — new capability)
+# Workbook column style summary
 # ---------------------------------------------------------------------------
 
 def workbook_column_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]:
@@ -605,7 +592,6 @@ def workbook_column_style_summary(workbook: dict[str, Any]) -> dict[str, list[st
 
     Useful for understanding column-level formatting, width detection,
     and style inventory across sheets.
-    Added in R65 Train H as a product deepening capability (column style metadata).
     """
     result: dict[str, list[str]] = {}
     for sheet in workbook.get("sheets", []):
@@ -641,7 +627,7 @@ def workbook_column_style_summary(workbook: dict[str, Any]) -> dict[str, list[st
 
 
 # ---------------------------------------------------------------------------
-# Workbook style family list (R66 Train H — new capability)
+# Workbook style family list
 # ---------------------------------------------------------------------------
 
 def workbook_style_family_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
@@ -659,7 +645,6 @@ def workbook_style_family_list(workbook: dict[str, Any]) -> list[dict[str, Any]]
         list[dict] -- style families found. Empty list if no style metadata.
 
     Useful for style inventory, format complexity assessment, and style cleanup.
-    Added in R66 Train H as a product deepening capability (style family inventory).
     """
     family_counts: dict[str, int] = {}
 
@@ -699,7 +684,7 @@ def workbook_style_family_list(workbook: dict[str, Any]) -> list[dict[str, Any]]
 
 
 # ---------------------------------------------------------------------------
-# Workbook data validation summary (R66 Train H — new capability)
+# Workbook data validation summary
 # ---------------------------------------------------------------------------
 
 def workbook_data_validation_summary(workbook: dict[str, Any]) -> dict[str, Any]:
@@ -715,7 +700,6 @@ def workbook_data_validation_summary(workbook: dict[str, Any]) -> dict[str, Any]
       validated_cell_ranges: list[str]   -- cell range expressions that have validations
 
     Useful for spreadsheet auditing and data integrity analysis.
-    Added in R66 Train H as a product deepening capability (data validation inventory).
     """
     validation_count = 0
     validated_cell_ranges: list[str] = []
@@ -779,7 +763,6 @@ def workbook_column_width_summary(workbook: dict[str, Any]) -> list[dict[str, An
       widths: list[str | None]       -- width value per column (None if absent)
 
     Useful for layout-sensitive spreadsheet processing and round-trip testing.
-    Added in R75 Train G as a product advancement capability.
     """
     result: list[dict[str, Any]] = []
     for sheet in workbook.get("sheets", []):
@@ -823,7 +806,6 @@ def workbook_cell_type_matrix(workbook: dict[str, Any]) -> list[dict[str, Any]]:
       by_type: dict[str, int] -- count per type label
 
     Useful for data profiling and format migration analysis.
-    Added in R75 Train G as a product advancement capability.
     """
     result: list[dict[str, Any]] = []
     for sheet in workbook.get("sheets", []):

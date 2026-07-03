@@ -11,7 +11,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Invert all pixel values in place.
     /// PBM: 0↔1. PGM: v → MaxValue - v. PPM: each channel inverted.
-    /// R88 Train J: invert transform API.
+    /// invert transform API.
     /// </summary>
     public void Invert()
     {
@@ -42,7 +42,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Adjust brightness by adding a delta to all pixel values, clamped to [0, MaxValue].
     /// Returns a NEW image.
-    /// R104 Wave 1: pixel intensity adjustment for image processing pipeline.
+    /// pixel intensity adjustment for image processing pipeline.
     /// </summary>
     public NetpbmImage AdjustBrightness(int delta)
     {
@@ -71,7 +71,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Adjust contrast by scaling pixel values around the midpoint (MaxValue/2).
     /// Returns a NEW image.
-    /// R105 Wave 2: contrast adjustment for image processing pipeline.
+    /// contrast adjustment for image processing pipeline.
     /// </summary>
     public NetpbmImage AdjustContrast(double factor)
     {
@@ -104,7 +104,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Perform histogram equalization on PGM images to improve contrast.
-    /// R107 Wave 2: image enhancement for processing pipeline depth.
+    /// image enhancement for processing pipeline depth.
     /// </summary>
     public NetpbmImage Equalize()
     {
@@ -160,7 +160,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Convert an image to a 1-bit PBM bitmap by thresholding.
-    /// R102 Train C: binarization for document scanning pipeline.
+    /// binarization for document scanning pipeline.
     /// </summary>
     public NetpbmImage Threshold(int threshold)
     {
@@ -274,7 +274,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Create a solarized copy of this image. Pixels above the threshold are inverted.
-    /// R110 Wave 4: artistic image processing depth.
+    /// artistic image processing depth.
     /// </summary>
     public NetpbmImage Solarize(byte threshold)
     {
@@ -307,7 +307,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Create a sepia-toned copy of this image. Only applies to PPM images.
-    /// R110 Wave 4: color tone processing for image manipulation.
+    /// color tone processing for image manipulation.
     /// </summary>
     public NetpbmImage Sepia()
     {
@@ -327,7 +327,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Apply a 3x3 sharpening kernel to the image. Returns a new sharpened image.
-    /// R111 Wave 5: image processing depth for enhancement workflows.
+    /// image processing depth for enhancement workflows.
     /// </summary>
     public NetpbmImage Sharpen()
     {
@@ -368,7 +368,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Apply an NxN box blur to the image. Returns a new blurred image.
-    /// R111 Wave 5: image processing depth for smoothing workflows.
+    /// image processing depth for smoothing workflows.
     /// </summary>
     public NetpbmImage BlurBox(int radius)
     {
@@ -429,7 +429,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Apply a box-based median filter with the given radius.
-    /// R114 Train C: noise-reduction median filter for image processing pipelines.
+    /// noise-reduction median filter for image processing pipelines.
     /// </summary>
     public NetpbmImage MedianFilter(int radius)
     {

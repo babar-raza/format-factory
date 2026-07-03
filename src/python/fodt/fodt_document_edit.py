@@ -9,7 +9,7 @@ from typing import Any
 
 
 # ---------------------------------------------------------------------------
-# Document section summary (R66 Train H — new capability)
+# Document section summary
 # ---------------------------------------------------------------------------
 
 def document_section_summary(document: dict[str, Any]) -> dict[str, Any]:
@@ -29,7 +29,6 @@ def document_section_summary(document: dict[str, Any]) -> dict[str, Any]:
       section_names: list[str]     -- names of sections in document order
 
     Useful for document structure analysis and section-based content extraction.
-    Added in R66 Train H as a product deepening capability (section inventory).
     """
     section_names: list[str] = []
     seen: set[str] = set()
@@ -74,7 +73,7 @@ def document_section_summary(document: dict[str, Any]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Document change tracking summary (R66 Train H — new capability)
+# Document change tracking summary
 # ---------------------------------------------------------------------------
 
 def document_change_tracking_summary(document: dict[str, Any]) -> dict[str, Any]:
@@ -93,7 +92,6 @@ def document_change_tracking_summary(document: dict[str, Any]) -> dict[str, Any]
       author_names: list[str]       -- unique author names found (in order)
 
     Useful for document review, collaboration analysis, and change auditing.
-    Added in R66 Train H as a product deepening capability (change tracking summary).
     """
     change_count = 0
     authors: list[str] = []
@@ -158,7 +156,6 @@ def document_paragraph_style_distribution(document: dict[str, Any]) -> dict[str,
         (style name starts with "Heading" or "heading" or contains "h[1-9]" pattern)
 
     Useful for document structure analysis and style migration.
-    Added in R75 Train G as a product advancement capability.
     """
     import re as _re
     distribution: dict[str, int] = {}
@@ -199,7 +196,6 @@ def document_language_list(document: dict[str, Any]) -> list[str]:
     Returns a list of language code strings (may be empty if no language
     attributes are present in the document).
 
-    Added in R75 Train G as a product advancement capability.
     """
     seen: set[str] = set()
     codes: list[str] = []
@@ -268,7 +264,6 @@ def document_set_block_text(
     single unstyled run (or preserves the first run's style if preserve_style=True).
     Heading level, block type, and other metadata are preserved.
 
-    Added in R76 Train G as a product deepening capability (edit-and-save workflow).
     """
     if not isinstance(document, dict):
         return False, "document must be a dict"
@@ -328,7 +323,6 @@ def document_warnings_for_unsupported_edit(
 
     Returns a list of warning strings. Empty list means no unsupported features detected.
 
-    Added in R76 Train G as a product deepening capability (edit safety disclosure).
     """
     warnings: list[str] = []
 
@@ -360,7 +354,7 @@ def document_warnings_for_unsupported_edit(
     return warnings
 
 
-# R77 Train J — Paragraph management APIs
+# R77 — Paragraph management APIs
 # ---------------------------------------------------------------------------
 
 
@@ -379,12 +373,11 @@ def document_append_paragraph(
     Returns:
         (success, message) tuple.
 
-    Added in R77 Train J as a paragraph-management product capability.
     """
     if text is None:
         return False, "Text must not be None"
 
-    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
+ # R79 : fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
     # Also maintain doc["content"] (authoritative write sequence used by write_fodt).
     blocks = document.get("blocks", [])
 
@@ -427,9 +420,8 @@ def document_remove_paragraph(
     Returns:
         (success, message) tuple.
 
-    Added in R77 Train J as a paragraph-management product capability.
     """
-    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
+ # R79 : fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
     # Also maintain doc["content"] (authoritative write sequence used by write_fodt).
     blocks = document.get("blocks", [])
 
@@ -480,7 +472,6 @@ def document_to_text(
     Returns:
         Plain text string with one block per line.
 
-    Added in R84 Train I as FODT product feature advancement.
     """
     lines = []
     blocks = document.get("blocks", [])
@@ -526,7 +517,6 @@ def document_get_paragraph_text(
     Returns:
         Paragraph text string, or None if not found.
 
-    Added in R84 Train I as FODT product feature advancement.
     """
     blocks = document.get("blocks", [])
     paragraphs = [b for b in blocks if b.get("type", "paragraph") == "paragraph"]

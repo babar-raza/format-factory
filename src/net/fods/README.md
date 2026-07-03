@@ -70,7 +70,7 @@ See `acquisition-packs/fods/gate11-commercial-licensing.md`.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-02T16:29:45+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-03T14:43:29+00:00 source=package-metadata -->
 ```bash
 dotnet add package FormatFactory.Fods
 ```
@@ -78,7 +78,7 @@ dotnet add package FormatFactory.Fods
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T16:29:45+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-03T14:43:29+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Spreadsheet |
@@ -90,6 +90,6 @@ dotnet add package FormatFactory.Fods
 | .NET | net10.0 |
 | Spec | OASIS ODF 1.3 |
 | QName coverage | 12/12 implemented |
-| Source files | 21 |
-| Test files | 652 |
+| Source files | 30 |
+| Test files | 566 |
 <!-- END:README-PACKAGE_INFO -->

@@ -1,7 +1,7 @@
 """
 pgm_to_ppm.py — Dogfood export: PGM to PPM using Format Factory write_ppm.
 
-R87 Train N: PGM to PPM dogfood export.
+R87 : PGM to PPM dogfood export.
 Uses Format Factory's own ppm.ppm_parser.write_ppm (not external libraries).
 
 dogfood_status: IMPLEMENTED

@@ -27,17 +27,21 @@ class OdsCellModel:
 
     @property
     def value(self) -> Any:
+        """Return the cell value."""
         return self._cell.value
 
     @property
     def value_type(self) -> str:
+        """Return the ODF value type string (e.g. 'string', 'float')."""
         return self._cell.value_type
 
     @property
     def text(self) -> str:
+        """Return the display text content of the cell."""
         return self._cell.text
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a dict with value, value_type, and text keys."""
         return {"value": self.value, "value_type": self.value_type, "text": self.text}
 
     def __repr__(self) -> str:
@@ -55,10 +59,12 @@ class OdsSheetModel:
 
     @property
     def name(self) -> str:
+        """Return the sheet name."""
         return self._sheet.name
 
     @property
     def row_count(self) -> int:
+        """Return the number of rows in this sheet."""
         return len(self._sheet.rows)
 
     def cells(self) -> Iterator[OdsCellModel]:
@@ -76,6 +82,7 @@ class OdsSheetModel:
         return None
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a dict with name and row_count keys."""
         return {"name": self.name, "row_count": self.row_count}
 
     def __repr__(self) -> str:

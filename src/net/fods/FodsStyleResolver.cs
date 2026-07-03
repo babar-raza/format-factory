@@ -1,4 +1,4 @@
-// FormatFactory.Fods -- ODF Style Chain Resolver (GI-FODS-NET-001 Phase 3b)
+// FormatFactory.Fods -- ODF Style Chain Resolver ( 3b)
 // Standalone, stateless resolver: navigates office:automatic-styles → style:style parent chain.
 // Gate 11 status: commercial_readiness_in_progress (NOT approved)
 //

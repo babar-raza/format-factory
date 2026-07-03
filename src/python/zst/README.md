@@ -53,7 +53,7 @@ src/python/zst/
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-02T16:00:11+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-03T14:43:28+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-zst
 ```
@@ -61,7 +61,7 @@ pip install format-factory-zst
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T16:00:11+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-03T14:43:28+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Zstandard Compressed File |
@@ -74,17 +74,17 @@ pip install format-factory-zst
 | Spec | IETF RFC 8878 |
 | QName coverage | 3/3 implemented |
 | Source files | 16 |
-| Test files | 97 |
+| Test files | 98 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T16:00:11+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-03T14:43:28+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-02T16:00:11+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-03T14:43:28+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->

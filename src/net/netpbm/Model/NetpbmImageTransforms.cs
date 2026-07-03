@@ -10,7 +10,7 @@ public sealed partial class NetpbmImage
 {
     /// <summary>
     /// Flip the image horizontally (mirror left-right) in place.
-    /// R87 Train J: simple transform API.
+    /// simple transform API.
     /// </summary>
     public void FlipHorizontal()
     {
@@ -44,7 +44,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Flip the image vertically (mirror top-bottom) in place.
-    /// R88 Train J: vertical transform API.
+    /// vertical transform API.
     /// </summary>
     public void FlipVertical()
     {
@@ -78,7 +78,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Rotate the image 90° clockwise. Returns a NEW image (dimensions swap).
-    /// R89 Train H: rotation transform.
+    /// rotation transform.
     /// </summary>
     public NetpbmImage Rotate90Cw()
     {
@@ -136,7 +136,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Rotate the image 270° clockwise (90° counter-clockwise). Returns a NEW image (dimensions swap).
-    /// R100 Train D: counter-clockwise rotation.
+    /// counter-clockwise rotation.
     /// </summary>
     public NetpbmImage Rotate270Cw()
     {
@@ -194,7 +194,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Rotate the image 180°. Returns a NEW image (dimensions unchanged).
-    /// R101 Train D: transform completion.
+    /// transform completion.
     /// </summary>
     public NetpbmImage Rotate180()
     {
@@ -239,7 +239,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Extract a rectangular sub-region. Returns a NEW image.
-    /// R89 Train H: crop API.
+    /// crop API.
     /// </summary>
     public NetpbmImage Crop(int top, int left, int cropHeight, int cropWidth)
     {
@@ -289,7 +289,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Create a new image resized to the specified dimensions using nearest-neighbor interpolation.
-    /// R94 Train O: basic resize for image processing pipeline.
+    /// basic resize for image processing pipeline.
     /// </summary>
     public NetpbmImage Resize(int newWidth, int newHeight)
     {
@@ -345,7 +345,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Transpose the image: swap rows and columns (flip along main diagonal).
-    /// R106 Wave 2: diagonal flip for image transformation.
+    /// diagonal flip for image transformation.
     /// </summary>
     public NetpbmImage FlipDiagonal()
     {
@@ -400,7 +400,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Merge another image horizontally (place <paramref name="other"/> to the right).
     /// Both images must have the same Height and Format. Returns a NEW image.
-    /// R104 Wave 1: image composition for tiling/panorama workflows.
+    /// image composition for tiling/panorama workflows.
     /// </summary>
     public NetpbmImage MergeHorizontal(NetpbmImage other)
     {
@@ -466,7 +466,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Merge another image vertically (place <paramref name="other"/> below).
     /// Both images must have the same Width and Format. Returns a NEW image.
-    /// R105 Wave 2: image composition for vertical tiling/stacking workflows.
+    /// image composition for vertical tiling/stacking workflows.
     /// </summary>
     public NetpbmImage MergeVertical(NetpbmImage other)
     {
@@ -517,7 +517,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Overlay another image on top of this image at the given offset.
-    /// R106 Wave 2: image compositing for editing workflows.
+    /// image compositing for editing workflows.
     /// </summary>
     public NetpbmImage Overlay(NetpbmImage overlay, int topOffset, int leftOffset)
     {

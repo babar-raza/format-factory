@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 def main() -> None:
+    """Entry point for the ff-fodt command-line tool."""
     if len(sys.argv) < 2:
         print("Usage: ff-fodt FILE.fodt")
         print("       Inspect a Flat OpenDocument Text file.")

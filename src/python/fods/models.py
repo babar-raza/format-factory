@@ -23,25 +23,31 @@ class FodsCell:
 
     @property
     def value(self) -> Any:
+        """Return the cell value."""
         return self._data.get("value")
 
     @property
     def value_type(self) -> str:
+        """Return the ODF value type string (e.g. 'string', 'float')."""
         return self._data.get("value_type", "")
 
     @property
     def text(self) -> str:
+        """Return the display text content of the cell."""
         return self._data.get("text", "")
 
     @property
     def formula(self) -> str | None:
+        """Return the formula string, or None if no formula is set."""
         return self._data.get("formula")
 
     @property
     def repeated(self) -> int:
+        """Return the repeat count for this cell (default 1)."""
         return self._data.get("repeated", 1)
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying cell data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:
@@ -58,14 +64,17 @@ class FodsSheet:
 
     @property
     def name(self) -> str:
+        """Return the sheet name."""
         return self._data.get("name", "")
 
     @property
     def rows(self) -> list[list[dict[str, Any]]]:
+        """Return the list of rows in this sheet."""
         return self._data.get("rows", [])
 
     @property
     def row_count(self) -> int:
+        """Return the number of rows in this sheet."""
         return len(self.rows)
 
     def cells(self) -> Iterator[FodsCell]:
@@ -92,6 +101,7 @@ class FodsSheet:
             yield [FodsCell(c) for c in row_cells]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying sheet data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:
@@ -114,18 +124,22 @@ class FodsDocument:
 
     @property
     def format_id(self) -> str:
+        """Return the format identifier string (always 'fods')."""
         return self._data.get("format_id", "fods")
 
     @property
     def odf_version(self) -> str:
+        """Return the ODF version string from the document root."""
         return self._data.get("odf_version", "")
 
     @property
     def sheet_count(self) -> int:
+        """Return the number of sheets in this document."""
         return len(self._data.get("sheets", []))
 
     @property
     def warnings(self) -> list[dict[str, Any]]:
+        """Return parse warnings accumulated during load."""
         return self._data.get("warnings", [])
 
     def sheets(self) -> list[FodsSheet]:

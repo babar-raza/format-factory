@@ -131,7 +131,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Fill a rectangular region with a uniform value (PBM/PGM) or color (PPM).
     /// For PBM, value must be 0 or 1. For PPM, all three channel values are used.
-    /// R92 Train N: region fill API for image editing workflows.
+    /// region fill API for image editing workflows.
     /// </summary>
     /// <param name="top">Top row (inclusive).</param>
     /// <param name="left">Left column (inclusive).</param>
@@ -184,7 +184,7 @@ public sealed partial class NetpbmImage
     /// (<paramref name="destTop"/>, <paramref name="destLeft"/>).
     /// Both images must have the same format. Region dimensions are clamped to the
     /// smaller of source and destination available bounds.
-    /// R93 Train M: region copy for image compositing.
+    /// region copy for image compositing.
     /// </summary>
     /// <param name="source">Source image to copy from.</param>
     /// <param name="srcTop">Top row of the source region (zero-based).</param>
@@ -242,7 +242,7 @@ public sealed partial class NetpbmImage
     /// Convert a PPM (color) image to a PGM (grayscale) image using standard luminance weights.
     /// Formula: gray = 0.299*R + 0.587*G + 0.114*B (ITU-R BT.601).
     /// Throws InvalidOperationException if the image is not PPM format.
-    /// R95 Train N: color-to-grayscale conversion for image pipeline.
+    /// color-to-grayscale conversion for image pipeline.
     /// </summary>
     public NetpbmImage ToGrayscale()
     {
@@ -274,7 +274,7 @@ public sealed partial class NetpbmImage
     /// Convert a PGM (grayscale) image to a PPM (color) image.
     /// Each gray value is replicated across R, G, B channels.
     /// Throws InvalidOperationException if the image is not PGM format.
-    /// R99 Train D: grayscale-to-color conversion for dogfood export pipeline.
+    /// grayscale-to-color conversion for dogfood export pipeline.
     /// </summary>
     public NetpbmImage ToColor()
     {
@@ -309,7 +309,7 @@ public sealed partial class NetpbmImage
     /// Extract a single color channel from a PPM image as a PGM grayscale image.
     /// Channel: 0 = Red, 1 = Green, 2 = Blue.
     /// Throws if the image is not PPM format or channel index is invalid.
-    /// R103 Train C: channel separation for color analysis pipeline.
+    /// channel separation for color analysis pipeline.
     /// </summary>
     /// <param name="channel">Channel index: 0=Red, 1=Green, 2=Blue.</param>
     public NetpbmImage ExtractChannel(int channel)
@@ -345,7 +345,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Save this image to a file in its current format.
     /// ASCII formats (P1/P2/P3) produce text files; binary (P4/P5/P6) produce raw bytes.
-    /// R98 Train N: same-format save for edit persistence.
+    /// same-format save for edit persistence.
     /// </summary>
     /// <param name="path">Absolute or relative path to write.</param>
     public void SaveToFile(string path)
@@ -357,7 +357,7 @@ public sealed partial class NetpbmImage
 
     /// <summary>
     /// Create a deep copy of this image. All pixel data is duplicated.
-    /// R97 Train N: image cloning for non-destructive editing pipeline.
+    /// image cloning for non-destructive editing pipeline.
     /// </summary>
     public NetpbmImage Clone()
     {
@@ -388,7 +388,7 @@ public sealed partial class NetpbmImage
     /// P1↔P4 (PBM), P2↔P5 (PGM), P3↔P6 (PPM).
     /// Does not alter pixel data — only changes the Format field.
     /// Returns a new image; does not modify the original.
-    /// R107 Wave 2: format conversion for save pipeline flexibility.
+    /// format conversion for save pipeline flexibility.
     /// </summary>
     public NetpbmImage ConvertFormat(NetpbmFormat targetFormat)
     {
@@ -454,7 +454,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Create a blank canvas of the specified dimensions and format, filled with the given value.
     /// For PPM format, all three channels are set to <paramref name="fill"/>.
-    /// R114 Train C: blank canvas factory for image composition pipelines.
+    /// blank canvas factory for image composition pipelines.
     /// </summary>
     public static NetpbmImage Create(int width, int height, NetpbmFormat format, byte fill = 0)
     {
@@ -518,7 +518,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Draw a filled or outlined rectangle on a PGM image.
     /// <paramref name="top"/>/<paramref name="left"/> are 0-based. Clipped to image bounds.
-    /// R115 Train A: drawing primitive for image composition pipelines.
+    /// drawing primitive for image composition pipelines.
     /// </summary>
     /// <param name="top">Top row (0-based).</param>
     /// <param name="left">Left column (0-based).</param>
@@ -551,7 +551,7 @@ public sealed partial class NetpbmImage
     /// <summary>
     /// Draw a line between two points using Bresenham's algorithm (PGM only).
     /// Clips to image bounds. Throws InvalidOperationException for PPM images.
-    /// R116 Train A: drawing primitives.
+    /// drawing primitives.
     /// </summary>
     public void DrawLine(int x0, int y0, int x1, int y1, byte fill)
     {

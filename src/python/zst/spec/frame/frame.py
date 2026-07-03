@@ -27,21 +27,26 @@ class Frame:
 
     @property
     def frame_type(self) -> str:
+        """Return the frame type string ('zstandard' or 'skippable')."""
         return str(self._data.get("frame_type", "zstandard"))
 
     @property
     def content_size(self) -> int:
+        """Return the uncompressed content size in bytes (-1 if unknown)."""
         return int(self._data.get("content_size", -1))
 
     @property
     def checksum_flag(self) -> bool:
+        """Return True if a content checksum is present in this frame."""
         return bool(self._data.get("checksum_flag", False))
 
     @property
     def block_count(self) -> int:
+        """Return the number of compressed blocks in this frame."""
         return int(self._data.get("block_count", 0))
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the underlying frame data dict."""
         return dict(self._data)
 
     def __repr__(self) -> str:

@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 def main() -> None:
+    """Entry point for the ff-toml command-line tool."""
     if len(sys.argv) < 2:
         print("Usage: ff-toml FILE.toml")
         print("       Inspect a TOML configuration file.")

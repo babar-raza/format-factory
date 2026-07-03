@@ -66,7 +66,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Create a new, empty FODT document with no paragraphs.
     /// Call <see cref="AppendParagraph"/> to add content.
-    /// R114 Train B: blank document factory for programmatic construction.
+    /// blank document factory for programmatic construction.
     /// </summary>
     public static FodtDocument CreateEmpty()
     {
@@ -188,7 +188,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Save this document to the specified file path.
     /// Alias for <see cref="Save(string)"/> — provides explicit round-trip API name.
-    /// R91 Train H: same-format save after edit demonstration.
+    /// same-format save after edit demonstration.
     /// </summary>
     /// <param name="path">Absolute or relative path to write.</param>
     public void SaveToFile(string path) => Save(path);
@@ -242,7 +242,7 @@ public sealed partial class FodtDocument
 
     /// <summary>
     /// Get the plain text content of the document (all paragraphs joined by newlines).
-    /// R88 Train I: text analysis API.
+    /// text analysis API.
     /// </summary>
     public string GetPlainText()
     {
@@ -261,7 +261,7 @@ public sealed partial class FodtDocument
     /// Return the plain text content of paragraphs in the range [startIndex, endIndex).
     /// Paragraphs are joined by newlines. Both indices are zero-based.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are invalid.
-    /// R103 Train B: section extraction for document splitting.
+    /// section extraction for document splitting.
     /// </summary>
     public string GetPlainTextRange(int startIndex, int endIndex)
     {
@@ -285,7 +285,7 @@ public sealed partial class FodtDocument
 
     /// <summary>
     /// Count words in the document (whitespace-delimited tokens across all paragraphs).
-    /// R88 Train I: text analysis API.
+    /// text analysis API.
     /// </summary>
     public int WordCount
     {
@@ -299,7 +299,7 @@ public sealed partial class FodtDocument
 
     /// <summary>
     /// Count characters in the document (excluding leading/trailing whitespace per paragraph).
-    /// R89 Train I: text statistics API.
+    /// text statistics API.
     /// </summary>
     public int CharCount
     {
@@ -319,7 +319,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Search for all occurrences of a substring in the document text.
     /// Returns a list of (paragraphIndex, positionInParagraph) tuples.
-    /// R89 Train I: text search API.
+    /// text search API.
     /// </summary>
     public List<(int ParagraphIndex, int Position)> SearchText(string query, StringComparison comparison = StringComparison.Ordinal)
     {
@@ -346,7 +346,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Replace all occurrences of a substring in paragraph text nodes.
     /// Returns the total number of replacements made.
-    /// R92 Train C: text manipulation API.
+    /// text manipulation API.
     /// </summary>
     public int ReplaceText(string oldText, string newText, StringComparison comparison = StringComparison.Ordinal)
     {
@@ -405,14 +405,14 @@ public sealed partial class FodtDocument
 
     /// <summary>
     /// Number of paragraphs in the document.
-    /// R92 Train C: convenience property.
+    /// convenience property.
     /// </summary>
     public int ParagraphCount => Paragraphs.Count;
 
     /// <summary>
     /// Return all heading paragraphs (text:h elements) in document order.
     /// Returns an empty list if the document has no headings.
-    /// R92 Train M: heading enumeration for document structure analysis.
+    /// heading enumeration for document structure analysis.
     /// </summary>
     public List<FodtParagraph> GetHeadingParagraphs()
     {
@@ -429,7 +429,7 @@ public sealed partial class FodtDocument
     /// Return the text content of all paragraphs in document order.
     /// Each element corresponds to one paragraph's full text content.
     /// Returns an empty list if the document has no paragraphs.
-    /// R93 Train L: bulk paragraph text extraction for diff/verification.
+    /// bulk paragraph text extraction for diff/verification.
     /// </summary>
     public List<string> GetParagraphTexts()
     {
@@ -443,7 +443,7 @@ public sealed partial class FodtDocument
     /// Append a new paragraph with the given text to the end of the document body.
     /// The paragraph is created as a text:p element under office:body/office:text.
     /// Returns the created paragraph. Throws if the document has no body.
-    /// R100 Train C: paragraph mutation API.
+    /// paragraph mutation API.
     /// </summary>
     public FodtParagraph AppendParagraph(string text)
     {
@@ -462,7 +462,7 @@ public sealed partial class FodtDocument
     /// Shifts existing paragraphs at and after the index down by one.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
     /// Index == ParagraphCount is allowed (same as AppendParagraph).
-    /// R102 Train B: paragraph insertion for document editing.
+    /// paragraph insertion for document editing.
     /// </summary>
     public FodtParagraph InsertParagraph(int index, string text)
     {
@@ -482,7 +482,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Remove the paragraph at the given zero-based index from the document body.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
-    /// R101 Train B: paragraph removal for document editing roundtrip.
+    /// paragraph removal for document editing roundtrip.
     /// </summary>
     public void RemoveParagraph(int index)
     {
@@ -497,7 +497,7 @@ public sealed partial class FodtDocument
     /// Set the text content of the paragraph at the given index.
     /// Replaces all existing text nodes in the paragraph element.
     /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
-    /// R104 Wave 1: in-place paragraph text editing (preserves element identity).
+    /// in-place paragraph text editing (preserves element identity).
     /// </summary>
     public void SetParagraphText(int index, string text)
     {
@@ -521,7 +521,7 @@ public sealed partial class FodtDocument
     /// Export the entire document as a Markdown string.
     /// Headings become # lines (level derived from text:outline-level attribute, default 1).
     /// Paragraphs become plain text lines separated by blank lines.
-    /// R101 Train B: Markdown export for documentation pipeline.
+    /// Markdown export for documentation pipeline.
     /// </summary>
     public string ExportToMarkdown()
     {
@@ -552,7 +552,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Export the document body to an HTML string.
     /// Headings become h1..h6 elements, paragraphs become p elements.
-    /// R105 Wave 2: HTML export for web pipeline and dogfood.
+    /// HTML export for web pipeline and dogfood.
     /// </summary>
     public string ExportToHtml()
     {
@@ -581,7 +581,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Get the text content of a single paragraph by zero-based index.
     /// Returns null if the index is out of range.
-    /// R105 Wave 2: single paragraph text access for efficient lookups.
+    /// single paragraph text access for efficient lookups.
     /// </summary>
     public string? GetParagraphText(int index)
     {
@@ -595,7 +595,7 @@ public sealed partial class FodtDocument
     /// <summary>
     /// Remove all paragraphs and headings from the document body.
     /// After this call ParagraphCount will be 0.
-    /// R106 Wave 2: document clearing for editing workflows.
+    /// document clearing for editing workflows.
     /// </summary>
     public void RemoveAllParagraphs()
     {
@@ -611,7 +611,7 @@ public sealed partial class FodtDocument
     /// Extract the concatenated text of paragraphs from startIndex (inclusive) to endIndex (exclusive).
     /// Returns paragraphs separated by newlines.
     /// Returns null if either index is out of range or start >= end.
-    /// R106 Wave 2: text range extraction for document analysis.
+    /// text range extraction for document analysis.
     /// </summary>
     public string? GetTextBetweenParagraphs(int startIndex, int endIndex)
     {
@@ -631,7 +631,7 @@ public sealed partial class FodtDocument
     /// Return the text content of all headings in document order.
     /// Returns an empty list if the document has no headings.
     /// Complements GetParagraphTexts() by filtering to headings only.
-    /// R107 Wave 2: heading text extraction for document structure analysis.
+    /// heading text extraction for document structure analysis.
     /// </summary>
     public IReadOnlyList<string> GetHeadingTexts()
     {
@@ -648,7 +648,7 @@ public sealed partial class FodtDocument
     /// Export the document body to a plain text file.
     /// Paragraphs are joined by newlines, headings are treated as plain text.
     /// Creates or overwrites the file at the specified path.
-    /// R107 Wave 2: plain text export for TXT dogfood pipeline.
+    /// plain text export for TXT dogfood pipeline.
     /// </summary>
     public void ExportToPlainTextFile(string filePath)
     {
@@ -688,7 +688,7 @@ public sealed partial class FodtDocument
     /// Insert a new heading with the given text and outline level at the specified index.
     /// Creates a text:h element (not text:p). Level must be 1-6.
     /// Shifts existing paragraphs at and after the index down by one.
-    /// R110 Wave 4: heading insertion for document structure editing.
+    /// heading insertion for document structure editing.
     /// </summary>
     public FodtParagraph InsertHeading(int index, string text, int level)
     {
@@ -729,7 +729,7 @@ public sealed partial class FodtDocument
     /// Remove a heading element by its index within the combined paragraph/heading list.
     /// Only removes elements that are headings (text:h). Throws if the element at the index
     /// is not a heading or the index is out of range.
-    /// R111 Wave 5: object-model depth, complements InsertHeading.
+    /// object-model depth, complements InsertHeading.
     /// </summary>
     public void RemoveHeading(int index)
     {
@@ -751,7 +751,7 @@ public sealed partial class FodtDocument
     /// For heading paragraphs, updates text:style-name on the text:h element.
     /// For body paragraphs, updates text:style-name on the text:p element.
     /// Throws if the index is out of range.
-    /// R114 Train B: paragraph style management for formatting pipelines.
+    /// paragraph style management for formatting pipelines.
     /// </summary>
     public void SetParagraphStyle(int index, string styleName)
     {

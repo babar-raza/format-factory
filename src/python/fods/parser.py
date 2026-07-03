@@ -343,13 +343,13 @@ def _process_row_elem(
         value_type = child.get(ATTR_VALUE_TYPE)
         formula = child.get(ATTR_FORMULA)  # IR-FODS-008: capture, don't eval
 
-        # R73 Train D: merged-cell span metadata preservation (ODF 1.3 section 9.1.4)
+ # R73 : merged-cell span metadata preservation (ODF 1.3 section 9.1.4)
         # table:number-columns-spanned / table:number-rows-spanned
         # Default 1 per ODF spec. Only non-trivial spans (>1) are reported.
         col_span = _safe_int(child.get(ATTR_COL_SPAN, "1"), 1)
         row_span = _safe_int(child.get(ATTR_ROW_SPAN, "1"), 1)
 
-        # R73 Train D: emit WARN_FORMULA_CELL when formula present (IR-FODS-008 transparency)
+ # R73 : emit WARN_FORMULA_CELL when formula present (IR-FODS-008 transparency)
         if formula is not None:
             unsupported_features.add("formula")
             warnings.append(make_warning(

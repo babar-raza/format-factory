@@ -4,7 +4,7 @@ ppm_stats.py -- Statistics and analysis functions for PPM neutral model dicts.
 Works on the dict output of parse_ppm(), not on file paths.
 All functions are pure: no I/O, no mutation.
 
-Added in R62 Train I (format track advancement).
+Added in R62 (format track advancement).
 
 License: Apache-2.0
 Package: format-factory-ppm v0.1.0
@@ -22,7 +22,6 @@ def image_stats(ppm_doc: dict[str, Any]) -> dict[str, Any]:
         width (int), height (int), pixel_count (int), maxval (int),
         magic (str), depth (str: '8-bit' or '16-bit'),
         aspect_ratio (float | None), megapixels (float).
-    Added in R62 Train I.
     """
     width = ppm_doc.get("width", 0)
     height = ppm_doc.get("height", 0)
@@ -55,7 +54,6 @@ def image_color_sample(ppm_doc: dict[str, Any], sample_size: int = 10) -> dict[s
     Returns: sampled_pixels (list of tuples/lists), sample_size (int),
              total_pixels (int).
     Samples evenly spaced from the pixel list.
-    Added in R62 Train I.
     """
     pixel_count = ppm_doc.get("pixel_count", 0)
     # Note: parse_ppm() returns pixel_count as an int, not the pixel list itself.
@@ -80,7 +78,6 @@ def ppm_channel_stats(ppm_doc: dict) -> dict:
     Works on the parsed dict from parse_ppm(). The dict includes a 'pixels'
     list of RGB tuples (may be partial for large images). If pixels is empty,
     returns zero statistics.
-    Added in R63 Train I (PPM format track advancement).
     """
     pixels = ppm_doc.get("pixels", [])
     if not pixels:
@@ -132,7 +129,6 @@ def ppm_brightness_histogram(ppm_doc: dict, bins: int = 4) -> dict[str, int]:
         dict mapping bin label strings (e.g. '0-63', '64-127') to pixel counts.
         Empty dict if no pixel data.
 
-    Added in R64 Train I (PPM format track advancement).
     """
     pixels = ppm_doc.get("pixels", [])
     maxval = ppm_doc.get("maxval", 255)
@@ -172,7 +168,6 @@ def ppm_pixel_count(ppm_doc: dict[str, Any]) -> int:
         int — total pixel count. 0 if width or height is missing/zero.
 
     Useful for quick image size assessment without loading pixel data.
-    Added in R65 Train I (PPM format track advancement).
     """
     width = ppm_doc.get("width", 0)
     height = ppm_doc.get("height", 0)
@@ -195,7 +190,6 @@ def ppm_channel_histogram(ppm_doc: dict[str, Any]) -> dict[str, list[int]]:
 
     Useful for color distribution analysis, exposure assessment, and
     image quality metrics.
-    Added in R66 Train I (PPM format track advancement).
     """
     red = [0] * 256
     green = [0] * 256

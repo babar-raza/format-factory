@@ -379,7 +379,7 @@ def _extract_sheets(root: ET.Element) -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Cell accessor functions (Sprint 3+, R123/R125/R126)
+# Cell accessor functions (+, R123/R125/R126)
 # ---------------------------------------------------------------------------
 
 def get_cell_value(model: dict[str, Any], sheet_idx: int, row: int, col: int) -> str:
@@ -447,7 +447,7 @@ def get_sheet_names(source: "str | bytes | Path") -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Sheet operations (Sprint 2, R130)
+# Sheet operations (, R130)
 # ---------------------------------------------------------------------------
 
 def get_row(model: dict[str, Any], sheet_idx: int, row_idx: int) -> list[str]:
@@ -533,7 +533,6 @@ def rename_sheet(model: dict[str, Any], sheet_idx: int, name: str) -> dict[str, 
 
 
 # ---------------------------------------------------------------------------
-# Sprint 4 additions (R136-R137)
 # ---------------------------------------------------------------------------
 
 def add_sheet(
@@ -606,7 +605,6 @@ def copy_sheet(model: dict[str, Any], sheet_idx: int) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Sprint 5 additions (R138)
 # ---------------------------------------------------------------------------
 
 def clear_cell(
@@ -659,7 +657,6 @@ def read_cell(
 
 
 # ---------------------------------------------------------------------------
-# Sprint 8 additions (R144)
 # ---------------------------------------------------------------------------
 
 def get_sheet_index(model: dict[str, Any], name: str) -> int:
