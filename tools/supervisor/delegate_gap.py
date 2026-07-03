@@ -222,8 +222,8 @@ def delegate_gap(
         return 1
 
     print(f"[delegate_gap] Gap {gap_id} delegated to {target_lane}")
-    print(f"[delegate_gap]   -> delegation-ledger.json updated")
-    print(f"[delegate_gap]   -> known-failure-ledger.yaml updated")
+    print("[delegate_gap]   -> delegation-ledger.json updated")
+    print("[delegate_gap]   -> known-failure-ledger.yaml updated")
     print(f"[delegate_gap]   -> {handoff_path.name} updated")
     return 0
 
