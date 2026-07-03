@@ -35,9 +35,10 @@ public class CsvWriter
     // -------------------------------------------------------------------------
 
     /// <summary>
-    /// Instance wrapper: serialize rows and write to a file path (delegates to WriteRowsToFile).
+    /// Serialize <paramref name="rows"/> and write to <paramref name="path"/> (static overload).
+    /// Callable as <c>CsvWriter.WriteRows(rows, path)</c> or on an instance (static-on-instance).
     /// </summary>
-    public void WriteRows(IEnumerable<IEnumerable<string?>> rows, string path) => WriteRowsToFile(rows, path);
+    public static void WriteRows(IEnumerable<IEnumerable<string?>> rows, string path) => WriteRowsToFile(rows, path);
 
     /// <summary>
     /// Serialize <paramref name="rows"/> to a CSV string.

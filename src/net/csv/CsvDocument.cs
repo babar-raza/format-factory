@@ -248,16 +248,16 @@ public sealed class CsvDocument
         return sorted.Length % 2 == 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2.0;
     }
 
-    /// <summary>Returns the most frequent numeric value in the specified column.</summary>
-    public double GetColumnMode(int index) => _Mode(ParseNumericColumn(GetColumn(index)));
+    /// <summary>Returns the most frequently occurring string value in the specified column.</summary>
+    public string GetColumnMode(int index) => _ModeString(GetColumn(index));
 
-    /// <summary>Returns the most frequent numeric value in the specified column (by header name).</summary>
-    public double GetColumnMode(string headerName) => _Mode(ParseNumericColumn(GetColumn(headerName)));
+    /// <summary>Returns the most frequently occurring string value in the specified column (by header name).</summary>
+    public string GetColumnMode(string headerName) => _ModeString(GetColumn(headerName));
 
-    private static double _Mode(IEnumerable<double> values)
+    private static string _ModeString(IEnumerable<string> values)
     {
         var grp = values.GroupBy(v => v).OrderByDescending(g => g.Count()).FirstOrDefault();
-        if (grp == null) throw new InvalidOperationException("Column has no numeric values.");
+        if (grp == null) throw new InvalidOperationException("Column has no values.");
         return grp.Key;
     }
 
