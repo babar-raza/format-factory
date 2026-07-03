@@ -7,6 +7,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Environment gate: requires explicit approval in GitHub repo settings before publishing.
+    # Create a "production" environment at Settings → Environments with required reviewers.
+    environment: production
     steps:
       - uses: actions/checkout@v4
 
@@ -14,22 +17,51 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install build tools
-        run: pip install build twine
+      - name: Install dependencies
+        run: pip install pyyaml build twine
 
-      - name: Determine format from tag
+      - name: Determine format from tag and validate Gate 11 approval
         id: format
         run: |
           TAG=${GITHUB_REF#refs/tags/}
-          # Tags should be like "fods-v0.1.0" or "v0.1.0"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
+          # Tags must be like "fods-v0.1.0" (format prefix required for per-format releases).
+          # Parse the format name from the tag prefix.
+          if [[ "$TAG" =~ ^([a-z]+)-v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            FORMAT="${BASH_REMATCH[1]}"
+            echo "format=$FORMAT" >> $GITHUB_OUTPUT
+            echo "Detected format: $FORMAT"
+          else
+            echo "ERROR: Tag '$TAG' does not match expected pattern '<format>-v<semver>'."
+            echo "Per-format releases require a tag like 'fods-v0.1.0'."
+            echo "Root package release is not supported via this workflow."
+            exit 1
+          fi
+          # Verify Gate 11 (G11-G) approval in the format registry.
+          python -c "
+          import yaml, sys
+          with open('registry/format-registry.yaml') as f:
+              reg = yaml.safe_load(f)
+          fmt = sys.argv[1]
+          formats = {e.get('id') or e.get('format_id'): e for e in reg.get('formats', [])}
+          entry = formats.get(fmt)
+          if not entry:
+              print(f'ERROR: Format \"{fmt}\" not found in registry/format-registry.yaml')
+              sys.exit(1)
+          gate = entry.get('gate_status', {})
+          g11 = gate.get('G11-G', 'not_approved')
+          if g11 != 'approved':
+              print(f'ERROR: Format \"{fmt}\" Gate 11 (G11-G) status is \"{g11}\" — publication blocked.')
+              print('Gate 11 must be approved by Babar Raza before publishing to PyPI.')
+              sys.exit(1)
+          print(f'Gate 11 approved for {fmt}. Proceeding with publication.')
+          " "$FORMAT"
 
-      - name: Build package
-        run: python -m build
-        # NOTE: Per-format releases will use:
-        #   python -m build src/python/$FORMAT/
-        # For now, builds the root dev package as a placeholder.
-        # Actual per-format release requires Gate 11 approval.
+      - name: Build per-format package
+        run: |
+          FORMAT="${{ steps.format.outputs.format }}"
+          echo "Building package for format: $FORMAT"
+          python -m build "src/python/${FORMAT}/"
 
       - name: Publish to PyPI
         run: twine upload dist/*
@@ -37,6 +69,9 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 
-      # Safety note: This workflow must NOT run for formats
-      # without Gate 11 approval. Tag creation is the manual gate.
-      # Verify in registry/format-registry.yaml before tagging.
+      # Safety note: This workflow requires:
+      # 1. Tag pattern '<format>-v<semver>' (e.g. fods-v0.1.0)
+      # 2. Format must exist in registry/format-registry.yaml
+      # 3. Gate 11 (G11-G) must be 'approved' in the registry
+      # 4. 'production' environment approval in GitHub Settings → Environments
+      # Verify all conditions before creating a release tag.

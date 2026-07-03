@@ -41,6 +41,8 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: pip install -e ".[dev]"
+      - name: Create output directories
+        run: mkdir -p .local/test-results
       - name: Run layered tests (L0-L3)
         run: python tools/test_runner.py --layer 3 --known-failures registry/known-failure-ledger.yaml --json-out .local/test-results/ci-fast.json
       - name: Upload test results
@@ -63,6 +65,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Create output directories
+        run: mkdir -p .local
       - name: Check skill attribution for src/ mutations
         run: |
           python tools/governance/ci_skill_attribution_check.py \
@@ -139,9 +143,11 @@ jobs:
         run: |
           # Build in dependency order: leaf deps first, then consumers
           for fmt in csv html txt markdown fods fodt ndjson tsv netpbm zst; do
-            proj=$(ls src/net/${fmt}/FormatFactory.*.csproj)
-            echo "Building ${fmt}"
-            dotnet build "${proj}" --configuration Release --no-restore
+            proj=$(ls src/net/${fmt}/FormatFactory.*.csproj 2>/dev/null || true)
+            if [ -n "$proj" ]; then
+              echo "Building ${fmt}"
+              dotnet build "${proj}" --configuration Release --no-restore
+            fi
           done
       - name: Run .NET tests
         run: |
@@ -174,6 +180,23 @@ jobs:
           name: coverage-report
           path: coverage.xml
 
+  oracle-obligations:
+    # TC-ORC-005: Validate oracle obligation coverage for all registered formats.
+    # Every format in registry/format-registry.yaml must have an entry in
+    # oracle/registry/format-oracle-registry.yaml before advancing beyond Gate 4.
+    # RULE-ORC-001 — enforced by V82 (validate_oracle_obligations).
+    # Mirrors .gitlab-ci.yml oracle-obligations job.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Validate oracle obligations
+        run: python tools/oracle/validate_oracle_obligations.py
+
   capability-parity:
     runs-on: ubuntu-latest
     steps:
@@ -182,7 +205,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install pyyaml jsonschema
+        run: pip install -e ".[dev]"
       - name: Detect capability registry drift
         run: python tools/capability_sync/detect_drift.py --output capability-drift.json
       - name: Upload drift report

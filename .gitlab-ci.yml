@@ -112,6 +112,23 @@ test-full:
 
 # ─── GOVERNANCE ───────────────────────────────────────────────────────────────
 
+capability-parity:
+  # Mirrors .github/workflows/ci.yml capability-parity job.
+  stage: governance
+  image: python:3.11
+  before_script:
+    - pip install -e ".[dev]"
+  script:
+    - python tools/capability_sync/detect_drift.py --output capability-drift.json
+  artifacts:
+    when: always
+    paths:
+      - capability-drift.json
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 oracle-obligations:
   # TC-ORC-005: Validate oracle obligation coverage for all registered formats.
   # Every format in registry/format-registry.yaml must have an entry in
@@ -176,6 +193,7 @@ governance-check:
 dotnet-build:
   stage: build
   image: mcr.microsoft.com/dotnet/sdk:10.0
+  # Note: bash for-loop syntax used below — bash is available in mcr.microsoft.com/dotnet/sdk:10.0 (Debian-based)
   script:
     - dotnet restore src/net/*/FormatFactory.*.csproj tests/net/*/FormatFactory.*.Tests.csproj
     - |
