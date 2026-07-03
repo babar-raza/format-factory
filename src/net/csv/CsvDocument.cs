@@ -232,6 +232,75 @@ public sealed class CsvDocument
     /// <summary>Returns the maximum numeric value in the specified column (by header name).</summary>
     public double GetColumnMax(string headerName) => ParseNumericColumn(GetColumn(headerName)).Max();
 
+    /// <summary>Returns the arithmetic mean of numeric values in the specified column (by header name).</summary>
+    public double GetColumnMean(string headerName) => ParseNumericColumn(GetColumn(headerName)).Average();
+
+    /// <summary>Returns the median of numeric values in the specified column.</summary>
+    public double GetColumnMedian(int index) => _Median(ParseNumericColumn(GetColumn(index)).OrderBy(x => x).ToArray());
+
+    /// <summary>Returns the median of numeric values in the specified column (by header name).</summary>
+    public double GetColumnMedian(string headerName) => _Median(ParseNumericColumn(GetColumn(headerName)).OrderBy(x => x).ToArray());
+
+    private static double _Median(double[] sorted)
+    {
+        if (sorted.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        int mid = sorted.Length / 2;
+        return sorted.Length % 2 == 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2.0;
+    }
+
+    /// <summary>Returns the most frequent numeric value in the specified column.</summary>
+    public double GetColumnMode(int index) => _Mode(ParseNumericColumn(GetColumn(index)));
+
+    /// <summary>Returns the most frequent numeric value in the specified column (by header name).</summary>
+    public double GetColumnMode(string headerName) => _Mode(ParseNumericColumn(GetColumn(headerName)));
+
+    private static double _Mode(IEnumerable<double> values)
+    {
+        var grp = values.GroupBy(v => v).OrderByDescending(g => g.Count()).FirstOrDefault();
+        if (grp == null) throw new InvalidOperationException("Column has no numeric values.");
+        return grp.Key;
+    }
+
+    /// <summary>Returns the population variance of numeric values in the specified column.</summary>
+    public double GetColumnVariance(int index) => _Variance(ParseNumericColumn(GetColumn(index)).ToArray());
+
+    /// <summary>Returns the population variance of numeric values in the specified column (by header name).</summary>
+    public double GetColumnVariance(string headerName) => _Variance(ParseNumericColumn(GetColumn(headerName)).ToArray());
+
+    private static double _Variance(double[] vals)
+    {
+        if (vals.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        double mean = vals.Average();
+        return vals.Average(v => (v - mean) * (v - mean));
+    }
+
+    /// <summary>Returns the population standard deviation of numeric values in the specified column.</summary>
+    public double GetColumnStdDev(int index) => Math.Sqrt(GetColumnVariance(index));
+
+    /// <summary>Returns the population standard deviation of numeric values in the specified column (by header name).</summary>
+    public double GetColumnStdDev(string headerName) => Math.Sqrt(GetColumnVariance(headerName));
+
+    /// <summary>Returns the first quartile (Q1) of numeric values in the specified column.</summary>
+    public double GetColumnFirstQuartile(int index) => _Quartile(ParseNumericColumn(GetColumn(index)).OrderBy(x => x).ToArray(), 0.25);
+
+    /// <summary>Returns the first quartile (Q1) of numeric values in the specified column (by header name).</summary>
+    public double GetColumnFirstQuartile(string headerName) => _Quartile(ParseNumericColumn(GetColumn(headerName)).OrderBy(x => x).ToArray(), 0.25);
+
+    /// <summary>Returns the third quartile (Q3) of numeric values in the specified column.</summary>
+    public double GetColumnThirdQuartile(int index) => _Quartile(ParseNumericColumn(GetColumn(index)).OrderBy(x => x).ToArray(), 0.75);
+
+    /// <summary>Returns the third quartile (Q3) of numeric values in the specified column (by header name).</summary>
+    public double GetColumnThirdQuartile(string headerName) => _Quartile(ParseNumericColumn(GetColumn(headerName)).OrderBy(x => x).ToArray(), 0.75);
+
+    private static double _Quartile(double[] sorted, double q)
+    {
+        if (sorted.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        double idx = q * (sorted.Length - 1);
+        int lo = (int)Math.Floor(idx);
+        int hi = (int)Math.Ceiling(idx);
+        return lo == hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+    }
+
     /// <summary>Returns the interquartile range (Q3 - Q1) of numeric values in the specified column.</summary>
     public double GetColumnInterquartileRange(int index)
     {
@@ -241,5 +310,102 @@ public sealed class CsvDocument
         int q1Idx = (int)Math.Round((n - 1) * 0.25, MidpointRounding.ToEven);
         int q3Idx = (int)Math.Round((n - 1) * 0.75, MidpointRounding.ToEven);
         return sorted[q3Idx] - sorted[q1Idx];
+    }
+
+    /// <summary>Returns the number of distinct values in the specified column.</summary>
+    public int GetColumnUniqueCount(int index) => GetColumn(index).Distinct().Count();
+
+    /// <summary>Returns the number of distinct values in the specified column (by header name).</summary>
+    public int GetColumnUniqueCount(string headerName) => GetColumn(headerName).Distinct().Count();
+
+    /// <summary>Returns the cardinality (distinct count) of the specified column.</summary>
+    public int GetColumnCardinality(int index) => GetColumnUniqueCount(index);
+
+    /// <summary>Returns the cardinality (distinct count) of the specified column (by header name).</summary>
+    public int GetColumnCardinality(string headerName) => GetColumnUniqueCount(headerName);
+
+    /// <summary>Returns the Shannon entropy of values in the specified column.</summary>
+    public double GetColumnEntropy(int index) => _Entropy(GetColumn(index));
+
+    /// <summary>Returns the Shannon entropy of values in the specified column (by header name).</summary>
+    public double GetColumnEntropy(string headerName) => _Entropy(GetColumn(headerName));
+
+    private static double _Entropy(List<string> values)
+    {
+        if (values.Count == 0) return 0.0;
+        var counts = values.GroupBy(v => v).Select(g => (double)g.Count() / values.Count);
+        return -counts.Sum(p => p > 0 ? p * Math.Log(p, 2) : 0.0);
+    }
+
+    /// <summary>Returns the Fisher skewness of numeric values in the specified column.</summary>
+    public double GetColumnSkewness(int index) => _Skewness(ParseNumericColumn(GetColumn(index)).ToArray());
+
+    /// <summary>Returns the Fisher skewness of numeric values in the specified column (by header name).</summary>
+    public double GetColumnSkewness(string headerName) => _Skewness(ParseNumericColumn(GetColumn(headerName)).ToArray());
+
+    private static double _Skewness(double[] vals)
+    {
+        if (vals.Length < 2) return 0.0;
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        if (std == 0) return 0.0;
+        return vals.Average(v => Math.Pow((v - mean) / std, 3));
+    }
+
+    /// <summary>Returns the excess kurtosis of numeric values in the specified column.</summary>
+    public double GetColumnKurtosis(int index) => _Kurtosis(ParseNumericColumn(GetColumn(index)).ToArray());
+
+    /// <summary>Returns the excess kurtosis of numeric values in the specified column (by header name).</summary>
+    public double GetColumnKurtosis(string headerName) => _Kurtosis(ParseNumericColumn(GetColumn(headerName)).ToArray());
+
+    private static double _Kurtosis(double[] vals)
+    {
+        if (vals.Length < 2) return 0.0;
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        if (std == 0) return 0.0;
+        return vals.Average(v => Math.Pow((v - mean) / std, 4)) - 3.0;
+    }
+
+    /// <summary>Returns the Z-score of a given value relative to the column distribution.</summary>
+    public double GetColumnZScore(int index, double value)
+    {
+        var vals = ParseNumericColumn(GetColumn(index)).ToArray();
+        if (vals.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        return std == 0 ? 0.0 : (value - mean) / std;
+    }
+
+    /// <summary>Returns the Z-score of a given value relative to the column distribution (by header name).</summary>
+    public double GetColumnZScore(string headerName, double value)
+    {
+        var vals = ParseNumericColumn(GetColumn(headerName)).ToArray();
+        if (vals.Length == 0) throw new InvalidOperationException("Column has no numeric values.");
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        return std == 0 ? 0.0 : (value - mean) / std;
+    }
+
+    /// <summary>Returns the count of numeric values in the column whose |z-score| exceeds the threshold.</summary>
+    public int GetColumnOutlierCount(int index, double threshold)
+    {
+        var vals = ParseNumericColumn(GetColumn(index)).ToArray();
+        if (vals.Length == 0) return 0;
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        if (std == 0) return 0;
+        return vals.Count(v => Math.Abs((v - mean) / std) > threshold);
+    }
+
+    /// <summary>Returns the count of numeric values in the column whose |z-score| exceeds the threshold (by header name).</summary>
+    public int GetColumnOutlierCount(string headerName, double threshold)
+    {
+        var vals = ParseNumericColumn(GetColumn(headerName)).ToArray();
+        if (vals.Length == 0) return 0;
+        double mean = vals.Average();
+        double std = Math.Sqrt(vals.Average(v => (v - mean) * (v - mean)));
+        if (std == 0) return 0;
+        return vals.Count(v => Math.Abs((v - mean) / std) > threshold);
     }
 }

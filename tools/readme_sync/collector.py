@@ -5,7 +5,10 @@ from __future__ import annotations
 import ast
 import re
 import sys
-import tomllib
+try:
+    import tomllib  # Python 3.11+
+except ImportError:
+    import tomli as tomllib  # type: ignore[no-redef]
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
