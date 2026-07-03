@@ -11,7 +11,15 @@ spec_concept: TOML v1.0 key-value pair / table / array
 """
 from __future__ import annotations
 
-import tomllib
+try:
+    import tomllib  # Python 3.11+
+except ImportError:
+    try:
+        import tomli as tomllib  # type: ignore[no-redef]
+    except ImportError as _e:
+        raise ImportError(
+            "tomllib requires Python 3.11+ or 'tomli' package (pip install tomli)"
+        ) from _e
 from pathlib import Path
 from typing import Any
 

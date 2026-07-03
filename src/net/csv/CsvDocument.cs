@@ -211,11 +211,26 @@ public sealed class CsvDocument
     /// <summary>Returns the maximum numeric value in the specified column.</summary>
     public double GetColumnMax(int index) => ParseNumericColumn(GetColumn(index)).Max();
 
-    /// <summary>Returns the sum of numeric values in the specified column.</summary>
+    /// <summary>Returns the sum of numeric values in the specified column (by index).</summary>
     public double GetColumnSum(int index) => ParseNumericColumn(GetColumn(index)).Sum();
+
+    /// <summary>Returns the sum of numeric values in the specified column (by header name).</summary>
+    public double GetColumnSum(string headerName) => ParseNumericColumn(GetColumn(headerName)).Sum();
 
     /// <summary>Returns the arithmetic mean of numeric values in the specified column.</summary>
     public double GetColumnMean(int index) => ParseNumericColumn(GetColumn(index)).Average();
+
+    /// <summary>Returns the range (max minus min) of numeric values in the specified column (by index).</summary>
+    public double GetColumnRange(int index) => GetColumnMax(index) - GetColumnMin(index);
+
+    /// <summary>Returns the range (max minus min) of numeric values in the specified column (by header name).</summary>
+    public double GetColumnRange(string headerName) => GetColumnMax(headerName) - GetColumnMin(headerName);
+
+    /// <summary>Returns the minimum numeric value in the specified column (by header name).</summary>
+    public double GetColumnMin(string headerName) => ParseNumericColumn(GetColumn(headerName)).Min();
+
+    /// <summary>Returns the maximum numeric value in the specified column (by header name).</summary>
+    public double GetColumnMax(string headerName) => ParseNumericColumn(GetColumn(headerName)).Max();
 
     /// <summary>Returns the interquartile range (Q3 - Q1) of numeric values in the specified column.</summary>
     public double GetColumnInterquartileRange(int index)
