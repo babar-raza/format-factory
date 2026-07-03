@@ -36,7 +36,7 @@ def _make_fods_xml(sheets: list[dict]) -> str:
     """
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        f'<office:document',
+        '<office:document',
         f'    xmlns:office="{NS_OFFICE}"',
         f'    xmlns:table="{NS_TABLE}"',
         f'    xmlns:text="{NS_TEXT}"',

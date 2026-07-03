@@ -117,7 +117,8 @@ def _derive_run_id() -> str:
     _h = _content_hash_inputs()
     if _h == _hl.sha256().hexdigest()[:12]:
         # No inputs found — fall back to git HEAD + date
-        import datetime as _dt, subprocess as _sp
+        import datetime as _dt
+        import subprocess as _sp
         print("[WARN] capability_map_generator: no SAL/registry inputs found; run_id uses git-HEAD fallback", file=sys.stderr)
         try:
             sha = _sp.check_output(["git", "rev-parse", "--short=7", "HEAD"], cwd=str(_REPO_ROOT), text=True, stderr=_sp.DEVNULL).strip()

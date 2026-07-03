@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 from .sylk_parser import parse_sylk, get_row_count, get_column_count, get_cell_count
 

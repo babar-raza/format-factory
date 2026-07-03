@@ -477,7 +477,7 @@ def test_pilot_10_idempotency(db, git_repo):
         wc = WorkerClaims(db_path=db)
         ckpt = CheckpointManager(db_path=db, repo_root=git_repo)
 
-        lid = ml._acquire(f"pilot-10-mission", "test", f"session-{cycle_num}", "main", None)
+        lid = ml._acquire("pilot-10-mission", "test", f"session-{cycle_num}", "main", None)
         paths = [f"src/python/csv/models_{cycle_num}.py",
                  f"src/python/tsv/models_{cycle_num}.py",
                  f"src/python/dif/models_{cycle_num}.py"]

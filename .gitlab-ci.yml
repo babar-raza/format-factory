@@ -195,7 +195,13 @@ dotnet-build:
   image: mcr.microsoft.com/dotnet/sdk:10.0
   # Note: bash for-loop syntax used below — bash is available in mcr.microsoft.com/dotnet/sdk:10.0 (Debian-based)
   script:
-    - dotnet restore src/net/*/FormatFactory.*.csproj tests/net/*/FormatFactory.*.Tests.csproj
+    - |
+      for proj in src/net/*/FormatFactory.*.csproj tests/net/*/FormatFactory.*.Tests.csproj; do
+        if [ -f "$proj" ]; then
+          echo "Restoring $proj"
+          dotnet restore "$proj"
+        fi
+      done
     - |
       # Build in dependency order: leaf deps first, then consumers
       for fmt in csv html txt markdown fods fodt ndjson tsv netpbm zst; do

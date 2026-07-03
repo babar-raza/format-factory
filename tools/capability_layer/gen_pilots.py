@@ -1,5 +1,6 @@
 """gen_pilots.py — Generate pilot evidence files for TC-CAP-014."""
-import json, hashlib
+import json
+import hashlib
 from pathlib import Path
 
 NOW = "2026-07-01T00:00:00+00:00"
@@ -158,16 +159,16 @@ for pid, title, steps, evidence, verdict, notes in pilots:
     if verdict != "PASS":
         failed += 1
     lines = [
-        f'schema_version: "1.0"',
+        'schema_version: "1.0"',
         f'pilot_id: "{pid}"',
         f'generated_at: "{NOW}"',
-        f'generated_by: "TC-CAP-014 (moonlit-squishing-sonnet)"',
-        f'mission_id: "capability-layer-healing"',
+        'generated_by: "TC-CAP-014 (moonlit-squishing-sonnet)"',
+        'mission_id: "capability-layer-healing"',
         f'title: "{title}"',
         f'verdict: "{verdict}"',
-        f'notes: |',
+        'notes: |',
         f'  {notes}',
-        f'steps:',
+        'steps:',
     ]
     for step in steps:
         lines.append(f'  - "{step}"')
@@ -185,4 +186,4 @@ for pid, title, steps, evidence, verdict, notes in pilots:
     print(f"  {pid}: {verdict} — {title}")
 
 print(f"\nFAILED_REQUIRED_PILOTS = {failed}")
-print(f"MATERIAL_SECOND_RUN_CHANGES = 0")
+print("MATERIAL_SECOND_RUN_CHANGES = 0")

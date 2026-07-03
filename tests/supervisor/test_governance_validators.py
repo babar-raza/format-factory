@@ -3182,7 +3182,8 @@ class TestV99PlaybookCoverageReportCurrent:
 
     def test_pass_coverage_newer_than_templates(self, tmp_path):
         """PASS when coverage universe report is newer than all templates."""
-        import os, time
+        import os
+        import time
         pb_dir = tmp_path / "playbooks" / "format-factory"
         pb_dir.mkdir(parents=True)
         template = pb_dir / "test-playbook.md"
@@ -3203,7 +3204,8 @@ class TestV99PlaybookCoverageReportCurrent:
 
     def test_warn_template_newer_than_coverage(self, tmp_path):
         """WARN when a template is newer than the coverage report."""
-        import os, time
+        import os
+        import time
         pb_dir = tmp_path / "playbooks" / "format-factory"
         pb_dir.mkdir(parents=True)
         coverage_dir = tmp_path / "reports" / "playbooks"

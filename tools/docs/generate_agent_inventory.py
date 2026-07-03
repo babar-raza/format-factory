@@ -149,7 +149,7 @@ def render_agent_inventory_markdown(agents: dict) -> str:
         f"| Claude Code | Primary development executor | {'Configured' if config.get('claude_configured') else 'Not configured'} |",
         f"| Codex | Secondary executor with governance adapter | {'Adapter present' if config.get('codex_adapter_exists') else 'Not configured'} |",
         f"| Kilo | Specialized orchestration | {'Configured' if config.get('kilo_configured') else 'Not configured'} |",
-        f"| Supervisor | Autonomous sprint orchestration and grading | Active |",
+        "| Supervisor | Autonomous sprint orchestration and grading | Active |",
         "",
         "### Orchestration Model",
         "",

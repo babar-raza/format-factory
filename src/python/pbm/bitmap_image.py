@@ -9,15 +9,12 @@ spec_fact_ref = "FACT-PBM-001"
 namespace_uri = "urn:netpbm:portable-bitmap"
 
 from pathlib import Path
-from typing import Any
 
 from .pbm_parser import (
     PbmError,
     parse_pbm_strict,
     black_pixel_ratio,
     image_pixel_stats,
-    pixel_count,
-    get_dimensions,
 )
 
 

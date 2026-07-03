@@ -16,9 +16,6 @@ spec_concept: DIF Data Interchange Format vector/tuple
 
 from __future__ import annotations
 
-import csv
-import html as _html_module
-import io
 import os
 from dataclasses import dataclass, field
 from pathlib import Path

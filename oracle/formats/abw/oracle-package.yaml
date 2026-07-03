@@ -84,3 +84,23 @@ valid_cases:
         authority: ABIWORD-FORMAT
     applicable_profiles:
       - PARSE_VALIDITY
+
+invalid_cases:
+  - case_id: abw-invalid-001
+    profile: INVALID_INPUT_REJECTION
+    purpose: "Malformed XML (unclosed tag) must raise an exception on load"
+    defect_class: malformed-xml
+    authority_refs:
+      - "ABIWORD-FORMAT -- XML well-formedness is a prerequisite"
+    inline_input: "<abiword><section><p>unclosed"
+    expected_failure_stage: PARSE_BODY
+    expected_error_type: "Exception"
+    partial_recovery_allowed: false
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: abw.abw_codec
+      callable: load
+      args: []
+      expect_exception: true

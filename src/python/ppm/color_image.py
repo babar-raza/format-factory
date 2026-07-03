@@ -9,14 +9,10 @@ spec_fact_ref = "FACT-PPM-001"
 namespace_uri = "urn:netpbm:portable-pixmap"
 
 from pathlib import Path
-from typing import Any
 
 from .ppm_parser import (
     PpmError,
     parse_ppm_strict,
-    get_dimensions,
-    pixel_count,
-    brightness,
 )
 
 

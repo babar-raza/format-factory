@@ -489,7 +489,10 @@ class TestReadmeLink:
 
         # Strip the generated= timestamp since it will differ
         import re
-        strip_ts = lambda s: re.sub(r'generated=\d{4}-\d{2}-\d{2}', 'generated=DATE', s)
+
+        def strip_ts(s):
+            return re.sub(r'generated=\d{4}-\d{2}-\d{2}', 'generated=DATE', s)
+
         assert strip_ts(content1) == strip_ts(content2)
 
     def test_readme_block_not_duplicated(self, tmp_path):

@@ -196,7 +196,8 @@ def test_pilot_e_closeout_task_guard(tmp_path: Path) -> None:
 def test_pilot_f_sprint_audit_guard(tmp_path: Path) -> None:
     """evidence-review.json >60s newer than sprint-audit-log.json → GUARD_WARN."""
     from lifecycle_audit import check_sprint_audit_guard
-    import os, time as _time
+    import os
+    import time as _time
 
     sup_dir = tmp_path / ".local" / "supervisor"
     sup_dir.mkdir(parents=True, exist_ok=True)

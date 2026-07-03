@@ -55,7 +55,8 @@ def test_parse_fodt_file_not_found():
 
 
 def test_parse_fodt_invalid_xml():
-    import tempfile, os
+    import tempfile
+    import os
     with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w") as f:
         f.write("not xml <<<")
         tmp = f.name

@@ -273,7 +273,7 @@ def main():
 
     result = run_mutation_testing(args.target, args.tests, args.max_mutations)
 
-    print(f"\n=== Results ===")
+    print("\n=== Results ===")
     print(f"Total mutations: {result['total_mutations']}")
     print(f"Killed: {result['killed']}")
     print(f"Survived: {result['survived']}")
@@ -282,7 +282,7 @@ def main():
     print(f"Verdict: {result['verdict']}")
 
     if result["survivors"]:
-        print(f"\nSurvivors (test gaps):")
+        print("\nSurvivors (test gaps):")
         for s in result["survivors"][:10]:
             print(f"  L{s['line']}: {s['type']} {s['original']} -> {s['mutated']}")
 

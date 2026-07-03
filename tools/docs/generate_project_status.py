@@ -606,7 +606,7 @@ def _render_generation_evidence(timestamp: str, head_revision: str, repo_root: P
         _anchor("generation-evidence"),
         "## Generation and Evidence",
         "",
-        f"- **Generator**: `tools/docs/generate_project_status.py`",
+        "- **Generator**: `tools/docs/generate_project_status.py`",
         f"- **Generated at**: {timestamp}",
         f"- **HEAD revision**: {head_revision}",
         "- **Regen command**: `python tools/docs/generate_project_status.py`",

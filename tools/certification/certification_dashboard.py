@@ -157,8 +157,8 @@ def generate_markdown(dashboard: dict[str, Any]) -> str:
     ]
 
     ps = dashboard["portfolio_summary"]
-    lines.append(f"| Metric | Count |")
-    lines.append(f"|--------|-------|")
+    lines.append("| Metric | Count |")
+    lines.append("|--------|-------|")
     lines.append(f"| Total Formats | {ps['total_formats']} |")
     lines.append(f"| Certified | {ps['certified']} |")
     lines.append(f"| Certified with Known Gaps | {ps['certified_with_gaps']} |")

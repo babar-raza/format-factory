@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .abw_codec import load, get_paragraph_count, get_section_count
+from .abw_codec import load
 
 
 def abw_installed_workflow(source: "str | bytes | Path") -> dict:

@@ -48,7 +48,8 @@ def test_parse_fods_file_not_found():
 
 
 def test_parse_fods_invalid_xml():
-    import tempfile, os
+    import tempfile
+    import os
     with tempfile.NamedTemporaryFile(suffix=".fods", delete=False, mode="w") as f:
         f.write("not xml <<<")
         tmp = f.name
@@ -60,7 +61,8 @@ def test_parse_fods_invalid_xml():
 
 
 def test_parse_fods_wrong_root():
-    import tempfile, os
+    import tempfile
+    import os
     with tempfile.NamedTemporaryFile(suffix=".fods", delete=False, mode="w") as f:
         f.write("<?xml version='1.0'?><root/>")
         tmp = f.name

@@ -20,7 +20,7 @@
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-06-29T09:48:51+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-03T09:37:35+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -31,25 +31,11 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 99
+Total active capabilities: 117
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
-| `backfill-task-skill-ownership` |  | FULL_PARITY | Y | Y | N | — |
-| `build-capability-routes` |  | FULL_PARITY | Y | Y | N | — |
-| `collect-skill-execution-receipts` |  | FULL_PARITY | Y | Y | N | — |
-| `detect-ad-hoc-execution` |  | FULL_PARITY | Y | Y | N | — |
-| `detect-duplicate-skills` |  | FULL_PARITY | Y | Y | N | — |
-| `enforce-skill-first-execution` |  | FULL_PARITY | Y | Y | N | — |
-| `inventory-commands` |  | FULL_PARITY | Y | Y | N | — |
-| `inventory-skills` |  | FULL_PARITY | Y | Y | N | — |
-| `normalize-skill-registry` |  | FULL_PARITY | Y | Y | N | — |
-| `qname-backfill` |  | FULL_PARITY | Y | Y | Y | qname_generation |
-| `run-skill-idempotency` |  | FULL_PARITY | Y | Y | N | — |
-| `scan-residual-bypasses` |  | FULL_PARITY | Y | Y | N | — |
-| `sync-skill-command-registry` |  | FULL_PARITY | Y | Y | N | — |
-| `validate-mutation-guard` |  | FULL_PARITY | Y | Y | N | — |
-| `validate-skill-contracts` |  | FULL_PARITY | Y | Y | N | — |
+| `backfill-gate4-prototype-evidence` | acquisition | PARTIAL | Y | Y | N | — |
 | `check-gate` | acquisition | FULL_PARITY | Y | Y | Y | capability_audit |
 | `check-release-boundary` | acquisition | FULL_PARITY | Y | Y | N | — |
 | `create-acquisition-pack` | acquisition | FULL_PARITY | Y | Y | N | — |
@@ -66,17 +52,44 @@ Total active capabilities: 99
 | `add-installed-package-example` | developer_experience | FULL_PARITY | Y | Y | Y | e2e_proof |
 | `add-python-api` | foss_python | FULL_PARITY | Y | Y | Y | product_backfill |
 | `add-python-object-model-feature` | foss_python | FULL_PARITY | Y | Y | Y | product_deepening |
+| `format-feature-expansion` | foss_python | PARTIAL | Y | Y | N | — |
+| `new-format-kickstart` | foss_python | PARTIAL | Y | Y | N | — |
+| `product-source-task` | foss_python | PARTIAL | Y | Y | N | — |
 | `python-reduced-spec-parity-model` | foss_python | FULL_PARITY | Y | Y | N | — |
 | `create-consumer-roundtrip` | foss_python_consumer | PARTIAL | Y | Y | N | — |
+| `backfill-task-skill-ownership` | governance | FULL_PARITY | Y | Y | N | — |
+| `build-capability-routes` | governance | FULL_PARITY | Y | Y | N | — |
+| `certification-assertion-scorer` | governance | PARTIAL | Y | Y | N | — |
 | `certification-dashboard` | governance | FULL_PARITY | Y | Y | N | — |
+| `certification-dotnet-assertion-scorer` | governance | PARTIAL | Y | Y | N | — |
+| `certification-exception-checker` | governance | PARTIAL | Y | Y | N | — |
+| `certification-fix-weak-assertions` | governance | PARTIAL | Y | Y | N | — |
+| `certification-generate-exception-tests` | governance | PARTIAL | Y | Y | N | — |
+| `certification-generate-security-tests` | governance | PARTIAL | Y | Y | N | — |
+| `certification-inventory-extractor` | governance | PARTIAL | Y | Y | N | — |
+| `certification-stub-detector` | governance | PARTIAL | Y | Y | N | — |
 | `check-dom-contract` | governance | FULL_PARITY | Y | Y | N | — |
 | `check-skill-coverage` | governance | FULL_PARITY | Y | Y | Y | capability_audit |
+| `collect-skill-execution-receipts` | governance | FULL_PARITY | Y | Y | N | — |
+| `detect-ad-hoc-execution` | governance | FULL_PARITY | Y | Y | N | — |
+| `detect-duplicate-skills` | governance | FULL_PARITY | Y | Y | N | — |
+| `enforce-skill-first-execution` | governance | FULL_PARITY | Y | Y | N | — |
+| `inventory-commands` | governance | FULL_PARITY | Y | Y | N | — |
 | `inventory-format-dom` | governance | FULL_PARITY | Y | Y | N | — |
+| `inventory-skills` | governance | FULL_PARITY | Y | Y | N | — |
+| `normalize-skill-registry` | governance | FULL_PARITY | Y | Y | N | — |
 | `post-sprint-audit` | governance | FULL_PARITY | Y | Y | Y | forensic_audit, integration_verification, sprint_audit |
 | `post-sprint-loop` | governance | FULL_PARITY | Y | Y | Y | sprint_audit |
 | `preflight-skill-entry` | governance | FULL_PARITY | Y | Y | N | — |
+| `qname-backfill` | governance | FULL_PARITY | Y | Y | Y | qname_generation |
+| `run-skill-idempotency` | governance | FULL_PARITY | Y | Y | N | — |
+| `scan-residual-bypasses` | governance | FULL_PARITY | Y | Y | N | — |
 | `select-deepening-lane` | governance | FULL_PARITY | Y | Y | N | — |
-| `autonomous-loop` | infrastructure | FULL_PARITY | Y | Y | Y | taskcard_execution |
+| `sync-skill-command-registry` | governance | FULL_PARITY | Y | Y | N | — |
+| `validate-mutation-guard` | governance | FULL_PARITY | Y | Y | N | — |
+| `validate-skill-contracts` | governance | FULL_PARITY | Y | Y | N | — |
+| `autonomous-loop` | infrastructure | FULL_PARITY | Y | Y | Y | bounded_execution, taskcard_execution |
+| `query-control-index` | infrastructure | PARTIAL | Y | Y | N | — |
 | `append-layer-verification-log` | layer_governance | PARTIAL | Y | Y | N | — |
 | `append-layer-work-log` | layer_governance | PARTIAL | Y | Y | N | — |
 | `capability-status` | layer_governance | FULL_PARITY | Y | Y | N | — |
@@ -85,6 +98,7 @@ Total active capabilities: 99
 | `create-permanent-layer-plan` | layer_governance | PARTIAL | Y | Y | N | — |
 | `detect-stale-layer-state` | layer_governance | PARTIAL | Y | Y | N | — |
 | `detect-unlogged-work` | layer_governance | PARTIAL | Y | Y | N | — |
+| `documentation-structure-migration` | layer_governance | PARTIAL | Y | Y | N | — |
 | `generate-root-status` | layer_governance | FULL_PARITY | Y | Y | N | — |
 | `identify-primary-layer` | layer_governance | PARTIAL | Y | Y | N | — |
 | `inventory-permanent-layer-plans` | layer_governance | PARTIAL | Y | Y | N | — |
@@ -95,7 +109,7 @@ Total active capabilities: 99
 | `register-layer-task` | layer_governance | PARTIAL | Y | Y | N | — |
 | `select-next-layer-task` | layer_governance | PARTIAL | Y | Y | N | — |
 | `sync-capabilities` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `sync-readmes` | layer_governance | FULL_PARITY | Y | Y | N | — |
+| `sync-readmes` | layer_governance | FULL_PARITY | Y | Y | Y | root_readme_governance |
 | `update-layer-current-state` | layer_governance | PARTIAL | Y | Y | N | — |
 | `update-layer-master-index` | layer_governance | PARTIAL | Y | Y | N | — |
 | `update-layer-session-handoff` | layer_governance | PARTIAL | Y | Y | N | — |
@@ -122,6 +136,10 @@ Total active capabilities: 99
 | `select-poc-gap` | planning | FULL_PARITY | Y | Y | Y | feature_planning |
 | `validate-product-code-ledger` | planning | FULL_PARITY | Y | Y | Y | ledger_reconciliation |
 | `validate-skill-transcript` | planning | FULL_PARITY | Y | Y | Y | focused_verification |
+| `diff-playbook-outputs` | playbook_governance | PARTIAL | Y | Y | N | — |
+| `export-review-queue` | playbook_governance | PARTIAL | Y | Y | N | — |
+| `replay-acquisition-playbook` | playbook_governance | PARTIAL | Y | Y | N | — |
+| `validate-playbook` | playbook_governance | PARTIAL | Y | Y | N | — |
 | `sal-pipeline-heal` | sal_infrastructure | FULL_PARITY | Y | Y | Y | fact_authorization, fact_normalization, specification_ingestion |
 | `ingest-spec-sal` | sal_ingestion | PARTIAL | Y | Y | N | — |
 | `update-capability-matrix` | shared_reference_snapshot | FULL_PARITY | Y | Y | Y | capability_extraction |

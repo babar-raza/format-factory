@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .ndjson_codec import load_ndjson, get_record_count
+from .ndjson_codec import load_ndjson
 
 
 def ndjson_installed_workflow(source: "str | Path") -> dict:

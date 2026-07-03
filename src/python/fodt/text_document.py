@@ -11,8 +11,6 @@ spec_fact_ref = "FACT-FODT-001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 import os
-import string
-from typing import Any
 
 
 def fodt_paragraph_count(file_path: "str | os.PathLike[str]") -> int:

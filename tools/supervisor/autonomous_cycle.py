@@ -1649,7 +1649,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         if _root_drift.get("drifted"):
             print(f"  ROOT README DRIFT: {_root_drift['drifted_fields']}")
         else:
-            print(f"  Root README: no drift detected")
+            print("  Root README: no drift detected")
     except Exception as _rd_err:
         print(f"  WARNING: root README drift check failed (non-blocking): {_rd_err}")
 

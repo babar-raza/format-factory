@@ -90,7 +90,7 @@ def generate_test_file(fmt: str, modules: dict) -> Path:
             "",
             f"def test_{test_name}_message():",
             f'    exc = {exc_name}("specific error")',
-            f'    assert "specific error" in str(exc)',
+            '    assert "specific error" in str(exc)',
             "",
             "",
         ])

@@ -161,7 +161,7 @@ def pilot_p3_transient_failures():
         result = call_with_retry(fn, policy=policy, item_id="P3-ITEM")
     assert result == "recovered"
     assert calls[0] == 3
-    print(f"  recovered after 3 attempts for 5xx")
+    print("  recovered after 3 attempts for 5xx")
 
 
 # ---------------------------------------------------------------------------

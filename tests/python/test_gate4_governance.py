@@ -172,7 +172,7 @@ def test_validator_passes_all_formats():
         fid = fmt["format_id"]
         errors = validate_gate4(fid, fmt)
         all_errors.extend(errors)
-    assert all_errors == [], f"Validator failures:\n" + "\n".join(all_errors)
+    assert all_errors == [], "Validator failures:\n" + "\n".join(all_errors)
 
 
 def test_registry_consistent_after_update_and_patch():

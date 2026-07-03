@@ -22,8 +22,8 @@ MSG_TAIL = r'(?:\s*,\s*.+)?'
 RE_ASSERT_TRUE = re.compile(rf"^(\s*)assert\s+True{MSG_TAIL}$")
 RE_ASSERT_FALSE = re.compile(rf"^(\s*)assert\s+False{MSG_TAIL}$")
 RE_ASSERT_CONST = re.compile(rf"^(\s*)assert\s+(\d+){MSG_TAIL}$")
-RE_ASSERT_NAME = re.compile(rf"^(\s*)assert\s+([a-zA-Z_]\w*)\s*(,.+)?$")
-RE_ASSERT_NOT_NAME = re.compile(rf"^(\s*)assert\s+not\s+([a-zA-Z_]\w*)\s*(,.+)?$")
+RE_ASSERT_NAME = re.compile(r"^(\s*)assert\s+([a-zA-Z_]\w*)\s*(,.+)?$")
+RE_ASSERT_NOT_NAME = re.compile(r"^(\s*)assert\s+not\s+([a-zA-Z_]\w*)\s*(,.+)?$")
 
 # Common result variable names that are likely collections
 COLLECTION_NAMES = {

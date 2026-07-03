@@ -226,7 +226,7 @@ def print_report(scores: list[FileScore], verbose: bool = False):
     overall_ratio = total_behavioral / total_non_guard if total_non_guard else 0.0
 
     print(f"\n{'='*70}")
-    print(f"DEPTH SCORE REPORT")
+    print("DEPTH SCORE REPORT")
     print(f"{'='*70}")
     print(f"Files analyzed:       {len(scores)}")
     print(f"Behavioral asserts:   {total_behavioral}")
@@ -245,19 +245,19 @@ def print_report(scores: list[FileScore], verbose: bool = False):
         # Show worst files (lowest depth ratio with > 0 assertions)
         scoreable = [s for s in scores if s.total_non_guard > 0]
         scoreable.sort(key=lambda s: s.depth_ratio)
-        print(f"\nBottom 20 files by depth ratio:")
+        print("\nBottom 20 files by depth ratio:")
         print(f"{'Ratio':>7} {'Beh':>4} {'Str':>4} {'Grd':>4} {'DW':>3} {'File'}")
         for s in scoreable[:20]:
             name = Path(s.path).name
             print(f"{s.depth_ratio:7.3f} {s.behavioral:4} {s.structural:4} {s.guard:4} {s.dogfood_weak:3} {name}")
 
-        print(f"\nTop 10 files by depth ratio:")
+        print("\nTop 10 files by depth ratio:")
         for s in scoreable[-10:]:
             name = Path(s.path).name
             print(f"{s.depth_ratio:7.3f} {s.behavioral:4} {s.structural:4} {s.guard:4} {s.dogfood_weak:3} {name}")
 
     # Machine-readable summary
-    print(f"\n## Machine-readable")
+    print("\n## Machine-readable")
     print(f"depth_ratio={overall_ratio:.4f}")
     print(f"behavioral={total_behavioral}")
     print(f"structural={total_structural}")
@@ -268,7 +268,7 @@ def print_report(scores: list[FileScore], verbose: bool = False):
     print(f"total_files={len(scores)}")
     gate_pass = overall_ratio >= 0.4
     print(f"gate_pass={'true' if gate_pass else 'false'}")
-    print(f"gate_threshold=0.40")
+    print("gate_threshold=0.40")
 
 
 def main():
