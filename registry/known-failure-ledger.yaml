@@ -796,3 +796,19 @@ supervisor_grader_failures:
   category: pre_existing_architecture_debt
   do_not_fix_in: lane-ci-audit
   status: open
+- gap_id: GAP-CI-DEMO-001
+  reason: "CsvDocument.cs missing analytics API methods. Discovered during CI audit. Belongs to lane-5-dotnet-structure (source architecture work)."
+  owning_lane: lane-5-dotnet-structure
+  discovered_by: lane-ci-audit
+  discovered_at: 2026-07-03
+  category: pre_existing_architecture_debt
+  do_not_fix_in: lane-ci-audit
+  status: open
+- gap_id: GAP-DEMO-FINAL
+  reason: "CsvDocument.cs analytics API gap — CI audit cannot fix directly"
+  owning_lane: lane-5-dotnet-structure
+  discovered_by: lane-ci-audit
+  discovered_at: 2026-07-03
+  category: pre_existing_architecture_debt
+  do_not_fix_in: lane-ci-audit
+  status: open

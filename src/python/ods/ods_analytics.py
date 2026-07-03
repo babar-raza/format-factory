@@ -1,12 +1,11 @@
 """
-ODS analytics functions extracted from ods_parser.py (TC-HEAL-FORMATS-BATCH1).
+ODS analytics functions for OpenDocument Spreadsheet format.
+
+Pure analytics functions operating on parsed ODS workbook models.
+No spec_qname claim at module scope — analytics modules do not represent
+ODF element types. Parser source: ods_parser.py (parse_ods_strict).
 """
 from __future__ import annotations
-
-
-spec_qname = "office:document"
-spec_fact_ref = "FACT-ODS-001"
-namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 from pathlib import Path
 

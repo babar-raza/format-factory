@@ -61,7 +61,7 @@ def test_ndjson_avg_list_length_positive():
     assert r > 0.0, "should have list fields with positive avg length"
 
 # SYLK ------------------------------------------------------------------------
-from src.python.sylk.sylk_parser import sylk_string_value_count, sylk_has_empty_cells
+from src.python.sylk.sylk_analytics import sylk_string_value_count, sylk_has_empty_cells
 
 _SYLK = _REPO / "samples" / "by-format" / "sylk" / "valid"
 

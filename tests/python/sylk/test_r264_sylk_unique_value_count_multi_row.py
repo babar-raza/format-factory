@@ -5,7 +5,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import sylk_unique_value_count, sylk_is_multi_row
+from sylk.sylk_analytics import sylk_unique_value_count, sylk_is_multi_row
 
 SYLK_DIR = _REPO / "samples" / "by-format" / "sylk" / "valid"
 

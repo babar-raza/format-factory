@@ -15,13 +15,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import (
-    sylk_is_rectangular,
-    sylk_min_row_length,
-    sylk_has_string_cells,
-    sylk_unique_row_count,
-    sylk_avg_cell_value_length,
-)
+from sylk.sylk_analytics import sylk_is_rectangular, sylk_min_row_length, sylk_has_string_cells, sylk_unique_row_count, sylk_avg_cell_value_length
 from tsv.tsv_parser import (
     tsv_is_single_column,
     tsv_is_all_numeric,

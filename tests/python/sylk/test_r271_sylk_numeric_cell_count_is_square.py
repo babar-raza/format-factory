@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from sylk.sylk_parser import sylk_numeric_cell_count, sylk_is_square
+from sylk.sylk_analytics import sylk_numeric_cell_count, sylk_is_square
 
 SYLK = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "sylk" / "valid"
 

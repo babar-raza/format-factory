@@ -12,7 +12,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.sylk.sylk_parser import sylk_numeric_cell_count
+from src.python.sylk.sylk_analytics import sylk_numeric_cell_count
 
 SAMPLES = _REPO / "samples" / "by-format" / "sylk" / "valid"
 

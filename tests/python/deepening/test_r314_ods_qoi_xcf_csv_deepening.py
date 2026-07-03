@@ -14,7 +14,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 # ODS -------------------------------------------------------------------------
-from src.python.ods.ods_parser import ods_numeric_column_count, ods_row_cell_variance
+from src.python.ods.ods_analytics import ods_numeric_column_count, ods_row_cell_variance
 
 _ODS = _REPO / "samples" / "by-format" / "ods" / "valid"
 

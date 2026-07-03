@@ -13,7 +13,7 @@ SYLK_SAMPLES = REPO / "samples" / "by-format" / "sylk" / "valid"
 
 sys.path.insert(0, str(REPO / "src" / "python"))
 
-from sylk.sylk_parser import sylk_empty_cell_count
+from sylk.sylk_analytics import sylk_empty_cell_count
 
 
 def test_import():

@@ -8,7 +8,7 @@ import sys
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import sylk_cell_type_distribution
+from sylk.sylk_analytics import sylk_cell_type_distribution
 
 
 def _make_sylk(records: list[str]) -> Path:

@@ -1,12 +1,11 @@
 """
-SYLK analytics functions extracted from sylk_parser.py (TC-HEAL-FORMATS-BATCH1).
+SYLK analytics functions for Symbolic Link spreadsheet format.
+
+Pure analytics functions operating on parsed SYLK document models.
+No spec_qname claim at module scope — analytics modules do not represent
+SYLK format element types. Parser source: sylk_parser.py (parse_sylk_strict).
 """
 from __future__ import annotations
-
-
-spec_qname = "slk:workbook"
-spec_fact_ref = "FACT-SYLK-001"
-namespace_uri = "urn:sylk:symbolic-link"
 
 from pathlib import Path
 

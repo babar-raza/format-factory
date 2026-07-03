@@ -24,14 +24,7 @@ from abw.abw_codec import (
     load as abw_load,
     get_paragraph_count,
 )
-from ods.ods_parser import (
-    ods_avg_numeric_value,
-    ods_avg_row_length,
-    ods_cell_density,
-    ods_empty_cell_count,
-    ods_empty_row_count,
-    ods_has_empty_rows,
-)
+from ods.ods_analytics import ods_avg_numeric_value, ods_avg_row_length, ods_cell_density, ods_empty_cell_count, ods_empty_row_count, ods_has_empty_rows
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _ABW_DIR = _REPO / "samples" / "by-format" / "abw"

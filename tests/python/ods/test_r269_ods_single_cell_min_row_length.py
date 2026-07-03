@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from ods.ods_parser import ods_is_single_cell, ods_min_row_length
+from ods.ods_analytics import ods_is_single_cell, ods_min_row_length
 
 ODS = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "ods" / "valid"
 

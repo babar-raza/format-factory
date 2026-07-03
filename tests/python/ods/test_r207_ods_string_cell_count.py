@@ -13,7 +13,7 @@ ODS_SAMPLES = REPO / "samples" / "by-format" / "ods" / "valid"
 
 sys.path.insert(0, str(REPO / "src" / "python"))
 
-from ods.ods_parser import ods_string_cell_count
+from ods.ods_analytics import ods_string_cell_count
 
 
 def test_import():

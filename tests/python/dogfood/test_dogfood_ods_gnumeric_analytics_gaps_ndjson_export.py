@@ -29,7 +29,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.ods.ods_parser import ods_numeric_ratio, ods_is_square
+from src.python.ods.ods_analytics import ods_numeric_ratio, ods_is_square
 from src.python.gnumeric.gnumeric_codec import gnumeric_cell_to_row_ratio
 from src.python.ndjson.ndjson_codec import write_ndjson
 

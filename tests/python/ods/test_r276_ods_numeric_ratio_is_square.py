@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from ods.ods_parser import ods_numeric_ratio, ods_is_square
+from ods.ods_analytics import ods_numeric_ratio, ods_is_square
 
 ODS = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "ods" / "valid"
 

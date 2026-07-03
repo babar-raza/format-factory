@@ -24,14 +24,8 @@ from fods.neutral_model import (
     workbook_formula_list,
 )
 from fods.parser import parse_fods
-from ods.ods_parser import (
-    probe_ods,
-    ods_column_count,
-    ods_max_row_length,
-    ods_has_merged_cells,
-    sum_row,
-    ods_to_html,
-)
+from ods.ods_analytics import ods_column_count, ods_max_row_length, ods_has_merged_cells
+from ods.ods_parser import probe_ods, sum_row, ods_to_html
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _FODS_DIR = _REPO / "samples" / "by-format" / "fods"

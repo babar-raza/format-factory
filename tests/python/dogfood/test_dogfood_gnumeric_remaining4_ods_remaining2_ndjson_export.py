@@ -30,9 +30,8 @@ from ods.ods_parser import (
     get_column_values as ods_get_column_values,
     get_row_values as ods_get_row_values,
     get_sheet_as_dict_list,
-    ods_average_cells_per_row,
-    ods_avg_cells_per_sheet,
 )
+from ods.ods_analytics import ods_average_cells_per_row, ods_avg_cells_per_sheet
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _GNUMERIC_DIR = _REPO / "samples" / "by-format" / "gnumeric"

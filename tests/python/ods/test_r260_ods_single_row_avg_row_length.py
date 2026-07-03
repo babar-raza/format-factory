@@ -5,7 +5,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import ods_is_single_row, ods_avg_row_length
+from ods.ods_analytics import ods_is_single_row, ods_avg_row_length
 
 ODS_DIR = _REPO / "samples" / "by-format" / "ods" / "valid"
 

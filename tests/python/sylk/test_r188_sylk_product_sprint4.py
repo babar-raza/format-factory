@@ -8,7 +8,8 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import find_rows_by_value, sylk_to_html, sylk_max_column_index
+from sylk.sylk_analytics import sylk_max_column_index
+from sylk.sylk_parser import find_rows_by_value, sylk_to_html
 
 _SAMPLES = _REPO / "samples" / "by-format" / "sylk" / "valid"
 _MINIMAL = str(_SAMPLES / "minimal-2x2.slk")

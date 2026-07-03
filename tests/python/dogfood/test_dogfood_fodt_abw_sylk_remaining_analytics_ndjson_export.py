@@ -23,10 +23,7 @@ from abw.abw_codec import (
     abw_avg_words_per_paragraph, abw_has_unicode,
     abw_is_single_paragraph, abw_sentence_density,
 )
-from sylk.sylk_parser import (
-    sylk_data_density, sylk_has_numeric_cells,
-    sylk_is_single_row, sylk_max_string_length,
-)
+from sylk.sylk_analytics import sylk_data_density, sylk_has_numeric_cells, sylk_is_single_row, sylk_max_string_length
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 

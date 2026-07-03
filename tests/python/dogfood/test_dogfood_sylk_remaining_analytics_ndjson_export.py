@@ -13,14 +13,8 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import (
-    sylk_has_numeric_cells,
-    sylk_data_density,
-    sylk_is_single_row,
-    sylk_max_string_length,
-    find_value,
-    find_rows_by_value,
-)
+from sylk.sylk_analytics import sylk_has_numeric_cells, sylk_data_density, sylk_is_single_row, sylk_max_string_length
+from sylk.sylk_parser import find_value, find_rows_by_value
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _SYLK_DIR = _REPO / "samples" / "by-format" / "sylk" / "valid"

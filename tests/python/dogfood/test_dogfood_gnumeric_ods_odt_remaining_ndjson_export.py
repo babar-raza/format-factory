@@ -15,7 +15,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
 from gnumeric.gnumeric_codec import gnumeric_min_column_count, gnumeric_avg_column_count
-from ods.ods_parser import ods_column_value_variance, ods_row_value_variance
+from ods.ods_analytics import ods_column_value_variance, ods_row_value_variance
 from odt.odt_parser import odt_avg_chars_per_paragraph, odt_paragraph_variance
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 

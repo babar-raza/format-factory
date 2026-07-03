@@ -10,7 +10,7 @@ from .ods_parser import *  # noqa: F401, F403
 from .ods_stats import *  # noqa: F401, F403
 from .ods_writer import *  # noqa: F401, F403
 from .ods_csv_exporter import *  # noqa: F401, F403
-from .spreadsheet_document import *  # noqa: F401, F403
+from .ods_analytics import *  # noqa: F401, F403  — PCG-PORTFOLIO-002 canonical location
 from .models import OdsModelDocument  # noqa: F401
 from .ods_workflow import ods_installed_workflow  # noqa: F401
 from .ods_sheet_iterator import ods_iter_sheets  # noqa: F401

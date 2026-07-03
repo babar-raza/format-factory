@@ -7,7 +7,7 @@ import pytest
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-from src.python.sylk.sylk_parser import sylk_is_all_numeric, sylk_row_span, sylk_is_square
+from src.python.sylk.sylk_analytics import sylk_is_all_numeric, sylk_row_span, sylk_is_square
 
 
 @pytest.fixture

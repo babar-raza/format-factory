@@ -23,14 +23,7 @@ from dif.dif_parser import (
     dif_numeric_sum,
     dif_is_single_row,
 )
-from sylk.sylk_parser import (
-    sylk_is_multi_row,
-    sylk_is_single_column,
-    sylk_cell_count_variance,
-    sylk_avg_cell_length,
-    sylk_column_span,
-    sylk_numeric_sum,
-)
+from sylk.sylk_analytics import sylk_is_multi_row, sylk_is_single_column, sylk_cell_count_variance, sylk_avg_cell_length, sylk_column_span, sylk_numeric_sum
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _DIF_DIR = _REPO / "samples" / "by-format" / "dif" / "valid"

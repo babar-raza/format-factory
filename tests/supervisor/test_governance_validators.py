@@ -453,6 +453,18 @@ class TestRunAllValidators:
             "validate_error_fallback_safety",
             "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
             "validate_readme_freshness",  # V87: scans README drift state, not declaration
+            # V100-V109: TC-PQLM-012 product code quality validators — scan filesystem, not declaration
+            # These use validator_id keys (not function names) per _norm_ext3 in governance_validator_runner.py
+            "V100",  # validate_suspicious_filenames: scans src/ for bad filenames
+            "V101",  # validate_history_identifiers_in_source: scans src/ for sprint IDs in source
+            "V102",  # validate_undocumented_public_python_apis: scans src/ Python files
+            "V103",  # validate_ungoverned_todo_markers: scans src/ for ungoverned TODOs
+            "V104",  # validate_constant_return_public_methods: scans src/ Python files
+            "V105",  # validate_getter_without_parser_source: scans src/ Python files
+            "V106",  # validate_setter_without_writer_path: scans src/ Python files
+            "V107",  # validate_test_only_public_apis: scans src/ and tests/
+            "V108",  # validate_detached_persistent_state: scans src/ Python files
+            "V109",  # validate_files_outside_approved_layout: scans src/ file paths
         }
         failed = [
             v["validator"] for v in result["validators"]
@@ -508,6 +520,18 @@ class TestRunAllValidators:
             "validate_error_fallback_safety",
             "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
             "validate_readme_freshness",  # V87: scans README drift state, not declaration
+            # V100-V109: TC-PQLM-012 product code quality validators — scan filesystem, not declaration
+            # These use validator_id keys (not function names) per _norm_ext3 in governance_validator_runner.py
+            "V100",  # validate_suspicious_filenames: scans src/ for bad filenames
+            "V101",  # validate_history_identifiers_in_source: scans src/ for sprint IDs in source
+            "V102",  # validate_undocumented_public_python_apis: scans src/ Python files
+            "V103",  # validate_ungoverned_todo_markers: scans src/ for ungoverned TODOs
+            "V104",  # validate_constant_return_public_methods: scans src/ Python files
+            "V105",  # validate_getter_without_parser_source: scans src/ Python files
+            "V106",  # validate_setter_without_writer_path: scans src/ Python files
+            "V107",  # validate_test_only_public_apis: scans src/ and tests/
+            "V108",  # validate_detached_persistent_state: scans src/ Python files
+            "V109",  # validate_files_outside_approved_layout: scans src/ file paths
         }
         failed = [
             v["validator"] for v in result["validators"]
@@ -1794,10 +1818,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 106, (
-            f"Expected 106 canonical validators, got {validator_count}. "
+        assert validator_count == 119, (
+            f"Expected 119 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(106 = 98 prior + V92-V99 playbook governance drift guards (TC-PB-009, FF-PLAYBOOK-SYSTEM-001))"
+            "(119 = 106 prior + V100-V109 product code quality validators + V110-V112 (TC-PQLM-012))"
         )
 
 

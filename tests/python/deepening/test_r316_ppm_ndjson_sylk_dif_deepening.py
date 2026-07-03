@@ -58,7 +58,7 @@ def test_ndjson_min_record_fields_positive():
     assert ndjson_min_record_fields(_NDJSON_DATA) > 0
 
 # SYLK ------------------------------------------------------------------------
-from src.python.sylk.sylk_parser import sylk_value_length_sum, sylk_avg_row_density
+from src.python.sylk.sylk_analytics import sylk_value_length_sum, sylk_avg_row_density
 
 _SYLK = _REPO / "samples" / "by-format" / "sylk" / "valid"
 

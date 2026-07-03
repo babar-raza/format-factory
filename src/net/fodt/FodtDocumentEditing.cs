@@ -1,5 +1,5 @@
-// FormatFactory.Fodt -- FodtDocument extended APIs (partial class).
-// R126-R394: Heading, Table, Bookmark, Section, Comment, Footnote, Endnote,
+// FormatFactory.Fodt -- FodtDocument editing and DOM operations (partial class).
+// Covers: Heading, Table, Bookmark, Section, Comment, Footnote, Endnote,
 // Hyperlink, List, Image, Metadata, Text-ops, Style, Export aliases, Header/Footer,
 // Annotation, Cross-reference, Text-box, and Search methods.
 // Gate 11 status: commercial_readiness_in_progress (NOT approved)

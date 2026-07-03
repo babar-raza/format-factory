@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.ods.ods_parser import ods_row_count
+from src.python.ods.ods_analytics import ods_row_count
 
 ODS_SAMPLES = _REPO / "samples" / "by-format" / "ods" / "valid"
 

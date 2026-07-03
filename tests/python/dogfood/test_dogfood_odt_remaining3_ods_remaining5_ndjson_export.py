@@ -23,14 +23,7 @@ from odt.odt_parser import (
     odt_nonspace_char_count,
     odt_total_text_length,
 )
-from ods.ods_parser import (
-    ods_is_rectangular,
-    ods_is_single_cell,
-    ods_is_single_row,
-    ods_nonempty_cell_count,
-    ods_nonempty_row_count,
-    ods_nonempty_row_ratio,
-)
+from ods.ods_analytics import ods_is_rectangular, ods_is_single_cell, ods_is_single_row, ods_nonempty_cell_count, ods_nonempty_row_count, ods_nonempty_row_ratio
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _ODT_DIR = _REPO / "samples" / "by-format" / "odt" / "valid"

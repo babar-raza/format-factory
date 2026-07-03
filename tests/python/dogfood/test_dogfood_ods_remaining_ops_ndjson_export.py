@@ -13,14 +13,8 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import (
-    get_capabilities,
-    probe_ods,
-    ods_is_single_row,
-    ods_avg_row_length,
-    ods_nonempty_cell_count,
-    ods_cell_value_variance,
-)
+from ods.ods_analytics import ods_is_single_row, ods_avg_row_length, ods_nonempty_cell_count, ods_cell_value_variance
+from ods.ods_parser import get_capabilities, probe_ods
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _ODS_DIR = _REPO / "samples" / "by-format" / "ods" / "valid"

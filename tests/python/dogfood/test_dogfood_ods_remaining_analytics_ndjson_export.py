@@ -15,14 +15,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import (
-    ods_has_numeric_cells,
-    ods_has_string_cells,
-    ods_is_empty,
-    ods_max_numeric_value,
-    ods_min_numeric_value,
-    ods_nonempty_row_count,
-)
+from ods.ods_analytics import ods_has_numeric_cells, ods_has_string_cells, ods_is_empty, ods_max_numeric_value, ods_min_numeric_value, ods_nonempty_row_count
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 

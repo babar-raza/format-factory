@@ -19,7 +19,7 @@ from src.python.csv.csv_parser import (
     csv_max_field_value_length,
     csv_unique_value_count,
 )
-from src.python.ods.ods_parser import ods_all_sheets_have_data, ods_is_single_sheet
+from src.python.ods.ods_analytics import ods_all_sheets_have_data, ods_is_single_sheet
 from src.python.ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _CSV_DIR = _REPO / "samples" / "by-format" / "csv"

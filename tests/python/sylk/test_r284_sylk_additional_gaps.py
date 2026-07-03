@@ -10,7 +10,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from sylk.sylk_parser import (
+from sylk.sylk_analytics import (
     sylk_string_value_count,
     sylk_value_length_sum,
 )

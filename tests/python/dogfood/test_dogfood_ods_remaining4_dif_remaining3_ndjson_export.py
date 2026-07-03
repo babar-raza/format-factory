@@ -15,14 +15,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import (
-    ods_has_formulas,
-    ods_has_numeric_cells,
-    ods_has_string_cells,
-    ods_is_all_numeric,
-    ods_is_empty,
-    ods_is_multi_sheet,
-)
+from ods.ods_analytics import ods_has_formulas, ods_has_numeric_cells, ods_has_string_cells, ods_is_all_numeric, ods_is_empty, ods_is_multi_sheet
 from dif.dif_parser import (
     export_to_html as dif_export_to_html,
     dif_avg_numeric_value,

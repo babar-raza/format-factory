@@ -18,7 +18,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src" / "python"))
 
-from sylk.sylk_parser import (
+from sylk.sylk_analytics import (
     sylk_row_span,
     sylk_is_square,
     sylk_total_string_length,

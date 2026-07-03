@@ -35,13 +35,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.sylk.sylk_parser import (
-    sylk_total_cells,
-    sylk_nonempty_cell_ratio,
-    sylk_min_row_index,
-    sylk_max_row_index,
-    sylk_numeric_cell_ratio,
-)
+from src.python.sylk.sylk_analytics import sylk_total_cells, sylk_nonempty_cell_ratio, sylk_min_row_index, sylk_max_row_index, sylk_numeric_cell_ratio
 from src.python.tsv.tsv_parser import (
     tsv_string_cell_count,
     tsv_total_string_length,

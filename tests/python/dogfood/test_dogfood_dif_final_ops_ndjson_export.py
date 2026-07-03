@@ -19,11 +19,8 @@ from dif.dif_parser import (
     sort_rows_by_column,
     parse_dif_strict,
 )
-from sylk.sylk_parser import (
-    count_distinct_values,
-    sylk_unique_values,
-    get_column_values,
-)
+from sylk.sylk_analytics import sylk_unique_values
+from sylk.sylk_parser import count_distinct_values, get_column_values
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 _DIF_DIR = _REPO / "samples" / "by-format" / "dif" / "valid"

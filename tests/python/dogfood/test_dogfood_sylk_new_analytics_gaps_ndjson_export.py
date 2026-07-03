@@ -30,13 +30,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.sylk.sylk_parser import (
-    sylk_avg_cell_length,
-    sylk_avg_numeric_value,
-    sylk_avg_row_density,
-    sylk_cell_count_variance,
-    sylk_string_value_count,
-)
+from src.python.sylk.sylk_analytics import sylk_avg_cell_length, sylk_avg_numeric_value, sylk_avg_row_density, sylk_cell_count_variance, sylk_string_value_count
 from src.python.ndjson.ndjson_codec import write_ndjson
 
 SAMPLES_DIR = _REPO / "samples" / "by-format" / "sylk" / "valid"

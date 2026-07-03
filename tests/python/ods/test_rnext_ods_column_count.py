@@ -7,7 +7,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import ods_column_count
+from ods.ods_analytics import ods_column_count
 
 _SAMPLES = _REPO / "samples" / "by-format" / "ods" / "valid"
 

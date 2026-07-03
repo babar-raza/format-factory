@@ -7,7 +7,7 @@ FOSS track only — no commercial readiness implied.
 """
 from .exceptions import *  # noqa: F401, F403
 from .sylk_parser import *  # noqa: F401, F403
-from .spreadsheet_document import *  # noqa: F401, F403
+from .sylk_analytics import *  # noqa: F401, F403  — PCG-PORTFOLIO-003 canonical location
 from .models import SylkModelDocument, SylkDoc  # noqa: F401
 from .sylk_workflow import sylk_installed_workflow  # noqa: F401
 from .sylk_cell_iterator import sylk_iter_cells  # noqa: F401

@@ -15,14 +15,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import (
-    ods_numeric_cell_count,
-    ods_numeric_density,
-    ods_numeric_sum,
-    ods_numeric_sum_all,
-    ods_string_cell_count,
-    ods_string_density,
-)
+from ods.ods_analytics import ods_numeric_cell_count, ods_numeric_density, ods_numeric_sum, ods_numeric_sum_all, ods_string_cell_count, ods_string_density
 from fods.neutral_model import (
     fods_avg_numeric_value,
     fods_has_string_cells,
