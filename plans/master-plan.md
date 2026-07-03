@@ -6005,3 +6005,35 @@ Full 22-phase product library healing mission on the FODS Python + .NET example 
 **Portfolio Result:** 20/20 CERTIFIED (was 12 CERTIFIED + 8 CERTIFIED_WITH_KNOWN_GAPS at plan start)
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+---
+
+## §110 — sequential-twirling-sunrise: Lane Separation Governance Machinery (TERMINAL_CLOSED 2026-07-03)
+
+**Plan:** `plans/.claude/sequential-twirling-sunrise.md` | **Mission:** lane-separation-governance-v5 | **Forensic findings healed:** F-001..F-009
+
+### Summary
+
+9-taskcard governance machinery plan. Designed and implemented all four components of the lane separation protocol in response to a CI audit agent that violated scope boundaries by fixing out-of-scope product APIs directly. Root cause: the machinery gave the agent no basis to make the right decision.
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-LSG-001 | `registry/lane-scope-registry.yaml` — 5 lanes with permitted/forbidden writes | CLOSED |
+| TC-LSG-002 | `tools/supervisor/scope_guard.py` + `tests/tools/test_scope_guard.py` (23/23 PASS) | CLOSED |
+| TC-LSG-003 | `write_plan_lock.py` extended with `lane_id` parsing from plan headers | CLOSED |
+| TC-LSG-004 | `.pre-commit-config.yaml` scope-guard hook (warn mode, `stages: [pre-commit]` F-003 fix) | CLOSED |
+| TC-LSG-005 | `tools/supervisor/delegate_gap.py` — writes to `delegation-ledger.json` (F-001 fix) | CLOSED |
+| TC-LSG-006 | `tools/supervisor/delegation_gate.py` — wait-for-supervisor gate | CLOSED |
+| TC-LSG-007 | `sprint_executor_validate.py` Phase 13 scope guard check (WARN only) | CLOSED |
+| TC-LSG-008 | `docs/governance/lane-separation-protocol.md` — canonical protocol reference | CLOSED |
+| TC-LSG-009 | warn->block hook upgrade | backlog (deferred: after >=3 stable sprints) |
+
+**Critical forensic fixes incorporated:**
+- F-001 (CRITICAL): delegation-ledger.json separate from gap-ledger.json (incompatible schema)
+- F-002 (CRITICAL): `_glob_matches()` helper for `**` wildcard (fnmatch returns False for `src/**`)
+- F-003 (HIGH): `stages: [pre-commit]` added to hook (required field was missing)
+- F-008 (MEDIUM): all 5 lanes have `delegation-ledger.json` + `known-failure-ledger.yaml` in `permitted_writes`
+
+**Verification:** All 23/23 scope_guard tests PASS. End-to-end scenario: scope guard violation, glob regression, delegation write, gate check, gap closure — all green.
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED

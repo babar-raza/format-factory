@@ -15,6 +15,13 @@ repos:
         args: [--maxkb=500]
   - repo: local
     hooks:
+      - id: scope-guard
+        name: Lane scope guard (warn mode - violations print to stderr, never block commit)
+        language: system
+        entry: python tools/supervisor/scope_guard.py --from-git-staged --lane-from-lock --mode warn
+        pass_filenames: false
+        always_run: false
+        stages: [pre-commit]
       - id: source-structure-baseline-check
         name: Architecture baseline growth check
         entry: python tools/validators/source_structure_validator.py --check-baseline-growth

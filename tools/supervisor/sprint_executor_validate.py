@@ -667,6 +667,58 @@ def validate_file(
     # --- Phase 12 (TC-LA-005): Provenance chain completeness check (WARN only) ---
     provenance_warnings = check_provenance_chain_completeness(doc)
 
+    # --- Phase 13 (TC-LSG-007): Lane scope guard check (WARN only, never blocks) ---
+    # Validates changed_files against the active lane's permitted/forbidden write rules.
+    # If lane_id is unknown or scope_guard unavailable, skip with WARN.
+    scope_warnings: list[str] = []
+    try:
+        import json as _json
+        _lock_path = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+        _lane_id = None
+        if _lock_path.exists():
+            try:
+                _lock_data = _json.loads(_lock_path.read_text(encoding="utf-8"))
+                _lane_id = _lock_data.get("lane_id")
+            except Exception:
+                pass
+        if _lane_id and _lane_id != "unknown":
+            _changed = doc.get("changed_files", []) or []
+            if _changed:
+                import sys as _sys
+                _guard_dir = str(repo_root / "tools" / "supervisor")
+                if _guard_dir not in _sys.path:
+                    _sys.path.insert(0, _guard_dir)
+                try:
+                    from scope_guard import _load_registry, _find_lane, check_files
+                    _registry_path = repo_root / "registry" / "lane-scope-registry.yaml"
+                    if _registry_path.exists():
+                        _registry = _load_registry(_registry_path)
+                        _lane = _find_lane(_registry, _lane_id)
+                        if _lane:
+                            _sg_result = check_files(_changed, _lane, _lane_id)
+                            for v in _sg_result.get("violations", []):
+                                scope_warnings.append(
+                                    f"WARN(TC-LSG-007)[scope]: {v['file']} violates "
+                                    f"rule '{v['rule']}' ({v['rule_type']}) in lane "
+                                    f"'{_lane_id}' - {v['action']}"
+                                )
+                        else:
+                            scope_warnings.append(
+                                f"WARN(TC-LSG-007): lane '{_lane_id}' not found in "
+                                "lane-scope-registry.yaml - scope check skipped"
+                            )
+                except ImportError:
+                    scope_warnings.append(
+                        "WARN(TC-LSG-007): scope_guard not importable - scope check skipped"
+                    )
+        else:
+            if doc.get("changed_files"):
+                scope_warnings.append(
+                    "WARN(TC-LSG-007): no lane_id in active-plan-lock.json - scope check skipped"
+                )
+    except Exception as _sg_exc:
+        scope_warnings.append(f"WARN(TC-LSG-007): scope check error: {_sg_exc}")
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
@@ -678,6 +730,7 @@ def validate_file(
         "parent_id_warnings": parent_id_warnings,
         "contract_warnings": contract_warnings,
         "provenance_warnings": provenance_warnings,
+        "scope_warnings": scope_warnings,
     }
 
 
@@ -755,6 +808,12 @@ def main(argv: list[str] | None = None) -> int:
     if prov_warns:
         print(f"\nProvenance chain warnings ({len(prov_warns)}):")
         for w in prov_warns:
+            print(f"  - {w}")
+
+    scope_warns = result.get("scope_warnings", [])
+    if scope_warns:
+        print(f"\nLane scope warnings ({len(scope_warns)}) [TC-LSG-007]:")
+        for w in scope_warns:
             print(f"  - {w}")
 
     if result["passed"]:

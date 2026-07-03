@@ -220,6 +220,43 @@ def _write_terminal_closure_record(
         )
 
 
+def _parse_lane_id_from_plan(plan_path: str) -> str:
+    """TC-LSG-003: Parse lane_id from plan file header or YAML front matter.
+
+    Looks for:
+      - Comment header: "# lane: lane-ci-audit"
+      - YAML front matter: "lane_id: lane-ci-audit"
+
+    Returns "unknown" if not found or file cannot be read.
+    """
+    import re
+    _LANE_RE = re.compile(r"^#\s*lane:\s*(\S+)", re.MULTILINE)
+    _YAML_LANE_RE = re.compile(r"^lane_id:\s*(\S+)", re.MULTILINE)
+    try:
+        p = Path(plan_path) if Path(plan_path).is_absolute() else _repo_root / plan_path
+        if not p.exists():
+            return "unknown"
+        # Read first 30 lines for efficiency
+        lines = []
+        with p.open(encoding="utf-8", errors="replace") as f:
+            for i, line in enumerate(f):
+                if i >= 30:
+                    break
+                lines.append(line)
+        text = "".join(lines)
+        # Try comment header first
+        m = _LANE_RE.search(text)
+        if m:
+            return m.group(1)
+        # Try YAML front matter
+        m = _YAML_LANE_RE.search(text)
+        if m:
+            return m.group(1)
+    except Exception:
+        pass
+    return "unknown"
+
+
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
@@ -302,6 +339,8 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
 
     # B2: get session_id BEFORE writing either file so both files have it
     sid = session_id or _get_session_id()
+    # TC-LSG-003: Parse lane_id from plan file header for scope_guard integration
+    lane_id = _parse_lane_id_from_plan(plan_path)
     lock = {
         "plan_path": plan_path,
         "status": status,
@@ -309,6 +348,7 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "session_id": sid,
         "track_type": track_type,  # GAP-WF-004: machinery track skips product-track locks
+        "lane_id": lane_id,  # TC-LSG-003: for scope_guard --lane-from-lock
     }
     if binding:
         lock["binding_contract"] = {
