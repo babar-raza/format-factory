@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V109).
+"""governance_validator_runner.py — Runs all governance validators (V1-V110).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -456,6 +456,25 @@ def run_all_governance_validators(
             _norm_ext3(_v108(declaration, repo_root)),  # V108: detached persistent state dict (blocking for new)
             _norm_ext3(_v109(declaration, repo_root)),  # V109: files outside approved layout (blocking for new)
         ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V110: dotnet-path-canonical — block src/dotnet/ product paths in declarations
+    try:
+        from governance_validators_path import (  # noqa: PLC0415
+            validate_dotnet_path_canonical as _v110,
+        )
+
+        def _norm_path(r: dict) -> dict:
+            return {
+                "validator": r.get("rule", "dotnet-path-canonical"),
+                "result": r.get("status", "PASS"),
+                "blocks_sprint": r.get("blocks_sprint", False),
+                "violations": r.get("violations", []),
+                "summary": r.get("summary", ""),
+            }
+
+        results.append(_norm_path(_v110(declaration, repo_root)))
     except Exception:
         pass  # Non-blocking on import failure
 

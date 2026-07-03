@@ -1,40 +1,42 @@
-# src/dotnet — Phase 0 Placeholder (Superseded by src/net/)
+# src/net/ — .NET Product Source Root
 
-**Document type:** Directory Orientation — Phase 0 Foundation
-**Last reviewed:** 2026-05-04 (run011: layout change — production .NET source target is src/net/{format}/)
+**Canonical .NET product directory.** Each format implementation lives at `src/net/{format}/`.
 
----
-
-## IMPORTANT: Layout Change
-
-**This directory (`src/dotnet/`) is a Phase 0 placeholder only.** Production .NET product source will NOT be created here.
-
-**The target .NET product layout is format-first:**
-```
-src/net/{format}/     e.g. src/net/fods/
-```
-
-`src/dotnet/open-source/` and `src/dotnet/commercial/` are **obsolete paths** — they must never be created. The old layout has been superseded by the format-first model described in `docs/product-factory/product-tracks.md` and `docs/code-quality/architecture.md`.
-
-`src/net/` will be created in Phase 4+ when the first format's .NET product implementation begins (Gate 9 passed + .NET implementation taskcards + explicit Phase 4 .NET implementation execution prompt).
+**Authority:** `registry/repository-layout.yaml` — language ID `dotnet` maps to `src/net/`.
+**Resolver:** `tools/supervisor/path_resolver.py` — use `resolve_product_path("dotnet", format_id)`.
+**Validator:** V110 (`governance_validators_path.py`) blocks sprints that reference prohibited paths.
 
 ---
 
-## Purpose (Phase 0)
+## Active Format Directories
 
-This directory contains only this orientation file. It marks the location of the future .NET product workspace and documents the layout change so agents do not recreate obsolete directory structures.
+| Format | Path | .csproj |
+|---|---|---|
+| csv | `src/net/csv/` | `FormatFactory.Csv.csproj` |
+| fods | `src/net/fods/` | `FormatFactory.Fods.csproj` |
+| fodt | `src/net/fodt/` | `FormatFactory.Fodt.csproj` |
+| html | `src/net/html/` | `FormatFactory.Html.csproj` |
+| markdown | `src/net/markdown/` | `FormatFactory.Markdown.csproj` |
+| ndjson | `src/net/ndjson/` | `FormatFactory.Ndjson.csproj` |
+| netpbm | `src/net/netpbm/` | `FormatFactory.Netpbm.csproj` |
+| tsv | `src/net/tsv/` | `FormatFactory.Tsv.csproj` |
+| txt | `src/net/txt/` | `FormatFactory.Txt.csproj` |
+| zst | `src/net/zst/` | `FormatFactory.Zst.csproj` |
 
 ---
 
-## Target Directory Structure (Phase 4+)
+## Layout per format
 
 ```
-src/
-  net/
-    {format}/           .NET product workspace per format (Phase 4+)
-    fods/               Example: FODS format .NET workspace
-  dotnet/
-    _readme.md          This file only (does not grow further)
+src/net/{format}/
+  {Format}Document.cs    # domain model (≤800 LOC per V78)
+  {Format}Parser.cs      # parse-only
+  {Format}Writer.cs      # write-only (where applicable)
+  Model/                 # supporting model classes
+  Exceptions/            # exception hierarchy
+  Spec/                  # architecture_only spec stubs (V73 validates SpecQName)
+  bin/                   # build output (gitignored)
+  obj/                   # build intermediates (gitignored)
 ```
 
 ---
@@ -68,9 +70,7 @@ SDK confirmation status: **Confirmed (TC-0003 completed 2026-06-18).**
 
 ---
 
-## Commercial Isolation Rules (Future — applies to src/net/{format}/)
-
-The commercial isolation rules now apply to `src/net/{format}/` (format-first layout). `src/dotnet/commercial/` is an obsolete path and must not be created.
+## Commercial Isolation Rules (applies to src/net/{format}/)
 
 Within `src/net/{format}/`, the FOSS and commercial isolation mechanism is deferred to Phase 4 design (DEC-033). The principles are:
 1. Physical or logical separation between FOSS-tier and commercial-tier source within `src/net/{format}/`.
@@ -97,3 +97,5 @@ Never use `XDocument.Load()` or `XmlDocument.Load()` with default settings on un
 - `docs/governance/security.md` — .NET parser security requirements
 - `docs/gates.md` — Gate 10 (OSS) and Gate 11 (commercial) criteria
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation
+- `registry/repository-layout.yaml` — Canonical path authority
+- `tools/supervisor/path_resolver.py` — Path resolution utility

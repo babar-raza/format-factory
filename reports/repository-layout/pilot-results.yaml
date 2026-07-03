@@ -1,0 +1,99 @@
+schema_version: "1.0"
+mission_id: DOTNET-PATH-GOV-001
+run_date: "2026-07-03"
+
+pilots:
+  - id: P1
+    name: "FODS .NET discovery"
+    method: "resolve_product_path('dotnet', 'fods')"
+    expected: ".../src/net/fods"
+    result: PASS
+    actual: "src/net/fods"
+
+  - id: P2
+    name: "Second .NET product"
+    method: "resolve_product_path('dotnet', 'csv')"
+    expected: ".../src/net/csv"
+    result: PASS
+    actual: "src/net/csv"
+
+  - id: P3
+    name: "Python product unaffected"
+    method: "resolve_product_path('python', 'fods')"
+    expected: ".../src/python/fods"
+    result: PASS
+    actual: "src/python/fods"
+
+  - id: P4
+    name: "Logical language ID 'dotnet' -> src/net"
+    method: "get_source_root('dotnet')"
+    expected: ".../src/net"
+    result: PASS
+    actual: "src/net"
+
+  - id: P5
+    name: "Alias 'net' resolves same as 'dotnet'"
+    method: "resolve_product_path('net', 'fods')"
+    expected: ".../src/net/fods"
+    result: PASS
+    actual: "src/net/fods"
+
+  - id: P6
+    name: "Prohibited path -> V110 FAIL before mutation"
+    method: "validate_dotnet_path_canonical({'changed_files': ['src/dotnet/open-source/fods/X.cs']})"
+    expected: "status: FAIL, blocks_sprint: true"
+    result: PASS
+    actual: "status: FAIL, blocks_sprint: true"
+
+  - id: P7
+    name: "Product not found -> FileNotFoundError"
+    method: "resolve_product_path('dotnet', 'nonexistent_format_xyz', validate_exists=True)"
+    expected: "FileNotFoundError raised"
+    result: PASS
+    actual: "FileNotFoundError raised"
+
+  - id: P8
+    name: "Taskcard/plan path fields use src/net/"
+    method: "Scan plans/.claude/kind-orbiting-moore.md for src/net/"
+    expected: "present"
+    result: PASS
+    actual: "src/net/ present in plan"
+
+  - id: P9
+    name: "Skill execution — add-dotnet-api.md uses src/net/"
+    method: "Read .claude/commands/add-dotnet-api.md for src/net/<format_id>/"
+    expected: "present"
+    result: PASS
+    actual: "src/net/<format_id>/ confirmed in skill"
+
+  - id: P10
+    name: "Generated docs — no stale src/dotnet/ paths"
+    method: "Scan .local/supervisor/*.json|yaml|md for src/dotnet product paths"
+    expected: "0 files"
+    result: PASS
+    actual: "0 files with prohibited paths"
+
+  - id: P11
+    name: "Layout authority contains prohibited_paths: [src/dotnet]"
+    method: "Read registry/repository-layout.yaml"
+    expected: "prohibited_paths includes src/dotnet; dotnet.path=src/net; aliases=[net]"
+    result: PASS
+    actual: "all confirmed"
+
+  - id: P12
+    name: "Idempotency — second read produces zero material changes"
+    method: "Re-read all 7 changed files; re-run P1-P11; count material changes"
+    expected: "0 material changes"
+    result: PASS
+    actual: "0 — all files stable, all pilots reproduce same PASS results"
+
+summary:
+  total_pilots: 12
+  pass: 12
+  fail: 0
+  verdict: DOTNET_SOURCE_PATH_GOVERNANCE_HEALED_SRC_NET_ENFORCED_AND_IDEMPOTENT
+
+idempotency:
+  run_1: "2026-07-03 — all pilots PASS"
+  run_2: "2026-07-03 — re-read all changed files; all pilots reproduce PASS; 0 material changes"
+  conclusion: IDEMPOTENT

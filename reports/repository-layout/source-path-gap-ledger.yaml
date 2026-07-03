@@ -1,0 +1,168 @@
+schema_version: "1.0"
+mission_id: DOTNET-PATH-GOV-001
+created: "2026-07-03"
+canonical_dotnet_root: src/net
+prohibited_assumed_root: src/dotnet
+
+summary:
+  total_gaps: 6
+  resolved: 6
+  no_change_needed: 1
+
+gaps:
+  - gap_id: GAP-PATH-001
+    category: DOCUMENTATION_AMBIGUITY
+    severity: CRITICAL
+    symptom: >
+      src/net/_readme.md contained Phase 0 placeholder content that named
+      src/dotnet/ as its directory context and described src/net/ as a future
+      target ("will be created in Phase 4+"). This was the primary source of
+      agent confusion — reading the file gave the false impression that
+      src/net/ was aspirational and src/dotnet/ was the real directory.
+    affected_files:
+      - src/net/_readme.md
+    root_cause: RC-001
+    migration_action: Rewrote the file as a proper src/net/ README (TC-PATH-001)
+    status: RESOLVED
+    task_ids: [TC-PATH-001]
+    validation: grep -c "src/dotnet" src/net/_readme.md returns 0
+
+  - gap_id: GAP-PATH-002
+    category: PATH_RESOLVER
+    severity: HIGH
+    symptom: >
+      No machine-readable layout authority existed. Agents and tools had to
+      guess paths from language names, leading to src/{language_id}/ derivation
+      that produced the wrong path (src/dotnet/ instead of src/net/).
+    affected_files:
+      - registry/repository-layout.yaml (did not exist)
+      - tools/supervisor/path_resolver.py (did not exist)
+    root_cause: RC-002
+    migration_action: >
+      Created registry/repository-layout.yaml as the canonical authority.
+      Created tools/supervisor/path_resolver.py for deterministic resolution.
+    status: RESOLVED
+    task_ids: [TC-PATH-002, TC-PATH-003]
+    validation: >
+      resolve_product_path("dotnet", "fods") returns .../src/net/fods.
+      resolve_product_path("net", "fods") returns same (alias).
+
+  - gap_id: GAP-PATH-003
+    category: SKILL_OR_COMMAND
+    severity: HIGH
+    symptom: >
+      No blocking governance validator prevented evidence declarations from
+      referencing src/dotnet/ product paths. An agent creating files under
+      src/dotnet/open-source/ would pass all validation checks.
+    affected_files:
+      - tools/supervisor/governance_validators_path.py (did not exist)
+    root_cause: RC-002
+    migration_action: >
+      Created governance_validators_path.py with V110 validator.
+      Registered V110 in governance_validator_runner.py.
+    status: RESOLVED
+    task_ids: [TC-PATH-004]
+    validation: >
+      V110 returns FAIL when changed_files contains src/dotnet/open-source/X.cs.
+
+  - gap_id: GAP-PATH-004
+    category: DOCUMENTATION_AMBIGUITY
+    severity: MEDIUM
+    symptom: >
+      AGENTS.md contained prohibition wording (line 360: "these paths must NEVER
+      be created") but no concise positive path table. Agents scanning the file
+      had to read through narrative text to discover the canonical src/net/ path.
+    affected_files:
+      - AGENTS.md
+    root_cause: RC-003
+    migration_action: >
+      Added section A1a "Canonical Source Roots" immediately after the A1
+      Identity paragraph, with a two-row table mapping language IDs to physical
+      paths and an explicit "src/dotnet/ does not exist" statement.
+    status: RESOLVED
+    task_ids: [TC-PATH-005]
+    validation: grep -n "src/net" AGENTS.md shows A1a table entry
+
+  - gap_id: GAP-PATH-005
+    category: AUTONOMOUS_ROUTING
+    severity: MEDIUM
+    symptom: >
+      .supervisor/project-memory.md lacked an explicit src/net/ canonical path
+      rule. Agents relying on persistent memory had no machine-readable record
+      that src/dotnet/ does not exist.
+    affected_files:
+      - .supervisor/project-memory.md
+    root_cause: RC-003
+    migration_action: >
+      Added MANDATORY entry at the top of project-memory.md documenting
+      the canonical path, resolver, and validator.
+    status: RESOLVED
+    task_ids: [TC-PATH-006]
+    validation: grep "src/dotnet/ does NOT exist" .supervisor/project-memory.md
+
+  - gap_id: GAP-PATH-006
+    category: STALE_PATH_REFERENCE
+    severity: LOW
+    symptom: >
+      ~48 files contain mentions of src/dotnet in prohibition/historical context.
+      On scanning, agents may pattern-match on the string src/dotnet and treat it
+      as an active path reference.
+    affected_files:
+      - AGENTS.md (line 360 — correct prohibition wording)
+      - docs/code-quality/architecture.md (lines 38, 124-126, 306, 424-425 — correct CRITICAL note)
+      - docs/product-factory/product-tracks.md (lines 34, 74 — correct prohibition)
+      - docs/governance/release-control.md (line 110 — correct prohibition)
+      - docs/history/ (immutable historical evidence)
+    root_cause: RC-003
+    migration_action: >
+      No text replacement performed. All references are correct prohibition
+      notices ("this path must NEVER be created") or immutable historical
+      evidence. The fix is the strong positive statement of src/net/ in
+      AGENTS.md A1a and the rewritten src/net/_readme.md.
+    status: RESOLVED_NO_CHANGE_NEEDED
+    task_ids: []
+
+root_causes:
+  - cause_id: RC-001
+    description: >
+      src/net/_readme.md was migrated verbatim from src/dotnet/ when the
+      Phase 0 layout was superseded. The file was never updated to reflect the
+      live state of src/net/ (10 active format directories).
+    first_failed_boundary: src/net/_readme.md title line 1
+    prevention: TC-PATH-001 rewrites the file
+    detection: head -1 src/net/_readme.md — title no longer mentions src/dotnet
+
+  - cause_id: RC-002
+    description: >
+      No machine-readable layout contract existed. Path consumers (skills,
+      validators, agents) had no single authoritative source to query. Without
+      a resolver, the natural inference from "language=dotnet" is path="src/dotnet/".
+    first_failed_boundary: Missing registry/repository-layout.yaml
+    prevention: registry/repository-layout.yaml + path_resolver.py
+    detection: V110 validator blocks prohibited path patterns in declarations
+
+  - cause_id: RC-003
+    description: >
+      AGENTS.md stated prohibitions in prose at line 360 but had no
+      quick-reference table at scan depth. Agents reading the file saw
+      src/dotnet mentioned without an obvious positive assertion that
+      src/net/ is the correct canonical path.
+    first_failed_boundary: AGENTS.md — missing A1a section
+    prevention: Section A1a added with table mapping language IDs to paths
+    detection: grep "## A1a" AGENTS.md returns a match
+
+counters:
+  UNINVENTORIED_DOTNET_PATH_REFERENCES: 0
+  UNCLASSIFIED_PATH_REFERENCES: 0
+  PATH_DEFECTS_WITHOUT_PROVEN_ROOT_CAUSE: 0
+  CURRENT_REFERENCES_TO_SRC_DOTNET: 0
+  PATH_CONSUMERS_BYPASSING_CANONICAL_RESOLVER: 0
+  DOCUMENTS_WITH_AMBIGUOUS_DOTNET_SOURCE_ROOT: 0
+  SKILLS_OR_COMMANDS_WITH_GUESSED_DOTNET_PATHS: 0
+  ACTIVE_TASKS_WITH_STALE_DOTNET_PATHS: 0
+  TASKS_WITHOUT_CANONICAL_PATH_PROVENANCE: 0
+  RESUMABLE_STATE_WITH_STALE_DOTNET_PATH: 0
+  GENERATED_ARTIFACTS_WITH_STALE_DOTNET_PATHS: 0
+  DUPLICATE_DOTNET_SOURCE_ROOTS: 0
+  MATERIAL_FINDINGS_WITHOUT_GAPS: 0
+  ACTIONABLE_GAPS_WITHOUT_TASKS: 0

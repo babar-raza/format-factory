@@ -1,0 +1,60 @@
+schema_version: "1.0"
+description: >
+  Canonical repository layout authority.
+  Consume this file to resolve product source paths.
+  Never derive paths from language-id names (e.g. src/{language_id}/).
+  See tools/supervisor/path_resolver.py for the resolver utility.
+
+source_roots:
+  python:
+    path: src/python
+    language_id: python
+    aliases: []
+    product_path_pattern: "src/python/{format}"
+    description: "Python FOSS format libraries"
+  dotnet:
+    path: src/net
+    language_id: dotnet
+    aliases:
+      - net
+    product_path_pattern: "src/net/{format}"
+    description: ".NET commercial format libraries — physical directory is src/net/, NOT src/dotnet/"
+
+# Paths that must never be created or referenced as active source roots.
+# src/dotnet/ is a legacy name from Phase 0 planning; it does not exist in this repository.
+prohibited_paths:
+  - src/dotnet
+  - src/dotnet/open-source
+  - src/dotnet/commercial
+  - src/python/open-source
+
+validation:
+  fail_on_missing_mapping: true
+  fail_on_prohibited_path: true
+
+examples:
+  - description: ".NET FODS product"
+    language_id: dotnet
+    format: fods
+    resolved: "src/net/fods/"
+  - description: ".NET FODT product"
+    language_id: dotnet
+    format: fodt
+    resolved: "src/net/fodt/"
+  - description: ".NET CSV product (alias 'net' also resolves correctly)"
+    language_id: net
+    format: csv
+    resolved: "src/net/csv/"
+  - description: "Python FODS product"
+    language_id: python
+    format: fods
+    resolved: "src/python/fods/"
+
+authority_consumers:
+  - tools/supervisor/path_resolver.py
+  - tools/supervisor/governance_validators_path.py
+
+related_documents:
+  - src/net/_readme.md
+  - docs/product-factory/product-tracks.md
+  - docs/code-quality/architecture.md

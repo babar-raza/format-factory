@@ -5,6 +5,19 @@
 
 ---
 
+## MANDATORY: .NET source is src/net/ — src/dotnet/ does not exist (DOTNET-PATH-GOV-001, 2026-07-03)
+
+- `.NET` product root: `src/net/{format}/`  (e.g. `src/net/fods/`, `src/net/csv/`)
+- `src/dotnet/` directory does **NOT** exist in this repository
+- Language ID `dotnet` (alias `net`) → physical path `src/net/`
+- Language ID `python` → physical path `src/python/`
+- Authority: `registry/repository-layout.yaml`
+- Resolver: `tools/supervisor/path_resolver.py` → `resolve_product_path("dotnet", format_id)`
+- Validator: V110 (`governance_validators_path.py`) blocks declarations referencing `src/dotnet/` product paths
+- NEVER search for or create .NET product source under `src/dotnet/`
+
+---
+
 ## Entry: dual-orchestration-supervisor-e2e-20260530-165603
 - timestamp: 2026-05-30T16:56:03
 - sprint_mode: MODE 1/2/3 implementation

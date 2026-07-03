@@ -6053,6 +6053,8 @@ PCG-PORTFOLIO-001/002/003 healed (moved from Deferred to CLOSED):
 
 ## §111 — logical-cuddling-naur: PGM Brightness Histogram Behavioral Tests (TERMINAL_CLOSED 2026-07-03)
 
+
+
 **Plan:** `plans/.claude/logical-cuddling-naur.md` | **Commit:** 8fac9d0b
 
 ### Summary
@@ -6070,3 +6072,46 @@ Sprint to add behavioral test coverage for `pgm_brightness_histogram` (grayscale
 **Tests verified:** `test_return_type`, `test_default_bins_is_4`, `test_1x1_white_last_bin_gets_pixel` ([0,0,0,1]), `test_2x2_gradient_uniform_distribution` ([1,1,1,1]), `test_sum_equals_pixel_count`, `test_custom_bins_256` (256 bins, result[0,85,170,255]==1), `test_3x1_ramp_sum_equals_3`, `test_consistent_across_calls` — all 8 PASS.
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+---
+
+## §112 — kind-orbiting-moore: .NET Source Path Governance — src/net/ Canonical Root (TERMINAL_CLOSED 2026-07-03)
+
+**Plan:** `plans/.claude/kind-orbiting-moore.md` | **Mission:** DOTNET-PATH-GOV-001 | **Type:** machinery_hardening
+
+### Summary
+
+Established `src/net/` as the authoritative .NET product source root and eliminated all agent
+confusion about `src/dotnet/` (which does not exist). Root cause: `src/net/_readme.md` was a
+verbatim copy of old Phase 0 content that described `src/dotnet/` as the active directory and
+`src/net/` as a future aspirational target. Combined with no machine-readable path authority,
+agents reliably guessed the wrong path.
+
+### What Was Completed
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-PATH-001 | `src/net/_readme.md` rewritten — Phase 0 content removed, proper README for live 10-format tree | CLOSED |
+| TC-PATH-002 | `registry/repository-layout.yaml` created — machine-readable layout authority | CLOSED |
+| TC-PATH-003 | `tools/supervisor/path_resolver.py` created — `resolve_product_path("dotnet", format_id)` | CLOSED |
+| TC-PATH-004 | `tools/supervisor/governance_validators_path.py` (V110) + registered in runner | CLOSED |
+| TC-PATH-005 | `AGENTS.md` §A1a added — canonical path table: `dotnet → src/net/`, `python → src/python/` | CLOSED |
+| TC-PATH-006 | `.supervisor/project-memory.md` — MANDATORY block: `src/dotnet/` does NOT exist | CLOSED |
+| TC-PATH-007 | `reports/repository-layout/source-path-gap-ledger.yaml` — 6 gaps, all resolved | CLOSED |
+| TC-PATH-008 | `reports/repository-layout/pilot-results.yaml` — 12/12 pilots PASS | CLOSED |
+| TC-PATH-009 | Idempotency proof — 0 material changes on second run | CLOSED |
+
+### Verification Performed
+
+- 12/12 pilots PASS (resolve_product_path, alias net, Python unaffected, V110 FAIL, FileNotFoundError, taskcard paths, skill paths, generated docs, layout authority, idempotency)
+- V110 validator: FAIL when `src/dotnet/open-source/X.cs` in changed_files; PASS otherwise
+- `src/net/_readme.md`: 0 occurrences of `src/dotnet` (grep count = 0)
+- `registry/repository-layout.yaml`: `prohibited_paths` includes `src/dotnet`
+- `AGENTS.md §A1a`: canonical path table present and correct
+- Idempotency: all files stable, all pilots reproduce PASS results, MATERIAL_SECOND_RUN_CHANGES=0
+
+### Completion Gate Counters (all = 0)
+
+UNINVENTORIED_DOTNET_PATH_REFERENCES=0, PATH_DEFECTS_WITHOUT_PROVEN_ROOT_CAUSE=0, CURRENT_REFERENCES_TO_SRC_DOTNET=0, PATH_CONSUMERS_BYPASSING_CANONICAL_RESOLVER=0, DOCUMENTS_WITH_AMBIGUOUS_DOTNET_SOURCE_ROOT=0, SKILLS_OR_COMMANDS_WITH_GUESSED_DOTNET_PATHS=0, ACTIVE_TASKS_WITH_STALE_DOTNET_PATHS=0, FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0
+
+**Final Verdict:** DOTNET_SOURCE_PATH_GOVERNANCE_HEALED_SRC_NET_ENFORCED_AND_IDEMPOTENT | TERMINAL_CLOSED

@@ -10,6 +10,28 @@
 
 **A1.** Claude in VS Code is the primary agent executor for all project phases. Claude is driven by this document, project commands in `.claude/commands/`, taskcards in `taskcards/`, and gate definitions in `docs/gates.md`.
 
+## A1a. Canonical Source Roots (PATH AUTHORITY — never guess)
+
+**Format-first layout.** Logical language IDs differ from physical directory names.
+Always resolve product paths from the authority below — never derive them from language names.
+
+| Language ID | Physical Source Root | Example product path |
+|---|---|---|
+| `python` | `src/python/` | `src/python/fods/` |
+| `dotnet` (alias: `net`) | `src/net/` | `src/net/fods/` |
+
+**`src/dotnet/` does not exist in this repository.** .NET product source is at `src/net/{format}/`.
+
+- **Authority:** `registry/repository-layout.yaml`
+- **Resolver:** `tools/supervisor/path_resolver.py` — `resolve_product_path("dotnet", format_id)`
+- **Validator:** V110 (`governance_validators_path.py`) blocks sprints referencing prohibited paths
+
+Prohibited (must never be created):
+- `src/dotnet/` and any subdirectory (`src/dotnet/open-source/`, `src/dotnet/commercial/`)
+- `src/python/open-source/`
+
+---
+
 **A2.** Codex (OpenAI API or GitHub Copilot agent mode) is an optional secondary agent. Codex is activated only when explicitly instructed by a human. Codex output that enters the repository must be tagged `generated_by: codex` in the artifact's front matter.
 
 **A2a. Codex Governance Adapter.** When Codex is activated, it MUST load its governance policy through the canonical adapter before taking any action:
