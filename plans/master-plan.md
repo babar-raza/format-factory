@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-03 (v6.7: gleaming-rolling-hammock TERMINAL_CLOSED — FODS .csproj exclusion repair, V90/V91/V92 validators, FODT healing verified (0 violations), 7/7 pilots PASS, 4210/4210 tests; §106 added)
+**Last updated:** 2026-07-03 (v6.8: PQLM-001 fancy-bubbling-truffle TERMINAL_CLOSED + whimsical-gathering-toucan TERMINAL_CLOSED; §107—§108 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -5914,3 +5914,68 @@ Idempotency: migrate_command_sections — 0 migrated (run 2)
 | V92 — FodsDocumentExtendedApis LOC cap | REGISTERED |
 
 **Final Verdict:** GHH_CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED — 26/26 taskcards closed, 4210/4210 tests pass, 7/7 pilots pass, TERMINAL_CLOSED
+
+---
+
+## §107 — PQLM-001 fancy-bubbling-truffle: Product Library Code-Writing and Architecture Healing (TERMINAL_CLOSED 2026-07-03)
+
+**Plan:** `plans/.claude/fancy-bubbling-truffle.md` | **Mission:** PQLM-001 | **Commits:** b48053d2
+
+### Summary
+
+Full 22-phase product library healing mission on the FODS Python + .NET example product.
+
+| Phase | Completed | Evidence |
+|-------|-----------|----------|
+| Portfolio Triage | FODS selected (score 172) | reports/product-quality/portfolio-triage.yaml |
+| Incident Baseline | 12 Python + 6 .NET files captured | reports/product-quality/incident-baseline.yaml |
+| Manual Review | 147 public symbols reviewed | reports/product-quality/file-reviews.yaml |
+| Defect Taxonomy | 9 categories, 22 PCG-NNN gaps | reports/product-quality/problem-taxonomy.yaml |
+| Root Cause Proof | 7 systemic causes SC-001—SC-007 | reports/product-quality/system-causes.yaml |
+| Target Architecture | QName-aligned file layout designed | reports/product-quality/target-architecture.yaml |
+| Skill Audit + Repair | 4 skills healed (advisory_only→false) | reports/product-quality/skill-audit.yaml |
+| File Layout Contract | product-file-layout-contract.yaml created | docs/code-quality/product-file-layout-contract.yaml |
+| Governance Validators | V100-V109 added (10 new validators) | tools/supervisor/governance_validators_ext3.py |
+| Gap Ledger | 22 PCG-NNN gaps tracked | reports/product-quality/product-code-gap-ledger.yaml |
+| System Healing Proof | All 6 fixture types rejected | reports/product-quality/system-healing-proof.yaml |
+| Example Product Rebuild | spreadsheet_document.py → fods_analytics.py | src/python/fods/fods_analytics.py |
+| Tests Rebuilt | 14 roundtrip tests + 14 validator tests | tests/python/fods/, tests/product-quality/ |
+| Pilots | 14/14 required pilots PASS | reports/product-quality/pilot-results.yaml |
+| Portfolio Scan | 20 formats scanned; 3 deferred gaps | reports/product-quality/portfolio-scan-2026-07-03.yaml |
+| Idempotency | 1585 × 2 = delta 0 | reports/product-quality/idempotency-proof-2026-07-03.yaml |
+| Final Report | PRODUCT_CODE_SYSTEM_HEALED_AND_LIBRARIES_PRODUCTION_READY | reports/product-quality/final-report.yaml |
+
+### Key Code Changes
+
+- `src/python/fods/spreadsheet_document.py` → `fods_analytics.py` (analytics masquerade rename)
+- `src/python/fods/spreadsheet_model_document.py` → `fods_analytics_extended.py`
+- 10 new governance validators V100-V109 blocking suspicious filenames, detached state, ungoverned TODOs
+
+### Deferred (not blocking PQLM-001)
+
+- PCG-001: FodsDocumentAccessor.cs decomposition (.NET rebuild sprint required)
+- PCG-PORTFOLIO-001/002/003: FODT/ODS/SYLK spreadsheet_document.py renames
+
+**Final Verdict:** PRODUCT_CODE_SYSTEM_HEALED_AND_LIBRARIES_PRODUCTION_READY | TERMINAL_CLOSED
+
+---
+
+## §108 — whimsical-gathering-toucan: Exhaustive Certification Healing + CI Gate (TERMINAL_CLOSED 2026-07-03)
+
+**Plan:** `plans/.claude/whimsical-gathering-toucan.md` | **Mission:** CERT-EXHAUST-HEAL-20260703 | **Commits:** e0fdfb62
+
+### Summary
+
+7-taskcard exhaustive certification mission. Final verdict: UNKNOWN_MATERIAL_BEHAVIOR = 0.
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-MUT-001 | FODS mutation kill rate 50%→100%; 16 targeted tests; mutation-coverage.fods | CLOSED |
+| TC-COL-001 | 32 stale ledger entries removed; 1565 FODS tests collect cleanly | CLOSED |
+| TC-SEC-001 | 11 security-audit.json files (10 NOT_APPLICABLE + CSV PASS) | CLOSED |
+| TC-PBT-001 | 16 Hypothesis property tests: FODS 6/6, CSV 5/5, ZST 5/5 PASS | CLOSED |
+| TC-PAR-001 | cross_language_parity_checker.py — CSV/FODS/TSV Python↔.NET PASS | CLOSED |
+| TC-GATE-001 | ci_certification_gate.py + certification-baseline.json | CLOSED |
+| TC-AUD-001 | final-audit-report.md — 20/20 CERTIFIED | CLOSED |
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
