@@ -6137,3 +6137,46 @@ agents reliably guessed the wrong path.
 UNINVENTORIED_DOTNET_PATH_REFERENCES=0, PATH_DEFECTS_WITHOUT_PROVEN_ROOT_CAUSE=0, CURRENT_REFERENCES_TO_SRC_DOTNET=0, PATH_CONSUMERS_BYPASSING_CANONICAL_RESOLVER=0, DOCUMENTS_WITH_AMBIGUOUS_DOTNET_SOURCE_ROOT=0, SKILLS_OR_COMMANDS_WITH_GUESSED_DOTNET_PATHS=0, ACTIVE_TASKS_WITH_STALE_DOTNET_PATHS=0, FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0
 
 **Final Verdict:** DOTNET_SOURCE_PATH_GOVERNANCE_HEALED_SRC_NET_ENFORCED_AND_IDEMPOTENT | TERMINAL_CLOSED
+
+---
+
+## §112 — Mission FG-PREV-001: False-Green Prevention Machinery
+
+**Plan:** `plans/.claude/wise-orbiting-yao.md` | **Mission:** FG-PREV-001 | **Type:** machinery_hardening | **Completed:** 2026-07-03
+**Commit:** `1a201b86`
+
+### Incident
+
+`TEST-PGM-BRIGHTNESS-HIST-001` graded `ACCEPTED_VERIFIED` during sprint `pgm-histogram-tests-20260703` via the intermediate fallback in `grade_intermediate_verify.intermediate_verify_item()`. The fallback used string-search (`"def test_" in content and "assert" in content`) to declare any test file adequate, producing `confidence: 0.7, adequate: true, llm_used: false` without verifying assertion strength. Two of 8 tests (`test_return_type`: isinstance-only, `test_default_bins_is_4`: len-only) were WEAK_PROOF (level 2) — not flagged.
+
+### What Was Completed
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-FG-001 | `reports/governance/false-green-incident.yaml` + `false-green-timeline.yaml` — incident bound, FMF-001/FMF-002 classified | CLOSED |
+| TC-FG-002 | `tools/supervisor/proof_adequacy_contract.py` — ProofLevel/ProofContract/FaultSensitivity/BeforeAfterProof; `assess_proof_level()` with SHAPE vs EXACT discrimination; `infer_default_contract()`; `proof_sufficient_for_closure()`; `tests/supervisor/conftest.py` | CLOSED |
+| TC-FG-002b | `grade_intermediate_verify.py` — AST analysis replaces string search; `grade_declared_work.py` — grade-cap for WEAK_PROOF fallback | CLOSED |
+| TC-FG-004 | `tools/supervisor/closure_challenger.py` — independent post-grading gate; integrated in `autonomous_cycle.py` after `grade_all()` | CLOSED |
+| TC-FG-005 | `tools/supervisor/before_after_evidence.py` — sprint-over-sprint proof comparison via `git show`; fallback for new files | CLOSED |
+| TC-FG-006 | `tools/supervisor/neighboring_risk_reviewer.py` — duplicate tests, weaker siblings, misleading assertions (constant-zero detection) | CLOSED |
+| TC-FG-007 | `autonomous_cycle.py` adversarial blocking hardened (iteration>=3 gate removed; LLM-None non-blocking); `detect_proof_gaps_for_empty_queue()` with max-cycle guard in `generate_next_worker_prompt.py` | CLOSED |
+| TC-FG-008 | `tools/supervisor/prior_closure_auditor.py`; `reports/governance/prior-closure-audit-2026-07-03.yaml` — 20 prior runs scanned, 3 AT_RISK | CLOSED |
+| TC-FG-003 | 12 false-green prevention pilots in `tests/supervisor/test_false_green_pilots.py`; 12 result JSONs in `reports/governance/pilots/` | CLOSED |
+| TC-FG-009 | PGM histogram replay: CLOSURE_CHALLENGE_PASSED (strong_ratio=0.5, 4/8 strong); `reports/governance/false-green-final-verdict.yaml` — all 17 counters=0; evidence declaration | CLOSED |
+| TC-FG-010 | `lifecycle_audit.py` → AUDIT_PASS → `write_plan_lock.py --terminal --audit-gate` → TERMINAL_CLOSED | CLOSED |
+
+### Verification Performed
+
+- 54 new tests: 11 (proof_adequacy_contract) + 7 (intermediate_verify_fix) + 6 (closure_challenger) + 5 (before_after_evidence) + 4 (neighboring_risk) + 5 (adversarial_blocking) + 4 (prior_closure_auditor) + 12 pilots — **54/54 PASS**
+- PGM histogram assessment: level=3, strong_ratio=0.5 (STRONG_PROOF); weak_tests=[test_return_type, test_default_bins_is_4, test_sum_equals_pixel_count, test_3x1_ramp_sum_equals_3]
+- Closure challenge on PGM: CLOSURE_CHALLENGE_PASSED (sound behavioral assertions present at level 3)
+- Idempotency: Pilot 12 — run1_verdict == run2_verdict (FOUND_REWORK both times)
+- Prior closure audit: 20 runs, 3 AT_RISK flagged (pre-fix declarations)
+- Zero regressions in existing supervisor tests (2 pre-existing flaky tests unaffected)
+- Lifecycle audit: AUDIT_PASS, all 11 taskcards CLOSED
+
+### Completion Gate Counters (all = 0)
+
+FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0, HIGH_RISK_PRIOR_CLOSURES_NOT_REAUDITED=0, GREEN_CANDIDATES_NOT_PROOF_CHALLENGED=0, AUDIT_PROOF_CONTRADICTIONS=0, ALL_17_GOVERNANCE_COUNTERS=0
+
+**Final Verdict:** SUPERVISOR_GOVERNANCE_HEALED_FALSE_GREEN_PREVENTED_AND_CLOSURE_PROVEN | TERMINAL_CLOSED
