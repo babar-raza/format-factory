@@ -475,8 +475,6 @@ def _build_inputs_section(skill: dict) -> str:
     purpose = skill.get("purpose", "")
 
     _descriptions = {
-        "format_id": "target format identifier (e.g. `fods`, `csv`)",
-        "format_name": "human-readable format name (e.g. `FODS`, `CSV`)",
         "api_name": "name of the API function being added or modified",
         "exact_source_paths": "list of source files to be modified",
         "exact_test_paths": "list of test files to be modified",
@@ -487,8 +485,6 @@ def _build_inputs_section(skill: dict) -> str:
         "output_format": "output format: `yaml`, `json`, or `markdown`",
         "target_skill_id": "skill_id of the target skill to be modified",
         "change_description": "one-line description of the change being made",
-        "layer_id": "layer identifier (e.g. `L01-SAL`, `L06-ProductSource`)",
-        "task_id": "task identifier within the layer (e.g. `TC-LA-001`)",
         "current_state": "JSON or YAML snapshot of the current layer state",
         "layer_id": "layer identifier from the permanent layer plan",
         "task_id": "task identifier from the layer task register",

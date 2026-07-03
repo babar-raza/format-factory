@@ -71,7 +71,7 @@ def generate_lane_section(fmt: str) -> str | None:
         "",
         "| Property | Value |",
         "|----------|-------|",
-        f"| DOM Applicability | FULL |",
+        "| DOM Applicability | FULL |",
         f"| Lane A (Features) | {lane_a} |",
         f"| Lane B (DOM/Object Model) | {lane_b} (ceiling: {lane_b_ceil}) |",
         f"| Execution Mode | {exec_mode} |",
