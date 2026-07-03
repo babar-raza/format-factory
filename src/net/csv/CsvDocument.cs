@@ -114,39 +114,24 @@ public sealed class CsvDocument
         r[col] = value;
     }
 
-    /// <summary>A row wrapper that allows column-name lookup via GetValue(string).</summary>
-    public sealed class CsvRow
-    {
-        private readonly string[] _values;
-        private readonly string[]? _headers;
-        internal CsvRow(string[] values, string[]? headers) { _values = values; _headers = headers; }
-        public string? GetValue(string colName)
-        {
-            if (_headers == null) return null;
-            for (int i = 0; i < _headers.Length; i++)
-                if (string.Equals(_headers[i], colName, StringComparison.OrdinalIgnoreCase) && i < _values.Length)
-                    return _values[i];
-            return null;
-        }
-        public string[] ToArray() => _values;
-    }
+    // Thread-local storage for header context during Filter evaluation.
+    // Enables string[].GetValue(string colName) extension method to resolve column names.
+    [ThreadStatic]
+    private static string[]? _filterHeaders;
+
+    internal static string[]? FilterHeaders => _filterHeaders;
 
     /// <summary>
     /// Returns a new CsvDocument containing only rows that match the predicate.
-    /// Headers are preserved unchanged.
+    /// Headers are preserved unchanged. Inside the predicate, call row.GetValue("colName")
+    /// to look up values by column name (requires the CsvRowExtensions import).
     /// </summary>
     public CsvDocument Filter(Func<string[], bool> predicate)
     {
         if (predicate is null) throw new ArgumentNullException(nameof(predicate));
-        return new CsvDocument(Headers, Rows.Where(predicate).ToList());
-    }
-
-    /// <summary>Filter rows using a CsvRow predicate that supports column-name lookup via GetValue(string).</summary>
-    public CsvDocument Filter(Func<CsvRow, bool> predicate)
-    {
-        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
-        var hdrs = Headers;
-        return Filter((string[] r) => predicate(new CsvRow(r, hdrs)));
+        _filterHeaders = Headers;
+        try { return new CsvDocument(Headers, Rows.Where(predicate).ToList()); }
+        finally { _filterHeaders = null; }
     }
 
     /// <summary>
@@ -440,7 +425,7 @@ public sealed class CsvDocument
     }
 
     /// <summary>Returns the count of numeric values in the column whose |z-score| exceeds the threshold (by header name).</summary>
-    public int GetColumnOutlierCount(string headerName, double threshold)
+    public int GetColumnOutlierCount(string headerName, double threshold = 3.0)
     {
         var vals = ParseNumericColumn(GetColumn(headerName)).ToArray();
         if (vals.Length == 0) return 0;
@@ -697,4 +682,22 @@ public sealed class CsvDocument
     private static string _XmlTag(string s) { var clean = new string(s.Select(c => char.IsLetterOrDigit(c) || c == '_' ? c : '_').ToArray()); return string.IsNullOrEmpty(clean) || char.IsDigit(clean[0]) ? "_" + clean : clean; }
     /// <summary>Exports to Markdown table string.</summary>
     public string ExportToMarkdown() { var sb = new System.Text.StringBuilder(); if (Headers != null) { sb.AppendLine("| " + string.Join(" | ", Headers) + " |"); sb.AppendLine("| " + string.Join(" | ", Headers.Select(_ => "---")) + " |"); } foreach (var row in Rows) sb.AppendLine("| " + string.Join(" | ", row.Select(c => c.Replace("|", "\\|"))) + " |"); return sb.ToString(); }
+}
+
+/// <summary>
+/// Extension methods for string[] rows used inside CsvDocument.Filter predicates.
+/// GetValue(string colName) resolves column names using the thread-local header context
+/// set by CsvDocument.Filter before evaluating each predicate.
+/// </summary>
+public static class CsvRowExtensions
+{
+    public static string? GetValue(this string[] row, string colName)
+    {
+        var headers = CsvDocument.FilterHeaders;
+        if (headers == null) return null;
+        for (int i = 0; i < headers.Length; i++)
+            if (string.Equals(headers[i], colName, StringComparison.OrdinalIgnoreCase) && i < row.Length)
+                return row[i];
+        return null;
+    }
 }
