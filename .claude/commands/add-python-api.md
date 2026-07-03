@@ -1,6 +1,6 @@
 ---
-version: "1.3"
-last-updated: "2026-06-24"
+version: "1.4"
+last-updated: "2026-07-03"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: codex
@@ -8,6 +8,27 @@ visibility: generated
 ---
 
 # /add-python-api
+
+## MANDATORY PRE-CHECK ZERO: Work-Shape Rejection and File-Type Check
+
+**STOP and reject (`BLOCKED_INVALID_TASK_SHAPE`) if ANY of the following match:**
+
+- Function is analytics-only (no class, no ODF parse/write path) AND target file is a domain model file (has class definitions). Analytics functions MUST go in `<format>_analytics.py` or `<format>_analytics_extended.py`.
+- Task asks to add wildcard imports (`from .x import *`) to any module.
+- Task adds `spec_qname = "..."` at module scope (not inside a class body).
+- Target file contains `_misc`, `_helpers`, `_extra`, `_utils` in name.
+
+**File-type check (MANDATORY before Step 1):**
+
+1. Read the first 30 lines of every target file.
+2. If the file contains only functions (no `class` definitions) and is named like a domain model, it is an analytics masquerade. Do NOT add to it — use the correct analytics file.
+3. If target file has `from .X import *` at module scope — this is a wildcard pollution pattern. Do NOT add more wildcard imports. Report `BLOCKED_WILDCARD_IMPORT_PATTERN`.
+
+**After implementation:**
+- Verify or update `__all__` in `<format>/__init__.py` to explicitly list new public names.
+- Wildcard imports in `__init__.py` are PROHIBITED — use explicit name lists only.
+
+---
 
 ## Step 0 — Knowledge Registry Lookup (MANDATORY, before QName compliance check)
 
@@ -142,3 +163,4 @@ with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_i
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).
 - 1.3 (2026-06-24): Added Step 0 knowledge registry lookup; replaced Step 5 "Inspect existing module conventions" with KC-PYTHON-001 contract reference (hidden-puzzling-rain).
+- 1.4 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK ZERO: analytics masquerade rejection, wildcard import prohibition, __all__ update requirement, file-type check before writing.

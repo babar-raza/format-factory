@@ -1,16 +1,17 @@
-"""
-FODS model analytics — analytics functions extracted from neutral_model.py.
+"""fods_analytics_extended.py — Extended analytics functions for the FODS neutral model.
+
+Extended analytics built on top of fods_analytics.py.
+This module contains no class definitions, no domain model types,
+and no ODF spec_qname assignments.
+
+License: Apache-2.0
+Package: format-factory-fods v0.1.0
 """
 from __future__ import annotations
 
-
-spec_qname = "office:spreadsheet"
-spec_fact_ref = "FACT-FODS-002"
-namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-
 from typing import Any
 
-from .spreadsheet_document import fods_sheet_count
+from .fods_analytics import fods_sheet_count
 
 def fods_formula_count(workbook: dict[str, Any]) -> int:
     """Return the total number of formula cells across all sheets.

@@ -1681,6 +1681,109 @@ capabilities:
     ci: false
     claude_code: true
     codex: true
+# --- Espanso Integration Capabilities (added 2026-07-03, GAP-ESP-001 through GAP-ESP-008) ---
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: true
+  capability_id: bounded-execution
+  command_file: null
+  command_file_exists: false
+  command_registry_entry: false
+  generated_at: '2026-07-03T00:00:00+00:00'
+  parity_status: PARTIAL
+  product_track: infrastructure
+  purpose: Execute a governed plan one taskcard at a time for agents with limited context windows.
+    State is persisted to the repository between sessions. Uses ESP-PROMPT-1 (bounded-executor.md).
+  routing_routes:
+  - bounded_execution
+  source_skill_registry_version: espanso-integration-2026-07-03
+  espanso_gap_id: GAP-ESP-002
+  espanso_source_trigger: ":ff-execute-short-context-plan"
+  prompt_asset: .supervisor/prompts/bounded-executor.md
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: true
+  capability_id: readme-root-governance
+  command_file: null
+  command_file_exists: false
+  command_registry_entry: false
+  generated_at: '2026-07-03T00:00:00+00:00'
+  parity_status: PARTIAL
+  product_track: layer_governance
+  purpose: Forensic investigation and preservation-first enhancement of the repository root
+    README.md. Distinct from /sync-readmes which governs per-format READMEs. Uses ESP-PROMPT-2.
+  routing_routes:
+  - root_readme_governance
+  source_skill_registry_version: espanso-integration-2026-07-03
+  espanso_gap_id: GAP-ESP-001
+  espanso_source_trigger: ":ffreadme"
+  prompt_asset: .supervisor/prompts/readme-governance.md
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: true
+  capability_id: expert-review-plan
+  command_file: null
+  command_file_exists: false
+  command_registry_entry: false
+  generated_at: '2026-07-03T00:00:00+00:00'
+  parity_status: PARTIAL
+  product_track: governance
+  purpose: Plan-mode-only expert manual system review. Read-only. Produces a structured review
+    plan covering product source, machinery, skills, evidence, and spec authority.
+    No source mutations. Outputs to reports/expert-manual-system-review/. Uses ESP-PROMPT-3.
+  routing_routes: []
+  source_skill_registry_version: espanso-integration-2026-07-03
+  espanso_gap_id: GAP-ESP-007
+  espanso_source_trigger: ":ff-expert-review-plan"
+  prompt_asset: .supervisor/prompts/expert-review-plan.md
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: true
+  capability_id: machinery-iteration-forensics
+  command_file: null
+  command_file_exists: false
+  command_registry_entry: false
+  generated_at: '2026-07-03T00:00:00+00:00'
+  parity_status: PARTIAL
+  product_track: governance
+  purpose: Diagnose why a machinery plan lifecycle did not iterate (AUDIT→PLAN→EXECUTE loop).
+    Classifies root cause (wrong lock flag, audit not run, MAX_ITERATIONS, etc.) and repairs
+    the machinery. Distinct from general machinery repair. Uses ESP-PROMPT-5.
+  routing_routes: []
+  source_skill_registry_version: espanso-integration-2026-07-03
+  espanso_gap_id: GAP-ESP-004
+  espanso_source_trigger: ":ff-machinery-iteration-forensics"
+  prompt_asset: .supervisor/prompts/machinery-iteration-forensics.md
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: true
+  capability_id: human-free-rectification
+  command_file: null
+  command_file_exists: false
+  command_registry_entry: false
+  generated_at: '2026-07-03T00:00:00+00:00'
+  parity_status: PARTIAL
+  product_track: governance
+  purpose: Scan AGENTS.md, CLAUDE.md, and governance files for text that unjustifiably
+    requires human intervention. Classify as GOVERNANCE_DEFECT vs TRUE_EXTERNAL_GATE.
+    Fix defects. Preserve genuine external gates. Outputs to reports/human-free-audit/.
+    Uses ESP-PROMPT-6.
+  routing_routes:
+  - governance_rectification
+  source_skill_registry_version: espanso-integration-2026-07-03
+  espanso_gap_id: GAP-ESP-008
+  espanso_source_trigger: ":ff-humanfree"
+  prompt_asset: .supervisor/prompts/human-free-rectification.md
+  status: active
 generated_at: '2026-06-29T09:48:50+00:00'
 generated_by: inventory_capabilities.py
 source_versions:

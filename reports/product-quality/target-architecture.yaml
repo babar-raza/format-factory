@@ -1,0 +1,501 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-006
+example_product: fods
+generated: "2026-07-03"
+
+# Target state design for FODS — Python and .NET tracks
+# This is the BEFORE-ANY-CODE-CHANGE architecture contract.
+# All source changes in TC-PQLM-015 must conform to this design.
+
+# =============================================================
+# PYTHON TRACK
+# =============================================================
+python:
+  product: fods
+  language: python
+  odf_spec: "ODF 1.3"
+  root_document_type: FodsDocument
+  root_qname: "office:document"
+
+  module_hierarchy:
+    - module: fods
+      role: package root; explicit __all__ only
+    - module: fods.model
+      role: domain model types (FodsDocument, FodsSheet, FodsRow, FodsCell, FodsMetadata)
+    - module: fods.parser
+      role: XML → model (FodsParser, parse_fods)
+    - module: fods.writer
+      role: model → XML (FodsWriter, write_fods)
+    - module: fods.fods_analytics
+      role: read-only analytics functions over parsed model (renamed from spreadsheet_document.py)
+    - module: fods.fods_analytics_extended
+      role: extended analytics functions (renamed from spreadsheet_model_document.py)
+
+  qname_type_map:
+    - spec_qname: "office:document"
+      canonical_class: FodsDocument
+      file: src/python/fods/model.py
+    - spec_qname: "table:table"
+      canonical_class: FodsSheet
+      file: src/python/fods/model.py
+    - spec_qname: "table:table-row"
+      canonical_class: FodsRow
+      file: src/python/fods/model.py
+    - spec_qname: "table:table-cell"
+      canonical_class: FodsCell
+      file: src/python/fods/model.py
+    - spec_qname: "office:meta"
+      canonical_class: FodsMetadata
+      file: src/python/fods/model.py
+    - spec_qname: "table:covered-table-cell"
+      canonical_class: FodsCoveredCell
+      file: src/python/fods/model.py
+    - spec_qname: "style:style"
+      canonical_class: FodsStyle
+      file: src/python/fods/model.py
+
+  domain_types:
+    - name: FodsDocument
+      spec_qname: "office:document"
+      owns: sheets, metadata, styles_catalog
+      mutability: mutable (supports in-place edit for writer path)
+      state_source: Parsed from XML via FodsParser
+
+    - name: FodsSheet
+      spec_qname: "table:table"
+      owns: rows, name, style_name
+      mutability: mutable
+      state_source: Parsed from <table:table> elements
+
+    - name: FodsRow
+      spec_qname: "table:table-row"
+      owns: cells, row_height, style_name
+      mutability: mutable
+      state_source: Parsed from <table:table-row> elements
+
+    - name: FodsCell
+      spec_qname: "table:table-cell"
+      owns: value, value_type, formula, text, style_name, col_span, row_span
+      mutability: mutable
+      state_source: Parsed from <table:table-cell> elements
+
+    - name: FodsMetadata
+      spec_qname: "office:meta"
+      owns: title, creator, date_created, date_modified, generator, keywords
+      mutability: mutable
+      state_source: Parsed from <office:meta>
+
+    - name: FodsStyle
+      spec_qname: "style:style"
+      owns: name, family, parent_name, font_name, font_size, bold, italic, color, background_color
+      mutability: immutable (read model)
+      state_source: Parsed from <office:automatic-styles> and <office:styles>
+
+  value_types:
+    - name: CellValueType
+      kind: Enum
+      values: [string, float, boolean, date, time, currency, percentage, void]
+      spec_ref: "ODF 1.3 §9.3.2 office:value-type"
+
+    - name: FontFamily
+      kind: Enum
+      values: [roman, swiss, modern, decorative, script, system]
+      spec_ref: "ODF 1.3 §20.190 fo:font-family-generic"
+
+  parser_components:
+    - name: FodsParser
+      file: src/python/fods/parser.py
+      responsibility: Parse ODF XML (flat ODS) → FodsDocument
+      input: file path or bytes
+      output: FodsDocument
+      spec_authority: "ODF 1.3 §3.1"
+
+  writer_components:
+    - name: FodsWriter
+      file: src/python/fods/writer.py
+      responsibility: FodsDocument → ODF XML (flat ODS)
+      input: FodsDocument
+      output: file path or bytes
+      spec_authority: "ODF 1.3 §3.1"
+
+  validation_components:
+    - name: validate_fods (function)
+      file: src/python/fods/validation.py (new)
+      responsibility: Validate FodsDocument structure before write
+      raises: FodsValidationError
+
+  export_components: []
+
+  public_facades:
+    - name: parse_fods
+      file: src/python/fods/parser.py
+      signature: "parse_fods(path: str | Path) -> FodsDocument"
+    - name: write_fods
+      file: src/python/fods/writer.py
+      signature: "write_fods(doc: FodsDocument, path: str | Path) -> None"
+
+  analytics_facades:
+    - description: 127 analytics functions remain in fods_analytics.py + fods_analytics_extended.py
+    - import_style: "from fods.fods_analytics import workbook_stats, fods_sheet_count"
+    - note: "NOT re-exported from fods.__init__ — analytics are opt-in, not default package surface"
+
+  mutability_policy: "FodsDocument and all domain types are mutable for in-place edit; FodsStyle is immutable"
+  nullability_policy: "Optional[X] for absent XML attributes; never return None for structural collections (always [])"
+  unsupported_feature_policy: "Raise FodsUnsupportedFeatureError for known-unsupported ODF features"
+  compatibility_policy: "No breaking changes to parse_fods / write_fods signatures; internal restructuring only"
+
+  file_layout:
+    - file: src/python/fods/__init__.py
+      responsibility: Package root; explicit __all__ listing public API only
+      forbidden: wildcard imports, re-export of analytics functions
+    - file: src/python/fods/model.py
+      responsibility: All domain model types (FodsDocument, FodsSheet, FodsRow, FodsCell, FodsMetadata, FodsStyle)
+      forbidden: analytics functions, parser logic, writer logic
+    - file: src/python/fods/parser.py
+      responsibility: FodsParser class + parse_fods convenience function
+      forbidden: domain types defined here, analytics functions
+    - file: src/python/fods/writer.py
+      responsibility: FodsWriter class + write_fods convenience function
+      forbidden: domain types defined here
+    - file: src/python/fods/fods_analytics.py
+      responsibility: Read-only analytics functions (renamed from spreadsheet_document.py)
+      forbidden: class definitions, spec_qname assignments, wildcard exports to neutral_model
+    - file: src/python/fods/fods_analytics_extended.py
+      responsibility: Extended analytics (renamed from spreadsheet_model_document.py)
+      forbidden: class definitions, spec_qname assignments
+    - file: src/python/fods/validation.py
+      responsibility: validate_fods() function; FodsValidationError exception
+    - file: src/python/fods/exceptions.py
+      responsibility: FodsParseError, FodsWriteError, FodsValidationError, FodsUnsupportedFeatureError
+
+  forbidden_filenames:
+    - "*_misc.py"
+    - "*_helpers.py"
+    - "*_extra.py"
+    - "*_utils.py"
+    - "spreadsheet_document.py (rename to fods_analytics.py)"
+    - "spreadsheet_model_document.py (rename to fods_analytics_extended.py)"
+    - "neutral_model.py (rename to model.py)"
+
+  migration_map:
+    - current: src/python/fods/spreadsheet_document.py
+      target: src/python/fods/fods_analytics.py
+      action: RENAME + remove false spec_qname + remove spec_fact_ref
+    - current: src/python/fods/spreadsheet_model_document.py
+      target: src/python/fods/fods_analytics_extended.py
+      action: RENAME + remove any false spec claims
+    - current: src/python/fods/neutral_model.py
+      target: src/python/fods/model.py
+      action: RENAME + remove wildcard imports (lines 713-717) + add domain type annotations
+    - current: src/python/fods/__init__.py
+      target: src/python/fods/__init__.py
+      action: RESTRUCTURE — add explicit __all__, remove wildcard imports, do not re-export analytics
+
+
+# =============================================================
+# .NET TRACK
+# =============================================================
+dotnet:
+  product: fods
+  language: csharp
+  odf_spec: "ODF 1.3"
+  root_document_type: FodsDocument
+  root_namespace: FormatFactory.Fods
+  root_qname: "office:document"
+
+  namespace_hierarchy:
+    - namespace: FormatFactory.Fods
+      role: root namespace; FodsDocument entry point
+    - namespace: FormatFactory.Fods.Model
+      role: domain model types (FodsCell, FodsRow, FodsSheet)
+    - namespace: FormatFactory.Fods.Parser
+      role: FodsParser
+    - namespace: FormatFactory.Fods.Writer
+      role: FodsWriter
+    - namespace: FormatFactory.Fods.Style
+      role: FodsStyleResolver, FodsStyleCatalog
+    - namespace: FormatFactory.Fods.Formula
+      role: FodsFormulaEditor
+    - namespace: FormatFactory.Fods.Export
+      role: FodsExporter (HTML, CSV, Markdown)
+
+  qname_type_map:
+    - spec_qname: "office:document"
+      canonical_class: FodsDocument
+      file: src/net/fods/FodsDocument.cs
+    - spec_qname: "table:table"
+      canonical_class: FodsSheet
+      file: src/net/fods/Model/FodsSheet.cs
+    - spec_qname: "table:table-row"
+      canonical_class: FodsRow
+      file: src/net/fods/Model/FodsRow.cs
+    - spec_qname: "table:table-cell"
+      canonical_class: FodsCell
+      file: src/net/fods/Model/FodsCell.cs
+    - spec_qname: "office:meta"
+      canonical_class: FodsMetadata
+      file: src/net/fods/Model/FodsMetadata.cs
+    - spec_qname: "style:style"
+      canonical_class: FodsStyle
+      file: src/net/fods/Style/FodsStyle.cs
+    - spec_qname: "table:named-range"
+      canonical_class: FodsNamedRange
+      file: src/net/fods/Model/FodsNamedRange.cs (new)
+
+  domain_types:
+    - name: FodsDocument
+      spec_qname: "office:document"
+      owns: Sheets (IReadOnlyList<FodsSheet>), Metadata, Load/Save factory methods
+      responsibilities: Document loading/saving, sheet collection management
+      forbidden_responsibilities:
+        - Cell-level style operations (belongs to FodsCell/FodsStyleResolver)
+        - Export operations (belongs to FodsExporter)
+        - Filter/sort (belongs to query utilities)
+        - Sheet configuration (belongs to FodsSheet)
+
+    - name: FodsSheet
+      spec_qname: "table:table"
+      owns: Name, Rows (IReadOnlyList<FodsRow>), StyleName, IsProtected, TabColor
+      state_source: "XML <table:table> element (XElement)"
+      persistence: All properties read from and write to XElement directly
+
+    - name: FodsRow
+      spec_qname: "table:table-row"
+      owns: Cells (IReadOnlyList<FodsCell>), RowHeight, StyleName, IsHidden
+      state_source: "XML <table:table-row> element"
+
+    - name: FodsCell
+      spec_qname: "table:table-cell"
+      owns: Value, ValueType, Formula, DisplayText, StyleName, ColSpan, RowSpan
+      state_source: "XML <table:table-cell> element"
+      persistence: All properties read from XElement attributes
+
+    - name: FodsMetadata
+      spec_qname: "office:meta"
+      owns: Title, Creator, DateCreated, DateModified, Generator, Keywords
+      state_source: "XML <office:meta> element"
+
+    - name: FodsStyle
+      spec_qname: "style:style"
+      owns: Name, Family, ParentName, FontName, FontSize, Bold, Italic, Color, BackgroundColor
+      mutability: immutable record
+      state_source: Resolved by FodsStyleResolver from XML
+
+  value_types:
+    - name: CellValueType
+      kind: enum
+      values: [String, Float, Boolean, Date, Time, Currency, Percentage, Void]
+      spec_ref: "ODF 1.3 §9.3.2"
+
+    - name: FontWeight
+      kind: enum
+      values: [Normal, Bold]
+
+    - name: FontStyle
+      kind: enum
+      values: [Normal, Italic]
+
+  parser_components:
+    - name: FodsParser
+      file: src/net/fods/FodsParser.cs
+      responsibility: Parse ODF XML → FodsDocument with Sheets/Rows/Cells
+      keeps: existing parser logic
+      adds: parse FodsNamedRange, FodsMetadata from XML
+
+  writer_components:
+    - name: FodsWriter
+      file: src/net/fods/FodsWriter.cs
+      responsibility: Serialize FodsDocument XDocument → file/stream
+      note: Model types use XElement directly — writer serializes the XDocument, not dicts
+
+  style_components:
+    - name: FodsStyleResolver
+      file: src/net/fods/Style/FodsStyleResolver.cs
+      responsibility: Resolve style:style inheritance chain → FodsStyle record
+      keeps: existing resolver logic
+
+    - name: FodsStyleEditor
+      file: src/net/fods/Style/FodsStyleEditor.cs (new or existing)
+      responsibility: Mutate style:style XML elements to apply cell formatting changes
+
+  formula_components:
+    - name: FodsFormulaEditor
+      file: src/net/fods/Formula/FodsFormulaEditor.cs
+      responsibility: Parse/edit ODF formula strings
+      keeps: existing logic
+
+  export_components:
+    - name: FodsExporter
+      file: src/net/fods/Export/FodsExporter.cs (new — extracted from FodsDocumentAccessor)
+      responsibility: Export sheet to HTML/CSV/Markdown
+      note: All ToHtml/ToCsv/ToMarkdown methods move here from FodsDocumentAccessor
+
+  validation_components:
+    - name: FodsValidator
+      file: src/net/fods/FodsValidator.cs (new)
+      responsibility: Validate FodsDocument before save; raise FodsValidationException
+
+  public_facades:
+    - name: FodsDocument.Load(path)
+      signature: "public static FodsDocument Load(string path)"
+    - name: FodsDocument.Save(path)
+      signature: "public void Save(string path)"
+    - name: FodsDocument.Create()
+      signature: "public static FodsDocument Create()"
+
+  mutability_policy: "All model types are mutable; property setters write directly to XElement; FodsStyle is immutable record"
+  nullability_policy: "Nullable<T> for optional attributes; non-nullable for required; IReadOnlyList<T> never null (empty list)"
+  unsupported_feature_policy: "Throw NotSupportedOdfFeatureException with spec QName for known-unsupported features"
+  compatibility_policy: "FodsDocument, FodsSheet, FodsRow, FodsCell public API surface preserved; ExtendedApis removed"
+
+  file_layout:
+    - file: src/net/fods/FodsDocument.cs
+      responsibility: Root document type; Load/Save/Create; Sheets property; Metadata property
+      forbidden: cell-level operations, export, analytics
+      approx_loc_target: 200
+
+    - file: src/net/fods/FodsParser.cs
+      responsibility: Parse ODF XML → FodsDocument
+      forbidden: domain type definitions
+      approx_loc_target: 400
+
+    - file: src/net/fods/FodsWriter.cs
+      responsibility: Serialize FodsDocument → XML
+      forbidden: domain type definitions
+      approx_loc_target: 150
+
+    - file: src/net/fods/FodsValidator.cs
+      responsibility: Validate FodsDocument; FodsValidationException
+      approx_loc_target: 150
+
+    - file: src/net/fods/FodsNamespaces.cs
+      responsibility: ODF namespace constants (XNamespace)
+      forbidden: custom non-ODF namespaces
+      approx_loc_target: 50
+
+    - file: src/net/fods/Model/FodsSheet.cs
+      responsibility: FodsSheet domain type
+      approx_loc_target: 100
+
+    - file: src/net/fods/Model/FodsRow.cs
+      responsibility: FodsRow domain type
+      approx_loc_target: 80
+
+    - file: src/net/fods/Model/FodsCell.cs
+      responsibility: FodsCell domain type; CellValueType enum
+      approx_loc_target: 150
+
+    - file: src/net/fods/Model/FodsMetadata.cs
+      responsibility: FodsMetadata domain type
+      approx_loc_target: 80
+
+    - file: src/net/fods/Model/FodsNamedRange.cs
+      responsibility: FodsNamedRange domain type (new)
+      approx_loc_target: 60
+
+    - file: src/net/fods/Style/FodsStyle.cs
+      responsibility: FodsStyle immutable record; FontWeight/FontStyle enums
+      approx_loc_target: 80
+
+    - file: src/net/fods/Style/FodsStyleResolver.cs
+      responsibility: Resolve style inheritance chain → FodsStyle
+      approx_loc_target: 250
+
+    - file: src/net/fods/Style/FodsStyleEditor.cs
+      responsibility: Mutate style:style XML elements
+      approx_loc_target: 150
+
+    - file: src/net/fods/Formula/FodsFormulaEditor.cs
+      responsibility: Parse/edit ODF formula strings
+      approx_loc_target: 200
+
+    - file: src/net/fods/Export/FodsExporter.cs
+      responsibility: ToHtml/ToCsv/ToMarkdown (moved from FodsDocumentAccessor)
+      approx_loc_target: 300
+
+  forbidden_filenames:
+    - "FodsDocumentExtendedApis.cs (QUARANTINE_THEN_REMOVE)"
+    - "FodsDocumentAccessor.cs (SPLIT_BY_DOMAIN_THEN_REMOVE)"
+    - "*ExtendedApis*.cs"
+    - "*MissingMethods*.cs"
+    - "*Misc*.cs"
+    - "*Helpers*.cs"
+    - "*Stubs*.cs"
+
+  migration_map:
+    - current: src/net/fods/FodsDocumentExtendedApis.cs
+      action: DECOMPOSE
+      xml_backed_apis_migrate_to:
+        - FodsDocument.cs (sheet-level APIs)
+        - Model/FodsCell.cs (cell-level APIs)
+        - Style/FodsStyleEditor.cs (style mutation APIs)
+      detached_state_apis: REMOVE (71 methods — no XML path exists; redesign required per gap)
+      alias_apis: REMOVE (merge into accessor if genuinely needed, else remove)
+
+    - current: src/net/fods/FodsDocumentAccessor.cs
+      action: SPLIT_BY_DOMAIN
+      cell_query_migrates_to: FodsDocument.cs + Model/FodsCell.cs
+      export_migrates_to: Export/FodsExporter.cs
+      style_migrates_to: Style/FodsStyleResolver.cs
+      sheet_config_migrates_to: Model/FodsSheet.cs
+      mutation_migrates_to: FodsDocument.cs + Model/FodsCell.cs (via XElement setters)
+      deferred_todos_migrate_to: Gap ledger (PCG-NNN references)
+      custom_namespace_removed: true
+
+# =============================================================
+# CROSS-LANGUAGE PARITY CONTRACT
+# =============================================================
+parity_contract:
+  - concept: Root document
+    python_type: FodsDocument (fods.model)
+    dotnet_type: FodsDocument (FormatFactory.Fods)
+    shared_qname: "office:document"
+
+  - concept: Sheet
+    python_type: FodsSheet
+    dotnet_type: FodsSheet
+    shared_qname: "table:table"
+
+  - concept: Row
+    python_type: FodsRow
+    dotnet_type: FodsRow
+    shared_qname: "table:table-row"
+
+  - concept: Cell
+    python_type: FodsCell
+    dotnet_type: FodsCell
+    shared_qname: "table:table-cell"
+
+  - concept: Cell value type
+    python_type: CellValueType (Enum)
+    dotnet_type: CellValueType (enum)
+    values: [string/String, float/Float, boolean/Boolean, date/Date, time/Time, void/Void]
+
+  - concept: Style
+    python_type: FodsStyle
+    dotnet_type: FodsStyle (immutable record)
+    shared_qname: "style:style"
+
+  - concept: Metadata
+    python_type: FodsMetadata
+    dotnet_type: FodsMetadata
+    shared_qname: "office:meta"
+
+  - concept: Analytics
+    python_type: "fods.fods_analytics (opt-in import)"
+    dotnet_type: "NOT exposed (analytics is Python-only for FOSS track)"
+
+# =============================================================
+# ARCHITECTURE VALIDATION CRITERIA
+# =============================================================
+validation_criteria:
+  - "All domain types have spec_qname/XML doc QName reference"
+  - "No file exceeds 800 LOC (hard cap)"
+  - "No file named *ExtendedApis*, *MissingMethods*, *Misc*, *Helpers*, *Stubs*"
+  - "No sprint/wave/train identifiers in filenames"
+  - "Python: __all__ defined in __init__.py listing only public API"
+  - "Python: no wildcard imports from analytics to model namespace"
+  - ".NET: no non-ODF XNamespace literals (only FodsNamespaces.cs constants)"
+  - ".NET: no private Dictionary field backing persistent document features"
+  - "All setters have XML write path; all getters read from parsed XML/XElement"
+  - "Round-trip test: parse(write(doc)) == doc for all persistent domain fields"

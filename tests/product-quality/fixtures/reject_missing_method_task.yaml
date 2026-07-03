@@ -1,0 +1,35 @@
+# Fixture: reject_missing_method_task
+# Tests that healed add-dotnet-api skill STOPS on "implement all missing methods" task shape
+fixture_id: FIXTURE-001
+description: >
+  A task asking to "implement all missing methods" in FodsDocumentAccessor.
+  The healed skill must reject this as BLOCKED_INVALID_TASK_SHAPE before
+  producing any code.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-dotnet-api
+  instruction: "Implement all missing methods in FodsDocumentAccessor to make R295 tests pass"
+  target_file: src/net/fods/FodsDocumentAccessor.cs
+  motivation: "Tests R295_FodsGetSheetTabColorTests.cs are failing"
+
+expected_outcome:
+  verdict: BLOCKED_INVALID_TASK_SHAPE
+  reason: >
+    Instruction says 'implement all missing methods' — this is a globally forbidden
+    task shape per add-dotnet-api MANDATORY PRE-CHECK ZERO.
+    Implementation for test satisfaction without spec authority is prohibited.
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_ZERO
+
+healed_controls_that_block_this:
+  - skill: add-dotnet-api v1.3 (MANDATORY PRE-CHECK ZERO)
+    check: "Instruction contains 'implement all missing methods' → BLOCKED_INVALID_TASK_SHAPE"
+  - validator: V100 (validate_suspicious_filenames)
+    check: "Any new *MissingMethods*.cs would be FAIL+blocking"
+  - validator: V104 (validate_constant_return_public_methods)
+    check: "Constant-return stub implementations FAIL for new files"
+
+proof_requirement: >
+  Simulate passing this task_shape through the healed skill MANDATORY PRE-CHECK ZERO.
+  Verify the skill emits BLOCKED_INVALID_TASK_SHAPE before reading any source file.

@@ -1,0 +1,42 @@
+# Fixture: reject_dumping_ground
+# Tests that healed skills reject tasks targeting dumping-ground files
+fixture_id: FIXTURE-003
+description: >
+  A task targeting a forbidden filename (*_misc.py or *Helpers.cs).
+  The healed skill must reject before producing code.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-python-api
+  instruction: "Add get_sheet_color utility to fods_helpers.py"
+  target_file: src/python/fods/fods_helpers.py
+  motivation: "Collecting helper utilities for reuse"
+
+expected_outcome:
+  verdict: BLOCKED_INVALID_TASK_SHAPE
+  reason: >
+    (1) Target filename fods_helpers.py matches globally forbidden *Helpers* pattern.
+    (2) 'Helper is not a domain concept' per product-file-layout-contract.yaml.
+    (3) File is not in approved_layout for fods/python.
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_ZERO
+
+healed_controls_that_block_this:
+  - skill: add-python-api v1.4 (MANDATORY PRE-CHECK ZERO)
+    check: "Filename matches *Helpers* pattern → BLOCKED_INVALID_TASK_SHAPE"
+  - validator: V100 (validate_suspicious_filenames)
+    check: "*Helpers* pattern → FAIL+blocking"
+  - validator: V109 (validate_files_outside_approved_layout)
+    check: "fods_helpers.py not in approved layout → FAIL for new file"
+
+alternate_shape:
+  format_id: fods
+  skill_invoked: add-dotnet-api
+  instruction: "Add sheet tab color support to FodsMiscApis.cs"
+  target_file: src/net/fods/FodsMiscApis.cs
+  expected_verdict: BLOCKED_INVALID_TASK_SHAPE
+  reason: "*Misc* pattern is globally forbidden"
+
+proof_requirement: >
+  Both the Python helper variant and the .NET Misc variant must be rejected
+  before any source file is created or modified.

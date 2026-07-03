@@ -1,6 +1,6 @@
 ---
-version: "1.4"
-last-updated: "2026-06-24"
+version: "1.5"
+last-updated: "2026-07-03"
 phase-available: "3+"
 gate-required: null
 generated_by: claude
@@ -10,6 +10,16 @@ visibility: generated
 # /add-python-object-model-feature
 
 Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, ppm, sylk, zst).
+
+## MANDATORY PRE-CHECK: File-Type and Wildcard Prohibition
+
+**Before Step 0:**
+1. Read the first 30 lines of every target source file.
+2. If the file has NO `class` definitions and contains only functions — it is NOT a domain model file. STOP: `BLOCKED_ANALYTICS_FILE_TARGETED`. Object-model features must go in a file with proper class definitions.
+3. Wildcard imports (`from .X import *`) are PROHIBITED in all product source files. Do not add code that depends on wildcards being present. If found, register as a gap instead.
+4. After implementation: verify `__all__` in `<format>/__init__.py` explicitly lists all new public names. No wildcard re-exports.
+
+---
 
 ## Step 0 — Knowledge Registry Lookup (MANDATORY, before any code)
 

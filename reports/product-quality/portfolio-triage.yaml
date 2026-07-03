@@ -1,0 +1,528 @@
+# Portfolio Triage Report — TC-PQLM-001
+# Mission: PQLM-001 — Product Library Code-Writing and Architecture Healing
+# Generated: 2026-07-03
+
+triage_metadata:
+  mission_id: PQLM-001
+  taskcard: TC-PQLM-001
+  scope: all_active_formats
+  python_formats_scanned: 20
+  dotnet_formats_scanned: 10
+  selection_method: composite_defect_signal_score
+
+# ============================================================
+# SCORING DIMENSIONS AND WEIGHTS
+# ============================================================
+scoring_dimensions:
+  known_baseline_violations:
+    description: Count of files in source-structure-baseline.json known_violations for this format
+    weight: 2
+  dotnet_files_over_800_loc:
+    description: Sum of (actual_LOC / 800) for .NET files exceeding 800 LOC cap
+    weight: 5
+  dumping_ground_filenames:
+    description: Presence of ExtendedApis, MissingMethods, Misc, Helpers, Stubs in product filenames
+    weight: 10
+  sprint_history_identifiers:
+    description: Sprint/wave/train identifiers in source comments (not spec refs)
+    weight: 3
+  analytics_not_separated:
+    description: Python format lacks dedicated {format}_analytics.py
+    weight: 3
+  analytics_masquerade:
+    description: File named *_document.py whose docstring describes analytics functions (V69 violation)
+    weight: 8
+  public_method_explosion:
+    description: .NET public method count > 100 (indicates inflated surface)
+    weight: 4
+  test_shaped_apis_confirmed:
+    description: Confirmed evidence of APIs created to satisfy test references, not spec
+    weight: 15
+  detached_persistent_state:
+    description: Dictionary used as primary backing store for features that claim ODF persistence
+    weight: 10
+  semantic_stubs_confirmed:
+    description: Self-described "minimal implementations suitable for governed test coverage"
+    weight: 15
+
+# ============================================================
+# FORMAT SCORES
+# ============================================================
+format_scores:
+
+  - format: fods
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 32
+        score: 64  # 32 * 2
+        note: Highest across all formats
+      dotnet_files_over_800_loc:
+        files:
+          - file: src/net/fods/FodsDocumentAccessor.cs
+            loc: 3283
+            ratio: 4.1  # 3283/800
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            loc: 1556
+            ratio: 1.9
+          - file: src/net/fods/FodsDocument.cs
+            loc: 893
+            ratio: 1.1
+        score: 35  # sum(ratios) * weight=5, capped at reasonable
+      dumping_ground_filenames:
+        files: [src/net/fods/FodsDocumentExtendedApis.cs]
+        score: 10
+        note: "'FodsDocumentExtendedApis' is a classic dumping-ground partial class name"
+      sprint_history_identifiers:
+        python_hits: 285
+        dotnet_hits: 448
+        sample_python:
+          - "constants.py: # MIME type (IR-FODS-001, IR-FODS-002 -- FFODS-002)"
+          - "models.py: # Workbook scale properties (FACT-FODS-001 R1245)"
+        sample_dotnet:
+          - "FodsDocument.cs:61: /// R114 Train A: blank document factory for programmatic construction."
+          - "FodsDocument.cs:352: /// R104 Wave 1: index-based sheet access"
+          - "FodsDocument.cs:379: /// R100 Train B: sheet creation API."
+        score: 8
+        note: Many are spec refs (IR-FODS-NNN), but R100/R104/R114 Train/Wave IDs are implementation history
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+      analytics_masquerade:
+        file: src/python/fods/spreadsheet_document.py
+        loc: 1124
+        docstring_says: "fods_analytics.py -- Analytics functions for the FODS neutral model"
+        filename_says: "spreadsheet_document.py"
+        score: 8
+        note: V69 violation — analytics masquerade under document filename
+      public_method_explosion:
+        dotnet_public_methods: 353
+        breakdown:
+          FodsDocumentExtendedApis_cs: 149
+          FodsDocumentAccessor_cs: 187
+          FodsDocument_cs: 34
+        score: 4
+      test_shaped_apis_confirmed:
+        evidence:
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            line: 1
+            quote: "Extended APIs (R290-R341 stubs + implementations)"
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            line: 2
+            quote: "Partial class extension for FodsDocument: covers all APIs referenced by R290-R341 test files."
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            line: 3
+            quote: "These methods provide minimal implementations suitable for governed test coverage."
+        score: 15
+      detached_persistent_state:
+        evidence:
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            line: 43
+            quote: "private readonly Dictionary<string, string?> _sheetProtection = new();"
+          - description: "IsSheetProtected reads from _sheetProtection dict, not from ODF XML"
+          - description: "SetSheetProtection writes to dict, state lost after Save/Load cycle"
+        score: 10
+      semantic_stubs_confirmed:
+        evidence:
+          - file: src/net/fods/FodsDocumentExtendedApis.cs
+            quote: "These methods provide minimal implementations suitable for governed test coverage."
+          - file: src/net/fods/FodsDocumentAccessor.cs
+            todos: 14
+            sample_todo: "TODO: GI-FODS-NET-001 Phase 3b/3c — replace each getter with ODF XML read"
+        score: 15
+    composite_score: 172
+    rank: 1
+    selection: EXAMPLE_PRODUCT
+
+  - format: fodt
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 25
+        score: 50
+      dotnet_files_over_800_loc:
+        files:
+          - file: src/net/fodt/FodtDocumentExtendedApis.cs
+            loc: 2662
+            ratio: 3.3
+        score: 16
+      dumping_ground_filenames:
+        files: [src/net/fodt/FodtDocumentExtendedApis.cs]
+        score: 10
+      sprint_history_identifiers:
+        dotnet_hits: 391
+        sample:
+          - "FodtDocument.cs: /// R114 Train B: blank document factory"
+          - "FodtDocument.cs: /// R103 Train B: section extraction"
+        score: 7
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 86
+    rank: 2
+
+  - format: abw
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 14
+        score: 28
+      sprint_history_identifiers:
+        python_hits: 13
+        sample:
+          - "abw_codec.py:306: # Sprint 2 additions (R130)"
+          - "abw_codec.py:361: # Sprint 3 additions (R135) — export_to_json, edit_paragraph, export_to_csv"
+          - "abw_codec.py:437: # Sprint 4 additions (R136-R137)"
+          - "abw_codec.py:487: # Sprint 7 additions (R142)"
+          - "abw_codec.py:510: # Sprint 8 additions (R144)"
+          - "abw_codec.py:542: # Sprint 10 additions (R148)"
+          - "abw_codec.py:571: # Sprint 11 additions (R150)"
+          - "abw_codec.py:591: # Sprint 12 additions (R152)"
+        score: 9
+        note: Classic sprint-driven accumulation — file organized by sprint boundary, not domain responsibility
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 40
+    rank: 3
+
+  - format: gnumeric
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      sprint_history_identifiers:
+        python_hits: 23
+        sample:
+          - "gnumeric_codec.py: # Cell accessor functions (Sprint 3+, R123/R125/R126)"
+          - "gnumeric_codec.py: # Sheet operations (Sprint 2, R130)"
+          - "gnumeric_codec.py: # Sprint 4 additions (R136-R137)"
+        score: 5
+    composite_score: 27
+    rank: 4
+
+  - format: fodg
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 12
+        score: 24
+      sprint_history_identifiers:
+        python_hits: 14
+        sample:
+          - "fodg_codec.py: # Sprint 4, R133-R136"
+          - "fodg_codec.py: # Sprint 5 additions (R138)"
+          - "fodg_codec.py: # Sprint 6 additions (R140)"
+          - "fodg_codec.py: # Sprint 7 additions (R142)"
+        score: 4
+    composite_score: 28
+    rank: 5
+
+  - format: tsv
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      sprint_history_identifiers:
+        python_hits: 30
+        sample:
+          - "tabular_document.py:2: TSV analytics functions extracted from tsv_parser.py (TC-HEAL-FORMATS-BATCH1)"
+          - "models.py: # Scale classification properties (FACT-TSV-001 R1234)"
+        score: 3
+        note: Most hits are spec refs (FACT-TSV-001 R-numbers); 30 is inflated vs actual sprint residue
+    composite_score: 25
+    rank: 6
+
+  - format: ods
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 15
+        score: 30
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 33
+    rank: 7
+
+  - format: dif
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 13
+        score: 26
+      sprint_history_identifiers:
+        python_hits: 9
+        sample:
+          - "dif_parser.py: # R117 — write_dif: serialize DifDocument back to DIF format"
+          - "interchange_document.py: # TC-DIF-002 (2026-06-22)"
+        score: 3
+    composite_score: 29
+    rank: 8
+
+  - format: ndjson
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+      sprint_history_identifiers:
+        python_hits: 7
+        sample:
+          - "json_stream.py:2: NDJSON analytics functions extracted from ndjson_codec.py (TC-HEAL-FORMATS-BATCH1)"
+        score: 2
+    composite_score: 27
+    rank: 9
+
+  - format: fodp
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 12
+        score: 24
+      sprint_history_identifiers:
+        python_hits: 5
+        sample:
+          - "presentation_document.py:6: Sprint: vivid-napping-kurzweil (TC-VNK-008)"
+          - "presentation_document.py: # Analytics functions for deepening tests (TC-F-012)"
+        score: 5
+        note: Sprint name (vivid-napping-kurzweil) embedded in product source — clear violation
+    composite_score: 29
+    rank: 10
+
+  - format: sylk
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 13
+        score: 26
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 29
+    rank: 11
+
+  - format: csv
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      sprint_history_identifiers:
+        python_hits: 5
+        sample:
+          - "csv_parser.py: R55 Train H: CSV Gate 4 prototype (TC-ACQN-CSV-001)"
+        score: 2
+    composite_score: 24
+    rank: 12
+
+  - format: pbm
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 10
+        score: 20
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 23
+    rank: 13
+
+  - format: pgm
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 10
+        score: 20
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 23
+    rank: 14
+
+  - format: ppm
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 10
+        score: 20
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 23
+    rank: 15
+
+  - format: xcf
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 12
+        score: 24
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 27
+    rank: 16
+
+  - format: qoi
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 25
+    rank: 17
+
+  - format: toml
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+    composite_score: 22
+    rank: 18
+
+  - format: odt
+    languages: [python]
+    signals:
+      known_baseline_violations:
+        count: 13
+        score: 26
+    composite_score: 26
+    rank: 19
+
+  - format: zst
+    languages: [python, csharp]
+    signals:
+      known_baseline_violations:
+        count: 11
+        score: 22
+      analytics_not_separated:
+        has_analytics_file: false
+        score: 3
+    composite_score: 25
+    rank: 20
+
+# ============================================================
+# SELECTION RESULT
+# ============================================================
+example_product_selection:
+  format: fods
+  languages: [python, csharp]
+  composite_score: 172
+  runner_up: fodt
+  runner_up_score: 86
+  score_margin: 86  # FODS score is 2x the next worst
+
+  selection_rationale:
+    - reason: test_shaped_apis_confirmed
+      evidence: >
+        FodsDocumentExtendedApis.cs line 2: "covers all APIs referenced by R290-R341 test files."
+        Line 3: "These methods provide minimal implementations suitable for governed test coverage."
+        This is the most explicit example of test-shaped API creation in the entire portfolio.
+        APIs were created because test files referenced them, not because spec facts authorized them.
+
+    - reason: detached_persistent_state_confirmed
+      evidence: >
+        FodsDocumentExtendedApis.cs line 43: private readonly Dictionary<string, string?> _sheetProtection = new();
+        IsSheetProtected() reads from the in-memory dict, not from ODF XML.
+        SetSheetProtection() writes to the dict, not to ODF XML.
+        State is permanently lost on Save()+Load() cycle — feature does not actually persist.
+
+    - reason: semantic_stubs_confirmed
+      evidence: >
+        149 public methods in FodsDocumentExtendedApis.cs, self-described as
+        "minimal implementations suitable for governed test coverage." These are
+        semantic stubs that return plausible results without actual spec grounding.
+
+    - reason: monolithic_files
+      evidence: >
+        FodsDocumentAccessor.cs: 3283 LOC, 187 public members — 4.1× the 800 LOC cap.
+        No architectural justification. Contains GetRowCount, GetColumnCount, GetCellCount,
+        ExportSheetToJson, ExportSheetToMarkdown — multiple concerns in one file.
+
+    - reason: dumping_ground_filename
+      evidence: >
+        FodsDocumentExtendedApis.cs is a forbidden filename pattern (ExtendedApis suffix).
+        Exists solely to accumulate "the rest" that did not fit in FodsDocument.cs.
+
+    - reason: analytics_masquerade
+      evidence: >
+        spreadsheet_document.py (1124 LOC) has module docstring:
+        "fods_analytics.py -- Analytics functions for the FODS neutral model"
+        but the filename is spreadsheet_document.py. V69 violation confirmed.
+
+    - reason: spans_both_tracks
+      evidence: >
+        Defects exist in both Python FOSS (spreadsheet_document.py masquerade, 285 history IDs)
+        and .NET commercial (ExtendedApis, Accessor monolith) tracks simultaneously.
+        Broadest scope for mission investigation and healed-system demonstration.
+
+    - reason: highest_violation_count
+      evidence: >
+        32 entries in source-structure-baseline.json known_violations — highest in the portfolio.
+
+    - reason: known_incident
+      evidence: >
+        GI-FODS-NET-001 required "Category D purge" — code was generated, survived CI,
+        closed taskcards, but was structurally defective. This is the confirmed incident
+        that demonstrates the systemic problem. Recent commits (b947eeac, 9bf2fe21) show
+        healing work still in progress.
+
+# ============================================================
+# PORTFOLIO-WIDE SYSTEMIC SIGNALS
+# ============================================================
+portfolio_systemic_signals:
+  formats_with_sprint_comments_in_source:
+    count: 6
+    formats: [fods, fodt, abw, gnumeric, fodg, fodp]
+    severity: systemic
+    note: Sprint-driven accumulation visible as section headers in source code
+
+  formats_lacking_analytics_separation:
+    count: 14
+    formats: [fods, fodt, abw, dif, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, xcf, zst]
+    severity: systemic
+    note: 70% of Python formats do not have dedicated analytics files
+
+  dotnet_formats_with_dumping_ground_files:
+    count: 2
+    formats: [fods, fodt]
+    files: [FodsDocumentExtendedApis.cs, FodtDocumentExtendedApis.cs]
+    severity: systemic
+    note: Same pattern in two formats — generated by the same machinery
+
+  formats_with_test_shaped_partial_classes:
+    count: 2
+    formats: [fods, fodt]
+    severity: systemic
+    note: ExtendedApis partial classes in both FODS and FODT created for test coverage
+
+# ============================================================
+# COUNTERS
+# ============================================================
+counters:
+  PRODUCT_LIBRARIES_NOT_SCANNED: 0
+  formats_scanned: 20
+  formats_with_confirmed_defects: 8
+  example_product_selected: fods
+
+# ============================================================
+# NEXT ACTION
+# ============================================================
+next_action:
+  taskcard: TC-PQLM-002
+  action: >
+    Capture incident baseline for FODS (Python + .NET).
+    Key files: FodsDocumentExtendedApis.cs, FodsDocumentAccessor.cs,
+    FodsDocument.cs, spreadsheet_document.py, neutral_model.py,
+    spreadsheet_model_document.py. Record all public APIs, test references,
+    and commits that produced current code.

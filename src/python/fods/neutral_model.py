@@ -709,9 +709,11 @@ def workbook_max_column_count(workbook: dict[str, Any]) -> int:
 # Formula count (product-healing pilot)
 # ---------------------------------------------------------------------------
 
-# Analytics re-export — all fods_* functions are in the domain module
+# TODO(PCG-005): These wildcard re-exports are a backward-compat shim only.
+# Tests should be updated to import analytics functions from fods_analytics /
+# fods_analytics_extended directly. See TC-PQLM-016 for test migration.
 try:
-    from .spreadsheet_document import *  # noqa: F401, F403
-    from .spreadsheet_model_document import *  # noqa: F401, F403
+    from .fods_analytics import *  # noqa: F401, F403  — canonical location
+    from .fods_analytics_extended import *  # noqa: F401, F403  — canonical location
 except ImportError:
     pass

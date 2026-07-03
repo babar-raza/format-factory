@@ -1,22 +1,19 @@
-"""
-fods_analytics.py -- Analytics functions for the FODS neutral model.
+"""fods_analytics.py — Analytics functions for the FODS neutral model.
 
 These functions compute statistics and summaries from parsed FODS workbook dicts.
-Extracted from neutral_model.py to maintain module responsibility separation.
-
 All functions accept a workbook dict as returned by parse_fods() and return
 structured analytics data suitable for content assessment pipelines.
+
+This is a pure analytics module — it contains no class definitions,
+no domain model types, and no ODF spec_qname assignments.
+ODF grounding: these functions operate on the parsed neutral model dict,
+which maps to office:spreadsheet / table:table elements per ODF §9.1.
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
 """
 
 from __future__ import annotations
-
-
-spec_qname = "office:document"
-spec_fact_ref = "FACT-FODS-001"
-namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 from typing import Any
 

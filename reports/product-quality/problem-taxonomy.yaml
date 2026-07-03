@@ -1,0 +1,512 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-004
+example_product: fods
+generated: "2026-07-03"
+counter_MATERIAL_FINDINGS_WITHOUT_GAPS: 0
+
+# Every material finding from TC-PQLM-003 mapped to exactly one defect category.
+# References: file-reviews.yaml, symbol-reviews.yaml, incident-baseline.yaml
+
+defect_categories:
+
+  # ============================================================
+  # 1. ARCHITECTURE
+  # ============================================================
+  - category: architecture
+    subcategory: monolithic_facade_and_mixed_responsibility
+    finding_id: ARCH-001
+    severity: blocking
+    title: FodsDocumentAccessor.cs is a 3283-LOC monolith mixing 7 concern domains
+    files: [src/net/fods/FodsDocumentAccessor.cs]
+    evidence:
+      - "3283 LOC — 4.1× the 800 LOC cap"
+      - "7 responsibility domains: cell query, sheet enumeration, export, filter/sort, style, sheet config, mutation"
+      - "47 TODO(Phase 3b/3c) markers for deferred ODF wiring"
+      - Custom non-ODF namespace 'urn:format-factory:fods-extensions' introduced
+    gap_ids: [PCG-010, PCG-011, PCG-012]
+    root_cause_hypothesis: SC-001 (task generator produces monolith-growing tasks without file-layout gate)
+
+  - category: architecture
+    subcategory: dumping_ground_partial_class
+    finding_id: ARCH-002
+    severity: blocking
+    title: FodsDocumentExtendedApis.cs is a test-driven dumping ground (194 test-shaped methods)
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "File header line 2: 'covers all APIs referenced by R290-R341 test files'"
+      - "File header line 3: 'minimal implementations suitable for governed test coverage'"
+      - "194 public methods added to satisfy test files, not ODF spec"
+    gap_ids: [PCG-005, PCG-009]
+    root_cause_hypothesis: SC-002 (skill allows 'implement missing methods' work shape)
+
+  - category: architecture
+    subcategory: analytics_masquerade
+    finding_id: ARCH-003
+    severity: blocking
+    title: spreadsheet_document.py (1124 LOC) is an analytics module masquerading as a domain model
+    files: [src/python/fods/spreadsheet_document.py]
+    evidence:
+      - "Module docstring line 2: 'fods_analytics.py -- Analytics functions for the FODS neutral model'"
+      - "Line 17: spec_qname = 'office:document' — false claim on an analytics module"
+      - "60 pure analytics functions, zero class definitions"
+      - "V69 analytics_masquerade violation (governance validator)"
+    gap_ids: [PCG-002, PCG-003]
+    root_cause_hypothesis: SC-003 (no file-content review gate; analytics file accepted as domain model)
+
+  - category: architecture
+    subcategory: analytics_masquerade
+    finding_id: ARCH-004
+    severity: major
+    title: spreadsheet_model_document.py (524 LOC) is a second analytics file in the domain model namespace
+    files: [src/python/fods/spreadsheet_model_document.py]
+    evidence:
+      - "67 analytics functions, no class definitions"
+      - "Named as if it were a domain model file"
+      - "Injected into neutral_model.py namespace via wildcard import"
+    gap_ids: [PCG-002]
+    root_cause_hypothesis: SC-003
+
+  - category: architecture
+    subcategory: wrong_ownership_and_namespace_pollution
+    finding_id: ARCH-005
+    severity: major
+    title: neutral_model.py exports 127 analytics functions via wildcard imports (namespace pollution)
+    files: [src/python/fods/neutral_model.py]
+    evidence:
+      - "Lines 713-717: 'from .spreadsheet_document import *' and 'from .spreadsheet_model_document import *'"
+      - "No __all__ guard — 127 analytics names injected into neutral_model namespace"
+      - "__init__.py then re-exports everything, polluting the fods package surface"
+    gap_ids: [PCG-001, PCG-004]
+    root_cause_hypothesis: SC-003
+
+  # ============================================================
+  # 2. QNAME / SPEC
+  # ============================================================
+  - category: qname_spec
+    subcategory: false_spec_qname
+    finding_id: QNAME-001
+    severity: blocking
+    title: spreadsheet_document.py claims spec_qname='office:document' without being a domain model
+    files: [src/python/fods/spreadsheet_document.py]
+    evidence:
+      - "Line 17: spec_qname = 'office:document'"
+      - "Line 18: spec_fact_ref = 'FACT-FODS-001'"
+      - "File contains no class definitions — these ClassVar-style attributes on a module are inert"
+      - "False claim makes analytics module appear spec-grounded to reviewers and validators"
+    gap_ids: [PCG-003]
+    root_cause_hypothesis: SC-004 (code-writing skills do not verify QName on correct entity type)
+
+  - category: qname_spec
+    subcategory: no_qname_authority
+    finding_id: QNAME-002
+    severity: blocking
+    title: FodsDocumentExtendedApis.cs — 194 public methods have zero ODF QName authority
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "File comment: 'APIs referenced by R290-R341 test files' — test authority, not ODF spec"
+      - "No XML doc comment cites an ODF QName for the 71 detached-state methods"
+      - "Requirement IDs (R290-R394) are substituted for ODF section references"
+    gap_ids: [PCG-005, PCG-006]
+    root_cause_hypothesis: SC-002, SC-004
+
+  - category: qname_spec
+    subcategory: speculative_api
+    finding_id: QNAME-003
+    severity: major
+    title: 35 SetXxx methods in ExtendedApis create APIs for ODF features with no write path
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "SetSheetProtection, SetCellNumberFormat, SetCellAlignment (and 32 more)"
+      - "Each writes to an in-memory dictionary; never serialized to XML"
+      - "API surface claims a write capability that does not exist"
+    gap_ids: [PCG-005, PCG-007]
+    root_cause_hypothesis: SC-002
+
+  - category: qname_spec
+    subcategory: custom_nonstandard_namespace
+    finding_id: QNAME-004
+    severity: major
+    title: FodsDocumentAccessor.cs introduces custom namespace 'urn:format-factory:fods-extensions'
+    files: [src/net/fods/FodsDocumentAccessor.cs]
+    evidence:
+      - "'urn:format-factory:fods-extensions' is not an ODF 1.3 namespace"
+      - "Used in some internal XML operations, creating non-ODF artifacts"
+      - "Round-tripped documents would contain non-standard extensions invisible to ODF consumers"
+    gap_ids: [PCG-015]
+    root_cause_hypothesis: SC-005 (no validator blocks non-ODF namespace introduction)
+
+  # ============================================================
+  # 3. STATE / PERSISTENCE
+  # ============================================================
+  - category: state_persistence
+    subcategory: detached_dictionary_backing_store
+    finding_id: STATE-001
+    severity: blocking
+    title: 33 private Dictionary fields in FodsDocumentExtendedApis store persistent state with no XML path
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "_sheetProtection, _cellNumberFormats, _cellAlignment, _cellFont, _cellWrapping,"
+      - "_freezePanes, _filters, _conditionalFormats, _dataValidations, _hyperlinks,"
+      - "_cellHyperlinks, _sheetPivotTables, _sheetSparklines, _hiddenSheets, _tabColors,"
+      - "_cellFontNames, _cellFontSizes, _cellFontBold, _cellFontItalic, _cellFontUnderline,"
+      - "_cellFontStrikethrough, _cellBackgrounds, _cellFontColors, _cellTextRotation,"
+      - "_cellIndent, _cellVerticalAlign, _cellErrors, _pageBreaks, _printAreas,"
+      - "_pivotTables, _sparklines, _groups (33 total)"
+      - "ALL state is LOST on Save() + Load() cycle — confirmed by incident-baseline.yaml"
+    gap_ids: [PCG-007]
+    root_cause_hypothesis: SC-006 (no validator checks dictionary-backed persistent feature)
+
+  - category: state_persistence
+    subcategory: detached_dictionary_backing_store
+    finding_id: STATE-002
+    severity: major
+    title: 4 additional detached dictionaries in FodsDocumentAccessor.cs
+    files: [src/net/fods/FodsDocumentAccessor.cs]
+    evidence:
+      - "_filterCache, _styleCache, _sheetCache, _rowHeightCache (4 dicts)"
+      - "Cache dicts not invalidated on mutation — stale reads possible"
+      - "Style cache bypasses XML resolution when key present"
+    gap_ids: [PCG-016]
+    root_cause_hypothesis: SC-006
+
+  - category: state_persistence
+    subcategory: getter_without_parser_source
+    finding_id: STATE-003
+    severity: blocking
+    title: 36 GetXxx methods in ExtendedApis read dictionaries — never the parsed ODF XML
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "GetSheetProtection → reads _sheetProtection dict (not XML table:table-source)"
+      - "GetCellNumberFormat → reads _cellNumberFormats dict (not XML style:data-style)"
+      - "All 36 GetXxx methods return null/default when dict is empty (i.e., after Load())"
+      - "Confirmed by round-trip proof in incident-baseline.yaml: state always null post-load"
+    gap_ids: [PCG-006, PCG-007]
+    root_cause_hypothesis: SC-006
+
+  - category: state_persistence
+    subcategory: setter_without_writer_path
+    finding_id: STATE-004
+    severity: blocking
+    title: 35 SetXxx methods in ExtendedApis have no ODF XML write path
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "Every SetXxx writes ONLY to private dictionary"
+      - "FodsWriter.Write() serializes XDocument — no dictionary-to-XML bridge exists"
+      - "Confirmed: SetSheetProtection → _sheetProtection dict; FodsWriter never reads _sheetProtection"
+    gap_ids: [PCG-005, PCG-007]
+    root_cause_hypothesis: SC-006
+
+  # ============================================================
+  # 4. API DESIGN
+  # ============================================================
+  - category: api_design
+    subcategory: test_only_public_apis
+    finding_id: API-001
+    severity: blocking
+    title: 194 public methods in FodsDocumentExtendedApis exist solely for R290-R341 test files
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "File explicitly states: 'covers all APIs referenced by R290-R341 test files'"
+      - "Producer of these APIs is the test file list, not ODF spec"
+      - "No documented external consumer use case"
+    gap_ids: [PCG-005, PCG-009]
+    root_cause_hypothesis: SC-002
+
+  - category: api_design
+    subcategory: root_document_owning_nested_behavior
+    finding_id: API-002
+    severity: major
+    title: FodsDocument.GetCellFont, SetCellAlignment etc. — root document owns cell-level behavior
+    files: [src/net/fods/FodsDocumentAccessor.cs, src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "FodsDocument.SetCellFont(sheetName, row, col, ...) — root doc sets per-cell formatting"
+      - "ODF model: style:style belongs to the style catalog, not to the document facade"
+      - "Cell-level state should be owned by FodsCell / StyleCatalog, not root document"
+    gap_ids: [PCG-010]
+    root_cause_hypothesis: SC-001
+
+  - category: api_design
+    subcategory: inflated_public_surface
+    finding_id: API-003
+    severity: major
+    title: 149 test-shaped methods in ExtendedApis inflate public surface without consumer value
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "194 total methods; ~45 are genuine XML-backed APIs; 149 are test-shaped"
+      - "Inflated count feeds false capability/maturity signals"
+    gap_ids: [PCG-009]
+    root_cause_hypothesis: SC-007 (grader rewards volume; certifier rewards test count)
+
+  - category: api_design
+    subcategory: aliases_for_tests
+    finding_id: API-004
+    severity: minor
+    title: ~81 alias/no-op methods duplicate FodsDocumentAccessor entry points for test convenience
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "Methods like GetCellValue() in ExtendedApis that simply call accessor.GetCellValue()"
+      - "Added because test files use both ExtendedApis and accessor paths"
+      - "Creates API surface confusion: two methods, identical behavior"
+    gap_ids: [PCG-009]
+    root_cause_hypothesis: SC-002
+
+  # ============================================================
+  # 5. FILES / FOLDERS
+  # ============================================================
+  - category: files_folders
+    subcategory: dumping_ground_filename
+    finding_id: FILE-001
+    severity: blocking
+    title: FodsDocumentExtendedApis.cs — 'ExtendedApis' is a prohibited dumping-ground filename
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "File layout contract: 'ExtendedApis' suffix indicates unstructured API accumulation"
+      - "1556 LOC of mixed purpose confirms it is a true dumping ground"
+    gap_ids: [PCG-005]
+    root_cause_hypothesis: SC-008 (no filename validator in skill; no pre-commit check)
+
+  - category: files_folders
+    subcategory: analytics_file_in_domain_namespace
+    finding_id: FILE-002
+    severity: blocking
+    title: spreadsheet_document.py filename implies domain model; content is pure analytics
+    files: [src/python/fods/spreadsheet_document.py]
+    evidence:
+      - "Name 'spreadsheet_document.py' implies it is the spreadsheet domain model"
+      - "Docstring line 2 contradicts: 'fods_analytics.py'"
+      - "Contains 60 analytics functions — no classes, no ODF model types"
+    gap_ids: [PCG-002, PCG-003]
+    root_cause_hypothesis: SC-008
+
+  - category: files_folders
+    subcategory: multiple_unrelated_types
+    finding_id: FILE-003
+    severity: major
+    title: FodsDocumentAccessor.cs contains 7 responsibility domains in one file
+    files: [src/net/fods/FodsDocumentAccessor.cs]
+    evidence:
+      - "Query + Export + Filter + Style + SheetConfig + Mutation + Metadata"
+      - "Should be split into: FodsQueryAccessor, FodsExporter, FodsStyleAccessor, etc."
+    gap_ids: [PCG-010, PCG-012]
+    root_cause_hypothesis: SC-001
+
+  # ============================================================
+  # 6. CODE WRITING
+  # ============================================================
+  - category: code_writing
+    subcategory: semantic_stub
+    finding_id: CODE-001
+    severity: blocking
+    title: 35 SetXxx methods are functional stubs — write to dict with no semantic effect
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "Each method stores value in a private dict → appears to succeed"
+      - "Save()+Load() reveals no effect — stub masked by get/set symmetry tests"
+      - "Production library standard §5.2: 'constant-return public methods' / 'empty success'"
+    gap_ids: [PCG-005, PCG-007]
+    root_cause_hypothesis: SC-006, SC-009 (grader scores test-pass, not semantic proof)
+
+  - category: code_writing
+    subcategory: mutable_state_without_invariants
+    finding_id: CODE-002
+    severity: major
+    title: 33 mutable dictionaries have no consistency invariants with ODF XML state
+    files: [src/net/fods/FodsDocumentExtendedApis.cs]
+    evidence:
+      - "Dict state and XDocument state are independent — no sync mechanism"
+      - "Sheet can be renamed in XDocument without updating dict keys"
+      - "No transaction or synchronization boundary exists"
+    gap_ids: [PCG-007]
+    root_cause_hypothesis: SC-006
+
+  - category: code_writing
+    subcategory: excessive_method_count
+    finding_id: CODE-003
+    severity: major
+    title: FodsDocumentAccessor.cs has 187+ public members in one partial class
+    files: [src/net/fods/FodsDocumentAccessor.cs]
+    evidence:
+      - "187 public methods/properties counted in incident-baseline.yaml"
+      - "Monolith exceeds 800 LOC cap by 4.1× (3283 LOC)"
+    gap_ids: [PCG-010]
+    root_cause_hypothesis: SC-001
+
+  # ============================================================
+  # 7. COMMENTS / DOCS
+  # ============================================================
+  - category: comments_docs
+    subcategory: history_describing_comments
+    finding_id: DOC-001
+    severity: major
+    title: FodsDocumentExtendedApis.cs and FodsDocumentAccessor.cs contain sprint/wave/phase history in XML docs
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+      - src/net/fods/FodsDocumentAccessor.cs
+    evidence:
+      - "Requirement IDs R100-R394 in XML doc comments of ExtendedApis"
+      - "'R100 Train B', 'R104 Wave 1', 'R114 Train A' — sprint history not ODF spec"
+      - "47× '// TODO: GI-FODS-NET-001 Phase 3b/3c' in FodsDocumentAccessor"
+    gap_ids: [PCG-013]
+    root_cause_hypothesis: SC-010 (no validator for history identifiers in product source)
+
+  - category: comments_docs
+    subcategory: false_docstring
+    finding_id: DOC-002
+    severity: major
+    title: spreadsheet_document.py module docstring contradicts filename (analytics vs. domain model)
+    files: [src/python/fods/spreadsheet_document.py]
+    evidence:
+      - "Line 2 docstring: 'fods_analytics.py -- Analytics functions'"
+      - "Filename: 'spreadsheet_document.py'"
+      - "Misleads developers about file purpose"
+    gap_ids: [PCG-003]
+    root_cause_hypothesis: SC-003
+
+  - category: comments_docs
+    subcategory: missing_dunder_all
+    finding_id: DOC-003
+    severity: major
+    title: fods Python package has no __all__ in __init__.py — 200+ names exported without governance
+    files: [src/python/fods/__init__.py]
+    evidence:
+      - "No __all__ declaration in __init__.py"
+      - "Wildcard chain: __init__.py → neutral_model.py → spreadsheet_document.py exports ~200 names"
+    gap_ids: [PCG-004]
+    root_cause_hypothesis: SC-011 (no __all__ enforcement in Python skill)
+
+  # ============================================================
+  # 8. TESTS / CERTIFICATION
+  # ============================================================
+  - category: tests_certification
+    subcategory: getter_setter_symmetry_tests
+    finding_id: TEST-001
+    severity: blocking
+    title: R290-R341 test suite tests only in-memory get/set symmetry — no persistence proof
+    files: [tests/net/fods/ (R290-R341 test files)]
+    evidence:
+      - "Pattern: SetSheetProtection(sheet, pwd); Assert.Equal(pwd, GetSheetProtection(sheet))"
+      - "No test calls Save()+Load() to verify persistence"
+      - "Tests pass but prove nothing about ODF round-trip"
+    gap_ids: [PCG-017]
+    root_cause_hypothesis: SC-009 (certifier accepts test-pass as semantic proof)
+
+  - category: tests_certification
+    subcategory: presence_only_tests
+    finding_id: TEST-002
+    severity: major
+    title: Several FodsCell and FodsSheet tests assert property existence only (no real data)
+    files: [tests/net/fods/test_fods_parser.cs]
+    evidence:
+      - "Assert.NotNull(cell.Value) — presence only, no value check"
+      - "Assert.True(doc.Sheets.Count > 0) — existence, no content verification"
+    gap_ids: [PCG-018]
+    root_cause_hypothesis: SC-009
+
+  - category: tests_certification
+    subcategory: no_roundtrip_proof_for_persistent_features
+    finding_id: TEST-003
+    severity: blocking
+    title: Zero round-trip tests for any of the 71 detached-state features
+    files: [tests/net/fods/]
+    evidence:
+      - "No test performs: SetX(v) → Save() → Load() → Assert.Equal(v, GetX())"
+      - "For all 35 SetXxx methods: persistence is ASSUMED not proven"
+    gap_ids: [PCG-017]
+    root_cause_hypothesis: SC-009
+
+  - category: tests_certification
+    subcategory: false_certification_claim
+    finding_id: TEST-004
+    severity: blocking
+    title: GI-FODS-NET-001 was closed with test-count-only evidence; detached state was not caught
+    files: [reports/supervisor/evidence-review.json]
+    evidence:
+      - "GI-FODS-NET-001 healing was declared COMPLETE based on test pass counts"
+      - "33 detached dictionaries survived the healing review undetected"
+      - "Certification must be reopened"
+    gap_ids: [PCG-019]
+    root_cause_hypothesis: SC-009, SC-007
+
+  # ============================================================
+  # 9. GOVERNANCE
+  # ============================================================
+  - category: governance
+    subcategory: missing_skill_architecture_gate
+    finding_id: GOV-001
+    severity: blocking
+    title: No skill enforces architecture-first design (file layout, domain types) before code generation
+    files: [skills/add-dotnet-api/, skills/add-dotnet-object-model-feature/]
+    evidence:
+      - "ExtendedApis.cs and Accessor.cs grew to current state through 30+ sprints of add-dotnet-api execution"
+      - "add-dotnet-api skill does not require: target file name, domain type assignment, QName authority"
+      - "No pre-implementation checklist exists"
+    gap_ids: [PCG-020]
+    root_cause_hypothesis: SC-002
+
+  - category: governance
+    subcategory: no_file_content_review
+    finding_id: GOV-002
+    severity: blocking
+    title: Skills and reviewer rubrics inspect diffs only — no full-file-content review
+    files: [skills/, tools/supervisor/]
+    evidence:
+      - "Reviewer rubrics score based on work items declared, not on full file examination"
+      - "analytics masquerade (ARCH-003) survived all reviews because file content was not read"
+      - "ExtendedApis dumping-ground pattern survived 30+ sprints"
+    gap_ids: [PCG-021]
+    root_cause_hypothesis: SC-003, SC-008
+
+  - category: governance
+    subcategory: weak_skill_contract
+    finding_id: GOV-003
+    severity: blocking
+    title: add-dotnet-api skill allows 'implement all missing methods' work shape without rejection
+    files: [skills/add-dotnet-api/]
+    evidence:
+      - "No explicit rejection instruction for 'add stubs', 'implement test-required methods', 'store in dict'"
+      - "ExtendedApis.cs pattern is exactly what the skill would produce given such a prompt"
+    gap_ids: [PCG-020]
+    root_cause_hypothesis: SC-002
+
+  - category: governance
+    subcategory: hardcoded_task_generator
+    finding_id: GOV-004
+    severity: blocking
+    title: autonomous_task_generator.py uses hardcoded _EXPANSION_GOALS instead of capability map
+    files: [tools/supervisor/autonomous_task_generator.py]
+    evidence:
+      - "_EXPANSION_GOALS hardcoded catalog — generates tasks without consulting SAL spec facts"
+      - "Tasks generated without QName authority → agents produce code without spec backing"
+      - "Root cause for all API design and QName defects"
+    gap_ids: [PCG-022]
+    root_cause_hypothesis: SC-001
+
+  - category: governance
+    subcategory: grader_rewards_volume
+    finding_id: GOV-005
+    severity: major
+    title: Supervisor grader scores volume (test count, method count) not semantic quality
+    files: [tools/supervisor/supervisor_loop.py]
+    evidence:
+      - "GI-FODS-NET-001 received passing grade despite 33 detached dictionaries"
+      - "194 test-shaped methods inflated capability count without semantic value"
+      - "Grader never detected getter-without-parser or setter-without-writer patterns"
+    gap_ids: [PCG-023]
+    root_cause_hypothesis: SC-007
+
+# Summary
+summary:
+  architecture_findings: 5
+  qname_spec_findings: 4
+  state_persistence_findings: 4
+  api_design_findings: 4
+  files_folders_findings: 3
+  code_writing_findings: 3
+  comments_docs_findings: 3
+  tests_certification_findings: 4
+  governance_findings: 5
+  total_findings: 35
+  blocking_findings: 13
+  major_findings: 17
+  minor_findings: 1
+  counter_MATERIAL_FINDINGS_WITHOUT_GAPS: 0

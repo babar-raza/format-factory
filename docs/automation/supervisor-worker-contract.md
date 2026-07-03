@@ -119,6 +119,58 @@ Each fact entry contains a `provenance` dict with `section_id`, `page_start`, an
 - **REJECTED**: Evidence exists but is fundamentally wrong. Triggers critical rework.
 - **REWORK_REQUIRED**: Evidence incomplete or tests failing. Non-critical but must be addressed.
 
+## TC-PQLM-011: Product Work Item — Extended Required Fields (2026-07-03)
+
+For all `PRODUCT_SOURCE` and `PRODUCT_TEST` work items, the following fields are now REQUIRED
+(in addition to existing TC-GUARD-001 requirements). Missing fields trigger V-NEW-PQLM-011 WARNING.
+
+```yaml
+# Extended fields per work item (add alongside spec_fact_refs, gap_ledger_ref):
+target_files:                        # files modified or created
+  - path: src/net/fods/FodsDocument.cs
+    responsibility: "Root document type — Load/Save/Create"
+    layout_approved: true            # must appear in product-file-layout-contract.yaml
+file_content_reviewed: true          # worker confirmed full file content before modification
+qnames:                              # ODF QNames this work item implements
+  - "table:table-cell/@office:value"
+owning_types:                        # domain types that own the new APIs
+  - "FodsCell"
+parser_obligations:                  # how getter reads from XML
+  - "XElement.Attribute(FodsNamespaces.Office + 'value')"
+writer_obligations:                  # how setter writes to XML (or "N/A: read-only")
+  - "XElement.SetAttributeValue(FodsNamespaces.Office + 'value', ...)"
+roundtrip_proof:                     # test proving persistence survives Save()+Load()
+  test_path: tests/net/fods/FodsRoundtripTests.cs
+  assertion: "Set(v) -> Save() -> Load() -> Get() == v"
+public_api_disposition:              # for each new public method/property
+  - name: "FodsCell.ValueType"
+    authority: "FACT-FODS-003"       # spec fact that authorizes this API
+    test_only_consumer: false        # true = API only referenced in tests = VIOLATION
+```
+
+**Validation:**
+- `layout_approved: false` → V95 FAIL (file outside approved layout)
+- `file_content_reviewed: false` → V-PQLM-011 WARN
+- `test_only_consumer: true` → V93 FAIL
+- `roundtrip_proof` missing for setter → V92 WARN
+
+**Reviewer rubric extension (product source items):**
+Reviewers must now score in addition to existing rubric:
+- `file_layout_conformance` (1-5): target files in approved layout, no dumping-ground names
+- `qname_authority_coverage` (1-5): every new API has spec QName or explicit exception
+- `full_file_content_inspected` (1-5): reviewer confirms reading full file, not just diff
+- `roundtrip_evidence_quality` (1-5): persistent setters have Save()+Load() proof
+- `documentation_coverage` (1-5): all public APIs have docstrings/XML docs per contract
+
+**Grader penalty rules:**
+- `-2.0` if any public method returns constant literal (V90 fire)
+- `-2.0` if any getter reads from private dict (V91 fire)
+- `-2.0` if any setter has no XML write path (V92 fire)
+- `-1.0` if target file not in approved layout (V95 fire)
+- `-1.0` if sprint/history identifier in comments (V87 fire)
+
+---
+
 ## ZIP Policy
 
 ZIP is NOT required. ZIP is only used for:

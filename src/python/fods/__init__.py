@@ -15,8 +15,9 @@ Acquisition Gates 1-7 PASSED.
 from .parser import *  # noqa: F401, F403
 from .writer import *  # noqa: F401, F403
 from .neutral_model import *  # noqa: F401, F403
-from .spreadsheet_document import *  # noqa: F401, F403
-from .spreadsheet_model_document import *  # noqa: F401, F403
+# Analytics modules — canonical names (PCG-003/004 migration complete 2026-07-03)
+from .fods_analytics import *  # noqa: F401, F403
+from .fods_analytics_extended import *  # noqa: F401, F403
 from .models import *  # noqa: F401, F403
 from .csv_exporter import *  # noqa: F401, F403
 from .fods_to_tsv import *  # noqa: F401, F403

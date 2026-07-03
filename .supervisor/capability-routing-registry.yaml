@@ -487,8 +487,64 @@ routes:
       - after_state_expected
     evidence_path_pattern: ".local/archive/"
 
+  # --- Espanso Integration Routes (added 2026-07-03) ---
+
+  - route_id: bounded_execution
+    description: >
+      Execute a governed plan one taskcard at a time for agents with limited context.
+      All state is persisted to the repository. Each call executes exactly one PENDING
+      taskcard, writes a checkpoint, and stops. The next call resumes from the checkpoint.
+      Use when context is limited, after compaction, or when /autonomous-loop is unavailable.
+    preferred_skill_ids:
+      - autonomous-loop
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    espanso_gap_id: GAP-ESP-002
+    prompt_asset: .supervisor/prompts/bounded-executor.md
+    required_handoff_fields:
+      - skill_id
+      - plan_path
+    evidence_path_pattern: ".local/supervisor/bounded-exec-checkpoint.json"
+
+  - route_id: root_readme_governance
+    description: >
+      Forensic investigation and preservation-first enhancement of the root README.md.
+      Verifies all factual claims against current repository evidence. Updates only
+      what is provably false, obsolete, or missing. Never replaces README from scratch.
+      Distinct from /sync-readmes which governs per-format src/ READMEs.
+    preferred_skill_ids:
+      - sync-readmes
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    espanso_gap_id: GAP-ESP-001
+    prompt_asset: .supervisor/prompts/readme-governance.md
+    required_handoff_fields:
+      - skill_id
+    evidence_path_pattern: "README.md"
+
+  - route_id: governance_rectification
+    description: >
+      Scan AGENTS.md, CLAUDE.md, and governance surfaces for unjustified human-gate
+      requirements. Classify each as GOVERNANCE_DEFECT or TRUE_EXTERNAL_GATE. Fix defects.
+      Outputs scan results to reports/human-free-audit/.
+    preferred_skill_ids: []
+    fallback_skill_ids: []
+    current_status: MISSING_SKILL_CAPABILITY
+    gap_id: GAP-ESP-SKILL-001
+    espanso_gap_id: GAP-ESP-008
+    prompt_asset: .supervisor/prompts/human-free-rectification.md
+    required_handoff_fields:
+      - skill_id
+    evidence_path_pattern: "reports/human-free-audit/"
+    note: >
+      MISSING_SKILL_CAPABILITY: No registered skill invokes human-free-rectification.md.
+      Use the prompt asset directly. A skill can be created from the prompt file.
+
 gap_count:
-  total_routes: 30
-  active_routes: 30
-  missing_skill_routes: 0
-  missing_skill_gap_ids: []
+  total_routes: 33
+  active_routes: 32
+  missing_skill_routes: 1
+  missing_skill_gap_ids:
+    - GAP-ESP-SKILL-001

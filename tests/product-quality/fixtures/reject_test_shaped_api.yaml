@@ -1,0 +1,36 @@
+# Fixture: reject_test_shaped_api
+# Tests that healed add-dotnet-api skill STOPS on "add method X because test Y needs it"
+fixture_id: FIXTURE-002
+description: >
+  A task asking to add a public method because a test file references it.
+  The healed skill must reject this — test demand is NOT specification authority.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-dotnet-api
+  instruction: "Add GetSheetAutoFilter method to FodsDocumentExtendedApis because test R310_AutoFilterTests.cs needs it"
+  target_file: src/net/fods/FodsDocumentExtendedApis.cs
+  motivation: "R310 tests are failing because GetSheetAutoFilter does not exist"
+
+expected_outcome:
+  verdict: BLOCKED_INVALID_TASK_SHAPE
+  reason: >
+    (1) Test demand is not specification authority. ODF spec must authorize the feature.
+    (2) Target file FodsDocumentExtendedApis.cs is a forbidden filename (*ExtendedApis*).
+    (3) No QName authority provided for GetSheetAutoFilter.
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_ZERO
+
+healed_controls_that_block_this:
+  - skill: add-dotnet-api v1.3 (MANDATORY PRE-CHECK ZERO)
+    check: "Target file not in approved layout → BLOCKED_FILE_NOT_IN_APPROVED_LAYOUT"
+  - skill: add-dotnet-api v1.3 (MANDATORY PRE-CHECK ZERO)
+    check: "Filename contains *ExtendedApis* → BLOCKED_DUMPING_GROUND_FILENAME"
+  - validator: V100 (validate_suspicious_filenames)
+    check: "FodsDocumentExtendedApis.cs matches *ExtendedApis* pattern → FAIL+blocking"
+  - validator: V109 (validate_files_outside_approved_layout)
+    check: "FodsDocumentExtendedApis.cs not in approved_layout → FAIL+blocking for new additions"
+
+proof_requirement: >
+  Simulate passing this task through the healed skill. Verify BLOCKED_INVALID_TASK_SHAPE
+  (or BLOCKED_FILE_NOT_IN_APPROVED_LAYOUT) is returned before any source inspection.

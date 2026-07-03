@@ -1,0 +1,699 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-013
+generated: "2026-07-03"
+example_product: fods
+version: "1.0"
+
+# Every material finding from TC-PQLM-003/004/005 is tracked here.
+# Root cause refs (SC-NNN) come from reports/product-quality/system-causes.yaml.
+# Problem taxonomy refs (ARCH-NNN, STATE-NNN, etc.) from problem-taxonomy.yaml.
+
+gaps:
+
+  # ==========================================================================
+  # ARCHITECTURE GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-001
+    product: fods
+    language: csharp
+    category: architecture
+    severity: blocking
+    taxonomy_refs: [ARCH-001]
+    root_cause: SC-001
+    files:
+      - src/net/fods/FodsDocumentAccessor.cs
+    symbols:
+      - FodsDocumentAccessor (3283 LOC)
+    qnames:
+      - table:table
+      - table:table-row
+      - table:table-cell
+      - style:style
+      - office:meta
+    capability_ids: []
+    evidence:
+      - "FodsDocumentAccessor.cs: 3283 LOC (4.1× 800 cap); 7 responsibility domains"
+      - "47 TODO(Phase 3b/3c) markers; custom urn:format-factory:fods-extensions namespace"
+    first_failed_boundary: validate_dotnet_loc_cap (V78)
+    system_repair: "autonomous_task_generator.py must gate on file-layout-contract.yaml before task generation"
+    architecture_repair: "SPLIT_BY_DOMAIN: query→FodsDocument.cs, export→Export/FodsExporter.cs, style→Style/FodsStyleResolver.cs, sheet→Model/FodsSheet.cs"
+    code_repair: "Move each domain's methods to target files per product-file-layout-contract.yaml; remove FodsDocumentAccessor.cs"
+    documentation_repair: "Update XML docs on each relocated method to reflect ODF QName; remove Phase markers"
+    test_repair: "Add integration tests that verify each domain accessor via the target type (not FodsDocumentAccessor)"
+    certification_repair: "Reopen any certification claiming FodsDocumentAccessor as production-ready"
+    backfill_scope: example_only
+    verification:
+      - "FodsDocumentAccessor.cs removed from src/net/fods/"
+      - "V78 (validate_dotnet_loc_cap) PASS for all remaining .cs files"
+    pilots: [P5]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Classify all FodsDocumentAccessor methods into domain buckets; migrate one domain at a time"
+
+  - gap_id: PCG-002
+    product: fods
+    language: csharp
+    category: architecture
+    severity: blocking
+    taxonomy_refs: [ARCH-002]
+    root_cause: SC-002
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - FodsDocumentExtendedApis (1556 LOC, 194 methods)
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "File header: 'APIs referenced by R290-R341 test files' — confirmed test-shaped"
+      - "33 private Dictionary<string,X?> fields; no XML write path for any"
+      - "V89 (validate_dotnet_missingmethods_filename): FAIL immediately"
+    first_failed_boundary: validate_dotnet_missingmethods_filename (V89) / validate_suspicious_filenames (V100)
+    system_repair: "add-dotnet-api skill pre-check ZERO must reject test-shaped task shapes"
+    architecture_repair: "DECOMPOSE_THEN_REMOVE: XML-backed methods → FodsDocument.cs/Model/FodsCell.cs; detached dict APIs → REMOVE"
+    code_repair: "Remove all 33 dict fields and their associated Get/Set methods; migrate only spec-grounded methods to approved files"
+    documentation_repair: "No documentation for test-shaped APIs — REMOVE without migration"
+    test_repair: "Remove R290-R341 tests that exist only to exercise spec-ungrounded test APIs"
+    certification_repair: "OPEN: any certification referencing ExtendedApis surface"
+    backfill_scope: example_only
+    verification:
+      - "FodsDocumentExtendedApis.cs removed from src/net/fods/"
+      - "V100 (validate_suspicious_filenames) PASS"
+    pilots: [P2, P5]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Identify which ExtendedApis methods have ODF QName backing; migrate those; delete the rest"
+
+  - gap_id: PCG-003
+    product: fods
+    language: python
+    category: architecture
+    severity: blocking
+    taxonomy_refs: [ARCH-003]
+    root_cause: SC-003
+    files:
+      - src/python/fods/spreadsheet_document.py
+    symbols:
+      - "module-level spec_qname = 'office:document' (false)"
+      - "60 analytics functions (no class definitions)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Module docstring claims: 'fods_analytics.py — Analytics functions'"
+      - "line 17: spec_qname = 'office:document' at module scope — NOT a class attribute; ODF does not define analytics at office:document"
+      - "Zero class definitions; 1124 LOC of analytics functions"
+    first_failed_boundary: validate_analytics_naming_enforced (V77)
+    system_repair: "Reviewer must scan module-level spec_qname assignments outside class bodies"
+    architecture_repair: "RENAME: spreadsheet_document.py → fods_analytics.py; remove false spec_qname at module scope"
+    code_repair: "Remove line 17 spec_qname assignment; rename file; update all imports"
+    documentation_repair: "Update module docstring to match actual analytics responsibility"
+    test_repair: "Update test imports from spreadsheet_document to fods_analytics"
+    certification_repair: "No certification impact (analytics file, not domain model)"
+    backfill_scope: example_only
+    verification:
+      - "src/python/fods/fods_analytics.py exists and contains the 60 analytics functions"
+      - "src/python/fods/spreadsheet_document.py removed"
+      - "No module-level spec_qname outside class bodies in fods_analytics.py"
+    pilots: [P1, P6]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Rename file; remove false spec_qname; update all imports across test suite"
+
+  - gap_id: PCG-004
+    product: fods
+    language: python
+    category: architecture
+    severity: blocking
+    taxonomy_refs: [ARCH-004]
+    root_cause: SC-003
+    files:
+      - src/python/fods/spreadsheet_model_document.py
+    symbols:
+      - "analytics functions masquerading as domain model"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Filename implies domain model; content is analytics extension functions"
+      - "No class definitions; companion to spreadsheet_document.py"
+    first_failed_boundary: validate_analytics_naming_enforced (V77)
+    system_repair: "Reviewer checks: if file has no class definitions, must end in _analytics.py"
+    architecture_repair: "RENAME: spreadsheet_model_document.py → fods_analytics_extended.py"
+    code_repair: "Rename file; update all imports"
+    documentation_repair: "Update module docstring"
+    test_repair: "Update test imports"
+    certification_repair: "No certification impact"
+    backfill_scope: example_only
+    verification:
+      - "src/python/fods/fods_analytics_extended.py exists"
+      - "src/python/fods/spreadsheet_model_document.py removed"
+    pilots: [P1]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Rename file; update imports"
+
+  - gap_id: PCG-005
+    product: fods
+    language: python
+    category: architecture
+    severity: blocking
+    taxonomy_refs: [ARCH-005]
+    root_cause: SC-003
+    files:
+      - src/python/fods/neutral_model.py
+      - src/python/fods/__init__.py
+    symbols:
+      - "wildcard imports from fods.spreadsheet_document (127 analytics names)"
+      - "wildcard re-export via __init__.py (no __all__)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "neutral_model.py lines 713-717: from .spreadsheet_document import *; from .spreadsheet_model_document import *"
+      - "__init__.py has no __all__; re-exports everything via wildcard"
+    first_failed_boundary: validate_all_exports_declared (V65)
+    system_repair: "add-python-api skill must forbid wildcard imports; __all__ required"
+    architecture_repair: "RENAME neutral_model.py → model.py; REMOVE wildcard imports; add explicit __all__ to __init__.py"
+    code_repair: "Replace wildcard imports with explicit imports of required names; define __all__ in __init__.py"
+    documentation_repair: "Add module docstring to model.py describing domain model responsibility"
+    test_repair: "Verify no test depends on wildcard namespace pollution"
+    certification_repair: "No certification impact"
+    backfill_scope: example_only
+    verification:
+      - "No 'from .X import *' in any fods module"
+      - "__init__.py has explicit __all__"
+    pilots: [P1, P6]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Remove wildcard imports; add __all__; rename neutral_model.py"
+
+  # ==========================================================================
+  # STATE / PERSISTENCE GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-006
+    product: fods
+    language: csharp
+    category: state_persistence
+    severity: blocking
+    taxonomy_refs: [STATE-001]
+    root_cause: SC-006
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - "_sheetProtections (Dictionary<string,string?>)"
+      - "_columnWidths (Dictionary<string,double?>)"
+      - "_rowHeights (Dictionary<string,double?>)"
+      - "... (33 total _field = new() detached dict fields)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "33 private Dictionary<string, X?> _field = new() fields; state lost on Save()+Load()"
+      - "SetXxx methods write to dict with no SetAttributeValue call"
+      - "GetXxx methods read from dict with no XML parse path"
+    first_failed_boundary: validate_dotnet_detached_dictionary_fields (V88) / validate_detached_persistent_state (V108)
+    system_repair: "add-dotnet-api skill MANDATORY PRE-CHECK ZERO blocks dict-backed persistent state"
+    architecture_repair: "Each persistent property needs XDocument-backed getter (XElement.Attribute/Value) and SetAttributeValue setter"
+    code_repair: "For each of 33 dict fields: identify ODF QName → implement XML read path → implement XML write path → add Type 4 roundtrip test → remove dict field"
+    documentation_repair: "XML doc must state ODF element/attribute source for each property"
+    test_repair: "Add Type 4 roundtrip test per persistent property: SetX(v) → Save() → Load() → Assert.Equal(v, GetX())"
+    certification_repair: "OPEN: any certified capability backed by detached dict state"
+    backfill_scope: example_only
+    verification:
+      - "No Dictionary<string, X?> _field = new() remaining in src/net/fods/"
+      - "V108 (validate_detached_persistent_state) PASS"
+      - "All persistent properties have roundtrip tests"
+    pilots: [P3, P9]
+    task_ids: [TC-PQLM-015, TC-PQLM-016]
+    status: OPEN
+    next_action: "Audit each of 33 dict fields for ODF spec backing; migrate spec-grounded ones; remove ungrounded"
+
+  - gap_id: PCG-007
+    product: fods
+    language: csharp
+    category: state_persistence
+    severity: blocking
+    taxonomy_refs: [STATE-002]
+    root_cause: SC-006
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - "35 SetXxx methods writing to dict without XML write path"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "SetSheetProtection, SetColumnWidth, SetRowHeight etc. — all write to private dict only"
+      - "No SetAttributeValue, no XElement modification in any setter"
+      - "V106 (validate_setter_without_writer_path): WARN on existing, FAIL on new"
+    first_failed_boundary: validate_setter_without_writer_path (V106)
+    system_repair: "add-dotnet-object-model-feature MANDATORY PRE-CHECK: setter must have XML write path"
+    architecture_repair: "Each setter must call SetAttributeValue on the correct ODF element"
+    code_repair: "Per setter: identify ODF element → replace dict write with XML write → verify roundtrip"
+    documentation_repair: "XML doc <param> must describe what ODF attribute/element is mutated"
+    test_repair: "Type 4 roundtrip test per setter"
+    certification_repair: "OPEN: certified setters without writer proof"
+    backfill_scope: example_only
+    verification:
+      - "No SetXxx method writes only to private dict"
+      - "V106 PASS for all new setters"
+    pilots: [P3]
+    task_ids: [TC-PQLM-015, TC-PQLM-016]
+    status: OPEN
+    next_action: "Implement XML write paths for spec-grounded setters; remove ungrounded setters"
+
+  # ==========================================================================
+  # API DESIGN GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-008
+    product: fods
+    language: csharp
+    category: api_design
+    severity: major
+    taxonomy_refs: [API-001]
+    root_cause: SC-002
+    files:
+      - src/net/fods/FodsDocumentAccessor.cs
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - "GetSheetTabColor(sheetName) — stringly typed, no ODF backing"
+      - "SetColumnStyle(sheetName, colIndex, styleName) — string style name, no style:style lookup"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Closed vocabularies (colors, styles) passed as string parameters"
+      - "No FodsColor, FodsStyleRef, or equivalent typed value objects"
+      - "V90 (validate_constant_return_public_methods): FAIL for constant-return stubs"
+    first_failed_boundary: validate_constant_return_public_methods (V104)
+    system_repair: "add-dotnet-api must require typed parameters for closed vocabularies"
+    architecture_repair: "Add value types FodsColor (ODF §20.xxx), FodsStyleReference; replace string params"
+    code_repair: "Replace string-typed closed vocabulary params with enums/value types"
+    documentation_repair: "XML doc must cite ODF spec section for valid values"
+    test_repair: "Tests must use typed values, not magic strings"
+    certification_repair: "No immediate certification impact"
+    backfill_scope: example_only
+    verification:
+      - "No public method takes color/style as raw string where a closed vocabulary exists"
+    pilots: [P6]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Identify all string-param closed vocabularies in FodsDocumentAccessor public surface"
+
+  - gap_id: PCG-009
+    product: fods
+    language: csharp
+    category: api_design
+    severity: major
+    taxonomy_refs: [API-002]
+    root_cause: SC-007
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - "194 public methods exposed as FodsDocument surface"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "194 public methods; only ~60 have ODF spec backing"
+      - "~134 are test-shaped helpers or presence-only stubs"
+      - "V104 (validate_constant_return_public_methods): detects constant-return stubs"
+    first_failed_boundary: validate_constant_return_public_methods (V104)
+    system_repair: "Grader must penalize test-count padding; require spec_fact_refs per method"
+    architecture_repair: "Remove ~134 test-shaped/ungrounded methods from public surface"
+    code_repair: "Delete or mark internal the test-shaped APIs"
+    documentation_repair: "Remove XML docs for deleted methods"
+    test_repair: "Remove tests that exist only to exercise test-shaped APIs"
+    certification_repair: "OPEN: capability counts based on ExtendedApis method count"
+    backfill_scope: example_only
+    verification:
+      - "Public API surface ≤ 100 methods across all FODS .NET files"
+      - "All remaining methods have spec_fact_refs"
+    pilots: [P2]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Classify each of 194 methods: spec-grounded vs test-shaped; remove test-shaped"
+
+  # ==========================================================================
+  # FILES / FOLDERS GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-010
+    product: fods
+    language: csharp
+    category: files_folders
+    severity: blocking
+    taxonomy_refs: [FILES-001]
+    root_cause: SC-001
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols: []
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "V100 (validate_suspicious_filenames): FAIL — *ExtendedApis* pattern"
+      - "V89 (validate_dotnet_missingmethods_filename): FAIL — test-shaped dumping ground"
+    first_failed_boundary: validate_suspicious_filenames (V100)
+    system_repair: "Task generator must check file-layout-contract.yaml before assigning target file"
+    architecture_repair: "File must be removed after all content is migrated to approved files"
+    code_repair: "Complete PCG-002 migration first; then delete this file"
+    documentation_repair: "N/A (file deleted)"
+    test_repair: "Remove test imports referencing FodsDocumentExtendedApis"
+    certification_repair: "N/A"
+    backfill_scope: example_only
+    verification:
+      - "V100 PASS (no ExtendedApis files in src/)"
+    pilots: [P5]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Blocked on PCG-002 migration completion"
+
+  - gap_id: PCG-011
+    product: fods
+    language: python
+    category: files_folders
+    severity: blocking
+    taxonomy_refs: [FILES-002]
+    root_cause: SC-001
+    files:
+      - src/python/fods/spreadsheet_document.py
+      - src/python/fods/spreadsheet_model_document.py
+      - src/python/fods/neutral_model.py
+    symbols: []
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "3 files require migration per product-file-layout-contract.yaml"
+      - "V109 (validate_files_outside_approved_layout): FAIL for all 3 files"
+    first_failed_boundary: validate_files_outside_approved_layout (V109)
+    system_repair: "V109 blocks new additions to non-approved files"
+    architecture_repair: "Rename to approved names: fods_analytics.py, fods_analytics_extended.py, model.py"
+    code_repair: "Git mv + import update; see PCG-003/004/005"
+    documentation_repair: "Update module docstrings"
+    test_repair: "Update test imports"
+    certification_repair: "N/A"
+    backfill_scope: example_only
+    verification:
+      - "V109 PASS for src/python/fods/"
+      - "Only 8 approved files present in src/python/fods/"
+    pilots: [P5]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Execute renames as part of TC-PQLM-015 rebuild"
+
+  # ==========================================================================
+  # CODE WRITING GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-012
+    product: fods
+    language: csharp
+    category: code_writing
+    severity: blocking
+    taxonomy_refs: [CODE-001]
+    root_cause: SC-007
+    files:
+      - src/net/fods/FodsDocumentExtendedApis.cs
+    symbols:
+      - "GetSheetProtectionMode() -> return null (semantic stub)"
+      - "IsAutoFilterActive() -> return false (semantic stub)"
+      - "multiple constant-return public methods"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "V104 (validate_constant_return_public_methods): FAIL"
+      - "V87 (validate_dotnet_constant_return_public_api): WARN (existing) → FAIL (new)"
+      - "Methods always return literal null/false/true without reading XDocument"
+    first_failed_boundary: validate_constant_return_public_methods (V104)
+    system_repair: "Grader penalizes constant-return methods; add-dotnet-api STOP if no XML read path"
+    architecture_repair: "Each method must read from XDocument or raise FodsUnsupportedFeatureException"
+    code_repair: "Replace constant returns with proper XDocument parse; or remove method if no ODF backing"
+    documentation_repair: "XML doc must say which ODF element/attribute is read"
+    test_repair: "Replace constant-assertion tests with tests on real FODS files"
+    certification_repair: "OPEN: any capability claiming these methods as evidence"
+    backfill_scope: example_only
+    verification:
+      - "V104 PASS for new files; V87 WARN count reduced"
+    pilots: [P3]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Identify all constant-return public methods in ExtendedApis; remove or implement"
+
+  # ==========================================================================
+  # COMMENTS / DOCS GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-013
+    product: fods
+    language: csharp
+    category: comments_docs
+    severity: major
+    taxonomy_refs: [DOCS-001]
+    root_cause: SC-008
+    files:
+      - src/net/fods/FodsDocumentAccessor.cs
+    symbols:
+      - "47 TODO(Phase 3b/3c) markers"
+      - "Custom namespace 'urn:format-factory:fods-extensions' in comments"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "47 TODO markers reference Phase 3b/3c (sprint-level identifiers)"
+      - "V101 (validate_history_identifiers_in_source): WARN"
+      - "V103 (validate_ungoverned_todo_markers): WARN (no GAP-* refs)"
+    first_failed_boundary: validate_history_identifiers_in_source (V101)
+    system_repair: "add-dotnet-api must forbid sprint/phase identifiers in TODO comments"
+    architecture_repair: "N/A"
+    code_repair: "Replace all 47 TODO(Phase X) with TODO(PCG-NNN) governed gap references or delete"
+    documentation_repair: "Update to governed reference format: // TODO(PCG-001): description"
+    test_repair: "N/A"
+    certification_repair: "N/A"
+    backfill_scope: example_only
+    verification:
+      - "V101 WARN count = 0 for src/net/fods/FodsDocumentAccessor.cs"
+      - "V103 WARN count = 0 for FodsDocumentAccessor.cs"
+    pilots: [P8]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Replace Phase markers with governed gap references as files are migrated in TC-PQLM-015"
+
+  - gap_id: PCG-014
+    product: fods
+    language: python
+    category: comments_docs
+    severity: major
+    taxonomy_refs: [DOCS-002]
+    root_cause: SC-008
+    files:
+      - src/python/fods/spreadsheet_document.py
+      - src/python/fods/neutral_model.py
+    symbols:
+      - "module docstring claims analytics identity but filename implies domain model"
+      - "many public functions lack docstrings"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "V102 (validate_undocumented_public_python_apis): FAIL (new files)"
+      - "V101 (validate_history_identifiers_in_source): WARN (Sprint markers found in .py)"
+    first_failed_boundary: validate_undocumented_public_python_apis (V102)
+    system_repair: "add-python-api skill requires docstrings on all new public defs"
+    architecture_repair: "N/A"
+    code_repair: "Add docstrings during rename/migration in TC-PQLM-015"
+    documentation_repair: "Each public function must have docstring per comment-and-docs-contract.md"
+    test_repair: "N/A"
+    certification_repair: "N/A"
+    backfill_scope: example_only
+    verification:
+      - "V102 PASS for all new/modified Python files"
+    pilots: [P7]
+    task_ids: [TC-PQLM-015]
+    status: OPEN
+    next_action: "Add docstrings during rename/migration phase"
+
+  # ==========================================================================
+  # TESTS / CERTIFICATION GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-015
+    product: fods
+    language: csharp
+    category: tests_certification
+    severity: blocking
+    taxonomy_refs: [TEST-001, TEST-002, TEST-003, TEST-004]
+    root_cause: SC-007
+    files:
+      - tests/net/fods/
+    symbols:
+      - "R290-R341 test files (test-shaped presence-only tests)"
+      - "GI-FODS-NET-001 (false certification)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Tests reference FodsDocumentExtendedApis which is a test-shaped dumping ground"
+      - "GI-FODS-NET-001: 'Category D' code removed — tests for non-existent APIs"
+      - "No round-trip tests for any persistent property in ExtendedApis"
+      - "Certification closed based on test count alone (SC-007)"
+    first_failed_boundary: validate_no_stub_tests (V36)
+    system_repair: "Grader requires roundtrip proof and spec fact refs per method"
+    architecture_repair: "Tests must reference domain types (FodsDocument, FodsSheet) not accessor facades"
+    code_repair: "Remove R290-R341 test files referencing ExtendedApis; replace with domain-backed tests"
+    documentation_repair: "Test names must reflect ODF scenario, not sprint numbers"
+    test_repair: "Add Type 4 roundtrip tests; add parse-from-real-file tests; add preservation tests"
+    certification_repair: "REOPEN GI-FODS-NET-001 certification; rebuild with roundtrip proof"
+    backfill_scope: example_only
+    verification:
+      - "No test references FodsDocumentExtendedApis"
+      - "All persistent capabilities have roundtrip tests"
+      - "GI-FODS-NET-001 re-certified with semantic proof"
+    pilots: [P9, P10]
+    task_ids: [TC-PQLM-016]
+    status: OPEN
+    next_action: "Remove test-shaped test files; add roundtrip tests for spec-grounded properties"
+
+  - gap_id: PCG-016
+    product: fods
+    language: python
+    category: tests_certification
+    severity: major
+    taxonomy_refs: [TEST-005]
+    root_cause: SC-007
+    files:
+      - tests/python/fods/
+    symbols:
+      - "test files importing from spreadsheet_document, neutral_model"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Tests import from old (pre-migration) module names"
+      - "No roundtrip tests for Python FODS writer path"
+      - "mutation-coverage.fods sample exists but not used in tests"
+    first_failed_boundary: "test import failures after migration"
+    system_repair: "N/A"
+    architecture_repair: "N/A"
+    code_repair: "Update imports from old module names to new (fods_analytics, model)"
+    documentation_repair: "N/A"
+    test_repair: "Add parse→model roundtrip tests; add writer tests; add preservation tests"
+    certification_repair: "No current Python FODS certification to reopen"
+    backfill_scope: example_only
+    verification:
+      - "All Python FODS tests pass after migration"
+      - "At least 1 roundtrip test exists"
+    pilots: [P9]
+    task_ids: [TC-PQLM-016]
+    status: OPEN
+    next_action: "Update imports as part of TC-PQLM-015 migration"
+
+  # ==========================================================================
+  # GOVERNANCE GAPS
+  # ==========================================================================
+
+  - gap_id: PCG-017
+    product: fods
+    language: both
+    category: governance
+    severity: blocking
+    taxonomy_refs: [GOV-001]
+    root_cause: SC-001
+    files:
+      - tools/supervisor/autonomous_task_generator.py
+    symbols:
+      - "_EXPANSION_GOALS list (hardcoded 114 tasks, now disabled)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "_EXPANSION_GOALS at line 29: hardcoded tasks without spec backing"
+      - "TC-GUARD-001-EXPANSION-001 stopgap: disabled at lines 1657-1675"
+      - "System cause: tasks generated without consulting capability map or SAL facts"
+    first_failed_boundary: "No gate existed before TC-PQLM-005 diagnosis"
+    system_repair: "Replace _EXPANSION_GOALS with dynamic lookup from capability-feature-compiler output; gate each task on SAL fact existence"
+    architecture_repair: "N/A"
+    code_repair: "Remove _EXPANSION_GOALS list entirely; route through capability_feature_compiler.py"
+    documentation_repair: "Add comment explaining the disabled block and the governed replacement"
+    test_repair: "Add test: task_generator produces 0 tasks when no SAL facts exist for format"
+    certification_repair: "N/A"
+    backfill_scope: portfolio
+    verification:
+      - "_EXPANSION_GOALS removed from autonomous_task_generator.py"
+      - "Task generation consults SAL facts"
+    pilots: [P1]
+    task_ids: [TC-PQLM-014]
+    status: OPEN
+    next_action: "TC-PQLM-014 healing proof must demonstrate system rejects expansion-goal task shapes"
+
+  - gap_id: PCG-018
+    product: fods
+    language: both
+    category: governance
+    severity: blocking
+    taxonomy_refs: [GOV-002]
+    root_cause: SC-002
+    files:
+      - .supervisor/skill-registry.yaml
+    symbols:
+      - "add-dotnet-api: advisory_only: true (line 141)"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "advisory_only: true makes all forbidden_patterns and pre_execution_requirements non-binding"
+      - "Root cause of ExtendedApis generation: skill allowed test-shaped tasks through"
+    first_failed_boundary: "skill-registry.yaml advisory_only flag"
+    system_repair: "Set advisory_only: false for add-dotnet-api; make pre_execution_requirements binding"
+    architecture_repair: "N/A"
+    code_repair: "Edit .supervisor/skill-registry.yaml: add-dotnet-api advisory_only: false"
+    documentation_repair: "Update skill docs to reflect binding pre-checks"
+    test_repair: "Add test: supervisor rejects declaration using add-dotnet-api without pre-check evidence"
+    certification_repair: "N/A"
+    backfill_scope: portfolio
+    verification:
+      - "advisory_only: false for add-dotnet-api in skill-registry.yaml"
+      - "Pre-execution requirements enforced by runner"
+    pilots: [P2]
+    task_ids: [TC-PQLM-014]
+    status: OPEN
+    next_action: "Change advisory_only: false as part of TC-PQLM-014 system healing"
+
+  - gap_id: PCG-019
+    product: fods
+    language: both
+    category: governance
+    severity: major
+    taxonomy_refs: [GOV-003]
+    root_cause: SC-007
+    files:
+      - tools/supervisor/quality_scorer.py
+      - tools/supervisor/anti_skip_checker.py
+    symbols:
+      - "quality_scorer: checks evidence presence + test counts only"
+      - "anti_skip_checker: AI review is advisory-only"
+    qnames: []
+    capability_ids: []
+    evidence:
+      - "Score rewards test count, not semantic quality"
+      - "anti_skip_checker.py result never blocks sprint"
+      - "Result: agents optimize for test count padding"
+    first_failed_boundary: "Grader output is advisory; never blocks sprint"
+    system_repair: "Grader must penalize constant-return/dict-getter/dict-setter; add -2.0 per occurrence"
+    architecture_repair: "N/A"
+    code_repair: "Update quality_scorer.py to import V104-V108 results and deduct score"
+    documentation_repair: "Update supervisor-worker-contract.md grader spec"
+    test_repair: "Add test: sprint with constant-return methods scores below threshold"
+    certification_repair: "N/A"
+    backfill_scope: portfolio
+    verification:
+      - "Sprint with V104/V108 violations scores below PASS threshold"
+    pilots: [P12]
+    task_ids: [TC-PQLM-014]
+    status: OPEN
+    next_action: "Implement grader penalty in quality_scorer.py"
+
+# ==========================================================================
+# GAP COUNTER SUMMARY
+# ==========================================================================
+gap_summary:
+  total_gaps: 19
+  blocking: 11   # PCG-001,002,003,004,005,006,007,010,011,012,015,017,018
+  major: 6       # PCG-008,009,013,014,016,019
+  minor: 0
+  open: 19
+  closed: 0
+
+# Required counter at TC-PQLM-013 close:
+counters:
+  MATERIAL_FINDINGS_WITHOUT_GAPS: 0
+  ACTIONABLE_GAPS_WITHOUT_TASKS: 0

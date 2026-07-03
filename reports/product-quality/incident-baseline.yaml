@@ -1,0 +1,460 @@
+# Incident Baseline — TC-PQLM-002
+# Mission: PQLM-001 — Product Library Code-Writing and Architecture Healing
+# Example Product: FODS (both Python FOSS and .NET commercial tracks)
+# Captured: 2026-07-03
+
+baseline_metadata:
+  mission_id: PQLM-001
+  taskcard: TC-PQLM-002
+  example_product: fods
+  tracks: [python_foss, dotnet_commercial]
+  head_branch: main
+  head_commit: b947eeac  # "fix(fods-net): complete GI-FODS-NET-001 healing + systemic machinery repair"
+  purpose: >
+    Capture complete before-state of FODS source so every subsequent change
+    is measured against a known artifact. No changes made during capture.
+
+# ============================================================
+# PYTHON FOSS TRACK
+# ============================================================
+python_source:
+  root: src/python/fods/
+  total_loc_approx: 3800
+  package_version: "0.1.0"
+  capability_level: alpha-foss-preview
+  status_claim: "alpha-foss-preview — Acquisition Gates 1-7 PASSED"
+
+  files:
+    - file: src/python/fods/spreadsheet_document.py
+      loc: 1124
+      status: HIGH_VIOLATION
+      intended_name_per_docstring: fods_analytics.py
+      actual_filename: spreadsheet_document.py
+      docstring_line1: "fods_analytics.py -- Analytics functions for the FODS neutral model."
+      spec_qname_claim: "office:document"
+      spec_fact_ref_claim: "FACT-FODS-001"
+      actual_content: 47+ pure analytics functions (fods_*, workbook_*)
+      class_definitions: 0
+      responsible_party: analytics_masquerade
+      disposition: RENAME_AND_STRIP_FALSE_CLAIMS
+
+    - file: src/python/fods/spreadsheet_model_document.py
+      loc: 524
+      status: HIGH_VIOLATION
+      spec_qname_claim: "office:spreadsheet"
+      actual_content: 49 analytics functions + imports from spreadsheet_document
+      class_definitions: 0
+      responsible_party: analytics_re_export_masquerade
+      disposition: RENAME_OR_MERGE_INTO_ANALYTICS
+
+    - file: src/python/fods/neutral_model.py
+      loc: 717
+      status: MEDIUM_VIOLATION
+      concerns: [model_building, edit_export_apis, wildcard_re_export_of_analytics]
+      critical_lines:
+        - "713-717: wildcard imports from spreadsheet_document and spreadsheet_model_document"
+      class_definitions: 0
+      public_functions: 15  # model + edit + export
+      disposition: REMOVE_WILDCARD_IMPORTS
+
+    - file: src/python/fods/models.py
+      loc: 329
+      status: KEEP
+      spec_qname_grounded: true
+      classes:
+        - name: FodsCell
+          spec_qname: "table:table-cell"
+          properties: [value, value_type, text, formula, repeated]
+        - name: FodsSheet
+          spec_qname: "table:table"
+          properties: [name, rows, row_count]
+          methods: [cells, cell_at, find_cells_by_value, iter_rows]
+        - name: FodsDocument
+          spec_qname: "office:document"
+          properties: [sheet_count, sheets, is_empty, is_single_sheet, is_multi_sheet,
+                       total_row_count, max_sheet_rows, min_sheet_rows, avg_rows_per_sheet,
+                       sheet_row_range, is_uniform_sheet_size]
+          methods: [from_file, sheet_by_name, find_sheet_by_index, to_dict]
+      additional_functions: 8  # gap-ledger closure functions at bottom of file
+      disposition: KEEP
+
+    - file: src/python/fods/__init__.py
+      loc: 47
+      status: MEDIUM_VIOLATION
+      has_all: true
+      all_type: dynamic_filter_pattern
+      issue: >
+        Wildcard imports from spreadsheet_document and spreadsheet_model_document
+        expose all 90+ analytics functions at package root level as official FODS API.
+        Analytics functions masquerade as first-class package exports.
+      disposition: RESTRUCTURE_IMPORTS
+
+    - file: src/python/fods/parser.py
+      loc: 475
+      status: KEEP
+      git_status: MODIFIED  # shown as M in git status
+      parser_type: streaming_xml
+      security: [defusedxml_XXE_protection, file_size_guard_100MB, expansion_caps]
+      public_entry_points: [parse_fods, parse_fods_strict]
+      imports: [neutral_model.build_workbook, neutral_model.make_warning, neutral_model.validate_workbook]
+      does_NOT_import: [spreadsheet_document, spreadsheet_model_document]
+      disposition: KEEP
+
+    - file: src/python/fods/writer.py
+      loc: 182
+      status: KEEP
+      public_entry_points: [write_fods, workbook_to_xml]
+      round_trip_support: [formula_preservation, style_preservation, column_definitions]
+      disposition: KEEP
+
+    - file: src/python/fods/constants.py
+      loc: 109
+      status: KEEP_WITH_CLEANUP
+      history_identifiers:
+        type: IR-FODS-NNN
+        count: 9
+        examples:
+          - "# MIME type (IR-FODS-001, IR-FODS-002 -- FFODS-002)"
+          - "# File size guard (IR-FODS-003 -- FFODS-009)"
+          - "# (IR-FODS-010, IR-FODS-011)"
+        verdict: LEGITIMATE_SPEC_REFS  # IR-FODS-NNN are formal requirement IDs, not sprint names
+      disposition: KEEP_WITH_CLEANUP
+
+    - file: src/python/fods/exceptions.py
+      loc: 41
+      status: KEEP
+      exception_hierarchy: [FodsInputError, FodsSizeError, FodsParseError]
+      disposition: KEEP
+
+    - file: src/python/fods/csv_exporter.py
+      loc: ~100
+      status: INVESTIGATION_REQUIRED
+      disposition: REVIEW_RESPONSIBILITY
+
+    - file: src/python/fods/fods_to_tsv.py
+      loc: ~100
+      status: INVESTIGATION_REQUIRED
+      disposition: REVIEW_RESPONSIBILITY
+
+  python_violation_summary:
+    HIGH:
+      - analytics_masquerade: spreadsheet_document.py (1124 LOC, false spec_qname, wrong filename)
+      - analytics_re_export: spreadsheet_model_document.py (524 LOC, false spec_qname)
+    MEDIUM:
+      - wildcard_pollution: neutral_model.py lines 713-717
+      - wildcard_amplification: __init__.py wildcard imports from analytics files
+    MINOR:
+      - missing_spec_qname_none: analytics files claim spec authority without warrant
+
+  python_completion_counters_current:
+    PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 6  # csv_exporter, fods_to_tsv, cli, fods_workflow, iterators
+    PUBLIC_SYMBOLS_NOT_REVIEWED: 90  # analytics functions not yet individually reviewed
+    ANALYTICS_MASQUERADE_FILES: 2
+    FILES_WITH_FALSE_SPEC_QNAME: 2
+
+# ============================================================
+# .NET COMMERCIAL TRACK
+# ============================================================
+dotnet_source:
+  root: src/net/fods/
+  total_loc: 8598
+  status_claim: "commercial_readiness_in_progress (NOT approved) — NOT release-ready"
+  gate11_status: NOT_APPROVED
+
+  files:
+    - file: src/net/fods/FodsDocumentExtendedApis.cs
+      loc: 1556
+      status: CRITICAL_VIOLATION
+      file_header_line1: "Extended APIs (R290-R341 stubs + implementations)"
+      file_header_line2: "Partial class extension for FodsDocument: covers all APIs referenced by R290-R341 test files."
+      file_header_line3: "These methods provide minimal implementations suitable for governed test coverage."
+      public_members: 149
+      partial_class_target: FodsDocument
+      detached_dictionaries:
+        count: 33
+        examples:
+          - "_sheetProtection: Dictionary<string, string?> — sheet passwords"
+          - "_cellNumberFormats: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellAlignment: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellFont: Dictionary<(Sheet,Row,Col), (Font,Size,Bold)>"
+          - "_cellWrapping: Dictionary<(Sheet,Row,Col), bool>"
+          - "_freezePanes: Dictionary<string, (Rows,Cols)>"
+          - "_filters: Dictionary<string, List<(Range,Column)>>"
+          - "_conditionalFormats: Dictionary<string, List<(Range,Condition,Style)>>"
+          - "_dataValidations: Dictionary<string, List<(Range,Rule,ErrorMsg)>>"
+          - "_hyperlinks: Dictionary<string, List<(Url,Display)>>"
+          - "_cellHyperlinks: Dictionary<(Sheet,Row,Col), (Url,Display)>"
+          - "_sheetPivotTables: Dictionary<string, List<(SourceRange,Name)>>"
+          - "_sheetSparklines: Dictionary<string, List<(DataRange,Location,Type)>>"
+          - "_hiddenSheets: Dictionary<string, bool>"
+          - "_tabColors: Dictionary<string, string>"
+          - "_cellFontNames: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellFontSizes: Dictionary<(Sheet,Row,Col), double>"
+          - "_cellFontBold/Italic/Underline/Strikethrough: 4 separate dicts"
+          - "_cellBackgrounds: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellFontColors: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellTextRotation: Dictionary<(Sheet,Row,Col), int>"
+          - "_cellIndent: Dictionary<(Sheet,Row,Col), int>"
+          - "_cellVerticalAlign: Dictionary<(Sheet,Row,Col), string>"
+          - "_cellErrors: Dictionary<(Sheet,Row,Col), string>"
+          - "_pageBreaks: Dictionary<string, List<int>>"
+          - "_printAreas: Dictionary<string, string>"
+        xml_persistence: NONE  # ALL 33 dictionaries are in-memory only
+        persistence_loss: "State lost on every Save()+Load() cycle"
+      todo_markers: 0
+      requirement_ids: [R290, R291, R293, R295, R297, R298, R300, R303, R304, R305, R306, R307, R308, R310, R313, R315, R317, R318, R320, R322, R324, R326, R327, R330, R331, R333, R335, R337, R338, R339, R340, R341, R342, R343, R345, R346, R349, R350, R351, R356, R357, R358, R359, R363, R364, R365, R366, R367, R368, R376, R381, R382, R383, R384, R388, R389, R390, R391, R392, R393, R394]
+      confirmed_test_shaped_apis:
+        evidence:
+          - "line 2: covers all APIs referenced by R290-R341 test files"
+          - "line 3: minimal implementations suitable for governed test coverage"
+        overloads_created_for_test_signatures:
+          - AddHyperlink: 2 overloads
+          - AddPivotTable: 3 overloads
+          - AddNamedRange: 3 overloads
+          - SetCellFont: 2 overloads
+          - GetFilterCount: no-arg + named-sheet
+      responsibility_violations:
+        - "style_in_extended_apis: SetCellFontColor calls FodsStyleEditor + FodsStyleResolver (lines 952-979)"
+      disposition: QUARANTINE_THEN_REDESIGN
+
+    - file: src/net/fods/FodsDocumentAccessor.cs
+      loc: 3283
+      status: CRITICAL_VIOLATION
+      loc_cap: 800
+      loc_ratio_to_cap: 4.1
+      public_members: 187
+      partial_class_target: FodsDocument
+      todo_markers: 15
+      todo_type: "GI-FODS-NET-001 Phase 3b/3c/3d/3e — deferred ODF XML read/write"
+      custom_namespace: "urn:format-factory:fods-extensions"
+      detached_dictionaries:
+        count: 4
+        examples:
+          - "_columnWidths: Dictionary<string, Dictionary<int, double>>"
+          - "_namedRanges: Dictionary<string, string>"
+          - "_activeFilters: Dictionary<string, (ColName,Value)>"
+      responsibility_violations:
+        - "style_in_accessor: GetResolvedCellStyle/Row/Column use FodsStyleResolver (lines 579-628)"
+        - "file_io_in_accessor: ExportSheetToCsvFile writes to disk (lines 658-678)"
+        - "json_assembly_in_accessor: ExportToJson builds JSON without delegating (lines 1388-1439)"
+        - "formatting_in_accessor: SetCellFormatting, SetCellBold/Italic (lines 1410-1499)"
+      good_patterns:
+        - "GetResolvedCellStyle delegates properly to FodsStyleResolver"
+        - "GetColumnWidth has Phase 3d real ODF implementation"
+        - "ExportSheetToJson/Markdown/Csv delegate to FodsDocumentExporter"
+      disposition: SPLIT_BY_DOMAIN
+
+    - file: src/net/fods/FodsDocument.cs
+      loc: 893
+      status: MEDIUM_VIOLATION
+      loc_cap: 800
+      public_members: 34
+      partial_class_target: FodsDocument
+      concerns:
+        - load_save_factory: APPROPRIATE (CreateNew, Load, Save, CreateEmpty, LoadFromXml, ToFodsXml)
+        - sheet_management: APPROPRIATE (GetSheetByName, AddSheet, RemoveSheet, RenameSheet, CopySheet)
+        - cell_mutation: BORDERLINE (SetCellValue, GetCellValue at root level bypasses typed sheet/row/cell)
+        - export: BORDERLINE (ExportSheetToHtml delegates to FodsDocumentExporter — acceptable)
+        - sort_merge_formula: BORDERLINE (SortRows, MergeCells, SetCellFormula at root level)
+      detached_dictionaries:
+        count: 1
+        examples:
+          - "_charts: Dictionary<string, List<ChartInfo>>"
+      history_identifiers:
+        sample:
+          - "R114 Train A: blank document factory for programmatic construction"
+          - "R104 Wave 1: index-based sheet access"
+          - "R100 Train B: sheet creation API"
+        count_estimated: 50+
+      disposition: REFACTOR_AND_REDUCE
+
+    - file: src/net/fods/FodsDocumentExporter.cs
+      loc: 280
+      status: KEEP
+      responsibility: Export implementations (Json, Markdown, Csv, Html) as static methods
+      disposition: KEEP
+
+    - file: src/net/fods/FodsParser.cs
+      loc: 286
+      status: KEEP
+      responsibility: Tier 0 streaming parser with security (DTD prohibition, XmlResolver null, file size guard)
+      disposition: KEEP
+
+    - file: src/net/fods/FodsWriter.cs
+      loc: 56
+      status: KEEP
+      disposition: KEEP
+
+    - file: src/net/fods/FodsStyleResolver.cs
+      loc: 343
+      status: KEEP
+      responsibility: Read ODF style chain for cell/row/column
+      disposition: KEEP
+
+    - file: src/net/fods/FodsStyleEditor.cs
+      loc: 255
+      status: KEEP
+      responsibility: Mutate ODF style attributes
+      disposition: KEEP
+
+    - file: src/net/fods/Model/FodsCell.cs
+      loc: 74
+      status: INVESTIGATION_REQUIRED
+      spec_qname: MISSING  # no spec_qname field — violates spec-to-feature plan
+      xml_backed: true  # reads/writes XElement directly
+      caching: NONE
+      disposition: INVESTIGATE_AND_GROUND
+
+    - file: src/net/fods/Model/FodsRow.cs
+      loc: 49
+      status: INVESTIGATION_REQUIRED
+      spec_qname: MISSING
+      caching: NONE  # FodsCell wrappers created on every Cells property access
+      disposition: INVESTIGATE_AND_GROUND
+
+    - file: src/net/fods/Model/FodsSheet.cs
+      loc: 50
+      status: INVESTIGATION_REQUIRED
+      spec_qname: MISSING
+      caching: NONE  # FodsRow wrappers created on every Rows property access
+      disposition: INVESTIGATE_AND_GROUND
+
+    - file: src/net/fods/Spec/Office/Document.cs
+      loc: 40
+      status: KEEP
+      disposition: KEEP
+
+    - file: src/net/fods/Spec/Table/Table.cs
+      loc: 34
+      status: KEEP
+      disposition: KEEP
+
+    - file: src/net/fods/Spec/Table/TableCell.cs
+      loc: 40
+      status: KEEP
+      disposition: KEEP
+
+    - file: src/net/fods/Spec/Table/TableRow.cs
+      loc: 32
+      status: KEEP
+      disposition: KEEP
+
+    - file: src/net/fods/Exceptions/FodsDocumentException.cs
+      loc: 13
+      status: KEEP
+      disposition: KEEP
+
+  dotnet_exporter_files:
+    - FodsCsvExporter.cs: 291 LOC
+    - FodsHtmlExporter.cs: 201 LOC
+    - FodsJsonExporter.cs: 188 LOC
+    - FodsOdsExporter.cs: 244 LOC
+    - FodsPdfExporter.cs: 391 LOC
+    - FodsPngExporter.cs: 331 LOC
+
+  dotnet_violation_summary:
+    CRITICAL:
+      - test_shaped_apis: FodsDocumentExtendedApis.cs — 149 methods, all R290-R394, all created for test coverage
+      - detached_state: 37 total detached in-memory dictionaries across ExtendedApis + Accessor
+      - monolith: FodsDocumentAccessor.cs at 3283 LOC (4.1× cap)
+      - semantic_stubs: "minimal implementations suitable for governed test coverage"
+    MEDIUM:
+      - dumping_ground: FodsDocumentExtendedApis.cs (forbidden filename pattern)
+      - root_document_owning_nested: SetCellValue/GetCellValue on FodsDocument
+      - mixed_responsibilities: style/export/io in FodsDocumentAccessor
+      - no_spec_qname_in_model: FodsCell/FodsRow/FodsSheet missing spec_qname
+      - loc_violation: FodsDocument.cs at 893 LOC
+      - no_caching: FodsCell/FodsRow/FodsSheet create wrappers on every property access
+
+  dotnet_completion_counters_current:
+    PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 0  # all read in this session
+    PUBLIC_SYMBOLS_NOT_REVIEWED: 150+  # 149 ExtendedApis + 187 Accessor methods
+    DETACHED_PERSISTENT_STATE_STORES: 37
+    TEST_ONLY_PUBLIC_APIS: ~100  # R290-R394 methods created for test references
+    FABRICATED_DEFAULT_SUCCESS_APIS: 1  # SortSheet is documented as no-op
+
+# ============================================================
+# TEST EVIDENCE
+# ============================================================
+test_evidence:
+  python:
+    total_test_functions: 1546
+    test_files_count_approx: 25
+    coverage_notes:
+      - "Mutation-hardened tests (test_parser_mutation_hardening.py) — new, untracked"
+      - "Many tests reference analytics functions from spreadsheet_document.py by name"
+      - "Some tests may test the masquerade filename (spreadsheet_document) not fods_analytics"
+    weak_test_patterns: []
+    strong_test_patterns:
+      - streaming_parser_mutation_tests
+      - roundtrip_preservation_tests
+      - security_xxe_tests
+
+  dotnet:
+    note: "FormatFactory.Fods.Tests.csproj.bak exists — .bak file indicates project file may have been modified"
+    test_files_root: tests/net/fods/
+    test_shaped_evidence:
+      - "Tests reference R290-R394 requirement IDs which map to method names in ExtendedApis"
+      - "Multiple overloads in ExtendedApis created to satisfy different test call signatures"
+
+# ============================================================
+# COMMITS THAT PRODUCED CURRENT CODE
+# ============================================================
+producing_commits:
+  - hash: b947eeac
+    message: "fix(fods-net): complete GI-FODS-NET-001 healing + systemic machinery repair"
+    note: "Most recent — claimed complete GI-FODS-NET-001 healing"
+  - hash: 7c6be9fc
+    message: "fix(governance): quiet-pondering-stream — resolve 7 R106/R107 test failures"
+  - hash: 9bf2fe21
+    message: "fix(fods-net): GI-FODS-NET-001 TERMINAL_CLOSED — Category D purge + Category B ODF-grounded"
+    note: "Category D purge = confirmed defective code was removed; Category B = ODF-grounding improvements"
+  - hash: d3f437c5
+    message: "feat(fods-net): GI-FODS-NET-001-HEAL — wire FodsStyleResolver; Type3 tests; fixture registration; Class A re-enable"
+    note: "Style resolver wiring — part of Phase 3d implementation"
+
+# ============================================================
+# CLAIMS vs EVIDENCE
+# ============================================================
+claims_vs_evidence:
+  python_foss:
+    claim: "alpha-foss-preview — Acquisition Gates 1-7 PASSED"
+    evidence_supports: PARTIALLY
+    gaps:
+      - "spreadsheet_document.py analytics masquerade is architectural debt"
+      - "Analytics not separated into dedicated file (despite claiming spec grounding)"
+      - "Wildcard import chain pollutes public API surface"
+    supported_claims:
+      - "Streaming parser with security (XXE, size guard, expansion caps)"
+      - "Round-trip capability (formula, style, column definitions)"
+      - "Typed exception hierarchy"
+      - "Mutation-hardened tests"
+
+  dotnet_commercial:
+    claim: "commercial_readiness_in_progress"
+    evidence_supports: FALSE_FOR_EXTENDEDAPIS
+    gaps:
+      - "33 detached dictionaries with zero XML persistence = features that do not work after Save+Load"
+      - "149 methods created for test coverage = API that exists because tests reference it, not spec"
+      - "3283 LOC accessor file = not maintainable"
+      - "No spec_qname on model classes = spec-parity rule violated"
+    supported_claims:
+      - "Security-first parser (DTD prohibition, XmlResolver null, file size guard)"
+      - "DOM-backed core preserves unknown XML"
+      - "FodsStyleResolver implements real ODF style chain traversal"
+
+# ============================================================
+# COUNTERS (BASELINE STATE)
+# ============================================================
+baseline_counters:
+  PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 6  # Python: iterators, cli, workflow (not yet read)
+  PUBLIC_SYMBOLS_NOT_REVIEWED: 240+  # 149 ExtendedApis + ~90 analytics functions
+  RETAINED_PUBLIC_APIS_WITHOUT_AUTHORITY: 149+  # all R290-R394 methods
+  DETACHED_PERSISTENT_STATE_STORES: 37  # combined Python + .NET
+  TEST_ONLY_PUBLIC_APIS: ~100  # ExtendedApis R290-R394
+  FABRICATED_DEFAULT_SUCCESS_APIS: 1  # SortSheet no-op
+  SUSPICIOUS_DUMPING_GROUND_FILES: 1  # FodsDocumentExtendedApis.cs
+  ANALYTICS_MASQUERADE_FILES: 2  # spreadsheet_document.py, spreadsheet_model_document.py
+  PRODUCT_SOURCE_FILES_WITH_HISTORY_IDENTIFIERS: 8+  # FodsDocument.cs R-wave-train refs
+
+next_taskcard: TC-PQLM-003

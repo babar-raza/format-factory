@@ -1,0 +1,462 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-005
+example_product: fods
+generated: "2026-07-03"
+counter_DEFECT_CATEGORIES_WITHOUT_PROVEN_SYSTEMIC_CAUSE: 0
+
+# Root Cause Proof: For each defect category, the originating system component
+# and the exact mechanism that allowed the defect to enter and survive.
+# Categories covered: Architecture, QName/Spec, State/Persistence, API Design,
+#   Files/Folders, Code Writing, Comments/Docs, Tests/Certification, Governance
+
+system_causes:
+
+  - cause_id: SC-001
+    title: Task generator grows monolith files by generating tasks without file-layout gate
+    defect_categories: [architecture, files_folders, api_design]
+    findings_implicated: [ARCH-001, ARCH-002, FILE-001, FILE-003, API-002, API-003, CODE-003]
+    originating_component: "tools/supervisor/autonomous_task_generator.py:29-100"
+    exact_instruction_or_behavior: |
+      _EXPANSION_GOALS (line 29) defines 114 hardcoded task entries by:
+      - format name
+      - function_name
+      - action_type (IMPLEMENT_SMALL_PRODUCT_FEATURE)
+      - source_file (always an existing file, never a new domain-type file)
+      - test_file
+      No field for: target_domain_type, target_class, file_layout_approval, architecture_first
+      The generated task asks the agent to add a function to an existing file.
+      Result: every sprint adds methods to the SAME file (FodsDocumentAccessor.cs grew from
+      ~500 LOC to 3283 LOC through 30+ consecutive sprints of IMPLEMENT_SMALL_PRODUCT_FEATURE).
+    incentive_created: |
+      Agent maximizes "function added to correct source_file" — the easiest path is to
+      append methods to an existing file. Adding new domain-type files requires extra design
+      work with no scoring reward.
+    resulting_code_pattern: |
+      FodsDocumentAccessor.cs: 7 concern domains in one file (3283 LOC).
+      FodsDocumentExtendedApis.cs: dumping-ground partial class with 194 methods.
+    first_failed_control_boundary: |
+      Pre-implementation check (skill-registry.yaml mandatory_validations) — but
+      add-dotnet-api is marked advisory_only: true (line 141 in skill-registry.yaml),
+      so mandatory_validations are advisory, not blocking.
+    why_existing_controls_failed: |
+      1. add-dotnet-api skill: advisory_only=true → all pre-execution requirements are
+         soft guidelines, not hard blocks. Agent can proceed without architecture plan.
+      2. No file-layout contract existed during ExtendedApis.cs construction sprints.
+      3. Governance validators (V86-V95) blocking suspicious filenames did not exist.
+      4. Reviewer rubric checks diff not full-file content — monolith growth is invisible
+         at the diff level.
+    evidence:
+      - "autonomous_task_generator.py line 29: _EXPANSION_GOALS hardcoded list, no architecture field"
+      - "skill-registry.yaml line 141: advisory_only: true on add-dotnet-api"
+      - "FodsDocumentAccessor.cs: 3283 LOC (4.1× cap)"
+      - "FodsDocumentExtendedApis.cs line 2: 'R290-R341 test files' — test-driven accumulation"
+    prevention: |
+      - Add mandatory file-layout approval to task generation (target_file must be in approved layout)
+      - Mark skill forbidden_patterns as hard blocks (not advisory)
+      - Add V86 (suspicious filename validator) and V95 (files outside approved layout)
+    detection: |
+      - V86: block *ExtendedApis*, *MissingMethods*, *Misc* filenames
+      - V95: block source files not in approved product file layout contract
+      - Reviewer rubric: require full-file-content score, not just diff score
+    recovery: |
+      Split FodsDocumentAccessor.cs into domain-specific types (FodsQueryAccessor,
+      FodsExporter, FodsStyleAccessor, FodsSheetConfig, FodsMutator).
+      Decompose FodsDocumentExtendedApis.cs: XML-backed APIs → proper domain types;
+      detached-state APIs → remove or redesign with XML persistence.
+
+  - cause_id: SC-002
+    title: add-dotnet-api skill allows test-driven API shape without spec-authority gate
+    defect_categories: [architecture, api_design, governance]
+    findings_implicated: [ARCH-002, API-001, API-003, API-004, GOV-001, GOV-003]
+    originating_component: ".supervisor/skill-registry.yaml:113-172 (add-dotnet-api block)"
+    exact_instruction_or_behavior: |
+      skill-registry.yaml lines 168-172:
+        forbidden_patterns:
+        - implementing a method that returns a constant (0, false, empty) as sole body
+        - creating a private dictionary field to back a persistent document property
+        - adding a public API whose only consumer is a test
+        - using TODO implement later as sole method body
+      BUT: line 141 advisory_only: true — these are ADVISORY rules, not hard blocks.
+      The command file (.claude/commands/add-dotnet-api.md) may not enforce rejection
+      of "implement all methods referenced by R-NNN test files" work shapes.
+    incentive_created: |
+      Agent receives a task like "implement the 15 methods in R290 test file."
+      The skill does NOT block this. Agent implements methods from test file list.
+      Each method gets a minimal passing implementation (dict storage = easiest way
+      to satisfy get/set assertions).
+    resulting_code_pattern: |
+      FodsDocumentExtendedApis.cs pattern: 194 methods created because test files
+      reference them. Implementations use private dicts for minimal test passage.
+    first_failed_control_boundary: |
+      Skill pre_execution_requirements.qname_authority (line 143-147):
+      "Identify the ODF/format QName or spec fact that authorizes this API.
+       If no QName exists, the API may not be created." — but advisory_only=true.
+    why_existing_controls_failed: |
+      advisory_only: true on the skill makes ALL pre_execution_requirements non-blocking.
+      An agent following the skill can skip qname_authority check and still produce code.
+      Forbidden pattern "adding a public API whose only consumer is a test" exists in
+      the registry but the ENFORCEMENT mechanism (blocking before code generation) is absent.
+    evidence:
+      - "skill-registry.yaml line 141: advisory_only: true"
+      - "skill-registry.yaml lines 168-172: forbidden_patterns listed but advisory"
+      - "FodsDocumentExtendedApis.cs line 2: 'APIs referenced by R290-R341 test files'"
+      - "194 public methods with test file R290-R341 as only consumer"
+    prevention: |
+      - Set advisory_only: false on add-dotnet-api and add-dotnet-object-model-feature
+      - Add explicit REJECT instruction: "If task says 'implement methods from test file list'
+        — STOP. Request spec-grounded task reformulation."
+      - Add architecture-first pre-implementation checklist as mandatory (blocking) step
+    detection: |
+      - V93: validate_test_only_public_apis — detect public APIs referenced only in tests
+      - Review rubric: require qname_authority proof per method before scoring PASS
+    recovery: |
+      Redesign each ExtendedApis method with ODF QName authority or remove it.
+      For 35 SetXxx detached methods: implement XML persistence path or remove API.
+
+  - cause_id: SC-003
+    title: No file-content reviewer catches analytics files masquerading as domain models
+    defect_categories: [architecture, files_folders, comments_docs]
+    findings_implicated: [ARCH-003, ARCH-004, ARCH-005, FILE-002, DOC-002, GOV-002]
+    originating_component: "tools/supervisor/autonomous_cycle.py:958-1119 (grader pipeline)"
+    exact_instruction_or_behavior: |
+      The grader pipeline (autonomous_cycle.py line 958) grades DECLARED work items.
+      The agent declares: "Added analytics function fods_sheet_count to spreadsheet_document.py."
+      The grader checks: evidence_paths exist, tests pass.
+      The grader does NOT: read the full file content of spreadsheet_document.py to verify
+      it is an analytics module masquerading as a domain model (ARCH-003).
+      V69 (analytics_naming_enforced) should catch this but requires filename to contain
+      'analytics' — spreadsheet_document.py escapes detection because the filename looks
+      like a domain model.
+    incentive_created: |
+      Agent is rewarded for "added function to spreadsheet_document.py, tests pass."
+      No penalty for: false spec_qname on an analytics module, misleading filename,
+      wildcard injection into neutral_model namespace.
+    resulting_code_pattern: |
+      spreadsheet_document.py (1124 LOC): false spec_qname claim, 60 analytics functions,
+      zero class definitions, wildcard-injected into neutral_model namespace.
+    first_failed_control_boundary: |
+      V69 (validate_analytics_naming_enforced): checks if files with analytics content
+      have '_analytics' in filename. But V69 relies on MODULE DOCSTRING or filename
+      pattern — if the docstring says 'fods_analytics.py' inside a file named
+      'spreadsheet_document.py', V69 would need docstring parsing to detect it.
+    why_existing_controls_failed: |
+      V69 checks filename against a pattern — 'spreadsheet_document.py' does not match
+      '*analytics*' so V69 passes it through. The masquerade (analytics content in a
+      domain-model-named file) evades filename-based detection.
+      Reviewer rubric does not require full-file-content read for every modified file.
+    evidence:
+      - "src/python/fods/spreadsheet_document.py line 2: 'fods_analytics.py -- Analytics functions'"
+      - "src/python/fods/spreadsheet_document.py line 17: spec_qname = 'office:document'"
+      - "No V69 trigger on spreadsheet_document.py (wrong name escapes pattern check)"
+    prevention: |
+      - Add V88: check public Python functions in files not named *analytics* for
+        analytics masquerade (file has >80% functions with analytics patterns but
+        is not named *analytics*).
+      - Require explicit file-responsibility declaration in task cards
+    detection: |
+      - Extend V69 to scan module docstrings for 'analytics' keyword regardless of filename
+      - Add content-type mismatch check: file with spec_qname but no class definitions
+    recovery: |
+      Rename spreadsheet_document.py → fods_analytics.py.
+      Remove false spec_qname = 'office:document' line.
+      Remove wildcard imports from neutral_model.py.
+
+  - cause_id: SC-004
+    title: QName classifier allows spec_qname assignment on non-model entities without type check
+    defect_categories: [qname_spec]
+    findings_implicated: [QNAME-001, QNAME-002, QNAME-003]
+    originating_component: "tools/supervisor/governance_validators_ext2.py (V50 spec_qname check)"
+    exact_instruction_or_behavior: |
+      V50 (validate_spec_qname_on_class) checks that classes with spec_qname are correctly
+      typed. However, module-level assignments (line 17: spec_qname = 'office:document' in
+      spreadsheet_document.py) are not class assignments — they are module attributes.
+      The validator may scan for the pattern `spec_qname =` without verifying it is inside
+      a class body with `ClassVar[str]` annotation.
+    incentive_created: |
+      Agent can place spec_qname on a module to claim spec grounding without implementing
+      a proper class. Module-level spec_qname bypasses class-scope validators.
+    resulting_code_pattern: |
+      spreadsheet_document.py line 17: `spec_qname = 'office:document'` at module scope —
+      no class, no ClassVar annotation, no actual domain model.
+    first_failed_control_boundary: |
+      V50 or python-qname-code-reviewer skill — should detect that spec_qname at module
+      scope (not ClassVar on a class) is invalid.
+    why_existing_controls_failed: |
+      V50 likely searches for spec_qname pattern in .py files but does not verify
+      the structural context (class body vs. module scope).
+    evidence:
+      - "spreadsheet_document.py line 17: spec_qname = 'office:document' at module scope"
+      - "No class definition in entire spreadsheet_document.py file"
+    prevention: |
+      Add AST-based check: spec_qname must appear inside a class body as ClassVar[str].
+      Module-level spec_qname assignments must be blocked.
+    detection: |
+      Extend V50 to use ast.parse() and verify spec_qname is within ast.ClassDef node.
+    recovery: Remove line 17 from spreadsheet_document.py.
+
+  - cause_id: SC-005
+    title: No validator blocks non-ODF namespace introduction in FODS XML operations
+    defect_categories: [qname_spec]
+    findings_implicated: [QNAME-004]
+    originating_component: "src/net/fods/FodsDocumentAccessor.cs (custom namespace literal)"
+    exact_instruction_or_behavior: |
+      FodsDocumentAccessor.cs introduces XNamespace "urn:format-factory:fods-extensions"
+      used in some internal XML element creation. This is not an ODF 1.3 namespace.
+      No validator checks that .NET product source only creates XML elements in approved
+      ODF namespaces (as listed in FodsNamespaces.cs).
+    incentive_created: |
+      Agent needed a namespace for format-factory-specific extension elements.
+      No constraint prevented inventing a custom one.
+    resulting_code_pattern: |
+      Non-ODF extension elements with custom namespace embedded in otherwise ODF-compliant
+      documents. External ODF consumers would encounter unexpected elements.
+    first_failed_control_boundary: |
+      Code review step — reviewer should flag any XNamespace that is not in FodsNamespaces.cs.
+    why_existing_controls_failed: |
+      Reviewer grades declared work items, not full-file content. The custom namespace
+      was introduced as a side effect of another feature and was not declared.
+    evidence:
+      - "FodsDocumentAccessor.cs: XNamespace ns = 'urn:format-factory:fods-extensions'"
+      - "FodsNamespaces.cs: approved namespaces listed (office:, table:, style:, fo:, etc.)"
+      - "urn:format-factory:fods-extensions not in ODF 1.3 namespace catalog"
+    prevention: |
+      Add validator V??: scan .cs files for XNamespace literals not in FodsNamespaces.cs.
+    detection: Same validator.
+    recovery: Replace custom namespace elements with ODF-standard representations or remove.
+
+  - cause_id: SC-006
+    title: No validator catches dictionary-backed persistent properties (detached state)
+    defect_categories: [state_persistence, code_writing]
+    findings_implicated: [STATE-001, STATE-002, STATE-003, STATE-004, CODE-001, CODE-002]
+    originating_component: "tools/supervisor/governance_validators_ext2.py (missing V94)"
+    exact_instruction_or_behavior: |
+      After TC-PQLM-004 forbidden_pattern "creating a private dictionary field to back a
+      persistent document property" was added to skill-registry.yaml (line 170) — but:
+      1. advisory_only: true means this rule is not enforced before code generation
+      2. No post-generation validator scans for `Dictionary<string, X?> _name = new()` patterns
+      3. No test requirement mandates Save()+Load() round-trip to prove persistence
+    incentive_created: |
+      Agent implementing SetSheetProtection: simplest passing implementation is
+      `_sheetProtection[sheetName] = password`. Tests pass (get/set symmetry).
+      No round-trip test requirement exists. Code is graded as COMPLETE.
+    resulting_code_pattern: |
+      33 Dictionary<string, X?> private fields in FodsDocumentExtendedApis.cs.
+      All persistent feature state is held in these dicts.
+      None is serialized to XML. All lost on Save()+Load().
+    first_failed_control_boundary: |
+      forbidden_pattern "creating a private dictionary field to back a persistent
+      document property" in skill-registry.yaml — but advisory_only=true means
+      this never blocks execution.
+    why_existing_controls_failed: |
+      advisory_only: true makes the forbidden_pattern list non-binding.
+      Post-generation validator for detached state (V94) does not exist.
+      Round-trip test is listed as required (skill-registry.yaml line 163-167) but
+      advisory_only=true means the test can be skipped without blocking closeout.
+    evidence:
+      - "skill-registry.yaml line 163-167: roundtrip_test required — but advisory_only=true"
+      - "skill-registry.yaml line 170: forbidden 'private dictionary field' — but advisory"
+      - "FodsDocumentExtendedApis.cs lines 43-110: 33 Dictionary<string, X?> fields confirmed"
+      - "incident-baseline.yaml: DETACHED_PERSISTENT_STATE_STORES=37, all confirmed lost on round-trip"
+    prevention: |
+      - Set advisory_only: false on add-dotnet-api
+      - Add V94: validate_detached_persistent_state — grep for
+        `Dictionary<string,.*?> _[a-z]+ = new\(\)` in non-cache context
+      - Mandatory round-trip test: task cannot close without Save()+Load()+Assert proof
+    detection: V94 scanner.
+    recovery: |
+      For each of 33 Dictionary fields: implement XML persistence path
+      (parser reads XML → model; writer serializes model → XML)
+      or remove the API if the ODF feature is out-of-scope.
+
+  - cause_id: SC-007
+    title: Grader rewards test passage and API volume without semantic quality proof
+    defect_categories: [tests_certification, governance]
+    findings_implicated: [TEST-001, TEST-003, TEST-004, GOV-005, API-003]
+    originating_component: "tools/supervisor/anti_skip_checker.py:773-1200 (evidence_quality_score)"
+    exact_instruction_or_behavior: |
+      anti_skip_checker.py detect_evidence_quality_score() (line 773):
+      Scores evidence quality based on:
+      - evidence_paths exist (files present)
+      - test results (tests pass)
+      - summary matches expected format
+      Does NOT score:
+      - Whether setters have XML write paths
+      - Whether getters have XML parse paths
+      - Whether round-trip proof exists
+      - Whether the API has ODF QName authority
+      autonomous_cycle.py line 958: "Grade work items (includes LLM semantic verification)"
+      — but ai_evidence_critic.py is "Advisory only" (line 4): LLM disagreement is
+      "logged as semantic_concern" but does NOT block grading.
+    incentive_created: |
+      Agent declares: "Added SetSheetProtection. Tests pass (R290)."
+      anti_skip_checker: evidence_paths exist + tests pass → high evidence_quality_score.
+      LLM critic may flag semantic_concern but it is advisory → grade = PASS.
+      Detached state survives review cycle after review cycle.
+    resulting_code_pattern: |
+      33 detached dictionary patterns passed grading for 30+ sprints.
+      GI-FODS-NET-001 was declared CLOSED despite confirmed detached state.
+    first_failed_control_boundary: |
+      ai_evidence_critic.py (LLM semantic review) — but advisory_only per line 4.
+    why_existing_controls_failed: |
+      ai_evidence_critic.py: "Anti_skip_checker results are authoritative; AI disagreement
+      logged as semantic_concern." (line 4) → LLM semantic proof has zero weight in grade.
+      Volume signals (API count, test count) dominate grade calculation.
+    evidence:
+      - "anti_skip_checker.py line 4 (ai_evidence_critic.py): 'Advisory only'"
+      - "autonomous_cycle.py line 1848-1856: evidence_quality_score from anti_skip_checker"
+      - "GI-FODS-NET-001 declared CLOSED — 33 detached dicts confirmed in incident-baseline.yaml"
+    prevention: |
+      - Promote LLM semantic review to authoritative (not advisory) for persistent features
+      - Add mandatory round-trip evidence requirement to anti_skip_checker (blocks if missing)
+      - Add getter-without-parser detection to evidence grading
+    detection: V91 (getter_without_parser_source), V92 (setter_without_writer_path).
+    recovery: |
+      Reopen GI-FODS-NET-001 certification.
+      Require round-trip evidence for every persistent feature before re-closure.
+
+  - cause_id: SC-008
+    title: No filename contract or pre-commit validator blocks dumping-ground file creation
+    defect_categories: [files_folders, governance]
+    findings_implicated: [FILE-001, FILE-002, GOV-002]
+    originating_component: "tools/supervisor/governance_validators_ext2.py (missing V86, V95)"
+    exact_instruction_or_behavior: |
+      governance_validators_ext2.py: no validator for suspicious filenames in product source.
+      Pre-commit hook: does not check for *ExtendedApis*, *MissingMethods*, *Misc* patterns.
+      skill-registry.yaml add-dotnet-api: no file_layout_approval requirement.
+      Result: FodsDocumentExtendedApis.cs was created and grew across 30+ sprints
+      without any system component flagging the filename as prohibited.
+    incentive_created: |
+      Agent asked to add APIs beyond FodsDocumentAccessor.cs capacity → creates
+      FodsDocumentExtendedApis.cs as overflow partial class. File name appears descriptive.
+      No system component rejects it.
+    resulting_code_pattern: |
+      FodsDocumentExtendedApis.cs: 1556 LOC dumping ground.
+      spreadsheet_document.py: analytics file in domain model namespace.
+    first_failed_control_boundary: |
+      Skill (add-dotnet-api): no file_layout approval requirement.
+      Pre-commit: no filename pattern check.
+    why_existing_controls_failed: |
+      Validators V86 and V95 do not exist.
+      No product-file-layout-contract.yaml existed during ExtendedApis construction.
+    evidence:
+      - "governance_validators_ext2.py: V1-V85 defined; no V86 suspicious filenames"
+      - "FodsDocumentExtendedApis.cs: 'ExtendedApis' name not blocked by any validator"
+      - "No product-file-layout-contract.yaml exists in docs/code-quality/"
+    prevention: |
+      - Create docs/code-quality/product-file-layout-contract.yaml
+      - Add V86: suspicious_filenames validator
+      - Add V95: files_outside_approved_layout validator
+    detection: V86, V95.
+    recovery: Remove FodsDocumentExtendedApis.cs after migrating XML-backed APIs to domain types.
+
+  - cause_id: SC-009
+    title: Certification closes on test-count proof without requiring round-trip and persistence evidence
+    defect_categories: [tests_certification, governance]
+    findings_implicated: [TEST-001, TEST-002, TEST-003, TEST-004, GOV-005]
+    originating_component: ".governance/certification/ (certification criteria schema)"
+    exact_instruction_or_behavior: |
+      Certification closes when: test_count >= threshold AND evidence_review.json shows PASS.
+      No certification criterion requires:
+      - Save()+Load() round-trip proof per persistent feature
+      - Getter-without-parser detection
+      - Setter-without-writer detection
+      - API authority proof (QName per method)
+      GI-FODS-NET-001 was certified CLOSED with R290-R341 tests passing
+      (get/set symmetry tests only).
+    incentive_created: |
+      Task closes when tests pass. Tests test in-memory symmetry. No round-trip required.
+      Certification closes when enough tasks close. 33 detached dicts survive certification.
+    resulting_code_pattern: |
+      GI-FODS-NET-001 declared COMPLETE. 33 detached dictionaries in production code.
+    first_failed_control_boundary: |
+      Certification evidence review: should require roundtrip_proof per persistent feature.
+    why_existing_controls_failed: |
+      Certification criteria in evidence-review.json do not include roundtrip_proof dimension.
+      Test count + in-memory test pass = sufficient for certification closure.
+    evidence:
+      - "reports/supervisor/evidence-review.json: GI-FODS-NET-001 CLOSED"
+      - "incident-baseline.yaml: DETACHED_PERSISTENT_STATE_STORES=37 confirmed after closure"
+      - "R290-R341 test pattern: SetX(v); Assert.Equal(v, GetX()) — no Save()+Load()"
+    prevention: |
+      Add to certification criteria: "MUST include at least one round-trip test per
+      persistent document property. MUST show getter reads from XML parser path."
+    detection: V91, V92, V93.
+    recovery: |
+      Reopen GI-FODS-NET-001 certification.
+      Add mandatory round-trip tests for all 35 detached SetXxx methods.
+      Re-certify only after XML persistence path is implemented and round-trip tests pass.
+
+  - cause_id: SC-010
+    title: No validator scans product source for sprint/wave/phase implementation history
+    defect_categories: [comments_docs]
+    findings_implicated: [DOC-001]
+    originating_component: "tools/supervisor/governance_validators_ext2.py (missing V87)"
+    exact_instruction_or_behavior: |
+      governance_validators_ext2.py: no validator scans product .py/.cs for free-form
+      sprint/wave/train/run identifiers in comments or XML docs.
+      FodsDocumentExtendedApis.cs XML docs contain:
+        "// R100 Train B", "// R104 Wave 1", "// R114 Train A" (sprint history)
+      FodsDocumentAccessor.cs contains:
+        "// TODO: GI-FODS-NET-001 Phase 3b/3c — replace getter with XML read" (47×)
+      These are implementation history, not ODF specification references.
+    incentive_created: |
+      Agent documents implementation in terms of sprint/wave identifiers it knows.
+      Easier than writing ODF spec references. No validator rejects sprint IDs in docs.
+    resulting_code_pattern: |
+      Requirement IDs (R290-R394) and sprint wave labels throughout XML doc comments.
+      47 "Phase 3b/3c" TODO markers in product source.
+    first_failed_control_boundary: |
+      Reviewer rubric: should check that XML doc comments cite ODF spec sections,
+      not sprint identifiers.
+    why_existing_controls_failed: V87 does not exist.
+    evidence:
+      - "FodsDocumentExtendedApis.cs: R100/R104/R114 Train labels in XML docs"
+      - "FodsDocumentAccessor.cs: 47× 'GI-FODS-NET-001 Phase 3b/3c' TODO markers"
+    prevention: V87: scan product source for sprint/wave/train/run identifiers.
+    detection: V87.
+    recovery: Remove history identifiers; replace TODOs with governed GAP-* references.
+
+  - cause_id: SC-011
+    title: Python skill does not require __all__ declaration in __init__.py
+    defect_categories: [comments_docs, api_design]
+    findings_implicated: [DOC-003, ARCH-005]
+    originating_component: ".supervisor/skill-registry.yaml:213-239 (add-python-api block)"
+    exact_instruction_or_behavior: |
+      add-python-api skill-registry entry: no requirement for __all__ in __init__.py.
+      No validator checks that Python package __init__.py exports explicitly.
+      Result: fods/__init__.py has no __all__, wildcard-imports from neutral_model,
+      which itself wildcard-imports from 2 analytics files → 200+ names exported.
+    incentive_created: |
+      Adding new functions to a module automatically makes them importable from the package.
+      Agent never needs to update __all__ because it doesn't exist.
+    resulting_code_pattern: |
+      fods package exports 200+ names including all analytics functions without governance.
+    first_failed_control_boundary: |
+      add-python-api skill: no __all__ update requirement.
+    why_existing_controls_failed: No __all__ enforcement in skill or validator.
+    evidence:
+      - "src/python/fods/__init__.py: no __all__ declaration"
+      - "src/python/fods/neutral_model.py lines 713-717: wildcard imports"
+      - "19/20 Python formats missing __all__ (portfolio-triage.yaml)"
+    prevention: |
+      Add __all__ requirement to add-python-api skill.
+      Add validator: Python package __init__.py must declare __all__ explicitly.
+    detection: New validator for missing __all__ in __init__.py files.
+    recovery: |
+      Add explicit __all__ to fods/__init__.py.
+      Remove wildcard imports from neutral_model.py.
+
+# Coverage map: all 9 defect categories → at least one proven systemic cause
+category_cause_map:
+  architecture: [SC-001, SC-003]
+  qname_spec: [SC-004, SC-005]
+  state_persistence: [SC-006]
+  api_design: [SC-001, SC-002]
+  files_folders: [SC-001, SC-008]
+  code_writing: [SC-006]
+  comments_docs: [SC-003, SC-010, SC-011]
+  tests_certification: [SC-007, SC-009]
+  governance: [SC-001, SC-002, SC-007, SC-008, SC-009]
+
+counter_DEFECT_CATEGORIES_WITHOUT_PROVEN_SYSTEMIC_CAUSE: 0
+total_system_causes: 11

@@ -1,6 +1,6 @@
 ---
-version: "1.2"
-last-updated: "2026-06-03"
+version: "1.3"
+last-updated: "2026-07-03"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: codex
@@ -8,6 +8,29 @@ visibility: generated
 ---
 
 # /add-dotnet-api
+
+## MANDATORY PRE-CHECK ZERO: Architecture-First and Work-Shape Rejection
+
+**Before accepting the task, STOP and reject if ANY of the following match the task description:**
+
+- "Implement all missing methods" or "add all methods referenced by tests" or "add methods from R-NNN test files"
+- "Add stubs" or "return defaults for now" or "make tests pass without XML path"
+- "Store values in a dictionary" or "cache in a private field" for a PERSISTENT document property
+- Target file name contains `ExtendedApis`, `MissingMethods`, `Misc`, `Helpers`, `Stubs`
+- Task asks to target a file that is NOT in `docs/code-quality/product-file-layout-contract.yaml`
+
+**If task matches any of the above: STOP. Respond with `BLOCKED_INVALID_TASK_SHAPE`. Do not write code.**
+
+**Architecture pre-flight (MANDATORY before writing any code):**
+1. Identify the target domain type (FodsDocument, FodsCell, FodsSheet, etc.) — not just the file
+2. Verify the target file is in the approved product file layout (`docs/code-quality/product-file-layout-contract.yaml`)
+3. For any setter: plan the XML write path (which XElement.SetAttributeValue() call?) before writing
+4. For any getter: plan the XML read path (which XElement.Attribute() call?) before writing
+5. For any persistent property: plan the Type 4 roundtrip test before writing the setter
+
+**If no XML read/write path can be identified: STOP. Respond with `BLOCKED_NO_XML_PATH`.**
+
+---
 
 ## MANDATORY PRE-CHECK: QName Compliance (must complete before naming any class)
 
@@ -60,7 +83,10 @@ in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in t
 5. Inspect the existing API, tests, and public surface. Keep the change limited to the named API.
 6. Add or modify only the exact authorized files under `src/net/<format_id>/` and the exact authorized
    test files under `tests/net/<format_id>/`.
-7. Add focused tests for normal behavior, one boundary case, and one invalid-input case when applicable.
+7. Add focused tests for normal behavior, one boundary case, and one invalid-input case.
+   **For any setter that persists document state:** ALSO add a Type 4 roundtrip test:
+   `SetX(value) → Save() → Load() → Assert.Equal(value, GetX())`.
+   A setter WITHOUT a roundtrip test is INCOMPLETE — do not close the task.
 8. Write the required ledger record in the exact authorized ledger path. Record skill ID, format,
    paths changed, API behavior, tests run, and whether any export path was affected.
 9. Run the ledger validator, the focused `dotnet test` command, and any format-specific validation
@@ -89,6 +115,11 @@ in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in t
 - The requested API implies a gate, release, publication, or commercial-readiness state change.
 - A dogfood export is introduced without using `/add-dogfood-export`.
 - Focused validation fails.
+- **Task is test-shaped** (methods exist only because a test references them): `BLOCKED_INVALID_TASK_SHAPE`
+- **Target file not in approved layout** (`docs/code-quality/product-file-layout-contract.yaml`): `BLOCKED_FILE_NOT_IN_APPROVED_LAYOUT`
+- **Target filename contains** `ExtendedApis`, `MissingMethods`, `Misc`, `Helpers`, `Stubs`: `BLOCKED_DUMPING_GROUND_FILENAME`
+- **Implementation would use a private Dictionary for persistent state** (no XML path exists): `BLOCKED_NO_XML_PATH`
+- **Setter without a Type 4 roundtrip test plan**: `BLOCKED_MISSING_ROUNDTRIP_TEST`
 
 ## Output Format
 
@@ -128,3 +159,4 @@ with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_i
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).
+- 1.3 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK ZERO (work-shape rejection + architecture pre-flight); mandatory roundtrip test for setters; blocking STOP conditions for test-shaped tasks, dumping-ground filenames, files outside approved layout, dictionary-backed persistent state.

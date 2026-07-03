@@ -1,0 +1,288 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-008
+generated: "2026-07-03"
+version: "1.0"
+
+# Enforceable product file layout contract.
+# This file is consumed by:
+#   - V86 (validate_suspicious_filenames)
+#   - V95 (validate_files_outside_approved_layout)
+#   - add-dotnet-api.md (MANDATORY PRE-CHECK ZERO)
+#   - add-python-api.md (MANDATORY PRE-CHECK ZERO)
+# All product source files must appear in the approved_layout for their format.
+# Any file NOT listed here in its format block is a layout violation.
+
+# ============================================================
+# GLOBAL FORBIDDEN FILENAME PATTERNS (applies to all formats)
+# ============================================================
+globally_forbidden_filename_patterns:
+  # Dumping-ground suffixes
+  - pattern: "*ExtendedApis*"
+    reason: "Accumulates APIs without domain design; test-shaped dumping ground"
+    blocking: true
+
+  - pattern: "*MissingMethods*"
+    reason: "Named after what is absent, not what domain concept it represents"
+    blocking: true
+
+  - pattern: "*Misc*"
+    reason: "Miscellaneous is not a domain concept"
+    blocking: true
+
+  - pattern: "*Helpers*"
+    reason: "Helper is not a domain concept; use specific domain names"
+    blocking: true
+
+  - pattern: "*Stubs*"
+    reason: "Stubs are temporary; permanent files must not be named after them"
+    blocking: true
+
+  - pattern: "*Utils*"
+    reason: "Utility is not a domain concept; use specific domain names"
+    blocking: true
+
+  - pattern: "*Extra*"
+    reason: "Extra implies overflow; use specific domain file names"
+    blocking: true
+
+  # Sprint/wave/train/gate identifiers in filenames
+  - pattern: "*Sprint[0-9]*"
+    reason: "Sprint identifiers are implementation history, not domain concepts"
+    blocking: true
+
+  - pattern: "*Wave[0-9]*"
+    reason: "Wave identifiers are implementation history"
+    blocking: true
+
+  - pattern: "*Train[A-Z]*"
+    reason: "Train identifiers are implementation history"
+    blocking: true
+
+  - pattern: "*Gate[0-9]*"
+    reason: "Gate identifiers are governance labels, not domain concepts"
+    blocking: true
+
+  - pattern: "*R[0-9][0-9][0-9]*"
+    reason: "Sprint R-number identifiers in product filenames are prohibited"
+    blocking: true
+
+# ============================================================
+# FODS — PYTHON
+# ============================================================
+formats:
+  - format_id: fods
+    language: python
+    product_root: src/python/fods/
+    approved_layout:
+      - file: src/python/fods/__init__.py
+        responsibility: Package root; explicit __all__; no wildcard imports; no analytics re-export
+        max_loc: 100
+
+      - file: src/python/fods/model.py
+        responsibility: Domain model types (FodsDocument, FodsSheet, FodsRow, FodsCell, FodsMetadata, FodsStyle)
+        forbidden_content: [analytics functions, parser logic, writer logic]
+        max_loc: 500
+
+      - file: src/python/fods/parser.py
+        responsibility: FodsParser class + parse_fods() convenience function
+        forbidden_content: [domain type definitions outside this file's scope]
+        max_loc: 400
+
+      - file: src/python/fods/writer.py
+        responsibility: FodsWriter class + write_fods() convenience function
+        max_loc: 300
+
+      - file: src/python/fods/fods_analytics.py
+        responsibility: Read-only analytics functions (renamed from spreadsheet_document.py)
+        forbidden_content: [class definitions, spec_qname assignments at module scope]
+        max_loc: 1200
+
+      - file: src/python/fods/fods_analytics_extended.py
+        responsibility: Extended analytics functions (renamed from spreadsheet_model_document.py)
+        forbidden_content: [class definitions, spec_qname assignments at module scope]
+        max_loc: 600
+
+      - file: src/python/fods/validation.py
+        responsibility: validate_fods() function; FodsValidationError exception
+        max_loc: 200
+
+      - file: src/python/fods/exceptions.py
+        responsibility: FodsParseError, FodsWriteError, FodsValidationError, FodsUnsupportedFeatureError
+        max_loc: 80
+
+    files_requiring_migration:
+      - current: src/python/fods/spreadsheet_document.py
+        reason: analytics masquerade; false spec_qname; must be renamed
+        target: src/python/fods/fods_analytics.py
+        action: RENAME
+
+      - current: src/python/fods/spreadsheet_model_document.py
+        reason: analytics file in domain model namespace
+        target: src/python/fods/fods_analytics_extended.py
+        action: RENAME
+
+      - current: src/python/fods/neutral_model.py
+        reason: wildcard imports from analytics files; misleading name
+        target: src/python/fods/model.py
+        action: RENAME + REMOVE_WILDCARD_IMPORTS
+
+  - format_id: fods
+    language: csharp
+    product_root: src/net/fods/
+    approved_layout:
+      - file: src/net/fods/FodsDocument.cs
+        responsibility: Root document type; Load/Save/Create; Sheets + Metadata properties
+        forbidden_content: [cell-level operations, export logic, filter/sort, analytics]
+        max_loc: 250
+
+      - file: src/net/fods/FodsParser.cs
+        responsibility: Parse ODF XML to FodsDocument
+        max_loc: 500
+
+      - file: src/net/fods/FodsWriter.cs
+        responsibility: Serialize FodsDocument to XML
+        max_loc: 200
+
+      - file: src/net/fods/FodsValidator.cs
+        responsibility: Validate FodsDocument; FodsValidationException
+        max_loc: 200
+
+      - file: src/net/fods/FodsNamespaces.cs
+        responsibility: ODF XNamespace constants only; NO custom non-ODF namespaces
+        max_loc: 60
+
+      - file: src/net/fods/Model/FodsSheet.cs
+        responsibility: FodsSheet domain type (table:table)
+        max_loc: 150
+
+      - file: src/net/fods/Model/FodsRow.cs
+        responsibility: FodsRow domain type (table:table-row)
+        max_loc: 100
+
+      - file: src/net/fods/Model/FodsCell.cs
+        responsibility: FodsCell domain type (table:table-cell); CellValueType enum
+        max_loc: 200
+
+      - file: src/net/fods/Model/FodsMetadata.cs
+        responsibility: FodsMetadata domain type (office:meta)
+        max_loc: 100
+
+      - file: src/net/fods/Model/FodsNamedRange.cs
+        responsibility: FodsNamedRange domain type (table:named-range)
+        max_loc: 80
+
+      - file: src/net/fods/Style/FodsStyle.cs
+        responsibility: FodsStyle immutable record; FontWeight/FontStyle enums
+        max_loc: 100
+
+      - file: src/net/fods/Style/FodsStyleResolver.cs
+        responsibility: Resolve style:style inheritance chain
+        max_loc: 350
+
+      - file: src/net/fods/Style/FodsStyleEditor.cs
+        responsibility: Mutate style XML elements
+        max_loc: 200
+
+      - file: src/net/fods/Formula/FodsFormulaEditor.cs
+        responsibility: Parse/edit ODF formula strings
+        max_loc: 250
+
+      - file: src/net/fods/Export/FodsExporter.cs
+        responsibility: ToHtml/ToCsv/ToMarkdown (export only; no domain mutation)
+        max_loc: 400
+
+    files_requiring_removal_or_migration:
+      - file: src/net/fods/FodsDocumentExtendedApis.cs
+        reason: dumping-ground; 194 test-shaped methods; 33 detached dict fields
+        action: DECOMPOSE_THEN_REMOVE
+        xml_backed_apis_migrate_to: [FodsDocument.cs, Model/FodsCell.cs, Style/FodsStyleEditor.cs]
+        detached_state_apis: REMOVE (redesign required per gap ledger)
+
+      - file: src/net/fods/FodsDocumentAccessor.cs
+        reason: monolith 3283 LOC; 7 mixed responsibility domains
+        action: SPLIT_BY_DOMAIN_THEN_REMOVE
+        export_methods_migrate_to: Export/FodsExporter.cs
+        style_methods_migrate_to: Style/FodsStyleResolver.cs
+        cell_query_migrates_to: Model/FodsCell.cs + FodsDocument.cs
+        sheet_config_migrates_to: Model/FodsSheet.cs
+
+# ============================================================
+# OTHER FORMATS — ABBREVIATED RULES (Python FOSS track)
+# ============================================================
+# For all other Python formats, the approved pattern is:
+# src/python/<format>/
+#   __init__.py  (explicit __all__, no wildcard)
+#   <format>_codec.py or equivalent domain module
+#   <format>_parser.py (if separate)
+#   <format>_writer.py (if separate)
+#   <format>_analytics.py (if analytics needed)
+#   exceptions.py (if separate)
+#
+# Files that do NOT match <format>_<domain>.py naming pattern
+# and are not __init__.py, exceptions.py, validation.py
+# must be explicitly registered here or are violations.
+
+general_python_rules:
+  analytics_files_must_end_with: "_analytics.py"
+  analytics_extended_files_must_end_with: "_analytics_extended.py"
+  no_wildcard_imports_in_any_module: true
+  all_init_py_must_have_explicit_all: true
+  max_loc_per_file: 800
+  exceptions:
+    - "files in registry/source-structure-baseline.json known_violations are grandfathered at their baseline_loc_cap"
+
+general_dotnet_rules:
+  no_custom_xnamespace_outside_namespaces_file: true
+  no_private_dictionary_for_persistent_state: true
+  all_setters_require_xml_write_path: true
+  all_getters_read_from_xml: true
+  no_partial_class_dumping_grounds: true
+  max_loc_per_file: 800
+  model_types_in_model_subdirectory: true
+  style_types_in_style_subdirectory: true
+  export_types_in_export_subdirectory: true
+  formula_types_in_formula_subdirectory: true
+
+# ============================================================
+# VALIDATOR CONFIGURATION
+# ============================================================
+validators:
+  V86:
+    name: validate_suspicious_filenames
+    scope: src/python/, src/net/
+    patterns: [globally_forbidden_filename_patterns]
+    severity: blocking
+    error_code: GOV_BLOCK
+
+  V95:
+    name: validate_files_outside_approved_layout
+    scope: src/python/fods/, src/net/fods/
+    reference: this_file
+    severity: blocking
+    error_code: GOV_BLOCK
+    note: "Only blocks files NOT in approved_layout AND NOT in files_requiring_migration/removal"
+
+test_fixtures:
+  - description: Validator rejects FodsDocumentExtendedApis.cs
+    input_file: FodsDocumentExtendedApis.cs
+    expected: V86 FAIL (ExtendedApis pattern)
+
+  - description: Validator rejects fods_misc.py
+    input_file: fods_misc.py
+    expected: V86 FAIL (Misc pattern)
+
+  - description: Validator rejects fods_helpers.py
+    input_file: fods_helpers.py
+    expected: V86 FAIL (Helpers pattern)
+
+  - description: Validator rejects Sprint5Additions.cs
+    input_file: Sprint5Additions.cs
+    expected: V86 FAIL (Sprint pattern)
+
+  - description: Validator accepts FodsParser.cs
+    input_file: FodsParser.cs
+    expected: PASS
+
+  - description: Validator accepts fods_analytics.py
+    input_file: fods_analytics.py
+    expected: PASS

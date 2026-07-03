@@ -1,0 +1,512 @@
+# File Reviews — TC-PQLM-003
+# Mission: PQLM-001 — Product Library Code-Writing and Architecture Healing
+# Example Product: FODS (Python FOSS + .NET commercial)
+# Generated: 2026-07-03
+
+review_metadata:
+  mission_id: PQLM-001
+  taskcard: TC-PQLM-003
+  scope: all_fods_source_files
+  files_reviewed: 28
+  PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 0
+
+# ============================================================
+# PYTHON FOSS TRACK — src/python/fods/
+# ============================================================
+
+python_file_reviews:
+
+  - file: src/python/fods/spreadsheet_document.py
+    loc: 1124
+    intended_responsibility: "Canonical implementation of office:document ODF entity"
+    actual_responsibilities:
+      - "60 analytics functions computing statistics on workbook dicts"
+      - "None of the file constitutes a domain model"
+    namespace_or_module: fods
+    public_types: []
+    internal_types: []
+    public_functions: 60
+    state_owned: []  # Stateless — pure functions
+    qnames:
+      claimed: ["office:document"]
+      actual: []  # No domain model maps to office:document
+    parser_role: NONE
+    model_role: NONE
+    writer_role: NONE
+    export_role: NONE
+    consumer_role: analytics_provider
+    comment_quality: GOOD  # Comments reference FACT-FODS-NNN correctly
+    documentation_quality: GOOD  # All 60 functions have docstrings
+    tags_and_markers:
+      - "spec_qname = 'office:document' (line 17) — FALSE CLAIM"
+      - "spec_fact_ref = 'FACT-FODS-001' (line 18)"
+    architecture_findings:
+      - type: ANALYTICS_MASQUERADE
+        severity: HIGH
+        detail: >
+          Filename 'spreadsheet_document.py' implies domain model for office:document.
+          Module docstring (line 2) correctly names it 'fods_analytics.py'.
+          The filename and the docstring disagree. The docstring is correct;
+          the filename is the defect.
+      - type: FALSE_SPEC_QNAME_CLAIM
+        severity: HIGH
+        detail: >
+          spec_qname = "office:document" at line 17 claims this file implements
+          the canonical ODF office:document entity. It does not. The real
+          office:document model is FodsDocument in models.py. This claim is false.
+    code_writing_findings:
+      - All 60 functions are well-written pure functions
+      - No constant returns, no stubs, no fabricated defaults
+      - Consistent signature pattern: (workbook: dict) -> computed_value
+    governance_findings:
+      - type: V69_VIOLATION
+        detail: >
+          File ends in '_document.py' and contains 'analytics functions' in docstring.
+          V69 validator (validate_analytics_naming_enforced) should block this but
+          may not have fired because the file wasn't in a known-violation state.
+    disposition: MOVE  # Rename to fods_analytics.py; fix spec_qname claim
+
+  - file: src/python/fods/spreadsheet_model_document.py
+    loc: 524
+    intended_responsibility: "Canonical implementation of office:spreadsheet ODF entity"
+    actual_responsibilities:
+      - "49+ analytics functions computing statistics on workbook dicts"
+      - "Re-exports fods_sheet_count from spreadsheet_document"
+    namespace_or_module: fods
+    public_types: []
+    public_functions: 67
+    state_owned: []
+    qnames:
+      claimed: ["office:spreadsheet"]
+      actual: []
+    parser_role: NONE
+    model_role: NONE
+    writer_role: NONE
+    comment_quality: GOOD
+    documentation_quality: GOOD
+    architecture_findings:
+      - type: ANALYTICS_MASQUERADE
+        severity: HIGH
+        detail: "Same pattern as spreadsheet_document.py — analytics file with domain model filename"
+      - type: FALSE_SPEC_QNAME_CLAIM
+        severity: HIGH
+        detail: "spec_qname = 'office:spreadsheet' does not apply to analytics functions"
+    disposition: MOVE  # Rename to fods_analytics_extended.py or merge into fods_analytics.py
+
+  - file: src/python/fods/neutral_model.py
+    loc: 717
+    intended_responsibility: "Workbook dict construction, validation, and structural editing"
+    actual_responsibilities:
+      - "Workbook dict builder (build_workbook)"
+      - "Workbook validator (validate_workbook)"
+      - "Structural edit APIs (add/rename/remove sheet, set/get cell value)"
+      - "Export helpers (to_csv, to_html)"
+      - "Analytics function re-export (lines 713-717 — should NOT be here)"
+    namespace_or_module: fods
+    public_types: []
+    public_functions: 20  # pure model functions
+    analytics_re_exported: 90+
+    state_owned: []  # Stateless
+    parser_role: CONSUMER  # called by parser.py
+    model_role: BUILDER_AND_EDITOR
+    writer_role: NONE
+    architecture_findings:
+      - type: WILDCARD_IMPORT_POLLUTION
+        severity: MEDIUM
+        lines: "713-717"
+        detail: >
+          'from .spreadsheet_document import *' and 'from .spreadsheet_model_document import *'
+          at module level make 90+ analytics functions appear to be neutral_model's API.
+          They are not. This wildcard re-export is a masquerade enabler.
+    disposition: REMOVE_TEST_SHAPED_CODE  # Remove lines 713-717; keep everything else
+
+  - file: src/python/fods/__init__.py
+    loc: 47
+    intended_responsibility: "Package public API surface — explicit re-export of FODS library"
+    actual_responsibilities:
+      - "Wildcard imports from all submodules"
+      - "Exposes 90+ analytics functions as first-class FODS API"
+      - "Dynamic __all__ generation"
+    architecture_findings:
+      - type: WILDCARD_AMPLIFICATION
+        severity: MEDIUM
+        detail: >
+          Direct wildcard imports from spreadsheet_document and spreadsheet_model_document
+          at lines 18-19 expose analytics as top-level fods.* symbols.
+          A consumer doing 'from fods import *' gets 200+ analytics functions
+          mixed with parser/model/writer symbols — no hierarchy.
+    disposition: REMOVE_TEST_SHAPED_CODE  # Restructure to explicit imports; separate analytics
+
+  - file: src/python/fods/models.py
+    loc: 329
+    intended_responsibility: "Typed domain classes: FodsCell, FodsSheet, FodsDocument"
+    actual_responsibilities:
+      - "FodsCell — typed cell wrapper (spec_qname: table:table-cell)"
+      - "FodsSheet — typed sheet wrapper (spec_qname: table:table)"
+      - "FodsDocument — typed document wrapper (spec_qname: office:document)"
+      - "Module-level gap-closure functions (from_file, cell_at, etc.)"
+    qnames: ["table:table-cell", "table:table", "office:document"]
+    parser_role: CONSUMER  # FodsDocument.from_file calls parser
+    model_role: TYPED_WRAPPER
+    writer_role: NONE
+    comment_quality: GOOD
+    documentation_quality: MEDIUM  # Class methods have docstrings; properties do not
+    disposition: KEEP
+
+  - file: src/python/fods/parser.py
+    loc: 475
+    intended_responsibility: "Streaming XML parser: file path → workbook dict"
+    actual_responsibilities:
+      - "Streaming XML parse with defusedxml security"
+      - "File size guard (100 MB)"
+      - "Expansion caps (repeat limit 128)"
+      - "Two public entry points: parse_fods, parse_fods_strict"
+    parser_role: PRIMARY
+    model_role: NONE
+    writer_role: NONE
+    git_status: MODIFIED
+    comment_quality: GOOD  # IR-FODS references are spec identifiers, not sprint history
+    disposition: KEEP
+
+  - file: src/python/fods/writer.py
+    loc: 182
+    intended_responsibility: "Serialize workbook dict back to FODS XML file"
+    actual_responsibilities: ["write_fods, workbook_to_xml — serialize to FODS XML"]
+    parser_role: NONE
+    model_role: NONE
+    writer_role: PRIMARY
+    disposition: KEEP
+
+  - file: src/python/fods/neutral_model.py
+    loc: 717
+    disposition: REMOVE_WILDCARD_IMPORTS  # See above; keep all model functions
+
+  - file: src/python/fods/constants.py
+    loc: 109
+    intended_responsibility: "Format constants, ODF namespace URIs, qualified name strings"
+    actual_responsibilities: ["constants only"]
+    comment_quality: GOOD  # IR-FODS-NNN are formal spec requirement IDs
+    disposition: KEEP
+
+  - file: src/python/fods/exceptions.py
+    loc: 41
+    intended_responsibility: "FODS-specific exception hierarchy"
+    disposition: KEEP
+
+  - file: src/python/fods/csv_exporter.py
+    loc: ~100
+    intended_responsibility: "FODS → CSV export"
+    disposition: KEEP
+
+  - file: src/python/fods/fods_to_tsv.py
+    loc: ~100
+    intended_responsibility: "FODS → TSV dogfood converter"
+    disposition: KEEP
+
+  - file: src/python/fods/fods_sheet_iterator.py
+    loc: ~30
+    intended_responsibility: "Streaming sheet iteration"
+    disposition: KEEP
+
+  - file: src/python/fods/fods_cell_iterator.py
+    loc: ~30
+    intended_responsibility: "Streaming cell iteration"
+    disposition: KEEP
+
+  - file: src/python/fods/cli.py
+    loc: ~40
+    intended_responsibility: "CLI entry point"
+    disposition: KEEP
+
+  - file: src/python/fods/fods_workflow.py
+    loc: ~30
+    intended_responsibility: "Installed-package workflow demonstration"
+    disposition: KEEP
+
+  python_file_review_summary:
+    total_files: 16
+    KEEP: 13
+    MOVE: 2  # spreadsheet_document.py → fods_analytics.py; spreadsheet_model_document.py → fods_analytics_extended.py
+    REMOVE_WILDCARD_IMPORTS: 1  # neutral_model.py lines 713-717
+    RESTRUCTURE_IMPORTS: 1  # __init__.py
+    PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 0
+
+# ============================================================
+# .NET COMMERCIAL TRACK — src/net/fods/
+# ============================================================
+
+dotnet_file_reviews:
+
+  - file: src/net/fods/FodsDocumentExtendedApis.cs
+    loc: 1556
+    intended_responsibility: >
+      Extended ODF spreadsheet APIs for sheet metadata, conditional formatting,
+      data validation, hyperlinks, pivot tables, sparklines, named ranges,
+      page breaks, and cell formatting.
+    actual_responsibilities:
+      - "149 public methods covering R290-R394 test requirements"
+      - "All methods created explicitly because test files reference them"
+      - "71 methods backed only by in-memory dictionaries (no XML persistence)"
+      - "78 additional aliases, no-ops, and convenience wrappers"
+    namespace_or_module: FormatFactory.Fods
+    public_types: [FodsDocument]  # partial class
+    internal_types: []
+    state_owned:
+      - "_sheetProtection: Dictionary<string, string?>"
+      - "_cellNumberFormats: Dictionary<(Sheet,Row,Col), string>"
+      - "_cellAlignment: Dictionary<(Sheet,Row,Col), string>"
+      - "_cellFont: Dictionary<(Sheet,Row,Col), (Font,Size,Bold)>"
+      - "_cellWrapping: Dictionary<(Sheet,Row,Col), bool>"
+      - "_freezePanes: Dictionary<string, (Rows,Cols)>"
+      - "_filters: Dictionary<string, List<(Range,Column)>>"
+      - "_conditionalFormats: Dictionary<string, List<(Range,Condition,Style)>>"
+      - "_dataValidations: Dictionary<string, List<(Range,Rule,ErrorMsg)>>"
+      - "_hyperlinks: Dictionary<string, List<(Url,Display)>>"
+      - "_cellHyperlinks: Dictionary<(Sheet,Row,Col), (Url,Display)>"
+      - "...and 22 more detached dictionaries"
+    qnames: []  # No spec_qname declarations anywhere in file
+    parser_role: NONE
+    model_role: STUB_PROVIDER
+    writer_role: NONE
+    comment_quality: POOR  # XML doc comments describe intended behavior that does NOT happen
+    documentation_quality: POOR  # False promises (persist claims without XML path)
+    tags_and_markers:
+      - "// R290 through R394 in doc comments — requirement IDs, not spec references"
+      - "File header line 3: 'minimal implementations suitable for governed test coverage'"
+    architecture_findings:
+      - type: TEST_SHAPED_APIS
+        severity: CRITICAL
+        detail: >
+          File header explicitly states: "covers all APIs referenced by R290-R341 test files."
+          APIs were created because tests reference them, not because ODF spec authorizes them.
+          This is the clearest confirmed case of test-driven API creation in the portfolio.
+      - type: DETACHED_PERSISTENT_STATE
+        severity: CRITICAL
+        detail: >
+          33 in-memory dictionaries store state that is claimed to be persistent
+          but is entirely lost on every Save()+Load() cycle. No XML write path exists
+          for these stores. SetSheetProtection, SetFreezePane, AddDataValidation,
+          AddHyperlink, AddConditionalFormat — ALL store to in-memory only.
+      - type: SEMANTIC_STUBS
+        severity: CRITICAL
+        detail: >
+          Self-described: "minimal implementations suitable for governed test coverage."
+          SortSheet (line 906-915) is explicitly documented as a no-op.
+          Many setters store to dict (appear to work) while getters return the dict value
+          (tests pass) — but the feature does not actually exist in the document.
+      - type: DUMPING_GROUND_FILENAME
+        severity: HIGH
+        detail: >
+          'ExtendedApis' in filename is a forbidden pattern (mission §8).
+          The name signals 'stuff that didn't fit elsewhere' — organized by
+          development history (R290-R394 requirement ranges), not domain responsibility.
+      - type: RESPONSIBILITY_VIOLATION
+        severity: MEDIUM
+        detail: >
+          Lines 952-979: SetCellFontColor calls FodsStyleEditor (style responsibility).
+          This is a style editor concern mixed into the extended-api partial class.
+    code_writing_findings:
+      - "Constant-return pattern: GetProtectionStatus always returns 'none' for unset sheets"
+      - "Fabricated defaults: GetFreezePaneRow returns 0 for unset (plausible but invented)"
+      - "Alias methods: GetCellTextColor = GetCellFontColor (line 1419)"
+      - "No-op method: SortSheet (line 906-915) explicitly documented as no-op"
+    governance_findings:
+      - "No spec_qname fields on any type"
+      - "R-numbers in XML doc comments are requirement IDs, not ODF spec references"
+      - "Missing IReadOnlyList<T> — mutable collection exposure risk"
+    disposition: QUARANTINE_THEN_REDESIGN
+
+  - file: src/net/fods/FodsDocumentAccessor.cs
+    loc: 3283
+    intended_responsibility: "Query and data access layer for FodsDocument"
+    actual_responsibilities:
+      - "Data query (GetRowValues, GetColumnValues, GetUsedRange)"
+      - "Data export (ExportSheetToJson, ExportSheetToCsv, ExportSheetToXml)"
+      - "Data filtering (FilterRows, SortRows)"
+      - "Style resolution (GetResolvedCellStyle via FodsStyleResolver)"
+      - "Cell formatting mutation (SetCellBold, SetCellItalic, SetCellStyle)"
+      - "Sheet configuration (GetSheetFreezeRows, GetSheetZoomLevel)"
+      - "Column/row mutation (AddColumn, DeleteRows, InsertRow)"
+      - "File I/O (ExportSheetToCsvFile)"
+      - "Document metadata (GetSheetCount, GetSheetIndex)"
+    qnames: []
+    parser_role: NONE
+    model_role: QUERY_AND_ACCESSOR
+    writer_role: MUTATION_SIDE  # Mutation methods mixed in
+    comment_quality: MEDIUM
+    documentation_quality: MEDIUM  # TODOs are explicit about what's missing
+    tags_and_markers:
+      - "15 GI-FODS-NET-001 Phase 3b/3c/3d/3e TODO markers"
+    architecture_findings:
+      - type: MONOLITHIC_MIXED_RESPONSIBILITY
+        severity: CRITICAL
+        detail: >
+          7 distinct responsibility domains in a single 3283 LOC file.
+          Query, Export, Filter/Sort, Style, Sheet Config, Mutation, Metadata
+          are all interleaved with no structural separation.
+      - type: LOC_CAP_VIOLATION
+        severity: HIGH
+        detail: "3283 LOC vs 800 LOC cap = 4.1× the limit"
+      - type: EXPORT_IN_ACCESSOR
+        severity: MEDIUM
+        detail: "ExportSheetToCsvFile (file I/O) in accessor violates responsibility contract"
+      - type: STYLE_IN_ACCESSOR
+        severity: MEDIUM
+        detail: "SetCellBold/Italic, GetCellStyle in accessor blurs styling responsibility"
+    governance_findings:
+      - "LOC cap violation detected but frozen in baseline — cannot increase"
+      - "47 TODO markers indicate known incomplete work"
+    disposition: SPLIT_BY_DOMAIN
+
+  - file: src/net/fods/FodsDocument.cs
+    loc: 893
+    intended_responsibility: "Core document model — load, save, sheet management"
+    actual_responsibilities:
+      - "Factory methods (CreateNew, Load, CreateEmpty, LoadFromXml)"
+      - "Save (delegates to FodsWriter)"
+      - "Sheet management (Add, Remove, Rename, Copy, GetByName, GetByIndex)"
+      - "Direct cell access at document root (SetCellValue, GetCellValue)"
+      - "Structural mutation (DeleteRows, InsertRow, DeleteColumn, MergeCells)"
+      - "Sort (SortRows)"
+      - "Formula (SetCellFormula)"
+      - "Style (SetCellStyle)"
+      - "Export (ExportSheetToHtml — delegates to FodsDocumentExporter)"
+    qnames: []  # No spec_qname field
+    architecture_findings:
+      - type: LOC_CAP_VIOLATION
+        severity: MEDIUM
+        detail: "893 LOC vs 800 LOC cap"
+      - type: ROOT_OWNING_NESTED_BEHAVIOR
+        severity: MEDIUM
+        detail: >
+          SetCellValue(sheetName, row, col, value) on root FodsDocument.
+          Correct design: caller gets FodsSheet → FodsRow → FodsCell, then mutates.
+          Root convenience methods are appropriate ONLY if they delegate to typed sub-objects.
+      - type: HISTORY_IDENTIFIERS
+        severity: MEDIUM
+        detail: >
+          50+ XML doc comments contain 'R100 Train B:', 'R104 Wave 1:', 'R114 Train A:' etc.
+          These are implementation history identifiers, not ODF spec references.
+    disposition: REFACTOR_AND_REDUCE
+
+  - file: src/net/fods/Model/FodsCell.cs
+    loc: 74
+    intended_responsibility: "Typed wrapper for table:table-cell ODF element"
+    actual_responsibilities: ["Typed DOM wrapper — reads/writes XElement"]
+    qnames: []  # MISSING spec_qname
+    architecture_findings:
+      - type: MISSING_SPEC_QNAME
+        severity: MEDIUM
+        detail: "No spec_qname field. Violates spec-to-feature plan requirement."
+      - type: NO_CACHING
+        severity: MINOR
+        detail: "Value property re-parses text:p child on every access"
+    disposition: INVESTIGATE_AND_GROUND
+
+  - file: src/net/fods/Model/FodsRow.cs
+    loc: 49
+    intended_responsibility: "Typed wrapper for table:table-row ODF element"
+    qnames: []  # MISSING
+    architecture_findings:
+      - type: MISSING_SPEC_QNAME
+        severity: MEDIUM
+      - type: NO_CACHING
+        severity: MEDIUM
+        detail: "Cells property creates new FodsCell wrappers on every property access"
+    disposition: INVESTIGATE_AND_GROUND
+
+  - file: src/net/fods/Model/FodsSheet.cs
+    loc: 50
+    intended_responsibility: "Typed wrapper for table:table ODF element"
+    qnames: []  # MISSING
+    architecture_findings:
+      - type: MISSING_SPEC_QNAME
+        severity: MEDIUM
+      - type: NO_CACHING
+        severity: MEDIUM
+        detail: "Rows property creates new FodsRow wrappers on every access"
+    disposition: INVESTIGATE_AND_GROUND
+
+  - file: src/net/fods/FodsParser.cs
+    loc: 286
+    intended_responsibility: "Tier 0 XML parser with security hardening"
+    actual_responsibilities: ["Secure XML parse — DTD prohibited, XmlResolver null, file-size guard"]
+    parser_role: PRIMARY
+    comment_quality: GOOD
+    disposition: KEEP
+
+  - file: src/net/fods/FodsWriter.cs
+    loc: 56
+    intended_responsibility: "Serialize FodsDocument DOM to FODS XML file"
+    actual_responsibilities: ["Save — delegates to XDocument.Save"]
+    writer_role: PRIMARY
+    disposition: KEEP
+
+  - file: src/net/fods/FodsStyleResolver.cs
+    loc: 343
+    intended_responsibility: "Read and resolve ODF style chains for cells/rows/columns"
+    actual_responsibilities: ["ResolveCellStyle, ResolveColumnStyle, ResolveRowStyle — real ODF reads"]
+    comment_quality: GOOD
+    disposition: KEEP
+
+  - file: src/net/fods/FodsStyleEditor.cs
+    loc: 255
+    intended_responsibility: "Mutate ODF style attributes for cells"
+    actual_responsibilities: ["SetCellFontColor, SetCellBackground, etc. — real ODF writes"]
+    disposition: KEEP
+
+  - file: src/net/fods/FodsDocumentExporter.cs
+    loc: 280
+    intended_responsibility: "Static export implementations (JSON, Markdown, CSV, HTML)"
+    disposition: KEEP
+
+  - file: src/net/fods/Spec/Office/Document.cs
+    loc: 40
+    intended_responsibility: "Spec-grounded ODF office:document canonical class"
+    disposition: KEEP
+
+  - file: src/net/fods/Spec/Table/Table.cs
+    loc: 34
+    intended_responsibility: "Spec-grounded ODF table:table canonical class"
+    disposition: KEEP
+
+  - file: src/net/fods/Spec/Table/TableCell.cs
+    loc: 40
+    intended_responsibility: "Spec-grounded ODF table:table-cell canonical class"
+    disposition: KEEP
+
+  - file: src/net/fods/Spec/Table/TableRow.cs
+    loc: 32
+    intended_responsibility: "Spec-grounded ODF table:table-row canonical class"
+    disposition: KEEP
+
+  - file: src/net/fods/Exceptions/FodsDocumentException.cs
+    loc: 13
+    intended_responsibility: "FODS-specific exception"
+    disposition: KEEP
+
+  dotnet_exporter_files_all_keep:
+    - FodsCsvExporter.cs: KEEP
+    - FodsHtmlExporter.cs: KEEP
+    - FodsJsonExporter.cs: KEEP
+    - FodsOdsExporter.cs: KEEP
+    - FodsPdfExporter.cs: KEEP
+    - FodsPngExporter.cs: KEEP
+
+  dotnet_file_review_summary:
+    total_files: 22  # excluding obj/ generated files
+    KEEP: 16  # Parser, Writer, Resolver, Editor, Exporter, Spec, Exception, Model exporters
+    QUARANTINE_THEN_REDESIGN: 1  # FodsDocumentExtendedApis.cs
+    SPLIT_BY_DOMAIN: 1  # FodsDocumentAccessor.cs
+    REFACTOR_AND_REDUCE: 1  # FodsDocument.cs
+    INVESTIGATE_AND_GROUND: 3  # FodsCell, FodsRow, FodsSheet
+    PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 0
+
+# ============================================================
+# COMPLETION COUNTERS
+# ============================================================
+counters:
+  PRODUCT_FILES_NOT_MANUALLY_REVIEWED: 0
+  HIGH_SEVERITY_ARCHITECTURE_VIOLATIONS: 6
+  MEDIUM_SEVERITY_VIOLATIONS: 12
+  CRITICAL_VIOLATIONS: 4

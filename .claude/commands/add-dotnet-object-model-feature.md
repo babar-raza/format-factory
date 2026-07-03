@@ -1,12 +1,31 @@
 ---
-version: "1.0"
-last-updated: "2026-06-02"
+version: "1.1"
+last-updated: "2026-07-03"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: r92-worker
 ---
 
 # /add-dotnet-object-model-feature
+
+## MANDATORY PRE-CHECK: QName Compliance
+
+Before modifying any model class:
+1. Read `registry/odf-ontology/qname-to-code-map.yaml` — identify the ODF QName for this feature.
+2. Add `public const string QName = "<spec:qname>";` to the class if not present.
+3. If no ODF QName exists for this feature, stop with `BLOCKED_SPEC_QNAME_REQUIRED`.
+
+**STOP and reject (`BLOCKED_INVALID_TASK_SHAPE`) if:**
+- Implementation would use `Dictionary<string, X?> _field = new()` to back persistent document state.
+  Dictionary fields for persistent features are PROHIBITED. Implement XML read/write path instead.
+- Feature adds a property that claims persistence but has no XML source.
+
+**For any property setter that persists document state:**
+Add a Type 4 roundtrip test before closing:
+`SetX(value) → Save() → Load() → Assert.Equal(value, GetX())`
+A setter task is INCOMPLETE without this test.
+
+---
 
 Add one bounded object-model feature to a commercial .NET product. This command extends
 an existing parsed object model (e.g., WorkbookModel, DocumentModel, ImageModel) with
@@ -90,3 +109,4 @@ with: skill_id, format_id, feature_name, model_class, changed_files, test_result
 
 - 1.0 (2026-06-02): Initial R92 governed command.
 - 1.2 (2026-06-03): Added rollback, transcript requirement, sample invocation, changelog (Skills R101).
+- 1.1 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK (QName compliance, dictionary-backing prohibition, roundtrip test requirement for setters).

@@ -1,0 +1,56 @@
+# Fixture: reject_undocumented_api
+# Tests that healed add-python-api skill rejects adding public def without docstring
+fixture_id: FIXTURE-006
+description: >
+  A task adding a public Python function without a docstring.
+  The healed skill must reject the implementation and require documentation.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-python-api
+  instruction: "Add get_named_ranges function to src/python/fods/parser.py"
+  target_file: src/python/fods/parser.py
+  proposed_implementation: |
+    def get_named_ranges(doc):
+        return doc.named_ranges
+
+expected_outcome:
+  verdict: INCOMPLETE_REJECTED
+  reason: >
+    Public function get_named_ranges has no docstring.
+    Per comment-and-docs-contract.md: all public Python APIs must have docstrings
+    describing: (1) ODF spec grounding, (2) parameters, (3) return value,
+    (4) persistence guarantees, (5) exception behavior.
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_ZERO
+
+correct_implementation_pattern: |
+  def get_named_ranges(doc: FodsDocument) -> list[FodsNamedRange]:
+      """Return all named ranges defined in this document.
+
+      Reads from table:named-expressions/table:named-range elements per ODF §9.4.5.
+      Returns empty list if no named ranges are defined.
+
+      Args:
+          doc: A parsed FodsDocument instance.
+
+      Returns:
+          List of FodsNamedRange objects; empty list if none defined.
+
+      Raises:
+          FodsParseError: If the document structure is malformed.
+      """
+      return doc.named_ranges
+
+healed_controls_that_block_this:
+  - skill: add-python-api v1.4 (MANDATORY PRE-CHECK ZERO)
+    check: "Public def without docstring → BLOCKED"
+  - validator: V102 (validate_undocumented_public_python_apis)
+    check: "Public def without docstring in new file → FAIL+blocking"
+  - contract: docs/code-quality/comment-and-docs-contract.md
+    check: "All public Python APIs must have docstrings with ODF spec reference"
+
+proof_requirement: >
+  V102 must FAIL on a Python file containing an undocumented public function.
+  V102 must PASS on the same file after the docstring is added.
+  Demonstrate both states.

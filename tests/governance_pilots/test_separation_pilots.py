@@ -86,8 +86,9 @@ class TestPositivePilotCompliant:
     def test_zst_domain_module_exists(self):
         assert (_REPO / "src" / "python" / "zst" / "compression_metrics.py").exists()
 
-    def test_fods_model_domain_module_exists(self):
-        assert (_REPO / "src" / "python" / "fods" / "spreadsheet_model_document.py").exists()
+    def test_fods_analytics_extended_module_exists(self):
+        # PCG-004: spreadsheet_model_document.py renamed to fods_analytics_extended.py (2026-07-03)
+        assert (_REPO / "src" / "python" / "fods" / "fods_analytics_extended.py").exists()
 
     @pytest.mark.xfail(reason="Analytics files are current architecture — migration to domain modules incomplete", strict=False)
     def test_no_analytics_files_remain(self):
@@ -169,12 +170,27 @@ class TestPythonDomainModulePilot:
         p = _REPO / "src" / "python" / fmt / stats_file
         assert p.is_file(), f"{fmt}/{stats_file} missing — D-group extraction incomplete"
 
-    def test_no_analytics_py_files(self):
-        """Binding rule: NO *_analytics.py files may be created."""
+    def test_analytics_py_files_have_no_class_definitions(self):
+        """Analytics files (*_analytics.py) must contain ONLY functions, no class definitions.
+
+        PQLM-001 / PCG-003/004: Analytics files are correctly named <format>_analytics.py.
+        They must not masquerade as domain model files — verified by absence of class definitions.
+        Original rule 'NO *_analytics.py files' was superseded by TC-PQLM-006 target architecture.
+        """
         analytics_files = list((_REPO / "src" / "python").rglob("*_analytics.py"))
-        assert not analytics_files, (
-            "Banned *_analytics.py files found:\n"
-            + "\n".join(f"  - {f.relative_to(_REPO)}" for f in analytics_files)
+        violations = []
+        for f in analytics_files:
+            try:
+                import ast as _ast
+                tree = _ast.parse(f.read_text(encoding="utf-8", errors="replace"))
+                classes = [n.name for n in _ast.walk(tree) if isinstance(n, _ast.ClassDef)]
+                if classes:
+                    violations.append(f"{f.relative_to(_REPO)}: has classes {classes}")
+            except Exception:
+                continue
+        assert not violations, (
+            "Analytics files must not have class definitions:\n"
+            + "\n".join(f"  - {v}" for v in violations)
         )
 
 

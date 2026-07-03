@@ -163,6 +163,222 @@ prompts:
     successor_rules: []
     validation_rules: []
 
+# Operational prompts — from Espanso integration (2026-07-03)
+# Source: C:\Users\prora\AppData\Roaming\espanso\match\format-factory.yml
+# Provenance map: .supervisor/prompts/espanso-provenance-map.yaml
+# These prompts address genuine capability gaps not covered by the 103 existing capabilities.
+operational_prompts:
+  - id: ESP-PROMPT-1
+    name: bounded-executor
+    file: .supervisor/prompts/bounded-executor.md
+    description: "Short-context one-taskcard-at-a-time executor with repository-persisted state"
+    stage: execution
+    mode: bounded_execution
+    inputs:
+      - .local/supervisor/active-plan-lock.json
+      - plans/.claude/<active-plan>.md
+    outputs:
+      - .local/supervisor/bounded-exec-checkpoint.json
+      - updated plan file (taskcard status)
+    output_schema: null
+    successor_rules:
+      - condition: "taskcard status == DONE and more PENDING taskcards remain"
+        next: ESP-PROMPT-1
+      - condition: "all taskcards DONE"
+        next: null
+    validation_rules:
+      - "must update taskcard status in plan file before stopping"
+      - "must not mark DONE without passing done-check"
+      - "must write checkpoint to .local/supervisor/bounded-exec-checkpoint.json"
+    espanso_source_trigger: ":ff-execute-short-context-plan"
+    espanso_gap_id: GAP-ESP-002
+
+  - id: ESP-PROMPT-2
+    name: readme-governance
+    file: .supervisor/prompts/readme-governance.md
+    description: "Root README forensic investigation and preservation-first enhancement"
+    stage: maintenance
+    mode: mutation
+    inputs:
+      - README.md
+      - .governance/capabilities/registry.yaml
+      - registry/format-registry.yaml
+      - .supervisor/skill-registry.yaml
+    outputs:
+      - README.md (updated in-place)
+    output_schema: null
+    successor_rules:
+      - condition: "all claims verified and updates applied"
+        next: null
+    validation_rules:
+      - "must read README.md before any mutation"
+      - "must not replace README from scratch"
+      - "must not remove human-authored context without evidence it is false"
+      - "must not commit without explicit user approval"
+    espanso_source_trigger: ":ffreadme"
+    espanso_gap_id: GAP-ESP-001
+
+  - id: ESP-PROMPT-3
+    name: expert-review-plan
+    file: .supervisor/prompts/expert-review-plan.md
+    description: "Plan-mode-only expert manual system review — produces review plan, no source mutations"
+    stage: planning
+    mode: plan_only
+    inputs:
+      - src/python/ (read-only)
+      - src/net/ (read-only)
+      - .supervisor/ (read-only)
+      - tools/supervisor/ (read-only)
+    outputs:
+      - reports/expert-manual-system-review/review-plan-<sprint_id>.md
+      - reports/expert-manual-system-review/gap-matrix-<sprint_id>.yaml
+    output_schema: null
+    successor_rules:
+      - condition: "review plan complete"
+        next: null
+    validation_rules:
+      - "MUST NOT edit src/ or tests/"
+      - "MUST NOT commit or push"
+      - "MUST NOT approve Gate 8 or Gate 11"
+      - "output must include gap_type and heal_system_first fields for each gap"
+    espanso_source_trigger: ":ff-expert-review-plan"
+    espanso_gap_id: GAP-ESP-007
+
+  - id: ESP-PROMPT-4
+    name: found-it-own-it
+    file: .supervisor/prompts/found-it-own-it.md
+    description: "Issue ownership enforcement protocol — when you discover it, you own it"
+    stage: cross_cutting
+    mode: policy_and_workflow
+    inputs:
+      - any discovered issue (failed test, broken fixture, schema violation, etc.)
+    outputs:
+      - taskcard in active plan or .local/evidences/<run_id>/
+      - regression test or validator update
+    output_schema: null
+    successor_rules:
+      - condition: "issue healed and verified"
+        next: null
+      - condition: "issue BLOCKED by external"
+        next: null
+    validation_rules:
+      - "must not skip BLOCKING issues discovered during execution"
+      - "must not mark sprint complete with known BLOCKING issues open"
+      - "must produce a taskcard, not just a prose note"
+    espanso_source_trigger: ":found-it-own-it"
+    espanso_gap_id: GAP-ESP-003
+
+  - id: ESP-PROMPT-5
+    name: machinery-iteration-forensics
+    file: .supervisor/prompts/machinery-iteration-forensics.md
+    description: "Diagnose and repair lifecycle iteration failures in machinery plans"
+    stage: diagnostics
+    mode: repair
+    inputs:
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/active-plan-lock.json
+      - .local/supervisor/lifecycle-audit-results.json
+      - reports/supervisor/approval-gates.md
+    outputs:
+      - repaired continuation-signal.json or plan-lock
+      - evidence of one additional lifecycle iteration
+    output_schema: null
+    successor_rules:
+      - condition: "check_continuation.py returns CONTINUE"
+        next: null
+    validation_rules:
+      - "must classify root cause into named category before applying repair"
+      - "must run check_continuation.py after repair to confirm CONTINUE"
+      - "must not suppress the underlying machinery failure"
+    espanso_source_trigger: ":ff-machinery-iteration-forensics"
+    espanso_gap_id: GAP-ESP-004
+
+  - id: ESP-PROMPT-6
+    name: human-free-rectification
+    file: .supervisor/prompts/human-free-rectification.md
+    description: "Scan governance files and remove unjustified human-required language"
+    stage: governance_repair
+    mode: mutation
+    inputs:
+      - AGENTS.md
+      - CLAUDE.md
+      - docs/governance/**
+      - .supervisor/prompts/**
+    outputs:
+      - modified governance files
+      - reports/human-free-audit/scan-results-<date>.yaml
+      - reports/human-free-audit/repair-log-<date>.md
+    output_schema: null
+    successor_rules:
+      - condition: "all files scanned and defects repaired"
+        next: null
+    validation_rules:
+      - "must not remove genuine external gates (Gate 11, credentials, branch protection)"
+      - "must classify each finding as GOVERNANCE_DEFECT or TRUE_EXTERNAL_GATE before editing"
+      - "must write repair log to reports/human-free-audit/"
+    espanso_source_trigger: ":ff-humanfree"
+    espanso_gap_id: GAP-ESP-008
+
+  - id: ESP-PROMPT-7
+    name: layer-hardening-template
+    file: .supervisor/prompts/layer-hardening-template.md
+    description: "Parameterized per-layer production hardening — accepts layer_id 0-7 or 'all'"
+    stage: hardening
+    mode: mutation
+    inputs:
+      - layer_id: "0|1|2|3|4|5|6|7|all"
+      - relevant layer files (varies by layer_id)
+    outputs:
+      - .local/evidences/<run_id>/layer-<layer_id>-gap-ledger.yaml
+      - repaired layer files
+    output_schema: null
+    successor_rules:
+      - condition: "all BLOCKING gaps resolved"
+        next: null
+      - condition: "layer_id=all and current layer complete"
+        next: ESP-PROMPT-7
+    validation_rules:
+      - "must build gap ledger before executing repairs"
+      - "must run done-check for each taskcard"
+      - "must not use destructive git operations"
+    espanso_source_triggers:
+      - ":ffl0:"
+      - ":ffl1:"
+      - ":ffl2:"
+      - ":ffl3:"
+      - ":ffl4:"
+      - ":ffl5:"
+      - ":ffl6:"
+      - ":ffl7:"
+      - ":ffla:"
+    espanso_gap_id: GAP-ESP-005
+
+  - id: ESP-PROMPT-8
+    name: production-standards-enforcement
+    file: .supervisor/prompts/production-standards-enforcement.md
+    description: "Master governance + production code quality checklist enforcement sprint"
+    stage: governance_and_product
+    mode: mutation
+    inputs:
+      - docs/code-quality/production-library-standard-v2.md
+      - src/python/ (audit then repair)
+      - src/net/ (audit then repair)
+      - registry/source-structure-baseline.json
+    outputs:
+      - new or updated governance validators
+      - src/ files with violations fixed
+      - evidence of governance machinery detecting violations
+    output_schema: null
+    successor_rules:
+      - condition: "all checklist items covered by governance and all validators pass"
+        next: null
+    validation_rules:
+      - "MUST NOT heal product code before governance machinery is proven"
+      - "MUST NOT increase baseline_loc_cap values (write-once)"
+      - "must build checklist (Phase 1) before any mutations"
+    espanso_source_trigger: ":ffmgh:"
+    espanso_gap_id: GAP-ESP-006
+
 # Pre-existing prompts (for completeness)
 existing_prompts:
   - id: LEGACY-EVIDENCE-REVIEW

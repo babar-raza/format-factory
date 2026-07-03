@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V89).
+"""governance_validator_runner.py — Runs all governance validators (V1-V109).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -40,7 +40,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V69) against a declaration.
+    """Run all governance validators (V1-V109) against a declaration.
 
     Returns a composite result dict:
       {
@@ -415,6 +415,46 @@ def run_all_governance_validators(
             _v87(declaration, repo_root),  # V87
             _v88(declaration, repo_root),  # V88
             _v89(declaration, repo_root),  # V89
+        ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V100-V109 (TC-PQLM-012): Product file layout + code quality validators
+    # Note: ext3 uses {validator_id, status, blocks_sprint} schema; normalize to {validator, result, blocks_sprint}
+    def _norm_ext3(r: dict) -> dict:
+        """Normalize ext3 validator output to standard runner schema."""
+        return {
+            "validator": r.get("validator_id", "ext3_validator"),
+            "result": r.get("status", "PASS"),
+            "blocks_sprint": r.get("blocks_sprint", False),
+            "summary": r.get("summary", ""),
+            **{k: v for k, v in r.items() if k not in {"validator_id", "status"}},
+        }
+
+    try:
+        from governance_validators_ext3 import (  # noqa: PLC0415
+            validate_suspicious_filenames as _v100,
+            validate_history_identifiers_in_source as _v101,
+            validate_undocumented_public_python_apis as _v102,
+            validate_ungoverned_todo_markers as _v103,
+            validate_constant_return_public_methods as _v104,
+            validate_getter_without_parser_source as _v105,
+            validate_setter_without_writer_path as _v106,
+            validate_test_only_public_apis as _v107,
+            validate_detached_persistent_state as _v108,
+            validate_files_outside_approved_layout as _v109,
+        )
+        results.extend([
+            _norm_ext3(_v100(declaration, repo_root)),  # V100: suspicious filenames (blocking)
+            _norm_ext3(_v101(declaration, repo_root)),  # V101: history identifiers in source (warn)
+            _norm_ext3(_v102(declaration, repo_root)),  # V102: undocumented public Python APIs (blocking for new)
+            _norm_ext3(_v103(declaration, repo_root)),  # V103: ungoverned TODO markers (warn)
+            _norm_ext3(_v104(declaration, repo_root)),  # V104: constant-return public methods (blocking for new)
+            _norm_ext3(_v105(declaration, repo_root)),  # V105: getter without parser source (blocking for new)
+            _norm_ext3(_v106(declaration, repo_root)),  # V106: setter without writer path (blocking for new)
+            _norm_ext3(_v107(declaration, repo_root)),  # V107: test-only public APIs (warn)
+            _norm_ext3(_v108(declaration, repo_root)),  # V108: detached persistent state dict (blocking for new)
+            _norm_ext3(_v109(declaration, repo_root)),  # V109: files outside approved layout (blocking for new)
         ])
     except Exception:
         pass  # Non-blocking on import failure

@@ -11,6 +11,7 @@ FOSS track only — no commercial readiness implied.
 
 # Import all core codec functions and exception classes
 from .ndjson_codec import *  # noqa: F401, F403
+from .ndjson_record_stats import *  # noqa: F401, F403
 
 # Import spec-level domain module (Compat facade)
 from .Compat.ndjson_record import NdjsonRecord  # noqa: F401

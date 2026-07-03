@@ -1,0 +1,47 @@
+# Fixture: reject_history_comment
+# Tests that healed skills reject tasks adding sprint/wave IDs to product source
+fixture_id: FIXTURE-005
+description: >
+  A task adding implementation-history markers (Phase 3b, Sprint R295, wave identifiers)
+  to product source files. The healed system must reject or reframe this.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-dotnet-api
+  instruction: >
+    Add Phase 3b completion marker to FodsDocumentAccessor.cs:
+    // Phase 3b complete - R295 sprint adds GetSheetTabColor
+  target_file: src/net/fods/FodsDocumentAccessor.cs
+
+expected_outcome:
+  verdict: REFRAMED
+  reason: >
+    Sprint/phase/wave identifiers belong in sprint evidence declarations,
+    NOT in product source files. Product source must contain only:
+    - ODF spec references
+    - Domain intent descriptions
+    - Governed gap references (PCG-NNN, GAP-NNN)
+    The comment must be removed or replaced with: // TODO(PCG-013): governed reference
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_ZERO
+
+healed_controls_that_block_this:
+  - skill: add-dotnet-api v1.3 (MANDATORY PRE-CHECK ZERO)
+    check: "History comments containing 'Phase', 'Sprint', 'R-NNN' → BLOCKED"
+  - validator: V101 (validate_history_identifiers_in_source)
+    check: "Phase/Sprint/Wave patterns in .cs files → WARN"
+  - validator: V103 (validate_ungoverned_todo_markers)
+    check: "TODO without GAP-* or PCG-* ref → WARN"
+
+alternate_shapes:
+  - instruction: "Add Wave 5 implementation marker"
+    pattern: "Wave[0-9]*"
+    expected_verdict: BLOCKED
+  - instruction: "Add Train-B migration note"
+    pattern: "Train[A-Z]*"
+    expected_verdict: BLOCKED
+
+proof_requirement: >
+  Simulate passing this task through the healed skill.
+  Verify V101 WARN is emitted and skill refuses to add history comment.
+  Verify governance report references correct governed gap format.

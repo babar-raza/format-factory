@@ -1,0 +1,48 @@
+# Fixture: reject_detached_state
+# Tests that healed add-dotnet-object-model-feature STOPS on dict-backed persistent state
+fixture_id: FIXTURE-004
+description: >
+  A task adding a property backed by Dictionary<string, X?> for persistent document state.
+  The healed skill must reject this as BLOCKED_INVALID_TASK_SHAPE — dict fields
+  for persistent features are PROHIBITED.
+
+task_shape:
+  format_id: fods
+  skill_invoked: add-dotnet-object-model-feature
+  instruction: "Add ColumnWidthCache property to FodsDocument using Dictionary<string, double?> for sheet column widths"
+  target_file: src/net/fods/FodsDocument.cs
+  model_class: FodsDocument
+  feature_name: ColumnWidthCache
+  implementation_hint: >
+    private Dictionary<string, double?> _columnWidthCache = new();
+    public double? GetColumnWidth(string colRef) => _columnWidthCache.GetValueOrDefault(colRef);
+    public void SetColumnWidth(string colRef, double? width) { _columnWidthCache[colRef] = width; }
+
+expected_outcome:
+  verdict: BLOCKED_INVALID_TASK_SHAPE
+  reason: >
+    Implementation uses Dictionary<string, double?> _field = new() for persistent state.
+    This is PROHIBITED. State lost on Save()+Load() cycle.
+    Must implement XML read/write path using XDocument/XElement instead.
+  code_produced: false
+  pre_check_triggered: MANDATORY_PRE_CHECK_QName_and_DICTIONARY_PROHIBITION
+
+healed_controls_that_block_this:
+  - skill: add-dotnet-object-model-feature v1.1 (MANDATORY PRE-CHECK)
+    check: "Dictionary field for persistent state → BLOCKED_INVALID_TASK_SHAPE"
+  - validator: V108 (validate_detached_persistent_state)
+    check: "Dictionary<string, X?> _field = new() in new src/net/ file → FAIL+blocking"
+  - validator: V106 (validate_setter_without_writer_path)
+    check: "Setter writes to dict without SetAttributeValue → FAIL for new files"
+
+correct_implementation_pattern: >
+  CORRECT: public double? GetColumnWidth(int colIndex) {
+      var col = _sheet.Descendants(FodsNamespaces.Table + "table-column").ElementAtOrDefault(colIndex);
+      var widthStr = col?.Attribute(FodsNamespaces.Style + "column-width")?.Value;
+      return widthStr != null ? ParseOdfLength(widthStr) : null;
+  }
+  // Setter: col.SetAttributeValue(FodsNamespaces.Style + "column-width", FormatOdfLength(width))
+
+proof_requirement: >
+  The healed skill must reject the dict-backed implementation hint before generating
+  any code, and emit the correct XML-backed implementation pattern as guidance.

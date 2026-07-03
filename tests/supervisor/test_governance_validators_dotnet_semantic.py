@@ -227,7 +227,7 @@ class TestV88DetachedDictionaryFields:
 
     def test_pass_when_no_dotnet_files(self):
         """V88 should skip and PASS when no .NET files are in changed_files."""
-        decl = _decl(changed_files=["src/python/fods/spreadsheet_document.py"])
+        decl = _decl(changed_files=["src/python/fods/fods_analytics.py"])
         result = validate_dotnet_detached_dictionary_fields(decl)
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False

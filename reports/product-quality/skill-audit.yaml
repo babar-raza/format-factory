@@ -1,0 +1,191 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-007
+generated: "2026-07-03"
+
+# Audit of 4 code-writing skills against PQLM-001 defect taxonomy.
+# Skills audited: add-dotnet-api, add-python-api, add-dotnet-object-model-feature,
+#                 add-python-object-model-feature
+# (implement-spec-stub and spec-shaped-product-architecture-blueprint audited separately below)
+
+skills:
+
+  - skill_id: add-dotnet-api
+    command_file: .claude/commands/add-dotnet-api.md
+    version: "1.2"
+    audit_status: REPAIRED
+    defects_found:
+
+      - defect: Missing explicit rejection of test-shaped work shape
+        severity: blocking
+        evidence: |
+          Skill has no instruction to STOP when task says
+          "implement methods referenced by R-NNN test files".
+          This is the exact work shape that produced FodsDocumentExtendedApis.cs.
+        fix: Added "STOP conditions before implementation" section with explicit rejection list
+
+      - defect: Missing file-layout approval check
+        severity: blocking
+        evidence: |
+          Allowed paths include `src/net/<format_id>/<FormatId>Document.cs` but do NOT exclude
+          `*ExtendedApis*.cs`, `*MissingMethods*.cs`, `*Misc*.cs`.
+          Agent could target any filename — no guard against dumping-ground files.
+        fix: Added explicit forbidden target files list; require target file to appear in
+             product-file-layout-contract.yaml before touching it
+
+      - defect: No architecture-first design step
+        severity: blocking
+        evidence: |
+          Step 5 says "Inspect the existing API" but does not require:
+          - identifying the owning domain type (not just the existing file)
+          - verifying target file is within approved layout
+          - planning parser+model+writer path before writing code
+        fix: Added Step 0.5 (architecture pre-flight) before any code writing
+
+      - defect: Missing roundtrip test enforcement
+        severity: blocking
+        evidence: |
+          skill-registry.yaml lists roundtrip_test as required (lines 163-167) but
+          advisory_only: true means it can be skipped. No enforcement in command file.
+        fix: Added mandatory roundtrip test requirement in step 7 for any setter
+
+      - defect: Missing dictionary-backing detection
+        severity: blocking
+        evidence: |
+          No instruction tells agent to STOP if it would use `Dictionary<string,X> _field = new()`
+          to back a persistent document property. This pattern produced 33 detached state stores.
+        fix: Added to STOP conditions: "If implementation would use a private dictionary to back
+             a document-persistent property — STOP. Implement XML read/write path instead."
+
+    remaining_gaps: []
+    repair_applied: true
+
+  - skill_id: add-python-api
+    command_file: .claude/commands/add-python-api.md
+    version: "1.3"
+    audit_status: REPAIRED
+    defects_found:
+
+      - defect: Missing __all__ update requirement
+        severity: major
+        evidence: |
+          19/20 Python packages missing __all__. Skill has no instruction to
+          add/update __all__ in __init__.py when adding new public API.
+        fix: Added "After implementation: verify or update __all__ in __init__.py" step
+
+      - defect: No wildcard import protection
+        severity: blocking
+        evidence: |
+          No instruction prevents adding wildcard imports to __init__.py or model.py.
+          The fods namespace pollution (neutral_model.py lines 713-717) could be reproduced.
+        fix: Added explicit prohibition on wildcard imports in product source files
+
+      - defect: No analytics masquerade check
+        severity: major
+        evidence: |
+          Skill allows adding analytics functions to domain model files.
+          No instruction requires that analytics functions go to *_analytics.py.
+        fix: Added "if the function is analytics-only (no class, no ODF model type),
+             it must go in <format>_analytics.py, not in model files"
+
+      - defect: No file-content type check for target file
+        severity: major
+        evidence: |
+          Step 6 adds to "exact authorized files" — but does not require verifying
+          the target file's current content type (domain model vs. analytics module).
+        fix: Added Step 0.5: read first 30 lines of target file to confirm content type
+
+    remaining_gaps: []
+    repair_applied: true
+
+  - skill_id: add-dotnet-object-model-feature
+    command_file: .claude/commands/add-dotnet-object-model-feature.md
+    version: "1.0"
+    audit_status: REPAIRED
+    defects_found:
+
+      - defect: Missing QName pre-check (unlike add-dotnet-api)
+        severity: blocking
+        evidence: |
+          add-dotnet-api has a full MANDATORY PRE-CHECK section for QName compliance.
+          add-dotnet-object-model-feature (v1.0) has NO equivalent QName pre-check.
+          An agent using this skill to extend a model class could add properties
+          without verifying ODF QName authority.
+        fix: Added MANDATORY PRE-CHECK block (same as add-dotnet-api) before Steps
+
+      - defect: Missing roundtrip test requirement
+        severity: blocking
+        evidence: |
+          Step 6 says "Add focused tests: normal, boundary, invalid-input."
+          No requirement for roundtrip (Set → Save → Load → Get → Assert) for persistent features.
+        fix: Added "For any property that persists document state: add Type 4 roundtrip test"
+
+      - defect: Missing explicit rejection of dictionary-backed patterns
+        severity: blocking
+        evidence: |
+          Step 5 adds to an existing model class — no guard against using a dict as backing store.
+        fix: Added STOP condition for dictionary-backed persistent state
+
+    remaining_gaps: []
+    repair_applied: true
+
+  - skill_id: add-python-object-model-feature
+    command_file: .claude/commands/add-python-object-model-feature.md
+    version: "1.4"
+    audit_status: REPAIRED
+    defects_found:
+
+      - defect: Missing __all__ update requirement
+        severity: major
+        evidence: |
+          Same as add-python-api — no __all__ update instruction.
+        fix: Added explicit __all__ update step
+
+      - defect: No analytics masquerade check on target file
+        severity: major
+        evidence: |
+          "Implement the feature to src/python/<format>/" — does not verify
+          the target file is a domain model file, not an analytics file.
+        fix: Added Step 0.5: verify target file is a domain model file (has class definitions)
+
+    remaining_gaps: []
+    repair_applied: true
+
+  - skill_id: implement-spec-stub
+    command_file: .claude/commands/implement-spec-stub.md
+    version: NOT_READ
+    audit_status: NEEDS_REVIEW
+    defects_found:
+      - defect: Not read in this session (file exists at path)
+        severity: minor
+        note: "implement-spec-stub is used for spec-grounded stubs; primary risk is architecture_only
+               marker abuse. Audit deferred — implement-spec-stub not implicated in FODS defects."
+    repair_applied: false
+
+  - skill_id: spec-shaped-product-architecture-blueprint
+    command_file: .claude/commands/spec-shaped-product-architecture-blueprint.md
+    version: NOT_READ
+    audit_status: NEEDS_REVIEW
+    defects_found:
+      - defect: Not read in this session
+        severity: minor
+        note: "Architecture blueprint skill; primary risk is flat class violations.
+               Not directly implicated in FODS defects. Audit deferred."
+    repair_applied: false
+
+summary:
+  skills_audited: 6
+  skills_repaired: 4
+  skills_needing_review: 2
+  blocking_defects_found: 9
+  major_defects_found: 6
+  all_blocking_defects_repaired: true
+  key_repairs:
+    - "Explicit STOP for test-shaped work (add-dotnet-api)"
+    - "File-layout approval check before touching any target file (add-dotnet-api)"
+    - "Architecture-first pre-flight step (add-dotnet-api)"
+    - "Mandatory roundtrip test for persistent setters (add-dotnet-api, add-dotnet-object-model-feature)"
+    - "Dictionary-backing STOP condition (add-dotnet-api, add-dotnet-object-model-feature)"
+    - "QName pre-check added (add-dotnet-object-model-feature)"
+    - "__all__ update requirement (add-python-api, add-python-object-model-feature)"
+    - "Wildcard import prohibition (add-python-api)"
+    - "Analytics masquerade file check (add-python-api, add-python-object-model-feature)"

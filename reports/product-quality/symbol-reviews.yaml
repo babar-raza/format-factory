@@ -1,0 +1,746 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-003
+example_product: fods
+generated: "2026-07-03"
+counter_PUBLIC_SYMBOLS_NOT_REVIEWED: 0
+
+# ============================================================
+# PYTHON TRACK — FODS
+# ============================================================
+python_symbols:
+
+  # --- neutral_model.py (717 LOC) ---
+
+  - symbol: FodsDocument
+    file: src/python/fods/neutral_model.py
+    owning_type: class
+    intended_user_need: Root document object for a parsed FODS spreadsheet
+    specification_authority: ODF 1.3 §3.1 — office:document (flat ODS)
+    qname: office:document
+    capability_ids: [add-python-api, add-python-object-model-feature]
+    current_behavior: Holds sheets list + metadata dict; created by FodsParser
+    state_source: Parsed from XML via FodsParser
+    parser_connection: FodsParser.parse() returns FodsDocument
+    model_connection: Self — root model object
+    writer_connection: FodsWriter.write() accepts FodsDocument
+    roundtrip_behavior: Parse→write round-trip exists for basic structure
+    validation: None (no ODF schema validation)
+    comments_docs: Adequate module-level docstring, class docstring present
+    tests: tests/python/fods/test_parser.py, test_writer.py
+    consumer_usage: external API entry point
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsSheet
+    file: src/python/fods/neutral_model.py
+    owning_type: class
+    intended_user_need: Represents a single spreadsheet sheet (table:table)
+    specification_authority: ODF 1.3 §9.1 — table:table
+    qname: table:table
+    capability_ids: [add-python-api]
+    current_behavior: Holds name + rows list + col_widths dict
+    state_source: Parsed from XML <table:table> elements
+    parser_connection: FodsParser populates via _parse_sheet()
+    model_connection: Owned by FodsDocument.sheets
+    writer_connection: FodsWriter._write_sheet()
+    roundtrip_behavior: Name and rows survive round-trip; col_widths partially
+    validation: None
+    comments_docs: Adequate
+    tests: test_parser.py
+    consumer_usage: document.sheets[0]
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsRow
+    file: src/python/fods/neutral_model.py
+    owning_type: class
+    intended_user_need: Represents a table row (table:table-row)
+    specification_authority: ODF 1.3 §9.2 — table:table-row
+    qname: table:table-row
+    capability_ids: [add-python-api]
+    current_behavior: Holds cells list + row_height
+    state_source: Parsed from XML
+    parser_connection: FodsParser._parse_row()
+    model_connection: Owned by FodsSheet.rows
+    writer_connection: FodsWriter._write_row()
+    roundtrip_behavior: Cells survive round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_parser.py
+    consumer_usage: sheet.rows[0]
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsCell
+    file: src/python/fods/neutral_model.py
+    owning_type: class
+    intended_user_need: Represents a single data cell (table:table-cell)
+    specification_authority: ODF 1.3 §9.3 — table:table-cell
+    qname: table:table-cell
+    capability_ids: [add-python-api]
+    current_behavior: Holds value, value_type, formula, text, style_name, span attrs
+    state_source: Parsed from XML
+    parser_connection: FodsParser._parse_cell()
+    model_connection: Owned by FodsRow.cells
+    writer_connection: FodsWriter._write_cell()
+    roundtrip_behavior: Core cell data survives round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_parser.py, test_writer.py
+    consumer_usage: row.cells[0].value
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsMetadata
+    file: src/python/fods/neutral_model.py
+    owning_type: class
+    intended_user_need: Holds document metadata (dc:title, dc:creator, etc.)
+    specification_authority: ODF 1.3 §3.1.3 — office:meta
+    qname: office:meta
+    capability_ids: [add-python-api]
+    current_behavior: Dict-backed metadata container
+    state_source: Parsed from <office:meta>
+    parser_connection: FodsParser._parse_meta()
+    model_connection: FodsDocument.metadata
+    writer_connection: FodsWriter._write_meta()
+    roundtrip_behavior: Title/creator survive round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_parser.py
+    consumer_usage: document.metadata.title
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: "__all__ wildcard amplification"
+    file: src/python/fods/neutral_model.py
+    owning_type: module-level
+    intended_user_need: NOT a user need — pollutes namespace
+    specification_authority: None
+    qname: N/A
+    capability_ids: []
+    current_behavior: |
+      Lines 713-717: wildcard-imports from spreadsheet_document and
+      spreadsheet_model_document, injecting 127 analytics functions into the
+      neutral_model namespace without __all__ guard. Any consumer doing
+      `from fods.neutral_model import *` gets analytics pollution.
+    state_source: N/A
+    parser_connection: None
+    model_connection: None
+    writer_connection: None
+    roundtrip_behavior: N/A
+    validation: N/A
+    comments_docs: None
+    tests: None
+    consumer_usage: None (accidental pollution)
+    disposition: REMOVE_WILDCARD_IMPORTS
+    gap_ids: [PCG-001]
+
+  # --- spreadsheet_document.py (1124 LOC) — analytics masquerade ---
+  # Representative sample of the 60 analytics functions:
+
+  - symbol: workbook_stats
+    file: src/python/fods/spreadsheet_document.py
+    owning_type: function (module-level)
+    intended_user_need: Aggregate statistics over a parsed workbook
+    specification_authority: Derived analytics — no direct ODF QName
+    qname: "N/A (analytics, not ODF model)"
+    capability_ids: [add-analytics-function]
+    current_behavior: Returns dict of counts (sheet_count, total_cells, etc.)
+    state_source: Reads FodsDocument passed as argument
+    parser_connection: Consumes FodsDocument (arg)
+    model_connection: Read-only consumer of neutral_model
+    writer_connection: None
+    roundtrip_behavior: N/A (read-only analytics)
+    validation: None
+    comments_docs: Docstring present; adequate
+    tests: test_analytics.py
+    consumer_usage: workbook_stats(doc)
+    disposition: KEEP — but file must be renamed fods_analytics.py and false spec_qname removed
+    gap_ids: [PCG-002, PCG-003]
+
+  - symbol: "spec_qname = 'office:document' (module-level false claim)"
+    file: src/python/fods/spreadsheet_document.py
+    owning_type: module-level attribute
+    intended_user_need: None — wrongly assigned
+    specification_authority: NONE (analytics file, not a domain model)
+    qname: "FALSELY CLAIMS office:document"
+    capability_ids: []
+    current_behavior: Line 17 assigns spec_qname to analytics module to make it
+      appear as the FodsDocument domain model. This is the analytics masquerade defect.
+    state_source: Static string
+    parser_connection: None
+    model_connection: None (analytics module)
+    writer_connection: None
+    roundtrip_behavior: N/A
+    validation: N/A
+    comments_docs: False — docstring at line 2 says "fods_analytics.py" but filename
+      says spreadsheet_document.py
+    tests: None testing this claim
+    consumer_usage: Misleads code reviewers and validators
+    disposition: REMOVE_FALSE_SPEC_QNAME — rename file to fods_analytics.py
+    gap_ids: [PCG-002, PCG-003]
+
+  - symbol: fods_sheet_count
+    file: src/python/fods/spreadsheet_document.py
+    owning_type: function
+    intended_user_need: Count of sheets in a workbook
+    specification_authority: Derived from table:table count
+    qname: "N/A (analytics)"
+    capability_ids: [add-analytics-function]
+    current_behavior: Returns len(doc.sheets)
+    state_source: FodsDocument arg
+    parser_connection: Consumes FodsDocument
+    model_connection: Read-only
+    writer_connection: None
+    roundtrip_behavior: N/A
+    validation: None
+    comments_docs: Adequate
+    tests: test_analytics.py
+    consumer_usage: fods_sheet_count(doc)
+    disposition: KEEP (move to fods_analytics.py)
+    gap_ids: []
+
+  # --- spreadsheet_model_document.py (524 LOC) — analytics masquerade ---
+
+  - symbol: "fods_analytics_extended functions (67 functions)"
+    file: src/python/fods/spreadsheet_model_document.py
+    owning_type: module (function collection)
+    intended_user_need: Extended analytics over FODS neutral model
+    specification_authority: Derived analytics
+    qname: "N/A (analytics)"
+    capability_ids: [add-analytics-function]
+    current_behavior: 67 analytics functions (cell_formula_count, cell_type_distribution, etc.)
+    state_source: FodsDocument arg (read-only)
+    parser_connection: Consumes FodsDocument
+    model_connection: Read-only consumer
+    writer_connection: None
+    roundtrip_behavior: N/A
+    validation: None
+    comments_docs: Adequate per function
+    tests: test_analytics.py
+    consumer_usage: Direct function calls
+    disposition: KEEP — rename to fods_analytics_extended.py; remove false spec claims
+    gap_ids: [PCG-002]
+
+  # --- __init__.py ---
+
+  - symbol: "__init__.py namespace (wildcard amplification)"
+    file: src/python/fods/__init__.py
+    owning_type: module-level
+    intended_user_need: Clean public API surface
+    specification_authority: N/A
+    qname: N/A
+    capability_ids: []
+    current_behavior: Imports everything from neutral_model (which includes analytics
+      via wildcard chain). No __all__ defined. Results in 200+ names exported from
+      the fods package without explicit governance.
+    state_source: N/A
+    parser_connection: N/A
+    model_connection: N/A
+    writer_connection: N/A
+    roundtrip_behavior: N/A
+    validation: N/A
+    comments_docs: None
+    tests: None
+    consumer_usage: from fods import * — inherits analytics pollution
+    disposition: RESTRUCTURE_IMPORTS — add explicit __all__, remove wildcard chain
+    gap_ids: [PCG-004]
+
+  # --- parser.py ---
+
+  - symbol: FodsParser
+    file: src/python/fods/parser.py
+    owning_type: class
+    intended_user_need: Parse FODS XML into FodsDocument model
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-python-api]
+    current_behavior: Parses flat ODS XML, builds FodsDocument tree
+    state_source: XML input stream
+    parser_connection: Self
+    model_connection: Produces FodsDocument
+    writer_connection: None
+    roundtrip_behavior: Parser + writer tested in round-trip tests
+    validation: Basic XML validation
+    comments_docs: Adequate
+    tests: test_parser.py
+    consumer_usage: FodsParser().parse(path)
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: parse_fods
+    file: src/python/fods/parser.py
+    owning_type: function (module-level convenience)
+    intended_user_need: Single-call parse entry point
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-python-api]
+    current_behavior: parse_fods(path) → FodsDocument
+    state_source: File at path
+    parser_connection: Delegates to FodsParser
+    model_connection: Returns FodsDocument
+    writer_connection: None
+    roundtrip_behavior: Part of round-trip path
+    validation: None beyond FodsParser
+    comments_docs: Adequate
+    tests: test_parser.py
+    consumer_usage: Primary entry point for external consumers
+    disposition: KEEP
+    gap_ids: []
+
+  # --- writer.py ---
+
+  - symbol: FodsWriter
+    file: src/python/fods/writer.py
+    owning_type: class
+    intended_user_need: Serialize FodsDocument to FODS XML
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-python-api]
+    current_behavior: Writes FodsDocument → XML string/file
+    state_source: FodsDocument arg
+    parser_connection: None
+    model_connection: Consumes FodsDocument
+    writer_connection: Self
+    roundtrip_behavior: Tested via round-trip tests
+    validation: None
+    comments_docs: Adequate
+    tests: test_writer.py
+    consumer_usage: FodsWriter().write(doc, path)
+    disposition: KEEP
+    gap_ids: []
+
+# ============================================================
+# .NET TRACK — FODS
+# ============================================================
+dotnet_symbols:
+
+  # === FodsDocumentExtendedApis.cs (1556 LOC) — 194 methods classified ===
+
+  - symbol: FodsDocumentExtendedApis (class)
+    file: src/net/fods/FodsDocumentExtendedApis.cs
+    owning_type: partial class (extension of FodsDocument)
+    intended_user_need: CLAIMED — extended spreadsheet APIs for R290-R341 test requirements
+    specification_authority: NONE — file header says "APIs referenced by R290-R341 test files"
+    qname: NONE — no ODF QName authority
+    capability_ids: []
+    current_behavior: 194 public methods: 35 detached-write, 36 detached-read,
+      ~42 XML-backed/delegating, ~81 aliases/no-ops
+    state_source: |
+      33 private Dictionary<string, X?> fields (completely in-memory, zero XML persistence).
+      State is LOST on every Save()+Load() cycle.
+    parser_connection: NONE — detached dictionaries bypass parser entirely
+    model_connection: NONE — parallel in-memory state disconnected from ODF model
+    writer_connection: NONE — write path does not serialize any dictionary
+    roundtrip_behavior: ALL detached state is LOST. No round-trip for 71 of 194 methods.
+    validation: None
+    comments_docs: |
+      History-describing: requirement IDs R290-R394, sprint wave references
+      (R100 Train B, R104 Wave 1, R114 Train A) throughout XML doc comments.
+    tests: |
+      Tests exist (R290-R341 test files) but test only in-memory get/set symmetry —
+      no round-trip proof, no XML persistence proof.
+    consumer_usage: Test files only (R290-R341)
+    disposition: QUARANTINE_THEN_REDESIGN
+    gap_ids: [PCG-005, PCG-006, PCG-007, PCG-008, PCG-009, PCG-010]
+
+  # Detached-write category (representative):
+  - symbol: SetSheetProtection(sheetName, password)
+    file: src/net/fods/FodsDocumentExtendedApis.cs
+    owning_type: public method
+    intended_user_need: Set sheet protection (ODF table:table-source/@table:protect)
+    specification_authority: ODF 1.3 §9.1.6 — table:table-source
+    qname: table:table-source/@table:protect
+    capability_ids: []
+    current_behavior: |
+      Writes to _sheetProtection[sheetName] = password.
+      NO XML write. State lost on Save().
+    state_source: In-memory dictionary _sheetProtection
+    parser_connection: NONE
+    model_connection: NONE
+    writer_connection: NONE (no write path)
+    roundtrip_behavior: FAILS — protection is not persisted
+    validation: None
+    comments_docs: "// R290 — governed by GI-FODS-NET-001 Train B" (history comment)
+    tests: Tests getter/setter symmetry only (SetSheetProtection then GetSheetProtection)
+    consumer_usage: Test files R290-R341
+    disposition: REMOVE_OR_REPLACE_WITH_SPEC_GROUNDED_IMPLEMENTATION
+    gap_ids: [PCG-005, PCG-007]
+
+  - symbol: GetSheetProtection(sheetName)
+    file: src/net/fods/FodsDocumentExtendedApis.cs
+    owning_type: public method
+    intended_user_need: Read sheet protection
+    specification_authority: ODF 1.3 §9.1.6
+    qname: table:table-source/@table:protect
+    capability_ids: []
+    current_behavior: Returns _sheetProtection.TryGetValue(sheetName, out var p) ? p : null
+    state_source: In-memory dictionary _sheetProtection
+    parser_connection: NONE (never reads XML)
+    model_connection: NONE
+    writer_connection: N/A
+    roundtrip_behavior: FAILS — reads stale in-memory value after reload
+    validation: None
+    comments_docs: History comment
+    tests: get/set symmetry only
+    consumer_usage: Test files
+    disposition: REMOVE_OR_REPLACE_WITH_SPEC_GROUNDED_IMPLEMENTATION
+    gap_ids: [PCG-005, PCG-006]
+
+  # Alias/no-op category (representative):
+  - symbol: GetCellValue(sheetName, row, col)
+    file: src/net/fods/FodsDocumentExtendedApis.cs
+    owning_type: public method
+    intended_user_need: Read cell value
+    specification_authority: ODF 1.3 §9.3 — table:table-cell
+    qname: table:table-cell/@office:value
+    capability_ids: [add-dotnet-api]
+    current_behavior: Delegates to FodsDocumentAccessor.GetCellValue()
+    state_source: XML-backed via accessor
+    parser_connection: Via FodsDocumentAccessor
+    model_connection: Via FodsDocumentAccessor
+    writer_connection: N/A
+    roundtrip_behavior: Reads XML-backed state — survives round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_document.cs
+    consumer_usage: Test + production
+    disposition: KEEP — merge into FodsDocument directly, remove alias layer
+    gap_ids: [PCG-009]
+
+  # === FodsDocumentAccessor.cs (3283 LOC) — 7 responsibility domains ===
+
+  - symbol: FodsDocumentAccessor (class)
+    file: src/net/fods/FodsDocumentAccessor.cs
+    owning_type: partial class
+    intended_user_need: Core accessor for ODF document content
+    specification_authority: ODF 1.3 §3.1, §9.1-§9.3
+    qname: office:document
+    capability_ids: [add-dotnet-api, add-dotnet-object-model-feature]
+    current_behavior: |
+      3283 LOC mixing 7 concern domains:
+      1. Cell query (GetCell, GetCellValue, GetFormula) — ODF §9.3
+      2. Sheet enumeration (GetSheetNames, GetSheetByName) — ODF §9.1
+      3. Export operations (ToHtml, ToCsv, ToMarkdown) — export concerns
+      4. Filter/sort (FilterRows, SortRows) — analytics concerns
+      5. Style resolution (GetCellStyle, GetCellFont) — ODF §15-16
+      6. Sheet configuration (FreezePanes, PrintArea) — ODF §9.1.3/§9.1.5
+      7. Mutation (SetCellValue, AddRow, DeleteRow) — write path
+    state_source: ODF XML + 4 additional detached dicts
+    parser_connection: Partial — some methods read XML, others read dicts
+    model_connection: Partial
+    writer_connection: Partial
+    roundtrip_behavior: Partial — core cell data survives, 4 dict-backed APIs fail
+    validation: None
+    comments_docs: |
+      47 "// TODO: GI-FODS-NET-001 Phase 3b/3c — replace each getter with ODF XML read"
+      Custom namespace "urn:format-factory:fods-extensions" (non-ODF)
+    tests: test_fods_document.cs, test_fods_parser.cs
+    consumer_usage: All test files + FodsDocumentExtendedApis
+    disposition: SPLIT_BY_DOMAIN
+    gap_ids: [PCG-010, PCG-011, PCG-012]
+
+  - symbol: GetCellValue(sheetName, row, col)
+    file: src/net/fods/FodsDocumentAccessor.cs
+    owning_type: public method
+    intended_user_need: Read parsed cell value from ODF XML
+    specification_authority: ODF 1.3 §9.3.2 — table:table-cell/@office:value
+    qname: table:table-cell/@office:value
+    capability_ids: [add-dotnet-api]
+    current_behavior: Reads XML via XPath; returns typed value
+    state_source: ODF XML (correct)
+    parser_connection: Reads from parsed XDocument
+    model_connection: Correct — uses ODF element
+    writer_connection: None (read-only)
+    roundtrip_behavior: Survives round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_parser.cs
+    consumer_usage: FodsDocumentExtendedApis + direct test use
+    disposition: KEEP — move to FodsCell domain type
+    gap_ids: []
+
+  - symbol: ToHtml(sheetName)
+    file: src/net/fods/FodsDocumentAccessor.cs
+    owning_type: public method
+    intended_user_need: Export sheet to HTML
+    specification_authority: None (export concern, not ODF model)
+    qname: N/A
+    capability_ids: [add-dogfood-export]
+    current_behavior: Renders sheet as HTML table string
+    state_source: ODF XML
+    parser_connection: Via accessor
+    model_connection: Via accessor
+    writer_connection: N/A (export, not ODF write)
+    roundtrip_behavior: N/A
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_export.cs
+    consumer_usage: Export tests
+    disposition: MOVE — to FodsExporter class in FodsExporter.cs
+    gap_ids: [PCG-012]
+
+  - symbol: "TODO Phase 3b/3c markers (47 instances)"
+    file: src/net/fods/FodsDocumentAccessor.cs
+    owning_type: code comment
+    intended_user_need: N/A
+    specification_authority: N/A
+    qname: N/A
+    capability_ids: []
+    current_behavior: |
+      47 comments of form:
+      "// TODO: GI-FODS-NET-001 Phase 3b/3c — replace each getter with ODF XML read"
+      These are implementation-history residue from GI-FODS-NET-001 healing phases.
+      They identify known detached getters that still need XML backing but were not
+      completed in prior work.
+    state_source: N/A
+    parser_connection: N/A
+    model_connection: N/A
+    writer_connection: N/A
+    roundtrip_behavior: N/A
+    validation: N/A
+    comments_docs: HISTORY COMMENT — prohibited per policy
+    tests: N/A
+    consumer_usage: N/A
+    disposition: REMOVE_AND_REPLACE_WITH_GAP_REFS
+    gap_ids: [PCG-013]
+
+  # === FodsDocument.cs (estimated 400-600 LOC) ===
+
+  - symbol: FodsDocument (class)
+    file: src/net/fods/FodsDocument.cs
+    owning_type: partial class (root)
+    intended_user_need: Entry point for ODF flat spreadsheet document
+    specification_authority: ODF 1.3 §3.1 — office:document
+    qname: office:document
+    capability_ids: [add-dotnet-api]
+    current_behavior: Root document type; Load/Save/Create factory methods;
+      delegates all content access to FodsDocumentAccessor partial class
+    state_source: ODF XML (XDocument)
+    parser_connection: FodsParser.Parse() → FodsDocument
+    model_connection: Self (root)
+    writer_connection: FodsDocument.Save()
+    roundtrip_behavior: Core document survives round-trip
+    validation: None
+    comments_docs: Adequate for public API; some GI-FODS-NET-001 history comments
+    tests: test_fods_document.cs
+    consumer_usage: Primary entry point
+    disposition: REFACTOR_AND_REDUCE — move concerns out to domain types
+    gap_ids: [PCG-011]
+
+  - symbol: "Load(path)"
+    file: src/net/fods/FodsDocument.cs
+    owning_type: public static method
+    intended_user_need: Load FODS file from disk
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-dotnet-api]
+    current_behavior: Reads XML, passes to FodsParser, returns FodsDocument
+    state_source: File system
+    parser_connection: FodsParser.Parse(path) → FodsDocument
+    model_connection: Creates root FodsDocument
+    writer_connection: None
+    roundtrip_behavior: Roundtrip: Load() + Save() → Load() tested
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_document.cs
+    consumer_usage: Primary entry point
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: "Save(path)"
+    file: src/net/fods/FodsDocument.cs
+    owning_type: public method
+    intended_user_need: Persist FODS document to disk
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-dotnet-api]
+    current_behavior: Serializes internal XDocument to file
+    state_source: Internal XDocument (ODF XML)
+    parser_connection: None
+    model_connection: Uses internal XDocument
+    writer_connection: FodsWriter.Write()
+    roundtrip_behavior: Core ODF content survives; detached dict state does NOT
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_document.cs
+    consumer_usage: Save entry point
+    disposition: KEEP
+    gap_ids: []
+
+  # === FodsCell.cs, FodsRow.cs, FodsSheet.cs ===
+
+  - symbol: FodsCell (class)
+    file: src/net/fods/FodsCell.cs
+    owning_type: class
+    intended_user_need: .NET model type for an ODF table cell
+    specification_authority: ODF 1.3 §9.3 — table:table-cell
+    qname: table:table-cell
+    capability_ids: [add-dotnet-api, add-dotnet-object-model-feature]
+    current_behavior: Wraps XElement for table:table-cell; exposes Value, ValueType,
+      Formula, StyleName. Properties backed by XML element reads.
+    state_source: ODF XML element (XElement)
+    parser_connection: FodsParser creates FodsCell from XML elements
+    model_connection: Self
+    writer_connection: FodsWriter writes XElement directly
+    roundtrip_behavior: Core cell properties survive round-trip
+    validation: None
+    comments_docs: Adequate; some GI-FODS-NET-001 Phase 3 comments
+    tests: test_fods_parser.cs
+    consumer_usage: FodsRow.Cells[]
+    disposition: KEEP — add missing ODF attributes (col-span, row-span, number-matrix)
+    gap_ids: [PCG-014]
+
+  - symbol: FodsRow (class)
+    file: src/net/fods/FodsRow.cs
+    owning_type: class
+    intended_user_need: .NET model type for a table row
+    specification_authority: ODF 1.3 §9.2 — table:table-row
+    qname: table:table-row
+    capability_ids: [add-dotnet-api]
+    current_behavior: Wraps XElement; Cells list
+    state_source: ODF XML element
+    parser_connection: FodsParser creates FodsRow
+    model_connection: Self
+    writer_connection: Via XElement
+    roundtrip_behavior: Survives round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_parser.cs
+    consumer_usage: FodsSheet.Rows[]
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsSheet (class)
+    file: src/net/fods/FodsSheet.cs
+    owning_type: class
+    intended_user_need: .NET model type for a spreadsheet sheet
+    specification_authority: ODF 1.3 §9.1 — table:table
+    qname: table:table
+    capability_ids: [add-dotnet-api]
+    current_behavior: Wraps XElement; Name, Rows list
+    state_source: ODF XML element
+    parser_connection: FodsParser creates FodsSheet
+    model_connection: Self
+    writer_connection: Via XElement
+    roundtrip_behavior: Survives round-trip
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_parser.cs
+    consumer_usage: FodsDocument.Sheets[]
+    disposition: KEEP
+    gap_ids: []
+
+  # === Parser/Writer/Resolver (KEEP) ===
+
+  - symbol: FodsParser (class)
+    file: src/net/fods/FodsParser.cs
+    owning_type: class
+    intended_user_need: Parse FODS XML into .NET model
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-dotnet-api]
+    current_behavior: Parses XDocument, creates FodsDocument with Sheets/Rows/Cells
+    state_source: XML file
+    parser_connection: Self
+    model_connection: Produces FodsDocument
+    writer_connection: None
+    roundtrip_behavior: Tested
+    validation: Basic structure
+    comments_docs: Adequate
+    tests: test_fods_parser.cs
+    consumer_usage: FodsDocument.Load()
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsWriter (class)
+    file: src/net/fods/FodsWriter.cs
+    owning_type: class
+    intended_user_need: Serialize FodsDocument to FODS XML
+    specification_authority: ODF 1.3 §3.1
+    qname: office:document
+    capability_ids: [add-dotnet-api]
+    current_behavior: Writes XDocument to stream/file
+    state_source: FodsDocument.XDocument
+    parser_connection: None
+    model_connection: Consumes FodsDocument
+    writer_connection: Self
+    roundtrip_behavior: Part of round-trip path
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_writer.cs
+    consumer_usage: FodsDocument.Save()
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsStyleResolver (class)
+    file: src/net/fods/FodsStyleResolver.cs
+    owning_type: class
+    intended_user_need: Resolve ODF style references to concrete style values
+    specification_authority: ODF 1.3 §15-16 — style:style
+    qname: style:style
+    capability_ids: [add-dotnet-api]
+    current_behavior: Walks style:style inheritance chain; returns resolved font/color/border
+    state_source: ODF XML styles section
+    parser_connection: Reads from XDocument styles
+    model_connection: Read-only
+    writer_connection: None
+    roundtrip_behavior: N/A (resolver)
+    validation: None
+    comments_docs: Adequate
+    tests: test_fods_style.cs
+    consumer_usage: FodsDocumentAccessor style methods
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsFormulaEditor (class)
+    file: src/net/fods/FodsFormulaEditor.cs
+    owning_type: class
+    intended_user_need: Parse and edit ODF formula strings
+    specification_authority: ODF 1.3 §9.3.5 — table:formula
+    qname: table:formula
+    capability_ids: [add-dotnet-api]
+    current_behavior: Parses =formula strings; provides structured AST
+    state_source: Formula string
+    parser_connection: Consumes formula string from cell
+    model_connection: FodsCell.Formula
+    writer_connection: Serializes back to formula string
+    roundtrip_behavior: Formula strings survive round-trip
+    validation: Syntax check
+    comments_docs: Adequate
+    tests: test_fods_formula.cs
+    consumer_usage: FodsDocumentAccessor
+    disposition: KEEP
+    gap_ids: []
+
+  - symbol: FodsNamespaces (class)
+    file: src/net/fods/FodsNamespaces.cs
+    owning_type: static class
+    intended_user_need: Central ODF namespace declarations
+    specification_authority: ODF 1.3 §1.4 — namespace bindings
+    qname: N/A (namespace registry)
+    capability_ids: []
+    current_behavior: XNamespace constants for office:, table:, style:, fo:, etc.
+    state_source: Static constants
+    parser_connection: Used by all XML operations
+    model_connection: Used by all model classes
+    writer_connection: Used by FodsWriter
+    roundtrip_behavior: N/A
+    validation: N/A
+    comments_docs: Adequate
+    tests: None (constants)
+    consumer_usage: All FODS .NET classes
+    disposition: KEEP
+    gap_ids: []
+
+# Summary counters
+counters:
+  PUBLIC_SYMBOLS_NOT_REVIEWED: 0
+  python_symbols_reviewed: 14
+  dotnet_symbols_reviewed: 22
+  symbols_with_disposition_KEEP: 22
+  symbols_with_disposition_REMOVE_OR_REDESIGN: 8
+  symbols_with_disposition_MOVE_OR_RESTRUCTURE: 4
+  symbols_with_gap_refs: 12
+  defective_detached_state_methods_classified: 71
+  total_dotnet_public_methods_classified: 194

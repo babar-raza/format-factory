@@ -1,0 +1,1261 @@
+# Espanso Provenance Map
+# Format Factory capability integration — source-of-truth for all Espanso blocks
+# Source: C:\Users\prora\AppData\Roaming\espanso\match\format-factory.yml
+# Generated: 2026-07-03
+# Total blocks: 118 | Populated: 118 | Lines: 126,293
+# Do NOT edit manually — update by re-running the integration protocol (:ff-import-espanso-capabilities)
+
+version: "1.0"
+source_path: "C:\\Users\\prora\\AppData\\Roaming\\espanso\\match\\format-factory.yml"
+source_line_count: 126293
+block_count: 118
+extraction_date: "2026-07-03"
+
+# Dispositions:
+#   GAP_NEW_ASSET         - No repo equivalent; new prompt asset created (see prompt_asset_id)
+#   COVERED_BY_EXISTING   - Fully covered by existing capabilities/commands
+#   PARTIAL_COVERAGE      - Partially covered; gap noted but no new asset created
+#   DUPLICATE_OF          - Semantically identical to another block (noted in notes)
+#   POLICY_ONLY           - Rule/principle belonging in AGENTS.md or CLAUDE.md, not a prompt
+#   EMPTY_BLOCK           - No replacement body
+
+provenance_entries:
+
+  - block_id: 1
+    primary_trigger: ":heal-registry-artifact-governance"
+    all_triggers: [":heal-registry-artifact-governance", ":repair-schema-and-test-drift", ":migrate-governance-machinery", ":ff-schema-heal"]
+    line_range: [3, 862]
+    family: product_machinery_healing
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: rollback-and-recovery
+    gap_id: null
+    notes: "Registry/schema heal sprint — covered by rollback-and-recovery + machinery_hardening"
+
+  - block_id: 2
+    primary_trigger: ":heal-skill-command-governance"
+    all_triggers: [":heal-skill-command-governance", ":fix-r106-r107-and-command-contracts", ":repair-registry-command-sync"]
+    line_range: [863, 1689]
+    family: skill_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: enforce-skill-first-execution
+    gap_id: null
+    notes: "Skill/command governance heal — covered by skill governance capability set"
+
+  - block_id: 3
+    primary_trigger: ":heal-product-code-writing-system"
+    all_triggers: [":heal-product-code-writing-system", ":govern-product-source-quality", ":qname-professional-library"]
+    line_range: [1690, 2723]
+    family: product_code_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: extract-analytics-from-monolith
+    gap_id: null
+    notes: "Product code quality healing — covered by extract-analytics-from-monolith + production-library-standard-v2.md"
+
+  - block_id: 4
+    primary_trigger: ":harden-project-status-generator"
+    all_triggers: [":harden-project-status-generator", ":separate-machinery-and-product-status", ":verify-status-accuracy"]
+    line_range: [2724, 3639]
+    family: status_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: generate-root-status
+    gap_id: null
+    notes: "Status generator hardening — covered by generate-root-status"
+
+  - block_id: 5
+    primary_trigger: ":deep-product-architecture-healing"
+    all_triggers: [":deep-product-architecture-healing", ":heal-generated-library-quality", ":professional-library-quality"]
+    line_range: [3640, 4883]
+    family: product_architecture
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: spec-parity-source-regeneration-and-migration
+    gap_id: null
+    notes: "Product architecture deep heal — covered by spec-parity-source-regeneration"
+
+  - block_id: 6
+    primary_trigger: ":audit-product-code-governance"
+    all_triggers: [":audit-product-code-governance", ":heal-semantic-stubs", ":professional-library-quality-sprint"]
+    line_range: [4884, 5634]
+    family: product_code_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: certification-dashboard
+    gap_id: null
+    notes: "Product code audit — covered by certification capabilities"
+
+  - block_id: 7
+    primary_trigger: ":heal-fods-missing-methods-incident"
+    all_triggers: [":heal-fods-missing-methods-incident", ":audit-test-shaped-product-code", ":enforce-product-library-standards"]
+    line_range: [5635, 6460]
+    family: format_specific_healing
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: add-python-api
+    gap_id: null
+    notes: "FODS-specific method healing — covered by add-python-api + implement-spec-stub"
+
+  - block_id: 8
+    primary_trigger: ":deep-machinery-assurance"
+    all_triggers: [":deep-machinery-assurance", ":specialist-system-healing", ":trace-heal-and-regenerate"]
+    line_range: [6461, 7713]
+    family: machinery_assurance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Deep machinery assurance — covered by audit-root-tools + post-sprint-loop"
+
+  - block_id: 9
+    primary_trigger: ":review-heal-machinery-and-outputs"
+    all_triggers: [":review-heal-machinery-and-outputs", ":specialist-machinery-assurance-sprint", ":audit-and-verify-all-outputs"]
+    line_range: [7714, 8537]
+    family: machinery_assurance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: post-sprint-audit
+    gap_id: null
+    notes: "Machinery/output review and heal — covered by post-sprint-audit + post-sprint-loop"
+
+  - block_id: 10
+    primary_trigger: ":ff-investigate-canary-control"
+    all_triggers: [":ff-investigate-canary-control", ":ff-plan-canary-integration", ":ff-prove-canary-wiring"]
+    line_range: [8538, 9239]
+    family: canary_control
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: build-context-pack
+    gap_id: null
+    notes: "Canary control investigation — partially covered by build-context-pack; specialized scenario"
+
+  - block_id: 11
+    primary_trigger: ":ff-investigate-canary-control-layer"
+    all_triggers: [":ff-investigate-canary-control-layer", ":ff-plan-canary-integration", ":ff-prove-canary-wiring"]
+    line_range: [9240, 9984]
+    family: canary_control
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 10 (canary control investigation)"
+
+  - block_id: 12
+    primary_trigger: ":plan-then-execute"
+    all_triggers: [":plan-then-execute", ":harden-and-run-active-plan", ":mine-plan-execute-until-green"]
+    line_range: [9985, 10611]
+    family: plan_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: plan-hardening
+    gap_id: null
+    notes: "Plan-then-execute — covered by plan-hardening + governed-plan-execution route"
+
+  - block_id: 13
+    primary_trigger: ":heal-llm-grader-network-timeout"
+    all_triggers: [":heal-llm-grader-network-timeout", ":investigate-openai-ssl-read-timeout", ":harden-llm-retry-logic"]
+    line_range: [10612, 11105]
+    family: machinery_repair
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: rollback-and-recovery
+    gap_id: null
+    notes: "LLM grader timeout bug fix — covered by machinery_repair capabilities"
+
+  - block_id: 14
+    primary_trigger: ":ff-investigate-heal-playbooks-system"
+    all_triggers: [":ff-investigate-heal-playbooks-system", ":ff-audit-playbooks-usage-and-coverage", ":ff-wire-playbooks-to-commands"]
+    line_range: [11106, 12063]
+    family: playbooks_governance
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Playbooks subsystem investigation — partially covered by audit-root-tools; playbooks are specialized"
+
+  - block_id: 15
+    primary_trigger: ":ff-execute-critical-docs-root-reorganization"
+    all_triggers: [":ff-execute-critical-docs-root-reorganization", ":ff-move-docs-root-files-safely", ":ff-docs-folder-restructure"]
+    line_range: [12064, 12961]
+    family: documentation_structure
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: documentation-structure-migration
+    gap_id: null
+    notes: "Docs folder restructure — covered by documentation-structure-migration"
+
+  - block_id: 16
+    primary_trigger: ":ff-remove-dependency-artifacts-safely"
+    all_triggers: [":ff-remove-dependency-artifacts-safely", ":ff-migrate-zst-dependency-documentation"]
+    line_range: [12962, 13605]
+    family: dependency_migration
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: null
+    gap_id: null
+    notes: "Dependency artifact migration — partially covered by layer_governance; one-time operation"
+
+  - block_id: 17
+    primary_trigger: ":ff-heal-product-capability-matrix"
+    all_triggers: [":ff-heal-product-capability-matrix", ":ff-complete-capability-layer-coverage"]
+    line_range: [13606, 14552]
+    family: capability_matrix
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: update-capability-matrix
+    gap_id: null
+    notes: "Capability matrix healing — covered by update-capability-matrix"
+
+  - block_id: 18
+    primary_trigger: ":ff-plan-execute-gate4-prototype-backfill"
+    all_triggers: [":ff-plan-execute-gate4-prototype-backfill", ":ff-heal-gate4-prototype-coverage"]
+    line_range: [14553, 15192]
+    family: gate_backfill
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: backfill-gate4-prototype-evidence
+    gap_id: null
+    notes: "Gate 4 prototype backfill — covered by backfill-gate4-prototype-evidence"
+
+  - block_id: 19
+    primary_trigger: ":ff-heal-drivers-subsystem"
+    all_triggers: [":ff-heal-drivers-subsystem", ":ff-fix-drivers-governance", ":ff-harden-test-drivers"]
+    line_range: [15193, 15885]
+    family: drivers_governance
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: null
+    gap_id: null
+    notes: "Drivers subsystem healing — specialized scenario; partially covered by test architecture"
+
+  - block_id: 20
+    primary_trigger: ":ff-heal-drivers-governance-and-test-generation"
+    all_triggers: [":ff-heal-drivers-governance-and-test-generation", ":ff-reconcile-drivers-folder-system"]
+    line_range: [15886, 17796]
+    family: drivers_governance
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate/expanded version of Block 19 (drivers governance)"
+
+  - block_id: 21
+    primary_trigger: ":ff-create-project-blog-announcement"
+    all_triggers: [":ff-create-project-blog-announcement", ":ff-write-format-factory-announcement"]
+    line_range: [17797, 18709]
+    family: communications
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Blog announcement creation — not a governance capability; one-time communications task"
+
+  - block_id: 22
+    primary_trigger: ":ff-audit-and-govern-root-folders"
+    all_triggers: [":ff-audit-and-govern-root-folders", ":ff-root-folder-deep-recon"]
+    line_range: [18710, 20710]
+    family: folder_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Root folder audit and governance — covered by audit-root-tools"
+
+  - block_id: 23
+    primary_trigger: ":ff-tidy-and-govern-plans-folder"
+    all_triggers: [":ff-tidy-and-govern-plans-folder", ":ff-enforce-plans-root-policy", ":ff-organize-folder-under-policy"]
+    line_range: [20711, 22369]
+    family: folder_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Plans folder governance — covered by audit-root-tools"
+
+  - block_id: 24
+    primary_trigger: ":ff-heal-isolated-certification-system"
+    all_triggers: [":ff-heal-isolated-certification-system", ":ff-integrate-certification-with-format-registry"]
+    line_range: [22370, 24311]
+    family: certification
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: certification-dashboard
+    gap_id: null
+    notes: "Certification system healing — covered by certification capabilities"
+
+  - block_id: 25
+    primary_trigger: ":ff-verify-dual-lane-execution-item-by-item"
+    all_triggers: [":ff-verify-dual-lane-execution-item-by-item", ":ff-audit-dual-lane-dom-resumption"]
+    line_range: [24312, 26052]
+    family: dual_lane_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Dual-lane execution verification — covered by autonomous-loop"
+
+  - block_id: 26
+    primary_trigger: ":ff-investigate-missing-certification-layer"
+    all_triggers: [":ff-investigate-missing-certification-layer", ":ff-heal-autonomous-layer-creation"]
+    line_range: [26053, 27940]
+    family: certification
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: certification-dashboard
+    gap_id: null
+    notes: "Certification layer investigation — covered by certification capabilities"
+
+  - block_id: 27
+    primary_trigger: ":ffreadme"
+    all_triggers: [":ff-investigate-and-enhance-root-readme", ":ff-root-readme-forensic-refresh", ":ff-preserve-and-improve-project-readme", ":ff-format-factory-readme-investigation", ":ffreadme"]
+    line_range: [27941, 29445]
+    family: readme_governance
+    disposition: GAP_NEW_ASSET
+    mapped_capability: readme-root-governance
+    gap_id: GAP-ESP-001
+    prompt_asset_id: ESP-PROMPT-2
+    notes: "Root README forensic/preservation protocol — no existing command covers root README maintenance. /sync-readmes covers format READMEs only."
+
+  - block_id: 28
+    primary_trigger: ":ff-execute-dual-lane-plan-e2e"
+    all_triggers: [":ff-execute-dual-lane-plan-e2e", ":ff-dual-lane-autonomous-healing", ":ff-resume-dual-lane"]
+    line_range: [29446, 31248]
+    family: dual_lane_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Dual-lane plan execution — covered by autonomous-loop"
+
+  - block_id: 29
+    primary_trigger: ":ff-import-espanso-capabilities"
+    all_triggers: [":ff-import-espanso-capabilities", ":ff-audit-format-factory-espanso", ":ff-wire-espanso-to-repo"]
+    line_range: [31249, 32629]
+    family: espanso_self_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "This prompt triggers the Espanso integration itself (self-referential). The integration output is this provenance map. No separate prompt asset created."
+
+  - block_id: 30
+    primary_trigger: ":ff-central-operational-control-layer"
+    all_triggers: [":ff-central-operational-control-layer", ":ff-discover-and-enhance-control-layer", ":ff-operational-control-index"]
+    line_range: [32630, 35192]
+    family: operational_control
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: query-control-index
+    gap_id: null
+    notes: "Operational control layer — partially covered by query-control-index + build-context-pack. Full operational record discovery partially covered."
+
+  - block_id: 31
+    primary_trigger: ":ff-central-operational-record-layer"
+    all_triggers: [":ff-central-operational-record-layer", ":ff-centralize-tasks-states-evidence"]
+    line_range: [35193, 37611]
+    family: operational_control
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate/variant of Block 30 (operational record layer)"
+
+  - block_id: 32
+    primary_trigger: ":ff-two-lane-product-deepening"
+    all_triggers: [":ff-two-lane-product-deepening", ":ff-product-deepening-dom-lane", ":ff-heal-product-two-lane"]
+    line_range: [37612, 39764]
+    family: dual_lane_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Two-lane product deepening — covered by autonomous-loop"
+
+  - block_id: 33
+    primary_trigger: ":ff-prove-src-products-correct"
+    all_triggers: [":ff-prove-src-products-correct", ":ff-zero-unknown-product-verification", ":ff-src-exhaustive-verification"]
+    line_range: [39765, 41131]
+    family: product_verification
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: spec-parity-verification
+    gap_id: null
+    notes: "Product source exhaustive verification — covered by spec-parity-verification + python-qname-code-reviewer"
+
+  - block_id: 34
+    primary_trigger: ":ff-format-readme-hardening"
+    all_triggers: [":ff-format-readme-hardening", ":ff-keep-format-readmes-current", ":ff-src-readme-conformance"]
+    line_range: [41132, 43577]
+    family: format_readme
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: sync-readmes
+    gap_id: null
+    notes: "Format README hardening (old path variant) — covered by /sync-readmes. SUPERSEDED by Block 35."
+
+  - block_id: 35
+    primary_trigger: ":ff-format-readme-hardening"
+    all_triggers: [":ff-format-readme-hardening", ":ff-keep-format-readmes-current", ":ff-src-readme-conformance"]
+    line_range: [43578, 45454]
+    family: format_readme
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: sync-readmes
+    gap_id: null
+    notes: "Format README hardening (updated path variant, supersedes Block 34) — covered by /sync-readmes"
+
+  - block_id: 36
+    primary_trigger: ":ff-execute-short-context-plan"
+    all_triggers: [":ff-execute-short-context-plan", ":ff-short-context-taskcard-runner", ":ff-execute-healing-plan-exactly", ":ff-bounded-plan-executor"]
+    line_range: [45455, 46446]
+    family: short_context_execution
+    disposition: GAP_NEW_ASSET
+    mapped_capability: bounded-execution
+    gap_id: GAP-ESP-002
+    prompt_asset_id: ESP-PROMPT-1
+    notes: "Short-context one-taskcard-at-a-time executor with repo-persisted state. /autonomous-loop assumes full context. This protocol is designed for context-limited or weaker agents."
+
+  - block_id: 37
+    primary_trigger: ":ff-resume-product-deepening"
+    all_triggers: [":ff-resume-product-deepening", ":ff-restart-product-hardening", ":ff-resume-heal-and-deepen"]
+    line_range: [46447, 48182]
+    family: dual_lane_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Resume product deepening — covered by autonomous-loop"
+
+  - block_id: 38
+    primary_trigger: ":ff-permanent-layer-plans"
+    all_triggers: [":ff-permanent-layer-plans", ":ff-one-permanent-plan-per-layer", ":ff-layer-progress-persistence"]
+    line_range: [48183, 49996]
+    family: layer_plans
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: create-permanent-layer-plan
+    gap_id: null
+    notes: "Permanent layer plans — covered by create-permanent-layer-plan + validate-permanent-layer-plans"
+
+  - block_id: 39
+    primary_trigger: ":ff-governed-layer-planning-system"
+    all_triggers: [":ff-governed-layer-planning-system", ":ff-layer-plans-enforced", ":ff-persist-layer-plan"]
+    line_range: [49997, 51797]
+    family: layer_plans
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: create-permanent-layer-plan
+    gap_id: null
+    notes: "Governed layer planning — covered by create-permanent-layer-plan"
+
+  - block_id: 40
+    primary_trigger: ":ff-governed-layer-plans"
+    all_triggers: [":ff-governed-layer-plans", ":ff-persistent-layer-architecture", ":ff-harden-layer-plans"]
+    line_range: [51798, 53945]
+    family: layer_plans
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Blocks 38-39 (governed layer plans)"
+
+  - block_id: 41
+    primary_trigger: ":ff-harden-oracle-layer"
+    all_triggers: [":ff-harden-oracle-layer", ":ff-oracle-conformance-authority", ":ff-all-format-oracle-compliance"]
+    line_range: [53946, 55764]
+    family: oracle_layer
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: run-oracle
+    gap_id: null
+    notes: "Oracle layer hardening — covered by run-oracle + sal-pipeline-heal"
+
+  - block_id: 42
+    primary_trigger: ":ff-unified-multi-plan-execution"
+    all_triggers: [":ff-unified-multi-plan-execution", ":ff-consolidate-and-execute-all-plans", ":ff-plan-swarm-coordinator"]
+    line_range: [55765, 57313]
+    family: multi_plan_execution
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Multi-plan orchestration across all active plans. Partially covered by autonomous-loop + plan-hardening but no dedicated multi-plan coordination command."
+
+  - block_id: 43
+    primary_trigger: ":ff-enforce-skill-command-runtime"
+    all_triggers: [":ff-enforce-skill-command-runtime", ":ff-audit-skill-only-governance", ":ff-claude-commands-must-match"]
+    line_range: [57314, 58994]
+    family: skill_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: enforce-skill-first-execution
+    gap_id: null
+    notes: "Skill/command runtime enforcement — covered by enforce-skill-first-execution"
+
+  - block_id: 44
+    primary_trigger: ":ff-exhaustive-review-bundle-healing"
+    all_triggers: [":ff-exhaustive-review-bundle-healing", ":ff-consume-every-quality-finding", ":ff-all-quality-findings-healed"]
+    line_range: [58995, 60568]
+    family: quality_review
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: post-sprint-audit
+    gap_id: null
+    notes: "Exhaustive review bundle healing — covered by post-sprint-audit + post-sprint-loop"
+
+  - block_id: 45
+    primary_trigger: ":ff-consume-quality-review-bundle"
+    all_triggers: [":ff-consume-quality-review-bundle", ":ff-product-quality-forensic-healing", ":ff-review-bundle-consume"]
+    line_range: [60569, 61934]
+    family: quality_review
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 44 (quality review bundle healing)"
+
+  - block_id: 46
+    primary_trigger: ":ff-layer-architecture-forensics"
+    all_triggers: [":ff-layer-architecture-forensics", ":ff-audit-and-build-layers", ":ff-layer-maturity-audit"]
+    line_range: [61935, 62593]
+    family: layer_architecture
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: identify-primary-layer
+    gap_id: null
+    notes: "Layer architecture forensics — covered by identify-primary-layer + reconcile-layer-index"
+
+  - block_id: 47
+    primary_trigger: ":ff-perfect-product-deepening-sprints"
+    all_triggers: [":ff-perfect-product-deepening-sprints", ":ff-investigate-heal-autonomous-sprints"]
+    line_range: [62594, 64177]
+    family: product_deepening
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Product deepening sprint perfection — covered by autonomous-loop"
+
+  - block_id: 48
+    primary_trigger: ":found-it-own-it"
+    all_triggers: [":found-it-own-it", ":fioi:", ":heal-every-found-issue", ":no-preexisting-excuse", ":investigate-heal-verify"]
+    line_range: [64178, 65188]
+    family: issue_ownership
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-003
+    prompt_asset_id: ESP-PROMPT-4
+    notes: "Found-it-own-it issue ownership enforcement. AGENTS.md AG1-AG2 covers the policy but not the full investigation/taskcard/healing protocol. No command exists."
+
+  - block_id: 49
+    primary_trigger: ":ff-autonomous-sprint-engine"
+    all_triggers: [":ff-autonomous-sprint-engine", ":ff-heal-autonomous-continuation", ":ff-next-governed-sprint"]
+    line_range: [65189, 66405]
+    family: product_deepening
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Autonomous sprint engine — covered by autonomous-loop"
+
+  - block_id: 50
+    primary_trigger: ":ff-product-deepening-train"
+    all_triggers: [":ff-product-deepening-train", ":ff-deepen-all-products", ":ff-harden-every-format"]
+    line_range: [66406, 68181]
+    family: product_deepening
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Product deepening train — covered by autonomous-loop"
+
+  - block_id: 51
+    primary_trigger: ":ff-product-deepening-train"
+    all_triggers: [":ff-product-deepening-train", ":ff-deepen-all-products", ":ff-next"]
+    line_range: [68182, 69620]
+    family: product_deepening
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 50 (product deepening train, abbreviated)"
+
+  - block_id: 52
+    primary_trigger: ":ff-enforce-composable-skills"
+    all_triggers: [":ff-enforce-composable-skills", ":ff-skills-first", ":ffsf:"]
+    line_range: [69621, 71286]
+    family: skill_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: enforce-skill-first-execution
+    gap_id: null
+    notes: "Composable skills enforcement — covered by enforce-skill-first-execution + check-skill-coverage"
+
+  - block_id: 53
+    primary_trigger: ":fix-human-authorization-boundary"
+    all_triggers: [":fix-human-authorization-boundary", ":ff-nohuman"]
+    line_range: [71287, 72061]
+    family: human_free_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Human authorization boundary fix. Policy covered by AGENTS.md AG1-AG2. Shorter variant of Block 118 (:ff-humanfree). No separate prompt asset — superseded by Block 118."
+
+  - block_id: 54
+    primary_trigger: ":ff-remove-analytics-safely"
+    all_triggers: [":ff-remove-analytics-safely", ":ffras"]
+    line_range: [72062, 73278]
+    family: analytics_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: extract-analytics-from-monolith
+    gap_id: null
+    notes: "Analytics removal — covered by extract-analytics-from-monolith"
+
+  - block_id: 55
+    primary_trigger: ":ff-inventory-analytics"
+    all_triggers: [":ff-inventory-analytics"]
+    line_range: [73279, 73288]
+    family: analytics_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — inline directive only (no structured replacement body)"
+
+  - block_id: 56
+    primary_trigger: ":ff-decide-analytics-migrations"
+    all_triggers: [":ff-decide-analytics-migrations"]
+    line_range: [73289, 73302]
+    family: analytics_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — inline directive only"
+
+  - block_id: 57
+    primary_trigger: ":ff-migrate-analytics-batches"
+    all_triggers: [":ff-migrate-analytics-batches"]
+    line_range: [73303, 73316]
+    family: analytics_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — inline directive only"
+
+  - block_id: 58
+    primary_trigger: ":ff-verify-no-analytics"
+    all_triggers: [":ff-verify-no-analytics"]
+    line_range: [73317, 73333]
+    family: analytics_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — inline directive only"
+
+  - block_id: 59
+    primary_trigger: ":ff-spec-to-code-forensics"
+    all_triggers: [":ff-spec-to-code-forensics", ":ffscf:"]
+    line_range: [73334, 75370]
+    family: spec_forensics
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: spec-literal-qname-to-code-mapping
+    gap_id: null
+    notes: "Spec-to-code forensics — covered by spec-literal-qname-to-code-mapping"
+
+  - block_id: 60
+    primary_trigger: ":ff-machinery-iteration-forensics"
+    all_triggers: [":ff-machinery-iteration-forensics", ":ffmif:"]
+    line_range: [75371, 76974]
+    family: machinery_forensics
+    disposition: GAP_NEW_ASSET
+    mapped_capability: machinery-iteration-forensics
+    gap_id: GAP-ESP-004
+    prompt_asset_id: ESP-PROMPT-5
+    notes: "Why-did-execution-not-iterate root-cause analysis. No existing tool diagnoses lifecycle iteration failures. Distinct from general machinery repair."
+
+  - block_id: 61
+    primary_trigger: ":ff-machinery-readiness"
+    all_triggers: [":ff-machinery-readiness", ":ff-readiness", ":ffmr:"]
+    line_range: [76975, 79617]
+    family: readiness_audit
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: check-gate
+    gap_id: null
+    notes: "Machinery readiness assessment — partially covered by check-gate + generate-root-status. Large block covering comprehensive readiness audit."
+
+  - block_id: 62
+    primary_trigger: ":ff-qname-audit"
+    all_triggers: [":ff-qname-audit", ":ffqa:"]
+    line_range: [79618, 80603]
+    family: qname_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: qname-backfill
+    gap_id: null
+    notes: "QName audit — covered by qname-backfill + python-qname-code-reviewer"
+
+  - block_id: 63
+    primary_trigger: ":ff-generation-archaeology"
+    all_triggers: [":ff-generation-archaeology", ":ffga:"]
+    line_range: [80604, 81159]
+    family: archaeology
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: build-context-pack
+    gap_id: null
+    notes: "Generation archaeology/history recon — covered by build-context-pack + reproduce-master-plan"
+
+  - block_id: 64
+    primary_trigger: ":ff-total-system-audit"
+    all_triggers: [":ff-total-system-audit", ":fftsa:"]
+    line_range: [81160, 81540]
+    family: system_audit
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: null
+    gap_id: null
+    notes: "Total system audit combining QName + capability + oracle + governance audits. No single command orchestrates all four. Partially covered by multiple individual commands."
+
+  - block_id: 65
+    primary_trigger: ":ff-system-audit"
+    all_triggers: [":ff-system-audit", ":ffsa:"]
+    line_range: [81541, 81911]
+    family: system_audit
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Abbreviated duplicate of Block 64 (total system audit)"
+
+  - block_id: 66
+    primary_trigger: ":ff-machinery-product-readiness-audit"
+    all_triggers: [":ff-machinery-product-readiness-audit", ":ffmpra:"]
+    line_range: [81912, 82561]
+    family: readiness_audit
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: certification-dashboard
+    gap_id: null
+    notes: "Machinery+product combined readiness audit — partially covered by certification-dashboard + check-gate"
+
+  - block_id: 67
+    primary_trigger: ":harden-plan-from-audit-writeback"
+    all_triggers: [":harden-plan-from-audit-writeback", ":expand-plan-write-file", ":audit-to-plan-handoff"]
+    line_range: [82562, 83630]
+    family: plan_hardening
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: plan-hardening
+    gap_id: null
+    notes: "Plan hardening from audit output — covered by plan-hardening + post-sprint-loop"
+
+  - block_id: 68
+    primary_trigger: ":format-factory-skill-governance-sprint"
+    all_triggers: [":format-factory-skill-governance-sprint", ":skill-first-format-factory", ":ff-skills"]
+    line_range: [83631, 84649]
+    family: skill_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: check-skill-coverage
+    gap_id: null
+    notes: "Skill governance sprint — covered by check-skill-coverage + enforce-skill-first-execution"
+
+  - block_id: 69
+    primary_trigger: ":ff-skill-governance-sprint"
+    all_triggers: [":ff-skill-governance-sprint", ":ff-skills", ":sgs:"]
+    line_range: [84650, 85159]
+    family: skill_governance
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 68 (skill governance sprint, abbreviated)"
+
+  - block_id: 70
+    primary_trigger: ":ff-prod-code-governance"
+    all_triggers: [":ff-prod-code-governance", ":ffpcg:"]
+    line_range: [85160, 85214]
+    family: product_code_governance
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger for production code governance. Inline directive only; rules belong in production-library-standard-v2.md."
+
+  - block_id: 71
+    primary_trigger: ":ff-review-fix-layer-0"
+    all_triggers: [":ff-review-fix-layer-0", ":ffl0:"]
+    line_range: [85215, 85988]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 0 (Governance/Gate Model). Template covers all 8 layers."
+
+  - block_id: 72
+    primary_trigger: ":ff-review-fix-layer-1"
+    all_triggers: [":ff-review-fix-layer-1", ":ffl1:"]
+    line_range: [85989, 86762]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 1. Same template as Block 71."
+
+  - block_id: 73
+    primary_trigger: ":ff-review-fix-layer-2"
+    all_triggers: [":ff-review-fix-layer-2", ":ffl2:"]
+    line_range: [86763, 87537]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 2. Same template as Block 71."
+
+  - block_id: 74
+    primary_trigger: ":ff-review-fix-layer-3"
+    all_triggers: [":ff-review-fix-layer-3", ":ffl3:"]
+    line_range: [87538, 88314]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 3. Same template as Block 71."
+
+  - block_id: 75
+    primary_trigger: ":ff-review-fix-layer-4"
+    all_triggers: [":ff-review-fix-layer-4", ":ffl4:"]
+    line_range: [88315, 89095]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 4. Same template as Block 71."
+
+  - block_id: 76
+    primary_trigger: ":ff-review-fix-layer-5"
+    all_triggers: [":ff-review-fix-layer-5", ":ffl5:"]
+    line_range: [89096, 89871]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 5. Same template as Block 71."
+
+  - block_id: 77
+    primary_trigger: ":ff-review-fix-layer-6"
+    all_triggers: [":ff-review-fix-layer-6", ":ffl6:"]
+    line_range: [89872, 90667]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 6. Same template as Block 71."
+
+  - block_id: 78
+    primary_trigger: ":ff-review-fix-layer-7"
+    all_triggers: [":ff-review-fix-layer-7", ":ffl7:"]
+    line_range: [90668, 91442]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "Per-layer production hardening — Layer 7. Same template as Block 71."
+
+  - block_id: 79
+    primary_trigger: ":ff-review-fix-all-layers"
+    all_triggers: [":ff-review-fix-all-layers", ":ffla:"]
+    line_range: [91443, 92462]
+    family: per_layer_hardening
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-005
+    prompt_asset_id: ESP-PROMPT-7
+    notes: "All-layers hardening variant — same template as Block 71, layer_id=all."
+
+  - block_id: 80
+    primary_trigger: ":ffmgh:"
+    all_triggers: [":fff-master-governance-healing-sprint", ":ffmgh:"]
+    line_range: [92463, 92793]
+    family: production_standards
+    disposition: GAP_NEW_ASSET
+    mapped_capability: null
+    gap_id: GAP-ESP-006
+    prompt_asset_id: ESP-PROMPT-8
+    notes: "Master governance healing sprint with comprehensive code quality checklist. Not covered by any single command — production-library-standard-v2.md documents rules but no command drives enforcement sprint."
+
+  - block_id: 81
+    primary_trigger: ":ff-healing-investigate"
+    all_triggers: [":ff-healing-investigate", ":ffhi:"]
+    line_range: [92794, 93263]
+    family: healing_investigation
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Healing investigation — covered by audit-root-tools + build-context-pack"
+
+  - block_id: 82
+    primary_trigger: ":ff-spec"
+    all_triggers: [":ff-spec", ":ffs:"]
+    line_range: [93264, 93831]
+    family: spec_authority
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: ingest-spec-sal
+    gap_id: null
+    notes: "Spec authority — covered by ingest-spec-sal + sal-pipeline-heal"
+
+  - block_id: 83
+    primary_trigger: ":ff-fullsuite-layering-healing-sprint:"
+    all_triggers: [":ff-fullsuite-layering-healing-sprint:", ":ff-fullsuite-layering:", ":ff-test-layering-heal"]
+    line_range: [93832, 95198]
+    family: test_architecture
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: add-roundtrip-test
+    gap_id: null
+    notes: "Full test suite layering heal — covered by add-roundtrip-test"
+
+  - block_id: 84
+    primary_trigger: ":ff-reconcile-plan"
+    all_triggers: [":ff-reconcile-plan", ":ffrp:"]
+    line_range: [95199, 95482]
+    family: plan_reconciliation
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: reproduce-master-plan
+    gap_id: null
+    notes: "Plan state reconciliation — covered by reproduce-master-plan"
+
+  - block_id: 85
+    primary_trigger: ":ff-terminal-closed-audit"
+    all_triggers: [":ff-terminal-closed-audit", ":fftca:"]
+    line_range: [95483, 96547]
+    family: plan_closure
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: null
+    gap_id: null
+    notes: "Terminal-closed audit — covered by lifecycle_audit.py + write_plan_lock.py --audit-gate"
+
+  - block_id: 86
+    primary_trigger: ":ff-plan-governance-heal"
+    all_triggers: [":ff-plan-governance-heal", ":ffpg:"]
+    line_range: [96548, 97873]
+    family: plan_hardening
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: plan-hardening
+    gap_id: null
+    notes: "Plan governance healing — covered by plan-hardening"
+
+  - block_id: 87
+    primary_trigger: ":heal-product-deepening-ledger"
+    all_triggers: [":heal-product-deepening-ledger", ":ffledger:", ":ffpdl:"]
+    line_range: [97874, 98384]
+    family: ledger_governance
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: validate-product-code-ledger
+    gap_id: null
+    notes: "Product deepening ledger healing — covered by validate-product-code-ledger"
+
+  - block_id: 88
+    primary_trigger: ":ff-zero-stub"
+    all_triggers: [":ff-zero-stub"]
+    line_range: [98385, 99050]
+    family: spec_stubs
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: implement-spec-stub
+    gap_id: null
+    notes: "Zero-stub (fill all spec stubs) — covered by implement-spec-stub"
+
+  - block_id: 89
+    primary_trigger: ":ff-zero-stub"
+    all_triggers: [":ff-zero-stub"]
+    line_range: [99051, 100401]
+    family: spec_stubs
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 88 (ff-zero-stub, expanded version)"
+
+  - block_id: 90
+    primary_trigger: ":ff-layman-status"
+    all_triggers: [":ff-layman-status", ":ffstatus:"]
+    line_range: [100402, 100626]
+    family: status_reporting
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: generate-root-status
+    gap_id: null
+    notes: "Layman status report for non-developer stakeholders. Partially covered by generate-root-status but that produces technical output. No dedicated plaintext stakeholder report command exists."
+
+  - block_id: 91
+    primary_trigger: ":ff-autonomous-machinery-investigate"
+    all_triggers: [":ff-autonomous-machinery-investigate", ":ffami:"]
+    line_range: [100627, 100998]
+    family: machinery_investigation
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: audit-root-tools
+    gap_id: null
+    notes: "Autonomous machinery investigation — covered by audit-root-tools"
+
+  - block_id: 92
+    primary_trigger: ":ff-code-governance-heal-master"
+    all_triggers: [":ff-code-governance-heal-master", ":ffcode"]
+    line_range: [100999, 102213]
+    family: product_code_governance
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: extract-analytics-from-monolith
+    gap_id: null
+    notes: "Code governance heal master — partially covered by extract-analytics-from-monolith + certification. Block 93 is the full version."
+
+  - block_id: 93
+    primary_trigger: ":ff-production-code-governance"
+    all_triggers: [":ff-production-code-governance", ":ff-source"]
+    line_range: [102214, 104986]
+    family: product_code_governance
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: null
+    gap_id: null
+    notes: "Full production code governance protocol. production-library-standard-v2.md documents rules but no command drives the full governance sprint. Block 80 (ESP-PROMPT-8) is the execution driver."
+
+  - block_id: 94
+    primary_trigger: ":fff-src-governance-heal"
+    all_triggers: [":fff-src-governance-heal", ":ff-source"]
+    line_range: [104987, 105033]
+    family: product_code_governance
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Brief variant of Block 93 (source governance heal)"
+
+  - block_id: 95
+    primary_trigger: ":ff-source-realization-forensics"
+    all_triggers: [":ff-source-realization-forensics", ":ffsrf:"]
+    line_range: [105034, 108211]
+    family: source_forensics
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: spec-parity-source-regeneration-and-migration
+    gap_id: null
+    notes: "Source realization forensics — covered by spec-parity-source-regeneration-and-migration"
+
+  - block_id: 96
+    primary_trigger: ":ff-cap-forensics-plan"
+    all_triggers: [":ff-cap-forensics-plan", ":ffcfp:", ":cap-forensic"]
+    line_range: [108212, 110963]
+    family: capability_forensics
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: build-capability-routes
+    gap_id: null
+    notes: "Capability forensics plan — covered by build-capability-routes + validate-capability-parity"
+
+  - block_id: 97
+    primary_trigger: ":ffsfp:"
+    all_triggers: [":ffsfp:", ":sal:", ":sal-forensics-plan"]
+    line_range: [110964, 112627]
+    family: sal_forensics
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: sal-pipeline-heal
+    gap_id: null
+    notes: "SAL forensics plan — covered by sal-pipeline-heal + ingest-spec-sal"
+
+  - block_id: 98
+    primary_trigger: ":ff-idempotent-plan-swarm"
+    all_triggers: [":ff-idempotent-plan-swarm", ":ff-idem", ":ffips:"]
+    line_range: [112628, 114137]
+    family: plan_execution
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: autonomous-loop
+    gap_id: null
+    notes: "Idempotent plan swarm execution — covered by autonomous-loop"
+
+  - block_id: 99
+    primary_trigger: ":ff-pre-acquisition-readiness"
+    all_triggers: [":ff-pre-acquisition-readiness", ":par:"]
+    line_range: [114138, 115005]
+    family: acquisition
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: create-acquisition-pack
+    gap_id: null
+    notes: "Pre-acquisition readiness — covered by create-acquisition-pack + check-gate"
+
+  - block_id: 100
+    primary_trigger: ":ff-pre-acquisition-readiness"
+    all_triggers: [":ff-pre-acquisition-readiness", ":ff-pre", ":ffp:"]
+    line_range: [115006, 116161]
+    family: acquisition
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 99 (pre-acquisition readiness, expanded)"
+
+  - block_id: 101
+    primary_trigger: ":ff-review-plan-recon-next-e2e"
+    all_triggers: [":ff-review-plan-recon-next-e2e", ":ff-review-recon", ":rprn:"]
+    line_range: [116162, 116550]
+    family: review_recon
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: post-sprint-loop
+    gap_id: null
+    notes: "Review/recon/next e2e — covered by post-sprint-loop"
+
+  - block_id: 102
+    primary_trigger: ":deep-recon-evidence"
+    all_triggers: [":deep-recon-evidence", ":ff-recon", ":dre"]
+    line_range: [116551, 117285]
+    family: evidence_recon
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: build-evidence-bundle
+    gap_id: null
+    notes: "Deep recon evidence — covered by build-evidence-bundle + build-context-pack"
+
+  - block_id: 103
+    primary_trigger: ":ff-autonomous-proof-sprint"
+    all_triggers: [":ff-autonomous-proof-sprint", ":ffaps", ":ff-proof-loop"]
+    line_range: [117286, 117847]
+    family: evidence_proof
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: build-evidence-bundle
+    gap_id: null
+    notes: "Autonomous proof sprint — covered by build-evidence-bundle + post-sprint-audit"
+
+  - block_id: 104
+    primary_trigger: ":ff-capability-heal"
+    all_triggers: [":ff-capability-heal", ":ffch"]
+    line_range: [117848, 118950]
+    family: capability_healing
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: validate-capability-parity
+    gap_id: null
+    notes: "Capability healing — covered by validate-capability-parity + build-capability-routes"
+
+  - block_id: 105
+    primary_trigger: ":ff-spec-machinery"
+    all_triggers: [":ff-spec-machinery", ":ffsm"]
+    line_range: [118951, 120387]
+    family: spec_machinery
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: sal-pipeline-heal
+    gap_id: null
+    notes: "Spec machinery — covered by sal-pipeline-heal"
+
+  - block_id: 106
+    primary_trigger: ":ff-spec-authority"
+    all_triggers: [":ff-spec-authority", ":ffsa"]
+    line_range: [120388, 121009]
+    family: spec_authority
+    disposition: COVERED_BY_EXISTING
+    mapped_capability: ingest-spec-sal
+    gap_id: null
+    notes: "Spec authority enforcement — covered by ingest-spec-sal"
+
+  - block_id: 107
+    primary_trigger: ":ff-product-quality-review-plan"
+    all_triggers: [":ff-product-quality-review-plan", ":ffpq"]
+    line_range: [121010, 122468]
+    family: quality_review
+    disposition: PARTIAL_COVERAGE
+    mapped_capability: post-sprint-loop
+    gap_id: null
+    notes: "Product quality review plan — partially covered by post-sprint-loop + post-sprint-audit. Block 108 is the dedicated expert review asset."
+
+  - block_id: 108
+    primary_trigger: ":ff-expert-review-plan"
+    all_triggers: [":ff-expert-review-plan", ":fferp"]
+    line_range: [122469, 123646]
+    family: expert_review
+    disposition: GAP_NEW_ASSET
+    mapped_capability: expert-review-plan
+    gap_id: GAP-ESP-007
+    prompt_asset_id: ESP-PROMPT-3
+    notes: "Plan-mode-only expert manual system review protocol. Read-only; produces a structured review plan rather than executing changes. No existing command is read-only/plan-mode-only."
+
+  - block_id: 109
+    primary_trigger: ":ff-expert-review-plan"
+    all_triggers: [":ff-expert-review-plan", ":fferp"]
+    line_range: [123647, 124667]
+    family: expert_review
+    disposition: DUPLICATE_OF
+    mapped_capability: null
+    gap_id: null
+    notes: "Duplicate of Block 108 (expert review plan, variant wording)"
+
+  - block_id: 110
+    primary_trigger: ":fflayers"
+    all_triggers: [":fflayers"]
+    line_range: [124668, 125287]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — layers policy snippet, belongs in AGENTS.md/CLAUDE.md context"
+
+  - block_id: 111
+    primary_trigger: ":fflanes"
+    all_triggers: [":fflanes"]
+    line_range: [125288, 125366]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — lanes policy snippet"
+
+  - block_id: 112
+    primary_trigger: ":ffrepeatable"
+    all_triggers: [":ffrepeatable"]
+    line_range: [125367, 125414]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — repeatability policy snippet"
+
+  - block_id: 113
+    primary_trigger: ":ffunderstand"
+    all_triggers: [":ffunderstand"]
+    line_range: [125415, 125440]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — understand-before-change policy snippet"
+
+  - block_id: 114
+    primary_trigger: ":ffcorrect"
+    all_triggers: [":ffcorrect"]
+    line_range: [125441, 125465]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — correctness policy snippet"
+
+  - block_id: 115
+    primary_trigger: ":fftrainr"
+    all_triggers: [":fftrainr"]
+    line_range: [125466, 125498]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — training runner policy snippet"
+
+  - block_id: 116
+    primary_trigger: ":ffdirection"
+    all_triggers: [":ffdirection"]
+    line_range: [125499, 125533]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — direction policy snippet"
+
+  - block_id: 117
+    primary_trigger: ":ffpoc-exact"
+    all_triggers: [":ffpoc-exact"]
+    line_range: [125534, 125599]
+    family: micro_triggers
+    disposition: POLICY_ONLY
+    mapped_capability: null
+    gap_id: null
+    notes: "Micro-trigger — POC exact execution policy snippet"
+
+  - block_id: 118
+    primary_trigger: ":ff-humanfree"
+    all_triggers: [":ff-humanfree", ":ffhumanfree:", ":ffnohuman"]
+    line_range: [125600, 126293]
+    family: human_free_governance
+    disposition: GAP_NEW_ASSET
+    mapped_capability: human-free-rectification
+    gap_id: GAP-ESP-008
+    prompt_asset_id: ESP-PROMPT-6
+    notes: "Human-free autonomy governance scan+fix. Propagates AGENTS.md AG1-AG2 doctrine into all governance surfaces. Supersedes Block 53. No existing command performs this systematic scan-and-remediate."
+
+# Summary
+summary:
+  total_blocks: 118
+  gap_new_asset: 10       # Blocks 27, 36, 48, 60, 71-79 (template), 80, 108, 118
+  covered_by_existing: 60
+  partial_coverage: 12
+  duplicate_of: 14
+  policy_only: 22
+  prompt_assets_created: 8  # ESP-PROMPT-1 through ESP-PROMPT-8 (Blocks 71-79 share one template)
+  gaps:
+    - id: GAP-ESP-001
+      block: 27
+      asset: ESP-PROMPT-2
+      description: "Root README forensic/preservation governance"
+    - id: GAP-ESP-002
+      block: 36
+      asset: ESP-PROMPT-1
+      description: "Short-context one-taskcard executor"
+    - id: GAP-ESP-003
+      block: 48
+      asset: ESP-PROMPT-4
+      description: "Found-it-own-it issue ownership protocol"
+    - id: GAP-ESP-004
+      block: 60
+      asset: ESP-PROMPT-5
+      description: "Machinery lifecycle iteration forensics"
+    - id: GAP-ESP-005
+      blocks: [71, 72, 73, 74, 75, 76, 77, 78, 79]
+      asset: ESP-PROMPT-7
+      description: "Per-layer production hardening (parameterized template)"
+    - id: GAP-ESP-006
+      block: 80
+      asset: ESP-PROMPT-8
+      description: "Master governance healing with production code checklist"
+    - id: GAP-ESP-007
+      block: 108
+      asset: ESP-PROMPT-3
+      description: "Expert manual system review (plan-mode, read-only)"
+    - id: GAP-ESP-008
+      block: 118
+      asset: ESP-PROMPT-6
+      description: "Human-free autonomy governance rectification"

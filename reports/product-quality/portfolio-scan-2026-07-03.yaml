@@ -1,0 +1,167 @@
+mission_id: PQLM-001
+taskcard: TC-PQLM-018
+generated: "2026-07-03"
+version: "1.0"
+
+# Portfolio scan: confirmed similar cases identified across all formats.
+# Validators V100-V109 scanned entire product source.
+
+# ==========================================================================
+# V100 SCAN RESULTS — Suspicious Filenames
+# ==========================================================================
+
+v100_suspicious_filenames:
+  status: FAIL
+  violations:
+    - file: src/net/fods/FodsDocumentExtendedApis.cs
+      pattern: "*ExtendedApis*"
+      gap_id: PCG-010  # Already tracked
+      priority: HIGH   # Blocking (PCG-002 migration required)
+
+    - file: src/net/fodt/FodtDocumentExtendedApis.cs
+      pattern: "*ExtendedApis*"
+      gap_id: PCG-PORTFOLIO-001  # New gap
+      priority: HIGH
+
+# ==========================================================================
+# ANALYTICS MASQUERADE SCAN — Other Formats
+# ==========================================================================
+
+analytics_masquerade_files:
+  description: "Files named *_document.py or similar but containing only analytics functions with false spec_qname at module scope"
+
+  confirmed_cases:
+    - format: ods
+      file: src/python/ods/spreadsheet_document.py
+      false_spec_qname: "office:document"
+      false_spec_fact_ref: "FACT-ODS-001"
+      content: analytics functions only (no class definitions)
+      gap_id: PCG-PORTFOLIO-002
+      priority: HIGH
+      action: RENAME → src/python/ods/ods_analytics.py + remove false spec_qname
+
+    - format: sylk
+      file: src/python/sylk/spreadsheet_document.py
+      false_spec_qname: "slk:workbook"
+      false_spec_fact_ref: "FACT-SYLK-001"
+      content: analytics functions only (no class definitions)
+      gap_id: PCG-PORTFOLIO-003
+      priority: MEDIUM
+      action: RENAME → src/python/sylk/sylk_analytics.py + remove false spec_qname
+
+# ==========================================================================
+# V101 SCAN RESULTS — History Identifiers
+# ==========================================================================
+
+v101_history_identifiers:
+  status: WARN
+  total_files_with_history_markers: 87
+  priority_files:
+    - src/net/fods/FodsDocumentAccessor.cs  # 47 Phase markers (PCG-013)
+    - src/python/fods/neutral_model.py       # PCG-005 (now governed with TODO(PCG-005))
+  action: "Replace in place as files are migrated in TC-PQLM-015 continuation"
+  blocks_sprint: false  # V101 is WARN only
+
+# ==========================================================================
+# SHARED MACHINERY ASSESSMENT
+# ==========================================================================
+
+shared_machinery_healed:
+  - component: governance_validators_ext3.py (V100-V109)
+    status: COMPLETE
+    notes: "All 10 validators active, 3 bugs fixed during TC-PQLM-014 proof"
+
+  - component: governance_validator_runner.py
+    status: COMPLETE
+    notes: "V100-V109 registered and normalized (schema adapter added)"
+
+  - component: add-dotnet-api.md (v1.3)
+    status: COMPLETE
+    notes: "MANDATORY PRE-CHECK ZERO added"
+
+  - component: add-python-api.md (v1.4)
+    status: COMPLETE
+    notes: "MANDATORY PRE-CHECK ZERO added"
+
+  - component: skill-registry.yaml
+    status: COMPLETE
+    notes: "add-dotnet-api advisory_only changed from true → false (PCG-018)"
+
+# ==========================================================================
+# NEW GAP ENTRIES FROM PORTFOLIO SCAN
+# ==========================================================================
+
+new_portfolio_gaps:
+
+  - gap_id: PCG-PORTFOLIO-001
+    product: fodt
+    language: csharp
+    category: files_folders
+    severity: blocking
+    files:
+      - src/net/fodt/FodtDocumentExtendedApis.cs
+    evidence:
+      - "V100 (validate_suspicious_filenames): FAIL — *ExtendedApis* pattern"
+      - "2662 LOC; same test-shaped dumping ground pattern as FODS PCG-002"
+    first_failed_boundary: validate_suspicious_filenames (V100)
+    system_repair: "Same system repairs as FODS (already healed — skills/validators block new additions)"
+    code_repair: "DECOMPOSE_THEN_REMOVE: migrate spec-grounded methods, remove test-shaped APIs"
+    status: OPEN
+    next_action: "Classify FodtDocumentExtendedApis.cs methods into domain buckets"
+    backfill_scope: portfolio
+
+  - gap_id: PCG-PORTFOLIO-002
+    product: ods
+    language: python
+    category: architecture
+    severity: major
+    files:
+      - src/python/ods/spreadsheet_document.py
+    evidence:
+      - "Module-level spec_qname = 'office:document' (false — this is an analytics file)"
+      - "No class definitions — pure analytics functions"
+      - "Filename masquerades as domain model"
+    first_failed_boundary: validate_analytics_naming_enforced (V77)
+    system_repair: "V77 already catches this pattern; analytics file naming enforced"
+    code_repair: "RENAME: spreadsheet_document.py → ods_analytics.py + remove false spec_qname"
+    status: OPEN
+    next_action: "Rename in dedicated sprint using healed add-python-api skill"
+    backfill_scope: portfolio
+
+  - gap_id: PCG-PORTFOLIO-003
+    product: sylk
+    language: python
+    category: architecture
+    severity: major
+    files:
+      - src/python/sylk/spreadsheet_document.py
+    evidence:
+      - "Module-level spec_qname = 'slk:workbook' (false)"
+      - "No class definitions — pure analytics functions"
+    first_failed_boundary: validate_analytics_naming_enforced (V77)
+    system_repair: "V77 already catches; healed machinery prevents recurrence"
+    code_repair: "RENAME: spreadsheet_document.py → sylk_analytics.py"
+    status: OPEN
+    next_action: "Rename in dedicated sprint"
+    backfill_scope: portfolio
+
+# ==========================================================================
+# PRODUCT LIBRARIES NOT SCANNED COUNTER
+# ==========================================================================
+
+scan_summary:
+  formats_with_product_source: 20  # Python FOSS
+  formats_scanned_by_V100: 20       # V100 scans all src/python/ + src/net/
+  formats_scanned_by_V101: 20
+  confirmed_similar_cases: 3        # fodt ExtendedApis + ods/sylk analytics masquerade
+  confirmed_cases_healed: 0         # Tracked as gaps; full healing needs dedicated sprint
+  false_certifications_to_reopen: 0 # No active certifications for fodt/ods/sylk
+  counters:
+    PRODUCT_LIBRARIES_NOT_SCANNED: 0   # V100/V101 ran against all formats
+    CONFIRMED_SIMILAR_CASES_NOT_HEALED: 3  # PCG-PORTFOLIO-001/002/003 tracked; healing deferred
+    FALSE_CERTIFICATIONS_NOT_REOPENED: 0   # No affected certifications active
+
+notes: >
+  PCG-PORTFOLIO-001/002/003 are tracked but healing deferred to dedicated product sprints.
+  The shared machinery (V100-V109 validators + healed skills) is already in place to prevent
+  new violations. The validator fix is systemic — it applies to ALL formats, not just FODS.
