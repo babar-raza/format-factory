@@ -119,14 +119,20 @@ sprint2_before:
   v108: 50
 
 sprint2_after:
-  v105: 0  # CellProps dict guards removed; governed_residuals: EXCL-XG-001-partial (font-style stub)
-  v106: 0  # CellProps dict writes removed; governed_residuals: EXCL-XG-001-partial
-  v108: 7  # ReadOps 7 legitimate fields; CellProps/SheetFeatures removed from known_violations
+  # Global counts (all .NET formats including newly added FODT files)
+  v105_global: 18  # 2 FODS governed-residual + 9 FODS COLLECTION_STUB + 7 FODT (out of scope)
+  v106_global: 14  # 5 FODS governed-residual + 9 FODT (out of scope)
+  v108_global: 11  # 2 FODS (_sheetProtection, _hiddenSheets) + 9 FODT (out of scope)
+  # FODS-format-only counts (target scope for this sprint)
+  v105_fods_governed_residual: 2  # GetSheetProtectionPassword, GetSheetVisibility (out of sprint-2 scope)
+  v105_fods_collection_stub: 9   # filters/pageBreaks/groups — COLLECTION_STUB per plan (deferred)
+  v106_fods_governed_residual: 5  # SetSheetProtectionPassword, SetSheetVisibility, SetSheetProtection(2x), SetSheetProtected
+  v108_fods: 2                    # _sheetProtection, _hiddenSheets (governed residual; sprint-2 removed 22 fields)
 
 sprint2_delta:
-  v105: -10
-  v106: -10
-  v108: -43
+  v105_targeted_removed: 10  # All 7 EXCL-XG-003 sheet-config dict guards + 3 EXCL-XG-001 cell-style guards
+  v106_targeted_removed: 10  # All 4 sheet-config dict writes + 6 cell-style dict writes
+  v108_fields_removed: 22    # 7 sheet-config + 12 cell-style + 3 SheetFeatures (freeze/print/tabcolor)
 
 sprint2_dict_fields_removed:
   FodsDocumentReadOps.cs:

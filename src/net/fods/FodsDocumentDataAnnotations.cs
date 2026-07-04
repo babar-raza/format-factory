@@ -14,6 +14,7 @@ public sealed partial class FodsDocument
 {
     // -------------------------------------------------------------------------
     // Chart title (R305)
+    // STUB: no ODF XML path for chart objects; _charts is an in-memory stub. Tracking GAP-NET-XG-012.
     // -------------------------------------------------------------------------
 
     /// <summary>R305: Return the title of the chart at the given index on the named sheet.</summary>
@@ -123,6 +124,7 @@ public sealed partial class FodsDocument
 
     // -------------------------------------------------------------------------
     // Conditional formats (R308, R339)
+    // STUB: no ODF XML path for conditional formats; _conditionalFormats is an in-memory stub. Tracking GAP-NET-XG-012.
     // -------------------------------------------------------------------------
 
     private readonly Dictionary<string, List<(string Range, string Condition, string Style)>> _conditionalFormats = new();
@@ -405,6 +407,7 @@ public sealed partial class FodsDocument
 
     // -------------------------------------------------------------------------
     // Sparklines (R324)
+    // STUB: no ODF XML path for sparklines; _sparklines is an in-memory stub. Tracking GAP-NET-XG-012.
     // -------------------------------------------------------------------------
 
     private readonly List<(string Type, string DataRange)> _sparklines = new();
