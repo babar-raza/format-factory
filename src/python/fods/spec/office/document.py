@@ -28,14 +28,29 @@ class Document:
     facade_names = ["FodsDocument"]
 
     def __init__(self, data: dict[str, Any] | None = None):
-        self._data = data or {}
+        self._data: dict[str, Any] = data or {}
+
+    @property
+    def format_id(self) -> str:
+        return self._data.get("format_id", "fods")
+
+    @property
+    def odf_version(self) -> str:
+        return self._data.get("odf_version", "")
 
     @property
     def sheet_count(self) -> int:
         return len(self._data.get("sheets", []))
 
+    @property
+    def warnings(self) -> list[dict[str, Any]]:
+        return self._data.get("warnings", [])
+
     def has_sheets(self) -> bool:
         return self.sheet_count > 0
+
+    def raw_sheets(self) -> list[dict[str, Any]]:
+        return self._data.get("sheets", [])
 
     def to_dict(self) -> dict[str, Any]:
         return dict(self._data)

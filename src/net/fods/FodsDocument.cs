@@ -237,6 +237,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Set a cell value by sheet name, row, and column.
     /// </summary>
+    [Obsolete("Use Worksheets[sheetName].Rows[row].Cells[col].Value = value instead. (TC-W1-FODS-NET-003)")]
     public void SetCellValue(string sheetName, int row, int col, string value)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -249,6 +250,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Get a cell value by sheet name, row, and column.
     /// </summary>
+    [Obsolete("Use Worksheets[sheetName].Rows[row].Cells[col].Value instead. (TC-W1-FODS-NET-003)")]
     public string? GetCellValue(string sheetName, int row, int col)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -276,6 +278,7 @@ public sealed partial class FodsDocument
     /// <summary>
     /// Delete column at the given index from the named sheet.
     /// </summary>
+    [Obsolete("Use Worksheets[sheetName].Columns.Remove(colIndex) instead. (TC-W1-FODS-NET-003)")]
     public void DeleteColumn(string sheetName, int colIndex)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -332,12 +335,14 @@ public sealed partial class FodsDocument
     /// Number of sheets in the document.
     /// convenience property.
     /// </summary>
+    [Obsolete("Use Worksheets.Count instead. (TC-W1-FODS-NET-003)")]
     public int SheetCount => Sheets.Count;
 
     /// <summary>
     /// Get a sheet by name (case-sensitive). Returns null if not found.
     /// named sheet access.
     /// </summary>
+    [Obsolete("Use Worksheets[name] instead. (TC-W1-FODS-NET-003)")]
     public FodsSheet? GetSheetByName(string name)
     {
         foreach (var sheet in Sheets)
@@ -351,6 +356,7 @@ public sealed partial class FodsDocument
     /// Get a sheet by zero-based index. Returns null if the index is out of range.
     /// index-based sheet access (complements GetSheetByName).
     /// </summary>
+    [Obsolete("Use Worksheets[index] instead. (TC-W1-FODS-NET-003)")]
     public FodsSheet? GetSheetByIndex(int index)
     {
         var sheets = Sheets;
@@ -363,6 +369,7 @@ public sealed partial class FodsDocument
     /// Returns an empty list if the document has no sheets.
     /// sheet name enumeration.
     /// </summary>
+    [Obsolete("Use Worksheets.Select(w => w.Name).ToList() instead. (TC-W1-FODS-NET-003)")]
     public IReadOnlyList<string> GetSheetNames()
     {
         var sheets = Sheets;
@@ -378,6 +385,7 @@ public sealed partial class FodsDocument
     /// Throws if a sheet with the same name already exists.
     /// sheet creation API.
     /// </summary>
+    [Obsolete("Use Worksheets.Add(name) instead. (TC-W1-FODS-NET-003)")]
     public FodsSheet AddSheet(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -404,6 +412,7 @@ public sealed partial class FodsDocument
     /// Throws <see cref="InvalidOperationException"/> if no sheet with that name exists.
     /// sheet management completion (AddSheet exists, RemoveSheet was missing).
     /// </summary>
+    [Obsolete("Use Worksheets.Remove(name) instead. (TC-W1-FODS-NET-003)")]
     public void RemoveSheet(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -421,6 +430,7 @@ public sealed partial class FodsDocument
     /// Throws if the old name is not found or the new name already exists.
     /// sheet renaming for workbook management.
     /// </summary>
+    [Obsolete("Use Worksheets[oldName].Name = newName instead. (TC-W1-FODS-NET-003)")]
     public void RenameSheet(string oldName, string newName)
     {
         if (string.IsNullOrWhiteSpace(oldName))
@@ -582,6 +592,7 @@ public sealed partial class FodsDocument
     /// Returns null if indices are out of range or cell is empty/covered.
     /// cell-level access.
     /// </summary>
+    [Obsolete("Use Worksheets[0].Rows[row].Cells[col].Value instead. (TC-W1-FODS-NET-003)")]
     public string? GetCellValue(int row, int col)
     {
         var sheets = Sheets;
@@ -594,6 +605,7 @@ public sealed partial class FodsDocument
     /// Returns null if indices are out of range or cell is empty/covered.
     /// cell-level access.
     /// </summary>
+    [Obsolete("Use FodsWorksheet.Rows[row].Cells[col].Value instead. (TC-W1-FODS-NET-003)")]
     public static string? GetCellValue(FodsSheet sheet, int row, int col)
     {
         ArgumentNullException.ThrowIfNull(sheet);
@@ -610,6 +622,7 @@ public sealed partial class FodsDocument
     /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
     /// round-trip edit support.
     /// </summary>
+    [Obsolete("Use Worksheets[0].Rows[row].Cells[col].Value = value instead. (TC-W1-FODS-NET-003)")]
     public void SetCellValue(int row, int col, string value)
     {
         var sheets = Sheets;
@@ -624,6 +637,7 @@ public sealed partial class FodsDocument
     /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
     /// round-trip edit support.
     /// </summary>
+    [Obsolete("Use FodsWorksheet.Rows[row].Cells[col].Value = value instead. (TC-W1-FODS-NET-003)")]
     public static void SetCellValue(FodsSheet sheet, int row, int col, string value)
     {
         ArgumentNullException.ThrowIfNull(sheet);

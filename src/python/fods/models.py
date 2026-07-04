@@ -1,54 +1,66 @@
-"""Domain classes for FODS — thin wrappers over the dict-based neutral model.
+"""Domain classes for FODS — thin wrappers over the spec-shaped canonical model.
 
 Classes:
-    FodsDocument — wraps the workbook dict from parse_fods()
-    FodsSheet — wraps a sheet dict
-    FodsCell — wraps a cell dict
+    FodsDocument — delegates to spec.office.document.Document (spec_qname=office:document)
+    FodsSheet — delegates to spec.table.table.Table (spec_qname=table:table)
+    FodsCell — delegates to spec.table.table_cell.TableCell (spec_qname=table:table-cell)
 
-These preserve the existing function API while providing a class-based interface.
+TC-W1-FODS-PY-001: FodsDocument now holds a spec.office.document.Document reference.
+Properties delegate to the spec object; the raw dict is NOT stored directly as domain state.
 """
 
 from __future__ import annotations
 
 from typing import Any, Iterator
 
+from .spec.office.document import Document as _SpecDocument
+from .spec.table.table_cell import TableCell as _SpecTableCell
+
 
 class FodsCell:
-    """Wraps a cell dict from the FODS neutral model."""
+    """Delegates to spec.table.table_cell.TableCell (spec_qname=table:table-cell).
+
+    TC-W1-FODS-PY-001: backs the cell with the canonical spec type.
+    """
 
     spec_qname = "table:table-cell"
 
     def __init__(self, data: dict[str, Any]):
-        self._data = data
+        self._spec_cell = _SpecTableCell(data)
 
     @property
     def value(self) -> Any:
         """Return the cell value."""
-        return self._data.get("value")
+        return self._spec_cell.value
+
+    @value.setter
+    def value(self, v: Any) -> None:
+        """Set the cell value."""
+        self._spec_cell.value = v
 
     @property
     def value_type(self) -> str:
         """Return the ODF value type string (e.g. 'string', 'float')."""
-        return self._data.get("value_type", "")
+        return self._spec_cell.value_type
 
     @property
     def text(self) -> str:
         """Return the display text content of the cell."""
-        return self._data.get("text", "")
+        return self._spec_cell.text
 
     @property
     def formula(self) -> str | None:
         """Return the formula string, or None if no formula is set."""
-        return self._data.get("formula")
+        return self._spec_cell.formula
 
     @property
     def repeated(self) -> int:
         """Return the repeat count for this cell (default 1)."""
-        return self._data.get("repeated", 1)
+        return self._spec_cell.repeated
 
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying cell data dict."""
-        return dict(self._data)
+        return self._spec_cell.to_dict()
 
     def __repr__(self) -> str:
         return f"FodsCell(type={self.value_type!r}, value={self.value!r})"
@@ -109,12 +121,17 @@ class FodsSheet:
 
 
 class FodsDocument:
-    """Wraps a workbook dict from parse_fods() with a class-based interface."""
+    """Delegates to spec.office.document.Document (spec_qname=office:document).
+
+    TC-W1-FODS-PY-001: FodsDocument holds a spec.office.document.Document reference.
+    The raw dict is stored inside the spec object, NOT directly as self._data.
+    """
 
     spec_qname = "office:document"
 
     def __init__(self, data: dict[str, Any]):
-        self._data = data
+        # TC-W1-FODS-PY-001: delegate to canonical spec type (not raw dict)
+        self._spec_doc = _SpecDocument(data)
 
     @classmethod
     def from_file(cls, path: str) -> FodsDocument:
@@ -125,37 +142,37 @@ class FodsDocument:
     @property
     def format_id(self) -> str:
         """Return the format identifier string (always 'fods')."""
-        return self._data.get("format_id", "fods")
+        return self._spec_doc.format_id
 
     @property
     def odf_version(self) -> str:
         """Return the ODF version string from the document root."""
-        return self._data.get("odf_version", "")
+        return self._spec_doc.odf_version
 
     @property
     def sheet_count(self) -> int:
         """Return the number of sheets in this document."""
-        return len(self._data.get("sheets", []))
+        return self._spec_doc.sheet_count
 
     @property
     def warnings(self) -> list[dict[str, Any]]:
         """Return parse warnings accumulated during load."""
-        return self._data.get("warnings", [])
+        return self._spec_doc.warnings
 
     def sheets(self) -> list[FodsSheet]:
         """Return all sheets as FodsSheet objects."""
-        return [FodsSheet(s) for s in self._data.get("sheets", [])]
+        return [FodsSheet(s) for s in self._spec_doc.raw_sheets()]
 
     def sheet_by_name(self, name: str) -> FodsSheet | None:
         """Find a sheet by name."""
-        for s in self._data.get("sheets", []):
+        for s in self._spec_doc.raw_sheets():
             if s.get("name") == name:
                 return FodsSheet(s)
         return None
 
     def find_sheet_by_index(self, index: int) -> FodsSheet | None:
         """Get sheet by zero-based index, or None if out of range."""
-        sheets = self._data.get("sheets", [])
+        sheets = self._spec_doc.raw_sheets()
         if 0 <= index < len(sheets):
             return FodsSheet(sheets[index])
         return None
@@ -239,7 +256,7 @@ class FodsDocument:
 
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""
-        return self._data
+        return self._spec_doc.to_dict()
 
     def __repr__(self) -> str:
         return f"FodsDocument(sheets={self.sheet_count})"
