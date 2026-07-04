@@ -1818,10 +1818,11 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 124, (
-            f"Expected 124 canonical validators, got {validator_count}. "
+        assert validator_count == 127, (
+            f"Expected 127 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(124 = 119 prior + V130-V133 found-issue lifecycle validators (PQLM-GOV-001, TC-VAL-002))"
+            "(127 = 119 prior + V130-V133 found-issue lifecycle validators (PQLM-GOV-001, TC-VAL-002)"
+            " + V134-V136 output escaping quality gates (MA-SYSTEM-WIDE-2026-07-04, playful-swimming-stearns))"
         )
 
 

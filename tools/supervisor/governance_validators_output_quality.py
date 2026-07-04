@@ -48,10 +48,19 @@ def _result(vid: str, name: str, passed: bool, items: list, blocks: bool = False
 
 # Matches a .Replace("\\", ...) chain followed by a .Replace("\"", ...) chain
 # — the exact pattern used by the defective _JsonEsc method.
+#
+# In a .cs file, the Replace-chain for manual JSON escaping looks like:
+#   .Replace("\\", "\\\\").Replace("\"", "\\\"")
+# As plain text in the file: .Replace("\\", "\\\\").Replace("\"", "\\\"")
+# Where "\\" in the file is two literal backslash characters.
+#
+# Regex breakdown:
+#   r'"\\\\"'  — matches "\\": ", then two literal backslashes, then "
+#   r'"\\""'   — matches "\"": ", then one literal backslash, then ", then "
 _MANUAL_JSON_ESC_PATTERN = re.compile(
-    r'\.Replace\s*\(\s*"\\\\\\\\"'     # .Replace("\\", ...)
+    r'\.Replace\s*\(\s*"\\\\"'         # .Replace("\\", ...) — escaping backslash
     r'.*?'
-    r'\.Replace\s*\(\s*"\\\\\\""',     # .Replace("\"", ...)
+    r'\.Replace\s*\(\s*"\\""',         # .Replace("\"", ...) — escaping double-quote
     re.DOTALL,
 )
 
@@ -84,7 +93,7 @@ def validate_no_manual_json_escaping_in_dotnet(
         if not str(rel_path).endswith(".cs"):
             continue
         norm = str(rel_path).replace("\\", "/")
-        if "/src/net/" not in norm:
+        if "src/net/" not in norm:
             continue
         try:
             cf_path = _root / rel_path if not Path(str(rel_path)).is_absolute() else Path(str(rel_path))
@@ -110,7 +119,7 @@ def validate_no_manual_json_escaping_in_dotnet(
 # Matches interpolated <td> or <th> where the variable is NOT wrapped in an escaping call.
 # Escaping calls recognized: _HtmlEsc(...), HtmlEncode(...), EscapeHtml(...)
 _RAW_TD_INTERPOLATION_DOTNET = re.compile(
-    r'<t[dh]>\{(?!_HtmlEsc|HtmlEncode|EscapeHtml)'
+    r'<t[dh]>\{(?!_HtmlEsc|HtmlEncode|EscapeHtml|WebUtility)'
 )
 
 
@@ -135,7 +144,7 @@ def validate_html_escaping_in_dotnet(
         if not str(rel_path).endswith(".cs"):
             continue
         norm = str(rel_path).replace("\\", "/")
-        if "/src/net/" not in norm:
+        if "src/net/" not in norm:
             continue
         try:
             cf_path = _root / rel_path if not Path(str(rel_path)).is_absolute() else Path(str(rel_path))
@@ -185,7 +194,7 @@ def validate_html_escaping_in_python(
         if not str(rel_path).endswith(".py"):
             continue
         norm = str(rel_path).replace("\\", "/")
-        if "/src/python/" not in norm:
+        if "src/python/" not in norm:
             continue
         try:
             cf_path = _root / rel_path if not Path(str(rel_path)).is_absolute() else Path(str(rel_path))
