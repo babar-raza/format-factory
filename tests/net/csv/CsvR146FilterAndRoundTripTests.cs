@@ -129,7 +129,7 @@ public class CsvR146FilterAndRoundTripTests : IDisposable
     {
         var doc = CsvDocument.Load(FourRowCsv);
         var csv = doc.ToCsv();
-        var reloaded = CsvDocument.Load(csv, hasHeaders: false);
+        var reloaded = CsvDocument.Load(csv, hasHeaders: true);
         Assert.Equal(doc.RowCount, reloaded.RowCount);
     }
 
@@ -170,7 +170,7 @@ public class CsvR146FilterAndRoundTripTests : IDisposable
         eng.SaveToFile(path);
         Assert.True(File.Exists(path));
 
-        var reloaded = CsvDocument.LoadFile(path, hasHeaders: false);
+        var reloaded = CsvDocument.LoadFile(path, hasHeaders: true);
         Assert.Equal(2, reloaded.RowCount);
 
         var col = reloaded.GetColumn(0);

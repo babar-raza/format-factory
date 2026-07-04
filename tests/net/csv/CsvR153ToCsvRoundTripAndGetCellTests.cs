@@ -56,7 +56,7 @@ public class CsvR153ToCsvRoundTripAndGetCellTests
     {
         var doc = CsvDocument.Load(FourRowCsv);
         var csv = doc.ToCsv();
-        var reloaded = CsvDocument.Load(csv, hasHeaders: false);
+        var reloaded = CsvDocument.Load(csv, hasHeaders: true);
         Assert.Equal(doc.RowCount, reloaded.RowCount);
     }
 
@@ -65,7 +65,7 @@ public class CsvR153ToCsvRoundTripAndGetCellTests
     {
         var doc = CsvDocument.Load(FourRowCsv);
         var csv = doc.ToCsv();
-        var reloaded = CsvDocument.Load(csv, hasHeaders: false);
+        var reloaded = CsvDocument.Load(csv, hasHeaders: true);
         Assert.Equal("Alice", reloaded.GetCellValue(0, 0));
     }
 
@@ -174,7 +174,7 @@ public class CsvR153ToCsvRoundTripAndGetCellTests
         Assert.DoesNotContain("Bob", csv);
 
         // Reload from ToCsv
-        var reloaded = CsvDocument.Load(csv, hasHeaders: false);
+        var reloaded = CsvDocument.Load(csv, hasHeaders: true);
         Assert.Equal(2, reloaded.RowCount);
 
         // GetCellValue on reloaded

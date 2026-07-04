@@ -98,7 +98,7 @@ public class CsvR194GetColumnCountAndExportToXmlDeepTests : IDisposable
     {
         var doc = LoadSample();
         var headers = doc.GetHeaders();
-        Assert.Equal(headers.Count, doc.GetColumnCount());
+        Assert.Equal(headers!.Count, doc.GetColumnCount());
     }
 
     // -------------------------------------------------------------------------

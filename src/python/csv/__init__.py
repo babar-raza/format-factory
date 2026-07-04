@@ -9,6 +9,7 @@ from .csv_parser import *  # noqa: F401, F403
 from .csv_stats import *  # noqa: F401, F403
 from .csv_writer import *  # noqa: F401, F403
 from .tabular_document import *  # noqa: F401, F403
+from .tabular_document_analytics import *  # noqa: F401, F403
 from .csv_analytics import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import CsvDocument  # noqa: F401

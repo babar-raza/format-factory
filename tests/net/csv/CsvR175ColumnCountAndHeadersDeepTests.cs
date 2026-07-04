@@ -36,7 +36,7 @@ public class CsvR175ColumnCountAndHeadersDeepTests
     public void ColumnCount_EqualsHeaderCount_AfterLoad()
     {
         var doc = CsvDocument.Load(FourColCsv);
-        Assert.Equal(doc.Headers.Count, doc.ColumnCount);
+        Assert.Equal(doc.Headers.Length, doc.ColumnCount);
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class CsvR175ColumnCountAndHeadersDeepTests
     public void Headers_Count_EqualsFourCols()
     {
         var doc = CsvDocument.Load(FourColCsv);
-        Assert.Equal(4, doc.Headers.Count);
+        Assert.Equal(4, doc.Headers.Length);
     }
 
     [Fact]
@@ -181,7 +181,7 @@ public class CsvR175ColumnCountAndHeadersDeepTests
 
         // Headers
         var headers = doc.Headers;
-        Assert.Equal(4, headers.Count);
+        Assert.Equal(4, headers!.Length);
         Assert.Equal("id", headers[0]);
         Assert.Equal("score", headers[3]);
 
@@ -191,7 +191,7 @@ public class CsvR175ColumnCountAndHeadersDeepTests
         // AddRow — ColumnCount and Headers unchanged
         doc.AddRow(new[] { "4", "Dave", "HR", "76" });
         Assert.Equal(4, doc.ColumnCount);
-        Assert.Equal(4, doc.Headers.Count);
+        Assert.Equal(4, doc.Headers.Length);
         Assert.Equal(4, doc.RowCount);
 
         // Filter Eng — ColumnCount and Headers preserved

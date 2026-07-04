@@ -189,7 +189,7 @@ public class CsvR143AddRowSetCellMutationTests
         Assert.Contains("Carol", csv);
         Assert.DoesNotContain("Alice", csv);
 
-        var reloaded = CsvDocument.Load(csv, hasHeaders: false);
+        var reloaded = CsvDocument.Load(csv, hasHeaders: true);
         Assert.Equal(2, reloaded.RowCount);
     }
 }

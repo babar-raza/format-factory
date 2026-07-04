@@ -158,7 +158,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
     {
         var doc = LoadSampleA();
         var row = doc.GetRowAt(0);
-        Assert.True(row != null && row.Count > 0);
+        Assert.True(row != null && row.Length > 0);
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
         var doc = LoadSampleA();
         var last = doc.GetRowAt(doc.GetRowCount() - 1);
         Assert.NotNull(last);
-        Assert.True(last.Count > 0);
+        Assert.True(last.Length > 0);
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
         var doc = LoadSampleA();
         var r1 = doc.GetRowAt(0);
         var r2 = doc.GetRowAt(0);
-        Assert.Equal(r1.Count, r2.Count);
+        Assert.Equal(r1.Length, r2.Length);
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
         doc.AddRow(new[] { "Zara", "Legal", "99" });
         var last = doc.GetRowAt(doc.GetRowCount() - 1);
         Assert.NotNull(last);
-        Assert.True(last.Count > 0);
+        Assert.True(last.Length > 0);
     }
 
     [Fact]
@@ -290,7 +290,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
         // GetRowAt baseline
         var firstRow = docA.GetRowAt(0);
         Assert.NotNull(firstRow);
-        Assert.True(firstRow.Count > 0);
+        Assert.True(firstRow.Length > 0);
 
         var lastRow = docA.GetRowAt(docA.GetRowCount() - 1);
         Assert.NotNull(lastRow);
@@ -303,7 +303,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
         // GetRowAt on merged
         var mergedFirst = merged.GetRowAt(0);
         Assert.NotNull(mergedFirst);
-        Assert.True(mergedFirst.Count >= 3);
+        Assert.True(mergedFirst.Length >= 3);
 
         var names = merged.GetColumnValues("Name");
         Assert.Contains("Alice", names);
@@ -346,7 +346,7 @@ public class CsvR196MergeAndGetRowAtDeepTests : IDisposable
 
         var loadedRow = loaded.GetRowAt(0);
         Assert.NotNull(loadedRow);
-        Assert.True(loadedRow.Count >= 5);
+        Assert.True(loadedRow.Length >= 5);
 
         var loadedNames = loaded.GetColumnValues("Name");
         Assert.Contains("Alice", loadedNames);

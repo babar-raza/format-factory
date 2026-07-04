@@ -191,13 +191,13 @@ public class CsvR246GetColumnBinCountAndHistogramDeepTests : IDisposable
         {
             var river = rivers[i % 6];
             // Daily mean flow — log-normal distribution approximation
-            double meanFlow = Math.Exp(3.0 + rng.NextDouble() * 2.5); // roughly 20-1200 cumecs
-            double peakFlow = meanFlow * (1.0 + rng.NextDouble() * 0.8);
+            double dailyMeanFlow = Math.Exp(3.0 + rng.NextDouble() * 2.5); // roughly 20-1200 cumecs
+            double peakFlow = dailyMeanFlow * (1.0 + rng.NextDouble() * 0.8);
             double stage = 0.5 + rng.NextDouble() * 5.0;
             // Return period: most events are frequent (short return period)
             double retPeriod = Math.Exp(rng.NextDouble() * 5.0); // 1-150 years
             int alert = (retPeriod > 50) ? 1 : 0;
-            csvLines.Add($"GAUGE{(i % 30):D3},{river},2024-{(i % 12 + 1):D2}-{(i % 28 + 1):D2},{meanFlow:F1},{peakFlow:F1},{stage:F2},{retPeriod:F1},{alert}");
+            csvLines.Add($"GAUGE{(i % 30):D3},{river},2024-{(i % 12 + 1):D2}-{(i % 28 + 1):D2},{dailyMeanFlow:F1},{peakFlow:F1},{stage:F2},{retPeriod:F1},{alert}");
         }
         File.WriteAllLines(path, csvLines);
 

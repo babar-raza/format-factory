@@ -103,7 +103,7 @@ public class CsvR172CsvReaderReadRowsDeepTests : IDisposable
     public void ReadRows_ColumnCount_Correct()
     {
         var rows = CsvReader.ReadRows(ThreeRowCsv);
-        Assert.All(rows, r => Assert.Equal(3, r.Count));
+        Assert.All(rows, r => Assert.Equal(3, r.Length));
     }
 
     // -------------------------------------------------------------------------
@@ -125,7 +125,8 @@ public class CsvR172CsvReaderReadRowsDeepTests : IDisposable
         var bytes = Encoding.UTF8.GetBytes(ThreeRowCsv);
         using var ms = new MemoryStream(bytes);
         var rows = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal(4, rows.Count);
+        // ReadRowsFromStream strips the header row; ThreeRowCsv has 1 header + 3 data = 3 data rows
+        Assert.Equal(3, rows.Count);
     }
 
     [Fact]
@@ -134,7 +135,8 @@ public class CsvR172CsvReaderReadRowsDeepTests : IDisposable
         var bytes = Encoding.UTF8.GetBytes(ThreeRowCsv);
         using var ms = new MemoryStream(bytes);
         var rows = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal("name", rows[0][0]);
+        // Header is stripped; first row is first data row (Alice)
+        Assert.Equal("Alice", rows[0][0]);
     }
 
     [Fact]
@@ -143,8 +145,9 @@ public class CsvR172CsvReaderReadRowsDeepTests : IDisposable
         var bytes = Encoding.UTF8.GetBytes(ThreeRowCsv);
         using var ms = new MemoryStream(bytes);
         var rows = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal("Bob", rows[2][0]);
-        Assert.Equal("Finance", rows[2][1]);
+        // Header stripped: Alice=0, Bob=1, Carol=2
+        Assert.Equal("Bob", rows[1][0]);
+        Assert.Equal("Finance", rows[1][1]);
     }
 
     // -------------------------------------------------------------------------
@@ -199,13 +202,13 @@ public class CsvR172CsvReaderReadRowsDeepTests : IDisposable
         Assert.Equal("name", fromString[0][0]);
         Assert.Equal("Alice", fromString[1][0]);
 
-        // ReadRowsFromStream
+        // ReadRowsFromStream strips the header; has 1 fewer row than ReadRows
         var bytes = Encoding.UTF8.GetBytes(ThreeRowCsv);
         using var ms = new MemoryStream(bytes);
         var fromStream = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal(fromString.Count, fromStream.Count);
-        Assert.Equal(fromString[0][0], fromStream[0][0]);
-        Assert.Equal(fromString[1][0], fromStream[1][0]);
+        Assert.Equal(fromString.Count - 1, fromStream.Count);
+        Assert.Equal(fromString[1][0], fromStream[0][0]); // Alice: row 1 in string, row 0 in stream
+        Assert.Equal(fromString[2][0], fromStream[1][0]); // Bob: row 2 in string, row 1 in stream
 
         // ReadRowsFromFile
         var path = TempFile("dogfood.csv");

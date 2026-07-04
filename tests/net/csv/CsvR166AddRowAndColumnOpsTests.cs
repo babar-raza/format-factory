@@ -116,7 +116,7 @@ public class CsvR166AddRowAndColumnOpsTests
     public void ColumnCount_EqualsHeaderCount()
     {
         var doc = CsvDocument.Load(ThreeRowCsv);
-        Assert.Equal(doc.Headers.Count, doc.ColumnCount);
+        Assert.Equal(doc.Headers.Length, doc.ColumnCount);
     }
 
     [Fact]

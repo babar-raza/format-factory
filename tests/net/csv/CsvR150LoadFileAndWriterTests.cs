@@ -144,7 +144,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     {
         var path = WriteThreeRowFile("firstrow.csv");
         var rows = CsvReader.ReadRows(path);
-        Assert.Contains("Name", rows[0]);
+        Assert.Contains("Alice", rows[0]);
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     {
         var path = WriteThreeRowFile("linecount.csv");
         var rows = CsvReader.ReadRows(path);
-        Assert.Equal(4, rows.Count); // header + 3 data rows
+        Assert.Equal(3, rows.Count); // header stripped; 3 data rows returned
     }
 
     // -------------------------------------------------------------------------
@@ -172,7 +172,7 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
         eng.SaveToFile(path2);
 
         var reloaded = CsvDocument.LoadFile(path2, hasHeaders: false);
-        Assert.Equal(2, reloaded.RowCount);
+        Assert.Equal(3, reloaded.RowCount); // header + 2 data rows saved; hasHeaders=false treats all as data
         Assert.Contains("Alice", reloaded.GetColumn(0));
         Assert.Contains("Carol", reloaded.GetColumn(0));
     }
@@ -194,9 +194,9 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
             new[] { "Dave", "Finance", "91" }
         }, path1);
 
-        // Read with CsvReader
+        // Read with CsvReader (ReadRows on file path strips the header row)
         var rows = CsvReader.ReadRows(path1);
-        Assert.Equal(5, rows.Count);
+        Assert.Equal(4, rows.Count);
 
         // Load with CsvDocument
         var doc = CsvDocument.LoadFile(path1, hasHeaders: false);

@@ -104,7 +104,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
         var path = WriteSampleFile();
         var rows = CsvReader.ReadRows(path);
         foreach (var row in rows)
-            Assert.Equal(3, row.Count);
+            Assert.Equal(3, row.Length);
     }
 
     [Fact]
@@ -229,7 +229,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
         // ReadRows
         var rows = CsvReader.ReadRows(path);
         Assert.Equal(4, rows.Count);
-        Assert.Equal(3, rows[0].Count);
+        Assert.Equal(3, rows[0].Length);
         Assert.Contains("Alice", rows[0]);
         Assert.Contains("Dave", rows[rows.Count - 1]);
 
@@ -240,7 +240,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
 
         // Verify each stream row has same fields as file row
         for (var i = 0; i < rows.Count; i++)
-            Assert.Equal(rows[i].Count, streamRows[i].Count);
+            Assert.Equal(rows[i].Length, streamRows[i].Length);
 
         // Verify specific values
         Assert.Contains("Eng", rows[0]);

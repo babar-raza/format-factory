@@ -13,6 +13,7 @@ from .fodt_neutral_ops import *  # noqa: F401, F403
 from .fodt_document_edit import *  # noqa: F401, F403
 from .fodt_document_query import *  # noqa: F401, F403
 from .text_document import *  # noqa: F401, F403
+from .text_document_analytics import *  # noqa: F401, F403
 from .models import *  # noqa: F401, F403
 from .exporters import fodt_to_txt, fodt_to_markdown, fodt_to_html  # noqa: F401
 from .exceptions import *  # noqa: F401, F403

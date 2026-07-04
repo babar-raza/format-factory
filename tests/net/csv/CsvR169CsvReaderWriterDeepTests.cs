@@ -97,7 +97,7 @@ public class CsvR169CsvReaderWriterDeepTests : IDisposable
         var csv = CsvWriter.WriteRows(SampleRows);
         var rows = CsvReader.ReadRows(csv);
         // Find Alice's row
-        List<string>? aliceRow = null;
+        string[]? aliceRow = null;
         foreach (var row in rows)
             if (row.Contains("Alice")) { aliceRow = row; break; }
         Assert.NotNull(aliceRow);

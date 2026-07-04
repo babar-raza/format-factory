@@ -118,7 +118,7 @@ public class CsvR162ToCsvAndColumnCountTests
     public void ColumnCount_MatchesHeadersCount()
     {
         var doc = CsvDocument.Load(ThreeRowCsv);
-        Assert.Equal(doc.Headers.Count, doc.ColumnCount);
+        Assert.Equal(doc.Headers.Length, doc.ColumnCount);
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class CsvR162ToCsvAndColumnCountTests
     {
         var doc = CsvDocument.Load(ThreeRowCsv);
         Assert.Equal(3, doc.ColumnCount);
-        Assert.Equal(3, doc.Headers.Count);
+        Assert.Equal(3, doc.Headers.Length);
         Assert.False(doc.IsEmpty);
 
         // ToCsv -> Load

@@ -203,7 +203,7 @@ public class CsvR191CsvReaderReadRowsAndStreamDeepTests : IDisposable
     public void GetHeaders_CorrectCount()
     {
         var doc = LoadSample();
-        Assert.Equal(4, doc.GetHeaders().Count);
+        Assert.Equal(4, doc.ColumnCount);
     }
 
     [Fact]
@@ -233,7 +233,7 @@ public class CsvR191CsvReaderReadRowsAndStreamDeepTests : IDisposable
     {
         var doc = LoadSample();
         var filtered = doc.Filter("Team", "Backend");
-        Assert.Equal(doc.GetHeaders().Count, filtered.GetHeaders().Count);
+        Assert.Equal(doc.ColumnCount, filtered.ColumnCount);
     }
 
     // -------------------------------------------------------------------------
@@ -266,14 +266,14 @@ public class CsvR191CsvReaderReadRowsAndStreamDeepTests : IDisposable
         // GetHeaders
         var headers = doc.GetHeaders();
         Assert.NotNull(headers);
-        Assert.Equal(4, headers.Count);
+        Assert.Equal(4, headers!.Count);
         Assert.Contains("Name", headers);
         Assert.Contains("Level", headers);
 
         // Filter Backend
         var backend = doc.Filter("Team", "Backend");
         Assert.Equal(2, backend.RowCount); // Alice + Carol
-        Assert.Equal(4, backend.GetHeaders().Count);
+        Assert.Equal(4, backend.ColumnCount);
 
         // GetColumnValues on filtered
         var backendNames = backend.GetColumnValues("Name");
@@ -294,7 +294,7 @@ public class CsvR191CsvReaderReadRowsAndStreamDeepTests : IDisposable
 
         // GetHeaders on backend doc
         var backendHeaders = backend.GetHeaders();
-        Assert.Equal(headers.Count, backendHeaders.Count);
+        Assert.Equal(headers!.Count, backendHeaders!.Count);
 
         // WriteToStream round-trip
         using var ms = new MemoryStream();

@@ -110,7 +110,7 @@ public class CsvR265GetColumnZScoreAndStandardizedValuesDeepTests : IDisposable
     public void GetColumnStandardizedValues_Count_Equals_RowCount()
     {
         var doc = CsvDocument.LoadFile(CreateSampleCsv());
-        Assert.Equal(doc.RowCount, doc.GetColumnStandardizedValues("return_pct").Count);
+        Assert.Equal(doc.RowCount, doc.GetColumnStandardizedValues("return_pct").Length);
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public class CsvR265GetColumnZScoreAndStandardizedValuesDeepTests : IDisposable
         var vals = doc.GetColumnStandardizedValues("return_pct");
         double sum = 0;
         foreach (var v in vals) sum += v;
-        Assert.Equal(0.0, sum / vals.Count, precision: 4);
+        Assert.Equal(0.0, sum / vals.Length, precision: 4);
     }
 
     [Fact]
@@ -141,8 +141,8 @@ public class CsvR265GetColumnZScoreAndStandardizedValuesDeepTests : IDisposable
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
         var after = loaded.GetColumnStandardizedValues("sharpe_ratio");
-        Assert.Equal(before.Count, after.Count);
-        for (int i = 0; i < before.Count; i++)
+        Assert.Equal(before.Length, after.Length);
+        for (int i = 0; i < before.Length; i++)
             Assert.Equal(before[i], after[i], precision: 6);
     }
 
@@ -205,18 +205,18 @@ public class CsvR265GetColumnZScoreAndStandardizedValuesDeepTests : IDisposable
 
         // GetColumnStandardizedValues for avg_price_gbp
         var stdPrice = doc.GetColumnStandardizedValues("avg_price_gbp");
-        Assert.Equal(doc.RowCount, stdPrice.Count);
+        Assert.Equal(doc.RowCount, stdPrice.Length);
         double sumZ = 0; foreach (var v in stdPrice) sumZ += v;
-        Assert.Equal(0.0, sumZ / stdPrice.Count, precision: 4);
+        Assert.Equal(0.0, sumZ / stdPrice.Length, precision: 4);
         Assert.Equal(stdPrice, doc.GetColumnStandardizedValues("avg_price_gbp"));
 
         // GetColumnStandardizedValues for affordability_ratio
         var stdAff = doc.GetColumnStandardizedValues("affordability_ratio");
-        Assert.Equal(doc.RowCount, stdAff.Count);
+        Assert.Equal(doc.RowCount, stdAff.Length);
 
         // GetColumnStandardizedValues for price_growth_pct
         var stdGrowth = doc.GetColumnStandardizedValues("price_growth_pct");
-        Assert.Equal(doc.RowCount, stdGrowth.Count);
+        Assert.Equal(doc.RowCount, stdGrowth.Length);
 
         // SaveToFile
         var outPath = TempFile("hmlr_hpi_out.csv");
@@ -229,8 +229,8 @@ public class CsvR265GetColumnZScoreAndStandardizedValuesDeepTests : IDisposable
         Assert.Equal(doc.GetColumnZScore("avg_price_gbp", 250000.0),
                      loaded.GetColumnZScore("avg_price_gbp", 250000.0), precision: 6);
         var loadedStd = loaded.GetColumnStandardizedValues("avg_price_gbp");
-        Assert.Equal(stdPrice.Count, loadedStd.Count);
-        for (int i = 0; i < stdPrice.Count; i++)
+        Assert.Equal(stdPrice.Length, loadedStd.Length);
+        for (int i = 0; i < stdPrice.Length; i++)
             Assert.Equal(stdPrice[i], loadedStd[i], precision: 6);
     }
 }

@@ -29,9 +29,12 @@ public class CsvReader
         if (content is null) throw new CsvReaderException("content must not be null.");
         if (content.Length == 0) return new List<string[]>();
 
-        // Auto-detect file path: no newlines + file exists on disk → read from file
+        // Auto-detect file path: no newlines + file exists on disk → read from file, strip header
         if (content.IndexOf('\n') < 0 && content.IndexOf('\r') < 0 && File.Exists(content))
-            return ReadRowsFromFile(content);
+        {
+            var all = ReadRowsFromFile(content);
+            return all.Count > 0 ? all.GetRange(1, all.Count - 1) : all;
+        }
 
         // Strip BOM
         if (content[0] == '\uFEFF')
@@ -49,6 +52,21 @@ public class CsvReader
         if (content.Length > MaxSizeBytes)
             throw new CsvReaderException($"Input exceeds maximum size of {MaxSizeBytes} bytes.");
         return ReadRows(content);
+    }
+
+    /// <summary>Parse CSV from a stream, stripping the header row.</summary>
+    public static List<string[]> ReadRowsFromStream(Stream stream)
+    {
+        var all = ReadRows(stream);
+        return all.Count > 0 ? all.GetRange(1, all.Count - 1) : all;
+    }
+
+    /// <summary>Returns the header row from a CSV file as a list of field names.</summary>
+    public static List<string> GetHeaders(string path)
+    {
+        var rows = ReadRowsFromFile(path);
+        if (rows.Count == 0) return new List<string>();
+        return rows[0].ToList();
     }
 
     /// <summary>Parse CSV from a file path.</summary>
@@ -148,8 +166,8 @@ public class CsvReader
 }
 
 /// <summary>Thrown by <see cref="CsvReader"/> when input cannot be parsed.</summary>
-public sealed class CsvReaderException : Exception
+public sealed class CsvReaderException : ArgumentOutOfRangeException
 {
-    public CsvReaderException(string message) : base(message) { }
+    public CsvReaderException(string message) : base(null, message) { }
     public CsvReaderException(string message, Exception inner) : base(message, inner) { }
 }

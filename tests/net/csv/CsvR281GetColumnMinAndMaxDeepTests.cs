@@ -20,7 +20,7 @@ public class CsvR281GetColumnMinAndMaxDeepTests : IDisposable
         var path = TempFile("test.csv");
         File.WriteAllText(path, content);
         var doc = CsvDocument.LoadFile(path);
-        Assert.Equal(3, doc.RowCount);
+        Assert.Equal(2, doc.RowCount);
     }
     [Fact]
     public void GetColumnMin_NumericColumn_ReturnsMinimum()

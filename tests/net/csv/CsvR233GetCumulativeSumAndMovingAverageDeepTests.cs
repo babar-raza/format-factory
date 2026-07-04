@@ -128,7 +128,7 @@ public class CsvR233GetCumulativeSumAndMovingAverageDeepTests : IDisposable
     public void GetMovingAverage_Count_LeqRowCount()
     {
         var doc = CsvDocument.LoadFile(CreateStockCsv());
-        Assert.True(doc.GetMovingAverage("close", 5).Length <= doc.GetRowCount());
+        Assert.True(doc.GetMovingAverage("close", 5).Count <= doc.GetRowCount());
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class CsvR233GetCumulativeSumAndMovingAverageDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateStockCsv());
         var m1 = doc.GetMovingAverage("volume", 3);
         var m2 = doc.GetMovingAverage("volume", 3);
-        Assert.Equal(m1.Length, m2.Length);
+        Assert.Equal(m1.Count, m2.Count);
     }
 
     [Fact]
@@ -149,7 +149,7 @@ public class CsvR233GetCumulativeSumAndMovingAverageDeepTests : IDisposable
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
         var after = loaded.GetMovingAverage("close", 5);
-        Assert.Equal(before.Length, after.Length);
+        Assert.Equal(before.Count, after.Count);
     }
 
     // -------------------------------------------------------------------------
@@ -245,15 +245,15 @@ public class CsvR233GetCumulativeSumAndMovingAverageDeepTests : IDisposable
 
         // GetMovingAverage — 3-year moving average of debt/GDP
         var ma3A = doc.GetMovingAverage("country_a_debt_gdp", 3);
-        Assert.True(ma3A.Length <= 12);
-        Assert.True(ma3A.Length > 0);
+        Assert.True(ma3A.Count <= 12);
+        Assert.True(ma3A.Count > 0);
 
         var ma3B = doc.GetMovingAverage("country_b_debt_gdp", 3);
-        Assert.True(ma3B.Length <= 12);
+        Assert.True(ma3B.Count <= 12);
 
         // 5-year MA of issuance
         var ma5Issue = doc.GetMovingAverage("issuance_bn", 5);
-        Assert.True(ma5Issue.Length <= 12);
+        Assert.True(ma5Issue.Count <= 12);
 
         // GetPercentileRank — rank of 2020 crisis year issuance
         var rank2020 = doc.GetPercentileRank("issuance_bn", 485.2);
@@ -294,7 +294,7 @@ public class CsvR233GetCumulativeSumAndMovingAverageDeepTests : IDisposable
         var loaded2 = CsvDocument.LoadFile(out2);
         Assert.Equal(13, loaded2.GetRowCount());
         Assert.Equal(13, loaded2.GetCumulativeSum("issuance_bn").Length);
-        Assert.True(loaded2.GetMovingAverage("avg_yield", 3).Length <= 13);
+        Assert.True(loaded2.GetMovingAverage("avg_yield", 3).Count <= 13);
         Assert.True(loaded2.GetPercentileRank("issuance_bn", 300.0) >= 0.0);
     }
 }

@@ -81,7 +81,7 @@ public class CsvR221GetOutliersAndTrimmedMeanDeepTests : IDisposable
     public void GetOutliers_Count_Leq_RowCount()
     {
         var doc = CsvDocument.LoadFile(CreateSalaryCsv());
-        Assert.True(doc.GetOutliers("Salary", 2.0).Length <= doc.GetRowCount());
+        Assert.True(doc.GetOutliers("Salary", 2.0).Count <= doc.GetRowCount());
     }
 
     [Fact]
@@ -90,18 +90,18 @@ public class CsvR221GetOutliersAndTrimmedMeanDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateSalaryCsv());
         var o1 = doc.GetOutliers("Salary", 2.0);
         var o2 = doc.GetOutliers("Salary", 2.0);
-        Assert.Equal(o1.Length, o2.Length);
+        Assert.Equal(o1.Count, o2.Count);
     }
 
     [Fact]
     public void GetOutliers_SaveLoad_Consistent()
     {
         var doc = CsvDocument.LoadFile(CreateSalaryCsv());
-        var before = doc.GetOutliers("Salary", 2.0).Length;
+        var before = doc.GetOutliers("Salary", 2.0).Count;
         var path = TempFile("ol_save.csv");
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
-        Assert.Equal(before, loaded.GetOutliers("Salary", 2.0).Length);
+        Assert.Equal(before, loaded.GetOutliers("Salary", 2.0).Count);
     }
 
     [Fact]
@@ -110,7 +110,7 @@ public class CsvR221GetOutliersAndTrimmedMeanDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateSalaryCsv());
         var tight = doc.GetOutliers("Salary", 1.5);
         var loose = doc.GetOutliers("Salary", 4.0);
-        Assert.True(loose.Length <= tight.Length);
+        Assert.True(loose.Count <= tight.Count);
     }
 
     // -------------------------------------------------------------------------
@@ -235,14 +235,14 @@ public class CsvR221GetOutliersAndTrimmedMeanDeepTests : IDisposable
         // GetOutliers — Amount has clear outlier (250000)
         var outliers = doc.GetOutliers("Amount", 2.0);
         Assert.NotNull(outliers);
-        Assert.True(outliers.Length >= 0);
-        Assert.True(outliers.Length <= doc.GetRowCount());
-        Assert.Equal(outliers.Length, doc.GetOutliers("Amount", 2.0).Length); // consistent
+        Assert.True(outliers.Count >= 0);
+        Assert.True(outliers.Count <= doc.GetRowCount());
+        Assert.Equal(outliers.Count, doc.GetOutliers("Amount", 2.0).Count); // consistent
 
         // GetOutliers — higher threshold catches fewer
         var tightOutliers = doc.GetOutliers("Amount", 1.5);
         var looseOutliers = doc.GetOutliers("Amount", 3.0);
-        Assert.True(looseOutliers.Length <= tightOutliers.Length);
+        Assert.True(looseOutliers.Count <= tightOutliers.Count);
 
         // GetTrimmedMean — Amount (trimmed mean excludes outlier)
         var trimMean = doc.GetTrimmedMean("Amount", 10.0);

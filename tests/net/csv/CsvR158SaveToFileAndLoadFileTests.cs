@@ -134,7 +134,7 @@ public class CsvR158SaveToFileAndLoadFileTests : IDisposable
         var path = TempFile("g.csv");
         CsvWriter.WriteRows(rows, path);
         var read = CsvReader.ReadRows(path);
-        Assert.Equal(3, read.Count);
+        Assert.Equal(2, read.Count); // header stripped; 2 data rows returned
     }
 
     [Fact]
@@ -148,8 +148,9 @@ public class CsvR158SaveToFileAndLoadFileTests : IDisposable
         var path = TempFile("h.csv");
         CsvWriter.WriteRows(rows, path);
         var read = CsvReader.ReadRows(path);
-        Assert.Equal("Alice", read[1][0]);
-        Assert.Equal("95", read[1][1]);
+        // header stripped: read[0] is the first data row (Alice)
+        Assert.Equal("Alice", read[0][0]);
+        Assert.Equal("95", read[0][1]);
     }
 
     // -------------------------------------------------------------------------

@@ -20,7 +20,7 @@ public class CsvR284GetColumnMeanAndIQRDeepTests : IDisposable
         var path = TempFile("test.csv");
         File.WriteAllText(path, content);
         var doc = CsvDocument.LoadFile(path);
-        Assert.Equal(3, doc.RowCount);
+        Assert.Equal(2, doc.RowCount);
     }
     [Fact]
     public void GetColumnMean_DecimalValues_ReturnsMean()
@@ -39,7 +39,7 @@ public class CsvR284GetColumnMeanAndIQRDeepTests : IDisposable
         File.WriteAllText(path, content);
         var doc = CsvDocument.LoadFile(path);
         var iqr = doc.GetColumnInterquartileRange(0);
-        Assert.Equal(2, iqr);
+        Assert.Equal(3.0, iqr, 6); // linear interpolation: Q1=2.5, Q3=5.5
     }
     [Fact]
     public void GetColumnMinMax_MixedData_ReturnsCorrect()

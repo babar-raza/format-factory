@@ -405,11 +405,18 @@ def csv_has_only_one_row(file_path: "str | Path") -> bool:
     return len(model.get("rows", [])) == 1
 
 
-# Analytics functions are in tabular_document.py to keep this file within policy limits.
+# Analytics functions are in tabular_document.py and tabular_document_analytics.py.
 try:
     from .tabular_document import *  # noqa: F401, F403
 except ImportError:
     try:
         from tabular_document import *  # noqa: F401, F403 — fallback for direct-module import
+    except ImportError:
+        pass
+try:
+    from .tabular_document_analytics import *  # noqa: F401, F403
+except ImportError:
+    try:
+        from tabular_document_analytics import *  # noqa: F401, F403
     except ImportError:
         pass

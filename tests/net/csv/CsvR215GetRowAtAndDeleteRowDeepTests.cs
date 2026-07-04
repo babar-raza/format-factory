@@ -80,7 +80,7 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateProjectsCsv());
         var row = doc.GetRowAt(0);
         Assert.True(row.Length > 0);
-        Assert.True(System.Array.Exists(row, v => v.Contains("PRJ-001") || v.Contains("Alice") || v.Contains("Platform")));
+        Assert.True(System.Array.Exists((string[])row, v => v.Contains("PRJ-001") || v.Contains("Alice") || v.Contains("Platform")));
     }
 
     [Fact]
@@ -216,7 +216,7 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateProjectsCsv());
         doc.SetRowValues(0, new[] { "PRJ-UPD", "Updated Project", "Planning", "200000", "Hector" });
         var row = doc.GetRowAt(0);
-        Assert.True(System.Array.Exists(row, v => v.Contains("PRJ-UPD") || v.Contains("Updated") || v.Contains("Hector")));
+        Assert.True(System.Array.Exists((string[])row, v => v.Contains("PRJ-UPD") || v.Contains("Updated") || v.Contains("Hector")));
     }
 
     [Fact]
@@ -228,7 +228,7 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
         var row = loaded.GetRowAt(2);
-        Assert.True(System.Array.Exists(row, v => v.Contains("PRJ-MOD") || v.Contains("Modified") || v.Contains("Iris")));
+        Assert.True(System.Array.Exists((string[])row, v => v.Contains("PRJ-MOD") || v.Contains("Modified") || v.Contains("Iris")));
     }
 
     [Fact]
@@ -286,11 +286,11 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
 
         // GetRowAt first row
         var first = doc.GetRowAt(0);
-        Assert.True(System.Array.Exists(first, v => v.Contains("INIT-001") || v.Contains("Alice")));
+        Assert.True(System.Array.Exists((string[])first, v => v.Contains("INIT-001") || v.Contains("Alice")));
 
         // GetRowAt last row
         var last = doc.GetRowAt(7);
-        Assert.True(System.Array.Exists(last, v => v.Contains("INIT-008") || v.Contains("Hector")));
+        Assert.True(System.Array.Exists((string[])last, v => v.Contains("INIT-008") || v.Contains("Hector")));
 
         // GetRowAt consistent
         var r2a = doc.GetRowAt(2);
@@ -301,12 +301,12 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
         // SetRowValues — update first initiative (now in Execution phase with revised budget)
         doc.SetRowValues(0, new[] { "INIT-001", "Digital Transformation v2", "Alice", "Critical", "1500000", "Execution", "EMEA" });
         var updatedFirst = doc.GetRowAt(0);
-        Assert.True(System.Array.Exists(updatedFirst, v => v.Contains("v2") || v.Contains("1500000") || v.Contains("Critical")));
+        Assert.True(System.Array.Exists((string[])updatedFirst, v => v.Contains("v2") || v.Contains("1500000") || v.Contains("Critical")));
 
         // SetRowValues — update another row
         doc.SetRowValues(6, new[] { "INIT-007", "ESG Reporting Initiative", "Grace", "Medium", "420000", "Planning", "EMEA" });
         var updatedSeven = doc.GetRowAt(6);
-        Assert.True(System.Array.Exists(updatedSeven, v => v.Contains("ESG") || v.Contains("420000")));
+        Assert.True(System.Array.Exists((string[])updatedSeven, v => v.Contains("ESG") || v.Contains("420000")));
 
         // DeleteRow — remove lowest priority initiative
         doc.DeleteRow(6); // Grace's ESG initiative (just updated)
@@ -353,7 +353,7 @@ public class CsvR215GetRowAtAndDeleteRowDeepTests : IDisposable
         // SetRowValues on loaded
         loaded.SetRowValues(0, new[] { "INIT-001", "DT v3 — Board Approved", "Alice", "Critical", "1800000", "Execution", "EMEA" });
         var loadedRow0 = loaded.GetRowAt(0);
-        Assert.True(System.Array.Exists(loadedRow0, v => v.Contains("v3") || v.Contains("1800000")));
+        Assert.True(System.Array.Exists((string[])loadedRow0, v => v.Contains("v3") || v.Contains("1800000")));
 
         // DeleteRow on loaded
         loaded.DeleteRow(0);

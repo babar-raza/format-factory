@@ -73,6 +73,21 @@ class TsvDocument:
                 return row[col_index]
         return ""
 
+    def get_column_values(self, col_index: int) -> list[str]:
+        """Return all data-row values in the given column.
+
+        Args:
+            col_index: Zero-based column index.
+
+        Returns:
+            list[str]: Values from each data row at col_index.
+            Returns '' for rows that are shorter than col_index + 1.
+
+        spec_qname: tsv:record
+        spec_fact_ref: FACT-TSV-001
+        """
+        return [row[col_index] if col_index < len(row) else "" for row in self.rows]
+
     # Tabular dimension properties (FACT-TSV-001)
 
     @property

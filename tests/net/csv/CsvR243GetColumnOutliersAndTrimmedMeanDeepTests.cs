@@ -94,7 +94,7 @@ public class CsvR243GetColumnOutliersAndTrimmedMeanDeepTests : IDisposable
     public void GetColumnOutliers_NonNegative()
     {
         var doc = CsvDocument.LoadFile(CreatePropertyCsv());
-        Assert.True(doc.GetColumnOutliers("asking_price_gbp", 2.0) >= 0);
+        Assert.True(doc.GetColumnOutliers("asking_price_gbp", 2.0).Count >= 0);
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class CsvR243GetColumnOutliersAndTrimmedMeanDeepTests : IDisposable
     public void GetColumnOutliers_Zero_ForUniformData()
     {
         var doc = CsvDocument.LoadFile(CreateConstantCsv());
-        Assert.Equal(0, doc.GetColumnOutliers("score", 2.0));
+        Assert.Equal(0, doc.GetColumnOutliers("score", 2.0).Count);
     }
 
     // -------------------------------------------------------------------------
@@ -231,7 +231,7 @@ public class CsvR243GetColumnOutliersAndTrimmedMeanDeepTests : IDisposable
 
         // GetColumnOutliers — large loss claims
         var repairOutliers = doc.GetColumnOutliers("repair_cost_gbp", 2.0);
-        Assert.True(repairOutliers >= 0);
+        Assert.True(repairOutliers.Count >= 0);
         Assert.Equal(repairOutliers, doc.GetColumnOutliers("repair_cost_gbp", 2.0)); // consistent
 
         // GetColumnTrimmedMean — robust average cost excluding total losses
@@ -247,7 +247,7 @@ public class CsvR243GetColumnOutliersAndTrimmedMeanDeepTests : IDisposable
         foreach (var col in new[] { "driver_age", "repair_cost_gbp", "total_incurred_gbp" })
         {
             Assert.True(doc.GetColumnIQR(col) >= 0);
-            Assert.True(doc.GetColumnOutliers(col, 2.0) >= 0);
+            Assert.True(doc.GetColumnOutliers(col, 2.0).Count >= 0);
             Assert.True(double.IsFinite(doc.GetColumnTrimmedMean(col, 0.1)));
         }
 
@@ -260,7 +260,7 @@ public class CsvR243GetColumnOutliersAndTrimmedMeanDeepTests : IDisposable
         var loaded = CsvDocument.LoadFile(outPath);
         Assert.Equal(repairIqr, loaded.GetColumnIQR("repair_cost_gbp"), precision: 6);
         Assert.True(double.IsFinite(loaded.GetColumnTrimmedMean("total_incurred_gbp", 0.1)));
-        Assert.True(loaded.GetColumnOutliers("repair_cost_gbp", 2.0) >= 0);
+        Assert.True(loaded.GetColumnOutliers("repair_cost_gbp", 2.0).Count >= 0);
         Assert.Equal(doc.RowCount, loaded.RowCount);
 
         // Consistency with mean and StdDev

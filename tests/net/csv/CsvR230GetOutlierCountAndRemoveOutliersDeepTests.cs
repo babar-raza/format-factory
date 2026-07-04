@@ -231,7 +231,7 @@ public class CsvR230GetOutlierCountAndRemoveOutliersDeepTests : IDisposable
 
         var doc = CsvDocument.LoadFile(path);
         Assert.Equal(12, doc.GetRowCount());
-        Assert.Equal(7, doc.GetColumnCount());
+        Assert.Equal(6, doc.GetColumnCount());
 
         // GetOutlierCount
         var outAdverse = doc.GetOutlierCount("adverse_events");

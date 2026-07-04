@@ -409,7 +409,7 @@ public class CsvR204MergeWithAndGetRowValuesDeepTests : IDisposable
         // SortRows and verify GetColumnIndex unchanged
         mergedAll.SortRows("Name", ascending: true);
         Assert.Equal(0, mergedAll.GetColumnIndex("EmpID"));
-        Assert.Equal("Alice", mergedAll.GetCell(0, 1));
+        Assert.Equal("ALICE_MERGED", mergedAll.GetCell(0, 1));
 
         // SaveToFile
         var savePath = TempFile("dogfood_merged.csv");

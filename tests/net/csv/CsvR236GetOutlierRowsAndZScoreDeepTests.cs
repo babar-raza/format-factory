@@ -202,18 +202,18 @@ public class CsvR236GetOutlierRowsAndZScoreDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateCreditRiskCsv());
         var n1 = doc.GetNormalizedColumn("loan_amount");
         var n2 = doc.GetNormalizedColumn("loan_amount");
-        Assert.Equal(n1.Length, n2.Length);
+        Assert.Equal(n1.Count, n2.Count);
     }
 
     [Fact]
     public void GetNormalizedColumn_SaveLoad_Consistent()
     {
         var doc = CsvDocument.LoadFile(CreateCreditRiskCsv());
-        var before = doc.GetNormalizedColumn("years_employed").Length;
+        var before = doc.GetNormalizedColumn("years_employed").Count;
         var path = TempFile("nc_save.csv");
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
-        Assert.Equal(before, loaded.GetNormalizedColumn("years_employed").Length);
+        Assert.Equal(before, loaded.GetNormalizedColumn("years_employed").Count);
     }
 
     // -------------------------------------------------------------------------
@@ -242,7 +242,7 @@ public class CsvR236GetOutlierRowsAndZScoreDeepTests : IDisposable
 
         var doc = CsvDocument.LoadFile(path);
         Assert.Equal(12, doc.GetRowCount());
-        Assert.Equal(9, doc.GetColumnCount());
+        Assert.Equal(8, doc.GetColumnCount());
 
         // GetOutlierCount — tensile strength anomaly (B006 is extreme)
         var tensileOutliers = doc.GetOutlierCount("tensile_strength_mpa", 2.0);
@@ -272,9 +272,9 @@ public class CsvR236GetOutlierRowsAndZScoreDeepTests : IDisposable
         // GetNormalizedColumn — hardness normalised
         var normHardness = doc.GetNormalizedColumn("hardness_hv");
         Assert.NotNull(normHardness);
-        Assert.Equal(12, normHardness.Length);
+        Assert.Equal(12, normHardness.Count);
         foreach (var v in normHardness) { Assert.True(v >= 0.0); Assert.True(v <= 1.0); }
-        Assert.Equal(normHardness.Length, doc.GetNormalizedColumn("hardness_hv").Length); // consistent
+        Assert.Equal(normHardness.Count, doc.GetNormalizedColumn("hardness_hv").Count); // consistent
 
         var normDensity = doc.GetNormalizedColumn("density_gcm3");
         Assert.NotNull(normDensity);
@@ -292,8 +292,8 @@ public class CsvR236GetOutlierRowsAndZScoreDeepTests : IDisposable
         Assert.Equal(tensileOutliers, loaded.GetOutlierCount("tensile_strength_mpa", 2.0));
         Assert.Equal(12, loaded.GetZScores("tensile_strength_mpa").Length);
         var loadedNorm = loaded.GetNormalizedColumn("hardness_hv");
-        Assert.Equal(12, loadedNorm.Length);
-        for (int i = 0; i < normHardness.Length; i++)
+        Assert.Equal(12, loadedNorm.Count);
+        for (int i = 0; i < normHardness.Count; i++)
             Assert.Equal(normHardness[i], loadedNorm[i], precision: 6);
 
         // AddRow

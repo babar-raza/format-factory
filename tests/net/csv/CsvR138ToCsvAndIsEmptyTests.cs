@@ -120,7 +120,7 @@ public class CsvR138ToCsvAndIsEmptyTests
     [Fact]
     public void IsEmpty_AfterRemoveLastRow_IsTrue()
     {
-        var doc = CsvDocument.Load("A\n1", hasHeaders: false);
+        var doc = CsvDocument.Load("A\n1", hasHeaders: true);
         Assert.False(doc.IsEmpty);
         doc.RemoveRow(0);
         Assert.True(doc.IsEmpty);

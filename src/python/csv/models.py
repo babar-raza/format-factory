@@ -38,7 +38,11 @@ class CsvDocument:
 
     @property
     def headers(self) -> list[str]:
-        """Column headers (first row if has_header, else empty list)."""
+        """Column headers (first row if has_header, else empty list).
+
+        Returns:
+            list[str]: Ordered list of column header names. Empty if no header row.
+        """
         return list(self._data.get("headers", []))
 
     @property

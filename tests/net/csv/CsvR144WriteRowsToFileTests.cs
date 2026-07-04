@@ -118,7 +118,7 @@ public class CsvR144WriteRowsToFileTests : IDisposable
         var doc = CsvDocument.Load(ThreeRowCsv);
         var path = TempFile("roundtrip.csv");
         doc.SaveToFile(path);
-        var reloaded = CsvDocument.LoadFile(path, hasHeaders: false);
+        var reloaded = CsvDocument.LoadFile(path, hasHeaders: true);
         Assert.Equal(doc.RowCount, reloaded.RowCount);
     }
 
@@ -128,7 +128,7 @@ public class CsvR144WriteRowsToFileTests : IDisposable
         var doc = CsvDocument.Load(ThreeRowCsv);
         var path = TempFile("values2.csv");
         doc.SaveToFile(path);
-        var reloaded = CsvDocument.LoadFile(path, hasHeaders: false);
+        var reloaded = CsvDocument.LoadFile(path, hasHeaders: true);
         Assert.Equal("Alice", reloaded.GetCellValue(0, 0));
     }
 
@@ -178,7 +178,7 @@ public class CsvR144WriteRowsToFileTests : IDisposable
         Assert.True(File.Exists(path));
 
         // Reload
-        var reloaded = CsvDocument.LoadFile(path, hasHeaders: false);
+        var reloaded = CsvDocument.LoadFile(path, hasHeaders: true);
         Assert.Equal(3, reloaded.RowCount);
 
         // Get column

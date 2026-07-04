@@ -69,7 +69,7 @@ public class CsvR118GetColumnTests
     {
         var doc = LoadCsv("A,B\n1,2\n");
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.GetColumn(-1));
+        Assert.ThrowsAny<ArgumentOutOfRangeException>(() => doc.GetColumn(-1));
     }
 
     [Fact]

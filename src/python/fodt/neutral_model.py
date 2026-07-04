@@ -261,9 +261,13 @@ def _validate_table_row(row: dict[str, Any], table_idx: int, row_idx: int) -> li
 
 
 
-# Analytics functions are in text_document.py
+# Analytics functions are in text_document.py and text_document_analytics.py
 try:
     from .text_document import *  # noqa: F401, F403
+except ImportError:
+    pass
+try:
+    from .text_document_analytics import *  # noqa: F401, F403
 except ImportError:
     pass
 

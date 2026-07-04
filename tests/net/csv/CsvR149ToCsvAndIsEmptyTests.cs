@@ -193,7 +193,7 @@ public class CsvR149ToCsvAndIsEmptyTests
         // Filter high scores
         var high = reloaded.Filter(row =>
             row.Length > 1 && int.TryParse(row[1], out var s) && s > 88);
-        Assert.Equal(3, high.RowCount); // Alice(95), Dave(91), and Name row? No...
+        Assert.Equal(2, high.RowCount); // Alice(95) and Dave(91) — Name/Score header fails TryParse, Carol(88) not strictly >
         // Actually: row 0=Name/Score (header row - doesn't pass int.TryParse)
         // rows: Alice/95 → 95>88 PASS; Bob/82 → 82>88 FAIL; Carol/88 → 88>88 FAIL; Dave/91 → PASS
         // So 2 pass + header doesn't (header fails TryParse)

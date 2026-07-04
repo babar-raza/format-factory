@@ -190,7 +190,7 @@ public class CsvR222GetHistogramBinsAndFrequencyTableDeepTests : IDisposable
     public void GetBinCount_Length_Equals_BinCount()
     {
         var doc = CsvDocument.LoadFile(CreateProductCsv());
-        Assert.Equal(4, doc.GetBinCount("Price", 4).Length);
+        Assert.Equal(4, doc.GetBinCount("Price", 4).Count);
     }
 
     [Fact]
@@ -207,7 +207,7 @@ public class CsvR222GetHistogramBinsAndFrequencyTableDeepTests : IDisposable
         var doc = CsvDocument.LoadFile(CreateProductCsv());
         var b1 = doc.GetBinCount("Price", 4);
         var b2 = doc.GetBinCount("Price", 4);
-        for (int i = 0; i < b1.Length; i++) Assert.Equal(b1[i], b2[i]);
+        for (int i = 0; i < b1.Count; i++) Assert.Equal(b1[i], b2[i]);
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class CsvR222GetHistogramBinsAndFrequencyTableDeepTests : IDisposable
         doc.SaveToFile(path);
         var loaded = CsvDocument.LoadFile(path);
         var after = loaded.GetBinCount("Price", 4);
-        for (int i = 0; i < before.Length; i++) Assert.Equal(before[i], after[i]);
+        for (int i = 0; i < before.Count; i++) Assert.Equal(before[i], after[i]);
     }
 
     // -------------------------------------------------------------------------
@@ -284,7 +284,7 @@ public class CsvR222GetHistogramBinsAndFrequencyTableDeepTests : IDisposable
         // GetBinCount — Score (4 bins)
         var scoreBinCount = doc.GetBinCount("Score", 4);
         Assert.NotNull(scoreBinCount);
-        Assert.Equal(4, scoreBinCount.Length);
+        Assert.Equal(4, scoreBinCount.Count);
         foreach (var c in scoreBinCount) Assert.True(c >= 0);
         int binTotal = 0;
         foreach (var c in scoreBinCount) binTotal += c;
@@ -312,7 +312,7 @@ public class CsvR222GetHistogramBinsAndFrequencyTableDeepTests : IDisposable
         Assert.Equal(13, loaded.GetRowCount());
         Assert.Equal(4, loaded.GetHistogramBins("Score", 4).Length);
         Assert.Equal(catFreq.Count, loaded.GetFrequencyTable("Category").Count);
-        Assert.Equal(4, loaded.GetBinCount("Score", 4).Length);
+        Assert.Equal(4, loaded.GetBinCount("Score", 4).Count);
 
         // GetColumnNames cross-check
         var cols = loaded.GetColumnNames();

@@ -301,9 +301,9 @@ public class CsvR199SortRowsAndGetCellDeepTests : IDisposable
         var financeSorted = financeFiltered.SortRows("Name", ascending: true);
         Assert.Equal("Alice", financeSorted.GetCell(0, 0));
 
-        // RemoveRow — remove Charlie (row 0)
+        // RemoveRow — remove current row 0 (Bob=95 after Score desc sort)
         var charlieScore = doc.GetCell(0, 2);
-        Assert.Equal("85", charlieScore);
+        Assert.Equal("95", charlieScore);
         doc.RemoveRow(0);
         Assert.Equal(4, doc.GetRowCount());
 

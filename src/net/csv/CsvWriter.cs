@@ -96,6 +96,63 @@ public class CsvWriter
         File.WriteAllText(path, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
     }
 
+    /// <summary>Serialize dictionary rows using headers as column order, returns CSV string.</summary>
+    public static string WriteRows(List<Dictionary<string, string>> rows, List<string> headers)
+    {
+        ArgumentNullException.ThrowIfNull(rows);
+        ArgumentNullException.ThrowIfNull(headers);
+        var all = new List<IEnumerable<string?>> { headers };
+        all.AddRange(rows.Select(r => (IEnumerable<string?>)headers.Select(h => r.TryGetValue(h, out var v) ? v : "")));
+        return WriteRows(all);
+    }
+
+    /// <summary>Serialize dictionary rows using headers as column order, write to file.</summary>
+    public static void WriteRowsToFile(List<Dictionary<string, string>> rows, List<string> headers, string path)
+    {
+        ArgumentNullException.ThrowIfNull(rows);
+        ArgumentNullException.ThrowIfNull(headers);
+        var all = new List<IEnumerable<string?>> { headers };
+        all.AddRange(rows.Select(r => (IEnumerable<string?>)headers.Select(h => r.TryGetValue(h, out var v) ? v : "")));
+        WriteRowsToFile(all, path);
+    }
+
+    /// <summary>Write rows (with optional header) to a stream as CSV (UTF-8, no BOM).</summary>
+    public static void WriteToStream(IEnumerable<IEnumerable<string?>> rows, Stream stream, string[]? headers = null)
+    {
+        ArgumentNullException.ThrowIfNull(rows);
+        ArgumentNullException.ThrowIfNull(stream);
+        IEnumerable<IEnumerable<string?>> all = headers != null
+            ? new List<IEnumerable<string?>> { headers }.Concat(rows)
+            : rows;
+        var bytes = System.Text.Encoding.UTF8.GetBytes(WriteRows(all));
+        stream.Write(bytes, 0, bytes.Length);
+    }
+
+    /// <summary>Write string[][] rows (with header array) to a file.</summary>
+    public static void WriteRowsToFile(IEnumerable<string[]> rows, string path, string[] headers)
+    {
+        var all = new List<IEnumerable<string?>> { headers };
+        all.AddRange(rows);
+        WriteRowsToFile(all, path);
+    }
+
+    /// <summary>Write string[][] rows (with header array) to a stream.</summary>
+    public static void WriteToStream(IEnumerable<string[]> rows, Stream stream, string[] headers)
+    {
+        var all = new List<IEnumerable<string?>> { headers };
+        all.AddRange(rows);
+        WriteToStream(all, stream);
+    }
+
+    /// <summary>Write a CsvDocument to a stream as CSV (UTF-8, no BOM).</summary>
+    public static void WriteToStream(CsvDocument doc, Stream stream)
+    {
+        ArgumentNullException.ThrowIfNull(doc);
+        ArgumentNullException.ThrowIfNull(stream);
+        var bytes = System.Text.Encoding.UTF8.GetBytes(doc.ToCsv());
+        stream.Write(bytes, 0, bytes.Length);
+    }
+
     // -------------------------------------------------------------------------
     // Field escaping — RFC 4180 compatible
     // -------------------------------------------------------------------------
