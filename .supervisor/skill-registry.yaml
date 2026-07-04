@@ -170,6 +170,55 @@ skills:
   - creating a private dictionary field to back a persistent document property
   - adding a public API whose only consumer is a test
   - using TODO implement later as sole method body
+  pre_execution_checklist:
+    # TC-ARC-011: QName authority checklist — all fields required before execution
+    spec_fact_ids:
+      required: true
+      description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
+      reject_if_missing: true
+    qname:
+      required: true
+      description: Target QName (e.g. table:table-cell); must exist in fods-qname-hierarchy.yaml or equivalent
+      reject_if_missing: true
+    canonical_owning_type:
+      required: true
+      description: Canonical model type from QName hierarchy (e.g. Table.TableCell)
+    target_folder:
+      required: true
+      description: Target folder per qname-code-organization-plan.yaml (e.g. src/net/fods/Model/Table/)
+    target_file:
+      required: true
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      reject_if_missing: true
+      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+    parser_obligation:
+      required: true
+      description: What the parser reads to populate this API value
+      reject_if_missing: true
+    writer_obligation:
+      required: true
+      description: What the writer emits when this API value changes
+      reject_if_missing: true
+    public_owning_type:
+      required: true
+      description: Aspose-style collection/facade type from fods-aspose-api-design.yaml (e.g. FodsCell)
+    roundtrip_obligation:
+      required: true
+      description: Round-trip test requirement (parse → mutate → write → reload → assert)
+  traceability_required:
+    # TC-ARC-017: Full traceability chain required for every add-dotnet-api invocation
+    spec_fact_ids:
+      required: true
+      description: Non-empty list — links to SAL-verified specification fact
+    qname:
+      required: true
+      description: Target QName — must exist in format QName hierarchy
+    capability_ids:
+      required: true
+      description: Non-empty list — capability authorizing this API addition
+    taskcard_id:
+      required: true
+      description: TC-ARC-* or equivalent taskcard owning this change
 - command: /add-dotnet-object-model-feature
   command_file: .claude/commands/add-dotnet-object-model-feature.md
   idempotency: create_or_update
@@ -193,6 +242,53 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+  pre_execution_checklist:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
+      reject_if_missing: true
+    qname:
+      required: true
+      description: Target QName; must exist in qname-code-organization-plan.yaml or format QName hierarchy
+      reject_if_missing: true
+    canonical_owning_type:
+      required: true
+      description: Canonical model type from QName hierarchy
+    target_folder:
+      required: true
+      description: Target folder per qname-code-organization-plan.yaml
+    target_file:
+      required: true
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      reject_if_missing: true
+      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+    parser_obligation:
+      required: true
+      description: What the parser reads to populate this feature value
+      reject_if_missing: true
+    writer_obligation:
+      required: true
+      description: What the writer emits when this feature value changes
+      reject_if_missing: true
+    public_owning_type:
+      required: true
+      description: Aspose-style collection/facade type that exposes this feature
+    roundtrip_obligation:
+      required: true
+      description: Round-trip test requirement
+  traceability_required:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list — links to SAL-verified specification fact
+    qname:
+      required: true
+      description: Target QName — must exist in format QName hierarchy
+    capability_ids:
+      required: true
+      description: Non-empty list — capability authorizing this feature addition
+    taskcard_id:
+      required: true
+      description: TC-ARC-* or equivalent taskcard owning this change
 - command: /add-installed-package-example
   command_file: .claude/commands/add-installed-package-example.md
   idempotency: create_or_update
@@ -237,6 +333,53 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+  pre_execution_checklist:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
+      reject_if_missing: true
+    qname:
+      required: true
+      description: Target QName; must exist in format QName hierarchy
+      reject_if_missing: true
+    canonical_owning_type:
+      required: true
+      description: Canonical model type from QName hierarchy (e.g. Table.TableCell)
+    target_folder:
+      required: true
+      description: Target folder per qname-code-organization-plan.yaml (e.g. src/python/fods/spec/table/)
+    target_file:
+      required: true
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      reject_if_missing: true
+      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+    parser_obligation:
+      required: true
+      description: What the parser reads to populate this API value
+      reject_if_missing: true
+    writer_obligation:
+      required: true
+      description: What the writer emits when this API value changes
+      reject_if_missing: true
+    public_owning_type:
+      required: true
+      description: Aspose-style collection/facade type from fods-aspose-api-design.yaml
+    roundtrip_obligation:
+      required: true
+      description: Round-trip test requirement (parse → mutate → write → reload → assert)
+  traceability_required:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list — links to SAL-verified specification fact
+    qname:
+      required: true
+      description: Target QName — must exist in format QName hierarchy
+    capability_ids:
+      required: true
+      description: Non-empty list — capability authorizing this API addition
+    taskcard_id:
+      required: true
+      description: TC-ARC-* or equivalent taskcard owning this change
 - command: /add-python-object-model-feature
   command_file: .claude/commands/add-python-object-model-feature.md
   idempotency: create_or_update
@@ -262,6 +405,53 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+  pre_execution_checklist:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
+      reject_if_missing: true
+    qname:
+      required: true
+      description: Target QName; must exist in format QName hierarchy
+      reject_if_missing: true
+    canonical_owning_type:
+      required: true
+      description: Canonical model type from QName hierarchy
+    target_folder:
+      required: true
+      description: Target folder per qname-code-organization-plan.yaml
+    target_file:
+      required: true
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      reject_if_missing: true
+      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+    parser_obligation:
+      required: true
+      description: What the parser reads to populate this feature value
+      reject_if_missing: true
+    writer_obligation:
+      required: true
+      description: What the writer emits when this feature value changes
+      reject_if_missing: true
+    public_owning_type:
+      required: true
+      description: Aspose-style collection/facade type that exposes this feature
+    roundtrip_obligation:
+      required: true
+      description: Round-trip test requirement
+  traceability_required:
+    spec_fact_ids:
+      required: true
+      description: Non-empty list — links to SAL-verified specification fact
+    qname:
+      required: true
+      description: Target QName — must exist in format QName hierarchy
+    capability_ids:
+      required: true
+      description: Non-empty list — capability authorizing this feature addition
+    taskcard_id:
+      required: true
+      description: TC-ARC-* or equivalent taskcard owning this change
 - command: /add-roundtrip-test
   command_file: .claude/commands/add-roundtrip-test.md
   idempotency: create_or_update

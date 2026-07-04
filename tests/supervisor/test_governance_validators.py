@@ -1818,10 +1818,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 119, (
-            f"Expected 119 canonical validators, got {validator_count}. "
+        assert validator_count == 124, (
+            f"Expected 124 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(119 = 106 prior + V100-V109 product code quality validators + V110-V112 (TC-PQLM-012))"
+            "(124 = 119 prior + V130-V133 found-issue lifecycle validators (PQLM-GOV-001, TC-VAL-002))"
         )
 
 
@@ -3265,3 +3265,4 @@ class TestV99PlaybookCoverageReportCurrent:
         )
         result = self._get_validator()({}, repo_root=tmp_path)
         assert result["result"] == "PASS"
+

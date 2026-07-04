@@ -305,6 +305,29 @@ src/python/_test_compliant_pilot.py: TC-PILOT-002 exclusive (temp)
 
 ---
 
+## Taskcard Status Summary (Required for lifecycle_audit.py closure detection)
+
+| TC-ID | Status |
+|-------|--------|
+| TC-BUILD-001 | CLOSED |
+| TC-STD-001 | CLOSED |
+| TC-STD-002 | CLOSED |
+| TC-REVIEW-001 | CLOSED |
+| TC-REVIEW-002 | CLOSED |
+| TC-ROOT-001 | CLOSED |
+| TC-VAL-001 | CLOSED |
+| TC-VAL-002 | CLOSED |
+| TC-HEAL-NET-001 | CLOSED |
+| TC-HEAL-NET-002 | CLOSED |
+| TC-HEAL-PY-001 | CLOSED |
+| TC-HEAL-PY-002 | CLOSED |
+| TC-PILOT-001 | CLOSED |
+| TC-PILOT-002 | CLOSED |
+| TC-PILOT-003 | CLOSED |
+| TC-CLOSE-001 | CLOSED |
+
+---
+
 ## PART 6: PARENT TASKCARDS WITH CHILDREN AND MICRO-STEPS
 
 ---

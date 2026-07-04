@@ -29,11 +29,13 @@ public class CsvReader
         if (content is null) throw new CsvReaderException("content must not be null.");
         if (content.Length == 0) return new List<string[]>();
 
-        // Auto-detect file path: no newlines + file exists on disk → read from file, strip header
+        // Auto-detect file path: no newlines + file exists on disk → read from file (all rows, including header).
+        // ReadRows() returns ALL rows; callers who need data-only rows must strip the header themselves,
+        // as CsvDocument.LoadFile already does. Stripping here was asymmetric with ReadRowsFromFile()
+        // and broke callers that expected the header to be included (GAP-CSV-001).
         if (content.IndexOf('\n') < 0 && content.IndexOf('\r') < 0 && File.Exists(content))
         {
-            var all = ReadRowsFromFile(content);
-            return all.Count > 0 ? all.GetRange(1, all.Count - 1) : all;
+            return ReadRowsFromFile(content);
         }
 
         // Strip BOM

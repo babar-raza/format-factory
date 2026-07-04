@@ -21,6 +21,20 @@
     ]
   },
   "known_violations": {
+    "src/net/csv/CsvDocument.cs": {
+      "loc": 275,
+      "baseline_loc_cap": 816,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "dotnet_pre_existing"
+    },
+    "src/net/csv/CsvDocumentAnalytics.cs": {
+      "loc": 604,
+      "baseline_loc_cap": 604,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
+    },
     "src/net/fods/FodsDocument.cs": {
       "loc": 1293,
       "baseline_loc_cap": 1293,
@@ -33,6 +47,55 @@
       "healing_priority": "P2",
       "healing_target_file": "src/net/fods/FodsDocumentQuery.cs",
       "healing_sprint": "TC-ARCH-FODS-NET-001"
+    },
+    "src/net/fods/FodsDocumentCellProps.cs": {
+      "loc": 687,
+      "baseline_loc_cap": 642,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
+    },
+    "src/net/fods/FodsDocumentCellStyle.cs": {
+      "loc": 600,
+      "baseline_loc_cap": 600,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "legitimate_odf_style_resolution_cache_not_xml_write_state"
+    },
+    "src/net/fods/FodsDocumentDataAnnotations.cs": {
+      "loc": 511,
+      "baseline_loc_cap": 508,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
+    },
+    "src/net/fods/FodsDocumentEditOps.cs": {
+      "loc": 738,
+      "baseline_loc_cap": 738,
+      "functions": 61,
+      "baseline_functions_cap": 61,
+      "category": "dotnet_decomposed_partial_v105_v106_grandfathered"
+    },
+    "src/net/fods/FodsDocumentExportOps.cs": {
+      "loc": 508,
+      "baseline_loc_cap": 508,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
+    },
+    "src/net/fods/FodsDocumentReadOps.cs": {
+      "loc": 892,
+      "baseline_loc_cap": 911,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
+    },
+    "src/net/fods/FodsDocumentSheetFeatures.cs": {
+      "loc": 483,
+      "baseline_loc_cap": 479,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
     },
     "src/net/fodt/FodtDocument.cs": {
       "loc": 778,
@@ -47,6 +110,42 @@
       "healing_target_file": "src/net/fodt/FodtDocumentQuery.cs",
       "healing_sprint": "TC-ARCH-FODT-NET-001"
     },
+    "src/net/fodt/FodtDocumentAdvancedTextOps.cs": {
+      "loc": 669,
+      "baseline_loc_cap": 669,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
+    },
+    "src/net/fodt/FodtDocumentEditing.cs": {
+      "loc": 664,
+      "baseline_loc_cap": 2662,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "new_violation_detected"
+    },
+    "src/net/fodt/FodtDocumentExtendedApis.cs": {
+      "loc": 2944,
+      "baseline_loc_cap": 2944,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "net_extended_apis_new_violation_detected",
+      "comment": "Created at 2,944 LOC in .NET FODT deepening sprint S507-S530 without prior baseline registration. Registered as new_violation_detected at cap=2944 on 2026-07-01. V35 monolith_detection_validator returns WARN (non-blocking) until \u00a78.1 decomposition sprint completes. Root cause: code extracted from FodtDocument.cs (977\u2192778 LOC) into this new file without baseline pre-registration. Decomposition sprint staged as GAP-NET-FODT-MONOLITH-001 in reports/capability-layer/gap-ledger.json."
+    },
+    "src/net/fodt/FodtDocumentSectionBookmarkOps.cs": {
+      "loc": 682,
+      "baseline_loc_cap": 682,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
+    },
+    "src/net/fodt/FodtDocumentStyleMetadataOps.cs": {
+      "loc": 693,
+      "baseline_loc_cap": 693,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
+    },
     "src/net/netpbm/Model/NetpbmImage.cs": {
       "loc": 580,
       "baseline_loc_cap": 600,
@@ -59,651 +158,6 @@
       "healing_priority": "P3",
       "healing_target_file": "none",
       "healing_sprint": "none"
-    },
-    "src/python/abw/abw_codec.py": {
-      "loc": 638,
-      "baseline_loc_cap": 898,
-      "functions": 37,
-      "baseline_functions_cap": 371,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/csv/csv_parser.py": {
-      "loc": 415,
-      "baseline_loc_cap": 415,
-      "functions": 12,
-      "baseline_functions_cap": 350,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/dif/dif_parser.py": {
-      "loc": 664,
-      "baseline_loc_cap": 664,
-      "functions": 22,
-      "baseline_functions_cap": 361,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/fodg/fodg_codec.py": {
-      "loc": 673,
-      "baseline_loc_cap": 831,
-      "functions": 38,
-      "baseline_functions_cap": 38,
-      "category": "mixed_model_analytics",
-      "note": "LOC history: old Step 0 recorded stale loc=3920; actual at grandfathering was 4334 per 2026-06-17 correction. Current file is 831 LOC. Cap frozen at 831. baseline_functions_cap corrected 2026-06-23 (TC-VNK-005): was stale at 384, actual functions=38. Frozen at 38.",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/fodp/fodp_codec.py": {
-      "loc": 320,
-      "baseline_loc_cap": 812,
-      "functions": 14,
-      "baseline_functions_cap": 327,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/fods/neutral_model.py": {
-      "loc": 1231,
-      "baseline_loc_cap": 1231,
-      "functions": 56,
-      "baseline_functions_cap": 358,
-      "category": "model_only",
-      "last_healed_check": "2026-06-21T14:16:31.971741+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series",
-      "healing_plan": "none_needed",
-      "healing_priority": "P3",
-      "healing_target_file": "none",
-      "healing_sprint": "none"
-    },
-    "src/python/fodt/neutral_model.py": {
-      "loc": 279,
-      "baseline_loc_cap": 1916,
-      "functions": 8,
-      "baseline_functions_cap": 358,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/gnumeric/gnumeric_codec.py": {
-      "loc": 708,
-      "baseline_loc_cap": 1113,
-      "functions": 31,
-      "baseline_functions_cap": 382,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "last_healed_check": "2026-06-25T11:57:23.529593+00:00"
-    },
-    "src/python/ndjson/ndjson_codec.py": {
-      "loc": 555,
-      "baseline_loc_cap": 1081,
-      "functions": 21,
-      "baseline_functions_cap": 349,
-      "category": "mixed_model_analytics",
-      "last_healed_check": "2026-06-23T08:21:08.361833+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/ods/ods_parser.py": {
-      "loc": 791,
-      "baseline_loc_cap": 791,
-      "functions": 29,
-      "baseline_functions_cap": 369,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/odt/odt_parser.py": {
-      "loc": 262,
-      "baseline_loc_cap": 262,
-      "functions": 7,
-      "baseline_functions_cap": 314,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/pbm/pbm_parser.py": {
-      "loc": 615,
-      "baseline_loc_cap": 615,
-      "functions": 20,
-      "baseline_functions_cap": 347,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/pgm/pgm_parser.py": {
-      "loc": 651,
-      "baseline_loc_cap": 651,
-      "functions": 20,
-      "baseline_functions_cap": 344,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/ppm/ppm_parser.py": {
-      "loc": 638,
-      "baseline_loc_cap": 638,
-      "functions": 19,
-      "baseline_functions_cap": 347,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/qoi/qoi_parser.py": {
-      "loc": 320,
-      "baseline_loc_cap": 320,
-      "functions": 7,
-      "baseline_functions_cap": 345,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/sylk/sylk_parser.py": {
-      "loc": 740,
-      "baseline_loc_cap": 740,
-      "functions": 25,
-      "baseline_functions_cap": 367,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/toml/toml_codec.py": {
-      "loc": 781,
-      "baseline_loc_cap": 781,
-      "functions": 27,
-      "baseline_functions_cap": 370,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.505297+00:00"
-    },
-    "src/python/tsv/tsv_parser.py": {
-      "loc": 818,
-      "baseline_loc_cap": 818,
-      "functions": 38,
-      "baseline_functions_cap": 367,
-      "category": "mixed_model_analytics",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/xcf/xcf_parser.py": {
-      "loc": 1272,
-      "baseline_loc_cap": 1277,
-      "functions": 124,
-      "baseline_functions_cap": 575,
-      "category": "mixed_model_analytics",
-      "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=3610; actual size at grandfathering=3997. Cap frozen at 3997 -- no further growth permitted.",
-      "last_healed_check": "2026-06-24T17:20:13.717470+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "none_needed",
-      "healing_priority": "P3",
-      "healing_target_file": "none",
-      "healing_sprint": "none"
-    },
-    "src/python/zst/zst_codec.py": {
-      "loc": 1073,
-      "baseline_loc_cap": 1549,
-      "functions": 24,
-      "baseline_functions_cap": 561,
-      "category": "mixed_model_analytics",
-      "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=3873; actual size at grandfathering=4210. Cap frozen at 4210 -- no further growth permitted.",
-      "last_healed_check": "2026-06-18T07:34:50.942758+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "none_needed",
-      "healing_priority": "P3",
-      "healing_target_file": "none",
-      "healing_sprint": "none"
-    },
-    "tools/supervisor/governance_validators.py": {
-      "loc": 3183,
-      "baseline_loc_cap": 3183,
-      "functions": 50,
-      "baseline_functions_cap": 54,
-      "note": "Grandfathered 2026-06-18: pre-existing large governance validator file; V41 (validate_analytics_skill_required) added by TC-ENFORCE-001 V42 (validate_deepening_suspension) added 2026-06-18 for SUSP-001 (Change C2, pre-product-acquisition sprint). V46 (validate_skill_transcript_present) added 2026-06-21 (TC-SKILL-GOV-002). V47 (validate_spec_fact_refs_in_sal_output) added 2026-06-21 (TC-MACH-ARCH-007). Cap update appropriate for governance infrastructure additions per MEMORY.md precedent. V48 (validate_architecture_only_stub_gate) added 2026-06-21 (TC-ZS-001, ZERO-STUB-AUDIT). V44 upgraded from constant-WARN stub to real import inspection. V49 (validate_qname_structure) added 2026-06-21 (TC-QNAME-VALIDATORS-001). Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.547744+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/supervisor/generate_next_worker_prompt.py": {
-      "loc": 1503,
-      "baseline_loc_cap": 1503,
-      "functions": 25,
-      "baseline_functions_cap": 25,
-      "note": "Grandfathered 2026-06-17: pre-existing large file; TC-WIRE-001 added _run_capability_consumer",
-      "category": "tools_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/capability_layer/capability_map_generator.py": {
-      "loc": 1717,
-      "baseline_loc_cap": 1717,
-      "functions": 33,
-      "baseline_functions_cap": 33,
-      "note": "Cap updated 2026-06-24: +54 LOC, +1 function for update_gap_status() (TC-C7-001, Stage 7 closure wiring). Prior cap: 1439/29. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.577769+00:00",
-      "last_healed_by": "abstract-finding-hummingbird-phase-ef-20260618",
-      "category": "tools_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "src/python/fodg/__init__.py": {
-      "loc": 40,
-      "baseline_loc_cap": 40,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "new_violation_detected",
-      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 1000 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.578944+00:00",
-      "last_healed_by": "silly-rolling-stroustrup-post-hardening",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/xcf/__init__.py": {
-      "loc": 37,
-      "baseline_loc_cap": 37,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "new_violation_detected",
-      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 894 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.579458+00:00",
-      "last_healed_by": "sprint559-561-deepening-20260618",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/zst/__init__.py": {
-      "loc": 93,
-      "baseline_loc_cap": 93,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "new_violation_detected",
-      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 867 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.579909+00:00",
-      "last_healed_by": "sprint559-561-deepening-20260618",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/abw/__init__.py": {
-      "loc": 32,
-      "baseline_loc_cap": 54,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "last_healed_check": "2026-06-21T17:16:45.662368+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/csv/__init__.py": {
-      "loc": 33,
-      "baseline_loc_cap": 44,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/dif/__init__.py": {
-      "loc": 31,
-      "baseline_loc_cap": 46,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/fodp/__init__.py": {
-      "loc": 104,
-      "baseline_loc_cap": 104,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3",
-      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
-      "last_healed_check": "2026-07-01T18:36:01.581640+00:00"
-    },
-    "src/python/fods/__init__.py": {
-      "loc": 43,
-      "baseline_loc_cap": 52,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/fodt/__init__.py": {
-      "loc": 38,
-      "baseline_loc_cap": 53,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/gnumeric/__init__.py": {
-      "loc": 32,
-      "baseline_loc_cap": 45,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/ndjson/__init__.py": {
-      "loc": 39,
-      "baseline_loc_cap": 259,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/ods/__init__.py": {
-      "loc": 33,
-      "baseline_loc_cap": 41,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/odt/__init__.py": {
-      "loc": 31,
-      "baseline_loc_cap": 87,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/pbm/__init__.py": {
-      "loc": 32,
-      "baseline_loc_cap": 40,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/pgm/__init__.py": {
-      "loc": 31,
-      "baseline_loc_cap": 40,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/ppm/__init__.py": {
-      "loc": 32,
-      "baseline_loc_cap": 41,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/qoi/__init__.py": {
-      "loc": 31,
-      "baseline_loc_cap": 93,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/sylk/__init__.py": {
-      "loc": 30,
-      "baseline_loc_cap": 45,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/toml/__init__.py": {
-      "loc": 30,
-      "baseline_loc_cap": 95,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "src/python/tsv/__init__.py": {
-      "loc": 30,
-      "baseline_loc_cap": 43,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "oversized_init_py",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-NET-H1-H3"
-    },
-    "tools/supervisor/autonomous_cycle.py": {
-      "loc": 2442,
-      "baseline_loc_cap": 2673,
-      "functions": 7,
-      "baseline_functions_cap": 7,
-      "category": "governance_infrastructure_addition",
-      "registered": "2026-06-18",
-      "note": "Supervisor infrastructure file; cap updated 2026-06-18 for TC-REPAIR-VERIFY-001 governance code. Cap is write-once after this update. Cap updated 2026-06-18 for TC-GUARD-001 BLOCK mode + SIGNAL-UNIFY-001 (Changes C1+C5, pre-product-acquisition sprint). Cap updated 2026-06-23 for TC-SIGNAL-001 _sync_hard_stops_after_repair() addition (supervisor infrastructure, 28 LOC, 1 function). Cap updated 2026-06-23 for TC-PG-005 Step 0b-validate block (plan readiness check wiring, supervisor infrastructure). Cap updated 2026-06-23 for TC-HARD-013 (+1 LOC: git_head_at_review in manifest dict). Cap updated 2026-06-23 for TC-PROD-H-010 Step 4a-compiler capability_feature_compiler wiring (+40 LOC).",
-      "last_healed_check": "2026-06-23T17:03:21.956564+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/supervisor/grade_declared_work.py": {
-      "loc": 1098,
-      "baseline_loc_cap": 1098,
-      "functions": 14,
-      "baseline_functions_cap": 14,
-      "category": "supervisor_infrastructure",
-      "registered": "2026-06-19",
-      "note": "Supervisor infrastructure file; cap registered 2026-06-19. TC-C3-001 (Change C3, Sprint 2) added DEFERRED_WITH_REASON logic for spec-parity grading timeout fix (+25 LOC). Cap is write-once after this registration. Cap updated 2026-06-23 for TC-GRADE-001/002/003 additions (+50 LOC: content-hash, TTL, iv-cache, timeout). Cap updated 2026-06-23 for TC-HARD-011 comment (+6 LOC: _is_governance_sprint redundancy documentation per TC-HARD-007 Option A).",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/evidence/run050_sprint_writer.py": {
-      "loc": 4116,
-      "baseline_loc_cap": 4116,
-      "functions": 4,
-      "baseline_functions_cap": 4,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/evidence/run048_sprint_writer.py": {
-      "loc": 3103,
-      "baseline_loc_cap": 3103,
-      "functions": 23,
-      "baseline_functions_cap": 24,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/evidence/run046_sprint_writer.py": {
-      "loc": 2922,
-      "baseline_loc_cap": 2922,
-      "functions": 3,
-      "baseline_functions_cap": 3,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/evidence/run047_sprint_writer.py": {
-      "loc": 2709,
-      "baseline_loc_cap": 2709,
-      "functions": 17,
-      "baseline_functions_cap": 17,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/evidence/run049_sprint_writer.py": {
-      "loc": 2690,
-      "baseline_loc_cap": 2690,
-      "functions": 15,
-      "baseline_functions_cap": 16,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/evidence/validate_evidence_bundle.py": {
-      "loc": 2638,
-      "baseline_loc_cap": 2638,
-      "functions": 42,
-      "baseline_functions_cap": 42,
-      "category": "evidence_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/supervisor/autonomous_task_generator.py": {
-      "loc": 1920,
-      "baseline_loc_cap": 1920,
-      "functions": 8,
-      "baseline_functions_cap": 8,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED",
-      "last_healed_check": "2026-06-23T17:03:28.509247+00:00"
-    },
-    "tools/supervisor/generate_supervisor_packet.py": {
-      "loc": 1434,
-      "baseline_loc_cap": 1434,
-      "functions": 20,
-      "baseline_functions_cap": 20,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/supervisor/anti_skip_checker.py": {
-      "loc": 1351,
-      "baseline_loc_cap": 1351,
-      "functions": 30,
-      "baseline_functions_cap": 30,
-      "category": "governance_infrastructure_addition",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tests/supervisor/test_llm_semantic_verification.py": {
-      "loc": 1258,
-      "baseline_loc_cap": 1258,
-      "functions": 1,
-      "baseline_functions_cap": 63,
-      "category": "test_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tests/ai/test_r31_ai_system_verification.py": {
-      "loc": 1167,
-      "baseline_loc_cap": 1167,
-      "functions": 0,
-      "baseline_functions_cap": 98,
-      "category": "test_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tools/supervisor/stop_reason_adjudicator.py": {
-      "loc": 1025,
-      "baseline_loc_cap": 1025,
-      "functions": 6,
-      "baseline_functions_cap": 6,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/specification-authority-layer/sal_master_runner.py": {
-      "loc": 1321,
-      "baseline_loc_cap": 1321,
-      "functions": 9,
-      "baseline_functions_cap": 9,
-      "category": "tools_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series",
-      "last_healed_check": "2026-07-01T18:36:01.768110+00:00",
-      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450)."
-    },
-    "tools/supervisor/tri_lane_integration.py": {
-      "loc": 973,
-      "baseline_loc_cap": 973,
-      "functions": 24,
-      "baseline_functions_cap": 26,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tests/evidence/test_negative_bundle_validation.py": {
-      "loc": 966,
-      "baseline_loc_cap": 966,
-      "functions": 31,
-      "baseline_functions_cap": 31,
-      "category": "test_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "tests/supervisor/test_governance_validators.py": {
-      "loc": 3267,
-      "baseline_loc_cap": 3267,
-      "functions": 233,
-      "baseline_functions_cap": 233,
-      "category": "test_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series",
-      "last_healed_check": "2026-07-01T18:36:01.799943+00:00",
-      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450)."
-    },
-    "tools/supervisor/autonomous_loop_runner.py": {
-      "loc": 922,
-      "baseline_loc_cap": 922,
-      "functions": 29,
-      "baseline_functions_cap": 29,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/llm/endpoint_client.py": {
-      "loc": 845,
-      "baseline_loc_cap": 845,
-      "functions": 8,
-      "baseline_functions_cap": 26,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/supervisor/autonomous_poc_controller.py": {
-      "loc": 840,
-      "baseline_loc_cap": 840,
-      "functions": 14,
-      "baseline_functions_cap": 16,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/supervisor/embedding_retrieval.py": {
-      "loc": 838,
-      "baseline_loc_cap": 838,
-      "functions": 5,
-      "baseline_functions_cap": 39,
-      "category": "supervisor_infrastructure",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "GRANDFATHERED"
-    },
-    "tools/supervisor/governance_validators_ext.py": {
-      "loc": 1397,
-      "baseline_loc_cap": 1397,
-      "functions": 16,
-      "baseline_functions_cap": 16,
-      "category": "governance_infrastructure",
-      "note": "TC-WHALE-GOVBLOCK-001 (2026-06-21): Extension validators extracted from governance_validators.py to keep it under baseline_loc_cap. Contains V48 (validate_architecture_only_stub_gate, TC-ZS-001) and V50 (validate_forbidden_module_names, MODULE-NAME-001, TC-ANAL-SEG-HEAL-001, 2026-06-22). Cap updated 2026-06-23 for TC-PG-006 V56 validate_hardening_target_identity (governance infrastructure).",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series",
-      "last_healed_check": "2026-06-23T18:48:18.888760+00:00"
     },
     "src/python/abw/Compat/__init__.py": {
       "loc": 10,
@@ -731,6 +185,32 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/abw/__init__.py": {
+      "loc": 32,
+      "baseline_loc_cap": 54,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "last_healed_check": "2026-06-21T17:16:45.662368+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/abw/abw_codec.py": {
+      "loc": 638,
+      "baseline_loc_cap": 898,
+      "functions": 37,
+      "baseline_functions_cap": 371,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/abw/models.py": {
+      "loc": 180,
+      "baseline_loc_cap": 180,
+      "functions": 27,
+      "baseline_functions_cap": 27,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/abw/spec/__init__.py": {
       "loc": 6,
@@ -795,6 +275,20 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/abw/word_document.py": {
+      "loc": 1051,
+      "baseline_loc_cap": 1051,
+      "functions": 101,
+      "baseline_functions_cap": 101,
+      "category": "new_violation_detected",
+      "last_healed_check": "2026-06-24T07:54:50.170969+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/abw/word_ops.py",
+      "healing_sprint": "TC-ARCH-ABW-001"
+    },
     "src/python/csv/Compat/__init__.py": {
       "loc": 12,
       "baseline_loc_cap": 12,
@@ -823,6 +317,31 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/csv/__init__.py": {
+      "loc": 33,
+      "baseline_loc_cap": 44,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/csv/csv_parser.py": {
+      "loc": 415,
+      "baseline_loc_cap": 415,
+      "functions": 12,
+      "baseline_functions_cap": 350,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/csv/models.py": {
+      "loc": 222,
+      "baseline_loc_cap": 222,
+      "functions": 33,
+      "baseline_functions_cap": 33,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/csv/spec/__init__.py": {
       "loc": 5,
@@ -853,6 +372,13 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/csv/spec/record/header.py": {
+      "loc": 43,
+      "baseline_loc_cap": 43,
+      "functions": 6,
+      "baseline_functions_cap": 6,
+      "category": "spec_property_accessors_pre_existing_pqlm001"
+    },
     "src/python/csv/spec/record/record.py": {
       "loc": 42,
       "baseline_loc_cap": 43,
@@ -861,6 +387,26 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/csv/tabular_document.py": {
+      "loc": 579,
+      "baseline_loc_cap": 1050,
+      "functions": 72,
+      "baseline_functions_cap": 72,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "analytics_extraction",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/csv/csv_analytics.py",
+      "healing_sprint": "TC-GH-008"
+    },
+    "src/python/csv/tabular_document_analytics.py": {
+      "loc": 496,
+      "baseline_loc_cap": 496,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
     },
     "src/python/dif/Compat/__init__.py": {
       "loc": 12,
@@ -897,6 +443,45 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/dif/__init__.py": {
+      "loc": 31,
+      "baseline_loc_cap": 46,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/dif/dif_parser.py": {
+      "loc": 664,
+      "baseline_loc_cap": 664,
+      "functions": 22,
+      "baseline_functions_cap": 361,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/dif/interchange_document.py": {
+      "loc": 994,
+      "baseline_loc_cap": 1023,
+      "functions": 64,
+      "baseline_functions_cap": 67,
+      "category": "new_violation_detected",
+      "last_healed_check": "2026-06-21T17:28:29.127521+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/dif/dif_converter.py",
+      "healing_sprint": "TC-ARCH-DIF-001"
+    },
+    "src/python/dif/models.py": {
+      "loc": 192,
+      "baseline_loc_cap": 192,
+      "functions": 27,
+      "baseline_functions_cap": 27,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/dif/spec/__init__.py": {
       "loc": 6,
@@ -970,6 +555,47 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/fodg/__init__.py": {
+      "loc": 40,
+      "baseline_loc_cap": 40,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "new_violation_detected",
+      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 1000 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.578944+00:00",
+      "last_healed_by": "silly-rolling-stroustrup-post-hardening",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/fodg/drawing_document.py": {
+      "loc": 683,
+      "baseline_loc_cap": 1007,
+      "functions": 53,
+      "baseline_functions_cap": 100,
+      "category": "spec_level_domain_module",
+      "spec_qname": "office:document",
+      "spec_fact_ref": "FACT-FODG-001",
+      "note": "Pre-registered before creation per PF-4 (TC-ANAL-SEG-HEAL-001, 2026-06-22). Contains all domain analytics from fodg_analytics_extra.py + unique survivors from fodg_analytics.py. baseline_loc_cap update required after actual file is created.",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/fodg/fodg_codec.py": {
+      "loc": 673,
+      "baseline_loc_cap": 831,
+      "functions": 38,
+      "baseline_functions_cap": 38,
+      "category": "mixed_model_analytics",
+      "note": "LOC history: old Step 0 recorded stale loc=3920; actual at grandfathering was 4334 per 2026-06-17 correction. Current file is 831 LOC. Cap frozen at 831. baseline_functions_cap corrected 2026-06-23 (TC-VNK-005): was stale at 384, actual functions=38. Frozen at 38.",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/fodg/models.py": {
+      "loc": 151,
+      "baseline_loc_cap": 151,
+      "functions": 20,
+      "baseline_functions_cap": 20,
+      "category": "dependency_direction_known_pattern"
+    },
     "src/python/fodg/spec/__init__.py": {
       "loc": 5,
       "baseline_loc_cap": 5,
@@ -1039,6 +665,44 @@
       "functions": 0,
       "baseline_functions_cap": 0,
       "category": "spec_compat_layer",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/fodp/__init__.py": {
+      "loc": 104,
+      "baseline_loc_cap": 104,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3",
+      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.581640+00:00"
+    },
+    "src/python/fodp/fodp_codec.py": {
+      "loc": 320,
+      "baseline_loc_cap": 812,
+      "functions": 14,
+      "baseline_functions_cap": 327,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/fodp/models.py": {
+      "loc": 168,
+      "baseline_loc_cap": 168,
+      "functions": 23,
+      "baseline_functions_cap": 23,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/fodp/presentation_document.py": {
+      "loc": 651,
+      "baseline_loc_cap": 651,
+      "functions": 62,
+      "baseline_functions_cap": 62,
+      "category": "analytics_only",
+      "last_healed_check": "2026-06-23",
+      "last_healed_by": "decompose-monolithic-codec skill (TC-VNK-008)",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
@@ -1124,6 +788,44 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/fods/__init__.py": {
+      "loc": 43,
+      "baseline_loc_cap": 52,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/fods/fods_analytics.py": {
+      "loc": 1121,
+      "baseline_loc_cap": 1121,
+      "functions": 30,
+      "baseline_functions_cap": 30,
+      "category": "analytics_separation_result",
+      "note": "Renamed from spreadsheet_document.py (sprint gleaming-rolling-hammock). Healing plan: decompose analytics per TC-ARCH-FODS-002."
+    },
+    "src/python/fods/models.py": {
+      "loc": 343,
+      "baseline_loc_cap": 343,
+      "functions": 49,
+      "baseline_functions_cap": 49,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/fods/neutral_model.py": {
+      "loc": 1231,
+      "baseline_loc_cap": 1231,
+      "functions": 56,
+      "baseline_functions_cap": 358,
+      "category": "model_only",
+      "last_healed_check": "2026-06-21T14:16:31.971741+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series",
+      "healing_plan": "none_needed",
+      "healing_priority": "P3",
+      "healing_target_file": "none",
+      "healing_sprint": "none"
     },
     "src/python/fods/spec/__init__.py": {
       "loc": 14,
@@ -1314,6 +1016,19 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/fods/spreadsheet_document.py": {
+      "loc": 1035,
+      "baseline_loc_cap": 1035,
+      "functions": 24,
+      "baseline_functions_cap": 24,
+      "category": "analytics_separation_result",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/fods/spreadsheet_ops.py",
+      "healing_sprint": "TC-ARCH-FODS-002"
+    },
     "src/python/fodt/Compat/__init__.py": {
       "loc": 34,
       "baseline_loc_cap": 34,
@@ -1369,6 +1084,31 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/fodt/__init__.py": {
+      "loc": 38,
+      "baseline_loc_cap": 53,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/fodt/models.py": {
+      "loc": 295,
+      "baseline_loc_cap": 295,
+      "functions": 49,
+      "baseline_functions_cap": 49,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/fodt/neutral_model.py": {
+      "loc": 279,
+      "baseline_loc_cap": 1916,
+      "functions": 8,
+      "baseline_functions_cap": 358,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
     "src/python/fodt/spec/__init__.py": {
       "loc": 11,
@@ -1487,6 +1227,26 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/fodt/text_document.py": {
+      "loc": 573,
+      "baseline_loc_cap": 1009,
+      "functions": 90,
+      "baseline_functions_cap": 92,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/fodt/text_ops.py",
+      "healing_sprint": "TC-ARCH-FODT-001"
+    },
+    "src/python/fodt/text_document_analytics.py": {
+      "loc": 447,
+      "baseline_loc_cap": 447,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "split_from_heal"
+    },
     "src/python/gnumeric/Compat/__init__.py": {
       "loc": 10,
       "baseline_loc_cap": 10,
@@ -1513,6 +1273,39 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/gnumeric/__init__.py": {
+      "loc": 32,
+      "baseline_loc_cap": 45,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/gnumeric/gnumeric_analytics.py": {
+      "loc": 913,
+      "baseline_loc_cap": 913,
+      "functions": 60,
+      "baseline_functions_cap": 60,
+      "category": "analytics_masquerade_rename_baseline"
+    },
+    "src/python/gnumeric/gnumeric_codec.py": {
+      "loc": 708,
+      "baseline_loc_cap": 1113,
+      "functions": 31,
+      "baseline_functions_cap": 382,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "last_healed_check": "2026-06-25T11:57:23.529593+00:00"
+    },
+    "src/python/gnumeric/models.py": {
+      "loc": 205,
+      "baseline_loc_cap": 205,
+      "functions": 29,
+      "baseline_functions_cap": 29,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/gnumeric/spec/__init__.py": {
       "loc": 5,
@@ -1576,6 +1369,41 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/ndjson/__init__.py": {
+      "loc": 39,
+      "baseline_loc_cap": 259,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/ndjson/json_stream.py": {
+      "loc": 928,
+      "baseline_loc_cap": 928,
+      "functions": 69,
+      "baseline_functions_cap": 69,
+      "category": "analytics_extraction",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/ndjson/models.py": {
+      "loc": 205,
+      "baseline_loc_cap": 205,
+      "functions": 29,
+      "baseline_functions_cap": 29,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/ndjson/ndjson_codec.py": {
+      "loc": 555,
+      "baseline_loc_cap": 1081,
+      "functions": 21,
+      "baseline_functions_cap": 349,
+      "category": "mixed_model_analytics",
+      "last_healed_check": "2026-06-23T08:21:08.361833+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
     "src/python/ndjson/spec/__init__.py": {
       "loc": 5,
@@ -1649,6 +1477,38 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/ods/__init__.py": {
+      "loc": 33,
+      "baseline_loc_cap": 41,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/ods/models.py": {
+      "loc": 248,
+      "baseline_loc_cap": 248,
+      "functions": 37,
+      "baseline_functions_cap": 37,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/ods/ods_analytics.py": {
+      "loc": 1000,
+      "baseline_loc_cap": 1000,
+      "functions": 60,
+      "baseline_functions_cap": 60,
+      "category": "new_violation_detected"
+    },
+    "src/python/ods/ods_parser.py": {
+      "loc": 791,
+      "baseline_loc_cap": 791,
+      "functions": 29,
+      "baseline_functions_cap": 369,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
     "src/python/ods/spec/__init__.py": {
       "loc": 1,
       "baseline_loc_cap": 1,
@@ -1712,6 +1572,19 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/ods/spreadsheet_document.py": {
+      "loc": 896,
+      "baseline_loc_cap": 901,
+      "functions": 54,
+      "baseline_functions_cap": 54,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P1",
+      "healing_target_file": "src/python/ods/spreadsheet_ops.py",
+      "healing_sprint": "TC-ARCH-ODS-001"
+    },
     "src/python/odt/Compat/__init__.py": {
       "loc": 12,
       "baseline_loc_cap": 12,
@@ -1747,6 +1620,31 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/odt/__init__.py": {
+      "loc": 31,
+      "baseline_loc_cap": 87,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/odt/models.py": {
+      "loc": 177,
+      "baseline_loc_cap": 177,
+      "functions": 25,
+      "baseline_functions_cap": 25,
+      "category": "dependency_direction_known_pattern"
+    },
+    "src/python/odt/odt_parser.py": {
+      "loc": 262,
+      "baseline_loc_cap": 262,
+      "functions": 7,
+      "baseline_functions_cap": 314,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
     "src/python/odt/spec/__init__.py": {
       "loc": 6,
@@ -1831,6 +1729,32 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/pbm/__init__.py": {
+      "loc": 32,
+      "baseline_loc_cap": 40,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/pbm/models.py": {
+      "loc": 179,
+      "baseline_loc_cap": 179,
+      "functions": 26,
+      "baseline_functions_cap": 26,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
+    },
+    "src/python/pbm/pbm_parser.py": {
+      "loc": 615,
+      "baseline_loc_cap": 615,
+      "functions": 20,
+      "baseline_functions_cap": 347,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
     "src/python/pbm/spec/__init__.py": {
       "loc": 5,
       "baseline_loc_cap": 5,
@@ -1869,6 +1793,13 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/pbm/spec/bitmap/raster.py": {
+      "loc": 46,
+      "baseline_loc_cap": 46,
+      "functions": 7,
+      "baseline_functions_cap": 7,
+      "category": "spec_property_accessors_pre_existing_pqlm001"
+    },
     "src/python/pgm/Compat/__init__.py": {
       "loc": 10,
       "baseline_loc_cap": 10,
@@ -1895,6 +1826,32 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/pgm/__init__.py": {
+      "loc": 31,
+      "baseline_loc_cap": 40,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/pgm/models.py": {
+      "loc": 193,
+      "baseline_loc_cap": 193,
+      "functions": 28,
+      "baseline_functions_cap": 28,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
+    },
+    "src/python/pgm/pgm_parser.py": {
+      "loc": 651,
+      "baseline_loc_cap": 651,
+      "functions": 20,
+      "baseline_functions_cap": 344,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
     "src/python/pgm/spec/__init__.py": {
       "loc": 5,
@@ -1958,6 +1915,32 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/ppm/__init__.py": {
+      "loc": 32,
+      "baseline_loc_cap": 41,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/ppm/models.py": {
+      "loc": 193,
+      "baseline_loc_cap": 193,
+      "functions": 28,
+      "baseline_functions_cap": 28,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
+    },
+    "src/python/ppm/ppm_parser.py": {
+      "loc": 638,
+      "baseline_loc_cap": 638,
+      "functions": 19,
+      "baseline_functions_cap": 347,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
     "src/python/ppm/spec/__init__.py": {
       "loc": 5,
@@ -2024,6 +2007,41 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/qoi/__init__.py": {
+      "loc": 31,
+      "baseline_loc_cap": 93,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/qoi/image_document.py": {
+      "loc": 773,
+      "baseline_loc_cap": 773,
+      "functions": 70,
+      "baseline_functions_cap": 70,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/qoi/models.py": {
+      "loc": 206,
+      "baseline_loc_cap": 206,
+      "functions": 30,
+      "baseline_functions_cap": 30,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern"
+    },
+    "src/python/qoi/qoi_parser.py": {
+      "loc": 320,
+      "baseline_loc_cap": 320,
+      "functions": 7,
+      "baseline_functions_cap": 345,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
     "src/python/qoi/spec/__init__.py": {
       "loc": 5,
       "baseline_loc_cap": 5,
@@ -2052,6 +2070,13 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/qoi/spec/chunk/end_marker.py": {
+      "loc": 42,
+      "baseline_loc_cap": 42,
+      "functions": 5,
+      "baseline_functions_cap": 5,
+      "category": "spec_property_accessors_pre_existing_pqlm001"
     },
     "src/python/qoi/spec/chunk/header.py": {
       "loc": 52,
@@ -2098,6 +2123,23 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/sylk/__init__.py": {
+      "loc": 30,
+      "baseline_loc_cap": 45,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/sylk/models.py": {
+      "loc": 219,
+      "baseline_loc_cap": 219,
+      "functions": 32,
+      "baseline_functions_cap": 32,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern"
+    },
     "src/python/sylk/spec/__init__.py": {
       "loc": 6,
       "baseline_loc_cap": 6,
@@ -2143,6 +2185,35 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/sylk/spreadsheet_document.py": {
+      "loc": 857,
+      "baseline_loc_cap": 889,
+      "functions": 64,
+      "baseline_functions_cap": 66,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "responsibility_split",
+      "healing_priority": "P2",
+      "healing_target_file": "src/python/sylk/sylk_ops.py",
+      "healing_sprint": "TC-ARCH-SYLK-001"
+    },
+    "src/python/sylk/sylk_analytics.py": {
+      "loc": 894,
+      "baseline_loc_cap": 894,
+      "functions": 68,
+      "baseline_functions_cap": 68,
+      "category": "new_violation_detected"
+    },
+    "src/python/sylk/sylk_parser.py": {
+      "loc": 740,
+      "baseline_loc_cap": 740,
+      "functions": 25,
+      "baseline_functions_cap": 367,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
     "src/python/toml/Compat/__init__.py": {
       "loc": 10,
       "baseline_loc_cap": 10,
@@ -2169,6 +2240,22 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/toml/__init__.py": {
+      "loc": 30,
+      "baseline_loc_cap": 95,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/toml/models.py": {
+      "loc": 200,
+      "baseline_loc_cap": 200,
+      "functions": 32,
+      "baseline_functions_cap": 32,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/toml/spec/__init__.py": {
       "loc": 5,
@@ -2206,6 +2293,24 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/toml/toml_analytics.py": {
+      "loc": 469,
+      "baseline_loc_cap": 469,
+      "functions": 50,
+      "baseline_functions_cap": 50,
+      "category": "analytics_masquerade_rename_baseline"
+    },
+    "src/python/toml/toml_codec.py": {
+      "loc": 781,
+      "baseline_loc_cap": 781,
+      "functions": 27,
+      "baseline_functions_cap": 370,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.505297+00:00"
+    },
     "src/python/tsv/Compat/__init__.py": {
       "loc": 10,
       "baseline_loc_cap": 10,
@@ -2232,6 +2337,22 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/tsv/__init__.py": {
+      "loc": 30,
+      "baseline_loc_cap": 43,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "oversized_init_py",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-NET-H1-H3"
+    },
+    "src/python/tsv/models.py": {
+      "loc": 217,
+      "baseline_loc_cap": 217,
+      "functions": 32,
+      "baseline_functions_cap": 32,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/tsv/spec/__init__.py": {
       "loc": 5,
@@ -2269,6 +2390,24 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/tsv/tabular_document.py": {
+      "loc": 851,
+      "baseline_loc_cap": 851,
+      "functions": 61,
+      "baseline_functions_cap": 61,
+      "category": "new_violation_detected",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/tsv/tsv_parser.py": {
+      "loc": 818,
+      "baseline_loc_cap": 818,
+      "functions": 38,
+      "baseline_functions_cap": 367,
+      "category": "mixed_model_analytics",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
     "src/python/xcf/Compat/__init__.py": {
       "loc": 10,
       "baseline_loc_cap": 10,
@@ -2296,6 +2435,38 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/xcf/__init__.py": {
+      "loc": 37,
+      "baseline_loc_cap": 37,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "new_violation_detected",
+      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 894 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.579458+00:00",
+      "last_healed_by": "sprint559-561-deepening-20260618",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/xcf/image_document.py": {
+      "loc": 50,
+      "baseline_loc_cap": 50,
+      "functions": 1,
+      "baseline_functions_cap": 10,
+      "category": "spec_level_domain_module",
+      "spec_qname": "xcf:image",
+      "spec_fact_ref": "FACT-XCF-001",
+      "note": "Created TC-XCF-SPEC-SEG-001 (2026-06-22). Behavioral module for XCF image-level predicates. Replaces xcf_analytics.py.",
+      "last_healed_check": "2026-06-23T08:21:08.619070+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/xcf/models.py": {
+      "loc": 216,
+      "baseline_loc_cap": 216,
+      "functions": 31,
+      "baseline_functions_cap": 31,
+      "category": "dependency_direction_known_pattern"
+    },
     "src/python/xcf/spec/__init__.py": {
       "loc": 5,
       "baseline_loc_cap": 5,
@@ -2314,6 +2485,13 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
+    "src/python/xcf/spec/layer/channel.py": {
+      "loc": 51,
+      "baseline_loc_cap": 51,
+      "functions": 8,
+      "baseline_functions_cap": 8,
+      "category": "spec_property_accessors_pre_existing_pqlm001"
+    },
     "src/python/xcf/spec/layer/header.py": {
       "loc": 52,
       "baseline_loc_cap": 52,
@@ -2331,6 +2509,31 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/xcf/xcf_image_metrics.py": {
+      "loc": 900,
+      "baseline_loc_cap": 906,
+      "functions": 104,
+      "baseline_functions_cap": 104,
+      "category": "analytics_extraction",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SEP-C-series",
+      "last_healed_check": "2026-06-24T17:20:13.577800+00:00"
+    },
+    "src/python/xcf/xcf_parser.py": {
+      "loc": 1272,
+      "baseline_loc_cap": 1277,
+      "functions": 124,
+      "baseline_functions_cap": 575,
+      "category": "mixed_model_analytics",
+      "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=3610; actual size at grandfathering=3997. Cap frozen at 3997 -- no further growth permitted.",
+      "last_healed_check": "2026-06-24T17:20:13.717470+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "none_needed",
+      "healing_priority": "P3",
+      "healing_target_file": "none",
+      "healing_sprint": "none"
     },
     "src/python/zst/Compat/__init__.py": {
       "loc": 10,
@@ -2358,6 +2561,37 @@
       "category": "spec_compat_layer",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/zst/__init__.py": {
+      "loc": 93,
+      "baseline_loc_cap": 93,
+      "functions": 0,
+      "baseline_functions_cap": 0,
+      "category": "new_violation_detected",
+      "note": "Cap corrected 2026-06-17: detected as oversized during governance healing sprint. Cap frozen at 867 -- no further growth permitted. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.579909+00:00",
+      "last_healed_by": "sprint559-561-deepening-20260618",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+    },
+    "src/python/zst/compressed_stream.py": {
+      "loc": 120,
+      "baseline_loc_cap": 150,
+      "functions": 9,
+      "baseline_functions_cap": 15,
+      "category": "spec_level_domain_module",
+      "spec_qname": "zst:frame",
+      "spec_fact_ref": "FACT-ZST-001",
+      "note": "Created TC-ZST-SPEC-SEG-001 (2026-06-22). Behavioral module for ZST frame-level predicates. Replaces zst_analytics.py.",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "src/python/zst/models.py": {
+      "loc": 212,
+      "baseline_loc_cap": 212,
+      "functions": 27,
+      "baseline_functions_cap": 27,
+      "category": "dependency_direction_known_pattern"
     },
     "src/python/zst/spec/__init__.py": {
       "loc": 5,
@@ -2395,183 +2629,264 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
-    "src/python/fodg/drawing_document.py": {
-      "loc": 683,
-      "baseline_loc_cap": 1007,
-      "functions": 53,
-      "baseline_functions_cap": 100,
-      "category": "spec_level_domain_module",
-      "spec_qname": "office:document",
-      "spec_fact_ref": "FACT-FODG-001",
-      "note": "Pre-registered before creation per PF-4 (TC-ANAL-SEG-HEAL-001, 2026-06-22). Contains all domain analytics from fodg_analytics_extra.py + unique survivors from fodg_analytics.py. baseline_loc_cap update required after actual file is created.",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "src/python/xcf/image_document.py": {
-      "loc": 50,
-      "baseline_loc_cap": 50,
-      "functions": 1,
-      "baseline_functions_cap": 10,
-      "category": "spec_level_domain_module",
-      "spec_qname": "xcf:image",
-      "spec_fact_ref": "FACT-XCF-001",
-      "note": "Created TC-XCF-SPEC-SEG-001 (2026-06-22). Behavioral module for XCF image-level predicates. Replaces xcf_analytics.py.",
-      "last_healed_check": "2026-06-23T08:21:08.619070+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "src/python/zst/compressed_stream.py": {
-      "loc": 120,
-      "baseline_loc_cap": 150,
-      "functions": 9,
-      "baseline_functions_cap": 15,
-      "category": "spec_level_domain_module",
-      "spec_qname": "zst:frame",
-      "spec_fact_ref": "FACT-ZST-001",
-      "note": "Created TC-ZST-SPEC-SEG-001 (2026-06-22). Behavioral module for ZST frame-level predicates. Replaces zst_analytics.py.",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "src/python/abw/word_document.py": {
-      "loc": 1051,
-      "baseline_loc_cap": 1051,
-      "functions": 101,
-      "baseline_functions_cap": 101,
-      "category": "new_violation_detected",
-      "last_healed_check": "2026-06-24T07:54:50.170969+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/abw/word_ops.py",
-      "healing_sprint": "TC-ARCH-ABW-001"
-    },
-    "src/python/csv/tabular_document.py": {
-      "loc": 579,
-      "baseline_loc_cap": 1050,
-      "functions": 72,
-      "baseline_functions_cap": 72,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "analytics_extraction",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/csv/csv_analytics.py",
-      "healing_sprint": "TC-GH-008"
-    },
-    "src/python/dif/interchange_document.py": {
-      "loc": 994,
-      "baseline_loc_cap": 1023,
-      "functions": 64,
-      "baseline_functions_cap": 67,
-      "category": "new_violation_detected",
-      "last_healed_check": "2026-06-21T17:28:29.127521+00:00",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/dif/dif_converter.py",
-      "healing_sprint": "TC-ARCH-DIF-001"
-    },
-    "src/python/fodp/presentation_document.py": {
-      "loc": 651,
-      "baseline_loc_cap": 651,
-      "functions": 62,
-      "baseline_functions_cap": 62,
-      "category": "analytics_only",
-      "last_healed_check": "2026-06-23",
-      "last_healed_by": "decompose-monolithic-codec skill (TC-VNK-008)",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D-series"
-    },
-    "src/python/fods/spreadsheet_document.py": {
-      "loc": 1035,
-      "baseline_loc_cap": 1035,
+    "src/python/zst/zst_codec.py": {
+      "loc": 1073,
+      "baseline_loc_cap": 1549,
       "functions": 24,
-      "baseline_functions_cap": 24,
-      "category": "analytics_separation_result",
+      "baseline_functions_cap": 561,
+      "category": "mixed_model_analytics",
+      "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=3873; actual size at grandfathering=4210. Cap frozen at 4210 -- no further growth permitted.",
+      "last_healed_check": "2026-06-18T07:34:50.942758+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-PRODUCT-PLAN-001",
+      "healing_plan": "none_needed",
+      "healing_priority": "P3",
+      "healing_target_file": "none",
+      "healing_sprint": "none"
+    },
+    "tests/ai/test_r31_ai_system_verification.py": {
+      "loc": 1167,
+      "baseline_loc_cap": 1167,
+      "functions": 0,
+      "baseline_functions_cap": 98,
+      "category": "test_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tests/evidence/test_negative_bundle_validation.py": {
+      "loc": 966,
+      "baseline_loc_cap": 966,
+      "functions": 31,
+      "baseline_functions_cap": 31,
+      "category": "test_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tests/supervisor/test_governance_validators.py": {
+      "loc": 3267,
+      "baseline_loc_cap": 3267,
+      "functions": 233,
+      "baseline_functions_cap": 233,
+      "category": "test_infrastructure",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/fods/spreadsheet_ops.py",
-      "healing_sprint": "TC-ARCH-FODS-002"
+      "last_healed_check": "2026-07-01T18:36:01.799943+00:00",
+      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450)."
     },
-    "src/python/fodt/text_document.py": {
-      "loc": 573,
-      "baseline_loc_cap": 1009,
-      "functions": 90,
-      "baseline_functions_cap": 92,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/fodt/text_ops.py",
-      "healing_sprint": "TC-ARCH-FODT-001"
-    },
-    "src/python/ndjson/json_stream.py": {
-      "loc": 928,
-      "baseline_loc_cap": 928,
-      "functions": 69,
-      "baseline_functions_cap": 69,
-      "category": "analytics_extraction",
+    "tests/supervisor/test_llm_semantic_verification.py": {
+      "loc": 1258,
+      "baseline_loc_cap": 1258,
+      "functions": 1,
+      "baseline_functions_cap": 63,
+      "category": "test_infrastructure",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SIZE-D-series"
     },
-    "src/python/ods/spreadsheet_document.py": {
-      "loc": 896,
-      "baseline_loc_cap": 901,
-      "functions": 54,
+    "tools/capability_layer/capability_map_generator.py": {
+      "loc": 1717,
+      "baseline_loc_cap": 1717,
+      "functions": 33,
+      "baseline_functions_cap": 33,
+      "note": "Cap updated 2026-06-24: +54 LOC, +1 function for update_gap_status() (TC-C7-001, Stage 7 closure wiring). Prior cap: 1439/29. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.577769+00:00",
+      "last_healed_by": "abstract-finding-hummingbird-phase-ef-20260618",
+      "category": "tools_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/run046_sprint_writer.py": {
+      "loc": 2922,
+      "baseline_loc_cap": 2922,
+      "functions": 3,
+      "baseline_functions_cap": 3,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/run047_sprint_writer.py": {
+      "loc": 2709,
+      "baseline_loc_cap": 2709,
+      "functions": 17,
+      "baseline_functions_cap": 17,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/run048_sprint_writer.py": {
+      "loc": 3103,
+      "baseline_loc_cap": 3103,
+      "functions": 23,
+      "baseline_functions_cap": 24,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/run049_sprint_writer.py": {
+      "loc": 2690,
+      "baseline_loc_cap": 2690,
+      "functions": 15,
+      "baseline_functions_cap": 16,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/run050_sprint_writer.py": {
+      "loc": 4116,
+      "baseline_loc_cap": 4116,
+      "functions": 4,
+      "baseline_functions_cap": 4,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/evidence/validate_evidence_bundle.py": {
+      "loc": 2638,
+      "baseline_loc_cap": 2638,
+      "functions": 42,
+      "baseline_functions_cap": 42,
+      "category": "evidence_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/llm/endpoint_client.py": {
+      "loc": 845,
+      "baseline_loc_cap": 845,
+      "functions": 8,
+      "baseline_functions_cap": 26,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/oracle/execute_oracle.py": {
+      "loc": 1428,
+      "baseline_loc_cap": 1428,
+      "functions": 33,
+      "baseline_functions_cap": 33,
+      "category": "new_violation_detected",
+      "last_healed_check": "2026-06-26T11:47:05.508264+00:00"
+    },
+    "tools/specification-authority-layer/sal_master_runner.py": {
+      "loc": 1321,
+      "baseline_loc_cap": 1321,
+      "functions": 9,
+      "baseline_functions_cap": 9,
+      "category": "tools_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series",
+      "last_healed_check": "2026-07-01T18:36:01.768110+00:00",
+      "note": " Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450)."
+    },
+    "tools/supervisor/anti_skip_checker.py": {
+      "loc": 1351,
+      "baseline_loc_cap": 1351,
+      "functions": 30,
+      "baseline_functions_cap": 30,
+      "category": "governance_infrastructure_addition",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/autonomous_cycle.py": {
+      "loc": 2442,
+      "baseline_loc_cap": 2673,
+      "functions": 7,
+      "baseline_functions_cap": 7,
+      "category": "governance_infrastructure_addition",
+      "registered": "2026-06-18",
+      "note": "Supervisor infrastructure file; cap updated 2026-06-18 for TC-REPAIR-VERIFY-001 governance code. Cap is write-once after this update. Cap updated 2026-06-18 for TC-GUARD-001 BLOCK mode + SIGNAL-UNIFY-001 (Changes C1+C5, pre-product-acquisition sprint). Cap updated 2026-06-23 for TC-SIGNAL-001 _sync_hard_stops_after_repair() addition (supervisor infrastructure, 28 LOC, 1 function). Cap updated 2026-06-23 for TC-PG-005 Step 0b-validate block (plan readiness check wiring, supervisor infrastructure). Cap updated 2026-06-23 for TC-HARD-013 (+1 LOC: git_head_at_review in manifest dict). Cap updated 2026-06-23 for TC-PROD-H-010 Step 4a-compiler capability_feature_compiler wiring (+40 LOC).",
+      "last_healed_check": "2026-06-23T17:03:21.956564+00:00",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/autonomous_cycle_utils.py": {
+      "loc": 335,
+      "baseline_loc_cap": 335,
+      "functions": 6,
+      "baseline_functions_cap": 6,
+      "category": "governance_extraction"
+    },
+    "tools/supervisor/autonomous_loop_runner.py": {
+      "loc": 922,
+      "baseline_loc_cap": 922,
+      "functions": 29,
+      "baseline_functions_cap": 29,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/autonomous_poc_controller.py": {
+      "loc": 840,
+      "baseline_loc_cap": 840,
+      "functions": 14,
+      "baseline_functions_cap": 16,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/autonomous_task_generator.py": {
+      "loc": 1920,
+      "baseline_loc_cap": 1920,
+      "functions": 8,
+      "baseline_functions_cap": 8,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED",
+      "last_healed_check": "2026-06-23T17:03:28.509247+00:00"
+    },
+    "tools/supervisor/embedding_retrieval.py": {
+      "loc": 838,
+      "baseline_loc_cap": 838,
+      "functions": 5,
+      "baseline_functions_cap": 39,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/generate_next_worker_prompt.py": {
+      "loc": 1503,
+      "baseline_loc_cap": 1503,
+      "functions": 25,
+      "baseline_functions_cap": 25,
+      "note": "Grandfathered 2026-06-17: pre-existing large file; TC-WIRE-001 added _run_capability_consumer",
+      "category": "tools_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "TC-SIZE-D-series"
+    },
+    "tools/supervisor/generate_supervisor_packet.py": {
+      "loc": 1434,
+      "baseline_loc_cap": 1434,
+      "functions": 20,
+      "baseline_functions_cap": 20,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
+    },
+    "tools/supervisor/governance_validators.py": {
+      "loc": 3183,
+      "baseline_loc_cap": 3183,
+      "functions": 50,
       "baseline_functions_cap": 54,
-      "category": "new_violation_detected",
+      "note": "Grandfathered 2026-06-18: pre-existing large governance validator file; V41 (validate_analytics_skill_required) added by TC-ENFORCE-001 V42 (validate_deepening_suspension) added 2026-06-18 for SUSP-001 (Change C2, pre-product-acquisition sprint). V46 (validate_skill_transcript_present) added 2026-06-21 (TC-SKILL-GOV-002). V47 (validate_spec_fact_refs_in_sal_output) added 2026-06-21 (TC-MACH-ARCH-007). Cap update appropriate for governance infrastructure additions per MEMORY.md precedent. V48 (validate_architecture_only_stub_gate) added 2026-06-21 (TC-ZS-001, ZERO-STUB-AUDIT). V44 upgraded from constant-WARN stub to real import inspection. V49 (validate_qname_structure) added 2026-06-21 (TC-QNAME-VALIDATORS-001). Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
+      "last_healed_check": "2026-07-01T18:36:01.547744+00:00",
       "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P1",
-      "healing_target_file": "src/python/ods/spreadsheet_ops.py",
-      "healing_sprint": "TC-ARCH-ODS-001"
+      "remediation_sprint": "TC-SIZE-D-series"
     },
-    "src/python/qoi/image_document.py": {
-      "loc": 773,
-      "baseline_loc_cap": 773,
-      "functions": 70,
-      "baseline_functions_cap": 70,
-      "category": "new_violation_detected",
+    "tools/supervisor/governance_validators_ext.py": {
+      "loc": 1397,
+      "baseline_loc_cap": 1397,
+      "functions": 16,
+      "baseline_functions_cap": 16,
+      "category": "governance_infrastructure",
+      "note": "TC-WHALE-GOVBLOCK-001 (2026-06-21): Extension validators extracted from governance_validators.py to keep it under baseline_loc_cap. Contains V48 (validate_architecture_only_stub_gate, TC-ZS-001) and V50 (validate_forbidden_module_names, MODULE-NAME-001, TC-ANAL-SEG-HEAL-001, 2026-06-22). Cap updated 2026-06-23 for TC-PG-006 V56 validate_hardening_target_identity (governance infrastructure).",
       "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
+      "remediation_sprint": "TC-SIZE-D-series",
+      "last_healed_check": "2026-06-23T18:48:18.888760+00:00"
     },
-    "src/python/sylk/spreadsheet_document.py": {
-      "loc": 857,
-      "baseline_loc_cap": 889,
-      "functions": 64,
-      "baseline_functions_cap": 66,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001",
-      "healing_plan": "responsibility_split",
-      "healing_priority": "P2",
-      "healing_target_file": "src/python/sylk/sylk_ops.py",
-      "healing_sprint": "TC-ARCH-SYLK-001"
-    },
-    "src/python/tsv/tabular_document.py": {
-      "loc": 851,
-      "baseline_loc_cap": 851,
-      "functions": 61,
-      "baseline_functions_cap": 61,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-PRODUCT-PLAN-001"
-    },
-    "src/python/xcf/xcf_image_metrics.py": {
-      "loc": 900,
-      "baseline_loc_cap": 906,
-      "functions": 104,
-      "baseline_functions_cap": 104,
-      "category": "analytics_extraction",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SEP-C-series",
-      "last_healed_check": "2026-06-24T17:20:13.577800+00:00"
+    "tools/supervisor/governance_validators_found_issue.py": {
+      "loc": 203,
+      "baseline_loc_cap": 203,
+      "functions": 5,
+      "baseline_functions_cap": 5,
+      "category": "governance_validator"
     },
     "tools/supervisor/governance_validators_ledger.py": {
       "loc": 125,
@@ -2580,27 +2895,6 @@
       "baseline_functions_cap": 1,
       "category": "governance_infrastructure",
       "note": "TC-PDL-005 (2026-06-25): V74 ledger continuation gate \u00e2\u20ac\u201d extracted from governance_validators_ext.py to keep ext file from growing further."
-    },
-    "tools/supervisor/governance_validators_spec.py": {
-      "loc": 571,
-      "baseline_loc_cap": 571,
-      "functions": 7,
-      "baseline_functions_cap": 7,
-      "category": "governance_infrastructure"
-    },
-    "src/python/gnumeric/gnumeric_analytics.py": {
-      "loc": 913,
-      "baseline_loc_cap": 913,
-      "functions": 60,
-      "baseline_functions_cap": 60,
-      "category": "analytics_masquerade_rename_baseline"
-    },
-    "src/python/toml/toml_analytics.py": {
-      "loc": 469,
-      "baseline_loc_cap": 469,
-      "functions": 50,
-      "baseline_functions_cap": 50,
-      "category": "analytics_masquerade_rename_baseline"
     },
     "tools/supervisor/governance_validators_sal.py": {
       "loc": 227,
@@ -2611,328 +2905,41 @@
       "note": "TC-LA-008 (2026-06-26): Added validate_sal_facts_schema (V-SAL-SCHEMA-001) \u2014 schema validation for sal-facts-latest.json. Cap updated from 89 to 172 for governance infrastructure addition. Cap updated 2026-07-01 (authorized: accumulated governance+product additions from sprints s420-s450).",
       "last_healed_check": "2026-07-01T18:36:01.979481+00:00"
     },
-    "tools/oracle/execute_oracle.py": {
-      "loc": 1428,
-      "baseline_loc_cap": 1428,
-      "functions": 33,
-      "baseline_functions_cap": 33,
-      "category": "new_violation_detected",
-      "last_healed_check": "2026-06-26T11:47:05.508264+00:00"
-    },
-    "tools/supervisor/autonomous_cycle_utils.py": {
-      "loc": 335,
-      "baseline_loc_cap": 335,
-      "functions": 6,
-      "baseline_functions_cap": 6,
-      "category": "governance_extraction"
-    },
-    "src/net/fodt/FodtDocumentExtendedApis.cs": {
-      "loc": 2944,
-      "baseline_loc_cap": 2944,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "net_extended_apis_new_violation_detected",
-      "comment": "Created at 2,944 LOC in .NET FODT deepening sprint S507-S530 without prior baseline registration. Registered as new_violation_detected at cap=2944 on 2026-07-01. V35 monolith_detection_validator returns WARN (non-blocking) until \u00a78.1 decomposition sprint completes. Root cause: code extracted from FodtDocument.cs (977\u2192778 LOC) into this new file without baseline pre-registration. Decomposition sprint staged as GAP-NET-FODT-MONOLITH-001 in reports/capability-layer/gap-ledger.json."
-    },
-    "src/python/pbm/models.py": {
-      "loc": 179,
-      "baseline_loc_cap": 179,
-      "functions": 26,
-      "baseline_functions_cap": 26,
-      "category": "dependency_direction_known_pattern",
-      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
-    },
-    "src/python/pgm/models.py": {
-      "loc": 193,
-      "baseline_loc_cap": 193,
-      "functions": 28,
-      "baseline_functions_cap": 28,
-      "category": "dependency_direction_known_pattern",
-      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
-    },
-    "src/python/ppm/models.py": {
-      "loc": 193,
-      "baseline_loc_cap": 193,
-      "functions": 28,
-      "baseline_functions_cap": 28,
-      "category": "dependency_direction_known_pattern",
-      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
-    },
-    "src/python/qoi/models.py": {
-      "loc": 206,
-      "baseline_loc_cap": 206,
-      "functions": 30,
-      "baseline_functions_cap": 30,
-      "category": "dependency_direction_known_pattern",
-      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern"
-    },
-    "src/python/sylk/models.py": {
-      "loc": 219,
-      "baseline_loc_cap": 219,
-      "functions": 32,
-      "baseline_functions_cap": 32,
-      "category": "dependency_direction_known_pattern",
-      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern"
-    },
-    "src/python/xcf/models.py": {
-      "loc": 216,
-      "baseline_loc_cap": 216,
-      "functions": 31,
-      "baseline_functions_cap": 31,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/gnumeric/models.py": {
-      "loc": 205,
-      "baseline_loc_cap": 205,
-      "functions": 29,
-      "baseline_functions_cap": 29,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/abw/models.py": {
-      "loc": 180,
-      "baseline_loc_cap": 180,
-      "functions": 27,
-      "baseline_functions_cap": 27,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/dif/models.py": {
-      "loc": 192,
-      "baseline_loc_cap": 192,
-      "functions": 27,
-      "baseline_functions_cap": 27,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/csv/models.py": {
-      "loc": 222,
-      "baseline_loc_cap": 222,
-      "functions": 33,
-      "baseline_functions_cap": 33,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/tsv/models.py": {
-      "loc": 217,
-      "baseline_loc_cap": 217,
-      "functions": 32,
-      "baseline_functions_cap": 32,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/ndjson/models.py": {
-      "loc": 205,
-      "baseline_loc_cap": 205,
-      "functions": 29,
-      "baseline_functions_cap": 29,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/odt/models.py": {
-      "loc": 177,
-      "baseline_loc_cap": 177,
-      "functions": 25,
-      "baseline_functions_cap": 25,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/ods/models.py": {
-      "loc": 248,
-      "baseline_loc_cap": 248,
-      "functions": 37,
-      "baseline_functions_cap": 37,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/fods/models.py": {
-      "loc": 343,
-      "baseline_loc_cap": 343,
-      "functions": 49,
-      "baseline_functions_cap": 49,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/fodt/models.py": {
-      "loc": 295,
-      "baseline_loc_cap": 295,
-      "functions": 49,
-      "baseline_functions_cap": 49,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/fodp/models.py": {
-      "loc": 168,
-      "baseline_loc_cap": 168,
-      "functions": 23,
-      "baseline_functions_cap": 23,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/fodg/models.py": {
-      "loc": 151,
-      "baseline_loc_cap": 151,
-      "functions": 20,
-      "baseline_functions_cap": 20,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/toml/models.py": {
-      "loc": 200,
-      "baseline_loc_cap": 200,
-      "functions": 32,
-      "baseline_functions_cap": 32,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/zst/models.py": {
-      "loc": 212,
-      "baseline_loc_cap": 212,
-      "functions": 27,
-      "baseline_functions_cap": 27,
-      "category": "dependency_direction_known_pattern"
-    },
-    "src/python/fods/fods_analytics.py": {
-      "loc": 1121,
-      "baseline_loc_cap": 1121,
-      "functions": 30,
-      "baseline_functions_cap": 30,
-      "category": "analytics_separation_result",
-      "note": "Renamed from spreadsheet_document.py (sprint gleaming-rolling-hammock). Healing plan: decompose analytics per TC-ARCH-FODS-002."
-    },
-    "src/python/ods/ods_analytics.py": {
-      "loc": 1000,
-      "baseline_loc_cap": 1000,
-      "functions": 60,
-      "baseline_functions_cap": 60,
-      "category": "new_violation_detected"
-    },
-    "src/python/sylk/sylk_analytics.py": {
-      "loc": 894,
-      "baseline_loc_cap": 894,
-      "functions": 68,
-      "baseline_functions_cap": 68,
-      "category": "new_violation_detected"
-    },
-    "src/net/fodt/FodtDocumentEditing.cs": {
-      "loc": 664,
-      "baseline_loc_cap": 2662,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "new_violation_detected"
-    },
-    "src/python/csv/spec/record/header.py": {
-      "loc": 43,
-      "baseline_loc_cap": 43,
-      "functions": 6,
-      "baseline_functions_cap": 6,
-      "category": "spec_property_accessors_pre_existing_pqlm001"
-    },
-    "src/python/pbm/spec/bitmap/raster.py": {
-      "loc": 46,
-      "baseline_loc_cap": 46,
+    "tools/supervisor/governance_validators_spec.py": {
+      "loc": 571,
+      "baseline_loc_cap": 571,
       "functions": 7,
       "baseline_functions_cap": 7,
-      "category": "spec_property_accessors_pre_existing_pqlm001"
+      "category": "governance_infrastructure"
     },
-    "src/python/qoi/spec/chunk/end_marker.py": {
-      "loc": 42,
-      "baseline_loc_cap": 42,
-      "functions": 5,
-      "baseline_functions_cap": 5,
-      "category": "spec_property_accessors_pre_existing_pqlm001"
+    "tools/supervisor/grade_declared_work.py": {
+      "loc": 1098,
+      "baseline_loc_cap": 1098,
+      "functions": 14,
+      "baseline_functions_cap": 14,
+      "category": "supervisor_infrastructure",
+      "registered": "2026-06-19",
+      "note": "Supervisor infrastructure file; cap registered 2026-06-19. TC-C3-001 (Change C3, Sprint 2) added DEFERRED_WITH_REASON logic for spec-parity grading timeout fix (+25 LOC). Cap is write-once after this registration. Cap updated 2026-06-23 for TC-GRADE-001/002/003 additions (+50 LOC: content-hash, TTL, iv-cache, timeout). Cap updated 2026-06-23 for TC-HARD-011 comment (+6 LOC: _is_governance_sprint redundancy documentation per TC-HARD-007 Option A).",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
     },
-    "src/python/xcf/spec/layer/channel.py": {
-      "loc": 51,
-      "baseline_loc_cap": 51,
-      "functions": 8,
-      "baseline_functions_cap": 8,
-      "category": "spec_property_accessors_pre_existing_pqlm001"
+    "tools/supervisor/stop_reason_adjudicator.py": {
+      "loc": 1025,
+      "baseline_loc_cap": 1025,
+      "functions": 6,
+      "baseline_functions_cap": 6,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
     },
-    "src/net/fods/FodsDocumentCellStyle.cs": {
-      "loc": 600,
-      "baseline_loc_cap": 600,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "legitimate_odf_style_resolution_cache_not_xml_write_state"
-    },
-    "src/net/fods/FodsDocumentDataAnnotations.cs": {
-      "loc": 511,
-      "baseline_loc_cap": 508,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
-    },
-    "src/net/fods/FodsDocumentExportOps.cs": {
-      "loc": 508,
-      "baseline_loc_cap": 508,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
-    },
-    "src/net/fods/FodsDocumentReadOps.cs": {
-      "loc": 892,
-      "baseline_loc_cap": 911,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
-    },
-    "src/net/csv/CsvDocument.cs": {
-      "loc": 275,
-      "baseline_loc_cap": 816,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "dotnet_pre_existing"
-    },
-    "src/net/fods/FodsDocumentEditOps.cs": {
-      "loc": 738,
-      "baseline_loc_cap": 738,
-      "functions": 61,
-      "baseline_functions_cap": 61,
-      "category": "dotnet_decomposed_partial_v105_v106_grandfathered"
-    },
-    "src/net/fods/FodsDocumentCellProps.cs": {
-      "loc": 687,
-      "baseline_loc_cap": 642,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
-    },
-    "src/net/fods/FodsDocumentSheetFeatures.cs": {
-      "loc": 483,
-      "baseline_loc_cap": 479,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "fods_net_decomposition_inherited_from_accessor_extendedapis_pqlm001"
-    },
-    "src/python/csv/tabular_document_analytics.py": {
-      "loc": 496,
-      "baseline_loc_cap": 496,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
-    },
-    "src/python/fodt/text_document_analytics.py": {
-      "loc": 447,
-      "baseline_loc_cap": 447,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
-    },
-    "src/net/fodt/FodtDocumentSectionBookmarkOps.cs": {
-      "loc": 682,
-      "baseline_loc_cap": 682,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
-    },
-    "src/net/fodt/FodtDocumentStyleMetadataOps.cs": {
-      "loc": 693,
-      "baseline_loc_cap": 693,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
-    },
-    "src/net/fodt/FodtDocumentAdvancedTextOps.cs": {
-      "loc": 669,
-      "baseline_loc_cap": 669,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
-    },
-    "src/net/csv/CsvDocumentAnalytics.cs": {
-      "loc": 604,
-      "baseline_loc_cap": 604,
-      "functions": 0,
-      "baseline_functions_cap": 0,
-      "category": "split_from_heal"
+    "tools/supervisor/tri_lane_integration.py": {
+      "loc": 973,
+      "baseline_loc_cap": 973,
+      "functions": 24,
+      "baseline_functions_cap": 26,
+      "category": "supervisor_infrastructure",
+      "remediation_deadline": "2026-09-01",
+      "remediation_sprint": "GRANDFATHERED"
     }
   },
   "qname_ownership_baseline": {

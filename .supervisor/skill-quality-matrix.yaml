@@ -1,7 +1,7 @@
 ---
 # Skill Quality Matrix
-# Mission: SKILL-FIRST-001 / Plan: cached-growing-snail
-# Generated: TC-SF-005
+# Mission: SKILL-FIRST-002 / Plan: twinkly-gliding-thimble (updated TC-FPSH-002 2026-07-02; originally generated TC-SF-005 under SKILL-FIRST-001)
+# Last-updated: TC-FPSH-002 (2026-07-02)
 # Grading scale: 0=absent/unsafe 1=one-time/undocumented 2=partial/weakly-repeatable
 #                3=usable-with-material-gaps 4=strong-and-governed 5=complete/composable/proven
 # Weak threshold: overall_grade < 3 → repair_required: true
@@ -732,10 +732,134 @@ skills:
     repair_taskcard_id: null
     first_execution: pending
 
+  # ============================================================
+  # CERTIFICATION SKILLS — added TC-FPSH-003 (2026-07-02)
+  # All 9 are Python-backed with dedicated implementation files.
+  # Grade basis: summary. Default grade: 4 (Python-backed, deterministic, clear contract).
+  # ============================================================
+
+  - skill_id: certification-dashboard
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/certification_dashboard.py); deterministic output; strong contract"
+
+  - skill_id: certification-inventory-extractor
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/inventory_extractor.py); deterministic inventory scan"
+
+  - skill_id: certification-stub-detector
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/stub_detector.py); deterministic stub detection"
+
+  - skill_id: certification-exception-checker
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/exception_coverage_checker.py); clear pass/fail contract"
+
+  - skill_id: certification-assertion-scorer
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/assertion_quality_scorer.py); scoring rubric documented"
+
+  - skill_id: certification-dotnet-assertion-scorer
+    grade_basis: summary
+    overall_grade: 4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/dotnet_assertion_scorer.py); .NET-specific scorer"
+
+  - skill_id: certification-generate-exception-tests
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/generate_exception_tests.py); generative — LLM output variability applies to test content"
+
+  - skill_id: certification-fix-weak-assertions
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/fix_weak_assertions.py); mutates test files — lower idempotency score"
+
+  - skill_id: certification-generate-security-tests
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Python-backed (tools/certification/generate_security_tests.py); generative — LLM output variability applies"
+
+  # ============================================================
+  # PLAYBOOK SKILLS — added TC-FPSH-003 (2026-07-02)
+  # Template-based playbooks. LLM-backed execution. Grade: 3.
+  # ============================================================
+
+  - skill_id: format-feature-expansion
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Template playbook (playbooks/format-factory/format-feature-expansion.md); strong structure; LLM execution; idempotency limited"
+
+  - skill_id: new-format-kickstart
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Template playbook (playbooks/format-factory/new-format-kickstart-template.md); well-scoped; LLM-backed; one-time per format"
+
+  - skill_id: product-source-task
+    grade_basis: summary
+    overall_grade: 3
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    grade_rationale: "Template playbook (playbooks/format-factory/product-source-task-template.md); governed by spec_qname; LLM-backed"
+
 summary:
-  total_skills_graded: 67
+  total_skills_graded: 79
   detailed_grades: 8
-  summary_grades: 59
+  summary_grades: 71
+  coverage_gap:
+    ungraded_count: 41
+    added_in_plan: TC-FPSH-003 (2026-07-02)
+    explanation: >
+      41 skills remain ungraded. These were registered during the parallel layer-audit
+      sprint (TC-LA-001 through TC-LA-010, 2026-06-26) AFTER the quality matrix was
+      originally created in SKILL-FIRST-001 (TC-SF-005). TC-SFE2-005 added 4 skills
+      from twinkly-gliding-thimble scope only. TC-FPSH-003 added 12 more (9 cert + 3
+      playbook). Remaining 41 ungraded are layer-governance skills (~17), acquisition/
+      playbook skills (~9), capability/readme sync skills (~5), and other new skills
+      (~10) from the layer-audit sprint. Full grading of these is deferred to a future
+      SKILL-QUALITY-003 mission.
+    ungraded_categories:
+      - "layer-governance (~17): append-layer-*, close-layer-task, create-cross-layer-handoff, etc."
+      - "acquisition (~9): replay-acquisition-playbook, validate-playbook, diff-playbook-outputs, etc."
+      - "capability-sync (~5): sync-capabilities, sync-readmes, validate-capability-parity, etc."
+      - "other-new (~10): check-dom-contract, query-control-index, ingest-spec-sal, run-oracle, etc."
   weak_skills:
     - post-sprint-audit       # overall_grade: 2 → repair required
     - export-plan-context     # overall_grade: 2 → repair required
@@ -745,8 +869,8 @@ summary:
     - decompose-monolithic-codec  # overall_grade: 2 → DEPRECATED (no repair)
   repair_required_count: 4
   repair_deferred_count: 2
-  strong_skills_count: 5     # overall_grade >= 4
-  adequate_skills_count: 39  # overall_grade == 3
+  strong_skills_count: 12    # overall_grade >= 4 (was 5; +7 from cert skills)
+  adequate_skills_count: 51  # overall_grade == 3 (was 39; +12 from FPSH-003 additions)
   weak_repair_count: 4
 
   # ============================================================

@@ -142,17 +142,21 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
     [Fact]
     public void CsvReader_ReadRows_FirstRowIsHeader()
     {
+        // ReadRows(path) returns ALL rows including the header row.
+        // The header is rows[0]; data rows start at rows[1].
         var path = WriteThreeRowFile("firstrow.csv");
         var rows = CsvReader.ReadRows(path);
-        Assert.Contains("Alice", rows[0]);
+        Assert.Contains("Name", rows[0]);  // rows[0] is the header row
     }
 
     [Fact]
     public void CsvReader_ReadRows_CountMatchesLines()
     {
+        // ReadRows(path) returns ALL rows (header + data). No stripping.
+        // ThreeRowCsv has 1 header + 3 data rows = 4 total.
         var path = WriteThreeRowFile("linecount.csv");
         var rows = CsvReader.ReadRows(path);
-        Assert.Equal(3, rows.Count); // header stripped; 3 data rows returned
+        Assert.Equal(4, rows.Count); // header + 3 data rows = 4 total (GAP-CSV-001 fix)
     }
 
     // -------------------------------------------------------------------------
@@ -194,9 +198,9 @@ public class CsvR150LoadFileAndWriterTests : IDisposable
             new[] { "Dave", "Finance", "91" }
         }, path1);
 
-        // Read with CsvReader (ReadRows on file path strips the header row)
+        // Read with CsvReader (ReadRows on file path returns ALL rows including header — GAP-CSV-001 fix)
         var rows = CsvReader.ReadRows(path1);
-        Assert.Equal(4, rows.Count);
+        Assert.Equal(5, rows.Count); // 1 header + 4 data rows = 5 total
 
         // Load with CsvDocument
         var doc = CsvDocument.LoadFile(path1, hasHeaders: false);

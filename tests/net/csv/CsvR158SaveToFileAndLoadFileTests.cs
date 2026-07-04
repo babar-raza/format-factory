@@ -134,7 +134,7 @@ public class CsvR158SaveToFileAndLoadFileTests : IDisposable
         var path = TempFile("g.csv");
         CsvWriter.WriteRows(rows, path);
         var read = CsvReader.ReadRows(path);
-        Assert.Equal(2, read.Count); // header stripped; 2 data rows returned
+        Assert.Equal(3, read.Count); // all rows returned: 1 header + 2 data rows (GAP-CSV-001 fix)
     }
 
     [Fact]
@@ -148,9 +148,10 @@ public class CsvR158SaveToFileAndLoadFileTests : IDisposable
         var path = TempFile("h.csv");
         CsvWriter.WriteRows(rows, path);
         var read = CsvReader.ReadRows(path);
-        // header stripped: read[0] is the first data row (Alice)
-        Assert.Equal("Alice", read[0][0]);
-        Assert.Equal("95", read[0][1]);
+        // ReadRows(path) returns all rows. read[0] is the header, read[1] is the first data row.
+        Assert.Equal("Name", read[0][0]);  // header row
+        Assert.Equal("Alice", read[1][0]); // first data row (GAP-CSV-001 fix)
+        Assert.Equal("95", read[1][1]);
     }
 
     // -------------------------------------------------------------------------

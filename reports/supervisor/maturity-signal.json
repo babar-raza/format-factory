@@ -1,11 +1,11 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "BULK-PROPERTIES-R1233-R1291",
-  "timestamp": "2026-07-02T17:03:18.023676+00:00",
-  "sprint_verdict": "ACCEPTED",
-  "autonomous_continue": true,
-  "iteration": 9,
+  "run_id": "honey-heal-20260704",
+  "timestamp": "2026-07-04T10:52:39.916166+00:00",
+  "sprint_verdict": "ACCEPTED_WITH_REWORK",
+  "autonomous_continue": false,
+  "iteration": 2,
   "test_results": {
     "total": 0,
     "passed": 0,
@@ -13,147 +13,38 @@
   },
   "work_items": [
     {
-      "id": "WI-R1233-CSV",
-      "grade": "ACCEPTED_VERIFIED",
+      "id": "TC-HEAL-NET-001",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     },
     {
-      "id": "WI-R1234-TSV",
-      "grade": "ACCEPTED_VERIFIED",
+      "id": "TC-HEAL-NET-002",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     },
     {
-      "id": "WI-R1235-XCF",
-      "grade": "ACCEPTED_VERIFIED",
+      "id": "TC-HEAL-PY-001",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     },
     {
-      "id": "WI-R1236-ODS",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1237-PBM",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1238-PGM",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1239-PPM",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1240-FODT",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1241-NDJSON",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1242-TOML",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1243-QOI",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1244-ODT",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1245-FODS",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1246-FODG",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1247-FODP",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1248-GNUMERIC",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1249-DIF",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1250-SYLK",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1251-ABW",
-      "grade": "ACCEPTED_VERIFIED",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "WI-R1252-ZST-VERIFY",
-      "grade": "ACCEPTED_VERIFIED",
+      "id": "TC-HEAL-PY-002",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     }
   ],
-  "rework_items": [],
+  "rework_items": [
+    "GOV_BLOCK:validate_analytics_naming_enforced",
+    "GOV_BLOCK:validate_readme_freshness"
+  ],
   "agentic_maturity_score": 4.4,
   "active_gaps": [],
   "next_action_hint": "",

@@ -268,8 +268,11 @@ public sealed partial class CsvDocument
     public double GetColumnEntropyNormalized(string headerName) { double e = GetColumnEntropy(headerName); int n = GetColumnUniqueCount(headerName); return n <= 1 ? 0.0 : e / Math.Log(n, 2); }
     /// <summary>Returns the normalized entropy alias.</summary>
     public double GetColumnNormalizedEntropy(string headerName) => GetColumnEntropyNormalized(headerName);
-    /// <summary>Returns the information content (entropy in bits).</summary>
-    public double GetColumnInformationContent(string headerName) => GetColumnEntropy(headerName) / Math.Log(2);
+    /// <summary>Returns the information content (entropy in bits).
+    /// Information content equals entropy in bits — same unit as GetColumnEntropy().
+    /// The historical / Math.Log(2) divisor incorrectly converted bits to nats; removed.
+    /// </summary>
+    public double GetColumnInformationContent(string headerName) => GetColumnEntropy(headerName);
     /// <summary>Returns the diversity index (normalized entropy) for the column.</summary>
     public double GetColumnDiversity(string headerName) { int n = RowCount; if (n == 0) return 0.0; return (double)GetColumnUniqueCount(headerName) / n; }
     /// <summary>Returns the uniformity score (1 when all values equal, 0 when maximally diverse).</summary>
@@ -487,12 +490,36 @@ public sealed partial class CsvDocument
     public CsvDocument Pivot(string rowCol, string colCol, string valueCol) { var rows = GetDistinctValues(rowCol); var cols = GetDistinctValues(colCol); var headers = new[] { rowCol }.Concat(cols).ToArray(); var data = new List<string[]>(); foreach (var r in rows) { var row = new[] { r }.Concat(cols.Select(c => { var match = Rows.FirstOrDefault(dr => { int ri = GetColumnIndex(rowCol), ci = GetColumnIndex(colCol), vi = GetColumnIndex(valueCol); return ri >= 0 && ci >= 0 && ri < dr.Length && ci < dr.Length && dr[ri] == r && dr[ci] == c; }); if (match == null) return ""; int vi2 = GetColumnIndex(valueCol); return vi2 >= 0 && vi2 < match.Length ? match[vi2] : ""; })).ToArray(); data.Add(row); } return new CsvDocument(headers, data); }
     /// <summary>Returns a random sample of n rows.</summary>
     public CsvDocument GetSampleRows(int n) { var rnd = new Random(); var sampled = Rows.OrderBy(_ => rnd.Next()).Take(n).ToList(); return new CsvDocument(Headers?.ToArray(), sampled); }
-    /// <summary>Returns a document with outlier rows removed from the named column.</summary>
-    public CsvDocument RemoveOutliers(string headerName, double threshold = 3.0) { int idx = GetColumnIndex(headerName); if (idx < 0) return Clone(); var filtered = Rows.Where(r => { if (idx >= r.Length) return true; if (!double.TryParse(r[idx], out double v)) return true; var vals = ParseNumericColumn(GetColumn(headerName)).ToArray(); double m = vals.Average(); double s = Math.Sqrt(vals.Average(x => (x - m) * (x - m))); return s == 0 || Math.Abs((v - m) / s) <= threshold; }).ToList(); return new CsvDocument(Headers?.ToArray(), filtered); }
+    /// <summary>Returns a document with outlier rows removed from the named column.
+    /// Outliers are rows whose z-score (standard deviations from the mean) exceeds <paramref name="threshold"/>.
+    /// The column statistics are computed once before filtering (O(N), not O(N²)).
+    /// </summary>
+    public CsvDocument RemoveOutliers(string headerName, double threshold = 3.0)
+    {
+        int idx = GetColumnIndex(headerName);
+        if (idx < 0) return Clone();
+        // Compute column statistics ONCE outside the lambda — avoids O(N²) re-parsing per row.
+        var vals = ParseNumericColumn(GetColumn(headerName)).ToArray();
+        if (vals.Length == 0) return Clone();
+        double m = vals.Average();
+        double s = Math.Sqrt(vals.Average(x => (x - m) * (x - m)));
+        var filtered = Rows.Where(r =>
+        {
+            if (idx >= r.Length) return true;
+            if (!double.TryParse(r[idx], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double v)) return true;
+            return s == 0 || Math.Abs((v - m) / s) <= threshold;
+        }).ToList();
+        return new CsvDocument(Headers?.ToArray(), filtered);
+    }
     /// <summary>Exports the document to HTML table format.</summary>
     public string ExportToHtml() => ToHtml();
-    /// <summary>Returns an HTML table representation of the document.</summary>
-    public string ToHtml() { var sb = new System.Text.StringBuilder(); sb.Append("<table>"); if (Headers != null) { sb.Append("<thead><tr>"); foreach (var h in Headers) sb.Append($"<th>{h}</th>"); sb.Append("</tr></thead>"); } sb.Append("<tbody>"); foreach (var row in Rows) { sb.Append("<tr>"); foreach (var cell in row) sb.Append($"<td>{cell}</td>"); sb.Append("</tr>"); } sb.Append("</tbody></table>"); return sb.ToString(); }
+    /// <summary>Returns an HTML table representation of the document.
+    /// All header and cell values are HTML-escaped to prevent XSS injection.
+    /// </summary>
+    public string ToHtml() { var sb = new System.Text.StringBuilder(); sb.Append("<table>"); if (Headers != null) { sb.Append("<thead><tr>"); foreach (var h in Headers) sb.Append($"<th>{_HtmlEsc(h)}</th>"); sb.Append("</tr></thead>"); } sb.Append("<tbody>"); foreach (var row in Rows) { sb.Append("<tr>"); foreach (var cell in row) sb.Append($"<td>{_HtmlEsc(cell)}</td>"); sb.Append("</tr>"); } sb.Append("</tbody></table>"); return sb.ToString(); }
+    private static string _HtmlEsc(string s) =>
+        s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
+         .Replace("\"", "&quot;").Replace("'", "&#39;");
     /// <summary>Exports to TSV string.</summary>
     public string ExportToTsv() => ToTsv();
     /// <summary>Returns a TSV representation of the document.</summary>
@@ -501,7 +528,9 @@ public sealed partial class CsvDocument
     public string ExportToJson() => ToJson();
     /// <summary>Returns a JSON array representation of the document.</summary>
     public string ToJson() { var sb = new System.Text.StringBuilder(); sb.Append("["); bool first = true; foreach (var row in Rows) { if (!first) sb.Append(","); first = false; sb.Append("{"); bool ff = true; int cols = Math.Min(Headers?.Length ?? row.Length, row.Length); for (int i = 0; i < cols; i++) { if (!ff) sb.Append(","); ff = false; string key = Headers != null && i < Headers.Length ? Headers[i] : $"col{i}"; sb.Append($"\"{_JsonEsc(key)}\":\"{_JsonEsc(row[i])}\""); } sb.Append("}"); } sb.Append("]"); return sb.ToString(); }
-    private static string _JsonEsc(string s) => s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+    private static string _JsonEsc(string s) =>
+        s.Replace("\\", "\\\\").Replace("\"", "\\\"")
+         .Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
     /// <summary>Exports to NDJSON string.</summary>
     public string ExportToNdjson() { var sb = new System.Text.StringBuilder(); foreach (var row in Rows) { sb.Append("{"); bool ff = true; int cols = Math.Min(Headers?.Length ?? row.Length, row.Length); for (int i = 0; i < cols; i++) { if (!ff) sb.Append(","); ff = false; string key = Headers != null && i < Headers.Length ? Headers[i] : $"col{i}"; sb.Append($"\"{_JsonEsc(key)}\":\"{_JsonEsc(row[i])}\""); } sb.AppendLine("}"); } return sb.ToString(); }
     /// <summary>Exports to XML string.</summary>

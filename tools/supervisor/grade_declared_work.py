@@ -831,6 +831,15 @@ def grade_all(inspection: dict, declaration: dict,
                     "Add spec_qname attribute to implementation class and a test that asserts "
                     "the attribute value matches the ODF spec QName."
                 )
+            # TC-CQGA-015 (SOL-001 Option D): cap grade at ACCEPTED_WITH_LIMITATIONS
+            # when LLM is unavailable. Only LLM semantic verification may grant
+            # ACCEPTED_VERIFIED. This prevents false-green grades from intermediate check.
+            _cap = sv.get("fallback_grade_cap", "ACCEPTED_WITH_LIMITATIONS")
+            if g.get("supervisor_grade") == "ACCEPTED_VERIFIED":
+                g["supervisor_grade"] = _cap
+                g["acceptance_criteria_failed"] = g.get("acceptance_criteria_failed", []) + [
+                    f"grade_capped_to_{_cap}: LLM unavailable; only intermediate verification used"
+                ]
             continue  # LLM unavailable, keep deterministic grade for non-spec-parity items
         if sv.get("stub_detected"):
             old_grade = g["supervisor_grade"]

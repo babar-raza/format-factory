@@ -298,6 +298,11 @@ def intermediate_verify_item(
         "source": "intermediate_content_check",
         "checks": checks,
         "summary": f"{ok_count}/{len(checks)} evidence files passed content check",
+        # TC-CQGA-015 (SOL-001 Option D): Only LLM can grant ACCEPTED_VERIFIED.
+        # This cap tells grade_declared_work.py to limit the grade to
+        # ACCEPTED_WITH_LIMITATIONS when this intermediate result is used.
+        # The LLM path (llm_used=True) does NOT include this cap.
+        "fallback_grade_cap": "ACCEPTED_WITH_LIMITATIONS",
     }
     # TC-FG-002b: expose AST classification at top level for grade_declared_work.py grade-cap
     if _strong_ratio is not None:

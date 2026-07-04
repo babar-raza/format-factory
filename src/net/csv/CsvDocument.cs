@@ -115,6 +115,11 @@ public sealed partial class CsvDocument
     }
 
     /// <summary>Set the cell value at the given zero-based row and column index.</summary>
+    /// <remarks>
+    /// This method silently returns (no-op) when <paramref name="row"/> or <paramref name="col"/>
+    /// is out of bounds. This is intentional for defensive bulk-update scenarios.
+    /// If you need strict bounds enforcement (exception on out-of-bounds), use <see cref="SetCell"/> instead.
+    /// </remarks>
     public void SetCellValue(int row, int col, string value)
     {
         if (row < 0 || row >= Rows.Count) return;
@@ -125,6 +130,12 @@ public sealed partial class CsvDocument
 
     // Thread-local storage for header context during Filter evaluation.
     // Enables string[].GetValue(string colName) extension method to resolve column names.
+    //
+    // IMPORTANT — async predicate limitation:
+    // [ThreadStatic] fields are not safe when the Filter predicate is async (returns Task or
+    // uses ConfigureAwait(false)), because async continuations may resume on a different thread
+    // where _filterHeaders is null. Only use Filter with synchronous predicates.
+    // For async filtering, materialize the rows with GetColumn() and filter manually.
     [ThreadStatic]
     private static string[]? _filterHeaders;
 

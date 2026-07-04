@@ -1315,9 +1315,18 @@ def rewrite_prompt_with_context(
     - Removal of stale/irrelevant sections
 
     Returns None if:
+    - LLM_REWRITE_DISABLED=1 is set (unit-test / CI fast-path — skips litellm import)
     - LLM gateway is unavailable
     - Rewrite fails prompt quality validation
     """
+    # Fast-path disable for unit tests and CI environments where the litellm import
+    # (~6s on cold start) and live network call would exceed test-suite timeouts.
+    # Set LLM_REWRITE_DISABLED=1 in conftest / CI env to skip rewriting without
+    # changing any product behaviour (generate_prompt falls back to deterministic prompt).
+    import os as _os
+    if _os.environ.get("LLM_REWRITE_DISABLED", "").strip() in ("1", "true", "yes"):
+        return None
+
     try:
         # SCRIPT_DIR = tools/supervisor, repo_root = tools/supervisor/../.. = repo root
         repo_root_for_import = str(SCRIPT_DIR.parent.parent)
@@ -1397,8 +1406,12 @@ def rewrite_prompt_with_context(
             operation="rewrite_prompt_with_context",
         )
         rewritten = resp.get("content", "")
-        # If gateway returned empty (e.g. litellm import failure), try direct SDK
-        if not rewritten and _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
+        # Fall back to direct SDK only when litellm itself failed (not installed/configured).
+        # Do NOT retry when the endpoint timed out (READ_TIMEOUT/CONNECT_TIMEOUT) — the same
+        # endpoint is used by both paths; an unreachable endpoint will time out via SDK too.
+        _error_cls = getattr(_record, "error_class_redacted", "") or ""
+        _is_litellm_unavailable = _error_cls == "UNKNOWN_PROVIDER_FAILURE"
+        if not rewritten and _is_litellm_unavailable:
             rewritten = _rewrite_sdk_fallback(messages, cfg) or ""
         if not rewritten or len(rewritten) < 200:
             return None
@@ -1424,11 +1437,25 @@ def rewrite_prompt_with_context(
 
 
 def _rewrite_sdk_fallback(messages: list[dict], cfg) -> str | None:
-    """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
+    """Fallback: call endpoint directly via SDK when litellm fails.
+
+    Wall-clock deadline enforced via concurrent.futures — same pattern as
+    tools/ai/control_plane/gateway._call_litellm_bounded.  Without this,
+    openai.OpenAI.chat.completions.create() passes its timeout= to httpx
+    -> httpcore -> SyncSSLStream.read() -> ssl.SSLObject.read(), a blocking
+    C-level syscall that ignores Python select-based timeouts and can hang
+    indefinitely when the TLS peer stalls mid-stream (RC-1 LLM-GRADER-TIMEOUT-001).
+    """  # policy-allowed
+    import concurrent.futures as _futures
     import os
     import time
-    _max_attempts = 3
-    _backoff = [1, 2, 4]
+    _per_call_timeout = float(os.environ.get("GRADER_LLM_TIMEOUT", "8"))
+    # Grace period: caller unblocked this many extra seconds beyond the SDK timeout
+    # in case ssl.SSLObject.read() ignores the timeout kwarg.
+    _OVERHEAD = 2.0
+    _hard_limit = _per_call_timeout + _OVERHEAD
+    _max_attempts = 2  # reduced from 3: each attempt can block up to _hard_limit seconds
+    _backoff = [1, 2]
     key = os.environ.get("GPT_OSS_API_KEY", "").strip()
     if not key or not cfg.endpoint:
         return None
@@ -1437,17 +1464,33 @@ def _rewrite_sdk_fallback(messages: list[dict], cfg) -> str | None:
             _sdk = __import__("openai")  # policy-approved endpoint only
             _Client = _sdk.OpenAI  # policy-approved
             client = _Client(base_url=cfg.endpoint, api_key=key)
-            resp = client.chat.completions.create(
-                model="recommended",
-                messages=messages,
-                max_tokens=4000,
-                temperature=0,
-            )
-            return resp.choices[0].message.content or None
+
+            def _do_call():
+                return client.chat.completions.create(
+                    model="recommended",
+                    messages=messages,
+                    max_tokens=4000,
+                    temperature=0,
+                    timeout=_per_call_timeout,  # SDK-level hint; may be ignored by ssl recv()
+                )
+
+            executor = _futures.ThreadPoolExecutor(max_workers=1)
+            future = executor.submit(_do_call)
+            executor.shutdown(wait=False)  # release immediately; worker self-terminates via socket timeout
+            try:
+                resp = future.result(timeout=_hard_limit)
+                return resp.choices[0].message.content or None
+            except _futures.TimeoutError:
+                print(
+                    f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} exceeded "
+                    f"{_hard_limit:.0f}s wall-clock limit -- SSL read hang suspected"
+                )
+                # Worker thread orphaned; self-terminates when socket.setdefaulttimeout fires.
+
         except Exception as exc:
             print(f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} failed: {type(exc).__name__}")
-            if attempt < _max_attempts - 1:
-                time.sleep(_backoff[attempt])
+        if attempt < _max_attempts - 1:
+            time.sleep(_backoff[attempt])
     print("  [LLM] All SDK fallback attempts exhausted")
     return None
 

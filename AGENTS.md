@@ -1213,6 +1213,33 @@ It DOES:
 
 ---
 
+### AG11. Scope-Guard Hook — Advisory WARN Mode (ACKNOWLEDGED_BY_DESIGN)
+
+**Authority:** TC-CQGA-017 (CQGA-001); CQG-002 → ACKNOWLEDGED_BY_DESIGN (2026-07-04)
+
+The `scope-guard` pre-commit hook (`.pre-commit-config.yaml`) is intentionally configured
+with `--mode warn`. This means:
+
+1. **Lane violations detected by scope-guard are advisory only** — they do NOT block commits,
+   CI, or sprint closeout. They produce a WARN to stderr.
+2. **No agent should treat a scope-guard WARN as a hard stop.** Record the warning in the
+   sprint evidence declaration, investigate the root cause, and continue.
+3. **This is by design**, not a misconfiguration. The scope-guard is a heuristic detector
+   based on file-ownership patterns. It produces false positives for legitimate cross-lane reads
+   (e.g., validators reading product source, or runners reading governance files). Blocking on
+   these would generate unacceptable stop frequency.
+4. **Lane ownership is enforced at planning time** (plan file ownership tables) and at review
+   time (supervisor audit). The scope-guard warning is an early-detection signal, not an
+   enforcement gate.
+5. **Gap CQG-002 is ACKNOWLEDGED_BY_DESIGN** — no action required. Future scope-guard tuning
+   may narrow false-positive rate, but the `--mode warn` setting is the permanent policy.
+
+Note: all pre-commit hooks (including scope-guard) are currently inert for local commits
+because `pre-commit install` has not been run (FINDING-001, CQG-001). Hooks are CI-only
+effective until resolved by running `pre-commit install` in the repository root.
+
+---
+
 ## AH. Spec Workbench Consumption Rules
 
 **Sprint:** TC-0020-spec-workbench-core

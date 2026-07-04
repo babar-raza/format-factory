@@ -16211,3 +16211,14 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: +1666
 - test_delta_from: 109
+
+## Entry: PQLM-GOV-001
+- timestamp: 2026-07-04T16:37:13.503440
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pqlm-gov-001-20260704-001\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 67
+- bundle_validation_pass: True

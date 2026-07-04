@@ -30,6 +30,30 @@ V86: validate_layer_task_registered — TC-* task_ids in declaration should appe
 V87: validate_dotnet_constant_return_public_api — public Get* methods returning constants in src/net/ (WARN for PRODUCT_SOURCE; FAIL+blocks for RELEASE_GATE) — GI-FODS-NET-001
 V88: validate_dotnet_detached_dictionary_fields — Dictionary fields not wired to XML parse path (WARN-only advisory) — GI-FODS-NET-001
 V89: validate_dotnet_missingmethods_filename — *Missing*.cs or *Stub*.cs additions in src/net/ (FAIL+blocks) — GI-FODS-NET-001
+V100: validate_suspicious_filenames — dumping-ground filename patterns in product src (FAIL, TC-PQLM-012)
+V101: validate_history_identifiers_in_source — sprint/wave/train IDs in source comments (WARN, TC-PQLM-012)
+V102: validate_undocumented_public_python_apis — public def without docstring (FAIL new, WARN existing, TC-PQLM-012)
+V103: validate_ungoverned_todo_markers — TODO/FIXME/HACK without GAP-*/TC-* ref (WARN, TC-PQLM-012)
+V104: validate_constant_return_public_methods — public fn always returning constant (FAIL new, TC-PQLM-012)
+V105: validate_getter_without_parser_source — .cs public getter reading _dict field (FAIL, TC-PQLM-012)
+V106: validate_setter_without_writer_path — .cs public setter writing _dict only (FAIL, TC-PQLM-012)
+V107: validate_test_only_public_apis — public API referenced only in tests (WARN, TC-PQLM-012)
+V108: validate_detached_persistent_state — Dictionary<> _field patterns in .cs (FAIL new, TC-PQLM-012)
+V109: validate_files_outside_approved_layout — product files outside layout contract (FAIL, TC-PQLM-012)
+V110: validate_dotnet_path_canonical — block src/dotnet/ paths in declarations (FAIL)
+V111: validate_public_symbol_without_qname_authority — spec/Model classes missing spec_qname (FAIL, TC-ARC-012)
+V112: validate_model_type_without_spec_authority — model classes missing spec_qname (FAIL, TC-ARC-012)
+V113: validate_nested_concept_on_root_document — root document owning nested-QName methods (FAIL, TC-ARC-012)
+V117: validate_dumping_ground_or_catchall_file — catch-all filename detection (FAIL, TC-ARC-012)
+V118: validate_sprint_history_identifier_in_source — sprint/wave/train IDs in source (WARN, TC-ARC-012)
+V119: validate_promoted_code_changed_without_reopening — PROMOTED_STABLE change without reopen (FAIL, TC-ARC-012)
+V120: validate_certification_without_architecture_proof — CERTIFIED without arch audit (FAIL, TC-ARC-012)
+V121: validate_missing_public_documentation — public Python fn without docstring (FAIL, TC-ARC-012)
+V123: validate_ungoverned_code_marker — TODO/FIXME/HACK without governed reference (WARN, TC-ARC-012)
+V124: validate_semantic_stub_constant_return — method body is constant-return stub (FAIL, TC-ARC-012)
+V125: validate_new_product_bypassing_architecture_gate — new format without qname plan entry (FAIL, TC-ARC-012)
+V126: validate_file_outside_approved_qname_layout — file outside approved QName subdirs (FAIL, TC-ARC-012)
+V127: validate_type_outside_approved_qname_hierarchy — class not in QName hierarchy (WARN, TC-ARC-012)
 """
 from __future__ import annotations
 
@@ -40,7 +64,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V109) against a declaration.
+    """Run all governance validators (V1-V127) against a declaration.
 
     Returns a composite result dict:
       {
@@ -478,6 +502,83 @@ def run_all_governance_validators(
     except Exception:
         pass  # Non-blocking on import failure
 
+    # V111-V127 (TC-ARC-012/CQGA-014): Architecture QName validators
+    # These validators operate on individual product source files (not the declaration object).
+    # The runner iterates over changed_files and runs each file-based validator.
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_public_symbol_without_qname_authority as _v111,
+            validate_model_type_without_spec_authority as _v112,
+            validate_nested_concept_on_root_document as _v113,
+            validate_dumping_ground_or_catchall_file as _v117,
+            validate_sprint_history_identifier_in_source as _v118,
+            validate_promoted_code_changed_without_reopening as _v119,
+            validate_certification_without_architecture_proof as _v120,
+            validate_missing_public_documentation as _v121,
+            validate_ungoverned_code_marker as _v123,
+            validate_semantic_stub_constant_return as _v124,
+            validate_new_product_bypassing_architecture_gate as _v125,
+            validate_file_outside_approved_qname_layout as _v126,
+            validate_type_outside_approved_qname_hierarchy as _v127,
+        )
+
+        def _norm_ext4_file(r: dict) -> dict:
+            """Normalize ext4 per-file validator output to standard runner schema."""
+            passed = r.get("passed", True)
+            violations = r.get("violations", [])
+            vid = r.get("validator_id", "ext4_validator")
+            name = r.get("validator_name", "ext4_check")
+            # V118, V123, V127 are WARN-only; others block on new violations
+            warn_only = vid in ("V118", "V123", "V127")
+            return {
+                "validator": vid,
+                "result": "PASS" if passed else ("WARN" if warn_only else "FAIL"),
+                "blocks_sprint": (not passed) and (not warn_only),
+                "violations": violations,
+                "summary": f"{vid}: {'passed' if passed else str(len(violations)) + ' violation(s)'}",
+            }
+
+        # Context-level validators (run against declaration + repo)
+        results.append(_norm_ext4_file(_v119(declaration, repo_root)))
+        results.append(_norm_ext4_file(_v120(declaration, repo_root)))
+        results.append(_norm_ext4_file(_v125(declaration, repo_root)))
+        results.append(_norm_ext4_file(_v126(declaration, repo_root)))
+
+        # File-level validators (run against each changed product source file)
+        changed_files = declaration.get("changed_files", [])
+        _repo = repo_root or Path(".")
+        for cf in changed_files:
+            cf_path = _repo / cf if not Path(cf).is_absolute() else Path(cf)
+            if not (
+                ("src/python" in cf or "src/net" in cf)
+                and cf_path.suffix in (".py", ".cs")
+            ):
+                continue
+            try:
+                text = cf_path.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            file_str = str(cf_path)
+            for fn, vid_label in [
+                (_v111, "V111"), (_v112, "V112"), (_v113, "V113"),
+                (_v121, "V121"), (_v123, "V123"), (_v124, "V124"),
+                (_v127, "V127"),
+            ]:
+                try:
+                    r = fn(text, file_str)
+                    results.append(_norm_ext4_file(r))
+                except Exception:
+                    pass
+            # V117 and V118 take (source_text, file_path) too
+            for fn in (_v117, _v118):
+                try:
+                    r = fn(text, file_str)
+                    results.append(_norm_ext4_file(r))
+                except Exception:
+                    pass
+    except Exception:
+        pass  # Non-blocking on import failure
+
     # SAL format advisory (non-blocking, Lane E integration)
     try:
         from sal_format_advisory import build_advisory, _load_sal_facts
@@ -495,6 +596,34 @@ def run_all_governance_validators(
                 })
     except Exception:
         pass  # Advisory is non-blocking; silently skip on failure
+
+    # V130-V133 (PQLM-GOV-001, TC-VAL-002): Found-issue lifecycle + proactive LOC scan
+    try:
+        from governance_validators_found_issue import (  # noqa: PLC0415
+            validate_dotnet_loc_cap_static as _v130,
+            validate_found_issue_disposition as _v131,
+            validate_found_issue_escalation as _v132,
+            validate_found_issue_invalid_disposition as _v133,
+        )
+        results.append(_v130(declaration, repo_root))
+        results.append(_v131(declaration))
+        results.append(_v132(declaration))
+        results.append(_v133(declaration))
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V134-V136 (MA-SYSTEM-WIDE-2026-07-04, playful-swimming-stearns): Output escaping quality gates
+    try:
+        from governance_validators_output_quality import (  # noqa: PLC0415
+            validate_no_manual_json_escaping_in_dotnet as _v134,
+            validate_html_escaping_in_dotnet as _v135,
+            validate_html_escaping_in_python as _v136,
+        )
+        results.append(_v134(declaration, repo_root))
+        results.append(_v135(declaration, repo_root))
+        results.append(_v136(declaration, repo_root))
+    except Exception:
+        pass  # Non-blocking on import failure
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")

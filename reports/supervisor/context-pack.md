@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-07-02T22:03:30.821700
+# Generated: 2026-07-04T17:00:36.355854
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 3a1c85a5 |
+| Git HEAD | 96c27c4b |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
-| Latest sprint | R1233 |
-| Sprint ID | BULK-PROPERTIES-R1233-R1291... |
+| Latest sprint | unknown |
+| Sprint ID | honey-heal-20260704... |
 | Autonomous continue | True |
-| Iteration | 9/12 |
+| Iteration | 2/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 117 |
 | Ledger entries | 2444 total (901 governed) |

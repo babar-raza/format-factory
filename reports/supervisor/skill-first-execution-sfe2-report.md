@@ -11,7 +11,7 @@
 
 - **Policy path:** `docs/governance/skill-only-policy.yaml`
 - **Direct mutation rule:** blocked at declaration layer (V48 fires on RELEASE_GATE+architecture_only) and commit layer (pre-commit hook `.hooks/pre-commit-skill-guard`)
-- **Reuse-before-create:** enforced by `detect-duplicate-skills` (108 active skills checked, 0 duplicates after fixing 4 incorrect `command_file` refs)
+- **Reuse-before-create:** enforced by `detect-duplicate-skills` (117 active skills checked, 0 duplicates after fixing 4 incorrect `command_file` refs)
 - **Exception rule:** `.local/exceptions/*.yaml` (documented, bounded, expiring)
 
 ---
@@ -20,7 +20,7 @@
 
 | Component | Location | Status |
 |-----------|----------|--------|
-| Skill root | `.supervisor/skill-registry.yaml` | 111 total (108 active, 3 deprecated) |
+| Skill root | `.supervisor/skill-registry.yaml` | 120 total (117 active, 3 deprecated) |
 | Command root | `.claude/commands/` | 103 .md files |
 | Capability routes | `.supervisor/capability-routing-registry.yaml` | 30/30 ACTIVE |
 | Audit register | `reports/skill-audit/root-tools-audit-2026-07-01.yaml` | 202 classified |
@@ -33,8 +33,8 @@
 
 | Metric | Count | Notes |
 |--------|-------|-------|
-| Total registered skills | 111 | Up from 48 (SKILL-FIRST-001), 65 (Jun 25 sync) |
-| Active skills | 108 | |
+| Total registered skills | 120 | Up from 48 (SKILL-FIRST-001), 65 (Jun 25 sync), 111 (TC-SFE2-006) |
+| Active skills | 117 | |
 | Deprecated skills | 3 | add-analytics-function, check-mcp-status, decompose-monolithic-codec |
 | Duplicate skills | 0 | Verified; 4 incorrect command_file refs fixed |
 | Capability routes ACTIVE | 30/30 | 0 missing |
@@ -105,9 +105,16 @@ All 8 pilots completed during SKILL-FIRST-001 prior to this plan. Receipts confi
 
 - All 8 SKILL-FIRST-001 pilots verified PASS
 - All SKILL-FIRST-002 taskcards complete
-- 0 duplicate skills (108 active checked)
+- 0 duplicate skills (117 active checked)
 - 0 unbound tasks in plans/
 - SKILL-GAP-008 and SKILL-GAP-011 CLOSED
 - EP-002-GAP bounded by commit-time hook; structural limitation documented
 - Quality matrix refreshed to 67 skills graded
 - 202 tools/supervisor/ scripts audited and classified
+
+---
+
+> **CORRECTION (2026-07-02, TC-FPSH-001):** Skill counts updated from 111 total / 108 active to
+> 120 total / 117 active. The original report was written on 2026-07-01 when the registry had 111
+> skills; SRAR addendum (TC-SRAR-001/002/003, 2026-07-02) refreshed the inventory to 120 total /
+> 117 active. This correction aligns the capstone report with all other SKILL-FIRST-002 artifacts.

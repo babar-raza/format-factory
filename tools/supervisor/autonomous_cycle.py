@@ -874,6 +874,47 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _v54_err2:
         print(f"  WARNING: V54/V55 tracker update skipped (non-blocking): {_v54_err2}")
 
+    # Step 2e¼: Promotion integrity check (TC-CQGA-018 — PQLM-GOV-001)
+    # Non-blocking: detects api_baseline_hash changes on PROMOTED_STABLE entries.
+    try:
+        _ledger_path = repo_root / "registry" / "promotion-ledger.yaml"
+        if _ledger_path.is_file():
+            import yaml as _yaml
+            import hashlib as _hashlib
+            import json as _json
+            import sys as _sys
+            _ledger = _yaml.safe_load(_ledger_path.read_text(encoding="utf-8")) or {}
+            _reopened = []
+            for _entry in _ledger.get("entries", []):
+                if _entry.get("state") == "PROMOTED_STABLE" and _entry.get("api_baseline_hash"):
+                    _fmt = _entry.get("format_id", "")
+                    _lang = _entry.get("language", "")
+                    _stored_hash = _entry["api_baseline_hash"]
+                    # Recompute hash: import package and hash sorted __all__
+                    try:
+                        _pkg_path = repo_root / "src" / "python" / _fmt
+                        if _pkg_path.is_dir():
+                            if str(repo_root / "src" / "python") not in _sys.path:
+                                _sys.path.insert(0, str(repo_root / "src" / "python"))
+                            import importlib as _il
+                            _mod = _il.import_module(_fmt)
+                            _symbols = sorted(getattr(_mod, "__all__", []))
+                            _current_hash = _hashlib.sha256(_json.dumps(_symbols).encode()).hexdigest()
+                            if _current_hash != _stored_hash:
+                                _entry["state"] = "REOPENED"
+                                _reopened.append(f"{_fmt}/{_lang}")
+                    except Exception:
+                        pass
+            if _reopened:
+                _ledger_path.write_text(_yaml.dump(_ledger, default_flow_style=False), encoding="utf-8")
+                print(f"  WARN(PROMOTION_INTEGRITY_BREACH): {len(_reopened)} entries reopened: {_reopened}")
+            else:
+                print("  Promotion integrity: OK (no PROMOTED_STABLE entries or hashes match)")
+        else:
+            print("  Promotion ledger not found — integrity check skipped")
+    except Exception as _promo_err:
+        print(f"  WARNING: Promotion integrity check skipped (non-blocking): {_promo_err}")
+
     # Step 2e½: Source structure validator (spec-derived architecture governance)
     print("\n=== STEP 2e½: SOURCE STRUCTURE VALIDATOR ===")
     try:

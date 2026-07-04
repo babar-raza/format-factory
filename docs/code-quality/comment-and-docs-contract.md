@@ -65,8 +65,10 @@ Every product module MUST have a module docstring.
 
 ### 1.3 `__all__` Declaration (REQUIRED in all `__init__.py`)
 
-Every package `__init__.py` MUST declare `__all__` as an explicit list.
+Every package `__init__.py` MUST declare `__all__`. Two equivalent forms are accepted
+(authority: `docs/code-quality/architecture-contract.md §4`):
 
+**Form A — Static list literal (preferred for smaller packages):**
 ```python
 __all__ = [
     "FodsDocument",
@@ -81,8 +83,27 @@ __all__ = [
 ]
 ```
 
-**Prohibited:** `from .X import *` anywhere in product source.
-**Prohibited:** `__all__` defined as a dynamic comprehension over all names in the module.
+**Form B — Dynamic frozenset built from explicit sub-module imports (permitted for large packages):**
+```python
+from .csv_parser import __all__ as _parser_all
+from .csv_writer import __all__ as _writer_all
+from .tabular_document import __all__ as _doc_all
+
+__all__ = list(frozenset(_parser_all) | frozenset(_writer_all) | frozenset(_doc_all))
+```
+
+Form B is an **explicit** declaration: each constituent `__all__` must itself be a static
+list in its source module. The frozenset union is deterministic and governed; it is NOT a
+dynamic comprehension over arbitrary module attributes.
+
+**Prohibited in all cases:**
+- `from .X import *` anywhere in product source
+- `__all__` built from `dir()`, `globals()`, or string-filtering of module attributes
+- Implicit public API (no `__all__` declaration at all in `__init__.py`)
+
+**Reconciliation note (CQG-005 RESOLVED):** Prior to 2026-07-04, three authority documents
+disagreed on this policy. This §1.3 supersedes any prior wording and aligns with
+`architecture-contract.md §4` and `production-library-standard-v2.md §9`.
 
 ### 1.4 TODO / FIXME / HACK Markers
 

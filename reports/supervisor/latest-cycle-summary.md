@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: MA-2026-07-02-BULK-R1233-R1291
-Sprint: BULK-PROPERTIES-R1233-R1291
-Timestamp: 2026-07-02T22:00:27.615235
-Verdict: ACCEPTED
-Autonomous Continue: True
-Accepted: 20
-Rework: 0
+Run: honey-heal-20260704
+Sprint: honey-heal-20260704
+Timestamp: 2026-07-04T15:49:15.232156
+Verdict: ACCEPTED_WITH_REWORK
+Autonomous Continue: False
+Accepted: 4
+Rework: 2
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\honey-heal-20260704\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\honey-heal-20260704\combined-next-worker-prompt.md

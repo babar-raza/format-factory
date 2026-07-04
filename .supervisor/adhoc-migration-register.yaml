@@ -19,27 +19,29 @@ adhoc_migration_register:
   disposition_records:
     # --- QUARANTINED: One-time gap closers (gaps already closed) ---
     - path: tools/close_xcf_zst_gaps.py
-      disposition: QUARANTINED_PENDING_AUTHORITY
+      disposition: RETAINED_AS_INERT_HISTORICAL
       reason: >
         One-time gap closer for XCF/ZST format gaps. Gaps confirmed closed per MEMORY.md
-        2026-06-25 sprint. Script has no ongoing purpose; running again would be a no-op
-        or could create duplicate entries. Physical move deferred until user authorizes.
+        2026-06-25 sprint. Script has no ongoing purpose; inert in place. Retained for
+        traceability. Resolved 2026-07-02 (TC-FPSH-004, option A).
       verified_gaps_closed: true
       evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
 
     - path: tools/close_fods_fodt_ppm_gaps.py
-      disposition: QUARANTINED_PENDING_AUTHORITY
+      disposition: RETAINED_AS_INERT_HISTORICAL
       reason: >
         One-time gap closer for FODS/FODT/PPM format gaps. Gaps confirmed closed per
-        MEMORY.md 2026-06-25 sprint. No ongoing purpose. Physical move deferred.
+        MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
+        Resolved 2026-07-02 (TC-FPSH-004, option A).
       verified_gaps_closed: true
       evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
 
     - path: tools/close_comm_gaps.py
-      disposition: QUARANTINED_PENDING_AUTHORITY
+      disposition: RETAINED_AS_INERT_HISTORICAL
       reason: >
         One-time gap closer for communications format gaps. Gaps confirmed closed per
-        MEMORY.md 2026-06-25 sprint. No ongoing purpose. Physical move deferred.
+        MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
+        Resolved 2026-07-02 (TC-FPSH-004, option A).
       verified_gaps_closed: true
       evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
 
@@ -94,14 +96,16 @@ adhoc_migration_register:
         format discovery. Produces registry/cross-format-index.yaml.
 
   quarantine_action:
-    deferred: true
-    reason: >
-      Physical move of 3 QUARANTINED scripts to .local/quarantine/ requires user authorization
-      (per TC-SFE2-003 protocol). Scripts are inert (one-time only; gaps already closed).
-      Blast radius of leaving them in place: zero — they have no automated callers.
-    target_path: .local/quarantine/
-    requires_authority: true
-    scripts_to_move:
+    deferred: false
+    resolution_date: "2026-07-02"
+    resolution_taskcard: TC-FPSH-004
+    resolution_option: A
+    resolution_note: >
+      Original disposition QUARANTINED_PENDING_AUTHORITY resolved via option A
+      (RETAINED_AS_INERT_HISTORICAL). Scripts are inert one-time gap closers with
+      zero blast radius; retained in tools/ for traceability. Physical move deferred
+      in TC-SFE2-003 was resolved without move (no authority needed for option A).
+    scripts_retained_in_place:
       - tools/close_xcf_zst_gaps.py
       - tools/close_fods_fodt_ppm_gaps.py
       - tools/close_comm_gaps.py
@@ -109,7 +113,8 @@ adhoc_migration_register:
   acceptance_criteria:
     all_scripts_dispositioned: true
     total: 11
-    quarantined: 3
-    retained: 8
-    move_deferred: true
+    retained_as_inert_historical: 3
+    retained_as_governed_diagnostic: 8
+    quarantined_pending_authority: 0
+    move_deferred: false
     evidence_confirmed: true
