@@ -29,25 +29,8 @@ public sealed partial class FodsDocument
         XNamespace.Get("urn:format-factory:cell-style");
     private string? _activeSheet;
     private readonly Dictionary<(string sheet, int row, int col), string> _cellComments = new();
-    private readonly Dictionary<string, int> _sheetFreezeRows = new();
-    private readonly Dictionary<string, int> _sheetFreezeColumns = new();
-    private readonly Dictionary<string, int> _sheetZoomLevel = new();
-    private readonly Dictionary<string, string> _sheetPrintArea = new();
-    private readonly Dictionary<string, bool> _sheetRightToLeft = new();
-    private readonly Dictionary<string, bool> _sheetShowGrid = new();
-    private readonly Dictionary<string, bool> _sheetShowHeaders = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellBorderStyles = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellFontStyles = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellHAlign = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellVAlign = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellIndentLevel = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellRotationAngle = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellMergeInfo = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellMergeSpan = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellShrinkToFit = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellUnderline = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellStrikethrough = new();
-    private readonly Dictionary<(string Sheet, int Row, int Col), bool> _cellProtection = new();
+    private readonly Dictionary<string, string> _sheetProtectionPasswords = new();
+    private readonly Dictionary<string, string> _sheetVisibility = new();
     private readonly Dictionary<(string sheet, int row), double> _rowHeights = new();
     private readonly Dictionary<string, string> _namedRanges = new();
 

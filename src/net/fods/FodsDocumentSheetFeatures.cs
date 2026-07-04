@@ -124,35 +124,35 @@ public sealed partial class FodsDocument
     // Freeze panes (R300, R303, R364)
     // -------------------------------------------------------------------------
 
-    private readonly Dictionary<string, (int Rows, int Cols)> _freezePanes = new();
-
     /// <summary>R300: Set a freeze pane at the specified row and column.</summary>
+    // GI-FODS-NET-002: delegates to XML-backed SetSheetFreezeRows/SetSheetFreezeColumns.
     public void SetFreezePane(string sheetName, int rows, int cols)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (rows < 0) throw new ArgumentOutOfRangeException(nameof(rows));
         if (cols < 0) throw new ArgumentOutOfRangeException(nameof(cols));
-        _ = GetSheetByName(sheetName)
-            ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        _freezePanes[sheetName] = (rows, cols);
+        SetSheetFreezeRows(sheetName, rows);
+        SetSheetFreezeColumns(sheetName, cols);
     }
 
     /// <summary>R300: Convenience overload — freeze the specified number of rows/cols.</summary>
     public void FreezePanes(string sheetName, int rows, int cols) => SetFreezePane(sheetName, rows, cols);
 
     /// <summary>R300: Return the number of frozen rows on the sheet (0 if none).</summary>
+    // GI-FODS-NET-002: delegates to XML-backed GetSheetFreezeRows.
     public int GetFreezePaneRow(string sheetName)
     {
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
-        return _freezePanes.TryGetValue(sheetName, out var fp) ? fp.Rows : 0;
+        return GetSheetFreezeRows(sheetName);
     }
 
     /// <summary>R300: Return the number of frozen columns on the sheet (0 if none).</summary>
+    // GI-FODS-NET-002: delegates to XML-backed GetSheetFreezeColumns.
     public int GetFreezePaneColumn(string sheetName)
     {
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
-        return _freezePanes.TryGetValue(sheetName, out var fp) ? fp.Cols : 0;
+        return GetSheetFreezeColumns(sheetName);
     }
 
     /// <summary>R303: Return the frozen row count.</summary>
@@ -165,7 +165,7 @@ public sealed partial class FodsDocument
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         _ = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return _freezePanes.TryGetValue(sheetName, out var fp) ? fp.Rows : 0;
+        return GetSheetFreezeRows(sheetName);
     }
 
     /// <summary>R364: Return number of frozen columns for the named sheet.</summary>
@@ -175,7 +175,7 @@ public sealed partial class FodsDocument
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         _ = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return _freezePanes.TryGetValue(sheetName, out var fp) ? fp.Cols : 0;
+        return GetSheetFreezeColumns(sheetName);
     }
 
     /// <summary>R364: Set freeze panes (alias for SetFreezePane).</summary>
@@ -185,6 +185,7 @@ public sealed partial class FodsDocument
     // Auto-filter / filter (R298, R303, R313, R343)
     // -------------------------------------------------------------------------
 
+    // COLLECTION_STUB: ODF target=table:database-range. XML write deferred to feature sprint.
     private readonly Dictionary<string, List<(string Range, string Column)>> _filters = new();
     private readonly List<string> _allFilterRanges = new();
 
@@ -265,7 +266,6 @@ public sealed partial class FodsDocument
     // -------------------------------------------------------------------------
 
     private readonly Dictionary<string, List<int>> _pageBreaks = new();
-    private readonly Dictionary<string, string> _printAreas = new();
 
     /// <summary>R327: Set a page break at the specified row on the sheet.</summary>
     public void SetPageBreak(string sheetName, int row)
@@ -284,18 +284,20 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R341: Return the print area for the named sheet (empty if not set).</summary>
+    // GI-FODS-NET-002: delegates to XML-backed GetSheetPrintArea.
     public string GetPrintArea(string sheetName)
     {
         if (string.IsNullOrWhiteSpace(sheetName)) return string.Empty;
-        return _printAreas.TryGetValue(sheetName, out var area) ? area : string.Empty;
+        return GetSheetPrintArea(sheetName);
     }
 
     /// <summary>R341: Set the print area for the named sheet.</summary>
+    // GI-FODS-NET-002: delegates to XML-backed SetSheetPrintArea.
     public void SetPrintArea(string sheetName, string area)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
-        _printAreas[sheetName] = area ?? string.Empty;
+        SetSheetPrintArea(sheetName, area ?? string.Empty);
     }
 
     /// <summary>R356: Insert a horizontal page break above the given row.</summary>
@@ -321,12 +323,14 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R359: Return the count of sheets that have a print area defined.</summary>
-    public int GetPrintAreaCount() => _printAreas.Count;
+    // STUB: count is not derivable from XML without sheet enumeration; returns 0 until feature sprint.
+    public int GetPrintAreaCount() => 0;
 
     // -------------------------------------------------------------------------
     // Grouping (R333, R341)
     // -------------------------------------------------------------------------
 
+    // COLLECTION_STUB: ODF target=table:row-group. XML write deferred to feature sprint.
     private readonly Dictionary<string, List<(string Range, string GroupType)>> _groups = new();
 
     /// <summary>R341: Add a group by start/end row.</summary>
@@ -364,7 +368,6 @@ public sealed partial class FodsDocument
     // -------------------------------------------------------------------------
 
     private readonly Dictionary<string, bool> _hiddenSheets = new();
-    private readonly Dictionary<string, string> _tabColors = new();
 
     /// <summary>R367: Return whether the named sheet is hidden.</summary>
     public bool GetSheetHidden(string sheetName)
@@ -387,23 +390,28 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R368: Return the tab color for the named sheet, or empty string if none set.</summary>
+    // GI-FODS-NET-002: reads ff-ext:tab-color attribute on table:table element.
     public string GetTabColor(string sheetName)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
-        _ = GetSheetByName(sheetName)
+        var sheet = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        return _tabColors.TryGetValue(sheetName, out var c) ? c : string.Empty;
+        return sheet.Element.Attribute(NsFfExt + "tab-color")?.Value ?? string.Empty;
     }
 
     /// <summary>R368: Set the tab color for the named sheet.</summary>
+    // GI-FODS-NET-002: writes ff-ext:tab-color attribute on table:table element.
     public void SetTabColor(string sheetName, string color)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
-        _ = GetSheetByName(sheetName)
+        var sheet = GetSheetByName(sheetName)
             ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        _tabColors[sheetName] = color ?? string.Empty;
+        if (string.IsNullOrEmpty(color))
+            sheet.Element.Attribute(NsFfExt + "tab-color")?.Remove();
+        else
+            sheet.Element.SetAttributeValue(NsFfExt + "tab-color", color);
     }
 
     /// <summary>R368: Return the sheet tab color (alias for GetTabColor).</summary>

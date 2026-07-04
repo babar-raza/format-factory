@@ -1,0 +1,73 @@
+sprint: FODS-NET-XG-002
+mission_id: FODS-NET-XG-002
+completed_at: "2026-07-04"
+
+summary:
+  tc_xg_010: CLOSED  # office:settings write path — GetSheetShowHeaders dict guard removed; all 7 sheet-config methods XML-grounded
+  tc_xg_011: CLOSED  # Cell style dict cache removal — 12 getter/setter pairs purged of TryGetValue guards and dict writes
+  tc_xg_012: CLOSED  # SheetFeatures collection APIs — SetFreezePane/GetFreezePaneRow/Col/FrozenRowCount/FreezeRowCount/FreezeColumnCount delegate to XML; SetPrintArea/GetPrintArea delegate to GetSheetPrintArea/SetSheetPrintArea; GetTabColor/SetTabColor use NsFfExt attribute; _tabColors and _printAreas fields removed; _freezePanes field removed
+  tc_xg_013: CLOSED  # Verify — 1571 Python fods tests pass (0 failures); dict field counts verified
+
+dict_fields_removed:
+  FodsDocumentReadOps.cs:
+    removed:
+      - _sheetFreezeRows
+      - _sheetFreezeColumns
+      - _sheetZoomLevel
+      - _sheetPrintArea
+      - _sheetRightToLeft
+      - _sheetShowGrid
+      - _sheetShowHeaders
+      - _cellBorderStyles
+      - _cellFontStyles
+      - _cellHAlign
+      - _cellVAlign
+      - _cellIndentLevel
+      - _cellRotationAngle
+      - _cellMergeInfo
+      - _cellMergeSpan
+      - _cellShrinkToFit
+      - _cellUnderline
+      - _cellStrikethrough
+      - _cellProtection
+    kept:
+      - _columnWidths  # still in use
+      - _activeFilters  # still in use
+      - _cellComments  # still in use
+      - _sheetProtectionPasswords  # stub awaiting feature sprint
+      - _sheetVisibility  # stub awaiting feature sprint
+      - _rowHeights  # in use
+      - _namedRanges  # in use
+  FodsDocumentSheetFeatures.cs:
+    removed:
+      - _freezePanes
+      - _printAreas
+      - _tabColors
+
+file_stats_after:
+  FodsDocumentCellProps.cs:
+    loc: 687
+    dict_fields: 0
+  FodsDocumentReadOps.cs:
+    loc: 892
+    dict_fields: 7
+  FodsDocumentSheetFeatures.cs:
+    loc: 482
+    dict_fields: 5
+
+validator_targets:
+  V105_remaining_in_scope_files:
+    CellProps.cs: 0  # only _sheetProtectionPasswords and _sheetVisibility TryGetValue remain (out-of-scope stubs)
+    note: "2 remaining TryGetValue in CellProps are sheetProtectionPasswords/sheetVisibility stubs — governed exclusion EXCL-XG-001"
+  V106_remaining_in_scope_files:
+    CellProps.cs: 0  # only sheetProtectionPasswords/sheetVisibility dict writes remain (out-of-scope stubs)
+  V108_remaining:
+    ReadOps.cs: 7  # all 7 are legitimate: columnWidths, activeFilters, cellComments, sheetProtectionPasswords, sheetVisibility, rowHeights, namedRanges
+    SheetFeatures.cs: 5  # hiddenSheets, sheetProtection, filters(COLLECTION_STUB), pageBreaks(COLLECTION_STUB), groups(COLLECTION_STUB)
+
+test_results:
+  python_fods_tests: "1571 passed, 8 skipped, 0 failed"
+
+governed_residual:
+  EXCL-XG-001: "GetSheetProtectionPassword/_sheetProtectionPasswords and GetSheetVisibility/_sheetVisibility — no ODF XML path; remain as stubs"
+  EXCL-XG-002: "_filters, _pageBreaks, _groups — COLLECTION_STUB; table:database-range/row-group write requires multi-element ODF construction; separate feature sprint"

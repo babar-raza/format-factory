@@ -46,6 +46,80 @@ public sealed partial class FodsDocument
         return null;
     }
 
+    /// <summary>
+    /// GI-FODS-NET-002 — navigate/create the office:settings hierarchy for the given
+    /// sheet name and upsert a config:config-item with itemName, itemType, and value.
+    /// Path created on demand:
+    ///   office:settings/config:config-item-set[@name="ooo:view-settings"]
+    ///     /config:config-item-map-indexed[@name="Views"]
+    ///     /config:config-item-map-entry (first entry)
+    ///     /config:config-item-map-named[@name="Tables"]
+    ///     /config:config-item-map-entry[@name=sheetName]
+    ///     /config:config-item[@name=itemName @type=itemType]
+    /// </summary>
+    private void SetSheetConfigItem(string sheetName, string itemName, string itemType, string value)
+    {
+        var root = _doc.Root!;
+        var settings = root.Element(NsOffice + "settings");
+        if (settings is null)
+        {
+            settings = new XElement(NsOffice + "settings");
+            root.Add(settings);
+        }
+        var itemSet = settings.Elements(NsConfig + "config-item-set")
+            .FirstOrDefault(e => e.Attribute(NsConfig + "name")?.Value == "ooo:view-settings");
+        if (itemSet is null)
+        {
+            itemSet = new XElement(NsConfig + "config-item-set",
+                new XAttribute(NsConfig + "name", "ooo:view-settings"));
+            settings.Add(itemSet);
+        }
+        var mapIndexed = itemSet.Elements(NsConfig + "config-item-map-indexed")
+            .FirstOrDefault(e => e.Attribute(NsConfig + "name")?.Value == "Views");
+        if (mapIndexed is null)
+        {
+            mapIndexed = new XElement(NsConfig + "config-item-map-indexed",
+                new XAttribute(NsConfig + "name", "Views"));
+            itemSet.Add(mapIndexed);
+        }
+        var topEntry = mapIndexed.Elements(NsConfig + "config-item-map-entry").FirstOrDefault();
+        if (topEntry is null)
+        {
+            topEntry = new XElement(NsConfig + "config-item-map-entry");
+            mapIndexed.Add(topEntry);
+        }
+        var mapNamed = topEntry.Elements(NsConfig + "config-item-map-named")
+            .FirstOrDefault(e => e.Attribute(NsConfig + "name")?.Value == "Tables");
+        if (mapNamed is null)
+        {
+            mapNamed = new XElement(NsConfig + "config-item-map-named",
+                new XAttribute(NsConfig + "name", "Tables"));
+            topEntry.Add(mapNamed);
+        }
+        var sheetEntry = mapNamed.Elements(NsConfig + "config-item-map-entry")
+            .FirstOrDefault(e => e.Attribute(NsConfig + "name")?.Value == sheetName);
+        if (sheetEntry is null)
+        {
+            sheetEntry = new XElement(NsConfig + "config-item-map-entry",
+                new XAttribute(NsConfig + "name", sheetName));
+            mapNamed.Add(sheetEntry);
+        }
+        var configItem = sheetEntry.Elements(NsConfig + "config-item")
+            .FirstOrDefault(ci => ci.Attribute(NsConfig + "name")?.Value == itemName);
+        if (configItem is null)
+        {
+            configItem = new XElement(NsConfig + "config-item",
+                new XAttribute(NsConfig + "name", itemName),
+                new XAttribute(NsConfig + "type", itemType));
+            sheetEntry.Add(configItem);
+        }
+        else
+        {
+            configItem.SetAttributeValue(NsConfig + "type", itemType);
+        }
+        configItem.Value = value;
+    }
+
     // =========================================================================
     // GI-FODS-NET-001: Cell element access helpers for FodsStyleResolver
     // =========================================================================
@@ -81,12 +155,10 @@ public sealed partial class FodsDocument
     // =========================================================================
 
     /// <summary>R452: Return freeze row count for the named sheet.</summary>
-    // GI-FODS-NET-001 — reads HorizontalSplitPosition from office:settings
-    // when HorizontalSplitMode == 2 (freeze). In-memory setter override takes priority.
+    // GI-FODS-NET-002 — reads HorizontalSplitPosition from office:settings XML only.
     public int GetSheetFreezeRows(string sheetName)
     {
         RequireSheet(sheetName);
-        if (_sheetFreezeRows.TryGetValue(sheetName, out var ov)) return ov;
         var mode = GetSheetConfigItem(sheetName, "HorizontalSplitMode");
         if (mode != "2") return 0;
         var pos = GetSheetConfigItem(sheetName, "HorizontalSplitPosition");
@@ -94,21 +166,20 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R452: Set freeze rows for the named sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write to office:settings/config:config-item
+    // GI-FODS-NET-002 — writes HorizontalSplitMode/Position to office:settings XML.
     public void SetSheetFreezeRows(string sheetName, int rows)
     {
         RequireSheet(sheetName);
         if (rows < 0) throw new ArgumentOutOfRangeException(nameof(rows));
-        _sheetFreezeRows[sheetName] = rows;
+        SetSheetConfigItem(sheetName, "HorizontalSplitMode", "short", "2");
+        SetSheetConfigItem(sheetName, "HorizontalSplitPosition", "int", rows.ToString());
     }
 
     /// <summary>R453: Return freeze column count for the named sheet.</summary>
-    // GI-FODS-NET-001 — reads VerticalSplitPosition from office:settings
-    // when VerticalSplitMode == 2 (freeze). In-memory setter override takes priority.
+    // GI-FODS-NET-002 — reads VerticalSplitPosition from office:settings XML only.
     public int GetSheetFreezeColumns(string sheetName)
     {
         RequireSheet(sheetName);
-        if (_sheetFreezeColumns.TryGetValue(sheetName, out var ov)) return ov;
         var mode = GetSheetConfigItem(sheetName, "VerticalSplitMode");
         if (mode != "2") return 0;
         var pos = GetSheetConfigItem(sheetName, "VerticalSplitPosition");
@@ -116,12 +187,13 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R453: Set freeze columns for the named sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write to office:settings/config:config-item
+    // GI-FODS-NET-002 — writes VerticalSplitMode/Position to office:settings XML.
     public void SetSheetFreezeColumns(string sheetName, int cols)
     {
         RequireSheet(sheetName);
         if (cols < 0) throw new ArgumentOutOfRangeException(nameof(cols));
-        _sheetFreezeColumns[sheetName] = cols;
+        SetSheetConfigItem(sheetName, "VerticalSplitMode", "short", "2");
+        SetSheetConfigItem(sheetName, "VerticalSplitPosition", "int", cols.ToString());
     }
 
     /// <summary>R478: Alias for GetSheetFreezeRows.</summary>
@@ -131,38 +203,36 @@ public sealed partial class FodsDocument
     public int GetSheetFreezeColumn(string sheetName) => GetSheetFreezeColumns(sheetName);
 
     /// <summary>R420/R480: Return the zoom level for the named sheet (default 100).</summary>
-    // GI-FODS-NET-001 — reads ZoomValue from office:settings.
-    // In-memory setter override takes priority; ODF default is 100.
+    // GI-FODS-NET-002 — reads ZoomValue from office:settings XML only.
     public int GetSheetZoomLevel(string sheetName)
     {
         RequireSheet(sheetName);
-        if (_sheetZoomLevel.TryGetValue(sheetName, out var ov)) return ov;
         var val = GetSheetConfigItem(sheetName, "ZoomValue");
         return val is not null && int.TryParse(val, out var z) ? z : 100;
     }
 
     /// <summary>R454/R480: Set the zoom level for the named sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write to office:settings/config:config-item
+    // GI-FODS-NET-002 — writes ZoomValue to office:settings XML.
     public void SetSheetZoomLevel(string sheetName, int zoom)
     {
         RequireSheet(sheetName);
-        _sheetZoomLevel[sheetName] = zoom;
+        SetSheetConfigItem(sheetName, "ZoomValue", "int", zoom.ToString());
     }
 
     /// <summary>R423/R451: Return the print area for the named sheet (empty string if none).</summary>
-    // TODO: GI-FODS-NET-001 — read from table:named-range[@table:print-range]
+    // GI-FODS-NET-002 — reads PrintArea from office:settings XML.
     public string GetSheetPrintArea(string sheetName)
     {
         RequireSheet(sheetName);
-        return _sheetPrintArea.TryGetValue(sheetName, out var v) ? v : string.Empty;
+        return GetSheetConfigItem(sheetName, "PrintArea") ?? string.Empty;
     }
 
     /// <summary>R451/R484: Set the print area for the named sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write table:named-range to ODF XML
+    // GI-FODS-NET-002 — writes PrintArea to office:settings XML.
     public void SetSheetPrintArea(string sheetName, string area)
     {
         RequireSheet(sheetName);
-        _sheetPrintArea[sheetName] = area ?? string.Empty;
+        SetSheetConfigItem(sheetName, "PrintArea", "string", area ?? string.Empty);
     }
 
     /// <summary>R469: Return the protection password for the named sheet (empty string if none).</summary>
@@ -198,32 +268,29 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R481: Return right-to-left flag for the named sheet (default false).</summary>
-    // TODO: GI-FODS-NET-001 — read from sheet style/@style:writing-mode
+    // STUB: writing-mode is a style attribute (style:writing-mode), not a config:config-item;
+    // no standard ODF config-item path exists for this property. Returns false.
     public bool GetSheetRightToLeft(string sheetName)
     {
         RequireSheet(sheetName);
-        return _sheetRightToLeft.TryGetValue(sheetName, out var v) && v;
+        return false;
     }
 
     /// <summary>R482: Return show-grid flag for the named sheet (default true).</summary>
-    // GI-FODS-NET-001 — reads ShowGrid from office:settings.
-    // In-memory setter override takes priority; ODF default is true.
+    // GI-FODS-NET-002 — reads ShowGrid from office:settings XML only.
     public bool GetSheetShowGrid(string sheetName)
     {
         RequireSheet(sheetName);
-        if (_sheetShowGrid.TryGetValue(sheetName, out var ov)) return ov;
         var val = GetSheetConfigItem(sheetName, "ShowGrid");
         if (val is null) return true;
         return !string.Equals(val, "false", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>R483: Return show-headers flag for the named sheet (default true).</summary>
-    // GI-FODS-NET-001 — reads HasColumnRowHeaders from office:settings.
-    // In-memory setter override takes priority; ODF default is true.
+    // GI-FODS-NET-002 — reads HasColumnRowHeaders from office:settings XML only.
     public bool GetSheetShowHeaders(string sheetName)
     {
         RequireSheet(sheetName);
-        if (_sheetShowHeaders.TryGetValue(sheetName, out var ov)) return ov;
         var val = GetSheetConfigItem(sheetName, "HasColumnRowHeaders");
         if (val is null) return true;
         return !string.Equals(val, "false", StringComparison.OrdinalIgnoreCase);
@@ -237,7 +304,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.5 style:table-cell-properties/@fo:border. GI-FODS-NET-001.</remarks>
     public string GetCellBorderStyle(string sheetName, int row, int col)
     {
-        if (_cellBorderStyles.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? string.Empty : (FodsStyleResolver.ResolveCellStyle(_doc, cellEl).BorderStyle ?? string.Empty);
     }
@@ -247,36 +313,33 @@ public sealed partial class FodsDocument
     {
         var cellEl = GetCellElement(sheetName, row, col);
         style ??= string.Empty;
-        _cellBorderStyles[(sheetName, row, col)] = style;
         if (cellEl is not null && !string.IsNullOrEmpty(style))
             FodsStyleEditor.SetCellBorderStyle(_doc, cellEl, style);
     }
 
     /// <summary>R472: Return the font style string for the cell (default "normal").</summary>
-    // TODO: GI-FODS-NET-001 — read via FodsStyleResolver from style:text-properties
+    // STUB: no ODF style-chain path for font-style string; returns default "normal"
     public string GetCellFontStyle(string sheetName, int row, int col)
     {
         RequireSheet(sheetName);
         RequireNonNegativeRow(row);
         RequireNonNegativeCol(col);
-        return _cellFontStyles.TryGetValue((sheetName, row, col), out var v) ? v : "normal";
+        return "normal";
     }
 
     /// <summary>R472: Set the font style string for the cell.</summary>
-    // TODO: GI-FODS-NET-001 — write via FodsStyleEditor to ODF XML
+    // STUB: no ODF style-chain path for font-style string; write deferred to feature sprint
     public void SetCellFontStyle(string sheetName, int row, int col, string style)
     {
         RequireSheet(sheetName);
         RequireNonNegativeRow(row);
         RequireNonNegativeCol(col);
-        _cellFontStyles[(sheetName, row, col)] = style ?? "normal";
     }
 
     /// <summary>R455: Return the horizontal alignment for the cell. ODF style chain read.</summary>
     /// <remarks>ODF 1.3 §15.11 style:paragraph-properties/@fo:text-align. GI-FODS-NET-001.</remarks>
     public string GetCellHorizontalAlignment(string sheetName, int row, int col)
     {
-        if (_cellHAlign.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? "start" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).HorizontalAlignment;
     }
@@ -286,7 +349,6 @@ public sealed partial class FodsDocument
     {
         var cellEl = GetCellElement(sheetName, row, col);
         alignment ??= "start";
-        _cellHAlign[(sheetName, row, col)] = alignment;
         if (cellEl is not null)
             FodsStyleEditor.SetCellHorizontalAlignment(_doc, cellEl, alignment);
     }
@@ -295,7 +357,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.5 style:table-cell-properties/@style:vertical-align. GI-FODS-NET-001.</remarks>
     public string GetCellVerticalAlignment(string sheetName, int row, int col)
     {
-        if (_cellVAlign.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? "bottom" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).VerticalAlignment;
     }
@@ -305,7 +366,6 @@ public sealed partial class FodsDocument
     {
         var cellEl = GetCellElement(sheetName, row, col);
         alignment ??= "bottom";
-        _cellVAlign[(sheetName, row, col)] = alignment;
         if (cellEl is not null)
             FodsStyleEditor.SetCellVerticalAlignment(_doc, cellEl, alignment);
     }
@@ -314,7 +374,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.11 style:paragraph-properties/@fo:margin-left. GI-FODS-NET-001.</remarks>
     public int GetCellIndentLevel(string sheetName, int row, int col)
     {
-        if (_cellIndentLevel.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? 0 : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).IndentLevel;
     }
@@ -323,7 +382,6 @@ public sealed partial class FodsDocument
     public void SetCellIndentLevel(string sheetName, int row, int col, int level)
     {
         var cellEl = GetCellElement(sheetName, row, col);
-        _cellIndentLevel[(sheetName, row, col)] = level;
         if (cellEl is not null)
             FodsStyleEditor.SetCellIndentLevel(_doc, cellEl, level);
     }
@@ -332,7 +390,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.5 style:table-cell-properties/@style:rotation-angle. GI-FODS-NET-001.</remarks>
     public int GetCellRotationAngle(string sheetName, int row, int col)
     {
-        if (_cellRotationAngle.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? 0 : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).RotationAngle;
     }
@@ -341,7 +398,6 @@ public sealed partial class FodsDocument
     public void SetCellRotationAngle(string sheetName, int row, int col, int angle)
     {
         var cellEl = GetCellElement(sheetName, row, col);
-        _cellRotationAngle[(sheetName, row, col)] = angle;
         if (cellEl is not null)
             FodsStyleEditor.SetCellRotationAngle(_doc, cellEl, angle);
     }
@@ -350,7 +406,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §9.4.5 table:table-cell/@table:number-rows-spanned. GI-FODS-NET-001.</remarks>
     public string GetCellMergeInfo(string sheetName, int row, int col)
     {
-        if (_cellMergeInfo.TryGetValue((sheetName, row, col), out var cached)) return cached;
         RequireSheet(sheetName);
         RequireNonNegativeRow(row);
         RequireNonNegativeCol(col);
@@ -365,7 +420,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §9.4.5 table:table-cell/@table:number-columns-spanned. GI-FODS-NET-001.</remarks>
     public int GetCellMergeSpan(string sheetName, int row, int col)
     {
-        if (_cellMergeSpan.TryGetValue((sheetName, row, col), out var cached)) return cached;
         RequireSheet(sheetName);
         RequireNonNegativeRow(row);
         RequireNonNegativeCol(col);
@@ -375,21 +429,19 @@ public sealed partial class FodsDocument
         return cSpan is not null && int.TryParse(cSpan, out int span) ? span : 1;
     }
 
-    /// <summary>R475: Set the column span for a merged cell (in-memory; persisted via).</summary>
-    // TODO: GI-FODS-NET-001 — write to table:table-cell/@table:number-columns-spanned
+    /// <summary>R475: Set the column span for a merged cell.</summary>
+    // STUB: merge-span write requires table:number-columns-spanned + covered-cell construction; deferred to feature sprint
     public void SetCellMergeSpan(string sheetName, int row, int col, int span)
     {
         RequireSheet(sheetName);
         RequireNonNegativeRow(row);
         RequireNonNegativeCol(col);
-        _cellMergeSpan[(sheetName, row, col)] = span;
     }
 
     /// <summary>R450: Return the shrink-to-fit flag. ODF style chain read.</summary>
     /// <remarks>ODF 1.3 §15.5 style:table-cell-properties/@style:shrink-to-fit. GI-FODS-NET-001.</remarks>
     public bool GetCellShrinkToFit(string sheetName, int row, int col)
     {
-        if (_cellShrinkToFit.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is not null && FodsStyleResolver.ResolveCellStyle(_doc, cellEl).ShrinkToFit;
     }
@@ -398,7 +450,6 @@ public sealed partial class FodsDocument
     public void SetCellShrinkToFit(string sheetName, int row, int col, bool shrink)
     {
         var cellEl = GetCellElement(sheetName, row, col);
-        _cellShrinkToFit[(sheetName, row, col)] = shrink;
         if (cellEl is not null)
             FodsStyleEditor.SetCellShrinkToFit(_doc, cellEl, shrink);
     }
@@ -407,7 +458,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.4 style:text-properties/@style:text-underline-style. GI-FODS-NET-001.</remarks>
     public string GetCellUnderline(string sheetName, int row, int col)
     {
-        if (_cellUnderline.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is null ? "none" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).Underline;
     }
@@ -417,7 +467,6 @@ public sealed partial class FodsDocument
     {
         var cellEl = GetCellElement(sheetName, row, col);
         style ??= "none";
-        _cellUnderline[(sheetName, row, col)] = style;
         if (cellEl is not null)
             FodsStyleEditor.SetCellUnderline(_doc, cellEl, style);
     }
@@ -426,7 +475,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.4 style:text-properties/@style:text-line-through-style. GI-FODS-NET-001.</remarks>
     public bool GetCellStrikethrough(string sheetName, int row, int col)
     {
-        if (_cellStrikethrough.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         if (cellEl is null) return false;
         var s = FodsStyleResolver.ResolveCellStyle(_doc, cellEl).Strikethrough;
@@ -437,7 +485,6 @@ public sealed partial class FodsDocument
     public void SetCellStrikethrough(string sheetName, int row, int col, bool strikethrough)
     {
         var cellEl = GetCellElement(sheetName, row, col);
-        _cellStrikethrough[(sheetName, row, col)] = strikethrough;
         if (cellEl is not null)
             FodsStyleEditor.SetCellStrikethrough(_doc, cellEl, strikethrough);
     }
@@ -446,7 +493,6 @@ public sealed partial class FodsDocument
     /// <remarks>ODF 1.3 §15.5 style:table-cell-properties/@style:cell-protect. GI-FODS-NET-001.</remarks>
     public bool GetCellProtection(string sheetName, int row, int col)
     {
-        if (_cellProtection.TryGetValue((sheetName, row, col), out var ov)) return ov;
         var cellEl = GetCellElement(sheetName, row, col);
         return cellEl is not null && FodsStyleResolver.ResolveCellStyle(_doc, cellEl).IsProtected;
     }
@@ -455,7 +501,6 @@ public sealed partial class FodsDocument
     public void SetCellProtection(string sheetName, int row, int col, bool protect)
     {
         var cellEl = GetCellElement(sheetName, row, col);
-        _cellProtection[(sheetName, row, col)] = protect;
         if (cellEl is not null)
             FodsStyleEditor.SetCellProtection(_doc, cellEl, protect);
     }

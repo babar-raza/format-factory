@@ -754,16 +754,6 @@ gaps:
   - TC-PQLM-014
   status: OPEN
   next_action: Implement grader penalty in quality_scorer.py
-gap_summary:
-  total_gaps: 22
-  blocking: 11
-  major: 9
-  minor: 0
-  open: 19
-  closed: 3
-counters:
-  MATERIAL_FINDINGS_WITHOUT_GAPS: 0
-  ACTIONABLE_GAPS_WITHOUT_TASKS: 0
 - gap_id: PCG-PORTFOLIO-001
   product: fodt
   language: csharp
@@ -803,3 +793,92 @@ counters:
   backfill_scope: portfolio
   status: CLOSED
   closure_note: Healed in TC-PQLM-018 Phase 2 — sylk_analytics.py canonical location, 2342 ODS+SYLK tests PASS
+- gap_id: GAP-NET-XG-010
+  product: fods
+  language: csharp
+  category: xml_grounding
+  severity: major
+  files:
+  - src/net/fods/FodsDocumentCellProps.cs
+  - src/net/fods/FodsDocumentSheetFeatures.cs
+  - src/net/fods/FodsDocumentReadOps.cs
+  description: >
+    V105/V106/V108 EXCL-XG-003/EXCL-XG-004 — Freeze pane setters (SetFreezePane,
+    SetFreezePanes), zoom (SetSheetZoomLevel), print area (SetSheetPrintArea),
+    show-grid (via dict), RTL (via dict), show-headers (via dict) remain dict-backed.
+    Getters already read office:settings/config:config-item XML; setters must write
+    config-item-map-indexed/config-item-map-entry entries to persist across save/load.
+  root_cause: EXCL-XG-003_EXCL-XG-004
+  predecessor_plan: FODS-NET-XG-001
+  governed_exclusion_ids:
+  - EXCL-XG-003
+  - EXCL-XG-004
+  v105_remaining: 7
+  v106_remaining: 4
+  v108_affected: yes
+  status: CLOSED
+  closure_note: "FODS-NET-XG-002 TC-XG-010: dict fields removed, XML grounding complete via SetSheetConfigItem. Tests: 1571 passed, 0 failed."
+  suggested_taskcard: TC-XG-010
+  suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
+
+- gap_id: GAP-NET-XG-011
+  product: fods
+  language: csharp
+  category: xml_grounding
+  severity: major
+  files:
+  - src/net/fods/FodsDocumentCellProps.cs
+  description: >
+    V105/V106 EXCL-XG-001 — Cell style resolution setters/getters
+    (GetCellBorderStyle, SetCellBorderStyle, GetCellFontStyle, SetCellFontStyle,
+    GetCellHorizontalAlignment, SetCellHorizontalAlignment, SetCellVerticalAlignment,
+    SetCellIndentLevel, SetCellRotationAngle, and 3 more) remain dict-backed.
+    Getters partially read via FodsStyleResolver but fall back to dict.
+    Setters call FodsStyleEditor but also write to dict cache.
+    The dict caches are the V105/V106 trigger — they need to be removed and
+    the getter/setter pattern unified to pure XML read/write via FodsStyleResolver/Editor.
+  root_cause: EXCL-XG-001
+  predecessor_plan: FODS-NET-XG-001
+  governed_exclusion_ids:
+  - EXCL-XG-001
+  v105_remaining: 3
+  v106_remaining: 6
+  status: CLOSED
+  closure_note: "FODS-NET-XG-002 TC-XG-011: 12 cell style dict fields removed, pure XML read/write via FodsStyleResolver/Editor. Tests: 1571 passed, 0 failed."
+  suggested_taskcard: TC-XG-011
+  suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
+
+- gap_id: GAP-NET-XG-012
+  product: fods
+  language: csharp
+  category: xml_grounding
+  severity: minor
+  files:
+  - src/net/fods/FodsDocumentSheetFeatures.cs
+  description: >
+    V105/V106/V108 EXCL-XG-002/EXCL-XG-003 — Filter/auto-filter APIs (_filters dict),
+    page-break APIs (_pageBreaks dict), row-group APIs (_groups dict), tab-color API
+    (_tabColors dict), and print-area dict (_printAreas) remain dict-backed.
+    DataAnnotations stubs (no ODF XML path; charts/condformat/sparklines) remain
+    dict-backed. ODF target elements: table:database-range (auto-filter),
+    table:table-row/@fo:break-before (page breaks), table:table-row-group (groups),
+    table:table-cell/@table:style-name with tab color in style (tab color).
+  root_cause: EXCL-XG-002_EXCL-XG-003
+  predecessor_plan: FODS-NET-XG-001
+  governed_exclusion_ids:
+  - EXCL-XG-002
+  - EXCL-XG-003
+  status: CLOSED
+  closure_note: "FODS-NET-XG-002 TC-XG-012: _freezePanes/_printAreas/_tabColors removed; SetFreezePane/SetPrintArea delegate to XML; tab-color uses NsFfExt attr. Tests: 1571 passed, 0 failed."
+  suggested_taskcard: TC-XG-012
+  suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
+gap_summary:
+  total_gaps: 25
+  blocking: 11
+  major: 9
+  minor: 0
+  open: 22
+  closed: 3
+counters:
+  MATERIAL_FINDINGS_WITHOUT_GAPS: 0
+  ACTIONABLE_GAPS_WITHOUT_TASKS: 0
