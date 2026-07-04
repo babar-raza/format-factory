@@ -99,6 +99,19 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
       None     → legacy mode (all groups, shared .local/supervisor/ path)
     """
     timestamp = datetime.now().isoformat()
+
+    # Step 0-pre (TC-PGI-044): Auto-GC SUPERSEDED plan locks older than 30 days.
+    # Extracted to plan_lock_gc.py to keep this file within LOC cap.
+    _gc_dir = repo_root / ".local" / "supervisor" / "plan-locks"
+    if _gc_dir.is_dir():
+        try:
+            from plan_lock_gc import gc_superseded_locks as _gc_fn  # noqa: PLC0415
+            _gc_deleted = _gc_fn(_gc_dir)
+            if _gc_deleted > 0:
+                print(f"  [TC-PGI-044] GC: deleted {_gc_deleted} SUPERSEDED locks older than 30 days")
+        except Exception:
+            pass  # best-effort
+
     # Step 0 (pre-cycle): Stale queue repair (disabled by default, dry-run safe)
     print("=== STEP 0: PRE-CYCLE STALE REPAIR ===")
     repair_result = run_stale_repair_pre_cycle(repo_root, dry_run=True, enabled=False)
@@ -243,70 +256,12 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  SKIP: reports/v54v55-sprint-tracker.json not found")
     except Exception as _v54_err:
         print(f"  WARNING: V54/V55 tracker check skipped (non-blocking): {_v54_err}")
-    # Step 0a-sal (FF-DEFERRED-RESOLVE-20260624 TC-D3): SAL-to-QName cross-reference check.
-    print("=== STEP 0a-sal: SAL-TO-QNAME CROSS-REFERENCE CHECK ===")
+    # Steps 0a-sal + 0a-gap-sal: SAL audit checks — extracted to extensions (TC-PGI-045)
     try:
-        import subprocess as _sal_subprocess
-        _sal_tool = repo_root / "tools" / "audit_sal_to_qname.py"
-        _sal_baseline_path = repo_root / "reports" / "sal-qname-baseline.json"
-        if _sal_tool.exists():
-            _sal_result = _sal_subprocess.run(
-                [sys.executable, str(_sal_tool)],
-                capture_output=True, text=True, timeout=60, cwd=str(repo_root),
-            )
-            import re as _sal_re
-            _sal_high_match = _sal_re.search(r"High severity:\s+(\d+)", _sal_result.stdout)
-            _sal_high = int(_sal_high_match.group(1)) if _sal_high_match else 0
-            _sal_bl_high = 28  # default baseline
-            if _sal_baseline_path.exists():
-                try:
-                    _sal_bl_data = json.loads(_sal_baseline_path.read_text(encoding="utf-8"))
-                    _sal_bl_high = int(_sal_bl_data.get("high_severity_count", 28))
-                except Exception:
-                    pass
-            if _sal_high > _sal_bl_high:
-                continuation_warnings.append(
-                    f"SAL_QNAME_DANGLING_REFS: {_sal_high} HIGH gaps (baseline {_sal_bl_high})"
-                )
-                print(f"  WARNING: SAL-QName HIGH gaps increased: {_sal_high} > baseline {_sal_bl_high}")
-            else:
-                print(f"  SAL-QName audit: {_sal_high} HIGH gaps (baseline: {_sal_bl_high}) — OK")
-        else:
-            print("  SKIP: tools/audit_sal_to_qname.py not found")
-    except Exception as _sal_err:
-        print(f"  WARNING: SAL-QName check skipped (non-blocking): {_sal_err}")
-    # Step 0a-gap-sal (FF-DEFERRED-RESOLVE-20260624 TC-D4): Gap-ledger SAL traceability check.
-    print("=== STEP 0a-gap-sal: GAP-LEDGER SAL TRACEABILITY CHECK ===")
-    try:
-        import subprocess as _gsal_subprocess
-        _gsal_tool = repo_root / "tools" / "audit_gap_ledger_sal_refs.py"
-        _gsal_baseline_path = repo_root / "reports" / "gap-ledger-sal-baseline.json"
-        if _gsal_tool.exists():
-            _gsal_result = _gsal_subprocess.run(
-                [sys.executable, str(_gsal_tool)],
-                capture_output=True, text=True, timeout=60, cwd=str(repo_root),
-            )
-            import re as _gsal_re
-            _gsal_high_match = _gsal_re.search(r"High severity:\s+(\d+)", _gsal_result.stdout)
-            _gsal_high = int(_gsal_high_match.group(1)) if _gsal_high_match else 0
-            _gsal_bl_high = 0  # default baseline
-            if _gsal_baseline_path.exists():
-                try:
-                    _gsal_bl_data = json.loads(_gsal_baseline_path.read_text(encoding="utf-8"))
-                    _gsal_bl_high = int(_gsal_bl_data.get("high_severity_count", 0))
-                except Exception:
-                    pass
-            if _gsal_high > _gsal_bl_high:
-                continuation_warnings.append(
-                    f"GAP_LEDGER_SAL_TRACEABILITY: {_gsal_high} HIGH gaps (baseline {_gsal_bl_high})"
-                )
-                print(f"  WARNING: Gap-ledger SAL HIGH gaps increased: {_gsal_high} > baseline {_gsal_bl_high}")
-            else:
-                print(f"  Gap-ledger SAL audit: {_gsal_high} HIGH gaps (baseline: {_gsal_bl_high}) — OK")
-        else:
-            print("  SKIP: tools/audit_gap_ledger_sal_refs.py not found")
-    except Exception as _gsal_err:
-        print(f"  WARNING: Gap-ledger SAL check skipped (non-blocking): {_gsal_err}")
+        from autonomous_cycle_extensions import run_sal_audit_checks
+        run_sal_audit_checks(repo_root, continuation_warnings)
+    except Exception as _sal_audit_err:
+        print(f"  WARNING: SAL audit checks skipped (non-blocking): {_sal_audit_err}")
 
     # Step 0c: Action queue consumption — promote machine_executable actions (TC-FL-008)
     _consumed_actions: list[dict] = []
@@ -1434,6 +1389,17 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                     rework_id = f"GOV_BLOCK:{v['validator']}"
                     if rework_id not in review.get("rework_items", []):
                         review.setdefault("rework_items", []).append(rework_id)
+
+    # TC-PGI-042: Governance degradation detection — too many skipped validators signals
+    # import failures that reduce governance coverage without surfacing as explicit FAILs.
+    _gov_skipped = governance_validation_result.get("skipped_count", 0)
+    if _gov_skipped > 5:
+        _gov_degraded = f"GOVERNANCE_DEGRADED:{_gov_skipped}_validators_skipped"
+        review.setdefault("rework_items", [])
+        if _gov_degraded not in review["rework_items"]:
+            review["rework_items"].append(_gov_degraded)
+        print(f"  [TC-PGI-042] WARNING: {_gov_skipped} governance validators skipped — "
+              f"governance coverage degraded. Added to rework_items: {_gov_degraded}")
 
     # Step 2e (SUP-RECT-001): Lane enforcement validation
     print("\n=== STEP 2e: LANE ENFORCEMENT VALIDATION ===")

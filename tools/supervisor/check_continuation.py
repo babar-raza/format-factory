@@ -482,6 +482,27 @@ def check(repo_root: Path, *, session_id: str | None = None,
                       f"{work_items_rel} does not exist",
                       iteration=iteration, max_iterations=max_iterations)
 
+    # --- Check 7b (TC-PGI-040): Stale suppression detection ---
+    # If next-work-items.json suppresses ledger for a plan that no longer has an
+    # IN_PROGRESS lock, flag it as stale (informational — does not block CONTINUE).
+    try:
+        _nwi_7b = json.loads(work_items_path.read_text(encoding="utf-8"))
+        if _nwi_7b.get("ledger_items_suppressed") and _nwi_7b.get("active_plan"):
+            _ref_plan_7b = _nwi_7b["active_plan"]
+            _ref_plan_has_lock_7b = any(
+                _ref_plan_7b in str(_lk.get("plan_path", "")) and
+                _lk.get("status") not in ("SUPERSEDED", "TERMINAL_CLOSED", "COMPLETE", "DEFERRED")
+                for _lk in _candidates
+            )
+            if not _ref_plan_has_lock_7b:
+                _output["stale_work_items_detected"] = True
+                _output["stale_work_items_reason"] = (
+                    f"next-work-items.json suppresses ledger for '{_ref_plan_7b}' "
+                    f"but no IN_PROGRESS lock exists. Bootstrap cycle needed."
+                )
+    except Exception:
+        pass  # non-blocking
+
     # --- Check 8 (TC-GOVBLK-001): Structural GOV_BLOCK carve-out ---
     # GOV_BLOCK:monolith_detection_validator and GOV_BLOCK:validate_source_architecture
     # are STRUCTURAL failures, not transient closeout failures. They must NOT be

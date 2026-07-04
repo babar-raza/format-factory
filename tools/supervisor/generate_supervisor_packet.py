@@ -1200,9 +1200,12 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
 
 def generate_session_resume_md(review: dict, contradictions: dict, memory_snippet: str, current_mode: int) -> str:
     facts = review.get("facts", {})
-    return f"""# Session Resume Briefing
+    _sprint_id = review.get('sprint_id', 'unknown')
+    _now_iso = datetime.now().isoformat()
+    return f"""<!-- generated_at: {_now_iso} | source_sprint: {_sprint_id} -->
+# Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: {datetime.now().isoformat()}
+# Generated: {_now_iso}
 
 ## Quick State
 - Last sprint: {review.get('sprint_id', 'unknown')}

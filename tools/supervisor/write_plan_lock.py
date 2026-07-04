@@ -438,6 +438,35 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     if terminal and status in ("TERMINAL_CLOSED", "ITERATION_REQUIRED"):
         _append_terminal_lock_to_plan(plan_path, sid, status, datetime.now(timezone.utc).isoformat())
 
+    # TC-PGI-041: Mark next-work-items.json stale when this plan terminally closes.
+    # Prevents ledger_items_suppressed from persisting across bootstrap cycles.
+    if status == "TERMINAL_CLOSED" and not _is_temp_path(str(plan_path)):
+        _repo = Path(__file__).resolve().parent.parent.parent
+        _nwi_path_041 = _repo / ".local" / "supervisor" / "next-work-items.json"
+        if _nwi_path_041.exists():
+            try:
+                _nwi_041 = json.loads(_nwi_path_041.read_text(encoding="utf-8"))
+                _active_041 = _nwi_041.get("active_plan", "")
+                if _active_041 and Path(plan_path).resolve() == Path(_active_041).resolve():
+                    _nwi_041["ledger_items_suppressed_stale"] = True
+                    _nwi_041["stale_reason"] = (
+                        f"Plan '{plan_path}' reached TERMINAL_CLOSED at "
+                        f"{datetime.now(timezone.utc).isoformat()}. Regenerate via bootstrap cycle."
+                    )
+                    _nwi_tmp_041 = _nwi_path_041.with_suffix(".tmp")
+                    _nwi_tmp_041.write_text(json.dumps(_nwi_041, indent=2) + "\n", encoding="utf-8")
+                    import os as _os
+                    _os.replace(str(_nwi_tmp_041), str(_nwi_path_041))
+                    print(
+                        f"[write_plan_lock] TC-PGI-041: marked next-work-items.json stale for plan '{plan_path}'",
+                        file=sys.stderr,
+                    )
+            except Exception as _e_041:
+                print(
+                    f"[write_plan_lock] WARNING (TC-PGI-041): could not mark work items stale: {_e_041}",
+                    file=sys.stderr,
+                )
+
 
 def _append_terminal_lock_to_plan(
     plan_path: str,

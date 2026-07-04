@@ -197,6 +197,8 @@ def run_all_governance_validators(
         validate_certification_matrix_consistent as _validate_certification_matrix_consistent,
         validate_plans_root_policy as _validate_plans_root_policy,
     )
+    # TC-PGI-042: Track validators that could not run due to import/execution errors.
+    _skipped_validators: list[dict] = []
     results = [
         validate_execution_method_required(declaration),
         validate_source_diff_required(declaration),
@@ -379,8 +381,8 @@ def run_all_governance_validators(
             _v85(declaration, repo_root),  # V85
             _v86(declaration, repo_root),  # V86
         ])
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v83:
+        _skipped_validators.append({"validators": ["V83", "V84", "V85", "V86"], "error": str(_exc_v83)})
 
     # V-TCF-001/002/003 (TC-TCF-007): Terminal closure governance validators
     # V-TCF-001: FAIL on open taskcards at terminal claim (LIFECYCLE_HARDENING/MACHINERY_HARDENING)
@@ -397,8 +399,8 @@ def run_all_governance_validators(
             _vtcf2(declaration, repo_root),  # V-TCF-002
             _vtcf3(declaration, repo_root),  # V-TCF-003
         ])
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_vtcf:
+        _skipped_validators.append({"validators": ["V-TCF-001", "V-TCF-002", "V-TCF-003"], "error": str(_exc_vtcf)})
 
     # V91 (TC-ROOT-005): Root structure architecture governance (FAIL for unregistered dirs, WARN for missing READMEs)
     try:
@@ -427,8 +429,8 @@ def run_all_governance_validators(
             _v96(declaration, repo_root), _v97(declaration, repo_root),
             _v98(declaration, repo_root), _v99(declaration, repo_root),
         ])
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v92:
+        _skipped_validators.append({"validators": ["V92", "V93", "V94", "V95", "V96", "V97", "V98", "V99"], "error": str(_exc_v92)})
 
     # V87-V89 (GI-FODS-NET-001): .NET semantic stub validators
     try:
@@ -442,8 +444,8 @@ def run_all_governance_validators(
             _v88(declaration, repo_root),  # V88
             _v89(declaration, repo_root),  # V89
         ])
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v87:
+        _skipped_validators.append({"validators": ["V87", "V88", "V89"], "error": str(_exc_v87)})
 
     # V100-V109 (TC-PQLM-012): Product file layout + code quality validators
     # Note: ext3 uses {validator_id, status, blocks_sprint} schema; normalize to {validator, result, blocks_sprint}
@@ -482,8 +484,8 @@ def run_all_governance_validators(
             _norm_ext3(_v108(declaration, repo_root)),  # V108: detached persistent state dict (blocking for new)
             _norm_ext3(_v109(declaration, repo_root)),  # V109: files outside approved layout (blocking for new)
         ])
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v100:
+        _skipped_validators.append({"validators": ["V100", "V101", "V102", "V103", "V104", "V105", "V106", "V107", "V108", "V109"], "error": str(_exc_v100)})
 
     # V110: dotnet-path-canonical — block src/dotnet/ product paths in declarations
     try:
@@ -611,8 +613,8 @@ def run_all_governance_validators(
         results.append(_v131(declaration))
         results.append(_v132(declaration))
         results.append(_v133(declaration))
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v130:
+        _skipped_validators.append({"validators": ["V130", "V131", "V132", "V133"], "error": str(_exc_v130)})
 
     # V134-V136 (MA-SYSTEM-WIDE-2026-07-04, playful-swimming-stearns): Output escaping quality gates
     try:
@@ -624,8 +626,8 @@ def run_all_governance_validators(
         results.append(_v134(declaration, repo_root))
         results.append(_v135(declaration, repo_root))
         results.append(_v136(declaration, repo_root))
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v134:
+        _skipped_validators.append({"validators": ["V134", "V135", "V136"], "error": str(_exc_v134)})
 
     # V137-V138 (TC-CPR-003, sparkling-waddling-narwhal): Consumer proof integrity gates
     # V137: stale installed packages (editable install defeated by coexisting site-packages dir) — FAIL/blocks
@@ -637,13 +639,16 @@ def run_all_governance_validators(
         )
         results.append(_v137(declaration, repo_root))
         results.append(_v138(declaration, repo_root))
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v137:
+        # TC-PGI-042: Record skipped validators instead of silent pass
+        _skipped_validators.append({"validators": ["V137", "V138"], "error": str(_exc_v137)})
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")
     pass_count = sum(1 for r in results if r["result"] == "PASS")
     blocks_sprint = any(r.get("blocks_sprint") for r in results if r["result"] == "FAIL")
+    skipped_count = sum(len(s.get("validators", [1])) for s in _skipped_validators)
+    ran_count = len(results)
 
     return {
         "all_pass": fail_count == 0,
@@ -652,6 +657,10 @@ def run_all_governance_validators(
         "warn_count": warn_count,
         "pass_count": pass_count,
         "validators": results,
+        "skipped_validators": _skipped_validators,
+        "skipped_count": skipped_count,
+        "expected_count": 129,  # update when validator count changes
+        "ran_count": ran_count,
         "summary": (
             f"{pass_count} PASS / {warn_count} WARN / {fail_count} FAIL. "
             f"Blocks sprint: {blocks_sprint}."

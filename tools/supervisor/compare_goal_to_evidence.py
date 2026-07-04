@@ -271,6 +271,7 @@ def write_markdown(result: dict, output_dir: Path) -> None:
     """Write contradictions.md."""
     output_dir.mkdir(parents=True, exist_ok=True)
     lines = [
+        f"<!-- generated_at: {result['timestamp']} | source_sprint: {result['sprint_id']} -->",
         "# Contradiction Detection Report",
         f"Sprint ID: {result['sprint_id']}",
         f"Timestamp: {result['timestamp']}",
