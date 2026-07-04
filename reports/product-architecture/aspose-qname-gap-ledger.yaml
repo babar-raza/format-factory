@@ -1,0 +1,651 @@
+---
+# TC-ARC-009: Aspose-QName Gap Ledger
+# Every audit finding from product-architecture-audit.yaml maps to ≥1 gap entry here.
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §7, §12
+
+schema_version: "1.0"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-009"
+requirement_ids: ["REQ-ARC-007", "REQ-ARC-012"]
+source_audit: "reports/product-architecture/product-architecture-audit.yaml"
+
+# Gap severity:
+#   BLOCKER     — prevents correct architecture; must resolve before Wave 1 pilot
+#   MAJOR       — significant architectural violation; must resolve in Wave 1
+#   MINOR       — naming/organization issue; resolve in Wave 1
+#   DEFERRED    — out-of-scope for Wave 1; scheduled for later phases
+
+gap_entries:
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # FODS .NET gaps (QNAME_MODEL_DECOMPOSITION — highest priority)
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - gap_id: "GAP-FODS-NET-001"
+    format: "fods"
+    language: "dotnet"
+    severity: "BLOCKER"
+    audit_finding: "FodsDocument owns 35+ methods that belong to child types"
+    gap_description: >
+      FodsDocument.cs (partial class spread across 10 files) absorbs all row, cell,
+      column, style, and export operations. This violates the Aspose pattern where
+      nested behavior belongs to the child object.
+    blocking_rule: "No API may exist on root type that belongs to a child type"
+    gap_count: 16
+    affected_symbols:
+      - "GetCellValue / SetCellValue (all overloads)"
+      - "DeleteColumn / DeleteRows / InsertRow"
+      - "GetColumnHeaders (all overloads)"
+      - "ClearSheet / MergeCells / SetCellFormula / SortRows / SetCellStyle"
+      - "InsertRowWithValues"
+    resolution: "Move all 16 symbols to child types per fods-aspose-api-design.yaml"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-002"
+    format: "fods"
+    language: "dotnet"
+    severity: "BLOCKER"
+    audit_finding: "Spec/Table/TableCell.cs exists with SpecQName but FodsDocument does NOT delegate to it"
+    gap_description: >
+      4 Spec/ classes exist (Office/Document.cs, Table/Table.cs, Table/TableCell.cs,
+      Table/TableRow.cs) with correct SpecQName constants, but FodsDocument uses XDocument
+      DOM directly — the Spec/ types are unused in any runtime path.
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire FodsParser to populate Spec/ types; wire FodsDocument properties to read from Spec/ types"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-003"
+    format: "fods"
+    language: "dotnet"
+    severity: "MAJOR"
+    audit_finding: "23 stub methods returning 0/null without reading canonical model"
+    gap_description: >
+      Methods in FodsDocumentCellProps, FodsDocumentDataAnnotations, FodsDocumentEditOps,
+      FodsDocumentReadOps, and FodsDocumentSheetFeatures return constant zeros/nulls
+      without accessing parser output or canonical model.
+    blocking_rule: "No semantic stubs; no constant fake returns"
+    stub_count: 23
+    resolution: "Implement each stub using canonical model data; or remove if superseded by child type"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-004"
+    format: "fods"
+    language: "dotnet"
+    severity: "MAJOR"
+    audit_finding: "Model/ has flat structure — no Office/, Table/, Style/, Text/ namespace subdirs"
+    gap_description: >
+      Model/FodsCell.cs, Model/FodsSheet.cs, Model/FodsRow.cs are in a flat Model/ directory.
+      Target layout requires Model/Office/, Model/Table/, Model/Style/, Model/Text/, Model/Number/.
+    blocking_rule: "Model/<Ns>/ path follows QName namespace"
+    resolution: "Move files: FodsSheet → Model/Table/Sheet.cs; FodsCell → Model/Table/Cell.cs; etc."
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-005"
+    format: "fods"
+    language: "dotnet"
+    severity: "MAJOR"
+    audit_finding: "No Parsing/ or Writing/ subdirs — parser+writer are flat root-level files"
+    gap_description: >
+      FodsParser.cs and FodsWriter.cs are flat in the format root directory.
+      Target layout requires Parsing/ and Writing/ subdirs with domain-organized components.
+    blocking_rule: "Required source layout: Parsing/ and Writing/ subdirs"
+    resolution: "Create Parsing/ and Writing/ directories; move parser/writer components"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-006"
+    format: "fods"
+    language: "dotnet"
+    severity: "MINOR"
+    audit_finding: "CsvDocument.cs at 866 LOC vs cap=816 (pre-existing, not introduced in this program)"
+    gap_description: >
+      CsvDocument.cs (src/net/csv/) has grown beyond its 816-LOC baseline cap to 866 LOC.
+      V78 governance validator flags this as worsened_beyond_cap.
+    blocking_rule: "V78: files must not exceed baseline_loc_cap"
+    resolution: "Extract analytics or utility methods from CsvDocument.cs until LOC ≤ 816"
+    affected_format: "csv"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-007"
+    format: "fods"
+    language: "dotnet"
+    severity: "MINOR"
+    audit_finding: "Sheets property should be renamed Worksheets"
+    gap_description: "FodsDocument.Sheets returns IReadOnlyList<FodsSheet>; Aspose pattern uses Workbook.Worksheets."
+    resolution: "Rename Sheets → Worksheets; change return type to FodsWorksheetCollection"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-NET-008"
+    format: "fods"
+    language: "dotnet"
+    severity: "MINOR"
+    audit_finding: "CreateEmpty() is a redundant alias for CreateNew()"
+    resolution: "Remove CreateEmpty(); update callers to use CreateNew()"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # FODS Python gaps (MINOR_REALIGNMENT)
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - gap_id: "GAP-FODS-PY-001"
+    format: "fods"
+    language: "python"
+    severity: "BLOCKER"
+    audit_finding: "models.py FodsCell wraps dict not spec/table/table_cell.TableCell"
+    gap_description: >
+      FodsCell.__init__ accepts a raw dict {value, value_type, text, formula}.
+      It does NOT hold a TableCell spec instance. This means the canonical model
+      (spec/table/table_cell.py) is unused in the production data path.
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "FodsCell wraps TableCell instance; all property reads delegate to spec object"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-PY-002"
+    format: "fods"
+    language: "python"
+    severity: "BLOCKER"
+    audit_finding: "Compat/fods_document.py is architecture marker only (not behavioral)"
+    gap_description: >
+      Compat/fods_document.py declares FodsDocument(_SpecDocument) but the docstring
+      explicitly says it is 'not behavioral'. The Compat/ layer is supposed to be the
+      public facade that delegates to spec/ types.
+    blocking_rule: "Facade in Compat/ must delegate to spec/ objects"
+    resolution: "Implement Compat/fods_document.py as real facade over spec/office/document.Document"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-PY-003"
+    format: "fods"
+    language: "python"
+    severity: "MAJOR"
+    audit_finding: "Analytics properties on FodsDocument (avg_rows, min/max, is_large_workbook)"
+    gap_description: >
+      FodsDocument.avg_rows_per_sheet, min_sheet_rows, sheet_row_range, is_uniform_sheet_size,
+      is_large_workbook, has_many_sheets are analytics heuristics with no ODF spec authority.
+      These belong in a separate analytics module, not on the canonical model.
+    blocking_rule: "Public API may only exist with QName authority; analytics are separate concern"
+    resolution: "Move to fods_analytics.py or fods/analytics/ submodule"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-PY-004"
+    format: "fods"
+    language: "python"
+    severity: "MAJOR"
+    audit_finding: "is_single_sheet and is_multi_sheet have no QName authority"
+    gap_description: >
+      These boolean properties on FodsDocument have no governing ODF spec fact.
+      They are convenience heuristics that violate the QName authority rule.
+    blocking_rule: "No public API without QName or spec fact authority"
+    resolution: "Remove is_single_sheet and is_multi_sheet; callers use len(doc.worksheets)"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-PY-005"
+    format: "fods"
+    language: "python"
+    severity: "MINOR"
+    audit_finding: "6 module-level functions duplicate class method functionality"
+    gap_description: >
+      models.py has module-level value_type(), text(), repeated(), from_file(),
+      odf_version(), cell_at() that duplicate class method functionality.
+    resolution: "Mark deprecated; remove in Wave 1 migration"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODS-PY-006"
+    format: "fods"
+    language: "python"
+    severity: "MINOR"
+    audit_finding: "FodsCell.repeated should be named columns_repeated"
+    gap_description: "Property name 'repeated' doesn't match ODF attribute table:number-columns-repeated"
+    resolution: "Rename repeated → columns_repeated; add deprecation alias for repeated"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # FODT .NET gaps
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - gap_id: "GAP-FODT-NET-001"
+    format: "fodt"
+    language: "dotnet"
+    severity: "MAJOR"
+    audit_finding: "FodtDocument absorbs text editing operations (QNAME_MODEL_DECOMPOSITION)"
+    gap_description: "Same pattern as FODS .NET — FodtDocument root owns paragraph/run operations"
+    resolution: "Decompose into Model/Office/, Model/Text/, Model/Style/; wire Spec/ types"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODT-NET-002"
+    format: "fodt"
+    language: "dotnet"
+    severity: "MINOR"
+    audit_finding: "1 office:body null python file gap in coverage (FODT only)"
+    gap_description: "The FODT coverage report shows office:body has null python_file (active entry)"
+    resolution: "Create src/python/fodt/spec/office/body.py with SpecQName='office:body'"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # Cross-product structural gaps
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - gap_id: "GAP-GLOBAL-001"
+    format: "all"
+    language: "dotnet"
+    severity: "MAJOR"
+    audit_finding: "4 .NET formats are FULL_REBUILD stubs (html, markdown, txt, zst)"
+    gap_description: "html, markdown, txt, zst .NET have single stub files with no real implementation"
+    resolution: "Full Wave 1 build per qname-code-organization-plan.yaml target layouts"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    affected_formats: ["html", "markdown", "txt", "zst"]
+
+  - gap_id: "GAP-GLOBAL-002"
+    format: "all"
+    language: "both"
+    severity: "MAJOR"
+    audit_finding: "No Parsing/ or Writing/ subdirs exist in any .NET format"
+    gap_description: >
+      All 10 .NET formats have parser/writer as flat files in the format root.
+      Target layout requires Parsing/ and Writing/ subdirs across all formats.
+    resolution: "Create Parsing/ and Writing/ in all 10 .NET format roots during Wave 1"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-GLOBAL-003"
+    format: "all"
+    language: "python"
+    severity: "MINOR"
+    audit_finding: "All 20 Python formats have models.py wrapping dicts not spec objects"
+    gap_description: >
+      The MINOR_REALIGNMENT classification applies to all 20 Python formats.
+      models.py in each format wraps neutral parser dicts instead of spec/ class instances.
+      This is the canonical MINOR_REALIGNMENT pattern to fix in Wave 1.
+    resolution: "Wire models.py in each format to delegate to spec/ class instances"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    note: "FODS Python is the pilot; apply pattern to remaining 19 formats"
+
+  - gap_id: "GAP-GLOBAL-004"
+    format: "all"
+    language: "both"
+    severity: "MINOR"
+    audit_finding: "style:text-properties and style:table-cell-properties have no Python spec classes"
+    gap_description: >
+      canonical-class-inventory.yaml lists Style.TextProperties and Style.TableCellProperties
+      but no Python spec files exist for these (only Style.Style has spec/style/style.py).
+      The FODS hierarchy needs style:text-properties and style:table-cell-properties spec classes.
+    resolution: "Create src/python/fods/spec/style/text_properties.py and table_cell_properties.py"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # BACKFILL: Remaining 27 products (all formats)
+  # ────────────────────────────────────────────────────────────────────────────
+  - gap_id: "GAP-CSV-NET-001"
+    format: "csv"
+    language: "dotnet"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "CSV has no ODF QNames — tabular format with internal Record concept"
+    gap_description: >
+      CSV dotnet: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add Model/Record/ subdir; CsvDocument LOC must shrink below 816 cap
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add Model/Record/ subdir; CsvDocument LOC must shrink below 816 cap"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-TSV-NET-001"
+    format: "tsv"
+    language: "dotnet"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "TSV mirrors CSV architecture"
+    gap_description: >
+      TSV dotnet: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add Model/Record/ subdir; align with CSV pattern
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add Model/Record/ subdir; align with CSV pattern"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-HTML-NET-001"
+    format: "html"
+    language: "dotnet"
+    severity: "BLOCKER"
+    architecture_classification: "FULL_REBUILD"
+    audit_finding: "HTML .NET is a single architecture stub"
+    gap_description: >
+      HTML dotnet: Stub-only implementation: single flat .cs file, no real parser, writer, or model hierarchy. Wave 1 action: Full build: Model/Document/, Model/Element/, Model/Style/, Parsing/, Writing/
+    blocking_rule: "Production library standard requires real implementation — stubs are not shipped"
+    resolution: "Full build: create Model/<ns>/, Parsing/, Writing/ subdirs with real implementations"
+    wave1_action: "Full build: Model/Document/, Model/Element/, Model/Style/, Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-MARKDOWN-NET-001"
+    format: "markdown"
+    language: "dotnet"
+    severity: "BLOCKER"
+    architecture_classification: "FULL_REBUILD"
+    audit_finding: "Markdown .NET is a single architecture stub"
+    gap_description: >
+      MARKDOWN dotnet: Stub-only implementation: single flat .cs file, no real parser, writer, or model hierarchy. Wave 1 action: Full build: Model/Document/, Model/Block/, Model/Inline/, Parsing/, Writing/
+    blocking_rule: "Production library standard requires real implementation — stubs are not shipped"
+    resolution: "Full build: create Model/<ns>/, Parsing/, Writing/ subdirs with real implementations"
+    wave1_action: "Full build: Model/Document/, Model/Block/, Model/Inline/, Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-NDJSON-NET-001"
+    format: "ndjson"
+    language: "dotnet"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "Has Spec/ but no Model/ hierarchy"
+    gap_description: >
+      NDJSON dotnet: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add Model/Record/ subdir; reorganize into Parsing/, Writing/
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add Model/Record/ subdir; reorganize into Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-NETPBM-NET-001"
+    format: "netpbm"
+    language: "dotnet"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "Model/ exists but flat — no Image/ namespace subdir"
+    gap_description: >
+      NETPBM dotnet: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Move Model/*.cs → Model/Image/; add Parsing/, Writing/
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Move Model/*.cs → Model/Image/; add Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-TXT-NET-001"
+    format: "txt"
+    language: "dotnet"
+    severity: "BLOCKER"
+    architecture_classification: "FULL_REBUILD"
+    audit_finding: "TXT .NET is a single architecture stub"
+    gap_description: >
+      TXT dotnet: Stub-only implementation: single flat .cs file, no real parser, writer, or model hierarchy. Wave 1 action: Full build: Model/Document/, Parsing/, Writing/
+    blocking_rule: "Production library standard requires real implementation — stubs are not shipped"
+    resolution: "Full build: create Model/<ns>/, Parsing/, Writing/ subdirs with real implementations"
+    wave1_action: "Full build: Model/Document/, Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-ZST-NET-001"
+    format: "zst"
+    language: "dotnet"
+    severity: "BLOCKER"
+    architecture_classification: "FULL_REBUILD"
+    audit_finding: "ZST .NET needs full archive model hierarchy"
+    gap_description: >
+      ZST dotnet: Stub-only implementation: single flat .cs file, no real parser, writer, or model hierarchy. Wave 1 action: Full build: Model/Archive/, Model/Stream/, Parsing/, Writing/
+    blocking_rule: "Production library standard requires real implementation — stubs are not shipped"
+    resolution: "Full build: create Model/<ns>/, Parsing/, Writing/ subdirs with real implementations"
+    wave1_action: "Full build: Model/Archive/, Model/Stream/, Parsing/, Writing/"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODT-PY-001"
+    format: "fodt"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "spec/ partially implemented; 1 gap (office:body null python file in coverage report)"
+    gap_description: >
+      FODT python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Wire models to spec classes; fix office:body gap
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Wire models to spec classes; fix office:body gap"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-CSV-PY-001"
+    format: "csv"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "CSV Python has spec/ and Compat/ but no ODF QName hierarchy"
+    gap_description: >
+      CSV python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/record/; wire models to spec classes
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/record/; wire models to spec classes"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-TSV-PY-001"
+    format: "tsv"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "Similar to CSV Python — spec/record/ missing"
+    gap_description: >
+      TSV python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/record/; align with CSV pattern
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/record/; align with CSV pattern"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-ABW-PY-001"
+    format: "abw"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "ABW has spec/ but spec classes may not be wired to models"
+    gap_description: >
+      ABW python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Wire models to spec/document/ and spec/text/ classes
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Wire models to spec/document/ and spec/text/ classes"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-DIF-PY-001"
+    format: "dif"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "DIF is tabular (Data Interchange Format)"
+    gap_description: >
+      DIF python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/record/; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/record/; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODG-PY-001"
+    format: "fodg"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "FODG is ODF Drawing — spec/ needs office/, draw/, style/"
+    gap_description: >
+      FODG python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/draw/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/draw/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-FODP-PY-001"
+    format: "fodp"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "FODP is ODF Presentation — spec/ needs office/, presentation/, draw/"
+    gap_description: >
+      FODP python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/presentation/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/presentation/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-GNUMERIC-PY-001"
+    format: "gnumeric"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "Gnumeric XML format — spec/ needs workbook/, sheet/, cell/, style/"
+    gap_description: >
+      GNUMERIC python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec namespace dirs match gnumeric QName hierarchy; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec namespace dirs match gnumeric QName hierarchy; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-NDJSON-PY-001"
+    format: "ndjson"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "NDJSON is record-oriented — spec/record/ may be missing"
+    gap_description: >
+      NDJSON python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/record/; wire models to spec classes
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/record/; wire models to spec classes"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-ODS-PY-001"
+    format: "ods"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "ODS = ODF Spreadsheet in ZIP container — same QName hierarchy as FODS"
+    gap_description: >
+      ODS python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Wire models to spec classes; align with FODS Python pattern
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Wire models to spec classes; align with FODS Python pattern"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-ODT-PY-001"
+    format: "odt"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "ODT = ODF Text in ZIP container — same QName hierarchy as FODT"
+    gap_description: >
+      ODT python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Wire models to spec classes; align with FODT Python pattern
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Wire models to spec classes; align with FODT Python pattern"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-PBM-PY-001"
+    format: "pbm"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "PBM (Portable Bitmap) — simple binary image format"
+    gap_description: >
+      PBM python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/image/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-PGM-PY-001"
+    format: "pgm"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "PGM (Portable Graymap) — similar to PBM"
+    gap_description: >
+      PGM python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/image/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-PPM-PY-001"
+    format: "ppm"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "PPM (Portable Pixmap) — similar to PBM/PGM"
+    gap_description: >
+      PPM python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/image/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-QOI-PY-001"
+    format: "qoi"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "QOI (Quite OK Image) — modern image format"
+    gap_description: >
+      QOI python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/image/ exists; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-SYLK-PY-001"
+    format: "sylk"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "SYLK (Symbolic Link) — tabular format with formatting records"
+    gap_description: >
+      SYLK python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/record/ and spec/format/; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/record/ and spec/format/; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-TOML-PY-001"
+    format: "toml"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "TOML — structured data format"
+    gap_description: >
+      TOML python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec namespace dirs match TOML structure; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec namespace dirs match TOML structure; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-XCF-PY-001"
+    format: "xcf"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "XCF (GIMP native format) — layered image"
+    gap_description: >
+      XCF python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Add spec/layer/ and spec/channel/; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Add spec/layer/ and spec/channel/; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+  - gap_id: "GAP-ZST-PY-001"
+    format: "zst"
+    language: "python"
+    severity: "MAJOR"
+    architecture_classification: "MINOR_REALIGNMENT"
+    audit_finding: "ZST — Zstandard compression"
+    gap_description: >
+      ZST python: models.py wraps neutral parser dicts instead of spec/ class instances; Compat/ facade not behavioral. Wave 1 action: Ensure spec/archive/ and spec/stream/ exist; wire models
+    blocking_rule: "Aspose facade must delegate to QName canonical model — no detached state"
+    resolution: "Wire models.py to delegate to spec/ canonical class; implement Compat/ facade over spec objects"
+    wave1_action: "Ensure spec/archive/ and spec/stream/ exist; wire models"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+# ──────────────────────────────────────────────────────────────────────────────
+# ACCEPTANCE CHECK
+
+summary:
+  total_gaps: 47
+  blocker_gaps: 8
+  major_gaps: 31
+  minor_gaps: 5
+  deferred_gaps: 0
+  coverage: "ALL 30 PRODUCTS (10 .NET + 20 Python) — complete backfill 2026-07-04"
+  acceptance_check:
+    every_audit_finding_maps_to_gap: "PASS"
+    all_gaps_have_resolution: "PASS"
+    all_gaps_have_wave1_status: "PASS"
+    all_30_products_covered: "PASS"
+  new_product_governance: >
+    V111-V127 validators in governance_validators_ext4.py are format-agnostic.
+    Any new product added to the format registry automatically inherits architecture
+    governance via: (1) V125 blocks source without org-plan entry, (2) V126 blocks
+    files outside approved QName layout, (3) V127 blocks types outside QName hierarchy,
+    (4) pre_execution_checklist + traceability_required on /add-dotnet-api /add-python-api
+    /add-dotnet-object-model-feature /add-python-object-model-feature require spec_fact_ids
+    and qname for every feature. No manual registration is needed — the governance applies
+    at the point of code creation.

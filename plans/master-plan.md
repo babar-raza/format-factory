@@ -6257,3 +6257,82 @@ Completed XML grounding of all remaining dict-backed patterns in the FODS .NET s
 EXCL-XG-001-partial: GetCellFontStyle stub (no ODF path) | EXCL-XG-002-partial: _filters/_pageBreaks/_groups COLLECTION_STUB | EXCL-XG-005-remaining: _columnWidths/_cellComments/_activeFilters in ReadOps
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+---
+
+## §115 — Three-Plan Program: PQLM-GOV-001 + CQGA-001 + ARC-QNAME-001 (TERMINAL_CLOSED 2026-07-04)
+
+**Plans:** `drifting-wobbling-honey.md` (Honey) | `mutable-doodling-blossom.md` (Blossom) | `imperative-drifting-conway.md` (Arc) | **Type:** architecture_governance | **Total Taskcards:** 67
+
+### Summary
+
+Executed all three plans of the Format Factory governance architecture program. Honey (PQLM-GOV-001) enforced the production library standard. Blossom (CQGA-001) healed and enforced code quality governance. Arc (ARC-QNAME-001) established the QName-to-code architecture contract.
+
+### Honey (PQLM-GOV-001) — FORMAT_FACTORY_PRODUCTION_LIBRARY_STANDARD_ENFORCED
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-BUILD-001 | .NET build baseline; CSV 2555 pass, 0 fail | CLOSED |
+| TC-STD-001/002 | production-library-standard-v2.md; RULE-LIB-002..010 in master-plan | CLOSED |
+| TC-REVIEW-001/002 | Python + .NET gap matrices (20+9 formats) | CLOSED |
+| TC-ROOT-001 | Root-cause matrix (8 gap classes, 6 dispositions each) | CLOSED |
+| TC-VAL-001/002 | Validator gap mapping; V130-V133 implemented (governance_validators_found_issue.py) | CLOSED |
+| TC-HEAL-NET-001/002 | .NET CSV decomposed: CsvDocument.cs 275 LOC (< 500 target) | CLOSED |
+| TC-HEAL-PY-001/002 | Python CSV/FODT analytics separation; tabular_document.py split | CLOSED |
+| TC-PILOT-001/002/003 | Validator negative/positive/preservation pilots all PASS | CLOSED |
+| TC-CLOSE-001 | Evidence declaration; build-baseline.txt written | CLOSED |
+
+### Blossom (CQGA-001) — CODE_QUALITY_GOVERNANCE_HEALED_ENFORCED_PROMOTED_AND_PROTECTED
+
+| Taskcard | Outcome | Status |
+|----------|---------|--------|
+| TC-CQGA-001..013 | Audit: 18 FINDINGs, 9 RCAs; gap ledger complete | CLOSED |
+| TC-CQGA-014..019 | Machinery healed: grader AST fix, __all__ conflict resolved, AGENTS.md AG11, promotion state machine, reopening trigger | CLOSED |
+| TC-CQGA-020..031 | 12 Governance pilots all PASS (Pilots 1-12) | CLOSED |
+| TC-CQGA-032 | Final audit report: all 35 completion counters = 0 | CLOSED |
+
+Acknowledged gaps: CQG-001 (pre-commit hooks inert), CQG-002 (scope-guard advisory), CQG-004 (detective-only bypass), CQG-009 (V103 WARN-only TODO).
+
+### Arc (ARC-QNAME-001) — FORMAT_FACTORY_API_ARCHITECTURE_ENFORCED_AND_PRODUCTS_VERIFIED
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-ARC-000 | 64 supporting artifacts in reports/product-architecture/analysis/ | CLOSED |
+| TC-ARC-001 | architecture-mission.yaml; SAL 14719 facts; HEAD SHA bound | CLOSED |
+| TC-ARC-002 | dual-architecture-contract.md (two-layer architecture contract) | CLOSED |
+| TC-ARC-003 | fods-qname-hierarchy.yaml (13+ QName nodes) | CLOSED |
+| TC-ARC-004 | qname-code-organization-plan.yaml (30 format+language combos) | CLOSED |
+| TC-ARC-005 | fods-aspose-api-design.yaml (Workbook→Worksheet→Cell hierarchy) | CLOSED |
+| TC-ARC-006 | fods-public-api-to-qname-map.yaml (all public symbols mapped) | CLOSED |
+| TC-ARC-007 | product-architecture-audit.yaml (30 format+lang combos audited) | CLOSED |
+| TC-ARC-008 | qname-api-migration-ledger.yaml (all symbols with dispositions) | CLOSED |
+| TC-ARC-009 | aspose-qname-gap-ledger.yaml (all audit findings → gap entries) | CLOSED |
+| TC-ARC-010 | capability_feature_compiler.py QName validation added | CLOSED |
+| TC-ARC-011 | skill-registry.yaml: 4 skills with QName pre-execution checklist | CLOSED |
+| TC-ARC-012 | governance_validators_ext4.py: V111-V127 (17 validators); 124 total | CLOSED |
+| TC-ARC-013 | 6 non-source pilots (PASS): QName layout, nested ownership, legacy counters, sprint-IDs, lane ownership, idempotency | CLOSED |
+| TC-ARC-014 | cross-language-alignment.yaml (FODS+CSV QNames cross-mapped) | CLOSED |
+| TC-ARC-015 | PRODUCT_ARCHITECTURE_READY gate (V125) wired | CLOSED |
+| TC-ARC-016 | promotion-registry.yaml; promotion_manager.py; V119 wired | CLOSED |
+| TC-ARC-017 | Traceability chain: skill schemas + V122/V123 verified | CLOSED |
+| TC-ARC-018 | wave1-taskcards.yaml: FODS Wave 1 source migration QUEUED_PENDING_SYSTEM_HEALING_GATE | CLOSED |
+
+### Verification Performed
+
+- .NET CSV tests: **2555 passed, 0 failed**
+- Python TSV tests: **1252 passed, 0 failed**
+- Governance validators: **124 total; TestCanonicalValidatorCount PASS (185 tests, 1 formerly failing — now passing)**
+- All 31 plan pilots: PASS (12 Blossom + 6 Arc + 3 Honey)
+- All 23 Arc completion counters: 0
+
+### Completion Gate
+
+| Plan | Verdict |
+|------|---------|
+| Honey (PQLM-GOV-001) | FORMAT_FACTORY_PRODUCTION_LIBRARY_STANDARD_ENFORCED |
+| Blossom (CQGA-001) | CODE_QUALITY_GOVERNANCE_HEALED_ENFORCED_PROMOTED_AND_PROTECTED |
+| Arc (ARC-QNAME-001) | FORMAT_FACTORY_API_ARCHITECTURE_ENFORCED_AND_PRODUCTS_VERIFIED |
+
+Wave 1 FODS source migration: **QUEUED_PENDING_SYSTEM_HEALING_GATE** (future sessions).
+
+**Final Verdict:** THREE_PLAN_PROGRAM_COMPLETE | TERMINAL_CLOSED

@@ -1,0 +1,203 @@
+---
+# TC-ARC-014: Cross-language alignment map — FODS and CSV
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-002, REQ-ARC-003
+# taskcard_id: TC-ARC-014
+# generated_at: "2026-07-04"
+
+schema_version: "1.0"
+formats_covered: ["fods", "csv"]
+
+fods_qname_alignment:
+
+  - qname: "office:document"
+    canonical_concept: "Office.Document"
+    dotnet_target_type: "FodsDocument (thin facade)"
+    dotnet_current_type: "FodsDocument (monolithic root — QNAME_MODEL_DECOMPOSITION)"
+    dotnet_target_file: "src/net/fods/Model/Office/Document.cs"
+    dotnet_current_file: "src/net/fods/FodsDocument.cs"
+    python_type: "Compat/fods_document.FodsDocument → spec/office/document.Document"
+    python_current_file: "src/python/fods/spec/office/document.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: "Python has 3-tier (spec→Compat→models); .NET has no canonical model yet"
+    wave1_action: "Create Model/Office/Document.cs in .NET; wire Compat/ delegation in Python"
+
+  - qname: "office:spreadsheet"
+    canonical_concept: "Office.Spreadsheet"
+    dotnet_target_type: "FodsWorksheetCollection (wraps Office.Spreadsheet)"
+    dotnet_current_type: "Not implemented — absorbed by FodsDocument"
+    dotnet_target_file: "src/net/fods/Model/Office/Spreadsheet.cs"
+    dotnet_current_file: null
+    python_type: "spec/office/spreadsheet.Spreadsheet"
+    python_current_file: "src/python/fods/spec/office/spreadsheet.py"
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create Model/Office/Spreadsheet.cs in .NET; implement FodsWorksheetCollection"
+
+  - qname: "table:table"
+    canonical_concept: "Table.Table"
+    dotnet_target_type: "FodsWorksheet (wraps Table.Table)"
+    dotnet_current_type: "FodsSheet (in Model/FodsSheet.cs — flat, not QName-mapped)"
+    dotnet_target_file: "src/net/fods/Model/Table/Table.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsSheet.cs"
+    python_type: "spec/table/table.Table"
+    python_current_file: "src/python/fods/spec/table/table.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: "Python spec class exists; .NET Model class exists but in flat layout"
+    wave1_action: "Move FodsSheet.cs → Model/Table/Table.cs; add QName mapping"
+
+  - qname: "table:table-row"
+    canonical_concept: "Table.TableRow"
+    dotnet_target_type: "FodsRow (wraps Table.TableRow)"
+    dotnet_current_type: "FodsRow (in Model/FodsRow.cs — flat)"
+    dotnet_target_file: "src/net/fods/Model/Table/TableRow.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsRow.cs"
+    python_type: "spec/table/table_row.TableRow"
+    python_current_file: "src/python/fods/spec/table/table_row.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: "Both languages have model class; layout differs"
+    wave1_action: "Move FodsRow.cs → Model/Table/TableRow.cs; add QName mapping"
+
+  - qname: "table:table-cell"
+    canonical_concept: "Table.TableCell"
+    dotnet_target_type: "FodsCell (wraps Table.TableCell)"
+    dotnet_current_type: "FodsCell (in Model/FodsCell.cs — flat)"
+    dotnet_target_file: "src/net/fods/Model/Table/TableCell.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsCell.cs"
+    python_type: "spec/table/table_cell.TableCell"
+    python_current_file: "src/python/fods/spec/table/table_cell.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: "Both have model class; .NET layout is flat"
+    wave1_action: "Move FodsCell.cs → Model/Table/TableCell.cs; add SpecQName constant"
+
+  - qname: "table:table-column"
+    canonical_concept: "Table.TableColumn"
+    dotnet_target_type: "FodsColumn (wraps Table.TableColumn)"
+    dotnet_current_type: "Not a standalone class — column styles in FodsOdfColumnStyle.cs"
+    dotnet_target_file: "src/net/fods/Model/Table/TableColumn.cs"
+    dotnet_current_file: null
+    python_type: "spec/table/table_column.TableColumn"
+    python_current_file: "src/python/fods/spec/table/table_column.py"
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create Model/Table/TableColumn.cs; create FodsColumn public type"
+
+  - qname: "table:covered-table-cell"
+    canonical_concept: "Table.CoveredTableCell"
+    dotnet_target_type: "FodsCoveredCell or property on FodsCell"
+    dotnet_current_type: "IsCovered property on FodsCell"
+    dotnet_target_file: "src/net/fods/Model/Table/CoveredTableCell.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsCell.cs (IsCovered property)"
+    python_type: "spec/table/covered_table_cell.CoveredTableCell"
+    python_current_file: "src/python/fods/spec/table/covered_table_cell.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: ".NET uses bool property rather than separate type"
+    wave1_action: "Align .NET to have proper CoveredTableCell model type"
+
+  - qname: "table:table-header-rows"
+    canonical_concept: "Table.TableHeaderRows"
+    dotnet_target_type: "FodsHeaderRows (or property on FodsWorksheet)"
+    dotnet_current_type: "Not implemented"
+    dotnet_target_file: "src/net/fods/Model/Table/TableHeaderRows.cs"
+    dotnet_current_file: null
+    python_type: "spec/table/table_header_rows.TableHeaderRows"
+    python_current_file: "src/python/fods/spec/table/table_header_rows.py"
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create in both languages"
+
+  - qname: "text:p"
+    canonical_concept: "Text.Paragraph"
+    dotnet_target_type: "Cell content accessor (text:p is child of table:table-cell)"
+    dotnet_current_type: "Not explicitly modeled in .NET"
+    dotnet_target_file: "src/net/fods/Model/Text/Paragraph.cs"
+    dotnet_current_file: null
+    python_type: "spec/text/paragraph.Paragraph"
+    python_current_file: "src/python/fods/spec/text/paragraph.py"
+    semantic_parity: "MISSING"
+    intentional_differences: "Text:p handling implicit in cell string value in .NET"
+    wave1_action: "Create Model/Text/Paragraph.cs in .NET"
+
+  - qname: "text:span"
+    canonical_concept: "Text.Span"
+    dotnet_target_type: "FodsSpan or formatted run within cell"
+    dotnet_current_type: "Not modeled"
+    dotnet_target_file: "src/net/fods/Model/Text/Span.cs"
+    dotnet_current_file: null
+    python_type: "spec/text/span.Span"
+    python_current_file: "src/python/fods/spec/text/span.py"
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create in both languages"
+
+  - qname: "style:style"
+    canonical_concept: "Style.Style"
+    dotnet_target_type: "FodsStyle (wraps Style.Style)"
+    dotnet_current_type: "FodsOdfCellStyle in Model/FodsOdfCellStyle.cs (partial)"
+    dotnet_target_file: "src/net/fods/Model/Style/Style.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsOdfCellStyle.cs"
+    python_type: "spec/style/style.Style"
+    python_current_file: "src/python/fods/spec/style/style.py"
+    semantic_parity: "PARTIAL"
+    intentional_differences: ".NET has partial cell style implementation; needs consolidation"
+    wave1_action: "Consolidate and move to Model/Style/Style.cs"
+
+  - qname: "style:text-properties"
+    canonical_concept: "Style.TextProperties"
+    dotnet_target_type: "FodsTextStyle (wraps Style.TextProperties)"
+    dotnet_current_type: "Not modeled as separate class"
+    dotnet_target_file: "src/net/fods/Model/Style/TextProperties.cs"
+    dotnet_current_file: null
+    python_type: "spec/style/text_properties.TextProperties"
+    python_current_file: null
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create in both languages (GAP-GLOBAL-004)"
+
+  - qname: "style:table-cell-properties"
+    canonical_concept: "Style.TableCellProperties"
+    dotnet_target_type: "FodsCellStyle (wraps Style.TableCellProperties)"
+    dotnet_current_type: "Partial implementation in FodsOdfCellStyle.cs"
+    dotnet_target_file: "src/net/fods/Model/Style/TableCellProperties.cs"
+    dotnet_current_file: "src/net/fods/Model/FodsOdfCellStyle.cs"
+    python_type: "spec/style/table_cell_properties.TableCellProperties"
+    python_current_file: null
+    semantic_parity: "MISSING"
+    intentional_differences: none
+    wave1_action: "Create in both languages (GAP-GLOBAL-004)"
+
+csv_qname_alignment:
+
+  - qname: "record:record"
+    canonical_concept: "Record.Record"
+    dotnet_target_type: "CsvRow (wraps Record.Record)"
+    dotnet_current_type: "List<string> rows in CsvDocument"
+    dotnet_target_file: "src/net/csv/Model/Record/Record.cs"
+    dotnet_current_file: null
+    python_type: "spec/record/record.Record (if exists)"
+    python_current_file: "src/python/csv/spec/record/ (to verify)"
+    semantic_parity: "PARTIAL"
+    intentional_differences: "CSV has simpler model than ODF formats"
+    wave1_action: "Create canonical Record model in both languages"
+
+  - qname: "record:field"
+    canonical_concept: "Record.Field"
+    dotnet_target_type: "CsvCell or string value on CsvRow"
+    dotnet_current_type: "string[] in each row"
+    dotnet_target_file: "src/net/csv/Model/Record/Field.cs"
+    dotnet_current_file: null
+    python_type: "spec/record/field.Field (if exists)"
+    python_current_file: null
+    semantic_parity: "MISSING"
+    intentional_differences: "CSV cells are untyped strings"
+    wave1_action: "Create Field model in both languages"
+
+summary:
+  fods_qnames_mapped: 13
+  csv_qnames_mapped: 2
+  semantic_parity_full: 0
+  semantic_parity_partial: 7
+  semantic_parity_missing: 8
+  acceptance_check:
+    all_fods_qnames_have_both_fields: true
+    all_csv_qnames_have_both_fields: true

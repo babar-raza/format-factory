@@ -1,0 +1,917 @@
+---
+# TC-ARC-004: QName Code Organization Plan — All Formats
+# Defines target source layout for all 30 format+language combinations.
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §2, §4
+
+schema_version: "1.0"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-004"
+requirement_ids: ["REQ-ARC-002", "REQ-ARC-004"]
+
+# Naming conventions
+# - .NET: Model/<Ns>/<Type>.cs — PascalCase namespace dirs
+# - Python: spec/<ns>/<type>.py — snake_case namespace dirs
+# - Prohibited subdir names: MissingMethods, ExtendedApis, Misc, Helpers, Extra
+# - Prohibited: sprint/wave/task IDs in directory names
+
+total_entries: 30
+dotnet_entries: 10
+python_entries: 20
+
+# ──────────────────────────────────────────────────────────────────────────────
+# .NET FORMATS (10)
+# ──────────────────────────────────────────────────────────────────────────────
+
+dotnet_formats:
+
+  - format: "fods"
+    language: "dotnet"
+    format_class: "ODF_Spreadsheet"
+    root: "src/net/fods/"
+    root_type: "FodsDocument"
+    current_layout:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 19
+      existing_subdirs: ["Model/", "Spec/Office/", "Spec/Table/"]
+      notes: "Model/ has flat FodsCell/FodsSheet/FodsRow. Spec/ has 4 canonical classes."
+    target_layout:
+      subdirs:
+        - "Model/Office/"
+        - "Model/Table/"
+        - "Model/Style/"
+        - "Model/Text/"
+        - "Model/Number/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Office: ["office:document", "office:body", "office:spreadsheet", "office:automatic-styles"]
+      Table: ["table:table", "table:table-row", "table:table-cell", "table:table-column", "table:covered-table-cell"]
+      Style: ["style:style", "style:table-cell-properties", "style:text-properties"]
+      Text: ["text:p", "text:span"]
+      Number: ["number:date-style"]
+    delta:
+      create: ["Model/Office/", "Model/Style/", "Model/Text/", "Model/Number/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+      move: ["Spec/ → Model/ (canonicalize names)"]
+      note: "Spec/Table/TableCell.cs exists — to become Model/Table/TableCell.cs post-wave"
+
+  - format: "fodt"
+    language: "dotnet"
+    format_class: "ODF_Text"
+    root: "src/net/fodt/"
+    root_type: "FodtDocument"
+    current_layout:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 10
+      existing_subdirs: ["Model/"]
+      notes: "Model/ has FodtParagraph/FodtRun. Spec/ exists."
+    target_layout:
+      subdirs:
+        - "Model/Office/"
+        - "Model/Text/"
+        - "Model/Style/"
+        - "Model/Draw/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Office: ["office:document", "office:body", "office:text", "office:automatic-styles"]
+      Text: ["text:p", "text:h", "text:span", "text:list", "text:list-item", "text:section", "text:note"]
+      Style: ["style:style", "style:text-properties", "style:paragraph-properties"]
+      Draw: ["draw:frame", "draw:image"]
+    delta:
+      create: ["Model/Office/", "Model/Style/", "Model/Draw/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+      move: ["Model/FodtParagraph.cs → Model/Text/Paragraph.cs"]
+
+  - format: "csv"
+    language: "dotnet"
+    format_class: "Tabular_Delimited"
+    root: "src/net/csv/"
+    root_type: "CsvDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 3
+      existing_subdirs: []
+      notes: "Flat layout. CsvDocument.cs, CsvReader.cs, CsvWriter.cs. No Model/ subdir."
+    target_layout:
+      subdirs:
+        - "Model/Record/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Record: ["csv:document", "csv:row", "csv:field"]
+    delta:
+      create: ["Model/Record/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+      move: []
+      note: "CSV has no ODF QNames; Record namespace is internal to FF spec"
+
+  - format: "tsv"
+    language: "dotnet"
+    format_class: "Tabular_Delimited"
+    root: "src/net/tsv/"
+    root_type: "TsvDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 5
+      existing_subdirs: []
+      notes: "Flat layout similar to CSV."
+    target_layout:
+      subdirs:
+        - "Model/Record/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Record: ["tsv:document", "tsv:row", "tsv:field"]
+    delta:
+      create: ["Model/Record/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+  - format: "html"
+    language: "dotnet"
+    format_class: "Markup"
+    root: "src/net/html/"
+    root_type: "HtmlDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      cs_file_count: 1
+      existing_subdirs: []
+      notes: "Single stub file only."
+    target_layout:
+      subdirs:
+        - "Model/Document/"
+        - "Model/Element/"
+        - "Model/Style/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Document: ["html:html", "html:head", "html:body"]
+      Element: ["html:table", "html:tr", "html:td", "html:p", "html:span"]
+      Style: ["html:style"]
+    delta:
+      create: ["Model/Document/", "Model/Element/", "Model/Style/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+  - format: "markdown"
+    language: "dotnet"
+    format_class: "Markup"
+    root: "src/net/markdown/"
+    root_type: "MarkdownDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      cs_file_count: 1
+      existing_subdirs: []
+      notes: "Single stub file only."
+    target_layout:
+      subdirs:
+        - "Model/Document/"
+        - "Model/Block/"
+        - "Model/Inline/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Document: ["md:document"]
+      Block: ["md:heading", "md:paragraph", "md:code_block", "md:list", "md:blockquote"]
+      Inline: ["md:emphasis", "md:strong", "md:code", "md:link", "md:image"]
+    delta:
+      create: ["Model/Document/", "Model/Block/", "Model/Inline/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+  - format: "ndjson"
+    language: "dotnet"
+    format_class: "Data"
+    root: "src/net/ndjson/"
+    root_type: "NdjsonDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 6
+      existing_subdirs: []
+      notes: "Flat layout with Spec/ files."
+    target_layout:
+      subdirs:
+        - "Model/Record/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Record: ["ndjson:document", "ndjson:record", "ndjson:field"]
+    delta:
+      create: ["Model/Record/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+  - format: "netpbm"
+    language: "dotnet"
+    format_class: "Image"
+    root: "src/net/netpbm/"
+    root_type: "NetpbmImage"
+    current_layout:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      cs_file_count: 4
+      existing_subdirs: ["Model/"]
+      notes: "Model/ exists. Spec/ exists."
+    target_layout:
+      subdirs:
+        - "Model/Image/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Image: ["pbm:image", "pgm:image", "ppm:image"]
+    delta:
+      create: ["Model/Image/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+      move: ["Model/*.cs → Model/Image/*.cs"]
+
+  - format: "txt"
+    language: "dotnet"
+    format_class: "PlainText"
+    root: "src/net/txt/"
+    root_type: "TxtDocument"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      cs_file_count: 1
+      existing_subdirs: []
+      notes: "Single stub file only."
+    target_layout:
+      subdirs:
+        - "Model/Document/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Document: ["txt:document", "txt:line"]
+    delta:
+      create: ["Model/Document/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+  - format: "zst"
+    language: "dotnet"
+    format_class: "Archive"
+    root: "src/net/zst/"
+    root_type: "ZstArchive"
+    current_layout:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      cs_file_count: 3
+      existing_subdirs: []
+      notes: "Flat layout. Compression-only format."
+    target_layout:
+      subdirs:
+        - "Model/Archive/"
+        - "Parsing/"
+        - "Writing/"
+        - "Values/"
+        - "Validation/"
+        - "Export/"
+        - "Exceptions/"
+        - "Internal/"
+    model_namespace_groups:
+      Archive: ["zst:archive", "zst:stream"]
+    delta:
+      create: ["Model/Archive/", "Parsing/", "Writing/", "Values/", "Validation/", "Export/", "Exceptions/", "Internal/"]
+
+# ──────────────────────────────────────────────────────────────────────────────
+# PYTHON FORMATS (20)
+# Note: Python uses spec/<ns>/ convention (not Model/<Ns>/)
+# All 20 Python formats already have spec/ and Compat/ directories.
+# ──────────────────────────────────────────────────────────────────────────────
+
+python_formats:
+
+  - format: "fods"
+    language: "python"
+    format_class: "ODF_Spreadsheet"
+    root: "src/python/fods/"
+    root_module: "fods"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 123
+      existing_spec_namespaces: ["office", "table", "text", "style", "number"]
+      notes: "Most complete. spec/ has 5 namespace dirs. Compat/ exists. models.py wraps dicts."
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/table/"
+        - "spec/text/"
+        - "spec/style/"
+        - "spec/number/"
+        - "spec/draw/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:spreadsheet", "office:automatic-styles", "office:annotation"]
+      table: ["table:table", "table:table-row", "table:table-cell", "table:table-column", "table:covered-table-cell", "table:table-header-rows"]
+      style: ["style:style", "style:table-cell-properties", "style:text-properties", "style:paragraph-properties"]
+      text: ["text:p", "text:span"]
+      number: ["number:date-style"]
+    delta:
+      create: ["spec/draw/", "parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+      fix: ["models.py must delegate to spec/ objects not raw dicts (MINOR_REALIGNMENT)"]
+
+  - format: "fodt"
+    language: "python"
+    format_class: "ODF_Text"
+    root: "src/python/fodt/"
+    root_module: "fodt"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 96
+      existing_spec_namespaces: ["office", "text", "style"]
+      notes: "spec/ partially implemented. Compat/ exists."
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/text/"
+        - "spec/style/"
+        - "spec/draw/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:text", "office:automatic-styles"]
+      text: ["text:p", "text:h", "text:span", "text:list", "text:list-item", "text:section"]
+      style: ["style:style", "style:text-properties", "style:paragraph-properties"]
+      draw: ["draw:frame", "draw:image"]
+    delta:
+      create: ["spec/draw/", "parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "csv"
+    language: "python"
+    format_class: "Tabular_Delimited"
+    root: "src/python/csv/"
+    root_module: "csv_ff"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+      existing_spec_namespaces: []
+      notes: "spec/ exists but may be empty or minimal. models.py wraps dicts."
+    target_layout:
+      subdirs:
+        - "spec/record/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      record: ["csv:document", "csv:row", "csv:field"]
+    delta:
+      create: ["spec/record/", "parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "tsv"
+    language: "python"
+    format_class: "Tabular_Delimited"
+    root: "src/python/tsv/"
+    root_module: "tsv"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 29
+    target_layout:
+      subdirs:
+        - "spec/record/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      record: ["tsv:document", "tsv:row", "tsv:field"]
+    delta:
+      create: ["spec/record/", "parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "abw"
+    language: "python"
+    format_class: "Document"
+    root: "src/python/abw/"
+    root_module: "abw"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 21
+    target_layout:
+      subdirs:
+        - "spec/document/"
+        - "spec/text/"
+        - "spec/style/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      document: ["abw:document", "abw:section"]
+      text: ["abw:p", "abw:span"]
+      style: ["abw:style"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "dif"
+    language: "python"
+    format_class: "Tabular"
+    root: "src/python/dif/"
+    root_module: "dif"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 20
+    target_layout:
+      subdirs:
+        - "spec/record/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      record: ["dif:document", "dif:tuple", "dif:data"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "fodg"
+    language: "python"
+    format_class: "ODF_Drawing"
+    root: "src/python/fodg/"
+    root_module: "fodg"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/draw/"
+        - "spec/style/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:drawing"]
+      draw: ["draw:page", "draw:frame", "draw:image", "draw:text-box"]
+      style: ["style:style", "style:graphic-properties"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "fodp"
+    language: "python"
+    format_class: "ODF_Presentation"
+    root: "src/python/fodp/"
+    root_module: "fodp"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 15
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/presentation/"
+        - "spec/draw/"
+        - "spec/style/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:presentation"]
+      presentation: ["presentation:page", "presentation:placeholder"]
+      draw: ["draw:frame", "draw:image"]
+      style: ["style:style", "style:presentation-properties"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "gnumeric"
+    language: "python"
+    format_class: "Spreadsheet_XML"
+    root: "src/python/gnumeric/"
+    root_module: "gnumeric"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 38
+    target_layout:
+      subdirs:
+        - "spec/workbook/"
+        - "spec/sheet/"
+        - "spec/cell/"
+        - "spec/style/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      workbook: ["gnm:Workbook", "gnm:Sheets"]
+      sheet: ["gnm:Sheet", "gnm:Rows", "gnm:Cols"]
+      cell: ["gnm:Cell"]
+      style: ["gnm:Style", "gnm:Font", "gnm:Border"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "ndjson"
+    language: "python"
+    format_class: "Data"
+    root: "src/python/ndjson/"
+    root_module: "ndjson"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 31
+    target_layout:
+      subdirs:
+        - "spec/record/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      record: ["ndjson:document", "ndjson:record", "ndjson:field"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "ods"
+    language: "python"
+    format_class: "ODF_Spreadsheet_Compressed"
+    root: "src/python/ods/"
+    root_module: "ods"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 27
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/table/"
+        - "spec/style/"
+        - "spec/text/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:spreadsheet"]
+      table: ["table:table", "table:table-row", "table:table-cell", "table:table-column"]
+      style: ["style:style", "style:table-cell-properties"]
+      text: ["text:p"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+      note: "Same QName hierarchy as FODS (compressed ZIP container)"
+
+  - format: "odt"
+    language: "python"
+    format_class: "ODF_Text_Compressed"
+    root: "src/python/odt/"
+    root_module: "odt"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 19
+    target_layout:
+      subdirs:
+        - "spec/office/"
+        - "spec/text/"
+        - "spec/style/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      office: ["office:document", "office:body", "office:text"]
+      text: ["text:p", "text:h", "text:span", "text:list"]
+      style: ["style:style", "style:text-properties"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+      note: "Same QName hierarchy as FODT (compressed ZIP container)"
+
+  - format: "pbm"
+    language: "python"
+    format_class: "Image_NetPBM"
+    root: "src/python/pbm/"
+    root_module: "pbm"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 22
+    target_layout:
+      subdirs:
+        - "spec/image/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      image: ["pbm:image", "pbm:pixel"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "pgm"
+    language: "python"
+    format_class: "Image_NetPBM"
+    root: "src/python/pgm/"
+    root_module: "pgm"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+    target_layout:
+      subdirs:
+        - "spec/image/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      image: ["pgm:image", "pgm:pixel"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "ppm"
+    language: "python"
+    format_class: "Image_NetPBM"
+    root: "src/python/ppm/"
+    root_module: "ppm"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 20
+    target_layout:
+      subdirs:
+        - "spec/image/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      image: ["ppm:image", "ppm:pixel"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "qoi"
+    language: "python"
+    format_class: "Image"
+    root: "src/python/qoi/"
+    root_module: "qoi"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 17
+    target_layout:
+      subdirs:
+        - "spec/image/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      image: ["qoi:image", "qoi:header"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "sylk"
+    language: "python"
+    format_class: "Tabular"
+    root: "src/python/sylk/"
+    root_module: "sylk"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 21
+    target_layout:
+      subdirs:
+        - "spec/record/"
+        - "spec/format/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      record: ["sylk:workbook", "sylk:cell"]
+      format: ["sylk:format", "sylk:font"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "toml"
+    language: "python"
+    format_class: "Data"
+    root: "src/python/toml/"
+    root_module: "toml_ff"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 45
+    target_layout:
+      subdirs:
+        - "spec/document/"
+        - "spec/table/"
+        - "spec/value/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      document: ["toml:document"]
+      table: ["toml:table", "toml:array-of-tables"]
+      value: ["toml:string", "toml:integer", "toml:float", "toml:boolean", "toml:datetime", "toml:array"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "xcf"
+    language: "python"
+    format_class: "Image"
+    root: "src/python/xcf/"
+    root_module: "xcf"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 17
+    target_layout:
+      subdirs:
+        - "spec/image/"
+        - "spec/layer/"
+        - "spec/channel/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      image: ["xcf:image"]
+      layer: ["xcf:layer"]
+      channel: ["xcf:channel"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+  - format: "zst"
+    language: "python"
+    format_class: "Archive"
+    root: "src/python/zst/"
+    root_module: "zst"
+    current_layout:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 42
+    target_layout:
+      subdirs:
+        - "spec/archive/"
+        - "spec/stream/"
+        - "Compat/"
+        - "parser/"
+        - "writer/"
+        - "values/"
+        - "validation/"
+        - "export/"
+        - "_internal/"
+    model_namespace_groups:
+      archive: ["zst:archive"]
+      stream: ["zst:stream", "zst:frame"]
+    delta:
+      create: ["parser/", "writer/", "values/", "validation/", "export/", "_internal/"]
+
+# ──────────────────────────────────────────────────────────────────────────────
+# GLOBAL LAYOUT RULES (enforced by TC-ARC-012 validators)
+# ──────────────────────────────────────────────────────────────────────────────
+
+global_rules:
+  prohibited_subdir_names:
+    - "MissingMethods"
+    - "ExtendedApis"
+    - "Misc"
+    - "Extra"
+    - "Helpers"
+    - "Utils"
+    - "LegacyCounters"
+  prohibited_filename_patterns:
+    - "*Sprint*"
+    - "*Wave*"
+    - "*Task*"
+    - "*Run*"
+    - "*R[0-9][0-9][0-9][0-9]*"   # sprint-ID-ranged filenames
+  dotnet_requirements:
+    - "One primary public type per .cs file"
+    - "Filename matches primary type (e.g. TableCell.cs for class TableCell)"
+    - "Model/<Ns>/ path follows QName namespace"
+    - "Parsing/ components may only reference Model/ types"
+    - "Writing/ components may only reference Model/ types"
+  python_requirements:
+    - "spec/<ns>/<type>.py — one canonical class per file"
+    - "Compat/ wraps spec classes — does not re-implement behavior"
+    - "parser/ modules populate spec/ objects from real files"
+    - "writer/ modules serialize spec/ objects to format bytes"
+    - "models.py is transitional — target is Compat/ wrapping spec/"
+  wave1_scope:
+    status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    note: >
+      Wave 1 source migration creates these directory structures in src/net/ and src/python/.
+      No directories are created until Lanes 1-6, 14, 15 system healing gate passes.
+      This plan records WHAT will be created, not authorization to create it now.

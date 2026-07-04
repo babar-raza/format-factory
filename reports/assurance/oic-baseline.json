@@ -1,0 +1,64 @@
+{
+  "total": 7,
+  "pass": 3,
+  "fail": 2,
+  "skip": 2,
+  "entries": [
+    {
+      "format": "ndjson",
+      "platform": "python",
+      "method": "to_json",
+      "invariant": "JSON_PARSEABLE",
+      "result": "SKIP",
+      "evidence": "Import/runtime error: cannot import name 'NdjsonDocument' from 'ndjson.ndjson_codec' (C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\ndjson_codec.py)"
+    },
+    {
+      "format": "abw",
+      "platform": "python",
+      "method": "export_to_html",
+      "invariant": "HTML_CELL_SAFETY",
+      "result": "SKIP",
+      "evidence": "Import/runtime error: cannot import name 'AbwDocument' from 'abw.abw_codec' (C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\abw_codec.py)"
+    },
+    {
+      "format": "csv",
+      "platform": "dotnet",
+      "method": "ToJson",
+      "invariant": "JSON_PARSEABLE",
+      "result": "FAIL",
+      "evidence": "dotnet/csv/ToJson: JSONDecodeError: Invalid control character at: line 1 column 16 (char 15)"
+    },
+    {
+      "format": "csv",
+      "platform": "dotnet",
+      "method": "ToHtml",
+      "invariant": "HTML_CELL_SAFETY",
+      "result": "FAIL",
+      "evidence": "dotnet/csv/ToHtml: unescaped HTML entity in <td>: '<script>alert(1)</script>'"
+    },
+    {
+      "format": "csv",
+      "platform": "dotnet",
+      "method": "ExportToXml",
+      "invariant": "XML_PARSEABLE",
+      "result": "PASS",
+      "evidence": null
+    },
+    {
+      "format": "fods",
+      "platform": "dotnet",
+      "method": "FodsJsonExporter",
+      "invariant": "JSON_PARSEABLE",
+      "result": "PASS",
+      "evidence": null
+    },
+    {
+      "format": "html",
+      "platform": "dotnet",
+      "method": "HtmlWriter.WriteTable",
+      "invariant": "HTML_CELL_SAFETY",
+      "result": "PASS",
+      "evidence": null
+    }
+  ]
+}

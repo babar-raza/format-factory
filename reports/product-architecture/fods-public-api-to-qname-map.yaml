@@ -1,0 +1,929 @@
+---
+# TC-ARC-006: FODS Public API to QName Map
+# Maps every FODS public symbol (both .NET and Python) to its governing QName.
+# Symbols without QName authority are flagged as VIOLATION or INTENTIONAL_UNMAPPED.
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §3
+
+schema_version: "1.0"
+format_id: "fods"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-006"
+requirement_ids: ["REQ-ARC-003"]
+
+# Disposition vocabulary:
+#   RETAINED_MAPPED      — symbol is compliant; maps correctly to QName
+#   VIOLATION_WRONG_OWNER — exists but belongs on a child type (not the root)
+#   VIOLATION_NO_QNAME   — no spec authority; test-only or speculative
+#   REDESIGNED           — symbol should become a property/collection instead of method
+#   MOVED                — symbol should move to a different class
+#   DEPRECATED           — redundant; duplicate; or replaced in target architecture
+#   INTENTIONAL_UNMAPPED — no QName but justified (enum, configuration, utility)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# .NET PUBLIC SYMBOLS
+# ──────────────────────────────────────────────────────────────────────────────
+
+dotnet_symbols:
+
+  # ── FodsDocument public surface ────────────────────────────────────────────
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "MaxFileSizeBytes"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Configuration constraint — no ODF QName governs file size limits"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "CreateNew"
+    kind: "static method"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "Load(string filePath)"
+    kind: "static method"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "Load(Stream stream)"
+    kind: "static method"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "Save(string filePath)"
+    kind: "method"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "CreateEmpty"
+    kind: "static method"
+    qname: "office:document"
+    disposition: "DEPRECATED"
+    justification: "Alias for CreateNew() — duplicate; remove in target architecture"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "LoadFromXml(string xml)"
+    kind: "static method"
+    qname: "office:document"
+    disposition: "REDESIGNED"
+    justification: "Valid but should be part of Load overloads, not a separate named method"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "ToFodsXml"
+    kind: "method"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "MimeType"
+    kind: "property"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "OdfVersion"
+    kind: "property"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "Sheets"
+    kind: "property"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    justification: "Correct QName but name should be 'Worksheets' per Aspose pattern; returns IReadOnlyList not typed collection"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SheetCount"
+    kind: "property"
+    qname: "table:table"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheetCollection.Count"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetSheetByName(string name)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheetCollection.this[string]"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetSheetByIndex(int index)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheetCollection.this[int]"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetSheetNames()"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheet.Name (enumerated via Worksheets)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "AddSheet(string name)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheetCollection.Add(string)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "RemoveSheet(string name)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheetCollection.Remove(string)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "RenameSheet(string oldName, string newName)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheet.Name setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "CopySheet(string sourceName, string newName)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  # VIOLATION group — methods that bypass child hierarchy
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetCellValue(string sheetName, int row, int col)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetCellValue(int row, int col)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value (on default sheet)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetCellValue(FodsSheet sheet, int row, int col)"
+    kind: "static method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SetCellValue(string sheetName, int row, int col, string value)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SetCellValue(int row, int col, string value)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SetCellValue(FodsSheet sheet, int row, int col, string value)"
+    kind: "static method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Value setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "DeleteColumn(string sheetName, int colIndex)"
+    kind: "method"
+    qname: "table:table-column"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Columns.Remove(int)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "DeleteRows(string sheetName, int startRow, int count)"
+    kind: "method"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Rows.Remove(int, int)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "InsertRow(string sheetName, int rowIndex)"
+    kind: "method"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Rows.Insert(int)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetColumnHeaders()"
+    kind: "method"
+    qname: "table:table-column"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Columns (enumerated)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "GetColumnHeaders(string sheetName)"
+    kind: "method"
+    qname: "table:table-column"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Columns (enumerated)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "ExportSheetToHtml()"
+    kind: "method"
+    qname: "office:document"
+    disposition: "REDESIGNED"
+    target_type: "FodsDocument.Export(path, FodsExportFormat.Html)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: "src/net/fods/FodsHtmlExporter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "ExportSheetToHtml(string sheetName)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "FodsWorksheet.Export(FodsExportFormat.Html)"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: "src/net/fods/FodsHtmlExporter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "ExportSheetToHtml(FodsSheet sheet)"
+    kind: "static method"
+    qname: "table:table"
+    disposition: "DEPRECATED"
+    justification: "Static helper; target architecture uses FodsWorksheet.Export()"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "ClearSheet(string sheetName)"
+    kind: "method"
+    qname: "table:table"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Clear()"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "InsertRowWithValues(string sheetName, int rowIndex, IReadOnlyList<string?> values)"
+    kind: "method"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.Rows.Insert(int, string[])"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "MergeCells(string sheetName, int startRow, int startCol, int rowSpan, int colSpan)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.MergeWith(rowSpan, colSpan) or FodsWorksheet.MergeRange()"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SetCellFormula(string sheetName, int row, int col, string formula)"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Formula setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SortRows(string sheetName, int sortColumn, bool ascending)"
+    kind: "method"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheet.SortRows(int, bool)"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsDocument"
+    source_file: "FodsDocument.cs"
+    symbol: "SetCellStyle(string sheetName, int row, int col, string styleName)"
+    kind: "method"
+    qname: "style:style"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsCell.Style setter"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  # ── FodsSheet ─────────────────────────────────────────────────────────────
+  - owner_type: "FodsSheet"
+    source_file: "Model/FodsSheet.cs"
+    symbol: "Name"
+    kind: "property"
+    qname: "table:table"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsSheet"
+    source_file: "Model/FodsSheet.cs"
+    symbol: "Rows"
+    kind: "property"
+    qname: "table:table-row"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  # ── FodsRow ───────────────────────────────────────────────────────────────
+  - owner_type: "FodsRow"
+    source_file: "Model/FodsRow.cs"
+    symbol: "Cells"
+    kind: "property"
+    qname: "table:table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+  # ── FodsCell ─────────────────────────────────────────────────────────────
+  - owner_type: "FodsCell"
+    source_file: "Model/FodsCell.cs"
+    symbol: "Value"
+    kind: "property"
+    qname: "table:table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsCell"
+    source_file: "Model/FodsCell.cs"
+    symbol: "SetText(string value)"
+    kind: "method"
+    qname: "text:p"
+    disposition: "REDESIGNED"
+    justification: "Should be Value setter with FodsValueType.String; SetText is a named workaround"
+    parser_path: null
+    writer_path: "src/net/fods/FodsWriter.cs"
+
+  - owner_type: "FodsCell"
+    source_file: "Model/FodsCell.cs"
+    symbol: "IsCovered"
+    kind: "property"
+    qname: "table:covered-table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/net/fods/FodsParser.cs"
+    writer_path: null
+
+# ──────────────────────────────────────────────────────────────────────────────
+# PYTHON PUBLIC SYMBOLS
+# ──────────────────────────────────────────────────────────────────────────────
+
+python_symbols:
+
+  # ── models.py — FodsDocument class ────────────────────────────────────────
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "from_file"
+    kind: "classmethod"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "format_id"
+    kind: "property"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "odf_version"
+    kind: "property"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "sheet_count"
+    kind: "property"
+    qname: "table:table"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "FodsWorksheetCollection.count (Python)"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "warnings"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Parser diagnostics — no ODF QName; metadata internal to FF"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "sheets"
+    kind: "property"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    justification: "Correct QName; name should be 'worksheets' per Aspose convention"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "sheet_by_name"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "worksheets[name]"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "find_sheet_by_index"
+    kind: "method"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "worksheets[index]"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "is_empty"
+    kind: "property"
+    qname: "office:document"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "is_single_sheet"
+    kind: "property"
+    qname: "table:table"
+    disposition: "VIOLATION_NO_QNAME"
+    justification: "Heuristic convenience — no ODF fact authorizes this property on the document type"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "is_multi_sheet"
+    kind: "property"
+    qname: "table:table"
+    disposition: "VIOLATION_NO_QNAME"
+    justification: "Same issue as is_single_sheet"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "has_sheets"
+    kind: "property"
+    qname: "table:table"
+    disposition: "REDESIGNED"
+    target_type: "len(worksheets) > 0"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "total_row_count"
+    kind: "property"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "sum(ws.row_count for ws in worksheets)"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "max_sheet_rows"
+    kind: "property"
+    qname: "table:table-row"
+    disposition: "VIOLATION_WRONG_OWNER"
+    target_type: "max(ws.row_count for ws in worksheets)"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "is_large_workbook"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Analytics heuristic — no ODF spec governs what 'large' means; migrates to analytics module"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "has_many_sheets"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Analytics heuristic — same as is_large_workbook; migrates to analytics module"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "avg_rows_per_sheet"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Pure analytics — no ODF spec authority; migrates to fods_analytics.py"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "min_sheet_rows"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Analytics — migrates to fods_analytics.py"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "sheet_row_range"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Analytics — migrates to fods_analytics.py"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "is_uniform_sheet_size"
+    kind: "property"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Analytics — migrates to fods_analytics.py"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "FodsDocument"
+    source_file: "src/python/fods/models.py"
+    symbol: "to_dict"
+    kind: "method"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Serialization utility; no ODF QName governs this; retained for Python interop"
+    parser_path: null
+    writer_path: null
+
+  # ── models.py — FodsSheet class ───────────────────────────────────────────
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "name"
+    kind: "property"
+    qname: "table:table"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "rows"
+    kind: "property"
+    qname: "table:table-row"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "row_count"
+    kind: "property"
+    qname: "table:table-row"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "cells"
+    kind: "property"
+    qname: "table:table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "cell_at"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "find_cells_by_value"
+    kind: "method"
+    qname: "table:table-cell"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "iter_rows"
+    kind: "method"
+    qname: "table:table-row"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsSheet"
+    source_file: "src/python/fods/models.py"
+    symbol: "to_dict"
+    kind: "method"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Python interop utility; no ODF QName authority"
+    parser_path: null
+    writer_path: null
+
+  # ── models.py — FodsCell class ────────────────────────────────────────────
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "value"
+    kind: "property"
+    qname: "office:value"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "value_type"
+    kind: "property"
+    qname: "office:value-type"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "text"
+    kind: "property"
+    qname: "text:p"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "formula"
+    kind: "property"
+    qname: "table:formula"
+    disposition: "RETAINED_MAPPED"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "repeated"
+    kind: "property"
+    qname: "table:table-cell"
+    disposition: "REDESIGNED"
+    justification: "Should be named columns_repeated to match table:number-columns-repeated"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "FodsCell"
+    source_file: "src/python/fods/models.py"
+    symbol: "to_dict"
+    kind: "method"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Python interop utility"
+    parser_path: null
+    writer_path: null
+
+  # ── models.py — module-level functions ────────────────────────────────────
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "value_type(cell)"
+    kind: "function"
+    qname: "office:value-type"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsCell.value_type property"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "text(cell)"
+    kind: "function"
+    qname: "text:p"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsCell.text property"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "repeated(cell)"
+    kind: "function"
+    qname: "table:table-cell"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsCell.repeated property"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "from_file(file_path)"
+    kind: "function"
+    qname: "office:document"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsDocument.from_file() classmethod"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "odf_version(workbook)"
+    kind: "function"
+    qname: "office:document"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsDocument.odf_version property"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "cell_at(workbook, sheet, row, col)"
+    kind: "function"
+    qname: "table:table-cell"
+    disposition: "DEPRECATED"
+    justification: "Replaced by FodsDocument.sheets[].cell_at()"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "to_dict(workbook)"
+    kind: "function"
+    qname: null
+    disposition: "INTENTIONAL_UNMAPPED"
+    justification: "Python interop utility"
+    parser_path: null
+    writer_path: null
+
+  - owner_type: "module"
+    source_file: "src/python/fods/models.py"
+    symbol: "export_fods_to_csv(workbook, sheet)"
+    kind: "function"
+    qname: "office:document"
+    disposition: "REDESIGNED"
+    target_type: "FodsDocument.Export(path, FodsExportFormat.Csv)"
+    parser_path: "src/python/fods/fods_codec.py"
+    writer_path: "src/python/fods/export/"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SUMMARY COUNTERS
+# ──────────────────────────────────────────────────────────────────────────────
+
+summary:
+  dotnet:
+    total_symbols: 42
+    retained_mapped: 9
+    violation_wrong_owner: 16
+    violation_no_qname: 0
+    redesigned: 10
+    deprecated: 3
+    intentional_unmapped: 4
+    symbols_with_null_qname_without_justification: 0
+  python:
+    total_symbols: 37
+    retained_mapped: 13
+    violation_wrong_owner: 5
+    violation_no_qname: 2
+    redesigned: 5
+    deprecated: 6
+    intentional_unmapped: 6
+    symbols_with_null_qname_without_justification: 0
+  acceptance_check:
+    zero_symbols_null_qname_without_justification: "PASS"
+    zero_symbols_null_parser_path_for_readers: "PASS"
+    zero_symbols_null_writer_path_for_writers: "PASS"
+  key_findings:
+    - "16 .NET FodsDocument methods are VIOLATION_WRONG_OWNER — root bypasses child hierarchy"
+    - "2 Python FodsDocument heuristic properties (is_single_sheet, is_multi_sheet) have no QName authority"
+    - "All analytics properties (avg_rows, min/max sheet rows) marked INTENTIONAL_UNMAPPED — migrate to fods_analytics.py"
+    - "6 Python module-level functions are DEPRECATED — superseded by class methods/properties"
+    - "Wave 1 resolution: restructure per fods-aspose-api-design.yaml hierarchy"

@@ -1,0 +1,580 @@
+---
+# TC-ARC-007: Product Architecture Audit — All 30 Format+Language Combinations
+# Classifies each product per Plan §7 classifications.
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §7
+
+schema_version: "1.0"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-007"
+requirement_ids: ["REQ-ARC-007"]
+total_audit_records: 30
+
+# Classification vocabulary:
+#   COMPLIANT                   — meets dual-arch standard now; no migration needed
+#   MINOR_REALIGNMENT           — small delta; models.py wraps dicts not spec objects
+#   PUBLIC_FACADE_REPAIR        — facade exists but doesn't delegate to canonical model
+#   QNAME_MODEL_DECOMPOSITION   — monolithic root absorbs all behavior; needs decomposition
+#   PARSER_WRITER_REALIGNMENT   — parser/writer exist but not in Model/Parsing/Writing layout
+#   FULL_REBUILD                — stub-only; no real implementation; needs full build
+
+audit_records:
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # .NET FORMATS (10)
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - format: "fods"
+    language: "dotnet"
+    root: "src/net/fods/"
+    classification: "QNAME_MODEL_DECOMPOSITION"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 4
+      model_files: ["Model/FodsCell.cs", "Model/FodsSheet.cs", "Model/FodsRow.cs",
+                    "Model/FodsOdfCellStyle.cs", "Model/FodsOdfColumnStyle.cs", "Model/FodsOdfRowStyle.cs"]
+      facade_delegating_to_spec: false
+      root_type_behavior: "MONOLITHIC — FodsDocument partial class absorbs cell, row, style, export ops"
+      stub_methods_count: 23
+      stub_files: ["FodsDocumentCellProps.cs", "FodsDocumentDataAnnotations.cs",
+                   "FodsDocumentEditOps.cs", "FodsDocumentReadOps.cs", "FodsDocumentSheetFeatures.cs"]
+    findings:
+      - "FodsDocument owns 35+ methods that belong to child types (cell, row, worksheet ops)"
+      - "Spec/Table/TableCell.cs exists with SpecQName='table:table-cell' but FodsDocument does NOT delegate to it"
+      - "Model/ has flat structure — no Office/, Table/, Style/ subdirs"
+      - "23 stub methods returning 0/null without reading canonical model"
+      - "No Parsing/ or Writing/ subdirs — parser+writer are flat FodsParser.cs/FodsWriter.cs"
+    symbol_dispositions:
+      RETAINED_MAPPED: 9
+      VIOLATION_WRONG_OWNER: 16
+      REDESIGNED: 10
+      DEPRECATED: 3
+      INTENTIONAL_UNMAPPED: 7
+    wave1_action: "Decompose into Model/Office/, Model/Table/, Model/Style/; wire Spec/ types; create Parsing/, Writing/"
+    blocking_violations: 16
+
+  - format: "fodt"
+    language: "dotnet"
+    root: "src/net/fodt/"
+    classification: "QNAME_MODEL_DECOMPOSITION"
+    confidence: "MEDIUM"
+    current_state:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 9
+      model_files: ["Model/FodtParagraph.cs (+ others)"]
+      facade_delegating_to_spec: false
+      root_type_behavior: "MONOLITHIC — FodtDocument partial class; Model/ flat"
+    findings:
+      - "FodtDocument absorbs text editing operations"
+      - "Model/FodtParagraph.cs wraps XElement, not Text.Paragraph spec class"
+      - "No Parsing/ or Writing/ subdirs"
+    wave1_action: "Decompose into Model/Office/, Model/Text/, Model/Style/; wire Spec/ types"
+    blocking_violations: 8
+
+  - format: "csv"
+    language: "dotnet"
+    root: "src/net/csv/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 3
+      model_files: []
+      facade_delegating_to_spec: "N/A"
+      root_type_behavior: "FLAT — CsvDocument wraps internal List<string[]>; CsvReader/CsvWriter are separate"
+    findings:
+      - "CSV has no ODF QNames — tabular format with internal Record concept"
+      - "CsvDocument.cs at 866 LOC (pre-existing cap violation: cap=816)"
+      - "CsvReader.cs and CsvWriter.cs exist as separate classes — good separation"
+      - "No Model/Record/ subdir — model is implicit List<string[]>"
+      - "No spec_qname mapping — no canonical class needed for CSV structure"
+    wave1_action: "Add Model/Record/ subdir; CsvDocument LOC must shrink below 816 cap"
+    blocking_violations: 1
+
+  - format: "tsv"
+    language: "dotnet"
+    root: "src/net/tsv/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 5
+      model_files: []
+      root_type_behavior: "FLAT — similar to CSV"
+    findings:
+      - "TSV mirrors CSV architecture"
+      - "No Model/Record/ subdir"
+    wave1_action: "Add Model/Record/ subdir; align with CSV pattern"
+    blocking_violations: 0
+
+  - format: "html"
+    language: "dotnet"
+    root: "src/net/html/"
+    classification: "FULL_REBUILD"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      spec_files_count: 1
+      model_files: []
+      root_type_behavior: "STUB — single .cs file, no real implementation"
+    findings:
+      - "HTML .NET is a single architecture stub"
+      - "No parser, no writer, no model hierarchy"
+    wave1_action: "Full build: Model/Document/, Model/Element/, Model/Style/, Parsing/, Writing/"
+    blocking_violations: 0
+
+  - format: "markdown"
+    language: "dotnet"
+    root: "src/net/markdown/"
+    classification: "FULL_REBUILD"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      spec_files_count: 1
+      model_files: []
+      root_type_behavior: "STUB — single .cs file"
+    findings:
+      - "Markdown .NET is a single architecture stub"
+    wave1_action: "Full build: Model/Document/, Model/Block/, Model/Inline/, Parsing/, Writing/"
+    blocking_violations: 0
+
+  - format: "ndjson"
+    language: "dotnet"
+    root: "src/net/ndjson/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 6
+      model_files: []
+      root_type_behavior: "FLAT — 6 files including reader/writer"
+    findings:
+      - "Has Spec/ but no Model/ hierarchy"
+      - "Reader/Writer likely flat"
+    wave1_action: "Add Model/Record/ subdir; reorganize into Parsing/, Writing/"
+    blocking_violations: 0
+
+  - format: "netpbm"
+    language: "dotnet"
+    root: "src/net/netpbm/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_model_subdir: true
+      has_parsing_subdir: false
+      has_spec_subdir: true
+      spec_files_count: 4
+      model_files: ["Model/*.cs"]
+      root_type_behavior: "PARTIAL — Model/ exists flat; no Parsing/ subdir"
+    findings:
+      - "Model/ exists but flat — no Image/ namespace subdir"
+      - "No Parsing/ or Writing/ subdirs"
+    wave1_action: "Move Model/*.cs → Model/Image/; add Parsing/, Writing/"
+    blocking_violations: 0
+
+  - format: "txt"
+    language: "dotnet"
+    root: "src/net/txt/"
+    classification: "FULL_REBUILD"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      spec_files_count: 1
+      model_files: []
+      root_type_behavior: "STUB — single .cs file"
+    findings:
+      - "TXT .NET is a single architecture stub"
+    wave1_action: "Full build: Model/Document/, Parsing/, Writing/"
+    blocking_violations: 0
+
+  - format: "zst"
+    language: "dotnet"
+    root: "src/net/zst/"
+    classification: "FULL_REBUILD"
+    confidence: "HIGH"
+    current_state:
+      has_model_subdir: false
+      has_parsing_subdir: false
+      has_spec_subdir: false
+      spec_files_count: 3
+      model_files: []
+      root_type_behavior: "STUB — 3 flat files, no real hierarchy"
+    findings:
+      - "ZST .NET needs full archive model hierarchy"
+    wave1_action: "Full build: Model/Archive/, Model/Stream/, Parsing/, Writing/"
+    blocking_violations: 0
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # PYTHON FORMATS (20)
+  # ────────────────────────────────────────────────────────────────────────────
+
+  - format: "fods"
+    language: "python"
+    root: "src/python/fods/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      spec_namespace_dirs: ["office", "table", "text", "style", "number"]
+      py_file_count: 123
+      models_wraps: "neutral dicts (not spec objects)"
+      compat_delegates_to_spec: false
+    findings:
+      - "spec/ directory has 5 namespace subdirs and 15 spec class files"
+      - "models.py FodsCell wraps dict {value, value_type, text, formula} — not spec/table/table_cell.py"
+      - "Compat/fods_document.py is architecture marker only ('not behavioral' by docstring)"
+      - "Analytics properties (avg_rows, min/max) on FodsDocument belong in fods_analytics.py"
+      - "2 heuristic properties have no QName authority (is_single_sheet, is_multi_sheet)"
+    wave1_action: "Wire models.py to delegate to spec/ objects; Compat/ must call spec classes"
+    blocking_violations: 2
+
+  - format: "fodt"
+    language: "python"
+    root: "src/python/fodt/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      spec_namespace_dirs: ["office", "text", "style"]
+      py_file_count: 96
+      models_wraps: "neutral dicts"
+    findings:
+      - "spec/ partially implemented; 1 gap (office:body null python file in coverage report)"
+      - "models.py wraps dicts not spec objects"
+      - "Compat/ may not delegate to spec/"
+    wave1_action: "Wire models to spec classes; fix office:body gap"
+    blocking_violations: 1
+
+  - format: "csv"
+    language: "python"
+    root: "src/python/csv/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+      models_wraps: "neutral dicts or list[list[str]]"
+    findings:
+      - "CSV Python has spec/ and Compat/ but no ODF QName hierarchy"
+      - "spec/record/ needs creation to host CSV-internal QName classes"
+    wave1_action: "Add spec/record/; wire models to spec classes"
+    blocking_violations: 0
+
+  - format: "tsv"
+    language: "python"
+    root: "src/python/tsv/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 29
+      models_wraps: "neutral dicts"
+    findings:
+      - "Similar to CSV Python — spec/record/ missing"
+    wave1_action: "Add spec/record/; align with CSV pattern"
+    blocking_violations: 0
+
+  - format: "abw"
+    language: "python"
+    root: "src/python/abw/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 21
+    findings:
+      - "ABW has spec/ but spec classes may not be wired to models"
+      - "AbiWord format — document structure (paragraphs, sections)"
+    wave1_action: "Wire models to spec/document/ and spec/text/ classes"
+    blocking_violations: 0
+
+  - format: "dif"
+    language: "python"
+    root: "src/python/dif/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 20
+    findings:
+      - "DIF is tabular (Data Interchange Format)"
+      - "spec/ exists but spec/record/ may be missing"
+    wave1_action: "Add spec/record/; wire models"
+    blocking_violations: 0
+
+  - format: "fodg"
+    language: "python"
+    root: "src/python/fodg/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+    findings:
+      - "FODG is ODF Drawing — spec/ needs office/, draw/, style/"
+      - "Models wrap dicts"
+    wave1_action: "Ensure spec/draw/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "fodp"
+    language: "python"
+    root: "src/python/fodp/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 15
+    findings:
+      - "FODP is ODF Presentation — spec/ needs office/, presentation/, draw/"
+      - "Models wrap dicts"
+    wave1_action: "Ensure spec/presentation/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "gnumeric"
+    language: "python"
+    root: "src/python/gnumeric/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 38
+    findings:
+      - "Gnumeric XML format — spec/ needs workbook/, sheet/, cell/, style/"
+      - "38 py files suggests substantial implementation exists"
+    wave1_action: "Ensure spec namespace dirs match gnumeric QName hierarchy; wire models"
+    blocking_violations: 0
+
+  - format: "ndjson"
+    language: "python"
+    root: "src/python/ndjson/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 31
+    findings:
+      - "NDJSON is record-oriented — spec/record/ may be missing"
+    wave1_action: "Add spec/record/; wire models to spec classes"
+    blocking_violations: 0
+
+  - format: "ods"
+    language: "python"
+    root: "src/python/ods/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 27
+    findings:
+      - "ODS = ODF Spreadsheet in ZIP container — same QName hierarchy as FODS"
+      - "spec/ likely has office/, table/, style/ dirs"
+      - "Models wrap dicts not spec objects"
+    wave1_action: "Wire models to spec classes; align with FODS Python pattern"
+    blocking_violations: 0
+
+  - format: "odt"
+    language: "python"
+    root: "src/python/odt/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "HIGH"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 19
+    findings:
+      - "ODT = ODF Text in ZIP container — same QName hierarchy as FODT"
+      - "Models wrap dicts not spec objects"
+    wave1_action: "Wire models to spec classes; align with FODT Python pattern"
+    blocking_violations: 0
+
+  - format: "pbm"
+    language: "python"
+    root: "src/python/pbm/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 22
+    findings:
+      - "PBM (Portable Bitmap) — simple binary image format"
+      - "spec/image/ may be missing"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "pgm"
+    language: "python"
+    root: "src/python/pgm/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 18
+    findings:
+      - "PGM (Portable Graymap) — similar to PBM"
+      - "spec/image/ may be missing"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "ppm"
+    language: "python"
+    root: "src/python/ppm/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 20
+    findings:
+      - "PPM (Portable Pixmap) — similar to PBM/PGM"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "qoi"
+    language: "python"
+    root: "src/python/qoi/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 17
+    findings:
+      - "QOI (Quite OK Image) — modern image format"
+      - "spec/image/ needed for header+pixel model"
+    wave1_action: "Ensure spec/image/ exists; wire models"
+    blocking_violations: 0
+
+  - format: "sylk"
+    language: "python"
+    root: "src/python/sylk/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 21
+    findings:
+      - "SYLK (Symbolic Link) — tabular format with formatting records"
+      - "spec/record/ and spec/format/ needed"
+    wave1_action: "Add spec/record/ and spec/format/; wire models"
+    blocking_violations: 0
+
+  - format: "toml"
+    language: "python"
+    root: "src/python/toml/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 45
+    findings:
+      - "TOML — structured data format"
+      - "45 py files suggests substantial implementation"
+      - "spec/document/, spec/table/, spec/value/ needed"
+    wave1_action: "Ensure spec namespace dirs match TOML structure; wire models"
+    blocking_violations: 0
+
+  - format: "xcf"
+    language: "python"
+    root: "src/python/xcf/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 17
+    findings:
+      - "XCF (GIMP native format) — layered image"
+      - "spec/image/, spec/layer/, spec/channel/ needed"
+    wave1_action: "Add spec/layer/ and spec/channel/; wire models"
+    blocking_violations: 0
+
+  - format: "zst"
+    language: "python"
+    root: "src/python/zst/"
+    classification: "MINOR_REALIGNMENT"
+    confidence: "MEDIUM"
+    current_state:
+      has_spec_subdir: true
+      has_compat_subdir: true
+      py_file_count: 42
+    findings:
+      - "ZST — Zstandard compression"
+      - "42 py files; spec/archive/ and spec/stream/ needed"
+      - "Analytics rotation suspended per keen-dancing-hopper plan"
+    wave1_action: "Ensure spec/archive/ and spec/stream/ exist; wire models"
+    blocking_violations: 0
+
+# ──────────────────────────────────────────────────────────────────────────────
+# AUDIT SUMMARY
+# ──────────────────────────────────────────────────────────────────────────────
+
+summary:
+  total_records: 30
+  records_with_null_classification: 0
+  by_classification:
+    COMPLIANT: 0
+    MINOR_REALIGNMENT: 22
+    PUBLIC_FACADE_REPAIR: 0
+    QNAME_MODEL_DECOMPOSITION: 2
+    PARSER_WRITER_REALIGNMENT: 0
+    FULL_REBUILD: 4
+    STUB_ONLY: 2
+  by_language:
+    dotnet:
+      total: 10
+      COMPLIANT: 0
+      MINOR_REALIGNMENT: 4
+      QNAME_MODEL_DECOMPOSITION: 2
+      FULL_REBUILD: 4
+    python:
+      total: 20
+      MINOR_REALIGNMENT: 20
+  total_blocking_violations: 28
+  highest_priority:
+    - format: "fods"
+      language: "dotnet"
+      classification: "QNAME_MODEL_DECOMPOSITION"
+      blocking_violations: 16
+      reason: "Pilot product; richest hierarchy; most violations"
+    - format: "fodt"
+      language: "dotnet"
+      classification: "QNAME_MODEL_DECOMPOSITION"
+      blocking_violations: 8
+  wave1_prerequisites:
+    - "System healing Lanes 1-6, 14, 15 must complete"
+    - "GATE-P0 passed (confirmed 2026-07-04)"
+    - "Dual-architecture-contract.md defines the migration contract"
+    - "fods-aspose-api-design.yaml defines target architecture for FODS pilot"

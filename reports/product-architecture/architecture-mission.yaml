@@ -1,0 +1,76 @@
+mission_id: "ARC-QNAME-001"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+repository: "format-factory"
+branch: "main"
+head: "d83d7064e954d51c6190aab1be0603b083daeda2"
+generated_at: "2026-07-04"
+
+product_roots:
+  - "src/net/"
+  - "src/python/"
+
+language_tracks:
+  - "dotnet"
+  - "python"
+
+authority_order:
+  - specification
+  - sal_fact
+  - qname_hierarchy
+  - approved_capability
+  - canonical_product_architecture
+  - aspose_convention
+  - implementation
+  - tests
+
+qname_registry_schema_version: "1.0"
+canonical_class_count: 28
+sal_fact_total: 14313
+sal_fact_fods: 4987
+
+specification_sources:
+  - "ODF 1.3"
+  - "RFC 4180"
+  - "NetPBM"
+  - "ITU-T T.871"
+
+sal_sources:
+  - ".local/sal-output/sal-facts-latest.json"
+
+qname_registries:
+  - "registry/odf-ontology/qname-to-code-map.yaml"
+  - "registry/odf-ontology/canonical-class-inventory.yaml"
+  - "registry/python-qname-architecture.json"
+
+capability_sources:
+  - "reports/capability-layer/unified-capability-map.json"
+
+aspose_api_reference:
+  - "Aspose.Cells Workbook/Worksheet/Cell/Style"
+  - "Aspose.Words Document/Section/Paragraph/Run"
+
+authority_verification:
+  qname_to_code_map:
+    path: "registry/odf-ontology/qname-to-code-map.yaml"
+    schema_version: "1.0"
+    status: "READABLE"
+    key_finding: "schema_version present; office:document entry found; FODS facades documented"
+
+  canonical_class_inventory:
+    path: "registry/odf-ontology/canonical-class-inventory.yaml"
+    canonical_class_count: 28
+    status: "READABLE"
+    key_finding: "office:document, Table.TableCell entries confirmed; some facades exist, no canonical .NET implementation"
+
+  python_qname_architecture:
+    path: "registry/python-qname-architecture.json"
+    format_count: 20
+    status: "READABLE"
+    key_finding: "fods key present; sal_facts_count=4987; state=ACCEPTED_VERIFIED"
+
+  unified_capability_map:
+    path: "reports/capability-layer/unified-capability-map.json"
+    generated_at: "2026-07-02T18:23:36"
+    status: "READABLE"
+
+note: "sal_fact_total=14313 meets ≥14000 threshold. FODS sal_facts=4987 meets ≥4000 threshold."

@@ -1,0 +1,508 @@
+---
+# TC-ARC-005: FODS Aspose-Style Public API Design
+# Defines the FODS public API hierarchy (Aspose-style navigable object model).
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §1, §3, §5
+
+schema_version: "1.0"
+format_id: "fods"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-005"
+requirement_ids: ["REQ-ARC-001", "REQ-ARC-003"]
+
+# Navigation hierarchy (Aspose pattern):
+# FodsDocument → FodsWorksheetCollection → FodsWorksheet → FodsCellCollection/FodsRowCollection → FodsCell/FodsRow
+# FodsDocument → FodsStyleCollection → FodsStyle → FodsCellStyle
+# FodsDocument → FodsMetadata
+
+public_types:
+
+  # ── Entry Point ────────────────────────────────────────────────────────────
+
+  - public_type: "FodsDocument"
+    canonical_model_type: "Office.Document"
+    qname: "office:document"
+    spec_fact_ref: "FACT-FODS-001"
+    delegation_strategy: >
+      FodsDocument wraps Office.Document (which wraps the office:document root element).
+      All child collections delegate to sub-types — FodsDocument owns only document-level
+      concerns. FodsDocument does NOT own cell values, row heights, column widths, cell
+      formats, or sheet-specific operations.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    collections:
+      - name: "Worksheets"
+        type: "FodsWorksheetCollection"
+        qname: "office:spreadsheet"
+      - name: "Styles"
+        type: "FodsStyleCollection"
+        qname: "office:automatic-styles"
+      - name: "Metadata"
+        type: "FodsMetadata"
+        qname: "office:meta"
+    methods:
+      - name: "Load"
+        signature: "static FodsDocument Load(string path)"
+        description: "Parse a .fods file from disk and return a FodsDocument."
+        qname_reads: ["office:document"]
+      - name: "Save"
+        signature: "void Save(string path)"
+        description: "Serialize the document model back to .fods format."
+        qname_writes: ["office:document"]
+      - name: "Export"
+        signature: "void Export(string path, FodsExportFormat format)"
+        description: "Export to a target format (CSV, ODS, HTML, JSON, TSV, PDF)."
+        qname_reads: ["office:document"]
+    properties: []
+    forbidden_members:
+      - "GetSheetCount() → belongs to FodsWorksheetCollection.Count"
+      - "GetCellCount() → belongs to FodsWorksheet.Cells.Count"
+      - "GetRowCount() → belongs to FodsWorksheet.Rows.Count"
+      - "GetColumnCount() → belongs to FodsWorksheet.Columns.Count"
+      - "GetCellValue(row, col) → belongs to FodsCell.Value"
+      - "SetCellValue(row, col, val) → belongs to FodsCell.Value setter"
+      - "GetCellType(row, col) → belongs to FodsCell.ValueType"
+      - "Any method that bypasses FodsWorksheet to access rows/cells directly"
+    current_violation:
+      status: "VIOLATION"
+      files_with_stub_methods:
+        - "FodsDocumentCellProps.cs"
+        - "FodsDocumentDataAnnotations.cs"
+        - "FodsDocumentEditOps.cs"
+        - "FodsDocumentReadOps.cs"
+        - "FodsDocumentSheetFeatures.cs"
+      stub_method_count: 23
+      stub_pattern: "Methods returning 0/null/empty without reading canonical model"
+      resolution: "Move each stub method to the child type that owns its QName"
+      wave1_action: "QNAME_MODEL_DECOMPOSITION migration"
+
+  # ── Worksheet Collection ───────────────────────────────────────────────────
+
+  - public_type: "FodsWorksheetCollection"
+    canonical_model_type: "Office.Spreadsheet"
+    qname: "office:spreadsheet"
+    spec_fact_ref: "FACT-FODS-003"
+    delegation_strategy: >
+      Wraps the office:spreadsheet element; iterates table:table children.
+      Index access returns FodsWorksheet wrapping Table.Table canonical type.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Count"
+        type: "int"
+        description: "Number of table:table children."
+        qname_reads: ["table:table"]
+    methods:
+      - name: "Add"
+        signature: "FodsWorksheet Add(string name)"
+        description: "Append a new table:table element; return wrapped FodsWorksheet."
+        qname_writes: ["table:table"]
+      - name: "Remove"
+        signature: "void Remove(int index)"
+        description: "Remove the table:table at the given index."
+        qname_writes: ["table:table"]
+      - name: "this[int]"
+        signature: "FodsWorksheet this[int index]"
+        description: "Zero-based indexed access to worksheets."
+        qname_reads: ["table:table"]
+      - name: "this[string]"
+        signature: "FodsWorksheet this[string name]"
+        description: "Named access by table:name attribute value."
+        qname_reads: ["table:table"]
+    existing_impl: "FodsSheet.cs (partially) — currently wraps XElement, not Table.Table"
+
+  # ── Worksheet ──────────────────────────────────────────────────────────────
+
+  - public_type: "FodsWorksheet"
+    canonical_model_type: "Table.Table"
+    qname: "table:table"
+    spec_fact_ref: "FACT-FODS-004"
+    delegation_strategy: >
+      Wraps Table.Table. All row/cell/column access delegates through canonical model.
+      FodsWorksheet does NOT store row/cell data independently — all data comes from
+      the Table.Table model which is populated by FodsParser.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Name"
+        type: "string"
+        description: "Sheet name (table:name attribute). Delegates to Table.Table.Name."
+        qname_reads: ["table:table"]
+        qname_writes: ["table:table"]
+      - name: "RowCount"
+        type: "int"
+        description: "Count of table:table-row elements. Delegates to Table.Table row list."
+        qname_reads: ["table:table-row"]
+      - name: "ColumnCount"
+        type: "int"
+        description: "Count of table:table-column elements."
+        qname_reads: ["table:table-column"]
+    collections:
+      - name: "Rows"
+        type: "FodsRowCollection"
+        qname: "table:table-row"
+      - name: "Cells"
+        type: "FodsCellCollection"
+        qname: "table:table-cell"
+      - name: "Columns"
+        type: "FodsColumnCollection"
+        qname: "table:table-column"
+    existing_impl: "FodsSheet.cs — wraps XElement directly, partially aligned"
+
+  # ── Row ────────────────────────────────────────────────────────────────────
+
+  - public_type: "FodsRowCollection"
+    canonical_model_type: "null (enumerates Table.TableRow)"
+    qname: "table:table-row"
+    delegation_strategy: "Ordered enumerable over Table.TableRow instances."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Count"
+        type: "int"
+        description: "Number of table:table-row elements."
+    methods:
+      - name: "this[int]"
+        signature: "FodsRow this[int index]"
+        description: "Zero-based indexed access to rows."
+
+  - public_type: "FodsRow"
+    canonical_model_type: "Table.TableRow"
+    qname: "table:table-row"
+    spec_fact_ref: "FACT-FODS-005"
+    delegation_strategy: >
+      Wraps Table.TableRow. Cell access delegates to Table.TableCell.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Index"
+        type: "int"
+        description: "Zero-based row index within parent FodsWorksheet."
+    collections:
+      - name: "Cells"
+        type: "FodsCellCollection"
+        qname: "table:table-cell"
+    existing_impl: "FodsRow.cs — wraps XElement"
+
+  # ── Column ─────────────────────────────────────────────────────────────────
+
+  - public_type: "FodsColumnCollection"
+    canonical_model_type: "null (enumerates Table.TableColumn)"
+    qname: "table:table-column"
+    delegation_strategy: "Ordered enumerable over Table.TableColumn instances."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Count"
+        type: "int"
+        description: "Number of table:table-column elements."
+    methods:
+      - name: "this[int]"
+        signature: "FodsColumn this[int index]"
+
+  - public_type: "FodsColumn"
+    canonical_model_type: "Table.TableColumn"
+    qname: "table:table-column"
+    spec_fact_ref: "FACT-FODS-020"
+    delegation_strategy: "Wraps Table.TableColumn."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Index"
+        type: "int"
+      - name: "DefaultCellStyleName"
+        type: "string"
+        description: "table:default-cell-style-name attribute value."
+        qname_reads: ["table:table-column"]
+
+  # ── Cell ───────────────────────────────────────────────────────────────────
+
+  - public_type: "FodsCellCollection"
+    canonical_model_type: "null (enumerates Table.TableCell)"
+    qname: "table:table-cell"
+    delegation_strategy: "Ordered enumerable over Table.TableCell instances."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Count"
+        type: "int"
+    methods:
+      - name: "this[int]"
+        signature: "FodsCell this[int columnIndex]"
+      - name: "this[int, int]"
+        signature: "FodsCell this[int rowIndex, int columnIndex]"
+        description: "Two-dimensional access on worksheet-level CellCollection."
+
+  - public_type: "FodsCell"
+    canonical_model_type: "Table.TableCell"
+    qname: "table:table-cell"
+    spec_fact_ref: "FACT-FODS-006"
+    delegation_strategy: >
+      Wraps Table.TableCell. All reads come from the canonical model populated by parser.
+      All writes mutate the canonical model which writer then serializes.
+      FodsCell MUST NOT store cell data independently of Table.TableCell.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Value"
+        type: "object?"
+        description: "Typed cell value. Reads from Table.TableCell.TypedValue; setter updates model."
+        qname_reads: ["office:value-type", "office:value", "office:string-value",
+                      "office:date-value", "office:boolean-value", "text:p"]
+        qname_writes: ["office:value-type", "office:value"]
+      - name: "ValueType"
+        type: "FodsValueType"
+        description: "Enum derived from office:value-type attribute."
+        qname_reads: ["office:value-type"]
+      - name: "Formula"
+        type: "string?"
+        description: "Table formula expression from table:formula attribute."
+        qname_reads: ["table:formula"]
+        qname_writes: ["table:formula"]
+      - name: "Style"
+        type: "FodsCellStyle?"
+        description: "Cell style wrapping Style.TableCellProperties. Resolves via table:style-name."
+        qname_reads: ["table:style-name", "style:style", "style:table-cell-properties"]
+      - name: "ColumnIndex"
+        type: "int"
+        description: "Zero-based column position."
+      - name: "RowIndex"
+        type: "int"
+        description: "Zero-based row position."
+      - name: "IsEmpty"
+        type: "bool"
+        description: "True if office:value-type is not set and text:p content is empty."
+        qname_reads: ["office:value-type", "text:p"]
+      - name: "IsCovered"
+        type: "bool"
+        description: "True if this maps to a table:covered-table-cell element."
+        qname_reads: ["table:covered-table-cell"]
+      - name: "ColumnsSpanned"
+        type: "int"
+        description: "table:number-columns-spanned attribute value (default 1)."
+        qname_reads: ["table:number-columns-spanned"]
+      - name: "RowsSpanned"
+        type: "int"
+        description: "table:number-rows-spanned attribute value (default 1)."
+        qname_reads: ["table:number-rows-spanned"]
+    existing_impl: "FodsCell.cs in Model/ — wraps XElement, partially aligned"
+
+  # ── Value Type Enum ────────────────────────────────────────────────────────
+
+  - public_type: "FodsValueType"
+    type_kind: "enum"
+    canonical_model_type: "Table.TypedValue (office:value-type)"
+    qname: "office:value-type"
+    spec_fact_ref: null
+    description: "Closed vocabulary matching ODF office:value-type attribute values."
+    values:
+      - name: "Empty"
+        odf_value: null
+        description: "No office:value-type set."
+      - name: "String"
+        odf_value: "string"
+        description: "Text value; content in text:p child."
+      - name: "Float"
+        odf_value: "float"
+        description: "Numeric value in office:value attribute."
+      - name: "Boolean"
+        odf_value: "boolean"
+        description: "Boolean value in office:boolean-value attribute."
+      - name: "Date"
+        odf_value: "date"
+        description: "ISO 8601 date in office:date-value attribute."
+      - name: "Currency"
+        odf_value: "currency"
+        description: "Currency value in office:value + office:currency attribute."
+      - name: "Percentage"
+        odf_value: "percentage"
+        description: "Percentage value stored as float in office:value."
+      - name: "Time"
+        odf_value: "time"
+        description: "Duration value in office:time-value attribute."
+
+  # ── Style Hierarchy ────────────────────────────────────────────────────────
+
+  - public_type: "FodsStyleCollection"
+    canonical_model_type: "Office.AutomaticStyles"
+    qname: "office:automatic-styles"
+    spec_fact_ref: "FACT-FODS-008"
+    delegation_strategy: "Wraps office:automatic-styles; enumerates style:style children."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Count"
+        type: "int"
+    methods:
+      - name: "this[string]"
+        signature: "FodsStyle? this[string styleName]"
+        description: "Find style by style:name attribute."
+      - name: "Add"
+        signature: "FodsStyle Add(string name, string family)"
+        description: "Create and register a new style:style element."
+        qname_writes: ["style:style"]
+
+  - public_type: "FodsStyle"
+    canonical_model_type: "Style.Style"
+    qname: "style:style"
+    spec_fact_ref: "FACT-FODS-009"
+    delegation_strategy: "Wraps Style.Style. Access to sub-property objects."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Name"
+        type: "string"
+        qname_reads: ["style:style"]
+      - name: "Family"
+        type: "string"
+        description: "style:family attribute (table-cell, table, etc.)."
+        qname_reads: ["style:style"]
+      - name: "CellProperties"
+        type: "FodsCellStyle?"
+        description: "Wraps the style:table-cell-properties child element."
+        qname_reads: ["style:table-cell-properties"]
+      - name: "TextProperties"
+        type: "FodsTextStyle?"
+        description: "Wraps the style:text-properties child element."
+        qname_reads: ["style:text-properties"]
+
+  - public_type: "FodsCellStyle"
+    canonical_model_type: "Style.TableCellProperties"
+    qname: "style:table-cell-properties"
+    spec_fact_ref: null
+    delegation_strategy: >
+      Wraps Style.TableCellProperties. Provides typed properties for background-color,
+      border, padding, and vertical-align. All reads/writes target the canonical model.
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "BackgroundColor"
+        type: "string?"
+        description: "fo:background-color attribute value (e.g. '#RRGGBB')."
+        qname_reads: ["style:table-cell-properties"]
+        qname_writes: ["style:table-cell-properties"]
+      - name: "Border"
+        type: "string?"
+        description: "fo:border shorthand."
+        qname_reads: ["style:table-cell-properties"]
+      - name: "VerticalAlign"
+        type: "string?"
+        description: "style:vertical-align value."
+        qname_reads: ["style:table-cell-properties"]
+      - name: "WrapOption"
+        type: "string?"
+        description: "fo:wrap-option value."
+        qname_reads: ["style:table-cell-properties"]
+
+  - public_type: "FodsTextStyle"
+    canonical_model_type: "Style.TextProperties"
+    qname: "style:text-properties"
+    spec_fact_ref: null
+    delegation_strategy: "Wraps Style.TextProperties."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "FontName"
+        type: "string?"
+        qname_reads: ["style:text-properties"]
+      - name: "FontSize"
+        type: "string?"
+        description: "fo:font-size value (e.g. '12pt')."
+        qname_reads: ["style:text-properties"]
+      - name: "Bold"
+        type: "bool"
+        description: "True if fo:font-weight='bold'."
+        qname_reads: ["style:text-properties"]
+      - name: "Italic"
+        type: "bool"
+        description: "True if fo:font-style='italic'."
+        qname_reads: ["style:text-properties"]
+      - name: "Color"
+        type: "string?"
+        description: "fo:color value."
+        qname_reads: ["style:text-properties"]
+
+  # ── Metadata ───────────────────────────────────────────────────────────────
+
+  - public_type: "FodsMetadata"
+    canonical_model_type: "Office.Meta"
+    qname: "office:meta"
+    spec_fact_ref: null
+    delegation_strategy: "Wraps office:meta element. Read-write access to document metadata."
+    parser_path: "Parsing/FodsParser.cs"
+    writer_path: "Writing/FodsWriter.cs"
+    properties:
+      - name: "Title"
+        type: "string?"
+        qname_reads: ["dc:title"]
+      - name: "Description"
+        type: "string?"
+        qname_reads: ["dc:description"]
+      - name: "Creator"
+        type: "string?"
+        qname_reads: ["dc:creator"]
+      - name: "CreationDate"
+        type: "DateTime?"
+        qname_reads: ["meta:creation-date"]
+
+  # ── Export Format Enum ─────────────────────────────────────────────────────
+
+  - public_type: "FodsExportFormat"
+    type_kind: "enum"
+    canonical_model_type: null
+    qname: null
+    description: "Supported export targets for FodsDocument.Export()."
+    values:
+      - name: "Csv"
+      - name: "Tsv"
+      - name: "Html"
+      - name: "Json"
+      - name: "Ods"
+      - name: "Pdf"
+
+# ── Violation Inventory (from TC-ARC-005-03) ──────────────────────────────────
+
+legacy_violations:
+  summary: >
+    FodsDocumentLegacyCounters.cs was estimated in the plan as a single file with ~48
+    zero-return methods. Actual finding: no such file exists. Instead, 23 stub/zero-return
+    methods are spread across 5 partial class files. Each must be moved to the child type
+    that owns its QName during Wave 1 source migration.
+  stub_method_count: 23
+  source_files:
+    - file: "FodsDocumentCellProps.cs"
+      stub_pattern: "Cell property methods returning 0/null without canonical model delegation"
+      target_type: "FodsCell"
+    - file: "FodsDocumentDataAnnotations.cs"
+      stub_pattern: "Annotation-related stubs returning empty"
+      target_type: "FodsCell or Office.Annotation"
+    - file: "FodsDocumentEditOps.cs"
+      stub_pattern: "Edit operations returning false/void without model mutation"
+      target_type: "FodsWorksheet or FodsCell (per QName)"
+    - file: "FodsDocumentReadOps.cs"
+      stub_pattern: "Read operations returning 0/null without parser delegation"
+      target_type: "FodsWorksheet.Rows or FodsCell.Value (per QName)"
+    - file: "FodsDocumentSheetFeatures.cs"
+      stub_pattern: "Sheet feature stubs returning empty lists"
+      target_type: "FodsWorksheet"
+  resolution_class: "QNAME_MODEL_DECOMPOSITION"
+  wave1_action: "Decompose all 23 stubs; assign each to correct child type; wire to canonical model"
+
+# ── Validation Checklist ──────────────────────────────────────────────────────
+
+validation:
+  - check: "FodsDocument only has Worksheets/Styles/Metadata/Load/Save/Export"
+    status: "DESIGNED_NOT_YET_IMPLEMENTED"
+  - check: "Every public type delegates to a named canonical QName type"
+    status: "DESIGNED_NOT_YET_IMPLEMENTED"
+  - check: "FodsCell.Value setter has writer_path defined"
+    status: "PASS — Writing/FodsWriter.cs declared"
+  - check: "Zero detached state — no dict-backed properties"
+    status: "DESIGNED_NOT_YET_IMPLEMENTED"
+  - check: "Legacy violations documented with target type for each"
+    status: "PASS — 23 stubs across 5 files inventoried"
+  - check: "FodsDocumentLegacyCounters.cs not referenced (does not exist)"
+    status: "PASS — confirmed not present"
+  - check: "All public types have parser_path and writer_path"
+    status: "PASS — all reference Parsing/FodsParser.cs and Writing/FodsWriter.cs"

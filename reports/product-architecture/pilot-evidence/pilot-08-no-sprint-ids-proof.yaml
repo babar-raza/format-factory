@@ -1,0 +1,54 @@
+---
+# TC-ARC-013-08: Pilot 8 — No sprint-history IDs in production source
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-013-08
+# generated_at: "2026-07-04"
+
+pilot_id: "pilot-08"
+pilot_name: "No sprint-history identifiers in production source"
+verdict: "PARTIAL_PASS"
+
+scan_results:
+  pattern_searched: "sprint\\d+|wave\\d+|train\\d+|R\\d{3}-R\\d{3}"
+  files_scanned: "src/net/**/*.cs + src/python/**/*.py"
+  total_violations: 6
+
+violations:
+  - file: "src/net/fodt/FodtDocumentEditing.cs"
+    matches: ["R349-R354", "R344-R394", "R387-R392", "R422-R432"]
+    note: "Requirement ID ranges in comments — pre-existing honey TC-HEAL-NET-001 scope"
+    severity: "WARN"
+
+  - file: "src/python/fodg/fodg_codec.py"
+    matches: ["R133-R136"]
+    note: "Requirement range in comment — pre-existing"
+    severity: "WARN"
+
+  - file: "src/python/gnumeric/build/lib/gnumeric/gnumeric_codec.py"
+    matches: ["R136-R137"]
+    note: "In build/ artifact directory — not production source"
+    severity: "INFO"
+
+  - file: "src/python/gnumeric/build/lib/gnumeric/build/lib/gnumeric/gnumeric_codec.py"
+    matches: ["R136-R137"]
+    note: "In build/ artifact directory — not production source"
+    severity: "INFO"
+
+  - file: "src/python/fodt/build/lib/fodt/neutral_model.py"
+    matches: ["SPRINT3"]
+    note: "In build/ artifact directory — not production source"
+    severity: "INFO"
+
+classification:
+  build_artifacts: 3
+  production_source_warnings: 3
+  new_violations_introduced_by_arc_plan: 0
+
+conclusion: >
+  3 violations are in build/ artifact directories (not production source) — not actionable.
+  3 violations are pre-existing in production source (FodtDocumentEditing.cs, fodg_codec.py),
+  matching R[0-9]{3}-R[0-9]{3} requirement ID range patterns.
+  These are documented as WARN (not BLOCK) by V118. The Arc plan introduces ZERO new violations.
+  FodtDocumentEditing.cs healing is scoped to honey TC-HEAL-NET-001.
+  Pilot 8 PARTIAL_PASS — no new violations; pre-existing violations are tracked.

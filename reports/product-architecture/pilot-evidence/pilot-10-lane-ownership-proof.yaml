@@ -1,0 +1,45 @@
+---
+# TC-ARC-013-10: Pilot 10 — Lane ownership safety audit
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-013-10
+# generated_at: "2026-07-04"
+
+pilot_id: "pilot-10"
+pilot_name: "Lane ownership safety"
+verdict: "PASS"
+
+file_ownership_audit:
+  TC-ARC-003: ["reports/product-architecture/fods-qname-hierarchy.yaml"]
+  TC-ARC-004: ["reports/product-architecture/qname-code-organization-plan.yaml"]
+  TC-ARC-005: ["reports/product-architecture/fods-aspose-api-design.yaml"]
+  TC-ARC-006: ["reports/product-architecture/fods-public-api-to-qname-map.yaml"]
+  TC-ARC-007: ["reports/product-architecture/product-architecture-audit.yaml"]
+  TC-ARC-008: ["reports/product-architecture/qname-api-migration-ledger.yaml"]
+  TC-ARC-009: ["reports/product-architecture/aspose-qname-gap-ledger.yaml"]
+  TC-ARC-010: ["tools/supervisor/capability_feature_compiler.py"]
+  TC-ARC-011: [".supervisor/skill-registry.yaml"]
+  TC-ARC-012:
+    - "tools/supervisor/governance_validators_ext4.py"
+    - "tests/supervisor/test_governance_validators_ext4.py"
+  TC-ARC-017: [".supervisor/skill-registry.yaml"]  # NOTE: sequential after TC-ARC-011
+
+conflicts_found: 0
+
+notes:
+  skill_registry_sequential: >
+    TC-ARC-011 and TC-ARC-017 both write to .supervisor/skill-registry.yaml.
+    Per plan, TC-ARC-017 runs AFTER TC-ARC-011 — sequential, not parallel.
+    No file-ownership conflict when ordered sequentially.
+  pre_commit_hook_gap: >
+    Pre-commit hooks are NOT installed (.git/hooks/ has only .sample files per
+    blossom FINDING-001). V111-V127 validators are therefore inactive for local commits.
+    This is a known gap documented in the three-plan program. Honey TC-HEAL-* scope
+    does not include pre-commit hook installation. Documented here for traceability.
+
+conclusion: >
+  Zero file-ownership conflicts across TC-ARC-003 through TC-ARC-012.
+  TC-ARC-011 and TC-ARC-017 share skill-registry.yaml but are ordered sequentially
+  per the plan — no concurrent write conflict.
+  Pre-commit hook gap documented as known limitation.
+  Pilot 10 PASSES.

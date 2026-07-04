@@ -1,0 +1,440 @@
+---
+# TC-ARC-003: FODS QName Hierarchy
+# Extracted from: canonical-class-inventory.yaml, qname-coverage-20260703.json,
+#                 src/python/fods/spec/**/*.py, src/net/fods/Spec/**/*.cs
+# Generated: 2026-07-04
+
+schema_version: "1.0"
+format_id: "fods"
+generated_at: "2026-07-04"
+total_qname_nodes: 17
+
+source_files:
+  - "registry/odf-ontology/canonical-class-inventory.yaml"
+  - "reports/qname-coverage-20260703.json"
+  - "src/python/fods/spec/**/*.py"
+  - "src/net/fods/Spec/**/*.cs"
+
+namespace_registry:
+  office: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  table:  "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  text:   "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  style:  "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+  number: "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+
+# ODF document tree for FODS (Flat Open Document Spreadsheet)
+# [*] = zero-or-more occurrences
+document_tree:
+  root: "office:document"
+  ascii: |
+    office:document
+      ├── office:body
+      │     └── office:spreadsheet
+      │           └── table:table [*]
+      │                 ├── table:table-column [*]
+      │                 ├── table:table-header-rows
+      │                 │     └── table:table-row [*]
+      │                 └── table:table-row [*]
+      │                       ├── table:table-cell [*]
+      │                       │     ├── text:p [*]
+      │                       │     │     └── text:span [*]
+      │                       │     └── office:annotation
+      │                       └── table:covered-table-cell [*]
+      └── office:automatic-styles
+            ├── style:style [*]
+            │     ├── style:text-properties
+            │     ├── style:paragraph-properties
+            │     └── style:table-cell-properties
+            └── number:date-style [*]
+
+qname_nodes:
+
+  # ── Office namespace ──────────────────────────────────────────────────────
+
+  - qname: "office:document"
+    local_name: "document"
+    namespace: "office"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    canonical_class: "Office.Document"
+    spec_section: "3.1.2"
+    spec_fact_ref: "FACT-FODS-001"
+    parent: null
+    children: ["office:body", "office:automatic-styles"]
+    key_attributes: [mimetype, version]
+    python_spec_file: "src/python/fods/spec/office/document.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: "src/net/fods/Spec/Office/Document.cs"
+    dotnet_spec_status: "exists"
+    dotnet_facade_file: null
+    implementation_status: "partial_dotnet_spec_exists_no_facade_delegation"
+    coverage_status: "covered"
+
+  - qname: "office:body"
+    local_name: "body"
+    namespace: "office"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    canonical_class: "Office.Body"
+    spec_section: "3.3"
+    spec_fact_ref: "FACT-FODS-003"
+    parent: "office:document"
+    children: ["office:spreadsheet"]
+    key_attributes: []
+    python_spec_file: "src/python/fods/spec/office/body.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "office:spreadsheet"
+    local_name: "spreadsheet"
+    namespace: "office"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    canonical_class: "Office.Spreadsheet"
+    spec_section: "3.7"
+    spec_fact_ref: "FACT-FODS-003"
+    parent: "office:body"
+    children: ["table:table"]
+    key_attributes: []
+    python_spec_file: "src/python/fods/spec/office/spreadsheet.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "office:automatic-styles"
+    local_name: "automatic-styles"
+    namespace: "office"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    canonical_class: "Office.AutomaticStyles"
+    spec_section: "3.15.3"
+    spec_fact_ref: "FACT-FODS-008"
+    parent: "office:document"
+    children: ["style:style", "number:date-style"]
+    key_attributes: []
+    python_spec_file: "src/python/fods/spec/office/automatic_styles.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "office:annotation"
+    local_name: "annotation"
+    namespace: "office"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    canonical_class: "Office.Annotation"
+    spec_section: "14.1"
+    spec_fact_ref: "FACT-FODS-022"
+    parent: "table:table-cell"
+    children: ["text:p"]
+    key_attributes: [office:author, office:date]
+    python_spec_file: "src/python/fods/spec/office/annotation.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  # ── Table namespace ───────────────────────────────────────────────────────
+
+  - qname: "table:table"
+    local_name: "table"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.Table"
+    spec_section: "9.1.2"
+    spec_fact_ref: "FACT-FODS-004"
+    parent: "office:spreadsheet"
+    children: ["table:table-column", "table:table-header-rows", "table:table-row"]
+    key_attributes: [table:name, table:style-name, table:print-ranges]
+    python_spec_file: "src/python/fods/spec/table/table.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: "src/net/fods/Spec/Table/Table.cs"
+    dotnet_spec_status: "exists"
+    dotnet_facade_file: "src/net/fods/Model/FodsSheet.cs"
+    dotnet_facade_class: "FodsSheet"
+    implementation_status: "facade_exists_spec_exists_no_delegation"
+    coverage_status: "covered"
+
+  - qname: "table:table-column"
+    local_name: "table-column"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.TableColumn"
+    spec_section: "9.1.6"
+    spec_fact_ref: "FACT-FODS-020"
+    parent: "table:table"
+    children: []
+    key_attributes: [table:style-name, table:default-cell-style-name, table:number-columns-repeated]
+    python_spec_file: "src/python/fods/spec/table/table_column.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "table:table-header-rows"
+    local_name: "table-header-rows"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.TableHeaderRows"
+    spec_section: "9.1.7"
+    spec_fact_ref: "FACT-FODS-021"
+    parent: "table:table"
+    children: ["table:table-row"]
+    key_attributes: []
+    python_spec_file: "src/python/fods/spec/table/table_header_rows.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "table:table-row"
+    local_name: "table-row"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.TableRow"
+    spec_section: "9.1.3"
+    spec_fact_ref: "FACT-FODS-005"
+    parent: "table:table"
+    children: ["table:table-cell", "table:covered-table-cell"]
+    key_attributes: [table:style-name, table:number-rows-repeated]
+    python_spec_file: "src/python/fods/spec/table/table_row.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: "src/net/fods/Spec/Table/TableRow.cs"
+    dotnet_spec_status: "exists"
+    dotnet_facade_file: "src/net/fods/Model/FodsRow.cs"
+    dotnet_facade_class: "FodsRow"
+    implementation_status: "facade_exists_spec_exists_no_delegation"
+    coverage_status: "covered"
+
+  - qname: "table:table-cell"
+    local_name: "table-cell"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.TableCell"
+    spec_section: "9.1.4"
+    spec_fact_ref: "FACT-FODS-006"
+    parent: "table:table-row"
+    children: ["text:p", "office:annotation"]
+    key_attributes:
+      - office:value-type
+      - office:value
+      - office:date-value
+      - office:string-value
+      - office:boolean-value
+      - table:formula
+      - table:style-name
+      - table:number-columns-spanned
+      - table:number-rows-spanned
+    python_spec_file: "src/python/fods/spec/table/table_cell.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: "src/net/fods/Spec/Table/TableCell.cs"
+    dotnet_spec_status: "exists"
+    dotnet_facade_file: "src/net/fods/Model/FodsCell.cs"
+    dotnet_facade_class: "FodsCell"
+    implementation_status: "facade_exists_spec_exists_no_delegation"
+    coverage_status: "covered"
+    notes: "Primary data-bearing cell element. Most complex element in FODS hierarchy."
+
+  - qname: "table:covered-table-cell"
+    local_name: "covered-table-cell"
+    namespace: "table"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    canonical_class: "Table.CoveredTableCell"
+    spec_section: "9.1.5"
+    spec_fact_ref: "FACT-FODS-023"
+    parent: "table:table-row"
+    children: []
+    key_attributes: [table:style-name, table:number-columns-repeated]
+    python_spec_file: "src/python/fods/spec/table/covered_table_cell.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+    notes: "Placeholder for cells covered by a spanning cell."
+
+  # ── Text namespace ────────────────────────────────────────────────────────
+
+  - qname: "text:p"
+    local_name: "p"
+    namespace: "text"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    canonical_class: "Text.Paragraph"
+    spec_section: "5.1.3"
+    spec_fact_ref: "FACT-FODS-007"
+    parent: "table:table-cell"
+    children: ["text:span"]
+    key_attributes: [text:style-name]
+    python_spec_file: "src/python/fods/spec/text/paragraph.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+    notes: "In FODS context: text:p is the string value container inside table:table-cell."
+
+  - qname: "text:span"
+    local_name: "span"
+    namespace: "text"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    canonical_class: "Text.Span"
+    spec_section: "6.1.7"
+    spec_fact_ref: "FACT-FODS-007"
+    parent: "text:p"
+    children: []
+    key_attributes: [text:style-name]
+    python_spec_file: "src/python/fods/spec/text/span.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  # ── Style namespace ───────────────────────────────────────────────────────
+
+  - qname: "style:style"
+    local_name: "style"
+    namespace: "style"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    canonical_class: "Style.Style"
+    spec_section: "16.2"
+    spec_fact_ref: "FACT-FODS-009"
+    parent: "office:automatic-styles"
+    children: ["style:text-properties", "style:paragraph-properties", "style:table-cell-properties"]
+    key_attributes: [style:name, style:family, style:parent-style-name]
+    python_spec_file: "src/python/fods/spec/style/style.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+
+  - qname: "style:text-properties"
+    local_name: "text-properties"
+    namespace: "style"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    canonical_class: "Style.TextProperties"
+    spec_section: "17.7"
+    spec_fact_ref: null
+    parent: "style:style"
+    children: []
+    key_attributes:
+      - fo:font-name
+      - fo:font-size
+      - fo:font-weight
+      - fo:font-style
+      - fo:color
+      - style:text-underline-style
+    python_spec_file: null
+    python_spec_status: "not_implemented"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "not_implemented"
+    coverage_status: "gap_no_spec_class"
+    notes: "Required for cell formatting. No Python or .NET spec class exists yet."
+
+  - qname: "style:paragraph-properties"
+    local_name: "paragraph-properties"
+    namespace: "style"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    canonical_class: "Style.ParagraphProperties"
+    spec_section: "17.6"
+    spec_fact_ref: null
+    parent: "style:style"
+    children: []
+    key_attributes: [fo:text-align, fo:margin-top, fo:margin-bottom, fo:line-height]
+    python_spec_file: null
+    python_spec_status: "not_implemented"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "not_implemented"
+    coverage_status: "gap_no_spec_class"
+
+  - qname: "style:table-cell-properties"
+    local_name: "table-cell-properties"
+    namespace: "style"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    canonical_class: "Style.TableCellProperties"
+    spec_section: "17.18"
+    spec_fact_ref: null
+    parent: "style:style"
+    children: []
+    key_attributes:
+      - fo:background-color
+      - fo:border
+      - fo:padding
+      - style:vertical-align
+      - fo:wrap-option
+    python_spec_file: null
+    python_spec_status: "not_implemented"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "not_implemented"
+    coverage_status: "gap_no_spec_class"
+    notes: "Required for cell background, border, and alignment properties."
+
+  # ── Number namespace ──────────────────────────────────────────────────────
+
+  - qname: "number:date-style"
+    local_name: "date-style"
+    namespace: "number"
+    namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+    canonical_class: "Number.DateStyle"
+    spec_section: "16.29"
+    spec_fact_ref: "FACT-FODS-010"
+    parent: "office:automatic-styles"
+    children: []
+    key_attributes: [style:name, number:language, number:country]
+    python_spec_file: "src/python/fods/spec/number/date_style.py"
+    python_spec_status: "exists"
+    dotnet_spec_file: null
+    dotnet_spec_status: "not_implemented"
+    dotnet_facade_file: null
+    implementation_status: "python_spec_only"
+    coverage_status: "covered"
+    notes: "Represents date format definitions in office:automatic-styles block."
+
+# ── Summary ────────────────────────────────────────────────────────────────
+
+summary:
+  total_nodes: 17
+  nodes_with_python_spec: 14
+  nodes_without_python_spec: 3
+  nodes_with_dotnet_spec: 4
+  nodes_with_dotnet_facade: 3
+  nodes_fully_not_implemented: 3
+  coverage_gaps:
+    - "style:text-properties — no Python or .NET spec class"
+    - "style:paragraph-properties — no Python or .NET spec class"
+    - "style:table-cell-properties — no Python or .NET spec class"
+  dotnet_spec_files_exist:
+    - "src/net/fods/Spec/Office/Document.cs"
+    - "src/net/fods/Spec/Table/Table.cs"
+    - "src/net/fods/Spec/Table/TableRow.cs"
+    - "src/net/fods/Spec/Table/TableCell.cs"
+  dotnet_facades_without_spec_delegation:
+    - "FodsSheet (table:table) — Spec/Table/Table.cs exists but FodsDocument does not delegate"
+    - "FodsRow (table:table-row) — Spec/Table/TableRow.cs exists but FodsDocument does not delegate"
+    - "FodsCell (table:table-cell) — Spec/Table/TableCell.cs exists but FodsDocument does not delegate"
+  critical_finding: >
+    3 .NET Spec/ files exist with correct SpecQName constants, and 3 facade files exist,
+    but FodsDocument.cs (DOM-backed via XDocument) does NOT delegate to Spec/ types.
+    This is the core QNAME_MODEL_DECOMPOSITION gap — wiring is the missing link.

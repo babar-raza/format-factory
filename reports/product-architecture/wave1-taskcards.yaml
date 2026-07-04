@@ -1,0 +1,297 @@
+---
+# TC-ARC-018: Wave 1 Source Migration Taskcards — FODS (.NET + Python)
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-018
+# generated_at: "2026-07-04"
+#
+# CRITICAL: These taskcards are QUEUED — NO SOURCE FILES MAY BE WRITTEN until
+# system healing Lanes 1-6, 14, 15 complete. This file records WHAT will migrate.
+# Execution authority for Wave 1 source changes requires:
+#   (1) all honey TC-HEAL-* taskcards CLOSED
+#   (2) all blossom PQLM-GOV-001 governance healing CLOSED
+#   (3) explicit PRODUCT_ARCHITECTURE_READY gate pass for fods/dotnet and fods/python
+
+schema_version: "1.0"
+wave: 1
+blocking_condition: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+wave1_formats: [fods]
+wave1_languages: [dotnet, python]
+
+gate_status:
+  status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+  blocked_by:
+    - "honey PQLM-GOV-001 TC-HEAL-NET-001/002/PY-001/002 — system healing lanes must complete"
+    - "blossom CQGA-001 governance validators active and enforcing"
+    - "PRODUCT_ARCHITECTURE_READY gate (V125) must pass for fods"
+  unblocked_when: "System healing Lanes 1-6 complete AND GATE-P4 passes"
+
+# ────────────────────────────────────────────────────────────────────────────
+# WAVE 1 TASKCARD GROUP A — FODS .NET Model/ Structure Creation
+# ────────────────────────────────────────────────────────────────────────────
+
+taskcards:
+
+  - task_id: TC-W1-FODS-NET-001
+    title: "Create src/net/fods/Model/ hierarchy for table:* QNames"
+    product: fods
+    language: dotnet
+    lane: canonical_model
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "System healing gate"
+    governing_skill: "/add-dotnet-object-model-feature"
+    allowed_paths:
+      - "src/net/fods/Model/Office/"
+      - "src/net/fods/Model/Table/"
+      - "src/net/fods/Model/Style/"
+      - "src/net/fods/Model/Text/"
+    forbidden_paths:
+      - "src/net/fods/FodsDocument.cs"
+      - "src/net/fods/FodsDocumentLegacyCounters.cs"
+    qnames:
+      - "office:document"
+      - "office:spreadsheet"
+      - "table:table"
+      - "table:table-row"
+      - "table:table-cell"
+    target_files:
+      - "src/net/fods/Model/Office/Document.cs"
+      - "src/net/fods/Model/Office/Spreadsheet.cs"
+      - "src/net/fods/Model/Table/Table.cs"
+      - "src/net/fods/Model/Table/TableRow.cs"
+      - "src/net/fods/Model/Table/TableCell.cs"
+      - "src/net/fods/Model/Table/CoveredTableCell.cs"
+      - "src/net/fods/Model/Table/TableColumn.cs"
+    model_obligations:
+      - "Each class carries only the properties owned by its QName"
+      - "Table.cs: Name(string), Rows(List<TableRow>), Columns(List<TableColumn>)"
+      - "TableRow.cs: Cells(List<TableCell>), RepeatCount(int)"
+      - "TableCell.cs: ValueType(string), Value(string), Formula(string), StyleName(string)"
+    parser_obligations:
+      - "FodsParser.cs must populate Table.TableCell from office:value-type + office:value attributes"
+      - "FodsParser.cs must populate TableRow.Cells list from child table:table-cell elements"
+    writer_obligations:
+      - "FodsWriter.cs must serialize Table.TableCell.Value → office:value attribute"
+      - "FodsWriter.cs must emit table:table-row with correct table:table-cell children"
+    proof_target: "Round-trip: load FODS file → mutate cell value in Model → save → reload → verify cell value preserved"
+    estimated_files_changed: 7
+    pre_execution_checklist_required: true
+    spec_fact_ids: ["FACT-FODS-042", "FACT-FODS-043", "FACT-FODS-044"]
+    capability_ids: ["CAP-FODS-SHEET-001"]
+    taskcard_id: "TC-W1-FODS-NET-001"
+    dependencies: ["TC-ARC-003", "TC-ARC-005", "TC-ARC-006"]
+
+  - task_id: TC-W1-FODS-NET-002
+    title: "Create src/net/fods/Model/Style/ hierarchy for style:* QNames"
+    product: fods
+    language: dotnet
+    lane: canonical_model
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "TC-W1-FODS-NET-001; system healing gate"
+    governing_skill: "/add-dotnet-object-model-feature"
+    allowed_paths:
+      - "src/net/fods/Model/Style/"
+      - "src/net/fods/Model/Text/"
+      - "src/net/fods/Model/Number/"
+    qnames:
+      - "style:style"
+      - "style:table-cell-properties"
+      - "style:text-properties"
+      - "text:p"
+      - "text:span"
+    target_files:
+      - "src/net/fods/Model/Style/Style.cs"
+      - "src/net/fods/Model/Style/TableCellProperties.cs"
+      - "src/net/fods/Model/Style/TextProperties.cs"
+      - "src/net/fods/Model/Text/Paragraph.cs"
+      - "src/net/fods/Model/Text/Span.cs"
+    model_obligations:
+      - "Style.cs: Name(string), Family(string), TableCellProperties, TextProperties"
+      - "TableCellProperties.cs: BackgroundColor(string), Border, WrapText(bool)"
+      - "TextProperties.cs: FontName(string), FontSize(double), Bold(bool), Italic(bool)"
+    parser_obligations:
+      - "FodsParser reads style:style elements into Model/Style/Style.cs instances"
+      - "FodsParser populates Style.TableCellProperties from style:table-cell-properties child"
+    writer_obligations:
+      - "FodsWriter serializes Style list from office:spreadsheet → office:automatic-styles"
+    proof_target: "Round-trip: style changes preserved after save/reload"
+    estimated_files_changed: 5
+    dependencies: ["TC-W1-FODS-NET-001"]
+
+  - task_id: TC-W1-FODS-NET-003
+    title: "Thin FodsDocument — remove VIOLATION_WRONG_OWNER methods"
+    product: fods
+    language: dotnet
+    lane: public_api
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "TC-W1-FODS-NET-001; TC-W1-FODS-NET-002; system healing gate"
+    governing_skill: "/add-dotnet-api"
+    allowed_paths:
+      - "src/net/fods/FodsDocument.cs"
+      - "src/net/fods/FodsWorksheetCollection.cs"
+      - "src/net/fods/FodsWorksheet.cs"
+      - "src/net/fods/FodsCell.cs"
+      - "src/net/fods/FodsRow.cs"
+      - "src/net/fods/FodsColumn.cs"
+    forbidden_paths:
+      - "src/net/fods/Model/"
+    migration_items_from_ledger:
+      - "SheetCount → FodsWorksheetCollection.Count"
+      - "GetSheetByName → FodsWorksheetCollection.this[string]"
+      - "GetSheetByIndex → FodsWorksheetCollection.this[int]"
+      - "GetSheetNames → Remove (callers use Worksheets.Select)"
+      - "GetCellValue (all overloads) → FodsCell.Value"
+      - "SetCellValue (all overloads) → FodsCell.Value setter"
+      - "DeleteColumn → FodsWorksheet.Columns.Remove"
+    api_obligations:
+      - "FodsDocument retains ONLY: Load, Save, Export, Worksheets, Styles, Metadata"
+      - "FodsWorksheetCollection: Add, Remove, Count, this[int], this[string]"
+      - "FodsCell: Value, ValueType, Formula, Style"
+    proof_target: "After thinning: existing tests using doc.GetCellValue must migrate to doc.Worksheets[0].Rows[r].Cells[c].Value"
+    compatibility_obligation: "Add Obsolete shims in FodsDocument for backward compat during transition"
+    estimated_files_changed: 6
+    dependencies: ["TC-W1-FODS-NET-001", "TC-W1-FODS-NET-002"]
+
+  - task_id: TC-W1-FODS-NET-004
+    title: "Retire FodsDocumentLegacyCounters.cs — move 48 zero-returns to proper owners"
+    product: fods
+    language: dotnet
+    lane: public_api
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "TC-W1-FODS-NET-003; system healing gate"
+    governing_skill: "/add-dotnet-api"
+    allowed_paths:
+      - "src/net/fods/FodsDocumentLegacyCounters.cs"
+      - "src/net/fods/FodsWorksheet.cs"
+      - "src/net/fods/FodsCell.cs"
+    notes:
+      - "FodsDocumentLegacyCounters.cs has 48 methods returning constant 0 (V113+V124 violations)"
+      - "Methods like GetRowCount, GetColumnCount belong to FodsWorksheet, not FodsDocument"
+      - "Methods like GetStyleCount belong to FodsStyleCollection"
+      - "Post-migration: file may be deleted entirely"
+    estimated_files_changed: 3
+    dependencies: ["TC-W1-FODS-NET-003"]
+
+  - task_id: TC-W1-FODS-NET-005
+    title: "Create src/net/fods/Parsing/ and src/net/fods/Writing/ subdirectories"
+    product: fods
+    language: dotnet
+    lane: parser_writer
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "TC-W1-FODS-NET-001; system healing gate"
+    governing_skill: "/add-dotnet-object-model-feature"
+    allowed_paths:
+      - "src/net/fods/Parsing/"
+      - "src/net/fods/Writing/"
+    qnames:
+      - "table:table"
+      - "table:table-row"
+      - "table:table-cell"
+    target_files:
+      - "src/net/fods/Parsing/TableParser.cs"
+      - "src/net/fods/Parsing/StyleParser.cs"
+      - "src/net/fods/Writing/TableWriter.cs"
+      - "src/net/fods/Writing/StyleWriter.cs"
+    parser_obligations:
+      - "TableParser.cs: parse table:table → Table.Table model; iterate rows+cells"
+      - "StyleParser.cs: parse style:style → Style.Style model"
+    writer_obligations:
+      - "TableWriter.cs: serialize Table.Table → office:spreadsheet XML"
+      - "StyleWriter.cs: serialize Style list → office:automatic-styles XML"
+    proof_target: "FodsDocument.Load() delegates to TableParser; FodsDocument.Save() delegates to TableWriter"
+    estimated_files_changed: 4
+    dependencies: ["TC-W1-FODS-NET-001", "TC-W1-FODS-NET-002"]
+
+# ────────────────────────────────────────────────────────────────────────────
+# WAVE 1 TASKCARD GROUP B — FODS Python Model Delegation Fix
+# ────────────────────────────────────────────────────────────────────────────
+
+  - task_id: TC-W1-FODS-PY-001
+    title: "Fix models.py to delegate to spec/ instead of wrapping neutral dict"
+    product: fods
+    language: python
+    lane: canonical_model
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "System healing gate; honey TC-HEAL-PY-002 must close first"
+    governing_skill: "/add-python-object-model-feature"
+    allowed_paths:
+      - "src/python/fods/models.py"
+      - "src/python/fods/spec/"
+    forbidden_paths:
+      - "src/python/fods/Compat/"
+    current_problem: >
+      FodsDocument in models.py wraps neutral parser dict (self._data = {}) rather
+      than delegating to spec/ canonical types. This is the MINOR_REALIGNMENT gap
+      (pilot-02: Python nested ownership PASS but models.py still dict-backed).
+    target_state: >
+      FodsDocument in models.py holds a reference to spec.office.document.Document
+      (spec_qname=office:document). Properties delegate to the spec object, not a raw dict.
+    qnames:
+      - "office:document"
+      - "table:table"
+      - "table:table-cell"
+    spec_fact_ids: ["FACT-FODS-001", "FACT-FODS-042"]
+    capability_ids: ["CAP-FODS-SHEET-001"]
+    model_obligations:
+      - "FodsDocument.__init__ creates spec.office.document.Document"
+      - "FodsDocument.worksheets delegates to spec object's table list"
+      - "NO anonymous dict stored as persistent domain model"
+    parser_obligations:
+      - "FodsParser populates spec.office.document.Document from XML"
+      - "models.py loads via parser, stores spec object, NOT raw dict"
+    writer_obligations:
+      - "FodsWriter serializes spec.office.document.Document to XML"
+      - "models.py save() delegates to writer, NOT dict serializer"
+    proof_target: "Round-trip: Load FODS → set cell value via models.py → Save → reload → value present"
+    estimated_files_changed: 2
+    pre_execution_checklist_required: true
+    dependencies: ["TC-ARC-003", "TC-ARC-005"]
+
+  - task_id: TC-W1-FODS-PY-002
+    title: "Align Compat/ layer to Aspose-style public API hierarchy"
+    product: fods
+    language: python
+    lane: public_api
+    status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+    blocked_by: "TC-W1-FODS-PY-001; system healing gate"
+    governing_skill: "/add-python-api"
+    allowed_paths:
+      - "src/python/fods/Compat/"
+    forbidden_paths:
+      - "src/python/fods/spec/"
+      - "src/python/fods/models.py"
+    current_problem: >
+      Compat/ layer does not fully implement the Aspose-style hierarchy.
+      FodsDocument in Compat/ lacks: Worksheets collection, Cells collection,
+      FodsRow, FodsCell as navigable objects.
+    target_state: >
+      FodsDocument(Compat) → Worksheets(FodsWorksheetCollection) → FodsWorksheet →
+      Cells(FodsCellCollection) → FodsCell(Value, ValueType, Formula, Style)
+    api_obligations:
+      - "FodsWorksheetCollection: Add, Remove, Count, __getitem__"
+      - "FodsCellCollection: __getitem__(row, col), __iter__"
+      - "FodsCell: value(property), value_type(enum), formula(property)"
+    proof_target: "doc.worksheets[0].cells[0, 0].value returns parsed cell value"
+    estimated_files_changed: 4
+    dependencies: ["TC-W1-FODS-PY-001"]
+
+# ────────────────────────────────────────────────────────────────────────────
+# SUMMARY
+# ────────────────────────────────────────────────────────────────────────────
+
+summary:
+  total_taskcards: 7
+  dotnet_taskcards: 5
+  python_taskcards: 2
+  all_status: QUEUED_PENDING_SYSTEM_HEALING_GATE
+  estimated_dotnet_files_changed: 25
+  estimated_python_files_changed: 6
+  estimated_total_files_changed: 31
+  wave1_acceptance:
+    - "All 7 taskcards CLOSED with evidence"
+    - "Round-trip proof exists for FODS .NET and FODS Python"
+    - "FAILED_REQUIRED_PILOTS = 0 (pilots 3-6 run post-Wave-1)"
+    - "FodsDocumentLegacyCounters.cs retired or all 48 methods delegating"
+    - "models.py in Python delegates to spec/, NOT anonymous dict"
+    - "FodsDocument (both languages) owns only: Load, Save, Export, Worksheets, Styles, Metadata"
+  next_wave: "Wave 2 — remaining 28 product+language combos per qname-code-organization-plan.yaml"

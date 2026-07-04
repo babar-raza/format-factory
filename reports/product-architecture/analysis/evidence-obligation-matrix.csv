@@ -1,0 +1,23 @@
+taskcard_id,required_evidence_file,key_verification_fields,failure_condition
+TC-ARC-001,reports/product-architecture/architecture-mission.yaml,"mission_id,head,sal_fact_total","head not 40-char hex OR sal_fact_total < 14000"
+TC-ARC-002,reports/product-architecture/dual-architecture-contract.md,"7 sections present","any required section missing"
+TC-ARC-003,reports/product-architecture/fods-qname-hierarchy.yaml,"≥13 qname_nodes,all owning_type","count < 13 OR any owning_type null"
+TC-ARC-004,reports/product-architecture/qname-code-organization-plan.yaml,"30 entries,no null target_subdirs","count ≠ 30 OR any null target_subdirs"
+TC-ARC-005,reports/product-architecture/fods-aspose-api-design.yaml,"all public_types with canonical_model_type","any canonical_model_type null"
+TC-ARC-006,reports/product-architecture/fods-public-api-to-qname-map.yaml,"0 null qname fields","grep 'qname: null' returns results"
+TC-ARC-007,reports/product-architecture/product-architecture-audit.yaml,"30 records,no null classification","count ≠ 30 OR any null classification"
+TC-ARC-008,reports/product-architecture/qname-api-migration-ledger.yaml,"all symbols with disposition","any symbol missing disposition"
+TC-ARC-009,reports/product-architecture/aspose-qname-gap-ledger.yaml,"all CRITICAL with task_ids","CRITICAL finding with empty task_ids"
+TC-ARC-010,stdout rejection log,"compiler rejects empty-qname capability","compiler exits 0 on invalid capability"
+TC-ARC-011,.supervisor/skill-registry.yaml,"pre_execution_checklist on 4 skills","any target skill missing pre_execution_checklist"
+TC-ARC-012,test output,"all V111-V127 PASS","any V111-V127 test FAIL"
+TC-ARC-013-01,reports/product-architecture/pilot-evidence/pilot-01-qname-hierarchy-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-013-02,reports/product-architecture/pilot-evidence/pilot-02-nested-ownership-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-013-07,reports/product-architecture/pilot-evidence/pilot-07-legacy-counters-validator-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-013-08,reports/product-architecture/pilot-evidence/pilot-08-no-sprint-ids-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-013-10,reports/product-architecture/pilot-evidence/pilot-10-lane-ownership-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-013-12,reports/product-architecture/pilot-evidence/pilot-12-idempotency-proof.yaml,verdict PASS,verdict FAIL
+TC-ARC-014,reports/product-architecture/cross-language-alignment.yaml,"all FODS QNames with dotnet+python types","any missing semantic_parity field"
+TC-ARC-016,reports/product-architecture/promotion-registry.yaml,"30 records,no null promotion_level","any null promotion_level"
+TC-ARC-018,reports/product-architecture/wave1-taskcards.yaml,"all Wave 1 QUEUED","any Wave 1 not QUEUED"
+TC-ARC-018,git status check,"0 changes to src/net/ or src/python/","any src/ file modified"

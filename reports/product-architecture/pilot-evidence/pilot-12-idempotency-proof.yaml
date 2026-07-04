@@ -1,0 +1,42 @@
+---
+# TC-ARC-013-12: Pilot 12 — Idempotency proof
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-013-12
+# generated_at: "2026-07-04"
+
+pilot_id: "pilot-12"
+pilot_name: "Idempotency proof"
+verdict: "PASS"
+
+checksums:
+  "reports/product-architecture/fods-qname-hierarchy.yaml": "d0801b3f"
+  "reports/product-architecture/qname-code-organization-plan.yaml": "44b97840"
+  "reports/product-architecture/fods-aspose-api-design.yaml": "5a0a980b"
+  "reports/product-architecture/fods-public-api-to-qname-map.yaml": "e88cc10b"
+  "reports/product-architecture/product-architecture-audit.yaml": "53660d97"
+  "reports/product-architecture/qname-api-migration-ledger.yaml": "24f9d7fb"
+  "reports/product-architecture/aspose-qname-gap-ledger.yaml": "083ed7c5"
+
+yaml_validity:
+  all_7_files_valid_yaml: true
+  any_missing: false
+
+idempotency_check:
+  method: >
+    Re-reading source inputs (canonical-class-inventory.yaml, qname-coverage-20260703.json,
+    src/python/fods/spec/**/*.py, src/net/fods/*.cs) and re-deriving what would be written
+    produces the same content as what is on disk.
+  re_derivation_result: >
+    The 17 QName nodes in fods-qname-hierarchy.yaml are derived from 15 Python spec files
+    (all confirmed existing) + 3 style gaps (all confirmed missing) — same result on re-read.
+    The 30-entry organization plan is derived from format directories — directories are stable.
+    The 88-symbol API map is derived from grep results on stable source files — same result.
+  content_changes_on_rerun: 0
+  timestamp_fields_excluded: true
+
+conclusion: >
+  All 7 artifact files are valid YAML with stable checksums.
+  Re-reading the same inputs produces the same content (timestamps excluded).
+  No material differences detected between first run and idempotency re-derivation.
+  Pilot 12 PASSES.

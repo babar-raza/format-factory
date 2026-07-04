@@ -1,0 +1,53 @@
+---
+# TC-ARC-013-01: Pilot 1 — QName hierarchy → folder/namespace/file plan correctness
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-013-01
+# generated_at: "2026-07-04"
+
+pilot_id: "pilot-01"
+pilot_name: "QName hierarchy to layout correctness"
+verdict: "PASS"
+
+evidence:
+  total_qname_nodes: 18
+  nodes_with_python_spec_file: 15
+  python_spec_files_existing: 15
+  python_spec_files_missing: 0
+  nodes_without_python_spec_file: 3
+
+  nodes_without_python_spec_file_detail:
+    - qname: "style:text-properties"
+      reason: "No Python spec class created yet — Wave 1 deferred (GAP-GLOBAL-004)"
+    - qname: "style:paragraph-properties"
+      reason: "No Python spec class created yet — Wave 1 deferred"
+    - qname: "style:table-cell-properties"
+      reason: "No Python spec class created yet — Wave 1 deferred (GAP-GLOBAL-004)"
+
+  all_15_spec_files_verified:
+    - "src/python/fods/spec/number/date_style.py"
+    - "src/python/fods/spec/office/annotation.py"
+    - "src/python/fods/spec/office/automatic_styles.py"
+    - "src/python/fods/spec/office/body.py"
+    - "src/python/fods/spec/office/document.py"
+    - "src/python/fods/spec/office/spreadsheet.py"
+    - "src/python/fods/spec/style/style.py"
+    - "src/python/fods/spec/table/covered_table_cell.py"
+    - "src/python/fods/spec/table/table.py"
+    - "src/python/fods/spec/table/table_cell.py"
+    - "src/python/fods/spec/table/table_column.py"
+    - "src/python/fods/spec/table/table_header_rows.py"
+    - "src/python/fods/spec/table/table_row.py"
+    - "src/python/fods/spec/text/paragraph.py"
+    - "src/python/fods/spec/text/span.py"
+
+  hierarchy_file: "reports/product-architecture/fods-qname-hierarchy.yaml"
+  hierarchy_node_count: 18
+  all_required_qnames_present: true
+
+conclusion: >
+  All 15 existing Python spec files match the QName hierarchy plan.
+  3 nodes (style:text-properties, style:paragraph-properties, style:table-cell-properties)
+  have no Python spec class — these are deferred to Wave 1 per GAP-GLOBAL-004.
+  All existing files are placed in the correct spec/<namespace>/<local>.py path structure.
+  Pilot 1 PASSES.

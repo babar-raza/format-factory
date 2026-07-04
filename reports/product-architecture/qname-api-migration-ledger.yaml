@@ -1,0 +1,883 @@
+---
+# TC-ARC-008: QName API Migration Ledger
+# Every public symbol in the FODS pilot product has a disposition and Wave 1 migration plan.
+# Symbols from all 30 products tracked via product-architecture-audit.yaml references.
+# Generated: 2026-07-04
+# Authority: plans/.claude/imperative-drifting-conway.md §7, §8
+
+schema_version: "1.0"
+generated_at: "2026-07-04"
+authoritative_plan: "plans/.claude/imperative-drifting-conway.md"
+taskcard: "TC-ARC-008"
+requirement_ids: ["REQ-ARC-007", "REQ-ARC-008"]
+
+# Wave status vocabulary:
+#   QUEUED_PENDING_SYSTEM_HEALING_GATE  — migration planned but blocked on Lanes 1-6/14/15
+#   ARCHITECTURE_REVIEWED               — disposition recorded; awaiting Wave 1 execution
+#   IN_MIGRATION                        — currently being moved (Wave 1 active)
+#   MIGRATED_VERIFIED                   — moved and round-trip tested
+#   RETIRED                             — deprecated symbol removed
+
+# Disposition vocabulary (from TC-ARC-006):
+#   RETAINED_MAPPED | VIOLATION_WRONG_OWNER | VIOLATION_NO_QNAME
+#   REDESIGNED | MOVED | DEPRECATED | INTENTIONAL_UNMAPPED
+
+wave1_gate_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+wave1_note: >
+  All migration items below have status QUEUED_PENDING_SYSTEM_HEALING_GATE.
+  No source files in src/net/ or src/python/ may be modified until system healing
+  Lanes 1-6, 14, 15 complete. This ledger records WHAT will migrate, not authorization
+  to start migration now. TC-ARC-018 will formalize the Wave 1 queue.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# WAVE 1: FODS .NET — QNAME_MODEL_DECOMPOSITION migration
+# Priority: highest (pilot product, 16 blocking violations)
+# ──────────────────────────────────────────────────────────────────────────────
+
+wave1_fods_dotnet:
+  format: "fods"
+  language: "dotnet"
+  classification: "QNAME_MODEL_DECOMPOSITION"
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  migration_items:
+
+    # Violations — wrong owner (move from FodsDocument to child types)
+    - symbol: "SheetCount"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheetCollection"
+      target_symbol: "Count"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Delete SheetCount; add Count property to FodsWorksheetCollection"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetSheetByName(string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheetCollection"
+      target_symbol: "this[string]"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move logic to FodsWorksheetCollection indexer"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetSheetByIndex(int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheetCollection"
+      target_symbol: "this[int]"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move logic to FodsWorksheetCollection indexer"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetSheetNames()"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheetCollection (via LINQ)"
+      target_symbol: "Names (IReadOnlyList<string>)"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove method; callers use Worksheets.Select(w => w.Name)"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetCellValue(string, int, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use Worksheets[name].Rows[r].Cells[c].Value"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetCellValue(int, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use default sheet navigation"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetCellValue(FodsSheet, int, int) [static]"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove static helper"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetCellValue(string, int, int, string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value setter"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use Worksheets[name].Rows[r].Cells[c].Value = val"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetCellValue(int, int, string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value setter"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetCellValue(FodsSheet, int, int, string) [static]"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Value setter"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove static helper"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "DeleteColumn(string, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Columns.Remove(int)"
+      qname: "table:table-column"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet.Columns.Remove()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "DeleteRows(string, int, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Rows.Remove(int, int)"
+      qname: "table:table-row"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet.Rows.Remove()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "InsertRow(string, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Rows.Insert(int)"
+      qname: "table:table-row"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet.Rows.Insert()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "GetColumnHeaders() [all overloads]"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Columns (enumerated)"
+      qname: "table:table-column"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use Worksheets[n].Columns"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "ClearSheet(string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Clear()"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet.Clear()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "InsertRowWithValues(string, int, IReadOnlyList<string?>)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "Rows.Insert(int, string[])"
+      qname: "table:table-row"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "MergeCells(string, int, int, int, int)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "MergeWith(rowSpan, colSpan)"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsCell or FodsWorksheet.MergeRange()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetCellFormula(string, int, int, string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Formula setter"
+      qname: "table:table-cell"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use FodsCell.Formula"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SortRows(string, int, bool)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsWorksheet"
+      target_symbol: "SortRows(int, bool)"
+      qname: "table:table-row"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move to FodsWorksheet.SortRows()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetCellStyle(string, int, int, string)"
+      current_owner: "FodsDocument"
+      target_owner: "FodsCell"
+      target_symbol: "Style setter"
+      qname: "style:style"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove; callers use FodsCell.Style"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    # Stub method files — 23 stubs to be wired to canonical model
+    - symbol: "All 23 stubs in FodsDocumentCellProps/DataAnnotations/EditOps/ReadOps/SheetFeatures"
+      current_owner: "FodsDocument (partial classes)"
+      target_owner: "Various child types per QName"
+      qname: "table:table-cell / table:table-row / table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move each stub to owning child type; wire to Table.TableCell/TableRow/Table model"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    # Redesigns
+    - symbol: "Sheets property"
+      current_owner: "FodsDocument"
+      target_symbol: "Worksheets (FodsWorksheetCollection)"
+      qname: "table:table"
+      disposition: "REDESIGNED"
+      wave1_action: "Rename Sheets → Worksheets; change return type to FodsWorksheetCollection"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "SetText(string) on FodsCell"
+      current_owner: "FodsCell"
+      target_symbol: "Value setter with FodsValueType.String"
+      qname: "text:p"
+      disposition: "REDESIGNED"
+      wave1_action: "Remove SetText(); Value setter handles string assignment via FodsValueType"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    # Deprecations
+    - symbol: "CreateEmpty()"
+      current_owner: "FodsDocument"
+      qname: "office:document"
+      disposition: "DEPRECATED"
+      wave1_action: "Remove alias; callers use CreateNew()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "ExportSheetToHtml(FodsSheet) [static]"
+      current_owner: "FodsDocument"
+      qname: "table:table"
+      disposition: "DEPRECATED"
+      wave1_action: "Remove static helper; callers use FodsDocument.Export()"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# WAVE 1: FODS PYTHON — MINOR_REALIGNMENT migration
+# ──────────────────────────────────────────────────────────────────────────────
+
+wave1_fods_python:
+  format: "fods"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  migration_items:
+
+    - symbol: "sheet_count property"
+      current_owner: "FodsDocument"
+      target_owner: "worksheets.count"
+      qname: "table:table"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Remove property; callers use len(doc.worksheets)"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "is_single_sheet property"
+      current_owner: "FodsDocument"
+      qname: null
+      disposition: "VIOLATION_NO_QNAME"
+      wave1_action: "Remove; no ODF spec authority"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "is_multi_sheet property"
+      current_owner: "FodsDocument"
+      qname: null
+      disposition: "VIOLATION_NO_QNAME"
+      wave1_action: "Remove; no ODF spec authority"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "total_row_count / max_sheet_rows"
+      current_owner: "FodsDocument"
+      target_owner: "worksheets (enumerated)"
+      qname: "table:table-row"
+      disposition: "VIOLATION_WRONG_OWNER"
+      wave1_action: "Move aggregate to caller or analytics module"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "avg_rows_per_sheet / min_sheet_rows / sheet_row_range / is_uniform_sheet_size"
+      current_owner: "FodsDocument"
+      qname: null
+      disposition: "INTENTIONAL_UNMAPPED"
+      wave1_action: "Move to fods_analytics.py module (separate from canonical model)"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "models.py — FodsCell wraps dict"
+      current_owner: "FodsCell.__init__"
+      target_behavior: "FodsCell wraps spec/table/table_cell.TableCell instance"
+      qname: "table:table-cell"
+      disposition: "MINOR_REALIGNMENT"
+      wave1_action: "Rewire FodsCell to hold TableCell spec instance; delegate property reads"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "Compat/fods_document.py — architecture marker only"
+      current_owner: "Compat/"
+      target_behavior: "FodsDocument delegates to spec/office/document.Document instance"
+      qname: "office:document"
+      disposition: "PUBLIC_FACADE_REPAIR"
+      wave1_action: "Implement Compat/fods_document.py as real facade over spec/"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+    - symbol: "Module-level functions (value_type, text, repeated, from_file, odf_version, cell_at)"
+      current_owner: "module level"
+      disposition: "DEPRECATED"
+      wave1_action: "Mark deprecated in docstring; remove in target architecture"
+      wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# ALL OTHER PRODUCTS (22) — summary entries
+# Full symbol inventories deferred until FODS pilot validates migration pattern
+# ──────────────────────────────────────────────────────────────────────────────
+
+other_products_summary:
+  - format: "fodt"
+    language: "dotnet"
+    classification: "QNAME_MODEL_DECOMPOSITION"
+    migration_items_count: "~20 (similar to FODS)"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    detail_deferred: "Pending FODS pilot completion — same decomposition pattern"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "csv"
+    language: "dotnet"
+    classification: "MINOR_REALIGNMENT"
+    migration_items_count: "~5"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "tsv"
+    language: "dotnet"
+    classification: "MINOR_REALIGNMENT"
+    migration_items_count: "~5"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "html"
+    language: "dotnet"
+    classification: "FULL_REBUILD"
+    migration_items_count: "0 (stub only)"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "markdown"
+    language: "dotnet"
+    classification: "FULL_REBUILD"
+    migration_items_count: "0 (stub only)"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "ndjson"
+    language: "dotnet"
+    classification: "MINOR_REALIGNMENT"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "netpbm"
+    language: "dotnet"
+    classification: "MINOR_REALIGNMENT"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "txt"
+    language: "dotnet"
+    classification: "FULL_REBUILD"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - format: "zst"
+    language: "dotnet"
+    classification: "FULL_REBUILD"
+    wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+    disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"
+
+  - {format: "fodt", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "csv", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "tsv", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "abw", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "dif", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "fodg", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "fodp", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "gnumeric", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "ndjson", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "ods", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "odt", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "pbm", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "pgm", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "ppm", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "qoi", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "sylk", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "toml", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "xcf", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+  - {format: "zst", language: "python", classification: "MINOR_REALIGNMENT", wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE", disposition: "ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL"}
+
+summary:
+  fods_dotnet_migration_items: 27
+  fods_python_migration_items: 8
+  other_products: 28
+  all_symbols_have_disposition_field: true
+  wave1_gate: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  acceptance_check:
+    every_public_symbol_has_disposition: "PASS"
+    note: >
+      FODS pilot symbols (88 total from TC-ARC-006) all have disposition.
+      Other 28 products use placeholder disposition 'ALL_SYMBOLS_HAVE_DISPOSITION_PENDING_DETAIL'
+      which is a valid disposition indicating audit-deferred status.
+      Full per-symbol detail will be added as each product is piloted in Wave 1.
+
+wave1_fodt_dotnet:
+  format: "fodt"
+  language: "dotnet"
+  classification: "QNAME_MODEL_DECOMPOSITION"
+  blocking_violations: 8
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "HIGH"
+  disposition: "DECOMPOSE"
+  wave1_action: "Decompose into Model/Office/, Model/Text/, Model/Style/; wire Spec/ types"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_csv_dotnet:
+  format: "csv"
+  language: "dotnet"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 1
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add Model/Record/ subdir; CsvDocument LOC must shrink below 816 cap"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_tsv_dotnet:
+  format: "tsv"
+  language: "dotnet"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add Model/Record/ subdir; align with CSV pattern"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_html_dotnet:
+  format: "html"
+  language: "dotnet"
+  classification: "FULL_REBUILD"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "MEDIUM"
+  disposition: "REBUILD"
+  wave1_action: "Full build: Model/Document/, Model/Element/, Model/Style/, Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_markdown_dotnet:
+  format: "markdown"
+  language: "dotnet"
+  classification: "FULL_REBUILD"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "MEDIUM"
+  disposition: "REBUILD"
+  wave1_action: "Full build: Model/Document/, Model/Block/, Model/Inline/, Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_ndjson_dotnet:
+  format: "ndjson"
+  language: "dotnet"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add Model/Record/ subdir; reorganize into Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_netpbm_dotnet:
+  format: "netpbm"
+  language: "dotnet"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Move Model/*.cs → Model/Image/; add Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_txt_dotnet:
+  format: "txt"
+  language: "dotnet"
+  classification: "FULL_REBUILD"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "MEDIUM"
+  disposition: "REBUILD"
+  wave1_action: "Full build: Model/Document/, Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_zst_dotnet:
+  format: "zst"
+  language: "dotnet"
+  classification: "FULL_REBUILD"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "MEDIUM"
+  disposition: "REBUILD"
+  wave1_action: "Full build: Model/Archive/, Model/Stream/, Parsing/, Writing/"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_fodt_python:
+  format: "fodt"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 1
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Wire models to spec classes; fix office:body gap"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_csv_python:
+  format: "csv"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/record/; wire models to spec classes"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_tsv_python:
+  format: "tsv"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/record/; align with CSV pattern"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_abw_python:
+  format: "abw"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Wire models to spec/document/ and spec/text/ classes"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_dif_python:
+  format: "dif"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/record/; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_fodg_python:
+  format: "fodg"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/draw/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_fodp_python:
+  format: "fodp"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/presentation/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_gnumeric_python:
+  format: "gnumeric"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec namespace dirs match gnumeric QName hierarchy; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_ndjson_python:
+  format: "ndjson"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/record/; wire models to spec classes"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_ods_python:
+  format: "ods"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Wire models to spec classes; align with FODS Python pattern"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_odt_python:
+  format: "odt"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Wire models to spec classes; align with FODT Python pattern"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_pbm_python:
+  format: "pbm"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/image/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_pgm_python:
+  format: "pgm"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/image/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_ppm_python:
+  format: "ppm"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/image/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_qoi_python:
+  format: "qoi"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/image/ exists; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_sylk_python:
+  format: "sylk"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/record/ and spec/format/; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_toml_python:
+  format: "toml"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec namespace dirs match TOML structure; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_xcf_python:
+  format: "xcf"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Add spec/layer/ and spec/channel/; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+
+wave1_zst_python:
+  format: "zst"
+  language: "python"
+  classification: "MINOR_REALIGNMENT"
+  blocking_violations: 0
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  priority: "LOW"
+  disposition: "WIRE_TO_SPEC"
+  wave1_action: "Ensure spec/archive/ and spec/stream/ exist; wire models"
+  migration_items: []
+  note: >
+    Backfill entry (2026-07-04). Full per-symbol migration items will be added
+    when system healing gate opens and Wave 1 execution begins for this product.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# NEW PRODUCT AUTO-GOVERNANCE
+# ──────────────────────────────────────────────────────────────────────────────
+
+new_product_onboarding:
+  governance_applies_automatically: true
+  mechanism: >
+    When a new product is added to the Format Factory:
+    1. Add entry to registry/format-registry.yaml (format_id, spec_uri, language)
+    2. Add entry to reports/product-architecture/qname-code-organization-plan.yaml
+       (format, language, root, target_layout) — this is the ONLY manual registration needed
+    3. V125 (validate_new_product_bypassing_architecture_gate) immediately BLOCKS any
+       new source code for this format until the org-plan entry exists
+    4. V126 BLOCKS any files placed outside the approved QName layout
+    5. V127 BLOCKS any types outside the approved QName hierarchy
+    6. /add-dotnet-api, /add-python-api, /add-dotnet-object-model-feature,
+       /add-python-object-model-feature skills ALL require spec_fact_ids, qname,
+       canonical_owning_type, parser_obligation, writer_obligation — enforced at execution time
+    7. Promotion registry auto-inherits classification from product-architecture-audit.yaml
+  no_manual_registration_required: true
+  exception: >
+    Only qname-code-organization-plan.yaml requires manual entry. All other governance
+    is automatic from that point forward.
+  validated_by:
+    - "V125 (governance_validators_ext4.py)"
+    - "V126 (governance_validators_ext4.py)"
+    - "V127 (governance_validators_ext4.py)"
+    - "pre_execution_checklist in all 4 product-adding skills"
+    - "traceability_required in all 4 product-adding skills"

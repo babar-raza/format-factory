@@ -1,0 +1,43 @@
+---
+# TC-ARC-013-02: Pilot 2 — Nested ownership proof
+# authoritative_plan: plans/.claude/imperative-drifting-conway.md
+# requirement_id: REQ-ARC-009
+# taskcard_id: TC-ARC-013-02
+# generated_at: "2026-07-04"
+
+pilot_id: "pilot-02"
+pilot_name: "Nested ownership proof"
+
+python_verdict: "PASS"
+dotnet_verdict: "GAP_DOCUMENTED"
+
+python_evidence:
+  spec_file: "src/python/fods/spec/table/table_cell.py"
+  has_spec_qname: true
+  spec_qname_value: "table:table-cell"
+  inherits_from_root: false
+  models_py_has_cell_methods: false
+  detail: >
+    Python spec/table/table_cell.py correctly owns table:table-cell QName.
+    FodsDocument in models.py has no cell-level methods (GetCell, SetCell, etc.).
+    Python nested ownership is CORRECT.
+
+dotnet_evidence:
+  fods_document_cs: "src/net/fods/FodsDocument.cs"
+  nested_methods_found:
+    - "SetCellValue (overload 1)"
+    - "SetCellValue (overload 2)"
+    - "SetCellFormula"
+    - "SetCellStyle"
+  gap_reference: "GAP-FODS-NET-001"
+  wave1_status: "QUEUED_PENDING_SYSTEM_HEALING_GATE"
+  detail: >
+    .NET FodsDocument.cs owns SetCellValue, SetCellFormula, SetCellStyle, and other
+    nested-QName methods that should belong to FodsCell (table:table-cell owner).
+    This is the documented QNAME_MODEL_DECOMPOSITION gap (GAP-FODS-NET-001).
+    Fix is QUEUED for Wave 1 source migration after system healing gate passes.
+
+conclusion: >
+  Python: spec/table/table_cell.py correctly owns table:table-cell — PASS.
+  .NET: FodsDocument.cs wrongly owns cell-level behavior — GAP documented, Wave 1 fix queued.
+  Pilot 2 PARTIAL_PASS (gap is documented, not a new finding).

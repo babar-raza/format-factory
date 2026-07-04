@@ -1,0 +1,82 @@
+parent_taskcard_id,child_taskcard_id,child_title
+TC-ARC-000,TC-ARC-000-01,Read full plan and confirm authority
+TC-ARC-000,TC-ARC-000-02,Write preflight record and plan section inventory
+TC-ARC-000,TC-ARC-000-03,Write plan-part-deep-analysis.yaml
+TC-ARC-000,TC-ARC-000-04,Write requirements inventory and traceability CSVs
+TC-ARC-000,TC-ARC-000-05,Write DAG + state machine + validation matrix + evidence contract
+TC-ARC-001,TC-ARC-001-01,Verify and read authority registry files
+TC-ARC-001,TC-ARC-001-02,Capture HEAD SHA and branch
+TC-ARC-001,TC-ARC-001-03,Read and validate SAL fact counts
+TC-ARC-001,TC-ARC-001-04,Write architecture-mission.yaml
+TC-ARC-002,TC-ARC-002-01,Inspect Python FODS spec/ and Compat/ layers
+TC-ARC-002,TC-ARC-002-02,Inspect .NET FODS current architecture
+TC-ARC-002,TC-ARC-002-03,Inspect Python CSV architecture
+TC-ARC-002,TC-ARC-002-04,Write dual-architecture-contract.md
+TC-ARC-003,TC-ARC-003-01,Read FODS entries from canonical-class-inventory.yaml
+TC-ARC-003,TC-ARC-003-02,Read FODS coverage from qname-coverage-20260703.json
+TC-ARC-003,TC-ARC-003-03,Build office:* and table:* qname_nodes
+TC-ARC-003,TC-ARC-003-04,Build style:* text:* number:* qname_nodes
+TC-ARC-003,TC-ARC-003-05,Write fods-qname-hierarchy.yaml and validate
+TC-ARC-004,TC-ARC-004-01,Survey current source layouts for all formats
+TC-ARC-004,TC-ARC-004-02,Define target layout entries for .NET formats
+TC-ARC-004,TC-ARC-004-03,Define target layout entries for Python formats
+TC-ARC-004,TC-ARC-004-04,Write qname-code-organization-plan.yaml
+TC-ARC-005,TC-ARC-005-01,Design workbook/worksheet/row/cell hierarchy
+TC-ARC-005,TC-ARC-005-02,Design style and metadata hierarchy
+TC-ARC-005,TC-ARC-005-03,Document known violations (LegacyCounters)
+TC-ARC-005,TC-ARC-005-04,Write fods-aspose-api-design.yaml
+TC-ARC-006,TC-ARC-006-01,Inventory .NET FODS public symbols
+TC-ARC-006,TC-ARC-006-02,Inventory Python FODS public symbols
+TC-ARC-006,TC-ARC-006-03,Inventory Python FODS models.py
+TC-ARC-006,TC-ARC-006-04,Assign QName mapping to each symbol
+TC-ARC-006,TC-ARC-006-05,Write fods-public-api-to-qname-map.yaml
+TC-ARC-007,TC-ARC-007-01,Audit FODS Python
+TC-ARC-007,TC-ARC-007-02,Audit FODS .NET
+TC-ARC-007,TC-ARC-007-03,Audit CSV (both languages)
+TC-ARC-007,TC-ARC-007-04,Audit remaining Python formats (17)
+TC-ARC-007,TC-ARC-007-05,Audit remaining .NET formats (8)
+TC-ARC-007,TC-ARC-007-06,Write product-architecture-audit.yaml
+TC-ARC-008,TC-ARC-008-01,Build migration items for FODS .NET
+TC-ARC-008,TC-ARC-008-02,Build migration items for FODS Python
+TC-ARC-008,TC-ARC-008-03,Build migration items for CSV
+TC-ARC-008,TC-ARC-008-04,Build migration items for remaining formats
+TC-ARC-008,TC-ARC-008-05,Write qname-api-migration-ledger.yaml
+TC-ARC-009,TC-ARC-009-01,Extract findings from product-architecture-audit.yaml
+TC-ARC-009,TC-ARC-009-02,Classify findings into gap categories
+TC-ARC-009,TC-ARC-009-03,Write aspose-qname-gap-ledger.yaml
+TC-ARC-010,TC-ARC-010-01,Read and understand current compiler
+TC-ARC-010,TC-ARC-010-02,Add compiled_capability output schema
+TC-ARC-010,TC-ARC-010-03,Add rejection rules
+TC-ARC-010,TC-ARC-010-04,Test with FODS format
+TC-ARC-011,TC-ARC-011-01,Read current skill entries
+TC-ARC-011,TC-ARC-011-02,Define updated pre_execution_checklist
+TC-ARC-011,TC-ARC-011-03,Write updated skill-registry.yaml
+TC-ARC-011,TC-ARC-011-04,Verify skills block speculative invocation
+TC-ARC-012,TC-ARC-012-01,Read ALL existing validator files; confirm V111 available
+TC-ARC-012,TC-ARC-012-02,Implement V111-V116 (API and model validators)
+TC-ARC-012,TC-ARC-012-03,Implement V117-V121 (file/structure/doc validators)
+TC-ARC-012,TC-ARC-012-04,Implement V122-V127 (traceability/stub/gate validators)
+TC-ARC-012,TC-ARC-012-05,Write tests and verify
+TC-ARC-013,TC-ARC-013-01,Pilot 1: QName hierarchy layout correctness
+TC-ARC-013,TC-ARC-013-02,Pilot 2: Nested ownership proof
+TC-ARC-013,TC-ARC-013-07,Pilot 7: Legacy counters flagged by validators
+TC-ARC-013,TC-ARC-013-08,Pilot 8: No sprint-history IDs in source
+TC-ARC-013,TC-ARC-013-10,Pilot 10: Lane ownership safety
+TC-ARC-013,TC-ARC-013-12,Pilot 12: Idempotency proof
+TC-ARC-014,TC-ARC-014-01,Map FODS QNames across .NET and Python
+TC-ARC-014,TC-ARC-014-02,Map CSV QNames across .NET and Python
+TC-ARC-014,TC-ARC-014-03,Write cross-language-alignment.yaml
+TC-ARC-015,TC-ARC-015-01,Define gate criteria as a check function
+TC-ARC-015,TC-ARC-015-02,Wire into validator runner
+TC-ARC-015,TC-ARC-015-03,Test: new format without QName plan blocked
+TC-ARC-016,TC-ARC-016-01,Write promotion-registry.yaml (all 30 at DRAFT)
+TC-ARC-016,TC-ARC-016-02,Implement promotion_manager.py
+TC-ARC-016,TC-ARC-016-03,Wire V119 into ext4 validators
+TC-ARC-016,TC-ARC-016-04,Set existing CERTIFIED products to REOPENED
+TC-ARC-017,TC-ARC-017-01,Add traceability field requirements to skill schemas
+TC-ARC-017,TC-ARC-017-02,Verify V122 and V123 correctly wired in ext4
+TC-ARC-017,TC-ARC-017-03,Confirm TC-LA-005 provenance_chain alignment
+TC-ARC-018,TC-ARC-018-01,Generate Wave 1 .NET FODS taskcards
+TC-ARC-018,TC-ARC-018-02,Generate Wave 1 Python FODS taskcards
+TC-ARC-018,TC-ARC-018-03,Write wave1-taskcards.yaml; update migration ledger
+TC-ARC-018,TC-ARC-018-04,Confirm system healing gate check
