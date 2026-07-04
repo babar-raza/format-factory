@@ -1,0 +1,205 @@
+version: 1
+policy_ref: docs/governance/found-issue-ownership-policy.md
+issues:
+
+- issue_id: FI-001
+  stable_semantic_key: "sylk:broken_fixture:test_separation_pilots.py:test_no_duplicates"
+  status: verified
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: broken_fixture
+  affected_component: sylk
+  affected_paths:
+    - tests/governance_pilots/test_separation_pilots.py
+    - src/python/sylk/spreadsheet_document.py
+  observed_behavior: "FileNotFoundError: src/python/sylk/spreadsheet_document.py — test parametrize references deleted file"
+  expected_behavior: "TestNoDuplicates parametrize for sylk should reference the replacement file (sylk_analytics.py)"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-001
+  healing_taskcard_id: TC-FIO-P2
+  verification_verdict: "21/21 tests pass after replacing (sylk, spreadsheet_document.py) with (sylk, sylk_analytics.py)"
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-04T00:00:00Z"
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-002-broken-fixture-analytics/"
+
+- issue_id: FI-002
+  stable_semantic_key: "sylk:broken_fixture:test_separation_pilots.py:test_has_spec_qname"
+  status: verified
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: broken_fixture
+  affected_component: sylk
+  affected_paths:
+    - tests/governance_pilots/test_separation_pilots.py
+    - src/python/sylk/spreadsheet_document.py
+  observed_behavior: "FileNotFoundError: src/python/sylk/spreadsheet_document.py — TestSpecQName references deleted file"
+  expected_behavior: "TestSpecQName for sylk should reference models.py which contains spec_qname"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-001
+  healing_taskcard_id: TC-FIO-P2
+  verification_verdict: "21/21 tests pass after replacing (sylk, spreadsheet_document.py) with (sylk, models.py)"
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-04T00:00:00Z"
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-002-broken-fixture-analytics/"
+
+- issue_id: FI-003
+  stable_semantic_key: "toml:broken_fixture:test_separation_pilots.py:test_has_spec_qname"
+  status: verified
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: broken_fixture
+  affected_component: toml
+  affected_paths:
+    - tests/governance_pilots/test_separation_pilots.py
+    - src/python/toml/config_document.py
+  observed_behavior: "FileNotFoundError: src/python/toml/config_document.py — test parametrize references non-existent file; toml domain model is at models.py"
+  expected_behavior: "TestSpecQName for toml should reference models.py (the actual domain model with spec_qname)"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-001
+  healing_taskcard_id: TC-FIO-P4
+  verification_verdict: "21/21 tests pass after replacing (toml, config_document.py) with (toml, models.py)"
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-04T00:00:00Z"
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-004-spec-qname-stale-fixture/"
+
+- issue_id: FI-004
+  stable_semantic_key: "gnumeric:broken_fixture:test_separation_pilots.py:test_has_spec_qname"
+  status: verified
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: broken_fixture
+  affected_component: gnumeric
+  affected_paths:
+    - tests/governance_pilots/test_separation_pilots.py
+    - src/python/gnumeric/workbook_document.py
+  observed_behavior: "FileNotFoundError: src/python/gnumeric/workbook_document.py — test references non-existent file; gnumeric domain model is at models.py"
+  expected_behavior: "TestSpecQName for gnumeric should reference models.py (the actual domain model with spec_qname)"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-001
+  healing_taskcard_id: TC-FIO-P4
+  verification_verdict: "21/21 tests pass after replacing (gnumeric, workbook_document.py) with (gnumeric, models.py)"
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-04T00:00:00Z"
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-004-spec-qname-stale-fixture/"
+
+- issue_id: FI-008
+  stable_semantic_key: "source_structure:regression:test_no_loc_regression:14_files"
+  status: taskcarded
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: regression
+  affected_component: multiple
+  affected_paths:
+    - src/python/csv/csv_parser.py
+    - src/python/csv/models.py
+    - src/python/fods/Compat/fods_document.py
+    - src/python/fods/models.py
+    - src/python/fods/spec/office/document.py
+    - src/python/fods/spec/table/table_cell.py
+    - src/python/tsv/models.py
+    - tests/supervisor/test_governance_validators.py
+    - tests/supervisor/test_llm_semantic_verification.py
+    - tools/capability_layer/capability_map_generator.py
+  observed_behavior: "10 Python files exceed their baseline_loc_cap (was 24; 10 healed; current count: 10 product files + 4 FODS Compat new from ARC-QNAME-001)"
+  expected_behavior: "All files in registry/source-structure-baseline.json must stay within baseline_loc_cap"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-002
+  healing_taskcard_id: TC-FIO-P1-HEAL-A
+  verification_verdict: null
+  disposition: null
+  closed_at: null
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-001-loc-regressions/"
+
+- issue_id: FI-010
+  stable_semantic_key: "dotnet:regression:fods_FodsDocumentCellProps.cs:exceeds_cap"
+  status: in_repair
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: regression
+  affected_component: fods_dotnet
+  affected_paths:
+    - src/net/fods/FodsDocumentCellProps.cs
+  observed_behavior: "687 LOC > frozen baseline_loc_cap of 642. V130 WARN on every run."
+  expected_behavior: "File must stay within its frozen baseline_loc_cap=642"
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-003
+  healing_taskcard_id: TC-FIO-P5-HEAL-FODS
+  verification_verdict: null
+  disposition: null
+  closed_at: null
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-005-dotnet-loc-violations/"
+
+- issue_id: FI-011
+  stable_semantic_key: "dotnet:regression:csv_CsvDocumentAnalytics.cs:exceeds_cap"
+  status: in_repair
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: regression
+  affected_component: csv_dotnet
+  affected_paths:
+    - src/net/csv/CsvDocumentAnalytics.cs
+  observed_behavior: "633 LOC > frozen baseline_loc_cap of 604. V130 WARN on every run."
+  expected_behavior: "File must stay within its frozen baseline_loc_cap=604"
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-003
+  healing_taskcard_id: TC-FIO-P5-HEAL-CSV
+  verification_verdict: null
+  disposition: null
+  closed_at: null
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-005-dotnet-loc-violations/"
+
+- issue_id: FI-012
+  stable_semantic_key: "dotnet:regression:fods_FodsDocumentDataAnnotations.cs:exceeds_cap"
+  status: in_repair
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: regression
+  affected_component: fods_dotnet
+  affected_paths:
+    - src/net/fods/FodsDocumentDataAnnotations.cs
+  observed_behavior: "511 LOC > frozen baseline_loc_cap of 508. V130 WARN on every run."
+  expected_behavior: "File must stay within its frozen baseline_loc_cap=508"
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-003
+  healing_taskcard_id: TC-FIO-P5-HEAL-FODS
+  verification_verdict: null
+  disposition: null
+  closed_at: null
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-005-dotnet-loc-violations/"
+
+- issue_id: FI-013
+  stable_semantic_key: "dotnet:regression:fods_FodsDocumentSheetFeatures.cs:exceeds_cap"
+  status: in_repair
+  discovered_at: "2026-07-04T00:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  issue_type: regression
+  affected_component: fods_dotnet
+  affected_paths:
+    - src/net/fods/FodsDocumentSheetFeatures.cs
+  observed_behavior: "483 LOC > frozen baseline_loc_cap of 479. V130 WARN on every run."
+  expected_behavior: "File must stay within its frozen baseline_loc_cap=479"
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-003
+  healing_taskcard_id: TC-FIO-P5-HEAL-FODS
+  verification_verdict: null
+  disposition: null
+  closed_at: null
+  evidence:
+    - ".local/evidences/found-issue-pilots/pilot-005-dotnet-loc-violations/"

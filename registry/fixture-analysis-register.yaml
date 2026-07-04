@@ -1,0 +1,35 @@
+version: 1
+fixtures:
+
+- fixture_id: FX-001
+  path: tests/governance_pilots/test_separation_pilots.py
+  owner: governance_pilots
+  purpose: "Parametrized tests verifying analytics separation structure: no duplicates, spec_qname presence, init LOC, .NET LOC limits"
+  producer: manual (written during analytics separation pilots)
+  consumers:
+    - "CI governance suite"
+    - "Autonomous sprint validator"
+  authoritative_source: "current working tree (post-analytics-separation state is canonical)"
+  valid: true
+  stale: false
+  synthetic: false
+  defect: "Parametrize lists contained stale file references: (sylk, spreadsheet_document.py), (toml, config_document.py), (gnumeric, workbook_document.py) — all referencing deleted/renamed files"
+  required_action: REPAIR_MANUALLY_THEN_ENCODE_IN_SKILL
+  issue_id: FI-001
+  status: repaired
+
+- fixture_id: FX-002
+  path: tests/governance_pilots/test_separation_pilots.py
+  owner: governance_pilots
+  purpose: "TestSpecQName — verify domain model files contain spec_qname header"
+  producer: manual (written during analytics separation pilots)
+  consumers:
+    - "CI governance suite"
+  authoritative_source: "current working tree; spec_qname is in models.py for all migrated formats"
+  valid: true
+  stale: false
+  synthetic: false
+  defect: "TestSpecQName parametrize listed (toml, config_document.py) and (gnumeric, workbook_document.py) — these files don't exist; actual domain models are models.py"
+  required_action: REPAIR_MANUALLY_THEN_ENCODE_IN_SKILL
+  issue_id: FI-003
+  status: repaired

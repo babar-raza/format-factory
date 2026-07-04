@@ -643,6 +643,25 @@ def run_all_governance_validators(
         # TC-PGI-042: Record skipped validators instead of silent pass
         _skipped_validators.append({"validators": ["V137", "V138"], "error": str(_exc_v137)})
 
+    # V139-V142 (FOUND-ISSUE-MVP-001, 2026-07-04): Register-level found-issue ownership validators
+    # V139: found_issue_register_present — WARN when tests fail but register is empty
+    # V140: issue_accounting_reconciles  — FAIL when register has unknown status
+    # V141: no_prose_only_findings       — WARN when dismissal prose in declaration
+    # V142: invalid_ownership_disposition — FAIL when invalid disposal in register
+    try:
+        from governance_validators_found_issue import (  # noqa: PLC0415
+            validate_found_issue_register_present as _v139,
+            validate_issue_accounting_reconciles as _v140,
+            validate_no_prose_only_findings as _v141,
+            validate_invalid_ownership_disposition as _v142,
+        )
+        results.append(_v139(declaration, repo_root))
+        results.append(_v140(declaration, repo_root))
+        results.append(_v141(declaration))
+        results.append(_v142(declaration, repo_root))
+    except Exception as _exc_v139:
+        _skipped_validators.append({"validators": ["V139", "V140", "V141", "V142"], "error": str(_exc_v139)})
+
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")
     pass_count = sum(1 for r in results if r["result"] == "PASS")

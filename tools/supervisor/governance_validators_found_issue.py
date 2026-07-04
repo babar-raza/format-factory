@@ -201,3 +201,227 @@ def validate_found_issue_invalid_disposition(declaration: dict) -> dict:
             )
 
     return _result("V133", "found_issue_invalid_disposition", not invalid, invalid, True)
+
+
+# ── V139-V142 ─────────────────────────────────────────────────────────────────
+# Register-level found-issue ownership validators (FOUND-ISSUE-MVP-001, 2026-07-04)
+#
+# V139-V142 operate on the REGISTER (registry/found-issue-register.yaml).
+# V130-V133 operate on the sprint DECLARATION (declaration['found_issues']).
+# Both layers are needed — different scopes, complementary enforcement.
+#
+# OWNERSHIP_VALID_DISPOSITIONS (6 — from found-issue-ownership-policy.md §6):
+#   HEALED_AND_VERIFIED, DUPLICATE_OF_ACTIVE_ISSUE, INVALID_FINDING_WITH_PROOF,
+#   VALID_GOVERNED_EXCLUSION, BLOCKED_TRUE_EXTERNAL_DEPENDENCY,
+#   WAITING_VALID_GATE_11_AUTHORIZATION
+#
+# These are DIFFERENT from VALID_DISPOSITIONS used by V133 (sprint-audit labels).
+# ─────────────────────────────────────────────────────────────────────────────
+
+import re  # noqa: E402
+
+OWNERSHIP_VALID_DISPOSITIONS: frozenset[str] = frozenset(
+    {
+        "HEALED_AND_VERIFIED",
+        "DUPLICATE_OF_ACTIVE_ISSUE",
+        "INVALID_FINDING_WITH_PROOF",
+        "VALID_GOVERNED_EXCLUSION",
+        "BLOCKED_TRUE_EXTERNAL_DEPENDENCY",
+        "WAITING_VALID_GATE_11_AUTHORIZATION",
+    }
+)
+
+_INVALID_DISMISSALS: frozenset[str] = frozenset(
+    {
+        "pre_existing", "pre-existing",
+        "unrelated",
+        "not_caused_by_me", "not caused by me",
+        "ignored",
+        "outside_current_task", "outside current task",
+    }
+)
+
+_PROSE_DISMISSAL_PATTERNS: list[str] = [
+    r"pre.?existing",
+    r"not caused by",
+    r"unrelated to",
+    r"outside.*task",
+    r"follow.?up recommended",
+    r"probably harmless",
+    r"somebody else",
+    r"no time to",
+    r"warning only",
+    r"already failing",
+]
+
+_PROSE_RE = re.compile(
+    "|".join(_PROSE_DISMISSAL_PATTERNS),
+    re.IGNORECASE,
+)
+
+
+def _load_found_issue_register(repo_root: "Path | None") -> "list[dict] | None":
+    """Load registry/found-issue-register.yaml issues list. Returns None if file missing."""
+    try:
+        import yaml as _yaml  # noqa: PLC0415
+    except ImportError:
+        return []
+
+    _r = repo_root or Path(__file__).parent.parent.parent
+    reg_path = _r / "registry" / "found-issue-register.yaml"
+    if not reg_path.exists():
+        return None
+    try:
+        data = _yaml.safe_load(reg_path.read_text(encoding="utf-8"))
+        return data.get("issues", []) if isinstance(data, dict) else []
+    except Exception:
+        return []
+
+
+# ── V139 ──────────────────────────────────────────────────────────────────────
+
+
+def validate_found_issue_register_present(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V139: When tests fail, found-issue-register.yaml should have entries.
+
+    WARN (not FAIL) during GA period — blocks_sprint=False.
+    Skips check if no sprint_id / run_id in declaration (can't correlate issues).
+    """
+    tests_run = declaration.get("tests_run", {}) or {}
+    failing_tests = declaration.get("failing_tests", []) or []
+    failed_count = tests_run.get("failed", 0) or 0
+
+    has_failures = failed_count > 0 or bool(failing_tests)
+    if not has_failures:
+        return _result("V139", "found_issue_register_present", True, [], False)
+
+    sprint_id = declaration.get("sprint_id") or declaration.get("run_id")
+    if not sprint_id:
+        return _result("V139", "found_issue_register_present", True, [], False)
+
+    issues = _load_found_issue_register(repo_root)
+    if issues is None:
+        return _result(
+            "V139",
+            "found_issue_register_present",
+            False,
+            ["[V139] registry/found-issue-register.yaml missing; tests failed but no issues registered"],
+            False,
+        )
+
+    if not issues:
+        return _result(
+            "V139",
+            "found_issue_register_present",
+            False,
+            [f"[V139] {failed_count or len(failing_tests)} test failure(s) detected but found-issue-register has no entries"],
+            False,
+        )
+
+    return _result("V139", "found_issue_register_present", True, [], False)
+
+
+# ── V140 ──────────────────────────────────────────────────────────────────────
+
+_STATUS_TO_BUCKET: dict[str, str] = {
+    "discovered": "active",
+    "classified": "active",
+    "taskcarded": "active",
+    "in_repair": "active",
+    "verified": "healed_and_verified",
+    "closed": "healed_and_verified",
+    "duplicate": "duplicate",
+    "invalid": "invalid_with_proof",
+    "governed_exclusion": "governed_exclusion",
+    "blocked_external": "blocked_true_external",
+    "waiting_gate_11": "waiting_gate_11",
+}
+
+
+def validate_issue_accounting_reconciles(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V140: All register statuses must map to accounting buckets without remainder.
+
+    blocks_sprint=True — unaccounted issues are never acceptable.
+    Missing register file = PASS (no issues to reconcile).
+    """
+    issues = _load_found_issue_register(repo_root)
+    if issues is None or not issues:
+        return _result("V140", "issue_accounting_reconciles", True, [], True)
+
+    unknown: list[str] = []
+    for issue in issues:
+        issue_id = issue.get("issue_id", "(no id)")
+        status = issue.get("status", "")
+        if status not in _STATUS_TO_BUCKET:
+            unknown.append(
+                f"[V140] {issue_id} has unknown status='{status}' "
+                f"(valid: {', '.join(sorted(_STATUS_TO_BUCKET))})"
+            )
+
+    return _result("V140", "issue_accounting_reconciles", not unknown, unknown, True)
+
+
+# ── V141 ──────────────────────────────────────────────────────────────────────
+
+
+def validate_no_prose_only_findings(declaration: dict) -> dict:
+    """V141: Detect dismissal language in worker_self_verdict or work item notes.
+
+    WARN (blocks_sprint=False) — advisory during GA period.
+    """
+    hits: list[str] = []
+
+    verdict = declaration.get("worker_self_verdict", "") or ""
+    if _PROSE_RE.search(verdict):
+        m = _PROSE_RE.search(verdict)
+        hits.append(f"[V141] worker_self_verdict contains dismissal language: '{m.group()}'")
+
+    for item in declaration.get("planned_work_items", []) or []:
+        notes = item.get("notes", "") or ""
+        if _PROSE_RE.search(notes):
+            m = _PROSE_RE.search(notes)
+            item_id = item.get("id", "(no id)")
+            hits.append(
+                f"[V141] work item {item_id} notes contain dismissal language: '{m.group()}'"
+            )
+
+    return _result("V141", "no_prose_only_findings", not hits, hits, False)
+
+
+# ── V142 ──────────────────────────────────────────────────────────────────────
+
+
+def validate_invalid_ownership_disposition(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V142: No issue in found-issue-register.yaml may use an invalid ownership disposition.
+
+    OWNERSHIP dispositions are the 6 from found-issue-ownership-policy.md §6.
+    These differ from V133 sprint-audit dispositions — different scopes.
+    blocks_sprint=True — invalid dispositions are never acceptable.
+    Missing register file = PASS.
+    """
+    issues = _load_found_issue_register(repo_root)
+    if issues is None or not issues:
+        return _result("V142", "invalid_ownership_disposition", True, [], True)
+
+    invalid: list[str] = []
+    for issue in issues:
+        issue_id = issue.get("issue_id", "(no id)")
+        disp = issue.get("disposition", "")
+        if not disp:
+            continue  # In-flight issue with no disposition yet — not a violation
+
+        disp_norm = disp.lower().replace("-", "_").replace(" ", "_")
+        invalid_norm = {d.lower().replace("-", "_").replace(" ", "_") for d in _INVALID_DISMISSALS}
+        if disp_norm in invalid_norm:
+            invalid.append(
+                f"[V142] {issue_id} disposition='{disp}' is an invalid dismissal "
+                f"(not one of the 6 valid ownership dispositions; see found-issue-ownership-policy.md §6)"
+            )
+
+    return _result("V142", "invalid_ownership_disposition", not invalid, invalid, True)

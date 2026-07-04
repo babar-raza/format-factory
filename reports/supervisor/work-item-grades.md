@@ -1,14 +1,14 @@
 # Work Item Grades
-Sprint: bootstrap-sr-003
-Generated: 2026-07-04T21:50:43.149549
+Sprint: stateless-juggling-robin-sprint2
+Generated: 2026-07-04T22:18:31.169582
 Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| WI-SR-BOOTSTRAP-003 | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-SJR2-FODS-NET-CELL-STYLE | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
 - Accepted: 1
-- Rework: 0
+- Rework: 1
 - Overclaimed: 0
-- Autonomous Continue: True
+- Autonomous Continue: False

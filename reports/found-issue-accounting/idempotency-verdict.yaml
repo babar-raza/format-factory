@@ -1,0 +1,23 @@
+idempotency_verdict:
+  mission_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  plan_id: streamed-jumping-oasis
+  rerun_date: "2026-07-04"
+  initial_issue_count: 9
+  rerun_issue_count: 9
+  new_issues_discovered_on_rerun: 0
+  duplicate_ids_created: 0
+  stable_id_preserved: true
+  verdict: IDEMPOTENT_RERUN_CONFIRMED
+
+  evidence:
+    - "registry/found-issue-register.yaml: 9 unique issue IDs (FI-001,002,003,004,008,010,011,012,013)"
+    - "No new issues discovered during idempotency re-check"
+    - "All issue IDs are unique (confirmed by uniqueness check)"
+    - "Accounting reconciles: 9 total = 4 healed_and_verified + 5 active"
+
+  idempotency_notes:
+    - "FI-001/002/003/004: All 4 fixture issues were healed and verified in the same session — re-running the tests produces 21/21 PASS"
+    - "FI-008/010/011/012/013: Active repair taskcards created; re-running the session would re-discover the same files exceeding LOC caps but would NOT create new FI entries (stable_semantic_key guards against duplication)"
+    - "V139 WARN (no register entries on failure) would fire for any future sprint that has test failures without filing issues — this is the intended enforcement"
+    - "V140 would catch any new issue with an unknown status that gets accidentally committed"
+    - "V142 would catch any issue with a pre_existing or unrelated disposition"

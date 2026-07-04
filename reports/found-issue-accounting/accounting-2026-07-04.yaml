@@ -1,0 +1,67 @@
+accounting:
+  report_date: "2026-07-04"
+  mission_id: FOUND-ISSUE-OWNERSHIP-MVP-001
+  plan_id: streamed-jumping-oasis
+
+  # Total issues registered in this mission
+  # FI-001 through FI-013, excluding FI-005/007/009 (healed before mission start)
+  # and FI-006 (superseded by FI-010–FI-013 which are the actual current violations)
+  total_discovered: 9
+
+  # Active bucket = discovered + classified + taskcarded + in_repair
+  # FI-008 (taskcarded) + FI-010/011/012/013 (in_repair) = 5
+  active: 5
+
+  # healed_and_verified = verified + closed
+  # FI-001/002/003/004 (all verified) = 4
+  healed_and_verified: 4
+
+  duplicate: 0
+  invalid_with_proof: 0
+  governed_exclusion: 0
+  blocked_true_external: 0
+  waiting_gate_11: 0
+
+  # Reconciliation: 5 + 4 + 0 + 0 + 0 + 0 + 0 = 9 == total_discovered
+  unaccounted: 0
+  counts_reconcile: true
+
+  # Informational sub-counts (not used in V140 formula)
+  informational_sub_counts:
+    sub_active_in_repair: 4    # FI-010, FI-011, FI-012, FI-013
+    sub_active_taskcarded: 1   # FI-008
+    sub_active_classified: 0
+    sub_active_discovered: 0
+    sub_healed_verified: 4     # FI-001, FI-002, FI-003, FI-004
+    sub_healed_closed: 0
+
+  # Issues healed in this mission (not counted — pre-healed before registration)
+  pre_healed_before_registration:
+    - FI-005   # fodp init LOC — cap updated to 104 (healed before mission)
+    - FI-007   # FodtDocumentEditing.cs — healed to 664 LOC (healed before mission)
+    - FI-009   # CsvDocument.cs — healed to 286 LOC (healed before mission)
+
+  # Open repair taskcards (FI-008 sub-groups)
+  repair_taskcards:
+    - id: TC-FIO-P1-HEAL-A
+      description: "FODS Compat/spec LOC regressions from ARC-QNAME-001 (4 files)"
+      severity: P3
+    - id: TC-FIO-P1-HEAL-B
+      description: "CSV/TSV parser LOC regressions (3 files)"
+      severity: P3
+    - id: TC-FIO-P1-HEAL-C
+      description: "capability_map_generator.py LOC regression (1 file)"
+      severity: P3
+    - id: TC-FIO-P5-HEAL-FODS
+      description: ".NET FODS LOC violations: FodsDocumentCellProps/DataAnnotations/SheetFeatures (3 files)"
+      severity: P3
+    - id: TC-FIO-P5-HEAL-CSV
+      description: ".NET CSV LOC violation: CsvDocumentAnalytics (1 file)"
+      severity: P3
+
+  # Governed exclusions (Group D — test files outside production standard scope)
+  governed_exclusions_pending:
+    - description: "tests/supervisor/test_governance_validators.py (3270 > 3267)"
+      rationale: "Test files are outside production library standard scope; excluded from LOC cap enforcement"
+    - description: "tests/supervisor/test_llm_semantic_verification.py (1259 > 1258)"
+      rationale: "Same — test file LOC exclusion"

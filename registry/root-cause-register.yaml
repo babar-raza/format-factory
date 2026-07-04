@@ -1,0 +1,54 @@
+version: 1
+root_causes:
+
+- root_cause_id: RC-FIO-001
+  title: "Stale test fixture parametrize lists after analytics separation migration"
+  first_failing_boundary: "tests/governance_pilots/test_separation_pilots.py (parametrize lists)"
+  local_cause: "test_separation_pilots.py was not updated when domain model files were renamed/deleted during analytics separation (PQLM-GOV-001)"
+  systemic_cause: "The analytics separation skill (/extract-analytics-from-monolith) did not include a step to update test fixture parametrize lists when renaming or deleting domain model files"
+  affected_producer: "extract-analytics-from-monolith skill"
+  affected_consumers:
+    - "tests/governance_pilots/test_separation_pilots.py::TestNoDuplicates"
+    - "tests/governance_pilots/test_separation_pilots.py::TestSpecQName"
+  recurrence_path: "Any future analytics separation that deletes or renames a domain model file without updating test_separation_pilots.py will reproduce this"
+  confidence: HIGH
+  issue_ids:
+    - FI-001
+    - FI-002
+    - FI-003
+    - FI-004
+  repair_skill_id: found-issue-ownership
+  status: healed
+
+- root_cause_id: RC-FIO-002
+  title: "PQLM-GOV-001 and ARC-QNAME-001 added fields/code exceeding frozen LOC caps"
+  first_failing_boundary: "registry/source-structure-baseline.json (frozen baseline_loc_cap entries)"
+  local_cause: "PQLM-001 added full domain model fields to models.py files and ARC-QNAME-001 added Compat facade fields; total LOC grew beyond frozen caps"
+  systemic_cause: "LOC caps were frozen before PQLM-001 and ARC-QNAME-001 work; the sprint executor did not require LOC cap verification before committing expanded files"
+  affected_producer: "PQLM-GOV-001 sprint / ARC-QNAME-001 sprint"
+  affected_consumers:
+    - "tests/test_source_structure.py::test_no_loc_regression"
+  recurrence_path: "Any sprint that adds fields to existing Python source files without checking baseline_loc_cap will reproduce this"
+  confidence: HIGH
+  issue_ids:
+    - FI-008
+  repair_skill_id: null
+  status: open
+
+- root_cause_id: RC-FIO-003
+  title: "Governed FODS/CSV .NET split work grew files past their post-split baseline caps"
+  first_failing_boundary: "registry/source-structure-baseline.json (frozen baseline_loc_cap for .cs files)"
+  local_cause: "FODS XML grounding (FODS-NET-XG-001+002) and PQLM-GOV-001 CSV split created/grew .cs files that were capped at creation size; subsequent feature additions pushed them past those caps"
+  systemic_cause: "The V78 reactive scanner only checks changed_files in the declaration; if a file grows between declarations (no sprint declares it changed), V78 misses it. V130 static scan (added in this mission) now surfaces this silent drift."
+  affected_producer: "FODS-NET-XG-001 sprint / PQLM-GOV-001 sprint"
+  affected_consumers:
+    - "V130 (validate_dotnet_loc_cap_static)"
+  recurrence_path: "Any .NET sprint that adds methods to existing split files without checking baseline_loc_cap will reproduce this"
+  confidence: HIGH
+  issue_ids:
+    - FI-010
+    - FI-011
+    - FI-012
+    - FI-013
+  repair_skill_id: null
+  status: open

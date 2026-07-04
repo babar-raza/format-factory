@@ -149,6 +149,19 @@ public sealed partial class FodsDocument
         return col < cells.Count ? cells[col] : null;
     }
 
+    /// <summary>
+    /// Validate, ensure the cell exists (creating rows/cells as needed), and return its XElement.
+    /// Use for Set operations that must create cells on demand.
+    /// </summary>
+    private XElement EnsureAndGetCellElement(string sheetName, int row, int col)
+    {
+        var sheet = RequireSheet(sheetName);
+        RequireNonNegativeRow(row);
+        RequireNonNegativeCol(col);
+        EnsureCell(sheet, row, col);
+        return GetCellElementDirect(sheetName, row, col, sheet)!;
+    }
+
     // =========================================================================
     // Sheet metadata properties — dict-backed with ODF config read-through
     // GI-FODS-NET-001: Category B stubs; adds XML round-trip
@@ -311,29 +324,25 @@ public sealed partial class FodsDocument
     /// <summary>R457: Set the border style for the cell. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellBorderStyle(string sheetName, int row, int col, string style)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
         style ??= string.Empty;
-        if (cellEl is not null && !string.IsNullOrEmpty(style))
-            FodsStyleEditor.SetCellBorderStyle(_doc, cellEl, style);
+        if (string.IsNullOrEmpty(style)) return;
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellBorderStyle(_doc, cellEl, style);
     }
 
     /// <summary>R472: Return the font style string for the cell (default "normal").</summary>
-    // STUB: no ODF style-chain path for font-style string; returns default "normal"
     public string GetCellFontStyle(string sheetName, int row, int col)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
-        return "normal";
+        var cellEl = GetCellElement(sheetName, row, col);
+        return cellEl is null ? "normal" : FodsStyleResolver.ResolveCellStyle(_doc, cellEl).FontStyle;
     }
 
-    /// <summary>R472: Set the font style string for the cell.</summary>
-    // STUB: no ODF style-chain path for font-style string; write deferred to feature sprint
+    /// <summary>R472: Set the font style string for the cell ("normal" or "italic").</summary>
     public void SetCellFontStyle(string sheetName, int row, int col, string style)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        style ??= "normal";
+        FodsStyleEditor.SetCellFontStyle(_doc, cellEl, style);
     }
 
     /// <summary>R455: Return the horizontal alignment for the cell. ODF style chain read.</summary>
@@ -347,10 +356,9 @@ public sealed partial class FodsDocument
     /// <summary>R455: Set the horizontal alignment for the cell. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellHorizontalAlignment(string sheetName, int row, int col, string alignment)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
         alignment ??= "start";
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellHorizontalAlignment(_doc, cellEl, alignment);
+        FodsStyleEditor.SetCellHorizontalAlignment(_doc, cellEl, alignment);
     }
 
     /// <summary>R456: Return the vertical alignment for the cell. ODF style chain read.</summary>
@@ -364,10 +372,9 @@ public sealed partial class FodsDocument
     /// <summary>R456: Set the vertical alignment for the cell. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellVerticalAlignment(string sheetName, int row, int col, string alignment)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
         alignment ??= "bottom";
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellVerticalAlignment(_doc, cellEl, alignment);
+        FodsStyleEditor.SetCellVerticalAlignment(_doc, cellEl, alignment);
     }
 
     /// <summary>R467: Return the indent level for the cell. ODF style chain read.</summary>
@@ -381,9 +388,8 @@ public sealed partial class FodsDocument
     /// <summary>R467: Set the indent level for the cell. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellIndentLevel(string sheetName, int row, int col, int level)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellIndentLevel(_doc, cellEl, level);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellIndentLevel(_doc, cellEl, level);
     }
 
     /// <summary>R468: Return the rotation angle for the cell. ODF style chain read.</summary>
@@ -397,9 +403,8 @@ public sealed partial class FodsDocument
     /// <summary>R468: Set the rotation angle for the cell. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellRotationAngle(string sheetName, int row, int col, int angle)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellRotationAngle(_doc, cellEl, angle);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellRotationAngle(_doc, cellEl, angle);
     }
 
     /// <summary>R445: Return merge info from ODF span attributes on the cell element.</summary>
@@ -429,13 +434,12 @@ public sealed partial class FodsDocument
         return cSpan is not null && int.TryParse(cSpan, out int span) ? span : 1;
     }
 
-    /// <summary>R475: Set the column span for a merged cell.</summary>
-    // STUB: merge-span write requires table:number-columns-spanned + covered-cell construction; deferred to feature sprint
+    /// <summary>R475: Set the column span for a merged cell. Sets table:number-columns-spanned.</summary>
     public void SetCellMergeSpan(string sheetName, int row, int col, int span)
     {
-        RequireSheet(sheetName);
-        RequireNonNegativeRow(row);
-        RequireNonNegativeCol(col);
+        if (span < 1) throw new ArgumentOutOfRangeException(nameof(span), "Span must be >= 1.");
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        cellEl.SetAttributeValue(NsTable + "number-columns-spanned", span.ToString());
     }
 
     /// <summary>R450: Return the shrink-to-fit flag. ODF style chain read.</summary>
@@ -449,9 +453,8 @@ public sealed partial class FodsDocument
     /// <summary>R450: Set the shrink-to-fit flag. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellShrinkToFit(string sheetName, int row, int col, bool shrink)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellShrinkToFit(_doc, cellEl, shrink);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellShrinkToFit(_doc, cellEl, shrink);
     }
 
     /// <summary>R471: Return the underline style. ODF style chain read.</summary>
@@ -465,10 +468,9 @@ public sealed partial class FodsDocument
     /// <summary>R471: Set the underline style. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellUnderline(string sheetName, int row, int col, string style)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
         style ??= "none";
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellUnderline(_doc, cellEl, style);
+        FodsStyleEditor.SetCellUnderline(_doc, cellEl, style);
     }
 
     /// <summary>R408: Return the strikethrough flag. ODF style chain read.</summary>
@@ -484,9 +486,8 @@ public sealed partial class FodsDocument
     /// <summary>R470: Set the strikethrough flag. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellStrikethrough(string sheetName, int row, int col, bool strikethrough)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellStrikethrough(_doc, cellEl, strikethrough);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellStrikethrough(_doc, cellEl, strikethrough);
     }
 
     /// <summary>R446: Return the protection flag. ODF style chain read.</summary>
@@ -500,9 +501,8 @@ public sealed partial class FodsDocument
     /// <summary>R446: Set the protection flag. GI-FODS-NET-001: writes to ODF XML.</summary>
     public void SetCellProtection(string sheetName, int row, int col, bool protect)
     {
-        var cellEl = GetCellElement(sheetName, row, col);
-        if (cellEl is not null)
-            FodsStyleEditor.SetCellProtection(_doc, cellEl, protect);
+        var cellEl = EnsureAndGetCellElement(sheetName, row, col);
+        FodsStyleEditor.SetCellProtection(_doc, cellEl, protect);
     }
 }
 

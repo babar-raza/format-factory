@@ -1,0 +1,49 @@
+version: 1
+blast_radii:
+
+- blast_radius_id: BR-001
+  issue_id: FI-001
+  search_pattern: "spreadsheet_document"
+  surfaces_scanned:
+    - tests/governance_pilots/test_separation_pilots.py
+    - tests/
+    - src/python/sylk/
+    - src/python/ods/
+  confirmed_affected:
+    - "tests/governance_pilots/test_separation_pilots.py:121 (TestNoDuplicates sylk)"
+    - "tests/governance_pilots/test_separation_pilots.py:248 (TestSpecQName sylk)"
+  suspected_affected: []
+  unaffected_controls:
+    - "ods tests — grep shows no ods spreadsheet_document reference in test file"
+  backfill_required: false
+  regression_scope:
+    - "TestNoDuplicates[sylk-spreadsheet_document.py]"
+    - "TestSpecQName[sylk-spreadsheet_document.py]"
+  status: complete
+
+- blast_radius_id: BR-002
+  issue_id: FI-008
+  search_pattern: "baseline_loc_cap"
+  surfaces_scanned:
+    - registry/source-structure-baseline.json
+    - src/python/
+    - tests/supervisor/
+    - tools/
+  confirmed_affected:
+    - "src/python/csv/csv_parser.py: 422 > 415"
+    - "src/python/csv/models.py: 226 > 222"
+    - "src/python/fods/Compat/fods_document.py: 44 > 25"
+    - "src/python/fods/models.py: 360 > 343"
+    - "src/python/fods/spec/office/document.py: 59 > 44"
+    - "src/python/fods/spec/table/table_cell.py: 59 > 26"
+    - "src/python/tsv/models.py: 232 > 217"
+    - "tests/supervisor/test_governance_validators.py: 3270 > 3267"
+    - "tests/supervisor/test_llm_semantic_verification.py: 1259 > 1258"
+    - "tools/capability_layer/capability_map_generator.py: 1721 > 1717"
+  suspected_affected: []
+  unaffected_controls:
+    - "All other Python src/ files within their caps"
+  backfill_required: true
+  regression_scope:
+    - "tests/test_source_structure.py::test_no_loc_regression"
+  status: open

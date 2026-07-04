@@ -156,7 +156,7 @@ Everything else: log and continue. Supreme Directive applies.
 
 | TC-ID | Status |
 |-------|--------|
-| TC-SR-004 | OPEN |
+| TC-SR-004 | CLOSED |
 
 ---
 
@@ -177,7 +177,7 @@ When TC-SR-004 hits a TRUE_EXTERNAL_GATE or context exhaustion:
 
 | TC-ID | Status |
 |-------|--------|
-| TC-SR-005 | OPEN |
+| TC-SR-005 | CLOSED |
 
 ---
 
@@ -188,8 +188,8 @@ When TC-SR-004 hits a TRUE_EXTERNAL_GATE or context exhaustion:
 | TC-SR-001 | Copy plan to repo + write plan lock | 0 | CLOSED |
 | TC-SR-002 | Reset track signal (fix SESSION_MISMATCH) | 1 | CLOSED |
 | TC-SR-003 | Bootstrap autonomous-cycle (regenerate next-sprint.md) | 2 | CLOSED |
-| TC-SR-004 | Execute autonomous ledger loop until TRUE_EXTERNAL_GATE | 3 | OPEN |
-| TC-SR-005 | Close this plan with --terminal | 4 | OPEN |
+| TC-SR-004 | Execute autonomous ledger loop until TRUE_EXTERNAL_GATE | 3 | CLOSED |
+| TC-SR-005 | Close this plan with --terminal | 4 | CLOSED |
 
 ---
 
@@ -236,3 +236,12 @@ After each TC-SR-004 sprint iteration:
 
 After TC-SR-005:
 - `active-plan-lock.json` shows `stateless-juggling-robin` as `TERMINAL_CLOSED`
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-04T17:23:44.273209+00:00"
+  locked_by: "425a70371d00"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

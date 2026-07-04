@@ -1,22 +1,32 @@
-- item_id: WI-SR-BOOTSTRAP-003
-  item_title: Regenerate next-sprint.md with current system state
+- item_id: WI-SJR2-FODS-NET-CELL-STYLE
+  item_title: Fix 16 failing FODS .NET cell style roundtrip tests
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/supervisor/continuation-signal.json
-  tests_supporting: []
+  - src/net/fods/FodsDocumentCellProps.cs
+  - src/net/fods/FodsStyleEditor.cs
+  - src/net/fods/FodsStyleResolver.cs
+  - src/net/fods/Model/FodsOdfCellStyle.cs
+  - src/net/fods/FodsDocumentReadOps.cs
+  tests_supporting:
+  - tests/net/fods/FodsR472GetCellFontStyleDedicatedTests.cs
+  - tests/net/fods/FodsR455GetCellHorizontalAlignmentDedicatedTests.cs
+  - tests/net/fods/FodsR446GetCellProtectionDedicatedTests.cs
+  - tests/net/fods/FodsR467GetCellIndentLevelDedicatedTests.cs
+  - tests/net/fods/FodsR456GetCellVerticalAlignmentDedicatedTests.cs
+  - tests/net/fods/FodsR450GetCellShrinkToFitDedicatedTests.cs
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
+  - Test content verified (6 files)
   acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  - 'grade_capped_to_ACCEPTED_WITH_LIMITATIONS: LLM unavailable; only intermediate
+    verification used'
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    WI-SR-BOOTSTRAP-003'
+  next_prompt_instruction: ''
   purpose_check:
     item_type: ''
     has_gap_ref: null
@@ -32,12 +42,34 @@
     deficiencies: []
     llm_used: false
     intermediate_verified: true
-    source: intermediate_content_check
+    source: intermediate_verify
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\continuation-signal.json
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsDocumentCellProps.cs
       exists: true
       content_ok: true
-      detail: JSON object with 21 keys
-      check_type: json_content
-    summary: 1/1 evidence files passed content check
+      detail: 'non-empty (31792 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsDocumentCellProps.cs'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsStyleEditor.cs
+      exists: true
+      content_ok: true
+      detail: 'non-empty (11130 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsStyleEditor.cs'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsStyleResolver.cs
+      exists: true
+      content_ok: true
+      detail: 'non-empty (13976 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsStyleResolver.cs'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\Model\FodsOdfCellStyle.cs
+      exists: true
+      content_ok: true
+      detail: 'non-empty (2745 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\Model\FodsOdfCellStyle.cs'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsDocumentReadOps.cs
+      exists: true
+      content_ok: true
+      detail: 'non-empty (42166 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\net\fods\FodsDocumentReadOps.cs'
+      check_type: nonzero_existence
+    summary: 5/5 evidence files passed content check
     fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
+    _cached_at: '2026-07-04T17:13:15.556553+00:00'
+    _from_cache: true

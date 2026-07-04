@@ -2957,6 +2957,32 @@ skills:
   status: active
   test_paths:
   - tests/tools/test_migration_engine.py
+- skill_id: found-issue-ownership
+  command: /found-issue-ownership
+  command_file: .claude/commands/found-issue-ownership.md
+  status: active
+  product_track: machinery_governance
+  spec_qname_required: false
+  purpose: "Governed found-issue capture, classification, root-cause, healing, and closure workflow"
+  triggers:
+  - discovered failing test
+  - broken fixture
+  - stale generated output
+  - unexpected warning
+  - contradictory evidence
+  - FileNotFoundError in test
+  - LOC cap exceeded
+  - spec_qname missing
+  outputs:
+  - registry/found-issue-register.yaml entry
+  - registry/root-cause-register.yaml entry (if systemic)
+  - healing taskcard
+  - verification record
+  anti_patterns:
+  - "'pre-existing' as sole disposition"
+  - "'unrelated to my change'"
+  - "no taskcard for discovered issue"
+  - "test deleted without behavior analysis"
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

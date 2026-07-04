@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: bootstrap-sr-003
-Sprint: bootstrap-sr-003
-Timestamp: 2026-07-04T21:50:43.149549
+Run: stateless-juggling-robin-sprint2
+Sprint: stateless-juggling-robin-sprint2
+Timestamp: 2026-07-04T22:18:31.169582
 Verdict: ACCEPTED_WITH_REWORK
-Autonomous Continue: True
+Autonomous Continue: False
 Accepted: 1
-Rework: 0
+Rework: 1
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bootstrap-sr-003\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bootstrap-sr-003\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\stateless-juggling-robin-sprint2\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\stateless-juggling-robin-sprint2\combined-next-worker-prompt.md

@@ -164,6 +164,17 @@ public static class FodsStyleEditor
             protect ? "protected" : "none");
     }
 
+    /// <summary>
+    /// Set the font style (<c>fo:font-style</c>) for the cell — "normal" or "italic".
+    /// ODF: style:text-properties/@fo:font-style.
+    /// </summary>
+    public static void SetCellFontStyle(
+        XDocument doc, XElement cell, string style)
+    {
+        var text = GetOrCreateCellStyleProperty(doc, cell, NsStyle + "text-properties");
+        text.SetAttributeValue(NsFo + "font-style", style);
+    }
+
     // -------------------------------------------------------------------------
     // Internal style management
     // -------------------------------------------------------------------------

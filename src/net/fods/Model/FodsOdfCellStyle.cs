@@ -52,4 +52,7 @@ public sealed record FodsOdfCellStyle
 
     /// <summary>style:text-properties/@style:text-line-through-style — "none" or "solid".</summary>
     public string Strikethrough { get; init; } = "none";
+
+    /// <summary>style:text-properties/@fo:font-style — "normal" or "italic".</summary>
+    public string FontStyle { get; init; } = "normal";
 }

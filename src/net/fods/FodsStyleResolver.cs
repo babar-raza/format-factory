@@ -153,6 +153,7 @@ public static class FodsStyleResolver
         int? rotationAngle = null;
         bool? isProtected = null;
         string? strikethrough = null;
+        string? fontStyle = null;
 
         foreach (var style in chain)
         {
@@ -198,6 +199,7 @@ public static class FodsStyleResolver
                 fontColor ??= textProps.Attribute(NsFo + "color")?.Value;
                 underline ??= textProps.Attribute(NsStyle + "text-underline-style")?.Value;
                 strikethrough ??= textProps.Attribute(NsStyle + "text-line-through-style")?.Value;
+                fontStyle ??= textProps.Attribute(NsFo + "font-style")?.Value;
                 if (fontSize is null)
                 {
                     var fs = textProps.Attribute(NsFo + "font-size")?.Value;
@@ -222,6 +224,7 @@ public static class FodsStyleResolver
             RotationAngle       = rotationAngle ?? 0,
             IsProtected         = isProtected ?? false,
             Strikethrough       = strikethrough ?? "none",
+            FontStyle           = fontStyle ?? "normal",
         };
     }
 

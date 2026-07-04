@@ -384,3 +384,28 @@ The pipeline anti-skip checker requires `lane-execution-ledger.json` in `evidenc
   "generated_by": "worker"
 }
 ```
+
+## §FIO — Found-Issue Ownership Obligation
+
+Added: FOUND-ISSUE-MVP-001 (2026-07-04)
+
+When any test fails during declaration execution, the worker MUST:
+
+1. File at least one entry in `registry/found-issue-register.yaml` with:
+   - `issue_id`: next available FI-NNN
+   - `status`: discovered or classified
+   - `issue_type`: one of the 12 types from `docs/governance/found-issue-ownership-policy.md §3`
+   - `observed_behavior`, `expected_behavior`, `affected_paths`
+
+2. Use only valid ownership dispositions (6 from found-issue-ownership-policy.md §6):
+   HEALED_AND_VERIFIED, DUPLICATE_OF_ACTIVE_ISSUE, INVALID_FINDING_WITH_PROOF,
+   VALID_GOVERNED_EXCLUSION, BLOCKED_TRUE_EXTERNAL_DEPENDENCY,
+   WAITING_VALID_GATE_11_AUTHORIZATION
+
+3. Invalid dispositions ("pre_existing", "unrelated", "not_caused_by_me") are blocked by
+   V142 (blocks_sprint: True).
+
+4. Issue accounting must reconcile before task closure (V140 — blocks_sprint: True).
+
+Use `/found-issue-ownership` skill to execute the governed workflow.
+

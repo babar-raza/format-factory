@@ -224,7 +224,8 @@ public sealed partial class FodsDocument
         foreach (var row in sheet.Rows)
         {
             var cells = row.Element.Elements(NsTable + "table-cell").ToList();
-            result.Add(col < cells.Count ? cells[col].Element(nsText + "p")?.Value : null);
+            if (col < cells.Count)
+                result.Add(cells[col].Element(nsText + "p")?.Value);
         }
         return result;
     }

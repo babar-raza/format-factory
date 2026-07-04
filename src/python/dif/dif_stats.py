@@ -266,3 +266,107 @@ def dif_numeric_value_total(file_path: "str | _Path") -> float:
                 except (ValueError, TypeError):
                     pass
     return total
+
+
+# ---------------------------------------------------------------------------
+# Spec-backed analytics: DIF-FACT-001, DIF-FACT-002 (TC-SR-004)
+# ---------------------------------------------------------------------------
+
+
+def dif_declared_vector_count(file_path: "str | _Path") -> int:
+    """Return the VECTORS header value — the declared column count.
+
+    Grounded in DIF-FACT-001: DIF files start with a header section containing
+    TABLE, VECTORS, and TUPLES directives that define the document dimensions.
+    The VECTORS directive specifies the number of columns declared by the author
+    of the file, which may differ from the actual data row width.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        int — declared VECTORS count (0 if header is missing or 0).
+    """
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return doc.vectors
+
+
+def dif_declared_tuple_count(file_path: "str | _Path") -> int:
+    """Return the TUPLES header value — the declared row count.
+
+    Grounded in DIF-FACT-001: DIF files start with a header section containing
+    TABLE, VECTORS, and TUPLES directives that define the document dimensions.
+    The TUPLES directive specifies the number of rows declared in the header,
+    which may differ from the actual parsed row count.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        int — declared TUPLES count (0 if header is missing or 0).
+    """
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return doc.tuples
+
+
+def dif_has_title(file_path: "str | _Path") -> bool:
+    """Return True if the DIF file TABLE header contains a non-empty title.
+
+    Grounded in DIF-FACT-001: DIF files start with a header section containing
+    TABLE, VECTORS, and TUPLES directives. The TABLE directive carries the
+    document title as its string argument (may be empty string in minimal files).
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        bool — True if the TABLE title string is non-empty, False otherwise.
+    """
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return bool(doc.title and doc.title.strip())
+
+
+def dif_boolean_cell_count(file_path: "str | _Path") -> int:
+    """Return the count of boolean-typed cells in the DIF file.
+
+    Grounded in DIF-FACT-002: the DATA section contains cell values where
+    each cell has a type indicator. Boolean values (TRUE/FALSE markers after
+    type 0 indicators with V marker) are parsed as value_type='boolean'.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        int — number of boolean cells. 0 if none.
+    """
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row
+        if cell.value_type == 'boolean'
+    )
+
+
+def dif_special_cell_count(file_path: "str | _Path") -> int:
+    """Return the count of special/NA cells in the DIF file.
+
+    Grounded in DIF-FACT-002: the DATA section uses special markers for
+    non-numeric, non-string values. Cells with value_type='special' include
+    NA (not available) and other V-marker variants that do not resolve to
+    numeric or string values.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        int — number of special/NA cells. 0 if none.
+    """
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row
+        if cell.value_type == 'special'
+    )
