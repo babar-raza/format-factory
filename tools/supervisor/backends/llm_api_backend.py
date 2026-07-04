@@ -129,11 +129,11 @@ class LlmApiBackend(ExecutionBackend):
         _last_error_class = "UNKNOWN_PROVIDER_FAILURE"
 
         def _do_http() -> str:
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=8) as resp:
                 return resp.read().decode("utf-8")
 
         if _rel_ok:
-            policy = RetryPolicy(max_attempts=2, overall_deadline=40.0, read_timeout=15.0)
+            policy = RetryPolicy(max_attempts=2, overall_deadline=25.0, read_timeout=8.0)
             observer = GradingObserver()
             try:
                 body = call_with_retry(

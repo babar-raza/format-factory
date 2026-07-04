@@ -16,7 +16,8 @@ from tools.ai.schemas.models import AIUsageRecord, CallStatus
 
 # Default per-call timeout in seconds. Override via GRADER_LLM_TIMEOUT env var.
 # Prevents indefinite hang on SSL read / TCP stall (RC-1 in LLM-GRADER-TIMEOUT-001).
-_DEFAULT_LLM_TIMEOUT = 30.0
+# Reduced from 30s → 15s so a hanging SSL read fails fast; retries handle transient drops.
+_DEFAULT_LLM_TIMEOUT = 15.0
 
 
 def _get_litellm():
