@@ -128,7 +128,8 @@ class TestSemanticVerifyItem:
         For WEAK_PROOF evidence (no exact/behavioral assertions), adequate=False.
         This prevents false-green when LLM is unavailable.
         """
-        import tempfile, os
+        import tempfile
+        import os
         import grade_declared_work as gdw
         gdw._sv_gateway = None
         gdw._sv_config = None

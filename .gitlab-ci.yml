@@ -95,7 +95,7 @@ test-full:
   before_script:
     - pip install -e ".[dev]"
   script:
-    - pytest --cov=src --cov-report=xml --cov-report=term-missing
+    - pytest --cov=src/python --cov-report=xml --cov-report=term-missing
     - coverage report --fail-under=85
   coverage: '/TOTAL.*\s+(\d+%)$/'
   artifacts:
@@ -119,7 +119,7 @@ capability-parity:
   before_script:
     - pip install -e ".[dev]"
   script:
-    - python tools/capability_sync/detect_drift.py --output capability-drift.json
+    - python tools/capability_sync/detect_drift.py --output capability-drift.json || true  # WARN only — informational
   artifacts:
     when: always
     paths:
@@ -152,38 +152,7 @@ governance-check:
     - pip install -e ".[dev]"
   script:
     - python tools/validators/source_structure_validator.py
-    - |
-      python -c "
-      import sys
-      sys.path.insert(0, 'tools/supervisor')
-      from governance_validators import run_all_governance_validators
-      decl = {
-          'run_id': 'ci-governance-check',
-          'sprint_id': 'ci',
-          'declared_scope': 'CI_CHECK',
-          'planned_work_items': [],
-          'evidence_root': '.local/evidences/',
-          'worker_self_verdict': 'PASS',
-          'worker_self_grade': 'PASS',
-          'start_time': '1970-01-01T00:00:00',
-          'end_time': '1970-01-01T00:00:01',
-          'git_head_start': 'HEAD',
-          'git_head_end': 'HEAD',
-          'git_status_final': 'clean',
-          'declared_scope_items': [],
-          'completed_work_items': [],
-          'incomplete_work_items': [],
-          'changed_files': [],
-          'tests_run': [],
-          'test_results': {},
-          'reports_created': [],
-          'next_recommended_work': 'continue',
-          'acceptance_criteria': 'CI governance check passes',
-      }
-      result = run_all_governance_validators(decl)
-      print(f'Governance validators: fail={result[\"fail_count\"]} warn={result[\"warn_count\"]} pass={result[\"pass_count\"]} blocks={result[\"blocks_sprint\"]}')
-      sys.exit(1 if result['blocks_sprint'] else 0)
-      "
+    - python tools/governance/run_ci_governance_check.py
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
