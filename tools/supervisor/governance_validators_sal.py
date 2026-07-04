@@ -225,3 +225,67 @@ def validate_sal_facts_schema(declaration: dict, repo_root: "Path | None" = None
             f"{data.get('spec_facts_total', 0)} facts total"
         ),
     }
+
+
+def validate_work_items_sal_backing(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V-CAP-SAL-GATE-001: Warn when next-work-items.json contains items with empty spec_facts.
+
+    Items with no spec_facts were derived from poc-targets.yaml prose, not SAL spec facts.
+    They should be marked SAL_UNGROUNDED in gap-ledger.json and excluded from work selection.
+    This validator monitors for regressions where SAL_UNGROUNDED items re-enter the queue.
+    """
+    import json as _json
+    _repo = Path(repo_root) if repo_root else Path(__file__).parent.parent.parent
+
+    work_items_path = _repo / "reports" / "supervisor" / "next-work-items.json"
+    if not work_items_path.exists():
+        work_items_path = _repo / ".local" / "supervisor" / "next-work-items.json"
+    if not work_items_path.exists():
+        return {
+            "validator": "validate_work_items_sal_backing",
+            "result": "SKIP",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V-CAP-SAL-GATE-001: Skipped — next-work-items.json not found",
+        }
+
+    try:
+        data = _json.loads(work_items_path.read_text(encoding="utf-8", errors="replace"))
+    except Exception as _e:
+        return {
+            "validator": "validate_work_items_sal_backing",
+            "result": "SKIP",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": f"V-CAP-SAL-GATE-001: Skipped — parse error: {_e}",
+        }
+
+    items = data.get("items", [])
+    ungrounded = [
+        item for item in items
+        if not item.get("spec_facts")
+    ]
+
+    if ungrounded:
+        return {
+            "validator": "validate_work_items_sal_backing",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [
+                {"item_id": i.get("item_id", ""), "gap_id": i.get("gap_id", ""),
+                 "issue": "no spec_facts — capability not SAL-grounded"}
+                for i in ungrounded[:10]
+            ],
+            "summary": (
+                f"V-CAP-SAL-GATE-001: WARN — {len(ungrounded)}/{len(items)} work items "
+                f"have no SAL fact backing (spec_facts=[])."
+            ),
+        }
+
+    return {
+        "validator": "validate_work_items_sal_backing",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V-CAP-SAL-GATE-001: PASS — all {len(items)} work items have SAL fact backing",
+    }

@@ -112,11 +112,16 @@ def _load_sal_facts_for_format(format_id: str) -> list[dict]:
                 data = json.loads(p.read_text(encoding="utf-8", errors="replace"))
                 facts = data.get("spec_facts", [])
                 if isinstance(facts, list):
-                    # Filter to verified facts only
+                    # Filter to verified/accepted facts.
+                    # None is included for legacy facts without a fact_status field.
+                    # "accepted" is included for structurally-derived facts (e.g. gnumeric).
+                    _ACCEPTED_STATUSES = frozenset(
+                        ("verified", "verified_with_note", "accepted", "structural", None)
+                    )
                     return [
                         f for f in facts
                         if isinstance(f, dict)
-                        and f.get("fact_status") in ("verified", "verified_with_note", None)
+                        and f.get("fact_status") in _ACCEPTED_STATUSES
                     ]
             except Exception:
                 pass
@@ -236,13 +241,13 @@ def _evaluate_state(
     example_refs: list[str] = []
 
     # Check source implementation
+    # Require operation-specific function evidence; do NOT fall back to arbitrary functions.
     fns = _scan_python_functions(src_dir)
-    op_fns = [f for f in fns if op_kind.split("_")[0] in f.lower() or any(
-        kw in f.lower() for kw in _OP_KEYWORDS.get(op_kind.split("_")[0], [])[:3]
-    )]
-    if not op_fns and fns:
-        # Fallback: any function suggests partial implementation
-        op_fns = fns[:3]
+    op_root = op_kind.split("_")[0]
+    op_kws = _OP_KEYWORDS.get(op_root, [])[:3]
+    op_fns = [f for f in fns if op_root in f.lower() or any(kw in f.lower() for kw in op_kws)]
+    # RC-3 fix: removed the "if not op_fns and fns: op_fns = fns[:3]" fallback.
+    # Using arbitrary functions as evidence for an operation produces false implementation_verified states.
 
     if op_fns:
         main_src = f"src/python/{fmt}/{fmt}_codec.py"
@@ -253,19 +258,26 @@ def _evaluate_state(
                 break
         impl_refs = [main_src]
 
-    # Check test evidence
+    # Check test evidence via AST function-name analysis.
+    # RC-3 fix: replaced format-name content search with test-function name analysis.
+    # A test file is credited only when it contains a test_ function whose name mentions
+    # the operation kind or one of its keywords — not merely because it contains the format name.
     test_files = sorted(test_dir.glob("test_*.py")) if test_dir.exists() else []
     if test_files:
-        # Check if any test file mentions the operation
         op_test_files = []
         for tf in test_files:
             try:
-                content = tf.read_text(encoding="utf-8", errors="replace").lower()
-                if op_kind.split("_")[0] in content or fmt in content:
-                    op_test_files.append(f"tests/python/{fmt}/{tf.name}")
-            except Exception:
+                tree = ast.parse(tf.read_text(encoding="utf-8", errors="replace"))
+                for node in ast.walk(tree):
+                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        if node.name.startswith("test_"):
+                            fn_lower = node.name.lower()
+                            if op_root in fn_lower or any(kw in fn_lower for kw in op_kws):
+                                op_test_files.append(f"tests/python/{fmt}/{tf.name}")
+                                break
+            except SyntaxError:
                 pass
-        test_refs = op_test_files[:3] if op_test_files else [f"tests/python/{fmt}/{test_files[0].name}"]
+        test_refs = op_test_files[:3]
 
     # Check example evidence
     if example_dir.exists():
@@ -313,8 +325,15 @@ def compile_format_capabilities(
     facts = _load_sal_facts_for_format(fmt)
     obligation_ids = _get_obligation_ids(fmt, "python", obligations)
 
+    # TC-SCP-008: Compute per-format fact hash for spec-change invalidation tracking.
+    import hashlib as _hashlib
+    _fact_qnames_sorted = sorted(f.get("qname", "") for f in facts)
+    sal_facts_hash = _hashlib.sha256(
+        json.dumps(_fact_qnames_sorted).encode()
+    ).hexdigest()[:16]
+
     if verbose:
-        print(f"  [{fmt}] SAL facts: {len(facts)}, obligation_ids: {obligation_ids}", file=sys.stderr)
+        print(f"  [{fmt}] SAL facts: {len(facts)}, hash: {sal_facts_hash}, obligation_ids: {obligation_ids}", file=sys.stderr)
 
     records: list[dict] = []
     seen_ops: set[str] = set()
@@ -364,6 +383,9 @@ def compile_format_capabilities(
             "example_refs": example_refs,
             "package_refs": [f".venv/Lib/site-packages/{fmt}/"] if (_VENV_PACKAGES / fmt).exists() else [],
             "oracle_evidence": [],  # populated from oracle results if available
+            # SPEC-CHANGE INVALIDATION (TC-SCP-008): hash of fact qnames used for this format.
+            # If this hash changes on rerun, the capability will be recompiled automatically.
+            "sal_facts_hash": sal_facts_hash,
             # STATE (based on ACTUAL evidence, not prose)
             "current_state": state,
             "confidence_level": confidence,
@@ -447,9 +469,33 @@ def compile_all(
     all_records: list[dict] = []
     stats: dict[str, int] = defaultdict(int)
 
+    # TC-SCP-009: Load existing output to detect per-format SAL fact hash changes.
+    # If a format's fact hash changed, log it so operators know recompilation was triggered.
+    _existing_hashes: dict[str, str] = {}
+    if (output_path or _DEFAULT_OUTPUT).exists():
+        try:
+            _existing = json.loads((output_path or _DEFAULT_OUTPUT).read_text(encoding="utf-8"))
+            for _r in _existing.get("capabilities", []):
+                _fmt = _r.get("format_id", "").lower()
+                _h = _r.get("sal_facts_hash")
+                if _fmt and _h and _fmt not in _existing_hashes:
+                    _existing_hashes[_fmt] = _h
+        except Exception:
+            pass
+
     for fmt in target_formats:
         try:
             records = compile_format_capabilities(fmt, obligations, verbose=verbose)
+            # TC-SCP-009: Log when SAL facts changed for a format.
+            if records:
+                new_hash = records[0].get("sal_facts_hash", "")
+                old_hash = _existing_hashes.get(fmt.lower(), "")
+                if old_hash and new_hash and old_hash != new_hash:
+                    print(
+                        f"[capability_compiler] {fmt}: SAL facts changed "
+                        f"(hash {old_hash} → {new_hash}), recompiling",
+                        file=sys.stderr,
+                    )
             all_records.extend(records)
             for r in records:
                 stats[r["current_state"]] += 1

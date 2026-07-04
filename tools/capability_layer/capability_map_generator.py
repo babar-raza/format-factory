@@ -990,6 +990,10 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
         # This allows formats with SAL-extracted but unverified facts to still appear
         # in gap ledger spec_facts (e.g. FODG, ODS, ODT via ODF-FACT-* qnames).
         _gap_spec_facts = r.get("spec_fact_refs", []) or r.get("spec_refs", []) or []
+        # RC-4 fix: enforce SAL backing as a requirement, not a decoration.
+        # Gaps with no spec_facts were derived from poc-targets.yaml prose, not SAL facts.
+        # Mark them SAL_UNGROUNDED so the execution loop skips them until real facts exist.
+        _gap_status = "open" if _gap_spec_facts else "SAL_UNGROUNDED"
         gaps.append({
             "gap_id": gap_id,
             "format": r["format"],
@@ -997,7 +1001,7 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
             "capability_name": r["capability_name"],
             "current_state": state,
             "gap_type": gap_type,
-            "status": "open",
+            "status": _gap_status,
             "blocks_poc": r.get("required_for_poc", False),
             "blocks_readiness": r.get("blocks_readiness", False),
             "commercial_impact": "HIGH" if r.get("expected_for_commercial") else "NONE",

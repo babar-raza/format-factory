@@ -20,8 +20,120 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+
+# ── QName validation schema + validators ─────────────────────────────────────
+
+
+@dataclass
+class CompiledCapability:
+    """Schema for a capability validated against QName authority.
+
+    TC-ARC-010: compiled_capability output schema for --validate-qnames mode.
+    """
+
+    capability_id: str
+    product: str
+    specification_facts: list[str] = field(default_factory=list)
+    qnames: list[str] = field(default_factory=list)
+    domain_owner: str = ""
+    model_types: list[str] = field(default_factory=list)
+    parser_obligations: list[str] = field(default_factory=list)
+    writer_obligations: list[str] = field(default_factory=list)
+    public_api_options: list[str] = field(default_factory=list)
+    test_obligations: list[str] = field(default_factory=list)
+    unsupported_states: list[str] = field(default_factory=list)
+    dependencies: list[str] = field(default_factory=list)
+
+
+class QNameValidationError(ValueError):
+    """Raised when a capability fails QName authority validation."""
+
+
+# Root document types that must not own nested QName behavior.
+_ROOT_DOCUMENT_TYPES: set[str] = {
+    "FodsDocument", "FodtDocument", "CsvDocument", "TsvDocument",
+    "NdjsonDocument", "HtmlDocument", "MarkdownDocument", "Document",
+    "Workbook",
+}
+# Tokens that indicate a type belongs to a child/nested QName concept.
+_NESTED_TYPE_TOKENS: set[str] = {
+    "Cell", "Row", "Column", "Sheet", "Worksheet", "Style",
+    "Paragraph", "Run", "Span", "Section", "Table", "Frame",
+}
+
+
+def validate_qname_authority(cap: CompiledCapability) -> None:
+    """Reject if qnames[] is empty — every capability needs QName authority."""
+    if not cap.qnames:
+        raise QNameValidationError(
+            f"[V-QNAME-001] {cap.capability_id} ({cap.product}): qnames[] is empty. "
+            "Every capability must trace to at least one format-spec QName."
+        )
+
+
+def validate_no_root_nesting(cap: CompiledCapability) -> None:
+    """Reject if a root document type owns nested-QName model_types."""
+    if cap.domain_owner not in _ROOT_DOCUMENT_TYPES:
+        return
+    nested = [t for t in cap.model_types
+              if any(tok in t for tok in _NESTED_TYPE_TOKENS)]
+    if nested:
+        raise QNameValidationError(
+            f"[V-QNAME-002] {cap.capability_id} ({cap.product}): domain_owner="
+            f"'{cap.domain_owner}' is a root type but model_types includes nested "
+            f"concepts {nested}. Nested behavior must belong to child types."
+        )
+
+
+def validate_parser_writer_obligations(cap: CompiledCapability) -> None:
+    """Reject if there are getter public APIs but no parser obligations."""
+    getter_options = [
+        o for o in cap.public_api_options
+        if any(tok in o.lower() for tok in ("get", "getter", "property", "read"))
+    ]
+    if getter_options and not cap.parser_obligations:
+        raise QNameValidationError(
+            f"[V-QNAME-003] {cap.capability_id} ({cap.product}): public_api_options "
+            f"includes getters {getter_options} but parser_obligations is empty. "
+            "Every getter must have a parser obligation."
+        )
+
+
+def _gap_to_compiled_capability(gap: dict) -> CompiledCapability:
+    """Convert a gap-ledger entry to a CompiledCapability for validation."""
+    return CompiledCapability(
+        capability_id=gap.get("gap_id", ""),
+        product=gap.get("format", gap.get("product_id", "")),
+        specification_facts=gap.get("spec_facts") or [],
+        qnames=gap.get("qnames") or [],
+        domain_owner=gap.get("domain_owner", ""),
+        model_types=gap.get("model_types") or [],
+        parser_obligations=gap.get("parser_obligations") or [],
+        writer_obligations=gap.get("writer_obligations") or [],
+        public_api_options=gap.get("public_api_options") or [],
+        test_obligations=gap.get("test_obligations") or [],
+        unsupported_states=gap.get("unsupported_states") or [],
+        dependencies=gap.get("dependencies") or [],
+    )
+
+
+def validate_capability(cap: CompiledCapability) -> list[str]:
+    """Run all QName validators. Returns list of error messages (empty = PASS)."""
+    errors: list[str] = []
+    for validator in (
+        validate_qname_authority,
+        validate_no_root_nesting,
+        validate_parser_writer_obligations,
+    ):
+        try:
+            validator(cap)
+        except QNameValidationError as exc:
+            errors.append(str(exc))
+    return errors
+
 
 # ── Priority scoring constants ────────────────────────────────────────────────
 
@@ -51,6 +163,7 @@ _SKIP_STATUSES = {
     "closed", "CLOSED",
     "DEFERRED_BY_DESIGN", "DEFERRED",
     "test_verified", "implementation_verified",
+    "SAL_UNGROUNDED",  # RC-4 fix: no SAL fact authority; excluded until spec facts exist
 }
 
 # Statuses that mean "not yet an open gap"
@@ -244,11 +357,46 @@ def compile_gaps(
     return items[:max_items], dedup_items
 
 
+def _run_validate_qnames(gaps: list[dict], format_filter: str | None) -> int:
+    """Validate all gaps against QName authority rules.
+
+    Returns 0 if all gaps that have qname-related fields pass, 3 if any fail.
+    Gaps without qnames[] are flagged (V-QNAME-001) unless they also have no
+    domain_owner and no model_types (i.e. they predate the QName schema).
+    """
+    target = [
+        g for g in gaps
+        if not format_filter or g.get("format", "").lower() == format_filter.lower()
+    ]
+    if not target:
+        print(f"No gaps found for format filter '{format_filter}'.", file=sys.stderr)
+        return 0
+
+    all_errors: list[str] = []
+    for gap in target:
+        cap = _gap_to_compiled_capability(gap)
+        errors = validate_capability(cap)
+        all_errors.extend(errors)
+
+    if all_errors:
+        print(f"QName validation FAILED — {len(all_errors)} violation(s):", file=sys.stderr)
+        for err in all_errors:
+            print(f"  {err}", file=sys.stderr)
+        return 3
+
+    total = len(target)
+    fmt_label = f" for format '{format_filter}'" if format_filter else ""
+    print(f"QName validation PASSED — {total} gap(s){fmt_label} checked.", file=sys.stderr)
+    return 0
+
+
 def run(
     gap_ledger_path: Path,
     output_path: Path | None,
     max_items: int = 20,
     dry_run: bool = False,
+    validate_qnames: bool = False,
+    format_filter: str | None = None,
 ) -> int:
     """Main compile + emit. Returns exit code."""
     if not gap_ledger_path.exists():
@@ -267,7 +415,15 @@ def run(
         return 1
 
     gaps: list[dict] = ledger["gaps"]
+
+    # TC-ARC-010: QName validation mode — validate and exit without emitting work items.
+    if validate_qnames:
+        return _run_validate_qnames(gaps, format_filter)
+
     open_gaps = [g for g in gaps if g.get("status") not in _SKIP_STATUSES]
+    if format_filter:
+        open_gaps = [g for g in open_gaps
+                     if g.get("format", "").lower() == format_filter.lower()]
 
     items, dedup_items = compile_gaps(open_gaps, max_items=max_items)
 
@@ -321,9 +477,27 @@ def main() -> None:
     )
     parser.add_argument("--max-items", type=int, default=20, help="Max work items to emit")
     parser.add_argument("--dry-run", action="store_true", help="Print to stdout, no file write")
+    parser.add_argument(
+        "--validate-qnames",
+        action="store_true",
+        help="Validate QName authority for all gaps; exit 3 on violation. No work items emitted.",
+    )
+    parser.add_argument(
+        "--format",
+        dest="format_filter",
+        default=None,
+        help="Filter gaps by format (e.g. --format fods). Works with --validate-qnames.",
+    )
     args = parser.parse_args()
 
-    sys.exit(run(args.gap_ledger, args.output, args.max_items, args.dry_run))
+    sys.exit(run(
+        args.gap_ledger,
+        args.output,
+        args.max_items,
+        args.dry_run,
+        validate_qnames=args.validate_qnames,
+        format_filter=args.format_filter,
+    ))
 
 
 if __name__ == "__main__":

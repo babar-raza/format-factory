@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-07-01T18:13:10.832859+00:00",
+  "generated_at": "2026-07-04T08:21:44.943120+00:00",
   "generator": "tools/capability_layer/capability_compiler.py",
   "generator_version": "2.0",
   "authority": "SAL_FACTS_PRIMARY",
@@ -27,10 +27,10 @@
     "xcf",
     "zst"
   ],
-  "total_capabilities": 169,
+  "total_capabilities": 161,
   "state_breakdown": {
-    "test_verified": 168,
-    "implementation_verified": 1
+    "test_verified": 92,
+    "missing": 69
   },
   "validation": {
     "capabilities_without_obligation_provenance": 0,
@@ -49,16 +49,16 @@
         "ALLF-ABW-PY"
       ],
       "source_fact_ids": [
-        "abw:abiword",
-        "abw:section"
+        "FACT-ABW-001",
+        "FACT-ABW-002"
       ],
       "implementation_refs": [
         "src/python/abw/abw_codec.py"
       ],
       "test_refs": [
-        "tests/python/abw/test_abw_append_truncate_pipeline.py",
-        "tests/python/abw/test_abw_char_count_export_pipeline.py",
-        "tests/python/abw/test_abw_codec.py"
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py"
       ],
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
@@ -67,6 +67,7 @@
         ".venv/Lib/site-packages/abw/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -86,17 +87,17 @@
         "ALLF-ABW-PY"
       ],
       "source_fact_ids": [
-        "abw:section",
-        "abw:p",
-        "abw:c"
+        "FACT-ABW-002",
+        "FACT-ABW-003",
+        "FACT-ABW-004"
       ],
       "implementation_refs": [
         "src/python/abw/abw_codec.py"
       ],
       "test_refs": [
         "tests/python/abw/test_abw_append_truncate_pipeline.py",
-        "tests/python/abw/test_abw_char_count_export_pipeline.py",
-        "tests/python/abw/test_abw_codec.py"
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py"
       ],
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
@@ -105,6 +106,7 @@
         ".venv/Lib/site-packages/abw/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -124,17 +126,17 @@
         "ALLF-ABW-PY"
       ],
       "source_fact_ids": [
-        "abw:p",
-        "abw:c",
-        "abw:field"
+        "FACT-ABW-003",
+        "FACT-ABW-004",
+        "FACT-ABW-005"
       ],
       "implementation_refs": [
         "src/python/abw/abw_codec.py"
       ],
       "test_refs": [
-        "tests/python/abw/test_abw_append_truncate_pipeline.py",
         "tests/python/abw/test_abw_char_count_export_pipeline.py",
-        "tests/python/abw/test_abw_codec.py"
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_document_model.py"
       ],
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
@@ -143,6 +145,7 @@
         ".venv/Lib/site-packages/abw/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -162,16 +165,13 @@
         "ALLF-ABW-PY"
       ],
       "source_fact_ids": [
-        "abw:abiword",
-        "abw:c"
+        "FACT-ABW-001",
+        "FACT-ABW-004"
       ],
-      "implementation_refs": [
-        "src/python/abw/abw_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/abw/test_abw_append_truncate_pipeline.py",
-        "tests/python/abw/test_abw_char_count_export_pipeline.py",
-        "tests/python/abw/test_abw_codec.py"
+        "tests/python/abw/test_r270_abw_installed_workflow.py",
+        "tests/python/abw/test_r287_abw_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
@@ -180,9 +180,10 @@
         ".venv/Lib/site-packages/abw/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "e67d33f431a9779d",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -225,6 +226,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -259,9 +261,9 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_mdr9_csv_exports.py",
+        "tests/python/csv/test_r165_csv_coverage.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -270,6 +272,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -304,9 +307,9 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_foss.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_pbt_csv.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -315,6 +318,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -360,6 +364,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -394,9 +399,9 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_mainstream_writer.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -405,6 +410,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -431,13 +437,9 @@
         "FACT-CSV-022",
         "FACT-CSV-035"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_r165_csv_coverage.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -446,9 +448,10 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "ec5b7b769e73c7b6",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -480,9 +483,9 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_to_dicts.py",
+        "tests/python/csv/test_mainstream_csv_writer.py",
+        "tests/python/csv/test_mdr11_csv_stats.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -491,6 +494,7 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -512,13 +516,11 @@
       "source_fact_ids": [
         "FACT-CSV-032"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_mdr9_csv_exports.py",
+        "tests/python/csv/test_r165_csv_coverage.py",
+        "tests/python/csv/test_r271_csv_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
@@ -527,9 +529,10 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "ec5b7b769e73c7b6",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -548,14 +551,8 @@
       "source_fact_ids": [
         "FACT-CSV-034"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
@@ -563,9 +560,10 @@
         ".venv/Lib/site-packages/csv/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "ec5b7b769e73c7b6",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -588,9 +586,9 @@
         "src/python/dif/dif_parser.py"
       ],
       "test_refs": [
-        "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py",
+        "tests/python/dif/test_r107_dif_roundtrip_proof.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -599,6 +597,7 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -620,13 +619,11 @@
       "source_fact_ids": [
         "FACT-DIF-001"
       ],
-      "implementation_refs": [
-        "src/python/dif/dif_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -635,9 +632,10 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -661,8 +659,8 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_gap_closure_foss.py",
+        "tests/python/dif/test_dif_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -671,6 +669,7 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -697,8 +696,8 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -707,6 +706,7 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -733,8 +733,8 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -743,6 +743,7 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -764,13 +765,11 @@
       "source_fact_ids": [
         "FACT-DIF-001"
       ],
-      "implementation_refs": [
-        "src/python/dif/dif_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_dif_gate5_neutral_model.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py",
+        "tests/python/dif/test_r165_dif_csv_edge_cases.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -779,9 +778,10 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -800,13 +800,10 @@
       "source_fact_ids": [
         "FACT-DIF-001"
       ],
-      "implementation_refs": [
-        "src/python/dif/dif_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_domain_model.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
+        "tests/python/dif/test_r111_dif_csv_export_hardening.py",
+        "tests/python/dif/test_r112_dif_roundtrip_hardening.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
@@ -815,9 +812,10 @@
         ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -849,9 +847,9 @@
         "src/python/fodg/fodg_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_codec.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -860,6 +858,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -895,8 +894,8 @@
       ],
       "test_refs": [
         "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_exception_coverage.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -905,6 +904,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -939,9 +939,9 @@
         "src/python/fodg/fodg_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py",
+        "tests/python/fodg/test_fodg_load_gap_closure.py",
+        "tests/python/fodg/test_fodg_roundtrip_export_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -950,6 +950,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -984,9 +985,9 @@
         "src/python/fodg/fodg_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_all_text_probe_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -995,6 +996,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1025,13 +1027,10 @@
         "FACT-FODG-EX-0052",
         "FACT-FODG-EX-0053"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_r274_fodg_installed_workflow.py",
+        "tests/python/fodg/test_r298_fodg_iter_pages.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1040,9 +1039,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1070,14 +1070,8 @@
         "FACT-FODG-EX-0053",
         "FACT-FODG-EX-0066"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
@@ -1085,9 +1079,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1115,13 +1110,10 @@
         "FACT-FODG-EX-0170",
         "FACT-FODG-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_r167_fodg_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1130,9 +1122,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1160,14 +1153,8 @@
         "FACT-FODG-EX-0171",
         "FACT-FODG-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
@@ -1175,9 +1162,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1205,14 +1193,8 @@
         "FACT-FODG-EX-0150",
         "FACT-FODG-EX-0154"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
@@ -1220,9 +1202,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1256,7 +1239,7 @@
       "test_refs": [
         "tests/python/fodg/test_cap_fodg_export_csv.py",
         "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_all_text_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1265,6 +1248,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1295,13 +1279,9 @@
         "FACT-FODG-EX-0043",
         "FACT-FODG-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_r274_fodg_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1310,9 +1290,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1340,14 +1321,8 @@
         "FACT-FODG-EX-0186",
         "FACT-FODG-EX-0187"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
@@ -1355,9 +1330,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1389,9 +1365,9 @@
         "src/python/fodg/fodg_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_add_page_metadata_pipeline.py",
+        "tests/python/fodg/test_fodg_codec.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1400,6 +1376,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1430,13 +1407,9 @@
         "FACT-FODG-EX-0204",
         "FACT-FODG-EX-0205"
       ],
-      "implementation_refs": [
-        "src/python/fodg/fodg_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_r122_fodg_probe.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1445,9 +1418,10 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1481,7 +1455,7 @@
       "test_refs": [
         "tests/python/fodg/test_cap_fodg_export_csv.py",
         "tests/python/fodg/test_drawing_document.py",
-        "tests/python/fodg/test_exception_coverage.py"
+        "tests/python/fodg/test_fodg_clear_page_count_w109_pipeline.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1490,6 +1464,7 @@
         ".venv/Lib/site-packages/fodg/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1524,9 +1499,9 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
         "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_fodp_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1535,6 +1510,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1570,8 +1546,8 @@
       ],
       "test_refs": [
         "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_roundtrip.py",
+        "tests/python/fodp/test_fodp_write_stub.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1580,6 +1556,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1610,13 +1587,9 @@
         "FACT-FODP-EX-1062",
         "FACT-FODP-EX-1063"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1625,9 +1598,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1655,14 +1629,8 @@
         "FACT-FODP-EX-0169",
         "FACT-FODP-EX-0170"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
@@ -1670,9 +1638,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1700,13 +1669,11 @@
         "FACT-FODP-EX-0052",
         "FACT-FODP-EX-0053"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
+        "tests/python/fodp/test_r299_fodp_iter_slides.py",
+        "tests/python/fodp/test_rnext_fodp_master_page_count.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1715,9 +1682,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1745,14 +1713,8 @@
         "FACT-FODP-EX-0053",
         "FACT-FODP-EX-0066"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
@@ -1760,9 +1722,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1790,13 +1753,9 @@
         "FACT-FODP-EX-0170",
         "FACT-FODP-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_export_functions.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1805,9 +1764,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1835,14 +1795,8 @@
         "FACT-FODP-EX-0171",
         "FACT-FODP-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
@@ -1850,9 +1804,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1880,13 +1835,9 @@
         "FACT-FODP-EX-0150",
         "FACT-FODP-EX-0154"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_export_functions.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1895,9 +1846,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1929,9 +1881,9 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
         "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_fodp_domain_model.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1940,6 +1892,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -1970,13 +1923,11 @@
         "FACT-FODP-EX-0043",
         "FACT-FODP-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
+        "tests/python/fodp/test_r567_fodp_presentation_analysis_properties.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1985,9 +1936,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2015,13 +1967,9 @@
         "FACT-FODP-EX-0186",
         "FACT-FODP-EX-0187"
       ],
-      "implementation_refs": [
-        "src/python/fodp/fodp_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_r230_fodp_text_per_slide.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -2030,9 +1978,10 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2064,9 +2013,9 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
         "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r202_fodp_advanced_ops.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -2075,6 +2024,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2109,9 +2059,8 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_r232_fodp_max_text_has_images.py",
+        "tests/python/fodp/test_rnext_fodp_image_count.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -2120,6 +2069,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2154,9 +2104,9 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_codec.py",
-        "tests/python/fodp/test_fodp_conveyor_deepening.py"
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r1224_fodp_shape_analysis_properties.py",
+        "tests/python/fodp/test_r1247_fodp_scale_content_properties.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -2165,6 +2115,7 @@
         ".venv/Lib/site-packages/fodp/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2199,9 +2150,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_gap_closure_batch.py",
+        "tests/python/fods/test_fods_install_proof.py",
+        "tests/python/fods/test_fods_primary_api.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2210,6 +2161,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2244,9 +2196,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_install_proof.py",
+        "tests/python/fods/test_fods_primary_api.py",
+        "tests/python/fods/test_pqlm_016_fods_rebuild_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2255,6 +2207,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2279,13 +2232,11 @@
         "FACT-FODS-EX-4047",
         "FACT-FODS-EX-4048"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_gap_closure_batch.py",
+        "tests/python/fods/test_fods_property_based.py",
+        "tests/python/fods/test_fods_pywrite_deepening.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2294,9 +2245,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2324,13 +2276,11 @@
         "FACT-FODS-EX-0364",
         "FACT-FODS-EX-0429"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_r125_fact_traceability.py",
+        "tests/python/fods/test_r238_fods_avg_cells_empty_sheets.py",
+        "tests/python/fods/test_r62_fods_deepening.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2339,9 +2289,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2373,9 +2324,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
         "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_domain_models.py",
+        "tests/python/fods/test_fods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2384,6 +2335,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2418,9 +2370,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
         "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_domain_models.py",
+        "tests/python/fods/test_fods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2429,6 +2381,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2463,9 +2416,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
         "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_domain_models.py",
+        "tests/python/fods/test_fods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2474,6 +2427,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2508,9 +2462,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_parser_mutation_hardening.py",
+        "tests/python/fods/test_r162_fods_column_values.py",
+        "tests/python/fods/test_r162_fods_sheet_order_numeric.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2519,6 +2473,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2549,14 +2504,8 @@
         "FACT-FODS-EX-0036",
         "FACT-FODS-EX-0037"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
@@ -2564,9 +2513,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2598,9 +2548,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_gap_closure_batch.py",
+        "tests/python/fods/test_fods_gap_closure_foss.py",
+        "tests/python/fods/test_fods_install_proof.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2609,6 +2559,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2643,9 +2594,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_gap_closure_batch.py",
+        "tests/python/fods/test_fods_property.py",
+        "tests/python/fods/test_neutral_model.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2654,6 +2605,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2688,9 +2640,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_fods_gap_closure_foss.py",
+        "tests/python/fods/test_fods_pywrite_deepening.py",
+        "tests/python/fods/test_parser_basic.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2699,6 +2651,7 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2729,13 +2682,9 @@
         "FACT-FODS-EX-0032",
         "FACT-FODS-EX-0033"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_r163_fods_col_style_validation.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2744,9 +2693,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2774,14 +2724,8 @@
         "FACT-FODS-EX-0131",
         "FACT-FODS-EX-0550"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
@@ -2789,9 +2733,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2819,13 +2764,10 @@
         "FACT-FODS-EX-0064",
         "FACT-FODS-EX-0065"
       ],
-      "implementation_refs": [
-        "src/python/fods/fods_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fods/test_fods_cli.py",
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py"
+        "tests/python/fods/test_parser_mutation_hardening.py",
+        "tests/python/fods/test_parser_security.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2834,9 +2776,10 @@
         ".venv/Lib/site-packages/fods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "74836de1e4c46ffc",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2870,7 +2813,7 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2879,6 +2822,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2914,8 +2858,8 @@
       ],
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_install_proof.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2924,6 +2868,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -2948,13 +2893,11 @@
         "FACT-FODT-EX-4047",
         "FACT-FODT-EX-4048"
       ],
-      "implementation_refs": [
-        "src/python/fodt/fodt_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_pywrite_deepening.py",
+        "tests/python/fodt/test_fodt_semantic_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2963,9 +2906,10 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -2993,13 +2937,10 @@
         "FACT-FODT-EX-1903",
         "FACT-FODT-EX-1913"
       ],
-      "implementation_refs": [
-        "src/python/fodt/fodt_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r75_fodt_new_apis.py",
+        "tests/python/fodt/test_traceability.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3008,9 +2949,10 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -3042,9 +2984,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_gap_closure_foss.py",
+        "tests/python/fodt/test_fodt_install_proof.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3053,6 +2995,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3087,9 +3030,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_parser_basic.py",
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r192_fodt_table_cell_count.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3098,6 +3041,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3132,9 +3076,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_neutral_model.py",
+        "tests/python/fodt/test_parser_basic.py",
+        "tests/python/fodt/test_r163_fodt_table_cell_span_fields.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3143,6 +3087,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3177,9 +3122,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r162_fodt_language_paragraph.py",
+        "tests/python/fodt/test_r163_fodt_table_cell_span_fields.py",
+        "tests/python/fodt/test_r373_fodt_document_analytics.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3188,6 +3133,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3224,7 +3170,7 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_domain_models.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3233,6 +3179,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3269,7 +3216,7 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_exporters.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3278,6 +3225,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3312,9 +3260,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_neutral_model.py",
+        "tests/python/fodt/test_parser_basic.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3323,6 +3271,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3353,13 +3302,9 @@
         "FACT-FODT-EX-0152",
         "FACT-FODT-EX-0153"
       ],
-      "implementation_refs": [
-        "src/python/fodt/fodt_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r63_fodt_advancement.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3368,9 +3313,10 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -3398,13 +3344,10 @@
         "FACT-FODT-EX-0033",
         "FACT-FODT-EX-0034"
       ],
-      "implementation_refs": [
-        "src/python/fodt/fodt_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r162_fodt_language_paragraph.py",
+        "tests/python/fodt/test_r75_fodt_new_apis.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3413,9 +3356,10 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -3447,9 +3391,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r194_fodt_image_frame_list.py",
+        "tests/python/fodt/test_r373_fodt_document_analytics.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3458,6 +3402,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3492,9 +3437,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_compat_bootstrap.py",
-        "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_cli.py"
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r65_fodt_advancement.py",
+        "tests/python/fodt/test_security.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3503,6 +3448,7 @@
         ".venv/Lib/site-packages/fodt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3521,14 +3467,16 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_cell_ops_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_codec.py",
+        "tests/python/gnumeric/test_gnumeric_export_cell_pipeline.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3537,108 +3485,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-WRITE-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Write",
-      "operation_kind": "write",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-ROUNDTRIP-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Roundtrip",
-      "operation_kind": "roundtrip",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-PROBE-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Probe",
-      "operation_kind": "probe",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3657,14 +3504,17 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001",
+        "FACT-GNUMERIC-002"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
         "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_clear_sheet_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_codec.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3673,6 +3523,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3691,14 +3542,17 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-002",
+        "FACT-GNUMERIC-003"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_avg_cellvalue_w118_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3707,6 +3561,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3725,14 +3580,16 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_clear_sheet_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_column_extraction.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3741,6 +3598,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3759,14 +3617,16 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_avg_cellvalue_w118_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_cell_ops_pipeline.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3775,40 +3635,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-PARAGRAPH-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Paragraph",
-      "operation_kind": "paragraph",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3827,14 +3654,16 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_export_cell_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_export_content.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3843,6 +3672,7 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -3861,14 +3691,14 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001",
+        "FACT-GNUMERIC-002",
+        "FACT-GNUMERIC-003"
       ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_r272_gnumeric_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3877,43 +3707,10 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-FORMULA-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Formula",
-      "operation_kind": "formula",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -3929,14 +3726,16 @@
       "obligation_ids": [
         "ALLF-GNUMERIC-PY"
       ],
-      "source_fact_ids": [],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001"
+      ],
       "implementation_refs": [
         "src/python/gnumeric/gnumeric_codec.py"
       ],
       "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
+        "tests/python/gnumeric/test_gnumeric_codec.py",
+        "tests/python/gnumeric/test_gnumeric_export_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_export_probe_pipeline.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
@@ -3945,105 +3744,12 @@
         ".venv/Lib/site-packages/gnumeric/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-IMAGE-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Image",
-      "operation_kind": "image",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-DRAWING-SAL-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Drawing",
-      "operation_kind": "drawing",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/gnumeric_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/gnumeric/test_exception_coverage.py",
-        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
-        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py"
-      ],
-      "example_refs": [
-        "examples/python/gnumeric/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
-      "oracle_evidence": [],
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "GNUMERIC-FOSS-LOAD-SOURCE-001",
-      "subject_id": "gnumeric:python",
-      "format_id": "GNUMERIC",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "GNUMERIC Source Implementation (no SAL facts)",
-      "operation_kind": "load",
-      "obligation_ids": [
-        "ALLF-GNUMERIC-PY"
-      ],
-      "source_fact_ids": [],
-      "implementation_refs": [
-        "src/python/gnumeric/"
-      ],
-      "test_refs": [],
-      "example_refs": [],
-      "package_refs": [],
-      "oracle_evidence": [],
-      "current_state": "implementation_verified",
-      "confidence_level": "low",
-      "evidence_note": "PROSE_DERIVED: no SAL facts available; source exists but not SAL-verified",
-      "derived_from": "SOURCE_INTROSPECTION",
-      "authority_note": "WARNING: No SAL facts for this format; capability not SAL-grounded",
       "generated_by": "tools/capability_layer/capability_compiler.py"
     },
     {
@@ -4060,14 +3766,8 @@
       "source_fact_ids": [
         "FACT-NDJSON-002"
       ],
-      "implementation_refs": [
-        "src/python/ndjson/ndjson_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/ndjson/test_broad_rnext_ndjson_sort_records.py",
-        "tests/python/ndjson/test_dogfood_ndjson_csv_pipeline.py",
-        "tests/python/ndjson/test_dogfood_ndjson_tsv_pipeline.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ndjson/consumer_roundtrip.py"
       ],
@@ -4075,9 +3775,10 @@
         ".venv/Lib/site-packages/ndjson/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "7cd4921a72ce163e",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4097,14 +3798,8 @@
         "FACT-NDJSON-001",
         "FACT-NDJSON-002"
       ],
-      "implementation_refs": [
-        "src/python/ndjson/ndjson_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/ndjson/test_broad_rnext_ndjson_sort_records.py",
-        "tests/python/ndjson/test_dogfood_ndjson_csv_pipeline.py",
-        "tests/python/ndjson/test_dogfood_ndjson_tsv_pipeline.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ndjson/consumer_roundtrip.py"
       ],
@@ -4112,9 +3807,10 @@
         ".venv/Lib/site-packages/ndjson/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "7cd4921a72ce163e",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4157,6 +3853,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4193,7 +3890,7 @@
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
         "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_ods_csv_exporter.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4202,6 +3899,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4232,13 +3930,11 @@
         "FACT-ODS-EX-1062",
         "FACT-ODS-EX-1063"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_ods_csv_exporter.py",
+        "tests/python/ods/test_ods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4247,9 +3943,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4282,8 +3979,8 @@
       ],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_ods_conveyor_deepening.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4292,6 +3989,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4327,8 +4025,8 @@
       ],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_mdr11_ods_stats.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4337,6 +4035,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4371,9 +4070,9 @@
         "src/python/ods/ods_parser.py"
       ],
       "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_cell_count_pipeline.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4382,6 +4081,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4417,8 +4117,8 @@
       ],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_add_delete_row_pipeline.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4427,6 +4127,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4462,8 +4163,8 @@
       ],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_avg_col_count_pipeline.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4472,6 +4173,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4502,14 +4204,8 @@
         "FACT-ODS-EX-0150",
         "FACT-ODS-EX-0154"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
@@ -4517,9 +4213,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4552,8 +4249,8 @@
       ],
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_cell_count_pipeline.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4562,6 +4259,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4592,13 +4290,11 @@
         "FACT-ODS-EX-0043",
         "FACT-ODS-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_ods_gate7_fuzz_guard.py",
+        "tests/python/ods/test_ods_probe_capabilities.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4607,9 +4303,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4641,9 +4338,9 @@
         "src/python/ods/ods_parser.py"
       ],
       "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_conveyor_deepening.py",
+        "tests/python/ods/test_ods_formula_stats_pipeline.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4652,6 +4349,7 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4682,14 +4380,8 @@
         "FACT-ODS-EX-0104",
         "FACT-ODS-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
@@ -4697,9 +4389,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4727,14 +4420,8 @@
         "FACT-ODS-EX-0204",
         "FACT-ODS-EX-0205"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
@@ -4742,9 +4429,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4772,14 +4460,8 @@
         "FACT-ODS-EX-0172",
         "FACT-ODS-EX-0174"
       ],
-      "implementation_refs": [
-        "src/python/ods/ods_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
-        "tests/python/ods/test_exception_coverage.py",
-        "tests/python/ods/test_mdr10_ods_exports.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
@@ -4787,9 +4469,10 @@
         ".venv/Lib/site-packages/ods/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4832,6 +4515,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4867,8 +4551,8 @@
       ],
       "test_refs": [
         "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_sample_roundtrip.py",
+        "tests/python/odt/test_odt_writer.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -4877,6 +4561,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -4907,13 +4592,10 @@
         "FACT-ODT-EX-1062",
         "FACT-ODT-EX-1063"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_sample_roundtrip.py",
+        "tests/python/odt/test_r1226_odt_dogfood_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -4922,9 +4604,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -4956,9 +4639,9 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
         "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_conveyor_deepening.py",
+        "tests/python/odt/test_odt_gate5_neutral_model.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -4967,6 +4650,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5001,9 +4685,9 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_gate5_neutral_model.py",
+        "tests/python/odt/test_r232_odt_longest_para_has_tables.py",
+        "tests/python/odt/test_r275_odt_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -5012,6 +4696,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5042,14 +4727,8 @@
         "FACT-ODT-EX-0053",
         "FACT-ODT-EX-0066"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5057,9 +4736,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5087,14 +4767,8 @@
         "FACT-ODT-EX-0170",
         "FACT-ODT-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5102,9 +4776,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5132,14 +4807,8 @@
         "FACT-ODT-EX-0171",
         "FACT-ODT-EX-0177"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5147,9 +4816,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5181,9 +4851,9 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
         "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_conveyor_deepening.py",
+        "tests/python/odt/test_odt_domain_model.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -5192,6 +4862,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5226,9 +4897,9 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_domain_model.py",
+        "tests/python/odt/test_odt_gate5_neutral_model.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -5237,6 +4908,7 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5267,13 +4939,11 @@
         "FACT-ODT-EX-0043",
         "FACT-ODT-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+        "tests/python/odt/test_r275_odt_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -5282,9 +4952,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5312,14 +4983,8 @@
         "FACT-ODT-EX-0186",
         "FACT-ODT-EX-0187"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5327,9 +4992,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5357,14 +5023,8 @@
         "FACT-ODT-EX-0104",
         "FACT-ODT-EX-0105"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5372,9 +5032,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5402,13 +5063,9 @@
         "FACT-ODT-EX-0204",
         "FACT-ODT-EX-0205"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
+        "tests/python/odt/test_odt_gate5_neutral_model.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -5417,9 +5074,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5447,14 +5105,8 @@
         "FACT-ODT-EX-0172",
         "FACT-ODT-EX-0174"
       ],
-      "implementation_refs": [
-        "src/python/odt/odt_parser.py"
-      ],
-      "test_refs": [
-        "tests/python/odt/test_exception_coverage.py",
-        "tests/python/odt/test_mdr10_odt_exports.py",
-        "tests/python/odt/test_odt_conveyor_deepening.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
@@ -5462,9 +5114,10 @@
         ".venv/Lib/site-packages/odt/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5488,9 +5141,9 @@
         "src/python/pbm/pbm_parser.py"
       ],
       "test_refs": [
-        "tests/python/pbm/test_exception_coverage.py",
-        "tests/python/pbm/test_pbm_consumer_proof.py",
-        "tests/python/pbm/test_pbm_conveyor_deepening.py"
+        "tests/python/pbm/test_pbm_conveyor_deepening.py",
+        "tests/python/pbm/test_pbm_gate6_oracle.py",
+        "tests/python/pbm/test_pbm_malformed_and_security.py"
       ],
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
@@ -5499,6 +5152,7 @@
         ".venv/Lib/site-packages/pbm/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "ffc030f693f60b3b",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5521,13 +5175,10 @@
         "FACT-PBM-001",
         "FACT-PBM-002"
       ],
-      "implementation_refs": [
-        "src/python/pbm/pbm_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/pbm/test_exception_coverage.py",
-        "tests/python/pbm/test_pbm_consumer_proof.py",
-        "tests/python/pbm/test_pbm_conveyor_deepening.py"
+        "tests/python/pbm/test_pbm_gate5_neutral_model.py",
+        "tests/python/pbm/test_r282_pbm_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
@@ -5536,9 +5187,10 @@
         ".venv/Lib/site-packages/pbm/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "ffc030f693f60b3b",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5562,9 +5214,9 @@
         "src/python/pgm/pgm_parser.py"
       ],
       "test_refs": [
-        "tests/python/pgm/test_exception_coverage.py",
         "tests/python/pgm/test_pgm_conveyor_deepening.py",
-        "tests/python/pgm/test_pgm_domain_model.py"
+        "tests/python/pgm/test_pgm_gate6_oracle.py",
+        "tests/python/pgm/test_pgm_malformed_and_security.py"
       ],
       "example_refs": [
         "examples/python/pgm/consumer_roundtrip.py"
@@ -5573,6 +5225,7 @@
         ".venv/Lib/site-packages/pgm/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "59e8d970b39fb333",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5595,13 +5248,10 @@
         "FACT-PGM-001",
         "FACT-PGM-002"
       ],
-      "implementation_refs": [
-        "src/python/pgm/pgm_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/pgm/test_exception_coverage.py",
-        "tests/python/pgm/test_pgm_conveyor_deepening.py",
-        "tests/python/pgm/test_pgm_domain_model.py"
+        "tests/python/pgm/test_pgm_gate5_neutral_model.py",
+        "tests/python/pgm/test_r283_pgm_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/pgm/consumer_roundtrip.py"
@@ -5610,9 +5260,10 @@
         ".venv/Lib/site-packages/pgm/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "59e8d970b39fb333",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5636,9 +5287,9 @@
         "src/python/ppm/ppm_parser.py"
       ],
       "test_refs": [
-        "tests/python/ppm/test_exception_coverage.py",
         "tests/python/ppm/test_ppm_conveyor_deepening.py",
-        "tests/python/ppm/test_ppm_domain_model.py"
+        "tests/python/ppm/test_ppm_gate6_oracle.py",
+        "tests/python/ppm/test_ppm_malformed_and_security.py"
       ],
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
@@ -5647,6 +5298,7 @@
         ".venv/Lib/site-packages/ppm/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "d1ff74bebb8ea2a2",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5669,13 +5321,11 @@
         "FACT-PPM-001",
         "FACT-PPM-002"
       ],
-      "implementation_refs": [
-        "src/python/ppm/ppm_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/ppm/test_exception_coverage.py",
-        "tests/python/ppm/test_ppm_conveyor_deepening.py",
-        "tests/python/ppm/test_ppm_domain_model.py"
+        "tests/python/ppm/test_ppm_gate5_neutral_model.py",
+        "tests/python/ppm/test_r101_netpbm_installed_chain.py",
+        "tests/python/ppm/test_r113_ppm_grayscale_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
@@ -5684,9 +5334,10 @@
         ".venv/Lib/site-packages/ppm/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "d1ff74bebb8ea2a2",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5720,6 +5371,7 @@
         ".venv/Lib/site-packages/qoi/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5745,9 +5397,9 @@
         "src/python/qoi/qoi_parser.py"
       ],
       "test_refs": [
-        "tests/python/qoi/test_exception_coverage.py",
         "tests/python/qoi/test_mdr10_qoi_exports.py",
-        "tests/python/qoi/test_qoi_conveyor_deepening.py"
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
@@ -5756,6 +5408,7 @@
         ".venv/Lib/site-packages/qoi/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5781,9 +5434,9 @@
         "src/python/qoi/qoi_parser.py"
       ],
       "test_refs": [
-        "tests/python/qoi/test_exception_coverage.py",
-        "tests/python/qoi/test_mdr10_qoi_exports.py",
-        "tests/python/qoi/test_qoi_conveyor_deepening.py"
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
@@ -5792,6 +5445,7 @@
         ".venv/Lib/site-packages/qoi/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5813,13 +5467,10 @@
       "source_fact_ids": [
         "FACT-QOI-001"
       ],
-      "implementation_refs": [
-        "src/python/qoi/qoi_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/qoi/test_exception_coverage.py",
-        "tests/python/qoi/test_mdr10_qoi_exports.py",
-        "tests/python/qoi/test_qoi_conveyor_deepening.py"
+        "tests/python/qoi/test_r202_qoi_advanced_ops.py",
+        "tests/python/qoi/test_r276_qoi_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
@@ -5828,9 +5479,10 @@
         ".venv/Lib/site-packages/qoi/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "71705f354549fb9d",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5853,9 +5505,9 @@
         "src/python/sylk/sylk_parser.py"
       ],
       "test_refs": [
-        "tests/python/sylk/test_exception_coverage.py",
-        "tests/python/sylk/test_mdr7_sylk_write.py",
-        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py"
       ],
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
@@ -5864,6 +5516,7 @@
         ".venv/Lib/site-packages/sylk/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5889,9 +5542,9 @@
         "src/python/sylk/sylk_parser.py"
       ],
       "test_refs": [
-        "tests/python/sylk/test_exception_coverage.py",
-        "tests/python/sylk/test_mdr7_sylk_write.py",
-        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r110_sylk_parse_edge_cases.py",
+        "tests/python/sylk/test_r166_sylk_coverage.py"
       ],
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
@@ -5900,6 +5553,7 @@
         ".venv/Lib/site-packages/sylk/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5925,9 +5579,9 @@
         "src/python/sylk/sylk_parser.py"
       ],
       "test_refs": [
-        "tests/python/sylk/test_exception_coverage.py",
         "tests/python/sylk/test_mdr7_sylk_write.py",
-        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
       ],
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
@@ -5936,6 +5590,7 @@
         ".venv/Lib/site-packages/sylk/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5962,9 +5617,9 @@
         "src/python/sylk/sylk_parser.py"
       ],
       "test_refs": [
-        "tests/python/sylk/test_exception_coverage.py",
-        "tests/python/sylk/test_mdr7_sylk_write.py",
-        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
       ],
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
@@ -5973,6 +5628,7 @@
         ".venv/Lib/site-packages/sylk/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -5998,9 +5654,9 @@
         "src/python/sylk/sylk_parser.py"
       ],
       "test_refs": [
-        "tests/python/sylk/test_exception_coverage.py",
-        "tests/python/sylk/test_mdr7_sylk_write.py",
-        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py"
       ],
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
@@ -6009,6 +5665,7 @@
         ".venv/Lib/site-packages/sylk/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6042,8 +5699,8 @@
       ],
       "test_refs": [
         "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6052,6 +5709,7 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6078,8 +5736,8 @@
       ],
       "test_refs": [
         "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r157_toml_roundtrip_capability.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6088,6 +5746,7 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6118,8 +5777,8 @@
       ],
       "test_refs": [
         "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6128,6 +5787,7 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6162,9 +5822,9 @@
         "src/python/toml/toml_codec.py"
       ],
       "test_refs": [
-        "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_pd_toml_update_section.py",
+        "tests/python/toml/test_r1226_toml_classification_properties.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6173,6 +5833,7 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6203,14 +5864,8 @@
         "FACT-TOML-025",
         "FACT-TOML-032"
       ],
-      "implementation_refs": [
-        "src/python/toml/toml_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
@@ -6218,9 +5873,10 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6241,13 +5897,11 @@
         "FACT-TOML-006",
         "FACT-TOML-041"
       ],
-      "implementation_refs": [
-        "src/python/toml/toml_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_r1226_toml_classification_properties.py",
+        "tests/python/toml/test_r155_toml_flatten_env.py",
+        "tests/python/toml/test_toml_roundtrip_gap_closure.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6256,9 +5910,10 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6290,9 +5945,9 @@
         "src/python/toml/toml_codec.py"
       ],
       "test_refs": [
-        "tests/python/toml/test_broad_rnext_toml_codec.py",
         "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r1226_toml_classification_properties.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6301,6 +5956,7 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6324,13 +5980,11 @@
         "FACT-TOML-019",
         "FACT-TOML-020"
       ],
-      "implementation_refs": [
-        "src/python/toml/toml_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/toml/test_broad_rnext_toml_codec.py",
-        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
-        "tests/python/toml/test_gap_installed_workflow.py"
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r155_toml_flatten_env.py",
+        "tests/python/toml/test_r266_toml_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6339,9 +5993,10 @@
         ".venv/Lib/site-packages/toml/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6365,9 +6020,9 @@
         "src/python/tsv/tsv_parser.py"
       ],
       "test_refs": [
-        "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
-        "tests/python/tsv/test_cap_tsv_append_row.py",
-        "tests/python/tsv/test_exception_coverage.py"
+        "tests/python/tsv/test_pfgi_tsv_average_column.py",
+        "tests/python/tsv/test_r122_tsv_write.py",
+        "tests/python/tsv/test_r1254_tsv_density_shape_properties.py"
       ],
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
@@ -6376,6 +6031,7 @@
         ".venv/Lib/site-packages/tsv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6403,7 +6059,7 @@
       "test_refs": [
         "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
         "tests/python/tsv/test_cap_tsv_append_row.py",
-        "tests/python/tsv/test_exception_coverage.py"
+        "tests/python/tsv/test_pfgi_tsv_average_column.py"
       ],
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
@@ -6412,6 +6068,7 @@
         ".venv/Lib/site-packages/tsv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6434,13 +6091,11 @@
         "FACT-TSV-001",
         "FACT-TSV-002"
       ],
-      "implementation_refs": [
-        "src/python/tsv/tsv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
-        "tests/python/tsv/test_cap_tsv_append_row.py",
-        "tests/python/tsv/test_exception_coverage.py"
+        "tests/python/tsv/test_r166_tsv_coverage.py",
+        "tests/python/tsv/test_r59_tsv_gate7_fuzz.py",
+        "tests/python/tsv/test_r60_tsv_gate8_security.py"
       ],
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
@@ -6449,9 +6104,10 @@
         ".venv/Lib/site-packages/tsv/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "2da3e578fdda6727",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6476,7 +6132,7 @@
       "test_refs": [
         "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
         "tests/python/tsv/test_cap_tsv_append_row.py",
-        "tests/python/tsv/test_exception_coverage.py"
+        "tests/python/tsv/test_r122_tsv_write.py"
       ],
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
@@ -6485,6 +6141,7 @@
         ".venv/Lib/site-packages/tsv/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6510,9 +6167,9 @@
         "src/python/xcf/xcf_parser.py"
       ],
       "test_refs": [
-        "tests/python/xcf/test_exception_coverage.py",
         "tests/python/xcf/test_mdr11_xcf_exports.py",
-        "tests/python/xcf/test_pff_xcf_helpers.py"
+        "tests/python/xcf/test_r185_xcf_probe_deepening.py",
+        "tests/python/xcf/test_r202_xcf_advanced_ops.py"
       ],
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
@@ -6521,6 +6178,7 @@
         ".venv/Lib/site-packages/xcf/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "1e616d23f3f723bb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6546,9 +6204,9 @@
         "src/python/xcf/xcf_parser.py"
       ],
       "test_refs": [
-        "tests/python/xcf/test_exception_coverage.py",
-        "tests/python/xcf/test_mdr11_xcf_exports.py",
-        "tests/python/xcf/test_pff_xcf_helpers.py"
+        "tests/python/xcf/test_r263_xcf_column_count_is_rgb.py",
+        "tests/python/xcf/test_r298_xcf_sprint46_gaps.py",
+        "tests/python/xcf/test_r309_xcf_color_pixel_analytics.py"
       ],
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
@@ -6557,6 +6215,7 @@
         ".venv/Lib/site-packages/xcf/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "1e616d23f3f723bb",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6578,13 +6237,10 @@
       "source_fact_ids": [
         "FACT-XCF-001"
       ],
-      "implementation_refs": [
-        "src/python/xcf/xcf_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/xcf/test_exception_coverage.py",
-        "tests/python/xcf/test_mdr11_xcf_exports.py",
-        "tests/python/xcf/test_pff_xcf_helpers.py"
+        "tests/python/xcf/test_r165_xcf_probe_layer_dims.py",
+        "tests/python/xcf/test_r278_xcf_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
@@ -6593,9 +6249,10 @@
         ".venv/Lib/site-packages/xcf/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "1e616d23f3f723bb",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6623,13 +6280,11 @@
         "FACT-ZST-EX-0059",
         "FACT-ZST-EX-0062"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6638,9 +6293,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6666,13 +6322,11 @@
         "FACT-ZST-EX-0072",
         "FACT-ZST-EX-0077"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r154_zst_validate_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6681,9 +6335,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6715,9 +6370,9 @@
         "src/python/zst/zst_codec.py"
       ],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r104_zst_compression_levels.py",
+        "tests/python/zst/test_r105_zst_file_workflow.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6726,6 +6381,7 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6756,13 +6412,11 @@
         "FACT-ZST-EX-0058",
         "FACT-ZST-EX-0059"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r267_zst_compression_summary.py",
+        "tests/python/zst/test_r280_zst_installed_workflow.py",
+        "tests/python/zst/test_r293_zst_inspect_frame.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6771,9 +6425,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6801,14 +6456,8 @@
         "FACT-ZST-EX-0059",
         "FACT-ZST-EX-0071"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
-      ],
+      "implementation_refs": [],
+      "test_refs": [],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
@@ -6816,9 +6465,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6840,13 +6490,10 @@
         "FACT-ZST-EX-0009",
         "FACT-ZST-EX-0011"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r166_zst_file_compress_decompress.py",
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6855,9 +6502,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6889,9 +6537,9 @@
         "src/python/zst/zst_codec.py"
       ],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r104_zst_compression_levels.py",
+        "tests/python/zst/test_r115_zst_file_roundtrip.py",
+        "tests/python/zst/test_r154_zst_frame_info.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6900,6 +6548,7 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -6930,13 +6579,10 @@
         "FACT-ZST-EX-0068",
         "FACT-ZST-EX-0069"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r267_zst_compression_summary.py",
+        "tests/python/zst/test_r280_zst_installed_workflow.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6945,9 +6591,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -6966,13 +6613,10 @@
       "source_fact_ids": [
         "FACT-ZST-EX-0068"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r165_zst_frame_ratio.py",
+        "tests/python/zst/test_r168_zst_frame_size_stats.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -6981,9 +6625,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -7002,13 +6647,9 @@
       "source_fact_ids": [
         "FACT-ZST-004"
       ],
-      "implementation_refs": [
-        "src/python/zst/zst_codec.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -7017,9 +6658,10 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
-      "current_state": "test_verified",
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -7051,9 +6693,9 @@
         "src/python/zst/zst_codec.py"
       ],
       "test_refs": [
-        "tests/python/zst/test_exception_coverage.py",
-        "tests/python/zst/test_pbt_zst.py",
-        "tests/python/zst/test_r100_zst_probe_workflow.py"
+        "tests/python/zst/test_r100_zst_probe_workflow.py",
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r104_zst_guard_limits.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
@@ -7062,6 +6704,7 @@
         ".venv/Lib/site-packages/zst/"
       ],
       "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
