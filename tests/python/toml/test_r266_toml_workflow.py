@@ -1,5 +1,5 @@
 """
-tests/python/toml/test_r266_toml_installed_workflow.py
+tests/python/toml/test_r266_toml_workflow.py
 
 Closes gap: GAP-TOML-FOSS-INSTALLED_WO-001
 Sprint: ff-sprint-s266-toml-installed-workflow-20260626

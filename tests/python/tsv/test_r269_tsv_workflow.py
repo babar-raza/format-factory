@@ -1,5 +1,5 @@
 """
-tests/python/tsv/test_r269_tsv_installed_workflow.py
+tests/python/tsv/test_r269_tsv_workflow.py
 
 Sprint: ff-sprint-s269-tsv-ndjson-installed-workflow-20260626
 Authority: IANA text/tab-separated-values

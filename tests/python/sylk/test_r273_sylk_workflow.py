@@ -1,5 +1,5 @@
 """
-tests/python/sylk/test_r273_sylk_installed_workflow.py
+tests/python/sylk/test_r273_sylk_workflow.py
 
 Sprint: ff-sprint-s273-sylk-installed-workflow-20260626
 Authority: SYLK spreadsheet format

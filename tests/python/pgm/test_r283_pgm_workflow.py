@@ -1,5 +1,5 @@
 """
-tests/python/pgm/test_r283_pgm_installed_workflow.py
+tests/python/pgm/test_r283_pgm_workflow.py
 
 Sprint: ff-sprint-s283-pgm-installed-workflow-20260626
 Authority: PGM grayscale image format (Netpbm)

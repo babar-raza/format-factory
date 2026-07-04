@@ -396,6 +396,16 @@ Phases 0–6 executed. Post-audit evidence review identified 6 unresolved gaps �
 **Product Deepening Mission COMPLETE (product-deepening-mission-complete-2026-06-25):**
 14 Python FOSS formats all at PROOF_LEVEL_4+. consumer_roundtrip.py examples created for 11 formats; all verified CONSUMER_PROOF: PASS. 14,498 tests passing, 0 failures. Evidence bundle: 51 artifacts. ACCEPTED verdict. Formats verified: ODS, ODT, FODS, FODT, ZST, PBM, PGM, PPM, SYLK, DIF, CSV, TSV, ABW, Gnumeric, FODG, NDJSON, TOML, XCF, QOI. Evidence root: `.local/supervisor/reviews/product-deepening-mission-complete-2026-06-25-001/`.
 
+**Consumer Proof Infrastructure Hardening (sparkling-waddling-narwhal — CLOSED 2026-07-04):**
+Root cause analysis revealed 3 structural failures behind false "Consumer Proof: PASS" claims: (1) 62 stale installed package files — consumer proofs were testing stale code, not HEAD source; (2) editable install mechanism silently defeated by co-existing module dirs in site-packages; (3) no dated execution evidence captured for any format. All 8 taskcards CLOSED:
+- TC-CPR-001/002: All 20 formats converted to editable installs — 19/20 now resolve to src/python/. CSV permanently excluded (stdlib `csv` name collision — disclosed in README).
+- TC-CPR-003: V137 (stale package detection, blocks sprint) + V138 (evidence existence, WARN) registered in governance_validator_runner.py.
+- TC-CPR-004: tools/consumer_proof_runner.py created — 20/20 PASS captured to .local/evidences/consumer-proof-manifest.json.
+- TC-CPR-005: STEP 8d added to autonomous_cycle.py — best-effort consumer proof capture on PRODUCT_SOURCE sprints.
+- TC-CPR-006: all-format-obligation-register.yaml updated — all 20 entries now cite captured stdout evidence paths.
+- TC-CPR-007: 27 test_r*_installed_workflow.py files renamed to test_r*_workflow.py (tests never tested installed packages — conftest routes to source).
+- TC-CPR-008: README CSV namespace collision disclosed. 19/20 consumer proofs now independently verifiable against current source.
+
 ## Dual-Lane Product Deepening
 
 Product deepening operates in two governed lanes:

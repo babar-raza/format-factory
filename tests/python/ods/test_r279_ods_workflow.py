@@ -1,5 +1,5 @@
 """
-tests/python/ods/test_r279_ods_installed_workflow.py
+tests/python/ods/test_r279_ods_workflow.py
 
 Sprint: ff-sprint-s279-ods-installed-workflow-20260626
 Authority: ODF ODS spreadsheet format

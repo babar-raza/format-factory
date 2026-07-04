@@ -1,5 +1,5 @@
 """
-tests/python/fods/test_r285_fods_installed_workflow.py
+tests/python/fods/test_r285_fods_workflow.py
 
 Sprint: ff-sprint-s285-fods-installed-workflow-20260626
 Authority: ODF FODS flat-XML spreadsheet format

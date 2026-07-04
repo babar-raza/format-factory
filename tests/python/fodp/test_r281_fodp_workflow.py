@@ -1,5 +1,5 @@
 """
-tests/python/fodp/test_r281_fodp_installed_workflow.py
+tests/python/fodp/test_r281_fodp_workflow.py
 
 Sprint: ff-sprint-s281-fodp-installed-workflow-20260626
 Authority: ODF FODP presentation format

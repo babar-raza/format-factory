@@ -1,5 +1,5 @@
 """
-tests/python/ndjson/test_r269_ndjson_installed_workflow.py
+tests/python/ndjson/test_r269_ndjson_workflow.py
 
 Sprint: ff-sprint-s269-tsv-ndjson-installed-workflow-20260626
 Authority: ndjson.org NDJSON specification

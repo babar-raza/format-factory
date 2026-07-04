@@ -1,5 +1,5 @@
 """
-tests/python/fodg/test_r274_fodg_installed_workflow.py
+tests/python/fodg/test_r274_fodg_workflow.py
 
 Sprint: ff-sprint-s274-fodg-installed-workflow-20260626
 Authority: ODF FODG drawing format

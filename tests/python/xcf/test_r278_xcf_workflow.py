@@ -1,5 +1,5 @@
 """
-tests/python/xcf/test_r278_xcf_installed_workflow.py
+tests/python/xcf/test_r278_xcf_workflow.py
 
 Sprint: ff-sprint-s278-xcf-installed-workflow-20260626
 Authority: XCF GIMP image format

@@ -1,5 +1,5 @@
 """
-tests/python/abw/test_r270_abw_installed_workflow.py
+tests/python/abw/test_r270_abw_workflow.py
 
 Sprint: ff-sprint-s270-abw-installed-workflow-20260626
 Authority: FACT-ABW-001 (AbiWord XML document format)

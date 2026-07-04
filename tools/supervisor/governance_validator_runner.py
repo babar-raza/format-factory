@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V110).
+"""governance_validator_runner.py — Runs all governance validators (V1-V138).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -54,6 +54,8 @@ V124: validate_semantic_stub_constant_return — method body is constant-return 
 V125: validate_new_product_bypassing_architecture_gate — new format without qname plan entry (FAIL, TC-ARC-012)
 V126: validate_file_outside_approved_qname_layout — file outside approved QName subdirs (FAIL, TC-ARC-012)
 V127: validate_type_outside_approved_qname_hierarchy — class not in QName hierarchy (WARN, TC-ARC-012)
+V137: validate_no_stale_installed_packages — stale module dirs in site-packages defeat editable installs (FAIL+blocks for changed formats, TC-CPR-003)
+V138: validate_consumer_proof_evidence_exists — consumer-proof-manifest.json must exist with PASS entries (WARN-only, TC-CPR-003)
 """
 from __future__ import annotations
 
@@ -622,6 +624,19 @@ def run_all_governance_validators(
         results.append(_v134(declaration, repo_root))
         results.append(_v135(declaration, repo_root))
         results.append(_v136(declaration, repo_root))
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V137-V138 (TC-CPR-003, sparkling-waddling-narwhal): Consumer proof integrity gates
+    # V137: stale installed packages (editable install defeated by coexisting site-packages dir) — FAIL/blocks
+    # V138: consumer proof execution evidence must exist — WARN-only
+    try:
+        from governance_validators_consumer_proof import (  # noqa: PLC0415
+            validate_no_stale_installed_packages as _v137,
+            validate_consumer_proof_evidence_exists as _v138,
+        )
+        results.append(_v137(declaration, repo_root))
+        results.append(_v138(declaration, repo_root))
     except Exception:
         pass  # Non-blocking on import failure
 

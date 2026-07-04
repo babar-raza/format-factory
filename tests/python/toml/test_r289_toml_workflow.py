@@ -1,5 +1,5 @@
 """
-tests/python/toml/test_r289_toml_installed_workflow.py
+tests/python/toml/test_r289_toml_workflow.py
 
 Sprint: ff-sprint-s289-toml-installed-workflow-20260626
 Authority: TOML v1.0.0 specification

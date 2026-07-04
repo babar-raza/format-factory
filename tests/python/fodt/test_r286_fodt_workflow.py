@@ -1,5 +1,5 @@
 """
-tests/python/fodt/test_r286_fodt_installed_workflow.py
+tests/python/fodt/test_r286_fodt_workflow.py
 
 Sprint: ff-sprint-s286-fodt-installed-workflow-20260626
 Authority: ODF FODT flat-XML document format

@@ -1,5 +1,5 @@
 """
-tests/python/csv/test_r271_csv_installed_workflow.py
+tests/python/csv/test_r271_csv_workflow.py
 
 Sprint: ff-sprint-s271-csv-installed-workflow-20260626
 Authority: RFC 4180 (IETF) — Common Format and MIME Type for CSV Files

@@ -1,5 +1,5 @@
 """
-tests/python/pbm/test_r282_pbm_installed_workflow.py
+tests/python/pbm/test_r282_pbm_workflow.py
 
 Sprint: ff-sprint-s282-pbm-installed-workflow-20260626
 Authority: PBM bitmap image format (Netpbm)

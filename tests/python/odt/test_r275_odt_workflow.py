@@ -1,5 +1,5 @@
 """
-tests/python/odt/test_r275_odt_installed_workflow.py
+tests/python/odt/test_r275_odt_workflow.py
 
 Sprint: ff-sprint-s275-odt-installed-workflow-20260626
 Authority: ODF ODT text document format

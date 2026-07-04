@@ -1,5 +1,5 @@
 """
-tests/python/gnumeric/test_r272_gnumeric_installed_workflow.py
+tests/python/gnumeric/test_r272_gnumeric_workflow.py
 
 Sprint: ff-sprint-s272-gnumeric-installed-workflow-20260626
 Authority: FACT-GNUMERIC-001 (Gnumeric Workbook XML format)

@@ -1,5 +1,5 @@
 """
-tests/python/zst/test_r280_zst_installed_workflow.py
+tests/python/zst/test_r280_zst_workflow.py
 
 Sprint: ff-sprint-s280-zst-installed-workflow-20260626
 Authority: Zstandard compression format

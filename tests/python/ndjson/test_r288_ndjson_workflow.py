@@ -1,5 +1,5 @@
 """
-tests/python/ndjson/test_r288_ndjson_installed_workflow.py
+tests/python/ndjson/test_r288_ndjson_workflow.py
 
 Sprint: ff-sprint-s288-ndjson-installed-workflow-20260626
 Authority: NDJSON / JSONL format spec

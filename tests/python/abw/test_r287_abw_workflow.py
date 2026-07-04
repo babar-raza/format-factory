@@ -1,5 +1,5 @@
 """
-tests/python/abw/test_r287_abw_installed_workflow.py
+tests/python/abw/test_r287_abw_workflow.py
 
 Sprint: ff-sprint-s287-abw-installed-workflow-20260626
 Authority: AWML 1.0 AbiWord document format

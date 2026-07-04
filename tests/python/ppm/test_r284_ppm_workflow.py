@@ -1,5 +1,5 @@
 """
-tests/python/ppm/test_r284_ppm_installed_workflow.py
+tests/python/ppm/test_r284_ppm_workflow.py
 
 Sprint: ff-sprint-s284-ppm-installed-workflow-20260626
 Authority: PPM color image format (Netpbm)

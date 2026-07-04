@@ -2694,6 +2694,38 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _psg_err:
         print(f"  WARNING: PROJECT_STATUS freshness check skipped (non-blocking): {_psg_err}")
 
+    # STEP 8d (TC-CPR-005): Consumer proof evidence capture (best-effort, non-blocking)
+    # Runs all 20 consumer_roundtrip.py scripts and captures stdout to .local/evidences/.
+    # Only fires when PRODUCT_SOURCE items are present in the declaration (source was modified).
+    print("\n=== STEP 8d: CONSUMER PROOF EVIDENCE CAPTURE ===")
+    try:
+        _has_product_source = any(
+            wi.get("type") == "PRODUCT_SOURCE"
+            for wi in declaration.get("planned_work_items", [])
+            if isinstance(wi, dict)
+        )
+        if _has_product_source:
+            import subprocess as _cpr_subprocess
+            _cpr_script = repo_root / "tools" / "consumer_proof_runner.py"
+            if _cpr_script.exists():
+                _cpr_result = _cpr_subprocess.run(
+                    [sys.executable, str(_cpr_script)],
+                    capture_output=True, text=True,
+                    cwd=str(repo_root), timeout=180,
+                )
+                if _cpr_result.returncode == 0:
+                    print("  Consumer proof: 20/20 PASS — evidence captured")
+                else:
+                    _cpr_lines = (_cpr_result.stdout + _cpr_result.stderr).splitlines()
+                    _summary = next((l for l in reversed(_cpr_lines) if l.strip()), "")
+                    print(f"  Consumer proof: PARTIAL or FAIL — {_summary} (non-blocking)")
+            else:
+                print("  Consumer proof runner not found — skipping (non-blocking)")
+        else:
+            print("  No PRODUCT_SOURCE items — skipping consumer proof capture")
+    except Exception as _cpr_err:
+        print(f"  Consumer proof capture skipped (non-blocking): {_cpr_err}")
+
     return manifest
 
 

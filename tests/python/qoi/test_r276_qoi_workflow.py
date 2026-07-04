@@ -1,5 +1,5 @@
 """
-tests/python/qoi/test_r276_qoi_installed_workflow.py
+tests/python/qoi/test_r276_qoi_workflow.py
 
 Sprint: ff-sprint-s276-qoi-installed-workflow-20260626
 Authority: QOI image format

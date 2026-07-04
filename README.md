@@ -133,7 +133,7 @@ Each format follows a similar pattern. See `examples/python/` for consumer round
 | TOML | Config/data format | `aspose-format-factory-toml` | PASS |
 | NDJSON | Newline-delimited JSON | `aspose-format-factory-ndjson` | PASS |
 | TSV | Tab-separated values | `aspose-format-factory-tsv` | PASS |
-| CSV | Comma-separated values | `aspose-format-factory-csv` | PASS |
+| CSV | Comma-separated values | `aspose-format-factory-csv` | PASS ⚠️ |
 | ZST | Zstandard compression | `aspose-format-factory-zst` | PASS |
 | QOI | Quite OK Image format | `aspose-format-factory-qoi` | PASS |
 | XCF | GIMP native image | `aspose-format-factory-xcf` | PASS |
@@ -142,6 +142,8 @@ Each format follows a similar pattern. See `examples/python/` for consumer round
 | PPM | Netpbm pixmap | `aspose-format-factory-ppm` | PASS |
 
 **Consumer Proof** means a runnable script that loads, inspects, mutates, writes, and reloads the format using only the installed package API — verifying the full workflow end-to-end. See `examples/python/` for all 20 scripts.
+
+**⚠️ CSV namespace note:** The `csv` package name collides with Python's stdlib `csv` module. Plain `import csv` resolves to stdlib in all standard Python environments. Use submodule imports instead: `from csv.csv_parser import parse_csv`. The consumer proof script handles this with an explicit sys.path workaround. All other 19 packages import without collision.
 
 All packages: `publish_status: local_only_not_published`, `publication_authorized: false`. See `packaging/python/package-matrix.yaml`.
 

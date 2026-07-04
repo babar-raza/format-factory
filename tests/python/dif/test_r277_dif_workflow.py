@@ -1,5 +1,5 @@
 """
-tests/python/dif/test_r277_dif_installed_workflow.py
+tests/python/dif/test_r277_dif_workflow.py
 
 Sprint: ff-sprint-s277-dif-installed-workflow-20260626
 Authority: DIF (Data Interchange Format) spreadsheet format
