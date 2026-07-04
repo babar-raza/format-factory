@@ -1,25 +1,193 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-07-04T10:24:07.689780+00:00",
+  "generated_at": "2026-07-04T12:28:58.440481+00:00",
   "generator": "tools/capability_layer/capability_compiler.py",
   "generator_version": "2.0",
   "authority": "SAL_FACTS_PRIMARY",
   "authority_note": "Capabilities derived from SAL spec facts. poc-targets.yaml provides scope/priority only. Every capability has obligation_ids[] linking to obligation register.",
   "formats_compiled": [
-    "csv",
     "abw",
-    "fods"
+    "csv",
+    "dif",
+    "fodg",
+    "fodp",
+    "fods",
+    "fodt",
+    "gnumeric",
+    "ndjson",
+    "ods",
+    "odt",
+    "pbm",
+    "pgm",
+    "ppm",
+    "qoi",
+    "sylk",
+    "toml",
+    "tsv",
+    "xcf",
+    "zst"
   ],
-  "total_capabilities": 28,
+  "total_capabilities": 161,
   "state_breakdown": {
-    "test_verified": 18,
-    "missing": 10
+    "test_verified": 92,
+    "missing": 69
   },
   "validation": {
     "capabilities_without_obligation_provenance": 0,
     "CAPABILITIES_WITHOUT_OBLIGATION_PROVENANCE": 0
   },
   "capabilities": [
+    {
+      "capability_id": "ABW-FOSS-LOAD-SAL-001",
+      "subject_id": "abw:python",
+      "format_id": "ABW",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ABW Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-ABW-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ABW-001",
+        "FACT-ABW-002"
+      ],
+      "implementation_refs": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/abw/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/abw/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ABW-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "abw:python",
+      "format_id": "ABW",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ABW Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-ABW-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ABW-002",
+        "FACT-ABW-003",
+        "FACT-ABW-004"
+      ],
+      "implementation_refs": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py"
+      ],
+      "example_refs": [
+        "examples/python/abw/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/abw/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ABW-FOSS-TEXT-SAL-001",
+      "subject_id": "abw:python",
+      "format_id": "ABW",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ABW Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-ABW-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ABW-003",
+        "FACT-ABW-004",
+        "FACT-ABW-005"
+      ],
+      "implementation_refs": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_document_model.py"
+      ],
+      "example_refs": [
+        "examples/python/abw/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/abw/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ABW-FOSS-STYLE-SAL-001",
+      "subject_id": "abw:python",
+      "format_id": "ABW",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ABW Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-ABW-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ABW-001",
+        "FACT-ABW-004"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/abw/test_r270_abw_installed_workflow.py",
+        "tests/python/abw/test_r287_abw_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/abw/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/abw/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "e67d33f431a9779d",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
     {
       "capability_id": "CSV-FOSS-LOAD-SAL-001",
       "subject_id": "csv:python",
@@ -401,36 +569,35 @@
       "generated_by": "tools/capability_layer/capability_compiler.py"
     },
     {
-      "capability_id": "ABW-FOSS-LOAD-SAL-001",
-      "subject_id": "abw:python",
-      "format_id": "ABW",
+      "capability_id": "DIF-FOSS-PROBE-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
       "product_type": "foss_reduced",
       "language": "python",
-      "capability_name": "ABW Load",
-      "operation_kind": "load",
+      "capability_name": "DIF Probe",
+      "operation_kind": "probe",
       "obligation_ids": [
-        "ALLF-ABW-PY"
+        "ALLF-DIF-PY"
       ],
       "source_fact_ids": [
-        "FACT-ABW-001",
-        "FACT-ABW-002"
+        "FACT-DIF-001"
       ],
       "implementation_refs": [
-        "src/python/abw/abw_codec.py"
+        "src/python/dif/dif_parser.py"
       ],
       "test_refs": [
-        "tests/python/abw/test_abw_codec.py",
-        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
-        "tests/python/abw/test_abw_export_batch_pipeline.py"
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py",
+        "tests/python/dif/test_r107_dif_roundtrip_proof.py"
       ],
       "example_refs": [
-        "examples/python/abw/consumer_roundtrip.py"
+        "examples/python/dif/consumer_roundtrip.py"
       ],
       "package_refs": [
-        ".venv/Lib/site-packages/abw/"
+        ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
-      "sal_facts_hash": "e67d33f431a9779d",
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
       "confidence_level": "high",
       "evidence_note": "STRONG: test file + source implementation evidence",
@@ -439,114 +606,1519 @@
       "generated_by": "tools/capability_layer/capability_compiler.py"
     },
     {
-      "capability_id": "ABW-FOSS-PARAGRAPH-SAL-001",
-      "subject_id": "abw:python",
-      "format_id": "ABW",
+      "capability_id": "DIF-FOSS-SHEET-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
       "product_type": "foss_reduced",
       "language": "python",
-      "capability_name": "ABW Paragraph",
-      "operation_kind": "paragraph",
+      "capability_name": "DIF Sheet",
+      "operation_kind": "sheet",
       "obligation_ids": [
-        "ALLF-ABW-PY"
+        "ALLF-DIF-PY"
       ],
       "source_fact_ids": [
-        "FACT-ABW-002",
-        "FACT-ABW-003",
-        "FACT-ABW-004"
-      ],
-      "implementation_refs": [
-        "src/python/abw/abw_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/abw/test_abw_append_truncate_pipeline.py",
-        "tests/python/abw/test_abw_codec.py",
-        "tests/python/abw/test_abw_conveyor_deepening.py"
-      ],
-      "example_refs": [
-        "examples/python/abw/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
-      "oracle_evidence": [],
-      "sal_facts_hash": "e67d33f431a9779d",
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "ABW-FOSS-TEXT-SAL-001",
-      "subject_id": "abw:python",
-      "format_id": "ABW",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "ABW Text",
-      "operation_kind": "text",
-      "obligation_ids": [
-        "ALLF-ABW-PY"
-      ],
-      "source_fact_ids": [
-        "FACT-ABW-003",
-        "FACT-ABW-004",
-        "FACT-ABW-005"
-      ],
-      "implementation_refs": [
-        "src/python/abw/abw_codec.py"
-      ],
-      "test_refs": [
-        "tests/python/abw/test_abw_char_count_export_pipeline.py",
-        "tests/python/abw/test_abw_codec.py",
-        "tests/python/abw/test_abw_document_model.py"
-      ],
-      "example_refs": [
-        "examples/python/abw/consumer_roundtrip.py"
-      ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
-      "oracle_evidence": [],
-      "sal_facts_hash": "e67d33f431a9779d",
-      "current_state": "test_verified",
-      "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
-      "derived_from": "SAL_FACTS",
-      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
-      "generated_by": "tools/capability_layer/capability_compiler.py"
-    },
-    {
-      "capability_id": "ABW-FOSS-STYLE-SAL-001",
-      "subject_id": "abw:python",
-      "format_id": "ABW",
-      "product_type": "foss_reduced",
-      "language": "python",
-      "capability_name": "ABW Style",
-      "operation_kind": "style",
-      "obligation_ids": [
-        "ALLF-ABW-PY"
-      ],
-      "source_fact_ids": [
-        "FACT-ABW-001",
-        "FACT-ABW-004"
+        "FACT-DIF-001"
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/abw/test_r270_abw_installed_workflow.py",
-        "tests/python/abw/test_r287_abw_installed_workflow.py"
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py"
       ],
       "example_refs": [
-        "examples/python/abw/consumer_roundtrip.py"
+        "examples/python/dif/consumer_roundtrip.py"
       ],
       "package_refs": [
-        ".venv/Lib/site-packages/abw/"
+        ".venv/Lib/site-packages/dif/"
       ],
       "oracle_evidence": [],
-      "sal_facts_hash": "e67d33f431a9779d",
+      "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "missing",
       "confidence_level": "high",
       "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "DIF-FOSS-CELL-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "DIF Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-DIF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-DIF-003"
+      ],
+      "implementation_refs": [
+        "src/python/dif/dif_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gap_closure_foss.py",
+        "tests/python/dif/test_dif_gate6_oracle.py"
+      ],
+      "example_refs": [
+        "examples/python/dif/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/dif/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "DIF-FOSS-ROW-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "DIF Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-DIF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-DIF-002"
+      ],
+      "implementation_refs": [
+        "src/python/dif/dif_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gate6_oracle.py"
+      ],
+      "example_refs": [
+        "examples/python/dif/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/dif/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "DIF-FOSS-COLUMN-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "DIF Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-DIF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-DIF-002"
+      ],
+      "implementation_refs": [
+        "src/python/dif/dif_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py"
+      ],
+      "example_refs": [
+        "examples/python/dif/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/dif/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "DIF-FOSS-STYLE-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "DIF Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-DIF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-DIF-001"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/dif/test_dif_gate5_neutral_model.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py",
+        "tests/python/dif/test_r165_dif_csv_edge_cases.py"
+      ],
+      "example_refs": [
+        "examples/python/dif/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/dif/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "DIF-FOSS-METADATA-SAL-001",
+      "subject_id": "dif:python",
+      "format_id": "DIF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "DIF Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-DIF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-DIF-001"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/dif/test_r111_dif_csv_export_hardening.py",
+        "tests/python/dif/test_r112_dif_roundtrip_hardening.py"
+      ],
+      "example_refs": [
+        "examples/python/dif/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/dif/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "0745f5174edaaa79",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-LOAD-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0001",
+        "FACT-FODG-EX-0005",
+        "FACT-FODG-EX-0006",
+        "FACT-FODG-EX-0007",
+        "FACT-FODG-EX-0016",
+        "FACT-FODG-EX-0019",
+        "FACT-FODG-EX-0022",
+        "FACT-FODG-EX-0023",
+        "FACT-FODG-EX-0024",
+        "FACT-FODG-EX-0025"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_codec.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-WRITE-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0009",
+        "FACT-FODG-EX-0111",
+        "FACT-FODG-EX-0112",
+        "FACT-FODG-EX-0145",
+        "FACT-FODG-EX-0153",
+        "FACT-FODG-EX-0194",
+        "FACT-FODG-EX-0270",
+        "FACT-FODG-EX-0297",
+        "FACT-FODG-EX-0319",
+        "FACT-FODG-EX-0333"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_exception_coverage.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0096",
+        "FACT-FODG-EX-0265",
+        "FACT-FODG-EX-0450",
+        "FACT-FODG-EX-0527",
+        "FACT-FODG-EX-0530",
+        "FACT-FODG-EX-0718",
+        "FACT-FODG-EX-0719",
+        "FACT-FODG-EX-0944",
+        "FACT-FODG-EX-1062",
+        "FACT-FODG-EX-1063"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py",
+        "tests/python/fodg/test_fodg_load_gap_closure.py",
+        "tests/python/fodg/test_fodg_roundtrip_export_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-PROBE-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0089",
+        "FACT-FODG-EX-0090",
+        "FACT-FODG-EX-0091",
+        "FACT-FODG-EX-0113",
+        "FACT-FODG-EX-0164",
+        "FACT-FODG-EX-0165",
+        "FACT-FODG-EX-0166",
+        "FACT-FODG-EX-0168",
+        "FACT-FODG-EX-0169",
+        "FACT-FODG-EX-0170"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_all_text_probe_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-SHEET-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0012",
+        "FACT-FODG-EX-0020",
+        "FACT-FODG-EX-0036",
+        "FACT-FODG-EX-0037",
+        "FACT-FODG-EX-0038",
+        "FACT-FODG-EX-0049",
+        "FACT-FODG-EX-0050",
+        "FACT-FODG-EX-0051",
+        "FACT-FODG-EX-0052",
+        "FACT-FODG-EX-0053"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_r274_fodg_installed_workflow.py",
+        "tests/python/fodg/test_r298_fodg_iter_pages.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-CELL-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0012",
+        "FACT-FODG-EX-0017",
+        "FACT-FODG-EX-0018",
+        "FACT-FODG-EX-0036",
+        "FACT-FODG-EX-0037",
+        "FACT-FODG-EX-0046",
+        "FACT-FODG-EX-0050",
+        "FACT-FODG-EX-0052",
+        "FACT-FODG-EX-0053",
+        "FACT-FODG-EX-0066"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-ROW-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0013",
+        "FACT-FODG-EX-0129",
+        "FACT-FODG-EX-0163",
+        "FACT-FODG-EX-0164",
+        "FACT-FODG-EX-0165",
+        "FACT-FODG-EX-0166",
+        "FACT-FODG-EX-0167",
+        "FACT-FODG-EX-0169",
+        "FACT-FODG-EX-0170",
+        "FACT-FODG-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_r167_fodg_coverage.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-COLUMN-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0109",
+        "FACT-FODG-EX-0110",
+        "FACT-FODG-EX-0131",
+        "FACT-FODG-EX-0148",
+        "FACT-FODG-EX-0163",
+        "FACT-FODG-EX-0168",
+        "FACT-FODG-EX-0169",
+        "FACT-FODG-EX-0170",
+        "FACT-FODG-EX-0171",
+        "FACT-FODG-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0094",
+        "FACT-FODG-EX-0125",
+        "FACT-FODG-EX-0126",
+        "FACT-FODG-EX-0127",
+        "FACT-FODG-EX-0128",
+        "FACT-FODG-EX-0130",
+        "FACT-FODG-EX-0132",
+        "FACT-FODG-EX-0146",
+        "FACT-FODG-EX-0150",
+        "FACT-FODG-EX-0154"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-TEXT-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0004",
+        "FACT-FODG-EX-0014",
+        "FACT-FODG-EX-0022",
+        "FACT-FODG-EX-0025",
+        "FACT-FODG-EX-0026",
+        "FACT-FODG-EX-0037",
+        "FACT-FODG-EX-0038",
+        "FACT-FODG-EX-0042",
+        "FACT-FODG-EX-0045",
+        "FACT-FODG-EX-0046"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_drawing_document.py",
+        "tests/python/fodg/test_fodg_all_text_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-STYLE-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0003",
+        "FACT-FODG-EX-0013",
+        "FACT-FODG-EX-0019",
+        "FACT-FODG-EX-0025",
+        "FACT-FODG-EX-0026",
+        "FACT-FODG-EX-0029",
+        "FACT-FODG-EX-0036",
+        "FACT-FODG-EX-0042",
+        "FACT-FODG-EX-0043",
+        "FACT-FODG-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_r274_fodg_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-FORMULA-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0036",
+        "FACT-FODG-EX-0037",
+        "FACT-FODG-EX-0052",
+        "FACT-FODG-EX-0053",
+        "FACT-FODG-EX-0062",
+        "FACT-FODG-EX-0063",
+        "FACT-FODG-EX-0064",
+        "FACT-FODG-EX-0182",
+        "FACT-FODG-EX-0186",
+        "FACT-FODG-EX-0187"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-METADATA-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0015",
+        "FACT-FODG-EX-0016",
+        "FACT-FODG-EX-0026",
+        "FACT-FODG-EX-0029",
+        "FACT-FODG-EX-0042",
+        "FACT-FODG-EX-0043",
+        "FACT-FODG-EX-0090",
+        "FACT-FODG-EX-0103",
+        "FACT-FODG-EX-0104",
+        "FACT-FODG-EX-0105"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_add_page_metadata_pipeline.py",
+        "tests/python/fodg/test_fodg_codec.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-IMAGE-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Image",
+      "operation_kind": "image",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0060",
+        "FACT-FODG-EX-0061",
+        "FACT-FODG-EX-0079",
+        "FACT-FODG-EX-0080",
+        "FACT-FODG-EX-0191",
+        "FACT-FODG-EX-0196",
+        "FACT-FODG-EX-0197",
+        "FACT-FODG-EX-0198",
+        "FACT-FODG-EX-0204",
+        "FACT-FODG-EX-0205"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_r122_fodg_probe.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODG-FOSS-DRAWING-SAL-001",
+      "subject_id": "fodg:python",
+      "format_id": "FODG",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODG Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-FODG-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODG-EX-0011",
+        "FACT-FODG-EX-0038",
+        "FACT-FODG-EX-0054",
+        "FACT-FODG-EX-0055",
+        "FACT-FODG-EX-0079",
+        "FACT-FODG-EX-0080",
+        "FACT-FODG-EX-0104",
+        "FACT-FODG-EX-0157",
+        "FACT-FODG-EX-0172",
+        "FACT-FODG-EX-0174"
+      ],
+      "implementation_refs": [
+        "src/python/fodg/fodg_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_drawing_document.py",
+        "tests/python/fodg/test_fodg_clear_page_count_w109_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/fodg/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodg/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "fe20e33eef8c2ebd",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-LOAD-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0001",
+        "FACT-FODP-EX-0005",
+        "FACT-FODP-EX-0006",
+        "FACT-FODP-EX-0007",
+        "FACT-FODP-EX-0016",
+        "FACT-FODP-EX-0019",
+        "FACT-FODP-EX-0022",
+        "FACT-FODP-EX-0023",
+        "FACT-FODP-EX-0024",
+        "FACT-FODP-EX-0025"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_codec.py",
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_fodp_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-WRITE-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0009",
+        "FACT-FODP-EX-0111",
+        "FACT-FODP-EX-0112",
+        "FACT-FODP-EX-0145",
+        "FACT-FODP-EX-0153",
+        "FACT-FODP-EX-0194",
+        "FACT-FODP-EX-0270",
+        "FACT-FODP-EX-0297",
+        "FACT-FODP-EX-0319",
+        "FACT-FODP-EX-0333"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_exception_coverage.py",
+        "tests/python/fodp/test_fodp_roundtrip.py",
+        "tests/python/fodp/test_fodp_write_stub.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0096",
+        "FACT-FODP-EX-0265",
+        "FACT-FODP-EX-0450",
+        "FACT-FODP-EX-0527",
+        "FACT-FODP-EX-0530",
+        "FACT-FODP-EX-0718",
+        "FACT-FODP-EX-0719",
+        "FACT-FODP-EX-0944",
+        "FACT-FODP-EX-1062",
+        "FACT-FODP-EX-1063"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-PROBE-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0089",
+        "FACT-FODP-EX-0090",
+        "FACT-FODP-EX-0091",
+        "FACT-FODP-EX-0113",
+        "FACT-FODP-EX-0164",
+        "FACT-FODP-EX-0165",
+        "FACT-FODP-EX-0166",
+        "FACT-FODP-EX-0168",
+        "FACT-FODP-EX-0169",
+        "FACT-FODP-EX-0170"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-SHEET-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0012",
+        "FACT-FODP-EX-0020",
+        "FACT-FODP-EX-0036",
+        "FACT-FODP-EX-0037",
+        "FACT-FODP-EX-0038",
+        "FACT-FODP-EX-0049",
+        "FACT-FODP-EX-0050",
+        "FACT-FODP-EX-0051",
+        "FACT-FODP-EX-0052",
+        "FACT-FODP-EX-0053"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
+        "tests/python/fodp/test_r299_fodp_iter_slides.py",
+        "tests/python/fodp/test_rnext_fodp_master_page_count.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-CELL-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0012",
+        "FACT-FODP-EX-0017",
+        "FACT-FODP-EX-0018",
+        "FACT-FODP-EX-0036",
+        "FACT-FODP-EX-0037",
+        "FACT-FODP-EX-0046",
+        "FACT-FODP-EX-0050",
+        "FACT-FODP-EX-0052",
+        "FACT-FODP-EX-0053",
+        "FACT-FODP-EX-0066"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-ROW-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0013",
+        "FACT-FODP-EX-0129",
+        "FACT-FODP-EX-0163",
+        "FACT-FODP-EX-0164",
+        "FACT-FODP-EX-0165",
+        "FACT-FODP-EX-0166",
+        "FACT-FODP-EX-0167",
+        "FACT-FODP-EX-0169",
+        "FACT-FODP-EX-0170",
+        "FACT-FODP-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_export_functions.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-COLUMN-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0109",
+        "FACT-FODP-EX-0110",
+        "FACT-FODP-EX-0131",
+        "FACT-FODP-EX-0148",
+        "FACT-FODP-EX-0163",
+        "FACT-FODP-EX-0168",
+        "FACT-FODP-EX-0169",
+        "FACT-FODP-EX-0170",
+        "FACT-FODP-EX-0171",
+        "FACT-FODP-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0094",
+        "FACT-FODP-EX-0125",
+        "FACT-FODP-EX-0126",
+        "FACT-FODP-EX-0127",
+        "FACT-FODP-EX-0128",
+        "FACT-FODP-EX-0130",
+        "FACT-FODP-EX-0132",
+        "FACT-FODP-EX-0146",
+        "FACT-FODP-EX-0150",
+        "FACT-FODP-EX-0154"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_export_functions.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-TEXT-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0004",
+        "FACT-FODP-EX-0014",
+        "FACT-FODP-EX-0022",
+        "FACT-FODP-EX-0025",
+        "FACT-FODP-EX-0026",
+        "FACT-FODP-EX-0037",
+        "FACT-FODP-EX-0038",
+        "FACT-FODP-EX-0042",
+        "FACT-FODP-EX-0045",
+        "FACT-FODP-EX-0046"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_codec.py",
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_fodp_domain_model.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-STYLE-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0003",
+        "FACT-FODP-EX-0013",
+        "FACT-FODP-EX-0019",
+        "FACT-FODP-EX-0025",
+        "FACT-FODP-EX-0026",
+        "FACT-FODP-EX-0029",
+        "FACT-FODP-EX-0036",
+        "FACT-FODP-EX-0042",
+        "FACT-FODP-EX-0043",
+        "FACT-FODP-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
+        "tests/python/fodp/test_r567_fodp_presentation_analysis_properties.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-FORMULA-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0036",
+        "FACT-FODP-EX-0037",
+        "FACT-FODP-EX-0052",
+        "FACT-FODP-EX-0053",
+        "FACT-FODP-EX-0062",
+        "FACT-FODP-EX-0063",
+        "FACT-FODP-EX-0064",
+        "FACT-FODP-EX-0182",
+        "FACT-FODP-EX-0186",
+        "FACT-FODP-EX-0187"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_r230_fodp_text_per_slide.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-METADATA-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0015",
+        "FACT-FODP-EX-0016",
+        "FACT-FODP-EX-0026",
+        "FACT-FODP-EX-0029",
+        "FACT-FODP-EX-0042",
+        "FACT-FODP-EX-0043",
+        "FACT-FODP-EX-0090",
+        "FACT-FODP-EX-0103",
+        "FACT-FODP-EX-0104",
+        "FACT-FODP-EX-0105"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_codec.py",
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r202_fodp_advanced_ops.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-IMAGE-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Image",
+      "operation_kind": "image",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0060",
+        "FACT-FODP-EX-0061",
+        "FACT-FODP-EX-0079",
+        "FACT-FODP-EX-0080",
+        "FACT-FODP-EX-0191",
+        "FACT-FODP-EX-0196",
+        "FACT-FODP-EX-0197",
+        "FACT-FODP-EX-0198",
+        "FACT-FODP-EX-0204",
+        "FACT-FODP-EX-0205"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_r232_fodp_max_text_has_images.py",
+        "tests/python/fodp/test_rnext_fodp_image_count.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODP-FOSS-DRAWING-SAL-001",
+      "subject_id": "fodp:python",
+      "format_id": "FODP",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODP Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-FODP-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODP-EX-0011",
+        "FACT-FODP-EX-0038",
+        "FACT-FODP-EX-0054",
+        "FACT-FODP-EX-0055",
+        "FACT-FODP-EX-0079",
+        "FACT-FODP-EX-0080",
+        "FACT-FODP-EX-0104",
+        "FACT-FODP-EX-0157",
+        "FACT-FODP-EX-0172",
+        "FACT-FODP-EX-0174"
+      ],
+      "implementation_refs": [
+        "src/python/fodp/fodp_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_conveyor_deepening.py",
+        "tests/python/fodp/test_r1224_fodp_shape_analysis_properties.py",
+        "tests/python/fodp/test_r1247_fodp_scale_content_properties.py"
+      ],
+      "example_refs": [
+        "examples/python/fodp/consumer_inspect.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodp/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "21bc6f611e96915b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -1208,6 +2780,3934 @@
       "current_state": "missing",
       "confidence_level": "high",
       "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-LOAD-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-001",
+        "FACT-FODT-002",
+        "FACT-FODT-011",
+        "FACT-FODT-EX-0001",
+        "FACT-FODT-EX-0002",
+        "FACT-FODT-EX-0003",
+        "FACT-FODT-EX-0005",
+        "FACT-FODT-EX-0006",
+        "FACT-FODT-EX-0007",
+        "FACT-FODT-EX-0008"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_compat_bootstrap.py",
+        "tests/python/fodt/test_compat_e2e.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-WRITE-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-027",
+        "FACT-FODT-EX-0161",
+        "FACT-FODT-EX-0202",
+        "FACT-FODT-EX-0449",
+        "FACT-FODT-EX-0834",
+        "FACT-FODT-EX-0923",
+        "FACT-FODT-EX-1007",
+        "FACT-FODT-EX-1330",
+        "FACT-FODT-EX-2220",
+        "FACT-FODT-EX-2801"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_compat_bootstrap.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_install_proof.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-EX-4002",
+        "FACT-FODT-EX-4003",
+        "FACT-FODT-EX-4047",
+        "FACT-FODT-EX-4048"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_pywrite_deepening.py",
+        "tests/python/fodt/test_fodt_semantic_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-PROBE-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-EX-0076",
+        "FACT-FODT-EX-0360",
+        "FACT-FODT-EX-0361",
+        "FACT-FODT-EX-0362",
+        "FACT-FODT-EX-0363",
+        "FACT-FODT-EX-0364",
+        "FACT-FODT-EX-0429",
+        "FACT-FODT-EX-1857",
+        "FACT-FODT-EX-1903",
+        "FACT-FODT-EX-1913"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodt/test_r75_fodt_new_apis.py",
+        "tests/python/fodt/test_traceability.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-SHEET-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-008",
+        "FACT-FODT-020",
+        "FACT-FODT-023",
+        "FACT-FODT-024",
+        "FACT-FODT-027",
+        "FACT-FODT-EX-0002",
+        "FACT-FODT-EX-0003",
+        "FACT-FODT-EX-0005",
+        "FACT-FODT-EX-0006",
+        "FACT-FODT-EX-0032"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_gap_closure_foss.py",
+        "tests/python/fodt/test_fodt_install_proof.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-CELL-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-016",
+        "FACT-FODT-023",
+        "FACT-FODT-024",
+        "FACT-FODT-EX-0001",
+        "FACT-FODT-EX-0002",
+        "FACT-FODT-EX-0005",
+        "FACT-FODT-EX-0006",
+        "FACT-FODT-EX-0012",
+        "FACT-FODT-EX-0015",
+        "FACT-FODT-EX-0017"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_parser_basic.py",
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r192_fodt_table_cell_count.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-ROW-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-023",
+        "FACT-FODT-EX-0095",
+        "FACT-FODT-EX-0215",
+        "FACT-FODT-EX-0248",
+        "FACT-FODT-EX-0249",
+        "FACT-FODT-EX-0250",
+        "FACT-FODT-EX-0251",
+        "FACT-FODT-EX-0252",
+        "FACT-FODT-EX-0310",
+        "FACT-FODT-EX-0311"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_neutral_model.py",
+        "tests/python/fodt/test_parser_basic.py",
+        "tests/python/fodt/test_r163_fodt_table_cell_span_fields.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-COLUMN-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-EX-0098",
+        "FACT-FODT-EX-0107",
+        "FACT-FODT-EX-0128",
+        "FACT-FODT-EX-0132",
+        "FACT-FODT-EX-0133",
+        "FACT-FODT-EX-0134",
+        "FACT-FODT-EX-0135",
+        "FACT-FODT-EX-0136",
+        "FACT-FODT-EX-0137",
+        "FACT-FODT-EX-0138"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_r162_fodt_language_paragraph.py",
+        "tests/python/fodt/test_r163_fodt_table_cell_span_fields.py",
+        "tests/python/fodt/test_r373_fodt_document_analytics.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-003",
+        "FACT-FODT-009",
+        "FACT-FODT-015",
+        "FACT-FODT-017",
+        "FACT-FODT-021",
+        "FACT-FODT-024",
+        "FACT-FODT-EX-0013",
+        "FACT-FODT-EX-0019",
+        "FACT-FODT-EX-0030",
+        "FACT-FODT-EX-0035"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_compat_bootstrap.py",
+        "tests/python/fodt/test_compat_e2e.py",
+        "tests/python/fodt/test_fodt_domain_models.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-TEXT-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-001",
+        "FACT-FODT-002",
+        "FACT-FODT-003",
+        "FACT-FODT-004",
+        "FACT-FODT-005",
+        "FACT-FODT-006",
+        "FACT-FODT-007",
+        "FACT-FODT-008",
+        "FACT-FODT-009",
+        "FACT-FODT-010"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_compat_bootstrap.py",
+        "tests/python/fodt/test_compat_e2e.py",
+        "tests/python/fodt/test_fodt_exporters.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-STYLE-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-006",
+        "FACT-FODT-011",
+        "FACT-FODT-013",
+        "FACT-FODT-014",
+        "FACT-FODT-015",
+        "FACT-FODT-019",
+        "FACT-FODT-027",
+        "FACT-FODT-EX-0013",
+        "FACT-FODT-EX-0014",
+        "FACT-FODT-EX-0016"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_neutral_model.py",
+        "tests/python/fodt/test_parser_basic.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-FORMULA-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-024",
+        "FACT-FODT-EX-0001",
+        "FACT-FODT-EX-0002",
+        "FACT-FODT-EX-0005",
+        "FACT-FODT-EX-0006",
+        "FACT-FODT-EX-0009",
+        "FACT-FODT-EX-0119",
+        "FACT-FODT-EX-0121",
+        "FACT-FODT-EX-0152",
+        "FACT-FODT-EX-0153"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodt/test_r63_fodt_advancement.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-METADATA-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-027",
+        "FACT-FODT-EX-0011",
+        "FACT-FODT-EX-0012",
+        "FACT-FODT-EX-0028",
+        "FACT-FODT-EX-0029",
+        "FACT-FODT-EX-0030",
+        "FACT-FODT-EX-0031",
+        "FACT-FODT-EX-0032",
+        "FACT-FODT-EX-0033",
+        "FACT-FODT-EX-0034"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/fodt/test_r162_fodt_language_paragraph.py",
+        "tests/python/fodt/test_r75_fodt_new_apis.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-IMAGE-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Image",
+      "operation_kind": "image",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-021",
+        "FACT-FODT-022",
+        "FACT-FODT-EX-0009",
+        "FACT-FODT-EX-0033",
+        "FACT-FODT-EX-0073",
+        "FACT-FODT-EX-0115",
+        "FACT-FODT-EX-0116",
+        "FACT-FODT-EX-0128",
+        "FACT-FODT-EX-0131",
+        "FACT-FODT-EX-0550"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r194_fodt_image_frame_list.py",
+        "tests/python/fodt/test_r373_fodt_document_analytics.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "FODT-FOSS-DRAWING-SAL-001",
+      "subject_id": "fodt:python",
+      "format_id": "FODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "FODT Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-FODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-FODT-021",
+        "FACT-FODT-022",
+        "FACT-FODT-EX-0007",
+        "FACT-FODT-EX-0034",
+        "FACT-FODT-EX-0059",
+        "FACT-FODT-EX-0060",
+        "FACT-FODT-EX-0061",
+        "FACT-FODT-EX-0062",
+        "FACT-FODT-EX-0063",
+        "FACT-FODT-EX-0064"
+      ],
+      "implementation_refs": [
+        "src/python/fodt/fodt_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/fodt/test_r163_fodt_section_change_image.py",
+        "tests/python/fodt/test_r65_fodt_advancement.py",
+        "tests/python/fodt/test_security.py"
+      ],
+      "example_refs": [
+        "examples/python/fodt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/fodt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "acc9894685ad6ed4",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-LOAD-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_cell_ops_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_codec.py",
+        "tests/python/gnumeric/test_gnumeric_export_cell_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-SHEET-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001",
+        "FACT-GNUMERIC-002"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_clear_sheet_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_codec.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-CELL-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-002",
+        "FACT-GNUMERIC-003"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_avg_cellvalue_w118_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-ROW-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_clear_sheet_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_column_extraction.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-COLUMN-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_avg_cellvalue_w118_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_cell_ops_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-TEXT-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-003"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_cell_content_verification.py",
+        "tests/python/gnumeric/test_gnumeric_export_cell_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_export_content.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-STYLE-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001",
+        "FACT-GNUMERIC-002",
+        "FACT-GNUMERIC-003"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/gnumeric/test_r272_gnumeric_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "GNUMERIC-FOSS-METADATA-SAL-001",
+      "subject_id": "gnumeric:python",
+      "format_id": "GNUMERIC",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "GNUMERIC Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-GNUMERIC-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-GNUMERIC-001"
+      ],
+      "implementation_refs": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/gnumeric/test_gnumeric_codec.py",
+        "tests/python/gnumeric/test_gnumeric_export_pipeline.py",
+        "tests/python/gnumeric/test_gnumeric_export_probe_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/gnumeric/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/gnumeric/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "61d27eeac475d20d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "NDJSON-FOSS-CELL-SAL-001",
+      "subject_id": "ndjson:python",
+      "format_id": "NDJSON",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "NDJSON Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-NDJSON-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-NDJSON-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ndjson/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ndjson/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "7cd4921a72ce163e",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "NDJSON-FOSS-DRAWING-SAL-001",
+      "subject_id": "ndjson:python",
+      "format_id": "NDJSON",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "NDJSON Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-NDJSON-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-NDJSON-001",
+        "FACT-NDJSON-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ndjson/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ndjson/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "7cd4921a72ce163e",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-LOAD-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-EX-0001",
+        "FACT-ODS-EX-0005",
+        "FACT-ODS-EX-0006",
+        "FACT-ODS-EX-0007",
+        "FACT-ODS-EX-0016",
+        "FACT-ODS-EX-0019",
+        "FACT-ODS-EX-0022",
+        "FACT-ODS-EX-0023"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_exception_coverage.py",
+        "tests/python/ods/test_mdr10_ods_exports.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-WRITE-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0009",
+        "FACT-ODS-EX-0111",
+        "FACT-ODS-EX-0112",
+        "FACT-ODS-EX-0145",
+        "FACT-ODS-EX-0153",
+        "FACT-ODS-EX-0194",
+        "FACT-ODS-EX-0270",
+        "FACT-ODS-EX-0297",
+        "FACT-ODS-EX-0319",
+        "FACT-ODS-EX-0333"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_exception_coverage.py",
+        "tests/python/ods/test_ods_csv_exporter.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0096",
+        "FACT-ODS-EX-0265",
+        "FACT-ODS-EX-0450",
+        "FACT-ODS-EX-0527",
+        "FACT-ODS-EX-0530",
+        "FACT-ODS-EX-0718",
+        "FACT-ODS-EX-0719",
+        "FACT-ODS-EX-0944",
+        "FACT-ODS-EX-1062",
+        "FACT-ODS-EX-1063"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_ods_csv_exporter.py",
+        "tests/python/ods/test_ods_gap_closure_batch.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-PROBE-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0089",
+        "FACT-ODS-EX-0090",
+        "FACT-ODS-EX-0091",
+        "FACT-ODS-EX-0113",
+        "FACT-ODS-EX-0164",
+        "FACT-ODS-EX-0165",
+        "FACT-ODS-EX-0166",
+        "FACT-ODS-EX-0168",
+        "FACT-ODS-EX-0169",
+        "FACT-ODS-EX-0170"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_ods_conveyor_deepening.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-SHEET-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003",
+        "FACT-ODS-EX-0012",
+        "FACT-ODS-EX-0020",
+        "FACT-ODS-EX-0036",
+        "FACT-ODS-EX-0037",
+        "FACT-ODS-EX-0038",
+        "FACT-ODS-EX-0049",
+        "FACT-ODS-EX-0050"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_mdr11_ods_stats.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-CELL-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-003",
+        "FACT-ODS-EX-0012",
+        "FACT-ODS-EX-0017",
+        "FACT-ODS-EX-0018",
+        "FACT-ODS-EX-0036",
+        "FACT-ODS-EX-0037",
+        "FACT-ODS-EX-0046",
+        "FACT-ODS-EX-0050",
+        "FACT-ODS-EX-0052",
+        "FACT-ODS-EX-0053"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_cell_count_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-ROW-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-002",
+        "FACT-ODS-EX-0013",
+        "FACT-ODS-EX-0129",
+        "FACT-ODS-EX-0163",
+        "FACT-ODS-EX-0164",
+        "FACT-ODS-EX-0165",
+        "FACT-ODS-EX-0166",
+        "FACT-ODS-EX-0167",
+        "FACT-ODS-EX-0169",
+        "FACT-ODS-EX-0170"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_add_delete_row_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-COLUMN-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0109",
+        "FACT-ODS-EX-0110",
+        "FACT-ODS-EX-0131",
+        "FACT-ODS-EX-0148",
+        "FACT-ODS-EX-0163",
+        "FACT-ODS-EX-0168",
+        "FACT-ODS-EX-0169",
+        "FACT-ODS-EX-0170",
+        "FACT-ODS-EX-0171",
+        "FACT-ODS-EX-0177"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_ods_accessor_content.py",
+        "tests/python/ods/test_ods_avg_col_count_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0094",
+        "FACT-ODS-EX-0125",
+        "FACT-ODS-EX-0126",
+        "FACT-ODS-EX-0127",
+        "FACT-ODS-EX-0128",
+        "FACT-ODS-EX-0130",
+        "FACT-ODS-EX-0132",
+        "FACT-ODS-EX-0146",
+        "FACT-ODS-EX-0150",
+        "FACT-ODS-EX-0154"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-TEXT-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0004",
+        "FACT-ODS-EX-0014",
+        "FACT-ODS-EX-0022",
+        "FACT-ODS-EX-0025",
+        "FACT-ODS-EX-0026",
+        "FACT-ODS-EX-0037",
+        "FACT-ODS-EX-0038",
+        "FACT-ODS-EX-0042",
+        "FACT-ODS-EX-0045",
+        "FACT-ODS-EX-0046"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_cell_count_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-STYLE-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0003",
+        "FACT-ODS-EX-0013",
+        "FACT-ODS-EX-0019",
+        "FACT-ODS-EX-0025",
+        "FACT-ODS-EX-0026",
+        "FACT-ODS-EX-0029",
+        "FACT-ODS-EX-0036",
+        "FACT-ODS-EX-0042",
+        "FACT-ODS-EX-0043",
+        "FACT-ODS-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/ods/test_mdr10_ods_exports.py",
+        "tests/python/ods/test_ods_gate7_fuzz_guard.py",
+        "tests/python/ods/test_ods_probe_capabilities.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-FORMULA-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0036",
+        "FACT-ODS-EX-0037",
+        "FACT-ODS-EX-0052",
+        "FACT-ODS-EX-0053",
+        "FACT-ODS-EX-0062",
+        "FACT-ODS-EX-0063",
+        "FACT-ODS-EX-0064",
+        "FACT-ODS-EX-0182",
+        "FACT-ODS-EX-0186",
+        "FACT-ODS-EX-0187"
+      ],
+      "implementation_refs": [
+        "src/python/ods/ods_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ods/test_mdr11_ods_stats.py",
+        "tests/python/ods/test_ods_conveyor_deepening.py",
+        "tests/python/ods/test_ods_formula_stats_pipeline.py"
+      ],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-METADATA-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0015",
+        "FACT-ODS-EX-0016",
+        "FACT-ODS-EX-0026",
+        "FACT-ODS-EX-0029",
+        "FACT-ODS-EX-0042",
+        "FACT-ODS-EX-0043",
+        "FACT-ODS-EX-0090",
+        "FACT-ODS-EX-0103",
+        "FACT-ODS-EX-0104",
+        "FACT-ODS-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-IMAGE-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Image",
+      "operation_kind": "image",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0060",
+        "FACT-ODS-EX-0061",
+        "FACT-ODS-EX-0079",
+        "FACT-ODS-EX-0080",
+        "FACT-ODS-EX-0191",
+        "FACT-ODS-EX-0196",
+        "FACT-ODS-EX-0197",
+        "FACT-ODS-EX-0198",
+        "FACT-ODS-EX-0204",
+        "FACT-ODS-EX-0205"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODS-FOSS-DRAWING-SAL-001",
+      "subject_id": "ods:python",
+      "format_id": "ODS",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODS Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-ODS-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODS-EX-0011",
+        "FACT-ODS-EX-0038",
+        "FACT-ODS-EX-0054",
+        "FACT-ODS-EX-0055",
+        "FACT-ODS-EX-0079",
+        "FACT-ODS-EX-0080",
+        "FACT-ODS-EX-0104",
+        "FACT-ODS-EX-0157",
+        "FACT-ODS-EX-0172",
+        "FACT-ODS-EX-0174"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/ods/clean_consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ods/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "bc85887d81e73767",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-LOAD-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0001",
+        "FACT-ODT-EX-0005",
+        "FACT-ODT-EX-0006",
+        "FACT-ODT-EX-0007",
+        "FACT-ODT-EX-0016",
+        "FACT-ODT-EX-0019",
+        "FACT-ODT-EX-0022",
+        "FACT-ODT-EX-0023",
+        "FACT-ODT-EX-0024",
+        "FACT-ODT-EX-0025"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_exception_coverage.py",
+        "tests/python/odt/test_mdr10_odt_exports.py",
+        "tests/python/odt/test_odt_conveyor_deepening.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-WRITE-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0009",
+        "FACT-ODT-EX-0111",
+        "FACT-ODT-EX-0112",
+        "FACT-ODT-EX-0145",
+        "FACT-ODT-EX-0153",
+        "FACT-ODT-EX-0194",
+        "FACT-ODT-EX-0270",
+        "FACT-ODT-EX-0297",
+        "FACT-ODT-EX-0319",
+        "FACT-ODT-EX-0333"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_exception_coverage.py",
+        "tests/python/odt/test_odt_sample_roundtrip.py",
+        "tests/python/odt/test_odt_writer.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0096",
+        "FACT-ODT-EX-0265",
+        "FACT-ODT-EX-0450",
+        "FACT-ODT-EX-0527",
+        "FACT-ODT-EX-0530",
+        "FACT-ODT-EX-0718",
+        "FACT-ODT-EX-0719",
+        "FACT-ODT-EX-0944",
+        "FACT-ODT-EX-1062",
+        "FACT-ODT-EX-1063"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/odt/test_odt_sample_roundtrip.py",
+        "tests/python/odt/test_r1226_odt_dogfood_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-PROBE-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0089",
+        "FACT-ODT-EX-0090",
+        "FACT-ODT-EX-0091",
+        "FACT-ODT-EX-0113",
+        "FACT-ODT-EX-0164",
+        "FACT-ODT-EX-0165",
+        "FACT-ODT-EX-0166",
+        "FACT-ODT-EX-0168",
+        "FACT-ODT-EX-0169",
+        "FACT-ODT-EX-0170"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_mdr10_odt_exports.py",
+        "tests/python/odt/test_odt_conveyor_deepening.py",
+        "tests/python/odt/test_odt_gate5_neutral_model.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-SHEET-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0012",
+        "FACT-ODT-EX-0020",
+        "FACT-ODT-EX-0036",
+        "FACT-ODT-EX-0037",
+        "FACT-ODT-EX-0038",
+        "FACT-ODT-EX-0049",
+        "FACT-ODT-EX-0050",
+        "FACT-ODT-EX-0051",
+        "FACT-ODT-EX-0052",
+        "FACT-ODT-EX-0053"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_odt_gate5_neutral_model.py",
+        "tests/python/odt/test_r232_odt_longest_para_has_tables.py",
+        "tests/python/odt/test_r275_odt_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-CELL-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0012",
+        "FACT-ODT-EX-0017",
+        "FACT-ODT-EX-0018",
+        "FACT-ODT-EX-0036",
+        "FACT-ODT-EX-0037",
+        "FACT-ODT-EX-0046",
+        "FACT-ODT-EX-0050",
+        "FACT-ODT-EX-0052",
+        "FACT-ODT-EX-0053",
+        "FACT-ODT-EX-0066"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-ROW-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0013",
+        "FACT-ODT-EX-0129",
+        "FACT-ODT-EX-0163",
+        "FACT-ODT-EX-0164",
+        "FACT-ODT-EX-0165",
+        "FACT-ODT-EX-0166",
+        "FACT-ODT-EX-0167",
+        "FACT-ODT-EX-0169",
+        "FACT-ODT-EX-0170",
+        "FACT-ODT-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-COLUMN-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0109",
+        "FACT-ODT-EX-0110",
+        "FACT-ODT-EX-0131",
+        "FACT-ODT-EX-0148",
+        "FACT-ODT-EX-0163",
+        "FACT-ODT-EX-0168",
+        "FACT-ODT-EX-0169",
+        "FACT-ODT-EX-0170",
+        "FACT-ODT-EX-0171",
+        "FACT-ODT-EX-0177"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0094",
+        "FACT-ODT-EX-0125",
+        "FACT-ODT-EX-0126",
+        "FACT-ODT-EX-0127",
+        "FACT-ODT-EX-0128",
+        "FACT-ODT-EX-0130",
+        "FACT-ODT-EX-0132",
+        "FACT-ODT-EX-0146",
+        "FACT-ODT-EX-0150",
+        "FACT-ODT-EX-0154"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_mdr10_odt_exports.py",
+        "tests/python/odt/test_odt_conveyor_deepening.py",
+        "tests/python/odt/test_odt_domain_model.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-TEXT-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0004",
+        "FACT-ODT-EX-0014",
+        "FACT-ODT-EX-0022",
+        "FACT-ODT-EX-0025",
+        "FACT-ODT-EX-0026",
+        "FACT-ODT-EX-0037",
+        "FACT-ODT-EX-0038",
+        "FACT-ODT-EX-0042",
+        "FACT-ODT-EX-0045",
+        "FACT-ODT-EX-0046"
+      ],
+      "implementation_refs": [
+        "src/python/odt/odt_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/odt/test_odt_domain_model.py",
+        "tests/python/odt/test_odt_gate5_neutral_model.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-STYLE-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0003",
+        "FACT-ODT-EX-0013",
+        "FACT-ODT-EX-0019",
+        "FACT-ODT-EX-0025",
+        "FACT-ODT-EX-0026",
+        "FACT-ODT-EX-0029",
+        "FACT-ODT-EX-0036",
+        "FACT-ODT-EX-0042",
+        "FACT-ODT-EX-0043",
+        "FACT-ODT-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/odt/test_odt_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+        "tests/python/odt/test_r275_odt_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-FORMULA-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0036",
+        "FACT-ODT-EX-0037",
+        "FACT-ODT-EX-0052",
+        "FACT-ODT-EX-0053",
+        "FACT-ODT-EX-0062",
+        "FACT-ODT-EX-0063",
+        "FACT-ODT-EX-0064",
+        "FACT-ODT-EX-0182",
+        "FACT-ODT-EX-0186",
+        "FACT-ODT-EX-0187"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-METADATA-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0015",
+        "FACT-ODT-EX-0016",
+        "FACT-ODT-EX-0026",
+        "FACT-ODT-EX-0029",
+        "FACT-ODT-EX-0042",
+        "FACT-ODT-EX-0043",
+        "FACT-ODT-EX-0090",
+        "FACT-ODT-EX-0103",
+        "FACT-ODT-EX-0104",
+        "FACT-ODT-EX-0105"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-IMAGE-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Image",
+      "operation_kind": "image",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0060",
+        "FACT-ODT-EX-0061",
+        "FACT-ODT-EX-0079",
+        "FACT-ODT-EX-0080",
+        "FACT-ODT-EX-0191",
+        "FACT-ODT-EX-0196",
+        "FACT-ODT-EX-0197",
+        "FACT-ODT-EX-0198",
+        "FACT-ODT-EX-0204",
+        "FACT-ODT-EX-0205"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/odt/test_odt_gate5_neutral_model.py"
+      ],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ODT-FOSS-DRAWING-SAL-001",
+      "subject_id": "odt:python",
+      "format_id": "ODT",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ODT Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-ODT-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ODT-EX-0011",
+        "FACT-ODT-EX-0038",
+        "FACT-ODT-EX-0054",
+        "FACT-ODT-EX-0055",
+        "FACT-ODT-EX-0079",
+        "FACT-ODT-EX-0080",
+        "FACT-ODT-EX-0104",
+        "FACT-ODT-EX-0157",
+        "FACT-ODT-EX-0172",
+        "FACT-ODT-EX-0174"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/odt/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/odt/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f776f952288fc7fb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PBM-FOSS-PROBE-SAL-001",
+      "subject_id": "pbm:python",
+      "format_id": "PBM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PBM Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-PBM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PBM-001",
+        "FACT-PBM-002"
+      ],
+      "implementation_refs": [
+        "src/python/pbm/pbm_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/pbm/test_pbm_conveyor_deepening.py",
+        "tests/python/pbm/test_pbm_gate6_oracle.py",
+        "tests/python/pbm/test_pbm_malformed_and_security.py"
+      ],
+      "example_refs": [
+        "examples/python/pbm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/pbm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "ffc030f693f60b3b",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PBM-FOSS-STYLE-SAL-001",
+      "subject_id": "pbm:python",
+      "format_id": "PBM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PBM Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-PBM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PBM-001",
+        "FACT-PBM-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/pbm/test_pbm_gate5_neutral_model.py",
+        "tests/python/pbm/test_r282_pbm_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/pbm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/pbm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "ffc030f693f60b3b",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PGM-FOSS-PROBE-SAL-001",
+      "subject_id": "pgm:python",
+      "format_id": "PGM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PGM Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-PGM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PGM-001",
+        "FACT-PGM-002"
+      ],
+      "implementation_refs": [
+        "src/python/pgm/pgm_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/pgm/test_pgm_conveyor_deepening.py",
+        "tests/python/pgm/test_pgm_gate6_oracle.py",
+        "tests/python/pgm/test_pgm_malformed_and_security.py"
+      ],
+      "example_refs": [
+        "examples/python/pgm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/pgm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "59e8d970b39fb333",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PGM-FOSS-STYLE-SAL-001",
+      "subject_id": "pgm:python",
+      "format_id": "PGM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PGM Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-PGM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PGM-001",
+        "FACT-PGM-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/pgm/test_pgm_gate5_neutral_model.py",
+        "tests/python/pgm/test_r283_pgm_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/pgm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/pgm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "59e8d970b39fb333",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PPM-FOSS-PROBE-SAL-001",
+      "subject_id": "ppm:python",
+      "format_id": "PPM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PPM Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-PPM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PPM-001",
+        "FACT-PPM-002"
+      ],
+      "implementation_refs": [
+        "src/python/ppm/ppm_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/ppm/test_ppm_conveyor_deepening.py",
+        "tests/python/ppm/test_ppm_gate6_oracle.py",
+        "tests/python/ppm/test_ppm_malformed_and_security.py"
+      ],
+      "example_refs": [
+        "examples/python/ppm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ppm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "d1ff74bebb8ea2a2",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "PPM-FOSS-STYLE-SAL-001",
+      "subject_id": "ppm:python",
+      "format_id": "PPM",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "PPM Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-PPM-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-PPM-001",
+        "FACT-PPM-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/ppm/test_ppm_gate5_neutral_model.py",
+        "tests/python/ppm/test_r101_netpbm_installed_chain.py",
+        "tests/python/ppm/test_r113_ppm_grayscale_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/ppm/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/ppm/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "d1ff74bebb8ea2a2",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "QOI-FOSS-LOAD-SAL-001",
+      "subject_id": "qoi:python",
+      "format_id": "QOI",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "QOI Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-QOI-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-QOI-001"
+      ],
+      "implementation_refs": [
+        "src/python/qoi/qoi_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/qoi/test_exception_coverage.py",
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py"
+      ],
+      "example_refs": [
+        "examples/python/qoi/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/qoi/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "QOI-FOSS-PROBE-SAL-001",
+      "subject_id": "qoi:python",
+      "format_id": "QOI",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "QOI Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-QOI-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-QOI-001"
+      ],
+      "implementation_refs": [
+        "src/python/qoi/qoi_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py"
+      ],
+      "example_refs": [
+        "examples/python/qoi/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/qoi/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "QOI-FOSS-COLUMN-SAL-001",
+      "subject_id": "qoi:python",
+      "format_id": "QOI",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "QOI Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-QOI-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-QOI-001"
+      ],
+      "implementation_refs": [
+        "src/python/qoi/qoi_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py"
+      ],
+      "example_refs": [
+        "examples/python/qoi/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/qoi/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "QOI-FOSS-STYLE-SAL-001",
+      "subject_id": "qoi:python",
+      "format_id": "QOI",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "QOI Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-QOI-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-QOI-001"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/qoi/test_r202_qoi_advanced_ops.py",
+        "tests/python/qoi/test_r276_qoi_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/qoi/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/qoi/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "71705f354549fb9d",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "SYLK-FOSS-LOAD-SAL-001",
+      "subject_id": "sylk:python",
+      "format_id": "SYLK",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "SYLK Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-SYLK-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-SYLK-001"
+      ],
+      "implementation_refs": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py"
+      ],
+      "example_refs": [
+        "examples/python/sylk/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/sylk/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "SYLK-FOSS-PROBE-SAL-001",
+      "subject_id": "sylk:python",
+      "format_id": "SYLK",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "SYLK Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-SYLK-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-SYLK-001"
+      ],
+      "implementation_refs": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r110_sylk_parse_edge_cases.py",
+        "tests/python/sylk/test_r166_sylk_coverage.py"
+      ],
+      "example_refs": [
+        "examples/python/sylk/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/sylk/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "SYLK-FOSS-CELL-SAL-001",
+      "subject_id": "sylk:python",
+      "format_id": "SYLK",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "SYLK Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-SYLK-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-SYLK-003"
+      ],
+      "implementation_refs": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/sylk/test_mdr7_sylk_write.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
+      ],
+      "example_refs": [
+        "examples/python/sylk/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/sylk/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "SYLK-FOSS-ROW-SAL-001",
+      "subject_id": "sylk:python",
+      "format_id": "SYLK",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "SYLK Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-SYLK-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-SYLK-002",
+        "FACT-SYLK-003"
+      ],
+      "implementation_refs": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
+      ],
+      "example_refs": [
+        "examples/python/sylk/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/sylk/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "SYLK-FOSS-COLUMN-SAL-001",
+      "subject_id": "sylk:python",
+      "format_id": "SYLK",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "SYLK Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-SYLK-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-SYLK-003"
+      ],
+      "implementation_refs": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py"
+      ],
+      "example_refs": [
+        "examples/python/sylk/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/sylk/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "79bad99d11b0ff87",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-LOAD-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-026",
+        "FACT-TOML-032",
+        "FACT-TOML-035",
+        "FACT-TOML-036",
+        "FACT-TOML-037",
+        "FACT-TOML-040",
+        "FACT-TOML-044",
+        "FACT-TOML-055"
+      ],
+      "implementation_refs": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-ROUNDTRIP-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Roundtrip",
+      "operation_kind": "roundtrip",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-033"
+      ],
+      "implementation_refs": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r157_toml_roundtrip_capability.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-PROBE-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-001",
+        "FACT-TOML-024",
+        "FACT-TOML-025",
+        "FACT-TOML-026",
+        "FACT-TOML-046"
+      ],
+      "implementation_refs": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-SHEET-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-001",
+        "FACT-TOML-023",
+        "FACT-TOML-024",
+        "FACT-TOML-025",
+        "FACT-TOML-027",
+        "FACT-TOML-035",
+        "FACT-TOML-036",
+        "FACT-TOML-043",
+        "FACT-TOML-045",
+        "FACT-TOML-046"
+      ],
+      "implementation_refs": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_pd_toml_update_section.py",
+        "tests/python/toml/test_r1226_toml_classification_properties.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-CELL-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-001",
+        "FACT-TOML-002",
+        "FACT-TOML-004",
+        "FACT-TOML-005",
+        "FACT-TOML-008",
+        "FACT-TOML-011",
+        "FACT-TOML-015",
+        "FACT-TOML-022",
+        "FACT-TOML-025",
+        "FACT-TOML-032"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-002",
+        "FACT-TOML-006",
+        "FACT-TOML-041"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/toml/test_r1226_toml_classification_properties.py",
+        "tests/python/toml/test_r155_toml_flatten_env.py",
+        "tests/python/toml/test_toml_roundtrip_gap_closure.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-TEXT-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-002",
+        "FACT-TOML-006",
+        "FACT-TOML-007",
+        "FACT-TOML-009",
+        "FACT-TOML-010",
+        "FACT-TOML-011",
+        "FACT-TOML-028",
+        "FACT-TOML-031",
+        "FACT-TOML-033",
+        "FACT-TOML-034"
+      ],
+      "implementation_refs": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r1226_toml_classification_properties.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TOML-FOSS-STYLE-SAL-001",
+      "subject_id": "toml:python",
+      "format_id": "TOML",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TOML Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-TOML-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TOML-017",
+        "FACT-TOML-019",
+        "FACT-TOML-020"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/toml/test_gap_installed_workflow.py",
+        "tests/python/toml/test_r155_toml_flatten_env.py",
+        "tests/python/toml/test_r266_toml_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/toml/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/toml/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "75ab4deafc7bce54",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TSV-FOSS-CELL-SAL-001",
+      "subject_id": "tsv:python",
+      "format_id": "TSV",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TSV Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-TSV-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TSV-001",
+        "FACT-TSV-002"
+      ],
+      "implementation_refs": [
+        "src/python/tsv/tsv_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/tsv/test_pfgi_tsv_average_column.py",
+        "tests/python/tsv/test_r122_tsv_write.py",
+        "tests/python/tsv/test_r1254_tsv_density_shape_properties.py"
+      ],
+      "example_refs": [
+        "examples/python/tsv/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/tsv/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TSV-FOSS-ROW-SAL-001",
+      "subject_id": "tsv:python",
+      "format_id": "TSV",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TSV Row",
+      "operation_kind": "row",
+      "obligation_ids": [
+        "ALLF-TSV-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TSV-001"
+      ],
+      "implementation_refs": [
+        "src/python/tsv/tsv_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py",
+        "tests/python/tsv/test_cqga001_pilot1_get_column_values.py"
+      ],
+      "example_refs": [
+        "examples/python/tsv/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/tsv/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TSV-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "tsv:python",
+      "format_id": "TSV",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TSV Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-TSV-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TSV-001",
+        "FACT-TSV-002"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/tsv/test_r166_tsv_coverage.py",
+        "tests/python/tsv/test_r59_tsv_gate7_fuzz.py",
+        "tests/python/tsv/test_r60_tsv_gate8_security.py"
+      ],
+      "example_refs": [
+        "examples/python/tsv/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/tsv/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "TSV-FOSS-TEXT-SAL-001",
+      "subject_id": "tsv:python",
+      "format_id": "TSV",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "TSV Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-TSV-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-TSV-001"
+      ],
+      "implementation_refs": [
+        "src/python/tsv/tsv_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py",
+        "tests/python/tsv/test_r122_tsv_write.py"
+      ],
+      "example_refs": [
+        "examples/python/tsv/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/tsv/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "2da3e578fdda6727",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "XCF-FOSS-PROBE-SAL-001",
+      "subject_id": "xcf:python",
+      "format_id": "XCF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "XCF Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-XCF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-XCF-001"
+      ],
+      "implementation_refs": [
+        "src/python/xcf/xcf_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/xcf/test_mdr11_xcf_exports.py",
+        "tests/python/xcf/test_r185_xcf_probe_deepening.py",
+        "tests/python/xcf/test_r202_xcf_advanced_ops.py"
+      ],
+      "example_refs": [
+        "examples/python/xcf/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/xcf/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "1e616d23f3f723bb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "XCF-FOSS-COLUMN-SAL-001",
+      "subject_id": "xcf:python",
+      "format_id": "XCF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "XCF Column",
+      "operation_kind": "column",
+      "obligation_ids": [
+        "ALLF-XCF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-XCF-001"
+      ],
+      "implementation_refs": [
+        "src/python/xcf/xcf_parser.py"
+      ],
+      "test_refs": [
+        "tests/python/xcf/test_r263_xcf_column_count_is_rgb.py",
+        "tests/python/xcf/test_r298_xcf_sprint46_gaps.py",
+        "tests/python/xcf/test_r309_xcf_color_pixel_analytics.py"
+      ],
+      "example_refs": [
+        "examples/python/xcf/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/xcf/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "1e616d23f3f723bb",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "XCF-FOSS-STYLE-SAL-001",
+      "subject_id": "xcf:python",
+      "format_id": "XCF",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "XCF Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-XCF-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-XCF-001"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/xcf/test_r165_xcf_probe_layer_dims.py",
+        "tests/python/xcf/test_r278_xcf_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/xcf/consumer_roundtrip.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/xcf/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "1e616d23f3f723bb",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-LOAD-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Load",
+      "operation_kind": "load",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-015",
+        "FACT-ZST-EX-0001",
+        "FACT-ZST-EX-0002",
+        "FACT-ZST-EX-0019",
+        "FACT-ZST-EX-0046",
+        "FACT-ZST-EX-0049",
+        "FACT-ZST-EX-0055",
+        "FACT-ZST-EX-0058",
+        "FACT-ZST-EX-0059",
+        "FACT-ZST-EX-0062"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_exception_coverage.py",
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-WRITE-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Write",
+      "operation_kind": "write",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-EX-0012",
+        "FACT-ZST-EX-0036",
+        "FACT-ZST-EX-0037",
+        "FACT-ZST-EX-0039",
+        "FACT-ZST-EX-0046",
+        "FACT-ZST-EX-0048",
+        "FACT-ZST-EX-0072",
+        "FACT-ZST-EX-0077"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_exception_coverage.py",
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r154_zst_validate_roundtrip.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-PROBE-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Probe",
+      "operation_kind": "probe",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-001",
+        "FACT-ZST-002",
+        "FACT-ZST-005",
+        "FACT-ZST-006",
+        "FACT-ZST-008",
+        "FACT-ZST-014",
+        "FACT-ZST-EX-0005",
+        "FACT-ZST-EX-0011",
+        "FACT-ZST-EX-0025",
+        "FACT-ZST-EX-0031"
+      ],
+      "implementation_refs": [
+        "src/python/zst/zst_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r104_zst_compression_levels.py",
+        "tests/python/zst/test_r105_zst_file_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-SHEET-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Sheet",
+      "operation_kind": "sheet",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-EX-0033",
+        "FACT-ZST-EX-0035",
+        "FACT-ZST-EX-0039",
+        "FACT-ZST-EX-0041",
+        "FACT-ZST-EX-0043",
+        "FACT-ZST-EX-0045",
+        "FACT-ZST-EX-0056",
+        "FACT-ZST-EX-0057",
+        "FACT-ZST-EX-0058",
+        "FACT-ZST-EX-0059"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_r267_zst_compression_summary.py",
+        "tests/python/zst/test_r280_zst_installed_workflow.py",
+        "tests/python/zst/test_r293_zst_inspect_frame.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-CELL-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Cell",
+      "operation_kind": "cell",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-002",
+        "FACT-ZST-011",
+        "FACT-ZST-EX-0016",
+        "FACT-ZST-EX-0024",
+        "FACT-ZST-EX-0029",
+        "FACT-ZST-EX-0047",
+        "FACT-ZST-EX-0056",
+        "FACT-ZST-EX-0058",
+        "FACT-ZST-EX-0059",
+        "FACT-ZST-EX-0071"
+      ],
+      "implementation_refs": [],
+      "test_refs": [],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-PARAGRAPH-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Paragraph",
+      "operation_kind": "paragraph",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-EX-0007",
+        "FACT-ZST-EX-0008",
+        "FACT-ZST-EX-0009",
+        "FACT-ZST-EX-0011"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_r166_zst_file_compress_decompress.py",
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-TEXT-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Text",
+      "operation_kind": "text",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-005",
+        "FACT-ZST-006",
+        "FACT-ZST-011",
+        "FACT-ZST-EX-0002",
+        "FACT-ZST-EX-0004",
+        "FACT-ZST-EX-0010",
+        "FACT-ZST-EX-0013",
+        "FACT-ZST-EX-0024",
+        "FACT-ZST-EX-0026",
+        "FACT-ZST-EX-0027"
+      ],
+      "implementation_refs": [
+        "src/python/zst/zst_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/zst/test_r104_zst_compression_levels.py",
+        "tests/python/zst/test_r115_zst_file_roundtrip.py",
+        "tests/python/zst/test_r154_zst_frame_info.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-STYLE-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Style",
+      "operation_kind": "style",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-001",
+        "FACT-ZST-004",
+        "FACT-ZST-EX-0001",
+        "FACT-ZST-EX-0005",
+        "FACT-ZST-EX-0008",
+        "FACT-ZST-EX-0019",
+        "FACT-ZST-EX-0024",
+        "FACT-ZST-EX-0054",
+        "FACT-ZST-EX-0068",
+        "FACT-ZST-EX-0069"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_r267_zst_compression_summary.py",
+        "tests/python/zst/test_r280_zst_installed_workflow.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-FORMULA-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Formula",
+      "operation_kind": "formula",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-EX-0068"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_r165_zst_frame_ratio.py",
+        "tests/python/zst/test_r168_zst_frame_size_stats.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-METADATA-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Metadata",
+      "operation_kind": "metadata",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-004"
+      ],
+      "implementation_refs": [],
+      "test_refs": [
+        "tests/python/zst/test_r170_zst_abw_dogfood_export.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "missing",
+      "confidence_level": "high",
+      "evidence_note": "MISSING: no source implementation found for this operation",
+      "derived_from": "SAL_FACTS",
+      "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
+      "generated_by": "tools/capability_layer/capability_compiler.py"
+    },
+    {
+      "capability_id": "ZST-FOSS-DRAWING-SAL-001",
+      "subject_id": "zst:python",
+      "format_id": "ZST",
+      "product_type": "foss_reduced",
+      "language": "python",
+      "capability_name": "ZST Drawing",
+      "operation_kind": "drawing",
+      "obligation_ids": [
+        "ALLF-ZST-PY"
+      ],
+      "source_fact_ids": [
+        "FACT-ZST-001",
+        "FACT-ZST-002",
+        "FACT-ZST-003",
+        "FACT-ZST-004",
+        "FACT-ZST-005",
+        "FACT-ZST-006",
+        "FACT-ZST-007",
+        "FACT-ZST-010",
+        "FACT-ZST-EX-0010",
+        "FACT-ZST-EX-0011"
+      ],
+      "implementation_refs": [
+        "src/python/zst/zst_codec.py"
+      ],
+      "test_refs": [
+        "tests/python/zst/test_r100_zst_probe_workflow.py",
+        "tests/python/zst/test_r101_zst_installed_smoke.py",
+        "tests/python/zst/test_r104_zst_guard_limits.py"
+      ],
+      "example_refs": [
+        "examples/python/zst/compress_decompress_file.py"
+      ],
+      "package_refs": [
+        ".venv/Lib/site-packages/zst/"
+      ],
+      "oracle_evidence": [],
+      "sal_facts_hash": "f5d93c069c475cf0",
+      "current_state": "test_verified",
+      "confidence_level": "high",
+      "evidence_note": "STRONG: test file + source implementation evidence",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"

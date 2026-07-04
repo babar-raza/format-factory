@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: honey-heal-20260704
-Sprint: honey-heal-20260704
-Timestamp: 2026-07-04T15:49:15.232156
+Run: bootstrap-sr-003
+Sprint: bootstrap-sr-003
+Timestamp: 2026-07-04T21:50:43.149549
 Verdict: ACCEPTED_WITH_REWORK
-Autonomous Continue: False
-Accepted: 4
-Rework: 2
+Autonomous Continue: True
+Accepted: 1
+Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\honey-heal-20260704\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\honey-heal-20260704\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bootstrap-sr-003\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bootstrap-sr-003\combined-next-worker-prompt.md

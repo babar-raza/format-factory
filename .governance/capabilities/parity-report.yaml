@@ -1,79 +1,31 @@
 checks:
 - check_id: skill_has_command_file
-  failure_count: 1
-  failures:
-  - 'check-mcp-status: command_file_exists=False (file: .claude/commands/check-mcp-status.md)'
+  failure_count: 0
+  failures: []
   priority: P1
-  verdict: FAIL
+  verdict: PASS
 - check_id: command_has_skill
   failure_count: 0
   failures: []
   priority: P1
   verdict: PASS
 - check_id: command_in_registry
-  failure_count: 46
-  failures:
-  - 'append-layer-verification-log: has command_file but missing from command-registry.yaml'
-  - 'append-layer-work-log: has command_file but missing from command-registry.yaml'
-  - 'audit-root-tools: has command_file but missing from command-registry.yaml'
-  - 'backfill-gate4-prototype-evidence: has command_file but missing from command-registry.yaml'
-  - 'build-obligation-register: has command_file but missing from command-registry.yaml'
-  - 'certification-assertion-scorer: has command_file but missing from command-registry.yaml'
-  - 'certification-dotnet-assertion-scorer: has command_file but missing from command-registry.yaml'
-  - 'certification-exception-checker: has command_file but missing from command-registry.yaml'
-  - 'certification-fix-weak-assertions: has command_file but missing from command-registry.yaml'
-  - 'certification-generate-exception-tests: has command_file but missing from command-registry.yaml'
-  - 'certification-generate-security-tests: has command_file but missing from command-registry.yaml'
-  - 'certification-inventory-extractor: has command_file but missing from command-registry.yaml'
-  - 'certification-stub-detector: has command_file but missing from command-registry.yaml'
-  - 'check-source-loc: has command_file but missing from command-registry.yaml'
-  - 'close-layer-task: has command_file but missing from command-registry.yaml'
-  - 'create-consumer-roundtrip: has command_file but missing from command-registry.yaml'
-  - 'create-cross-layer-handoff: has command_file but missing from command-registry.yaml'
-  - 'create-permanent-layer-plan: has command_file but missing from command-registry.yaml'
-  - 'detect-stale-layer-state: has command_file but missing from command-registry.yaml'
-  - 'detect-unlogged-work: has command_file but missing from command-registry.yaml'
-  - 'diff-playbook-outputs: has command_file but missing from command-registry.yaml'
-  - 'documentation-structure-migration: has command_file but missing from command-registry.yaml'
-  - 'export-review-queue: has command_file but missing from command-registry.yaml'
-  - 'format-feature-expansion: has command_file but missing from command-registry.yaml'
-  - 'identify-primary-layer: has command_file but missing from command-registry.yaml'
-  - 'ingest-spec-sal: has command_file but missing from command-registry.yaml'
-  - 'inventory-permanent-layer-plans: has command_file but missing from command-registry.yaml'
-  - 'migrate-temporary-agent-plan: has command_file but missing from command-registry.yaml'
-  - 'new-format-kickstart: has command_file but missing from command-registry.yaml'
-  - 'portfolio-reconcile: has command_file but missing from command-registry.yaml'
-  - 'product-source-task: has command_file but missing from command-registry.yaml'
-  - 'query-control-index: has command_file but missing from command-registry.yaml'
-  - 'reconcile-layer-index: has command_file but missing from command-registry.yaml'
-  - 'reconcile-layer-task-register: has command_file but missing from command-registry.yaml'
-  - 'register-layer-gap: has command_file but missing from command-registry.yaml'
-  - 'register-layer-task: has command_file but missing from command-registry.yaml'
-  - 'replay-acquisition-playbook: has command_file but missing from command-registry.yaml'
-  - 'run-oracle: has command_file but missing from command-registry.yaml'
-  - 'select-next-layer-task: has command_file but missing from command-registry.yaml'
-  - 'update-layer-current-state: has command_file but missing from command-registry.yaml'
-  - 'update-layer-master-index: has command_file but missing from command-registry.yaml'
-  - 'update-layer-session-handoff: has command_file but missing from command-registry.yaml'
-  - 'update-obligation-entry: has command_file but missing from command-registry.yaml'
-  - 'validate-permanent-layer-plans: has command_file but missing from command-registry.yaml'
-  - 'validate-playbook: has command_file but missing from command-registry.yaml'
-  - 'verify-obligation-entry: has command_file but missing from command-registry.yaml'
+  failure_count: 0
+  failures: []
   priority: P2
-  verdict: WARN
+  verdict: PASS
 - check_id: routing_coverage
   failure_count: 0
   failures: []
   priority: P2
   verdict: PASS
-generated_at: '2026-07-03T09:37:34+00:00'
+generated_at: '2026-07-04T16:39:55+00:00'
 generated_by: validate_parity.py
-overall_verdict: FAIL
+overall_verdict: PASS
 parity_counts:
-  FULL_PARITY: 73
-  PARTIAL: 47
+  FULL_PARITY: 122
 source_versions:
   command_registry: .claude\commands\command-registry.yaml
   routing_registry: .supervisor\capability-routing-registry.yaml
   skill_registry: r98-governed-skills-expanded
-total_capabilities: 120
+total_capabilities: 122

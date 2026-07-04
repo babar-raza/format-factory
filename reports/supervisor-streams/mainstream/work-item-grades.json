@@ -1,15 +1,12 @@
 [
   {
-    "item_id": "TC-HEAL-NET-001",
-    "item_title": "Decompose FodtDocumentEditing.cs (2662 LOC) into 4 partial classes each <800 LOC",
+    "item_id": "WI-SR-BOOTSTRAP-003",
+    "item_title": "Regenerate next-sprint.md with current system state",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "src/net/fodt/FodtDocumentEditing.cs",
-      "src/net/fodt/FodtDocumentSectionBookmarkOps.cs",
-      "src/net/fodt/FodtDocumentStyleMetadataOps.cs",
-      "src/net/fodt/FodtDocumentAdvancedTextOps.cs"
+      ".local/supervisor/continuation-signal.json"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -23,7 +20,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-HEAL-NET-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for WI-SR-BOOTSTRAP-003",
     "purpose_check": {
       "item_type": "",
       "has_gap_ref": null,
@@ -41,258 +38,18 @@
       "deficiencies": [],
       "llm_used": false,
       "intermediate_verified": true,
-      "source": "intermediate_verify",
+      "source": "intermediate_content_check",
       "checks": [
         {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentEditing.cs",
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\continuation-signal.json",
           "exists": true,
           "content_ok": true,
-          "detail": "non-empty (30762 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentEditing.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentSectionBookmarkOps.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (31141 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentSectionBookmarkOps.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentStyleMetadataOps.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (31579 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentStyleMetadataOps.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentAdvancedTextOps.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (30014 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fodt\\FodtDocumentAdvancedTextOps.cs",
-          "check_type": "nonzero_existence"
+          "detail": "JSON object with 21 keys",
+          "check_type": "json_content"
         }
       ],
-      "summary": "4/4 evidence files passed content check",
-      "_cached_at": "2026-07-04T10:42:34.576214+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-HEAL-NET-002",
-    "item_title": "Extract CsvDocument.cs analytics to CsvDocumentAnalytics.cs (partial class)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/net/csv/CsvDocument.cs",
-      "src/net/csv/CsvDocumentAnalytics.cs"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-HEAL-NET-002",
-    "purpose_check": {
-      "item_type": "",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\csv\\CsvDocument.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (10897 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\csv\\CsvDocument.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\csv\\CsvDocumentAnalytics.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (56520 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\csv\\CsvDocumentAnalytics.cs",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check",
-      "_cached_at": "2026-07-04T10:42:34.683588+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-HEAL-PY-001",
-    "item_title": "Split text_document.py (1009 LOC) into text_document.py (573) + text_document_analytics.py (447)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fodt/text_document.py",
-      "src/python/fodt/text_document_analytics.py",
-      "src/python/fodt/neutral_model.py",
-      "src/python/fodt/__init__.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-HEAL-PY-001",
-    "purpose_check": {
-      "item_type": "",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\text_document.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (20367 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\text_document.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\text_document_analytics.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (16947 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\text_document_analytics.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\neutral_model.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (8567 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\neutral_model.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\__init__.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (1627 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodt\\__init__.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "4/4 evidence files passed content check",
-      "_cached_at": "2026-07-04T10:42:34.793710+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-HEAL-PY-002",
-    "item_title": "Split tabular_document.py (1050 LOC) into tabular_document.py (579) + tabular_document_analytics.py (496)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/csv/tabular_document.py",
-      "src/python/csv/tabular_document_analytics.py",
-      "src/python/csv/__init__.py",
-      "src/python/csv/csv_parser.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-HEAL-PY-002",
-    "purpose_check": {
-      "item_type": "",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\tabular_document.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (17035 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\tabular_document.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\tabular_document_analytics.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (16522 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\tabular_document_analytics.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\__init__.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (1291 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\__init__.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\csv_parser.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (12589 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\csv\\csv_parser.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "4/4 evidence files passed content check",
-      "_cached_at": "2026-07-04T10:42:34.908690+00:00",
-      "_from_cache": true
+      "summary": "1/1 evidence files passed content check",
+      "fallback_grade_cap": "ACCEPTED_WITH_LIMITATIONS"
     }
   }
 ]

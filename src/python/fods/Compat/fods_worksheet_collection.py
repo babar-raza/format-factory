@@ -31,6 +31,7 @@ class FodsWorksheetCollection:
 
     @property
     def count(self) -> int:
+        """Return the number of worksheets in the collection."""
         return len(self._sheets)
 
     def __len__(self) -> int:

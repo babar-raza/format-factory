@@ -250,6 +250,31 @@ routes:
       - ledger_entry_path
     evidence_path_pattern: "src/"
 
+  - route_id: spec_grounded_analytics
+    description: >
+      Add one spec-backed domain analytics function to a format's canonical domain
+      module. SAL fact verification required. Arithmetic rotation patterns forbidden.
+      Replaces deprecated add-analytics-function for spec-grounded work.
+    preferred_skill_ids:
+      - add-spec-analytics-function
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    covers_work_types:
+      - analytics_function
+    gap_id: null
+    required_handoff_fields:
+      - format_id
+      - function_name
+      - target_module
+      - spec_fact_ref
+      - gap_ledger_ref
+      - formula
+      - focused_test_command
+    evidence_path_pattern: "src/python/"
+    note: >
+      Created TC-PGI-021 (2026-07-04). Supersedes analytics_function route that
+      pointed to deprecated add-analytics-function skill.
+
   - route_id: analytics_migration
     description: >
       Extract analytics functions from a monolithic codec/parser file into
@@ -543,8 +568,8 @@ routes:
       Use the prompt asset directly. A skill can be created from the prompt file.
 
 gap_count:
-  total_routes: 33
-  active_routes: 32
+  total_routes: 34
+  active_routes: 33
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001

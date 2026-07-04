@@ -74,8 +74,15 @@ Complete when: wheel installs, import succeeds, and API smoke test result is doc
 After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
 with: skill_id, format_id, package_name, wheel_path, import_result, smoke_result, verdict.
 
+## Related Skills
+
+- **`/sync-installed-packages`** — Fleet-level editable install audit + repair for all 20 formats.
+  Use this skill when checking a single package; use `/sync-installed-packages` when you need
+  to audit or repair the entire installed environment (stale dirs, PTH files, consumer proof evidence).
+
 ## Changelog
 
 - 1.0 (2026-06-02): Initial version
 - 1.1 (2026-06-03): Added frontmatter, allowed/forbidden paths, rollback, changelog (Skills R99)
 - 1.2 (2026-06-03): Added validation, transcript requirement (Skills R101).
+- 1.3 (2026-07-04): Added Related Skills cross-reference to /sync-installed-packages.

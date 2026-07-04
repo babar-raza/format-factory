@@ -327,6 +327,21 @@ the hash stored in the existing sal-driven-capability-map.json. Log stale format
 | TC-SCP-009 | Hash-comparison invalidation trigger | CLOSED |
 | TC-SCP-010 | Pilots + completion gate | CLOSED |
 
+### Taskcard Closure Summary (machine-readable)
+
+| TC-ID | CLOSED |
+|-------|--------|
+| TC-SCP-001 | CLOSED |
+| TC-SCP-002 | CLOSED |
+| TC-SCP-003 | CLOSED |
+| TC-SCP-004 | CLOSED |
+| TC-SCP-005 | CLOSED |
+| TC-SCP-006 | CLOSED |
+| TC-SCP-007 | CLOSED |
+| TC-SCP-008 | CLOSED |
+| TC-SCP-009 | CLOSED |
+| TC-SCP-010 | CLOSED |
+
 ---
 
 ## Key Files (all verified to exist)
@@ -430,26 +445,11 @@ After every taskcard:
 The open work item count in next-work-items.json is allowed to decrease (SAL_UNGROUNDED items removed).
 It is not allowed to reach 0 — that would mean the execution loop has no work, which is a blocker.
 
-## Taskcard Closure Summary (machine-parseable)
-
-| TC-ID | Status |
-|-------|--------|
-| TC-SCP-001 | CLOSED |
-| TC-SCP-002 | CLOSED |
-| TC-SCP-003 | CLOSED |
-| TC-SCP-004 | CLOSED |
-| TC-SCP-005 | CLOSED |
-| TC-SCP-006 | CLOSED |
-| TC-SCP-007 | CLOSED |
-| TC-SCP-008 | CLOSED |
-| TC-SCP-009 | CLOSED |
-| TC-SCP-010 | CLOSED |
-
 
 <!--plan_terminal_lock:
   status: ITERATION_REQUIRED
-  locked_at: "2026-07-04T08:38:23.798675+00:00"
-  locked_by: "6aa6591642a4"
+  locked_at: "2026-07-04T12:30:33.566367+00:00"
+  locked_by: "6ccb0fc24c11"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->

@@ -28,22 +28,27 @@ class FodsWorksheet:
 
     @property
     def name(self) -> str:
+        """Return the worksheet name (table:name attribute)."""
         return self._data.get("name", "")
 
     @name.setter
     def name(self, value: str) -> None:
+        """Set the worksheet name."""
         self._data["name"] = value
 
     @property
     def rows(self) -> list[dict[str, Any]]:
+        """Return all table:table-row dicts for this worksheet."""
         return self._data.get("rows", [])
 
     @property
     def cells(self) -> FodsCellCollection:
+        """Return the navigable cell collection for (row, col) access."""
         return FodsCellCollection(self.rows)
 
     @property
     def is_visible(self) -> bool:
+        """Return True if the worksheet is visible (table:display != false)."""
         return self._data.get("display", "true").lower() != "false"
 
     def __repr__(self) -> str:
