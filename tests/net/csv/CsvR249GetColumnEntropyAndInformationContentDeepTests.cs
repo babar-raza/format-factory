@@ -126,6 +126,12 @@ public class CsvR249GetColumnEntropyAndInformationContentDeepTests : IDisposable
     {
         var doc = CsvDocument.LoadFile(CreateCreditCsv());
         Assert.True(doc.GetColumnInformationContent("credit_grade") >= 0);
+        // GAP-CSV-003 fix: after removing the / Math.Log(2) divisor, information content
+        // must equal entropy exactly (both in bits). Assert they are equal to 6 decimal places.
+        Assert.Equal(
+            doc.GetColumnEntropy("credit_grade"),
+            doc.GetColumnInformationContent("credit_grade"),
+            precision: 6);
     }
 
     [Fact]

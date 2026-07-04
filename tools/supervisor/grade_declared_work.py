@@ -858,6 +858,44 @@ def grade_all(inspection: dict, declaration: dict,
                     + "; ".join(sv.get("deficiencies", []))
                 )
 
+    # Step 3b (TC-C1, playful-swimming-stearns): C# Assertion Quality check.
+    # Best-effort — non-blocking. Routes .cs test evidence files through CSharpAssertionAnalyzer.
+    # When a TEST item's evidence paths contain .cs files that grade as WEAK_PROOF and the item
+    # is currently ACCEPTED, downgrade to ACCEPTED_WITH_LIMITATIONS and flag for upgrade.
+    try:
+        import sys as _caqa_sys
+        _caqa_tools = str(_repo_root / "tools" / "assurance") if _repo_root else ""
+        if _caqa_tools and _caqa_tools not in _caqa_sys.path:
+            _caqa_sys.path.insert(0, _caqa_tools)
+        from csharp_assertion_analyzer import CSharpAssertionAnalyzer as _CAQA  # type: ignore[import]
+        _caqa = _CAQA()
+        for g in grades:
+            decl_item = decl_items.get(g["item_id"], {})
+            if decl_item.get("item_type") not in ("TEST", "TEST_AND_VERIFY"):
+                continue
+            evidence_paths = decl_item.get("evidence_paths", []) or []
+            cs_files = [Path(p) for p in evidence_paths if str(p).endswith(".cs") and Path(p).exists()]
+            if not cs_files:
+                continue
+            for cs_path in cs_files:
+                try:
+                    analysis = _caqa.analyze_file(cs_path)
+                    g.setdefault("csharp_assertion_grade", analysis.grade)
+                    if (analysis.grade == "WEAK_PROOF"
+                            and g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED")):
+                        g["supervisor_grade"] = "ACCEPTED_WITH_LIMITATIONS"
+                        g.setdefault("acceptance_criteria_failed", []).append(
+                            f"csharp_weak_proof:{cs_path.name} — "
+                            f"strong_ratio={analysis.assertion_count.strong_ratio:.2f} "
+                            f"< {0.3} threshold. Upgrade Assert.NotNull/NotEmpty to Assert.Equal."
+                        )
+                except Exception:
+                    pass
+    except ImportError:
+        pass  # Non-blocking
+    except Exception:
+        pass  # Non-blocking
+
     accepted_grades = ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")
     accepted = [g["item_id"] for g in grades if g["supervisor_grade"] in accepted_grades]
     rework = [g["item_id"] for g in grades if g["supervisor_grade"] in ("REWORK_REQUIRED", "OVERCLAIMED")]

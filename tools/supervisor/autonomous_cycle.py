@@ -449,6 +449,165 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _vpr_exc:
             print(f"  [PLAN_READINESS] WARNING: readiness check failed ({_vpr_exc}) — skipping (non-blocking)")
 
+    # Step 0d (TC-B2, playful-swimming-stearns): Output Invariant Check (OIC)
+    # Best-effort — Supreme Directive applies. Never blocks sprint.
+    # Triggered when declaration's diff_content references JSON/HTML/XML export methods.
+    print("=== STEP 0d: OUTPUT INVARIANT CHECK (OIC) ===")
+    _OIC_EXPORT_SIGS = [
+        "ToJson", "ExportToJson", "ExportToNdjson",
+        "ToHtml", "ExportToHtml", "ExportToXml",
+        "to_json", "export_json", "to_html", "export_html",
+    ]
+    _oic_rework_entries: list = []
+    try:
+        import sys as _oic_sys
+        _oic_tools = str(Path(__file__).resolve().parent.parent / "assurance")
+        if _oic_tools not in _oic_sys.path:
+            _oic_sys.path.insert(0, _oic_tools)
+        from output_invariant_checker import OutputInvariantChecker as _OIC  # type: ignore[import]
+
+        # Read declaration to determine if OIC should run
+        _oic_decl_path = Path(declaration_path)
+        _oic_diff = ""
+        _oic_decl_raw: dict = {}
+        if _oic_decl_path.exists():
+            try:
+                _oic_decl_raw = json.loads(_oic_decl_path.read_text(encoding="utf-8"))
+                _oic_diff = _oic_decl_raw.get("diff_content", "") or ""
+            except Exception:
+                pass
+
+        _oic_triggered = any(sig in _oic_diff for sig in _OIC_EXPORT_SIGS)
+        if not _oic_triggered:
+            print("  [OIC] No JSON/HTML/XML export method changes detected — skipping")
+        else:
+            print("  [OIC] Export signature detected in diff — running invariant checks")
+            _oic = _OIC()
+            _oic_results: list[dict] = []
+            _oic_failures: list[str] = []
+
+            # Run OIC against canonical fixtures in tests/assurance/fixtures/
+            _oic_fixtures_dir = repo_root / "tests" / "assurance" / "fixtures"
+            if _oic_fixtures_dir.exists():
+                for _oic_fix in sorted(_oic_fixtures_dir.iterdir()):
+                    try:
+                        _oic_content = _oic_fix.read_text(encoding="utf-8", errors="replace")
+                        _oic_ctx = f"fixture:{_oic_fix.name}"
+                        if _oic_fix.suffix in (".json", ".ndjson"):
+                            for _ln in _oic_content.splitlines():
+                                _ln = _ln.strip()
+                                if _ln:
+                                    _r = _oic.check_json(_ln, _oic_ctx)
+                                    _oic_results.append({"context": _oic_ctx, "check": "json", "pass": _r.passed, "detail": _r.error})
+                                    if not _r.passed:
+                                        _oic_failures.append(f"{_oic_ctx}: {_r.error}")
+                        elif _oic_fix.suffix in (".html",):
+                            _r = _oic.check_html_cell_safety(_oic_content, _oic_ctx)
+                            _oic_results.append({"context": _oic_ctx, "check": "html", "pass": _r.passed, "detail": _r.error})
+                            if not _r.passed:
+                                _oic_failures.append(f"{_oic_ctx}: {_r.error}")
+                        elif _oic_fix.suffix in (".xml", ".fods", ".fodt", ".fodp", ".fodg"):
+                            _r = _oic.check_xml(_oic_content, _oic_ctx)
+                            _oic_results.append({"context": _oic_ctx, "check": "xml", "pass": _r.passed, "detail": _r.error})
+                            if not _r.passed:
+                                _oic_failures.append(f"{_oic_ctx}: {_r.error}")
+                    except Exception as _oic_fix_err:
+                        print(f"  [OIC] WARNING: fixture {_oic_fix.name} error: {_oic_fix_err}")
+            else:
+                print("  [OIC] No fixtures directory — invariant check skipped")
+
+            # Write report
+            import datetime as _oic_dt
+            _oic_run_id = _oic_decl_raw.get("run_id", "unknown")
+            _oic_report_dir = repo_root / "reports" / "assurance"
+            _oic_report_dir.mkdir(parents=True, exist_ok=True)
+            _oic_report_path = _oic_report_dir / f"oic-{_oic_run_id}.json"
+            _oic_report_path.write_text(
+                json.dumps({
+                    "run_id": _oic_run_id,
+                    "timestamp": _oic_dt.datetime.utcnow().isoformat() + "Z",
+                    "triggered_by": [s for s in _OIC_EXPORT_SIGS if s in _oic_diff],
+                    "results": _oic_results,
+                    "failures": _oic_failures,
+                    "pass": len(_oic_failures) == 0,
+                }, indent=2),
+                encoding="utf-8",
+            )
+
+            if _oic_failures:
+                print(f"  [OIC] {len(_oic_failures)} invariant failure(s) — adding to rework_items (non-blocking)")
+                for _f in _oic_failures:
+                    print(f"    FAIL: {_f}")
+                _oic_rework_entries = [f"OIC_INVARIANT_FAIL:{_f}" for _f in _oic_failures]
+            else:
+                print(f"  [OIC] All {len(_oic_results)} invariant checks PASS")
+            print(f"  [OIC] Report: {_oic_report_path}")
+    except ImportError:
+        print("  [OIC] output_invariant_checker not available — skipping (non-blocking)")
+    except Exception as _oic_err:
+        print(f"  [OIC] WARNING: OIC step failed ({_oic_err}) — skipping (non-blocking)")
+
+    # Step 0e (TC-C2, playful-swimming-stearns): Cross-Platform Parity Check
+    # Best-effort — never blocks sprint. Triggered when csv source changes.
+    print("=== STEP 0e: CROSS-PLATFORM PARITY CHECK ===")
+    _CPF_TRIGGER_PATHS = ("src/net/csv/", "src/python/csv/")
+    try:
+        _cpf_decl_path = Path(declaration_path)
+        _cpf_changed: list[str] = []
+        if _cpf_decl_path.exists():
+            try:
+                _cpf_decl = json.loads(_cpf_decl_path.read_text(encoding="utf-8"))
+                _cpf_changed = _cpf_decl.get("changed_files", []) or []
+            except Exception:
+                pass
+
+        _cpf_triggered = any(
+            any(trigger in str(f).replace("\\", "/") for trigger in _CPF_TRIGGER_PATHS)
+            for f in _cpf_changed
+        )
+        if not _cpf_triggered:
+            print("  [CPF] No CSV source changes detected — skipping")
+        else:
+            import sys as _cpf_sys
+            _cpf_tools = str(Path(__file__).resolve().parent.parent / "assurance")
+            if _cpf_tools not in _cpf_sys.path:
+                _cpf_sys.path.insert(0, _cpf_tools)
+            from cross_platform_parity_runner import CrossPlatformParityRunner as _CPF  # type: ignore[import]
+
+            _cpf_fixtures_path = repo_root / "tests" / "cross-platform" / "csv" / "parity-fixtures.yaml"
+            if not _cpf_fixtures_path.exists():
+                print("  [CPF] No parity fixtures found — skipping")
+            else:
+                _cpf = _CPF()
+                _cpf_fixtures = _cpf.load_fixtures(_cpf_fixtures_path)
+                _cpf_results = _cpf.run_all(_cpf_fixtures)
+                _cpf_summary = _cpf.summary(_cpf_results)
+                print(f"  [CPF] {_cpf_summary['passed']}/{_cpf_summary['total']} fixtures PASS")
+
+                _cpf_report_dir = repo_root / "reports" / "assurance"
+                _cpf_report_dir.mkdir(parents=True, exist_ok=True)
+                _cpf_run_id = (json.loads(_cpf_decl_path.read_text(encoding="utf-8")).get("run_id", "unknown")
+                               if _cpf_decl_path.exists() else "unknown")
+                _cpf_report_path = _cpf_report_dir / f"cross-platform-parity-{_cpf_run_id}.json"
+                _cpf_report_path.write_text(
+                    json.dumps({"run_id": _cpf_run_id, "summary": _cpf_summary,
+                                "results": [r.to_dict() for r in _cpf_results]}, indent=2),
+                    encoding="utf-8",
+                )
+
+                if _cpf_summary["failures"]:
+                    print(f"  [CPF] {len(_cpf_summary['failures'])} parity failure(s) — adding to rework_items (non-blocking)")
+                    for _cpf_f in _cpf_summary["failures"]:
+                        print(f"    FAIL: {_cpf_f['fixture_id']}: {_cpf_f.get('error', '')}")
+                    _oic_rework_entries.extend([
+                        f"CPF_PARITY_FAIL:{f['fixture_id']}" for f in _cpf_summary["failures"]
+                    ])
+                print(f"  [CPF] Report: {_cpf_report_path}")
+    except ImportError:
+        print("  [CPF] cross_platform_parity_runner not available — skipping (non-blocking)")
+    except Exception as _cpf_err:
+        print(f"  [CPF] WARNING: parity check failed ({_cpf_err}) — skipping (non-blocking)")
+
     # Step 1: Validate declaration
     _logger.info("Step 1: Validate declaration", extra={"sprint_id": "pending"})
     print("=== STEP 1: VALIDATE DECLARATION ===")
@@ -1091,6 +1250,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             f"  [TC-GUARD-001 POST-GRADE] {len(_guard001_violations)} violation(s) added to "
             f"rework_items — continuation blocked until gap references are added."
         )
+
+    # Step 0d post-grading: inject OIC invariant failures into rework_items (non-blocking).
+    if _oic_rework_entries:
+        review.setdefault("rework_items", [])
+        for _oe in _oic_rework_entries:
+            if _oe not in review["rework_items"]:
+                review["rework_items"].append(_oe)
+        print(f"  [OIC POST-GRADE] {len(_oic_rework_entries)} OIC failure(s) added to rework_items (non-blocking)")
 
     print(f"  Verdict: {review['overall_verdict']}")
     print(f"  Accepted: {len(review['accepted_items'])}")

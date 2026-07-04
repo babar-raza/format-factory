@@ -67,12 +67,27 @@ Report at the end of execution:
 - Test result summary: `N/N tests pass`
 - Import proof: the import command and its success output
 
+## Output Safety Defaults (MA-SYSTEM-WIDE-2026-07-04 — mandatory)
+
+Any export function that emits JSON, HTML, or XML MUST use a safe escaping primitive:
+
+- **Python JSON output:** Use `json.dumps()` — never manual `.replace("\\", "\\\\")` chains.
+  - Correct: `json.dumps({"key": value})`
+  - Forbidden: `s.replace("\\", "\\\\").replace('"', '\\"')`
+
+- **Python HTML output:** Use `html.escape()` or `str.maketrans()` for ALL cell/paragraph values.
+  - Correct: `f"<td>{html.escape(str(val))}</td>"`
+  - Forbidden: `f"<td>{val}</td>"`
+
+These defaults are enforced by governance validators V134 (.NET JSON), V135 (.NET HTML), V136 (Python HTML).
+
 ## Validation
 
-- `governance_validators_pass` — all governance validators must pass
+- `governance_validators_pass` — all governance validators must pass (includes V134/V135/V136)
 - `min_7_tests` — at least 7 tests across probe, load, write
 - `no_new_external_imports` — no new third-party imports added beyond what's in venv
 - `probe_never_raises` — probe function must never raise; returns True/False only
+- `output_safety` — any to_json/to_html/to_xml function must use safe escaping primitives (see Output Safety Defaults)
 
 ## Rollback
 

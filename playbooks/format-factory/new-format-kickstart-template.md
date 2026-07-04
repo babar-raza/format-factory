@@ -160,6 +160,36 @@ Produces the minimum slice: probe → load → write → tests.
 | Over-claiming capabilities | Only claim probe/load/write PASS when tests exist |
 | External spec dependency | Note spec URL in module docstring; cache locally if needed |
 | Binary format complexity | Start with probe only if full parser is risky |
+| Unsafe JSON output | NEVER use manual `.replace("\\", "\\\\")` chains — use `json.dumps()` |
+| Unsafe HTML output | NEVER use raw f-string `<td>{value}</td>` — use `html.escape(str(value))` |
+
+## Output Safety Defaults (MA-SYSTEM-WIDE-2026-07-04 — mandatory)
+
+All export functions emitting JSON, HTML, or XML must use safe primitives. Validators V134/V135/V136 enforce this.
+
+**Python JSON — always use `json.dumps()`:**
+```python
+import json
+def to_json_line(record: dict) -> str:
+    return json.dumps(record)  # handles all escaping correctly
+```
+
+**Python HTML — always use `html.escape()`:**
+```python
+from html import escape
+def to_html_table(records: list[dict], headers: list[str]) -> str:
+    lines = ["<table>", "<thead><tr>"]
+    for h in headers:
+        lines.append(f"  <th>{escape(h)}</th>")
+    lines.append("</tr></thead><tbody>")
+    for row in records:
+        lines.append("  <tr>")
+        for h in headers:
+            lines.append(f"    <td>{escape(str(row.get(h, '')))}</td>")
+        lines.append("  </tr>")
+    lines.append("</tbody></table>")
+    return "\n".join(lines)
+```
 
 ---
 

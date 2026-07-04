@@ -1,0 +1,2175 @@
+{
+  "run_id": "tc-c1",
+  "directory": "tests\\net\\csv",
+  "summary": {
+    "total_files": 173,
+    "grade_distribution": {
+      "STRONG_PROOF": 132,
+      "PARTIAL_PROOF": 41
+    },
+    "total_assertions": 6199,
+    "total_strong": 2946,
+    "total_weak": 838,
+    "overall_strong_ratio": 0.475,
+    "weak_proof_files": []
+  },
+  "files": [
+    {
+      "path": "tests\\net\\csv\\CsvDocumentTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 0,
+      "total": 20,
+      "strong_ratio": 0.55,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvMutationApiTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 43,
+      "weak": 0,
+      "total": 48,
+      "strong_ratio": 0.896,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR117DocumentQueryTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 0,
+      "total": 19,
+      "strong_ratio": 0.263,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR118GetColumnTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 0,
+      "total": 22,
+      "strong_ratio": 0.682,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR119FilterMutationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 0,
+      "total": 21,
+      "strong_ratio": 0.571,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR120SetCellEscapeTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 1,
+      "total": 18,
+      "strong_ratio": 0.778,
+      "weak_lines_sample": [
+        "Assert.NotNull(escaped);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR121StaticReaderWriterTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 19,
+      "weak": 0,
+      "total": 23,
+      "strong_ratio": 0.826,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR122SaveToFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 27,
+      "weak": 0,
+      "total": 33,
+      "strong_ratio": 0.818,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR123MutationCountTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 0,
+      "total": 17,
+      "strong_ratio": 0.647,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR124WriteRowsToFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 0,
+      "total": 25,
+      "strong_ratio": 0.92,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR125StreamReadRowsTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 25,
+      "weak": 1,
+      "total": 29,
+      "strong_ratio": 0.862,
+      "weak_lines_sample": [
+        "Assert.NotNull(rows);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR126MutationTrinityTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 0,
+      "total": 16,
+      "strong_ratio": 0.562,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR127HasColumnAndGetColumnTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 13,
+      "weak": 0,
+      "total": 24,
+      "strong_ratio": 0.542,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR128DocumentLoadFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 2,
+      "total": 20,
+      "strong_ratio": 0.55,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc);",
+        "Assert.NotNull(doc.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR129SpecCsvRecordTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 0,
+      "total": 19,
+      "strong_ratio": 0.789,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR130ToCsvSerializationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 14,
+      "strong_ratio": 0.571,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR131EscapeFieldAndWriterExceptionTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 17,
+      "strong_ratio": 0.471,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR132IsEmptyAndRemoveRowTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 0,
+      "total": 16,
+      "strong_ratio": 0.688,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR133WriterRowsAndToCsvTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 0,
+      "total": 14,
+      "strong_ratio": 0.857,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR134WriterToFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 11,
+      "strong_ratio": 0.727,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR135AddRowAndSetCellTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 0,
+      "total": 14,
+      "strong_ratio": 0.786,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR136FilterDedicatedTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 12,
+      "strong_ratio": 0.667,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR137GetColumnAndColumnCountTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 0,
+      "total": 18,
+      "strong_ratio": 0.611,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR137GetColumnDedicatedTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 16,
+      "weak": 0,
+      "total": 18,
+      "strong_ratio": 0.889,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR138ToCsvAndIsEmptyTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 0,
+      "total": 18,
+      "strong_ratio": 0.5,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR139AddRowSetCellRemoveRowTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 13,
+      "weak": 0,
+      "total": 21,
+      "strong_ratio": 0.619,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR140LoadFileAndSaveToFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 1,
+      "total": 18,
+      "strong_ratio": 0.667,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR141FilterAndGetCellValueTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 1,
+      "total": 25,
+      "strong_ratio": 0.56,
+      "weak_lines_sample": [
+        "Assert.NotNull(filtered.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR142ToCsvAndColumnTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 21,
+      "weak": 0,
+      "total": 34,
+      "strong_ratio": 0.618,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR143AddRowSetCellMutationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 0,
+      "total": 27,
+      "strong_ratio": 0.852,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR144WriteRowsToFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 13,
+      "weak": 0,
+      "total": 21,
+      "strong_ratio": 0.619,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR145HeaderAndColumnCountTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 0,
+      "total": 29,
+      "strong_ratio": 0.586,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR146FilterAndRoundTripTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 0,
+      "total": 23,
+      "strong_ratio": 0.739,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR147HasColumnAndGetColumnByNameTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 22,
+      "weak": 0,
+      "total": 36,
+      "strong_ratio": 0.611,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR148GetCellValueAndMutationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 0,
+      "total": 21,
+      "strong_ratio": 0.714,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR149ToCsvAndIsEmptyTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 0,
+      "total": 26,
+      "strong_ratio": 0.654,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR150LoadFileAndWriterTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 1,
+      "total": 23,
+      "strong_ratio": 0.87,
+      "weak_lines_sample": [
+        "Assert.NotEmpty(rows);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR151AddRowSetCellAndRemoveRowTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 0,
+      "total": 29,
+      "strong_ratio": 0.69,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR152ColumnCountAndHeadersTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 18,
+      "weak": 1,
+      "total": 30,
+      "strong_ratio": 0.6,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR153ToCsvRoundTripAndGetCellTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 24,
+      "weak": 0,
+      "total": 30,
+      "strong_ratio": 0.8,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR154FilterSaveAndLoadFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 0,
+      "total": 21,
+      "strong_ratio": 0.667,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR155ToCsvAndIsEmptyTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 18,
+      "weak": 1,
+      "total": 32,
+      "strong_ratio": 0.562,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ToCsv());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR156GetColumnAndFilterChainTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 29,
+      "weak": 0,
+      "total": 37,
+      "strong_ratio": 0.784,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR157LoadFileAndMutationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 1,
+      "total": 22,
+      "strong_ratio": 0.773,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR158SaveToFileAndLoadFileTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 0,
+      "total": 22,
+      "strong_ratio": 0.636,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR159FilterAndToTsvChainTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 22,
+      "weak": 1,
+      "total": 32,
+      "strong_ratio": 0.688,
+      "weak_lines_sample": [
+        "Assert.NotNull(csv);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR160AddRowAndRemoveRowTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 19,
+      "weak": 0,
+      "total": 28,
+      "strong_ratio": 0.679,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR161ReaderWriterStreamTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 1,
+      "total": 28,
+      "strong_ratio": 0.821,
+      "weak_lines_sample": [
+        "Assert.NotNull(csv);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR162ToCsvAndColumnCountTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 27,
+      "weak": 2,
+      "total": 37,
+      "strong_ratio": 0.73,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ToCsv());",
+        "Assert.NotNull(doc.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR163GetCellValueAndHasColumnTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 0,
+      "total": 32,
+      "strong_ratio": 0.719,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR164RowCountAndMutationTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 0,
+      "total": 23,
+      "strong_ratio": 0.87,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR165GetCellByNameAndToCsvRoundTripTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 27,
+      "weak": 1,
+      "total": 31,
+      "strong_ratio": 0.871,
+      "weak_lines_sample": [
+        "Assert.NotNull(csv);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR166AddRowAndColumnOpsTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 0,
+      "total": 29,
+      "strong_ratio": 0.793,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR167IsEmptyAndClearTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 22,
+      "weak": 1,
+      "total": 38,
+      "strong_ratio": 0.579,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR168StreamLoadAndSaveTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 19,
+      "weak": 1,
+      "total": 27,
+      "strong_ratio": 0.704,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR169CsvReaderWriterDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 3,
+      "total": 33,
+      "strong_ratio": 0.697,
+      "weak_lines_sample": [
+        "Assert.NotNull(rows);",
+        "Assert.NotNull(aliceRow);",
+        "Assert.NotNull(csv);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR170FilterAndGetColumnDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 26,
+      "weak": 1,
+      "total": 36,
+      "strong_ratio": 0.722,
+      "weak_lines_sample": [
+        "Assert.NotNull(result);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR171GetCellValueAndRemoveRowDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 24,
+      "weak": 2,
+      "total": 27,
+      "strong_ratio": 0.889,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetCellValue(0, 0));",
+        "Assert.NotNull(doc.GetCellValue(0, \"name\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR172CsvReaderReadRowsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 26,
+      "weak": 3,
+      "total": 35,
+      "strong_ratio": 0.743,
+      "weak_lines_sample": [
+        "Assert.NotNull(rows);",
+        "Assert.NotNull(rows);",
+        "Assert.NotNull(rows);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR173CreateEmptyAndIsEmptyDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 0,
+      "total": 32,
+      "strong_ratio": 0.438,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR174ToCsvAndSaveLoadRoundTripDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 24,
+      "weak": 1,
+      "total": 32,
+      "strong_ratio": 0.75,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ToCsv());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR175ColumnCountAndHeadersDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 31,
+      "weak": 1,
+      "total": 40,
+      "strong_ratio": 0.775,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.Headers);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR176GetDistinctValuesAndStatsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 9,
+      "total": 35,
+      "strong_ratio": 0.571,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetDistinctValues(\"Dept\"));",
+        "Assert.NotNull(stats);",
+        "Assert.NotNull(doc.ToHtml());",
+        "Assert.NotEmpty(doc.ToHtml());",
+        "Assert.NotNull(doc.ExportToJson());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR177AddRowAndGetCellValueChainDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 25,
+      "weak": 0,
+      "total": 27,
+      "strong_ratio": 0.926,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR178FilterAndGetDistinctAndToHtmlDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 1,
+      "total": 22,
+      "strong_ratio": 0.773,
+      "weak_lines_sample": [
+        "Assert.True(engCount.Count >= 2);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR179CsvWriterWriteRowsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 5,
+      "total": 28,
+      "strong_ratio": 0.714,
+      "weak_lines_sample": [
+        "Assert.NotNull(csv);",
+        "Assert.NotEmpty(csv);",
+        "Assert.True(ms.Length > 0);",
+        "Assert.True(ms.Length > 0);",
+        "Assert.NotEmpty(csv);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR180GetRowAndMergeDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 29,
+      "weak": 4,
+      "total": 37,
+      "strong_ratio": 0.784,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetRow(0));",
+        "Assert.NotNull(doc1.Merge(doc2));",
+        "Assert.NotNull(r0);",
+        "Assert.NotNull(engRow0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR181CsvReaderReadRowsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 26,
+      "weak": 5,
+      "total": 34,
+      "strong_ratio": 0.765,
+      "weak_lines_sample": [
+        "Assert.NotNull(CsvReader.ReadRows(path));",
+        "Assert.NotNull(row);",
+        "Assert.NotNull(CsvReader.ReadRowsFromStream(ms));",
+        "Assert.NotNull(row);",
+        "Assert.NotNull(CsvReader.GetHeaders(path));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR182SetCellValueAndSaveRoundTripDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 28,
+      "weak": 1,
+      "total": 34,
+      "strong_ratio": 0.824,
+      "weak_lines_sample": [
+        "Assert.NotNull(CsvDocument.LoadFile(path));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR183ExportToJsonAndToHtmlDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 31,
+      "weak": 7,
+      "total": 43,
+      "strong_ratio": 0.721,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToJson());",
+        "Assert.NotEmpty(doc.ExportToJson());",
+        "Assert.NotNull(doc.ToHtml());",
+        "Assert.NotEmpty(doc.ToHtml());",
+        "Assert.NotNull(json);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR184FilterAndGetColumnStatsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 22,
+      "weak": 1,
+      "total": 30,
+      "strong_ratio": 0.733,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnStats(\"Score\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR185GetDistinctValuesAndToTsvDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 28,
+      "weak": 7,
+      "total": 44,
+      "strong_ratio": 0.636,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetDistinctValues(\"Dept\"));",
+        "Assert.NotNull(doc.ToTsv());",
+        "Assert.NotEmpty(doc.ToTsv());",
+        "Assert.NotNull(doc.ExportToJson());",
+        "Assert.NotEmpty(doc.ExportToJson());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR186AddRowAndRemoveRowDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 29,
+      "weak": 1,
+      "total": 43,
+      "strong_ratio": 0.674,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnValues(\"Name\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR187MergeAndIsEmptyDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 24,
+      "weak": 1,
+      "total": 43,
+      "strong_ratio": 0.558,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc1.Merge(doc2));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR188GetRowAndSaveLoadDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 34,
+      "weak": 5,
+      "total": 45,
+      "strong_ratio": 0.756,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetRow(0));",
+        "Assert.NotNull(doc.GetRow(i));",
+        "Assert.NotNull(CsvDocument.LoadFile(path));",
+        "Assert.NotNull(row);",
+        "Assert.True(row.Count >= 3);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR189ExportToHtmlAndToTsvDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 12,
+      "total": 46,
+      "strong_ratio": 0.326,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToHtml());",
+        "Assert.NotEmpty(doc.ExportToHtml());",
+        "Assert.NotNull(doc.ExportToMarkdown());",
+        "Assert.NotEmpty(doc.ExportToMarkdown());",
+        "Assert.NotNull(doc.ToTsv());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR190ExportToJsonAndGetColumnStatsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 46,
+      "weak": 7,
+      "total": 61,
+      "strong_ratio": 0.754,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToJson());",
+        "Assert.NotEmpty(doc.ExportToJson());",
+        "Assert.NotNull(doc.GetColumnStats(\"Salary\"));",
+        "Assert.NotNull(json);",
+        "Assert.NotEmpty(json);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR191CsvReaderReadRowsAndStreamDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 10,
+      "total": 46,
+      "strong_ratio": 0.435,
+      "weak_lines_sample": [
+        "Assert.NotNull(CsvReader.ReadRows(path));",
+        "Assert.True(rows.Count >= 5);",
+        "Assert.True(rows.Count >= 1);",
+        "Assert.NotNull(CsvReader.ReadRowsFromStream(ms));",
+        "Assert.True(rows.Count >= 5);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR192CsvWriterWriteToStreamAndToCsvDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 24,
+      "weak": 8,
+      "total": 43,
+      "strong_ratio": 0.558,
+      "weak_lines_sample": [
+        "Assert.True(ms.Length > 0);",
+        "Assert.NotNull(doc.ToCsv());",
+        "Assert.NotEmpty(doc.ToCsv());",
+        "Assert.True(lines.Length >= 5);",
+        "Assert.True(after.Length >= before.Length - 10);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR193SortRowsAndGetCellDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 34,
+      "weak": 3,
+      "total": 48,
+      "strong_ratio": 0.708,
+      "weak_lines_sample": [
+        "Assert.True(alicePos < charliePos);",
+        "Assert.True(values.Count >= 2);",
+        "Assert.True(val != null && val.Length > 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR194GetColumnCountAndExportToXmlDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 25,
+      "weak": 7,
+      "total": 52,
+      "strong_ratio": 0.481,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToXml());",
+        "Assert.NotEmpty(doc.ExportToXml());",
+        "Assert.NotNull(doc.Clone());",
+        "Assert.NotNull(xml);",
+        "Assert.True(cloneXml.Length > xml.Length);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR195RenameColumnAndGetUniqueValuesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 29,
+      "weak": 7,
+      "total": 52,
+      "strong_ratio": 0.558,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetUniqueValues(\"Class\"));",
+        "Assert.True(unique.Count >= 3 && unique.Count <= 5);",
+        "Assert.NotNull(doc.ExportToNdjson());",
+        "Assert.NotEmpty(doc.ExportToNdjson());",
+        "Assert.True(filteredLines < allLines);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR196MergeAndGetRowAtDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 34,
+      "weak": 14,
+      "total": 56,
+      "strong_ratio": 0.607,
+      "weak_lines_sample": [
+        "Assert.NotNull(a.Merge(b));",
+        "Assert.NotNull(doc.GetRowAt(0));",
+        "Assert.True(row != null && row.Length > 0);",
+        "Assert.NotNull(last);",
+        "Assert.True(last.Length > 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR197ExportToHtmlAndCloneDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 18,
+      "weak": 15,
+      "total": 52,
+      "strong_ratio": 0.346,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToHtml());",
+        "Assert.True(after > before);",
+        "Assert.True(filteredHtml < all);",
+        "Assert.NotNull(doc.Clone());",
+        "Assert.NotNull(doc.GetDistinctValues(\"Dept\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR198AddRowAndExportToNdjsonDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 13,
+      "total": 44,
+      "strong_ratio": 0.455,
+      "weak_lines_sample": [
+        "Assert.True(after > before);",
+        "Assert.NotNull(doc.ExportToNdjson());",
+        "Assert.True(filteredNdjson < all);",
+        "Assert.True(lines.Length >= 3);",
+        "Assert.True(filtered < all);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR199SortRowsAndGetCellDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 30,
+      "weak": 6,
+      "total": 51,
+      "strong_ratio": 0.588,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.SortRows(\"Name\", ascending: true));",
+        "Assert.NotNull(doc.GetCell(0, 0));",
+        "Assert.NotNull(cell);",
+        "Assert.True(cell.Length > 0);",
+        "Assert.NotNull(doc.GetCell(0, 0));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR200GetHeadersAndSetCellDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 43,
+      "weak": 13,
+      "total": 72,
+      "strong_ratio": 0.597,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetHeaders());",
+        "Assert.NotNull(doc.ExportToXml());",
+        "Assert.NotEmpty(doc.ExportToXml());",
+        "Assert.True(after > before);",
+        "Assert.True(after < before);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR201RenameColumnAndExportToTsvDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 47,
+      "weak": 12,
+      "total": 79,
+      "strong_ratio": 0.595,
+      "weak_lines_sample": [
+        "Assert.NotNull(filtered);",
+        "Assert.NotNull(doc.ExportToTsv());",
+        "Assert.NotEmpty(doc.ExportToTsv());",
+        "Assert.True(after > before);",
+        "Assert.True(after < before);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR202GetColumnValuesAndRemoveColumnDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 55,
+      "weak": 4,
+      "total": 75,
+      "strong_ratio": 0.733,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnValues(\"Name\"));",
+        "Assert.True(after < before);",
+        "Assert.NotNull(doc.GetDistinctValues(\"Department\"));",
+        "Assert.True(after > before);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR203HasColumnAndExportToNdjsonDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 28,
+      "weak": 14,
+      "total": 80,
+      "strong_ratio": 0.35,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToNdjson());",
+        "Assert.NotEmpty(doc.ExportToNdjson());",
+        "Assert.True(after > before);",
+        "Assert.True(after < before);",
+        "Assert.True(lines.Length >= doc.GetRowCount());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR204MergeWithAndGetRowValuesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 47,
+      "weak": 6,
+      "total": 75,
+      "strong_ratio": 0.627,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc1.MergeWith(doc2));",
+        "Assert.NotNull(doc.GetRowValues(0));",
+        "Assert.True(idx < 0);",
+        "Assert.True(idx >= 4);",
+        "Assert.True(idx < 0 || !doc.HasColumn(\"City\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR205SortRowsAndGetHeaderCountDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 21,
+      "weak": 8,
+      "total": 60,
+      "strong_ratio": 0.35,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToXml());",
+        "Assert.NotEmpty(doc.ExportToXml());",
+        "Assert.NotNull(xml);",
+        "Assert.NotEmpty(xml);",
+        "Assert.True(xmlAfterAdd.Length > xml.Length);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR206ExportToXmlAndGetHeaderCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 19,
+      "weak": 13,
+      "total": 67,
+      "strong_ratio": 0.284,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToXml());",
+        "Assert.NotEmpty(doc.ExportToXml());",
+        "Assert.NotNull(xml);",
+        "Assert.NotEmpty(xml);",
+        "Assert.NotNull(doc.Clone());"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR207GetRowValuesAndExportToNdjsonDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 40,
+      "weak": 14,
+      "total": 76,
+      "strong_ratio": 0.526,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetRowValues(0));",
+        "Assert.NotNull(doc.ExportToNdjson());",
+        "Assert.NotEmpty(doc.ExportToNdjson());",
+        "Assert.NotNull(row0);",
+        "Assert.NotNull(ndjson);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR208GetColumnStatsAndPivotDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 29,
+      "weak": 13,
+      "total": 63,
+      "strong_ratio": 0.46,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnStats(\"Score\"));",
+        "Assert.True(after >= before);",
+        "Assert.NotNull(doc.GetNumericColumn(\"Score\"));",
+        "Assert.True(v >= 0 && v <= 200);",
+        "Assert.NotNull(doc.Pivot(\"Department\", \"Name\", \"Score\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR209FilterAndMergeWithDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 28,
+      "weak": 11,
+      "total": 59,
+      "strong_ratio": 0.475,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.Filter(\"Department\", \"Engineering\"));",
+        "Assert.NotNull(filtered.ExportToXml());",
+        "Assert.NotEmpty(filtered.ExportToXml());",
+        "Assert.NotNull(docA.MergeWith(docB));",
+        "Assert.NotNull(doc.GetDistinctValues(\"Department\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR210AddColumnAndRemoveColumnDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 28,
+      "weak": 3,
+      "total": 61,
+      "strong_ratio": 0.459,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnValues(\"Name\"));",
+        "Assert.NotNull(xml);",
+        "Assert.NotEmpty(xml);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR211SortByColumnAndRenameColumnDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 23,
+      "weak": 1,
+      "total": 53,
+      "strong_ratio": 0.434,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.SortByColumn(\"Score\", ascending: true));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR212ExportToMarkdownAndJoinDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 14,
+      "weak": 10,
+      "total": 49,
+      "strong_ratio": 0.286,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.ExportToMarkdown());",
+        "Assert.NotEmpty(doc.ExportToMarkdown());",
+        "Assert.NotNull(emp.JoinWith(sal, \"EmpId\"));",
+        "Assert.NotNull(doc.GetSampleRows(3));",
+        "Assert.NotNull(md);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR213GetSummaryStatsAndTransposeDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 14,
+      "weak": 16,
+      "total": 61,
+      "strong_ratio": 0.23,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetSummaryStats());",
+        "Assert.NotNull(s1);",
+        "Assert.NotNull(s2);",
+        "Assert.True(stats.Count >= 0); // graceful if column key differs",
+        "Assert.True(stats.Count >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR214GetDistinctValuesAndFilterRowsDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 20,
+      "weak": 12,
+      "total": 57,
+      "strong_ratio": 0.351,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetDistinctValues(\"Category\"));",
+        "Assert.NotNull(doc.FilterRows(\"Category\", \"Electronics\"));",
+        "Assert.NotNull(doc.ExportToHtml());",
+        "Assert.NotNull(productLines);",
+        "Assert.NotNull(paidOrders);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR215GetRowAtAndDeleteRowDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 11,
+      "weak": 13,
+      "total": 51,
+      "strong_ratio": 0.216,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetRowAt(0));",
+        "Assert.True(row.Length > 0);",
+        "Assert.NotNull(row);",
+        "Assert.True(row.Length > 0);",
+        "Assert.NotNull(row);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR216ConcatenateAndGetColumnNamesDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 17,
+      "weak": 8,
+      "total": 57,
+      "strong_ratio": 0.298,
+      "weak_lines_sample": [
+        "Assert.NotNull(a.Concatenate(b));",
+        "Assert.True(categories.Count >= 2);",
+        "Assert.NotNull(doc.GetColumnNames());",
+        "Assert.NotNull(doc.GetNumericColumn(\"Value\"));",
+        "Assert.True(v > 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR217RenameColumnAndHasColumnDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 18,
+      "weak": 4,
+      "total": 77,
+      "strong_ratio": 0.234,
+      "weak_lines_sample": [
+        "Assert.NotNull(values);",
+        "Assert.NotNull(codes);",
+        "Assert.NotNull(html);",
+        "Assert.NotEmpty(html);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR218GetMedianAndFilterRowsDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 9,
+      "weak": 16,
+      "total": 49,
+      "strong_ratio": 0.184,
+      "weak_lines_sample": [
+        "Assert.True(median >= 65 && median <= 95);",
+        "Assert.True(median >= doc.GetMinValue(\"Grade\"));",
+        "Assert.True(median <= doc.GetMaxValue(\"Grade\"));",
+        "Assert.NotNull(doc.FilterRows(\"Subject\", \"Science\"));",
+        "Assert.True(median >= 81 && median <= 95);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR219AddColumnAndRemoveColumnDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 9,
+      "weak": 5,
+      "total": 58,
+      "strong_ratio": 0.155,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnSummary(\"Salary\"));",
+        "Assert.NotNull(salarySummary);",
+        "Assert.NotNull(yrsSummary);",
+        "Assert.NotNull(html);",
+        "Assert.NotEmpty(html);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR220GetCorrelationAndCovarianceDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 3,
+      "total": 43,
+      "strong_ratio": 0.163,
+      "weak_lines_sample": [
+        "Assert.True(corrYTD_Sharpe > 0);",
+        "Assert.True(zTech > 0);",
+        "Assert.True(zBond < 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR221GetOutliersAndTrimmedMeanDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 16,
+      "total": 49,
+      "strong_ratio": 0.102,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetOutliers(\"Salary\", 2.0));",
+        "Assert.True(trimmed >= doc.GetMinValue(\"Salary\"));",
+        "Assert.True(trimmed <= doc.GetMaxValue(\"Salary\"));",
+        "Assert.NotNull(doc.GetModeValue(\"Department\"));",
+        "Assert.NotNull(mode);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR222GetHistogramBinsAndFrequencyTableDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 19,
+      "weak": 13,
+      "total": 49,
+      "strong_ratio": 0.388,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetHistogramBins(\"Price\", 4));",
+        "Assert.NotNull(doc.GetFrequencyTable(\"Category\"));",
+        "Assert.NotEmpty(doc.GetFrequencyTable(\"Category\"));",
+        "Assert.NotNull(doc.GetBinCount(\"Price\", 4));",
+        "foreach (var c in bins) Assert.True(c >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR223GetNullCountAndFillRateDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 10,
+      "weak": 8,
+      "total": 43,
+      "strong_ratio": 0.233,
+      "weak_lines_sample": [
+        "Assert.True(r >= 0.0 && r <= 1.0);",
+        "Assert.True(c >= 0.0 && c <= 1.0);",
+        "Assert.True(nullCompany >= 0);",
+        "Assert.True(nullCompany <= doc.GetRowCount());",
+        "Assert.True(fillCompany >= 0.0 && fillCompany <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR224GetColumnMinMaxRangeDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 8,
+      "total": 44,
+      "strong_ratio": 0.114,
+      "weak_lines_sample": [
+        "Assert.True(minPrice > 0);",
+        "Assert.True(maxPrice >= minPrice);",
+        "Assert.True(rangePrice >= 0);",
+        "Assert.True(minSqFt > 0);",
+        "Assert.True(maxSqFt >= minSqFt);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR225GetPercentileAndIQRDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 10,
+      "total": 48,
+      "strong_ratio": 0.104,
+      "weak_lines_sample": [
+        "Assert.True(p50 >= doc.GetColumnMin(\"Science\") && p50 <= doc.GetColumnMax(\"Science\"));",
+        "Assert.True(wp25 <= wp50);",
+        "Assert.True(wp50 <= wp75);",
+        "Assert.True(wp25 >= doc.GetColumnMin(\"Weight\"));",
+        "Assert.True(wp75 <= doc.GetColumnMax(\"Weight\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR226GetKurtosisAndEntropyDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 5,
+      "total": 41,
+      "strong_ratio": 0.122,
+      "weak_lines_sample": [
+        "Assert.True(cv >= 0);",
+        "Assert.True(entGlucose >= 0.0);",
+        "Assert.True(entChol >= 0.0);",
+        "Assert.True(cvHba >= 0.0);",
+        "Assert.True(cvBP >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR227GetColumnVarianceAndCorrelationDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 9,
+      "weak": 6,
+      "total": 39,
+      "strong_ratio": 0.231,
+      "weak_lines_sample": [
+        "Assert.True(r >= 0.99 || Math.Abs(r - 1.0) < 1e-9);",
+        "Assert.True(varSolar >= 0.0);",
+        "Assert.True(varRenewables >= 0.0);",
+        "Assert.True(varCo2 >= 0.0);",
+        "Assert.True(rRenewablesCo2 < 0.5);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR228GetLinearRegressionAndPredictionDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 11,
+      "weak": 1,
+      "total": 37,
+      "strong_ratio": 0.297,
+      "weak_lines_sample": [
+        "Assert.True(slope > 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR229GetRSquaredAndResidualDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 11,
+      "weak": 10,
+      "total": 41,
+      "strong_ratio": 0.268,
+      "weak_lines_sample": [
+        "Assert.True(r2 >= 0.0 && r2 <= 1.0);",
+        "Assert.True(r2 >= 0.999);",
+        "Assert.True(stdDev < 1e-9 || stdDev == 0.0);",
+        "Assert.True(r2Internet >= 0.0 && r2Internet <= 1.0);",
+        "Assert.True(r2GreenWellbeing >= 0.0 && r2GreenWellbeing <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR230GetOutlierCountAndRemoveOutliersDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 8,
+      "weak": 8,
+      "total": 47,
+      "strong_ratio": 0.17,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.RemoveOutliers(\"revenue_k\"));",
+        "Assert.True(outAdverse >= 0);",
+        "Assert.True(outAdverse <= doc.GetRowCount());",
+        "Assert.True(outBiomarker >= 0);",
+        "Assert.True(outCompletion >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR231GetColumnSkewnessAndKurtosisDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 12,
+      "weak": 4,
+      "total": 41,
+      "strong_ratio": 0.293,
+      "weak_lines_sample": [
+        "Assert.True(score >= 0.0);",
+        "Assert.True(score <= 1.0);",
+        "Assert.True(score >= 0.0, $\"{col} normality score should be >= 0\");",
+        "Assert.True(score <= 1.0, $\"{col} normality score should be <= 1\");"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR232GetColumnEntropyAndUniqueCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 11,
+      "weak": 10,
+      "total": 43,
+      "strong_ratio": 0.256,
+      "weak_lines_sample": [
+        "Assert.True(entSeg >= 0.0);",
+        "Assert.True(entCat >= 0.0);",
+        "Assert.True(entCountry >= 0.0);",
+        "Assert.True(miSegSat >= 0.0);",
+        "Assert.True(miChanPay >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR233GetCumulativeSumAndMovingAverageDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 8,
+      "total": 45,
+      "strong_ratio": 0.333,
+      "weak_lines_sample": [
+        "Assert.True(rank >= 0.0);",
+        "Assert.True(rank <= 100.0);",
+        "Assert.True(rank >= 99.0);",
+        "Assert.True(ma3A.Count > 0);",
+        "Assert.True(rank2020 >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR234GetColumnVarianceAndCoefficientOfVariationDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 7,
+      "total": 42,
+      "strong_ratio": 0.357,
+      "weak_lines_sample": [
+        "Assert.True(varGdp >= 0.0);",
+        "Assert.True(varUnemployment >= 0.0);",
+        "Assert.True(varDebt >= 0.0);",
+        "Assert.True(stdCpi >= 0.0);",
+        "Assert.True(stdBudget >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR235GetColumnCorrelationAndLinearRegressionDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 5,
+      "total": 40,
+      "strong_ratio": 0.35,
+      "weak_lines_sample": [
+        "Assert.True(corr <= 1.0);",
+        "Assert.True(corrGdpCo2 <= 1.0);",
+        "Assert.True(corrRenewCo2 <= 1.0);",
+        "Assert.True(corrEnerCo2 <= 1.0);",
+        "Assert.True(newCorr <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR236GetOutlierRowsAndZScoreDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 14,
+      "weak": 16,
+      "total": 50,
+      "strong_ratio": 0.28,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetZScores(\"credit_score\"));",
+        "Assert.NotNull(doc.GetNormalizedColumn(\"credit_score\"));",
+        "Assert.True(v >= 0.0);",
+        "Assert.True(v <= 1.0);",
+        "Assert.True(tensileOutliers >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR237GetColumnEntropyAndGiniImpurityDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 22,
+      "weak": 10,
+      "total": 47,
+      "strong_ratio": 0.468,
+      "weak_lines_sample": [
+        "Assert.True(u >= 0.0 && u <= 1.0);",
+        "Assert.True(g >= 0.0 && g <= 1.0);",
+        "Assert.True(modeEntropy >= 0.0);",
+        "Assert.True(satEntropy >= 0.0);",
+        "Assert.True(freqEntropy >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR238GetColumnModeAndMedianDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 15,
+      "weak": 19,
+      "total": 47,
+      "strong_ratio": 0.319,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnMode(\"subject\"));",
+        "Assert.True(median >= doc.GetColumnMin(\"score\"));",
+        "Assert.True(median <= doc.GetColumnMax(\"score\"));",
+        "Assert.True(tm >= doc.GetColumnMin(\"score\"));",
+        "Assert.True(tm <= doc.GetColumnMax(\"score\"));"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR239GetColumnRankAndPercentileDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 12,
+      "weak": 17,
+      "total": 47,
+      "strong_ratio": 0.255,
+      "weak_lines_sample": [
+        "Assert.True(p75 >= doc.GetColumnMin(\"ytd_return\"));",
+        "Assert.True(p75 <= doc.GetColumnMax(\"ytd_return\"));",
+        "Assert.True(q90 >= doc.GetColumnMin(\"ytd_return\"));",
+        "Assert.True(q90 <= doc.GetColumnMax(\"ytd_return\"));",
+        "Assert.True(topRank >= 1);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR240GetColumnSkewnessAndKurtosisDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 4,
+      "weak": 5,
+      "total": 34,
+      "strong_ratio": 0.118,
+      "weak_lines_sample": [
+        "Assert.True(ageStd > 0);",
+        "Assert.True(bmiStd > 0);",
+        "Assert.True(saStd > ageStd); // sum assured has much higher variance",
+        "Assert.True(mean >= min);",
+        "Assert.True(mean <= max);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR241GetColumnCorrelationAndCovarianceDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 2,
+      "total": 29,
+      "strong_ratio": 0.241,
+      "weak_lines_sample": [
+        "Assert.True(rateTransCorr < 0); // higher rates \u2192 fewer transactions",
+        "Assert.True(mi >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR242GetColumnEntropyNormalizedAndDiversityDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 10,
+      "total": 36,
+      "strong_ratio": 0.333,
+      "weak_lines_sample": [
+        "Assert.True(en >= 0.0 && en <= 1.0);",
+        "Assert.True(en > 0.5);",
+        "Assert.True(div >= 0.0 && div <= 1.0);",
+        "Assert.True(siteDiv >= 0.0 && siteDiv <= 1.0);",
+        "Assert.True(visitDiv >= 0.0 && visitDiv <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR243GetColumnOutliersAndTrimmedMeanDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 10,
+      "total": 36,
+      "strong_ratio": 0.139,
+      "weak_lines_sample": [
+        "Assert.True(tm >= min);",
+        "Assert.True(tm <= max);",
+        "Assert.True(repairIqr >= 0);",
+        "Assert.True(totalIqr >= 0);",
+        "Assert.True(repairOutliers.Count >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR244GetColumnModeAndFrequencyDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 8,
+      "weak": 10,
+      "total": 32,
+      "strong_ratio": 0.25,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnMode(\"blood_group\"));",
+        "Assert.True(ratio >= 0.0 && ratio <= 1.0);",
+        "Assert.NotNull(modeType);",
+        "Assert.NotNull(modeDec);",
+        "Assert.True(grantedCount >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR245GetColumnCoefficientOfVariationAndZScoreDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 8,
+      "weak": 6,
+      "total": 32,
+      "strong_ratio": 0.25,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnNormalized(\"percentile\"));",
+        "Assert.True(vo2CV >= 0);",
+        "Assert.True(timeCV >= 0);",
+        "Assert.NotNull(normVO2);",
+        "Assert.NotNull(normPower);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR246GetColumnBinCountAndHistogramDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 8,
+      "total": 31,
+      "strong_ratio": 0.226,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnBinCount(\"baseline_bmi\", 5));",
+        "Assert.NotNull(doc.GetColumnHistogram(\"week12_bmi\", 4));",
+        "Assert.NotNull(doc.GetColumnBinEdges(\"weight_change_kg\", 4));",
+        "Assert.NotNull(flowBins);",
+        "Assert.NotNull(hist5);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR247GetColumnSkewnessAndKurtosisDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 9,
+      "weak": 4,
+      "total": 34,
+      "strong_ratio": 0.265,
+      "weak_lines_sample": [
+        "Assert.True(kurt < 0); // uniform-like has negative excess kurtosis",
+        "Assert.True(claimVar > 0);",
+        "Assert.True(meanClaim > 0);",
+        "Assert.True(maxClaim >= meanClaim);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR248GetColumnQuantileAndPercentileDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 13,
+      "weak": 11,
+      "total": 35,
+      "strong_ratio": 0.371,
+      "weak_lines_sample": [
+        "Assert.True(q >= min && q <= max);",
+        "Assert.True(p >= min && p <= max);",
+        "Assert.True(d >= min && d <= max);",
+        "Assert.True(q25 <= q50);",
+        "Assert.True(q50 <= q75);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR249GetColumnEntropyAndInformationContentDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 9,
+      "total": 30,
+      "strong_ratio": 0.167,
+      "weak_lines_sample": [
+        "Assert.True(deviceEntropy >= 0 && deviceEntropy <= 2.0); // max for 3 categories \u2248 1.58 bits",
+        "Assert.True(catEntropy >= 0);",
+        "Assert.True(purchEntropy >= 0 && purchEntropy <= 1.1);",
+        "Assert.True(deviceIC >= 0);",
+        "Assert.True(sourceIC >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR250GetColumnCoefficientOfVariationAndRelativeRangeDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 10,
+      "weak": 8,
+      "total": 34,
+      "strong_ratio": 0.294,
+      "weak_lines_sample": [
+        "Assert.True(cvCmax >= 0.0);",
+        "Assert.True(cvAuc >= 0.0);",
+        "Assert.True(cvTmax >= 0.0);",
+        "Assert.True(cvThalf >= 0.0);",
+        "Assert.True(rrCmax >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR251GetColumnZScoreAndStandardizedValuesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 5,
+      "total": 36,
+      "strong_ratio": 0.389,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnStandardizedValues(\"price_gbp\"));",
+        "Assert.True(zAbove > 0.0);",
+        "Assert.True(zBelow < 0.0);",
+        "Assert.NotNull(zValsBmi);",
+        "Assert.True(stdZ > 0.9 && stdZ < 1.1);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR252GetColumnNormalizedValuesAndRobustScaledValuesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 8,
+      "total": 37,
+      "strong_ratio": 0.378,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnNormalizedValues(\"income_gbp\"));",
+        "Assert.True(v >= 0.0 && v <= 1.0);",
+        "Assert.NotNull(doc.GetColumnRobustScaledValues(\"income_gbp\"));",
+        "Assert.NotNull(normAmount);",
+        "Assert.True(v >= 0.0 && v <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR253GetColumnInterquartileRangeAndMeanAbsoluteDeviationDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 13,
+      "weak": 12,
+      "total": 40,
+      "strong_ratio": 0.325,
+      "weak_lines_sample": [
+        "Assert.True(iqrCmax >= 0.0);",
+        "Assert.True(iqrAuc >= 0.0);",
+        "Assert.True(iqrTHalf >= 0.0);",
+        "Assert.True(iqrCl >= 0.0);",
+        "Assert.True(iqrF >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR254GetColumnTrimmedMeanAndWinsorizedMeanDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 8,
+      "weak": 2,
+      "total": 30,
+      "strong_ratio": 0.267,
+      "weak_lines_sample": [
+        "Assert.True(meanSeverity >= 0.0);",
+        "Assert.True(iqrSeverity >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR255GetColumnGiniCoefficientAndTheilIndexDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 10,
+      "weak": 9,
+      "total": 32,
+      "strong_ratio": 0.312,
+      "weak_lines_sample": [
+        "Assert.True(gini >= 0.0 && gini <= 1.0);",
+        "Assert.True(giniTotal >= 0.0 && giniTotal <= 1.0);",
+        "Assert.True(giniBranded >= 0.0 && giniBranded <= 1.0);",
+        "Assert.True(giniRd >= 0.0 && giniRd <= 1.0);",
+        "Assert.True(giniPatents >= 0.0 && giniPatents <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR256GetColumnAutoCorrelationAndPartialCorrelationDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 10,
+      "weak": 0,
+      "total": 30,
+      "strong_ratio": 0.333,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR257GetColumnZScoreAndOutlierCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 6,
+      "weak": 7,
+      "total": 33,
+      "strong_ratio": 0.182,
+      "weak_lines_sample": [
+        "Assert.True(zsAmount88 > 0.0); // large payment is above mean",
+        "Assert.True(zsVelocity155 > 2.0); // velocity spike",
+        "Assert.True(outliersAmount >= 1); // large payment outlier",
+        "Assert.True(outliersAmount < doc.RowCount);",
+        "Assert.True(outliersVelocity >= 1);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR258GetColumnCumulativeSumAndRunningMeanDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 17,
+      "weak": 4,
+      "total": 44,
+      "strong_ratio": 0.386,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnCumulativeSum(\"revenue_gbp\"));",
+        "Assert.NotNull(doc.GetColumnRunningMean(\"revenue_gbp\"));",
+        "Assert.NotNull(csPharma);",
+        "Assert.NotNull(rmSemi);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR259GetColumnPercentileRankAndRankTransformDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 9,
+      "total": 35,
+      "strong_ratio": 0.2,
+      "weak_lines_sample": [
+        "Assert.True(pr >= 0.0 && pr <= 100.0);",
+        "Assert.NotNull(doc.GetColumnRankTransform(\"return_pct\"));",
+        "Assert.True(prReturn50 >= 0.0 && prReturn50 <= 100.0);",
+        "Assert.True(prReturn50 >= 30.0 && prReturn50 <= 70.0); // near 50th percentile",
+        "Assert.True(prReturnTop >= 90.0 && prReturnTop <= 100.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR260GetColumnEntropyAndNormalizedEntropyDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 9,
+      "total": 33,
+      "strong_ratio": 0.364,
+      "weak_lines_sample": [
+        "Assert.True(ne >= 0.0 && ne <= 1.0);",
+        "Assert.True(entropyReporter >= 0);",
+        "Assert.True(entropyAnomaly >= 0);",
+        "Assert.True(entropyRisk >= 0);",
+        "Assert.True(entropyJurisdiction >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR261GetColumnKurtosisAndSkewnessDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 3,
+      "total": 33,
+      "strong_ratio": 0.212,
+      "weak_lines_sample": [
+        "Assert.True(skewInsuredLoss > 0); // catastrophe losses are right-skewed",
+        "Assert.True(skewMarketLoss > 0); // market losses also right-skewed",
+        "Assert.True(skewReturnPeriod > 0); // return periods right-skewed"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR262GetColumnModeAndModeCountDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 8,
+      "total": 35,
+      "strong_ratio": 0.314,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnMode(\"channel\"));",
+        "Assert.NotNull(modePropType);",
+        "Assert.True(mcPropType >= 1);",
+        "Assert.True(mcPropType <= doc.RowCount);",
+        "Assert.True(mcTenure >= 1);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR263GetColumnIQRAndQuartilesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 18,
+      "weak": 6,
+      "total": 51,
+      "strong_ratio": 0.353,
+      "weak_lines_sample": [
+        "Assert.True(iqrCombined >= 0);",
+        "Assert.True(iqrGwp >= 0);",
+        "Assert.True(iqrExp >= 0);",
+        "Assert.True(iqrExp <= 19); // max range is 19",
+        "Assert.True(iqrYrs >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR264GetColumnOutliersAndOutlierCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 4,
+      "weak": 6,
+      "total": 34,
+      "strong_ratio": 0.118,
+      "weak_lines_sample": [
+        "Assert.True(outlierCountAum >= 0);",
+        "Assert.True(outlierCountAum <= doc.RowCount);",
+        "Assert.True(outlierCountTer >= 0);",
+        "Assert.True(outlierCountDd >= 0);",
+        "Assert.True(outlierCountRet >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR265GetColumnZScoreAndStandardizedValuesDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 2,
+      "total": 29,
+      "strong_ratio": 0.414,
+      "weak_lines_sample": [
+        "Assert.True(meanPrice > 0);",
+        "Assert.True(sdPrice > 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR266GetColumnCorrelationAndCovarianceDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 2,
+      "total": 26,
+      "strong_ratio": 0.346,
+      "weak_lines_sample": [
+        "Assert.True(corrDurMat > 0); // longer maturity \u2192 longer duration",
+        "Assert.True(covDurMat > 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR267GetColumnEntropyAndDistinctRatioDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 13,
+      "total": 37,
+      "strong_ratio": 0.324,
+      "weak_lines_sample": [
+        "Assert.True(dr >= 0.0 && dr <= 1.0);",
+        "Assert.True(dr <= 0.05); // 1 distinct / 60 rows",
+        "Assert.True(entAcc >= 0.0);",
+        "Assert.True(entIns >= 0.0);",
+        "Assert.True(entIns > entAcc); // 10 insurers roughly uniform vs skewed accident types"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR268GetColumnMissingRateAndFillRateDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 21,
+      "weak": 8,
+      "total": 37,
+      "strong_ratio": 0.568,
+      "weak_lines_sample": [
+        "Assert.True(mr >= 0.0 && mr <= 1.0);",
+        "Assert.True(fr >= 0.0 && fr <= 1.0);",
+        "Assert.True(mrDiag >= 0.0 && mrDiag <= 1.0);",
+        "Assert.True(frDiag >= 0.99); // DQF standard: >99% fill rate expected",
+        "Assert.True(mrProc >= 0.0 && mrProc <= 1.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR269GetColumnValueCountsAndTopValueDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 3,
+      "weak": 8,
+      "total": 38,
+      "strong_ratio": 0.079,
+      "weak_lines_sample": [
+        "Assert.NotNull(doc.GetColumnValueCounts(\"fuel_type\"));",
+        "Assert.False(string.IsNullOrEmpty(doc.GetColumnTopValue(\"fuel_type\")));",
+        "Assert.True(topCount >= kv.Value);",
+        "Assert.NotNull(fuelCounts);",
+        "Assert.NotNull(bodyCounts);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR270GetColumnZScoreAndOutlierCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 7,
+      "weak": 4,
+      "total": 27,
+      "strong_ratio": 0.259,
+      "weak_lines_sample": [
+        "Assert.True(zZurich > 1.5); // well above mean",
+        "Assert.True(zBrit > 1.5);",
+        "Assert.True(outlierScr >= 0 && outlierScr <= doc.RowCount);",
+        "Assert.True(outlierCombined >= 0 && outlierCombined <= doc.RowCount);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR271GetColumnModeAndColumnRangeDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 10,
+      "weak": 5,
+      "total": 28,
+      "strong_ratio": 0.357,
+      "weak_lines_sample": [
+        "Assert.True(priceRange >= 0.0);",
+        "Assert.True(priceRange > 0.0); // prices definitely vary",
+        "Assert.True(maxPrice > minPrice);",
+        "Assert.True(minPrice > 0); // all prices positive",
+        "Assert.True(maxPrice < 5000000); // sanity cap"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR272GetColumnVarianceAndStdDevDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 7,
+      "total": 33,
+      "strong_ratio": 0.424,
+      "weak_lines_sample": [
+        "Assert.True(offerVar >= 0.0);",
+        "Assert.True(offerSd >= 0.0);",
+        "Assert.True(offerVar > 0.0); // prices vary",
+        "Assert.True(spreadVar >= 0.0);",
+        "Assert.True(spreadSd >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR273GetColumnFirstQuartileAndThirdQuartileDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 11,
+      "weak": 10,
+      "total": 33,
+      "strong_ratio": 0.333,
+      "weak_lines_sample": [
+        "Assert.True(q1 >= doc.GetColumnMin(\"value\") && q1 <= doc.GetColumnMax(\"value\"));",
+        "Assert.True(q3 >= doc.GetColumnMin(\"value\") && q3 <= doc.GetColumnMax(\"value\"));",
+        "Assert.True(rawQ1 >= doc.GetColumnMin(\"raw_mark\"));",
+        "Assert.True(rawQ3 <= doc.GetColumnMax(\"raw_mark\"));",
+        "Assert.True(rawQ1 <= rawQ3);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR274GetColumnSkewnessAndKurtosisDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 0,
+      "total": 26,
+      "strong_ratio": 0.346,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR275GetColumnEntropyAndCardinalityDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 8,
+      "weak": 9,
+      "total": 32,
+      "strong_ratio": 0.25,
+      "weak_lines_sample": [
+        "Assert.True(pathEnt >= 0.0);",
+        "Assert.True(pathCard >= 1 && pathCard <= 10);",
+        "Assert.True(settingEnt >= 0.0);",
+        "Assert.True(settingCard >= 1 && settingCard <= 10);",
+        "Assert.True(outcomeCard >= 1 && outcomeCard <= 6);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR276GetColumnModeAndUniqueCountDeepTests.cs",
+      "grade": "PARTIAL_PROOF",
+      "strong": 5,
+      "weak": 12,
+      "total": 37,
+      "strong_ratio": 0.135,
+      "weak_lines_sample": [
+        "Assert.NotNull(ecoMode);",
+        "Assert.NotEmpty(ecoMode);",
+        "Assert.True(ecoUnique >= 1);",
+        "Assert.True(ecoUnique <= 5);",
+        "Assert.NotNull(chemMode);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR277GetColumnMeanAndMedianDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 14,
+      "total": 35,
+      "strong_ratio": 0.343,
+      "weak_lines_sample": [
+        "Assert.True(mean >= doc.GetColumnMin(\"score\") && mean <= doc.GetColumnMax(\"score\"));",
+        "Assert.True(median >= doc.GetColumnMin(\"score\") && median <= doc.GetColumnMax(\"score\"));",
+        "Assert.True(s106Mean >= s106Min && s106Mean <= s106Max);",
+        "Assert.True(s106Median >= s106Min && s106Median <= s106Max);",
+        "Assert.True(s106Mean > 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR278GetColumnMinAndColumnMaxDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 12,
+      "weak": 10,
+      "total": 33,
+      "strong_ratio": 0.364,
+      "weak_lines_sample": [
+        "Assert.True(rttMin >= 0.0 && rttMin <= 100.0);",
+        "Assert.True(rttMax >= 0.0 && rttMax <= 100.0);",
+        "Assert.True(rttMin <= rttMax);",
+        "Assert.True(aeMin <= aeMax);",
+        "Assert.True(aeMin >= 0.0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR279GetColumnSumAndColumnRangeDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 14,
+      "weak": 6,
+      "total": 30,
+      "strong_ratio": 0.467,
+      "weak_lines_sample": [
+        "Assert.True(totalItems > 0);",
+        "Assert.True(totalNic > 0);",
+        "Assert.True(itemsRange >= 0);",
+        "Assert.True(nicRange >= 0);",
+        "Assert.True(avgCostRange >= 0);"
+      ]
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR280GetColumnSumAndMeanDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 10,
+      "weak": 0,
+      "total": 12,
+      "strong_ratio": 0.833,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR281GetColumnMinAndMaxDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 0,
+      "total": 11,
+      "strong_ratio": 0.818,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR282GetColumnRangeAndMeanDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 12,
+      "strong_ratio": 0.667,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR283GetColumnMinMaxAndSumDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 9,
+      "weak": 0,
+      "total": 12,
+      "strong_ratio": 0.75,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvR284GetColumnMeanAndIQRDeepTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 7,
+      "weak": 0,
+      "total": 11,
+      "strong_ratio": 0.636,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvReaderTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 18,
+      "weak": 0,
+      "total": 26,
+      "strong_ratio": 0.692,
+      "weak_lines_sample": []
+    },
+    {
+      "path": "tests\\net\\csv\\CsvWriterTests.cs",
+      "grade": "STRONG_PROOF",
+      "strong": 8,
+      "weak": 0,
+      "total": 17,
+      "strong_ratio": 0.471,
+      "weak_lines_sample": []
+    }
+  ]
+}

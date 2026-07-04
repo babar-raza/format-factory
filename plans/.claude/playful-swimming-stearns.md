@@ -624,23 +624,48 @@ GAP_LEDGER_CLOSURES_APPLIED = true         # TC-C3
 
 ## Taskcard Status
 
-### Sprint 1 — Parts A and B
+### Closure Summary (lifecycle_audit.py canonical table)
+
+| TC-ID | Status |
+|---|---|
+| TC-OIC-A1 | CLOSED |
+| TC-OIC-A2 | CLOSED |
+| TC-OIC-A3 | CLOSED |
+| TC-OIC-A4 | CLOSED |
+| TC-GOV-B1 | CLOSED |
+| TC-GOV-B2 | CLOSED |
+| TC-GOV-B3 | CLOSED |
+| TC-GOV-B4 | CLOSED |
+| TC-CAQA-C1 | CLOSED |
+| TC-CPF-C2 | CLOSED |
+| TC-GLH-C3 | CLOSED |
+
+### Sprint 1 — Parts A and B (detailed)
 
 | TC-ID | Title | Part | Priority | Status |
 |---|---|---|---|---|
-| TC-A1 | Build Output Invariant Checker | A | P0 | OPEN |
-| TC-A2 | OIC baseline against ALL formats (pre-fix) | A | P0 | OPEN |
-| TC-A3 | Fix all confirmed defects in CSV .NET (6 fixes, target: CsvDocumentAnalytics.cs + CsvDocument.cs + CsvReader.cs) | A | P0 | OPEN |
-| TC-A4 | OIC post-fix verification against ALL formats | A | P0 | OPEN |
-| TC-B1 | Add governance validators V134/V135/V136 in governance_validators_output_quality.py | B | P1 | OPEN |
-| TC-B2 | Wire OIC into sprint closeout (autonomous_cycle.py STEP_0B) | B | P1 | OPEN |
-| TC-B3 | Create canonical OIC fixtures (tests/assurance/fixtures/) | B | P1 | OPEN |
-| TC-B4 | Update new-format-kickstart templates for safe JSON/HTML defaults | B | P2 | OPEN |
+| TC-A1 | Build Output Invariant Checker | A | P0 | CLOSED |
+| TC-A2 | OIC baseline against ALL formats (pre-fix) | A | P0 | CLOSED |
+| TC-A3 | Fix all confirmed defects in CSV .NET (6 fixes, target: CsvDocumentAnalytics.cs + CsvDocument.cs + CsvReader.cs) | A | P0 | CLOSED |
+| TC-A4 | OIC post-fix verification against ALL formats | A | P0 | CLOSED |
+| TC-B1 | Add governance validators V134/V135/V136 in governance_validators_output_quality.py | B | P1 | CLOSED |
+| TC-B2 | Wire OIC into sprint closeout (autonomous_cycle.py STEP_0B) | B | P1 | CLOSED |
+| TC-B3 | Create canonical OIC fixtures (tests/assurance/fixtures/) | B | P1 | CLOSED |
+| TC-B4 | Update new-format-kickstart templates for safe JSON/HTML defaults | B | P2 | CLOSED |
 
 ### Sprint 2 — Part C (immediate follow-on, no user authorization required)
 
 | TC-ID | Title | Part | Priority | Status |
 |---|---|---|---|---|
-| TC-C1 | C# Assertion Quality Analyzer — build, test, wire into grading, apply to 179 .NET tests | C | P1 | OPEN |
-| TC-C2 | Cross-Platform Parity Fixtures — 15 hand-computed contracts, runner, apply to CSV | C | P1 | OPEN |
-| TC-C3 | Gap Ledger Orphan Detection — build, dry-run, apply confirmed closures | C | P2 | OPEN |
+| TC-C1 | C# Assertion Quality Analyzer — build, test, wire into grading, apply to 179 .NET tests | C | P1 | CLOSED |
+| TC-C2 | Cross-Platform Parity Fixtures — 15 hand-computed contracts, runner, apply to CSV | C | P1 | CLOSED |
+| TC-C3 | Gap Ledger Orphan Detection — build, dry-run, apply confirmed closures | C | P2 | CLOSED |
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-04T12:39:56.683003+00:00"
+  locked_by: "6ccb0fc24c11"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

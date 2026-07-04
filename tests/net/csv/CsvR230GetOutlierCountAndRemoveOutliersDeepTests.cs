@@ -138,7 +138,12 @@ public class CsvR230GetOutlierCountAndRemoveOutliersDeepTests : IDisposable
     public void RemoveOutliers_NonNull()
     {
         var doc = CsvDocument.LoadFile(CreateRetailCsv());
-        Assert.NotNull(doc.RemoveOutliers("revenue_k"));
+        var cleaned = doc.RemoveOutliers("revenue_k");
+        Assert.NotNull(cleaned);
+        // GAP-CSV-004 fix: RemoveOutliers must preserve headers. Strong assertion.
+        Assert.Equal(doc.Headers, cleaned.Headers);
+        // Result must have same or fewer rows than original.
+        Assert.True(cleaned.GetRowCount() <= doc.GetRowCount());
     }
 
     [Fact]
