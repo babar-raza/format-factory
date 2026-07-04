@@ -4,7 +4,7 @@ Commercial .NET library for reading and writing CSV (comma-separated values) fil
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:28+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-04T11:41:51+00:00 source=package-metadata -->
 ```bash
 dotnet add package FormatFactory.Csv
 ```
@@ -37,7 +37,7 @@ Commercial — Format Factory product. See root LICENSE for terms.
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:28+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-04T11:41:51+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Comma-Separated Values (CSV) |
@@ -49,6 +49,6 @@ Commercial — Format Factory product. See root LICENSE for terms.
 | .NET | net10.0 |
 | Spec | IETF (RFC 4180) RFC 4180 (2005) |
 | QName coverage | 3/3 implemented |
-| Source files | 4 |
+| Source files | 5 |
 | Test files | 173 |
 <!-- END:README-PACKAGE_INFO -->

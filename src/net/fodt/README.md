@@ -65,7 +65,7 @@ See `acquisition-packs/fodt/gate11-commercial-licensing.md`.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T15:33:06+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-04T11:41:51+00:00 source=package-metadata -->
 ```bash
 dotnet add package FormatFactory.Fodt
 ```
@@ -73,7 +73,7 @@ dotnet add package FormatFactory.Fodt
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T15:33:06+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-04T11:41:51+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Text |
@@ -85,6 +85,6 @@ dotnet add package FormatFactory.Fodt
 | .NET | net10.0 |
 | Spec | OASIS ODF 1.3 |
 | QName coverage | 8/9 implemented |
-| Source files | 25 |
+| Source files | 28 |
 | Test files | 646 |
 <!-- END:README-PACKAGE_INFO -->

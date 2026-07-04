@@ -4,7 +4,7 @@ Parse and write TSV (tab-separated values) files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-02T16:00:10+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-04T11:41:50+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-tsv
 ```
@@ -34,13 +34,13 @@ write_tsv(rows, "output.tsv", headers=model["headers"])
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-02T16:00:10+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-04T11:41:50+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-02T16:00:10+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-04T11:41:50+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Tab-Separated Values (TSV) |
@@ -53,11 +53,11 @@ Apache-2.0
 | Spec | IANA IANA registration (1993) |
 | QName coverage | 3/3 implemented |
 | Source files | 16 |
-| Test files | 115 |
+| Test files | 116 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-02T16:00:10+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-04T11:41:50+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
