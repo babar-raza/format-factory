@@ -43,9 +43,9 @@ for sample in abw_files:
     print(f"File: {sample.name}")
     try:
         model = abw.load(sample)
-        section_count = abw.get_section_count(model)
-        paragraph_count = abw.get_paragraph_count(model)
-        text = abw.extract_text(model)
+        section_count = abw.get_section_count(sample)
+        paragraph_count = abw.get_paragraph_count(sample)
+        text = abw.extract_text(sample)
         print(f"  Sections: {section_count}")
         print(f"  Paragraphs: {paragraph_count}")
         print(f"  Text: {text[:5]}{'...' if len(text) > 5 else ''}")

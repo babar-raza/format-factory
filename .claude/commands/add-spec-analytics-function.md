@@ -12,7 +12,7 @@ Arithmetic rotation functions (`_mod_N_times_N`) are permanently forbidden.
 - [ ] Target module is within baseline_loc_cap (check registry/source-structure-baseline.json)
 - [ ] Function name does not contain `_mod_` or `_times_`
 
-## Required Handoff Fields
+## Required Inputs
 - format_id: (e.g., abw)
 - function_name: (e.g., abw_total_sentence_count)
 - target_module: (e.g., src/python/abw/analysis/text_metrics.py)
@@ -22,13 +22,30 @@ Arithmetic rotation functions (`_mod_N_times_N`) are permanently forbidden.
 - expected_values: (list of test vectors with inputs and expected outputs)
 - focused_test_command: (.venv/Scripts/pytest tests/python/<format>/test_*.py -v --tb=short)
 
-## Forbidden Targets (HARD BLOCK — never write to these)
-- src/python/<format>/<format>_analytics.py
-- src/python/<format>/<format>_analytics_extra.py
-- Any file matching *_extra.py, *_misc.py
+## Allowed Paths
+
+- `src/python/<format>/` — domain module files only (not *_analytics.py or *_analytics_extra.py)
+- `tests/python/<format>/` — test files for the added function
+- `reports/capability-layer/gap-ledger.json` — close the gap entry
+- `reports/all-format-deepening/product-code-ledger.json` — add ledger entry
+- `.local/transcripts/` — skill invocation transcript
+
+## Forbidden Paths
+
+- `src/python/<format>/<format>_analytics.py` (HARD BLOCK)
+- `src/python/<format>/<format>_analytics_extra.py` (HARD BLOCK)
+- Any file matching `*_extra.py`, `*_misc.py`
 - Any function name containing `_mod_` or `_times_`
 
-## Algorithm
+## Stop Conditions
+
+Stop and report `BLOCKED` if:
+- The gap entry does not exist or has `status != open`
+- The spec_fact_ref is not in the SAL cache (run `/ingest-spec-sal` first)
+- The target module is at or above its `baseline_loc_cap`
+- The function name contains `_mod_` or `_times_`
+
+## Steps
 
 ### Step 1: Verify gap is open
 ```python
@@ -112,7 +129,7 @@ Set `status: "closed"` in gap-ledger.json for the gap entry.
 ### Step 10: Write skill invocation transcript
 Path: `.local/transcripts/add-spec-analytics-function-<gap_id>-<ts>.yaml`
 
-## Validation Checklist
+## Evidence
 - [ ] spec_fact_ref verified in SAL: PASS/FAIL
 - [ ] function targets domain module (not analytics.py): PASS/FAIL
 - [ ] LOC within baseline_loc_cap: PASS/FAIL

@@ -131,7 +131,7 @@ Optional:
 - `--formats abw,fods,fodt` — restrict to specific formats (default: all 20)
 - `--dry-run` — audit only, no deletions or PTH creation
 
-## Required Evidence
+## Evidence
 
 - Staleness audit table (before state)
 - List of stale dirs removed

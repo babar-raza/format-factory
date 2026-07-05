@@ -28,7 +28,7 @@ Use this command when you discover any of:
 - `expected_behavior`: What should happen
 - `affected_paths`: List of files involved
 
-## Workflow Steps
+## Steps
 
 ### Step 1 — Capture
 Write a new entry to `registry/found-issue-register.yaml` with:
@@ -76,6 +76,33 @@ Set `status: closed` and `disposition` to one of the 6 valid values:
 
 Never use as the sole disposition:
 - `pre_existing`, `unrelated`, `not_caused_by_me`, `ignored`, `outside_current_task`
+
+## Allowed Paths
+
+- `registry/found-issue-register.yaml` — write issue entries
+- `registry/root-cause-register.yaml` — write root cause entries
+- `registry/blast-radius-register.yaml` — write blast radius entries
+- `registry/fixture-analysis-register.yaml` — write fixture analysis entries
+- Any test or source file required to repair the issue
+
+## Forbidden Paths
+
+- `plans/master-plan.md` — do not modify master plan via this skill
+- `registry/format-registry.yaml` — gate authority, read-only
+- `.local/supervisor/active-plan-lock.json` — do not touch plan lock
+
+## Stop Conditions
+
+Stop and report `BLOCKED` if:
+- The issue cannot be reproduced after investigation
+- The root cause requires a TRUE_EXTERNAL_GATE (Gate 11, credentials)
+- Repair is outside scope of current authorization
+
+## Evidence
+
+- `registry/found-issue-register.yaml` entry with `status: closed` and valid disposition
+- Passing test output confirming the repair (if HEALED_AND_VERIFIED)
+- Root cause entry in `registry/root-cause-register.yaml` (if systemic)
 
 ## Integration
 
