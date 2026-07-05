@@ -45,6 +45,20 @@ public static class TxtWriter
     }
 
     /// <summary>
+    /// Join <paramref name="paragraphs"/> with LF separators into a plain-text string.
+    /// Null entries become empty strings.
+    /// </summary>
+    public static string WriteParagraphs(IEnumerable<string?> paragraphs)
+    {
+        ArgumentNullException.ThrowIfNull(paragraphs);
+        var parts = new List<string>();
+        foreach (var p in paragraphs)
+            parts.Add(p ?? string.Empty);
+        var result = string.Join("\n", parts);
+        return result.Replace("\r\n", "\n").Replace("\r", "\n");
+    }
+
+    /// <summary>
     /// Join <paramref name="lines"/> and write to <paramref name="path"/>.
     /// Creates parent directories as needed. UTF-8, no BOM.
     /// </summary>

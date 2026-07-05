@@ -42,7 +42,7 @@ public class ZstR280GetCompressionRatioAndFrameCountDeepTests : IDisposable
     public void GetFrameCount_MultipleFrames_ReturnsCount()
     {
         var path = TempFile("multi.zst");
-        using (path, new byte[] { 1, 2, 3 });
+        CreateZstFile(path, new byte[] { 1, 2, 3 });
         using (var fs = File.Open(path, FileMode.Append))
         using (var zs = new ZLibStream(fs, CompressionLevel.Optimal))
         {

@@ -51,7 +51,8 @@ public static class MarkdownWriter
         var parts = new List<string>();
         foreach (var p in paragraphs)
             parts.Add(p ?? string.Empty);
-        return string.Join("\n", parts);
+        var result = string.Join("\n", parts);
+        return result.Replace("\r\n", "\n").Replace("\r", "\n");
     }
 
     /// <summary>
