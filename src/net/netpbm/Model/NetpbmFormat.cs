@@ -16,5 +16,11 @@ public enum NetpbmFormat
     /// <summary>PPM ASCII color (magic P3).</summary>
     PPM_P3,
     /// <summary>PPM binary color (magic P6).</summary>
-    PPM_P6
+    PPM_P6,
+    /// <summary>Alias for PGM_P2 (grayscale ASCII).</summary>
+    Pgm = PGM_P2,
+    /// <summary>Alias for PBM_P1 (bitmap ASCII).</summary>
+    Pbm = PBM_P1,
+    /// <summary>Alias for PPM_P3 (color ASCII).</summary>
+    Ppm = PPM_P3
 }
