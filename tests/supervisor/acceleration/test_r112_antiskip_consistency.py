@@ -457,7 +457,7 @@ class TestRegressionR112:
     """Ensure R112 changes don't break existing anti-skip checks."""
 
     def test_severity_map_has_18_entries(self):
-        assert len(SEVERITY_MAP) == 18
+        assert len(SEVERITY_MAP) == 19
 
     def test_run_all_checks_basic(self):
         result = run_all_checks(target_stream="acceleration")
