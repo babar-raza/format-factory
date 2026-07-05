@@ -95,6 +95,58 @@ public static class HtmlWriter
         File.WriteAllText(path, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
     }
 
+    /// <summary>
+    /// Serialize <paramref name="rows"/> to an HTML table with a separate header row.
+    /// </summary>
+    /// <param name="headers">Column header labels rendered in &lt;th&gt; elements.</param>
+    /// <param name="rows">Data rows rendered in &lt;td&gt; elements.</param>
+    public static string WriteTable(
+        IEnumerable<string?> headers,
+        IEnumerable<IEnumerable<string?>> rows)
+    {
+        ArgumentNullException.ThrowIfNull(headers);
+        ArgumentNullException.ThrowIfNull(rows);
+        var sb = new StringBuilder();
+        sb.AppendLine("<table>");
+        sb.AppendLine("  <tr>");
+        foreach (var h in headers)
+            sb.AppendLine($"    <th>{EscapeHtml(h)}</th>");
+        sb.AppendLine("  </tr>");
+        foreach (var row in rows)
+        {
+            sb.AppendLine("  <tr>");
+            foreach (var cell in row)
+                sb.AppendLine($"    <td>{EscapeHtml(cell)}</td>");
+            sb.AppendLine("  </tr>");
+        }
+        sb.AppendLine("</table>");
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns an HTML heading fragment: &lt;h{level}&gt;text&lt;/h{level}&gt;.
+    /// </summary>
+    /// <param name="text">Heading text (HTML-escaped).</param>
+    /// <param name="level">Heading level 1-6.</param>
+    public static string WriteHeading(string text, int level = 1)
+    {
+        var l = Math.Clamp(level, 1, 6);
+        return $"<h{l}>{EscapeHtml(text)}</h{l}>\n";
+    }
+
+    /// <summary>
+    /// Returns an HTML fragment with each string wrapped in a &lt;p&gt; element.
+    /// </summary>
+    /// <param name="lines">Text lines to wrap.</param>
+    public static string WriteParagraphs(IEnumerable<string?> lines)
+    {
+        ArgumentNullException.ThrowIfNull(lines);
+        var sb = new StringBuilder();
+        foreach (var line in lines)
+            sb.AppendLine($"<p>{EscapeHtml(line)}</p>");
+        return sb.ToString();
+    }
+
     // -------------------------------------------------------------------------
     // HTML escaping
     // -------------------------------------------------------------------------
