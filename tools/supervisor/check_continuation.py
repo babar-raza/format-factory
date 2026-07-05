@@ -485,6 +485,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
     # --- Check 7b (TC-PGI-040): Stale suppression detection ---
     # If next-work-items.json suppresses ledger for a plan that no longer has an
     # IN_PROGRESS lock, flag it as stale (informational — does not block CONTINUE).
+    _stale_advisory: dict = {}
     try:
         _nwi_7b = json.loads(work_items_path.read_text(encoding="utf-8"))
         if _nwi_7b.get("ledger_items_suppressed") and _nwi_7b.get("active_plan"):
@@ -492,11 +493,11 @@ def check(repo_root: Path, *, session_id: str | None = None,
             _ref_plan_has_lock_7b = any(
                 _ref_plan_7b in str(_lk.get("plan_path", "")) and
                 _lk.get("status") not in ("SUPERSEDED", "TERMINAL_CLOSED", "COMPLETE", "DEFERRED")
-                for _lk in _candidates
+                for _lk in _lock_candidates
             )
             if not _ref_plan_has_lock_7b:
-                _output["stale_work_items_detected"] = True
-                _output["stale_work_items_reason"] = (
+                _stale_advisory["stale_work_items_detected"] = True
+                _stale_advisory["stale_work_items_reason"] = (
                     f"next-work-items.json suppresses ledger for '{_ref_plan_7b}' "
                     f"but no IN_PROGRESS lock exists. Bootstrap cycle needed."
                 )
@@ -632,6 +633,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
         "rework_items": rework_items,
         "lane_starvation_warnings": lane_starvation_warnings,
         "resume_command": f"python tools/supervisor/check_continuation.py{' --track ' + track if track else ''}",
+        **_stale_advisory,
     }
     if signal.get("evidence_continuation_failed"):
         result["warning"] = (

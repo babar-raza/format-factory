@@ -266,7 +266,7 @@ class OicBaselineRunner:
 
     def print_summary(self) -> None:
         s = self.summary()
-        print(f"\n=== OIC Baseline Report ===")
+        print("\n=== OIC Baseline Report ===")
         print(f"Total checks: {s['total']} | PASS: {s['pass']} | FAIL: {s['fail']} | SKIP: {s['skip']}\n")
         for entry in s["entries"]:
             status = entry["result"]

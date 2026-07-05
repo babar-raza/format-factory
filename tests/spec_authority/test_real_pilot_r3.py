@@ -21,25 +21,34 @@ REPORTS_R3 = REPO_ROOT / "reports" / "spec-authority-real-pilot-r3"
 RESULTS_R3 = EVIDENCE_R3 / "pilot-results-r3.json"
 SNAPSHOT_PATH = REPORTS_R3 / "rca-input-snapshot-manifest.json"
 
+# Skip entire module in CI where .local/ evidence is not present (gitignored).
+pytestmark = pytest.mark.skipif(
+    not EVIDENCE_R3.exists(),
+    reason="R3 pilot evidence not available (.local/ is gitignored) — run _r3_odf_driver.py first",
+)
+
 
 # ─── Fixtures ──────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
 def r3_results():
-    assert RESULTS_R3.exists(), "pilot-results-r3.json missing — run _r3_odf_driver.py first"
+    if not RESULTS_R3.exists():
+        pytest.skip("pilot-results-r3.json missing — run _r3_odf_driver.py first")
     return json.loads(RESULTS_R3.read_text())
 
 
 @pytest.fixture(scope="module")
 def rca_snapshot():
-    assert SNAPSHOT_PATH.exists(), "rca-input-snapshot-manifest.json missing"
+    if not SNAPSHOT_PATH.exists():
+        pytest.skip("rca-input-snapshot-manifest.json missing")
     return json.loads(SNAPSHOT_PATH.read_text())
 
 
 @pytest.fixture(scope="module")
 def r2_results():
     results_path = EVIDENCE_R2 / "pilot-results-r2.json"
-    assert results_path.exists(), "pilot-results-r2.json missing"
+    if not results_path.exists():
+        pytest.skip("pilot-results-r2.json missing")
     return json.loads(results_path.read_text())
 
 

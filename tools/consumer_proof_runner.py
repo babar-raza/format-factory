@@ -69,7 +69,7 @@ def _run_format(fmt: str, output_dir: Path, python: str) -> dict:
             "error": None if passed else f"returncode={proc.returncode} or PASS sentinel missing",
         }
     except subprocess.TimeoutExpired:
-        out_file.write_text(f"TIMEOUT after 60s\n", encoding="utf-8")
+        out_file.write_text("TIMEOUT after 60s\n", encoding="utf-8")
         return {
             "pass": False,
             "timestamp": ts,

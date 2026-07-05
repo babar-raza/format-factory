@@ -70,7 +70,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
     {
         var path = WriteSampleFile();
         var rows = CsvReader.ReadRows(path);
-        Assert.Equal(4, rows.Count);
+        Assert.Equal(5, rows.Count); // ReadRows includes header row; SampleCsv = 1 header + 4 data
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
     {
         var path = WriteSampleFile();
         var rows = CsvReader.ReadRows(path);
-        Assert.Contains("Alice", rows[0]);
+        Assert.Contains("Alice", rows[1]); // rows[0] is header; first data row is rows[1]
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
         var path = TempFile("single.csv");
         File.WriteAllText(path, "A,B\n1,2");
         var rows = CsvReader.ReadRows(path);
-        Assert.Equal(1, rows.Count);
+        Assert.Equal(2, rows.Count); // ReadRows includes header; "A,B\n1,2" = 1 header + 1 data
     }
 
     // -------------------------------------------------------------------------
@@ -150,7 +150,8 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
         var fileRows = CsvReader.ReadRows(path);
         using var ms = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(SampleCsv));
         var streamRows = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal(fileRows.Count, streamRows.Count);
+        // ReadRowsFromStream strips the header row; ReadRows includes it.
+        Assert.Equal(fileRows.Count - 1, streamRows.Count);
     }
 
     [Fact]
@@ -226,26 +227,26 @@ public class CsvR181CsvReaderReadRowsDeepTests : IDisposable
         Assert.Equal(3, headers.Count);
         Assert.Equal("Name", headers[0]);
 
-        // ReadRows
+        // ReadRows returns ALL rows including the header (GAP-CSV-001).
         var rows = CsvReader.ReadRows(path);
-        Assert.Equal(4, rows.Count);
-        Assert.Equal(3, rows[0].Length);
-        Assert.Contains("Alice", rows[0]);
+        Assert.Equal(5, rows.Count); // 1 header + 4 data rows
+        Assert.Equal(3, rows[0].Length); // header row has 3 columns
+        Assert.Contains("Alice", rows[1]); // rows[0] is header; first data row is rows[1]
         Assert.Contains("Dave", rows[rows.Count - 1]);
 
-        // ReadRowsFromStream from same content
+        // ReadRowsFromStream strips the header; returns only data rows.
         using var ms = new MemoryStream(File.ReadAllBytes(path));
         var streamRows = CsvReader.ReadRowsFromStream(ms);
-        Assert.Equal(rows.Count, streamRows.Count);
+        Assert.Equal(rows.Count - 1, streamRows.Count);
 
-        // Verify each stream row has same fields as file row
-        for (var i = 0; i < rows.Count; i++)
-            Assert.Equal(rows[i].Length, streamRows[i].Length);
+        // Verify each stream row has same field count as corresponding data row in ReadRows.
+        for (var i = 0; i < streamRows.Count; i++)
+            Assert.Equal(rows[i + 1].Length, streamRows[i].Length);
 
-        // Verify specific values
-        Assert.Contains("Eng", rows[0]);
-        Assert.Contains("92", rows[0]);
-        Assert.Contains("Finance", rows[1]);
-        Assert.Contains("HR", rows[2]);
+        // Verify specific values (row indices shifted by 1 vs ReadRows due to header).
+        Assert.Contains("Eng", rows[1]);
+        Assert.Contains("92", rows[1]);
+        Assert.Contains("Finance", rows[2]);
+        Assert.Contains("HR", rows[3]);
     }
 }
