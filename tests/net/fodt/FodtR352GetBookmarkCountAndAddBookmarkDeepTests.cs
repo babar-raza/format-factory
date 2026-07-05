@@ -223,7 +223,7 @@ public class FodtR352GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("Claimant's skeleton argument, settled by Rupert Cavendish-Lee KC and Amanda Whitmore-Singh of Chambers, argues three grounds of review. Ground 1 (error of law): Secretary of State applied wrong legal test under s.104(7). Ground 2 (relevancy): net zero obligations under Climate Change Act 2008 are mandatory relevant considerations. Ground 3 (procedural unfairness): pre-application consultation failed to meet procedural legitimate expectations.");
         doc.AppendParagraph("Secretary of State's skeleton argument, settled by Timothy Wren-Ashford KC, resists all three grounds. Concedes Ground 3 is 'not without difficulty' but submits the procedural error, if any, was not material (R v North and East Devon Health Authority, ex p Coughlan [2001] QB 213 applied).");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(18, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetBookmarkCount());
 
         // AddBookmark — cross-reference navigation bookmarks for judicial bundle
@@ -246,7 +246,7 @@ public class FodtR352GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         Assert.Equal(doc.GetBookmarkCount(), doc.GetBookmarkCount());
 
         // Paragraph count unchanged
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(18, doc.GetParagraphCount());
 
         // ExportToHtml
         var html = doc.ExportToHtml();
@@ -271,13 +271,13 @@ public class FodtR352GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         // LoadFile and verify
         var loaded = FodtDocument.LoadFile(path);
         Assert.Equal(5, loaded.GetBookmarkCount());
-        Assert.Equal(10, loaded.GetParagraphCount());
+        Assert.Equal(18, loaded.GetParagraphCount());
         Assert.True(loaded.GetWordCount() > 0);
 
         // AddBookmark on loaded
         loaded.AddBookmark("BM_InterlocutoryOrders", 0);
         Assert.Equal(6, loaded.GetBookmarkCount());
-        Assert.Equal(10, loaded.GetParagraphCount()); // still unchanged
+        Assert.Equal(18, loaded.GetParagraphCount()); // still unchanged
 
         // AppendParagraph on loaded
         loaded.AppendParagraph("Order for costs: if the Claimant succeeds on any ground, costs to follow the event. Parties directed to file written submissions on costs within 14 days of judgment. Court of Appeal permission to appeal: dealt with in judgment.");

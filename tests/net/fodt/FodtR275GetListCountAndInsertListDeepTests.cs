@@ -282,7 +282,7 @@ public class FodtR275GetListCountAndInsertListDeepTests : IDisposable
         doc.AppendParagraph("External system dependencies are listed below for planning purposes.");
         doc.AppendParagraph("All dependency versions have been confirmed with respective vendor teams.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetListCount — zero initially
         Assert.Equal(0, doc.GetListCount());

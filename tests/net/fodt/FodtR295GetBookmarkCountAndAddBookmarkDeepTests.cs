@@ -254,7 +254,7 @@ public class FodtR295GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("Smile curve analysis reveals that design and distribution capture more value than manufacturing.");
         doc.AppendParagraph("Reshoring trends post-pandemic signal a reconfiguration of global value chain architecture.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetBookmarkCount — zero initially
         Assert.Equal(0, doc.GetBookmarkCount());

@@ -140,7 +140,7 @@ public class FodtR124SearchTextPositionTests
     {
         var doc = FodtDocument.CreateEmpty();
         doc.AppendParagraph("Original text with keyword");
-        doc.AppendParagraph("No keyword here");
+        doc.AppendParagraph("No match here"); // must not contain "keyword" substring
         doc.AppendParagraph("Another keyword line");
 
         var results = doc.SearchText("keyword");

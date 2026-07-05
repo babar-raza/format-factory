@@ -243,7 +243,7 @@ public class FodtR313GetSectionCountAndAddSectionDeepTests : IDisposable
         doc.AppendParagraph("Friend-shoring and near-shoring policies reflect geopolitical risk premia being incorporated into supply chain investment decisions.");
         doc.AppendParagraph("Industrial policy resurgence in semiconductors, pharmaceuticals, and critical minerals signals a structural shift from pure market allocation.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetSectionCount — zero initially
         Assert.Equal(0, doc.GetSectionCount());

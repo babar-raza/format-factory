@@ -30,14 +30,14 @@ public class FodtR105GetParagraphTextTests
     public void GetParagraphText_NegativeIndex_ReturnsNull()
     {
         var doc = FodtDocument.Load(MinimalPath);
-        Assert.Null(doc.GetParagraphText(-1));
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(-1));
     }
 
     [Fact]
     public void GetParagraphText_OutOfRange_ReturnsNull()
     {
         var doc = FodtDocument.Load(MinimalPath);
-        Assert.Null(doc.GetParagraphText(9999));
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(9999));
     }
 
     [Fact]

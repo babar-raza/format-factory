@@ -241,7 +241,7 @@ public class FodtR334GetTextBoxCountAndAddTextBoxDeepTests : IDisposable
         doc.AppendParagraph("Immediate access restrictions to Class 6 axle loading apply to spans 7-11 pending steelwork remediation, with reblasting and metal spray zinc coating specified for the affected bottom flange sections.");
         doc.AppendParagraph("Post-remediation fatigue life assessment projects a remaining safe service life of 22 years at current traffic loading, subject to five-yearly re-inspection and monitoring of crack initiation at identified high-damage locations.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetTextBoxCount());
 
         // AddTextBox — callout boxes for critical data

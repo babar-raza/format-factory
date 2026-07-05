@@ -185,7 +185,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
         doc.InsertHeading(3, "Section C: Pathways to Impact", 2);
         doc.AppendParagraph("Impact will be delivered through three channels: (1) policy engagement with BEIS, DWP, and HMRC via the ESRC Policy Fellowship scheme; (2) sector engagement with the Trades Union Congress, GMB, and the Independent Workers Union of Great Britain; (3) academic dissemination via high-impact journals (BJIR, Work Employment and Society, ILR Review) and the IES conference programme.");
 
-        Assert.Equal(6, doc.GetParagraphCount());
+        Assert.Equal(10, doc.GetParagraphCount());
 
         // GetHeaderText — initially empty or default
         var initialHeader = doc.GetHeaderText();
@@ -195,7 +195,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
         // SetHeaderText — draft stage
         doc.SetHeaderText("DRAFT — ESRC Standard Grant Application | Not for Circulation");
         Assert.Equal("DRAFT — ESRC Standard Grant Application | Not for Circulation", doc.GetHeaderText());
-        Assert.Equal(6, doc.GetParagraphCount()); // unchanged
+        Assert.Equal(10, doc.GetParagraphCount()); // unchanged
 
         // ExportToHtml with header
         var html = doc.ExportToHtml();
@@ -220,7 +220,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
         // LoadFile and verify header persists
         var draft = FodtDocument.LoadFile(path1);
         Assert.Equal("DRAFT — ESRC Standard Grant Application | Not for Circulation", draft.GetHeaderText());
-        Assert.Equal(6, draft.GetParagraphCount());
+        Assert.Equal(10, draft.GetParagraphCount());
 
         // SetHeaderText — peer review stage
         draft.SetHeaderText("UNDER PEER REVIEW — ESRC Standard Grant | ES/W012345/1");
@@ -228,7 +228,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
 
         // AppendParagraph — impact summary added at review stage
         draft.AppendParagraph("User Advisory Group: the research will be guided by a User Advisory Group comprising representatives from Deliveroo, Uber UK, IWGB, TUC, BEIS Labour Markets Analytical Team, and the Low Pay Commission, ensuring co-production of impact pathways throughout the research lifecycle.");
-        Assert.Equal(7, draft.GetParagraphCount());
+        Assert.Equal(11, draft.GetParagraphCount());
         Assert.Equal("UNDER PEER REVIEW — ESRC Standard Grant | ES/W012345/1", draft.GetHeaderText());
 
         // SaveToFile (review stage)
@@ -239,7 +239,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
         // LoadFile review version
         var review = FodtDocument.LoadFile(path2);
         Assert.Equal("UNDER PEER REVIEW — ESRC Standard Grant | ES/W012345/1", review.GetHeaderText());
-        Assert.Equal(7, review.GetParagraphCount());
+        Assert.Equal(11, review.GetParagraphCount());
 
         // SetHeaderText — award stage
         review.SetHeaderText("AWARDED — ES/W012345/1 — £487,250 — January 2025 — December 2027");
@@ -251,7 +251,7 @@ public class FodtR360GetHeaderTextAndSetHeaderTextDeepTests : IDisposable
         Assert.True(File.Exists(path3));
         var awarded = FodtDocument.LoadFile(path3);
         Assert.Equal("AWARDED — ES/W012345/1 — £487,250 — January 2025 — December 2027", awarded.GetHeaderText());
-        Assert.Equal(7, awarded.GetParagraphCount());
+        Assert.Equal(11, awarded.GetParagraphCount());
 
         var ex1 = Record.Exception(() => awarded.ExportToHtml());
         var ex2 = Record.Exception(() => awarded.ExportToMarkdown());

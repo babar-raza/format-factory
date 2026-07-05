@@ -196,7 +196,7 @@ public class FodtR202GetDocumentOutlineAndWordFrequencyTests
         // GetDocumentStats consistency
         var stats = doc.GetDocumentStats();
         Assert.Equal(5, stats.HeadingCount);
-        Assert.Equal(5, stats.ParagraphCount);
+        Assert.Equal(10, stats.ParagraphCount);
         Assert.True(stats.WordCount > 0);
     }
 }

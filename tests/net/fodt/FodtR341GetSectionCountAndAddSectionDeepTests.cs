@@ -242,7 +242,7 @@ public class FodtR341GetSectionCountAndAddSectionDeepTests : IDisposable
         doc.AppendParagraph("ILI-detected anomalies are classified per RSTRENG effective area method and POF analysis: Immediate Repair (>80% wt), Scheduled Repair (60-80% wt), and Monitor (< 60% wt) conditions trigger the appropriate work order in SAP PM.");
         doc.AppendParagraph("Fitness-for-service assessments for pressurised dents exceeding 6% OD, composite repairs, and weld anomalies follow BS 7910 Level 2 fracture mechanics analysis with Monte Carlo uncertainty quantification at 95th percentile confidence.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetSectionCount());
 
         // AddSection — document sections for regulatory cross-reference

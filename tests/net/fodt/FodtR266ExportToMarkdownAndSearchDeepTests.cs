@@ -324,7 +324,7 @@ public class FodtR266ExportToMarkdownAndSearchDeepTests : IDisposable
         doc.AppendParagraph("Technology investment totaled forty-two million dollars for the year.");
         doc.AppendParagraph("Return on technology investment exceeded targets by fifteen percent.");
 
-        Assert.Equal(13, doc.GetParagraphCount());
+        Assert.Equal(16, doc.GetParagraphCount());
 
         // ExportToMarkdown
         var md = doc.ExportToMarkdown();

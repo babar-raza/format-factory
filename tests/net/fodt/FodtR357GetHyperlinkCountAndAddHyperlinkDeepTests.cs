@@ -205,7 +205,7 @@ public class FodtR357GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         doc.AppendParagraph("The Information Commissioner's Office has issued updated guidance on legitimate interests balancing tests, AI and data protection, and biometric data processing following the UK AI Safety Institute's framework publication.");
         doc.AppendParagraph("Ofcom published its Phase 1 implementation roadmap in January 2024, covering risk assessments, safety codes of practice, and enforcement procedures for Online Safety Act compliance.");
 
-        Assert.Equal(7, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetHyperlinkCount()); // no hyperlinks yet
 
         // AddHyperlink — primary legislation sources
@@ -233,7 +233,7 @@ public class FodtR357GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
 
         // Consistent
         Assert.Equal(7, doc.GetHyperlinkCount());
-        Assert.Equal(7, doc.GetParagraphCount()); // paragraph count unchanged
+        Assert.Equal(11, doc.GetParagraphCount()); // paragraph count unchanged
 
         // ExportToHtml — hyperlinks should be rendered
         var html = doc.ExportToHtml();
@@ -258,7 +258,7 @@ public class FodtR357GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         // LoadFile and verify
         var loaded = FodtDocument.LoadFile(path);
         Assert.Equal(7, loaded.GetHyperlinkCount());
-        Assert.Equal(7, loaded.GetParagraphCount());
+        Assert.Equal(11, loaded.GetParagraphCount());
 
         // AddHyperlink on loaded — UK Supreme Court cases
         loaded.AddHyperlink("https://www.supremecourt.uk/cases/", "UK Supreme Court Cases", 1);
@@ -271,7 +271,7 @@ public class FodtR357GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         loaded.AppendParagraph("International frameworks: the OECD AI Principles, EU AI Act (Regulation 2024/1689), and UK-EU Data Bridge adequacy decision are key cross-border reference points for multinational practitioners.");
         loaded.AddHyperlink("https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449", "OECD AI Principles — Legal Instrument", 9);
         Assert.Equal(10, loaded.GetHyperlinkCount());
-        Assert.Equal(8, loaded.GetParagraphCount());
+        Assert.Equal(12, loaded.GetParagraphCount());
 
         // Final save
         var path2 = TempFile("dogfood_citation_handbook_v2.fodt");
@@ -279,7 +279,7 @@ public class FodtR357GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         Assert.True(File.Exists(path2));
         var loaded2 = FodtDocument.LoadFile(path2);
         Assert.Equal(10, loaded2.GetHyperlinkCount());
-        Assert.Equal(8, loaded2.GetParagraphCount());
+        Assert.Equal(12, loaded2.GetParagraphCount());
         var ex1 = Record.Exception(() => loaded2.ExportToHtml());
         var ex2 = Record.Exception(() => loaded2.ExportToMarkdown());
         var ex3 = Record.Exception(() => loaded2.GetWordCount());

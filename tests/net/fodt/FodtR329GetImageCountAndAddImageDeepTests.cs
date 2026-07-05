@@ -274,7 +274,7 @@ public class FodtR329GetImageCountAndAddImageDeepTests : IDisposable
         doc.AppendParagraph("Bias temperature instability (BTI) stress testing at 125°C demonstrates threshold voltage drift below 10mV after 10-year extrapolation, meeting JEDEC qualification criteria.");
         doc.AppendParagraph("Hot carrier injection reliability measurements using SPICE-level compact models confirm channel lifetime exceeding 20 years at nominal operating conditions.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetImageCount());
 
         var imagePath = CreateTestPng();

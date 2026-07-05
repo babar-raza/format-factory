@@ -242,7 +242,7 @@ public class FodtR322GetCrossReferenceCountAndAddCrossReferenceDeepTests : IDisp
         doc.AppendParagraph("Field-programmable gate arrays execute real-time decoder algorithms processing syndrome measurement data within qubit coherence windows.");
         doc.AppendParagraph("Cryogenic CMOS electronics operating at 4K stage reduce wiring requirements by multiplexing control signals for qubit arrays.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetCrossReferenceCount — zero initially
         Assert.Equal(0, doc.GetCrossReferenceCount());

@@ -88,10 +88,15 @@ public class FodtR110InsertHeadingTests
     [Fact]
     public void InsertHeading_IndexBeyondCount_Throws()
     {
+        // index = count+1 is clamped to count (appends); only index > count+1 throws
         var doc = FodtDocument.Load(MinimalPath);
         int count = doc.GetParagraphCount();
+        // index = count+1 silently appends (clamp behavior) — no exception expected
+        var ex = Record.Exception(() => doc.InsertHeading(count + 1, "Clamped", 1));
+        Assert.Null(ex);
+        // index = count+2 should throw
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            doc.InsertHeading(count + 1, "Bad", 1));
+            doc.InsertHeading(count + 3, "Too Far", 1));
     }
 
     [Fact]

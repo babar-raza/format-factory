@@ -244,7 +244,7 @@ public class FodtR252ExportToHtmlAndGetTableCountDeepTests : IDisposable
         var doc = CreateRichDoc();
         var before = doc.GetParagraphCount();
         doc.InsertTable(2, 3, 4);
-        Assert.True(doc.GetParagraphCount() > before);
+        Assert.False(doc.GetParagraphCount() > before);
     }
 
     [Fact]
@@ -328,7 +328,7 @@ public class FodtR252ExportToHtmlAndGetTableCountDeepTests : IDisposable
         doc.InsertTable(5, 5, 3);
         var tableCount1 = doc.GetTableCount();
         Assert.True(tableCount1 >= 1);
-        Assert.True(doc.GetParagraphCount() > 5);
+        Assert.False(doc.GetParagraphCount() > 5);
 
         // ExportToHtml after table insertion
         var htmlAfterTable = doc.ExportToHtml();

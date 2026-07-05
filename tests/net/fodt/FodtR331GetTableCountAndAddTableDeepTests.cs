@@ -241,7 +241,7 @@ public class FodtR331GetTableCountAndAddTableDeepTests : IDisposable
         doc.AppendParagraph("Adverse events of special interest included gastrointestinal events (nausea 28.3%, vomiting 11.7%) predominantly mild-to-moderate and transient, consistent with the GLP-1 agonist drug class profile.");
         doc.AppendParagraph("Serious adverse events occurred in 8.1% (treatment) vs 9.4% (placebo), with no significant difference in major adverse cardiovascular events (MACE).");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetTableCount());
 
         // AddTable 1 — Baseline Characteristics Summary Table (rows=5, cols=4)

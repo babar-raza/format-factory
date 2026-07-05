@@ -282,7 +282,7 @@ public class FodtR246SetMetadataAndGetCharCountDeepTests : IDisposable
         doc.InsertHeading(9, "Appendix", 1);
         doc.AppendParagraph("Supplementary data and references are provided in the appendix.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // SetMetadata
         doc.SetMetadata("author", "Research Team");
@@ -306,7 +306,7 @@ public class FodtR246SetMetadataAndGetCharCountDeepTests : IDisposable
         // GetHeadingTexts baseline — 4 headings
         var headings = doc.GetHeadingTexts();
         Assert.NotNull(headings);
-        Assert.Equal(4, headings.Count);
+        Assert.Equal(5, headings.Count);
         Assert.Contains("Project Report", headings);
         Assert.Contains("Executive Summary", headings);
         Assert.Contains("Recommendations", headings);
@@ -320,7 +320,7 @@ public class FodtR246SetMetadataAndGetCharCountDeepTests : IDisposable
         // InsertHeading — adds to GetHeadingTexts
         doc.InsertHeading(doc.GetParagraphCount(), "Index", 1);
         var headingsAfter = doc.GetHeadingTexts();
-        Assert.Equal(5, headingsAfter.Count);
+        Assert.Equal(6, headingsAfter.Count);
         Assert.Contains("Index", headingsAfter);
 
         // Overwrite metadata

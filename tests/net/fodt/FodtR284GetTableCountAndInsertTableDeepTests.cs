@@ -256,7 +256,7 @@ public class FodtR284GetTableCountAndInsertTableDeepTests : IDisposable
         doc.InsertHeading(6, "Integration Matrix", 2);
         doc.AppendParagraph("The integration matrix defines communication patterns between components.");
 
-        doc.InsertHeading(9, "Risk Assessment", 1);
+        doc.InsertHeading(doc.GetParagraphCount(), "Risk Assessment", 1);
         doc.AppendParagraph("Each component has been assessed for risk based on criticality and maturity.");
         doc.AppendParagraph("Risk levels are categorized as Low, Medium, High, and Critical.");
 

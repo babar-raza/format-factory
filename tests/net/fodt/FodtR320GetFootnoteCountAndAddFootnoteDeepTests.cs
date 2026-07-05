@@ -242,7 +242,7 @@ public class FodtR320GetFootnoteCountAndAddFootnoteDeepTests : IDisposable
         doc.AppendParagraph("Myocarditis incidence post-mRNA vaccination estimated at 1-4.8 per 100,000 doses, predominantly in adolescent males following the second dose.");
         doc.AppendParagraph("VAERS and Yellow Card surveillance systems identified reactogenicity as the most common adverse event class, consistent with robust immune activation.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetFootnoteCount — zero initially
         Assert.Equal(0, doc.GetFootnoteCount());

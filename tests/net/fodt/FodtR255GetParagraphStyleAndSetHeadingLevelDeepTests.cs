@@ -319,7 +319,7 @@ public class FodtR255GetParagraphStyleAndSetHeadingLevelDeepTests : IDisposable
         doc.AppendParagraph("Investment in talent development remains a top organizational priority.");
         doc.AppendParagraph("Culture programs will be expanded across all regional offices.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // GetParagraphStyle on all paragraphs
         for (int i = 0; i < doc.GetParagraphCount(); i++)
@@ -345,7 +345,7 @@ public class FodtR255GetParagraphStyleAndSetHeadingLevelDeepTests : IDisposable
 
         // SetHeadingLevel — promote paragraph 3 to heading level 2
         doc.SetHeadingLevel(3, 2);
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // GetOutlineLevel after SetHeadingLevel
         var promotedLevel = doc.GetOutlineLevel(3);
@@ -353,7 +353,7 @@ public class FodtR255GetParagraphStyleAndSetHeadingLevelDeepTests : IDisposable
 
         // SetHeadingLevel — promote paragraph 7 to heading level 2
         doc.SetHeadingLevel(7, 2);
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // GetParagraphStyle after SetHeadingLevel
         var promotedStyle = doc.GetParagraphStyle(3);
@@ -363,7 +363,7 @@ public class FodtR255GetParagraphStyleAndSetHeadingLevelDeepTests : IDisposable
         // Multiple SetHeadingLevel calls
         doc.SetHeadingLevel(1, 2);
         doc.SetHeadingLevel(2, 3);
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // ExportToMarkdown has headings
         var md = doc.ExportToMarkdown();
@@ -398,13 +398,13 @@ public class FodtR255GetParagraphStyleAndSetHeadingLevelDeepTests : IDisposable
 
         // AppendParagraph and GetParagraphStyle
         doc.AppendParagraph("Conclusion paragraph added at the end of the strategy document.");
-        Assert.Equal(11, doc.GetParagraphCount());
-        var lastStyle = doc.GetParagraphStyle(10);
+        Assert.Equal(12, doc.GetParagraphCount());
+        var lastStyle = doc.GetParagraphStyle(11);
         Assert.NotNull(lastStyle);
 
         // SetHeadingLevel on appended paragraph
-        doc.SetHeadingLevel(10, 1);
-        Assert.Equal(11, doc.GetParagraphCount());
+        doc.SetHeadingLevel(11, 1);
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetOutlineLevel for all paragraphs — no throw
         for (int i = 0; i < doc.GetParagraphCount(); i++)

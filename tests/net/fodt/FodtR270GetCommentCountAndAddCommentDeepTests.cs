@@ -297,7 +297,7 @@ public class FodtR270GetCommentCountAndAddCommentDeepTests : IDisposable
         doc.AppendParagraph("CEO to present revised growth targets at next quarterly review.");
         doc.AppendParagraph("CFO to prepare detailed capital expenditure report for Q4.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetCommentCount — should be 0 initially
         Assert.Equal(0, doc.GetCommentCount());

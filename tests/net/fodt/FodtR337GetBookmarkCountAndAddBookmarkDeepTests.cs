@@ -242,7 +242,7 @@ public class FodtR337GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("Error messages must identify the item in error and describe what the error is in text, using clear, plain English language following the GDS style guide. Inline validation should be provided where technically feasible for form fields exceeding three inputs.");
         doc.AppendParagraph("Time limits must include mechanisms to extend, adjust, or disable them, unless the time limit is a fundamental requirement or extends beyond 20 hours, in accordance with WCAG SC 2.2.1.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetBookmarkCount());
 
         // AddBookmark — navigation anchors for accessibility standards document

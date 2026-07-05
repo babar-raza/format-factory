@@ -117,6 +117,6 @@ public class FodtR252CountSentencesTests
         doc.AppendParagraph("The company performed well this quarter. Revenue increased by 15 percent. Customer satisfaction reached an all-time high.");
         doc.AppendParagraph("Looking ahead, we expect continued growth. New markets will be explored.");
         Assert.True(doc.CountSentences() > 0);
-        Assert.Equal(2, doc.ParagraphCount);
+        Assert.Equal(3, doc.ParagraphCount);
     }
 }

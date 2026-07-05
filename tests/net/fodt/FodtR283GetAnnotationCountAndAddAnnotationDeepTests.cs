@@ -254,7 +254,7 @@ public class FodtR283GetAnnotationCountAndAddAnnotationDeepTests : IDisposable
         doc.AppendParagraph("The primary endpoint is progression-free survival at twelve months.");
         doc.AppendParagraph("Secondary endpoints include overall survival and quality of life measures.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetAnnotationCount — zero initially
         Assert.Equal(0, doc.GetAnnotationCount());

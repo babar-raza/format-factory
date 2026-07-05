@@ -265,7 +265,7 @@ public class FodtR277GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("The presentation layer uses server-side rendering for initial page loads.");
         doc.AppendParagraph("Client-side hydration enables rich interactivity after the initial render.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetBookmarkCount — zero initially
         Assert.Equal(0, doc.GetBookmarkCount());

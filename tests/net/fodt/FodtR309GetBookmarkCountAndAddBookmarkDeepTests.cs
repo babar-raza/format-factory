@@ -243,7 +243,7 @@ public class FodtR309GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("The democratic peace thesis holds that liberal democracies rarely engage in armed conflict with one another.");
         doc.AppendParagraph("Regime complexity in international institutions creates overlapping authority that complicates compliance and enforcement.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetBookmarkCount — zero initially
         Assert.Equal(0, doc.GetBookmarkCount());

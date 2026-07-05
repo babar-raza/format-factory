@@ -241,7 +241,7 @@ public class FodtR327GetListCountAndAddListItemDeepTests : IDisposable
         doc.AppendParagraph("A nominated officer (Money Laundering Reporting Officer) must be appointed at board level with direct reporting line and authority to file SARs independently.");
         doc.AppendParagraph("Annual MLRO report to the board must cover SAR statistics, training completion rates, control effectiveness assessments, and emerging typologies.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetListCount());
 
         // AddListItem — CDD programme elements

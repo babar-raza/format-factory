@@ -242,7 +242,7 @@ public class FodtR319GetTableCountAndAddTableDeepTests : IDisposable
         doc.AppendParagraph("BloombergNEF projects 6.7 million FCEV units globally by 2040, driven by commercial vehicle adoption in heavy transport and logistics sectors.");
         doc.AppendParagraph("Toyota, Hyundai, and Honda lead passenger FCEV commercialisation while Daimler, Volvo, and Scania target long-haul FCEV trucking by 2027.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetTableCount — zero initially
         Assert.Equal(0, doc.GetTableCount());

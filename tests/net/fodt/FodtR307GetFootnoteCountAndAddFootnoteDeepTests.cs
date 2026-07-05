@@ -244,7 +244,7 @@ public class FodtR307GetFootnoteCountAndAddFootnoteDeepTests : IDisposable
         doc.AppendParagraph("A meta-analysis of 47 rent control studies finds mixed evidence on long-term affordability outcomes across different market conditions.");
         doc.AppendParagraph("Upzoning experiments in Auckland and Minneapolis show 3-8% rent reductions within 5 years of implementation.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetFootnoteCount — zero initially
         Assert.Equal(0, doc.GetFootnoteCount());

@@ -45,8 +45,7 @@ public class FodtR105DogfoodHtmlExportTests
     public void Dogfood_GetParagraphText_OutOfRange_ReturnsNull()
     {
         var doc = FodtDocument.Load(MinimalPath);
-        var text = doc.GetParagraphText(9999);
-        Assert.Null(text);
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(9999));
     }
 
     [Fact]

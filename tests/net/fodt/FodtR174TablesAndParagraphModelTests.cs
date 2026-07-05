@@ -100,8 +100,7 @@ public class FodtR174TablesAndParagraphModelTests
     {
         var doc = FodtDocument.CreateEmpty();
         doc.AppendParagraph("Text");
-        var text = doc.GetParagraphText(999);
-        Assert.Null(text);
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(999));
     }
 
     // -------------------------------------------------------------------------

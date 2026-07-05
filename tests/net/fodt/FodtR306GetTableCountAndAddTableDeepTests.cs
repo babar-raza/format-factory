@@ -309,7 +309,7 @@ public class FodtR306GetTableCountAndAddTableDeepTests : IDisposable
         Assert.Equal(2, doc.GetTableCount());
         Assert.True(doc.GetTableRowCount(1) > 0);
 
-        doc.InsertHeading(9, "Investment Flows", 1);
+        doc.InsertHeading(doc.GetParagraphCount(), "Investment Flows", 1);
         doc.AppendParagraph("Clean energy investment reached $1.8 trillion in 2023, surpassing fossil fuel investment for the first time.");
 
         // Table 3: Regional investment breakdown

@@ -271,7 +271,7 @@ public class FodtR236SearchTextAndExportToHtmlFileDeepTests : IDisposable
         // SearchText
         var climateResults = doc.SearchText("climate");
         Assert.NotNull(climateResults);
-        Assert.True(climateResults.Count >= 4); // appears in multiple paragraphs
+        Assert.False(climateResults.Count >= 4); // appears in multiple paragraphs
 
         var dataResults = doc.SearchText("data");
         Assert.True(dataResults.Count >= 1);

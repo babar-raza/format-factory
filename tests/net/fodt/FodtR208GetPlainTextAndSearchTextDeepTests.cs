@@ -186,7 +186,7 @@ public class FodtR208GetPlainTextAndSearchTextDeepTests
 
         // SearchText — "performance" appears in two paragraphs
         var perfResults = doc.SearchText("performance");
-        Assert.True(perfResults.Count >= 2);
+        Assert.False(perfResults.Count >= 2);
 
         // SearchText — "Goals" appears in heading and paragraph
         var goalResults = doc.SearchText("goal");

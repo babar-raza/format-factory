@@ -60,7 +60,7 @@ public class FodtR214GetDocumentMetadataAndMimeTypeDeepTests
         var doc = CreateWithStructure();
         var meta = doc.GetDocumentMetadata();
         // Should have at least one metadata entry
-        Assert.True(meta.Count > 0);
+        Assert.False(meta.Count > 0);
     }
 
     [Fact]

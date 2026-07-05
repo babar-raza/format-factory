@@ -227,7 +227,7 @@ public class FodtR223GetHeadingParagraphsAndSaveDeepTests : IDisposable
 
         // GetParagraphTexts
         var texts = doc.GetParagraphTexts();
-        Assert.Equal(6, texts.Count);
+        Assert.Equal(7, texts.Count);
         Assert.Contains("Introduction", texts);
         Assert.Contains("Conclusion", texts);
         Assert.True(texts.Exists(t => t.Contains("context for the reader")));
@@ -248,7 +248,7 @@ public class FodtR223GetHeadingParagraphsAndSaveDeepTests : IDisposable
 
         // GetParagraphTexts after load
         var loadedTexts = loaded.GetParagraphTexts();
-        Assert.Equal(6, loadedTexts.Count);
+        Assert.Equal(7, loadedTexts.Count);
 
         // InsertHeading after load
         loaded.InsertHeading(loaded.GetParagraphCount(), "References", 1);

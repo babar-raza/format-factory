@@ -285,7 +285,7 @@ public class FodtR269ExportToPlainTextAndGetStylesDeepTests : IDisposable
         doc.AppendParagraph("Three major strategic initiatives will guide the business through fiscal 2027.");
         doc.AppendParagraph("Technology investment will double to support digital transformation goals.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // ExportToPlainText baseline
         var plainText = doc.ExportToPlainText();

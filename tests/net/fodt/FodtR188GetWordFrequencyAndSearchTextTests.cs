@@ -155,7 +155,7 @@ public class FodtR188GetWordFrequencyAndSearchTextTests
     public void GetTextBetweenParagraphs_ContainsFirstParagraphText()
     {
         var doc = CreateWithParagraphs();
-        var text = doc.GetTextBetweenParagraphs(0, 0);
+        var text = doc.GetTextBetweenParagraphs(0, 1);
         Assert.Contains("quick", text);
     }
 

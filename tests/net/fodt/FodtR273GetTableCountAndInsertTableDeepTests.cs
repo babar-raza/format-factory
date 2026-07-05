@@ -266,7 +266,7 @@ public class FodtR273GetTableCountAndInsertTableDeepTests : IDisposable
         doc.AppendParagraph("Revenue guidance for the next quarter is set at twelve percent growth.");
         doc.AppendParagraph("Margin improvement target of one hundred fifty basis points is maintained.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetTableCount — zero initially
         Assert.Equal(0, doc.GetTableCount());

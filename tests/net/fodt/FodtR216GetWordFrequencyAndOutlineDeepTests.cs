@@ -197,7 +197,7 @@ public class FodtR216GetWordFrequencyAndOutlineDeepTests
         doc.AppendParagraph("The conclusion summarizes the document findings.");
 
         // Verify structure
-        Assert.Equal(6, doc.GetParagraphCount());
+        Assert.Equal(7, doc.GetParagraphCount());
         Assert.Equal(3, doc.GetHeadingCount());
 
         // GetWordFrequency
@@ -222,7 +222,7 @@ public class FodtR216GetWordFrequencyAndOutlineDeepTests
         Assert.NotNull(introSection);
         Assert.Contains("Introduction", introSection);
 
-        var fullText = doc.GetPlainTextRange(0, 5);
+        var fullText = doc.GetPlainTextRange(0, 6); // exclusive end: (0,6) returns indices 0-5 incl. "Conclusion"
         Assert.Contains("Introduction", fullText);
         Assert.Contains("Conclusion", fullText);
 

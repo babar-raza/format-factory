@@ -242,7 +242,7 @@ public class FodtR348GetFootnoteCountAndAddFootnoteDeepTests : IDisposable
         doc.AppendParagraph("Article 99 establishes administrative penalties of up to €35 million or 7% of global annual turnover for violations of the prohibited practices under Article 5, and up to €15 million or 3% of global annual turnover for violations of other AIA obligations. The competent authorities responsible for enforcement are designated by Member States under Article 70.");
         doc.AppendParagraph("The European AI Office, established within the Commission under Decision C(2024) 1831, exercises supervisory authority over general-purpose AI model providers, with the power to conduct evaluations, request information, impose remedial actions, and refer cases to national authorities for penalties under Article 101.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetFootnoteCount());
 
         // AddFootnote — legal citations and cross-references

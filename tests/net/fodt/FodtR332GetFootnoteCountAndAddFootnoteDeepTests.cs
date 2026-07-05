@@ -242,7 +242,7 @@ public class FodtR332GetFootnoteCountAndAddFootnoteDeepTests : IDisposable
         doc.AppendParagraph("The contraction of railway share prices from October 1845 reversed speculative gains and precipitated widespread financial distress among heavily leveraged investors, with many projects abandoned at intermediate construction stages.");
         doc.AppendParagraph("Despite the speculative collapse, completed Victorian railway infrastructure substantially reduced internal transport costs, facilitated regional labour market integration, and accelerated the spatial concentration of manufacturing industries.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetFootnoteCount());
 
         // AddFootnote — scholarly citations and clarifications

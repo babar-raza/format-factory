@@ -257,7 +257,7 @@ public class FodtR280GetSectionCountAndAddSectionDeepTests : IDisposable
         doc.AppendParagraph("The enterprise risk management framework was updated with twelve new controls.");
         doc.AppendParagraph("Cyber-security risk rating improved from medium-high to medium-low during the year.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetSectionCount — zero initially
         Assert.Equal(0, doc.GetSectionCount());

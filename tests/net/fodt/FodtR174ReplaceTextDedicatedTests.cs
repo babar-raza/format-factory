@@ -30,7 +30,7 @@ public class FodtR174ReplaceTextDedicatedTests
     {
         var doc = FodtDocument.CreateEmpty();
         doc.AppendParagraph("Some text");
-        Assert.Throws<ArgumentException>(() => doc.ReplaceText(null!, "new"));
+        Assert.Throws<ArgumentNullException>(() => doc.ReplaceText(null!, "new"));
     }
 
     [Fact]

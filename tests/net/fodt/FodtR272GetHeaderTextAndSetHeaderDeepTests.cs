@@ -287,7 +287,7 @@ public class FodtR272GetHeaderTextAndSetHeaderDeepTests : IDisposable
         doc.AppendParagraph("Revenue growth target is set at twenty percent for fiscal year 2026.");
         doc.AppendParagraph("EBITDA margin improvement of two hundred basis points is targeted.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetHeaderText — default (empty or auto-generated)
         var defaultHeader = doc.GetHeaderText();

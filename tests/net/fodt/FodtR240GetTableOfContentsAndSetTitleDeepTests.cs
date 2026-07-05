@@ -278,7 +278,7 @@ public class FodtR240GetTableOfContentsAndSetTitleDeepTests : IDisposable
         doc.AppendParagraph("Security protocols must comply with industry standards. All data must be encrypted.");
         doc.InsertHeading(7, "Timeline and Milestones", 2);
         doc.AppendParagraph("Phase one begins in January. Phase two follows in March. Final delivery is in June.");
-        doc.InsertHeading(10, "Budget Overview", 1);
+        doc.InsertHeading(doc.GetParagraphCount(), "Budget Overview", 1);
         doc.AppendParagraph("The total budget is one million dollars. Resources are allocated per phase.");
 
         // GetTableOfContents

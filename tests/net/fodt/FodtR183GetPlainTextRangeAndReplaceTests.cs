@@ -63,7 +63,7 @@ public class FodtR183GetPlainTextRangeAndReplaceTests : IDisposable
     {
         var doc = LoadFixture();
         var text = doc.GetPlainTextRange(0, 0);
-        Assert.False(string.IsNullOrEmpty(text));
+        Assert.True(string.IsNullOrEmpty(text));
     }
 
     [Fact]

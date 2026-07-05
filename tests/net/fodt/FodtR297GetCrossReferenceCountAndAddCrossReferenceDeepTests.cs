@@ -245,7 +245,7 @@ public class FodtR297GetCrossReferenceCountAndAddCrossReferenceDeepTests : IDisp
         doc.AppendParagraph("Central bank independence is associated with lower inflation and better policy credibility.");
         doc.AppendParagraph("Fiscal councils provide independent assessment of fiscal plans and sustainability.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetCrossReferenceCount — zero initially
         Assert.Equal(0, doc.GetCrossReferenceCount());

@@ -130,13 +130,13 @@ public class FodtR157FindParagraphsByStyleAndWordFrequencyTests
     {
         var doc = FodtDocument.CreateEmpty();
         doc.AppendParagraph("a an the quick fox");
-        // minLength=4 excludes "a", "an", "the" (3 chars)
+        // minLength=4 excludes words shorter than 4 chars: "a"(1), "an"(2), "the"(3), "fox"(3)
         var freq = doc.GetWordFrequency(minLength: 4);
         Assert.DoesNotContain("a", freq.Keys);
         Assert.DoesNotContain("an", freq.Keys);
         Assert.DoesNotContain("the", freq.Keys);
+        Assert.DoesNotContain("fox", freq.Keys); // fox has 3 chars, excluded by minLength=4
         Assert.Contains("quick", freq.Keys);
-        Assert.Contains("fox", freq.Keys);
     }
 
     [Fact]

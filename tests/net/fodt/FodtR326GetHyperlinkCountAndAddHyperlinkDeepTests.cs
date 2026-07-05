@@ -242,7 +242,7 @@ public class FodtR326GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         doc.AppendParagraph("Prohibited practices provisions entered force six months after publication; GPAI model obligations apply twelve months post-publication; full high-risk system obligations apply 36 months post-publication.");
         doc.AppendParagraph("Notified body accreditation, standardisation mandate execution (CEN/CENELEC), and national authority designation constitute the critical path for market readiness.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetHyperlinkCount — zero initially
         Assert.Equal(0, doc.GetHyperlinkCount());

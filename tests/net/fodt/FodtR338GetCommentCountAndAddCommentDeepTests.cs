@@ -242,7 +242,7 @@ public class FodtR338GetCommentCountAndAddCommentDeepTests : IDisposable
         doc.AppendParagraph("VR-NMS-001: System testing shall include 47 test cases covering all mode transitions in the NMTM-001, executed on target hardware (PowerPC 603e processor) at nominal and worst-case timing conditions.");
         doc.AppendParagraph("VR-NMS-002: Code coverage analysis using LDRA Testbed shall demonstrate 100% statement, decision, and MC/DC coverage across all NMS source modules before Stage 3 review submission.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetCommentCount());
 
         // AddComment — peer review annotations for DO-178C formal review

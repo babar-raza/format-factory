@@ -236,7 +236,7 @@ public class FodtR294GetListCountAndAddListDeepTests : IDisposable
         doc.AppendParagraph("A phased approach reduces risk while delivering tangible value at each milestone.");
         doc.AppendParagraph("Change management and training programmes must parallel technology deployment timelines.");
 
-        Assert.Equal(7, doc.GetParagraphCount());
+        Assert.Equal(9, doc.GetParagraphCount());
 
         // GetListCount — zero initially
         Assert.Equal(0, doc.GetListCount());

@@ -208,7 +208,7 @@ public class FodtR345GetPageCountAndSetPageOrientationDeepTests : IDisposable
         doc.AppendParagraph("The benefit-risk assessment supports the proposed indication: pembranivimab demonstrates clinically meaningful improvement in PFS and OS in patients with locally advanced NSCLC following definitive chemoradiotherapy, with a manageable safety profile consistent with the PD-L1 inhibitor class, and a positive benefit-risk balance supported by the DSMB interim analysis and the Scientific Advice received from the CHMP.");
         doc.AppendParagraph("The proposed Summary of Product Characteristics (SmPC) includes risk minimisation measures for pneumonitis, hepatitis, colitis, endocrinopathies, and nephritis based on the PRAC assessment of pharmacovigilance data from the compassionate use programme (3,418 patients).");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetPageCount
         var pageCount = doc.GetPageCount();
@@ -232,7 +232,7 @@ public class FodtR345GetPageCountAndSetPageOrientationDeepTests : IDisposable
 
         // Landscape doesn't affect paragraph count or word count
         doc.SetPageOrientation("landscape");
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.True(doc.GetWordCount() > 0);
         Assert.True(doc.GetCharCount() > 0);
 

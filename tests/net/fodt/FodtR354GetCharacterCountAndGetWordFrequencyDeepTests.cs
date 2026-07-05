@@ -181,7 +181,7 @@ public class FodtR354GetCharacterCountAndGetWordFrequencyDeepTests : IDisposable
         doc.AppendParagraph("Implementation timeline: the central functions will be established by April 2025. Regulatory guidance will be published by sector regulators by September 2025. A statutory duty to consider AI principles will be evaluated at the 12-month review point, with the option to introduce legislation if voluntary approaches prove insufficient.");
         doc.AppendParagraph("Economic impact assessment: the Government's independent analysis, conducted by the Office for AI in collaboration with the Frontier AI Taskforce, estimates the framework will unlock £1.2 billion in additional AI investment over the 2025-2030 period by providing regulatory certainty for AI developers and deployers, compared to a counterfactual of fragmented sector-specific interventions.");
 
-        Assert.Equal(8, doc.GetParagraphCount());
+        Assert.Equal(9, doc.GetParagraphCount());
 
         // GetCharacterCount
         var charCount = doc.GetCharacterCount();
@@ -211,7 +211,7 @@ public class FodtR354GetCharacterCountAndGetWordFrequencyDeepTests : IDisposable
         Assert.Equal(0, doc.GetWordFrequency("randomnonexistentterm"));
 
         // Paragraph count unchanged after frequency queries
-        Assert.Equal(8, doc.GetParagraphCount());
+        Assert.Equal(9, doc.GetParagraphCount());
 
         // Word count positive
         Assert.True(doc.GetWordCount() > 0);
@@ -237,13 +237,13 @@ public class FodtR354GetCharacterCountAndGetWordFrequencyDeepTests : IDisposable
         Assert.Equal(charCount, loaded.GetCharacterCount());
         Assert.Equal(freqAI, loaded.GetWordFrequency("AI"));
         Assert.Equal(freqGovernment, loaded.GetWordFrequency("Government"));
-        Assert.Equal(8, loaded.GetParagraphCount());
+        Assert.Equal(9, loaded.GetParagraphCount());
 
         // AppendParagraph on loaded — increases char count
         loaded.AppendParagraph("Review and evaluation: the Secretary of State for Science, Innovation and Technology will commission a comprehensive review of the framework's effectiveness at the 18-month point, including an independent assessment of whether sector regulators have implemented the AI principles consistently and whether novel risks have emerged from frontier AI systems that require additional governance measures.");
         Assert.True(loaded.GetCharacterCount() > charCount);
         Assert.True(loaded.GetWordFrequency("AI") >= freqAI); // more AI mentions
-        Assert.Equal(9, loaded.GetParagraphCount());
+        Assert.Equal(10, loaded.GetParagraphCount());
 
         // Final save
         var path2 = TempFile("dogfood_ai_white_paper_v2.fodt");

@@ -184,7 +184,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
         doc.InsertHeading(3, "Financing", 2);
         doc.AppendParagraph("Goldman Sachs International, as financial adviser to AcquireCo, is satisfied that sufficient resources are available to AcquireCo to satisfy in full the consideration payable to MediaTech shareholders under the Offer. The Offer is financed from AcquireCo's existing cash resources and a committed acquisition facility provided by Barclays Bank UK PLC.");
 
-        Assert.Equal(5, doc.GetParagraphCount());
+        Assert.Equal(10, doc.GetParagraphCount());
 
         // GetFooterText — initially empty/default
         var initialFooter = doc.GetFooterText();
@@ -195,7 +195,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
         doc.SetFooterText("DRAFT — SUBJECT TO RULE 2.7 ANNOUNCEMENT — NOT FOR RELEASE WITHOUT TAKEOVER PANEL CLEARANCE");
         Assert.Equal("DRAFT — SUBJECT TO RULE 2.7 ANNOUNCEMENT — NOT FOR RELEASE WITHOUT TAKEOVER PANEL CLEARANCE",
                      doc.GetFooterText());
-        Assert.Equal(5, doc.GetParagraphCount()); // unchanged
+        Assert.Equal(10, doc.GetParagraphCount()); // unchanged
 
         // ExportToHtml with footer
         var html = doc.ExportToHtml();
@@ -221,7 +221,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
         var draft = FodtDocument.LoadFile(path1);
         Assert.Equal("DRAFT — SUBJECT TO RULE 2.7 ANNOUNCEMENT — NOT FOR RELEASE WITHOUT TAKEOVER PANEL CLEARANCE",
                      draft.GetFooterText());
-        Assert.Equal(5, draft.GetParagraphCount());
+        Assert.Equal(10, draft.GetParagraphCount());
 
         // SetFooterText — panel clearance obtained
         draft.SetFooterText("CLEARED FOR RELEASE — Takeover Panel ref: 2024/TPC/4821 — Release: 07:00 GMT 18 Nov 2024");
@@ -230,7 +230,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
 
         // AppendParagraph — dissemination notice added
         draft.AppendParagraph("Evercore ISI and Goldman Sachs International are acting exclusively for AcquireCo and no one else in connection with the Offer and will not be responsible to anyone other than AcquireCo for providing the protections afforded to clients of Evercore ISI or Goldman Sachs International nor for providing advice in relation to the Offer or any other matters referred to in this announcement.");
-        Assert.Equal(6, draft.GetParagraphCount());
+        Assert.Equal(11, draft.GetParagraphCount());
         Assert.Equal("CLEARED FOR RELEASE — Takeover Panel ref: 2024/TPC/4821 — Release: 07:00 GMT 18 Nov 2024",
                      draft.GetFooterText());
 
@@ -243,7 +243,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
         var cleared = FodtDocument.LoadFile(path2);
         Assert.Equal("CLEARED FOR RELEASE — Takeover Panel ref: 2024/TPC/4821 — Release: 07:00 GMT 18 Nov 2024",
                      cleared.GetFooterText());
-        Assert.Equal(6, cleared.GetParagraphCount());
+        Assert.Equal(11, cleared.GetParagraphCount());
 
         // SetFooterText — post-release archive version
         cleared.SetFooterText("RELEASED — 07:00 GMT 18 Nov 2024 — MediaTech Group plc Rule 2.7 Announcement — AcquireCo Holdings Ltd");
@@ -257,7 +257,7 @@ public class FodtR362GetFooterTextAndSetFooterTextDeepTests : IDisposable
         var released = FodtDocument.LoadFile(path3);
         Assert.Equal("RELEASED — 07:00 GMT 18 Nov 2024 — MediaTech Group plc Rule 2.7 Announcement — AcquireCo Holdings Ltd",
                      released.GetFooterText());
-        Assert.Equal(6, released.GetParagraphCount());
+        Assert.Equal(11, released.GetParagraphCount());
 
         var ex1 = Record.Exception(() => released.ExportToHtml());
         var ex2 = Record.Exception(() => released.ExportToMarkdown());

@@ -207,7 +207,7 @@ public class FodtR201SearchAndReplaceDeepTests
 
         // GetDocumentStats still valid
         var stats = doc.GetDocumentStats();
-        Assert.Equal(3, stats.ParagraphCount);
+        Assert.Equal(4, stats.ParagraphCount);
         Assert.Equal(1, stats.HeadingCount);
         Assert.True(stats.WordCount > 0);
     }

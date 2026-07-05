@@ -105,8 +105,7 @@ public class FodtR181ParagraphSetTextTests
     public void GetParagraphText_OOBIndex_ReturnsNull()
     {
         var doc = LoadFixture();
-        var text = doc.GetParagraphText(999);
-        Assert.Null(text);
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(999));
     }
 
     // -------------------------------------------------------------------------

@@ -77,7 +77,7 @@ public class FodtR173GetPlainTextAndReplaceTextTests
         doc.AppendParagraph("First");
         doc.AppendParagraph("Second");
         doc.AppendParagraph("Third");
-        var text = doc.GetPlainTextRange(1, 1);
+        var text = doc.GetPlainTextRange(1, 2); // exclusive end: (1,2) returns index 1 = "Second"
         Assert.Contains("Second", text);
     }
 
@@ -88,7 +88,7 @@ public class FodtR173GetPlainTextAndReplaceTextTests
         doc.AppendParagraph("Para A");
         doc.AppendParagraph("Para B");
         doc.AppendParagraph("Para C");
-        var text = doc.GetPlainTextRange(0, 1);
+        var text = doc.GetPlainTextRange(0, 2); // exclusive end: (0,2) returns indices 0,1 = "Para A","Para B"
         Assert.Contains("Para A", text);
         Assert.Contains("Para B", text);
     }

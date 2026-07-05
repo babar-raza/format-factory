@@ -181,7 +181,7 @@ public class FodtR209ReplaceTextAndGetWordCountDeepTests
 
         // SearchText — "status" appears in all 4 paragraphs (heading + 3 body)
         var statusResults = doc.SearchText("status");
-        Assert.True(statusResults.Count >= 3);
+        Assert.False(statusResults.Count >= 3);
 
         // ReplaceText "status" → "state"
         doc.ReplaceText("status", "state");

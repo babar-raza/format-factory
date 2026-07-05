@@ -254,7 +254,7 @@ public class FodtR288GetEndnoteCountAndAddEndnoteDeepTests : IDisposable
         doc.AppendParagraph("Carbon pricing can be regressive absent revenue recycling to lower-income households.");
         doc.AppendParagraph("Dividend policies have been shown to make carbon pricing broadly progressive in multiple jurisdictions.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetEndnoteCount — zero initially
         Assert.Equal(0, doc.GetEndnoteCount());

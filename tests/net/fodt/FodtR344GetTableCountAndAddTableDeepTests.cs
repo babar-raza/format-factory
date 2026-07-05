@@ -252,7 +252,7 @@ public class FodtR344GetTableCountAndAddTableDeepTests : IDisposable
         doc.AppendParagraph("The Defect Reporting, Analysis and Corrective Action System (DRACAS) records 312 field reliability events in the reporting period. Mean Time Between Failures (MTBF) achieved was 847 hours against the contractual target of 800 hours, representing 5.9% margin above target.");
         doc.AppendParagraph("Corrective Action Reports (CARs) issued: 7 open CARs from prior period, 12 new CARs raised, 9 CARs closed. 3 CARs escalated to Defect Investigation Reports (DIRs) for systemic engineering root cause analysis. DIR-2024-003 (fuel system vapour lock) remains open pending contractor design authority response.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetTableCount());
 
         // AddTable — contract performance data tables

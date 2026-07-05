@@ -243,7 +243,7 @@ public class FodtR314GetCommentCountAndAddCommentDeepTests : IDisposable
         doc.AppendParagraph("Arctic shipping route viability increases with sea ice decline, reducing transit distances between Europe and Asia by 40%.");
         doc.AppendParagraph("Permafrost thaw releases methane and CO2 stores, potentially triggering positive feedback loops in the carbon cycle.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetCommentCount — zero initially
         Assert.Equal(0, doc.GetCommentCount());

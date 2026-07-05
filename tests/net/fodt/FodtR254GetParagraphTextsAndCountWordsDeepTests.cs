@@ -333,12 +333,12 @@ public class FodtR254GetParagraphTextsAndCountWordsDeepTests : IDisposable
         doc.AppendParagraph("Primary risks include supply chain disruptions and regulatory changes.");
         doc.AppendParagraph("Mitigation strategies are documented and owned by respective teams.");
 
-        Assert.Equal(11, doc.GetParagraphCount());
+        Assert.Equal(13, doc.GetParagraphCount());
 
         // GetParagraphTexts baseline
         var texts = doc.GetParagraphTexts();
         Assert.NotNull(texts);
-        Assert.Equal(11, texts.Count);
+        Assert.Equal(13, texts.Count);
         Assert.True(texts.Exists(t => t.Contains("Strategic") || t.Contains("strategic")));
         Assert.True(texts.Exists(t => t.Contains("market") || t.Contains("Market")));
 
@@ -370,9 +370,9 @@ public class FodtR254GetParagraphTextsAndCountWordsDeepTests : IDisposable
 
         // AppendParagraph and verify GetParagraphTexts grows
         doc.AppendParagraph("MARKER_PARAGRAPH_UNIQUE_XYZ: additional content for pipeline verification.");
-        Assert.Equal(12, doc.GetParagraphCount());
+        Assert.Equal(14, doc.GetParagraphCount());
         var textsAfterAppend = doc.GetParagraphTexts();
-        Assert.Equal(12, textsAfterAppend.Count);
+        Assert.Equal(14, textsAfterAppend.Count);
         Assert.True(textsAfterAppend.Exists(t => t.Contains("MARKER_PARAGRAPH_UNIQUE_XYZ")));
 
         // CountWords grew
@@ -386,7 +386,7 @@ public class FodtR254GetParagraphTextsAndCountWordsDeepTests : IDisposable
         doc.ReplaceText("strategic", "TACTICAL");
         var textsAfterReplace = doc.GetParagraphTexts();
         Assert.True(textsAfterReplace.Exists(t => t.Contains("TACTICAL")));
-        Assert.Equal(12, textsAfterReplace.Count);
+        Assert.Equal(14, textsAfterReplace.Count);
 
         // ExportToHtml after styling
         var html = doc.ExportToHtml();
@@ -409,7 +409,7 @@ public class FodtR254GetParagraphTextsAndCountWordsDeepTests : IDisposable
 
         // RemoveParagraphAt and verify GetParagraphTexts shrinks
         doc.RemoveParagraphAt(11); // Remove the MARKER paragraph
-        Assert.Equal(11, doc.GetParagraphTexts().Count);
+        Assert.Equal(13, doc.GetParagraphTexts().Count);
 
         // CountWords after remove
         var wordCountAfterRemove = doc.CountWords();

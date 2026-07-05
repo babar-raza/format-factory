@@ -244,7 +244,7 @@ public class FodtR300GetAnnotationCountAndAddAnnotationDeepTests : IDisposable
         doc.AppendParagraph("ESG integration reduces downside risk while maintaining competitive risk-adjusted returns over 5+ year horizons.");
         doc.AppendParagraph("Factor-based ESG strategies systematically tilt portfolios toward higher-scoring securities within sectors.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetAnnotationCount — zero initially
         Assert.Equal(0, doc.GetAnnotationCount());

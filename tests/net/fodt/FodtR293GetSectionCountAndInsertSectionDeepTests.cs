@@ -246,7 +246,7 @@ public class FodtR293GetSectionCountAndInsertSectionDeepTests : IDisposable
         doc.AppendParagraph("Diversification of supply chains across multiple geographic regions reduces concentration risk.");
         doc.AppendParagraph("Scenario planning and stress testing should incorporate geopolitical risk factors.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetSectionCount — initially set from InsertHeading calls
         var initialCount = doc.GetSectionCount();

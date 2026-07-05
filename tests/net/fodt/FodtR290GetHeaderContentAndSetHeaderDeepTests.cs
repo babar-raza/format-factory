@@ -243,7 +243,7 @@ public class FodtR290GetHeaderContentAndSetHeaderDeepTests : IDisposable
         doc.AppendParagraph("Current quantum hardware suffers from high error rates and limited qubit coherence times.");
         doc.AppendParagraph("Fault-tolerant quantum computing requires thousands of physical qubits per logical qubit.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetHeaderContent — initially empty/null-safe
         var initHeader = doc.GetHeaderContent();

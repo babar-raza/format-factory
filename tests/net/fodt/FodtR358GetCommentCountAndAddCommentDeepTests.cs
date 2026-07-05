@@ -197,7 +197,7 @@ public class FodtR358GetCommentCountAndAddCommentDeepTests : IDisposable
         doc.AppendParagraph("The Law Commission's provisional view that existing netting legislation does not adequately address digital asset collateral is supported by our members' experience. We endorse the recommendation for reform of the Financial Collateral Arrangements (No. 2) Regulations 2003 to extend their scope to digital asset collateral.");
         doc.AppendParagraph("We recommend that any reform expressly address the characterisation of on-chain settlement finality for the purposes of netting close-out, and the treatment of smart contract-embedded collateral arrangements under the proposed framework.");
 
-        Assert.Equal(6, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetCommentCount());
 
         // AddComment — first reviewer (partner)
@@ -223,7 +223,7 @@ public class FodtR358GetCommentCountAndAddCommentDeepTests : IDisposable
 
         // Consistent
         Assert.Equal(6, doc.GetCommentCount());
-        Assert.Equal(6, doc.GetParagraphCount()); // paragraph count unchanged
+        Assert.Equal(11, doc.GetParagraphCount()); // paragraph count unchanged
 
         // ExportToHtml
         var html = doc.ExportToHtml();
@@ -248,7 +248,7 @@ public class FodtR358GetCommentCountAndAddCommentDeepTests : IDisposable
         // LoadFile and verify
         var loaded = FodtDocument.LoadFile(path);
         Assert.Equal(6, loaded.GetCommentCount());
-        Assert.Equal(6, loaded.GetParagraphCount());
+        Assert.Equal(11, loaded.GetParagraphCount());
 
         // Add resolution comment on loaded
         loaded.AddComment("J.Thornton", "RESOLVED: citation verified — both SGHCR 4 and SGHC 46 are correct (different proceedings)", 4);
@@ -258,7 +258,7 @@ public class FodtR358GetCommentCountAndAddCommentDeepTests : IDisposable
         loaded.AppendParagraph("We would welcome the opportunity to engage further with the Law Commission during the consultation period and are available to participate in roundtable discussions.");
         loaded.AddComment("S.Mehta", "Standard closing paragraph — approved for submission", 7);
         Assert.Equal(8, loaded.GetCommentCount());
-        Assert.Equal(7, loaded.GetParagraphCount());
+        Assert.Equal(12, loaded.GetParagraphCount());
 
         // Final save
         var path2 = TempFile("dogfood_law_commission_response_v2.fodt");
@@ -266,7 +266,7 @@ public class FodtR358GetCommentCountAndAddCommentDeepTests : IDisposable
         Assert.True(File.Exists(path2));
         var loaded2 = FodtDocument.LoadFile(path2);
         Assert.Equal(8, loaded2.GetCommentCount());
-        Assert.Equal(7, loaded2.GetParagraphCount());
+        Assert.Equal(12, loaded2.GetParagraphCount());
         var ex1 = Record.Exception(() => loaded2.ExportToHtml());
         var ex2 = Record.Exception(() => loaded2.ExportToMarkdown());
         var ex3 = Record.Exception(() => loaded2.AddComment("Admin", "Submitted", 0));

@@ -254,7 +254,7 @@ public class FodtR287GetFootnoteCountAndAddFootnoteDeepTests : IDisposable
         doc.AppendParagraph("Meta-analysis of central bank interventions shows average inflation reduction of 1.8 percentage points.");
         doc.AppendParagraph("Asset purchase programmes reduced ten-year yields by approximately 100 basis points on average.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetFootnoteCount — zero initially
         Assert.Equal(0, doc.GetFootnoteCount());

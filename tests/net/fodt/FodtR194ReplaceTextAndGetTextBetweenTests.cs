@@ -116,7 +116,7 @@ public class FodtR194ReplaceTextAndGetTextBetweenTests
     public void GetTextBetweenParagraphs_SingleParagraph()
     {
         var doc = CreateWithContent();
-        var text = doc.GetTextBetweenParagraphs(2, 2);
+        var text = doc.GetTextBetweenParagraphs(2, 3); // exclusive end: (2,3) returns index 2 = Carol
         Assert.Contains("Carol", text);
     }
 
@@ -145,7 +145,7 @@ public class FodtR194ReplaceTextAndGetTextBetweenTests
     public void GetPlainTextRange_ContainsExpectedText()
     {
         var doc = CreateWithContent();
-        var text = doc.GetPlainTextRange(0, 0);
+        var text = doc.GetPlainTextRange(0, 1); // exclusive end: (0,1) returns index 0 = Alice
         Assert.Contains("Alice", text);
     }
 
@@ -163,8 +163,8 @@ public class FodtR194ReplaceTextAndGetTextBetweenTests
     public void GetPlainTextRange_Subset_OnlyContainsRange()
     {
         var doc = CreateWithContent();
-        // Range 0..0 is only Alice's paragraph
-        var text = doc.GetPlainTextRange(0, 0);
+        // Range 0..1 (exclusive) is only Alice's paragraph (index 0)
+        var text = doc.GetPlainTextRange(0, 1);
         Assert.Contains("Alice", text);
     }
 
@@ -173,7 +173,7 @@ public class FodtR194ReplaceTextAndGetTextBetweenTests
     {
         var doc = CreateWithContent();
         doc.ReplaceText("Alice", "Alicia");
-        var text = doc.GetPlainTextRange(0, 0);
+        var text = doc.GetPlainTextRange(0, 1); // exclusive end: returns index 0 = Alicia's paragraph
         Assert.Contains("Alicia", text);
         Assert.DoesNotContain("Alice", text);
     }
@@ -201,14 +201,14 @@ public class FodtR194ReplaceTextAndGetTextBetweenTests
         Assert.Contains("chapter:", allText);
         Assert.DoesNotContain("section:", allText);
 
-        // GetTextBetweenParagraphs 0..1
-        var firstTwo = doc.GetTextBetweenParagraphs(0, 1);
+        // GetTextBetweenParagraphs 0..2 (exclusive end: returns indices 0,1 = introduction+methods)
+        var firstTwo = doc.GetTextBetweenParagraphs(0, 2);
         Assert.Contains("introduction", firstTwo);
         Assert.Contains("methods", firstTwo);
         Assert.DoesNotContain("results", firstTwo);
 
-        // GetPlainTextRange 2..3
-        var lastTwo = doc.GetPlainTextRange(2, 3);
+        // GetPlainTextRange 2..4 (exclusive end: returns indices 2,3 = results+conclusion)
+        var lastTwo = doc.GetPlainTextRange(2, 4);
         Assert.Contains("results", lastTwo);
         Assert.Contains("conclusion", lastTwo);
         Assert.DoesNotContain("introduction", lastTwo);

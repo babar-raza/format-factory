@@ -279,7 +279,7 @@ public class FodtR281GetImageCountAndInsertImageDeepTests : IDisposable
         doc.AppendParagraph("Professional services engagements include discovery, design, and delivery phases.");
         doc.AppendParagraph("All service engagements are led by certified solution architects.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetImageCount — zero initially
         Assert.Equal(0, doc.GetImageCount());

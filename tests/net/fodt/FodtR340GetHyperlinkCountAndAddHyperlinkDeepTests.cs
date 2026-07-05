@@ -242,7 +242,7 @@ public class FodtR340GetHyperlinkCountAndAddHyperlinkDeepTests : IDisposable
         doc.AppendParagraph("All screening decisions, data extraction forms, and statistical analysis code are deposited in the Open Science Framework repository with pre-registration of the analysis plan.");
         doc.AppendParagraph("Requests for individual patient data from included studies should be directed to the corresponding author of each included trial; meta-analysis code is available under MIT licence.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetHyperlinkCount());
 
         // AddHyperlink — bibliography links

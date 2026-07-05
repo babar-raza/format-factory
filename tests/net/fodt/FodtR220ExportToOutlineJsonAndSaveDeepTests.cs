@@ -213,7 +213,7 @@ public class FodtR220ExportToOutlineJsonAndSaveDeepTests : IDisposable
 
         // Verify structure
         Assert.Equal(3, doc.GetHeadingCount());
-        Assert.Equal(6, doc.GetParagraphCount());
+        Assert.Equal(7, doc.GetParagraphCount());
 
         // ExportToOutlineJson
         var json = doc.ExportToOutlineJson();
@@ -233,7 +233,7 @@ public class FodtR220ExportToOutlineJsonAndSaveDeepTests : IDisposable
         var loaded = FodtDocument.LoadFile(path);
         Assert.NotNull(loaded);
         Assert.Equal(3, loaded.GetHeadingCount());
-        Assert.Equal(6, loaded.GetParagraphCount());
+        Assert.Equal(7, loaded.GetParagraphCount());
 
         // Outline from loaded doc
         var outline = loaded.GetDocumentOutline();

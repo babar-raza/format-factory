@@ -89,10 +89,11 @@ public class FodtR130ExportToMarkdownDeepHeadingsTests
         doc.AppendHeading("Not Top Level", level: 4);
 
         var md = doc.ExportToMarkdown();
-        // Should not start with a single # (which would be H1)
-        Assert.DoesNotContain("\n# Not Top Level", md);
-        Assert.DoesNotContain("## Not Top Level", md);
-        Assert.DoesNotContain("### Not Top Level", md);
+        // H4 heading should produce #### prefix
+        Assert.Contains("#### Not Top Level", md);
+        // Should not produce # (H1) prefix alone — be careful: ## is substring of ####
+        // So only check for standalone H1 prefix
+        Assert.DoesNotContain("# Not Top Level", md.Replace("####", "    ").Replace("###", "   ").Replace("##", "  "));
     }
 
     // ---- Mixed shallow + deep heading document ----

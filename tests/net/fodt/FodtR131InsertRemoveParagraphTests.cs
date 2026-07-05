@@ -43,7 +43,7 @@ public class FodtR131InsertRemoveParagraphTests
         var doc = FodtDocument.CreateEmpty();
         doc.AppendParagraph("Only one");
 
-        Assert.Null(doc.GetParagraphText(5));
+        Assert.ThrowsAny<Exception>(() => doc.GetParagraphText(5));
     }
 
     // ---- SetParagraphText: in-place replacement ----

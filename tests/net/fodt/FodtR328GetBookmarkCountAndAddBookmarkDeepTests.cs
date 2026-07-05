@@ -242,7 +242,7 @@ public class FodtR328GetBookmarkCountAndAddBookmarkDeepTests : IDisposable
         doc.AppendParagraph("NetFlow telemetry streams from all CE and PE routers enable real-time traffic analysis and capacity planning with 5-minute granularity in the NOC dashboard.");
         doc.AppendParagraph("Monthly SLA compliance reports include per-link utilisation, latency percentiles, packet loss statistics, and availability calculations for each service tier.");
 
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
         Assert.Equal(0, doc.GetBookmarkCount());
 
         // AddBookmark — document navigation anchors

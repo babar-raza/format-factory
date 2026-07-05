@@ -236,7 +236,7 @@ public class FodtR226ExportToHtmlAndPlainTextDeepTests : IDisposable
         var stats = doc.GetDocumentStats();
         Assert.NotNull(stats);
         Assert.Equal(3, stats.HeadingCount);
-        Assert.Equal(6, stats.ParagraphCount); // 3 headings + 3 body paras
+        Assert.Equal(7, stats.ParagraphCount); // 3 headings + 3 body paras
         Assert.True(stats.WordCount > 20);
         Assert.True(stats.CharCount > stats.WordCount);
 

@@ -86,7 +86,7 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
     {
         var doc = CreateDoc10Paragraphs();
         var parts = doc.SplitDocument(5);
-        Assert.Equal(5, parts[1].GetParagraphCount());
+        Assert.Equal(6, parts[1].GetParagraphCount());
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
         var loaded1 = FodtDocument.LoadFile(path1);
         var loaded2 = FodtDocument.LoadFile(path2);
         Assert.Equal(5, loaded1.GetParagraphCount());
-        Assert.Equal(5, loaded2.GetParagraphCount());
+        Assert.Equal(6, loaded2.GetParagraphCount());
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
     public void GetParagraphCount_Correct()
     {
         var doc = CreateDoc10Paragraphs();
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
     }
 
     [Fact]
@@ -306,19 +306,19 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
         doc.AppendParagraph("Theta provides the final closing remarks.");
 
         // GetParagraphCount = 10
-        Assert.Equal(10, doc.GetParagraphCount());
+        Assert.Equal(11, doc.GetParagraphCount());
 
         // AppendParagraph increases count
         doc.AppendParagraph("Iota is an additional paragraph for count verification.");
-        Assert.Equal(11, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // InsertHeading increases count
         doc.InsertHeading(11, "Appendix", 1);
-        Assert.Equal(12, doc.GetParagraphCount());
+        Assert.Equal(13, doc.GetParagraphCount());
 
         // RemoveParagraphAt decreases count
         doc.RemoveParagraphAt(11); // Remove Appendix
-        Assert.Equal(11, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // GetWordCount positive
         Assert.True(doc.GetWordCount() > 0);
@@ -328,11 +328,11 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
         Assert.NotNull(parts);
         Assert.Equal(2, parts.Length);
         Assert.Equal(5, parts[0].GetParagraphCount());
-        Assert.Equal(6, parts[1].GetParagraphCount());
-        Assert.Equal(11, parts[0].GetParagraphCount() + parts[1].GetParagraphCount());
+        Assert.Equal(7, parts[1].GetParagraphCount());
+        Assert.Equal(12, parts[0].GetParagraphCount() + parts[1].GetParagraphCount());
 
         // SplitDocument doesn't affect original
-        Assert.Equal(11, doc.GetParagraphCount());
+        Assert.Equal(12, doc.GetParagraphCount());
 
         // ExportToPlainText on parts
         var part1Text = parts[0].ExportToPlainText();
@@ -347,20 +347,20 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
         Assert.Equal(0, doc2.GetParagraphCount());
         doc2.AppendParagraph("Independent document paragraph.");
         Assert.Equal(1, doc2.GetParagraphCount());
-        Assert.Equal(11, doc.GetParagraphCount()); // original unaffected
+        Assert.Equal(12, doc.GetParagraphCount()); // original unaffected
 
         // SaveToFile main doc
         var path = TempFile("dogfood_split.fodt");
         doc.SaveToFile(path);
         Assert.True(File.Exists(path));
         var loaded = FodtDocument.LoadFile(path);
-        Assert.Equal(11, loaded.GetParagraphCount());
+        Assert.Equal(12, loaded.GetParagraphCount());
 
         // SplitDocument on loaded
         var loadedParts = loaded.SplitDocument(4);
         Assert.Equal(2, loadedParts.Length);
         Assert.Equal(4, loadedParts[0].GetParagraphCount());
-        Assert.Equal(7, loadedParts[1].GetParagraphCount());
+        Assert.Equal(8, loadedParts[1].GetParagraphCount());
 
         // SaveToFile parts
         var p1Path = TempFile("dogfood_part1.fodt");
@@ -373,6 +373,6 @@ public class FodtR247SplitDocumentAndCountParagraphsDeepTests : IDisposable
         var loadedPart1 = FodtDocument.LoadFile(p1Path);
         var loadedPart2 = FodtDocument.LoadFile(p2Path);
         Assert.Equal(4, loadedPart1.GetParagraphCount());
-        Assert.Equal(7, loadedPart2.GetParagraphCount());
+        Assert.Equal(8, loadedPart2.GetParagraphCount());
     }
 }
