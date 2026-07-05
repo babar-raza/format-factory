@@ -55,6 +55,19 @@ public static class MarkdownWriter
     }
 
     /// <summary>
+    /// Return <paramref name="lines"/> joined with LF as a string.
+    /// Null entries become empty strings.
+    /// </summary>
+    public static string WriteLines(IEnumerable<string?> lines)
+    {
+        ArgumentNullException.ThrowIfNull(lines);
+        var parts = new List<string>();
+        foreach (var line in lines)
+            parts.Add(line ?? string.Empty);
+        return string.Join("\n", parts);
+    }
+
+    /// <summary>
     /// Write <paramref name="lines"/> joined with LF to <paramref name="path"/>.
     /// Creates parent directories as needed. UTF-8, no BOM.
     /// </summary>
