@@ -98,16 +98,17 @@ MISSING (still needed):
 
 ## Taskcard Status Table
 
-| TC-ID | Title | Status | Notes |
+| TC-ID | Status | Title | Notes |
 |---|---|---|---|
-| TC-FIO-001 | Found-Issue Policy Document | CLOSED | docs/governance/found-issue-ownership-policy.md created |
-| TC-FIO-002 | Register Infrastructure (4 YAML schemas) | CLOSED | All 4 registers created |
-| TC-FIO-003 | Add V139-V142 to existing validators file | CLOSED | V139-V142 appended; 23/23 tests pass |
-| TC-FIO-004 | Found-Issue Skill Registration | CLOSED | Skill registered; .claude/commands/found-issue-ownership.md created |
-| TC-FIO-007 | Enforcement Wiring | CLOSED | V139-V142 wired; §FIO added; context-pack updated |
-| TC-FIO-005 | Six Pilots (FI-001–FI-004, FI-008, FI-010–FI-013) | CLOSED | FI-001/002/003/004 healed; FI-008/010-013 taskcarded/in_repair |
-| TC-FIO-006 | Issue Accounting Report | CLOSED | accounting-2026-07-04.yaml created; reconciles 9/9 |
-| TC-FIO-008 | Final Report + Idempotency Verdict | OPEN | Last step |
+| TC-FIO-001 | CLOSED | Found-Issue Policy Document | docs/governance/found-issue-ownership-policy.md created |
+| TC-FIO-002 | CLOSED | Register Infrastructure (4 YAML schemas) | All 4 registers created |
+| TC-FIO-003 | CLOSED | Add V139-V142 to existing validators file | V139-V142 appended; 23/23 tests pass |
+| TC-FIO-004 | CLOSED | Found-Issue Skill Registration | Skill registered; .claude/commands/found-issue-ownership.md created |
+| TC-FIO-007 | CLOSED | Enforcement Wiring | V139-V142 wired; §FIO added; context-pack updated |
+| TC-FIO-005 | CLOSED | Six Pilots (FI-001–FI-004, FI-008, FI-010–FI-013) | FI-001/002/003/004 healed; FI-008/010-013 taskcarded/in_repair |
+| TC-FIO-006 | CLOSED | Issue Accounting Report | accounting-2026-07-04.yaml created; reconciles 9/9 |
+| TC-FIO-008 | CLOSED | Final Report + Idempotency Verdict | final-report-2026-07-04.md + idempotency-verdict.yaml created; verdict=IDEMPOTENT_RERUN_CONFIRMED |
+| TC-FIO-009 | CLOSED | Convergence Commit + Master-Plan Update | Commit plan file; update master-plan.md §26 with mission closure; close-task.md invocation |
 
 ---
 

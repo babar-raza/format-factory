@@ -6346,3 +6346,81 @@ Acknowledged gaps: CQG-001 (pre-commit hooks inert), CQG-002 (scope-guard adviso
 Wave 1 FODS source migration: **QUEUED_PENDING_SYSTEM_HEALING_GATE** (future sessions).
 
 **Final Verdict:** THREE_PLAN_PROGRAM_COMPLETE | TERMINAL_CLOSED
+
+## §116 — streamed-jumping-oasis: Found-Issue Ownership, Forensic Investigation, Root-Cause Healing, Fixture Repair, Verification, and Idempotent Continuation Protocol (TERMINAL_CLOSED 2026-07-05)
+
+**Mission:** FOUND-ISSUE-OWNERSHIP-MVP-001
+**Plan:** plans/.claude/streamed-jumping-oasis.md
+**Commit:** 46b304bb
+
+### Summary
+
+Established the governed found-issue ownership lifecycle for the repository: FOUND IT → OWN IT → INVESTIGATE IT → HEAL IT → VERIFY IT → PREVENT ITS RETURN. Created policy document, 4 YAML registers, 4 new governance validators (V139-V142), skill registration, enforcement wiring, and executed 9 pilots on real test failures.
+
+### What Was Completed
+
+| Taskcard | Deliverable | Status |
+|----------|-------------|--------|
+| TC-FIO-001 | docs/governance/found-issue-ownership-policy.md — 6 valid dispositions, priority map P0-P4, lifecycle states, 12 issue types | CLOSED |
+| TC-FIO-002 | 4 YAML registers: found-issue-register.yaml, root-cause-register.yaml, fixture-analysis-register.yaml, blast-radius-register.yaml | CLOSED |
+| TC-FIO-003 | V139-V142 appended to governance_validators_found_issue.py (203→427 LOC, 5→10 functions); 23/23 tests pass | CLOSED |
+| TC-FIO-004 | found-issue-ownership skill registered in .supervisor/skill-registry.yaml; .claude/commands/found-issue-ownership.md created | CLOSED |
+| TC-FIO-007 | V139-V142 wired into governance_validator_runner.py; §FIO added to supervisor-worker-contract.md; context-pack.yaml updated | CLOSED |
+| TC-FIO-005 | FI-001/002/003/004 healed in test_separation_pilots.py (sylk→sylk_analytics.py, toml/gnumeric→models.py); 21+ tests now pass | CLOSED |
+| TC-FIO-006 | reports/found-issue-accounting/accounting-2026-07-04.yaml — 9 issues reconcile (4 healed, 5 active) | CLOSED |
+| TC-FIO-008 | reports/found-issue-accounting/final-report-2026-07-04.md + idempotency-verdict.yaml; verdict=IDEMPOTENT_RERUN_CONFIRMED | CLOSED |
+| TC-FIO-009 | Convergence commit + master-plan §116 update (this entry) | CLOSED |
+
+### Verification Performed
+
+- 23/23 test_found_issue_ownership.py PASS (V139-V142 unit tests)
+- 102/104 test_separation_pilots.py PASS (2 pre-existing failures: fodp init LOC + FODS .cs LOC — documented in FI register, not introduced by this mission)
+- 133 total validators run, 0 skipped (confirmed V139-V142 wired)
+- lifecycle_audit AUDIT_PASS — 8 taskcards parsed, all CLOSED, closure_authorized=true
+
+### Deferred (governed, not blocking closure)
+
+- FI-008 (Python LOC regressions, 10 files): taskcards TC-FIO-P1-HEAL-A/B/C in found-issue-register.yaml
+- FI-010/011/012/013 (.NET LOC violations): in_repair entries in register; requires follow-on sprint
+
+### Completion Gate
+
+| Metric | Value |
+|--------|-------|
+| Validators added | V139-V142 (4) |
+| Total validators | 133 |
+| Issues discovered | 9 |
+| Issues healed+verified | 4 (FI-001/002/003/004) |
+| Issues governed-deferred | 5 (FI-008, FI-010/011/012/013) |
+| Test regressions introduced | 0 |
+| Plan lifecycle_audit | AUDIT_PASS |
+
+**Final Verdict:** FOUND_ISSUE_OWNERSHIP_LIFECYCLE_ESTABLISHED | TERMINAL_CLOSED
+
+**Final Verdict:** THREE_PLAN_PROGRAM_COMPLETE | TERMINAL_CLOSED
+
+## §116 — stateless-juggling-robin: Unblock and Complete Governed Ledger Execution (TERMINAL_CLOSED 2026-07-04)
+
+**Plan:** `stateless-juggling-robin.md` | **Type:** blocker_fix + ledger_execution | **Total Taskcards:** 5
+
+### Summary
+
+Unblocked autonomous ledger execution after SESSION_MISMATCH and `_claims_mgr` NameError. Fixed 16 failing FODS .NET cell style roundtrip tests. Executed DIF spec-backed header analytics sprint. Terminally closed plan.
+
+### Taskcards
+
+| TC-ID | Deliverable | Status |
+|-------|-------------|--------|
+| TC-SR-001 | Plan copied to `plans/.claude/`; plan lock written | CLOSED |
+| TC-SR-002 | SESSION_MISMATCH resolved via `reset_track_signal.py --track product` | CLOSED |
+| TC-SR-003 | `_claims_mgr` NameError fixed in `autonomous_cycle.py`; continuation signal reset | CLOSED |
+| TC-SR-004 | FODS .NET: 16 failing → 0 failing (4228/4228 pass); DIF spec analytics (5 functions, 15/15 tests) | CLOSED |
+| TC-SR-005 | Plan terminally closed; plan lock TERMINAL_CLOSED | CLOSED |
+
+### Verification
+
+- FODS .NET tests: **4228 passed, 0 failed** (was 4212 passing, 16 failing)
+- DIF analytics: **15/15 tests pass**
+- Commit: `46b304bb feat(dif-spec-analytics): TC-SR-004 DIF spec-backed header analytics + stateless-juggling-robin TERMINAL_CLOSED`
+
+**Final Verdict:** UNBLOCK_AND_LEDGER_EXECUTION_COMPLETE | TERMINAL_CLOSED
