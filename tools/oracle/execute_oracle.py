@@ -1271,6 +1271,242 @@ def execute_fods_invalid_case(case: dict, pkg: dict) -> dict:
         )
 
 
+def execute_fods_rt_case(case: dict, pkg: dict) -> dict:
+    """Execute FODS roundtrip case: parse → write → re-parse → compare semantics.
+
+    TC-H1-001 (FF-XPLAN-001 healed plan): fods-rt-* cases at D1 depth.
+    Compares sheet_count, sheet names, and non-empty cell values after round-trip.
+    D2 upgrade applied if schema validates both source and output.
+    """
+    import os
+    import tempfile
+    case_id = case["case_id"]
+    _, authority_status = check_authority(case, True)
+
+    sample_ref = case.get("sample_ref") or "samples/by-format/fods/minimal-spreadsheet.fods"
+    sample_path = REPO_ROOT / sample_ref
+
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    tmp_path = None
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.fods.parser import parse_fods  # noqa: PLC0415
+        from src.python.fods.writer import write_fods  # noqa: PLC0415
+
+        # Step 1: parse source
+        model1 = parse_fods(str(sample_path))
+
+        # Step 2: write to temp file
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".fods", delete=False, encoding="utf-8"
+        ) as tf:
+            tmp_path = tf.name
+        write_fods(model1, tmp_path)
+
+        # Step 3: re-parse output
+        model2 = parse_fods(tmp_path)
+
+        # Step 4: semantic comparison
+        mismatches = []
+
+        sc1 = model1.get("sheet_count", 0)
+        sc2 = model2.get("sheet_count", 0)
+        if sc1 != sc2:
+            mismatches.append(f"sheet_count mismatch: {sc1} vs {sc2}")
+
+        sheets1 = model1.get("sheets", [])
+        sheets2 = model2.get("sheets", [])
+        names1 = [s.get("name", "") for s in sheets1]
+        names2 = [s.get("name", "") for s in sheets2]
+        if names1 != names2:
+            mismatches.append(f"sheet_names mismatch: {names1} vs {names2}")
+
+        # Compare non-empty cell values across all sheets
+        def _extract_cells(sheets: list) -> list:
+            cells = []
+            for sheet in sheets:
+                rows = sheet.get("rows", sheet.get("cells", []))
+                if isinstance(rows, list):
+                    for row in rows:
+                        if isinstance(row, list):
+                            for cell in row:
+                                if isinstance(cell, dict):
+                                    v = cell.get("value")
+                                    if v is not None and v != "":
+                                        cells.append(v)
+                                elif cell is not None and cell != "":
+                                    cells.append(cell)
+            return cells
+
+        cells1 = _extract_cells(sheets1)
+        cells2 = _extract_cells(sheets2)
+        if cells1 != cells2:
+            mismatches.append(
+                f"cell_values mismatch: {len(cells1)} non-empty cells vs {len(cells2)}"
+            )
+
+        depth = DEPTH_D1
+        diags = [f"Roundtrip: {sample_path.name} → temp → re-parse"]
+
+        # Attempt D2 upgrade via schema validation
+        try:
+            from tools.oracle.schema_validator import validate_odf_schema
+            r1 = validate_odf_schema(str(sample_path))
+            r2 = validate_odf_schema(tmp_path)
+            if r1.get("valid") and r2.get("valid"):
+                depth = DEPTH_D2
+                diags.append("D2: schema validation PASS for source and output")
+            else:
+                errs = r1.get("errors", []) + r2.get("errors", [])
+                diags.append(f"D2: schema validation not achieved ({errs[:1]})")
+        except Exception as se:
+            diags.append(f"D2: schema_validator unavailable — {se}")
+
+        if mismatches:
+            diags.extend(mismatches)
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+                result=RESULT_FAIL, authority_status=authority_status,
+                depth_level=depth, diagnostics=diags,
+            )
+
+        diags.append(f"sheet_count: {sc1}, sheet_names: {names1}, cells: {len(cells1)}")
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+            result=RESULT_PASS, authority_status=authority_status,
+            depth_level=depth, diagnostics=diags,
+        )
+
+    except ImportError as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=[f"Import error: {e}"],
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+            result=RESULT_FAIL, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=[f"Exception: {type(e).__name__}: {e}"],
+        )
+    finally:
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def execute_fods_libreoffice_case(case: dict, pkg: dict) -> dict:
+    """Execute FODS D3 interoperability case via LibreOffice headless.
+
+    TC-H1-002 (FF-XPLAN-001 healed plan): fods-lo-* cases at D3 depth.
+    Returns SKIPPED_MISSING_PROVIDER if soffice is not on PATH (expected on CI).
+    """
+    import shutil
+    import subprocess
+    import tempfile
+    case_id = case["case_id"]
+    _, authority_status = check_authority(case, True)
+
+    if not shutil.which("soffice"):
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INTEROPERABILITY",
+            result=RESULT_SKIPPED_MISSING_PROVIDER, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=["LibreOffice (soffice) not found on PATH — D3 skipped"],
+        )
+
+    sample_ref = case.get("sample_ref") or "samples/by-format/fods/minimal-spreadsheet.fods"
+    sample_path = REPO_ROOT / sample_ref
+
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INTEROPERABILITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            proc = subprocess.run(
+                ["soffice", "--headless", "--convert-to", "xml",
+                 "--outdir", tmpdir, str(sample_path)],
+                capture_output=True, text=True, timeout=60,
+            )
+            if proc.returncode != 0:
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id="fods", product_id="format-factory-fods", language="python",
+                    case_id=case_id, profile="INTEROPERABILITY",
+                    result=RESULT_FAIL, authority_status=authority_status,
+                    depth_level=DEPTH_D3,
+                    diagnostics=[f"soffice exited {proc.returncode}", proc.stderr[:200]],
+                )
+            # Check that an xml output file was produced
+            from pathlib import Path as _Path
+            xml_files = list(_Path(tmpdir).glob("*.xml"))
+            if not xml_files:
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id="fods", product_id="format-factory-fods", language="python",
+                    case_id=case_id, profile="INTEROPERABILITY",
+                    result=RESULT_FAIL, authority_status=authority_status,
+                    depth_level=DEPTH_D3,
+                    diagnostics=["soffice produced no xml output"],
+                )
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="INTEROPERABILITY",
+                result=RESULT_PASS, authority_status=authority_status,
+                depth_level=DEPTH_D3,
+                diagnostics=[f"D3 PASS: LibreOffice converted to {xml_files[0].name}"],
+            )
+    except subprocess.TimeoutExpired:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INTEROPERABILITY",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            depth_level=DEPTH_D3,
+            diagnostics=["soffice timed out after 60s"],
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INTEROPERABILITY",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            depth_level=DEPTH_D0,
+            diagnostics=[f"Exception: {type(e).__name__}: {e}"],
+        )
+
+
 def execute_zst_lossless_case(case: dict, pkg: dict) -> dict:
     """Execute ZST compress→decompress round-trip lossless case."""
     case_id = case["case_id"]
@@ -1437,6 +1673,35 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
         counts[result] = counts.get(result, 0) + 1
         status_icon = "OK" if result == "PASS" else ("FAIL" if result == "FAIL" else "~~")
         print(f"  [{status_icon}] {case_id}: {result}")
+
+    # Execute FODS roundtrip cases (TC-H1-001)
+    if format_id == "fods":
+        for case in pkg.get("roundtrip_cases", []):
+            case_id = case["case_id"]
+            if case_filter and case_id != case_filter:
+                continue
+            verdict = execute_fods_rt_case(case, pkg)
+            verdicts.append(verdict)
+            save_verdict(verdict, format_id)
+            result = verdict["result"]
+            counts[result] = counts.get(result, 0) + 1
+            status_icon = "OK" if result == "PASS" else ("~~" if result == RESULT_SKIPPED_MISSING_PROVIDER else "FAIL")
+            print(f"  [{status_icon}] {case_id}: {result}")
+
+        # Execute FODS LibreOffice D3 cases (TC-H1-002)
+        for case in pkg.get("interoperability_cases", []):
+            case_id = case.get("case_id", "")
+            if not case_id.startswith("fods-lo-"):
+                continue
+            if case_filter and case_id != case_filter:
+                continue
+            verdict = execute_fods_libreoffice_case(case, pkg)
+            verdicts.append(verdict)
+            save_verdict(verdict, format_id)
+            result = verdict["result"]
+            counts[result] = counts.get(result, 0) + 1
+            status_icon = "OK" if result == "PASS" else ("~~" if result == RESULT_SKIPPED_MISSING_PROVIDER else "FAIL")
+            print(f"  [{status_icon}] {case_id}: {result}")
 
     # Execute ZST roundtrip cases
     if format_id == "zst":

@@ -295,16 +295,21 @@ formats:
     release_gates:
       updated_at: '2026-07-06'
       mission_ref: FF-XPLAN-001
+      evidence_source: oracle/formats/fods/reports/oracle-run-summary.json
+      evidence_derived: true
       pyrel_g1:
         name: Source Readiness
         status: passed
-        evidence: src/python/fods/pyproject.toml + tests/packaging/test_*fods*
+        evidence_basis: tests/python/fods/ (18+ test files), src/python/fods/pyproject.toml
+        derivation: at_least_one_test_file_covers_format
       pyrel_g2:
-        name: Oracle Evidence
+        name: Oracle Evidence D1+
         status: passed
-        evidence: oracle/formats/fods/reports/oracle-run-summary.json
-        pass_rate: '8/8'
+        evidence_source: oracle/formats/fods/reports/oracle-run-summary.json
+        pass_rate: '9/10 (1 SKIPPED_MISSING_PROVIDER: fods-lo-001)'
+        valid_case_pass_rate: '5/5'
         depth: D1
+        depth_derivation: max_depth_from_valid_pass_cases
       pyrel_g3:
         name: Package Build
         status: not_implemented

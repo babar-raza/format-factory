@@ -42,7 +42,7 @@ Prohibited (must never be created):
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-04T16:39:55+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-06T11:51:37+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -53,7 +53,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 119
+Total active capabilities: 120
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -139,6 +139,7 @@ Total active capabilities: 119
 | `validate-capability-parity` | layer_governance | FULL_PARITY | Y | Y | N | — |
 | `validate-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | Y | N | — |
 | `audit-root-tools` | machinery_governance | FULL_PARITY | Y | Y | N | — |
+| `found-issue-ownership` | machinery_governance | PARTIAL | Y | Y | N | — |
 | `rollback-and-recovery` | machinery_repair | FULL_PARITY | Y | Y | Y | rollback_and_recovery |
 | `sync-memory` | maintenance | FULL_PARITY | Y | Y | N | — |
 | `run-oracle` | oracle_execution | FULL_PARITY | Y | Y | N | — |

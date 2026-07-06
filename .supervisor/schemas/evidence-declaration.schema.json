@@ -133,7 +133,8 @@
     "full_suite_required": { "type": "boolean", "description": "Whether the full test suite (layer6) was required for this sprint" },
     "full_suite_run": { "type": "boolean", "description": "Whether the full test suite was actually run" },
     "full_suite_reason": { "type": "string", "description": "Reason full suite was or was not run" },
-    "NO_STASH_RESET_RESTORE_CLEAN_USED": { "description": "Attestation that no destructive git cleanup commands were used. Value YES means no stash/reset/restore/clean was used." }
+    "NO_STASH_RESET_RESTORE_CLEAN_USED": { "description": "Attestation that no destructive git cleanup commands were used. Value YES means no stash/reset/restore/clean was used." },
+    "gate_check_results_path": { "type": "string", "description": "Path to gate-check-results.json produced by autonomous_cycle.py gate executor step. Example: .local/supervisor/gate-check-results.json" }
   },
   "additionalProperties": false
 }

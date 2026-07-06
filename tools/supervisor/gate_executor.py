@@ -215,18 +215,99 @@ def run_gates(format_id: str, gates: list[str] | None = None, dry_run: bool = Fa
     }
 
 
+class PhaseLocker:
+    """Phase lock mechanism for PYREL release gates (TC-H2-004).
+
+    Writes a JSON state file recording which gate phase a format is locked to,
+    preventing out-of-order gate progression. Lock files are stored in
+    .local/supervisor/phase-locks/{format_id}.json.
+    """
+
+    LOCK_DIR = REPO_ROOT / ".local" / "supervisor" / "phase-locks"
+
+    def __init__(self) -> None:
+        self.LOCK_DIR.mkdir(parents=True, exist_ok=True)
+
+    def _lock_path(self, format_id: str) -> Path:
+        return self.LOCK_DIR / f"{format_id}.json"
+
+    def lock(self, format_id: str, phase: str, reason: str = "") -> dict:
+        """Lock format to a gate phase. Returns the lock record."""
+        from datetime import datetime, timezone
+        record = {
+            "format_id": format_id,
+            "locked_phase": phase,
+            "locked_at": datetime.now(timezone.utc).isoformat(),
+            "reason": reason or f"Locked at {phase} via gate_executor phase-lock command",
+        }
+        self._lock_path(format_id).write_text(
+            json.dumps(record, indent=2), encoding="utf-8"
+        )
+        return record
+
+    def get_locked_phase(self, format_id: str) -> str | None:
+        """Return the locked gate phase for a format, or None if no lock exists."""
+        lock_path = self._lock_path(format_id)
+        if not lock_path.exists():
+            return None
+        try:
+            return json.loads(lock_path.read_text(encoding="utf-8")).get("locked_phase")
+        except Exception:
+            return None
+
+    def is_locked_at_or_before(self, format_id: str, gate_id: str) -> bool:
+        """Return True if format is locked at gate_id or earlier (blocks progression)."""
+        locked = self.get_locked_phase(format_id)
+        if locked is None:
+            return False
+        gate_order = list(PYREL_GATES.keys())
+        try:
+            locked_idx = gate_order.index(locked)
+            gate_idx = gate_order.index(gate_id)
+            return gate_idx > locked_idx
+        except ValueError:
+            return False
+
+
 def main():
     parser = argparse.ArgumentParser(description="PYREL Gate Executor")
-    parser.add_argument("--format", required=True, help="Format ID")
-    parser.add_argument("--gates", default=None, help="Comma-separated gate IDs (default: all)")
-    parser.add_argument("--dry-run", action="store_true", help="Run all gates even if one fails")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # 'run' subcommand (original behavior, also default)
+    run_parser = subparsers.add_parser("run", help="Run release gates")
+    run_parser.add_argument("--format", required=True, help="Format ID")
+    run_parser.add_argument("--gates", default=None, help="Comma-separated gate IDs (default: all)")
+    run_parser.add_argument("--dry-run", action="store_true", help="Run all gates even if one fails")
+
+    # 'phase-lock' subcommand (TC-H2-004)
+    lock_parser = subparsers.add_parser("phase-lock", help="Lock format to a gate phase")
+    lock_parser.add_argument("--format", required=True, help="Format ID")
+    lock_parser.add_argument("--phase", required=True, help="Gate phase to lock to (e.g. G2)")
+    lock_parser.add_argument("--reason", default="", help="Reason for locking")
+
+    # Legacy flat args (no subcommand) — backwards compatible
+    parser.add_argument("--format", default=None, help="Format ID (legacy flat mode)")
+    parser.add_argument("--gates", default=None, help="Comma-separated gate IDs (legacy flat mode)")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run (legacy flat mode)")
+
     args = parser.parse_args()
 
-    gate_list = args.gates.split(",") if args.gates else None
-    result = run_gates(args.format, gate_list, args.dry_run)
-
-    print(json.dumps(result, indent=2))
-    sys.exit(0 if result["all_passed"] else 1)
+    if args.command == "phase-lock":
+        locker = PhaseLocker()
+        record = locker.lock(args.format, args.phase, args.reason)
+        print(json.dumps(record, indent=2))
+        sys.exit(0)
+    else:
+        # 'run' subcommand or legacy flat mode
+        fmt = getattr(args, "format", None)
+        gates_arg = getattr(args, "gates", None)
+        dry = getattr(args, "dry_run", False)
+        if fmt is None:
+            parser.error("--format is required")
+        gate_list = gates_arg.split(",") if gates_arg else None
+        result = run_gates(fmt, gate_list, dry)
+        print(json.dumps(result, indent=2))
+        sys.exit(0 if result["all_passed"] else 1)
 
 
 if __name__ == "__main__":

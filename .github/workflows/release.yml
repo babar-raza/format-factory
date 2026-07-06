@@ -57,6 +57,13 @@ jobs:
           print(f'Gate 11 approved for {fmt}. Proceeding with publication.')
           " "$FORMAT"
 
+      - name: PYREL gate check (G1+G2) before build
+        # TC-H3-002 (FF-XPLAN-001): Verify oracle evidence gates pass before publishing
+        run: |
+          FORMAT="${{ steps.format.outputs.format }}"
+          echo "Running PYREL gate check for format: $FORMAT"
+          python tools/supervisor/gate_executor.py --format "$FORMAT" --gates G1,G2 --dry-run
+
       - name: Build per-format package
         run: |
           FORMAT="${{ steps.format.outputs.format }}"

@@ -10,22 +10,24 @@ checks:
   priority: P1
   verdict: PASS
 - check_id: command_in_registry
-  failure_count: 0
-  failures: []
+  failure_count: 1
+  failures:
+  - 'found-issue-ownership: has command_file but missing from command-registry.yaml'
   priority: P2
-  verdict: PASS
+  verdict: WARN
 - check_id: routing_coverage
   failure_count: 0
   failures: []
   priority: P2
   verdict: PASS
-generated_at: '2026-07-04T16:39:55+00:00'
+generated_at: '2026-07-06T11:51:37+00:00'
 generated_by: validate_parity.py
-overall_verdict: PASS
+overall_verdict: WARN
 parity_counts:
   FULL_PARITY: 122
+  PARTIAL: 1
 source_versions:
   command_registry: .claude\commands\command-registry.yaml
   routing_registry: .supervisor\capability-routing-registry.yaml
   skill_registry: r98-governed-skills-expanded
-total_capabilities: 122
+total_capabilities: 123

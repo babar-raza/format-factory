@@ -273,6 +273,10 @@ roundtrip_cases:
   - case_id: fods-rt-001
     purpose: "Parse minimal FODS → FodsDocument → write → re-parse → semantic equivalence"
     operation: "FodsDocument.load(path) → write_fods(doc, path2) → FodsDocument.load(path2)"
+    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "ODF 1.3 §3.1 — FODS must produce semantically equivalent output on round-trip"
     equality_mode: SEMANTICALLY_EQUIVALENT
     canonicalizer: "odf-workbook-canonical"
     comparator: "spreadsheet-cell-comparator"
@@ -289,6 +293,25 @@ roundtrip_cases:
     ordering_policy: "rows in ascending order, columns in ascending order"
     whitespace_policy: "cell value whitespace preserved"
     tolerance_policy: "FLOAT64_RELATIVE_1E-9 for numeric cells"
+
+# ==============================================================================
+# INTEROPERABILITY CASES (D3 — LibreOffice headless)
+# ==============================================================================
+interoperability_cases:
+
+  - case_id: fods-lo-001
+    purpose: "LibreOffice headless converts minimal-spreadsheet.fods to xml without error"
+    operation: "soffice --headless --convert-to xml <path>"
+    authority_class: ACCEPTED_EMPIRICAL
+    authority_refs:
+      - "ODF 1.3 §3.1.2 — FODS is a valid ODF document readable by conforming processors"
+    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+    expected_parse_result: SUCCESS
+    depth: D3
+    skipped_when_missing: true
+    skip_reason: "LibreOffice installation required — SKIPPED_MISSING_PROVIDER if soffice not on PATH"
+    applicable_profiles:
+      - INTEROPERABILITY
 
 # ==============================================================================
 # SECURITY CASES

@@ -223,6 +223,19 @@ jobs:
               print('All formats at D1+ depth')
           "
 
+  release-phase-validation:
+    # FF-XPLAN-001 TC-H3-001: Validate PYREL release gates G1+G2 for key formats
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+      - name: Validate PYREL gates (dry-run)
+        run: python tools/supervisor/gate_executor.py --format fods --dry-run
+
   count-drift-detection:
     # FF-XPLAN-001 W4-004: Detect README count drift
     runs-on: ubuntu-latest
