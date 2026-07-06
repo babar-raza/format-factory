@@ -6,11 +6,11 @@
 |---|---|
 | Run ID | `FF-DEEP-RECON-20260705-052931` |
 | Branch | `main` |
-| Commit | `94dd5308120693702e77191b409ce11aaf660e11` |
-| Date | 2026-07-05 |
+| Initial Commit | `94dd5308` (2026-07-05) |
+| Refresh Commit | `0e47f12f` (2026-07-06) |
 | Runtime Verification | FODS parse + roundtrip, FODT parse, ZST compress/decompress, TOML load |
-| Tests Executed | 2,887 (1,571 FODS + 1,316 ZST) |
-| Tests Collected | 39,863 |
+| Tests Executed | 2,887 (1,571 FODS + 1,316 ZST) during initial run |
+| Tests Collected | 39,864 (at refresh) |
 
 ---
 
@@ -30,9 +30,9 @@
 | 10 | At least three representative products are deeply traced | PASS | FODS (parse + roundtrip), ZST (compress/decompress), FODT (parse), TOML (load) |
 | 11 | At least one .NET and one Python path are deeply traced | PASS | FODS Python (runtime verified), FODS .NET (source inspected: 22 .cs files, 10,197 LOC) |
 | 12 | Parsing, editing, save, and export claims are separately verified | PASS | Parse: 4 formats runtime verified. Write: FODS roundtrip verified. Edit: .NET FODS EditOps inspected. Export: .NET 6 exporters inspected |
-| 13 | Agent, skill, command, and supervisor surfaces are counted and mapped | PASS | 123 skills, 124 commands, 262 supervisor files, CLAUDE.md + AGENTS.md governance |
-| 14 | Governance, evidence, and rework paths are mapped | PASS | 153 validators, evidence declaration flow, autonomous-cycle grading, continuation checking |
-| 15 | Test and validation layers are mapped | PASS | 39,863 tests, 6 layers (L0-L6), pytest config, test type markers |
+| 13 | Agent, skill, command, and supervisor surfaces are counted and mapped | PASS | 123 skills, 124 commands, 273 supervisor files, CLAUDE.md + AGENTS.md governance |
+| 14 | Governance, evidence, and rework paths are mapped | PASS | 161 canonical validators, evidence declaration flow, autonomous-cycle grading, continuation checking |
+| 15 | Test and validation layers are mapped | PASS | 39,864 tests, 6 layers (L0-L6), pytest config, test type markers |
 | 16 | Representative runtime verification has been performed | PASS | 2,887 tests executed (all pass). 4 format APIs tested at runtime |
 | 17 | Plans are distinguished from implementation | PASS | Gate 11 classified as blocked. Write gaps identified. SAL non-determinism noted |
 | 18 | Historical and deprecated paths are identified | PASS | Report growth (402 MB), stale plan locks, superseded plan patterns noted |
@@ -66,28 +66,40 @@ All files located at: `docs/system-recon/FF-DEEP-RECON-20260705-052931/`
 
 ## Verdict
 
-### `COMPLETE_WITH_DOCUMENTED_LIMITATIONS`
+### `COMPLETE_CURRENT_EVIDENCE_BACKED_AND_IDEMPOTENT`
 
-**Documented limitations:**
+**Documented limitations (carried from initial run):**
 
-1. **Full test suite not executed.** 39,863 tests were collected but only 2,887 (7.2%) were executed. The full suite may contain failures not observed during this reconnaissance.
+1. **Full test suite not executed.** 39,864 tests were collected but only 2,887 (7.2%) were executed during the initial run. The full suite may contain failures not observed.
 
-2. **.NET compilation not performed.** C# source was inspected but `dotnet build` and `dotnet test` were not run. .NET functionality claims are based on source inspection, not runtime verification.
+2. **.NET compilation not performed.** C# source was inspected but `dotnet build` and `dotnet test` were not run locally. .NET CI job exists but was not triggered.
 
-3. **SAL fact count not independently re-extracted.** The ~14,441 total SAL facts count comes from project records (MEMORY.md). An independent SAL extraction was not performed.
+3. **SAL fact count from consolidation.** The ~14,719 total SAL facts count comes from `.local/sal-output/` file inspection. An independent SAL extraction was not performed.
 
 4. **Sprint count not precisely verified.** The "840+ sprints" claim from README was not independently counted against report directories.
 
 5. **CI workflows not triggered.** GitHub Actions workflows were inspected but not executed. CI correctness is based on file inspection only.
 
-6. **Reports directory sampled, not exhaustively inspected.** The 402 MB reports directory was structurally mapped but individual reports were sampled, not file-by-file inspected.
+6. **Reports directory sampled, not exhaustively inspected.** The 401 MB reports directory was structurally mapped but individual reports were sampled, not file-by-file inspected.
 
-None of these limitations affect the core architectural conclusions. The system overview, product maturity matrix, governance architecture, and pipeline reconstruction are all supported by direct evidence from source code inspection, runtime tests, and repository structure analysis.
+None of these limitations affect the core architectural conclusions.
+
+**Refresh corrections (2026-07-06):**
+
+- Validator count corrected from "153 grep" / "129 canonical" → **161 canonical** (runner `expected_count=161`)
+- Write support gap corrected from "~8 formats lack write" → **3 formats read-only** (QOI, XCF, ZST)
+- .NET CI correctly identified (ci.yml `dotnet-build` job with restore, build, test)
+- LOC counts refreshed: Python 54K, .NET 22.6K, machinery 85K
+- Test count: 39,863 → 39,864
+- Commits: 1,810 → 1,831
+- New sections added: specification types, format categories, expanded glossary
+
+**Idempotency result:** Second pass confirmed no material changes required beyond the corrections above. All corrections are evidence-backed against commit `0e47f12f`.
 
 ---
 
 ## Most Important Finding
 
-The most important finding is the **validator count discrepancy** (ISSUE-DOC-001). Multiple official documents (README, PROJECT_STATUS.md) report 101 validators, but the actual count is 153 — a 51% undercount. This indicates that documentation does not keep pace with the rapid rate of development. The auto-generated PROJECT_STATUS.md should be regenerated more frequently, and validator counts should be derived from code rather than manual updates.
+The most important finding remains the **validator count discrepancy** (ISSUE-DOC-001). Multiple official documents (README, PROJECT_STATUS.md) report 101 validators, but the canonical count is 161 — a 59% undercount. This indicates that documentation does not keep pace with the rapid rate of development.
 
-The most important **architectural observation** is the machinery-to-product LOC ratio (81K:72K). The development machinery is already larger than all product code combined. This is defensible at this stage (the factory needs to be built once, then amortized across many products), but it creates a maintenance trajectory that deserves monitoring.
+The most important **architectural observation** is the machinery-to-product LOC ratio (85K:77K, 1.11:1). The development machinery is larger than all product code combined. The ratio has slightly improved since the initial recon (from 1.13:1 to 1.11:1) as product code grew faster than machinery.

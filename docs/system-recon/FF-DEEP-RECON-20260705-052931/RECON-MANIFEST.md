@@ -5,9 +5,11 @@
 | Field | Value |
 |---|---|
 | Run ID | `FF-DEEP-RECON-20260705-052931` |
-| Start Time | 2026-07-05 10:22:56 +0500 (05:22 UTC) |
+| Initial Run | 2026-07-05 10:22:56 +0500 (05:22 UTC) |
+| Refresh Run | 2026-07-06 |
 | Branch | `main` |
-| Commit | `94dd5308120693702e77191b409ce11aaf660e11` |
+| Initial Commit | `94dd5308120693702e77191b409ce11aaf660e11` |
+| Refresh Commit | `0e47f12f086a9efb441406126d6fbcc866fcad35` |
 | Platform | Windows 11 Pro 10.0.26200 |
 | Shell | bash (Git Bash on Windows) |
 | Python | 3.13 (system), 3.13 (.venv) |
@@ -20,12 +22,9 @@
 |---|---|
 | Root | `format-factory` |
 | Remotes | GitHub (`github.com/babar-raza/format-factory.git`), GitLab (`gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git`) |
-| Total commits | 1,810 |
+| Total commits | 1,831 (at refresh) |
 | First commit | 2026-05-02 |
-| Latest commit | 2026-07-05 |
-| Commits: May 2026 | 547 |
-| Commits: June 2026 | 945 |
-| Commits: July 2026 | 318 |
+| Latest commit | 2026-07-06 |
 
 ## Working-Tree State at Scan Start
 
@@ -47,13 +46,12 @@ Pre-existing changes were preserved; no files were modified, stashed, or reset d
 | `.md` files | 4,797 | Extension count from `git ls-files` |
 | `.json` files | 1,982 | Extension count from `git ls-files` |
 | `.yaml` files | 1,250 | Extension count from `git ls-files` |
-| Python source LOC (src/) | ~49,375 | Sum of per-format LOC counts |
-| .NET source LOC (src/) | ~22,557 | Sum of per-format LOC counts |
-| Python test files | ~2,300+ | `find tests/ -name "test_*.py"` |
-| Tests collected (pytest) | 39,863 | `pytest --collect-only` |
-| Supervisor .py files | 262 | `find tools/supervisor -name "*.py"` |
-| Supervisor LOC | ~81,241 | `wc -l tools/supervisor/*.py` |
-| Governance validators | 153 | `grep -c "def validate_"` across 18 modules |
+| Python source LOC (src/) | ~54,202 | Sum of per-format LOC counts (refresh) |
+| .NET source LOC (src/) | ~22,643 | Sum of per-format LOC counts (refresh) |
+| Tests collected (pytest) | 39,864 | `pytest --collect-only` (refresh) |
+| Supervisor .py files | 273 | `find tools/supervisor -name "*.py"` (refresh) |
+| Supervisor LOC | ~85,280 | `wc -l tools/supervisor/**/*.py` (refresh) |
+| Governance validators | 161 canonical | `governance_validator_runner.py expected_count=161` |
 | Registered skills | 123 | `grep -c "skill_id:"` in skill-registry.yaml |
 | Claude commands | 124 | `.claude/commands/*.md` count |
 
@@ -106,7 +104,7 @@ Pre-existing changes were preserved; no files were modified, stashed, or reset d
 
 | File | Purpose |
 |---|---|
-| `.github/workflows/ci.yml` | Lint (ruff), security (bandit), fast tests (L0-L3), skill attribution |
+| `.github/workflows/ci.yml` | Lint (ruff), security (bandit), fast tests (L0-L3), skill attribution, .NET build/test |
 | `.github/workflows/release.yml` | Release workflow |
 
 ## Directories Excluded from Exhaustive Inspection
@@ -130,7 +128,7 @@ Pre-existing changes were preserved; no files were modified, stashed, or reset d
 | ZST compress/decompress | 2300→41 bytes, roundtrip match | <1s |
 | FODT parse runtime | `parse_fodt()` returned `format_id: fodt` | <1s |
 | TOML load runtime | `load_toml()` returned dict | <1s |
-| `pytest --collect-only` (full) | 39,863 tests collected | 100s |
+| `pytest --collect-only` (full) | 39,864 tests collected (refresh) | 158s |
 
 ## Generated Files
 

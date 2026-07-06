@@ -2,7 +2,7 @@
 
 ## 1. Document Scope and Inspected Commit
 
-This document is the product of a deep, evidence-backed technical reconnaissance of the Format Factory repository performed on 2026-07-05 against commit `94dd5308` on branch `main`. Every claim is classified by verification status and backed by repository-relative evidence. Claim IDs (CLM-*) reference the evidence ledger in `04-CLAIM-EVIDENCE-LEDGER.md`.
+This document is the product of a deep, evidence-backed technical reconnaissance of the Format Factory repository. Originally performed on 2026-07-05 against commit `94dd5308`; refreshed on 2026-07-06 against commit `0e47f12f` on branch `main`. Every claim is classified by verification status and backed by repository-relative evidence. Claim IDs (CLM-*) reference the evidence ledger in `04-CLAIM-EVIDENCE-LEDGER.md`.
 
 ---
 
@@ -13,9 +13,9 @@ Format Factory is a system for converting file-format specifications into tested
 - **Products** — deterministic, spec-aligned libraries that parse, write, validate, and convert file formats. 20 Python FOSS packages and 10 .NET libraries exist today.
 - **Machinery** — an autonomous AI-driven development pipeline that plans work, executes sprints, validates evidence, grades outcomes, enforces governance, and generates the next sprint's tasks. The machinery is written by agents for agents.
 
-The project was started on 2026-05-02 and has accumulated 1,810 commits over 64 days. The repository contains 15,728 tracked files, approximately 49,000 lines of Python product source, 22,500 lines of C# product source, 81,000 lines of supervisor/machinery Python, and 39,863 collected tests.
+The project was started on 2026-05-02 and has accumulated 1,831 commits over 65 days. The repository contains approximately 54,000 lines of Python product source, 22,600 lines of C# product source, 85,000 lines of supervisor/machinery Python, and 39,864 collected tests.
 
-**CLM-SYS-001**: Format Factory is a dual-track system (products + machinery) that converts file-format specifications into tested libraries. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `README.md`, `src/python/` (20 format dirs), `src/net/` (10 format dirs), `tools/supervisor/` (262 .py files).
+**CLM-SYS-001**: Format Factory is a dual-track system (products + machinery) that converts file-format specifications into tested libraries. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `README.md`, `src/python/` (20 format dirs), `src/net/` (10 format dirs), `tools/supervisor/` (273 .py files).
 
 ---
 
@@ -80,17 +80,17 @@ ORA, PAM, XPM, ZPAQ — these have acquisition packs but no `src/` implementatio
 ```
 format-factory/
 ├── src/
-│   ├── python/          # 20 format packages, ~49K LOC
-│   │   ├── fods/        # FODS: 4,903 LOC (most mature Python)
-│   │   ├── fodt/        # FODT: 5,263 LOC
+│   ├── python/          # 20 format packages, ~54K LOC
+│   │   ├── fods/        # FODS: 3,891 LOC
+│   │   ├── fodt/        # FODT: 4,681 LOC (most mature Python)
 │   │   ├── ...          # 18 more format packages
 │   │   └── _shared/     # Shared utilities
-│   └── net/             # 10 .NET libraries, ~22.5K LOC
+│   └── net/             # 10 .NET libraries, ~22.6K LOC
 │       ├── fods/        # FODS: 10,197 LOC (most mature .NET)
 │       ├── fodt/        # FODT: 6,008 LOC
 │       └── ...          # 8 more format libraries
 ├── tools/
-│   ├── supervisor/      # 262 files, ~81K LOC — sprint orchestration
+│   ├── supervisor/      # 273 files, ~85K LOC — sprint orchestration
 │   ├── oracle/          # Oracle execution engine
 │   ├── spec/            # Spec processing and validation
 │   ├── specification-authority-layer/  # SAL fact extraction
@@ -99,7 +99,7 @@ format-factory/
 │   ├── certification/   # Test certification tools
 │   ├── assurance/       # Output quality assurance
 │   └── ...              # 30+ other tool directories
-├── tests/               # 39,863 tests, ~262 MB
+├── tests/               # 39,864 tests
 ├── oracle/              # Oracle test cases for 20 formats
 ├── shared/qname-registry/  # 21 QName registry files
 ├── registry/            # Format registry, baselines
@@ -131,8 +131,8 @@ Format Factory is organized into 11 independent layers:
 | L07 | Test Layer | `tests/` | Unit, integration, roundtrip, oracle tests | ~5,600 |
 | L08 | Evidence Layer | `.local/evidences/` (gitignored) | Sprint evidence declarations | Local |
 | L09 | State Layer | `.local/supervisor/` (gitignored) | Continuation signals, plan locks | Local |
-| L11 | Supervisor Layer | `tools/supervisor/` | Sprint orchestration, grading | 262 |
-| L12 | Governance Layer | `tools/supervisor/governance_validators*.py` | 153 programmatic validators | 18 modules |
+| L11 | Supervisor Layer | `tools/supervisor/` | Sprint orchestration, grading | 273 |
+| L12 | Governance Layer | `tools/supervisor/governance_validators*.py` | 161 canonical validators | 20 modules |
 | L13 | Skills Layer | `.supervisor/skill-registry.yaml` | 123 registered skills | 1 |
 
 **CLM-ARCH-001**: The system uses an 11-layer architecture. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: Layer paths exist and contain active code; verified via directory inspection and LOC counts.
@@ -158,8 +158,8 @@ The pipeline proceeds through these stages (confirmed via repository evidence):
 ### Stage 3: Specification Acquisition and Fact Extraction (SAL)
 - **Tool**: `tools/specification-authority-layer/` + `tools/spec/`
 - **Output**: Structured facts in `.local/sal-output/` and per-format `spec/` dirs
-- **Evidence**: 24 SAL Python modules, ~14,441 total facts reported
-- **Status**: `IMPLEMENTED_AND_VERIFIED` (for active formats; 4 formats have 0 facts)
+- **Evidence**: 24 SAL Python modules, ~14,719 total facts (consolidated)
+- **Status**: `IMPLEMENTED_AND_VERIFIED` (for active formats; 4 acquisition-only formats have 0 facts)
 
 ### Stage 4: QName Mapping
 - **Registry**: `shared/qname-registry/{format}.yaml`
@@ -185,11 +185,11 @@ The pipeline proceeds through these stages (confirmed via repository evidence):
 
 ### Stage 8: Testing
 - **Framework**: pytest (Python), xUnit-style .cs files (.NET)
-- **Count**: 39,863 tests collected
-- **Status**: `IMPLEMENTED_AND_VERIFIED` (1,571 FODS tests passed, 1,316 ZST tests passed in this run)
+- **Count**: 39,864 tests collected
+- **Status**: `IMPLEMENTED_AND_VERIFIED` (1,571 FODS tests passed, 1,316 ZST tests passed during initial run)
 
 ### Stage 9: Governance Validation
-- **Validators**: 153 across 18 modules
+- **Validators**: 161 canonical across 20 modules (156 `def validate_` functions + 5 contract-registry entries)
 - **Status**: `IMPLEMENTED_AND_VERIFIED`
 
 ### Stage 10: Packaging
@@ -214,7 +214,7 @@ The Specification Authority Layer (SAL) extracts machine-readable facts from for
 
 **Data flow**: Specification PDFs/HTML → SAL extraction (sometimes AI-assisted via `tools/ai/`) → structured JSON facts → persisted in `.local/sal-output/`
 
-**Fact counts** (from MEMORY.md, verified against code): ~14,441 total facts. FODS: ~4,988 facts. Some formats (ora, pam, xpm, zpaq) have 0 facts.
+**Fact counts** (from `.local/sal-output/` consolidation): ~14,719 total facts. FODS: ~4,990 facts. ODF family formats (FODS, FODT, ODS, FODG, FODP, ODT) account for ~14,135 facts. Four acquisition-only formats (ora, pam, xpm, zpaq) have 0 facts.
 
 **CLM-PIPE-002**: SAL extracts structured facts from specifications. `IMPLEMENTED_AND_VERIFIED` (MEDIUM). Evidence: 24 SAL modules exist, fact JSON files found in `.local/sal-output/`. Extraction process involves AI-assisted steps.
 
@@ -228,7 +228,7 @@ Capabilities track what each format implementation can do, what gaps remain, and
 - `reports/capability-layer/gap-ledger.json` — active gap tracking
 - `reports/capability-layer/gap-ledger-active.json` — current active gaps
 - `reports/capability-layer/capability-authority-model.yaml` — capability taxonomy
-- `.governance/capabilities/registry.yaml` — 119 active capabilities
+- `.governance/capabilities/registry.yaml` — 120 active capabilities (123 total entries)
 
 **CLM-PIPE-003**: Capability modeling tracks per-format features and gaps. `IMPLEMENTED_AND_VERIFIED` (MEDIUM). Evidence: Gap ledger files, capability registry.
 
@@ -345,7 +345,7 @@ Skills are registered in `.supervisor/skill-registry.yaml` and map to Claude com
 
 ## 18. Supervisor and Autonomous Execution
 
-The supervisor system (`tools/supervisor/`, 262 files, ~81K LOC) orchestrates autonomous development:
+The supervisor system (`tools/supervisor/`, 273 files, ~85K LOC) orchestrates autonomous development:
 
 ### Core Components
 
@@ -357,7 +357,7 @@ The supervisor system (`tools/supervisor/`, 262 files, ~81K LOC) orchestrates au
 | Sprint Executor | `sprint_executor.py` | 628 | Sprint-level execution coordinator |
 | Declaration Validator | `sprint_executor_validate.py` | 828 | Validates evidence declarations |
 | Plan Lock | `write_plan_lock.py` | 691 | Per-chat plan lock mechanism |
-| Governance Validators | `governance_validators*.py` | ~9,000+ | 153 validators across 18 modules |
+| Governance Validators | `governance_validators*.py` | ~9,000+ | 161 canonical validators across 20 modules |
 
 ### Execution Flow
 1. Agent reads `reports/supervisor/session-resume.md` for context
@@ -386,9 +386,11 @@ Each sprint produces an evidence declaration YAML file containing:
 
 Schema: `schemas/evidence/` (multiple schemas for different evidence types)
 
-### Governance Validators (153 total)
+### Governance Validators (161 canonical)
 
-| Module | Count | Focus |
+The canonical count of 161 comes from `governance_validator_runner.py` (`expected_count: 161`): 134 explicitly wired validators + 27 from the `@validator` contract registry (`governance_validators_contract.py`). The `grep -c "def validate_"` count across all modules is 156 (includes some unwired helpers).
+
+| Module | `def validate_` count | Focus |
 |---|---|---|
 | `governance_validators.py` | 50 | Core validators |
 | `governance_validators_ext4.py` | 20 | Extended validators batch 4 |
@@ -401,9 +403,15 @@ Schema: `schemas/evidence/` (multiple schemas for different evidence types)
 | `governance_validators_sal.py` | 4 | SAL validators |
 | `governance_validators_layers.py` | 4 | Layer validators |
 | `governance_validators_output_quality.py` | 3 | Output quality (V134-V136) |
+| `governance_validators_contract.py` | 2 | @validator decorator and ValidationResult contract |
 | `governance_validators_consumer_proof.py` | 2 | Consumer proof validators |
 | `governance_validators_gate_auth.py` | 2 | Gate authorization |
-| Others (5 modules) | 5 | Signal, ledger, path, root_struct, dotnet |
+| `governance_validators_oracle.py` | 1 | Oracle validators |
+| `governance_validators_signal.py` | 1 | Signal validators |
+| `governance_validators_root_struct.py` | 1 | Root structure validators |
+| `governance_validators_path.py` | 1 | Path validators |
+| `governance_validators_ledger.py` | 1 | Ledger validators |
+| `governance_validators_dotnet.py` | 1 | .NET validators |
 
 ### Gate System
 Formats pass through 11 gates:
@@ -414,7 +422,7 @@ Formats pass through 11 gates:
 
 FODS has passed Gates 1-7 + Gate 11 G11-G sub-gate (approved 2026-06-05).
 
-**CLM-GOV-003**: 153 governance validators exist across 18 modules. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `grep -c "def validate_"` across all governance_validators*.py files.
+**CLM-GOV-003**: 161 canonical governance validators exist across 20 modules. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `governance_validator_runner.py expected_count=161`; `grep -c "def validate_"` = 156 across 20 files; canonical count includes contract-registry entries.
 
 ---
 
@@ -432,7 +440,7 @@ FODS has passed Gates 1-7 + Gate 11 G11-G sub-gate (approved 2026-06-05).
 | L5: Broad | ~5,000 | Slow | All Python + supervisor + evidence |
 | L6: Full | ~5,000 | Slow | Entire test suite |
 
-Total: 39,863 tests collected.
+Total: 39,864 tests collected.
 
 ### Test Types
 - **Unit tests**: Per-format in `tests/python/{format}/` and `tests/net/{format}/`
@@ -449,7 +457,7 @@ Total: 39,863 tests collected.
 - `tools/oracle/execute_oracle.py` (1,428 LOC) executes cases
 - Result: 73/73 PASS across all 20 Python formats
 
-**CLM-TEST-001**: 39,863 tests collected across 6 layers. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `pytest --collect-only` returned 39,863.
+**CLM-TEST-001**: 39,864 tests collected across 6 layers. `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: `pytest --collect-only` returned 39,864.
 
 **CLM-TEST-002**: All 20 Python formats pass oracle verification (73/73). `IMPLEMENTED_AND_VERIFIED` (HIGH). Evidence: MEMORY.md records, oracle-package.yaml status: VERIFIED for FODS.
 
@@ -459,30 +467,32 @@ Total: 39,863 tests collected.
 
 ### Python FOSS Products (20 formats)
 
-| Format | Family | LOC | Tests | Parse | Write | Export | Oracle | Package |
-|---|---|---|---|---|---|---|---|---|
-| FODS | Cells | 4,903 | 1,571 | Yes | Yes | CSV, TSV | 8/8 | Yes |
-| FODT | Text | 5,263 | 140 files | Yes | Yes | — | 3/3 | Yes |
-| CSV | Cells | 2,485 | 62 files | Yes | Yes | — | 5/5 | Yes |
-| TSV | Cells | 2,205 | 116 files | Yes | Yes | — | 4/4 | Yes |
-| ZST | Compression | 2,401 | 1,316 | Yes | Yes | — | 6/6 | Yes |
-| NDJSON | Data | 2,674 | 155 files | Yes | Yes | — | 4/4 | Yes |
-| ODS | Cells | 2,974 | 113 files | Yes | — | — | 3/3 | Yes |
-| ODT | Text | 1,544 | 39 files | Yes | — | — | 3/3 | Yes |
-| TOML | Config | 1,779 | 64 files | Yes | Yes | — | 4/4 | Yes |
-| ABW | Text | 2,639 | 162 files | Yes | — | — | 3/3 | Yes |
-| DIF | Cells | 2,506 | 97 files | Yes | Yes | — | 3/3 | Yes |
-| SYLK | Cells | 2,199 | 102 files | Yes | Yes | — | 3/3 | Yes |
-| FODG | Drawing | 2,572 | 105 files | Yes | — | — | 3/3 | Yes |
-| FODP | Presentation | 1,504 | 38 files | Yes | — | — | 3/3 | Yes |
-| Gnumeric | Cells | 2,508 | 122 files | Yes | — | — | 3/3 | Yes |
-| XCF | Image | 1,773 | 73 files | Yes | — | — | 3/3 | Yes |
-| QOI | Image | 1,826 | 47 files | Yes | Yes | — | 3/3 | Yes |
-| PBM | Image | 1,860 | 70 files | Yes | Yes | — | 3/3 | Yes |
-| PGM | Image | 1,792 | 65 files | Yes | Yes | — | 3/3 | Yes |
-| PPM | Image | 1,969 | 82 files | Yes | Yes | — | 3/3 | Yes |
+| Format | Family | LOC | Parse | Write | Export | Oracle | Analytics |
+|---|---|---|---|---|---|---|---|
+| FODS | Cells | 3,891 | Yes | Yes | CSV | 8/8 | Yes |
+| FODT | Text | 4,681 | Yes | Yes | Yes | 3/3 | Yes |
+| CSV | Cells | 2,297 | Yes | Yes | — | 5/5 | Yes |
+| TSV | Cells | 2,059 | Yes | Yes | — | 4/4 | — |
+| ZST | Compression | 2,238 | Yes | — | — | 6/6 | — |
+| NDJSON | Data | 2,551 | Yes | Yes | — | 4/4 | — |
+| ODS | Cells | 2,781 | Yes | Yes | CSV | 3/3 | Yes |
+| ODT | Text | 1,310 | Yes | Yes | — | 3/3 | — |
+| TOML | Config | 1,638 | Yes | Yes | — | 4/4 | Yes |
+| ABW | Text | 2,277 | Yes | Yes | — | 3/3 | — |
+| DIF | Cells | 2,327 | Yes | Yes | — | 3/3 | — |
+| SYLK | Cells | 2,016 | Yes | Yes | — | 3/3 | Yes |
+| FODG | Drawing | 2,202 | Yes | Yes | — | 3/3 | — |
+| FODP | Presentation | 1,338 | Yes | Yes | — | 3/3 | — |
+| Gnumeric | Cells | 2,338 | Yes | Yes | — | 3/3 | Yes |
+| XCF | Image | 1,570 | Yes | — | — | 3/3 | — |
+| QOI | Image | 1,638 | Yes | — | — | 3/3 | — |
+| PBM | Image | 1,673 | Yes | Yes | — | 3/3 | — |
+| PGM | Image | 1,664 | Yes | Yes | — | 3/3 | — |
+| PPM | Image | 1,841 | Yes | Yes | — | 3/3 | — |
 
-### .NET Commercial Products (10 formats)
+**Write coverage**: 17 of 20 Python formats have write/save support. Three formats are read-only: QOI, XCF, ZST.
+
+### .NET Products (10 formats)
 
 | Format | LOC | Test Files | Parse | Write | Edit | Export |
 |---|---|---|---|---|---|---|
@@ -512,17 +522,17 @@ Total: 39,863 tests collected.
 | TSV | `TESTED` | `TESTED` | Parse and write |
 | NDJSON | `TESTED` | `TESTED` | Parse and write |
 | Netpbm | `TESTED` (PBM/PGM/PPM) | `TESTED + EDIT_WORKING` | Pixel editing |
-| ODS | `TESTED` | — | Parse (ZIP-based) |
-| ODT | `TESTED` | — | Parse |
+| ODS | `TESTED` | — | Parse and write + CSV export |
+| ODT | `TESTED` | — | Parse and write |
 | DIF | `TESTED` | — | Parse and write |
 | SYLK | `TESTED` | — | Parse and write |
 | TOML | `TESTED` | — | Parse and write |
-| ABW | `TESTED` | — | Parse |
-| Gnumeric | `TESTED` | — | Parse |
-| FODG | `TESTED` | — | Parse |
-| FODP | `TESTED` | — | Parse |
-| XCF | `TESTED` | — | Parse (GIMP format) |
-| QOI | `TESTED` | — | Parse and encode |
+| ABW | `TESTED` | — | Parse and write |
+| Gnumeric | `TESTED` | — | Parse and write |
+| FODG | `TESTED` | — | Parse and write |
+| FODP | `TESTED` | — | Parse and write |
+| XCF | `TESTED` | — | Parse (GIMP format, read-only) |
+| QOI | `TESTED` | — | Parse (read-only) |
 | HTML | — | `SCAFFOLDED` | Write-only target |
 | Markdown | — | `SCAFFOLDED` | Write-only target |
 | TXT | — | `SCAFFOLDED` | Write-only target |
@@ -534,8 +544,8 @@ Total: 39,863 tests collected.
 | Dimension | Python | .NET |
 |---|---|---|
 | Formats | 20 | 10 |
-| Total source LOC | ~49K | ~22.5K |
-| Most mature | FODS (4,903 LOC) | FODS (10,197 LOC) |
+| Total source LOC | ~54K | ~22.6K |
+| Most mature | FODT (4,681 LOC) | FODS (10,197 LOC) |
 | Licensing | Apache-2.0 (FOSS) | Commercial |
 | Edit capabilities | Dict-based mutation | Rich edit ops (dedicated classes) |
 | Export formats | CSV, TSV (FODS only) | CSV, HTML, JSON, ODS, PDF, PNG |
@@ -603,12 +613,12 @@ Adding a new format follows the governed pipeline:
 
 ## 27. Current Strengths
 
-1. **Broad format coverage**: 20 Python + 10 .NET implementations from a standing start of 64 days
-2. **Rigorous governance**: 153 validators, 123 skills, 124 commands — unusually high for a 2-month project
+1. **Broad format coverage**: 20 Python + 10 .NET implementations from a standing start of 65 days
+2. **Rigorous governance**: 161 canonical validators, 123 skills, 124 commands — unusually high for a 2-month project
 3. **Spec traceability**: QName registry links every code class to a specification element
 4. **Oracle verification**: 73/73 PASS — deterministic proof that parsers match specifications
 5. **Autonomous development**: 840+ sprints executed through formal pipeline
-6. **Test density**: 39,863 tests — approximately 556 tests per format (Python average)
+6. **Test density**: 39,864 tests — approximately 556 tests per format (Python average)
 7. **Dual-track**: Same governance for both FOSS (Python) and commercial (.NET)
 
 ---
@@ -617,24 +627,23 @@ Adding a new format follows the governed pipeline:
 
 1. **No public releases**: Neither PyPI packages nor NuGet packages are published
 2. **Gate 11 not approved**: Commercial release requires business decision
-3. **Write support is partial**: Many formats have parse but not save/write
-4. **Export is narrow**: Only FODS has multiple export targets
+3. **Write support is nearly complete but 3 formats remain read-only**: QOI, XCF, and ZST lack same-format write. 17 of 20 Python formats have write/save.
+4. **Export is narrow**: Only FODS and ODS have cross-format export (CSV). .NET FODS has 6 export targets.
 5. **Edit support varies**: Rich editing exists for FODS .NET but not uniformly across formats
-6. **No CI for .NET**: GitHub Actions only runs Python lint/test
-7. **SAL has gaps**: 4 formats (ora, pam, xpm, zpaq) have 0 extracted facts
-8. **Analytics are large**: Some analytics files exceed 1,000 LOC (governance violation tracking)
-9. **Supervisor is very large**: 81K LOC of machinery for 72K LOC of product — machinery outweighs product
+6. **SAL has gaps**: 4 acquisition-only formats (ora, pam, xpm, zpaq) have 0 extracted facts and no product source
+7. **Analytics are large**: Some analytics files exceed 1,000 LOC (governance violation tracking)
+8. **Supervisor is very large**: 85K LOC of machinery for 77K LOC of product — machinery outweighs product
 
 ---
 
 ## 29. Architectural Risks
 
-1. **Machinery-to-product ratio**: Supervisor code (81K LOC) is larger than all product code (72K LOC combined). This is unusual and creates maintenance burden.
+1. **Machinery-to-product ratio**: Supervisor code (85K LOC) is larger than all product code (77K LOC combined). This is unusual and creates maintenance burden.
 2. **Prompt-only governance**: Many governance rules exist only in CLAUDE.md and AGENTS.md — they are enforced by AI compliance, not by code.
 3. **Report accumulation**: The `reports/` directory is 402 MB and growing. No automated archival or pruning.
 4. **Single-agent dependency**: The system is designed around Claude Code. Codex support is governance-adapted but not primary.
 5. **Local-state dependency**: Evidence and continuation state in `.local/` is gitignored — not reproducible across machines.
-6. **No public CI for products**: Product tests run locally; CI only runs lint and L0-L3.
+6. **CI coverage is partial**: CI runs lint, security, and L0-L3 Python tests plus .NET restore/build/test, but the full 39K+ test suite is not run in CI.
 
 ---
 
@@ -642,37 +651,86 @@ Adding a new format follows the governed pipeline:
 
 1. **Monolithic analytics files**: Some `*_analytics.py` files exceed governance LOC caps
 2. **CSV import shadowing**: Python's `csv` stdlib module conflicts with the format-factory `csv` package name
-3. **Missing writers**: ~8 Python formats lack same-format save
+3. **Missing writers**: 3 Python formats lack same-format save (QOI, XCF, ZST)
 4. **Zero-fact formats**: ORA, PAM, XPM, ZPAQ have acquisition packs but no SAL facts or product code
 5. **Stale plan locks**: Historical plan locks can interfere with continuation checking
 6. **supervisor_loop.py timeout**: 120-second default can block on large declarations
 
 ---
 
-## 31. Glossary
+## 31. Specification Types
 
-| Term | Definition |
-|---|---|
-| **SAL** | Specification Authority Layer — extracts facts from specs |
-| **QName** | Qualified Name — spec namespace:element identifier (e.g., `table:table`) |
-| **Gate** | Approval checkpoint in the acquisition pipeline (11 total) |
-| **Sprint** | A unit of autonomous development work |
-| **Taskcard** | A work item within a plan (e.g., TC-PGI-045) |
-| **Oracle** | Deterministic spec-grounded test case |
-| **Gap Ledger** | Tracks missing capabilities per format |
-| **Evidence Declaration** | YAML file documenting sprint outcomes |
-| **Governance Validator** | Programmatic check (e.g., V001, V134) |
-| **Skill** | Registered Claude command with defined inputs/outputs |
-| **Compat/** | Facade directory with format-prefixed convenience classes |
-| **spec/** | Spec-aligned domain class hierarchy |
-| **Machinery** | Development automation tools (not shipped) |
-| **Product** | Format libraries (shipped to users) |
-| **FOSS** | Free and Open Source Software (Python track) |
-| **Gate 11** | Commercial release gate (requires business approval) |
+The system handles specifications of several different kinds, each with different ingestion and normalization paths:
+
+| Spec Type | Formats | Ingestion Path | Normalization | Current Support |
+|---|---|---|---|---|
+| XML schema / ODF-style prose specs | FODS, FODT, ODS, ODT, FODG, FODP | SAL extraction via `tools/specification-authority-layer/` | AI-assisted fact extraction → JSON | Full (14,135 facts for ODF family) |
+| Binary layout specs | XCF (GIMP), QOI | Manual spec reading → fact JSON | Manually normalized | Partial (5-45 facts each) |
+| Textual grammar / record-oriented | CSV, TSV, DIF, SYLK, NDJSON, TOML | RFC/spec reading → fact JSON | Manually normalized | Partial (18-70 facts each) |
+| Compression / container specs | ZST (Zstandard), Gnumeric (gzip+XML) | RFC/spec reading → fact JSON | Manually normalized | Partial (64-204 facts) |
+| XML-based document specs | ABW (AbiWord XML) | Spec reading → fact JSON | Manually normalized | Minimal (39 facts) |
+
+**Limitations**: SAL AI-assisted extraction is currently effective primarily for XML/ODF-family specifications. Non-XML formats rely on manually normalized fact sets that are smaller and less comprehensive. The 4 acquisition-only formats (ORA, PAM, XPM, ZPAQ) have no facts extracted yet.
+
+## 32. Format Categories
+
+Products are organized into these categories based on their primary purpose:
+
+| Category | Formats (Python) | Formats (.NET) | Notes |
+|---|---|---|---|
+| Spreadsheets and tables | FODS, ODS, CSV, TSV, DIF, SYLK, Gnumeric | FODS, CSV, TSV | Tabular data with cells, rows, formulas |
+| Documents and text | FODT, ODT, ABW | FODT | Rich text with paragraphs, styles, sections |
+| Presentations | FODP | — | Slide-based content |
+| Drawings | FODG | — | Vector graphics |
+| Images and rasters | PBM, PGM, PPM, QOI, XCF | Netpbm | Pixel data, codec operations |
+| Structured data | NDJSON, TOML | NDJSON | Machine-readable structured records |
+| Compression | ZST | ZST | Compression/decompression codec |
+| Export-only targets | — | HTML, Markdown, TXT | Write-only output formats for .NET |
+
+**Coverage**: The strongest category is spreadsheets/tables (7 Python formats, 3 .NET) where the ODF specification provides deep SAL fact coverage. Image/raster formats have the simplest implementations. Structured data formats (NDJSON, TOML) are lightweight wrappers.
+
+## 33. Glossary
+
+| Term | Definition | FF-Specific Meaning |
+|---|---|---|
+| **Specification** | A formal document describing a file format's structure, syntax, and semantics (e.g., ODF 1.3, RFC 8478) | Input to the SAL layer; the authoritative source for all product behavior |
+| **Schema** | A machine-readable definition of allowed structure (e.g., XML Schema, JSON Schema) | Used for both specification elements and internal data validation (evidence schemas, capability schemas) |
+| **SAL** | Specification Authority Layer | The subsystem (`tools/specification-authority-layer/`) that extracts structured facts from specifications. Uses AI-assisted analysis for complex specs. |
+| **QName** | Qualified Name — a namespace-prefixed element identifier (e.g., `table:table-cell`) | Maps spec elements to canonical class names via `shared/qname-registry/{format}.yaml`. Shared across Python and .NET. |
+| **Namespace** | An XML namespace URI that disambiguates element names (e.g., `urn:oasis:names:tc:opendocument:xmlns:table:1.0`) | Defined in specification; used by parsers to identify elements; recorded in QName registry |
+| **Capability** | A discrete feature or behavior that a format implementation can exhibit | Tracked in `.governance/capabilities/registry.yaml` (120 active). Each maps to a product track. |
+| **Capability Compiler** | A tool that translates capability gaps into concrete work items | `tools/supervisor/capability_feature_compiler.py` produces `next-work-items.json` from gap ledger entries |
+| **Object Model** | The in-memory data structure representing a parsed file's content | Each format defines models via dataclasses or dicts. Spec-aligned classes live in `spec/`; user-facing facades in `Compat/`. |
+| **Parser** | Code that reads a file format and produces an object model | Implemented per format in `{format}_codec.py` or `parser.py`. Uses streaming XML for ODF formats. |
+| **Writer / Serializer** | Code that takes an object model and writes it back to the format | 17 of 20 Python formats have writers. Enables round-trip (parse→edit→save). |
+| **Round-trip** | Parse a file, optionally modify it, write it back, and verify the output matches expectations | Key quality metric. FODS Python has verified parse→write→parse round-trip. |
+| **Preservation** | The property that writing a parsed file back produces output identical (or semantically equivalent) to the input | Stronger than round-trip; not yet verified for all formats |
+| **Oracle** | A deterministic, spec-grounded test case that verifies parser output against specification requirements | 73 oracle cases across 20 formats, all PASS. Defined in `oracle/formats/{format}/oracle-package.yaml`. |
+| **Evidence Declaration** | A YAML file documenting what work was done in a sprint, with file references and test results | Written to `.local/evidences/{run_id}/`. Schema at `schemas/evidence/`. Validated by `sprint_executor_validate.py`. |
+| **Gate** | An approval checkpoint in the acquisition or release pipeline (11 total) | Gates 1-4: legal/spec/prototype. Gates 5-7: requirements/oracle/fuzz. Gates 8-10: product readiness. Gate 11: commercial release. |
+| **Gate 11** | The commercial release gate requiring business approval from Babar Raza | Blocks PyPI and NuGet publication. Criteria: C1-C20 (.NET), P1-P11 (Python). |
+| **Sprint** | A unit of autonomous development work, typically executed by Claude Code | 840+ completed. Each sprint reads `next-sprint.md`, executes work, produces evidence. |
+| **Taskcard** | A named work item within a plan (e.g., TC-PGI-045) | Has status (CLOSED, IN_PROGRESS, etc.). Plans contain multiple taskcards executed sequentially. |
+| **Lane** | A parallel execution track for format-specific or cross-cutting work | The supervisor can schedule work across multiple lanes (e.g., FODS deepening, governance). |
+| **Queue** | An ordered list of work items awaiting execution | Gap ledger entries feed into the work queue via the capability compiler |
+| **Supervisor** | The orchestration system that plans, validates, grades, and sequences autonomous sprints | `tools/supervisor/` (273 files, 85K LOC). Core: `supervisor_loop.py`, `autonomous_cycle.py`, `check_continuation.py`. |
+| **Governance Validator** | A programmatic check enforcing code quality, spec alignment, or process compliance (e.g., V001, V134) | 161 canonical validators across 20 modules. Run during autonomous-cycle grading. |
+| **Gap Ledger** | Tracks missing capabilities per format as structured JSON entries | `reports/capability-layer/gap-ledger.json`. Entries drive work item generation. |
+| **Skill** | A registered agent command with defined inputs, outputs, and capability routing | 123 skills in `.supervisor/skill-registry.yaml`. Every source mutation should go through a registered skill. |
+| **Promotion** | Advancing a format through pipeline gates (e.g., from Gate 4 to Gate 5) | Tracked in `registry/format-registry.yaml` |
+| **Certification** | Formal verification that tests meet quality thresholds (strong assertions, exception coverage) | Tools in `tools/certification/`. Report at `reports/certification/certification-report.md`. |
+| **Compat/** | Facade directory within each format package containing format-prefixed convenience classes | e.g., `FodsDocument`, `FodsCell`. Wraps canonical spec-aligned classes for user ergonomics. |
+| **spec/** | Spec-aligned domain class hierarchy within each format package | Classes have `spec_qname: ClassVar[str]` linking to specification elements. Canonical naming, not format-prefixed. |
+| **Machinery** | Development automation tools (not shipped to users) | `tools/supervisor/`, `tools/oracle/`, `tools/spec/`, etc. — 85K LOC total. |
+| **Product** | Format libraries shipped to end users | `src/python/` (20 formats, 54K LOC), `src/net/` (10 formats, 22.6K LOC). No AI/LLM dependencies. |
+| **FOSS** | Free and Open Source Software | The Python product track, licensed Apache-2.0 |
+| **Idempotency** | The property that running an operation multiple times produces the same result | Applied to skills, governance validators, and this documentation maintenance process |
+| **Generated Code** | Artifacts produced automatically by machinery (e.g., `next-sprint.md`, `session-resume.md`, capability index) | Distinguished from manually written product source. See DIAG-017. |
+| **Manually Maintained Code** | Product source written by agents through governed skills, not auto-generated | Parsers, writers, models, analytics, tests. May be scaffolded initially via `/new-format-kickstart`. |
 
 ---
 
-## 32. Claim-Reference Index
+## 34. Claim-Reference Index
 
 All claim IDs used in this document:
 
@@ -696,6 +754,6 @@ All claim IDs used in this document:
 | CLM-PROD-002 | 21 | Python broader, .NET deeper |
 | CLM-GOV-001 | 17 | 123 skills and 124 commands |
 | CLM-GOV-002 | 18 | Supervisor orchestrates autonomous sprints |
-| CLM-GOV-003 | 19 | 153 governance validators |
-| CLM-TEST-001 | 20 | 39,863 tests collected |
+| CLM-GOV-003 | 19 | 161 canonical governance validators |
+| CLM-TEST-001 | 20 | 39,864 tests collected |
 | CLM-TEST-002 | 20 | 73/73 oracle pass rate |

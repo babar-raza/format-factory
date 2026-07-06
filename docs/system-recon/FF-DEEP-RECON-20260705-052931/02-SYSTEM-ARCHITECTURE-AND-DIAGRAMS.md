@@ -43,8 +43,8 @@ flowchart TB
 | SPECS | Format specifications from standards bodies |
 | SAMPLES | Known-good sample files for each format |
 | HUMAN | Business approver for commercial release |
-| MACH | Development machinery (81K LOC) |
-| PROD | Product libraries (72K LOC) |
+| MACH | Development machinery (85K LOC) |
+| PROD | Product libraries (77K LOC) |
 | PYDEV | End-user Python developers |
 | NETDEV | End-user .NET developers |
 
@@ -59,12 +59,12 @@ flowchart TB
 ```mermaid
 flowchart LR
     subgraph Product["Product Layer (L06)"]
-        PY["src/python/<br/>20 formats, 49K LOC"]
-        NET["src/net/<br/>10 formats, 22.5K LOC"]
+        PY["src/python/<br/>20 formats, 54K LOC"]
+        NET["src/net/<br/>10 formats, 22.6K LOC"]
     end
 
     subgraph Machinery["Machinery"]
-        SUP["tools/supervisor/<br/>262 files, 81K LOC"]
+        SUP["tools/supervisor/<br/>273 files, 85K LOC"]
         SPEC["tools/spec/ +<br/>tools/specification-authority-layer/"]
         ORC["tools/oracle/"]
         GOV["tools/supervisor/<br/>governance_validators*"]
@@ -79,7 +79,7 @@ flowchart LR
     end
 
     subgraph Tests["Test Layer (L07)"]
-        TESTS["tests/<br/>39,863 tests"]
+        TESTS["tests/<br/>39,864 tests"]
     end
 
     SPEC -->|facts| QNAME
@@ -112,8 +112,8 @@ flowchart TB
     S7["7. Capability Modeling<br/>(reports/capability-layer/)"]
     S8["8. Source Implementation<br/>(src/python/, src/net/)"]
     S9["9. Oracle Verification<br/>(oracle/formats/)"]
-    S10["10. Testing<br/>(tests/, 39K tests)"]
-    S11["11. Governance Validation<br/>(153 validators)"]
+    S10["10. Testing<br/>(tests/, 39.8K tests)"]
+    S11["11. Governance Validation<br/>(161 validators)"]
     S12["12. Packaging<br/>(packaging/python/)"]
     S13["13. Gate 11 Release<br/>(NOT APPROVED)"]
 
@@ -159,7 +159,7 @@ flowchart TB
 |---|---|---|
 | SAL Extractor | 24 .py files | Active |
 | AI tools | ~30 .py files | Active |
-| Facts output | ~14,441 total facts | 20 formats have facts; 4 have 0 |
+| Facts output | ~14,719 total facts | 20 formats have facts; 4 have 0 |
 
 ---
 
@@ -171,7 +171,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    FACTS["SAL Facts<br/>(~14K facts)"]
+    FACTS["SAL Facts<br/>(~14.7K facts)"]
     QNAME["QName Registry<br/>(21 YAML files)"]
     CAPS["Capability Model<br/>(reports/capability-layer/)"]
     GAPS["Gap Ledger<br/>(gap-ledger.json)"]
@@ -267,7 +267,7 @@ flowchart TB
     end
 
     subgraph Skills["Skills Layer (L13)"]
-        REGISTRY[".supervisor/skill-registry.yaml<br/>(123 skills)"]
+        REGISTRY[".supervisor/<br/>skill-registry.yaml<br/>(123 skills)"]
         COMMANDS[".claude/commands/<br/>(124 command files)"]
     end
 
@@ -279,7 +279,7 @@ flowchart TB
     end
 
     subgraph Governance["Governance Layer (L12)"]
-        VALIDATORS["153 Governance Validators<br/>(18 modules)"]
+        VALIDATORS["161 Governance Validators<br/>(20 modules)"]
         POLICIES[".supervisor/policies.yaml"]
     end
 
@@ -341,7 +341,7 @@ flowchart TB
     SPRINT["Sprint Execution"]
     EVIDENCE["Evidence Declaration<br/>(.local/evidences/{run_id}/)"]
     VALIDATE["Sprint Executor Validate<br/>(828 LOC)"]
-    GOVVAL["153 Governance Validators"]
+    GOVVAL["161 Governance Validators"]
     GRADE["Autonomous Cycle Grading"]
 
     SPRINT --> EVIDENCE
@@ -374,7 +374,7 @@ flowchart LR
     end
 
     subgraph Facts["Extracted Knowledge"]
-        SAL["SAL Facts<br/>(JSON, ~14K)"]
+        SAL["SAL Facts<br/>(JSON, ~14.7K)"]
         QNAME["QName Registry<br/>(YAML, 21 files)"]
     end
 
@@ -385,7 +385,7 @@ flowchart LR
 
     subgraph Verify["Verification"]
         ORACLE["Oracle Cases<br/>(oracle/formats/)"]
-        TESTS["Tests<br/>(39,863)"]
+        TESTS["Tests<br/>(39,864)"]
         EVIDENCE["Evidence Decls<br/>(.local/evidences/)"]
     end
 
@@ -454,7 +454,7 @@ sequenceDiagram
     participant CC as check_continuation.py
 
     Agent->>SUP: autonomous-cycle --declaration evidence.yaml
-    SUP->>GOV: Run 153 validators
+    SUP->>GOV: Run 161 validators
     GOV-->>SUP: V66 FAIL (monolith detected)
     SUP-->>Agent: Exit 3 (rework items)
     Agent->>CC: check_continuation.py
@@ -483,25 +483,26 @@ flowchart TB
         ZST_P["ZST Python<br/>Compress+Decompress"]
     end
 
-    subgraph Tested["Tested with Parse + Some Write"]
+    subgraph Tested["Tested with Parse + Write"]
         CSV_P["CSV Python"]
         TSV_P["TSV Python"]
         DIF_P["DIF Python"]
         SYLK_P["SYLK Python"]
         NDJSON_P["NDJSON Python"]
         TOML_P["TOML Python"]
-        QOI_P["QOI Python"]
-        PBM_P["PBM/PGM/PPM Python"]
-    end
-
-    subgraph ParseOnly["Tested with Parse Only"]
         ODS_P["ODS Python"]
         ODT_P["ODT Python"]
         ABW_P["ABW Python"]
         GNUM_P["Gnumeric Python"]
         FODG_P["FODG Python"]
         FODP_P["FODP Python"]
+        PBM_P["PBM/PGM/PPM Python"]
+    end
+
+    subgraph ParseOnly["Tested with Parse Only (Read-Only)"]
         XCF_P["XCF Python"]
+        QOI_P["QOI Python"]
+        ZST_RO["ZST Python<br/>(compress/decompress only)"]
     end
 
     subgraph Scaffolded["Scaffolded / Write-Only"]
@@ -531,6 +532,7 @@ flowchart LR
     SEC["Bandit Security"]
     FAST["Fast Tests (L0-L3)"]
     SKILL["Skill Attribution Check"]
+    DOTNETCI[".NET Build + Test<br/>(dotnet restore/build/test)"]
     BUILD["Package Build<br/>(build-local-packages.py)"]
     GATE11["Gate 11 Approval<br/>(NOT APPROVED)"]
     PYPI["PyPI Publish"]
@@ -540,8 +542,10 @@ flowchart LR
     PUSH --> SEC
     PUSH --> FAST
     PUSH --> SKILL
+    PUSH --> DOTNETCI
     LINT --> BUILD
     FAST --> BUILD
+    DOTNETCI --> BUILD
     BUILD --> GATE11
     GATE11 -->|Approved| PYPI
     GATE11 -->|Approved| NUGET
@@ -633,8 +637,8 @@ flowchart TB
         C4["Oracle: 73/73 PASS"]
         C5["Gate 11: NOT approved"]
         C6["No public packages"]
-        C7["153 validators"]
-        C8["39,863 tests"]
+        C7["161 validators"]
+        C8["39,864 tests"]
     end
 
     subgraph Intended["Intended State (from plans)"]
@@ -647,7 +651,7 @@ flowchart TB
         I7["Self-healing autonomous loop"]
     end
 
-    C1 -.->|gap: write/export partial| I1
+    C1 -.->|gap: 3 formats read-only| I1
     C2 -.->|gap: 10 vs 20 formats| I2
     C3 -.->|gap: human/AI hybrid| I3
     C5 -.->|blocked: business decision| I4
@@ -657,4 +661,4 @@ flowchart TB
     style C6 fill:#f99,stroke:#c00
 ```
 
-**Key gaps**: Write support is partial for most formats. .NET covers half the formats Python does. Publication is blocked on Gate 11 business approval. SAL fact extraction involves AI-assisted steps rather than being fully deterministic. Code generation is scaffolding-based, not continuous regeneration.
+**Key gaps**: 3 Python formats remain read-only (QOI, XCF, ZST). .NET covers half the formats Python does. Publication is blocked on Gate 11 business approval. SAL fact extraction involves AI-assisted steps rather than being fully deterministic. Code generation is scaffolding-based, not continuous regeneration.

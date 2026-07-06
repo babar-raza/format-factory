@@ -2,7 +2,7 @@
 
 ## Summary
 
-Format Factory is an open-source system that converts file-format specifications into tested, legally vetted software libraries. In 64 days of development, it has produced 20 Python and 10 .NET format libraries, verified by nearly 40,000 tests, governed by 153 automated validators, and developed through 840+ AI-supervised sprint cycles. This post explains what it does, how it works, and what it has achieved so far.
+Format Factory is an open-source system that converts file-format specifications into tested, legally vetted software libraries. In 65 days of development, it has produced 20 Python and 10 .NET format libraries, verified by nearly 40,000 tests, governed by 161 automated validators, and developed through 840+ AI-supervised sprint cycles. This post explains what it does, how it works, and what it has achieved so far.
 
 ---
 
@@ -53,7 +53,7 @@ Adding a new format follows a governed pipeline with 11 gates:
 
 9. **Oracle verification.** Deterministic test cases derived from the specification verify that the parser handles each element correctly. FODS has 8 oracle cases covering document structure, table elements, cell types, and value attributes. All 20 Python formats pass their oracle suites (73 out of 73 cases pass).
 
-10. **Testing.** The test suite contains 39,863 collected tests across unit, integration, roundtrip, oracle, security, and governance categories. Tests run in layered tiers — fast structural tests first, then focused single-format tests, then integration and cross-format tests.
+10. **Testing.** The test suite contains 39,864 collected tests across unit, integration, roundtrip, oracle, security, and governance categories. Tests run in layered tiers — fast structural tests first, then focused single-format tests, then integration and cross-format tests.
 
 11. **Release gating.** Gate 11 is the commercial release gate. It is currently not approved — publication to PyPI and NuGet requires a business decision by the project owner.
 
@@ -115,9 +115,9 @@ The .NET libraries follow a class-based pattern. FODS .NET (10,197 lines of C#) 
 
 The project currently maintains:
 
-- **39,863 tests** collected by pytest across Python and machinery categories
+- **39,864 tests** collected by pytest across Python and machinery categories
 - **73 oracle cases** across 20 formats, all passing
-- **153 governance validators** enforcing code quality, spec alignment, naming conventions, and structural constraints
+- **161 governance validators** enforcing code quality, spec alignment, naming conventions, and structural constraints
 - **6 test layers** from fast structural checks through full cross-format suites
 
 A representative test run during this reconnaissance: FODS parser tests ran 1,571 tests in 10 seconds (all pass). ZST tests ran 1,316 tests in 9 seconds (all pass). Both suites include roundtrip verification — parse, modify, write, re-parse — confirming that the format libraries preserve data integrity through edit cycles.
@@ -132,7 +132,7 @@ Development is driven by AI agents (primarily Claude Code) operating under stric
 
 - **123 registered skills** define what the agent can do — from `/new-format-kickstart` (scaffold a new format package) to `/add-python-api` (add a public API function) to `/run-oracle` (execute oracle verification).
 - **124 Claude commands** provide executable prompts for specific operations.
-- **119 active capabilities** are tracked in a capability registry, each mapping to specific product tracks (FOSS Python, commercial .NET, governance, planning, etc.).
+- **120 active capabilities** are tracked in a capability registry, each mapping to specific product tracks (FOSS Python, .NET, governance, planning, etc.).
 
 The agent does not operate freely. Every source mutation must go through a registered skill. Every sprint's output is declared as evidence, validated by the sprint executor, graded by the autonomous cycle, and checked by governance validators before the next sprint begins.
 
@@ -145,7 +145,7 @@ The supervisor system orchestrates the autonomous development loop:
 1. The agent reads the current sprint prompt (`next-sprint.md`).
 2. It executes the sprint — writing code, running tests, producing evidence.
 3. It submits an evidence declaration describing what was done.
-4. The supervisor validates the declaration against 153 governance validators.
+4. The supervisor validates the declaration against 161 governance validators.
 5. The autonomous cycle grades each work item (accepted, rework, rejected).
 6. The continuation checker decides whether to proceed or stop.
 7. If continuing, a new `next-sprint.md` is generated and the loop repeats.
@@ -160,9 +160,9 @@ Governance validators check concerns ranging from code structure (file size caps
 
 **20 Python FOSS libraries** cover spreadsheets (FODS, ODS, CSV, TSV, DIF, SYLK, Gnumeric), documents (FODT, ODT, ABW), presentations (FODP), drawings (FODG), images (XCF, QOI, PBM, PGM, PPM), data interchange (NDJSON, TOML), and compression (ZST).
 
-**10 .NET commercial libraries** cover a subset with deeper functionality: FODS .NET includes cell editing, style editing, and export to six output formats.
+**10 .NET libraries** cover a subset with deeper functionality: FODS .NET includes cell editing, style editing, and export to six output formats.
 
-All 20 Python formats pass oracle verification. Parse functionality works across all formats. Write/save support is available for approximately 12 of 20 Python formats. Export capability is concentrated in FODS (CSV, TSV) and the .NET track (CSV, HTML, JSON, ODS, PDF, PNG).
+All 20 Python formats pass oracle verification. Parse functionality works across all formats. Write/save support is available for 17 of 20 Python formats (3 are read-only: QOI, XCF, ZST). Export capability is concentrated in FODS and ODS (CSV export) and the .NET track (CSV, HTML, JSON, ODS, PDF, PNG).
 
 ---
 
@@ -170,7 +170,7 @@ All 20 Python formats pass oracle verification. Parse functionality works across
 
 - **Specification-grounded parsing works.** 73 oracle cases derived from specifications pass, confirming that parsers implement what the specs define — not just what the developer expected.
 - **Round-trip fidelity is achievable.** FODS parse-write-parse cycles produce identical model structures.
-- **Automated governance scales.** 153 validators enforce quality rules that would be impossible to check manually across 39,863 tests and 72,000 lines of product code.
+- **Automated governance scales.** 161 validators enforce quality rules that would be impossible to check manually across 39,864 tests and 77,000 lines of product code.
 - **The pipeline is repeatable.** 20 formats have been brought through the same pipeline. Adding format 21 follows the same governed process.
 
 ---
@@ -178,17 +178,17 @@ All 20 Python formats pass oracle verification. Parse functionality works across
 ## What Remains Incomplete
 
 - **No public packages.** Neither Python packages (PyPI) nor .NET packages (NuGet) have been published. Gate 11 commercial release requires a business decision.
-- **Write support is partial.** Approximately 8 of 20 Python formats lack same-format save.
-- **Export is narrow.** Cross-format export is concentrated in FODS. Most formats support only parse.
+- **Write support is nearly complete but 3 formats remain read-only.** QOI, XCF, and ZST lack same-format save.
+- **Export is narrow.** Cross-format export is concentrated in FODS and ODS (CSV). Most formats support parse and write but not export to other formats.
 - **SAL extraction involves AI.** Fact extraction from specifications is not fully deterministic — it involves AI-assisted analysis steps.
-- **.NET lags Python.** 10 .NET formats versus 20 Python formats. .NET CI is not yet automated.
-- **The machinery is large.** 81,000 lines of supervisor code govern 72,000 lines of product code. This ratio is intentional (the factory is bigger than any single product) but creates maintenance cost.
+- **.NET lags Python.** 10 .NET formats versus 20 Python formats.
+- **The machinery is large.** 85,000 lines of supervisor code govern 77,000 lines of product code. This ratio is intentional (the factory is bigger than any single product) but creates maintenance cost.
 
 ---
 
 ## Technical and Business Relevance
 
-Format Factory demonstrates that specification-driven development of format libraries, combined with AI-governed automation, can produce traceable, tested, legally vetted code at a pace that would be difficult to achieve manually. In 64 days, the system produced 30 format libraries across two languages with nearly 40,000 tests — a throughput that reflects the value of structured automation.
+Format Factory demonstrates that specification-driven development of format libraries, combined with AI-governed automation, can produce traceable, tested, legally vetted code at a pace that would be difficult to achieve manually. In 65 days, the system produced 30 format libraries across two languages with nearly 40,000 tests — a throughput that reflects the value of structured automation.
 
 The approach is relevant to:
 - **Document processing platforms** needing to add format support without building from scratch.
@@ -201,7 +201,7 @@ The approach is relevant to:
 ## Near-Term Direction
 
 Based on active plans and gap ledgers:
-- Closing write-support gaps for parse-only formats
+- Closing the remaining 3 write-support gaps (QOI, XCF, ZST)
 - Completing .NET parity for high-priority formats
 - Addressing monolithic analytics files that exceed governance size limits
 - Preparing Gate 11 submission for FODS and FODT
@@ -219,8 +219,8 @@ What exists today is a foundation: 20 tested Python libraries, 10 tested .NET li
 
 ## Verification Basis
 
-- **Inspected commit**: `94dd5308` on branch `main`
-- **Inspection date**: 2026-07-05
-- **Evidence categories**: Source code inspection, runtime execution (parse, write, roundtrip), test execution (2,887 tests run, 39,863 collected), file system analysis, git history review, governance validator counts, schema inspection
+- **Inspected commits**: `94dd5308` (initial, 2026-07-05), `0e47f12f` (refresh, 2026-07-06) on branch `main`
+- **Inspection dates**: 2026-07-05 (initial), 2026-07-06 (refresh)
+- **Evidence categories**: Source code inspection, runtime execution (parse, write, roundtrip), test execution (2,887 tests run, 39,864 collected), file system analysis, git history review, governance validator counts, schema inspection
 - **Runtime verification scope**: FODS (parse + roundtrip), FODT (parse), ZST (compress + decompress + roundtrip), TOML (load). Representative, not exhaustive.
-- **Limitations**: Full test suite (39,863 tests) was collected but not run in its entirety during this reconnaissance. .NET compilation was not executed. CI workflows were inspected but not triggered. SAL fact counts are from project records, not independently re-extracted. Sprint count (840+) is from README documentation, not independently verified against report directory count.
+- **Limitations**: Full test suite (39,864 tests) was collected but not run in its entirety during this reconnaissance. .NET compilation was not executed. CI workflows were inspected but not triggered. SAL fact counts are from `.local/sal-output/` consolidation. Sprint count (840+) is from README documentation, not independently verified against report directory count.

@@ -8,21 +8,21 @@ Issues, contradictions, and open questions discovered during the deep reconnaiss
 
 ### ISSUE-DOC-001: Validator Count Discrepancy
 
-> **VERIFICATION (FF-XPLAN-001, 2026-07-06):** PARTIALLY INCORRECT. The recon
-> grep count of 153 includes 24 unwired helper functions. The canonical count
-> is **129**, as asserted by `test_canonical_validator_count` and
-> `governance_validator_runner.py expected_count=129`. README's "101" is stale.
-> Fix: use runner's canonical count, not grep. See W1-001 in golden-hugging-manatee.md.
+> **VERIFICATION (FF-XPLAN-001, 2026-07-06; refreshed 2026-07-06):** The canonical
+> count is now **161**, as asserted by `governance_validator_runner.py expected_count=161`
+> (134 explicit + 27 from contract registry). `grep -c "def validate_"` across 20 modules
+> returns 156. README's "101" remains stale. The count has grown from 129→161 between
+> the initial recon and this refresh due to convergence work (FF-XPLAN-001).
 
 | Field | Value |
 |---|---|
 | Description | Multiple documents report different governance validator counts |
-| Affected | `README.md`, `PROJECT_STATUS.md`, `CLAUDE.md` MEMORY.md, actual code |
-| Evidence | README: "101 governance validators". PROJECT_STATUS.md: "101 validators across 11 modules". MEMORY.md: "127 total (V134-V136 added)". Actual `grep -c "def validate_"`: **153 across 18 modules** |
+| Affected | `README.md`, `PROJECT_STATUS.md`, `CLAUDE.md`, MEMORY.md, actual code |
+| Evidence | README: "101 governance validators". PROJECT_STATUS.md: "101 validators across 11 modules". MEMORY.md: "127 total". `governance_validator_runner.py`: **161 canonical** (134 explicit + 27 contract). `grep -c "def validate_"`: **156 across 20 modules**. |
 | Impact | Moderate — readers get wrong impression of governance depth |
-| Confidence | HIGH — independently counted |
-| Blocks | Blog claim must use verified count (~~153~~ **129** canonical) |
-| Likely Interpretation | Count grew rapidly (101 → 127 → 129) and documentation wasn't updated at each step. Grep over-counts by including unwired helper functions. |
+| Confidence | HIGH — independently counted from runner and grep |
+| Blocks | Blog claim must use verified count (**161** canonical) |
+| Likely Interpretation | Count grew rapidly (101 → 127 → 129 → 161) and documentation wasn't updated at each step. Grep returns 156 but canonical runner count is 161 including contract-registry validators. |
 
 ### ISSUE-DOC-002: Skill Count Discrepancy
 
@@ -51,7 +51,7 @@ Issues, contradictions, and open questions discovered during the deep reconnaiss
 |---|---|
 | Description | PROJECT_STATUS.md was auto-generated on 2026-07-02 but some counts are already stale |
 | Affected | `PROJECT_STATUS.md` |
-| Evidence | Header: "Generated: 2026-07-02T16:07:14+00:00". Reports "101 validators" but actual is 153. Reports "100 of 103 capabilities" but AGENTS.md shows 119 |
+| Evidence | Header: "Generated: 2026-07-02T16:07:14+00:00". Reports "101 validators" but actual is 161 canonical. Reports "100 of 103 capabilities" but registry shows 120 active |
 | Impact | Moderate — auto-generated status is not re-generated frequently enough |
 | Confidence | HIGH |
 
@@ -72,13 +72,18 @@ Issues, contradictions, and open questions discovered during the deep reconnaiss
 
 ### ISSUE-IMPL-002: Write Support Gaps
 
+> **REFRESH (2026-07-06):** Write coverage has improved significantly. Only 3 of 20
+> Python formats now lack write/save: QOI, XCF, ZST. The previous count of "~8" was
+> based on incomplete directory inspection. ODS, ODT, ABW, Gnumeric, FODG, and FODP
+> all now have write/save functions.
+
 | Field | Value |
 |---|---|
-| Description | Approximately 8 of 20 Python formats lack same-format save/write |
-| Affected | ODS, ODT, ABW, Gnumeric, FODG, FODP, XCF, and potentially others |
-| Evidence | No `writer.py` or write function found in these format directories |
-| Impact | MEDIUM — parse-only formats cannot round-trip |
-| Confidence | MEDIUM — based on directory inspection, not exhaustive source reading |
+| Description | 3 of 20 Python formats lack same-format save/write |
+| Affected | QOI, XCF, ZST |
+| Evidence | `grep -r "def write_\|def save_"` found no write functions in these 3 format dirs |
+| Impact | LOW — only 3 formats cannot round-trip; 17 of 20 have write support |
+| Confidence | HIGH — exhaustive source search during refresh |
 
 ### ISSUE-IMPL-003: SAL Extraction is AI-Assisted, Not Deterministic
 
@@ -120,9 +125,9 @@ Issues, contradictions, and open questions discovered during the deep reconnaiss
 
 | Field | Value |
 |---|---|
-| Description | Supervisor/machinery code (~81K LOC) is larger than all product code (~72K LOC) |
+| Description | Supervisor/machinery code (~85K LOC) is larger than all product code (~77K LOC) |
 | Affected | `tools/supervisor/` vs `src/python/` + `src/net/` |
-| Evidence | `wc -l tools/supervisor/*.py` = 81,241; sum of product LOC = ~71,932 |
+| Evidence | `wc -l tools/supervisor/**/*.py` = 85,280; sum of product LOC (Python 54,202 + .NET 22,643) = ~76,845 |
 | Impact | MEDIUM — unusual ratio; machinery maintenance cost is significant |
 | Confidence | HIGH |
 | Likely Interpretation | The "factory is bigger than the product" is intentional but carries scaling risk |
@@ -243,9 +248,9 @@ Given that SAL involves AI-assisted steps, can two separate runs produce identic
 
 README claims 840+. The report directories suggest hundreds of sprints but the exact total was not independently verified. A precise count would require enumerating all report directories and evidence declarations.
 
-### OQ-003: Are All 39,863 Tests Green?
+### OQ-003: Are All 39,864 Tests Green?
 
-Only 2,887 tests (FODS + ZST) were executed during this recon. The full suite may contain failures, skips, or environmental dependencies not visible in collection.
+Only 2,887 tests (FODS + ZST) were executed during the initial recon. The full suite may contain failures, skips, or environmental dependencies not visible in collection.
 
 ### OQ-004: What is the Publication Timeline?
 
@@ -257,8 +262,8 @@ MEMORY.md documents recurring issues with stale plan locks blocking continuation
 
 ### OQ-006: Is the Machinery-to-Product LOC Ratio Sustainable?
 
-At 81K:72K (1.13:1), the machinery is already larger than the products. As more formats are added, will the machinery grow proportionally? Or does it reach a steady state?
+At 85K:77K (1.11:1), the machinery is already larger than the products. As more formats are added, will the machinery grow proportionally? Or does it reach a steady state?
 
 ### OQ-007: What Percentage of Tests Are Generated vs Hand-Written?
 
-The 39,863 test count is large. Some tests appear to be generated (e.g., test files with systematic naming patterns in `tests/python/deepening/`). The ratio of generated to hand-written tests affects the interpretation of test coverage claims.
+The 39,864 test count is large. Some tests appear to be generated (e.g., test files with systematic naming patterns in `tests/python/deepening/`). The ratio of generated to hand-written tests affects the interpretation of test coverage claims.
