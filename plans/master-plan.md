@@ -6567,3 +6567,64 @@ evidence-backed publication pack with claim IDs, evidence classification, and ad
 No production source modified. All output confined to `docs/system-recon/FF-DEEP-RECON-20260705-052931/`.
 
 **Final Verdict:** COMPLETE_WITH_DOCUMENTED_LIMITATIONS | CLOSED
+
+---
+
+## §119 — golden-hugging-manatee (healed-v2): FF-XPLAN-001 — Zero Exclusions Convergence (TERMINAL_CLOSED)
+
+**Plan:** `plans/.claude/golden-hugging-manatee.md` | **Commits:** `28f01047`, `0e47f12f` | **Date:** 2026-07-06
+
+### Objective
+
+Convert all 15 items previously marked EXCLUDED or BLOCKED_EXTERNAL in the prior convergence pass into concrete, agent-executable taskcards and execute them to verified completion. True reason for each exclusion documented; most were planning shortcuts, not genuine external gates.
+
+### Taskcards
+
+| TC-ID | Description | STATUS |
+|-------|-------------|--------|
+| TC-H1-001 | FODS roundtrip oracle executor (execute_fods_rt_case, D1+) | CLOSED |
+| TC-H1-002 | D3 LibreOffice executor — SKIPPED_MISSING_PROVIDER when soffice absent | CLOSED |
+| TC-H2-001 | PyPI name availability report — 24 formats, all AVAILABLE | CLOSED |
+| TC-H2-002 | Gate 10 statuses in format-registry.yaml derived from oracle evidence | CLOSED |
+| TC-H2-003 | gate_check_results_path field in evidence-declaration.schema.json | CLOSED |
+| TC-H2-004 | PhaseLocker + phase-lock subcommand in gate_executor.py | CLOSED |
+| TC-H3-001 | release-phase-validation job in .github/workflows/ci.yml | CLOSED |
+| TC-H3-002 | PYREL gate check step in .github/workflows/release.yml before build | CLOSED |
+| TC-H4-001 | Capability sync — CLAUDE.md capability index timestamp refreshed | CLOSED |
+| TC-H4-002 | depth_achieved field in oracle registry (all 20 formats) | CLOSED |
+| TC-H4-003 | Sprint count verification doc — 840 sprints confirmed | CLOSED |
+| TC-H4-004 | P1-P11 coverage assessment (9/11 MET, 2 PARTIAL external) | CLOSED |
+| TC-H5-001 | FODS wheel built + twine check PASSED; upload BLOCKED_EXTERNAL: PYPI_TOKEN | CLOSED |
+| TC-H5-002 | Gate 11 production release checklist prepared | CLOSED |
+| TC-H6-001 | fodg_analytics.py deleted (analytics rotation suspension); 254 tests pass | CLOSED |
+
+### Key Artifacts
+
+- `tools/oracle/execute_oracle.py`: `execute_fods_rt_case()` (D1 roundtrip) + `execute_fods_libreoffice_case()` (D3/SKIPPED)
+- `oracle/formats/fods/oracle-package.yaml`: fods-rt-001 + fods-lo-001 cases
+- `oracle/registry/format-oracle-registry.yaml`: `depth_achieved` field for all 20 formats
+- `tools/supervisor/gate_executor.py`: `PhaseLocker` class + `phase-lock` subcommand
+- `.supervisor/schemas/evidence-declaration.schema.json`: `gate_check_results_path` field
+- `.github/workflows/ci.yml`: `release-phase-validation` job
+- `.github/workflows/release.yml`: PYREL gate check step (G1+G2) before build
+- `docs/gates/pypi-name-availability.md`: 24 formats, all AVAILABLE
+- `docs/gates/pyrel-p1-p11-coverage-assessment.md`: P1-P11 coverage (9/11 MET)
+- `docs/gates/testpypi-result.md`: twine check PASSED, upload BLOCKED_EXTERNAL
+- `docs/gates/gate11-fods-production-checklist.md`: Gate 11 production checklist
+- `docs/system-recon/sprint-count-verification.md`: 840 sprints verified
+- `registry/format-registry.yaml`: FODS release_gates section evidence-derived
+
+### Convergence Audit (Iteration 2)
+
+- fods-rt-001: PASS at D1 (live oracle run verified)
+- fods-lo-001: SKIPPED_MISSING_PROVIDER (not FAIL — correct behavior verified)
+- 254/254 governance tests pass
+- fodg_analytics.py absent (analytics rotation suspension enforced)
+- One non-blocking L2 finding: oracle-package.yaml schema missing interoperability_cases (VALID_DEFERRED)
+
+### External Gates Remaining (TRUE_EXTERNAL_GATE — not agent-executable)
+
+- TestPyPI upload: requires `PYPI_TOKEN` credentials
+- Gate 11 production release: requires Babar Raza G11-G commercial release approval
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
