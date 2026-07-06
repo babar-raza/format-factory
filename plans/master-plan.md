@@ -6424,3 +6424,53 @@ Unblocked autonomous ledger execution after SESSION_MISMATCH and `_claims_mgr` N
 - Commit: `46b304bb feat(dif-spec-analytics): TC-SR-004 DIF spec-backed header analytics + stateless-juggling-robin TERMINAL_CLOSED`
 
 **Final Verdict:** UNBLOCK_AND_LEDGER_EXECUTION_COMPLETE | TERMINAL_CLOSED
+
+## §117 — joyful-jingling-quill: FF Supervisor Machinery Investigation (TERMINAL_CLOSED 2026-07-06)
+
+**Plan:** `plans/.claude/joyful-jingling-quill.md` | **Type:** investigation | **Total Taskcards:** read-only investigation (6 phases)
+
+### Summary
+
+Evidence-based investigation of supervisor machinery growth. Answered 3 core questions: (1) whether the 81K:72K ratio is accurate, (2) which guarantees the machinery provides, (3) which components are duplicated/obsolete. Produced 16 investigation files + 4 evidence artifacts. No production code changed during investigation.
+
+Also applied 4 opportunistic tool fixes discovered during investigation.
+
+### Taskcards
+
+| TC-ID | Deliverable | Status |
+|-------|-------------|--------|
+| Phase 1 | LOC measurement + baseline (00, 01, evidence/metrics.json, evidence/file-classification.csv) | CLOSED |
+| Phase 2 | Architecture mapping + 9 workflow traces (02, 03, evidence/commands-and-results.md) | CLOSED |
+| Phase 3 | Component register + guarantee matrix (04, 06, evidence/component-register.csv) | CLOSED |
+| Phase 4 | Problem catalog + risk register (05, 07) | CLOSED |
+| Phase 5 | Architecture options + hardened execution plan (08, 09) | CLOSED |
+| Phase 6 | Adversarial review + executive brief (10, 11) | CLOSED |
+
+### Key Findings
+
+| Metric | Original Claim | Actual Value |
+|--------|----------------|--------------|
+| Machinery LOC | 81K | 85.5K (supervisor) / 174K (all tools) |
+| Product LOC | 72K | 72.1K |
+| Machinery:Product ratio | 1.13:1 | 2.41:1 (tools) / 3.47:1 (tools+config) |
+| Governance validators | 101-127 | 153 across 18 files |
+
+- **12 guarantees** mapped to 45 classified components (G-001 through G-012)
+- **12 problems** catalogued; ~13K LOC confirmed dead (run046-049 sprint writers)
+- **Safest first pilot**: TC-S2-001 — quarantine run046-049 (11.4K LOC, zero consumers)
+- **Verdict**: `INVESTIGATION_COMPLETE_WITH_DOCUMENTED_LIMITATIONS`
+
+### Tool Fixes (opportunistic — discovered during investigation)
+
+- `tools/oracle/execute_oracle.py`: oracle depth levels D0-D3 (FF-XPLAN-001 W2A-002)
+- `tools/readme_sync/generate_root_status.py`: validator count reads `expected_count` field
+- `tools/supervisor/generate_supervisor_packet.py`: list-not-dict guard (pre-existing bug)
+- `tools/supervisor/generate_sprint_learning.py`: defensive grades branch
+
+### Verification
+
+- All 16 investigation files created under `docs/system-recon/supervisor-machinery-audit/`
+- No production files changed (`git diff --name-only HEAD~3 HEAD~2` shows only `docs/` and `tools/`)
+- Commits: `03946125` (investigation docs), `8ab61144` (tool fixes), `3631ffd2` (state/config)
+
+**Final Verdict:** INVESTIGATION_COMPLETE_WITH_DOCUMENTED_LIMITATIONS | TERMINAL_CLOSED
