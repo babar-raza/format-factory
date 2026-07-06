@@ -55,6 +55,13 @@ RESULT_INVALID_ORACLE = "INVALID_ORACLE"
 RESULT_STALE_ORACLE = "STALE_ORACLE"
 RESULT_INCONCLUSIVE = "INCONCLUSIVE"
 RESULT_NOT_APPLICABLE = "NOT_APPLICABLE"
+RESULT_SKIPPED_MISSING_PROVIDER = "SKIPPED_MISSING_PROVIDER"
+
+# Oracle depth levels (FF-XPLAN-001 W2A-002)
+DEPTH_D0 = "D0"  # Load didn't crash (no property comparison)
+DEPTH_D1 = "D1"  # Model properties compared against expected values
+DEPTH_D2 = "D2"  # Schema validation (e.g. ODF RelaxNG via lxml)
+DEPTH_D3 = "D3"  # External tool interop (e.g. LibreOffice)
 
 
 def sha256_file(path: Path) -> str:
@@ -99,6 +106,7 @@ def make_verdict(
     diagnostics: list = None,
     evidence: list = None,
     input_hash: str = None,
+    depth_level: str = DEPTH_D0,
 ) -> dict:
     """Create a structured oracle verdict."""
     return {
@@ -112,6 +120,7 @@ def make_verdict(
         "profile": profile,
         "result": result,
         "authority_status": authority_status,
+        "depth_level": depth_level,
         "input_hash": input_hash,
         "output_hashes": [],
         "comparator": None,
@@ -642,8 +651,58 @@ def execute_toml_valid_case(case: dict, pkg: dict) -> dict:
         )
 
 
+def _compare_model_properties(result_val, expected_props: list) -> tuple[dict, list, str]:
+    """Compare model properties against expected values from oracle-package.yaml.
+
+    Returns (observed_dict, deviations_list, depth_level).
+    FF-XPLAN-001 W2A-003: Upgrade from D0 to D1 by actually inspecting properties.
+    """
+    observed = {"loaded": True, "result_type": type(result_val).__name__}
+    deviations = []
+
+    if not expected_props:
+        return observed, deviations, DEPTH_D0
+
+    for prop_spec in expected_props:
+        prop_name = prop_spec.get("property", "")
+        if not prop_name:
+            continue
+
+        # Extract actual value from result
+        actual = None
+        if isinstance(result_val, dict):
+            actual = result_val.get(prop_name)
+        elif hasattr(result_val, prop_name):
+            actual = getattr(result_val, prop_name)
+
+        observed[prop_name] = actual
+
+        # Compare against expected
+        if "value" in prop_spec:
+            expected_val = prop_spec["value"]
+            if actual != expected_val:
+                deviations.append({
+                    "property": prop_name,
+                    "expected": expected_val,
+                    "observed": actual,
+                    "type": "value_mismatch",
+                })
+        elif "value_min" in prop_spec:
+            min_val = prop_spec["value_min"]
+            if actual is None or (isinstance(actual, (int, float)) and actual < min_val):
+                deviations.append({
+                    "property": prop_name,
+                    "expected_min": min_val,
+                    "observed": actual,
+                    "type": "below_minimum",
+                })
+
+    depth = DEPTH_D1 if expected_props else DEPTH_D0
+    return observed, deviations, depth
+
+
 def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str, callable_name: str) -> dict:
-    """Generic executor: import module, call callable(sample_path), expect no exception (TC-LA-003)."""
+    """Generic executor: import module, call callable(sample_path), compare properties (FF-XPLAN-001)."""
     case_id = case["case_id"]
     sample_ref = case.get("input_ref") or case.get("sample_ref")
     _, authority_status = check_authority(case, True)
@@ -674,13 +733,19 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
         mod = importlib.import_module(f"src.python.{module}")
         fn = getattr(mod, callable_name)
         result_val = fn(str(sample_path))
-        observed = {"loaded": True, "result_type": type(result_val).__name__}
+
+        # FF-XPLAN-001 W2A-003: Compare expected_model_properties if defined
+        expected_props = case.get("expected_model_properties", [])
+        observed, deviations, depth = _compare_model_properties(result_val, expected_props)
+
+        verdict_result = RESULT_FAIL if deviations else RESULT_PASS
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
             case_id=case_id, profile="PARSE_VALIDITY",
-            result=RESULT_PASS, authority_status=authority_status,
-            observed=observed, deviations=[], input_hash=input_hash,
+            result=verdict_result, authority_status=authority_status,
+            observed=observed, deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
     except Exception as e:
         return make_verdict(
@@ -689,6 +754,7 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
             case_id=case_id, profile="PARSE_VALIDITY",
             result=RESULT_FAIL, authority_status=authority_status,
             diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
+            depth_level=DEPTH_D0,
         )
 
 
@@ -948,6 +1014,7 @@ def execute_fods_valid_case(case: dict, pkg: dict) -> dict:
                 case_id=case_id, profile="DOMAIN_MODEL_MAPPING",
                 result=result, authority_status=authority_status,
                 observed=observed, expected=expected_props, deviations=deviations,
+                depth_level=DEPTH_D1,
             )
         except Exception as e:
             return make_verdict(
@@ -1033,7 +1100,7 @@ def execute_fods_valid_case(case: dict, pkg: dict) -> dict:
             case_id=case_id, profile="PARSE_VALIDITY",
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props, deviations=deviations,
-            input_hash=input_hash,
+            input_hash=input_hash, depth_level=DEPTH_D1,
         )
 
     except Exception as e:
@@ -1373,9 +1440,16 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             counts[result] = counts.get(result, 0) + 1
             print(f"  [{'OK' if result == 'PASS' else 'FAIL'}] {case_id}: {result}")
 
-    # Summary
+    # Summary with depth histogram (FF-XPLAN-001 W2A-005)
     total = len(verdicts)
     passed = counts["PASS"]
+    depth_histogram = {}
+    for v in verdicts:
+        dl = v.get("depth_level", DEPTH_D0)
+        depth_histogram[dl] = depth_histogram.get(dl, 0) + 1
+    # Format depth = minimum depth across all PASS verdicts (conservative)
+    pass_depths = [v.get("depth_level", DEPTH_D0) for v in verdicts if v["result"] == "PASS"]
+    format_depth = min(pass_depths, default=DEPTH_D0)
     summary = {
         "oracle_id": oracle_id,
         "format_id": format_id,
@@ -1385,6 +1459,8 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
         "pass_rate": f"{passed}/{total}" if total else "0/0",
         "verdict": "ALL_PASS" if passed == total and total > 0 else ("PARTIAL_PASS" if passed > 0 else "ALL_FAIL"),
         "verdicts_dir": str(LOCAL_ORACLE_DIR / format_id / "verdicts"),
+        "depth_histogram": depth_histogram,
+        "format_depth_score": format_depth,
     }
 
     # Save summary

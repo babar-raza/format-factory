@@ -82,8 +82,10 @@ def generate_learning_notes(
     lines.extend(["", "## Grade summary"])
     if isinstance(work_item_grades, list):
         grades = work_item_grades
-    else:
+    elif isinstance(work_item_grades, dict):
         grades = work_item_grades.get("work_item_grades", [])
+    else:
+        grades = []
     grade_counts: dict[str, int] = {}
     for g in grades:
         grade = g.get("supervisor_grade", g.get("grade", "UNKNOWN"))

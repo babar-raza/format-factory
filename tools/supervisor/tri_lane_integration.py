@@ -203,7 +203,7 @@ def _load_packets_from_legacy_dir(root: Path) -> Dict[str, Dict[str, Any]]:
     for json_file in dir_path.glob("*.json"):
         try:
             data = load_json(json_file)
-            if data and "format" in data:
+            if isinstance(data, dict) and "format" in data:
                 family = normalize_family(data["format"])
                 data["authority_state"] = "ai_draft"
                 data["fallback_used"] = True

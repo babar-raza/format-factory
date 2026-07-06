@@ -175,6 +175,8 @@ def _load_gap_ledger_ids(repo_root: Path) -> set:
 def load_selected_product_gaps(repo_root: Path) -> list[dict]:
     """Load bounded product work selected by the governed R90 selector."""
     payload = load_json(repo_root / SELECTED_PRODUCT_GAPS_PATH)
+    if not isinstance(payload, dict):
+        return payload if isinstance(payload, list) else []
     gaps = payload.get("selected_gaps", [])
     return gaps if isinstance(gaps, list) else []
 

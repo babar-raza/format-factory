@@ -38,16 +38,21 @@ def collect_root_status(repo_root: Path = REPO_ROOT) -> dict:
     else:
         status["package_count"] = None
 
-    # Validator count from governance_validators*.py
-    validator_count = 0
-    for f in sorted(repo_root.glob("tools/supervisor/governance_validators*.py")):
+    # Validator count from canonical runner (governance_validator_runner.py expected_count)
+    # This matches the count asserted by test_canonical_validator_count — NOT the
+    # grep-based count of def validate_* which includes unwired helpers.
+    validator_count = None
+    runner_path = repo_root / "tools" / "supervisor" / "governance_validator_runner.py"
+    if runner_path.exists():
         try:
-            for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
-                if line.startswith("def validate_"):
-                    validator_count += 1
+            import re as _re
+            runner_text = runner_path.read_text(encoding="utf-8", errors="replace")
+            m = _re.search(r'"expected_count":\s*(\d+)', runner_text)
+            if m:
+                validator_count = int(m.group(1))
         except Exception:
             pass
-    status["validator_count"] = validator_count if validator_count > 0 else None
+    status["validator_count"] = validator_count
 
     # Sprint count from maturity-trend.json
     mt_path = repo_root / "reports" / "supervisor" / "maturity-trend.json"
