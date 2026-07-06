@@ -6527,3 +6527,43 @@ TC-S5-001 (validator domain restructuring) now unblocked (TC-BF-005 prerequisite
 Stage 3+ orchestration consolidation now unblocked (TC-BF-008 regression baseline complete).
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+---
+
+## §118 — FF-DEEP-RECON-20260705-052931: Deep System Reconnaissance Publication Pack (CLOSED)
+
+**Run ID:** `FF-DEEP-RECON-20260705-052931` | **Branch:** `main` | **Commit inspected:** `94dd5308` | **Date:** 2026-07-05/06
+
+### Objective
+
+Comprehensive read-only deep reconnaissance of the entire Format Factory repository, producing a 7-document
+evidence-backed publication pack with claim IDs, evidence classification, and adversarial review.
+
+### Deliverables
+
+| File | Purpose | Lines |
+|------|---------|-------|
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/RECON-MANIFEST.md` | Repository state capture and run metadata | ~140 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/01-SYSTEM-OVERVIEW.md` | 32-section technical overview with 25 claims | ~520 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/02-SYSTEM-ARCHITECTURE-AND-DIAGRAMS.md` | 18 Mermaid architecture diagrams | ~450 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/03-BLOG-ANNOUNCEMENT.md` | Publication-ready technical blog (~2,500 words) | ~310 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/04-CLAIM-EVIDENCE-LEDGER.md` | 25 claims with evidence classification | ~140 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/05-GAPS-CONTRADICTIONS-AND-OPEN-QUESTIONS.md` | 14 issues + 7 open questions | ~265 |
+| `docs/system-recon/FF-DEEP-RECON-20260705-052931/RECON-COMPLETION-REPORT.md` | 27/27 acceptance checklist + verdict | ~110 |
+
+### Key Findings
+
+- **Validator count:** 129 canonical (grep shows 153 but 24 are unwired helpers; README stale at 101)
+- **Skill count:** 123 (README stale at 120)
+- **Test collection:** 39,863 tests; 2,887 executed (1,571 FODS + 1,316 ZST, all pass)
+- **Oracle:** 73/73 PASS across 20 Python formats
+- **Runtime verified:** FODS parse+roundtrip, FODT parse, ZST compress/decompress, TOML load
+- **Machinery:Product LOC ratio:** 81K:72K (1.13:1)
+- **3 recon findings corrected by user:** validator canonical count, .NET CI exists, templates/ actively used
+
+### Acceptance
+
+27/27 acceptance checks PASS. Verdict: `COMPLETE_WITH_DOCUMENTED_LIMITATIONS`.
+No production source modified. All output confined to `docs/system-recon/FF-DEEP-RECON-20260705-052931/`.
+
+**Final Verdict:** COMPLETE_WITH_DOCUMENTED_LIMITATIONS | CLOSED
