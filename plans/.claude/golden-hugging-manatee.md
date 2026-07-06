@@ -3,7 +3,7 @@
 ```yaml
 authoritative_plan: plans/.claude/golden-hugging-manatee.md
 plan_type: cross_plan_integration_handoff
-plan_status: READY_FOR_EXECUTION
+plan_status: TERMINAL_CLOSED
 created: 2026-07-06
 HEAD_at_analysis: 6b3f6f07
 branch: main
@@ -535,9 +535,9 @@ Once approved, the verdict upgrades to `INTEGRATED_EXECUTION_HANDOFF_READY_FOR_S
 | TC-W2A-003 | CLOSED |
 | TC-W2A-004 | CLOSED |
 | TC-W2A-005 | CLOSED |
-| TC-W2A-006 | EXCLUDED |
+| TC-W2A-006 | CLOSED |
 | TC-W2A-007 | CLOSED |
-| TC-W2A-008 | EXCLUDED |
+| TC-W2A-008 | CLOSED |
 | TC-W2A-009 | EXCLUDED |
 | TC-W2B-001 | CLOSED |
 | TC-W2B-002 | CLOSED |
@@ -549,7 +549,7 @@ Once approved, the verdict upgrades to `INTEGRATED_EXECUTION_HANDOFF_READY_FOR_S
 | TC-W3-002 | CLOSED |
 | TC-W3-003 | CLOSED |
 | TC-W3-004 | CLOSED |
-| TC-W3-005 | EXCLUDED |
+| TC-W3-005 | CLOSED |
 | TC-W3-006 | EXCLUDED |
 | TC-W3-007 | EXCLUDED |
 | TC-W3-008 | EXCLUDED |

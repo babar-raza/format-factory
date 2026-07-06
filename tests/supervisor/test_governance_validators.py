@@ -1818,11 +1818,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 134, (
-            f"Expected 134 canonical validators, got {validator_count}. "
+        assert validator_count == 161, (
+            f"Expected 161 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(129 prior + V139-V142 found-issue ownership validators (FOUND-ISSUE-MVP-001)"
-            " + V143 oracle depth minimum validator (FF-XPLAN-001 W3-001))"
+            "(134 explicit + 27 from governance_validators_contract registry (TC-BF-005))"
         )
 
 
@@ -3267,3 +3266,38 @@ class TestV99PlaybookCoverageReportCurrent:
         result = self._get_validator()({}, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
+
+
+# TC-BF-005: Validator count invariant test
+class TestValidatorCountInvariant:
+    """TC-BF-005-05: Assert that the governance validator registry contains >= 154 entries."""
+
+    def test_validator_count_invariant(self):
+        """_VALIDATOR_REGISTRY must contain >= 154 validators after decorating all validate_* functions."""
+        import sys
+        import importlib
+        import glob
+        import os
+
+        # Add supervisor to path if needed
+        supervisor_path = os.path.join(os.path.dirname(__file__), '..', '..', 'tools', 'supervisor')
+        if supervisor_path not in sys.path:
+            sys.path.insert(0, supervisor_path)
+
+        from governance_validators_contract import _VALIDATOR_REGISTRY
+
+        # Import all governance validator modules to trigger @validator decorators
+        for f in sorted(glob.glob(os.path.join(supervisor_path, 'governance_validators*.py'))):
+            modname = os.path.basename(f).replace('.py', '')
+            if modname == 'governance_validators_contract':
+                continue
+            try:
+                importlib.import_module(modname)
+            except Exception:
+                pass
+
+        count = len(_VALIDATOR_REGISTRY)
+        assert count >= 154, (
+            f"Expected >= 154 validators in _VALIDATOR_REGISTRY, got {count}. "
+            "TC-BF-005 requires @validator decorator on all validate_* functions."
+        )

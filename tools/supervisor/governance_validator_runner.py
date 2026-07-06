@@ -681,18 +681,20 @@ def run_all_governance_validators(
     _registry_dedup = 0
     try:
         from governance_validators_contract import _VALIDATOR_REGISTRY  # noqa: PLC0415
-        seen_rule_ids = {r.get("rule_id", r.get("validator", "")) for r in results}
+        # Dedup by function name — the existing results use the function name in "validator"
+        # field, while the registry uses the function object itself. Match by __name__.
+        seen_fn_names = {r.get("validator", "").lstrip("_") for r in results}
         for _reg_entry in _VALIDATOR_REGISTRY:
-            _rid = _reg_entry.get("rule_id", "")
-            if _rid and _rid in seen_rule_ids:
-                _registry_dedup += 1
-                continue
             _fn = _reg_entry.get("fn")
             if _fn is None:
                 continue
+            _fn_name = getattr(_fn, "__name__", "").lstrip("_")
+            if _fn_name and _fn_name in seen_fn_names:
+                _registry_dedup += 1
+                continue
             try:
                 _extra_result = _fn(declaration, repo_root)
-                if isinstance(_extra_result, dict):
+                if isinstance(_extra_result, dict) and "result" in _extra_result:
                     results.append(_extra_result)
                     _registry_new += 1
             except Exception:
@@ -716,7 +718,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 154,  # TC-BF-005: updated from 134 (154 validate_* functions confirmed)
+        "expected_count": 161,  # convergence-FF-XPLAN-001: 134 explicit + 27 from contract registry
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,
