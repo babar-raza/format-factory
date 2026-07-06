@@ -1,0 +1,52 @@
+component_id,path,responsibility,loc,files,callers,classification,confidence,disposition
+COMP-ORCH-001,tools/supervisor/autonomous_cycle.py,Declaration-driven supervisor cycle (validate-inspect-grade-plan-manifest),2651,1,supervisor_loop.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-ORCH-002,tools/supervisor/check_continuation.py,Deterministic continuation checker with CCI session guards,796,1,CLAUDE.md+sprint_executor.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-ORCH-003,tools/supervisor/supervisor_loop.py,CLI dispatcher with 14 subcommands (8 canonical + 6 legacy),605,1,CLAUDE.md+CLI,ESSENTIAL_OVERCOMPLICATED,HIGH,CONSOLIDATE
+COMP-ORCH-004,tools/supervisor/sprint_executor.py,Headless loop actuator (invokes claude CLI via subprocess),628,1,CLAUDE.md+CLI,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-ORCH-005,tools/supervisor/autonomous_loop_runner.py,Alternative orchestration loop,922,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-006,tools/supervisor/external_host_loop.py,External host loop runner,674,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-007,tools/supervisor/autonomous_host_daemon.py+runner.py,Host-mode daemon and runner,764,2,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-008,tools/supervisor/autonomous_orchestrator.py,Orchestrator abstraction,663,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-009,tools/supervisor/autonomous_poc_controller.py,PoC controller for proof-of-concept sprints,840,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-010,tools/supervisor/autonomous_train_executor.py,Train executor for sequenced work,698,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-ORCH-011,tools/supervisor/autonomous_task_generator.py,Task generation for sprints,1920,1,NONE_FOUND,SUSPECTED_GHOST,HIGH,INVESTIGATE
+COMP-ORCH-012,tools/supervisor/autonomous_cycle_extensions.py+utils.py,Extensions and utils for autonomous_cycle,1808,3,autonomous_cycle.py,ESSENTIAL_OVERCOMPLICATED,HIGH,CONSOLIDATE
+COMP-ORCH-013,tools/supervisor/tri_lane_integration.py,Tri-lane sprint coordination,973,1,autonomous_cycle.py,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-ORCH-014,tools/supervisor/stop_reason_adjudicator.py,Stop reason analysis and override,1025,1,CLAUDE.md,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-ORCH-015,tools/supervisor/rework_orchestrator.py,Rework item management,683,1,autonomous_cycle.py,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-GOV-001,tools/supervisor/governance_validators.py,Core governance validators (53 functions),3183,1,governance_validator_runner.py+tests,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-GOV-002,tools/supervisor/governance_validators_ext*.py (4 files),Extended validators (ext-ext4),4057,4,governance_validator_runner.py,ESSENTIAL_OVERCOMPLICATED,HIGH,CONSOLIDATE
+COMP-GOV-003,tools/supervisor/governance_validators_dotnet*.py (2 files),Dotnet-specific validators,924,2,governance_validator_runner.py,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-GOV-004,tools/supervisor/governance_validators_{other}.py (11 files),Specialized validators (sal/spec/layers/signal/etc),2744,11,governance_validator_runner.py,USEFUL_SHARED_INFRASTRUCTURE,HIGH,DOCUMENT
+COMP-GOV-005,tools/supervisor/governance_validator_runner.py,Validator discovery and execution,687,1,autonomous_cycle.py+tests,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-GOV-006,tools/supervisor/anti_skip_checker.py,30-check anti-skip enforcement,1351,1,autonomous_cycle.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-GOV-007,tools/supervisor/validate_*.py (17 files),Standalone validation scripts,5122,17,CLI+skills,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,DOCUMENT
+COMP-EVI-001,tools/supervisor/grade_declared_work.py,Evidence grading with optional LLM,1127,1,autonomous_cycle.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-EVI-002,tools/supervisor/evidence_declaration.py,Declaration schema validation,219,1,autonomous_cycle.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-EVI-003,tools/supervisor/inspect_declared_evidence.py,Declared evidence inspection,542,1,autonomous_cycle.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-EVI-004,tools/supervisor/sprint_executor_validate.py,Declaration validation and auto-repair,828,1,CLAUDE.md+CLI,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-EVI-005,tools/evidence/run050_sprint_writer.py,Latest evidence sprint writer (standalone),4116,1,CLI_ONLY,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-EVI-006,tools/evidence/run046-049_sprint_writer.py,Older evidence sprint writers (4 files),11424,4,NONE_FOUND,DEPRECATED_STILL_ACTIVE,HIGH,QUARANTINE
+COMP-EVI-007,tools/evidence/validate_evidence_bundle.py,Evidence bundle validation,2638,1,CLI,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-EVI-008,tools/supervisor/build_declaration_review_package.py,Review package builder,407,1,CLAUDE.md+CLI,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-PROMPT-001,tools/supervisor/generate_next_worker_prompt.py,Sprint prompt and work item generation,1546,1,autonomous_cycle.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-PROMPT-002,tools/supervisor/generate_supervisor_packet.py,Supervisor decision packet,1437,1,CLI+skills,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-PROMPT-003,tools/supervisor/generate_mainstream_execution_packet.py,Mainstream acceleration packet,486,1,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-STATE-001,tools/supervisor/write_plan_lock.py,Plan lock creation and lifecycle,691,1,CLAUDE.md+CLI,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-STATE-002,tools/supervisor/continuation_*.py (5 files),Continuation state management,969,5,check_continuation.py,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-STATE-003,tools/supervisor/action_queue.py,Work item queue management,340,1,autonomous_cycle.py,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-AI-001,tools/supervisor/ai_*.py (6 files),AI integration modules,1367,6,NONE_FOUND,SUSPECTED_GHOST,MEDIUM,INVESTIGATE
+COMP-AI-002,tools/supervisor/embedding_retrieval.py,Embedding search and retrieval,838,1,generate_next_worker_prompt.py,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-AI-003,tools/ai/ (43 files),AI pipeline infrastructure,4327,43,various,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,CHARACTERIZE
+COMP-SPEC-001,tools/specification-authority-layer/ (24 files),SAL ingestion pipeline,5874,24,skills+CLI,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-SPEC-002,tools/spec-normalize/ (13 files),Specification normalization,4286,13,SAL pipeline,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-SPEC-003,tools/oracle/ (11 files),Oracle validation framework,3728,11,skills+CLI,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-CAP-001,tools/capability_layer/ (8 files),Capability mapping and compilation,4260,8,autonomous_cycle.py+skills,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-SKILL-001,tools/skills/ (25 files),Skill execution infrastructure,8304,25,skills+CLI,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-CERT-001,tools/certification/ (14 files),Assertion quality analysis,3009,14,skills+CLI,USEFUL_SHARED_INFRASTRUCTURE,MEDIUM,RETAIN
+COMP-INFRA-001,tools/supervisor/control_index/ (16 files),SQLite+FTS5 control index,1662,16,CLI+autonomous_cycle.py,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-INFRA-002,tools/supervisor/concurrency/ (4 files),Concurrency primitives,995,4,autonomous_cycle.py,USEFUL_SHARED_INFRASTRUCTURE,HIGH,RETAIN
+COMP-INFRA-003,tools/supervisor/lifecycle_audit.py,Post-plan lifecycle audit,808,1,CLAUDE.md+CLI,ESSENTIAL_SAFETY_CRITICAL,HIGH,RETAIN
+COMP-LEGACY-001,tools/supervisor/libforge_*.py (4 files),Libforge integration (code gen),1764,4,NONE_FOUND+low_reference,EXPERIMENTAL,MEDIUM,INVESTIGATE
+COMP-LEGACY-002,tools/supervisor/migrate_command_sections.py,Command section migration,742,1,NONE_FOUND,DEPRECATED_STILL_ACTIVE,HIGH,QUARANTINE
+COMP-LEGACY-003,tools/supervisor/build_proof_graph_iter001-003.py,Iterative proof graph builders,510,3,NONE_FOUND,DEPRECATED_STILL_ACTIVE,HIGH,QUARANTINE

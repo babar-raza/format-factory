@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "commit": "6b3f6f07",
+    "branch": "main",
+    "date": "2026-07-06",
+    "tracked_files": 15731,
+    "method": "find <dir> -name '*.py' -not -path '*/__pycache__/*' -exec cat {} + | wc -l",
+    "note": "Physical LOC (all lines including blanks and comments). Windows Git Bash. Egg-info and build dirs excluded from src/python."
+  },
+  "machinery": {
+    "tools_supervisor": { "loc": 85469, "files": 262, "path": "tools/supervisor/" },
+    "tools_total": { "loc": 174068, "files": 560, "path": "tools/" },
+    "tools_evidence": { "loc": 21396, "files": 15, "path": "tools/evidence/" },
+    "tools_skills": { "loc": 8304, "files": 25, "path": "tools/skills/" },
+    "tools_spec_authority_layer": { "loc": 5874, "files": 24, "path": "tools/specification-authority-layer/" },
+    "tools_requirements_authority": { "loc": 4465, "files": 17, "path": "tools/requirements_authority/" },
+    "tools_ai": { "loc": 4327, "files": 43, "path": "tools/ai/" },
+    "tools_spec_normalize": { "loc": 4286, "files": 13, "path": "tools/spec-normalize/" },
+    "tools_capability_layer": { "loc": 4260, "files": 8, "path": "tools/capability_layer/" },
+    "tools_oracle": { "loc": 3728, "files": 11, "path": "tools/oracle/" },
+    "tools_certification": { "loc": 3009, "files": 14, "path": "tools/certification/" },
+    "tools_playbook": { "loc": 2788, "files": 9, "path": "tools/playbook/" },
+    "tools_docs": { "loc": 2762, "files": 8, "path": "tools/docs/" },
+    "tools_validators": { "loc": 2161, "files": 8, "path": "tools/validators/" },
+    "tools_backfill": { "loc": 1652, "files": 7, "path": "tools/backfill/" },
+    "tools_governance": { "loc": 1546, "files": 8, "path": "tools/governance/" },
+    "tools_spec": { "loc": 1451, "files": 6, "path": "tools/spec/" },
+    "tools_llm": { "loc": 1284, "files": 4, "path": "tools/llm/" },
+    "tools_spec_cache": { "loc": 1164, "files": 4, "path": "tools/spec-cache/" },
+    "tools_assurance": { "loc": 1122, "files": 5, "path": "tools/assurance/" },
+    "tools_readme_sync": { "loc": 1052, "files": 9, "path": "tools/readme_sync/" },
+    "tools_capability_sync": { "loc": 1022, "files": 8, "path": "tools/capability_sync/" },
+    "tools_other": { "loc": 5120, "files": 21, "note": "package, validation, samples, scripts, fuzz, review, gates, model, requirements" },
+    "supervisor_config": { "loc": 39351, "files": 183, "path": ".supervisor/" },
+    "governance_config": { "loc": 2193, "files": null, "path": ".governance/" },
+    "schemas": { "loc": 6371, "files": null, "path": "schemas/" },
+    "claude_commands": { "loc": 12645, "files": 125, "path": ".claude/commands/" }
+  },
+  "product": {
+    "python_total": { "loc": 49483, "files": 409, "path": "src/python/" },
+    "dotnet_total": { "loc": 22643, "files": 173, "path": "src/net/" },
+    "python_by_format": {
+      "fodt": 5263, "fods": 4903, "ods": 2974, "ndjson": 2674,
+      "abw": 2639, "fodg": 2572, "gnumeric": 2508, "dif": 2506,
+      "csv": 2485, "zst": 2401, "tsv": 2205, "sylk": 2199,
+      "ppm": 1969, "pbm": 1860, "qoi": 1826, "pgm": 1792,
+      "toml": 1779, "xcf": 1773, "odt": 1544, "fodp": 1504,
+      "_shared": 107
+    },
+    "dotnet_by_format": {
+      "fods": 10197, "fodt": 6008, "netpbm": 2849, "csv": 1377,
+      "ndjson": 603, "zst": 535, "tsv": 506, "html": 242,
+      "markdown": 170, "txt": 156
+    }
+  },
+  "tests": {
+    "total": { "loc": 396192, "files": 3095, "path": "tests/" },
+    "python_format_tests": { "loc": 240892, "files": 2307, "path": "tests/python/" },
+    "supervisor_tests": { "loc": 92188, "files": 409, "path": "tests/supervisor/" },
+    "evidence_tests": { "loc": 21632, "files": 156, "path": "tests/evidence/" },
+    "skills_tests": { "loc": 10222, "files": 38, "path": "tests/skills/" },
+    "ai_tests": { "loc": 6600, "files": 33, "path": "tests/ai/" },
+    "other_tests": { "loc": 24658, "files": 152, "note": "packaging, playbook, SAL, capability, spec, governance, etc." }
+  },
+  "documentation": {
+    "docs_md": { "loc": 40890, "path": "docs/" },
+    "registry": { "loc": 15919, "files": 42, "path": "registry/" }
+  },
+  "summary_ratios": {
+    "product_runtime_loc": 72126,
+    "machinery_runtime_loc_tools_only": 174068,
+    "machinery_runtime_loc_tools_plus_config": 234628,
+    "tests_loc": 396192,
+    "machinery_to_product_tools_only": "2.41:1",
+    "machinery_to_product_with_config": "3.25:1",
+    "tests_to_production": "4.63:1",
+    "original_claim_81k_vs_72k": "PARTIALLY_ACCURATE",
+    "explanation": "81K correctly measures tools/supervisor/ (85.5K actual). But 'machinery' is much larger: tools/ total is 174K. The original comparison omitted 88K of non-supervisor tooling. Product at 72K is accurate."
+  },
+  "notable_file_families": {
+    "evidence_sprint_writers": {
+      "files": ["tools/evidence/run046_sprint_writer.py", "tools/evidence/run047_sprint_writer.py", "tools/evidence/run048_sprint_writer.py", "tools/evidence/run049_sprint_writer.py", "tools/evidence/run050_sprint_writer.py"],
+      "total_loc": 15540,
+      "note": "5 versioned evidence sprint writers. Likely only run050 is active."
+    },
+    "governance_validators": {
+      "files_count": 18,
+      "total_loc": 10908,
+      "note": "Main file (3183 LOC) + 17 extension files. Accretive growth pattern."
+    },
+    "autonomous_family": {
+      "files_count": 10,
+      "total_loc": 9964,
+      "note": "10 files with 'autonomous_' prefix in tools/supervisor/. Multiple orchestration layers."
+    },
+    "validate_family": {
+      "files_count": 17,
+      "total_loc": 5122,
+      "note": "17 files with 'validate_' prefix in tools/supervisor/. Separate from governance_validators."
+    }
+  }
+}
