@@ -662,6 +662,44 @@ def run_all_governance_validators(
     except Exception as _exc_v139:
         _skipped_validators.append({"validators": ["V139", "V140", "V141", "V142"], "error": str(_exc_v139)})
 
+    # V143 (FF-XPLAN-001 W3-001): Oracle depth minimum validator
+    # WARN for formats with all-D0 oracle evidence (no property comparison)
+    try:
+        from governance_validators_oracle import (  # noqa: PLC0415
+            validate_oracle_depth_minimum as _v143,
+        )
+        results.append(_v143(declaration, repo_root))
+    except Exception as _exc_v143:
+        _skipped_validators.append({"validators": ["V143"], "error": str(_exc_v143)})
+
+    # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
+    # covered by explicit imports above).  The @validator decorator fires when each
+    # governance_validators_*.py module is imported above, so the registry is populated by
+    # the time we reach this point.  Dedup rule: if rule_id is already in explicit results,
+    # the explicit instance wins (backward compat).
+    _registry_new = 0
+    _registry_dedup = 0
+    try:
+        from governance_validators_contract import _VALIDATOR_REGISTRY  # noqa: PLC0415
+        seen_rule_ids = {r.get("rule_id", r.get("validator", "")) for r in results}
+        for _reg_entry in _VALIDATOR_REGISTRY:
+            _rid = _reg_entry.get("rule_id", "")
+            if _rid and _rid in seen_rule_ids:
+                _registry_dedup += 1
+                continue
+            _fn = _reg_entry.get("fn")
+            if _fn is None:
+                continue
+            try:
+                _extra_result = _fn(declaration, repo_root)
+                if isinstance(_extra_result, dict):
+                    results.append(_extra_result)
+                    _registry_new += 1
+            except Exception:
+                pass
+    except Exception:
+        pass  # Registry loading is best-effort and non-blocking
+
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")
     pass_count = sum(1 for r in results if r["result"] == "PASS")
@@ -678,7 +716,9 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 129,  # update when validator count changes
+        "expected_count": 154,  # TC-BF-005: updated from 134 (154 validate_* functions confirmed)
+        "registry_new": _registry_new,
+        "registry_dedup": _registry_dedup,
         "ran_count": ran_count,
         "summary": (
             f"{pass_count} PASS / {warn_count} WARN / {fail_count} FAIL. "

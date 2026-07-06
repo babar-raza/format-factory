@@ -67,10 +67,19 @@ def check_g1(format_id: str) -> dict:
 
     test_dir = REPO_ROOT / "tests" / format_id
     has_tests = test_dir.exists() and any(test_dir.glob("test_*.py"))
+    test_detail = str(test_dir)
+    if not has_tests:
+        # Also check tests/packaging/ for format-specific test files
+        packaging_dir = REPO_ROOT / "tests" / "packaging"
+        if packaging_dir.exists():
+            packaging_tests = list(packaging_dir.glob(f"test_*{format_id}*"))
+            if packaging_tests:
+                has_tests = True
+                test_detail = str(packaging_dir)
     results.append({
         "check": "has_tests",
         "passed": has_tests,
-        "detail": str(test_dir),
+        "detail": test_detail,
     })
 
     return {
@@ -134,7 +143,16 @@ def check_g5(format_id: str) -> dict:
         import yaml
         reg_path = REPO_ROOT / "registry" / "format-registry.yaml"
         reg = yaml.safe_load(reg_path.read_text(encoding="utf-8"))
-        fmt_entry = reg.get("formats", {}).get(format_id, {})
+        formats_raw = reg.get("formats", [])
+        # formats can be a list of dicts with format_id keys, or a dict keyed by format_id
+        fmt_entry = {}
+        if isinstance(formats_raw, list):
+            for entry in formats_raw:
+                if isinstance(entry, dict) and entry.get("format_id") == format_id:
+                    fmt_entry = entry
+                    break
+        elif isinstance(formats_raw, dict):
+            fmt_entry = formats_raw.get(format_id, {})
         gates = fmt_entry.get("gates", {})
         g11 = gates.get("gate_11", {})
         g11g = g11.get("G11-G", {})

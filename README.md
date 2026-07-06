@@ -4,7 +4,7 @@ A File Format Acquisition System that produces legal parsers, converters, import
 
 **Target users:** Developers building file-format support, document processing tool builders, and teams evaluating format libraries for their products.
 
-**Current state (as of July 2026):** 20 formats supported across Python FOSS and .NET commercial tracks. 20 installable Python packages. 101 governance validators across 11 modules. 840 autonomous sprint cycles completed through the formal pipeline. Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). All 20 Python FOSS formats oracle-verified (73/73 PASS). See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the full auto-generated status.
+**Current state (as of July 2026):** 20 formats supported across Python FOSS and .NET commercial tracks. 20 installable Python packages. 134 governance validators across 12 modules. 840+ autonomous sprint cycles completed through the formal pipeline. Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). All 20 Python FOSS formats oracle-verified (73/73 PASS). PYREL release gates G1+G2 operational. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the full auto-generated status.
 
 ---
 
@@ -268,7 +268,7 @@ format-factory uses an autonomous supervisor pipeline that manages multi-sprint 
 
 - **State Management:** Session state persisted in `reports/supervisor/session-resume.md` and `.local/supervisor/continuation-signal.json`. Cross-window recovery restores full operational context without requiring prior conversation history.
 - **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start → execute work items → write evidence declaration → validate with 101 governance validators → grade work items → generate next sprint → check continuation signal.
-- **Boundary Enforcement:** `AGENTS.md` (~60KB operating contract) defines non-negotiable rules for all automated executors. 101 governance validators across 11 modules programmatically block sprints on policy violations. Gate 11 G11-G approval requires explicit human business authority.
+- **Boundary Enforcement:** `AGENTS.md` (~60KB operating contract) defines non-negotiable rules for all automated executors. 134 governance validators across 12 modules programmatically block sprints on policy violations. Gate 11 G11-G approval requires explicit human business authority.
 - **Adaptive Repair:** `tools/supervisor/bounded_repair_engine.py` classifies test and build failures into 6 categories (IMPORT, SYNTAX, ATTRIBUTE, NAME, ASSERTION, TIMEOUT) and applies targeted repairs with automatic rollback on failure.
 - **CCI (Cross-Chat Continuation Isolation):** `session_id` field in continuation signals prevents cross-chat state contamination. SESSION_MISMATCH is a non-overridable hard stop.
 

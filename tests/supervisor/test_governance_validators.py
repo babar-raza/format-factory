@@ -1818,12 +1818,11 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 129, (
-            f"Expected 129 canonical validators, got {validator_count}. "
+        assert validator_count == 134, (
+            f"Expected 134 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(129 = 119 prior + V130-V133 found-issue lifecycle validators (PQLM-GOV-001, TC-VAL-002)"
-            " + V134-V136 output escaping quality gates (MA-SYSTEM-WIDE-2026-07-04, playful-swimming-stearns)"
-            " + V137-V138 consumer proof integrity gates (TC-CPR-003, sparkling-waddling-narwhal))"
+            "(129 prior + V139-V142 found-issue ownership validators (FOUND-ISSUE-MVP-001)"
+            " + V143 oracle depth minimum validator (FF-XPLAN-001 W3-001))"
         )
 
 

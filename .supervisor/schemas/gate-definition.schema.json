@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://format-factory.local/.supervisor/schemas/gate-definition.schema.json",
+  "title": "PYREL Gate Definition",
+  "description": "Schema for PYREL release gate definitions (FF-XPLAN-001 W2B-002)",
+  "type": "object",
+  "required": ["gate_id", "name", "description", "checks"],
+  "properties": {
+    "gate_id": {
+      "type": "string",
+      "pattern": "^G[1-9][0-9]?$",
+      "description": "Gate identifier, e.g. G1, G2, G5"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable gate name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Gate description"
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["check_id", "description", "failure_risk"],
+        "properties": {
+          "check_id": {
+            "type": "string",
+            "description": "Machine-readable check identifier"
+          },
+          "description": {
+            "type": "string"
+          },
+          "failure_risk": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "EXTERNAL"]
+          },
+          "failure_action": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "entry_criteria": {
+      "type": "string"
+    },
+    "exit_criteria": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["IMPLEMENTED", "NOT_IMPLEMENTED", "PARTIAL"]
+    },
+    "mission_ref": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

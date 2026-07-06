@@ -98,6 +98,8 @@ jobs:
         run: python tools/governance/run_ci_governance_check.py
       - name: Capability parity source registry tests
         run: pytest tests/governance/test_capability_parity.py -v
+      - name: Component register completeness check
+        run: python tools/supervisor/check_component_register.py
 
   dotnet-build:
     runs-on: ubuntu-latest
@@ -190,3 +192,44 @@ jobs:
         with:
           name: capability-drift-report
           path: capability-drift.json
+
+  oracle-depth-check:
+    # FF-XPLAN-001 W4-002: Verify oracle depth scores meet D1+ minimum
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Check oracle depth scores
+        run: |
+          python -c "
+          import json, os, sys
+          d0_formats = []
+          oracle_dir = 'oracle/formats'
+          for fmt in sorted(os.listdir(oracle_dir)):
+              sp = os.path.join(oracle_dir, fmt, 'reports', 'oracle-run-summary.json')
+              if os.path.isfile(sp):
+                  s = json.loads(open(sp, encoding='utf-8').read())
+                  if s.get('format_depth_score', 'D0') == 'D0':
+                      d0_formats.append(fmt)
+          if d0_formats:
+              print(f'WARN: {len(d0_formats)} formats at D0: {d0_formats}')
+          else:
+              print('All formats at D1+ depth')
+          "
+
+  count-drift-detection:
+    # FF-XPLAN-001 W4-004: Detect README count drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Check README count drift
+        run: python tools/readme_sync/generate_root_status.py --mode drift-only

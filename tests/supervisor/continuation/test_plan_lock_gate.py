@@ -165,26 +165,28 @@ class TestT9_SessionKeyedLockCompleteSameSession:
     instead of --terminal during in-session plan completion."""
 
     def test_session_keyed_complete_blocks_same_session(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
         full_continue_setup(session_id="session-aaa")
         _write_session_lock(mock_repo, "session-aaa", {
             "plan_path": "C:/Users/prora/.claude/plans/wiggly-doodling-wirth.md",
             "status": "COMPLETE",
             "session_id": "session-aaa",
             "last_taskcard": "TC-FINAL-001",
-            "updated_at": "2026-06-21T10:00:00+00:00",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         result = check(mock_repo, session_id="session-aaa")
         assert result["verdict"] == "STOP"
         assert result["reason"] == "PLAN_COMPLETED_IN_SESSION"
 
     def test_plan_path_in_detail(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
         full_continue_setup(session_id="session-bbb")
         plan_path = "C:/Users/prora/.claude/plans/my-completed-plan.md"
         _write_session_lock(mock_repo, "session-bbb", {
             "plan_path": plan_path,
             "status": "COMPLETE",
             "session_id": "session-bbb",
-            "updated_at": "2026-06-21T10:00:00+00:00",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         result = check(mock_repo, session_id="session-bbb")
         assert result["verdict"] == "STOP"
@@ -244,12 +246,13 @@ class TestT12_TerminalOnlyNewestFires:
     """T12: Single TERMINAL_CLOSED lock for session → POST_PLAN_TERMINAL still fires."""
 
     def test_single_terminal_still_blocks(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
         full_continue_setup(session_id="session-single")
         _write_session_lock(mock_repo, "session-single", {
             "plan_path": "plans/only-plan.md",
             "status": "TERMINAL_CLOSED",
             "session_id": "session-single",
-            "updated_at": "2026-06-24T01:00:00+00:00",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         result = check(mock_repo, session_id="session-single")
         assert result["verdict"] == "STOP"
@@ -302,18 +305,20 @@ class TestT15_TwoTerminalsNewestWins:
     """T15: Two TERMINAL_CLOSED locks for same session → POST_PLAN_TERMINAL with NEWEST plan."""
 
     def test_two_terminals_newest_plan_reported(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone, timedelta
+        now = datetime.now(timezone.utc)
         full_continue_setup(session_id="session-twot")
         _write_session_lock(mock_repo, "session-twot-old", {
             "plan_path": "plans/first-plan.md",
             "status": "TERMINAL_CLOSED",
             "session_id": "session-twot",
-            "updated_at": "2026-06-24T01:00:00+00:00",
+            "updated_at": (now - timedelta(hours=1)).isoformat(),
         })
         _write_session_lock(mock_repo, "session-twot-new", {
             "plan_path": "plans/second-plan.md",
             "status": "TERMINAL_CLOSED",
             "session_id": "session-twot",
-            "updated_at": "2026-06-24T02:00:00+00:00",
+            "updated_at": now.isoformat(),
         })
         result = check(mock_repo, session_id="session-twot")
         assert result["verdict"] == "STOP"

@@ -28,7 +28,7 @@ import sys
 
 from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import yaml
@@ -960,6 +960,34 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  WARNING: DAG prerequisite check skipped: {safe_err}")
     # dag_validation_result is applied to review after grade_all() creates it (below)
 
+    # Step 2g (FF-XPLAN-001 W3-002): Release gate check
+    # Runs PYREL gates for any format mentioned in the declaration
+    print("\n=== STEP 2g: RELEASE GATE CHECK ===")
+    gate_check_results = []
+    try:
+        from gate_executor import run_gates  # noqa: PLC0415
+        decl_formats = set()
+        for wi in decl.get("planned_work_items", []):
+            fmt = wi.get("format_id")
+            if fmt:
+                decl_formats.add(fmt)
+        if decl_formats:
+            for fmt_id in sorted(decl_formats):
+                gate_result = run_gates(fmt_id, ["G1", "G2"], dry_run=True)
+                gate_check_results.append(gate_result)
+                g1 = next((r for r in gate_result["results"] if r["gate"] == "G1"), {})
+                g2 = next((r for r in gate_result["results"] if r["gate"] == "G2"), {})
+                g1_status = "PASS" if g1.get("passed") else "FAIL"
+                g2_status = "PASS" if g2.get("passed") else "FAIL"
+                print(f"  {fmt_id}: G1={g1_status} G2={g2_status}")
+            (review_dir / "gate-check-results.json").write_text(
+                json.dumps(gate_check_results, indent=2), encoding="utf-8"
+            )
+        else:
+            print("  No format_id in declaration — gate check skipped")
+    except Exception as gate_err:
+        print(f"  WARNING: Release gate check skipped: {gate_err}")
+
     # Step 3: Grade work items (includes Step 3a: LLM semantic verification)
     print("\n=== STEP 3: GRADE WORK ITEMS ===")
     # Inject repo_root for semantic verification (LLM reads evidence files)
@@ -1661,6 +1689,43 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         _auth_path.write_text(json.dumps(_auth_map, indent=2), encoding="utf-8")
     except Exception as _auth_err:
         print(f"  WARNING: authority-map.json write failed: {_auth_err}")
+
+    # Step 6b (FF-XPLAN-001 W3-003): Evidence retention cleanup
+    # Delete evidence directories older than 30 days, preserving active/pinned ones
+    print("\n=== STEP 6b: EVIDENCE RETENTION CLEANUP ===")
+    try:
+        import shutil
+        evidence_base = repo_root / ".local" / "evidences"
+        if evidence_base.is_dir():
+            cutoff = datetime.now(timezone.utc) - timedelta(days=30)
+            removed = 0
+            kept = 0
+            for edir in sorted(evidence_base.iterdir()):
+                if not edir.is_dir():
+                    continue
+                # Preserve current run and pinned evidence
+                if edir.name == run_id:
+                    kept += 1
+                    continue
+                pin_file = edir / ".pinned"
+                if pin_file.exists():
+                    kept += 1
+                    continue
+                # Check modification time
+                try:
+                    mtime = datetime.fromtimestamp(edir.stat().st_mtime, tz=timezone.utc)
+                    if mtime < cutoff:
+                        shutil.rmtree(edir, ignore_errors=True)
+                        removed += 1
+                    else:
+                        kept += 1
+                except Exception:
+                    kept += 1
+            print(f"  Retention: removed {removed} old, kept {kept}")
+        else:
+            print("  No evidence directory found — skipped")
+    except Exception as _ret_err:
+        print(f"  WARNING: Evidence retention cleanup failed: {_ret_err}")
 
     # Step 7: Bridge to legacy format for session-resume/approval-gates/next-sprint
     print("\n=== STEP 7: BRIDGE TO LEGACY PACKET FORMAT ===")

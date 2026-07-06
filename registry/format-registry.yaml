@@ -292,6 +292,31 @@ formats:
       deferred_tier3:
       - IR-FODS-008
       notes: TC-0050 COMPLETED (run051). 6 source files, 5 test files. iterparse streaming, defusedxml optional.
+    release_gates:
+      updated_at: '2026-07-06'
+      mission_ref: FF-XPLAN-001
+      pyrel_g1:
+        name: Source Readiness
+        status: passed
+        evidence: src/python/fods/pyproject.toml + tests/packaging/test_*fods*
+      pyrel_g2:
+        name: Oracle Evidence
+        status: passed
+        evidence: oracle/formats/fods/reports/oracle-run-summary.json
+        pass_rate: '8/8'
+        depth: D1
+      pyrel_g3:
+        name: Package Build
+        status: not_implemented
+        notes: Requires clean build execution environment
+      pyrel_g4:
+        name: Install Verification
+        status: not_implemented
+        notes: Requires clean venv execution environment
+      pyrel_g5:
+        name: Publication Authorization
+        status: pending_external_gate
+        notes: Requires Babar Raza Gate 11 G11-G approval (TRUE_EXTERNAL_GATE)
 - format_id: fodt
   display_name: Flat OpenDocument Text
   family: words
