@@ -31,6 +31,24 @@ write_csv_to_file(model["rows"], "output.csv", headers=model["headers"])
 - Header-aware access (`get_column_names()`, `get_cell_value()`)
 - Write CSV output
 
+## Known Issue: Package Name Shadows Python stdlib `csv`
+
+The package directory is named `csv`, which shadows Python's built-in `csv` module
+in certain import configurations. This was established early in the project and
+renaming it would break hundreds of existing imports, tests, and oracle cases.
+
+The installed package name is `format-factory-csv` and the importable module is
+`csv_format` (not `csv`), which avoids the stdlib conflict at runtime. Do not
+attempt to import using `from csv import ...` — Python will resolve to the stdlib.
+
+**Correct usage:**
+```python
+from csv_format import CsvDocument, parse_csv_strict, write_csv_to_file
+```
+
+**Do not rename** the `src/python/csv/` directory without a major version bump and
+a coordinated import migration across all tests, oracle cases, and downstream consumers.
+
 ## License
 
 <!-- BEGIN:README-LICENSE generated=2026-07-04T11:41:36+00:00 source=package-metadata -->

@@ -197,7 +197,7 @@ def load_selected_gap_ids(repo_root: Path) -> set:
         needs_refresh = True
         if selected_gaps_path.exists():
             sg_data = json.loads(selected_gaps_path.read_text(encoding="utf-8"))
-            if sg_data.get("selected_gap_count", 0) > 0:
+            if isinstance(sg_data, dict) and sg_data.get("selected_gap_count", 0) > 0:
                 gen_at = sg_data.get("generated_at", "")
                 if gen_at:
                     try:
@@ -215,7 +215,8 @@ def load_selected_gap_ids(repo_root: Path) -> set:
                 pass
         if selected_gaps_path.exists():
             sg_data = json.loads(selected_gaps_path.read_text(encoding="utf-8"))
-            return {g.get("gap_id", "") for g in sg_data.get("selected_gaps", [])}
+            gaps_list = sg_data.get("selected_gaps", []) if isinstance(sg_data, dict) else sg_data
+            return {g.get("gap_id", "") for g in gaps_list if isinstance(g, dict)}
     except Exception:
         pass
     return set()
@@ -232,6 +233,8 @@ def enrich_goals_with_compiled_taskcards(all_goals: list, repo_root: Path) -> No
         if not compiled_path.exists():
             return
         cgd = json.loads(compiled_path.read_text(encoding="utf-8"))
+        if not isinstance(cgd, dict):
+            return
         index = {}
         for cg in cgd.get("compiled", []):
             gid = cg.get("gap_id", "")
