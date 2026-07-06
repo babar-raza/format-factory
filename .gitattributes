@@ -1,0 +1,6 @@
+# Linguist overrides — prevent reports and generated artifacts from inflating
+# GitHub language statistics and dominating diffs.
+reports/** linguist-generated=true
+.local/** linguist-generated=true
+oracle/formats/*/reports/** linguist-generated=true
+*.jsonl linguist-generated=true
