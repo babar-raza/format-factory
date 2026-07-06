@@ -338,6 +338,18 @@ Do not rename without a major version bump and a coordinated import migration.
 
 ---
 
+## Taskcard Status Summary (lifecycle_audit format)
+
+| TC-ID | Status |
+|---|---|
+| TC-PCP-A | CLOSED |
+| TC-PCP-B | CLOSED |
+| TC-PCP-C | CLOSED |
+| TC-PCP-D | CLOSED |
+| TC-PCP-E | CLOSED |
+| TC-PCP-F | CLOSED |
+| TC-PCP-G | CLOSED |
+
 ## Execution Order
 
 ```
@@ -382,3 +394,12 @@ TC-G (CSV docs)                 [independent, fast]
 3. **TC-D 30-day cutoff is generous.** Can be shortened after observing impact. Deliberately conservative for the first deployment.
 4. **TC-E corrects an observation document, not product source.** The recon docs are historical records — corrections are annotations, not rewrites.
 5. **Validator count changes faster than documentation** — the gap went from 101 to 161 in ~60 days. The CI gate (TC-B) is the structural fix; manual count updates (TC-A) are an immediate repair.
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-06T13:49:38.869473+00:00"
+  locked_by: "c5d4c96a6edf"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

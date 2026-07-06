@@ -6628,3 +6628,45 @@ Convert all 15 items previously marked EXCLUDED or BLOCKED_EXTERNAL in the prior
 - Gate 11 production release: requires Babar Raza G11-G commercial release approval
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+## §120 — partitioned-chasing-puzzle: Deep Recon Gap Rectification (TERMINAL_CLOSED)
+
+### Objective
+
+Rectify all material gaps, contradictions, and stale documentation discovered in the FF-DEEP-RECON-20260705-052931 deep reconnaissance. Root causes addressed structurally, not patched locally.
+
+### Taskcards
+
+| TC | Description | Status |
+|---|---|---|
+| TC-A | Update README counts (101→161 validators, 120→123 skills, 11→20 modules) | CLOSED |
+| TC-B | Add CI readme-drift enforcement gate to `.github/workflows/ci.yml` | CLOSED |
+| TC-C | Add isinstance guards for sg_data/cgd in autonomous_cycle_extensions.py | CLOSED |
+| TC-D | Evidence directory cleanup — already existed at Step 6b; no change | VALID_DEFERRED |
+| TC-E | Correct 01-SYSTEM-OVERVIEW.md — already correct at HEAD; no change needed | VALID_DEFERRED |
+| TC-F | Verify README sprint count against maturity-trend.json (840 confirmed) | CLOSED |
+| TC-G | Document CSV stdlib namespace shadow in src/python/csv/README.md | CLOSED |
+
+### Key Artifacts
+
+- `README.md`: 9 stale count locations updated; drift tool confirms NO_DRIFT
+- `.github/workflows/ci.yml`: `readme-drift` job at line 106 — gates on count accuracy
+- `tools/supervisor/autonomous_cycle_extensions.py`: 3 isinstance guards at lines 200, 218, 236
+- `src/python/csv/README.md`: "Known Issue" section documenting stdlib shadow (ISSUE-IMPL-001)
+- `reports/supervisor/maturity-trend.json`: sprint_count=840 confirmed
+- Commit: `0a13bb77`
+
+### Verification
+
+- `generate_root_status.py --mode drift-only` → NO_DRIFT (idempotent across 2 runs)
+- `.github/workflows/ci.yml` → YAML syntax valid
+- `autonomous_cycle_extensions.py` → Python syntax check PASS
+- `tests/governance/test_capability_parity.py` → 3/3 PASS
+
+### Root Causes Addressed
+
+- Count drift: no CI enforcement loop → fixed by readme-drift CI job (TC-B)
+- Type safety crash: ad-hoc `.get()` on unvalidated JSON → fixed by isinstance guards (TC-C)
+- Documentation gap: ISSUE-IMPL-001 undocumented → fixed in CSV README (TC-G)
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
