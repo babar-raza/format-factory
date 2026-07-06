@@ -6474,3 +6474,56 @@ Also applied 4 opportunistic tool fixes discovered during investigation.
 - Commits: `03946125` (investigation docs), `8ab61144` (tool fixes), `3631ffd2` (state/config)
 
 **Final Verdict:** INVESTIGATION_COMPLETE_WITH_DOCUMENTED_LIMITATIONS | TERMINAL_CLOSED
+
+---
+
+## Section 97 — bright-greeting-goose: BACKFILL — Apply New Governance to Existing Machinery Debt (CLOSED)
+
+**Plan:** `plans/.claude/bright-greeting-goose.md` | **Commit:** `e03a077b` | **Date:** 2026-07-06
+
+### Objective
+
+Convert accumulated machinery classification debt into a fully governed, machine-checkable inventory
+where every component has a registered disposition and every tombstone candidate has an active sentinel.
+
+### Taskcards
+
+| TC-ID | Title | STATUS |
+|-------|-------|--------|
+| TC-BF-001 | COMPONENT-REGISTER.yaml + check_component_register.py + CI step | CLOSED |
+| TC-BF-002 | Register all unregistered tools/supervisor/*.py files (273/273) | CLOSED |
+| TC-BF-003 | Tombstone 8 DEPRECATED_STILL_ACTIVE files | CLOSED |
+| TC-BF-004 | Tombstone 9 SUSPECTED_GHOST files + check_tombstone_records.py | CLOSED |
+| TC-BF-005 | @validator decorator contract for all 154 validators | CLOSED |
+| TC-BF-006 | Invocation graph — 3 ingestors, 4-mechanism coverage, 9 ghosts classified | CLOSED |
+| TC-BF-007 | EXTENSION-BUDGET.yaml + check_extension_budget.py + CI step | CLOSED |
+| TC-BF-008 | run_regression_baseline.py — all 4 checks PASS | CLOSED |
+| TC-BF-009 | Git latency assessment — SKIPPED (206ms < 3000ms threshold) | CLOSED |
+
+### Key Artifacts
+
+- `tools/supervisor/COMPONENT-REGISTER.yaml` — 273 registered components
+- `tools/supervisor/check_component_register.py` — exits 0 (273/273 registered)
+- `tools/supervisor/EXTENSION-BUDGET.yaml` — 19 grandfathered naming-pattern files
+- `tools/supervisor/check_extension_budget.py` — exits 0 (19/19 budgeted)
+- `tools/supervisor/governance_validators_contract.py` — @validator, ValidationResult, _VALIDATOR_REGISTRY
+- `tools/supervisor/check_tombstone_records.py` — 30-day observation window runner
+- `tools/supervisor/run_regression_baseline.py` — 4-check regression gate
+- `tools/supervisor/control_index/ingestors/` — subprocess_calls, command_invocations, skill_invocations
+- `docs/system-recon/supervisor-machinery-audit/invocation-graph-backfill.md` — 9 ghost classifications
+
+### Verification
+
+- 187/187 governance validator tests pass
+- check_component_register.py: exit 0 (273/273)
+- check_extension_budget.py: exit 0 (19/19)
+- run_regression_baseline.py: exit 0 (validator count 154, grade hash stable, continuation stable, git latency 206ms)
+- TC-BF-004 observation window: expires 2026-08-05 (run check_tombstone_records.py on that date)
+
+### Supersession
+
+Supersedes TC-S2-001/002/003 (quarantine-by-move), TC-S7-001 (CI file count check) from 09-hardened-execution-plan.md.
+TC-S5-001 (validator domain restructuring) now unblocked (TC-BF-005 prerequisite satisfied).
+Stage 3+ orchestration consolidation now unblocked (TC-BF-008 regression baseline complete).
+
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
