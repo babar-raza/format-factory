@@ -30,12 +30,14 @@ V82 (TC-ORC-003, ORACLE-LAYER-HARDENING-001): validate_oracle_obligations
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 from pathlib import Path
 
 
 # V75 — TC-GH-004: dependency_direction_validator
 # Enforces RULE-LIB-003: import direction Parser→Model→Analytics→Compat←__init__
+@validator(rule_id="V_VALIDATE_DEPENDENCY_DIRECTION", domain="governance")
 def validate_dependency_direction(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V75: Import direction within format packages must follow the governed dependency chain.
 
@@ -118,6 +120,7 @@ def validate_dependency_direction(declaration: dict, repo_root: "Path | None" = 
 
 # V76 — TC-GH-004: error_handling_hierarchy_validator
 # Enforces RULE-LIB-006: format-specific exception hierarchy required
+@validator(rule_id="V_VALIDATE_ERROR_HANDLING_HIERARCHY", domain="governance")
 def validate_error_handling_hierarchy(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V76: Each format package must have exceptions.py; parsers must not raise bare exceptions.
 
@@ -179,6 +182,7 @@ def validate_error_handling_hierarchy(declaration: dict, repo_root: "Path | None
 
 # V77 — PROD-GOVERNANCE-001 (TC-GM-002): analytics_naming_enforced
 # RULE-LIB-007: *_document.py files must not be analytics files in disguise.
+@validator(rule_id="V_VALIDATE_ANALYTICS_NAMING_ENFORCED", domain="governance")
 def validate_analytics_naming_enforced(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V77: *_document.py files under src/python/ must not have 'analytics functions' in docstring.
 
@@ -228,6 +232,7 @@ def validate_analytics_naming_enforced(declaration: dict, repo_root: "Path | Non
 
 # V78 — PROD-GOVERNANCE-001 (TC-GM-003): dotnet_loc_cap
 # RULE-LIB-008: .cs files in src/net/ must be ≤800 LOC unless already in known_violations.
+@validator(rule_id="V_VALIDATE_DOTNET_LOC_CAP", domain="governance")
 def validate_dotnet_loc_cap(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V78: src/net/**/*.cs files must be ≤800 LOC or pre-existing in known_violations.
 
@@ -282,6 +287,7 @@ def validate_dotnet_loc_cap(declaration: dict, repo_root: "Path | None" = None) 
 
 # V79 — PROD-GOVERNANCE-001 (TC-GM-004): healing_stall_detector
 # RULE-LIB-009: known_violations entries at loc == baseline_loc_cap have zero healing progress.
+@validator(rule_id="V_VALIDATE_HEALING_STALL_DETECTOR", domain="governance")
 def validate_healing_stall_detector(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V79: WARN when known_violations entries show zero healing progress (loc == baseline_loc_cap).
 
@@ -325,6 +331,7 @@ def validate_healing_stall_detector(declaration: dict, repo_root: "Path | None" 
     }
 
 
+@validator(rule_id="V_VALIDATE_ORACLE_OBLIGATIONS", domain="governance")
 def validate_oracle_obligations(declaration: dict, repo_root: Path = None) -> dict:
     """V82: Every registered format must have an oracle obligation entry.
 
@@ -422,6 +429,7 @@ def validate_oracle_obligations(declaration: dict, repo_root: Path = None) -> di
         }
 
 
+@validator(rule_id="V_VALIDATE_CERTIFICATION_REPORTS_EXIST", domain="governance")
 def validate_certification_reports_exist(declaration: dict, repo_root: Path = None) -> dict:
     """V88: Certification report directories must exist for all 20 formats."""
     if repo_root is None:
@@ -463,6 +471,7 @@ def validate_certification_reports_exist(declaration: dict, repo_root: Path = No
     }
 
 
+@validator(rule_id="V_VALIDATE_CERTIFICATION_MATRIX_CONSISTENT", domain="governance")
 def validate_certification_matrix_consistent(declaration: dict, repo_root: Path = None) -> dict:
     """V89: Portfolio certification matrix must be internally consistent."""
     if repo_root is None:
@@ -521,6 +530,7 @@ def validate_certification_matrix_consistent(declaration: dict, repo_root: Path 
         }
 
 
+@validator(rule_id="V_VALIDATE_README_FRESHNESS", domain="governance")
 def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict:
     """V87: Per-format READMEs must have current generated blocks."""
     if repo_root is None:
@@ -569,6 +579,7 @@ def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict
         }
 
 
+@validator(rule_id="V_VALIDATE_PLANS_ROOT_POLICY", domain="governance")
 def validate_plans_root_policy(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -653,6 +664,7 @@ def _load_playbook_contracts(repo_root: "Path") -> "list[dict]":
     return contracts
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_REGISTRY_ENTRIES", domain="governance")
 def validate_playbook_registry_entries(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -705,6 +717,7 @@ def validate_playbook_registry_entries(
         }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_HAS_VERSION", domain="governance")
 def validate_playbook_has_version(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -743,6 +756,7 @@ def validate_playbook_has_version(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_HAS_OWNER", domain="governance")
 def validate_playbook_has_owner(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -781,6 +795,7 @@ def validate_playbook_has_owner(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_HAS_EVIDENCE_CONTRACT", domain="governance")
 def validate_playbook_has_evidence_contract(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -819,6 +834,7 @@ def validate_playbook_has_evidence_contract(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_HAS_ROLLBACK", domain="governance")
 def validate_playbook_has_rollback(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -857,6 +873,7 @@ def validate_playbook_has_rollback(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_NOT_OVERRIDING_GATE", domain="governance")
 def validate_playbook_not_overriding_gate(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -900,6 +917,7 @@ def validate_playbook_not_overriding_gate(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_HAS_NO_DEPRECATED_PATHS", domain="governance")
 def validate_playbook_has_no_deprecated_paths(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -943,6 +961,7 @@ def validate_playbook_has_no_deprecated_paths(
     }
 
 
+@validator(rule_id="V_VALIDATE_PLAYBOOK_COVERAGE_REPORT_CURRENT", domain="governance")
 def validate_playbook_coverage_report_current(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -1001,6 +1020,7 @@ def validate_playbook_coverage_report_current(
 # Enforces RULE-STATUS-001: PROJECT_STATUS.md must exist, be structurally valid (two-lane
 # contract), and have stable anchors. blocks_sprint=False (advisory — regeneration is
 # best-effort per Supreme Directive).
+@validator(rule_id="V_VALIDATE_PROJECT_STATUS_FRESHNESS", domain="governance")
 def validate_project_status_freshness(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V93: PROJECT_STATUS.md must exist with valid two-lane structure and stable anchors.
 

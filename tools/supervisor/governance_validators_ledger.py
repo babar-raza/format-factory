@@ -9,11 +9,13 @@ Created: 2026-06-25
 Task: TC-PDL-005 (sunny-crunching-galaxy)
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import re as _re
 from pathlib import Path
 
 
+@validator(rule_id="V_VALIDATE_LEDGER_CONTINUATION_GATE", domain="ledger")
 def validate_ledger_continuation_gate(
     declaration: dict,
     repo_root: "Path | None" = None,

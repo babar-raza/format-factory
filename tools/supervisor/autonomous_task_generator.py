@@ -1,5 +1,5 @@
 """
-Format Factory — Autonomous Task Generator
+Format Factory â€” Autonomous Task Generator
 Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-1-001
 
 Generates queue-item-v2 product task candidates from:
@@ -8,7 +8,7 @@ Generates queue-item-v2 product task candidates from:
 3. Source code introspection (detects missing functions)
 
 Outputs:
-  product-task-candidates.json   — top N scored tasks ready for queue dispatch
+  product-task-candidates.json   â€” top N scored tasks ready for queue dispatch
 """
 from __future__ import annotations
 
@@ -103,7 +103,7 @@ _EXPANSION_GOALS: List[Dict[str, Any]] = [
         "product_value": 3,
         "autonomy_value": 2,
         "risk_level": "LOW",
-        "description": "Load → write → reload FODG roundtrip test",
+        "description": "Load â†’ write â†’ reload FODG roundtrip test",
     },
     {
         "format": "ndjson",
@@ -116,7 +116,7 @@ _EXPANSION_GOALS: List[Dict[str, Any]] = [
         "product_value": 3,
         "autonomy_value": 2,
         "risk_level": "LOW",
-        "description": "Load → modify → write_ndjson → reload NDJSON roundtrip test",
+        "description": "Load â†’ modify â†’ write_ndjson â†’ reload NDJSON roundtrip test",
     },
     {
         "format": "tsv",
@@ -129,7 +129,7 @@ _EXPANSION_GOALS: List[Dict[str, Any]] = [
         "product_value": 2,
         "autonomy_value": 2,
         "risk_level": "LOW",
-        "description": "Load → write_tsv → reload → compare headers roundtrip test",
+        "description": "Load â†’ write_tsv â†’ reload â†’ compare headers roundtrip test",
     },
     {
         "format": "abw",
@@ -1374,7 +1374,7 @@ _GLOBAL_FORBIDDEN = [
 _GAP_LEDGER_PATH = _REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
 _SAL_FACTS_PATH = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
 
-# Format name → Python source module mapping for gap-ledger integration
+# Format name â†’ Python source module mapping for gap-ledger integration
 _FORMAT_SOURCE_MAP: Dict[str, str] = {
     "FODS": "src/python/fods/__init__.py",
     "FODT": "src/python/fodt/__init__.py",
@@ -1413,10 +1413,10 @@ def _load_gap_ledger_goals(
           - goals_list: list of goal dicts (may be empty if 0 open FOSS gaps)
           - spec_grounded_available: True if spec-grounded goals exist before filtering
 
-    CRITICAL — TC-V4-009 (2026-06-25): This function returns a TUPLE, not a list.
+    CRITICAL â€” TC-V4-009 (2026-06-25): This function returns a TUPLE, not a list.
     ALWAYS unpack: goals, spec_grounded = _load_gap_ledger_goals()
-    NEVER call len() on the return value — len((list, bool)) == 2, not the goal count.
-    FOSS depletion check: if len(goals) == 0 → _expansion_goal_fallback = True.
+    NEVER call len() on the return value â€” len((list, bool)) == 2, not the goal count.
+    FOSS depletion check: if len(goals) == 0 â†’ _expansion_goal_fallback = True.
     See: plans/velvet-hatching-lark.md TC-V4-009.
     """
     if not _GAP_LEDGER_PATH.exists():
@@ -1432,7 +1432,7 @@ def _load_gap_ledger_goals(
     goals = []
     for gap in gaps:
         # Only generate tasks for OPEN FOSS gaps with missing test coverage.
-        # TC-FINDING-021 (2026-06-25): status filter was missing — caused all 1,130 CLOSED
+        # TC-FINDING-021 (2026-06-25): status filter was missing â€” caused all 1,130 CLOSED
         # foss_reduced/test_coverage gaps to be returned as "goals", making
         # _expansion_goal_fallback evaluate to False (wrong). Fixed by adding status check.
         if gap.get("status") != "open":
@@ -1495,7 +1495,7 @@ def _load_gap_ledger_goals(
     if len(goals) < _DEPLETION_THRESHOLD:
         import sys as _sys_monitor
         _msg = (
-            f"WARNING [TC-C2-005-MONITORING]: FOSS DEPLETION — "
+            f"WARNING [TC-C2-005-MONITORING]: FOSS DEPLETION â€” "
             f"only {len(goals)} open FOSS goals remain "
             f"(threshold={_DEPLETION_THRESHOLD}). "
             f"_expansion_goal_fallback will activate at 0. "
@@ -1542,7 +1542,7 @@ def _goal_to_queue_item(goal: Dict[str, Any], run_number: int) -> Dict[str, Any]
     action_id = f"atg-{fmt}-{fn.replace('_', '-')}-{run_number:03d}"
 
     # TC-FALLBACK-REF-001: inject gap_ledger_ref so TC-GUARD-001 check passes.
-    # Gap-ledger sourced items carry gap_id — use it directly.
+    # Gap-ledger sourced items carry gap_id â€” use it directly.
     # Expansion fallback items get a synthetic EXPANSION-FALLBACK ref.
     if goal.get("gap_source") == "gap_ledger" and goal.get("gap_id"):
         _gap_ledger_ref = goal["gap_id"]
@@ -1637,7 +1637,7 @@ def generate_task_candidates(
         pass
 
     # Lane 6: gap-ledger is PRIMARY; hardcoded goals demoted to fallback (missing fns only).
-    # TC-SA-HEAL-006: require spec_facts for formats with ≥15 SAL facts (MIN_FACTS_T=15).
+    # TC-SA-HEAL-006: require spec_facts for formats with â‰¥15 SAL facts (MIN_FACTS_T=15).
     _req_sf = _SAL_FACTS_PATH.exists() and any(len(e.get("spec_facts", [])) >= 15 for e in json.loads(_SAL_FACTS_PATH.read_text()).get("results", []))
     gap_ledger_goals, _spec_grounded_available = _load_gap_ledger_goals(
         require_spec_facts=_req_sf,
@@ -1666,13 +1666,13 @@ def generate_task_candidates(
         import sys as _sys_guard
         print(
             "WARNING [TC-GUARD-001-EXPANSION-001]: FOSS fallback active but "
-            "EXPANSION_GOALS disabled — all 114 hardcoded goals lack gap_ledger_ref "
+            "EXPANSION_GOALS disabled â€” all 114 hardcoded goals lack gap_ledger_ref "
             "and would be blocked by TC-GUARD-001. Sprint continues with 0 FOSS tasks. "
             "Resolution: run TC-GAP-REGEN-001 to regenerate open FOSS gaps.",
             file=_sys_guard.stderr,
         )
         del _sys_guard
-        # Do NOT add any hardcoded goals — they will be blocked by TC-GUARD-001.
+        # Do NOT add any hardcoded goals â€” they will be blocked by TC-GUARD-001.
 
     candidates = []
     advisory_skipped = 0
@@ -1680,7 +1680,7 @@ def generate_task_candidates(
         fn = goal["function_name"]
         source_file = goal["source_file"]
 
-        # Lane 6: Skip advisory-only items — they cannot be executed as product work
+        # Lane 6: Skip advisory-only items â€” they cannot be executed as product work
         if goal.get("advisory_only", False):
             advisory_skipped += 1
             continue
@@ -1760,7 +1760,7 @@ def generate_task_candidates(
             enrich_work_item_with_route(item) for item in queue_items
         ]
     except ImportError:
-        pass  # Route enrichment unavailable — items remain unenriched
+        pass  # Route enrichment unavailable â€” items remain unenriched
 
     # SUP-RECT-005: Circuit breaker for zero-task loops
     zero_task_tracker_path = Path(output_path).parent / ".zero-task-counter.json"
@@ -1782,7 +1782,7 @@ def generate_task_candidates(
         }, indent=2), encoding="utf-8")
         if zero_count >= 3:
             print(f"CIRCUIT_BREAKER: {zero_count} consecutive zero-task cycles. "
-                  "Escalation triggered — inspect gap-ledger and _EXPANSION_GOALS.",
+                  "Escalation triggered â€” inspect gap-ledger and _EXPANSION_GOALS.",
                   file=sys.stderr)
     else:
         # Reset counter on successful generation

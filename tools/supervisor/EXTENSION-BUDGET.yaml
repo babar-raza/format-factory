@@ -1,0 +1,135 @@
+# EXTENSION-BUDGET.yaml — Grandfathers all existing naming-pattern violations.
+# CI blocks NEW files matching guarded patterns that lack a budget entry.
+#
+# Guarded patterns:
+#   1. tools/supervisor/autonomous_*.py
+#   2. tools/supervisor/governance_validators_ext*.py
+#   3. tools/evidence/run0*_sprint_writer.py
+#
+# Entry schema:
+#   file: relative path from repo root
+#   pattern: guarded pattern it matches
+#   status: ACTIVE | TOMBSTONED | PENDING_DELETION
+#   rationale: reason for existence
+#   disposition: RETAIN | CONSOLIDATE_AFTER_TC_BF_005 | PENDING_DELETION | INVESTIGATE
+
+budget_version: 1
+
+entries:
+
+  # ── autonomous_*.py (10 files) ──────────────────────────────────────────────
+  - file: tools/supervisor/autonomous_cycle.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_SAFETY_CRITICAL canonical orchestration loop. Pattern origin."
+    disposition: RETAIN
+
+  - file: tools/supervisor/autonomous_cycle_extensions.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — extensions factored from autonomous_cycle.py for LOC cap."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  - file: tools/supervisor/autonomous_cycle_utils.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — utils factored from autonomous_cycle.py for LOC cap."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  - file: tools/supervisor/autonomous_host_daemon.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_host_runner.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_loop_runner.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_orchestrator.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_poc_controller.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_task_generator.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  - file: tools/supervisor/autonomous_train_executor.py
+    pattern: "autonomous_*.py"
+    status: ACTIVE
+    rationale: "LIVE_VIA_TEST — fires via import in test suite; investigation input for TC-BF-006."
+    disposition: INVESTIGATE
+
+  # ── governance_validators_ext*.py (4 files) ─────────────────────────────────
+  - file: tools/supervisor/governance_validators_ext.py
+    pattern: "governance_validators_ext*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — overflow from monolithic governance_validators.py (LOC cap)."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  - file: tools/supervisor/governance_validators_ext2.py
+    pattern: "governance_validators_ext*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — second overflow file (LOC cap on ext.py)."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  - file: tools/supervisor/governance_validators_ext3.py
+    pattern: "governance_validators_ext*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — third overflow file."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  - file: tools/supervisor/governance_validators_ext4.py
+    pattern: "governance_validators_ext*.py"
+    status: ACTIVE
+    rationale: "ESSENTIAL_OVERCOMPLICATED — fourth overflow file."
+    disposition: CONSOLIDATE_AFTER_TC_BF_005
+
+  # ── run0*_sprint_writer.py (5 files) ────────────────────────────────────────
+  - file: tools/evidence/run046_sprint_writer.py
+    pattern: "run0*_sprint_writer.py"
+    status: TOMBSTONED
+    rationale: "DEPRECATED_STILL_ACTIVE — tombstoned TC-BF-003. 30-day observation window expires 2026-08-05."
+    disposition: PENDING_DELETION
+
+  - file: tools/evidence/run047_sprint_writer.py
+    pattern: "run0*_sprint_writer.py"
+    status: TOMBSTONED
+    rationale: "DEPRECATED_STILL_ACTIVE — tombstoned TC-BF-003. 30-day observation window expires 2026-08-05."
+    disposition: PENDING_DELETION
+
+  - file: tools/evidence/run048_sprint_writer.py
+    pattern: "run0*_sprint_writer.py"
+    status: TOMBSTONED
+    rationale: "DEPRECATED_STILL_ACTIVE — tombstoned TC-BF-003. 30-day observation window expires 2026-08-05."
+    disposition: PENDING_DELETION
+
+  - file: tools/evidence/run049_sprint_writer.py
+    pattern: "run0*_sprint_writer.py"
+    status: TOMBSTONED
+    rationale: "DEPRECATED_STILL_ACTIVE — tombstoned TC-BF-003. 30-day observation window expires 2026-08-05."
+    disposition: PENDING_DELETION
+
+  - file: tools/evidence/run050_sprint_writer.py
+    pattern: "run0*_sprint_writer.py"
+    status: ACTIVE
+    rationale: "USEFUL_SHARED_INFRASTRUCTURE — current active sprint writer (run050 is the live version)."
+    disposition: RETAIN

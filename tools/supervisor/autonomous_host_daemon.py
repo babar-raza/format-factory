@@ -1,5 +1,5 @@
 """
-Format Factory — Autonomous Host Daemon (Scaffold)
+Format Factory â€” Autonomous Host Daemon (Scaffold)
 Sprint: FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
 
 Scaffold only. Loads and dispatches next-action files via next_action_runner.

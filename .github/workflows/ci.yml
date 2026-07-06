@@ -100,6 +100,8 @@ jobs:
         run: pytest tests/governance/test_capability_parity.py -v
       - name: Component register completeness check
         run: python tools/supervisor/check_component_register.py
+      - name: Extension budget check
+        run: python tools/supervisor/check_extension_budget.py
 
   dotnet-build:
     runs-on: ubuntu-latest

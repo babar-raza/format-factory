@@ -1,5 +1,5 @@
 """
-autonomous_loop_runner.py — Real Autonomous Multi-Item Loop Runner
+autonomous_loop_runner.py â€” Real Autonomous Multi-Item Loop Runner
 
 Addresses the stop-after-one-item failure. This runner:
   1. Loads continuation signal
@@ -13,10 +13,10 @@ Addresses the stop-after-one-item failure. This runner:
   9. Stops when: queue empty, true external gate, or max_items reached
 
 Exit codes:
-  0 — loop complete, at least one item consumed
-  1 — no continuation signal or invalid state
-  2 — queue empty (no executable items found)
-  3 — hard blocker encountered (true external gate)
+  0 â€” loop complete, at least one item consumed
+  1 â€” no continuation signal or invalid state
+  2 â€” queue empty (no executable items found)
+  3 â€” hard blocker encountered (true external gate)
 """
 from __future__ import annotations
 
@@ -165,7 +165,7 @@ def _log(msg: str, prefix: str = "INFO") -> None:
 def _is_true_external_gate(item: WorkItem) -> bool:
     """Return True if item requires a true external human gate.
 
-    Per AGENTS.md §AG1:
+    Per AGENTS.md Â§AG1:
     - Gate 11 PREPARATION is agent-owned (never a gate)
     - Gate 11 SUBMISSION/EXECUTION requires Babar Raza
     - git push / nuget publish / pypi publish require credentials + policy
@@ -211,7 +211,7 @@ def _is_package_terminal(item: WorkItem) -> bool:
 def _is_gate11_item(item: WorkItem) -> bool:
     """Specifically guard against Gate 11 APPROVAL EXECUTION tasks.
 
-    Per AGENTS.md §AG1: Gate 11 PREPARATION is always agent-owned.
+    Per AGENTS.md Â§AG1: Gate 11 PREPARATION is always agent-owned.
     Only the final commercial sign-off (submit/approve/execute) requires human.
     """
     text = (item.description + " " + item.label + " " + item.action_type).lower()
@@ -225,7 +225,7 @@ def _is_gate11_item(item: WorkItem) -> bool:
         return True
 
     # Preparation / readiness / "toward" = agent-owned, not a gate
-    # "Prepare Gate 11 readiness packet", "toward Gate 11 readiness" → EXEC
+    # "Prepare Gate 11 readiness packet", "toward Gate 11 readiness" â†’ EXEC
     if ("prepare" in text or "readiness" in text or "toward" in text or "packet" in text) \
             and ("gate 11" in text or "gate11" in text):
         return False
@@ -358,13 +358,13 @@ def _classify_item_executability(item: WorkItem) -> tuple[bool, str]:
         return False, "SKIP: Gate 11 approval requires Babar Raza (true external gate)"
 
     if _is_true_external_gate(item):
-        return False, f"SKIP: True external gate — {item.label}"
+        return False, f"SKIP: True external gate â€” {item.label}"
 
     if item.action_type in ("GIT_COMMIT", "GIT_PUSH", "GATE_11_APPROVAL"):
         return False, f"SKIP: Forbidden action type {item.action_type}"
 
     if _is_package_terminal(item):
-        return True, "EXECUTE: Package creation is not terminal — continue after"
+        return True, "EXECUTE: Package creation is not terminal â€” continue after"
 
     return True, "EXECUTE: Agent-owned item"
 
@@ -378,7 +378,7 @@ def dispatch_product_gap_closure(item: WorkItem, evidence_root: Path) -> tuple[b
 
     TC-EXPAND-001a: replaced LOGISTICS_STUB with authority preflight gate.
     Calls product_source_executor.run_authority_preflight() before logging.
-    BLOCK decision → returns (False, reason). ALLOW → logs with preflight_result.
+    BLOCK decision â†’ returns (False, reason). ALLOW â†’ logs with preflight_result.
     """
     sys.path.insert(0, str(SCRIPT_DIR))
     from product_source_executor import run_authority_preflight  # noqa: PLC0415
@@ -410,7 +410,7 @@ def dispatch_product_gap_closure(item: WorkItem, evidence_root: Path) -> tuple[b
             "result": "BLOCKED",
             "preflight_result": preflight,
         })
-        return False, f"BLOCKED: authority preflight — {preflight['reason']}"
+        return False, f"BLOCKED: authority preflight â€” {preflight['reason']}"
 
     result_note = f"Product gap closure executed with authority preflight ALLOW for: {item.description}"
     _write_json(log_path, {
@@ -481,7 +481,7 @@ def dispatch_agent_task(item: WorkItem, evidence_root: Path) -> tuple[bool, str]
         "description": item.description,
         "dispatched_at": _now_iso(),
         "result": "DISPATCHED",
-        "note": "Generic agent task — dispatched to agent execution queue",
+        "note": "Generic agent task â€” dispatched to agent execution queue",
     })
     return True, f"Agent task dispatched: {item.description}"
 
@@ -530,7 +530,7 @@ def dispatch_recompute(evidence_root: Path) -> tuple[bool, str]:
         )
         if result.returncode == 0:
             return True, "RECOMPUTE_OK: capability maps refreshed (exit 0)"
-        return False, f"RECOMPUTE_FAIL: exit {result.returncode} — {result.stderr[:200]}"
+        return False, f"RECOMPUTE_FAIL: exit {result.returncode} â€” {result.stderr[:200]}"
     except subprocess.TimeoutExpired:
         return False, "RECOMPUTE_TIMEOUT: capability_map_generator took >120s"
     except Exception as exc:
@@ -582,7 +582,7 @@ def write_continuation_update(
     updated["last_loop_runner_at"] = _now_iso()
     updated["last_loop_items_consumed"] = items_consumed
     updated["last_loop_stop_reason"] = stop_reason
-    # Do NOT modify autonomous_continue or iteration — that is supervisor_loop's job
+    # Do NOT modify autonomous_continue or iteration â€” that is supervisor_loop's job
     _write_json(signal_path, updated)
 
 
@@ -632,7 +632,7 @@ def run_loop(
         result.stop_reason = "CONTINUATION_NOT_ALLOWED"
         result.stop_detail = reason
         result.autonomy_verdict = "BLOCKED_EXTERNAL"
-        _log_result(f"STOP: {result.stop_reason} — {reason}", "WARN")
+        _log_result(f"STOP: {result.stop_reason} â€” {reason}", "WARN")
         return result
 
     # -- Step 2: Load work items
@@ -653,12 +653,12 @@ def run_loop(
         executable, reason_str = _classify_item_executability(item)
         if executable:
             queue.append(item)
-            _log_result(f"  QUEUE: {item.item_id} — {reason_str}")
+            _log_result(f"  QUEUE: {item.item_id} â€” {reason_str}")
         else:
             item.status = "skipped"
             item.skip_reason = reason_str
             result.items_skipped.append(item)
-            _log_result(f"  SKIP: {item.item_id} — {reason_str}")
+            _log_result(f"  SKIP: {item.item_id} â€” {reason_str}")
 
     if not queue:
         result.stop_reason = "NO_EXECUTABLE_ITEMS"
@@ -750,7 +750,7 @@ def run_loop(
         else:
             result.stop_reason = "LOOP_COMPLETE"
 
-    # Package/evidence checkpoint is NOT terminal — continue signal preserved
+    # Package/evidence checkpoint is NOT terminal â€” continue signal preserved
     if not dry_run:
         write_continuation_update(signal_path, signal, items_consumed, result.stop_reason)
 
@@ -817,10 +817,10 @@ Examples:
       --max-items 5
 
 Exit codes:
-  0 — loop complete, at least one item consumed
-  1 — no continuation signal or invalid state
-  2 — queue empty (no executable items found)
-  3 — hard blocker encountered (true external gate)
+  0 â€” loop complete, at least one item consumed
+  1 â€” no continuation signal or invalid state
+  2 â€” queue empty (no executable items found)
+  3 â€” hard blocker encountered (true external gate)
         """,
     )
     p.add_argument(
@@ -867,7 +867,7 @@ def main() -> int:
     evidence_root.mkdir(parents=True, exist_ok=True)
     (evidence_root / "raw-logs").mkdir(parents=True, exist_ok=True)
 
-    _log(f"Autonomous Loop Runner — {_now_iso()}", "START")
+    _log(f"Autonomous Loop Runner â€” {_now_iso()}", "START")
     _log(f"Signal: {signal_path}", "CFG")
     _log(f"Next sprint: {next_sprint_path}", "CFG")
     _log(f"Evidence root: {evidence_root}", "CFG")

@@ -21,6 +21,7 @@ Usage:
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 from pathlib import Path
 
@@ -47,6 +48,7 @@ from governance_validator_utils import (  # noqa: E402
 # Validator 1: execution_method_required_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_EXECUTION_METHOD_REQUIRED", domain="structural")
 def validate_execution_method_required(declaration: dict) -> dict:
     """Validator 1: Every PRODUCT_SOURCE item must have an execution_method.
 
@@ -122,6 +124,7 @@ def validate_execution_method_required(declaration: dict) -> dict:
 # Validator 2: source_diff_required_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_SOURCE_DIFF_REQUIRED", domain="structural")
 def validate_source_diff_required(declaration: dict) -> dict:
     """Validator 2: Every PRODUCT_SOURCE item must have source_diff_paths.
 
@@ -185,6 +188,7 @@ def validate_source_diff_required(declaration: dict) -> dict:
 # Validator 3: idempotency_key_required_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_IDEMPOTENCY_KEY_REQUIRED", domain="structural")
 def validate_idempotency_key_required(declaration: dict) -> dict:
     """Validator 3: Every PRODUCT_SOURCE item must have an idempotency_key.
 
@@ -254,6 +258,7 @@ def validate_idempotency_key_required(declaration: dict) -> dict:
 # Validator 4: replay_recipe_required_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_REPLAY_RECIPE_REQUIRED", domain="structural")
 def validate_replay_recipe_required(declaration: dict) -> dict:
     """Validator 4: REPLAYABLE_* claims require a replay_recipe_path.
 
@@ -316,6 +321,7 @@ def validate_replay_recipe_required(declaration: dict) -> dict:
 # Validator 5: claim_classification_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_CLAIM_CLASSIFICATION", domain="structural")
 def validate_claim_classification(declaration: dict) -> dict:
     """Validator 5: claim_classification must be a valid value.
 
@@ -390,6 +396,7 @@ def validate_claim_classification(declaration: dict) -> dict:
 # Validator 6: legacy_backfill_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_LEGACY_BACKFILL", domain="structural")
 def validate_legacy_backfill(declaration: dict, repo_root: Path | None = None) -> dict:
     """Validator 6: Check sidecar attribution files for backfilled items.
 
@@ -460,6 +467,7 @@ def validate_legacy_backfill(declaration: dict, repo_root: Path | None = None) -
 # Validator 7: manual_ungoverned_rejection_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_MANUAL_UNGOVERNED_REJECTION", domain="structural")
 def validate_manual_ungoverned_rejection(declaration: dict) -> dict:
     """Validator 7: MANUAL_UNGOVERNED must not close a product source taskcard.
 
@@ -519,6 +527,7 @@ def validate_manual_ungoverned_rejection(declaration: dict) -> dict:
 # Validator 8: governed_direct_execution_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_GOVERNED_DIRECT_EXECUTION", domain="structural")
 def validate_governed_direct_execution(declaration: dict,
                                         skill_registry_path: Path | None = None) -> dict:
     """Validator 8: MANUAL_GOVERNED_BY_SKILL items must have transcript and skill_id.
@@ -580,6 +589,7 @@ def validate_governed_direct_execution(declaration: dict,
 # Validator 9: source_marker_or_sidecar_attribution_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_SOURCE_MARKER_OR_SIDECAR", domain="structural")
 def validate_source_marker_or_sidecar(declaration: dict,
                                        repo_root: Path | None = None) -> dict:
     """Validator 9: Touched source files must have FORMAT_FACTORY_EXECUTION marker or sidecar.
@@ -677,6 +687,7 @@ def validate_source_marker_or_sidecar(declaration: dict,
 # Validator 10: taskcard_state_transition_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_TASKCARD_STATE_TRANSITIONS", domain="structural")
 def validate_taskcard_state_transitions(declaration: dict) -> dict:
     """Validator 10 / Lane F: Enforce 15-state taskcard state machine.
 
@@ -775,6 +786,7 @@ def validate_taskcard_state_transitions(declaration: dict) -> dict:
 # Validator 11: route_decision_required_validator
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_ROUTE_DECISION_REQUIRED", domain="structural")
 def validate_route_decision_required(declaration: dict) -> dict:
     """Validator 11: Check items for route_decision_id.
 
@@ -849,6 +861,7 @@ def validate_route_decision_required(declaration: dict) -> dict:
 # Validator 12: ci_artifact_presence_validator (TC-APRV-014)
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_CI_ARTIFACTS", domain="structural")
 def validate_ci_artifacts(declaration: dict, repo_root: Path | None = None) -> dict:
     """V12: Check for CI-produced test results and coverage artifacts.
 
@@ -909,6 +922,7 @@ def validate_ci_artifacts(declaration: dict, repo_root: Path | None = None) -> d
 # Validator 13: spec_fact_refs enforcement (SAL-VERIFICATION-HARDENING-001)
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_REFS_WIRED", domain="structural")
 def validate_spec_fact_refs_wired(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
     """V13: Enforce spec_fact_refs on PRODUCT_SOURCE/READINESS/RELEASE_GATE/TEST/REQUIREMENT items.
@@ -1017,6 +1031,7 @@ def validate_spec_fact_refs_wired(declaration: dict,
 # ── REQ-GOV-001 / REQ-GOV-002: Gate 11 Spec-Literal Depth Validators ────────
 
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_COUNT", domain="structural")
 def validate_spec_fact_count(declaration: dict) -> dict:
     """V14: Verify at least min_spec_facts_cited spec facts are referenced.
 
@@ -1044,6 +1059,7 @@ def validate_spec_fact_count(declaration: dict) -> dict:
     )
 
 
+@validator(rule_id="V_VALIDATE_QNAME_COVERAGE", domain="structural")
 def validate_qname_coverage(declaration: dict,
                              repo_root: Path | None = None) -> dict:
     """V15: Check that test files reference spec QNames in any evidence_paths.
@@ -1081,6 +1097,7 @@ def validate_qname_coverage(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_PARITY_MATRIX_PRESENT", domain="structural")
 def validate_parity_matrix_present(declaration: dict,
                                     repo_root: Path | None = None) -> dict:
     """V16: For RELEASE_GATE items, check that a parity matrix artifact exists.
@@ -1118,6 +1135,7 @@ def validate_parity_matrix_present(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_NO_PLACEHOLDER_METADATA", domain="structural")
 def validate_no_placeholder_metadata(declaration: dict,
                                       repo_root: Path | None = None) -> dict:
     """V17: Scan declared evidence files for placeholder strings.
@@ -1164,6 +1182,7 @@ def validate_no_placeholder_metadata(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_GATE11_CRITERIA", domain="structural")
 def validate_gate11_criteria(declaration: dict,
                                repo_root: Path | None = None) -> dict:
     """V18: Master Gate 11 validator using registry/gate11-criteria.yaml.
@@ -1234,6 +1253,7 @@ def validate_gate11_criteria(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_MIN_SPEC_FACTS_PER_FORMAT", domain="structural")
 def validate_min_spec_facts_per_format(
     declaration: dict,
     repo_root: Path | None = None,
@@ -1383,6 +1403,7 @@ GLOBAL_ALLOWED_PATHS = [
 ]
 
 
+@validator(rule_id="V_VALIDATE_LANE_OWNERSHIP", domain="structural")
 def validate_lane_ownership(declaration: dict,
                             repo_root: Path | None = None) -> dict:
     """SUP-RECT-001: Validate that changed_files are within lane-allowed paths.
@@ -1472,6 +1493,7 @@ LANE_WAVE_MAP: dict[str, str] = {
 }
 
 
+@validator(rule_id="V_VALIDATE_DAG_ORDERING", domain="structural")
 def validate_dag_ordering(declaration: dict,
                           repo_root: Path | None = None) -> dict:
     """SUP-RECT-002: Validate that lane prerequisites are met.
@@ -1536,6 +1558,7 @@ def validate_dag_ordering(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_CAPABILITY_MAP_STALENESS", domain="structural")
 def validate_capability_map_staleness(declaration: dict,
                                       repo_root: Path | None = None) -> dict:
     """V_STALENESS: Check if capability maps are stale relative to product source.
@@ -1654,6 +1677,7 @@ ODF_MODEL_PATH_PREFIXES = (
 )
 
 
+@validator(rule_id="V_VALIDATE_SPEC_QNAME_REFS", domain="structural")
 def validate_spec_qname_refs(declaration: dict) -> dict:
     """V_SPEC_QNAME: PRODUCT_SOURCE items touching ODF model paths should have
     spec_qname_refs.  WARN for product items, FAIL for RELEASE_GATE items."""
@@ -1709,6 +1733,7 @@ def validate_spec_qname_refs(declaration: dict) -> dict:
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_SKELETON_PROGRESS", domain="structural")
 def validate_skeleton_progress(declaration: dict,
                                repo_root: Path | None = None) -> dict:
     """V_SKELETON: Detect PRODUCT_SOURCE items with skeleton-only evidence.
@@ -1797,6 +1822,7 @@ def validate_skeleton_progress(declaration: dict,
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_SPEC_PARITY_GATE", domain="structural")
 def validate_spec_parity_gate(declaration: dict) -> dict:
     """V_SPEC_PARITY_GATE: RELEASE_GATE items must have spec_parity_validator_results
     and depth_validator_results fields.  Non-gate items pass unconditionally."""
@@ -1837,6 +1863,7 @@ def validate_spec_parity_gate(declaration: dict) -> dict:
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_IMPLEMENTATION_DEPTH_FIELDS", domain="structural")
 def validate_implementation_depth_fields(declaration: dict) -> dict:
     """V_DEPTH_FIELDS: Advisory check that PRODUCT_SOURCE items have
     implementation_depth_score and non-empty tests_supporting."""
@@ -1875,6 +1902,7 @@ def validate_implementation_depth_fields(declaration: dict) -> dict:
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_DEPTH_SCORE", domain="structural")
 def validate_depth_score(declaration: dict) -> dict:
     """V_DEPTH_SCORE: Check that PRODUCT_SOURCE items with an
     implementation_depth_score dict have non-zero source_loc_delta,
@@ -1939,6 +1967,7 @@ def validate_depth_score(declaration: dict) -> dict:
     )
 
 
+@validator(rule_id="V_VALIDATE_CHANGED_WITHOUT_TESTS", domain="structural")
 def validate_changed_without_tests(declaration: dict) -> dict:
     """V_CHANGED_NO_TESTS: Advisory check that PRODUCT_SOURCE items with
     changed product source files also have tests_supporting entries."""
@@ -1982,6 +2011,7 @@ _HELPERS_ONLY_NAMES = frozenset({"__init__.py", "conftest.py"})
 _HELPERS_ONLY_SUFFIXES = ("_helpers.py", "_utils.py")
 
 
+@validator(rule_id="V_VALIDATE_HELPERS_ONLY_OVERCLAIM", domain="structural")
 def validate_helpers_only_overclaim(declaration: dict) -> dict:
     """V_HELPERS_ONLY: Advisory check that PRODUCT_SOURCE items with
     REPLAYABLE claims actually changed substantive source files, not
@@ -2031,6 +2061,7 @@ def validate_helpers_only_overclaim(declaration: dict) -> dict:
 _NAMESPACE_TREE_FORMATS = ("fods", "fodt", "fodp", "ods", "odt")
 
 
+@validator(rule_id="V_VALIDATE_NAMESPACE_TREE", domain="structural")
 def validate_namespace_tree(declaration: dict,
                             repo_root: Path | None = None) -> dict:
     """V_NAMESPACE_TREE: RELEASE_GATE items for ODF formats must reference a
@@ -2075,6 +2106,7 @@ def validate_namespace_tree(declaration: dict,
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_ATTRIBUTE_PROPERTY_MAP", domain="structural")
 def validate_attribute_property_map(declaration: dict,
                                     repo_root: Path | None = None) -> dict:
     """V_ATTRIBUTE_PROPERTY_MAP: RELEASE_GATE items for ODF formats must
@@ -2124,6 +2156,7 @@ def validate_attribute_property_map(declaration: dict,
 _CONTAINMENT_GRAPH_FORMATS = ("fods", "fodt", "ods", "odt", "fodp")
 
 
+@validator(rule_id="V_VALIDATE_CONTAINMENT_GRAPH", domain="structural")
 def validate_containment_graph(declaration: dict,
                                repo_root: Path | None = None) -> dict:
     """V_CONTAINMENT_GRAPH: RELEASE_GATE items for complex ODF formats must
@@ -2169,6 +2202,7 @@ def validate_containment_graph(declaration: dict,
 # ── ────────────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_ALIAS_COMPATIBILITY", domain="structural")
 def validate_alias_compatibility(declaration: dict,
                                  repo_root: Path | None = None) -> dict:
     """V_ALIAS_COMPATIBILITY: RELEASE_GATE items must not have conflicting
@@ -2244,6 +2278,7 @@ def _load_monolith_baseline() -> dict:
             pass
     return {}
 
+@validator(rule_id="V_VALIDATE_CLASS_COUNT_MINIMUM", domain="structural")
 def validate_class_count_minimum(declaration: dict,
                                   repo_root: Path | None = None) -> dict:
     """V34: Reject PRODUCT_SOURCE items for complex formats with < 15 classes."""
@@ -2292,6 +2327,7 @@ def validate_class_count_minimum(declaration: dict,
     }
 
 
+@validator(rule_id="V_VALIDATE_MONOLITH_DETECTION", domain="structural")
 def validate_monolith_detection(declaration: dict,
                                  repo_root: Path | None = None) -> dict:
     """V35: Block new monolith files and monolith regression.
@@ -2365,6 +2401,7 @@ def validate_monolith_detection(declaration: dict,
     }
 
 
+@validator(rule_id="V_VALIDATE_NO_STUB_TESTS", domain="structural")
 def validate_no_stub_tests(declaration: dict,
                             repo_root: Path | None = None) -> dict:
     """V36: Reject test files that only assert `is not None`, `isinstance`, or spec_qname ==.
@@ -2421,6 +2458,7 @@ def validate_no_stub_tests(declaration: dict,
     }
 
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_AUTHORITY_CHAIN", domain="structural")
 def validate_spec_fact_authority_chain(declaration: dict,
                                        repo_root: Path | None = None) -> dict:
     """V37: WARN when PRODUCT_SOURCE items for ODF formats lack spec-fact authority.
@@ -2512,6 +2550,7 @@ def validate_spec_fact_authority_chain(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_EVIDENCE_MINIMUM", domain="structural")
 def validate_evidence_minimum(declaration: dict, repo_root: Path | None = None) -> dict:
     """V38 (TC-H3-001): WARN when declared evidence is too thin to support grading.
 
@@ -2577,6 +2616,7 @@ _GOVERNANCE_ITEM_TYPES = frozenset({
 })
 
 
+@validator(rule_id="V_VALIDATE_GOVERNANCE_ONLY_NO_SOURCE_DELTA", domain="structural")
 def validate_governance_only_no_source_delta(declaration: dict,
                                               repo_root: Path | None = None) -> dict:
     """V39: Warn if all items are governance-type and no source files changed.
@@ -2669,6 +2709,7 @@ def _validate_source_architecture(declaration: dict,
         }
 
 
+@validator(rule_id="V_VALIDATE_ANALYTICS_SKILL_REQUIRED", domain="structural")
 def validate_analytics_skill_required(declaration: dict,
                                        repo_root: Path | None = None) -> dict:
     """V41 (REQ-ENFORCE-001): Enforce skill attribution for analytics.py changes.
@@ -2724,6 +2765,7 @@ def validate_analytics_skill_required(declaration: dict,
     )
 
 
+@validator(rule_id="V_VALIDATE_DEEPENING_SUSPENSION", domain="structural")
 def validate_deepening_suspension(declaration: dict) -> dict:
     """V42 (SUSP-001): Reject suspended arithmetic deepening functions.
 
@@ -2753,6 +2795,7 @@ def validate_deepening_suspension(declaration: dict) -> dict:
     }
 
 
+@validator(rule_id="V_VALIDATE_CANONICAL_REGISTRY_ENTRY_EXISTS", domain="structural")
 def validate_canonical_registry_entry_exists(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -2793,6 +2836,7 @@ def validate_canonical_registry_entry_exists(
     }
 
 
+@validator(rule_id="V_VALIDATE_FACADE_DELEGATES_TO_SPEC", domain="structural")
 def validate_facade_delegates_to_spec(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -2850,6 +2894,7 @@ def validate_facade_delegates_to_spec(
     }
 
 
+@validator(rule_id="V_VALIDATE_QNAME_CLASS_NAMES", domain="structural")
 def validate_qname_class_names(declaration: dict, repo_root: Path | None = None) -> dict:
     """V45: Format-prefixed class names (FodsXxx/FodtXxx) outside Compat/ blocks sprint."""
     import re
@@ -2876,6 +2921,7 @@ def validate_qname_class_names(declaration: dict, repo_root: Path | None = None)
             "blocks_sprint": bool(violations)}
 
 
+@validator(rule_id="V_VALIDATE_SKILL_TRANSCRIPT_PRESENT", domain="structural")
 def validate_skill_transcript_present(declaration: dict) -> dict:
     """V46 (TC-SKILL-GOV-002): PRODUCT_SOURCE items should have a linked skill_transcript.
 
@@ -2965,6 +3011,7 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
     }
 
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_REFS_IN_SAL_OUTPUT", domain="structural")
 def validate_spec_fact_refs_in_sal_output(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -3030,6 +3077,7 @@ def validate_spec_fact_refs_in_sal_output(
     }
 
 
+@validator(rule_id="V_VALIDATE_QNAME_STRUCTURE", domain="structural")
 def validate_qname_structure(declaration: dict, repo_root: Path | None = None) -> dict:
     """V49 (TC-QNAME-VALIDATORS-001): spec/ class files in changed_files must have spec_qname.
 
@@ -3076,6 +3124,7 @@ def validate_qname_structure(declaration: dict, repo_root: Path | None = None) -
     }
 
 
+@validator(rule_id="V_VALIDATE_PY_TYPED_MARKER", domain="structural")
 def validate_py_typed_marker(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V64 (TC-GOV-MACH-002): Check Python packages in changed_files have py.typed marker."""
     _r = repo_root or REPO_ROOT
@@ -3101,6 +3150,7 @@ def validate_py_typed_marker(declaration: dict, repo_root: "Path | None" = None)
     }
 
 
+@validator(rule_id="V_VALIDATE_ALL_EXPORTS_DECLARED", domain="structural")
 def validate_all_exports_declared(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V65 (TC-GOV-MACH-002): Check Python packages in changed_files declare __all__ in __init__.py."""
     _r = repo_root or REPO_ROOT
@@ -3130,6 +3180,7 @@ def validate_all_exports_declared(declaration: dict, repo_root: "Path | None" = 
     }
 
 
+@validator(rule_id="V_VALIDATE_MULTI_RESPONSIBILITY_FILE", domain="structural")
 def validate_multi_responsibility_file(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V66 (TC-GOV-MACH-002): WARN if a single Python source file mixes parser/model/serializer roles."""
     import ast as _ast

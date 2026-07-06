@@ -11,7 +11,7 @@ integration into Mainstream product implementation. It contains:
 - Allowed and forbidden files
 - Expected tests, dogfood output, transcript
 - Proposed capability delta
-- Validation commands (dotnet test only for .NET families — NO python pytest for .cs files)
+- Validation commands (dotnet test only for .NET families â€” NO python pytest for .cs files)
 - Stop conditions
 - Rollback requirements
 
@@ -49,9 +49,9 @@ sys.path.insert(0, str(_here))
 from tri_lane_integration import run_integration, _project_root
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Per-family packet builders
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 _FAMILY_SPEC = {
     "FODS": {
@@ -86,11 +86,11 @@ _FAMILY_SPEC = {
             "proposed_status": "IMPLEMENTED",
             "requires_test_evidence": True,
             "proposed_only": True,
-            "authority_note": "Do not write directly — requires test evidence and Mainstream product authority",
+            "authority_note": "Do not write directly â€” requires test evidence and Mainstream product authority",
         },
     },
     "FODT": {
-        # FODT Markdown — primary FODT capability
+        # FODT Markdown â€” primary FODT capability
         "capability": "dogfood_status.fodt_to_markdown_dotnet",
         "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
         "product_track": "commercial_net",
@@ -122,11 +122,11 @@ _FAMILY_SPEC = {
             "proposed_status": "IMPLEMENTED",
             "requires_test_evidence": True,
             "proposed_only": True,
-            "authority_note": "Do not write directly — requires test evidence and Mainstream product authority",
+            "authority_note": "Do not write directly â€” requires test evidence and Mainstream product authority",
         },
     },
     "FODT_TXT": {
-        # FODT TXT — new in v2 (was missing from v1)
+        # FODT TXT â€” new in v2 (was missing from v1)
         "capability": "dogfood_status.fodt_to_txt_dotnet",
         "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
         "product_track": "commercial_net",
@@ -152,14 +152,14 @@ _FAMILY_SPEC = {
             "product-capability-matrix/poc-targets.yaml",
         ],
         "expected_tests": "tests/net/fodt/FodtR114ExportToTxtTests.cs with 8+ test methods",
-        "acceleration_advisory_note": "No acceleration advisory packet for FODT TXT — optional missing allowed per sprint spec",
+        "acceleration_advisory_note": "No acceleration advisory packet for FODT TXT â€” optional missing allowed per sprint spec",
         "proposed_capability_delta": {
             "file": "product-capability-matrix/poc-targets.yaml",
             "path": "fodt.dogfood_status.fodt_to_txt_dotnet",
             "proposed_status": "IMPLEMENTED",
             "requires_test_evidence": True,
             "proposed_only": True,
-            "authority_note": "Do not write directly — requires test evidence and Mainstream product authority",
+            "authority_note": "Do not write directly â€” requires test evidence and Mainstream product authority",
         },
     },
     "Netpbm": {
@@ -189,7 +189,7 @@ _FAMILY_SPEC = {
         ],
         "expected_tests": "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs with 8+ test methods",
         "svg_replacement_rejected": True,
-        "svg_rejection_note": "SVG cannot replace Netpbm — format class mismatch (vector vs raster)",
+        "svg_rejection_note": "SVG cannot replace Netpbm â€” format class mismatch (vector vs raster)",
         "acceleration_advisory_note": "Acceleration advisory targets flip_diagonal (already implemented R106). Skills target: Pipeline method at R114. Follow Skills handoff.",
         "proposed_capability_delta": {
             "file": "product-capability-matrix/poc-targets.yaml",
@@ -197,7 +197,7 @@ _FAMILY_SPEC = {
             "proposed_status": "IMPLEMENTED",
             "requires_test_evidence": True,
             "proposed_only": True,
-            "authority_note": "Do not write directly — requires test evidence and Mainstream product authority",
+            "authority_note": "Do not write directly â€” requires test evidence and Mainstream product authority",
         },
     },
 }
@@ -250,7 +250,7 @@ def build_family_packet(
         "proposed_capability_delta": spec.get("proposed_capability_delta", {}),
         "validation_commands": spec.get("validation_commands", []),
         "stop_conditions": [
-            "git push without SCM Agent policy authorization (AGENTS.md §AG4)",
+            "git push without SCM Agent policy authorization (AGENTS.md Â§AG4)",
             "Gate 11 G11-G approval without Babar Raza authorization",
             "product source edit outside allowed_files",
             "product-capability-matrix/poc-targets.yaml direct write",
@@ -291,7 +291,7 @@ def generate_mainstream_execution_packet(root: Optional[Path] = None) -> Dict[st
                 "skills_handoff": {"packet_type": "shell", "packet_path": "", "skill": ""},
                 "acceleration_advisory": {"packet_path": "", "capability_path": spec["capability"], "use_for": "advisory"},
             }
-            limitations.append(f"FAMILY_SPEC_ONLY: {family} not in merged integration — using spec defaults")
+            limitations.append(f"FAMILY_SPEC_ONLY: {family} not in merged integration â€” using spec defaults")
         packet = build_family_packet(family, merged_entry, spec)
         family_packets.append(packet)
 
@@ -311,8 +311,8 @@ def generate_mainstream_execution_packet(root: Optional[Path] = None) -> Dict[st
         "family_count": len(family_packets),
         "families": family_packets,
         "global_stop_conditions": [
-            "git push without SCM Agent policy authorization (AGENTS.md §AG4)",
-            "Gate 11 G11-G self-approval (sole TRUE_EXTERNAL_GATE — Babar Raza only)",
+            "git push without SCM Agent policy authorization (AGENTS.md Â§AG4)",
+            "Gate 11 G11-G self-approval (sole TRUE_EXTERNAL_GATE â€” Babar Raza only)",
             "product-capability-matrix/poc-targets.yaml direct write from this packet",
             "Acceleration advisory used as authoritative evidence without test validation",
             "External tool activated without MODE 4+ authorization",
@@ -439,7 +439,7 @@ def build_markdown(packet: Dict[str, Any]) -> str:
         lines.append(f"- Authority: `{fam['skills_handoff']['authority_state']}`")
         lines.append(f"- Note: {fam['skills_handoff']['note']}")
         lines.append("")
-        lines.append("**Acceleration Advisory** *(ai_draft — not authoritative)*")
+        lines.append("**Acceleration Advisory** *(ai_draft â€” not authoritative)*")
         lines.append(f"- Use for: {fam['acceleration_advisory']['use_for']}")
         lines.append(f"- Authority: `{fam['acceleration_advisory']['authority_state']}`")
         lines.append("")
@@ -455,9 +455,9 @@ def build_markdown(packet: Dict[str, Any]) -> str:
         lines.append(f"**Expected Dogfood Output**: {fam['expected_dogfood_output']}")
         lines.append(f"**Expected Transcript**: `{fam['expected_transcript']}`")
         lines.append("")
-        lines.append("**Proposed Capability Delta** *(proposed only — not a direct write)*")
+        lines.append("**Proposed Capability Delta** *(proposed only â€” not a direct write)*")
         cd = fam.get("proposed_capability_delta", {})
-        lines.append(f"- `{cd.get('path', '')}` → `{cd.get('proposed_status', '')}`")
+        lines.append(f"- `{cd.get('path', '')}` â†’ `{cd.get('proposed_status', '')}`")
         lines.append(f"- Requires test evidence: `{cd.get('requires_test_evidence', True)}`")
         lines.append("")
         lines.append("**Validation Commands**")

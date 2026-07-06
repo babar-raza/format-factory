@@ -14,6 +14,7 @@ Validators:
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import ast
 import re as _re
@@ -96,6 +97,7 @@ def _all_symbols_for_format(fmt: str, src_root: Path) -> list[str]:
     return syms
 
 
+@validator(rule_id="V_VALIDATE_SPEC_QNAME_COVERAGE", domain="spec")
 def validate_spec_qname_coverage(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -167,6 +169,7 @@ def validate_spec_qname_coverage(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_COMPAT_IMPORT_INTEGRITY", domain="spec")
 def validate_compat_import_integrity(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -252,6 +255,7 @@ def validate_compat_import_integrity(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_SPEC_AUTHORITY_CLASS_COMPLETENESS", domain="spec")
 def validate_spec_authority_class_completeness(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -410,6 +414,7 @@ def validate_spec_authority_class_completeness(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_CROSS_LANGUAGE_PARITY", domain="spec")
 def validate_cross_language_parity(
     declaration: dict,
     repo_root: "Path | None" = None,
@@ -496,6 +501,7 @@ def validate_cross_language_parity(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_REFS_DENSITY", domain="spec")
 def validate_spec_fact_refs_density(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:

@@ -9,6 +9,7 @@ V67: validate_maturity_signal_schema — blocks on missing required fields or
      wrong schema version in reports/supervisor/maturity-signal.json.
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import json
 from pathlib import Path
@@ -33,6 +34,7 @@ _REQUIRED_FIELDS = [
 _EXPECTED_SCHEMA = "format-factory-maturity-signal/v1"
 
 
+@validator(rule_id="V_VALIDATE_MATURITY_SIGNAL_SCHEMA", domain="signal")
 def validate_maturity_signal_schema(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

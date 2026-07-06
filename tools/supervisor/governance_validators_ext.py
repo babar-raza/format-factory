@@ -18,6 +18,7 @@ TC-SGF-002 (2026-06-25): V-SGF-001 validate_skill_attribution_in_declaration —
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import ast
 import re as _re
@@ -26,6 +27,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+@validator(rule_id="V_VALIDATE_ARCHITECTURE_ONLY_STUB_GATE", domain="governance")
 def validate_architecture_only_stub_gate(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -91,6 +93,7 @@ def validate_architecture_only_stub_gate(
     }
 
 
+@validator(rule_id="V_VALIDATE_HARDENING_TARGET_IDENTITY", domain="governance")
 def validate_hardening_target_identity(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -231,6 +234,7 @@ def validate_hardening_target_identity(
     }
 
 
+@validator(rule_id="V_VALIDATE_FORBIDDEN_MODULE_NAMES", domain="governance")
 def validate_forbidden_module_names(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -352,6 +356,7 @@ _MACHINERY_SUPERVISOR_PREFIXES = (
 )
 
 
+@validator(rule_id="V_VALIDATE_CROSS_LANE_PRODUCT_TOUCHING_MACHINERY", domain="governance")
 def validate_cross_lane_product_touching_machinery(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -442,6 +447,7 @@ _PRODUCT_SRC_PREFIXES = (
 )
 
 
+@validator(rule_id="V_VALIDATE_CROSS_LANE_MACHINERY_TOUCHING_PRODUCT", domain="governance")
 def validate_cross_lane_machinery_touching_product(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -515,6 +521,7 @@ def validate_cross_lane_machinery_touching_product(
 _LEDGER_SRC_PREFIXES = ("src/python/", "src/net/")
 
 
+@validator(rule_id="V_VALIDATE_CHANGED_FILES_IN_LEDGER", domain="governance")
 def validate_changed_files_in_ledger(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -584,6 +591,7 @@ def validate_changed_files_in_ledger(
     }
 
 
+@validator(rule_id="V_VALIDATE_EXPANSION_FALLBACK_REFS", domain="governance")
 def validate_expansion_fallback_refs(declaration: dict) -> dict:
     """V58 (FALLBACK-REF-001): Detect EXPANSION-FALLBACK-* synthetic gap references.
 
@@ -636,6 +644,7 @@ def validate_expansion_fallback_refs(declaration: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_TERMINAL_CLOSURE_COMPLETENESS", domain="governance")
 def validate_terminal_closure_completeness(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -729,6 +738,7 @@ def validate_terminal_closure_completeness(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_ERROR_FALLBACK_SAFETY", domain="governance")
 def validate_error_fallback_safety(
     declaration: dict | None = None,
     repo_root: Path | None = None,
@@ -817,6 +827,7 @@ def validate_error_fallback_safety(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V_VALIDATE_PUBLIC_API_SURFACE_RATIO", domain="governance")
 def validate_public_api_surface_ratio(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -915,6 +926,7 @@ def validate_public_api_surface_ratio(
 # V69 — TC-FL-005: skill_idempotency_declared_validator
 # WARN-only: fires when a PRODUCT_SOURCE work item claims a skill_id for a skill
 # that still has idempotency: not_specified in the skill registry.
+@validator(rule_id="V_VALIDATE_SKILL_IDEMPOTENCY_DECLARED", domain="governance")
 def validate_skill_idempotency_declared(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V69 (TC-FL-005): WARN if a PRODUCT_SOURCE item invokes a skill with idempotency: not_specified.
 
@@ -977,6 +989,7 @@ def validate_skill_idempotency_declared(declaration: dict, repo_root: "Path | No
 # WARN-only: fires when a PRODUCT_SOURCE work item cites spec_fact_refs for a format
 # whose qname registry has authority_source: code_introspection (circular authority).
 # Guides agent to use empirical_refs instead.
+@validator(rule_id="V_VALIDATE_SAL_AUTHORITY_CHAIN", domain="governance")
 def validate_sal_authority_chain(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V70 (TC-FL-006): WARN when spec_fact_refs cited for code_introspection formats.
 
@@ -1066,6 +1079,7 @@ _SYSTEM_HEALING_HIGH_PRIORITY = {"P0", "P1", "P2"}  # blocks sprint (FAIL)
 _SYSTEM_HEALING_WARN_PRIORITY = {"P3", "P4"}         # WARN only
 
 
+@validator(rule_id="V_VALIDATE_LANE_DAG_ORDERING", domain="governance")
 def validate_lane_dag_ordering(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V71 (TC-FL-007): Enforce Lane DAG — system healing before product deepening.
 
@@ -1178,6 +1192,7 @@ def validate_lane_dag_ordering(declaration: dict, repo_root: "Path | None" = Non
 _VALID_AUTHORITY_VALUES = {"AUTHORITATIVE", "VERIFIED_DERIVATION", "AI_DRAFT", "UNVERIFIED"}
 
 
+@validator(rule_id="V_VALIDATE_ARTIFACT_IDENTITY", domain="governance")
 def validate_artifact_identity(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V72 (TC-FL-010): Check evidence_artifacts have artifact_id and authority fields.
 
@@ -1286,6 +1301,7 @@ def _load_skill_registry(repo_root: Path | None) -> set[str]:
         return set()
 
 
+@validator(rule_id="V_VALIDATE_SKILL_ATTRIBUTION_IN_DECLARATION", domain="governance")
 def validate_skill_attribution_in_declaration(
     declaration: dict, repo_root: Path
 ) -> dict:

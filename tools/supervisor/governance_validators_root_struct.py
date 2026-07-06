@@ -12,6 +12,7 @@ FAIL + blocks_sprint=True for unregistered directories.
 WARN for missing READMEs, resurrected deleted dirs, coverage gaps.
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import json
 import sys
@@ -20,6 +21,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
+@validator(rule_id="V_VALIDATE_ROOT_STRUCTURE", domain="root_struct")
 def validate_root_structure(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

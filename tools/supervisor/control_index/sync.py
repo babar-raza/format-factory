@@ -97,6 +97,10 @@ from .ingestors import gap_ingestor        # noqa: F401, E402
 from .ingestors import qname_ingestor      # noqa: F401, E402
 from .ingestors import evidence_ingestor   # noqa: F401, E402
 from .ingestors import event_ingestor      # noqa: F401, E402
+# TC-BF-006: Invocation graph ingestors (subprocess calls, claude commands, skill registry)
+from .ingestors import subprocess_calls_ingestor   # noqa: F401, E402
+from .ingestors import command_invocations_ingestor  # noqa: F401, E402
+from .ingestors import skill_invocations_ingestor   # noqa: F401, E402
 
 
 def sync_all(db_path: Path, repo_root: Path, *, force: bool = False) -> SyncReport:

@@ -21,6 +21,7 @@ V136 (future-prevention): validate_html_escaping_in_python
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import re
 from pathlib import Path
@@ -72,6 +73,7 @@ _SYSTEM_TEXT_JSON_IMPORTS = (
 )
 
 
+@validator(rule_id="V_VALIDATE_NO_MANUAL_JSON_ESCAPING_IN_DOTNET", domain="output_quality")
 def validate_no_manual_json_escaping_in_dotnet(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -123,6 +125,7 @@ _RAW_TD_INTERPOLATION_DOTNET = re.compile(
 )
 
 
+@validator(rule_id="V_VALIDATE_HTML_ESCAPING_IN_DOTNET", domain="output_quality")
 def validate_html_escaping_in_dotnet(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -173,6 +176,7 @@ _RAW_TD_INTERPOLATION_PYTHON = re.compile(
 )
 
 
+@validator(rule_id="V_VALIDATE_HTML_ESCAPING_IN_PYTHON", domain="output_quality")
 def validate_html_escaping_in_python(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:

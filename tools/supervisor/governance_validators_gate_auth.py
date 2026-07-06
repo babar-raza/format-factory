@@ -7,6 +7,7 @@ Imported by governance_validator_runner.py alongside other validator modules.
 Policy reference: docs/governance/authorization-policy-v1.yaml (FORMAT_FACTORY_GATE_AUTHORIZATION_V1)
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -71,6 +72,7 @@ _GATE_11_ITEM_TYPES = frozenset({
 })
 
 
+@validator(rule_id="V_VALIDATE_PREMATURE_HUMAN_AUTHORIZATION_REQUEST", domain="gate_auth")
 def validate_premature_human_authorization_request(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -192,6 +194,7 @@ def validate_premature_human_authorization_request(
     }
 
 
+@validator(rule_id="V_VALIDATE_GATE_TRANSITION_STATE_MACHINE", domain="gate_auth")
 def validate_gate_transition_state_machine(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

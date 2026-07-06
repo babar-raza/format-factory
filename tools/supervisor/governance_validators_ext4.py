@@ -55,6 +55,7 @@ V127: type_outside_approved_qname_hierarchy
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import ast
 import re
@@ -100,6 +101,7 @@ def _result(vid: str, name: str, passed: bool, violations: list[str]) -> dict:
 
 # ── V111 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_PUBLIC_SYMBOL_WITHOUT_QNAME_AUTHORITY", domain="naming")
 def validate_public_symbol_without_qname_authority(source_text: str, file_path: str = "") -> dict:
     """V111: Python spec/ or .NET Model/ classes must have spec_qname / SpecQName."""
     violations: list[str] = []
@@ -139,6 +141,7 @@ def validate_public_symbol_without_qname_authority(source_text: str, file_path: 
 
 # ── V112 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_MODEL_TYPE_WITHOUT_SPEC_AUTHORITY", domain="naming")
 def validate_model_type_without_spec_authority(source_text: str, file_path: str = "") -> dict:
     """V112: Model/spec classes without spec_qname authority."""
     violations: list[str] = []
@@ -176,6 +179,7 @@ def validate_model_type_without_spec_authority(source_text: str, file_path: str 
 
 # ── V113 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_NESTED_CONCEPT_ON_ROOT_DOCUMENT", domain="naming")
 def validate_nested_concept_on_root_document(source_text: str, file_path: str = "") -> dict:
     """V113: Root document classes must not own nested-QName methods."""
     violations: list[str] = []
@@ -195,6 +199,7 @@ def validate_nested_concept_on_root_document(source_text: str, file_path: str = 
 
 # ── V114 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_OBLIGATION", domain="naming")
 def validate_getter_without_parser_obligation(symbol_entry: dict) -> dict:
     """V114: Getter symbols must have parser_path defined."""
     violations: list[str] = []
@@ -212,6 +217,7 @@ def validate_getter_without_parser_obligation(symbol_entry: dict) -> dict:
 
 # ── V115 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_OBLIGATION", domain="naming")
 def validate_setter_without_writer_obligation(symbol_entry: dict) -> dict:
     """V115: Setter symbols must have writer_path defined."""
     violations: list[str] = []
@@ -234,6 +240,7 @@ _DICT_PATTERN = re.compile(
 )
 
 
+@validator(rule_id="V_VALIDATE_DETACHED_PERSISTENT_DICT_ON_MODEL", domain="naming")
 def validate_detached_persistent_dict_on_model(source_text: str, file_path: str = "") -> dict:
     """V116: Model classes must not use private Dictionary/dict for persistent state."""
     violations: list[str] = []
@@ -253,6 +260,7 @@ def validate_detached_persistent_dict_on_model(source_text: str, file_path: str 
 
 # ── V117 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_DUMPING_GROUND_OR_CATCHALL_FILE", domain="naming")
 def validate_dumping_ground_or_catchall_file(file_path: str) -> dict:
     """V117: Product source files must not have catch-all naming."""
     violations: list[str] = []
@@ -267,6 +275,7 @@ def validate_dumping_ground_or_catchall_file(file_path: str) -> dict:
 
 # ── V118 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_SPRINT_HISTORY_IDENTIFIER_IN_SOURCE", domain="naming")
 def validate_sprint_history_identifier_in_source(source_text: str, file_path: str = "") -> dict:
     """V118: Production source must not embed sprint/wave/train history identifiers."""
     violations: list[str] = []
@@ -281,6 +290,7 @@ def validate_sprint_history_identifier_in_source(source_text: str, file_path: st
 
 # ── V119 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_PROMOTED_CODE_CHANGED_WITHOUT_REOPENING", domain="naming")
 def validate_promoted_code_changed_without_reopening(
     modified_files: list[str],
     promotion_registry: dict,
@@ -306,6 +316,7 @@ def validate_promoted_code_changed_without_reopening(
 
 # ── V120 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_CERTIFICATION_WITHOUT_ARCHITECTURE_PROOF", domain="naming")
 def validate_certification_without_architecture_proof(
     certification_status: str,
     architecture_classification: str,
@@ -323,6 +334,7 @@ def validate_certification_without_architecture_proof(
 
 # ── V121 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_MISSING_PUBLIC_DOCUMENTATION", domain="naming")
 def validate_missing_public_documentation(source_text: str, file_path: str = "") -> dict:
     """V121: Public Python functions/classes in product source must have docstrings."""
     violations: list[str] = []
@@ -350,6 +362,7 @@ def validate_missing_public_documentation(source_text: str, file_path: str = "")
 
 # ── V122 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_BROKEN_TRACEABILITY_CHAIN", domain="naming")
 def validate_broken_traceability_chain(symbol_entry: dict) -> dict:
     """V122: Public symbols must have spec_fact_ids in the API-to-QName map."""
     violations: list[str] = []
@@ -371,6 +384,7 @@ _UNGOVERNED_MARKER = re.compile(r"\b(TODO|FIXME|HACK)\b", re.IGNORECASE)
 _GOVERNED_REF = re.compile(r"(GAP-[A-Z0-9-]+|TC-[A-Z]+-\d+|TC-ARC-\d+)", re.IGNORECASE)
 
 
+@validator(rule_id="V_VALIDATE_UNGOVERNED_CODE_MARKER", domain="naming")
 def validate_ungoverned_code_marker(source_text: str, file_path: str = "") -> dict:
     """V123: TODO/FIXME/HACK in product source must reference a GAP-* or TC-* ID."""
     violations: list[str] = []
@@ -390,6 +404,7 @@ def validate_ungoverned_code_marker(source_text: str, file_path: str = "") -> di
 
 # ── V124 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_SEMANTIC_STUB_CONSTANT_RETURN", domain="naming")
 def validate_semantic_stub_constant_return(source_text: str, file_path: str = "") -> dict:
     """V124: Methods whose sole body is a constant-return stub are semantic stubs."""
     violations: list[str] = []
@@ -434,6 +449,7 @@ def validate_semantic_stub_constant_return(source_text: str, file_path: str = ""
 
 # ── V125 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_NEW_PRODUCT_BYPASSING_ARCHITECTURE_GATE", domain="naming")
 def validate_new_product_bypassing_architecture_gate(
     format_id: str,
     organization_plan_entries: list[dict],
@@ -454,6 +470,7 @@ def validate_new_product_bypassing_architecture_gate(
 
 # ── V126 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_FILE_OUTSIDE_APPROVED_QNAME_LAYOUT", domain="naming")
 def validate_file_outside_approved_qname_layout(
     file_path: str,
     organization_plan_entries: list[dict],
@@ -513,6 +530,7 @@ def _qname_local_to_class_tokens(qname: str) -> set[str]:
     return tokens
 
 
+@validator(rule_id="V_VALIDATE_TYPE_OUTSIDE_APPROVED_QNAME_HIERARCHY", domain="naming")
 def validate_type_outside_approved_qname_hierarchy(
     class_name: str,
     qname_nodes: list[dict],
@@ -551,6 +569,7 @@ class ArchitectureGateNotPassed(Exception):
     """Raised when a format has not passed the PRODUCT_ARCHITECTURE_READY gate."""
 
 
+@validator(rule_id="V_VALIDATE_PRODUCT_ARCHITECTURE_READY", domain="naming")
 def validate_product_architecture_ready(
     format_id: str,
     organization_plan_entries: list[dict],
@@ -609,6 +628,7 @@ def validate_product_architecture_ready(
 
 # ── V128 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_DOTNET_PARSER_REQUIRED", domain="naming")
 def validate_dotnet_parser_required(
     format_id: str,
     format_root_files: list[str],
@@ -645,6 +665,7 @@ def validate_dotnet_parser_required(
 
 # ── V129 ──────────────────────────────────────────────────────────────────────
 
+@validator(rule_id="V_VALIDATE_COMPAT_FACADE_BEHAVIORAL", domain="naming")
 def validate_compat_facade_behavioral(
     source_text: str,
     file_path: str = "",

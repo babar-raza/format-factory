@@ -13,6 +13,7 @@ V86: validate_layer_task_registered — sprint task_id should appear in task-reg
 Created: TC-LP-024 (2026-06-26)
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 from pathlib import Path
 
@@ -20,6 +21,7 @@ from pathlib import Path
 _DEFAULT_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+@validator(rule_id="V_VALIDATE_PRIMARY_LAYER_CLASSIFIED", domain="layers")
 def validate_primary_layer_classified(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -60,6 +62,7 @@ def validate_primary_layer_classified(
     }
 
 
+@validator(rule_id="V_VALIDATE_PERMANENT_LAYER_PLAN_EXISTS", domain="layers")
 def validate_permanent_layer_plan_exists(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -139,6 +142,7 @@ def validate_permanent_layer_plan_exists(
     }
 
 
+@validator(rule_id="V_VALIDATE_PREWORK_LOG_PRESENT", domain="layers")
 def validate_prework_log_present(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -189,6 +193,7 @@ def validate_prework_log_present(
     }
 
 
+@validator(rule_id="V_VALIDATE_LAYER_TASK_REGISTERED", domain="layers")
 def validate_layer_task_registered(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

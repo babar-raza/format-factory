@@ -23,6 +23,7 @@ Plan reference:     plans/.claude/buzzing-wiggling-whistle.md
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import re
 import yaml
@@ -142,6 +143,7 @@ def _extract_fqn_prefix(source: str) -> str:
 # V87: validate_dotnet_constant_return_public_api
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_DOTNET_CONSTANT_RETURN_PUBLIC_API", domain="dotnet")
 def validate_dotnet_constant_return_public_api(
     declaration: dict,
     repo_root: Path | None = None,
@@ -284,6 +286,7 @@ def _get_peer_partial_class_files(rel_path: str, repo_root: Path) -> list[str]:
 # V88: validate_dotnet_detached_dictionary_fields
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_DOTNET_DETACHED_DICTIONARY_FIELDS", domain="dotnet")
 def validate_dotnet_detached_dictionary_fields(
     declaration: dict,
     repo_root: Path | None = None,
@@ -376,6 +379,7 @@ _SUSPICIOUS_FILE_RE = re.compile(
 )
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_MISSINGMETHODS_FILENAME", domain="dotnet")
 def validate_dotnet_missingmethods_filename(
     declaration: dict,
     repo_root: Path | None = None,
@@ -488,6 +492,7 @@ def _body_is_dict_only(body: str) -> bool:
     return False
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_SETTER_WITHOUT_XML_WRITE", domain="dotnet")
 def validate_dotnet_setter_without_xml_write(
     declaration: dict,
     repo_root: Path | None = None,
@@ -589,6 +594,7 @@ def _body_is_field_backed(body: str) -> bool:
     return has_dict_read and not has_xml_read
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_GETTER_WITHOUT_XML_READ", domain="dotnet")
 def validate_dotnet_getter_without_xml_read(
     declaration: dict,
     repo_root: Path | None = None,
@@ -666,6 +672,7 @@ _EXTENDED_APIS_FILENAME = "FodsDocumentExtendedApis.cs"
 _EXTENDED_APIS_LOC_CAP = 800
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_FODS_EXTENDED_APIS_LOC", domain="dotnet")
 def validate_dotnet_fods_extended_apis_loc(
     declaration: dict,
     repo_root: Path | None = None,

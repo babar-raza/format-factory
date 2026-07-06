@@ -1,15 +1,15 @@
 """
-autonomous_host_runner.py — Host-Level Autonomous Runner
+autonomous_host_runner.py â€” Host-Level Autonomous Runner
 
 Attempts to invoke the next autonomous cycle by calling the Claude CLI.
 Reads: train-state.json, next-action.json, continuation-signal.json, next-sprint.md
 Writes: host-runner-state.json, host-runner-log.jsonl
 
 Classification:
-  HOST_INVOCATION_ATTEMPTED      — CLI invocation was started (async)
-  HOST_INVOCATION_LAYER_MISSING  — CLI not found, invocation impossible
-  HOST_INVOCATION_DEFERRED       — POC ready or terminal, no invocation needed
-  HOST_INVOCATION_REFUSED        — Safety check blocked invocation (hard stop)
+  HOST_INVOCATION_ATTEMPTED      â€” CLI invocation was started (async)
+  HOST_INVOCATION_LAYER_MISSING  â€” CLI not found, invocation impossible
+  HOST_INVOCATION_DEFERRED       â€” POC ready or terminal, no invocation needed
+  HOST_INVOCATION_REFUSED        â€” Safety check blocked invocation (hard stop)
 
 DESIGN INVARIANT:
   This runner never claims 100% full autonomy.
@@ -39,9 +39,9 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Invocation result constants
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 HOST_INVOCATION_ATTEMPTED = "HOST_INVOCATION_ATTEMPTED"
 HOST_INVOCATION_LAYER_MISSING = "HOST_INVOCATION_LAYER_MISSING"
@@ -71,9 +71,9 @@ CLAUDE_CLI_CANDIDATES = [
 ]
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Nested session detection
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 NESTED_SESSION_ENV_VAR = "CLAUDECODE"
 _EXTERNAL_TERMINAL_COMMAND = (
@@ -101,7 +101,7 @@ def detect_nested_session() -> dict:
     wiring = None
     if nested:
         wiring = (
-            f"CLAUDECODE={claudecode_val!r} is set — nested Claude Code session detected. "
+            f"CLAUDECODE={claudecode_val!r} is set â€” nested Claude Code session detected. "
             "The Claude CLI will refuse invocation to protect running sessions. "
             "To prove live invocation, run from an EXTERNAL terminal (not inside Claude Code):\n"
             f"  {_EXTERNAL_TERMINAL_COMMAND}\n"
@@ -115,9 +115,9 @@ def detect_nested_session() -> dict:
     }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # CLI detection
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def detect_claude_cli() -> dict:
     """
@@ -181,9 +181,9 @@ def detect_claude_cli() -> dict:
     }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Safety checks
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _check_prompt_safety(prompt_content: str) -> dict:
     """
@@ -207,9 +207,9 @@ def _is_terminal_state(train_state: dict) -> bool:
     return train_state.get("terminal", False)
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # State loading
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _load_train_state(report_dir: Path) -> dict:
     path = report_dir / "train-state.json"
@@ -251,9 +251,9 @@ def _load_next_sprint(repo_root: Path, next_sprint_path: str = None) -> str:
     return ""
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Log helpers
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _append_log(log_path: Path, entry: dict) -> None:
     entry["timestamp"] = datetime.now().isoformat()
@@ -390,9 +390,9 @@ def classify_noop_result(noop_result: dict) -> dict:
     }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Core runner
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def run_host_runner(
     repo_root: Path,
@@ -442,7 +442,7 @@ def run_host_runner(
         _write_state(output_dir, result)
         return result
 
-    # 3. Check if terminal — no invocation needed
+    # 3. Check if terminal â€” no invocation needed
     if _is_terminal_state(train_state):
         terminal_state = train_state.get("execution_state", "UNKNOWN_TERMINAL")
         _append_log(log_path, {"event": "terminal_state_deferred", "state": terminal_state})
@@ -455,7 +455,7 @@ def run_host_runner(
         _write_state(output_dir, result)
         return result
 
-    # 4. If CLI not available → CONTINUATION_PACKET_ONLY (honest classification)
+    # 4. If CLI not available â†’ CONTINUATION_PACKET_ONLY (honest classification)
     if not cli_detection["invocable"]:
         _append_log(log_path, {"event": "cli_missing", "reason": cli_detection["reason"]})
         result = {
@@ -464,7 +464,7 @@ def run_host_runner(
             "reason": (
                 "Claude CLI is not invocable from within this tooling environment. "
                 "The runner can write continuation packets but cannot start the next worker. "
-                "This is NOT full autonomy — it is CONTINUATION_PACKET_ONLY. "
+                "This is NOT full autonomy â€” it is CONTINUATION_PACKET_ONLY. "
                 f"CLI detection: {cli_detection['reason']}"
             ),
             "cli_detection": cli_detection,
@@ -515,7 +515,7 @@ def run_host_runner(
         result = {
             "classification": HOST_INVOCATION_ATTEMPTED,
             "dry_run": True,
-            "reason": "Dry run — CLI available and prompt safe. Would invoke in live mode.",
+            "reason": "Dry run â€” CLI available and prompt safe. Would invoke in live mode.",
             "cli_detection": cli_detection,
             "invocation_command": f"{cli_detection['path']} --print -p <next-sprint-prompt>",
             "next_sprint_path": next_sprint_path,
@@ -583,9 +583,9 @@ def _write_state(output_dir: Path, result: dict) -> None:
     path.write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # CLI
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Host-Level Autonomous Runner")
@@ -634,7 +634,7 @@ def main() -> int:
 
         if result["classification"] == HOST_INVOCATION_LAYER_MISSING:
             print("\nACTION REQUIRED: Claude CLI is not invocable from this environment.")
-            print("This system is CONTINUATION_PACKET_ONLY — not fully autonomous.")
+            print("This system is CONTINUATION_PACKET_ONLY â€” not fully autonomous.")
             print(f"Manual invocation: {result.get('invocation_command', 'See next-sprint.md')}")
             return 1
 

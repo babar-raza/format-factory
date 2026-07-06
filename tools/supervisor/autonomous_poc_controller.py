@@ -1,4 +1,4 @@
-"""Autonomous POC Controller — hardened continuation logic.
+"""Autonomous POC Controller â€” hardened continuation logic.
 
 Enforces that the POC train NEVER stops because:
 - Supervisor ACCEPTED
@@ -38,9 +38,9 @@ def _get_adjudicator():
             _adjudicator_fn = False
     return _adjudicator_fn if _adjudicator_fn is not False else None
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Terminal states
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 TERMINAL_POC_READY = "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED"
 TERMINAL_POC_READY_RELEASE_PENDING = (
@@ -54,9 +54,9 @@ NON_TERMINAL_REROUTE = "REROUTE_BLOCKED_LANE"
 NON_TERMINAL_CHECKPOINT = "CHECKPOINT_ROLLOVER_CONTINUE"
 NON_TERMINAL_REPAIR = "LOCAL_REPAIR_CONTINUE"
 
-# ─────────────────────────────────────────────────────────────
-# True external blockers — these warrant TERMINAL_EXTERNAL_GATE
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# True external blockers â€” these warrant TERMINAL_EXTERNAL_GATE
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 _EXTERNAL_GATE_SIGNALS = {
     "credentials_required",
@@ -70,7 +70,7 @@ _EXTERNAL_GATE_SIGNALS = {
     "destructive_cleanup_required",
 }
 
-# Release-only gates — these do NOT block POC-ready candidate; they block release.
+# Release-only gates â€” these do NOT block POC-ready candidate; they block release.
 # When only these are present, use TERMINAL_POC_READY_RELEASE_PENDING.
 _RELEASE_ONLY_GATE_SIGNALS = {
     "gate_11_required",
@@ -91,7 +91,7 @@ _UNSAFE_SIGNALS = {
     "unrecoverable_local_failure",
 }
 
-# False-positive / local-repair signals — NEVER terminal
+# False-positive / local-repair signals â€” NEVER terminal
 _LOCAL_REPAIR_SIGNALS = {
     "evidence_quality_zero",
     "prompt_quality_failure",
@@ -105,9 +105,9 @@ _LOCAL_REPAIR_SIGNALS = {
 }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # adjudicate_with_stop_reason_adjudicator
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def adjudicate_with_stop_reason_adjudicator(
     signals: list[str] | None = None,
@@ -122,24 +122,24 @@ def adjudicate_with_stop_reason_adjudicator(
     should go through this function.
 
     Hard rules enforced by adjudicator (all 18):
-    1. Supervisor ACCEPTED → CONTINUE_NEXT_ITERATION (not terminal)
-    2. ACCEPTED_WITH_REWORK → LOCAL_REPAIR_CONTINUE (not terminal)
-    3. Evidence package built → CONTINUE_NEXT_ITERATION (not terminal)
-    4. evidence_quality_zero (repairable) → LOCAL_REPAIR_CONTINUE (not terminal)
-    5. prompt_quality_failure → LOCAL_REPAIR_CONTINUE (not terminal)
-    6. max_iterations → CHECKPOINT_ROLLOVER_CONTINUE (not terminal)
-    7. MODE 5 → RUFLO_FALLBACK_LOCAL_CONTINUE (not terminal)
-    8. Ruflo unavailable → RUFLO_FALLBACK_LOCAL_CONTINUE (not terminal)
-    9. Gate 11 + POC ready → RELEASE_APPROVAL_PENDING (terminal for release, not implementation)
-    10. Gate 8 + POC ready → RELEASE_APPROVAL_PENDING (terminal for release, not implementation)
-    11. git commit/push → TRUE_EXTERNAL_GATE (terminal)
-    12. publication → TRUE_EXTERNAL_GATE (terminal)
-    13. credentials → TRUE_EXTERNAL_GATE (no fallback) or LOCAL_REPAIR_CONTINUE (with fallback)
-    14. destructive → TRUE_EXTERNAL_GATE or LOCAL_REPAIR_CONTINUE
-    15. business_decision → TRUE_EXTERNAL_GATE or AGENT_OWNED_RECOMMENDATION_CONTINUE
-    16. DIF/SYLK/ZST → AGENT_OWNED_RECOMMENDATION_CONTINUE (not terminal)
-    17. poc-targets delta → AGENT_OWNED_RECOMMENDATION_CONTINUE (not terminal)
-    18. dirty git state → CONTINUE_NEXT_ITERATION (classified) or LOCAL_REPAIR_CONTINUE
+    1. Supervisor ACCEPTED â†’ CONTINUE_NEXT_ITERATION (not terminal)
+    2. ACCEPTED_WITH_REWORK â†’ LOCAL_REPAIR_CONTINUE (not terminal)
+    3. Evidence package built â†’ CONTINUE_NEXT_ITERATION (not terminal)
+    4. evidence_quality_zero (repairable) â†’ LOCAL_REPAIR_CONTINUE (not terminal)
+    5. prompt_quality_failure â†’ LOCAL_REPAIR_CONTINUE (not terminal)
+    6. max_iterations â†’ CHECKPOINT_ROLLOVER_CONTINUE (not terminal)
+    7. MODE 5 â†’ RUFLO_FALLBACK_LOCAL_CONTINUE (not terminal)
+    8. Ruflo unavailable â†’ RUFLO_FALLBACK_LOCAL_CONTINUE (not terminal)
+    9. Gate 11 + POC ready â†’ RELEASE_APPROVAL_PENDING (terminal for release, not implementation)
+    10. Gate 8 + POC ready â†’ RELEASE_APPROVAL_PENDING (terminal for release, not implementation)
+    11. git commit/push â†’ TRUE_EXTERNAL_GATE (terminal)
+    12. publication â†’ TRUE_EXTERNAL_GATE (terminal)
+    13. credentials â†’ TRUE_EXTERNAL_GATE (no fallback) or LOCAL_REPAIR_CONTINUE (with fallback)
+    14. destructive â†’ TRUE_EXTERNAL_GATE or LOCAL_REPAIR_CONTINUE
+    15. business_decision â†’ TRUE_EXTERNAL_GATE or AGENT_OWNED_RECOMMENDATION_CONTINUE
+    16. DIF/SYLK/ZST â†’ AGENT_OWNED_RECOMMENDATION_CONTINUE (not terminal)
+    17. poc-targets delta â†’ AGENT_OWNED_RECOMMENDATION_CONTINUE (not terminal)
+    18. dirty git state â†’ CONTINUE_NEXT_ITERATION (classified) or LOCAL_REPAIR_CONTINUE
     """
     if not signals:
         return None
@@ -150,9 +150,9 @@ def adjudicate_with_stop_reason_adjudicator(
     return adjudicate_batch(signals, context)
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # classify_terminal_state
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def classify_terminal_state(
     train_state: dict[str, Any],
@@ -172,25 +172,25 @@ def classify_terminal_state(
     - max_iterations reached is NOT terminal (checkpoint rollover).
     - Evidence package created is NOT terminal.
     - Evidence/prompt quality issues are NOT terminal.
-    - Gate 11 pending does NOT block POC-ready candidate — only commercial release.
+    - Gate 11 pending does NOT block POC-ready candidate â€” only commercial release.
     - evidence_quality_zero cannot override final proof when materialization passes.
     """
-    # ── Check unsafe workspace first ──────────────────────────
+    # â”€â”€ Check unsafe workspace first â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     blockers = blocker_routing or {}
     for sig in _UNSAFE_SIGNALS:
         if blockers.get(sig):
             return TERMINAL_UNSAFE
 
-    # ── Check true external blockers (NOT release-only) ──────
+    # â”€â”€ Check true external blockers (NOT release-only) â”€â”€â”€â”€â”€â”€
     for sig in _EXTERNAL_GATE_SIGNALS:
         if blockers.get(sig):
             return TERMINAL_EXTERNAL_GATE
 
-    # ── Runtime / context limit ───────────────────────────────
+    # â”€â”€ Runtime / context limit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if runtime_limit_reached:
         return TERMINAL_RUNTIME_LIMIT
 
-    # ── Adjudicator cross-check (if available) ────────────────
+    # â”€â”€ Adjudicator cross-check (if available) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     # Collect active signals for adjudicator validation
     active_signals = [sig for sig, active in blockers.items() if active]
     if active_signals:
@@ -207,7 +207,7 @@ def classify_terminal_state(
             if adjudication.get("has_true_external_gate"):
                 return TERMINAL_EXTERNAL_GATE
 
-    # ── Check POC readiness criteria ─────────────────────────
+    # â”€â”€ Check POC readiness criteria â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if _check_poc_ready(train_state, poc_dashboard, supervisor_verdict, required_set):
         # If only release-only gate is pending, use RELEASE_PENDING variant
         release_gate = gate_11_pending or any(
@@ -217,7 +217,7 @@ def classify_terminal_state(
             return TERMINAL_POC_READY_RELEASE_PENDING
         return TERMINAL_POC_READY
 
-    # ── Everything else: continue ────────────────────────────
+    # â”€â”€ Everything else: continue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     return NON_TERMINAL_CONTINUE
 
 
@@ -259,9 +259,9 @@ def _check_poc_ready(
     return True
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # reconcile_dashboard_contradiction
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def reconcile_dashboard_contradiction(
     dashboard: dict[str, Any],
@@ -338,9 +338,9 @@ def reconcile_dashboard_contradiction(
     }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # classify_human_gate_item
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def classify_human_gate_item(gate_name: str, context: dict[str, Any] | None = None) -> str:
     """Classify a 'human required' gate item.
@@ -390,9 +390,9 @@ def classify_human_gate_item(gate_name: str, context: dict[str, Any] | None = No
     return GATE_CLASS_AGENT_REVIEWABLE
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # evaluate_evidence_quality_override
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def evaluate_evidence_quality_override(
     materialization_result: dict[str, Any] | None = None,
@@ -408,7 +408,7 @@ def evaluate_evidence_quality_override(
     """Determine if evidence_quality_zero can override final proof.
 
     Returns:
-    - override_valid: bool — True if evidence_quality signal should be ignored
+    - override_valid: bool â€” True if evidence_quality signal should be ignored
     - classification: str
     - reason: str
     """
@@ -447,13 +447,13 @@ def evaluate_evidence_quality_override(
     return {
         "override_valid": False,
         "classification": "EVIDENCE_QUALITY_CONCERN_VALID",
-        "reason": "Evidence quality concern is valid — final proof not sufficiently materialized",
+        "reason": "Evidence quality concern is valid â€” final proof not sufficiently materialized",
     }
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # generate_gate11_readiness_packet
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def generate_gate11_readiness_packet(
     train_state: dict[str, Any],
@@ -463,7 +463,7 @@ def generate_gate11_readiness_packet(
     """Generate a Gate 11 readiness packet for human review.
 
     This packet is prepared BY the agent for Babar's review.
-    The agent does NOT approve Gate 11 — it only prepares the packet.
+    The agent does NOT approve Gate 11 â€” it only prepares the packet.
     """
     output_path = Path(
         output_path or "reports/unified-authority-integrated-poc-train/gate11-readiness-packet.json"
@@ -504,8 +504,8 @@ def generate_gate11_readiness_packet(
         },
         "agent_recommendation": "APPROVE_FOR_GATE_11_REVIEW",
         "release_risks": [
-            "DIF status PARTIAL_PASS — write_dif implemented but installed_workflow not yet proven",
-            "Gnumeric NOT_STARTED — not required for closure minimum",
+            "DIF status PARTIAL_PASS â€” write_dif implemented but installed_workflow not yet proven",
+            "Gnumeric NOT_STARTED â€” not required for closure minimum",
             "commercial_product_ready=false for all targets until Gate 11 G11-G approved",
         ],
         "remaining_non_release_caveats": [
@@ -523,9 +523,9 @@ def generate_gate11_readiness_packet(
     return packet
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # reclassify_supervisor_signal
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def reclassify_supervisor_signal(signal: dict[str, Any]) -> str:
     """Reclassify a supervisor signal. ACCEPTED alone is never terminal.
@@ -542,7 +542,7 @@ def reclassify_supervisor_signal(signal: dict[str, Any]) -> str:
     hard_stops = signal.get("hard_stops_detected", [])
     cont = signal.get("autonomous_continue", True)
 
-    # Release-only gates — POC-ready candidate may still proceed; release is pending
+    # Release-only gates â€” POC-ready candidate may still proceed; release is pending
     for sig in _RELEASE_ONLY_GATE_SIGNALS:
         if sig in stop_reason or sig in str(hard_stops):
             return "STOP_RELEASE_APPROVAL_PENDING"
@@ -566,7 +566,7 @@ def reclassify_supervisor_signal(signal: dict[str, Any]) -> str:
     if signal.get("rework_items"):
         return "REWORK_THEN_CONTINUE"
 
-    # Supervisor signaled stop with no clear reason — check if it's a local issue
+    # Supervisor signaled stop with no clear reason â€” check if it's a local issue
     if not cont and not stop_reason:
         return LOCAL_REPAIR_CONTINUE
 
@@ -580,16 +580,16 @@ def reclassify_supervisor_signal(signal: dict[str, Any]) -> str:
             return LOCAL_REPAIR_CONTINUE
         return LOCAL_REPAIR_CONTINUE  # default: try to continue
 
-    # Supervisor says ACCEPTED or continue — continue
+    # Supervisor says ACCEPTED or continue â€” continue
     return "CONTINUE_NEXT_ITERATION"
 
 
 LOCAL_REPAIR_CONTINUE = NON_TERMINAL_REPAIR
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # classify_iteration_floor
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def classify_iteration_floor(iteration_artifacts: dict[str, Any]) -> str:
     """Classify an iteration's product output floor.
@@ -598,7 +598,7 @@ def classify_iteration_floor(iteration_artifacts: dict[str, Any]) -> str:
     - PRODUCT_DELTA_PASS
     - SINGLE_CRITICAL_GAP_PASS
     - BLOCKER_WITH_REROUTE_PASS
-    - EVIDENCE_ONLY_CONTINUE  (not successful product progress — loop continues)
+    - EVIDENCE_ONLY_CONTINUE  (not successful product progress â€” loop continues)
     """
     source_files_changed = iteration_artifacts.get("source_files_changed", [])
     tests_passed = iteration_artifacts.get("tests_passed", 0)
@@ -628,9 +628,9 @@ def classify_iteration_floor(iteration_artifacts: dict[str, Any]) -> str:
     return "EVIDENCE_ONLY_CONTINUE"
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # decide_next_action
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def decide_next_action(
     terminal_state: str,
@@ -652,7 +652,7 @@ def decide_next_action(
     ):
         return {"action": "TERMINAL", "rationale": terminal_state, "reroute_to": None}
 
-    # Checkpoint rollover — but CONTINUE
+    # Checkpoint rollover â€” but CONTINUE
     if iteration >= max_iterations:
         return {
             "action": NON_TERMINAL_CHECKPOINT,
@@ -660,7 +660,7 @@ def decide_next_action(
             "reroute_to": None,
         }
 
-    # Blocked lanes — reroute if alternatives exist
+    # Blocked lanes â€” reroute if alternatives exist
     if blocked_lanes and gap_queue:
         available = [g for g in gap_queue if g.get("target_id") not in blocked_lanes]
         if available:
@@ -674,9 +674,9 @@ def decide_next_action(
     return {"action": NON_TERMINAL_CONTINUE, "rationale": "non-terminal, gaps remain", "reroute_to": None}
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # write_train_state
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def write_train_state(
     state: dict[str, Any],
@@ -691,9 +691,9 @@ def write_train_state(
     return output_path
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # write_next_iteration_prompt
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def write_next_iteration_prompt(
     train_state: dict[str, Any],
@@ -709,7 +709,7 @@ def write_next_iteration_prompt(
     terminal = train_state.get("terminal_state_reached", False)
     reason = train_state.get("terminal_state_reason", "runtime_limit")
 
-    content = f"""# Next Iteration Prompt — POC Train Continuation
+    content = f"""# Next Iteration Prompt â€” POC Train Continuation
 
 Generated: {datetime.now(timezone.utc).isoformat()}
 Sprint: FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001
@@ -745,9 +745,9 @@ Last iteration: {iteration}
     return output_path
 
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # build_poc_dashboard
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def build_poc_dashboard(
     poc_targets_path: str | Path = "product-capability-matrix/poc-targets.yaml",
@@ -761,7 +761,7 @@ def build_poc_dashboard(
     text = path.read_text(encoding="utf-8")
 
     def _get_status(format_name: str) -> str:
-        # Match the dotnet_status block only — stop at the next 4-space-indented key
+        # Match the dotnet_status block only â€” stop at the next 4-space-indented key
         # (python_foss_status, dogfood_status, etc.) or end of that format entry.
         # The YAML structure uses 4-space indent for keys inside a list item.
         pattern = rf"format:\s*{format_name}.*?dotnet_status:(.*?)(?=\n    [a-z_]|\Z)"

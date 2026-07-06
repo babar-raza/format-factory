@@ -1,5 +1,5 @@
 """
-autonomous_train_executor.py — Autonomous Train Executor
+autonomous_train_executor.py â€” Autonomous Train Executor
 
 Chains supervisor cycles. After each accepted sprint, determines whether to continue
 or emit a continuation packet for host invocation.
@@ -10,9 +10,9 @@ Key invariant:
   with a machine-consumable continuation packet.
 
 Exit codes:
-  0 — terminal state reached (POC_READY or RUNTIME_LIMIT or EXTERNAL_GATE)
-  1 — bad input / missing declaration
-  9 — unexpected error
+  0 â€” terminal state reached (POC_READY or RUNTIME_LIMIT or EXTERNAL_GATE)
+  1 â€” bad input / missing declaration
+  9 â€” unexpected error
 
 Terminal results:
   MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING
@@ -37,9 +37,9 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Terminal state constants
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 TERMINAL_POC_READY_RELEASE_PENDING = "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING"
 TERMINAL_POC_READY = "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED"
@@ -48,11 +48,11 @@ TERMINAL_HOST_INVOCATION = "AUTONOMOUS_EXECUTION_CHAINING_REQUIRES_HOST_INVOCATI
 TERMINAL_EXTERNAL_GATE = "MAINSTREAM_POC_BLOCKED_EXTERNAL_GATE"
 TERMINAL_UNSAFE = "MAINSTREAM_POC_UNSAFE_WORKSPACE"
 
-# Non-terminal states — executor must NOT stop for these
+# Non-terminal states â€” executor must NOT stop for these
 NON_TERMINAL_CONTINUE = "NON_TERMINAL_CONTINUE"
 NON_TERMINAL_POC_NOT_READY = "NON_TERMINAL_POC_NOT_READY_CONTINUE_PRODUCT_TRAIN"
 
-# Non-terminal — executor must NOT stop for these
+# Non-terminal â€” executor must NOT stop for these
 NON_TERMINAL_SIGNALS = frozenset({
     "accepted",
     "accepted_with_rework",
@@ -165,7 +165,7 @@ def _load_proof_backed_poc_dashboard(repo_root: Path) -> dict:
             "poc_ready": poc_ready,
             # gate_11_approved: only True if release_approval_pending=False
             "gate_11_approved": not result.get("release_approval_pending", True),
-            # commercial_product_ready: always False — requires human Gate 11 approval
+            # commercial_product_ready: always False â€” requires human Gate 11 approval
             "commercial_product_ready": False,
             "proof_backed": True,
             "decision": result.get("decision", "POC_NOT_READY_CONTINUE"),
@@ -177,11 +177,11 @@ def _load_proof_backed_poc_dashboard(repo_root: Path) -> dict:
             "proof_failures": result.get("proof_failures", []),
         }
     except ImportError:
-        # proof_backed_poc_gate not available — fall back to shallow check
+        # proof_backed_poc_gate not available â€” fall back to shallow check
         # Mark as not proof-backed so executor knows this is advisory only
         shallow = _load_poc_dashboard(repo_root)
         shallow["proof_backed"] = False
-        # Shallow check is insufficient — override decision to POC_NOT_READY_CONTINUE
+        # Shallow check is insufficient â€” override decision to POC_NOT_READY_CONTINUE
         shallow["decision"] = "POC_NOT_READY_CONTINUE"
         shallow["poc_ready"] = False  # Cannot confirm proof without the gate
         return shallow
@@ -194,7 +194,7 @@ def _adjudicate_signals(signals: list, context: dict = None) -> dict:
         from stop_reason_adjudicator import adjudicate_batch
         return adjudicate_batch(signals, context or {})
     except ImportError:
-        # Adjudicator not available — assume non-terminal
+        # Adjudicator not available â€” assume non-terminal
         return {
             "overall_terminal": False,
             "has_true_external_gate": False,
@@ -216,7 +216,7 @@ def classify_execution_state(
 
     Returns one of the terminal constants or a non-terminal string.
     """
-    # 1. Unsafe workspace — always terminal
+    # 1. Unsafe workspace â€” always terminal
     if continuation_signal.get("unsafe_workspace"):
         return TERMINAL_UNSAFE
 
@@ -236,25 +236,25 @@ def classify_execution_state(
     if adj.get("has_unsafe"):
         return TERMINAL_UNSAFE
 
-    # 3. Proof-backed POC gate: if decision is POC_NOT_READY_CONTINUE → non-terminal
+    # 3. Proof-backed POC gate: if decision is POC_NOT_READY_CONTINUE â†’ non-terminal
     #    Only applies when the proof-backed gate was used (proof_backed=True).
     #    Shallow poc-targets.yaml "gates_passed: 1-10" text is NOT sufficient for terminal.
     poc_decision = poc_dashboard.get("decision", "POC_NOT_READY_CONTINUE")
     poc_ready = poc_dashboard.get("poc_ready", False) or poc_dashboard.get("poc_candidate_valid", False)
 
     if poc_dashboard.get("proof_backed", False) and not poc_ready and poc_decision == "POC_NOT_READY_CONTINUE":
-        # POC proof missing — not terminal, continue product train
+        # POC proof missing â€” not terminal, continue product train
         return NON_TERMINAL_POC_NOT_READY
 
-    # 4. POC ready (proof-backed) + gate 11 pending → release pending terminal
+    # 4. POC ready (proof-backed) + gate 11 pending â†’ release pending terminal
     if poc_ready and gate_11_pending:
         return TERMINAL_POC_READY_RELEASE_PENDING
 
-    # 5. POC ready (proof-backed) + gate 11 approved → POC ready terminal
+    # 5. POC ready (proof-backed) + gate 11 approved â†’ POC ready terminal
     if poc_ready and poc_dashboard.get("gate_11_approved"):
         return TERMINAL_POC_READY
 
-    # 6. True external gate → blocked
+    # 6. True external gate â†’ blocked
     if adj.get("has_true_external_gate"):
         return TERMINAL_EXTERNAL_GATE
 
@@ -262,7 +262,7 @@ def classify_execution_state(
     if continuation_signal.get("runtime_limit_reached"):
         return TERMINAL_RUNTIME_LIMIT
 
-    # 8. Non-terminal — executor must continue or emit continuation packet
+    # 8. Non-terminal â€” executor must continue or emit continuation packet
     return NON_TERMINAL_CONTINUE
 
 
@@ -275,10 +275,10 @@ def determine_next_action(
     Determine the next action based on execution state.
 
     Returns a dict with:
-      action: str — the action to take
-      reason: str — why this action
-      executable_locally: bool — whether this can be done without host invocation
-      continuation_packet_required: bool — whether to write a continuation packet
+      action: str â€” the action to take
+      reason: str â€” why this action
+      executable_locally: bool â€” whether this can be done without host invocation
+      continuation_packet_required: bool â€” whether to write a continuation packet
     """
     if execution_state in (
         TERMINAL_POC_READY_RELEASE_PENDING,
@@ -296,7 +296,7 @@ def determine_next_action(
             "continuation_packet_required": False,
         }
 
-    # POC not ready — executor must continue product train (not terminal)
+    # POC not ready â€” executor must continue product train (not terminal)
     if execution_state == NON_TERMINAL_POC_NOT_READY:
         return {
             "action": "CONTINUE_PRODUCT_TRAIN",
@@ -304,7 +304,7 @@ def determine_next_action(
             "reason": (
                 "Proof-backed POC gate returned POC_NOT_READY_CONTINUE. "
                 "Missing on-disk evidence (source/test logs/proof records). "
-                "Continue product train to build proof — do NOT stop."
+                "Continue product train to build proof â€” do NOT stop."
             ),
             "executable_locally": True,
             "continuation_packet_required": True,
@@ -333,7 +333,7 @@ def determine_next_action(
         return {
             "action": "NON_TERMINAL_CONTINUE",
             "terminal_state": None,
-            "reason": "autonomous_continue=true, safe_lanes_available=true — continue execution",
+            "reason": "autonomous_continue=true, safe_lanes_available=true â€” continue execution",
             "executable_locally": True,
             "continuation_packet_required": False,
             "next_sprint_path": continuation_signal.get("next_sprint_path", "reports/supervisor/next-sprint.md"),
@@ -341,7 +341,7 @@ def determine_next_action(
             "max_iterations": max_iter,
         }
 
-    # Cannot execute locally — emit continuation packet for host invocation
+    # Cannot execute locally â€” emit continuation packet for host invocation
     return {
         "action": "TERMINAL",
         "terminal_state": TERMINAL_HOST_INVOCATION,

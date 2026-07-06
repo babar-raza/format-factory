@@ -44,6 +44,7 @@ V109 (TC-PQLM-012): validate_files_outside_approved_layout
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import ast
 import re
@@ -110,6 +111,7 @@ def _load_baseline(repo_root: Path) -> dict:
         return {"known_violations": {}}
 
 
+@validator(rule_id="V_VALIDATE_SUSPICIOUS_FILENAMES", domain="structural")
 def validate_suspicious_filenames(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V100: Product source files must not have dumping-ground filename patterns.
 
@@ -154,6 +156,7 @@ def validate_suspicious_filenames(declaration: dict, repo_root: "Path | None" = 
     }
 
 
+@validator(rule_id="V_VALIDATE_HISTORY_IDENTIFIERS_IN_SOURCE", domain="structural")
 def validate_history_identifiers_in_source(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -203,6 +206,7 @@ def validate_history_identifiers_in_source(
     }
 
 
+@validator(rule_id="V_VALIDATE_UNDOCUMENTED_PUBLIC_PYTHON_APIS", domain="structural")
 def validate_undocumented_public_python_apis(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -278,6 +282,7 @@ def validate_undocumented_public_python_apis(
     }
 
 
+@validator(rule_id="V_VALIDATE_UNGOVERNED_TODO_MARKERS", domain="structural")
 def validate_ungoverned_todo_markers(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -327,6 +332,7 @@ def validate_ungoverned_todo_markers(
     }
 
 
+@validator(rule_id="V_VALIDATE_CONSTANT_RETURN_PUBLIC_METHODS", domain="structural")
 def validate_constant_return_public_methods(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -418,6 +424,7 @@ def validate_constant_return_public_methods(
     }
 
 
+@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_SOURCE", domain="structural")
 def validate_getter_without_parser_source(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -503,6 +510,7 @@ def validate_getter_without_parser_source(
     }
 
 
+@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_PATH", domain="structural")
 def validate_setter_without_writer_path(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -581,6 +589,7 @@ def validate_setter_without_writer_path(
     }
 
 
+@validator(rule_id="V_VALIDATE_TEST_ONLY_PUBLIC_APIS", domain="structural")
 def validate_test_only_public_apis(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -676,6 +685,7 @@ def validate_test_only_public_apis(
     }
 
 
+@validator(rule_id="V_VALIDATE_DETACHED_PERSISTENT_STATE", domain="structural")
 def validate_detached_persistent_state(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -755,6 +765,7 @@ def validate_detached_persistent_state(
     }
 
 
+@validator(rule_id="V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT", domain="structural")
 def validate_files_outside_approved_layout(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

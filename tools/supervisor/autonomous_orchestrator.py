@@ -1,5 +1,5 @@
 """
-Format Factory — Autonomous Orchestrator
+Format Factory â€” Autonomous Orchestrator
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 
 Persistent/restartable orchestrator. Reads machine-readable continuation state,
@@ -12,7 +12,7 @@ Usage:
 Modes:
   --once                Run exactly one cycle then stop
   --max-cycles N        Run at most N cycles (default: 3)
-  --watch               Run in watch mode (not implemented — blocks on external gate)
+  --watch               Run in watch mode (not implemented â€” blocks on external gate)
   --interval-seconds N  Seconds between cycles in watch mode (default: 10)
   --stop-after-idle N   Stop if N consecutive cycles had no runnable action (default: 1)
 
@@ -76,7 +76,7 @@ from tools.supervisor.action_queue import (
     mark_failed as queue_mark_failed,
 )
 
-# ── Lock file ─────────────────────────────────────────────────────────────────
+# â”€â”€ Lock file â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 LOCK_PATH = STATE_DIR / "orchestrator.lock"
 DEFAULT_SPRINT_ID = "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001"
@@ -99,12 +99,12 @@ def _acquire_lock(run_id: str) -> bool:
             if existing_pid and existing_pid != os.getpid():
                 try:
                     os.kill(int(existing_pid), 0)
-                    # Process exists — lock is held
+                    # Process exists â€” lock is held
                     return False
                 except (OSError, ProcessLookupError):
-                    pass  # Process dead — stale lock, overwrite
+                    pass  # Process dead â€” stale lock, overwrite
         except Exception:
-            pass  # Corrupt lock — overwrite
+            pass  # Corrupt lock â€” overwrite
 
     LOCK_PATH.write_text(json.dumps({
         "run_id": run_id,
@@ -119,7 +119,7 @@ def _release_lock() -> None:
         LOCK_PATH.unlink(missing_ok=True)
 
 
-# ── Orchestrator ──────────────────────────────────────────────────────────────
+# â”€â”€ Orchestrator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class OrchestratorResult:
     def __init__(
@@ -190,7 +190,7 @@ def _queue_item_to_next_action(item: Dict[str, Any], cycle_index: int, sprint_id
 
 
 class AutonomousOrchestrator:
-    # TC-P2-007: stream filter — maps stream name to allowed item streams
+    # TC-P2-007: stream filter â€” maps stream name to allowed item streams
     # machinery: refuses STREAM_PRODUCT actions (G3/G4/G5)
     # product:   refuses non-STREAM_PRODUCT actions
     # all/None:  no filter (current behavior)
@@ -308,7 +308,7 @@ class AutonomousOrchestrator:
         if self.queue_first and QUEUE_PATH.exists():
             q_item = dequeue_next()
             if q_item is not None:
-                # TC-P2-007: Stream filter — refuse wrong-track action types (REQ-TRK-011)
+                # TC-P2-007: Stream filter â€” refuse wrong-track action types (REQ-TRK-011)
                 if self.stream_filter and self.stream_filter != "all":
                     allowed = self._STREAM_ALLOWED.get(self.stream_filter, set())
                     item_stream = q_item.get("stream", "autonomy")
@@ -355,7 +355,7 @@ class AutonomousOrchestrator:
 
     def _execute_cycle(self, cycle_index: int, next_action_path: str) -> Dict[str, Any]:
         """Execute one orchestrator cycle. Returns action result dict."""
-        # Dry run — validate only
+        # Dry run â€” validate only
         if self.dry_run:
             action = load_next_action(next_action_path)
             return {
@@ -588,7 +588,7 @@ def update_orch_state(
     save_orchestrator_state(state)
 
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+# â”€â”€ CLI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Format Factory Autonomous Orchestrator")
@@ -643,7 +643,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.json_output:
         print(json.dumps(result.to_dict(), indent=2))
     else:
-        print(f"Orchestrator {result.run_id}: {result.cycles_completed} cycle(s) — {result.stop_code}")
+        print(f"Orchestrator {result.run_id}: {result.cycles_completed} cycle(s) â€” {result.stop_code}")
         if result.stop_detail:
             print(f"  Detail: {result.stop_detail}")
         for i, r in enumerate(result.results, 1):

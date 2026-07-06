@@ -1,0 +1,2062 @@
+schema_version: 1
+schema_definition:
+  component_id:
+    type: string
+    required: true
+  file:
+    type: string
+    required: true
+  loc:
+    type: integer
+    required: true
+  classification:
+    type: enum
+    required: true
+    values:
+    - ESSENTIAL_SAFETY_CRITICAL
+    - ESSENTIAL_OVERCOMPLICATED
+    - USEFUL_SHARED_INFRASTRUCTURE
+    - SUSPECTED_GHOST
+    - DEPRECATED_STILL_ACTIVE
+    - EXPERIMENTAL
+    - UNKNOWN_REQUIRES_RUNTIME_EVIDENCE
+  disposition:
+    type: enum
+    required: true
+    values:
+    - RETAIN
+    - CONSOLIDATE
+    - INVESTIGATE
+    - QUARANTINE
+    - DOCUMENT
+    - CHARACTERIZE
+  tombstone_status:
+    type: enum
+    required: false
+    values:
+    - null
+    - ACTIVE
+    - FIRED
+    - CLEARED
+    - REVERTED
+  notes:
+    type: string
+    required: false
+components:
+- component_id: COMP-ORCH-001
+  file: tools/supervisor/autonomous_cycle.py
+  loc: 2651
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Canonical orchestration loop; imported by supervisor_loop.py; G-001 G-002
+    G-006 enforcer
+- component_id: COMP-ORCH-002
+  file: tools/supervisor/check_continuation.py
+  loc: 796
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CCI-MVP session guard; G-003 G-007 G-009 enforcer; SESSION_MISMATCH hard
+    stop
+- component_id: COMP-ORCH-003
+  file: tools/supervisor/supervisor_loop.py
+  loc: 605
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Entry point shim; imports autonomous_cycle.py; could merge into cycle
+- component_id: COMP-ORCH-004
+  file: tools/supervisor/sprint_executor.py
+  loc: 628
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Headless run-loop; G-010 TRUE_EXTERNAL_GATE classification
+- component_id: COMP-ORCH-005
+  file: tools/supervisor/autonomous_loop_runner.py
+  loc: 922
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; may be CLI entry via subprocess or skill-registry
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-006
+  file: tools/supervisor/external_host_loop.py
+  loc: 674
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: ACTIVE
+  notes: Zero Python imports; external host mode candidate
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-ORCH-007a
+  file: tools/supervisor/autonomous_host_daemon.py
+  loc: 400
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; daemon mode; split from COMP-ORCH-007
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-007b
+  file: tools/supervisor/autonomous_host_runner.py
+  loc: 364
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; host runner; split from COMP-ORCH-007
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-008
+  file: tools/supervisor/autonomous_orchestrator.py
+  loc: 663
+  classification: LIVE_VIA_COMMAND
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: "Referenced in .claude/commands/autonomous-loop.md lines 122,125,265; also imported by test suite (LIVE_VIA_TEST)"
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-009
+  file: tools/supervisor/autonomous_poc_controller.py
+  loc: 840
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; PoC controller
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-010
+  file: tools/supervisor/autonomous_train_executor.py
+  loc: 698
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; train executor
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-011
+  file: tools/supervisor/autonomous_task_generator.py
+  loc: 1920
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; task generation logic
+  tombstone_date: '2026-07-06'
+- component_id: COMP-ORCH-012a
+  file: tools/supervisor/autonomous_cycle_extensions.py
+  loc: 900
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Extensions for autonomous_cycle.py; split from COMP-ORCH-012
+- component_id: COMP-ORCH-012b
+  file: tools/supervisor/autonomous_cycle_utils.py
+  loc: 908
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Utils for autonomous_cycle.py; split from COMP-ORCH-012
+- component_id: COMP-ORCH-013
+  file: tools/supervisor/tri_lane_integration.py
+  loc: 973
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Tri-lane orchestration integration
+- component_id: COMP-ORCH-014
+  file: tools/supervisor/stop_reason_adjudicator.py
+  loc: 1025
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Stop reason classification and adjudication
+- component_id: COMP-ORCH-015
+  file: tools/supervisor/rework_orchestrator.py
+  loc: 683
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Rework item orchestration
+- component_id: COMP-GOV-001
+  file: tools/supervisor/governance_validators.py
+  loc: 3183
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Primary governance validator file; G-002 enforcer
+- component_id: COMP-GOV-002a
+  file: tools/supervisor/governance_validators_ext.py
+  loc: 1014
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Overflow from governance_validators.py; active validators
+- component_id: COMP-GOV-002b
+  file: tools/supervisor/governance_validators_ext2.py
+  loc: 1014
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Second overflow file
+- component_id: COMP-GOV-002c
+  file: tools/supervisor/governance_validators_ext3.py
+  loc: 1014
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Third overflow file
+- component_id: COMP-GOV-002d
+  file: tools/supervisor/governance_validators_ext4.py
+  loc: 1015
+  classification: ESSENTIAL_OVERCOMPLICATED
+  disposition: CONSOLIDATE
+  tombstone_status: null
+  notes: Fourth overflow file
+- component_id: COMP-GOV-003a
+  file: tools/supervisor/governance_validators_dotnet.py
+  loc: 462
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: .NET governance validators
+- component_id: COMP-GOV-003b
+  file: tools/supervisor/governance_validators_dotnet_semantic.py
+  loc: 462
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: .NET semantic validators
+- component_id: COMP-GOV-004
+  file: tools/supervisor/governance_validators_spec.py
+  loc: 250
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: DOCUMENT
+  tombstone_status: null
+  notes: Spec-specific governance validators
+- component_id: COMP-GOV-005
+  file: tools/supervisor/governance_validator_runner.py
+  loc: 687
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Loads and runs all governance validators; G-002 dispatch
+- component_id: COMP-GOV-006
+  file: tools/supervisor/anti_skip_checker.py
+  loc: 1351
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: 30-check anti-skip enforcement; G-006 enforcer
+- component_id: COMP-GOV-007
+  file: tools/supervisor/governance_validators_output_quality.py
+  loc: 300
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Output quality validators V134-V136; added 2026-07-04
+- component_id: COMP-EVI-001
+  file: tools/supervisor/grade_declared_work.py
+  loc: 1127
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Grade computation pipeline; G-001 G-008 enforcer
+- component_id: COMP-EVI-002
+  file: tools/supervisor/evidence_declaration.py
+  loc: 219
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Declaration validation; G-001 prerequisite
+- component_id: COMP-EVI-003
+  file: tools/supervisor/inspect_declared_evidence.py
+  loc: 542
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Evidence inspection pipeline
+- component_id: COMP-EVI-004
+  file: tools/supervisor/sprint_executor_validate.py
+  loc: 828
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Declaration pre-validation with --repair flag
+- component_id: COMP-EVI-005
+  file: tools/evidence/run050_sprint_writer.py
+  loc: 4116
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Active sprint writer; do NOT tombstone
+- component_id: COMP-EVI-006a
+  file: tools/evidence/run046_sprint_writer.py
+  loc: 2856
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Superseded by run050; candidate for tombstone TC-BF-003
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-EVI-006b
+  file: tools/evidence/run047_sprint_writer.py
+  loc: 2856
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Superseded by run050; candidate for tombstone TC-BF-003
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-EVI-006c
+  file: tools/evidence/run048_sprint_writer.py
+  loc: 2856
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Superseded by run050; candidate for tombstone TC-BF-003
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-EVI-006d
+  file: tools/evidence/run049_sprint_writer.py
+  loc: 2856
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Superseded by run050; candidate for tombstone TC-BF-003
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-EVI-007
+  file: tools/supervisor/validate_evidence_bundle.py
+  loc: 2638
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Evidence bundle validation
+- component_id: COMP-EVI-008
+  file: tools/supervisor/build_declaration_review_package.py
+  loc: 407
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Builds review package ZIP
+- component_id: COMP-PROMPT-001
+  file: tools/supervisor/generate_next_worker_prompt.py
+  loc: 1546
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Generates next sprint prompt; required for autonomous loop
+- component_id: COMP-PROMPT-002
+  file: tools/supervisor/generate_supervisor_packet.py
+  loc: 1437
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Supervisor context packet generation
+- component_id: COMP-PROMPT-003
+  file: tools/supervisor/generate_mainstream_execution_packet.py
+  loc: 486
+  classification: LIVE_VIA_TEST
+  disposition: INVESTIGATE
+  tombstone_status: REVERTED
+  notes: Zero Python imports; execution packet generator; TC-BF-004 tombstone candidate
+  tombstone_date: '2026-07-06'
+- component_id: COMP-STATE-001
+  file: tools/supervisor/write_plan_lock.py
+  loc: 691
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Plan lock writer; G-003 enforcer; session isolation
+- component_id: COMP-STATE-002a
+  file: tools/supervisor/continuation_identity.py
+  loc: 194
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Continuation session identity
+- component_id: COMP-STATE-002b
+  file: tools/supervisor/continuation_ledger.py
+  loc: 194
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Continuation ledger management
+- component_id: COMP-STATE-002c
+  file: tools/supervisor/continuation_router.py
+  loc: 194
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Continuation routing logic
+- component_id: COMP-STATE-002d
+  file: tools/supervisor/continuation_selector.py
+  loc: 194
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Continuation selector
+- component_id: COMP-STATE-002e
+  file: tools/supervisor/continuation_state.py
+  loc: 193
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Continuation state model
+- component_id: COMP-STATE-003
+  file: tools/supervisor/action_queue.py
+  loc: 340
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Action queue management
+- component_id: COMP-AI-001a
+  file: tools/supervisor/ai_evidence_critic.py
+  loc: 230
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI evidence critique; zero Python imports from other supervisor files
+- component_id: COMP-AI-001b
+  file: tools/supervisor/ai_implementation_designer.py
+  loc: 228
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI implementation design; zero Python imports
+- component_id: COMP-AI-001c
+  file: tools/supervisor/ai_learning_loop.py
+  loc: 227
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI learning loop; zero Python imports
+- component_id: COMP-AI-001d
+  file: tools/supervisor/ai_product_brain.py
+  loc: 228
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI product brain; zero Python imports
+- component_id: COMP-AI-001e
+  file: tools/supervisor/ai_sprint_manager.py
+  loc: 229
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI sprint manager; zero Python imports
+- component_id: COMP-AI-001f
+  file: tools/supervisor/ai_supervisor_advisor.py
+  loc: 228
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: AI supervisor advisor; zero Python imports
+- component_id: COMP-AI-002
+  file: tools/supervisor/embedding_retrieval.py
+  loc: 838
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Embedding retrieval utility
+- component_id: COMP-SPEC-001
+  file: tools/specification-authority-layer/sal_pipeline.py
+  loc: 5874
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: 'SAL pipeline; specification authority; G-005 enforcer (directory: tools/specification-authority-layer/)'
+- component_id: COMP-SPEC-002
+  file: tools/spec-normalize/normalize_spec.py
+  loc: 4286
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: 'Spec normalization (directory: tools/spec-normalize/)'
+- component_id: COMP-SPEC-003
+  file: tools/oracle/execute_oracle.py
+  loc: 3728
+  classification: ESSENTIAL_SAFETY_CRITICAL
+  disposition: RETAIN
+  tombstone_status: null
+  notes: 'Oracle execution framework; ALL 20 formats VERIFIED (directory: tools/oracle/)'
+- component_id: COMP-LEGACY-001
+  file: tools/supervisor/libforge_base.py
+  loc: 441
+  classification: EXPERIMENTAL
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: libforge experimental prototype
+- component_id: COMP-LEGACY-002
+  file: tools/supervisor/migrate_command_sections.py
+  loc: 742
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: One-time migration script; superseded; TC-BF-003 tombstone candidate
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-LEGACY-003a
+  file: tools/supervisor/build_proof_graph_iter001.py
+  loc: 170
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Proof graph generation v1; superseded; TC-BF-003 tombstone candidate
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-LEGACY-003b
+  file: tools/supervisor/build_proof_graph_iter002.py
+  loc: 170
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Proof graph generation v2; superseded; TC-BF-003 tombstone candidate
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-LEGACY-003c
+  file: tools/supervisor/build_proof_graph_iter003.py
+  loc: 170
+  classification: DEPRECATED_STILL_ACTIVE
+  disposition: QUARANTINE
+  tombstone_status: ACTIVE
+  notes: Proof graph generation v3; superseded; TC-BF-003 tombstone candidate
+  tombstone_date: '2026-07-06'
+  observation_window_expires: '2026-08-05'
+- component_id: COMP-TC-BF-002-ADVERSARIAL-CHECK
+  file: tools/supervisor/adversarial_check.py
+  loc: 97
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-AST-FORBIDDEN-SCANNER
+  file: tools/supervisor/ast_forbidden_scanner.py
+  loc: 348
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-ATOMIC-IO
+  file: tools/supervisor/atomic_io.py
+  loc: 58
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-AUTHORITY-CONVEYOR
+  file: tools/supervisor/authority_conveyor.py
+  loc: 355
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-AUTHORITY-GATE-VALIDATION
+  file: tools/supervisor/authority_gate_validation.py
+  loc: 364
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-AUTHORITY-INTEGRATION-FABRIC
+  file: tools/supervisor/authority_integration_fabric.py
+  loc: 462
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-AUTONOMOUS-CYCLE-EXTENSIONS---INIT--
+  file: tools/supervisor/autonomous_cycle_extensions/__init__.py
+  loc: 302
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-AUTONOMOUS-CYCLE-EXTENSIONS-KNOWLEDGE-FR
+  file: tools/supervisor/autonomous_cycle_extensions/knowledge_freshness_hook.py
+  loc: 45
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-AUTONOMY-ROUTE-DECIDER
+  file: tools/supervisor/autonomy_route_decider.py
+  loc: 564
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-AUTONOMY-ROUTE-LEDGER
+  file: tools/supervisor/autonomy_route_ledger.py
+  loc: 64
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-AUTONOMY-ROUTE-MODELS
+  file: tools/supervisor/autonomy_route_models.py
+  loc: 77
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-BACKEND-SELECTOR
+  file: tools/supervisor/backend_selector.py
+  loc: 150
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS---INIT--
+  file: tools/supervisor/backends/__init__.py
+  loc: 4
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-BACKENDS-COGNEE-MEMORY-BACKEND
+  file: tools/supervisor/backends/cognee_memory_backend.py
+  loc: 53
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-LLM-API-BACKEND
+  file: tools/supervisor/backends/llm_api_backend.py
+  loc: 247
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-LOCAL-DETERMINISTIC-BACKEND
+  file: tools/supervisor/backends/local_deterministic_backend.py
+  loc: 293
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-MCP-SUPERPOWERS-BACKEND
+  file: tools/supervisor/backends/mcp_superpowers_backend.py
+  loc: 64
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-SESSION-SKILL-BACKEND
+  file: tools/supervisor/backends/session_skill_backend.py
+  loc: 68
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-SKILL-SEEKERS-BACKEND
+  file: tools/supervisor/backends/skill_seekers_backend.py
+  loc: 48
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-SUPERPOWERS-SKILL-BACKEND
+  file: tools/supervisor/backends/superpowers_skill_backend.py
+  loc: 52
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BACKENDS-TASK-MASTER-BACKEND
+  file: tools/supervisor/backends/task_master_backend.py
+  loc: 64
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-BEFORE-AFTER-EVIDENCE
+  file: tools/supervisor/before_after_evidence.py
+  loc: 183
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-BOUNDED-REPAIR-ENGINE
+  file: tools/supervisor/bounded_repair_engine.py
+  loc: 424
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-BUILD-CAPABILITY-ROUTES
+  file: tools/supervisor/build_capability_routes.py
+  loc: 81
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-BUILD-CONTEXT-PACK
+  file: tools/supervisor/build_context_pack.py
+  loc: 344
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CAPABILITY-COMPILER
+  file: tools/supervisor/capability_compiler.py
+  loc: 521
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CAPABILITY-FEATURE-COMPILER
+  file: tools/supervisor/capability_feature_compiler.py
+  loc: 504
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CAPABILITY-QUEUE-CONSUMER
+  file: tools/supervisor/capability_queue_consumer.py
+  loc: 360
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CAPABILITY-TO-FEATURE-COMPILER
+  file: tools/supervisor/capability_to_feature_compiler.py
+  loc: 5
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CAPABILITY-VERIFIER
+  file: tools/supervisor/capability_verifier.py
+  loc: 416
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CAPTURE-RAW-LOGS
+  file: tools/supervisor/capture_raw_logs.py
+  loc: 158
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CCI-MIGRATION
+  file: tools/supervisor/cci_migration.py
+  loc: 214
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHECK-COMPONENT-REGISTER
+  file: tools/supervisor/check_component_register.py
+  loc: 89
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHECK-CROSS-STREAM-CONSUMPTION
+  file: tools/supervisor/check_cross_stream_consumption.py
+  loc: 299
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHECK-MCP-STATUS
+  file: tools/supervisor/check_mcp_status.py
+  loc: 233
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHECK-SYSTEM-HEALING-GATE
+  file: tools/supervisor/check_system_healing_gate.py
+  loc: 478
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHECK-TRACK-HEALTH
+  file: tools/supervisor/check_track_health.py
+  loc: 339
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CHOOSE-SKILL-OR-HANDOFF
+  file: tools/supervisor/choose_skill_or_handoff.py
+  loc: 264
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-CLOSURE-CHALLENGER
+  file: tools/supervisor/closure_challenger.py
+  loc: 254
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-COMPARE-GOAL-TO-EVIDENCE
+  file: tools/supervisor/compare_goal_to_evidence.py
+  loc: 362
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-COMPOSE-VERIFY-LOOP
+  file: tools/supervisor/compose_verify_loop.py
+  loc: 384
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONCURRENCY---INIT--
+  file: tools/supervisor/concurrency/__init__.py
+  loc: 9
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONCURRENCY-CHECKPOINT
+  file: tools/supervisor/concurrency/checkpoint.py
+  loc: 274
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONCURRENCY-ERRORS
+  file: tools/supervisor/concurrency/errors.py
+  loc: 69
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONCURRENCY-MISSION-LOCK
+  file: tools/supervisor/concurrency/mission_lock.py
+  loc: 386
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONCURRENCY-WORKER-CLAIM
+  file: tools/supervisor/concurrency/worker_claim.py
+  loc: 257
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX---INIT--
+  file: tools/supervisor/control_index/__init__.py
+  loc: 27
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONTROL-INDEX---MAIN--
+  file: tools/supervisor/control_index/__main__.py
+  loc: 140
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-ADAPTERS---INIT--
+  file: tools/supervisor/control_index/adapters/__init__.py
+  loc: 49
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-ADAPTERS-JSON-ADAPTER
+  file: tools/supervisor/control_index/adapters/json_adapter.py
+  loc: 95
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-ADAPTERS-YAML-ADAPTER
+  file: tools/supervisor/control_index/adapters/yaml_adapter.py
+  loc: 93
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-DB
+  file: tools/supervisor/control_index/db.py
+  loc: 92
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS---INIT--
+  file: tools/supervisor/control_index/ingestors/__init__.py
+  loc: 105
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-CAPABILITY-INGES
+  file: tools/supervisor/control_index/ingestors/capability_ingestor.py
+  loc: 53
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-EVENT-INGESTOR
+  file: tools/supervisor/control_index/ingestors/event_ingestor.py
+  loc: 55
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-EVIDENCE-INGESTO
+  file: tools/supervisor/control_index/ingestors/evidence_ingestor.py
+  loc: 131
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-FAILURE-INGESTOR
+  file: tools/supervisor/control_index/ingestors/failure_ingestor.py
+  loc: 60
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-FORMAT-INGESTOR
+  file: tools/supervisor/control_index/ingestors/format_ingestor.py
+  loc: 55
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-GAP-INGESTOR
+  file: tools/supervisor/control_index/ingestors/gap_ingestor.py
+  loc: 77
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-LAYER-INGESTOR
+  file: tools/supervisor/control_index/ingestors/layer_ingestor.py
+  loc: 75
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-PLAN-LOCK-INGEST
+  file: tools/supervisor/control_index/ingestors/plan_lock_ingestor.py
+  loc: 55
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-QNAME-INGESTOR
+  file: tools/supervisor/control_index/ingestors/qname_ingestor.py
+  loc: 59
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-SKILL-INGESTOR
+  file: tools/supervisor/control_index/ingestors/skill_ingestor.py
+  loc: 52
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-INGESTORS-VIOLATION-INGEST
+  file: tools/supervisor/control_index/ingestors/violation_ingestor.py
+  loc: 64
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-QUERY
+  file: tools/supervisor/control_index/query.py
+  loc: 298
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-SEARCH
+  file: tools/supervisor/control_index/search.py
+  loc: 114
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-STALENESS
+  file: tools/supervisor/control_index/staleness.py
+  loc: 95
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-CONTROL-INDEX-SYNC
+  file: tools/supervisor/control_index/sync.py
+  loc: 149
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-DELEGATE-GAP
+  file: tools/supervisor/delegate_gap.py
+  loc: 262
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-DELEGATION-GATE
+  file: tools/supervisor/delegation_gate.py
+  loc: 130
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-DETECT-AD-HOC-EXECUTION
+  file: tools/supervisor/detect_ad_hoc_execution.py
+  loc: 86
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-DETECT-PRODUCT-PROGRESS
+  file: tools/supervisor/detect_product_progress.py
+  loc: 220
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-DISCOVER-LATEST-EVIDENCE
+  file: tools/supervisor/discover_latest_evidence.py
+  loc: 274
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-DOM-BASELINE-SCANNER
+  file: tools/supervisor/dom_baseline_scanner.py
+  loc: 104
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-DOM-CONTRACT-CHECKER
+  file: tools/supervisor/dom_contract_checker.py
+  loc: 269
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-DOM-MATURITY-PROMOTER
+  file: tools/supervisor/dom_maturity_promoter.py
+  loc: 119
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-DRIVERS-PROMOTION
+  file: tools/supervisor/drivers_promotion.py
+  loc: 214
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EMIT-MATURITY-SIGNAL
+  file: tools/supervisor/emit_maturity_signal.py
+  loc: 89
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EVIDENCE-AUTO-PACKAGER
+  file: tools/supervisor/evidence_auto_packager.py
+  loc: 405
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EVIDENCE-CONTINUATION
+  file: tools/supervisor/evidence_continuation.py
+  loc: 366
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EVIDENCE-MANIFEST
+  file: tools/supervisor/evidence_manifest.py
+  loc: 298
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EXECUTION-BACKEND
+  file: tools/supervisor/execution_backend.py
+  loc: 97
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-EXTERNAL-TOOL-GOVERNANCE
+  file: tools/supervisor/external_tool_governance.py
+  loc: 219
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-FAILURE-MEMORY
+  file: tools/supervisor/failure_memory.py
+  loc: 233
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-FOCUSED-EVIDENCE-EXTRACTOR
+  file: tools/supervisor/focused_evidence_extractor.py
+  loc: 261
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-FREEZE-GATE-RUNNER
+  file: tools/supervisor/freeze_gate_runner.py
+  loc: 487
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GAP-CLOSURE-ENGINE
+  file: tools/supervisor/gap_closure_engine.py
+  loc: 157
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GAP-LEDGER-HYGIENE
+  file: tools/supervisor/gap_ledger_hygiene.py
+  loc: 223
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GAP-LEDGER-TO-WORK-ITEMS
+  file: tools/supervisor/gap_ledger_to_work_items.py
+  loc: 249
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-GAP-VERIFICATION-ENGINE
+  file: tools/supervisor/gap_verification_engine.py
+  loc: 114
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GATE-EXECUTOR
+  file: tools/supervisor/gate_executor.py
+  loc: 233
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GEN-READINESS-REGISTRY
+  file: tools/supervisor/gen_readiness_registry.py
+  loc: 42
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GEN-SKILL-TRANSCRIPTS
+  file: tools/supervisor/gen_skill_transcripts.py
+  loc: 179
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-CLOSURE-ARTIFACTS
+  file: tools/supervisor/generate_closure_artifacts.py
+  loc: 353
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-EXECUTION-HANDOFF
+  file: tools/supervisor/generate_execution_handoff.py
+  loc: 234
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-ITER001-SAMPLES
+  file: tools/supervisor/generate_iter001_samples.py
+  loc: 128
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-SAMPLE-OUTPUTS
+  file: tools/supervisor/generate_sample_outputs.py
+  loc: 153
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-SPRINT-LEARNING
+  file: tools/supervisor/generate_sprint_learning.py
+  loc: 373
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-STREAM-GAPS
+  file: tools/supervisor/generate_stream_gaps.py
+  loc: 291
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GENERATE-STREAM-ROUTING-PACKET
+  file: tools/supervisor/generate_stream_routing_packet.py
+  loc: 292
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATOR-UTILS
+  file: tools/supervisor/governance_validator_utils.py
+  loc: 152
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-CONSUMER-PROOF
+  file: tools/supervisor/governance_validators_consumer_proof.py
+  loc: 209
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-FOUND-ISSUE
+  file: tools/supervisor/governance_validators_found_issue.py
+  loc: 427
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-GATE-AUTH
+  file: tools/supervisor/governance_validators_gate_auth.py
+  loc: 301
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-LAYERS
+  file: tools/supervisor/governance_validators_layers.py
+  loc: 260
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-LEDGER
+  file: tools/supervisor/governance_validators_ledger.py
+  loc: 125
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-ORACLE
+  file: tools/supervisor/governance_validators_oracle.py
+  loc: 71
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-PATH
+  file: tools/supervisor/governance_validators_path.py
+  loc: 85
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-ROOT-STRUCT
+  file: tools/supervisor/governance_validators_root_struct.py
+  loc: 167
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-SAL
+  file: tools/supervisor/governance_validators_sal.py
+  loc: 291
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GOVERNANCE-VALIDATORS-SIGNAL
+  file: tools/supervisor/governance_validators_signal.py
+  loc: 96
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GRADE-INTERMEDIATE-VERIFY
+  file: tools/supervisor/grade_intermediate_verify.py
+  loc: 372
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GRADE-TO-QUALITY-ADAPTER
+  file: tools/supervisor/grade_to_quality_adapter.py
+  loc: 169
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GRADER-RELIABILITY
+  file: tools/supervisor/grader_reliability.py
+  loc: 459
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GRADING-RETRIEVAL-BRIDGE
+  file: tools/supervisor/grading_retrieval_bridge.py
+  loc: 133
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-GUARD-001-CHECKER
+  file: tools/supervisor/guard_001_checker.py
+  loc: 117
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-INIT-MISSION-LEDGER
+  file: tools/supervisor/init_mission_ledger.py
+  loc: 87
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-KNOWLEDGE-FRESHNESS-VALIDATOR
+  file: tools/supervisor/knowledge_freshness_validator.py
+  loc: 86
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LANE-DEPENDENCY-CHECKER
+  file: tools/supervisor/lane_dependency_checker.py
+  loc: 87
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LANE-ENFORCEMENT-VALIDATOR
+  file: tools/supervisor/lane_enforcement_validator.py
+  loc: 184
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LANE-EXECUTION-LEDGER
+  file: tools/supervisor/lane_execution_ledger.py
+  loc: 216
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LANE-SELECTOR
+  file: tools/supervisor/lane_selector.py
+  loc: 269
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-LEARNING-CONSUMER
+  file: tools/supervisor/learning_consumer.py
+  loc: 165
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LIBFORGE-ADAPTER-PLANNER
+  file: tools/supervisor/libforge_adapter_planner.py
+  loc: 203
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-LIBFORGE-INTEGRATION-EVIDENCE-CHECK
+  file: tools/supervisor/libforge_integration_evidence_check.py
+  loc: 774
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LIBFORGE-ISOLATED-JOB-RUNNER
+  file: tools/supervisor/libforge_isolated_job_runner.py
+  loc: 367
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-LIBFORGE-PATTERN-REGISTRY
+  file: tools/supervisor/libforge_pattern_registry.py
+  loc: 420
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LIFECYCLE-AUDIT
+  file: tools/supervisor/lifecycle_audit.py
+  loc: 808
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-LLM-BACKEND-CONFIG
+  file: tools/supervisor/llm_backend_config.py
+  loc: 65
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-LOGGING-CONFIG
+  file: tools/supervisor/logging_config.py
+  loc: 64
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-MACHINERY-AUDIT
+  file: tools/supervisor/machinery_audit.py
+  loc: 200
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-MAINSTREAM-ACCELERATION-PACKET
+  file: tools/supervisor/mainstream_acceleration_packet.py
+  loc: 336
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-MATERIALIZE-AND-REVIEW
+  file: tools/supervisor/materialize_and_review.py
+  loc: 62
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-MATERIALIZE-DECLARED-EVIDENCE
+  file: tools/supervisor/materialize_declared_evidence.py
+  loc: 424
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-MATURITY-TREND
+  file: tools/supervisor/maturity_trend.py
+  loc: 185
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-MCP-BRIDGE
+  file: tools/supervisor/mcp_bridge.py
+  loc: 127
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-NEIGHBORING-RISK-REVIEWER
+  file: tools/supervisor/neighboring_risk_reviewer.py
+  loc: 214
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-NEXT-ACTION-GENERATOR
+  file: tools/supervisor/next_action_generator.py
+  loc: 220
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-NEXT-ACTION-RUNNER
+  file: tools/supervisor/next_action_runner.py
+  loc: 242
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-NEXT-ACTION-SCHEMA
+  file: tools/supervisor/next_action_schema.py
+  loc: 99
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-NEXT-BEST-ACTION
+  file: tools/supervisor/next_best_action.py
+  loc: 155
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-ORCHESTRATOR-LIFETIME
+  file: tools/supervisor/orchestrator_lifetime.py
+  loc: 229
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PACKAGE-INSTALL-PROOF
+  file: tools/supervisor/package_install_proof.py
+  loc: 272
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PATCH-LEDGER-CSPROJ
+  file: tools/supervisor/patch_ledger_csproj.py
+  loc: 40
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PATCH-REGISTRY-MISSING-FIELDS
+  file: tools/supervisor/patch_registry_missing_fields.py
+  loc: 276
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PATH-RESOLVER
+  file: tools/supervisor/path_resolver.py
+  loc: 159
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-PLAN-IDENTITY
+  file: tools/supervisor/plan_identity.py
+  loc: 489
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PLAN-LOCK-GC
+  file: tools/supervisor/plan_lock_gc.py
+  loc: 42
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PLAN-PLACEMENT
+  file: tools/supervisor/plan_placement.py
+  loc: 107
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-POST-SPRINT-LOOP-CONTROLLER
+  file: tools/supervisor/post_sprint_loop_controller.py
+  loc: 374
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-PREFLIGHT-SKILL-ENTRY
+  file: tools/supervisor/preflight_skill_entry.py
+  loc: 62
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-PRIOR-CLOSURE-AUDITOR
+  file: tools/supervisor/prior_closure_auditor.py
+  loc: 183
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PRODUCT-ACTION-GUARD
+  file: tools/supervisor/product_action_guard.py
+  loc: 473
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PRODUCT-DEEPENING-GATE
+  file: tools/supervisor/product_deepening_gate.py
+  loc: 263
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PRODUCT-FEATURE-FACTORY
+  file: tools/supervisor/product_feature_factory.py
+  loc: 446
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-PRODUCT-SOURCE-EXECUTOR
+  file: tools/supervisor/product_source_executor.py
+  loc: 550
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PRODUCT-TASK-SELECTOR
+  file: tools/supervisor/product_task_selector.py
+  loc: 357
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PRODUCT-VELOCITY-SCORER
+  file: tools/supervisor/product_velocity_scorer.py
+  loc: 309
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PROJECT-PRODUCT-LEDGER-TO-PROOF-GRAPH
+  file: tools/supervisor/project_product_ledger_to_proof_graph.py
+  loc: 250
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PROMOTION-MANAGER
+  file: tools/supervisor/promotion_manager.py
+  loc: 257
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PROOF-ADEQUACY-CONTRACT
+  file: tools/supervisor/proof_adequacy_contract.py
+  loc: 414
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-PROOF-BACKED-POC-GATE
+  file: tools/supervisor/proof_backed_poc_gate.py
+  loc: 537
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-QNAME-ONTOLOGY-GENERATOR
+  file: tools/supervisor/qname_ontology_generator.py
+  loc: 389
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-QUALITY-SCORER
+  file: tools/supervisor/quality_scorer.py
+  loc: 349
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-README-LANE-INJECTOR
+  file: tools/supervisor/readme_lane_injector.py
+  loc: 155
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-RECONCILE-EXPORTS-VS-CAPABILITIES
+  file: tools/supervisor/reconcile_exports_vs_capabilities.py
+  loc: 138
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-RECORD-LANE-EXECUTION
+  file: tools/supervisor/record_lane_execution.py
+  loc: 290
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-REOPEN-PLAN-LOCK
+  file: tools/supervisor/reopen_plan_lock.py
+  loc: 321
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-RESET-TRACK-SIGNAL
+  file: tools/supervisor/reset_track_signal.py
+  loc: 160
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-REVIEWER-ADAPTER
+  file: tools/supervisor/reviewer_adapter.py
+  loc: 77
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-RISK-TAXONOMY
+  file: tools/supervisor/risk_taxonomy.py
+  loc: 55
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-RUN-SKILL-IDEMPOTENCY
+  file: tools/supervisor/run_skill_idempotency.py
+  loc: 78
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-SAL-FORMAT-ADVISORY
+  file: tools/supervisor/sal_format_advisory.py
+  loc: 160
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SCAN-RESIDUAL-BYPASSES
+  file: tools/supervisor/scan_residual_bypasses.py
+  loc: 116
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-SCOPE-GUARD
+  file: tools/supervisor/scope_guard.py
+  loc: 277
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SELECT-POC-GAPS
+  file: tools/supervisor/select_poc_gaps.py
+  loc: 548
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-SIMULATE-AUTONOMOUS-LOOP
+  file: tools/supervisor/simulate_autonomous_loop.py
+  loc: 381
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SKILL-INVENTORY
+  file: tools/supervisor/skill_inventory.py
+  loc: 74
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-SOURCE-PATTERN-MINER
+  file: tools/supervisor/source_pattern_miner.py
+  loc: 176
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-STALE-QUEUE-REPAIR-HOOK
+  file: tools/supervisor/stale_queue_repair_hook.py
+  loc: 165
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-STREAM-FORECASTER
+  file: tools/supervisor/stream_forecaster.py
+  loc: 130
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-STREAM-PROMPT-GENERATOR
+  file: tools/supervisor/stream_prompt_generator.py
+  loc: 183
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SUMMARY-CLASSIFIER
+  file: tools/supervisor/summary_classifier.py
+  loc: 420
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SYNC-LOCAL-MEMORY
+  file: tools/supervisor/sync_local_memory.py
+  loc: 243
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-SYNC-SKILL-COMMAND-REGISTRY
+  file: tools/supervisor/sync_skill_command_registry.py
+  loc: 89
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-TERMINAL-CLOSURE-VALIDATORS
+  file: tools/supervisor/terminal_closure_validators.py
+  loc: 239
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-TEST-DRIVERS
+  file: tools/supervisor/test_drivers.py
+  loc: 269
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-TEST-LAYER-UTILS
+  file: tools/supervisor/test_layer_utils.py
+  loc: 76
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-TEST-PLAN-GENERATOR
+  file: tools/supervisor/test_plan_generator.py
+  loc: 175
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-UPDATE-LEDGER-MWP
+  file: tools/supervisor/update_ledger_mwp.py
+  loc: 194
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-UPDATE-SOURCE-BASELINE
+  file: tools/supervisor/update_source_baseline.py
+  loc: 317
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-ADOPTION-COMPLIANCE
+  file: tools/supervisor/validate_adoption_compliance.py
+  loc: 293
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-CLAUDE-COMMANDS
+  file: tools/supervisor/validate_claude_commands.py
+  loc: 403
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-CLOSEOUT-GATE
+  file: tools/supervisor/validate_closeout_gate.py
+  loc: 322
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-EVIDENCE-FOR-SUPERVISOR
+  file: tools/supervisor/validate_evidence_for_supervisor.py
+  loc: 578
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-EXECUTION-PLAN
+  file: tools/supervisor/validate_execution_plan.py
+  loc: 210
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-LEDGER-ENTRY
+  file: tools/supervisor/validate_ledger_entry.py
+  loc: 168
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-NO-STOP-WATCHDOG
+  file: tools/supervisor/validate_no_stop_watchdog.py
+  loc: 219
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-PACKAGE-IDENTITY
+  file: tools/supervisor/validate_package_identity.py
+  loc: 236
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-PLAN-READINESS
+  file: tools/supervisor/validate_plan_readiness.py
+  loc: 219
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-PRODUCT-CODE-LEDGER
+  file: tools/supervisor/validate_product_code_ledger.py
+  loc: 195
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-PROMPT-QUALITY
+  file: tools/supervisor/validate_prompt_quality.py
+  loc: 256
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Has supervisor imports
+- component_id: COMP-TC-BF-002-VALIDATE-SKILL-CONTRACTS
+  file: tools/supervisor/validate_skill_contracts.py
+  loc: 86
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-SKILL-REGISTRY
+  file: tools/supervisor/validate_skill_registry.py
+  loc: 275
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-SKILL-TRANSCRIPT
+  file: tools/supervisor/validate_skill_transcript.py
+  loc: 211
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-SPEC-FACT-REFS
+  file: tools/supervisor/validate_spec_fact_refs.py
+  loc: 536
+  classification: USEFUL_SHARED_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: CLI/skill reference found
+- component_id: COMP-TC-BF-002-VALIDATE-SUPERVISOR-EVIDENCE-BUNDLE
+  file: tools/supervisor/validate_supervisor_evidence_bundle.py
+  loc: 332
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-VALIDATE-TRI-LANE-CONTRACT
+  file: tools/supervisor/validate_tri_lane_contract.py
+  loc: 583
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-WATCH-FOR-BUNDLE
+  file: tools/supervisor/watch_for_bundle.py
+  loc: 264
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-WRITE-CHAT-PLAN-BINDING
+  file: tools/supervisor/write_chat_plan_binding.py
+  loc: 152
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-WRITE-SPRINT-LEARNINGS
+  file: tools/supervisor/write_sprint_learnings.py
+  loc: 164
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+- component_id: COMP-TC-BF-002-WRITE-TRACK-HANDOFF
+  file: tools/supervisor/write_track_handoff.py
+  loc: 176
+  classification: SUSPECTED_GHOST
+  disposition: INVESTIGATE
+  tombstone_status: null
+  notes: Zero imports and zero CLI refs; suspected ghost
+# TC-BF-001 through TC-BF-008 new artifacts — created during BACKFILL plan execution
+- component_id: COMP-BACKFILL-001
+  file: tools/supervisor/check_component_register.py
+  loc: 84
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-001 artifact; CI enforcement script for component register completeness
+- component_id: COMP-BACKFILL-002
+  file: tools/supervisor/check_tombstone_records.py
+  loc: 133
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-004 artifact; reads invocation tombstone records; classifies FIRED vs CONFIRMED_DEAD
+- component_id: COMP-BACKFILL-003
+  file: tools/supervisor/governance_validators_contract.py
+  loc: 96
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-005 artifact; @validator decorator, ValidationResult, _VALIDATOR_REGISTRY
+- component_id: COMP-BACKFILL-004
+  file: tools/supervisor/run_regression_baseline.py
+  loc: 275
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-008 artifact; regression baseline with 4 checks
+- component_id: COMP-BACKFILL-005
+  file: tools/supervisor/control_index/ingestors/command_invocations_ingestor.py
+  loc: 75
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-006 artifact; ingests .claude/commands/*.md for .py references
+- component_id: COMP-BACKFILL-006
+  file: tools/supervisor/control_index/ingestors/skill_invocations_ingestor.py
+  loc: 79
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-006 artifact; ingests skill-registry.yaml for .py command_file references
+- component_id: COMP-BACKFILL-007
+  file: tools/supervisor/control_index/ingestors/subprocess_calls_ingestor.py
+  loc: 86
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-006 artifact; ingests tools/supervisor/**/*.py for subprocess.run() call sites
+- component_id: COMP-BACKFILL-008
+  file: tools/supervisor/check_extension_budget.py
+  loc: 84
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: TC-BF-007 artifact; CI enforcement script for extension budget (autonomous_* etc naming patterns)

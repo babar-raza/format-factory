@@ -13,6 +13,7 @@ Severity guidance:
   - All other items → WARN only
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import re
 from pathlib import Path
@@ -63,6 +64,7 @@ def _build_qname_registry() -> dict[str, str]:
     return registry
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_SPEC_QNAME", domain="dotnet")
 def validate_dotnet_spec_qname(
     declaration: dict,
     repo_root: "Path | None" = None,

@@ -10,6 +10,7 @@ product source path in a declaration.
 Authority: registry/repository-layout.yaml
 """
 
+from governance_validators_contract import validator  # noqa: F401
 # Paths prohibited in active product declarations.
 # src/dotnet/ itself (without a product subdir) is allowed in docs/history/;
 # only the never-to-be-created product subdirectories are blocked here.
@@ -19,6 +20,7 @@ _PROHIBITED_ACTIVE_PATHS = [
 ]
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_PATH_CANONICAL", domain="path")
 def validate_dotnet_path_canonical(
     declaration: dict, repo_root=None
 ) -> dict:

@@ -17,6 +17,7 @@ V138 (TC-CPR-003b): validate_consumer_proof_evidence_exists
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 import json
 import hashlib
@@ -62,6 +63,7 @@ def _find_venv_site_packages(repo_root: Path) -> Path | None:
     return None
 
 
+@validator(rule_id="V_VALIDATE_NO_STALE_INSTALLED_PACKAGES", domain="consumer_proof")
 def validate_no_stale_installed_packages(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
@@ -149,6 +151,7 @@ def validate_no_stale_installed_packages(
 # V138: Consumer proof execution evidence must exist
 # ---------------------------------------------------------------------------
 
+@validator(rule_id="V_VALIDATE_CONSUMER_PROOF_EVIDENCE_EXISTS", domain="consumer_proof")
 def validate_consumer_proof_evidence_exists(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:

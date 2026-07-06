@@ -21,6 +21,7 @@ V133 (PQLM-GOV-001, TC-VAL-002): validate_found_issue_invalid_disposition
 """
 
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -58,6 +59,7 @@ def _result(vid: str, name: str, passed: bool, items: list, blocks: bool) -> dic
 # ── V130 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_DOTNET_LOC_CAP_STATIC", domain="found_issue")
 def validate_dotnet_loc_cap_static(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -123,6 +125,7 @@ def validate_dotnet_loc_cap_static(
 # ── V131 ───────────���──────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_FOUND_ISSUE_DISPOSITION", domain="found_issue")
 def validate_found_issue_disposition(declaration: dict) -> dict:
     """V131: Each found_issue entry must have a disposition field.
 
@@ -146,6 +149,7 @@ def validate_found_issue_disposition(declaration: dict) -> dict:
 # ── V132 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_FOUND_ISSUE_ESCALATION", domain="found_issue")
 def validate_found_issue_escalation(declaration: dict) -> dict:
     """V132: FI items with risk_not_reduced disposition must include an escalation_plan.
 
@@ -173,6 +177,7 @@ def validate_found_issue_escalation(declaration: dict) -> dict:
 # ─�� V133 ���─────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_FOUND_ISSUE_INVALID_DISPOSITION", domain="found_issue")
 def validate_found_issue_invalid_disposition(declaration: dict) -> dict:
     """V133: FI disposition must be one of the 6 valid values.
 
@@ -281,6 +286,7 @@ def _load_found_issue_register(repo_root: "Path | None") -> "list[dict] | None":
 # ── V139 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_FOUND_ISSUE_REGISTER_PRESENT", domain="found_issue")
 def validate_found_issue_register_present(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -340,6 +346,7 @@ _STATUS_TO_BUCKET: dict[str, str] = {
 }
 
 
+@validator(rule_id="V_VALIDATE_ISSUE_ACCOUNTING_RECONCILES", domain="found_issue")
 def validate_issue_accounting_reconciles(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -368,6 +375,7 @@ def validate_issue_accounting_reconciles(
 # ── V141 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_NO_PROSE_ONLY_FINDINGS", domain="found_issue")
 def validate_no_prose_only_findings(declaration: dict) -> dict:
     """V141: Detect dismissal language in worker_self_verdict or work item notes.
 
@@ -395,6 +403,7 @@ def validate_no_prose_only_findings(declaration: dict) -> dict:
 # ── V142 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V_VALIDATE_INVALID_OWNERSHIP_DISPOSITION", domain="found_issue")
 def validate_invalid_ownership_disposition(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

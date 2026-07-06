@@ -3,9 +3,11 @@ governance_validators_sal.py — SAL-specific governance validators (SAL-VHIP-00
 Extracted to keep governance_validators_ext.py within its baseline_loc_cap.
 """
 from __future__ import annotations
+from governance_validators_contract import validator  # noqa: F401
 from pathlib import Path
 
 
+@validator(rule_id="V_VALIDATE_CAPABILITY_FACT_RATIO", domain="sal")
 def validate_capability_fact_ratio(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V-NEW-001: Warn when capabilities/verified_facts ratio > 10 for a format (inflation check)."""
     import json as _json
@@ -89,6 +91,7 @@ def validate_capability_fact_ratio(declaration: dict, repo_root: "Path | None" =
     }
 
 
+@validator(rule_id="V_VALIDATE_SPEC_FACT_PROVENANCE_ADVISORY", domain="sal")
 def validate_spec_fact_provenance_advisory(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V-NEW-002: Warn when READINESS items have spec_fact_refs but no spec_fact_provenance.
 
@@ -142,6 +145,7 @@ def validate_spec_fact_provenance_advisory(declaration: dict, repo_root: "Path |
     }
 
 
+@validator(rule_id="V_VALIDATE_SAL_FACTS_SCHEMA", domain="sal")
 def validate_sal_facts_schema(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V-SAL-SCHEMA-001: Validate sal-facts-latest.json exists and matches required structure."""
     import json as _json
@@ -227,6 +231,7 @@ def validate_sal_facts_schema(declaration: dict, repo_root: "Path | None" = None
     }
 
 
+@validator(rule_id="V_VALIDATE_WORK_ITEMS_SAL_BACKING", domain="sal")
 def validate_work_items_sal_backing(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V-CAP-SAL-GATE-001: Warn when next-work-items.json contains items with empty spec_facts.
 
