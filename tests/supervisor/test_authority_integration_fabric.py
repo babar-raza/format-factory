@@ -31,6 +31,11 @@ from tools.requirements_authority.graph_store import GraphStore
 SPEC_ARTIFACTS_DIR = REPO_ROOT / ".local" / "spec-artifacts"
 FIXTURES_DIR = REPO_ROOT / "requirements-authority" / "fixtures"
 
+pytestmark = pytest.mark.skipif(
+    not SPEC_ARTIFACTS_DIR.is_dir(),
+    reason="Spec artifacts not present in this environment (.local/spec-artifacts)",
+)
+
 REQUIRED_OUTPUT_FILES = [
     "spec-context-pack-index.json",
     "authority-integration-contract.json",

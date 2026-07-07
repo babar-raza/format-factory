@@ -15,8 +15,11 @@ import re
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO / "tools" / "supervisor"))
+_SPEC_CACHE = REPO / ".local" / "spec-cache"
 
 
 # ── Inline stale-fact policy (mirrors warning-mode design) ──────────────────
@@ -161,6 +164,11 @@ class TestStaleWarningIsNotHardBlock:
 
 class TestSpecCacheFreshnessCheck:
     """Integration test against real spec cache."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_zst_facts_freshness_check_runs(self):
         results = check_spec_cache_freshness("zst")

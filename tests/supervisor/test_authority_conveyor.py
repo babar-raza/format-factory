@@ -9,8 +9,12 @@ import sys
 import json
 from pathlib import Path
 
+import pytest
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
+_REPO_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(_REPO_ROOT / "tools" / "supervisor"))
+
+_SPEC_CACHE = _REPO_ROOT / ".local" / "spec-cache"
 
 from authority_conveyor import run_conveyor
 
@@ -22,6 +26,11 @@ from authority_conveyor import run_conveyor
 
 class TestRealFormatConveyor:
     """Smoke tests using real repo state."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_fods_already_at_p6(self):
         """FODS is P6 — already at or above target P6."""

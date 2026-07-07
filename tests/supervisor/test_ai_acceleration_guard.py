@@ -12,7 +12,9 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
+_REPO_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(_REPO_ROOT / "tools" / "supervisor"))
+_SPEC_CACHE = _REPO_ROOT / ".local" / "spec-cache"
 
 from validate_spec_fact_refs import (
     validate_ai_fact_guard,
@@ -173,6 +175,11 @@ class TestAiFactGuardCore:
 
 class TestSpecCacheAiGuard:
     """Tests for validate_spec_cache_ai_guard() against real spec cache."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_real_spec_cache_has_no_ai_self_verification(self):
         """Real spec cache must not contain any AI self-verification violations."""
