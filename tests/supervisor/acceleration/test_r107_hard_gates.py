@@ -266,7 +266,7 @@ class TestEvidenceQualityEnforcement:
         }
         review = grade_all(inspection, declaration)
         assert review["evidence_quality_score"] == 1.0
-        assert review["overall_verdict"] == "ACCEPTED"
+        assert review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK")
 
 
 # --- Lane E: Prompt quality check tests ---

@@ -408,8 +408,8 @@ def run_all_governance_validators(
             validate_root_structure as _validate_root_structure,
         )
         results.append(_validate_root_structure(declaration, repo_root))
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v91:
+        _skipped_validators.append({"validators": ["V91"], "error": str(_exc_v91)})
 
     # V92-V99 (TC-PB-009, FF-PLAYBOOK-SYSTEM-001): Playbook governance drift guards (WARN-only)
     try:
@@ -503,8 +503,8 @@ def run_all_governance_validators(
             }
 
         results.append(_norm_path(_v110(declaration, repo_root)))
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v110:
+        _skipped_validators.append({"validators": ["V110"], "error": str(_exc_v110)})
 
     # V111-V127 (TC-ARC-012/CQGA-014): Architecture QName validators
     # These validators operate on individual product source files (not the declaration object).
@@ -580,8 +580,8 @@ def run_all_governance_validators(
                     results.append(_norm_ext4_file(r))
                 except Exception:
                     pass
-    except Exception:
-        pass  # Non-blocking on import failure
+    except Exception as _exc_v111:
+        _skipped_validators.append({"validators": ["V111", "V112", "V113", "V117", "V118", "V119", "V120", "V121", "V123", "V124", "V125", "V126", "V127"], "error": str(_exc_v111)})
 
     # SAL format advisory (non-blocking, Lane E integration)
     try:

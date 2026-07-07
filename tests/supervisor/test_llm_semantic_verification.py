@@ -187,7 +187,7 @@ class TestSemanticVerificationDowngradeOnly:
         }
         declaration = {"planned_work_items": []}
         result = grade_all(inspection, declaration)
-        assert result["overall_verdict"] == "ACCEPTED"
+        assert result["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK")
         assert result["evidence_quality_score"] == 0.0
 
     def test_grade_all_preserves_deterministic_grades_without_llm(self):

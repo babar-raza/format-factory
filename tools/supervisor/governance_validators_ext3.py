@@ -111,7 +111,10 @@ def _load_baseline(repo_root: Path) -> dict:
         return {"known_violations": {}}
 
 
-@validator(rule_id="V_VALIDATE_SUSPICIOUS_FILENAMES", domain="structural")
+@validator(rule_id="V_VALIDATE_SUSPICIOUS_FILENAMES", domain="structural",
+           description="Block dumping-ground filename patterns in product source",
+           skill_ids=["add-python-api", "add-dotnet-api", "add-python-object-model-feature",
+                      "add-dotnet-object-model-feature", "product-source-task"])
 def validate_suspicious_filenames(declaration: dict, repo_root: "Path | None" = None) -> dict:
     """V100: Product source files must not have dumping-ground filename patterns.
 
@@ -156,7 +159,9 @@ def validate_suspicious_filenames(declaration: dict, repo_root: "Path | None" = 
     }
 
 
-@validator(rule_id="V_VALIDATE_HISTORY_IDENTIFIERS_IN_SOURCE", domain="structural")
+@validator(rule_id="V_VALIDATE_HISTORY_IDENTIFIERS_IN_SOURCE", domain="structural",
+           description="Warn when sprint/wave/train history IDs appear in production source",
+           skill_ids=["add-python-api", "add-dotnet-api", "product-source-task"])
 def validate_history_identifiers_in_source(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -206,7 +211,10 @@ def validate_history_identifiers_in_source(
     }
 
 
-@validator(rule_id="V_VALIDATE_UNDOCUMENTED_PUBLIC_PYTHON_APIS", domain="structural")
+@validator(rule_id="V_VALIDATE_UNDOCUMENTED_PUBLIC_PYTHON_APIS", domain="structural",
+           description="Block public Python functions in product source without docstrings",
+           skill_ids=["add-python-api", "add-python-object-model-feature", "product-source-task",
+                      "add-spec-analytics-function"])
 def validate_undocumented_public_python_apis(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -282,7 +290,9 @@ def validate_undocumented_public_python_apis(
     }
 
 
-@validator(rule_id="V_VALIDATE_UNGOVERNED_TODO_MARKERS", domain="structural")
+@validator(rule_id="V_VALIDATE_UNGOVERNED_TODO_MARKERS", domain="structural",
+           description="Warn for TODO/FIXME/HACK without GAP-* or TC-* reference",
+           skill_ids=["add-python-api", "add-dotnet-api", "product-source-task"])
 def validate_ungoverned_todo_markers(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -332,7 +342,9 @@ def validate_ungoverned_todo_markers(
     }
 
 
-@validator(rule_id="V_VALIDATE_CONSTANT_RETURN_PUBLIC_METHODS", domain="structural")
+@validator(rule_id="V_VALIDATE_CONSTANT_RETURN_PUBLIC_METHODS", domain="structural",
+           description="Block public Python functions that return only a literal constant",
+           skill_ids=["add-python-api", "add-python-object-model-feature", "product-source-task"])
 def validate_constant_return_public_methods(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -424,7 +436,9 @@ def validate_constant_return_public_methods(
     }
 
 
-@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_SOURCE", domain="structural")
+@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_SOURCE", domain="structural",
+           description="Block .cs public getters reading from private dict fields without XML path",
+           skill_ids=["add-dotnet-api", "add-dotnet-object-model-feature"])
 def validate_getter_without_parser_source(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -510,7 +524,9 @@ def validate_getter_without_parser_source(
     }
 
 
-@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_PATH", domain="structural")
+@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_PATH", domain="structural",
+           description="Block .cs public setters writing to dict only without XML writer path",
+           skill_ids=["add-dotnet-api", "add-dotnet-object-model-feature"])
 def validate_setter_without_writer_path(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -589,7 +605,9 @@ def validate_setter_without_writer_path(
     }
 
 
-@validator(rule_id="V_VALIDATE_TEST_ONLY_PUBLIC_APIS", domain="structural")
+@validator(rule_id="V_VALIDATE_TEST_ONLY_PUBLIC_APIS", domain="structural",
+           description="Warn for public Python/C# APIs referenced only in test files",
+           skill_ids=["add-python-api", "add-dotnet-api", "product-source-task"])
 def validate_test_only_public_apis(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -685,7 +703,9 @@ def validate_test_only_public_apis(
     }
 
 
-@validator(rule_id="V_VALIDATE_DETACHED_PERSISTENT_STATE", domain="structural")
+@validator(rule_id="V_VALIDATE_DETACHED_PERSISTENT_STATE", domain="structural",
+           description="Block private Dictionary<> _field persistent state in .cs product source",
+           skill_ids=["add-dotnet-api", "add-dotnet-object-model-feature"])
 def validate_detached_persistent_state(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -765,7 +785,10 @@ def validate_detached_persistent_state(
     }
 
 
-@validator(rule_id="V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT", domain="structural")
+@validator(rule_id="V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT", domain="structural",
+           description="Block product source files outside approved layout contract",
+           skill_ids=["add-python-api", "add-dotnet-api", "add-python-object-model-feature",
+                      "add-dotnet-object-model-feature", "product-source-task"])
 def validate_files_outside_approved_layout(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:

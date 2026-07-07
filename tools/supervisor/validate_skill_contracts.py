@@ -5,13 +5,19 @@ For each registered active skill in skill-registry.yaml, verify:
   (a) command_file exists on disk
   (b) required fields present (purpose, command, status)
   (c) status is a valid enum value
+  (d) validator coverage: if _VALIDATOR_REGISTRY has entries mapping to this skill,
+      the skill's command_file must mention those rule_ids (TC-CQGA-033-03)
 
 Output: .supervisor/skill-contract-validation-results.yaml
-LOC budget: <80 lines
 """
 import argparse
+import sys
 from pathlib import Path
 import yaml
+
+_SUPERVISOR_DIR = Path(__file__).resolve().parent
+if str(_SUPERVISOR_DIR) not in sys.path:
+    sys.path.insert(0, str(_SUPERVISOR_DIR))
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 _VALID_STATUSES = {"active", "deprecated", "experimental", "retired"}
@@ -33,14 +39,30 @@ def validate(skill: dict, repo_root: Path) -> dict:
                          "detail": f"Status '{status}' not in {sorted(_VALID_STATUSES)}"})
 
     cf = skill.get("command_file", "")
+    cmd_path = repo_root / cf if cf else None
     if cf:
-        cmd_path = repo_root / cf
         if not cmd_path.exists():
             findings.append({"check": "command_file_exists", "result": "FAIL",
                              "detail": f"command_file not found: {cf}"})
     else:
         findings.append({"check": "command_file_exists", "result": "WARN",
                          "detail": "No command_file specified"})
+
+    # (d) Validator coverage: check that command_file mentions applicable rule_ids
+    if cf and cmd_path and cmd_path.exists():
+        try:
+            from governance_validators_contract import _VALIDATOR_REGISTRY  # noqa: PLC0415
+            cmd_text = cmd_path.read_text(encoding="utf-8", errors="replace")
+            for entry in _VALIDATOR_REGISTRY:
+                if sid in entry.get("skill_ids", []):
+                    rid = entry["rule_id"]
+                    if rid not in cmd_text:
+                        findings.append({"check": f"validator_coverage:{rid}", "result": "WARN",
+                                         "detail": (f"Validator {rid} (domain={entry.get('domain')}) "
+                                                    f"applies to skill '{sid}' but is not mentioned "
+                                                    f"in {cf}")})
+        except Exception:
+            pass  # Registry loading is best-effort; never blocks contract check
 
     fails = sum(1 for f in findings if f["result"] == "FAIL")
     warns = sum(1 for f in findings if f["result"] == "WARN")

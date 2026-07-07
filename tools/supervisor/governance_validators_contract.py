@@ -69,6 +69,7 @@ def validator(
     rule_id: str,
     domain: str,
     description: str = "",
+    skill_ids: "list[str] | None" = None,
 ) -> Callable[[Callable], Callable]:
     """Decorator that registers a governance validator in _VALIDATOR_REGISTRY.
 
@@ -76,12 +77,16 @@ def validator(
         rule_id: Canonical rule identifier (e.g. "V001"). Must be unique per function.
         domain: Domain classification for the validator (see VALID_DOMAINS).
         description: Human-readable description of what this validator checks.
+        skill_ids: Optional list of skill IDs (from .supervisor/skill-registry.yaml) that
+            must mention this validator in their command files. Used by
+            validate_skill_contracts.py to detect stale skill documentation.
+            Example: ["add-python-api", "add-dotnet-api"]
 
     Returns:
         The original function unchanged (decorator is metadata-only).
 
     Example:
-        @validator(rule_id="V001", domain="structural")
+        @validator(rule_id="V001", domain="structural", skill_ids=["add-python-api"])
         def validate_source_architecture(context):
             ...
     """
@@ -90,6 +95,7 @@ def validator(
             "rule_id": rule_id,
             "domain": domain,
             "description": description,
+            "skill_ids": skill_ids or [],
             "fn": fn,
         })
         return fn
