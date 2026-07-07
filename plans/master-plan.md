@@ -6670,3 +6670,42 @@ Rectify all material gaps, contradictions, and stale documentation discovered in
 - Documentation gap: ISSUE-IMPL-001 undocumented → fixed in CSV README (TC-G)
 
 **Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+
+## §121 — snazzy-rolling-feigenbaum: Python Product Release Gate System PYREL-001 (TERMINAL_CLOSED 2026-07-07)
+
+**Plan:** `snazzy-rolling-feigenbaum.md` | **Type:** structural_redesign | **Total Taskcards:** 15 | **External gates:** 2
+
+### Summary
+
+Established the complete Python FOSS package release gate system. Renamed .NET workflow, created Python release workflow, standardized all 20 package names to `format-factory-{fmt}`, fixed gate_executor.py bugs, added V144 gate_10 consistency validator, extended gate checks with G_TESTS/G_EXAMPLES/G_SPECQNAME, and fixed publication-runbook.md.
+
+### Taskcards
+
+| TC-ID | Deliverable | Status |
+|-------|-------------|--------|
+| TC-PYREL-001 | gate_executor.py: G1 test path fixed, G5 reads gate_10.status, extended gates | CLOSED |
+| TC-PYREL-002 | package-matrix.yaml: all 20 formats → format-factory-{fmt} (0 aspose refs) | CLOSED |
+| TC-PYREL-003 | fods+fodt pyproject.toml: format-factory-fods/format-factory-fodt | CLOSED |
+| TC-PYREL-004 | build-local-packages.py: --format + --version CLI flags | CLOSED |
+| TC-PYREL-005 | Full build verified: format_factory_fods-0.1.0-py3-none-any.whl (4 artifacts) | CLOSED |
+| TC-PYREL-006 | release.yml → release-dotnet.yml; G11 key bug fixed | CLOSED |
+| TC-PYREL-007 | release-python.yml: publish job with gate checks + --full-check | CLOSED |
+| TC-PYREL-008 | format-registry.yaml gate_10.status standardized (local_release_*→passed) | CLOSED |
+| TC-PYREL-009 | V144 validate_gate10_status_consistency; expected_count 161→162 | CLOSED |
+| TC-PYREL-010 | gate_executor: G_TESTS/G_EXAMPLES/G_SPECQNAME/--full-check | CLOSED |
+| TC-PYREL-011 | release-python.yml: --full-check --dry-run wired in gate check step | CLOSED |
+| TC-PYREL-012 | publication-runbook.md: old API refs removed | CLOSED |
+| TC-PYREL-013 | PyPI name format-factory-fods: free (not published to public registry) | CLOSED |
+| TC-PYREL-014 | TestPyPI dry run | BLOCKED_EXTERNAL_GATE |
+| TC-PYREL-015 | Production PyPI release | BLOCKED_EXTERNAL_GATE |
+
+### Verification
+
+- gate_executor G1/G2/G5 for fods: **ALL PASS**
+- gate_executor G5 for ora: **FAIL (correct — gate_10=not_started)**
+- V144 gate_10 consistency: **PASS (no non-standard values)**
+- Canonical validator count: **162/162 PASS** (V144 wired)
+- Build format_factory_fods-0.1.0: **4 artifacts, 0 issues**
+- Commit: `ffa96939`
+
+**Final Verdict:** PYREL_PYTHON_RELEASE_GATE_SYSTEM_ESTABLISHED | TERMINAL_CLOSED
