@@ -56,6 +56,7 @@ RESULT_STALE_ORACLE = "STALE_ORACLE"
 RESULT_INCONCLUSIVE = "INCONCLUSIVE"
 RESULT_NOT_APPLICABLE = "NOT_APPLICABLE"
 RESULT_SKIPPED_MISSING_PROVIDER = "SKIPPED_MISSING_PROVIDER"
+RESULT_SKIPPED_MISSING_DEPENDENCY = "SKIPPED_MISSING_DEPENDENCY"
 
 # Oracle depth levels (FF-XPLAN-001 W2A-002)
 DEPTH_D0 = "D0"  # Load didn't crash (no property comparison)
@@ -212,13 +213,14 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
                             diagnostics=[f"Unsupported properties in CSV executor: {unsupported_props}"],
                         )
                     result = RESULT_PASS if not deviations else RESULT_FAIL
+                    depth = DEPTH_D1 if expected_props else DEPTH_D0
                     return make_verdict(
                         oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
                         format_id="csv", product_id="format-factory-csv", language="python",
                         case_id=case_id, profile="LIMITS_AND_BOUNDARIES",
                         result=result, authority_status=authority_status,
                         observed=observed, expected=expected_props,
-                        deviations=deviations,
+                        deviations=deviations, depth_level=depth,
                     )
                 finally:
                     os.unlink(tmp_path)
@@ -284,6 +286,7 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
             )
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
+        depth = DEPTH_D1 if expected_props else DEPTH_D0
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="csv", product_id="format-factory-csv", language="python",
@@ -291,6 +294,7 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props,
             deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
 
     except Exception as e:
@@ -429,6 +433,7 @@ def execute_tsv_valid_case(case: dict, pkg: dict) -> dict:
                     deviations.append({"property": prop, "expected_min": exp_min, "observed": obs_val})
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
+        depth = DEPTH_D1 if expected_props else DEPTH_D0
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="tsv", product_id="format-factory-tsv", language="python",
@@ -436,6 +441,7 @@ def execute_tsv_valid_case(case: dict, pkg: dict) -> dict:
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props,
             deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
 
     except Exception as e:
@@ -518,6 +524,7 @@ def execute_ndjson_valid_case(case: dict, pkg: dict) -> dict:
             })
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
+        depth = DEPTH_D1 if expected_props else DEPTH_D0
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="ndjson", product_id="format-factory-ndjson", language="python",
@@ -525,6 +532,7 @@ def execute_ndjson_valid_case(case: dict, pkg: dict) -> dict:
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props,
             deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
 
     except Exception as e:
@@ -631,6 +639,7 @@ def execute_toml_valid_case(case: dict, pkg: dict) -> dict:
                 os.unlink(tmp_path)
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
+        depth = DEPTH_D1 if expected_props else DEPTH_D0
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="toml", product_id="format-factory-toml", language="python",
@@ -638,6 +647,7 @@ def execute_toml_valid_case(case: dict, pkg: dict) -> dict:
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props,
             deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
 
     except Exception as e:
@@ -838,13 +848,17 @@ def execute_pgm_valid_case(case: dict, pkg: dict) -> dict:
             sys.path.insert(0, src_py)
         from pgm.pgm_parser import parse_pgm as _parse_pgm
         result_val = _parse_pgm(str(sample_path))
+        observed, deviations, depth = _compare_model_properties(
+            result_val, case.get("expected_model_properties", [])
+        )
+        result = RESULT_PASS if not deviations else RESULT_FAIL
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="pgm", product_id="format-factory-pgm", language="python",
             case_id=case_id, profile="PARSE_VALIDITY",
-            result=RESULT_PASS, authority_status=authority_status,
-            observed={"loaded": True, "ok": result_val.get("ok") if isinstance(result_val, dict) else None},
-            deviations=[], input_hash=input_hash,
+            result=result, authority_status=authority_status,
+            observed=observed, deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
     except Exception as e:
         return make_verdict(
@@ -955,6 +969,7 @@ def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
             )
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
+        depth = DEPTH_D1 if expected_props else DEPTH_D0
         return make_verdict(
             oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
             format_id="zst", product_id="format-factory-zst", language="python",
@@ -962,6 +977,7 @@ def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
             result=result, authority_status=authority_status,
             observed=observed, expected=expected_props,
             deviations=deviations, input_hash=input_hash,
+            depth_level=depth,
         )
 
     except Exception as e:
@@ -1606,7 +1622,8 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
     verdicts = []
     counts = {"PASS": 0, "FAIL": 0, "BLOCKED_MISSING_AUTHORITY": 0,
                "BLOCKED_MISSING_SAMPLE": 0, "INCONCLUSIVE": 0, "NOT_APPLICABLE": 0,
-               "STALE_ORACLE": 0, "INVALID_ORACLE": 0}
+               "STALE_ORACLE": 0, "INVALID_ORACLE": 0,
+               "SKIPPED_MISSING_PROVIDER": 0, "SKIPPED_MISSING_DEPENDENCY": 0}
 
     # Execute valid cases
     for case in pkg.get("valid_cases", []):

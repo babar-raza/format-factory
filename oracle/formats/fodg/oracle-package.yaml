@@ -55,6 +55,13 @@ valid_cases:
       expect_type: dict
       expect_no_exception: true
     authority_ref: FACT-FODG-001
+    expected_model_properties:
+      - property: is_fodg
+        value: true
+        authority: FORMAT_FACTORY_IMPL
+      - property: page_count
+        value: 1
+        authority: FORMAT_FACTORY_IMPL
 
   - case_id: fodg-valid-002
     profile: PARSE_VALIDITY
@@ -70,6 +77,10 @@ valid_cases:
       expect_return_value: true
       expect_no_exception: true
     authority_ref: FACT-FODG-001
+    expected_model_properties:
+      - property: is_fodg
+        value: true
+        authority: FORMAT_FACTORY_IMPL
 
   - case_id: fodg-valid-003
     profile: PARSE_VALIDITY
@@ -86,6 +97,10 @@ valid_cases:
       expect_type: dict
       expect_no_exception: true
     authority_ref: FACT-FODG-001
+    expected_model_properties:
+      - property: is_fodg
+        value: true
+        authority: FORMAT_FACTORY_IMPL
 
 invalid_cases:
   - case_id: fodg-invalid-001

@@ -6712,3 +6712,43 @@ Established the complete Python FOSS package release gate system. Renamed .NET w
 - Commit: `ffa96939`
 
 **Final Verdict:** PYREL_PYTHON_RELEASE_GATE_SYSTEM_ESTABLISHED | TERMINAL_CLOSED
+
+---
+
+## §122 — twinkly-coalescing-jellyfish: Oracle Depth Scoring Convergence (TERMINAL_CLOSED 2026-07-07)
+
+**Mission:** Advance all 20 Python FOSS format oracle summaries from D0 (load-only) to D1+ (property-level comparison), eliminating false-positive "73/73 PASS" signal and making V143 governance validator pass cleanly.
+
+**Plan:** `C:/Users/prora/.claude/plans/twinkly-coalescing-jellyfish.md` | type: structural_redesign
+
+### What Was Completed
+
+All 5 taskcards closed in a single session (2026-07-07):
+
+| TC-ID | Deliverable | Status |
+|-------|-------------|--------|
+| TC-REMAINING-004 | FODG oracle-package.yaml: `expected_model_properties` added to all 3 valid cases (is_fodg, page_count) | CLOSED |
+| TC-REMAINING-003A | `depth_level=DEPTH_D1` added to CSV/TSV/NDJSON/TOML/ZST executors; PGM executor refactored to call `_compare_model_properties()` | CLOSED |
+| TC-REMAINING-003C | Oracle re-run for all 8 D0 formats (fods, pgm, fodg, zst, tsv, csv, ndjson, toml) — all now at D1 | CLOSED |
+| TC-REMAINING-002 | `lxml>=4.9` added to `pyproject.toml` [dev] optional deps | CLOSED |
+| TC-REMAINING-001 | `RESULT_SKIPPED_MISSING_DEPENDENCY` constant added to `execute_oracle.py`; both SKIPPED types pre-declared in counts dict | CLOSED |
+
+### Changes
+
+- `tools/oracle/execute_oracle.py`: +27 lines — DEPENDENCY constant, depth_level in 6 executors, PGM refactored, counts dict updated
+- `oracle/formats/fodg/oracle-package.yaml`: +25 lines — expected_model_properties for 3 cases
+- `pyproject.toml`: +1 line — lxml>=4.9 in dev deps
+- `oracle/formats/*/reports/oracle-run-summary.json`: 8 files regenerated (csv, fodg, fods, ndjson, pgm, toml, tsv, zst)
+
+### Verification
+
+- FODS oracle: 9/10 PASS (10 total; 1 SKIPPED_MISSING_PROVIDER for fods-lo-001 — LibreOffice absent)
+- All 20 formats: `format_depth_score = "D1"` — zero D0 formats
+- V143 `validate_oracle_depth_minimum`: **PASS — "All 20 formats at D1+ depth"**
+- Root cause fixed: 5 pre-existing dedicated executors missing `depth_level=DEPTH_D1`; PGM hardcoded D0; FODG had no YAML properties
+
+### Remaining (BLOCKED_EXTERNAL)
+
+- LibreOffice D3 depth (fods-lo-001): requires user to install LibreOffice — executor ready, SKIPPED gracefully
+
+**Final Verdict:** ORACLE_DEPTH_ALL_D1_VERIFIED | TERMINAL_CLOSED
