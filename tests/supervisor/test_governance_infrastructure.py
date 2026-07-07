@@ -122,7 +122,15 @@ class TestWorkTypeSkillMap:
 # gap-register.yaml
 # ---------------------------------------------------------------------------
 
+_GAP_REGISTER = _REPO / ".local" / "recon" / "gap-register.yaml"
+
+
 class TestGapRegister:
+    pytestmark = pytest.mark.skipif(
+        not _GAP_REGISTER.is_file(),
+        reason=".local/recon/gap-register.yaml not present in this environment",
+    )
+
     def test_yaml_parses(self):
         d = _load_yaml(".local/recon/gap-register.yaml")
         assert isinstance(d, dict)

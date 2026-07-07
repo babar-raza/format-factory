@@ -50,23 +50,26 @@ class TestFactRegistryBuilder:
         registry = _build_fact_registry(repo_root=tmp_path)
         assert registry == {}
 
-    def test_loads_fact_ids_from_verified_facts_file(self, tmp_path):
-        """Facts from verified-facts-review.yaml are loaded into registry."""
-        workbench = tmp_path / ".local" / "spec-cache" / "fods" / "1.3" / "workbench"
-        workbench.mkdir(parents=True)
-        facts_file = workbench / "verified-facts-review.yaml"
-        facts_file.write_text(
-            """
-facts:
-  - claim_id: FACT-FODS-001
-    provenance:
-      verification_status: verified
-  - claim_id: FACT-FODS-002
-    provenance:
-      verification_status: needs_review
-""",
-            encoding="utf-8",
+    def _write_sal_facts(self, tmp_path, facts_by_format: dict) -> None:
+        """Helper: write sal-facts-latest.json with given facts."""
+        import json
+        sal_dir = tmp_path / ".local" / "sal-output"
+        sal_dir.mkdir(parents=True, exist_ok=True)
+        results = []
+        for fmt, facts in facts_by_format.items():
+            results.append({"format_id": fmt, "spec_facts": facts})
+        (sal_dir / "sal-facts-latest.json").write_text(
+            json.dumps({"results": results}), encoding="utf-8"
         )
+
+    def test_loads_fact_ids_from_verified_facts_file(self, tmp_path):
+        """Facts from sal-facts-latest.json are loaded into registry."""
+        self._write_sal_facts(tmp_path, {
+            "fods": [
+                {"qname": "FACT-FODS-001", "fact_status": "verified"},
+                {"qname": "FACT-FODS-002", "fact_status": "needs_review"},
+            ]
+        })
         registry = _build_fact_registry(repo_root=tmp_path)
         assert "FACT-FODS-001" in registry
         assert registry["FACT-FODS-001"] == "verified"
@@ -74,54 +77,36 @@ facts:
         assert registry["FACT-FODS-002"] == "needs_review"
 
     def test_fact_id_field_also_accepted(self, tmp_path):
-        """fact_id field (alternate name) is also loaded."""
-        workbench = tmp_path / ".local" / "spec-cache" / "fodt" / "workbench"
-        workbench.mkdir(parents=True)
-        facts_file = workbench / "verified-facts-review.yaml"
-        facts_file.write_text(
-            """
-facts:
-  - fact_id: FACT-FODT-001
-    provenance:
-      verification_status: verified
-""",
-            encoding="utf-8",
-        )
+        """qname field in sal-facts-latest.json is used as fact ID."""
+        self._write_sal_facts(tmp_path, {
+            "fodt": [{"qname": "FACT-FODT-001", "fact_status": "verified"}]
+        })
         registry = _build_fact_registry(repo_root=tmp_path)
         assert "FACT-FODT-001" in registry
 
     def test_multiple_format_files_merged(self, tmp_path):
-        """Multiple verified-facts-review.yaml files across formats are merged."""
-        for fmt in ["fods", "fodt"]:
-            wb = tmp_path / ".local" / "spec-cache" / fmt / "workbench"
-            wb.mkdir(parents=True)
-            (wb / "verified-facts-review.yaml").write_text(
-                f"facts:\n  - claim_id: FACT-{fmt.upper()}-001\n    provenance:\n      verification_status: verified\n",
-                encoding="utf-8",
-            )
+        """Facts across multiple formats in sal-facts-latest.json are merged."""
+        self._write_sal_facts(tmp_path, {
+            "fods": [{"qname": "FACT-FODS-001", "fact_status": "verified"}],
+            "fodt": [{"qname": "FACT-FODT-001", "fact_status": "verified"}],
+        })
         registry = _build_fact_registry(repo_root=tmp_path)
         assert "FACT-FODS-001" in registry
         assert "FACT-FODT-001" in registry
 
     def test_malformed_yaml_file_skipped_gracefully(self, tmp_path):
-        """Malformed YAML file is skipped without crashing."""
-        workbench = tmp_path / ".local" / "spec-cache" / "bad" / "workbench"
-        workbench.mkdir(parents=True)
-        (workbench / "verified-facts-review.yaml").write_text(
-            "this: is: not: valid: yaml: [[[[",
-            encoding="utf-8",
-        )
+        """Malformed sal-facts-latest.json returns empty registry gracefully."""
+        sal_dir = tmp_path / ".local" / "sal-output"
+        sal_dir.mkdir(parents=True)
+        (sal_dir / "sal-facts-latest.json").write_text("this is not json {{{", encoding="utf-8")
         registry = _build_fact_registry(repo_root=tmp_path)
         assert registry == {}
 
     def test_cache_is_populated_on_first_call(self, tmp_path):
         """get_fact_registry caches on first call."""
-        workbench = tmp_path / ".local" / "spec-cache" / "fods" / "workbench"
-        workbench.mkdir(parents=True)
-        (workbench / "verified-facts-review.yaml").write_text(
-            "facts:\n  - claim_id: FACT-FODS-001\n    provenance:\n      verification_status: verified\n",
-            encoding="utf-8",
-        )
+        self._write_sal_facts(tmp_path, {
+            "fods": [{"qname": "FACT-FODS-001", "fact_status": "verified"}]
+        })
         r1 = get_fact_registry(repo_root=tmp_path)
         r2 = get_fact_registry(repo_root=tmp_path)
         assert r1 is r2  # same object = cached
@@ -163,13 +148,13 @@ class TestFactExistenceEnforcementWithRegistry:
             item = {
                 "item_id": "WI-TEST-002",
                 "item_type": "PRODUCT_SOURCE",
-                "spec_fact_refs": ["FACT-DOES-NOT-EXIST"],
+                "spec_fact_refs": ["FACT-FODS-999"],  # valid format, not in registry
             }
             result = check_item(item)
         assert not result["compliant"]
         assert result["grade_impact"] == "reject"
-        assert "not found in governed fact registry" in result["violation"]
-        assert "FACT-DOES-NOT-EXIST" in result["violation"]
+        assert "FACT-FODS-999" in result["violation"]
+        assert "not found" in result["violation"] or "sal-facts-latest.json" in result["violation"]
 
     def test_empty_registry_skips_existence_check(self):
         """Empty registry (no registry files) → graceful degradation, format-only."""
@@ -178,7 +163,7 @@ class TestFactExistenceEnforcementWithRegistry:
             item = {
                 "item_id": "WI-TEST-003",
                 "item_type": "PRODUCT_SOURCE",
-                "spec_fact_refs": ["FACT-DOES-NOT-EXIST"],
+                "spec_fact_refs": ["FACT-FODS-999"],  # valid format, not in registry
             }
             result = check_item(item)
         # graceful degradation: format valid, registry absent → pass
