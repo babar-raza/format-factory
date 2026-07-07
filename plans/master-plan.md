@@ -6479,7 +6479,7 @@ Also applied 4 opportunistic tool fixes discovered during investigation.
 
 ## Section 97 — bright-greeting-goose: BACKFILL — Apply New Governance to Existing Machinery Debt (CLOSED)
 
-**Plan:** `plans/.claude/bright-greeting-goose.md` | **Commit:** `e03a077b` | **Date:** 2026-07-06
+**Plan:** `plans/.claude/bright-greeting-goose.md` | **Commits:** `e03a077b` (BACKFILL), `7ce45df6` (PH addendum) | **Date:** 2026-07-06/07
 
 ### Objective
 
@@ -6499,6 +6499,8 @@ where every component has a registered disposition and every tombstone candidate
 | TC-BF-007 | EXTENSION-BUDGET.yaml + check_extension_budget.py + CI step | CLOSED |
 | TC-BF-008 | run_regression_baseline.py — all 4 checks PASS | CLOSED |
 | TC-BF-009 | Git latency assessment — SKIPPED (206ms < 3000ms threshold) | CLOSED |
+| TC-BF-PH-001 | Sync stale READMEs (fods, fodg, fodt) — V87 PASS | CLOSED |
+| TC-BF-PH-002 | Add 14 docstrings to fods spec classes — V102 violations_new=0 | CLOSED |
 
 ### Key Artifacts
 
@@ -6519,6 +6521,7 @@ where every component has a registered disposition and every tombstone candidate
 - check_extension_budget.py: exit 0 (19/19)
 - run_regression_baseline.py: exit 0 (validator count 154, grade hash stable, continuation stable, git latency 206ms)
 - TC-BF-004 observation window: expires 2026-08-05 (run check_tombstone_records.py on that date)
+- **PH addendum (2026-07-07):** V87 README freshness PASS (30 checked, 0 drifted); V102 PASS (violations_new=0, 253 grandfathered); both blocks_sprint=True validators resolved
 
 ### Supersession
 
@@ -6526,7 +6529,7 @@ Supersedes TC-S2-001/002/003 (quarantine-by-move), TC-S7-001 (CI file count chec
 TC-S5-001 (validator domain restructuring) now unblocked (TC-BF-005 prerequisite satisfied).
 Stage 3+ orchestration consolidation now unblocked (TC-BF-008 regression baseline complete).
 
-**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED
+**Final Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED | TERMINAL_CLOSED (2026-07-07, lifecycle_audit AUDIT_PASS, PH addendum TC-BF-PH-001/002 CLOSED)
 
 ---
 
