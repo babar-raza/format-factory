@@ -672,6 +672,16 @@ def run_all_governance_validators(
     except Exception as _exc_v143:
         _skipped_validators.append({"validators": ["V143"], "error": str(_exc_v143)})
 
+    # V144 (PYREL-001, 2026-07-06): Gate 10 status consistency validator
+    # FAIL/blocks when gate_10.status contains non-standard values in format-registry.yaml
+    try:
+        from governance_validators_release import (  # noqa: PLC0415
+            validate_gate10_status_consistency as _v144,
+        )
+        results.append(_v144(declaration, repo_root))
+    except Exception as _exc_v144:
+        _skipped_validators.append({"validators": ["V144"], "error": str(_exc_v144)})
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -718,7 +728,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 161,  # convergence-FF-XPLAN-001: 134 explicit + 27 from contract registry
+        "expected_count": 162,  # PYREL-001 2026-07-06: 135 explicit (V144 added) + 27 from contract registry
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,

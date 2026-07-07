@@ -63,38 +63,38 @@ src/python/fods/
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-04T14:03:36+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-07T17:16:26+00:00 source=package-metadata -->
 ```bash
-pip install format-factory-fods-python
+pip install format-factory-fods
 ```
 <!-- END:README-INSTALLATION -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-04T14:03:36+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-07T17:16:26+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Spreadsheet |
 | Track | python |
-| Package | format-factory-fods-python |
+| Package | format-factory-fods |
 | Version | 0.1.0 |
 | License | Apache-2.0 |
 | Python | >=3.9 |
 | .NET | unknown |
 | Spec | OASIS ODF 1.3 |
 | QName coverage | 12/12 implemented |
-| Source files | 52 |
+| Source files | 104 |
 | Test files | 110 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-04T14:03:36+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-07T17:16:26+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-04T14:03:36+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-07T17:16:26+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->

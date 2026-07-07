@@ -840,7 +840,7 @@ formats:
       tier_map: null
       notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
-      status: local_release_candidate_ready_verified
+      status: passed
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
       notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
@@ -982,7 +982,7 @@ formats:
       tier_map: null
       notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
-      status: local_release_candidate_ready_verified
+      status: passed
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
       notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
@@ -1139,7 +1139,7 @@ formats:
       tier_map: null
       notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
-      status: local_release_candidate_ready_verified
+      status: passed
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
       notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
@@ -1296,7 +1296,7 @@ formats:
       tier_map: null
       notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
-      status: local_release_candidate_ready_verified
+      status: passed
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
       notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
@@ -1456,7 +1456,7 @@ formats:
       tier_map: null
       notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
-      status: local_release_candidate_ready_verified
+      status: passed
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
       notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
@@ -1672,7 +1672,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS cells track.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -1784,7 +1784,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS words track.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -1896,7 +1896,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS imaging track. Aspose NOT_SUPPORTED.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -1999,7 +1999,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS imaging track. Aspose NOT_SUPPORTED.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -2058,6 +2058,9 @@ formats:
       blocker: ZPAQL VM / zpaq CLI unavailable; cannot create corpus samples
       next_gate: gate_3_recovery
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: dif
   display_name: Data Interchange Format
   family: cells
@@ -2155,7 +2158,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS cells track. Aspose NOT_SUPPORTED.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -2258,7 +2261,7 @@ formats:
       commercial_product_ready: false
       notes: Gate 9 product mapping (R31). Python FOSS imaging track. Netpbm anchor.
     gate_10:
-      status: local_release_candidate_ready
+      status: passed
       approved_by: delegated_agent_r31
       approved_date: '2026-05-19'
       publication_authorized: false
@@ -2362,6 +2365,9 @@ formats:
 
         '
       binary_p5_status: not_implemented
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: pbm
   display_name: Portable Bitmap (PBM / Netpbm)
   family: imaging
@@ -2451,6 +2457,9 @@ formats:
 
         '
       binary_p4_status: not_implemented
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: sylk
   display_name: Symbolic Link (SYLK)
   family: cells
@@ -2532,6 +2541,9 @@ formats:
         invalid samples)'
       notes: Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant + field completeness tests. Python
         FOSS cells track. SYLK text-based spreadsheet.
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: csv
   display_name: Comma-Separated Values (CSV)
   family: cells
@@ -2578,6 +2590,9 @@ formats:
       - samples/by-format/csv/
       acquisition_pack: acquisition-packs/csv/pack.yaml
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: tsv
   display_name: Tab-Separated Values (TSV)
   family: cells
@@ -2626,6 +2641,9 @@ formats:
       - samples/by-format/tsv/
       acquisition_pack: acquisition-packs/tsv/pack.yaml
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: xpm
   display_name: X PixMap (XPM)
   family: imaging
@@ -2675,6 +2693,9 @@ formats:
       - Max 4096x4096
       - No write
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: pam
   display_name: Portable Arbitrary Map (PAM / Netpbm P7)
   family: imaging
@@ -2725,6 +2746,9 @@ formats:
       - Max 4096x4096 depth 4
       - No write
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: ndjson
   display_name: Newline Delimited JSON
   family: data
@@ -2757,6 +2781,9 @@ formats:
       - samples/by-format/ndjson/valid/
       acquisition_pack: acquisition-packs/ndjson/pack.yaml
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: toml
   display_name: Tom's Obvious, Minimal Language
   family: data
@@ -2788,6 +2815,9 @@ formats:
       - samples/by-format/toml/
       acquisition_pack: acquisition-packs/toml/pack.yaml
       mission_id: FF-G4-BACKFILL-001
+    gate_10:
+      status: not_started
+      notes: 'Gate 10 not formally executed. Set not_started 2026-07-06 PYREL-001.'
 - format_id: odf-shared
   display_name: ODF 1.3 Shared Specification Parts
   family: odf

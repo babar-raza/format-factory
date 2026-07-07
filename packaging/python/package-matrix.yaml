@@ -1,3 +1,7 @@
+# Naming convention (decided PYREL-001, 2026-07-06):
+#   PyPI name:   format-factory-{format_id}  (e.g. format-factory-fods)
+#   Import name: {format_id}                  (e.g. import fods)
+#   Tag format:  {format_id}-v{semver}         (e.g. fods-v0.1.0)
 packages:
 - acquisition_gates_passed:
   - 1
@@ -18,7 +22,7 @@ packages:
   license: Apache-2.0
   module_import: zst
   module_path: src/python/zst/
-  package_name: aspose-format-factory-zst
+  package_name: format-factory-zst
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -40,7 +44,7 @@ packages:
   license: Apache-2.0
   module_import: fodp
   module_path: src/python/fodp/
-  package_name: aspose-format-factory-fodp
+  package_name: format-factory-fodp
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -62,7 +66,7 @@ packages:
   license: Apache-2.0
   module_import: fodg
   module_path: src/python/fodg/
-  package_name: aspose-format-factory-fodg
+  package_name: format-factory-fodg
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -84,7 +88,7 @@ packages:
   license: Apache-2.0
   module_import: gnumeric
   module_path: src/python/gnumeric/
-  package_name: aspose-format-factory-gnumeric
+  package_name: format-factory-gnumeric
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -106,7 +110,7 @@ packages:
   license: Apache-2.0
   module_import: abw
   module_path: src/python/abw/
-  package_name: aspose-format-factory-abw
+  package_name: format-factory-abw
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -131,7 +135,7 @@ packages:
   license: Apache-2.0
   module_import: fods
   module_path: src/python/fods/
-  package_name: aspose-format-factory-fods
+  package_name: format-factory-fods
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -156,7 +160,7 @@ packages:
   license: Apache-2.0
   module_import: fodt
   module_path: src/python/fodt/
-  package_name: aspose-format-factory-fodt
+  package_name: format-factory-fodt
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -181,7 +185,7 @@ packages:
   license: Apache-2.0
   module_import: pgm
   module_path: src/python/pgm/
-  package_name: aspose-format-factory-pgm
+  package_name: format-factory-pgm
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -206,7 +210,7 @@ packages:
   license: Apache-2.0
   module_import: pbm
   module_path: src/python/pbm/
-  package_name: aspose-format-factory-pbm
+  package_name: format-factory-pbm
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -231,7 +235,7 @@ packages:
   license: Apache-2.0
   module_import: ppm
   module_path: src/python/ppm/
-  package_name: aspose-format-factory-ppm
+  package_name: format-factory-ppm
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -256,7 +260,7 @@ packages:
   license: Apache-2.0
   module_import: sylk
   module_path: src/python/sylk/
-  package_name: aspose-format-factory-sylk
+  package_name: format-factory-sylk
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -275,7 +279,7 @@ packages:
   license: Apache-2.0
   module_import: ndjson
   module_path: src/python/ndjson/
-  package_name: aspose-format-factory-ndjson
+  package_name: format-factory-ndjson
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -294,7 +298,7 @@ packages:
   license: Apache-2.0
   module_import: tsv
   module_path: src/python/tsv/
-  package_name: aspose-format-factory-tsv
+  package_name: format-factory-tsv
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -317,7 +321,7 @@ packages:
   license: Apache-2.0
   module_import: dif
   module_path: src/python/dif/
-  package_name: aspose-format-factory-dif
+  package_name: format-factory-dif
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -337,7 +341,7 @@ packages:
   module_import: csv
   module_path: src/python/csv/
   note: Required as dependency for dif dogfood export (dif_to_csv uses csv.csv_writer.write_csv)
-  package_name: aspose-format-factory-csv
+  package_name: format-factory-csv
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -360,7 +364,7 @@ packages:
   module_import: odt
   module_path: src/python/odt/
   note: odt_writer.py added in sprint ff-domain-models-ext-20260624
-  package_name: aspose-format-factory-odt
+  package_name: format-factory-odt
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -378,7 +382,7 @@ packages:
   license: Apache-2.0
   module_import: ods
   module_path: src/python/ods/
-  package_name: aspose-format-factory-ods
+  package_name: format-factory-ods
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -396,7 +400,7 @@ packages:
   license: Apache-2.0
   module_import: qoi
   module_path: src/python/qoi/
-  package_name: aspose-format-factory-qoi
+  package_name: format-factory-qoi
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -414,7 +418,7 @@ packages:
   license: Apache-2.0
   module_import: toml
   module_path: src/python/toml/
-  package_name: aspose-format-factory-toml
+  package_name: format-factory-toml
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
@@ -432,7 +436,7 @@ packages:
   license: Apache-2.0
   module_import: xcf
   module_path: src/python/xcf/
-  package_name: aspose-format-factory-xcf
+  package_name: format-factory-xcf
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'

@@ -37,7 +37,7 @@ class TestFodsInstalledProductWorkflow:
 
     def test_fods_version(self):
         fods = _import_fods()
-        assert fods.__version__ == "0.1.0.dev0"
+        assert fods.__version__ == "0.1.0"
 
     def test_fods_track(self):
         fods = _import_fods()

@@ -925,9 +925,16 @@ class TestV47SpecFactRefsInSalOutput:
 
     POSITIVE: real FACT-FODS-001 in spec_fact_refs -> PASS.
     NEGATIVE: fake FACT-FODS-999 in spec_fact_refs -> FAIL + blocks.
+
+    Note: These tests require sal-facts-latest.json to be present. Skipped on CI.
     NO-REFS: PRODUCT_SOURCE item without spec_fact_refs -> PASS (not checked).
     NON-PRODUCT: GOVERNANCE_TASKCARD type -> PASS (not checked).
     """
+
+    pytestmark = pytest.mark.skipif(
+        not (REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json").is_file(),
+        reason="sal-facts-latest.json not present in this environment",
+    )
 
     def _validator(self):
         from governance_validators import validate_spec_fact_refs_in_sal_output
@@ -1818,10 +1825,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 161, (
-            f"Expected 161 canonical validators, got {validator_count}. "
+        assert validator_count == 162, (
+            f"Expected 162 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(134 explicit + 27 from governance_validators_contract registry (TC-BF-005))"
+            "(135 explicit + 27 from governance_validators_contract registry (TC-BF-005))"
         )
 
 
@@ -3266,6 +3273,75 @@ class TestV99PlaybookCoverageReportCurrent:
         result = self._get_validator()({}, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
+
+
+# V144 (PYREL-001): Gate 10 status consistency validator
+class TestGate10StatusConsistency:
+    """Tests for V144: validate_gate10_status_consistency."""
+
+    def _get_validator(self):
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "supervisor"))
+        from governance_validators_release import validate_gate10_status_consistency
+        return validate_gate10_status_consistency
+
+    def _make_registry(self, tmp_path, entries):
+        import yaml
+        reg_dir = tmp_path / "registry"
+        reg_dir.mkdir(parents=True, exist_ok=True)
+        reg_path = reg_dir / "format-registry.yaml"
+        reg_path.write_text(yaml.dump({"formats": entries}), encoding="utf-8")
+        return tmp_path
+
+    def test_pass_all_standard_values(self, tmp_path):
+        """PASS when all formats have standard gate_10.status values."""
+        entries = [
+            {"format_id": "fods", "gates": {"gate_10": {"status": "passed"}}},
+            {"format_id": "ora", "gates": {"gate_10": {"status": "not_started"}}},
+            {"format_id": "xcf", "gates": {"gate_10": {"status": "failed"}}},
+        ]
+        root = self._make_registry(tmp_path, entries)
+        result = self._get_validator()({}, repo_root=root)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_fail_nonstandard_value(self, tmp_path):
+        """FAIL with blocks_sprint=True when a non-standard value is present."""
+        entries = [
+            {"format_id": "abw", "gates": {"gate_10": {"status": "local_release_candidate_ready_verified"}}},
+        ]
+        root = self._make_registry(tmp_path, entries)
+        result = self._get_validator()({}, repo_root=root)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert any("local_release_candidate_ready_verified" in item for item in result["items"])
+
+    def test_warn_missing_gate10_key(self, tmp_path):
+        """WARN (not FAIL/blocks) when gate_10 key is missing entirely."""
+        entries = [
+            {"format_id": "pgm", "gates": {"gate_1": {"status": "passed"}}},
+        ]
+        root = self._make_registry(tmp_path, entries)
+        result = self._get_validator()({}, repo_root=root)
+        # Missing key is a warn (blocks_sprint=False) not a hard block
+        assert result["blocks_sprint"] is False
+        assert any("missing" in item for item in result["items"])
+
+    def test_pass_no_registry(self, tmp_path):
+        """PASS when registry file doesn't exist (nothing to check)."""
+        result = self._get_validator()({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_skip_odf_shared(self, tmp_path):
+        """PASS when odf-shared entry has non-standard value (it's excluded from checks)."""
+        entries = [
+            {"format_id": "odf-shared", "gates": {"gate_10": {"status": "some_custom_value"}}},
+            {"format_id": "fods", "gates": {"gate_10": {"status": "passed"}}},
+        ]
+        root = self._make_registry(tmp_path, entries)
+        result = self._get_validator()({}, repo_root=root)
+        assert result["result"] == "PASS"
 
 
 # TC-BF-005: Validator count invariant test

@@ -25,6 +25,11 @@ REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..")
 BUILD_DIR = os.path.join(REPO_ROOT, ".local", "package-builds", "python-foss")
 VERSION = "0.1.0.dev0"
 
+pytestmark = pytest.mark.skipif(
+    not os.path.isdir(BUILD_DIR),
+    reason="Package build artifacts not present in this environment",
+)
+
 
 def wheel_path(pkg_dir: str, pkg_mod: str) -> str:
     return os.path.join(

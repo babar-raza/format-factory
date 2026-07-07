@@ -17,30 +17,30 @@ sys.path.insert(0, str(REPO_ROOT))
 
 
 class TestPackageVersionSync:
-    """D78-04: PACKAGE_VERSION in constants.py must match 0.1.0.dev0."""
+    """D78-04: PACKAGE_VERSION in constants.py must match 0.1.0."""
 
     def test_fods_package_version_is_dev0(self):
         from src.python.fods.constants import PACKAGE_VERSION
-        assert PACKAGE_VERSION == "0.1.0.dev0", (
-            f"fods PACKAGE_VERSION is {PACKAGE_VERSION!r}, expected '0.1.0.dev0'"
+        assert PACKAGE_VERSION == "0.1.0", (
+            f"fods PACKAGE_VERSION is {PACKAGE_VERSION!r}, expected '0.1.0'"
         )
 
     def test_fodt_package_version_is_dev0(self):
         from src.python.fodt.constants import PACKAGE_VERSION
-        assert PACKAGE_VERSION == "0.1.0.dev0", (
-            f"fodt PACKAGE_VERSION is {PACKAGE_VERSION!r}, expected '0.1.0.dev0'"
+        assert PACKAGE_VERSION == "0.1.0", (
+            f"fodt PACKAGE_VERSION is {PACKAGE_VERSION!r}, expected '0.1.0'"
         )
 
     def test_fods_dunder_version_is_dev0(self):
         from src.python.fods import __version__
-        assert __version__ == "0.1.0.dev0", (
-            f"fods.__version__ is {__version__!r}, expected '0.1.0.dev0'"
+        assert __version__ == "0.1.0", (
+            f"fods.__version__ is {__version__!r}, expected '0.1.0'"
         )
 
     def test_fodt_dunder_version_is_dev0(self):
         from src.python.fodt import __version__
-        assert __version__ == "0.1.0.dev0", (
-            f"fodt.__version__ is {__version__!r}, expected '0.1.0.dev0'"
+        assert __version__ == "0.1.0", (
+            f"fodt.__version__ is {__version__!r}, expected '0.1.0'"
         )
 
 

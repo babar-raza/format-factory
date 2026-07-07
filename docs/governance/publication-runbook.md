@@ -11,8 +11,8 @@ This runbook documents the complete sequence for publishing a Format Factory Pyt
 to PyPI. It identifies every step, whether the step is agent-owned or human-gated, and
 classifies all credential and authorization requirements.
 
-The first target is FODS (format_factory_fods_python). The sequence is generic and applies
-to all 13+ Python packages.
+The first target is FODS (format-factory-fods). The sequence is generic and applies
+to all 20 Python packages.
 
 ---
 
@@ -38,18 +38,14 @@ Before starting the publication sequence, verify all of the following:
 ### Step 1 — Build (Agent-Owned)
 
 ```bash
-# From repo root
-python packaging/python/build-local-packages.py --format fods
-
-# OR directly via build tool:
-python -m build src/python/fods/ \
-  --outdir .local/package-builds/python-foss/aspose-format-factory-fods/dist-latest/
+# From repo root — builds format-factory-fods v0.1.0 wheel in dist-latest/
+python packaging/python/build-local-packages.py --format fods --version 0.1.0
 ```
 
 **Verify wheel is non-empty:**
 ```python
 import zipfile
-with zipfile.ZipFile('.local/package-builds/python-foss/aspose-format-factory-fods/dist-latest/format_factory_fods_python-0.1.0-py3-none-any.whl') as z:
+with zipfile.ZipFile('.local/package-builds/python-foss/format-factory-fods/dist-latest/format_factory_fods-0.1.0-py3-none-any.whl') as z:
     names = z.namelist()
     py_files = [n for n in names if n.endswith('.py')]
     assert len(py_files) > 0, f"FAIL: wheel has no .py files. Contents: {names}"
@@ -65,20 +61,17 @@ with zipfile.ZipFile('.local/package-builds/python-foss/aspose-format-factory-fo
 ```bash
 # Create isolated test environment
 python -m venv .local/pub-test-venv
-.local/pub-test-venv/Scripts/pip install .local/package-builds/python-foss/aspose-format-factory-fods/dist-latest/format_factory_fods_python-0.1.0-py3-none-any.whl
+.local/pub-test-venv/Scripts/pip install .local/package-builds/python-foss/format-factory-fods/dist-latest/format_factory_fods-0.1.0-py3-none-any.whl
 
 # Run smoke test
 .local/pub-test-venv/Scripts/python -c "
-import fods
-import tempfile, os
-# Verify basic import and API surface
-print('fods version:', getattr(fods, '__version__', 'NOT_SET'))
-print('fods.load:', fods.load)
+from fods import FodsDocument
+print('FodsDocument:', FodsDocument)
 print('PASS: fods installs and imports cleanly')
 "
 ```
 
-**Accept criteria:** Import succeeds, `fods.load` is callable, no import errors.
+**Accept criteria:** Import succeeds, `FodsDocument` is importable, no import errors.
 
 **Authorization:** Agent-owned.
 
@@ -87,8 +80,8 @@ print('PASS: fods installs and imports cleanly')
 ### Step 3 — Version Tag (Agent-Preparable / Human-Authorized for Push)
 
 ```bash
-# Agent creates tag locally
-git tag python-fods-v0.1.0 -m "FODS Python package v0.1.0 — first public release"
+# Agent creates tag locally (tag format must match release-python.yml regex: [a-z]*-v[0-9]*)
+git tag fods-v0.1.0 -m "FODS Python package v0.1.0 — first public release"
 
 # Push requires human authorization (branch protection + credentials)
 # EXTERNAL_GATE: git push --tags
@@ -105,7 +98,7 @@ git tag python-fods-v0.1.0 -m "FODS Python package v0.1.0 — first public relea
 # Using twine (recommended):
 pip install twine
 twine upload \
-  .local/package-builds/python-foss/aspose-format-factory-fods/dist-latest/format_factory_fods_python-0.1.0-py3-none-any.whl
+  .local/package-builds/python-foss/format-factory-fods/dist-latest/format_factory_fods-0.1.0-py3-none-any.whl
 
 # OR using poetry (if project uses poetry):
 cd src/python/fods
@@ -190,7 +183,7 @@ After publication confirmed:
 | Build wheel | YES | `build-local-packages.py` or `python -m build` |
 | Run tests | YES | `pytest tests/python/fods/` |
 | Install from wheel (local) | YES | `pip install <whl>` in virtualenv |
-| Create local git tag | YES | `git tag python-fods-v0.1.0` |
+| Create local git tag | YES | `git tag fods-v0.1.0` |
 | Upload to PyPI | NO | Requires PyPI token |
 | Push git tag | NO | Requires git push credentials + authorization |
 | Verify public install from PyPI | YES (after upload) | `pip install format-factory-fods` |

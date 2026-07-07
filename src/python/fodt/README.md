@@ -39,7 +39,7 @@ else:
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-04T11:41:49+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-07T17:16:27+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
@@ -92,20 +92,20 @@ python -m pytest tests/python/fodt/ -q
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-04T11:41:49+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-07T17:16:27+00:00 source=package-metadata -->
 ```bash
-pip install format-factory-fodt-python
+pip install format-factory-fodt
 ```
 <!-- END:README-INSTALLATION -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-04T11:41:49+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-07T17:16:27+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Text |
 | Track | python |
-| Package | format-factory-fodt-python |
+| Package | format-factory-fodt |
 | Version | 0.1.0.dev0 |
 | License | Apache-2.0 |
 | Python | >=3.9 |
@@ -118,6 +118,6 @@ pip install format-factory-fodt-python
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-04T11:41:49+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-07T17:16:27+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->

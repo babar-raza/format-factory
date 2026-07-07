@@ -23,6 +23,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ARTIFACTS_DIR = PROJECT_ROOT / ".local" / "r56-metadata" / "package-artifacts"
 MANIFEST_PATH = PROJECT_ROOT / ".local" / "r56-metadata" / "package-artifact-manifest.yaml"
 
+pytestmark = pytest.mark.skipif(
+    not ARTIFACTS_DIR.is_dir(),
+    reason="R56 package artifacts not present in this environment",
+)
+
 EXPECTED_WHEELS = [
     "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
     "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl",

@@ -1,0 +1,78 @@
+name: Release (Python / PyPI)
+
+on:
+  push:
+    tags: ["[a-z]*-v[0-9]*"]  # e.g. fods-v0.1.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml build twine hatchling
+
+      - name: Parse format from tag
+        id: format
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          if [[ "$TAG" =~ ^([a-z]+)-v([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            echo "format=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "version=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
+            echo "Detected format=${BASH_REMATCH[1]}, version=${BASH_REMATCH[2]}"
+          else
+            echo "ERROR: Tag '$TAG' must match '<format>-v<semver>' (e.g. fods-v0.1.0)"; exit 1
+          fi
+
+      - name: Gate 10 check (Python FOSS release authority per DEC-033)
+        run: |
+          python -c "
+          import yaml, sys
+          reg = yaml.safe_load(open('registry/format-registry.yaml'))
+          fmt = sys.argv[1]
+          entry = next((e for e in reg['formats'] if (e.get('id') or e.get('format_id')) == fmt), None)
+          if not entry:
+              print(f'ERROR: format {fmt} not in registry'); sys.exit(1)
+          status = entry.get('gates', {}).get('gate_10', {}).get('status', 'not_started')
+          if status != 'passed':
+              print(f'ERROR: Gate 10 status={status}. Must be passed before PyPI publication.'); sys.exit(1)
+          print(f'Gate 10 passed for {fmt}.')
+          " "${{ steps.format.outputs.format }}"
+
+      - name: PYREL full gate check (G1, G2, G5, G_TESTS, G_EXAMPLES, G_SPECQNAME)
+        run: |
+          python tools/supervisor/gate_executor.py \
+            --format "${{ steps.format.outputs.format }}" \
+            --full-check --dry-run
+
+      - name: Build package
+        run: |
+          python packaging/python/build-local-packages.py \
+            --format "${{ steps.format.outputs.format }}" \
+            --version "${{ steps.format.outputs.version }}"
+
+      - name: Verify wheel contains .py files
+        run: |
+          python -c "
+          import zipfile, glob, sys
+          fmt = sys.argv[1]
+          wheels = glob.glob(f'.local/package-builds/python-foss/format-factory-{fmt}/dist-latest/*.whl')
+          if not wheels: print('ERROR: No wheel found'); sys.exit(1)
+          with zipfile.ZipFile(wheels[0]) as z:
+              py_files = [n for n in z.namelist() if n.endswith('.py')]
+              if not py_files: print('ERROR: Wheel has no .py files'); sys.exit(1)
+              print(f'OK: {len(py_files)} .py files in {wheels[0]}')
+          " "${{ steps.format.outputs.format }}"
+
+      - name: Publish to PyPI
+        run: |
+          twine upload .local/package-builds/python-foss/format-factory-${{ steps.format.outputs.format }}/dist-latest/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}

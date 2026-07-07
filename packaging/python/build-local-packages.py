@@ -153,6 +153,11 @@ def build_package(module: str, package_name: str, version: str = "0.1.0.dev0") -
                     "size_bytes": artifact.stat().st_size,
                     "sha256": sha256_file(artifact),
                 })
+            # Copy artifacts to dist-latest/ for release workflow consumption
+            dist_latest = pkg_dir / "dist-latest"
+            if dist_latest.exists():
+                shutil.rmtree(dist_latest)
+            shutil.copytree(dist_dir, dist_latest)
         else:
             result["status"] = "build_failed"
             result["error"] = proc.stderr[-2000:] if proc.stderr else proc.stdout[-2000:]
@@ -166,6 +171,12 @@ def build_package(module: str, package_name: str, version: str = "0.1.0.dev0") -
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Build local Python FOSS packages")
+    parser.add_argument("--format", default=None, help="Build only this format (e.g. fods)")
+    parser.add_argument("--version", default=None, help="Override version (e.g. 0.1.0)")
+    args = parser.parse_args()
+
     try:
         import yaml
         with open(PACKAGE_MATRIX, encoding="utf-8") as f:
@@ -174,9 +185,15 @@ def main():
     except ImportError:
         print("PyYAML not available — using hardcoded package list")
         packages = [
-            {"module_import": m, "package_name": f"aspose-format-factory-{m}"}
+            {"module_import": m, "package_name": f"format-factory-{m}"}
             for m in ["zst", "fodp", "fodg", "gnumeric", "abw", "fods", "fodt", "pgm", "pbm", "ppm", "sylk"]
         ]
+
+    if args.format:
+        packages = [p for p in packages if p["module_import"] == args.format]
+        if not packages:
+            print(f"ERROR: format '{args.format}' not found in package matrix")
+            return 1
 
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
     results = []
@@ -184,11 +201,16 @@ def main():
     for pkg in packages:
         module = pkg["module_import"]
         name = pkg["package_name"]
-        print(f"Building {name} (module: {module}) ...")
-        r = build_package(module, name)
+        version = args.version or "0.1.0.dev0"
+        print(f"Building {name} (module: {module}, version: {version}) ...")
+        r = build_package(module, name, version)
         results.append(r)
         status = r["status"]
-        print(f"  -> {status}")
+        print(f"  -> {status}", end="")
+        if r.get("artifacts"):
+            print(f" ({len(r['artifacts'])} artifact(s))")
+        else:
+            print()
         if r.get("artifacts"):
             for a in r["artifacts"]:
                 print(f"    {a['file']} ({a['size_bytes']} bytes, sha256={a['sha256'][:16]}...)")

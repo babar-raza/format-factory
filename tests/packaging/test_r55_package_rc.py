@@ -19,10 +19,16 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / ".local" / "package-builds" / "python-foss"
 sys.path.insert(0, str(REPO_ROOT))
+
+pytestmark = pytest.mark.skipif(
+    not BUILD_DIR.is_dir(),
+    reason="Package build artifacts not present in this environment",
+)
 
 
 # ---------------------------------------------------------------------------

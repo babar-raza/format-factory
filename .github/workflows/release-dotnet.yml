@@ -1,8 +1,8 @@
-name: Release
+name: Release (.NET / NuGet)
 
 on:
   push:
-    tags: ["[a-z]*-v[0-9]*"]
+    tags: ["dotnet-*-v[0-9]*"]
 
 jobs:
   publish:
@@ -48,11 +48,14 @@ jobs:
           if not entry:
               print(f'ERROR: Format \"{fmt}\" not found in registry/format-registry.yaml')
               sys.exit(1)
-          gate = entry.get('gate_status', {})
-          g11 = gate.get('G11-G', 'not_approved')
-          if g11 != 'approved':
-              print(f'ERROR: Format \"{fmt}\" Gate 11 (G11-G) status is \"{g11}\" — publication blocked.')
-              print('Gate 11 must be approved by Babar Raza before publishing to PyPI.')
+          gates = entry.get('gates', {})
+          g11_status = gates.get('gate_11', {}).get('g11g_status', 'not_approved')
+          # Normalize legacy approval string to canonical value
+          if g11_status == 'APPROVED_BY_BABAR_RAZA_2026_06_05':
+              g11_status = 'approved'
+          if g11_status != 'approved':
+              print(f'ERROR: Format \"{fmt}\" Gate 11 (G11-G) status is \"{g11_status}\" — publication blocked.')
+              print('Gate 11 must be approved by Babar Raza before publishing to NuGet.')
               sys.exit(1)
           print(f'Gate 11 approved for {fmt}. Proceeding with publication.')
           " "$FORMAT"
