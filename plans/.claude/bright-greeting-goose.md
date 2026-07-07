@@ -1921,3 +1921,375 @@ Note: TC-BF-004 implementation is CLOSED (tombstones applied, check_tombstone_re
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->
+
+---
+
+## POST-CLOSURE PILOT HARDENING ADDENDUM
+
+```yaml
+addendum_meta:
+  type: POST_CLOSURE_PILOT_HARDENING
+  source: pilot-rerun-comparison-2026-07-06
+  authored_at: "2026-07-06T17:30:00Z"
+  authority: prompt2-plan-hardening + prompt1-post-sprint-audit (PLAN FILE HARDENING MODE)
+  execution_authority: true
+  reason: >
+    Pilot rerun surfaced 2 show-stopper governance FAILs (blocks_sprint=True)
+    predating BACKFILL that prevent sprint progression.
+    These were invisible before BACKFILL because the validator suite was not
+    being exercised end-to-end. Now that 161 validators fire on every run,
+    these two long-standing product-code defects become hard blockers.
+```
+
+### Plan File Hardening Change Log
+
+| Date | Author | Change | Scope |
+|---|---|---|---|
+| 2026-07-06 | claude-sonnet-4-6 | Appended TC-BF-PH-001, TC-BF-PH-002 and full hardening structure | Post-closure blocker repair |
+
+---
+
+### Audit Findings Incorporated
+
+**Source**: Pilot rerun `run_all_governance_validators()` on commit `e03a077b` (post-BACKFILL).
+**Pilot result**: 161 validators fired — 138 PASS, 21 WARN, **2 FAIL (blocks_sprint=True)**
+
+| Finding ID | Validator | Severity | Issue |
+|---|---|---|---|
+| FIND-PH-001 | `validate_readme_freshness` | FAIL / blocks_sprint=True | fods README stale, fodg README stale (2 drifted READMEs) |
+| FIND-PH-002 | `V102` | FAIL / blocks_sprint=True | 14 new public Python functions/properties missing docstrings across fods/spec/ |
+
+**Claim classifications:**
+- FIND-PH-001: `FAILED` — validator explicitly returns blocks_sprint=True, verified in pilot output
+- FIND-PH-002: `FAILED` — 14 concrete violation lines named with file:line:symbol detail
+
+---
+
+### Resolved / Preserved Work
+
+All 9 TC-BF taskcards are CLOSED and preserved. Their evidence and commit `e03a077b` are not revisited. These hardening taskcards are additive only.
+
+| TC-ID | Status | Not touched |
+|---|---|---|
+| TC-BF-001 through TC-BF-009 | CLOSED | All preserved |
+
+---
+
+### Unresolved Work Register
+
+| ID | Issue | Validator | File | Line | blocks_sprint |
+|---|---|---|---|---|---|
+| UW-PH-001 | fods README stale | validate_readme_freshness | src/python/fods/README.md | — | True |
+| UW-PH-002 | fodg README stale | validate_readme_freshness | src/python/fodg/README.md | — | True |
+| UW-PH-003 | format_id missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 34 | True |
+| UW-PH-004 | odf_version missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 38 | True |
+| UW-PH-005 | sheet_count missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 42 | True |
+| UW-PH-006 | warnings missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 46 | True |
+| UW-PH-007 | has_sheets missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 49 | True |
+| UW-PH-008 | raw_sheets missing docstring | V102 | src/python/fods/fods/spec/office/document.py | 52 | True |
+| UW-PH-009 | to_dict missing docstring (Document) | V102 | src/python/fods/fods/spec/office/document.py | 55 | True |
+| UW-PH-010 | value getter missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 35 | True |
+| UW-PH-011 | value setter missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 39 | True |
+| UW-PH-012 | value_type missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 43 | True |
+| UW-PH-013 | text missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 47 | True |
+| UW-PH-014 | formula missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 51 | True |
+| UW-PH-015 | repeated missing docstring | V102 | src/python/fods/fods/spec/table/table_cell.py | 55 | True |
+| UW-PH-016 | to_dict missing docstring (TableCell) | V102 | src/python/fods/fods/spec/table/table_cell.py | 58 | True |
+
+---
+
+### Taskcard Register
+
+| TC-ID | Title | Status | Priority | Blocker |
+|---|---|---|---|---|
+| TC-BF-PH-001 | Fix validate_readme_freshness FAIL for fods and fodg | not_attempted | P0 | blocks_sprint=True |
+| TC-BF-PH-002 | Add docstrings to 14 public members in fods/spec/ (V102) | not_attempted | P0 | blocks_sprint=True |
+
+---
+
+### TC-BF-PH-001 — Fix validate_readme_freshness FAIL (fods + fodg)
+
+```yaml
+taskcard_id: TC-BF-PH-001
+title: Fix stale README detection for fods and fodg formats
+status: not_attempted
+priority: P0
+source_issue_ids: [FIND-PH-001, UW-PH-001, UW-PH-002]
+source_issue_level: L1_EXECUTION
+source_audit_finding: >
+  Pilot run: validate_readme_freshness returned FAIL with blocks_sprint=True.
+  2 drifted READMEs: src/python/fods/README.md and src/python/fodg/README.md.
+  Predates BACKFILL. BACKFILL's expanded validator coverage surfaced it.
+why_it_matters: >
+  blocks_sprint=True means NO sprint can pass governance while this fails.
+  Every autonomous cycle run on any sprint will FAIL governance until resolved.
+  This is not advisory — it hard-blocks the entire pipeline.
+risk_addressed: Sprint pipeline cannot progress; governance gate is permanently red.
+
+lane_owner: product-readme-sync-lane
+supervisor_role: governance-repair-agent
+
+required_implementation:
+  - Run /sync-readmes skill for fods format: updates src/python/fods/README.md to reflect current source state
+  - Run /sync-readmes skill for fodg format: updates src/python/fodg/README.md to reflect current source state
+  - Alternatively: execute python tools/readme_sync/generate_root_status.py --format fods --format fodg
+  - Verify README content reflects current module structure (API sections, class list, method list)
+
+required_verification:
+  - After update: run governance validator runner on a test declaration
+  - validate_readme_freshness must return result=PASS for both fods and fodg
+  - Confirm blocks_sprint=False in result
+
+required_evidence:
+  - Command output showing /sync-readmes ran for fods and fodg
+  - Validator run output showing validate_readme_freshness=PASS
+  - git diff showing README changes
+
+acceptance_criteria:
+  - validate_readme_freshness PASS in governance validator run
+  - blocks_sprint=False for this validator
+  - READMEs contain accurate API surface (no phantom entries, no missing entries)
+
+stop_conditions:
+  - If sync-readmes tool is broken: manually inspect README vs current src/__init__.py exports and fix drift manually
+  - Do NOT skip this by suppressing the validator
+
+allowed_files:
+  - src/python/fods/README.md
+  - src/python/fodg/README.md
+  - Any README regeneration tooling output
+
+forbidden_files:
+  - src/python/fods/*.py (production source — only touch if README genuinely misrepresents the API)
+  - src/python/fodg/*.py
+
+dependencies: []
+closeout_rules:
+  - validate_readme_freshness returns PASS (not WARN, not FAIL) in a live pilot run
+  - Evidence of run provided (stdout from validator run)
+
+machine_state: not_attempted
+validation_commands:
+  - "python -c \"from pathlib import Path; import sys; sys.path.insert(0,'tools/supervisor'); from governance_validator_runner import run_all_governance_validators; from pathlib import Path; res = run_all_governance_validators({'run_id':'ph001-check','sprint_id':'ph001','evidence_root':'.local/evidences/','start_time':'2026-07-06T00:00:00Z','end_time':'2026-07-06T00:00:00Z','git_head_start':'HEAD','git_head_end':'HEAD','git_status_final':'','declared_scope':'check','planned_work_items':[],'completed_work_items':[],'incomplete_work_items':[],'changed_files':[]}, Path('.')); v=[x for x in res['validators'] if x.get('validator')=='validate_readme_freshness']; print(v[0] if v else 'NOT FOUND')\""
+```
+
+---
+
+### TC-BF-PH-002 — Add Docstrings to 14 Public Members in fods/spec/ (V102)
+
+```yaml
+taskcard_id: TC-BF-PH-002
+title: Add docstrings to 14 public properties and methods in fods/spec/ to resolve V102 FAIL
+status: not_attempted
+priority: P0
+source_issue_ids: [FIND-PH-002, UW-PH-003..UW-PH-016]
+source_issue_level: L1_EXECUTION
+source_audit_finding: >
+  Pilot run: V102 returned FAIL with blocks_sprint=True.
+  14 new public Python functions/properties without docstrings in fods/spec/ domain classes.
+  Files: src/python/fods/fods/spec/office/document.py (7 members),
+         src/python/fods/fods/spec/table/table_cell.py (7 members).
+  253 grandfathered violations MUST remain unchanged — only the 14 new ones need fixing.
+why_it_matters: >
+  blocks_sprint=True. No sprint pipeline pass possible while V102 fails.
+  These are spec-aligned domain classes introduced by the fods/spec/ hierarchy.
+  Public API without docstrings fails the production library standard.
+risk_addressed: Sprint pipeline blocked; fods/spec/ public API undocumented.
+
+lane_owner: product-docstring-lane
+supervisor_role: governance-repair-agent
+
+target_files:
+  - path: src/python/fods/fods/spec/office/document.py
+    members_requiring_docstrings:
+      - "format_id (property, line 34): Returns the format identifier string for this document"
+      - "odf_version (property, line 38): Returns the ODF version string from the document attributes"
+      - "sheet_count (property, line 42): Returns the number of sheets in this document"
+      - "warnings (property, line 46): Returns the list of parse warnings attached to this document"
+      - "has_sheets (method, line 49): Returns True if the document contains at least one sheet"
+      - "raw_sheets (method, line 52): Returns the raw list of sheet dicts from the internal data store"
+      - "to_dict (method, line 55): Returns a copy of the internal data dict representation"
+
+  - path: src/python/fods/fods/spec/table/table_cell.py
+    members_requiring_docstrings:
+      - "value getter (property, line 35): Returns the cell value; type depends on office:value-type"
+      - "value setter (property, line 39): Sets the cell value in the internal data store"
+      - "value_type (property, line 43): Returns the ODF value type string (e.g. 'float', 'string')"
+      - "text (property, line 47): Returns the text:p content for string/formula cells"
+      - "formula (property, line 51): Returns the formula expression string, or None if not a formula cell"
+      - "repeated (property, line 55): Returns the table:number-columns-repeated count; default 1"
+      - "to_dict (method, line 58): Returns a copy of the internal data dict representation"
+
+required_implementation:
+  - Add a single-line or multi-line docstring to EACH of the 14 members listed above
+  - Docstrings must be spec-grounded (reference the ODF spec element and field name)
+  - Do NOT modify any logic, return types, or signatures
+  - Do NOT touch the class docstrings (already present and passing)
+  - Do NOT touch the 253 grandfathered violations — leave them as-is
+
+grandfathering_rule: >
+  V102 tracks violations_new separately from violations_grandfathered.
+  Only the 14 listed here are new. The 253 grandfathered ones are frozen baseline.
+  If you accidentally add them to violations_new, V102 will re-count them — do NOT.
+  Only edit the 2 files listed. No other .py files.
+
+required_verification:
+  - Run V102 in isolation or via full validator suite
+  - V102 result must show: violations_new=[] (empty), violations_grandfathered=253, result=PASS
+  - Confirm blocks_sprint=False
+
+required_evidence:
+  - git diff showing exactly the 14 docstring additions (no other changes)
+  - Validator run output showing V102=PASS, violations_new=0, violations_grandfathered=253
+
+acceptance_criteria:
+  - V102 returns result=PASS
+  - violations_new is empty (0 new violations)
+  - violations_grandfathered remains 253 (unchanged)
+  - blocks_sprint=False
+  - No logic, signature, or type-annotation changes in the 2 target files
+
+stop_conditions:
+  - If V102 violations_new count changes after your edit (increases or decreases by more than 14): BLOCK — re-read the files before proceeding
+  - Do NOT suppress the validator or modify V102 logic to pass
+  - Do NOT add docstrings to any file other than the 2 listed
+
+allowed_files:
+  - src/python/fods/fods/spec/office/document.py
+  - src/python/fods/fods/spec/table/table_cell.py
+
+forbidden_files:
+  - All other src/ files
+  - tools/supervisor/governance_validators_ext.py (do NOT modify V102 itself)
+  - tests/ (do NOT add tests for this unless governance test suite requires it)
+
+dependencies: []
+closeout_rules:
+  - V102 returns PASS in live pilot run
+  - violations_new=0 confirmed in validator output
+  - git diff restricted to the 2 target files
+
+machine_state: not_attempted
+validation_commands:
+  - ".venv/Scripts/pytest tests/supervisor/test_governance_validators.py -k V102 --tb=short"
+```
+
+---
+
+### Lane Ownership
+
+| Lane | Owner | Taskcards |
+|---|---|---|
+| product-readme-sync-lane | governance-repair-agent | TC-BF-PH-001 |
+| product-docstring-lane | governance-repair-agent | TC-BF-PH-002 |
+
+Both lanes are UNBLOCKED — no external dependencies. Both are fully agent-executable.
+
+---
+
+### Gate Contract
+
+```yaml
+gate_PH_GREEN:
+  id: GATE-PH-001
+  description: >
+    Both show-stoppers resolved. Sprint pipeline unblocked.
+  conditions:
+    - validate_readme_freshness: PASS (not FAIL, not WARN with blocks_sprint)
+    - V102: PASS with violations_new=0 and violations_grandfathered=253
+    - Full governance validator run: fail_count=0, blocks_sprint=False
+  verification: "run_all_governance_validators(decl, repo_root)['fail_count'] == 0"
+  blocking: true
+  note: >
+    Gate cannot be passed by suppressing validators or modifying their logic.
+    Both validators must return PASS on genuine code fixes.
+```
+
+---
+
+### Evidence Contract
+
+Each taskcard closure REQUIRES:
+1. `git diff` output showing only the allowed files changed
+2. Validator run stdout showing PASS for the specific validator
+3. No new test failures in `tests/supervisor/test_governance_validators.py`
+4. `blocks_sprint=False` confirmed for both validators
+
+Prohibited evidence:
+- "I believe the README is updated" (prose without output)
+- Validator run output not shown
+- Missing git diff
+- Modified validator logic as workaround
+
+---
+
+### Verification Matrix
+
+| Check | Command | Expected |
+|---|---|---|
+| validate_readme_freshness | pilot validator run | result=PASS, blocks_sprint=False |
+| V102 docstrings | pilot validator run | result=PASS, violations_new=0 |
+| Full fail_count | run_all_governance_validators | fail_count=0 |
+| Test regression | pytest test_governance_validators.py | 187 passed (no new failures) |
+| git diff scope | git diff HEAD --stat | Only 2-4 files changed |
+
+---
+
+### Repair Loop
+
+```
+FOR each blocker in [TC-BF-PH-001, TC-BF-PH-002]:
+  1. Read target files BEFORE editing
+  2. Apply minimal change (sync README / add docstring)
+  3. Run validator in isolation
+  4. If PASS: capture stdout evidence; proceed to next blocker
+  5. If still FAIL: re-read violation detail; do NOT guess; re-apply
+  6. DO NOT patch the validator to silence the failure
+  7. After both: run full governance suite (187 tests expected)
+  8. If any new test fails: REROUTE — do not accept
+```
+
+---
+
+### Anti-Overclaim Rules
+
+- `validate_readme_freshness PASS` is NOT proven until validator stdout is shown
+- `V102 PASS` is NOT proven until `violations_new=0` is confirmed in output
+- `blocks_sprint=False` is NOT assumed — must appear in `result["blocks_sprint"]`
+- A partial docstring (e.g., empty string `""`) does NOT satisfy V102
+- README "looks good visually" does NOT satisfy validate_readme_freshness
+- 253 grandfathered violations remaining is a REQUIRED invariant, not optional
+
+---
+
+### Closeout Criteria
+
+TC-BF-PH-001 CLOSED when:
+- [ ] validate_readme_freshness returns PASS in live validator run
+- [ ] git diff shows only README files changed
+- [ ] blocks_sprint=False confirmed
+
+TC-BF-PH-002 CLOSED when:
+- [ ] V102 returns PASS with violations_new=0 and violations_grandfathered=253
+- [ ] git diff shows only the 2 fods/spec/ files changed
+- [ ] blocks_sprint=False confirmed
+
+ADDENDUM CLOSED when:
+- [ ] TC-BF-PH-001 CLOSED
+- [ ] TC-BF-PH-002 CLOSED
+- [ ] Full governance validator run: fail_count=0, blocks_sprint=False
+- [ ] 187 governance tests pass (no regressions)
+- [ ] Commit with both fixes recorded
+
+---
+
+### Remaining True Blockers
+
+| Blocker | Type | Agent-Executable | External Gate |
+|---|---|---|---|
+| validate_readme_freshness FAIL | Product code gap | YES — run /sync-readmes or fix manually | No |
+| V102 14 docstrings FAIL | Product code gap | YES — add docstrings to 2 files | No |
+
+Neither blocker requires Babar Raza approval. Neither requires credentials. Both are agent-executable immediately.
+
+TC-BF-004 observation window (expires 2026-08-05): NOT a show-stopper. The `check_tombstone_records.py` monitoring runs independently on 2026-08-05. It does not block sprint progression.

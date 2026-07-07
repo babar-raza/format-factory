@@ -1,0 +1,66 @@
+"""
+ODF spec element: office:document
+
+Spec ref: ODF 1.3 §3.1 — Document Element (flat format)
+Fact ref: FACT-FODS-001
+QName: office:document
+Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
+Canonical class: Office.Document
+"""
+from __future__ import annotations
+
+from typing import Any
+
+
+class Document:
+    """Canonical spec-shaped class for office:document in FODS context.
+
+    Root element of a flat ODS document. Contains office:body, office:automatic-styles,
+    and office:scripts. Attributes include office:version and xmlns declarations.
+
+    Facades in Compat/ should delegate to this class via spec_qname.
+    """
+
+    spec_qname = "office:document"
+    spec_fact_ref = "FACT-FODS-001"
+    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name = "document"
+    facade_names = ["FodsDocument"]
+
+    def __init__(self, data: dict[str, Any] | None = None):
+        self._data: dict[str, Any] = data or {}
+
+    @property
+    def format_id(self) -> str:
+        """Return the format identifier for this document (always 'fods')."""
+        return self._data.get("format_id", "fods")
+
+    @property
+    def odf_version(self) -> str:
+        """Return the ODF version string from the office:version attribute."""
+        return self._data.get("odf_version", "")
+
+    @property
+    def sheet_count(self) -> int:
+        """Return the number of sheets (table:table elements) in this document."""
+        return len(self._data.get("sheets", []))
+
+    @property
+    def warnings(self) -> list[dict[str, Any]]:
+        """Return any parser warnings accumulated during document loading."""
+        return self._data.get("warnings", [])
+
+    def has_sheets(self) -> bool:
+        """Return True if the document contains at least one sheet."""
+        return self.sheet_count > 0
+
+    def raw_sheets(self) -> list[dict[str, Any]]:
+        """Return the raw sheet data list from the internal data store."""
+        return self._data.get("sheets", [])
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return a shallow copy of the internal data dictionary."""
+        return dict(self._data)
+
+    def __repr__(self) -> str:
+        return f"Document(sheets={self.sheet_count})"
