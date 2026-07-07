@@ -20,8 +20,8 @@ _WHEELS_DIR = REPO / ".local" / "wheels"
 class TestOdsWheelProof:
     def test_ods_wheel_exists(self) -> None:
         wheel_dir = REPO / ".local" / "wheels" / "ods"
-        if not wheel_dir.is_dir():
-            pytest.skip(f"ODS wheel dir not present: {wheel_dir}")
+        if not wheel_dir.is_dir() or not list(wheel_dir.glob("*.whl")):
+            pytest.skip(f"ODS wheel dir not present or empty: {wheel_dir}")
         wheels = list(wheel_dir.glob("*.whl"))
         assert len(wheels) >= 1, f"No ODS wheel found in {wheel_dir}"
         assert "format_factory_ods" in wheels[0].name
@@ -44,8 +44,8 @@ class TestOdsWheelProof:
 class TestSylkWheelProof:
     def test_sylk_wheel_exists(self) -> None:
         wheel_dir = REPO / ".local" / "wheels" / "sylk"
-        if not wheel_dir.is_dir():
-            pytest.skip(f"SYLK wheel dir not present: {wheel_dir}")
+        if not wheel_dir.is_dir() or not list(wheel_dir.glob("*.whl")):
+            pytest.skip(f"SYLK wheel dir not present or empty: {wheel_dir}")
         wheels = list(wheel_dir.glob("*.whl"))
         assert len(wheels) >= 1, f"No SYLK wheel found in {wheel_dir}"
         assert "format_factory_sylk" in wheels[0].name

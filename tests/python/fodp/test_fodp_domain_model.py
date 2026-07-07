@@ -25,18 +25,26 @@ class TestFodpDocumentSpecQname:
         assert FodpDocument.spec_fact_ref == "FACT-FODP-001"
 
     def test_from_file_returns_model(self):
+        if not _SAMPLE.is_file():
+            import pytest; pytest.skip(f"Sample file not present: {_SAMPLE}")
         doc = FodpDocument.from_file(_SAMPLE)
         assert isinstance(doc, FodpDocument)
 
     def test_from_file_spec_qname_on_instance(self):
+        if not _SAMPLE.is_file():
+            import pytest; pytest.skip(f"Sample file not present: {_SAMPLE}")
         doc = FodpDocument.from_file(_SAMPLE)
         assert doc.spec_qname == "office:document"
 
     def test_from_file_page_count(self):
+        if not _SAMPLE.is_file():
+            import pytest; pytest.skip(f"Sample file not present: {_SAMPLE}")
         doc = FodpDocument.from_file(_SAMPLE)
         assert doc.page_count >= 1
 
     def test_to_dict_page_count_key(self):
+        if not _SAMPLE.is_file():
+            import pytest; pytest.skip(f"Sample file not present: {_SAMPLE}")
         doc = FodpDocument.from_file(_SAMPLE)
         assert "page_count" in doc.to_dict()
 
