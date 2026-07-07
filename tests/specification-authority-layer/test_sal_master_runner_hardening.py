@@ -14,6 +14,8 @@ sys.path.insert(0, str(_REPO / "tools" / "specification-authority-layer"))
 
 import sal_master_runner as smr
 
+_SOURCE_REGISTRY = _REPO / ".local" / "spec-source-registry" / "sources.jsonl"
+
 
 # ---------------------------------------------------------------------------
 # _get_source_id_for_format
@@ -21,6 +23,11 @@ import sal_master_runner as smr
 
 class TestGetSourceIdForFormat:
     """_get_source_id_for_format returns registered source_ids with ODF fallback."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SOURCE_REGISTRY.is_file(),
+        reason="SAL source registry not present in this environment",
+    )
 
     def setup_method(self):
         # Reset module-level cache before each test

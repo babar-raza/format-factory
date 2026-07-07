@@ -11,10 +11,18 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO / "tools" / "capability_layer"))
 
 from capability_map_generator import _load_spec_facts, _VERIFIED_FACT_STATUSES, _NON_AUTHORITATIVE_STATUSES
+
+_SPEC_CACHE = REPO / ".local" / "spec-cache"
+pytestmark = pytest.mark.skipif(
+    not _SPEC_CACHE.is_dir(),
+    reason="SAL spec-cache not present in this environment",
+)
 
 
 class TestLoadSpecFactsFiltering:

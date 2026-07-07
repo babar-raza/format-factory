@@ -19,6 +19,12 @@ sys.path.insert(0, str(_REPO / "tools" / "specification-authority-layer"))
 
 from sal_master_runner import run_sal_pipeline
 
+_SPEC_CACHE = _REPO / ".local" / "spec-cache"
+pytestmark = pytest.mark.skipif(
+    not _SPEC_CACHE.is_dir(),
+    reason="SAL spec-cache not present in this environment",
+)
+
 
 # ---------------------------------------------------------------------------
 # TC-SAL-IMPL-001: --from-cache-only mode

@@ -14,9 +14,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 _REPO = Path(__file__).resolve().parents[2]
 _EVIDENCE = _REPO / ".local" / "evidences" / \
     "sal-main-goal-verification-healing-pilot-backfill-closeout-20260612-8e45224"
+
+pytestmark = pytest.mark.skipif(
+    not _EVIDENCE.is_dir(),
+    reason="SAL closeout evidence not present in this environment",
+)
 
 
 class TestLaneSupervisorLedger:

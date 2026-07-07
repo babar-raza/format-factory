@@ -3,8 +3,12 @@
 import sys
 from pathlib import Path
 
+import pytest
+
 _REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO / "tools" / "specification-authority-layer"))
+
+_SPEC_CACHE = _REPO / ".local" / "spec-cache"
 
 from fact_quality import (
     ITEM_TYPE_THRESHOLDS,
@@ -166,6 +170,11 @@ class TestLoadRegisteredSourceIds:
 
 class TestBuildFactQualityIndex:
     """build_fact_quality_index() produces a usable index."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_builds_from_production(self):
         index = build_fact_quality_index(repo_root=_REPO)

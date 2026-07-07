@@ -18,6 +18,12 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
+_SPEC_CACHE = REPO_ROOT / ".local" / "spec-cache"
+pytestmark = pytest.mark.skipif(
+    not _SPEC_CACHE.is_dir(),
+    reason="SAL spec-cache not present in this environment",
+)
+
 from authority_gate_validation import validate_format_authority
 
 

@@ -31,6 +31,12 @@ try:
 except ImportError:
     _YAML_AVAILABLE = False
 
+_SPEC_CACHE = _REPO_ROOT / ".local" / "spec-cache"
+pytestmark = pytest.mark.skipif(
+    not _SPEC_CACHE.is_dir(),
+    reason="SAL spec-cache not present in this environment",
+)
+
 
 def _load_facts(format_id: str) -> list[dict]:
     """Load facts from spec-cache verified-facts-review.yaml for a format."""

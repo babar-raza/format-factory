@@ -24,6 +24,11 @@ except ImportError:
 
 _REPO = Path(__file__).parent.parent.parent
 _SAL_FACTS = _REPO / ".local" / "sal-output" / "sal-facts-latest.json"
+
+pytestmark = pytest.mark.skipif(
+    not _SAL_FACTS.is_file(),
+    reason="SAL facts output not present in this environment",
+)
 _SAL_OVERRIDES = _REPO / "shared" / "sal-fact-overrides.yaml"
 _SRC_PYTHON = _REPO / "src" / "python"
 

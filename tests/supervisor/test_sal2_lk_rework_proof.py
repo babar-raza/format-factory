@@ -16,9 +16,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SPRINT2_EVIDENCE = REPO_ROOT / ".local" / "evidences" / "sal-integration-hardening-sprint2-20260611-8e45224"
 SPRINT1_EVIDENCE = REPO_ROOT / ".local" / "evidences" / "sal-verification-healing-hardening-backfill-single-go-20260611-8e45224"
+
+pytestmark = pytest.mark.skipif(
+    not SPRINT2_EVIDENCE.is_dir() or not SPRINT1_EVIDENCE.is_dir(),
+    reason="Sprint evidence directories not present in this environment",
+)
 
 
 # ---------------------------------------------------------------------------

@@ -10,7 +10,16 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "specification-authority-layer"))
+import pytest
+
+_REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(_REPO / "tools" / "specification-authority-layer"))
+
+_SPEC_CACHE = _REPO / ".local" / "spec-cache"
+pytestmark = pytest.mark.skipif(
+    not _SPEC_CACHE.is_dir(),
+    reason="SAL spec-cache not present in this environment",
+)
 
 
 def _run_for_format(fmt: str) -> tuple[int, set[str]]:

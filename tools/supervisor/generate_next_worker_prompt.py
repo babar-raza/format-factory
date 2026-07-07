@@ -828,12 +828,19 @@ STREAM_FORWARD_WORK = {
 # R-NMPC: Patterns that always require external human authorization — never agent-executable
 _EXTERNAL_GATE_PATTERNS = [
     "gate 11",
+    "gate 8",
     "g11-g",
+    "git commit",
+    "git push",
+    "commit + push",
     "publication",
     "publish to nuget",
     "nuget publish",
     "human required for commercial",
     "commercial release",
+    "requires user authorization",
+    "requires explicit user authorization",
+    "requires human authorization",
 ]
 
 

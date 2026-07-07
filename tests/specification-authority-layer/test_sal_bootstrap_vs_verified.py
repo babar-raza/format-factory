@@ -50,6 +50,9 @@ class TestBootstrapVsVerified:
 
     def test_workbench_format_verified_facts_have_source_id(self, tmp_path):
         """ZST (has verified workbench) → workbench facts have fact_status='verified' and source_id."""
+        _spec_cache = _REPO / ".local" / "spec-cache" / "zst"
+        if not _spec_cache.is_dir():
+            pytest.skip("ZST SAL spec-cache not present in this environment")
         result = run_sal_pipeline(formats=["zst"], output_dir=tmp_path)
         zst_result = next(
             (r for r in result.get("results", []) if r["format_id"] == "zst"), None

@@ -15,6 +15,12 @@ import pytest
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 
+_SAL_FACTS = _REPO / ".local" / "sal-output" / "sal-facts-latest.json"
+pytestmark = pytest.mark.skipif(
+    not _SAL_FACTS.is_file(),
+    reason="SAL facts output not present in this environment",
+)
+
 
 # ── Step 1: SPEC artifact is real ────────────────────────────────────────────
 

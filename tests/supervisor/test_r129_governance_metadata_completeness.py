@@ -207,8 +207,16 @@ class TestAntiSkipLaneLedgerDiscovery:
         )
 
 
+_SPEC_CACHE = REPO_ROOT / ".local" / "spec-cache"
+
+
 class TestPpmPromotion:
     """PPM must be at P4 after verified magic number facts from spec-index + crossref."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_ppm_reaches_p4(self):
         result = validate_format_authority("ppm")
@@ -235,6 +243,11 @@ class TestPpmPromotion:
 
 class TestFormatAuthorityMatrixConsistency:
     """Format authority levels must be consistent with expected state."""
+
+    pytestmark = pytest.mark.skipif(
+        not _SPEC_CACHE.is_dir(),
+        reason="SAL spec-cache not present in this environment",
+    )
 
     def test_p6_formats(self):
         for fmt in ["fods", "zst"]:
