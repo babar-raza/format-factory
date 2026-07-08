@@ -61,10 +61,14 @@ class TestWorkTypeSkillGate:
         assert len(violations) == 0
 
     def test_all_five_gaps_detected(self):
-        """All 5 BLOCKED_SKILL_GAP entries in map are detectable."""
+        """All 5 BLOCKED_SKILL_GAP entries in map are detectable.
+
+        Note: extract_analytics_from_monolith was moved to active_mappings when
+        SKILL-GAP-005 was closed; replaced with rollback_and_recovery (SKILL-GAP-011).
+        """
         gap_types = [
             "capability_compiler",
-            "extract_analytics_from_monolith",
+            "rollback_and_recovery",
             "pre_sprint_governance_hook",
             "ci_transcript_verification",
             "supervision_audit",

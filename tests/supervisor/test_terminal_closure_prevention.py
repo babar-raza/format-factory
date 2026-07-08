@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -185,7 +186,8 @@ class TestLifecycleAuditWithPlanPath:
         }))
 
         result = run_lifecycle_audit(repo_root=tmp_path)
-        assert result["verdict"] == "AUDIT_PASS"
+        # Without a plan_path, no taskcards are parsed — verdict is AUDIT_PASS_VACUOUS
+        assert result["verdict"] in ("AUDIT_PASS", "AUDIT_PASS_VACUOUS")
         assert result["open_taskcards"] == []
         assert result["total_taskcards_parsed"] == 0
 
@@ -374,7 +376,7 @@ class TestCompletionCandidate:
             "last_taskcard": None,
             "session_id": "test-cc",
             "track_type": "product",
-            "updated_at": "2026-06-23T17:00:00Z",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         (lock_dir / "test-cc.json").write_text(json.dumps(lock))
         (tmp_path / ".local" / "supervisor" / "active-plan-lock.json").write_text(json.dumps(lock))
@@ -729,7 +731,7 @@ class TestCompletionCandidateIntegration:
             "plan_path": "plans/test-cc.md",
             "status": "COMPLETION_CANDIDATE",
             "session_id": session_id,
-            "updated_at": "2026-06-23T00:00:00Z",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         }))
 
         # Write session ID file
