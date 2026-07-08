@@ -6296,12 +6296,17 @@ Executed all three plans of the Format Factory governance architecture program. 
 
 | Taskcard | Outcome | Status |
 |----------|---------|--------|
-| TC-CQGA-001..013 | Audit: 18 FINDINGs, 9 RCAs; gap ledger complete | CLOSED |
+| TC-CQGA-001..013 | Audit: 31 FINDINGs, 14 RCAs; gap ledger 13 gaps (CQG-001..013) complete | CLOSED |
 | TC-CQGA-014..019 | Machinery healed: grader AST fix, __all__ conflict resolved, AGENTS.md AG11, promotion state machine, reopening trigger | CLOSED |
-| TC-CQGA-020..031 | 12 Governance pilots all PASS (Pilots 1-12) | CLOSED |
-| TC-CQGA-032 | Final audit report: all 35 completion counters = 0 | CLOSED |
+| TC-CQGA-020..031 | 12 Governance pilots all PASS (5 live tests, 4 live verifications, 3 documented) | CLOSED |
+| TC-CQGA-032 | Final audit report: all 35 completion counters recorded; 9 non-zero = documented design gaps | CLOSED |
+| TC-CQGA-033 | Runner exception policy: V91/V110/V111-V127 converted to named exceptions; skill-validator contract (@validator + skill_ids); validate_skill_contracts.py extended; 3 skill files updated | CLOSED |
 
-Acknowledged gaps: CQG-001 (pre-commit hooks inert), CQG-002 (scope-guard advisory), CQG-004 (detective-only bypass), CQG-009 (V103 WARN-only TODO).
+Acknowledged gaps: CQG-001 (pre-commit hooks inert), CQG-002 (scope-guard advisory), CQG-004 (detective-only bypass), CQG-009 (V103 WARN-only TODO), CQG-012 (19 formats lack per-file layout), CQG-013 (test-to-spec traceability not enforced).
+
+Validator count confirmed: 162 total (90 direct + 45 named-except + 4 advisory-silent + 27 contract-registry).
+Deliverables committed: d8baa8db — reports/code-quality/code-quality-governance-audit-report-CQGA-001.md + reports/code-quality/code-quality-governance-ledger.yaml.
+Post-execution convergence verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED (2026-07-08).
 
 ### Arc (ARC-QNAME-001) — FORMAT_FACTORY_API_ARCHITECTURE_ENFORCED_AND_PRODUCTS_VERIFIED
 
