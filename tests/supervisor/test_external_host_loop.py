@@ -1,7 +1,7 @@
 """
 test_external_host_loop.py
 
-Tests for external_host_loop.py — validates the external autonomous host loop.
+Tests for external_host_loop.py  -  validates the external autonomous host loop.
 
 Sprint: FORMAT-FACTORY-AUTONOMOUS-EXTERNAL-HOST-BOOTSTRAP-001
 Updated: FORMAT-FACTORY-AUTONOMOUS-HOST-LOOP-FALSE-POSITIVE-REPAIR-001
@@ -20,7 +20,7 @@ import pytest
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
-# external_host_loop.py is tombstoned � skip all tests if import raises
+# external_host_loop.py is tombstoned - skip all tests if import raises
 try:
     import external_host_loop as _ehl_check  # noqa: F401
     _EHL_AVAILABLE = True
@@ -149,7 +149,7 @@ class TestPromptSafety:
             word in content.lower()[:content.lower().find(v.split(":", 1)[-1].lower()) + 5]
             for word in ["do not", "must not", "never", "forbidden"]
         )]
-        # The smoke prompt lists DO NOT instructions — those shouldn't count as violations
+        # The smoke prompt lists DO NOT instructions  -  those shouldn't count as violations
         # Basic check: smoke prompt doesn't have "git commit" as an action
         assert "authorized git" not in content.lower()
         assert "gate 11 approval" not in content.lower() or "do not" in content.lower()
@@ -186,7 +186,7 @@ class TestCLAUDECODEScrub:
         import shutil
         from external_host_loop import scrub_claudecode_env
         if os.environ.get("CLAUDECODE"):
-            pytest.skip("Skipped inside Claude Code session — claude CLI may hang")
+            pytest.skip("Skipped inside Claude Code session  -  claude CLI may hang")
         claude_path = shutil.which("claude")
         if not claude_path:
             pytest.skip("Claude CLI not found")
@@ -205,7 +205,7 @@ class TestGitStatusVerification:
 
     def test_allowed_path_is_clean(self):
         from external_host_loop import verify_git_status
-        # No changes in this test — should be clean for known-allowed paths
+        # No changes in this test  -  should be clean for known-allowed paths
         clean, violations = verify_git_status(
             REPO_ROOT,
             ["reports/autonomous-external-host-bootstrap/smoke/"],
@@ -430,7 +430,7 @@ class TestPackage107FalsePositiveRegression:
             na_file = tmpdir / "next-action.json"
             na_file.write_text(_json.dumps(na))
 
-            # Mock invoke_claude to return valid JSON stdout — but child does NOT create proof
+            # Mock invoke_claude to return valid JSON stdout  -  but child does NOT create proof
             valid_stdout = _json.dumps({
                 "status": "HOST_CYCLE_SMOKE_OK",
                 "action_id": "HOST_SMOKE_001",
