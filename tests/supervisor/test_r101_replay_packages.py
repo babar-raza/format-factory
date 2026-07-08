@@ -53,6 +53,8 @@ def _load_declaration_from_zip(zip_path: Path) -> dict:
 
 @pytest.mark.parametrize("run_id", list(PACKAGES.keys()))
 def test_review_package_exists(run_id):
+    if not REVIEW_BASE.exists():
+        pytest.skip(".local/supervisor/reviews/ does not exist (gitignored, CI skip)")
     path = _get_package_path(run_id)
     assert path.exists(), f"Review package not found: {path}"
 

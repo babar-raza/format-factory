@@ -31,6 +31,7 @@ def validate_oracle_depth_minimum(declaration: dict, repo_root: Path | None = No
             "validator": "validate_oracle_depth_minimum",
             "result": "SKIP",
             "detail": "oracle/formats/ directory not found",
+            "blocks_sprint": False,
         }
 
     for fmt_dir in sorted(oracle_dir.iterdir()):
@@ -64,10 +65,12 @@ def validate_oracle_depth_minimum(declaration: dict, repo_root: Path | None = No
             "result": "WARN",
             "detail": f"{len(findings)}/{len(formats_checked)} formats at D0-only depth",
             "findings": findings,
+            "blocks_sprint": False,
         }
 
     return {
         "validator": "validate_oracle_depth_minimum",
         "result": "PASS",
         "detail": f"All {len(formats_checked)} formats at D1+ depth",
+        "blocks_sprint": False,
     }

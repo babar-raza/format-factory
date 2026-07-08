@@ -118,7 +118,7 @@ class TestV66MultiResponsibilityFile:
         assert result["result"] == "PASS"
         assert "V66" in result["summary"]
 
-    def test_warn_three_roles(self, tmp_path):
+    def test_fail_three_roles(self, tmp_path):
         pkg = tmp_path / "src" / "python" / "fmtpkg"
         pkg.mkdir(parents=True)
         code = (
@@ -134,8 +134,7 @@ class TestV66MultiResponsibilityFile:
         (pkg / "codec.py").write_text(code)
         decl = {"changed_files": ["src/python/fmtpkg/codec.py"]}
         result = validate_multi_responsibility_file(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
-        assert result["blocks_sprint"] is False
+        assert result["result"] == "FAIL"
         assert "V66" in result["summary"]
         assert len(result["items"]) == 1
         assert set(result["items"][0]["roles"]) == {"parser", "model", "serializer"}

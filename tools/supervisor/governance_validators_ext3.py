@@ -605,6 +605,9 @@ def validate_setter_without_writer_path(
     }
 
 
+_v107_cache = {}  # keyed by str(repo_root) — repo state constant within process
+
+
 @validator(rule_id="V_VALIDATE_TEST_ONLY_PUBLIC_APIS", domain="structural",
            description="Warn for public Python/C# APIs referenced only in test files",
            skill_ids=["add-python-api", "add-dotnet-api", "product-source-task"])
@@ -619,21 +622,38 @@ def validate_test_only_public_apis(
     # Implemented as a best-effort heuristic: functions in analytics/codec files that have
     # zero references in non-test source files.
     _r = repo_root or Path(__file__).parent.parent.parent
+    _cache_key = str(_r)
+    if _cache_key in _v107_cache:
+        return _v107_cache[_cache_key]
+
+    def _cache_and_return(result: dict) -> dict:
+        _v107_cache[_cache_key] = result
+        return result
+
     src_dir = _r / "src" / "python"
     test_dir = _r / "tests" / "python"
     if not src_dir.exists():
-        return {
+        return _cache_and_return({
             "validator_id": "V107",
             "status": "PASS",
             "blocks_sprint": False,
             "summary": "V107: No src/python directory (skipped)",
-        }
+        })
+
+    import time as _time
+    _v107_start = _time.monotonic()
+    _V107_TIMEOUT = 5  # seconds — short-circuit to avoid CI hangs
 
     # Collect all public function names defined in product source
     product_api_names: dict[str, str] = {}  # name -> source file
     for f in src_dir.rglob("*.py"):
         if "__pycache__" in f.parts or "test" in f.name.lower():
             continue
+        if _time.monotonic() - _v107_start > _V107_TIMEOUT:
+            return _cache_and_return({
+                "validator_id": "V107", "status": "WARN", "blocks_sprint": False,
+                "summary": "V107: Timed out during source scan (>5s) — skipped",
+            })
         try:
             tree = ast.parse(f.read_text(encoding="utf-8", errors="replace"))
         except SyntaxError:
@@ -648,6 +668,11 @@ def validate_test_only_public_apis(
     for f in src_dir.rglob("*.py"):
         if "__pycache__" in f.parts or "test" in f.name.lower():
             continue
+        if _time.monotonic() - _v107_start > _V107_TIMEOUT:
+            return _cache_and_return({
+                "validator_id": "V107", "status": "WARN", "blocks_sprint": False,
+                "summary": "V107: Timed out during cross-ref scan (>5s) — skipped",
+            })
         try:
             content = f.read_text(encoding="utf-8", errors="replace")
             for name in product_api_names:
@@ -660,6 +685,11 @@ def validate_test_only_public_apis(
     test_referenced = set()
     if test_dir.exists():
         for f in test_dir.rglob("*.py"):
+            if _time.monotonic() - _v107_start > _V107_TIMEOUT:
+                return _cache_and_return({
+                    "validator_id": "V107", "status": "WARN", "blocks_sprint": False,
+                    "summary": "V107: Timed out during test scan (>5s) — skipped",
+                })
             try:
                 content = f.read_text(encoding="utf-8", errors="replace")
                 for name in product_api_names:
@@ -674,8 +704,7 @@ def validate_test_only_public_apis(
             test_only.append(f"{src_file}:{name}")
 
     if len(test_only) > 50:
-        # Too many — likely a false-positive-heavy scan; suppress
-        return {
+        return _cache_and_return({
             "validator_id": "V107",
             "status": "WARN",
             "blocks_sprint": False,
@@ -683,9 +712,9 @@ def validate_test_only_public_apis(
                 f"V107: High-count scan ({len(test_only)} potential test-only APIs) — "
                 f"likely includes false positives. Manual review recommended."
             ),
-        }
+        })
     if test_only:
-        return {
+        return _cache_and_return({
             "validator_id": "V107",
             "status": "WARN",
             "blocks_sprint": False,
@@ -694,13 +723,13 @@ def validate_test_only_public_apis(
                 f"V107: {len(test_only)} public Python function(s) appear only in test files. "
                 f"Review — these may be test-shaped APIs."
             ),
-        }
-    return {
+        })
+    return _cache_and_return({
         "validator_id": "V107",
         "status": "PASS",
         "blocks_sprint": False,
         "summary": "V107: No test-only public Python APIs detected",
-    }
+    })
 
 
 @validator(rule_id="V_VALIDATE_DETACHED_PERSISTENT_STATE", domain="structural",

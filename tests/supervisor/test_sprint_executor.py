@@ -116,9 +116,15 @@ class TestStatus:
     """TC-A3-2: status prints valid JSON with verdict key."""
 
     def test_exits_zero(self):
+        signal_path = _REPO / ".local" / "supervisor" / "continuation-signal.json"
+        if not signal_path.exists():
+            pytest.skip("continuation-signal.json not present (.local/ gitignored in CI)")
         _run("status")
 
     def test_prints_valid_json(self):
+        signal_path = _REPO / ".local" / "supervisor" / "continuation-signal.json"
+        if not signal_path.exists():
+            pytest.skip("continuation-signal.json not present (.local/ gitignored in CI)")
         result = _run("status")
         # Find the JSON block in stdout (may have non-JSON lines before/after)
         stdout = result.stdout.strip()

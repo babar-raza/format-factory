@@ -16,6 +16,13 @@ _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))
 
 QUEUE_PATH = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
+
+if not QUEUE_PATH.exists():
+    pytest.skip(
+        "action-queue.jsonl not present (gitignored, CI skip)",
+        allow_module_level=True,
+    )
+
 CONSUMPTION_RESULT_PATH = (
     _repo_root
     / "reports"

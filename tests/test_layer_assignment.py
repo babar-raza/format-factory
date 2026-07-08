@@ -23,16 +23,19 @@ PYTHON_EXE = sys.executable
 
 
 def _subprocess_env() -> dict:
-    """Return an env dict with PYTHONPATH set to include all current sys.path entries.
+    """Return an env dict with PYTHONPATH set so subprocess can find pytest.
 
-    Ensures that subprocess calls using PYTHON_EXE can find pytest even when
-    pytest is installed in user site-packages (not the system Python's default path).
+    Only adds site-packages paths (not every sys.path entry) to avoid
+    OSError E7 (Argument list too long) on CI where the full env can exceed
+    the kernel's ARG_MAX limit.
     """
     env = dict(os.environ)
-    # Prepend all non-empty sys.path entries to PYTHONPATH so pytest is discoverable.
-    extra = os.pathsep.join(p for p in sys.path if p)
-    existing = env.get("PYTHONPATH", "")
-    env["PYTHONPATH"] = f"{extra}{os.pathsep}{existing}" if existing else extra
+    # Only include site-packages paths — these are what's needed for pytest discovery.
+    site_paths = [p for p in sys.path if p and "site-packages" in p]
+    if site_paths:
+        existing = env.get("PYTHONPATH", "")
+        extra = os.pathsep.join(site_paths)
+        env["PYTHONPATH"] = f"{extra}{os.pathsep}{existing}" if existing else extra
     return env
 
 

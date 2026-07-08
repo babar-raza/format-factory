@@ -237,9 +237,12 @@ class TestPerStreamStateDirectories:
     """R108: Autonomous cycle writes to per-stream directory."""
 
     def test_stream_dir_code_exists(self):
-        """autonomous_cycle.py contains supervisor-streams directory logic."""
+        """autonomous_cycle or extensions contains supervisor-streams directory logic."""
         import autonomous_cycle as mod
         source = Path(mod.__file__).read_text(encoding="utf-8")
+        ext_path = Path(mod.__file__).parent / "autonomous_cycle_extensions.py"
+        if ext_path.exists():
+            source += ext_path.read_text(encoding="utf-8")
         assert "supervisor-streams" in source
 
     def test_stream_dir_path_structure(self):

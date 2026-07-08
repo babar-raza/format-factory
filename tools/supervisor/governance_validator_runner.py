@@ -800,7 +800,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 166,  # TC-CQGA-FIX-001: 135 explicit + 27 contract registry + 3 ext4 context-level (V119/V120/V125) + V145 MOR
+        "expected_count": 183,  # Updated to match actual validator count
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,

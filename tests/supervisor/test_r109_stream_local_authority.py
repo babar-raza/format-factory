@@ -62,9 +62,12 @@ class TestReviewRouting:
     """Evidence review and contradictions are routed to stream-local directories."""
 
     def test_autonomous_cycle_writes_stream_local_review(self):
-        """autonomous_cycle.py bridge writes to stream-local directory."""
+        """autonomous_cycle or extensions writes to stream-local directory."""
         import autonomous_cycle as mod
         source = Path(mod.__file__).read_text(encoding="utf-8")
+        ext_path = Path(mod.__file__).parent / "autonomous_cycle_extensions.py"
+        if ext_path.exists():
+            source += ext_path.read_text(encoding="utf-8")
         assert "supervisor-streams" in source
         assert "evidence-review.json" in source
 

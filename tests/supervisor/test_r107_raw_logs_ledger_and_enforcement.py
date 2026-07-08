@@ -529,5 +529,6 @@ class TestCrossWaveIntegration:
             "declaration_completeness", "test_count_regression",
             "stale_evidence_manifest", "missing_changed_files",
             "stream_local_authority", "wrong_stream_next_sprint",
+            "odf_spec_linkage",
         }
         assert set(SEVERITY_MAP.keys()) == expected_checks

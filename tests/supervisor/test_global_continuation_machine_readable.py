@@ -99,6 +99,8 @@ def test_next_action_not_advisory_md():
 @pytest.mark.state_dependent
 def test_action_queue_exists():
     """action-queue.jsonl must exist."""
+    if not ACTION_QUEUE_PATH.parent.exists():
+        pytest.skip(".local/supervisor/ not present (gitignored, CI skip)")
     assert ACTION_QUEUE_PATH.exists(), "action-queue.jsonl must exist"
 
 

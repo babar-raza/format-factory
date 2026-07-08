@@ -305,12 +305,13 @@ class TestProductionScanIntegration:
 
         # F-001: xcf_layer_name_list synthetic placeholder — governed, expected
         GOVERNED_VIOLATIONS = {
-            ("forbidden_term", "src\\python\\xcf\\xcf_parser.py", 1119),
+            ("forbidden_term", "src/python/xcf/xcf_parser.py", 1119),
         }
 
         unexpected = []
         for v in violations:
             file_rel = v["file"].replace(str(_REPO) + "\\", "").replace(str(_REPO) + "/", "")
+            file_rel = file_rel.replace("\\", "/")
             key = (v["kind"], file_rel, v["line"])
             if key not in GOVERNED_VIOLATIONS:
                 unexpected.append(v)

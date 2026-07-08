@@ -530,11 +530,17 @@ def validate_certification_matrix_consistent(declaration: dict, repo_root: Path 
         }
 
 
+_readme_freshness_cache = {}  # keyed by str(repo_root) — repo state constant within process
+
+
 @validator(rule_id="V_VALIDATE_README_FRESHNESS", domain="governance")
 def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict:
     """V87: Per-format READMEs must have current generated blocks."""
     if repo_root is None:
         repo_root = Path(__file__).resolve().parents[2]
+    _cache_key = str(repo_root)
+    if _cache_key in _readme_freshness_cache:
+        return _readme_freshness_cache[_cache_key]
     try:
         import sys as _sys
 
@@ -555,28 +561,33 @@ def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict
 
         stale = [item for item in report.get("checks", []) if item.get("drifted")]
         if stale:
-            return {
+            _result = {
                 "validator": "validate_readme_freshness",
                 "result": "FAIL",
                 "items": stale,
                 "summary": f"V87: {len(stale)} stale README(s) detected",
                 "blocks_sprint": True,
             }
-        return {
-            "validator": "validate_readme_freshness",
-            "result": "PASS",
-            "items": [],
-            "summary": f"V87: README freshness clean ({len(report.get('checks', []))} checked)",
-            "blocks_sprint": False,
-        }
+        else:
+            _result = {
+                "validator": "validate_readme_freshness",
+                "result": "PASS",
+                "items": [],
+                "summary": f"V87: README freshness clean ({len(report.get('checks', []))} checked)",
+                "blocks_sprint": False,
+            }
+        _readme_freshness_cache[_cache_key] = _result
+        return _result
     except Exception as e:
-        return {
+        _result = {
             "validator": "validate_readme_freshness",
             "result": "FAIL",
             "items": [{"error": str(e)}],
             "summary": f"V87: README freshness check failed: {e}",
             "blocks_sprint": True,
         }
+        _readme_freshness_cache[_cache_key] = _result
+        return _result
 
 
 @validator(rule_id="V_VALIDATE_PLANS_ROOT_POLICY", domain="governance")

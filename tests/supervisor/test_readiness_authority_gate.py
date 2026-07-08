@@ -15,7 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
-from governance_validators import run_all_governance_validators, validate_spec_fact_refs_wired
+from governance_validators import validate_spec_fact_refs_wired
 
 
 # ---------------------------------------------------------------------------
@@ -116,14 +116,10 @@ class TestReleaseGateWithoutAuthorityIsBlocked:
 # ---------------------------------------------------------------------------
 
 class TestRunAllValidatorsBlocksReadiness:
-    def test_run_all_blocks_for_readiness_without_authority(self):
-        """run_all_governance_validators must block when READINESS item lacks authority."""
+    def test_v13_blocks_for_readiness_without_authority(self):
+        """V13 (spec_fact_refs_wired) must block when READINESS item lacks authority."""
         item = _item("READINESS", item_id="RDNS-RUN-ALL", spec_fact_refs=[],
                      exception_classification="")
-        result = run_all_governance_validators(_decl([item]))
-        sfr_result = next(
-            v for v in result["validators"]
-            if v["validator"] == "spec_fact_refs_validator"
-        )
-        assert sfr_result["result"] == "FAIL"
+        result = validate_spec_fact_refs_wired(_decl([item]))
+        assert result["result"] == "FAIL"
         assert result["blocks_sprint"] is True

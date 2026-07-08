@@ -252,6 +252,8 @@ REPLAY_PACKAGES = {
 
 @pytest.mark.parametrize("run_id", list(REPLAY_PACKAGES.keys()))
 def test_replay_package_exists(run_id):
+    if not REVIEW_BASE.exists():
+        pytest.skip(".local/supervisor/reviews/ does not exist (gitignored, CI skip)")
     path = REVIEW_BASE / run_id / "declaration-review-package.zip"
     assert path.exists(), f"Missing: {path}"
 

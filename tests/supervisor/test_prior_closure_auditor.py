@@ -51,6 +51,12 @@ def test_scans_evidence_declarations():
         import pytest
         pytest.skip(".local/evidences/ does not exist — cannot scan declarations")
 
+    # Check that at least one evidence subdirectory with a declaration exists
+    decl_files = list(evidence_dir.rglob("evidence-declaration.*"))
+    if not decl_files:
+        import pytest
+        pytest.skip(".local/evidences/ exists but contains no declarations (CI environment)")
+
     results = audit_prior_closures(
         evidence_dir=str(evidence_dir),
         lookback_runs=20,

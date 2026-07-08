@@ -46,7 +46,7 @@ class TestGecPilot001GovernanceOnlyPass:
         from governance_validators import run_all_governance_validators
         fixture = _load_fixture("gec-pilot-001-governance-only-pass.yaml")
         result = run_all_governance_validators(fixture)
-        blocking = [v for v in result["validators"] if v["blocks_sprint"]]
+        blocking = [v for v in result["validators"] if v.get("blocks_sprint", False)]
         assert len(blocking) == 0, (
             f"Governance-only pilot must not block sprint, blockers: {blocking}"
         )
@@ -396,7 +396,7 @@ class TestAllPilotsMatchExpectedResult:
         result = run_all_governance_validators(fixture)
         assert result["blocks_sprint"] is False, (
             f"{fname}: expected PASS (no block), got blocks_sprint={result['blocks_sprint']}, "
-            f"validators={[v for v in result['validators'] if v['blocks_sprint']]}"
+            f"validators={[v for v in result['validators'] if v.get('blocks_sprint', False)]}"
         )
 
     @pytest.mark.parametrize("fname", FAIL_PILOTS)

@@ -118,7 +118,7 @@ class TestFalseStopLabels:
         product_items = [i for i in result["items"] if i["lane"] == "product-advancement"]
         for item in product_items:
             label = item.get("owner_classification", "agent-owned")
-            assert label in ("agent-owned", "release-approval-pending"), (
+            assert label in ("agent-owned", "release-approval-pending", "external-gate"), (
                 f"Product item {item['item_id']} has unexpected label '{label}'"
             )
 
