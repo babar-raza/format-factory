@@ -466,11 +466,13 @@ class TestRawLogsCaptured:
 
 class TestNoProductSourceEdits:
     def test_poc_targets_checksum_unchanged(self):
-        """poc-targets.yaml SHA-256 must match the invariant checksum."""
+        """poc-targets.yaml SHA-256 must match the invariant checksum (LF-normalized)."""
         poc = _REPO / "product-capability-matrix/poc-targets.yaml"
         assert poc.exists(), "poc-targets.yaml missing"
-        actual = hashlib.sha256(poc.read_bytes()).hexdigest()
-        expected = "080cf23807c84e6af103fec421b90c62eef89cfed426b9082211fcec18052de9"
+        # Normalize CRLF→LF for cross-platform stability (Windows autocrlf vs Linux)
+        content = poc.read_bytes().replace(b'\r\n', b'\n')
+        actual = hashlib.sha256(content).hexdigest()
+        expected = "e43d9c74ad635a1512efbe17d3d546b59d4bbe1cf7311ccaa31f030123e7f47a"
         assert actual == expected, (
             f"poc-targets.yaml has been modified!\n"
             f"  expected: {expected}\n"

@@ -279,11 +279,19 @@ class TestSalFactsExistCheck:
 
     def test_fods_sal_facts_verified(self):
         """FODS has real facts in sal-facts file — must pass."""
+        import pytest
+        sal_file = _REPO / ".local" / "spec-cache" / "sal-facts-fods.json"
+        if not sal_file.exists():
+            pytest.skip(".local/spec-cache/sal-facts-fods.json not present (gitignored, CI skip)")
         result = review_format("fods")
         assert result["checks"]["sal_facts_exist"]["pass"] is True
 
     def test_csv_passes_sal_facts_after_fix(self):
         """CSV now has structural facts — sal_facts_exist check must pass."""
+        import pytest
+        sal_file = _REPO / ".local" / "spec-cache" / "sal-facts-csv.json"
+        if not sal_file.exists():
+            pytest.skip(".local/spec-cache/sal-facts-csv.json not present (gitignored, CI skip)")
         result = review_format("csv")
         assert result["checks"]["sal_facts_exist"]["pass"] is True
 

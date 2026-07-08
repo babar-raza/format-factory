@@ -200,10 +200,13 @@ class TestReworkArchiveBehavior:
         assert json.loads(lines[1])["item_id"] == "RW-NEW"
 
     def test_source_has_archive_logic(self):
-        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
-        assert "rework_archive" in src
-        assert "HEAL-RECT-005" in src
-        assert "rework_archive.jsonl" in src
+        # HEAL-RECT-005 archive logic may live in autonomous_cycle.py or extensions
+        ext_src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
+        main_src = (_REPO / "tools" / "supervisor" / "autonomous_cycle.py").read_text(encoding="utf-8")
+        combined = ext_src + main_src
+        assert "rework_archive" in combined
+        assert "HEAL-RECT-005" in combined
+        assert "rework_archive.jsonl" in combined
 
 
 # ---------------------------------------------------------------------------

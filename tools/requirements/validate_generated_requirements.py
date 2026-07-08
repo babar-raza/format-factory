@@ -78,10 +78,17 @@ def manual_validate(data: dict, schema: dict, file_path: Path) -> list:
         if field not in data:
             errors.append(f"  [{file_path.name}] Missing required field: {field}")
 
-    # Check requirements array if present
-    reqs = data.get("requirements", data.get("entities", []))
-    if not isinstance(reqs, list) or len(reqs) == 0:
-        errors.append(f"  [{file_path.name}] 'requirements'/'entities' must be non-empty array")
+    # Check requirements array only when the schema actually requires it
+    schema_required = schema.get("required", [])
+    schema_props = schema.get("properties", {})
+    has_reqs_in_schema = "requirements" in schema_required or "entities" in schema_required or \
+                         "requirements" in schema_props or "entities" in schema_props
+    if has_reqs_in_schema or "requirements" in data or "entities" in data:
+        reqs = data.get("requirements", data.get("entities", []))
+        if not isinstance(reqs, list) or len(reqs) == 0:
+            errors.append(f"  [{file_path.name}] 'requirements'/'entities' must be non-empty array")
+            return errors
+    else:
         return errors
 
     req_ids = set()

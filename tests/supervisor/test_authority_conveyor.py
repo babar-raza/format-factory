@@ -199,6 +199,10 @@ class TestAuthorityProductGate:
 
     def test_p4_format_allows_product_expansion(self):
         """P4+ formats must have product_expansion_allowed=True."""
+        import pytest
+        spec_cache = _REPO_ROOT / ".local" / "spec-cache" / "fods"
+        if not spec_cache.exists():
+            pytest.skip(".local/spec-cache/fods not present (gitignored, CI skip)")
         result = run_conveyor("fods", target_level=6)
         assert result["product_expansion_allowed"]
         assert result["readiness_allowed"]
