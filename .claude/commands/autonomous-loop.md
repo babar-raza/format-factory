@@ -300,6 +300,24 @@ Read the updated continuation-signal.json and repeat from Step 1.
 /autonomous-loop
 ```
 
+## Promotion Ledger Awareness (TC-CQGA-033-04)
+
+The autonomous loop interacts with `registry/promotion-ledger.yaml` at each sprint closeout.
+`autonomous_cycle.py` checks for api_baseline_hash changes on `PROMOTED_STABLE` entries.
+
+**States:** `DRAFT → IMPLEMENTATION_VERIFIED → PILOT_ACCEPTED → PROMOTED_STABLE → REOPENED`
+
+**REOPENED trigger:** When `autonomous_cycle.py` detects a hash change on a `PROMOTED_STABLE`
+entry (promoted_files changed without a re-proof bundle), the entry is set to `state=REOPENED`
+and the sprint verdict includes `WARN(PROMOTION_INTEGRITY_BREACH)`. The format must be
+re-verified before returning to `PROMOTED_STABLE`.
+
+**V119 validator** (`validate_promoted_code_changed_without_reopening`) also blocks sprint
+declarations that modify `PROMOTED_STABLE` files without declaring REOPENED status.
+
+The loop does NOT stop on a REOPENED event — it logs it and continues. The next sprint for
+that format must address the re-proof requirement.
+
 ## Stop Conditions
 
 - Stop if the skill's mandatory validations cannot be completed

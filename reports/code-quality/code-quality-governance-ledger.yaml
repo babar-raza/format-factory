@@ -1,0 +1,273 @@
+---
+# Format Factory — Code Quality Governance Gap Ledger
+# Mission ID: CQGA-001
+# Generated: 2026-07-07
+# Authority: plans/.claude/mutable-doodling-blossom.md
+# All gaps discovered during Code Quality Governance Audit (CQGA-001)
+
+schema_version: "1.0"
+generated_by: TC-CQGA-013 (mutable-doodling-blossom)
+date: "2026-07-07"
+total_gaps: 13
+
+gaps:
+  - gap_id: CQG-001
+    name: pre_commit_hooks_not_installed
+    status: OPEN
+    severity: CRITICAL
+    finding_ids: [FINDING-001]
+    root_cause: RCA-10
+    summary: >
+      .git/hooks/ contains only .sample files. pre-commit was never installed.
+      All pre-commit hooks (scope-guard, source-structure-baseline-check,
+      validate-source-architecture, ruff, etc.) are INERT for local commits.
+    control_type: PREVENTIVE
+    control_gap: hooks exist in .pre-commit-config.yaml but are not active
+    first_failed_boundary: LOCAL_COMMIT
+    detection: NONE (no automatic detection of hook non-installation)
+    remediation: Run `pre-commit install` once per developer environment; add to AGENTS.md onboarding
+    task_ids: [TC-CQGA-014_observation]
+    note: TC-CQGA-014 was closed as VERIFIED_NO_ACTION_NEEDED for V100-V109 registration;
+          the pre-commit install issue is a separate gap tracked here.
+
+  - gap_id: CQG-002
+    name: scope_guard_warn_mode
+    status: ACKNOWLEDGED_BY_DESIGN
+    severity: LOW
+    finding_ids: [FINDING-002]
+    root_cause: design_decision
+    summary: >
+      scope-guard hook runs in --mode warn. Lane violations are advisory only.
+      A commit touching cross-lane files is never blocked by this hook.
+    control_type: ADVISORY
+    control_gap: None (by design — cross-lane reads/writes are sometimes legitimate)
+    first_failed_boundary: COMMIT_GATE
+    detection: WARN printed to stderr on commit
+    remediation: ACKNOWLEDGED_BY_DESIGN per AGENTS.md §AG11 (TC-CQGA-017)
+    task_ids: [TC-CQGA-017]
+    close_reason: Intentional advisory mode documented in AGENTS.md
+
+  - gap_id: CQG-003
+    name: intermediate_grader_weak_proof_acceptance
+    status: FIXED
+    severity: MEDIUM
+    finding_ids: [FINDING-003, FINDING-013, FINDING-016]
+    root_cause: RCA-11
+    summary: >
+      Prior to TC-CQGA-015, the fallback grader accepted type-only test assertions
+      (isinstance() only) as ACCEPTED_VERIFIED. Now uses proof_adequacy_contract.py
+      with STRONG_PROOF/PARTIAL_PROOF classification. WEAK_PROOF = adequate=False.
+    control_type: DETECTIVE
+    control_gap: CLOSED — AST classification deployed
+    first_failed_boundary: GRADE_STAGE
+    detection: proof_adequacy_contract.assess_proof_level() in grade_intermediate_verify.py
+    remediation: TC-CQGA-015 CLOSED (already implemented by prior deployment)
+    task_ids: [TC-CQGA-015]
+
+  - gap_id: CQG-004
+    name: direct_edit_bypass
+    status: OPEN_DETECTIVE_ONLY
+    severity: HIGH
+    finding_ids: [FINDING-005, FINDING-014]
+    root_cause: RCA-12
+    summary: >
+      Direct use of Edit/Bash tool bypasses all skill quality contracts
+      (architecture input, QName enforcement, docstring requirement, test minimum,
+      ledger entry, skill transcript). No preventive gate exists at the write-time
+      boundary. Validators (V100-V109, V46) fire at sprint closeout — detective only.
+    control_type: DETECTIVE_ONLY
+    control_gap: Preventive gate would require tool-layer interception (EP-002-GAP, SKILL-GAP-008)
+    first_failed_boundary: CODE_WRITING_ENTRY
+    detection: V100-V109 detect file quality violations at sprint closeout
+    remediation: BACKLOG — EP-002-GAP pre-mutation guard interception; requires platform change
+    task_ids: [TC-CQGA-011, TC-CQGA-030]
+
+  - gap_id: CQG-005
+    name: __all__policy_conflict
+    status: RESOLVED
+    severity: LOW
+    finding_ids: [FINDING-011, FINDING-012]
+    root_cause: RCA-14
+    summary: >
+      Three authority docs previously disagreed on __all__ implementation style.
+      comment-and-docs-contract.md §1.3 now accepts Form A (static list) and
+      Form B (dynamic frozenset) as equivalent. CQG-005 RESOLVED.
+    control_type: DOCUMENTATION
+    control_gap: CLOSED
+    first_failed_boundary: RULE_AUTHORITY
+    remediation: TC-CQGA-016 CLOSED (comment-and-docs-contract §1.3 updated)
+    task_ids: [TC-CQGA-016]
+
+  - gap_id: CQG-006
+    name: no_api_content_hash_for_promoted_files
+    status: PARTIALLY_FIXED
+    severity: HIGH
+    finding_ids: [FINDING-007, FINDING-017]
+    root_cause: RCA-13
+    summary: >
+      Promotion ledger exists (registry/promotion-ledger.yaml) with api_baseline_hash
+      per format. Hash scope is sorted(__all__) — symbol name list only. Does NOT detect:
+      function renamed at same name, signature changed, body rewritten returning wrong values.
+      Signature-aware hash (sorted (name, str(inspect.signature(fn)))) planned but not deployed.
+    control_type: PREVENTIVE
+    control_gap: Name-only hash partially protects; signature hash is future improvement
+    first_failed_boundary: PROMOTION_GATE
+    detection: autonomous_cycle.py checks hash at closeout; V119 blocks declaration changes
+    remediation: TC-CQGA-018 CLOSED (promotion ledger deployed); signature-aware hash = future
+    task_ids: [TC-CQGA-018, TC-CQGA-028]
+
+  - gap_id: CQG-007
+    name: no_reopening_trigger_on_promoted_file_change
+    status: FIXED
+    severity: HIGH
+    finding_ids: [FINDING-008]
+    root_cause: RCA-13
+    summary: >
+      Now two independent detection mechanisms:
+      1. autonomous_cycle.py lines 1039/1063: reads promotion-ledger.yaml, detects hash change,
+         sets entry.state = REOPENED.
+      2. V119 (validate_promoted_code_changed_without_reopening): blocks sprint declarations
+         that modify PROMOTED_STABLE files without declaring REOPENED status.
+    control_type: DETECTIVE + PREVENTIVE
+    control_gap: CLOSED
+    first_failed_boundary: PROMOTION_GATE
+    remediation: TC-CQGA-018 + TC-CQGA-019 CLOSED
+    task_ids: [TC-CQGA-018, TC-CQGA-019]
+
+  - gap_id: CQG-008
+    name: end_to_end_traceability_incomplete
+    status: PARTIAL
+    severity: MEDIUM
+    finding_ids: [FINDING-009]
+    root_cause: RCA-13
+    summary: >
+      spec_fact → spec_stub → domain chain: ENFORCED (V47, V13, V45, V111/V112).
+      domain → test: NOT ENFORCED (no validator requires tests to cite spec_fact_refs).
+      V53 (spec_authority_class_completeness) is WARN-only.
+    control_type: PARTIAL
+    control_gap: Test-to-spec traceability is a documentation convention, not a validator gate
+    first_failed_boundary: TEST_AUTHORING
+    detection: V53 WARN-only for registry entries missing on disk
+    remediation: Future: add validator requiring test files to declare spec_fact_ref coverage
+    task_ids: [TC-CQGA-008, TC-CQGA-027]
+
+  - gap_id: CQG-009
+    name: warn_only_todo_markers
+    status: OPEN_DESIGN_GAP
+    severity: MEDIUM
+    finding_ids: [FINDING-006]
+    root_cause: design_decision
+    summary: >
+      V103 (ungoverned TODO/FIXME/HACK) and V101 (history identifiers) are WARN-only.
+      Sprint history artifacts and ungoverned TODO markers survive to HEAD.
+    control_type: ADVISORY
+    control_gap: Upgrading to FAIL would block legitimate in-progress work markers
+    first_failed_boundary: COMMIT_GATE
+    detection: V103 WARN at sprint closeout
+    remediation: Accept as design gap; document for agents reading this ledger
+    task_ids: [TC-CQGA-026]
+
+  - gap_id: CQG-010
+    name: skill_command_files_not_updated_with_validator_changes
+    status: FIXED
+    severity: HIGH
+    finding_ids: [FINDING-019, FINDING-021]
+    root_cause: RCA-12
+    summary: >
+      Skill command files (add-python-api.md, add-dotnet-api.md, autonomous-loop.md)
+      were not updated when V100-V109 validators were added. Agents reading these files
+      would not know about blocking validators.
+      FIXED: TC-CQGA-033-04 added Governance Validators sections to all four skill files.
+      FIXED: TC-CQGA-033-03 added automated check in validate_skill_contracts.py using _VALIDATOR_REGISTRY.
+      FIXED: TC-CQGA-033-02 added skill_ids= param to @validator decorator in ext3.
+    control_type: DOCUMENTATION + AUTOMATED_CHECK
+    control_gap: CLOSED
+    first_failed_boundary: SKILL_CONTRACT_UPDATE
+    detection: validate_skill_contracts.py check (d) — WARN when skill file missing validator rule_id
+    remediation: TC-CQGA-033 CLOSED
+    task_ids: [TC-CQGA-033]
+
+  - gap_id: CQG-011
+    name: silent_import_bypass_in_validator_runner
+    status: FIXED
+    severity: CRITICAL
+    finding_ids: [FINDING-020]
+    root_cause: RCA-12
+    summary: >
+      Runner previously had 3 deferred validator groups using `except Exception: pass`.
+      Import failure for V91, V110, V111-V127 produced zero results (false-green).
+      FIXED: TC-CQGA-033-01 converted all 3 remaining silent groups to named exception
+      + _skipped_validators.append().
+      Remaining silent: 4 advisory-only groups (V-NEW-001, V-NEW-002, V-SAL-SCHEMA,
+      V-SAL-ADVISORY) — non-blocking by design.
+    control_type: INFRASTRUCTURE
+    control_gap: CLOSED for blocking validators; advisory groups remain silent by design
+    first_failed_boundary: VALIDATOR_EXECUTION
+    detection: _skipped_validators list in runner return dict
+    remediation: TC-CQGA-033-01 CLOSED
+    task_ids: [TC-CQGA-033]
+
+  - gap_id: CQG-012_org_rules
+    name: per_file_layout_enforcement_missing_19_formats
+    status: OPEN_DESIGN_GAP
+    severity: MEDIUM
+    finding_ids: []
+    root_cause: TC-CQGA-005_finding
+    summary: >
+      19 of 20 Python FOSS formats have only general_python_rules in the product file layout
+      contract. V109 cannot enforce per-file layout for these formats (no explicit approved_layout
+      entry). A badly-named file (e.g. csv_data_proc.py — not matching <format>_<domain>.py)
+      would only be caught by V100 (globally forbidden patterns) if it uses a forbidden word,
+      but not by V109 (layout contract) since no layout entry exists.
+    control_type: PARTIAL
+    control_gap: Naming convention catches extreme cases; per-file canonical layout is FODS-only
+    first_failed_boundary: PRODUCT_FILE_CREATION
+    detection: V100 catches globally forbidden patterns; V109 only enforces where layout defined
+    remediation: Future: add layout contract entries for all 20 Python formats
+    task_ids: [TC-CQGA-005]
+
+  - gap_id: CQG-013_traceability
+    name: test_to_spec_fact_traceability_not_enforced
+    status: OPEN_DESIGN_GAP
+    severity: LOW
+    finding_ids: []
+    root_cause: TC-CQGA-008_finding
+    summary: >
+      Tests verify behavior but are not required to declare spec_fact_ref coverage.
+      There is no validator that checks: "for every public symbol in product source,
+      at least one test explicitly cites the spec_fact_ref for that symbol."
+      V53 (WARN-only) checks that registry entries exist on disk but not test linkage.
+    control_type: MISSING
+    control_gap: Test authoring is a convention; no mechanical enforcement of spec-fact links in tests
+    first_failed_boundary: TEST_AUTHORING
+    detection: None
+    remediation: Future: add validator requiring test declaration of spec_fact_refs
+    task_ids: [TC-CQGA-008]
+
+summary:
+  total_gaps: 13
+  by_status:
+    FIXED: 5
+    RESOLVED: 2
+    ACKNOWLEDGED_BY_DESIGN: 1
+    PARTIALLY_FIXED: 1
+    PARTIAL: 1
+    OPEN_DETECTIVE_ONLY: 1
+    OPEN_DESIGN_GAP: 2
+  critical_open: 0
+  high_open: 1  # CQG-004 direct edit bypass (detective only, no preventive fix available)
+  medium_open: 2  # CQG-008 traceability, CQG-012 layout enforcement
+  low_open: 2   # CQG-001 pre-commit not installed, CQG-013 test-spec linkage
+
+completion_gate_impact:
+  CODE_CREATION_PATHS_WITHOUT_QUALITY_CONTRACT: 1 (CQG-004 — direct edit bypass, detective only)
+  CODE_CHANGES_ALLOWED_WITHOUT_COMPLETE_CONTEXT: 1 (CQG-004)
+  CODE_CHANGES_ALLOWED_WITHOUT_FINAL_DIFF_REVIEW: 1 (CQG-004)
+  CODE_CHANGES_ALLOWED_WITHOUT_FILE_OWNERSHIP: 1 (CQG-004)
+  FILE_PLACEMENT_WITHOUT_CANONICAL_AUTHORITY: 1 (CQG-012)
+  SOURCE_CHANGES_ALLOWED_WITHOUT_TRACEABILITY_UPDATE: 0 (V13 blocks at closeout)
+  ACCEPTANCE_GATES_ALLOWING_WEAK_PROOF: 0 (CQG-003 FIXED)
+  PROMOTED_ARTIFACTS_WITHOUT_BASELINE: 0 (CQG-006 PARTIALLY_FIXED, ledger exists)
+  PROMOTED_ARTIFACTS_CHANGEABLE_WITHOUT_REOPENING: 0 (CQG-007 FIXED)
+  ACTIVE_UNGOVERNED_CODE_WRITING_PATHS: 1 (direct edit — detective only)
+  GOVERNANCE_BYPASSES_NOT_INVENTORIED: 0 (all known bypasses inventoried in §13.H)

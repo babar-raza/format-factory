@@ -158,9 +158,31 @@ with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_i
 #   focused_test_command: python -m pytest tests/python/sylk/test_r93_sylk_write.py -v
 ```
 
+## Governance Validators (TC-CQGA-033-04)
+
+The following validators from `_VALIDATOR_REGISTRY` apply to this skill. A sprint declaration
+containing output from this skill will be checked by each of these validators:
+
+| Rule ID | V-Number | Blocks Sprint | What it checks |
+|---|---|---|---|
+| `V_VALIDATE_SUSPICIOUS_FILENAMES` | V100 | YES | Dumping-ground filename patterns (*Misc, *Helpers, *Utils, *Extra, *Stubs) in product source |
+| `V_VALIDATE_HISTORY_IDENTIFIERS_IN_SOURCE` | V101 | NO (WARN) | Sprint/wave/train IDs in source comments |
+| `V_VALIDATE_UNDOCUMENTED_PUBLIC_PYTHON_APIS` | V102 | YES (new files) | Public `def` without docstring in product .py |
+| `V_VALIDATE_UNGOVERNED_TODO_MARKERS` | V103 | NO (WARN) | TODO/FIXME/HACK without GAP-* or TC-* reference |
+| `V_VALIDATE_CONSTANT_RETURN_PUBLIC_METHODS` | V104 | YES (new files) | Public Python function whose body is only `return <literal>` |
+| `V_VALIDATE_TEST_ONLY_PUBLIC_APIS` | V107 | NO (WARN) | Public Python API referenced only in test files |
+| `V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT` | V109 | YES (new files) | Product source file outside `product-file-layout-contract.yaml` |
+
+**Blocking rules summary for implementors:**
+- Every new public function needs a docstring (V102 blocks on new files)
+- No constant-return stub functions (V104 blocks on new files)
+- No dumping-ground filenames (V100 blocks always)
+- New files must appear in product-file-layout-contract.yaml (V109 blocks on new files)
+
 ## Changelog
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).
 - 1.3 (2026-06-24): Added Step 0 knowledge registry lookup; replaced Step 5 "Inspect existing module conventions" with KC-PYTHON-001 contract reference (hidden-puzzling-rain).
 - 1.4 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK ZERO: analytics masquerade rejection, wildcard import prohibition, __all__ update requirement, file-type check before writing.
+- 1.5 (2026-07-07): TC-CQGA-033-04 — Added Governance Validators section with rule IDs V_VALIDATE_SUSPICIOUS_FILENAMES through V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT.

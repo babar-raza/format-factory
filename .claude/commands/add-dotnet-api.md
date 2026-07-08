@@ -155,8 +155,30 @@ with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_i
 #   focused_test_command: dotnet test tests/net/fods/ --filter "FodsR93"
 ```
 
+## Governance Validators (TC-CQGA-033-04)
+
+The following validators from `_VALIDATOR_REGISTRY` apply to this skill:
+
+| Rule ID | V-Number | Blocks Sprint | What it checks |
+|---|---|---|---|
+| `V_VALIDATE_SUSPICIOUS_FILENAMES` | V100 | YES | Dumping-ground filename patterns in product source |
+| `V_VALIDATE_HISTORY_IDENTIFIERS_IN_SOURCE` | V101 | NO (WARN) | Sprint/wave/train IDs in source comments |
+| `V_VALIDATE_UNGOVERNED_TODO_MARKERS` | V103 | NO (WARN) | TODO/FIXME/HACK without GAP-* or TC-* reference |
+| `V_VALIDATE_GETTER_WITHOUT_PARSER_SOURCE` | V105 | YES | Public .cs getter reading from private dict field (not XML) |
+| `V_VALIDATE_SETTER_WITHOUT_WRITER_PATH` | V106 | YES | Public .cs setter writing to dict only (no XML writer path) |
+| `V_VALIDATE_TEST_ONLY_PUBLIC_APIS` | V107 | NO (WARN) | Public API referenced only in test files |
+| `V_VALIDATE_DETACHED_PERSISTENT_STATE` | V108 | YES (new) | `Dictionary<> _field = new()` persistent state pattern |
+| `V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT` | V109 | YES (new) | Product source file outside `product-file-layout-contract.yaml` |
+
+**Blocking rules summary for implementors:**
+- No detached dict state (V108 blocks on new .cs files)
+- Getters and setters must have XML parse/write paths (V105, V106 block)
+- No dumping-ground filenames (V100 blocks always)
+- New files must appear in product-file-layout-contract.yaml (V109)
+
 ## Changelog
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).
 - 1.3 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK ZERO (work-shape rejection + architecture pre-flight); mandatory roundtrip test for setters; blocking STOP conditions for test-shaped tasks, dumping-ground filenames, files outside approved layout, dictionary-backed persistent state.
+- 1.4 (2026-07-07): TC-CQGA-033-04 — Added Governance Validators section with rule IDs V_VALIDATE_SUSPICIOUS_FILENAMES through V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT.
