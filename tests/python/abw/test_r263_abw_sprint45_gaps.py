@@ -67,11 +67,13 @@ class TestAbwFileSizeBytes:
     def test_return_type(self):
         assert isinstance(abw_file_size_bytes(_MINIMAL), int)
 
-    def test_exact_284_for_minimal(self):
-        assert abw_file_size_bytes(_MINIMAL) == 284
+    def test_matches_os_file_size_for_minimal(self):
+        from pathlib import Path
+        assert abw_file_size_bytes(_MINIMAL) == Path(_MINIMAL).stat().st_size
 
-    def test_exact_270_for_empty_section(self):
-        assert abw_file_size_bytes(_EMPTY) == 270
+    def test_matches_os_file_size_for_empty_section(self):
+        from pathlib import Path
+        assert abw_file_size_bytes(_EMPTY) == Path(_EMPTY).stat().st_size
 
     def test_positive(self):
         assert abw_file_size_bytes(_MINIMAL) > 0

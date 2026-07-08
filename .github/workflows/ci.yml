@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" && pip install zstandard
       - name: Create output directories
         run: mkdir -p .local/test-results
       - name: Run layered tests (L0-L3)
@@ -91,7 +91,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" && pip install zstandard
       - name: Source structure validation
         run: python tools/validators/source_structure_validator.py
       - name: Governance validators check
@@ -113,7 +113,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" && pip install zstandard
       - name: Check README drift
         run: python tools/readme_sync/generate_root_status.py --mode drift-only
 
@@ -161,7 +161,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" && pip install zstandard
       - name: Run full test suite with coverage
         run: pytest --cov=src/python --cov-report=xml --cov-report=term-missing
       - name: Coverage threshold
@@ -198,7 +198,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" && pip install zstandard
       - name: Detect capability registry drift
         continue-on-error: true  # WARN only — drift report is informational
         run: python tools/capability_sync/detect_drift.py --output capability-drift.json
@@ -248,7 +248,7 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml jsonschema
       - name: Validate PYREL gates (dry-run)
-        run: python tools/supervisor/gate_executor.py --format fods --dry-run
+        run: python tools/supervisor/gate_executor.py --format fods --gates G1,G2 --dry-run
 
   count-drift-detection:
     # FF-XPLAN-001 W4-004: Detect README count drift

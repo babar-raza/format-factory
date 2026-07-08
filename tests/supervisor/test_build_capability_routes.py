@@ -25,7 +25,7 @@ def test_check_routes_with_real_registry():
         pytest.skip("registry files not found")
     registered = load_registered_skills(reg)
     results = check_routes(routing, registered)
-    assert len(results) == 30
+    assert len(results) == 34
     verdicts = {r["verdict"] for r in results}
     assert verdicts <= {"ROUTE_ACTIVE", "MISSING_SKILL_CAPABILITY", "BROKEN_REFERENCE"}
 
@@ -67,4 +67,4 @@ def test_main_produces_output(tmp_path):
     assert out.exists()
     import yaml
     data = yaml.safe_load(out.read_text(encoding="utf-8"))
-    assert data["total_routes"] == 30
+    assert data["total_routes"] == 34

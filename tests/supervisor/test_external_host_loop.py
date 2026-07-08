@@ -20,6 +20,17 @@ import pytest
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
+# external_host_loop.py is tombstoned — skip all tests if import raises
+try:
+    import external_host_loop as _ehl_check  # noqa: F401
+    _EHL_AVAILABLE = True
+except (DeprecationWarning, Exception):
+    _EHL_AVAILABLE = False
+pytestmark = pytest.mark.skipif(
+    not _EHL_AVAILABLE,
+    reason="external_host_loop.py is tombstoned (quarantined 2026-07-06)",
+)
+
 
 class TestNextActionLoading:
     """Tests for load_next_action()."""

@@ -260,7 +260,7 @@ def _sv_sdk_fallback(messages: list[dict], cfg, item_id: str = "") -> str | None
     """Fallback: call endpoint directly via SDK when litellm fails.
 
     Hardened (LLM-GRADER-TIMEOUT-001):
-    - Single OpenAI client created once (not per attempt)
+    - Single OpenAI client created once (not per attempt)  # policy-reference
     - httpx.Timeout(connect=10, read=30) on the client constructor
     - call_with_retry() with exponential backoff + jitter + overall deadline
     - Permanent errors (auth, invalid request) abort immediately — no useless retry

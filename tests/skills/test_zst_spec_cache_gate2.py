@@ -13,10 +13,16 @@ Validates:
 import hashlib
 import yaml
 from pathlib import Path
+import pytest
 
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 SPEC_CACHE_ROOT = REPO_ROOT / ".local" / "spec-cache" / "zst"
+
+pytestmark = pytest.mark.skipif(
+    not SPEC_CACHE_ROOT.exists(),
+    reason=".local/spec-cache/zst/ not present (local artifact, not in CI)",
+)
 
 RFC8878_SHA256 = "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4"
 RFC9659_SHA256 = "sha256:a43584f250506db54df8bc9ff90652888135369fbc331453f67a71829b0827a2"

@@ -83,7 +83,7 @@ def main() -> int:
     if check3["assertion_passed"]:
         print(f"  PASS: all_identical={check3['all_identical']} verdict={check3.get('verdict')}")
     else:
-        print(f"  FAIL: verdicts differ across runs")
+        print("  FAIL: verdicts differ across runs")
         all_pass = False
 
     print("\n[Check 4] Git operation latency...")

@@ -88,7 +88,8 @@ class TestTomlRemainingAnalyticsGapsNdjsonExport:
 
     # file_size_bytes
     def test_flat_file_size_bytes(self, flat_toml):
-        assert toml_file_size_bytes(flat_toml) == 44
+        from pathlib import Path
+        assert toml_file_size_bytes(flat_toml) == Path(flat_toml).stat().st_size
 
     # all_keys_lowercase
     def test_flat_all_keys_lowercase_true(self, flat_toml):

@@ -41,6 +41,10 @@ EXPECTED_TABLES = {
     "source_violations",
     "sprint_work_items",
     "sprints",
+    "mission_locks",
+    "concurrency_transitions",
+    "concurrency_checkpoints",
+    "worker_claims",
 }
 
 

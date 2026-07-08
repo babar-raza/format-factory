@@ -200,7 +200,7 @@ class TestReworkArchiveBehavior:
         assert json.loads(lines[1])["item_id"] == "RW-NEW"
 
     def test_source_has_archive_logic(self):
-        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle.py").read_text(encoding="utf-8")
+        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
         assert "rework_archive" in src
         assert "HEAL-RECT-005" in src
         assert "rework_archive.jsonl" in src
@@ -242,13 +242,13 @@ class TestPromptQualitySoftFailure:
     """Verify no_wrong_stream alone does not hard-stop continuation."""
 
     def test_source_has_soft_failure_logic(self):
-        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle.py").read_text(encoding="utf-8")
+        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
         assert "soft_prompt_failures" in src
         assert "hard_prompt_failures" in src
         assert "PROMPT_QUALITY_REWORK" in src
 
     def test_no_wrong_stream_is_soft(self):
-        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle.py").read_text(encoding="utf-8")
+        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
         # no_wrong_stream should be in soft_prompt_failures, not hard_prompt_failures
         assert '"no_wrong_stream"' in src
         # Find the soft_prompt_failures line
@@ -259,7 +259,7 @@ class TestPromptQualitySoftFailure:
             pytest.fail("no_wrong_stream not found in soft_prompt_failures set")
 
     def test_stream_identity_is_hard(self):
-        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle.py").read_text(encoding="utf-8")
+        src = (_REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py").read_text(encoding="utf-8")
         for line in src.splitlines():
             if "hard_prompt_failures" in line and "stream_identity" in line:
                 break

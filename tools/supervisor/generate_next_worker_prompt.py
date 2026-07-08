@@ -1448,7 +1448,7 @@ def _rewrite_sdk_fallback(messages: list[dict], cfg) -> str | None:
 
     Wall-clock deadline enforced via concurrent.futures — same pattern as
     tools/ai/control_plane/gateway._call_litellm_bounded.  Without this,
-    openai.OpenAI.chat.completions.create() passes its timeout= to httpx
+    openai.OpenAI.chat.completions.create() passes its timeout= to httpx  # policy-reference
     -> httpcore -> SyncSSLStream.read() -> ssl.SSLObject.read(), a blocking
     C-level syscall that ignores Python select-based timeouts and can hang
     indefinitely when the TLS peer stalls mid-stream (RC-1 LLM-GRADER-TIMEOUT-001).

@@ -4,7 +4,10 @@
 # confirms dead. Any record fires: re-investigate this file.
 # Unlike DEPRECATED files, fires here ARE the desired outcome --
 # they reveal live invocation paths not captured by static analysis.
-import pathlib as _p, datetime as _dt, json as _j, traceback as _tb
+import pathlib as _p
+import datetime as _dt
+import json as _j
+import traceback as _tb
 _repo_root = _p.Path(__file__).resolve()
 while _repo_root.name not in ("format-factory", "") and _repo_root != _repo_root.parent:
     _repo_root = _repo_root.parent
