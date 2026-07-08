@@ -101,6 +101,8 @@ def test_action_queue_exists():
     """action-queue.jsonl must exist."""
     if not ACTION_QUEUE_PATH.parent.exists():
         pytest.skip(".local/supervisor/ not present (gitignored, CI skip)")
+    if not ACTION_QUEUE_PATH.exists():
+        pytest.skip("action-queue.jsonl not present (gitignored, CI skip)")
     assert ACTION_QUEUE_PATH.exists(), "action-queue.jsonl must exist"
 
 

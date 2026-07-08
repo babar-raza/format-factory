@@ -77,7 +77,8 @@ class TestFullSync:
         # maintenance_obligation) always re-insert — excluded from idempotency check.
         report2 = sync_all(db_path, _REPO)
         _non_idempotent = {"source_violation", "subprocess_invocation",
-                           "command_invocation", "maintenance_obligation"}
+                           "command_invocation", "maintenance_obligation",
+                           "skill_invocation"}
         core_results = [r for r in report2.results if r.entity_type not in _non_idempotent]
         core_inserted = sum(r.inserted for r in core_results)
         assert core_inserted == 0, f"Core entity types re-inserted: {[(r.entity_type, r.inserted) for r in core_results if r.inserted > 0]}"

@@ -27,6 +27,9 @@ def reset_cache():
 class TestV13V47Enforcement:
     def test_v47_blocks_fake_fact_release_gate(self):
         """V47 must block RELEASE_GATE items with non-existent fact IDs."""
+        sal_output = _REPO / ".local" / "sal-output" / "sal-facts-latest.json"
+        if not sal_output.exists():
+            pytest.skip("sal-facts-latest.json not present — V47 returns bootstrap tolerance PASS without it")
         decl = {"planned_work_items": [{"item_id": "NEG-001", "item_type": "RELEASE_GATE",
                                  "spec_fact_refs": ["FACT-FAKE-DOES-NOT-EXIST-99999"]}]}
         result = validate_spec_fact_refs_in_sal_output(decl, repo_root=_REPO)

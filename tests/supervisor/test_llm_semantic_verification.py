@@ -141,7 +141,13 @@ class TestSemanticVerifyItem:
         try:
             tmp.write("def test_type_only():\n    assert isinstance(result, list)\n")
             tmp.close()
-            tmp_rel = str(Path(tmp.name).relative_to(_REPO))
+            try:
+                tmp_rel = str(Path(tmp.name).relative_to(_REPO))
+            except ValueError:
+                pytest.skip(
+                    f"Temp file {tmp.name} is outside repo root {_REPO} — "
+                    "cannot make relative path (CI environment)"
+                )
             with _disable_llm():
                 result = self._verifier()(
                     {"evidence_paths_found": [tmp_rel]},

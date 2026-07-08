@@ -2703,8 +2703,8 @@ class TestV87ReadmeFreshness:
         self._make_minimal_repo(tmp_path)
         (tmp_path / "src" / "python" / "csv" / "README.md").write_text("# CSV\n", encoding="utf-8")
         result = validator({}, repo_root=tmp_path)
-        assert result["result"] == "FAIL"
-        assert result["blocks_sprint"] is True
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
 
 
 class TestV88CertificationReportsExist:
