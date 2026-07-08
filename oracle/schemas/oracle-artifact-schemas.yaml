@@ -1,0 +1,198 @@
+# Oracle Artifact Schemas — Format Factory
+# Produced by: TC-ORA-007 (jaunty-whistling-meteor investigation)
+# Generated: 2026-07-08
+# Status: PROPOSED — these are versioned schema definitions for oracle artifacts
+# Note: These schemas are backward-compatible extensions to current oracle artifacts.
+#       New fields are optional in all schemas to preserve existing data.
+
+schema_version: "1.1"
+generated_at: "2026-07-08"
+produced_by: jaunty-whistling-meteor/TC-ORA-007
+
+# ───────────────────────────────────────────────────────────────────────
+# Schema 1: oracle_definition
+# Stored in: oracle/formats/{fmt}/oracle-package.yaml
+# ───────────────────────────────────────────────────────────────────────
+oracle_definition:
+  schema_name: oracle_definition
+  version: "1.1"
+  fields:
+    required:
+      - oracle_id: string         # e.g., oracle-fods-v1
+      - format_id: string         # e.g., fods
+      - format_version: string    # e.g., ODF 1.3
+      - oracle_version: integer   # monotonically increasing
+      - status: enum[OBLIGATION_CREATED, SCAFFOLDED, AUTHORITY_MAPPED, CASES_DEFINED, VERIFIED, PRODUCTION_ACTIVE]
+      - authority.specification_refs: list[authority_ref]
+    optional:
+      - family: string            # e.g., spreadsheet, document, image
+      - generated_at: date
+      - generator_skill: string   # skill that created this package
+      - corpus_refs: list[corpus_ref]
+      - valid_cases: list[oracle_case]
+      - invalid_cases: list[oracle_case]
+      - roundtrip_cases: list[oracle_case]
+      - interoperability_cases: list[oracle_case]
+      - schema_version: string    # NEW: "1.0" (assertion: only) | "1.1" (model_props) | "1.2" (both)
+  notes:
+    - "schema_version enables executor to detect which schema is in use without reading case contents"
+    - "authority.authorized_fact_refs must be a LIST of fact IDs, not a string comment"
+
+# ───────────────────────────────────────────────────────────────────────
+# Schema 2: oracle_case
+# Embedded in oracle_definition valid_cases / invalid_cases / roundtrip_cases
+# ───────────────────────────────────────────────────────────────────────
+oracle_case:
+  schema_name: oracle_case
+  version: "1.1"
+  fields:
+    required:
+      - case_id: string
+      - profile: string           # PARSE_VALIDITY | INVALID_INPUT_REJECTION | ROUNDTRIP | INTEROPERABILITY
+    optional:
+      - input_ref: string         # path to sample file (mutually exclusive with input_inline)
+      - input_inline: string      # inline content for invalid cases
+      - authority_ref: string     # single fact ID reference
+      - authority_refs: list[string]
+      - authority_class: enum[SPEC_NORMATIVE, SCHEMA_DERIVED, VERIFIED_INTEROPERABILITY, ACCEPTED_EMPIRICAL, GENERATED_FROM_NEUTRAL_MODEL]
+      - oracle_verdict: enum[PASS, FAIL, INCONCLUSIVE]
+      - oracle_class: enum[DETERMINISTIC, STRUCTURAL, BEHAVIORAL]
+      - expected_model_properties: list[property_spec]  # schema version 1.1+
+      - assertion: assertion_spec  # schema version 1.0 (legacy) — supported via Fix 5
+      - applicable_profiles: list[string]
+
+# ───────────────────────────────────────────────────────────────────────
+# Schema 3: oracle_run (single case verdict)
+# Stored in: .local/oracle/{fmt}/verdicts/{case_id}.json
+# ───────────────────────────────────────────────────────────────────────
+oracle_run:
+  schema_name: oracle_run
+  version: "1.1"
+  fields:
+    required:
+      - oracle_id: string
+      - oracle_version: integer
+      - format_id: string
+      - product_id: string
+      - language: string          # python | dotnet
+      - case_id: string
+      - profile: string
+      - result: enum[PASS, FAIL, BLOCKED_MISSING_AUTHORITY, BLOCKED_MISSING_SAMPLE, INCONCLUSIVE, NOT_APPLICABLE, STALE_ORACLE, INVALID_ORACLE, SKIPPED_MISSING_PROVIDER]
+      - authority_status: string
+      - depth_level: enum[D0, D1, D2, D3]  # per make_verdict() in execute_oracle.py
+      - executed_at: datetime_iso8601
+    optional:
+      - diagnostics: list[string]
+      - observed_properties: dict  # what was actually observed in the model
+      - deviations: list[dict]     # property mismatches
+
+# ───────────────────────────────────────────────────────────────────────
+# Schema 4: oracle_result (format-level summary)
+# Stored in: oracle/formats/{fmt}/reports/oracle-run-summary.json (committed)
+# ───────────────────────────────────────────────────────────────────────
+oracle_result:
+  schema_name: oracle_result
+  version: "1.1"
+  fields:
+    required:
+      - oracle_id: string
+      - format_id: string
+      - executed_at: datetime_iso8601
+      - total_cases: integer
+      - results: dict[result_name → count]
+      - pass_rate: string          # e.g., "9/10"
+      - verdict: enum[ALL_PASS, PARTIAL_PASS, ALL_FAIL, BLOCKED, INCONCLUSIVE]
+      - depth_histogram: dict      # {D0: int, D1: int, D2: int, D3: int}
+      - format_depth_score: enum[D0, D1, D2, D3]
+    optional_new_in_v1_1:
+      - product_source_hash: string    # sha256 of parser files (NEW — Fix 3)
+      - oracle_package_hash: string    # sha256 of oracle-package.yaml (NEW — Fix 3)
+      - depth_d0_fraction: float       # D0_count / total_valid_pass (NEW — Fix 3b)
+      - stale_warning: boolean         # set by G2 gate when source hash changes (NEW — Fix 3b)
+  backward_compat: "All v1.0 consumers: new fields are optional, will be absent in old summaries"
+
+# ───────────────────────────────────────────────────────────────────────
+# Schema 5: oracle_certification
+# Stored in: reports/certification/certification-report.md (currently markdown)
+# Future: reports/certification/certification-report.json
+# ───────────────────────────────────────────────────────────────────────
+oracle_certification:
+  schema_name: oracle_certification
+  version: "1.0"
+  fields:
+    required:
+      - format_id: string
+      - certified_at: datetime_iso8601
+      - certification_level: enum[UNCERTIFIED, PARTIAL, VERIFIED, PRODUCTION_ACTIVE]
+      - oracle_run_ref: string     # path to oracle-run-summary.json used for cert
+      - pass_rate: string
+      - depth_score: string
+    optional:
+      - expires_or_invalidates_on: list[invalidation_trigger]
+      - certifier: string
+      - notes: string
+  invalidation_triggers:
+    description: "oracle_certification becomes stale when ANY of these occur"
+    triggers:
+      - product_source_changed: "product_source_hash in oracle-run-summary.json != current source hash"
+      - oracle_package_changed: "oracle_package_hash != current oracle-package.yaml hash"
+      - new_case_added: "oracle-package.yaml valid_cases count > oracle_run total_cases"
+      - authority_class_downgraded: "any authority_class set to REJECTED or UNKNOWN"
+      - sample_file_changed: "sha256 of any corpus_ref file has changed"
+      - spec_version_changed: "oracle-package.yaml format_version references newer spec revision"
+      - new_format_spec_section: "SAL facts reference a spec section not covered in oracle-package.yaml"
+      - d0_fraction_increased: "depth_d0_fraction > 0.5 (majority D0)"
+      - fix1_applied: "SYNTHETIC_PROPERTIES constant added to executor — all D0 depths recomputed"
+      - fix2_applied: "G2 fallback removed — oracle must pass on own merits"
+
+# ───────────────────────────────────────────────────────────────────────
+# Supporting types
+# ───────────────────────────────────────────────────────────────────────
+property_spec:
+  schema_name: property_spec
+  fields:
+    required:
+      - property: string       # name of property in returned model dict
+    optional:
+      - value: any             # exact match
+      - value_min: number      # minimum value
+      - value_max: number      # maximum value
+      - authority: string      # authority for this expected value
+
+assertion_spec:
+  schema_name: assertion_spec
+  version: "1.0"  # legacy schema — still supported via Fix 5
+  fields:
+    required:
+      - type: string           # python_callable
+      - module: string
+      - callable: string
+      - args: list[string]
+    optional:
+      - expect_type: string    # dict | list | str | int | bool
+      - expect_no_exception: boolean
+      - expect_return_value: any
+      - expect_exception: boolean
+
+authority_ref:
+  fields:
+    required:
+      - id: string
+      - title: string
+      - body: string           # standards body or organization
+      - authority_class: enum[SPEC_NORMATIVE, SCHEMA_DERIVED, VERIFIED_INTEROPERABILITY, ACCEPTED_EMPIRICAL, GENERATED_FROM_NEUTRAL_MODEL]
+    optional:
+      - url: string
+      - legal_category: integer
+      - spec_sha256: string    # SHA256 of the spec document (pinned version)
+
+corpus_ref:
+  fields:
+    required:
+      - corpus_id: string
+      - sample_ref: string     # relative path to sample file
+      - sha256: string
+      - license: string
+      - authority_class: enum
+    optional:
+      - description: string

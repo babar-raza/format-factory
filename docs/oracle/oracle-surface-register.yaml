@@ -1,0 +1,395 @@
+# Oracle Surface Register — Format Factory
+# Produced by: TC-ORA-002 (jaunty-whistling-meteor investigation)
+# Generated: 2026-07-08
+# Source: Direct code reading of tools/oracle/execute_oracle.py + oracle/formats/*/oracle-package.yaml
+# Acceptance criterion: oracle_surfaces_not_inventoried: 0
+# Total active Python FOSS formats: 20
+
+metadata:
+  oracle_surfaces_not_inventoried: 0
+  total_surfaces: 20
+  status_verified: 3
+  status_d1_real_props: 6
+  status_d1_weak_props: 7
+  status_synthetic_only: 3
+  status_schema_mismatch: 1
+  surfaces_with_unexecuted_invalid_cases: 18
+  surfaces_with_unexecuted_roundtrip_cases: 2  # abw (2 RT defined, not executed), zst invalid (4 defined, not executed)
+
+# Notation:
+#   ACTIVE_VERIFIED      — real non-synthetic model property comparisons, all case types executing
+#   ACTIVE_D1_REAL_PROPS — has real (non-synthetic) model properties, some cases may be mixed
+#   ACTIVE_D1_WEAK_PROPS — only checks weak boolean indicators (ok, is_fodp, is_fodg) — real fields but discriminating power is low
+#   ACTIVE_SYNTHETIC_ONLY — ALL cases check only `loaded: true` (synthetic) — will drop to D0 after Fix 1
+#   ACTIVE_SCHEMA_MISMATCH — some cases use `assertion:` without `expected_model_properties` — executor reads only model_props, these cases run at D0 without comparison
+
+surfaces:
+  - format_id: csv
+    oracle_id: oracle-csv-v1
+    status: ACTIVE_VERIFIED
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # real properties: headers, row_count, has_header, column_count
+    valid_cases: 5
+    invalid_cases_defined: 2
+    invalid_cases_executed: 2  # csv IS in the csv/fods guard
+    roundtrip_cases_defined: 1
+    roundtrip_cases_executed: 0  # csv has roundtrip defined but no RT executor
+    properties_checked:
+      - headers         # real: list of column names
+      - row_count       # real: integer
+      - has_header      # real: boolean
+      - column_count    # real: integer
+    authority_class: SPEC_NORMATIVE  # RFC 4180
+    notes: "Strongest oracle surface. Real discriminating properties. Invalid cases execute."
+
+  - format_id: fods
+    oracle_id: oracle-fods-v1
+    status: ACTIVE_VERIFIED
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    depth_histogram_current: {D1: 6, D0: 4}
+    valid_cases: 9  # 1 SKIPPED_MISSING_PROVIDER (LibreOffice D3 case)
+    invalid_cases_defined: 3
+    invalid_cases_executed: 3
+    roundtrip_cases_defined: 1
+    roundtrip_cases_executed: 1
+    properties_checked:
+      - sheet_count      # real: integer
+      - cell_count       # real: integer
+      - first_sheet_name # real: string
+      - has_float_cell   # real: boolean (discriminating)
+      - has_string_cell  # real: boolean
+      - has_formula_cell # real: boolean
+      - spec_qname       # real: ODF spec qname string
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "4 D0 cases in hist are from RelaxNG (D2 attempt fails on simplified test files — retained at D1 with diagnostic). One SKIPPED_MISSING_PROVIDER (LibreOffice). Most complete surface."
+
+  - format_id: zst
+    oracle_id: oracle-zst-v1
+    status: ACTIVE_VERIFIED
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 6
+    invalid_cases_defined: 4
+    invalid_cases_executed: 0  # NOT in the csv/fods guard — 4 invalid cases unexecuted
+    roundtrip_cases_defined: 2
+    roundtrip_cases_executed: 2  # ZST has inline roundtrip handling in main loop
+    properties_checked:
+      - compressed_size    # real: integer
+      - decompressed_size  # real: integer
+      - is_empty           # real: boolean
+      - frame_count        # real: integer
+    authority_class: SPEC_NORMATIVE  # zstandard RFC 8878
+    notes: "Strong real properties. Roundtrip executes. CRITICAL: 4 invalid cases defined but executor guard is 'csv/fods' only — unexecuted."
+
+  - format_id: gnumeric
+    oracle_id: oracle-gnumeric-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # 2 real cases survive; 1 synthetic drops to D0
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - sheet_count  # real (2 cases)
+      - cell_count   # real (1 case)
+      - loaded       # SYNTHETIC — will be D0 after Fix 1 for gnumeric-valid-003
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "2 of 3 cases have real properties. D1 score survives Fix 1 because max(D0, D1, D1)=D1."
+
+  - format_id: ndjson
+    oracle_id: oracle-ndjson-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 4
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - record_count  # real (2 cases)
+      - spec_qname    # real (1 case)
+      - NO_SCHEMA     # 1 case has no schema at all — executor runs at D0
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "ndjson-valid-004 has NO schema key — runs at D0, contributes nothing. 3 real D1 cases."
+
+  - format_id: ods
+    oracle_id: oracle-ods-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # 2 real cases survive
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - sheet_count  # real (2 cases)
+      - loaded       # SYNTHETIC — ods-valid-003 will be D0 after Fix 1
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "2 real sheet_count cases. 1 synthetic will drop to D0 after Fix 1."
+
+  - format_id: toml
+    oracle_id: oracle-toml-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 4
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - key_count   # real (2 cases)
+      - spec_qname  # real (1 case)
+      - NO_SCHEMA   # toml-valid-004 has no schema
+    authority_class: SPEC_NORMATIVE  # TOML 1.0
+    notes: "3 real D1 cases. 1 NO_SCHEMA runs at D0."
+
+  - format_id: tsv
+    oracle_id: oracle-tsv-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 4
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - row_count    # real (2 cases)
+      - column_count # real
+      - spec_qname   # real (1 case)
+      - NO_SCHEMA    # tsv-valid-004 has no schema
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "3 real D1 cases. 1 NO_SCHEMA runs at D0."
+
+  - format_id: xcf
+    oracle_id: oracle-xcf-v1
+    status: ACTIVE_D1_REAL_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # spec_qname case survives as D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - loaded    # SYNTHETIC — 2 cases, will be D0 after Fix 1
+      - spec_qname # real (1 case)
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "1 real spec_qname case saves D1 score. 2 synthetic cases will drop to D0."
+
+  - format_id: fodg
+    oracle_id: oracle-fodg-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props_with_assertion  # both assertion: AND expected_model_properties: present
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - is_fodg     # real: boolean flag returned by parser
+      - page_count  # real: integer
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "Has both assertion: and expected_model_properties: in same cases. Executor reads model_props, ignores assertion:. is_fodg is a real returned field but weak (always True on success). page_count is discriminating."
+
+  - format_id: fodp
+    oracle_id: oracle-fodp-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # is_fodp is a real returned field, not synthetic
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - is_fodp  # real: boolean field returned by fodp_codec.load() — not synthetic
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "is_fodp is real (returned by parser) but semantically weak — always True on successful parse. No structural properties (page_count, etc.) compared."
+
+  - format_id: odt
+    oracle_id: oracle-odt-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1  # ok is a real returned field
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - ok  # real: returned by odt_parser.parse_odt() — but always True on success
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "ok is returned field (not synthetic) but discriminating power is near-zero. Parser returns {'ok', 'error', 'error_type'}."
+
+  - format_id: pbm
+    oracle_id: oracle-pbm-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - ok  # real returned field but weak
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "Same pattern as odt: ok is real but always True on success."
+
+  - format_id: pgm
+    oracle_id: oracle-pgm-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - ok
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "Same pattern as pbm."
+
+  - format_id: ppm
+    oracle_id: oracle-ppm-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - ok
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "Same pattern as pbm."
+
+  - format_id: qoi
+    oracle_id: oracle-qoi-v1
+    status: ACTIVE_D1_WEAK_PROPS
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D1
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - ok
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "Same pattern as pbm."
+
+  - format_id: dif
+    oracle_id: oracle-dif-v1
+    status: ACTIVE_SYNTHETIC_ONLY
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D0  # ALL 3 cases check only 'loaded' — synthetic
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - loaded  # SYNTHETIC ONLY — all 3 cases
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "WILL DROP TO D0 after Fix 1. No real model properties checked. DIF parser returns a dict with real fields (cells, rows, etc.) that are never compared."
+
+  - format_id: fodt
+    oracle_id: oracle-fodt-v1
+    status: ACTIVE_SYNTHETIC_ONLY
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D0  # ALL 3 cases check only 'loaded' — synthetic
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - loaded  # SYNTHETIC ONLY — all 3 cases
+    authority_class: SPEC_NORMATIVE  # ODF 1.3
+    notes: "WILL DROP TO D0 after Fix 1. Parser returns rich dict (format_id, spec_version, odf_version_attr, blocks, tables, etc.) — none compared. Oracle package was backfilled (TC-LA-010) with minimal effort."
+
+  - format_id: sylk
+    oracle_id: oracle-sylk-v1
+    status: ACTIVE_SYNTHETIC_ONLY
+    schema_type: model_props
+    depth_score_current: D1
+    depth_score_after_fix1: D0  # ALL 3 cases check only 'loaded' — synthetic
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - loaded  # SYNTHETIC ONLY — all 3 cases
+    authority_class: ACCEPTED_EMPIRICAL
+    notes: "WILL DROP TO D0 after Fix 1. No real properties. SYLK parser returns a dict with cells/rows that are never compared."
+
+  - format_id: abw
+    oracle_id: oracle-abw-v1
+    status: ACTIVE_SCHEMA_MISMATCH
+    schema_type: mixed  # assertion: only (cases 001, 002) + model_props (case 003)
+    depth_score_current: D1  # because abw-valid-003 has is_abw → D1
+    depth_score_after_fix1: D1  # is_abw is not synthetic (real returned field)
+    depth_histogram_current: {D0: 2, D1: 1}
+    valid_cases: 3
+    invalid_cases_defined: 1
+    invalid_cases_executed: 0
+    roundtrip_cases_defined: 0
+    roundtrip_cases_executed: 0
+    properties_checked:
+      - assertion_only_cases: [abw-valid-001, abw-valid-002]  # executor reads [], returns D0 PASS
+      - is_abw: [abw-valid-003]  # real returned field, D1
+    authority_class: SPEC_INFORMATIVE  # AbiWord format docs
+    notes: "abw-valid-001 and abw-valid-002 use assertion: without expected_model_properties — executor runs at D0 (load succeeds = PASS, no comparison). After Fix 5 (read assertion: schema), these cases would run at D1 with expect_type: dict comparison. abw-valid-003 has real is_abw check."
+
+# SUMMARY TABLE
+# Format      | Current D1 | After Fix 1 | Invalid Exec | RT Exec | Status
+# csv         | D1         | D1          | YES          | NO      | ACTIVE_VERIFIED
+# fods        | D1         | D1          | YES          | YES     | ACTIVE_VERIFIED
+# zst         | D1         | D1          | NO (4 unexec)| YES     | ACTIVE_VERIFIED
+# gnumeric    | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# ndjson      | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# ods         | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# toml        | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# tsv         | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# xcf         | D1         | D1          | NO           | NO      | ACTIVE_D1_REAL_PROPS
+# fodg        | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# fodp        | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# odt         | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# pbm         | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# pgm         | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# ppm         | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# qoi         | D1         | D1          | NO           | NO      | ACTIVE_D1_WEAK_PROPS
+# dif         | D1         | D0 !!!      | NO           | NO      | ACTIVE_SYNTHETIC_ONLY
+# fodt        | D1         | D0 !!!      | NO           | NO      | ACTIVE_SYNTHETIC_ONLY
+# sylk        | D1         | D0 !!!      | NO           | NO      | ACTIVE_SYNTHETIC_ONLY
+# abw         | D1         | D1          | NO           | NO      | ACTIVE_SCHEMA_MISMATCH

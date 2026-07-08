@@ -1,0 +1,237 @@
+# Oracle Gap Register — Format Factory
+# Produced by: TC-ORA-008 (jaunty-whistling-meteor investigation)
+# Generated: 2026-07-08
+# All gaps traced to specific code locations. All gaps have assigned tasks.
+
+gap_register_version: "1.0"
+total_gaps: 10
+gaps_with_tasks: 10
+gaps_without_tasks: 0
+
+gaps:
+
+  - gap_id: OGAP-001
+    title: "Synthetic `loaded: true` property inflates D1 depth score"
+    category: depth_scoring
+    severity: HIGH
+    false_green_risk: HIGH
+    evidence:
+      file: tools/oracle/execute_oracle.py
+      function: _compare_model_properties
+      lines: "664-714"
+      citation: |
+        Line 683-685:
+          if prop_name == "loaded":
+              actual = result_val is not None  # synthetic: if no exception, always True
+        Line 713:
+          depth = DEPTH_D1 if expected_props else DEPTH_D0
+        Any non-empty expected_props list → D1, even if all props are synthetic.
+    root_causes: [RC1, SW3]
+    affected_formats: [dif, fodt, sylk]  # ALL cases are synthetic → inflated to D1
+    partially_affected: [gnumeric, ods, xcf]  # some cases synthetic, some real
+    current_reported_depth: D1
+    actual_depth_for_affected: D0
+    migration_stage: Fix 1
+    task_ids: [IMPL-FIX-001]
+    implementation_location:
+      file: tools/oracle/execute_oracle.py
+      change: "Add SYNTHETIC_PROPERTIES = frozenset({'loaded', 'result_type'}); modify depth computation"
+      lines_to_change: "713"
+
+  - gap_id: OGAP-002
+    title: "G2 gate passes with zero oracle verdicts via test-suite fallback"
+    category: gate_integrity
+    severity: HIGH
+    false_green_risk: HIGH
+    evidence:
+      file: tools/supervisor/gate_executor.py
+      function: check_g2
+      lines: "119-136"
+      citation: |
+        using_fallback = (passed_cases == 0) and (test_count >= 10)
+        if using_fallback:
+            results.append({"check": "oracle_depth_minimum_d1", "passed": True, ...})
+        When passed_cases==0 and test_count>=10: G2 passes.
+        Gate output reports oracle_depth_minimum_d1: True — false claim.
+    root_causes: [RC4, SW4]
+    affected_formats: "All 20 formats (fallback code exists, currently not triggered for any)"
+    current_impact: "LATENT — no format currently has 0 oracle PASS (as of 2026-07-08 baseline)"
+    future_risk: "If CI environment changes (LibreOffice removed, package install broken), fallback activates silently"
+    migration_stage: Fix 2
+    task_ids: [IMPL-FIX-002]
+    implementation_location:
+      file: tools/supervisor/gate_executor.py
+      change: "Remove lines 119-136 (using_fallback block); replace with direct oracle result check"
+      lines_to_remove: "119-136"
+
+  - gap_id: OGAP-003
+    title: "No product_source_hash — stale oracle evidence undetectable"
+    category: evidence_integrity
+    severity: HIGH
+    false_green_risk: HIGH
+    evidence:
+      file: oracle/formats/fods/reports/oracle-run-summary.json
+      citation: |
+        File content: {"oracle_id", "format_id", "executed_at", ...}
+        No "product_source_hash" field. No "oracle_package_hash" field.
+        The `executed_at` timestamp is recorded but never compared against anything.
+        gate_executor.py check_g2() reads the summary but performs no staleness check.
+    root_causes: [RC5]
+    affected_formats: "All 20 formats"
+    current_impact: "LATENT — all summaries are fresh as of 2026-07-08 baseline run"
+    future_risk: "Product changes after last oracle run are invisible until oracle is manually re-run"
+    migration_stage: Fix 3
+    task_ids: [IMPL-FIX-003]
+    implementation_location:
+      file: tools/oracle/execute_oracle.py
+      change: "Add product_source_hash + oracle_package_hash + depth_d0_fraction to oracle-run-summary.json"
+      additional_file: tools/supervisor/gate_executor.py
+      additional_change: "Add staleness check in check_g2() — report stale_warning: true (not block)"
+
+  - gap_id: OGAP-004
+    title: "`assertion:` schema silently ignored by executor"
+    category: schema_compatibility
+    severity: HIGH
+    false_green_risk: MEDIUM
+    evidence:
+      file: tools/oracle/execute_oracle.py
+      function: execute_generic_load_case
+      lines: "717-780"
+      citation: |
+        Line 751 (approx): expected_props = case.get("expected_model_properties", [])
+        The `assertion:` block in oracle-package.yaml is never read by this function.
+        If case has only `assertion:` (no `expected_model_properties`), executor gets expected_props=[]
+        → depth=D0 → PASS (load succeeded, no comparison made).
+      secondary_file: oracle/formats/abw/oracle-package.yaml
+      secondary_citation: |
+        abw-valid-001 and abw-valid-002: assertion: {expect_type: dict, expect_no_exception: true}
+        No expected_model_properties present.
+        → These 2 cases run at D0 with no comparison.
+    root_causes: [RC3, SW2]
+    affected_formats: [abw]  # only abw has assertion: without expected_model_properties
+    affected_cases: [abw-valid-001, abw-valid-002]
+    partially_affected: [fodg]  # fodg has both assertion: AND model_props — model_props IS read
+    current_impact: "abw 2/3 cases run at D0 with no real comparison; assertion: is documentation only"
+    migration_stage: Fix 5
+    task_ids: [IMPL-FIX-005]
+    implementation_location:
+      file: tools/oracle/execute_oracle.py
+      function: execute_generic_load_case
+      change: "After getting result_val, check assertion: block if expected_model_properties is absent"
+
+  - gap_id: OGAP-005
+    title: "Invalid/roundtrip cases defined but unexecuted for 18/20 formats"
+    category: case_coverage
+    severity: HIGH
+    false_green_risk: MEDIUM
+    evidence:
+      file: tools/oracle/execute_oracle.py
+      function: run_oracle_for_format
+      lines: "1737-1755"
+      citation: |
+        if format_id in ("csv", "fods"):
+            for case in pkg.get("invalid_cases", []):
+        Only csv and fods have invalid cases executed.
+        ZST roundtrip executes (separate block, line 1724) but ZST invalid cases do not.
+        18 formats have invalid_cases defined in oracle-package.yaml but never executed.
+    root_causes: [RC2, SW1]
+    affected_formats_invalid_unexecuted: [abw, dif, fodg, fodp, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    count_unexecuted_invalid_cases: 18  # one per format
+    count_unexecuted_invalid_for_zst: 4  # ZST has 4 invalid cases defined
+    current_impact: "A parser that accepts invalid input would still PASS the oracle for 18 formats"
+    migration_stage: Fix 4 (registry refactor) + follow-on work per format
+    task_ids: [IMPL-FIX-004, IMPL-FOLLOW-ON-INVALID]
+    implementation_location:
+      file: tools/oracle/execute_oracle.py
+      change: "Replace if/elif dispatch chain with EXECUTOR_REGISTRY dict; unify case-type dispatch"
+      note: "Registry alone doesn't add coverage — needs generic invalid executor or per-format impl"
+
+  - gap_id: OGAP-006
+    title: "format_depth = max hides D0 distribution"
+    category: depth_reporting
+    severity: MEDIUM
+    false_green_risk: LOW_MEDIUM
+    evidence:
+      file: tools/oracle/execute_oracle.py
+      function: run_oracle_for_format
+      lines: "~1764-1770"
+      citation: |
+        format_depth = max(valid_pass_depths, default=DEPTH_D0)
+        One D1 verdict out of 10 reports format_depth = D1.
+        The D0 distribution is in depth_histogram but ignored by V143 and G2.
+      secondary_file: tools/supervisor/governance_validators_oracle.py
+      secondary_function: validate_oracle_depth_minimum
+      secondary_citation: |
+        if depth == "D0":
+            findings.append({...})
+        V143 only fires when ALL cases are D0 (format_depth_score == "D0").
+        A format with 1 D1 and 9 D0 passes V143 silently.
+    root_causes: [SW3]
+    affected_formats: [fods]  # 6 D1, 4 D0 — current D0 fraction = 0.4
+    example_false_green: "A format with 1 D1 case and 9 D0 cases reports format_depth=D1, V143 does not fire"
+    migration_stage: Fix 6
+    task_ids: [IMPL-FIX-006]
+    implementation_location:
+      file: tools/supervisor/governance_validators_oracle.py
+      function: validate_oracle_depth_minimum
+      change: "Add majority_d0 check: if D0_count > D1+D2+D3 count, fire WARN"
+
+  - gap_id: OGAP-007
+    title: "SAL facts lack provenance fields — authorized_fact_refs is a string comment"
+    category: specification_oracle
+    severity: MEDIUM
+    false_green_risk: LOW
+    evidence:
+      file: oracle/formats/fods/oracle-package.yaml
+      citation: |
+        authorized_fact_refs:
+          - "~4988 total FODS facts in SAL"
+        This is a string comment, not a list of fact IDs.
+        No code verifies that FACT-FODS-001 through FACT-FODS-4988 exist in the SAL store.
+    root_causes: [SW5]
+    affected_boundary: BOUNDARY_C (Specification Oracle)
+    current_impact: "Specification authority is claimed but not machine-verifiable"
+    migration_path: "Add provenance fields to SAL facts; migrate authorized_fact_refs to real fact ID lists"
+    task_ids: [SPEC-PROVENANCE-001]
+    implementation_notes: "Non-blocking for product oracle fixes. Address after Fix 1-6."
+
+  - gap_id: OGAP-008
+    title: "Capability oracle absent — 398 capabilities without proof validation"
+    category: capability_oracle
+    severity: LOW
+    false_green_risk: LOW
+    evidence:
+      file: reports/capability-layer/gap-ledger.json
+      citation: "398 capabilities in gap-ledger.json. No proof validation machinery."
+    root_causes: [SW5]
+    affected_boundary: BOUNDARY_D (Capability Oracle)
+    current_impact: "Capability claims are advisory. Not blocking product oracle work."
+    migration_path: "Separate project. Requires formal acceptance criteria design."
+    task_ids: [CAPABILITY-ORACLE-PLAN-001]
+    note: "Do NOT build capability oracle while product oracle has false-green paths (Fixes 1-6 first)"
+
+  - gap_id: OGAP-009
+    title: "Acquisition oracle covers only 2/20 formats — no mechanism for other formats"
+    category: acquisition_oracle
+    severity: MEDIUM
+    false_green_risk: LOW
+    evidence:
+      files: [tools/oracle/run_fods_oracle.py, tools/oracle/run_fodt_oracle.py]
+      citation: "Only fods and fodt have acquisition oracle runs. 18 other formats have no Gate 6 coverage."
+    root_causes: [format-specific]
+    affected_boundary: BOUNDARY_A (Acquisition Oracle)
+    current_impact: "18 formats have no interoperability evidence against any reference implementation"
+    migration_path: "Format-specific. Some formats (image, compression) have no applicable reference impl."
+    task_ids: []  # out of scope for this plan — separate format-by-format decision
+    note: "Acquisition oracle correctly scoped for formats where LibreOffice applies."
+
+  - gap_id: OGAP-010
+    title: "oracle/registry/format-oracle-registry.yaml missing V82 target format IDs"
+    category: registry_sync
+    severity: LOW
+    false_green_risk: LOW
+    evidence:
+      note: "Mismatch between format-oracle-registry.yaml format list and active 20-format list"
+    migration_path: "Documentation fix — sync registry to reflect current active oracle surfaces"
+    task_ids: [REGISTRY-SYNC-001]
+    note: "Does not affect oracle execution. Low priority."

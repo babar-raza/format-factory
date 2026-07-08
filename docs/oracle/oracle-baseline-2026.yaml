@@ -1,0 +1,353 @@
+# Oracle Baseline — Format Factory — Pre-Fix State
+# Produced by: TC-ORA-004 (jaunty-whistling-meteor investigation)
+# Generated: 2026-07-08
+# Oracle runs executed: 2026-07-08T (fresh run via .venv/Scripts/python tools/oracle/execute_oracle.py)
+# Purpose: Capture actual state BEFORE implementing any of the 6 proposed fixes
+#          so that fix impact can be measured against this baseline.
+
+metadata:
+  baseline_date: "2026-07-08"
+  total_formats: 20
+  total_cases_executed: 75
+  total_pass: 74
+  total_skipped_missing_provider: 1  # fods LibreOffice D3 case
+  total_fail: 0
+  all_formats_at_d1_current: true  # MISLEADING — see notes on synthetic inflation
+  formats_with_unexecuted_invalid_cases: 18
+  formats_with_unexecuted_roundtrip_cases: 18  # only fods/zst have RT executed
+
+# Key observation: ALL 20 formats report D1 depth score.
+# This is partially inflated by:
+#   1. Synthetic `loaded: true` property counting as D1 (dif, fodt, sylk — ALL cases synthetic)
+#   2. Weak boolean indicators (ok, is_fodp) — real fields but always True on success
+#   3. max(depths) scoring — one real D1 case lifts entire format to D1 even with many D0 cases
+
+# PROJECTED STATE AFTER FIX 1 (synthetic properties do not count toward D1):
+# Formats that WILL DROP to D0: dif, fodt, sylk (all cases check only 'loaded')
+# Formats that KEEP D1 but with changed histogram: gnumeric, ods, xcf, csv, fods, abw, ndjson, toml, tsv, zst
+# Formats unchanged: csv, fodg, fodp, odt, pbm, pgm, ppm, qoi (use real non-synthetic props)
+
+formats:
+  - format_id: abw
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D0: 2, D1: 1}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]  # 1 invalid defined, not executed
+    properties_actually_compared:
+      - property: is_abw
+        in_case: abw-valid-003
+        is_synthetic: false
+        depth_level: D1
+      - property: assertion_schema_only
+        in_cases: [abw-valid-001, abw-valid-002]
+        executor_behavior: "expected_model_properties=[] → D0, loads and passes without comparison"
+    after_fix1_depth: D1  # is_abw is not synthetic (real returned field)
+    after_fix5_change: "abw-valid-001 and abw-valid-002 would execute assertion comparison → D1"
+
+  - format_id: csv
+    executed_at: "2026-07-08"
+    pass_rate: "5/5"
+    depth_score: D1
+    depth_histogram: {D1: 4, D0: 1}
+    skip_count: 0
+    case_types_executed: [valid, invalid]
+    case_types_unexecuted: []  # roundtrip defined but no RT executor — 0 unexecuted for active types
+    properties_actually_compared:
+      - [headers, row_count, has_header, column_count]  # real discriminating properties
+    after_fix1_depth: D1  # no change — no synthetic properties
+    notes: "1 D0 case is csv-invalid (which correctly returns D0 — invalid rejection, not property check)"
+
+  - format_id: dif
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1  # INFLATED — synthetic only
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: loaded
+        synthetic: true
+        note: "Always True if result_val is not None — no real comparison"
+    after_fix1_depth: D0  # WILL DROP — all 3 cases will become D0
+    after_fix1_histogram: {D0: 3}
+    v143_will_fire_after_fix1: true
+
+  - format_id: fodg
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - [is_fodg, page_count]  # real returned fields from fodg_codec.load()
+    after_fix1_depth: D1  # no change — properties are real
+
+  - format_id: fodp
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: is_fodp
+        synthetic: false
+        note: "Real returned field but always True on success — weak discriminating power"
+    after_fix1_depth: D1  # no change — is_fodp is real (not in SYNTHETIC_PROPERTIES set)
+
+  - format_id: fods
+    executed_at: "2026-07-08"
+    pass_rate: "9/10"
+    depth_score: D1
+    depth_histogram: {D1: 6, D0: 4}
+    skip_count: 1  # fods-lo-interop-001 SKIPPED_MISSING_PROVIDER (LibreOffice)
+    case_types_executed: [valid, invalid, roundtrip]
+    case_types_unexecuted: []
+    properties_actually_compared:
+      - [sheet_count, cell_count, first_sheet_name, has_float_cell, has_string_cell, has_formula_cell, spec_qname]
+    after_fix1_depth: D1
+    notes: "4 D0 cases are from D2 RelaxNG attempts that fall back to D1 with diagnostics. Most complete surface."
+
+  - format_id: fodt
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1  # INFLATED — synthetic only
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: loaded
+        synthetic: true
+    after_fix1_depth: D0  # WILL DROP
+    after_fix1_histogram: {D0: 3}
+    v143_will_fire_after_fix1: true
+    notes: "Parser returns rich dict (format_id, spec_version, odf_version_attr, blocks, tables) — none compared"
+
+  - format_id: gnumeric
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: sheet_count
+        cases: [gnumeric-valid-001, gnumeric-valid-002]
+        synthetic: false
+      - property: cell_count
+        cases: [gnumeric-valid-002]
+        synthetic: false
+      - property: loaded
+        cases: [gnumeric-valid-003]
+        synthetic: true
+    after_fix1_depth: D1  # 2 real D1 cases survive; gnumeric-valid-003 drops to D0
+    after_fix1_histogram: {D1: 2, D0: 1}
+
+  - format_id: ndjson
+    executed_at: "2026-07-08"
+    pass_rate: "4/4"
+    depth_score: D1
+    depth_histogram: {D1: 3, D0: 1}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: record_count
+        cases: [ndjson-valid-001, ndjson-valid-002]
+        synthetic: false
+      - property: spec_qname
+        cases: [ndjson-valid-003]
+        synthetic: false
+      - note: "ndjson-valid-004 has NO schema → D0"
+    after_fix1_depth: D1
+
+  - format_id: ods
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: sheet_count
+        cases: [ods-valid-001, ods-valid-002]
+        synthetic: false
+      - property: loaded
+        cases: [ods-valid-003]
+        synthetic: true
+    after_fix1_depth: D1  # 2 real cases survive
+    after_fix1_histogram: {D1: 2, D0: 1}
+
+  - format_id: odt
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: ok
+        synthetic: false
+        note: "Real returned field from parse_odt() — always True on success"
+    after_fix1_depth: D1  # ok is not in SYNTHETIC_PROPERTIES
+
+  - format_id: pbm
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: ok
+        synthetic: false
+    after_fix1_depth: D1
+
+  - format_id: pgm
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: ok
+        synthetic: false
+    after_fix1_depth: D1
+
+  - format_id: ppm
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: ok
+        synthetic: false
+    after_fix1_depth: D1
+
+  - format_id: qoi
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: ok
+        synthetic: false
+    after_fix1_depth: D1
+
+  - format_id: sylk
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1  # INFLATED — synthetic only
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: loaded
+        synthetic: true
+    after_fix1_depth: D0  # WILL DROP
+    after_fix1_histogram: {D0: 3}
+    v143_will_fire_after_fix1: true
+
+  - format_id: toml
+    executed_at: "2026-07-08"
+    pass_rate: "4/4"
+    depth_score: D1
+    depth_histogram: {D1: 3, D0: 1}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: key_count
+        cases: [toml-valid-001, toml-valid-002]
+        synthetic: false
+      - property: spec_qname
+        cases: [toml-valid-003]
+        synthetic: false
+      - note: "toml-valid-004 has NO schema → D0"
+    after_fix1_depth: D1
+
+  - format_id: tsv
+    executed_at: "2026-07-08"
+    pass_rate: "4/4"
+    depth_score: D1
+    depth_histogram: {D1: 3, D0: 1}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: row_count
+        synthetic: false
+      - property: column_count
+        synthetic: false
+      - property: spec_qname
+        synthetic: false
+      - note: "tsv-valid-004 has NO schema → D0"
+    after_fix1_depth: D1
+
+  - format_id: xcf
+    executed_at: "2026-07-08"
+    pass_rate: "3/3"
+    depth_score: D1
+    depth_histogram: {D1: 3}
+    skip_count: 0
+    case_types_executed: [valid]
+    case_types_unexecuted: [invalid]
+    properties_actually_compared:
+      - property: loaded
+        cases: [xcf-valid-001, xcf-valid-002]
+        synthetic: true
+      - property: spec_qname
+        cases: [xcf-valid-003]
+        synthetic: false
+    after_fix1_depth: D1  # spec_qname in xcf-valid-003 is real
+    after_fix1_histogram: {D0: 2, D1: 1}
+
+  - format_id: zst
+    executed_at: "2026-07-08"
+    pass_rate: "6/6"
+    depth_score: D1
+    depth_histogram: {D1: 4, D0: 2}
+    skip_count: 0
+    case_types_executed: [valid, roundtrip]
+    case_types_unexecuted: [invalid]  # 4 invalid cases defined, not executed (not in csv/fods guard)
+    properties_actually_compared:
+      - [compressed_size, decompressed_size, is_empty, frame_count]  # real properties
+    after_fix1_depth: D1
+
+# SUMMARY: PROJECTED IMPACT OF FIX 1 (synthetic properties)
+fix1_impact:
+  formats_dropping_to_d0: [dif, fodt, sylk]
+  formats_keeping_d1_unchanged: [csv, fodg, fodp, fods, ndjson, odt, pbm, pgm, ppm, qoi, toml, tsv, zst]
+  formats_keeping_d1_with_changed_histogram: [abw, gnumeric, ods, xcf]
+  v143_will_fire_after_fix1_for: [dif, fodt, sylk]
+
+# G2 FALLBACK IMPACT (Fix 2 — remove test-suite fallback):
+# Which formats currently have 0 oracle PASS? NONE — all 20 have PASS > 0.
+# The fallback is only triggered when passed_cases == 0.
+# Therefore Fix 2 does NOT immediately block any format's G2 gate.
+# However, the gate output was previously LYING (claiming oracle_depth_minimum_d1: True
+# via fallback for formats that had no oracle run). This is now corrected.
+fix2_impact:
+  formats_currently_relying_on_fallback: 0  # All 20 have active oracle runs with PASS > 0
+  gate_behavior_change: "G2 oracle_depth_minimum_d1 will only pass via actual oracle results, not test file count"

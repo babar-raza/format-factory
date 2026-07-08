@@ -1,0 +1,173 @@
+# Oracle Boundary Register — Format Factory
+# Produced by: TC-ORA-003 (jaunty-whistling-meteor investigation)
+# Generated: 2026-07-08
+# Source: Direct code reading with citations to specific file:line locations
+
+metadata:
+  boundary_count: 4
+  boundaries_with_implementation: 3  # Spec has partial impl (SAL); Capability has none
+  boundaries_without_implementation: 1  # Capability Oracle
+
+# ───────────────────────────────────────────────────────────────────────
+# BOUNDARY A — ACQUISITION ORACLE
+# ───────────────────────────────────────────────────────────────────────
+boundary_a:
+  id: BOUNDARY_A
+  name: Acquisition Oracle
+  classification: ACQUISITION_IS_SEPARATE_INTEROPERABILITY_ORACLE
+  maturity_level: 2  # BASIC_REPEATABLE
+  primary_files:
+    - tools/oracle/run_fods_oracle.py
+    - tools/oracle/run_fodt_oracle.py
+    - acquisition-packs/fods/gate6-oracle-comparison-report.md
+  evidence_in_code:
+    - file: oracle/formats/fods/oracle-package.yaml
+      citation: >
+        Comment in oracle-package.yaml header: "The acquisition oracle validates:
+        'does our prototype agree with LibreOffice?' This product oracle validates:
+        'does our product implement the ODF 1.3 spec?'" — explicit boundary declaration.
+  question_answered: "Does our prototype parser agree with LibreOffice's output for the same FODS file?"
+  authority_class_used: VERIFIED_INTEROPERABILITY
+  not_authority_class: SPEC_NORMATIVE  # LibreOffice is a reference implementation, not the ODF spec
+  formats_covered: [fods, fodt]
+  formats_without_coverage: 18  # image formats, compression, etc. — LibreOffice not applicable
+  known_issues:
+    - LibreOffice version not strictly pinned
+    - Multi-sheet FODS export nondeterminism (1/4 WARN in gate6 report)
+    - No mechanism for the 18 formats without LibreOffice support
+  relationship_to_product_oracle: >
+    Acquisition oracle provides VERIFIED_INTEROPERABILITY evidence that can feed into
+    product oracle cases (interoperability_cases section in oracle-package.yaml).
+    The fods-lo-* cases in fods oracle-package.yaml reference LibreOffice explicitly.
+    Acquisition oracle DOES NOT replace product oracle — different questions, different authorities.
+  verdict: CORRECTLY_SCOPED  # The boundary is well-designed; implementation needs LibreOffice pinning
+
+# ───────────────────────────────────────────────────────────────────────
+# BOUNDARY B — PRODUCT ORACLE
+# ───────────────────────────────────────────────────────────────────────
+boundary_b:
+  id: BOUNDARY_B
+  name: Product Oracle
+  classification: GOVERNED_PARTIAL  # Level 3
+  maturity_level: 3
+  primary_files:
+    - tools/oracle/execute_oracle.py  # 1,822 lines
+    - oracle/formats/*/oracle-package.yaml
+    - oracle/formats/*/reports/oracle-run-summary.json
+    - oracle/oracle-authority-policy.md
+  question_answered: "Does our production library correctly implement the format specification?"
+  authority_classes_enforced:
+    - SPEC_NORMATIVE          # ODF spec, RFC 4180, TOML 1.0, etc.
+    - SCHEMA_DERIVED          # ODF RelaxNG (D2 depth level)
+    - VERIFIED_INTEROPERABILITY # LibreOffice interop cases
+    - ACCEPTED_EMPIRICAL      # Observed format behavior
+    - GENERATED_FROM_NEUTRAL_MODEL  # Test files generated from neutral model
+  authority_classes_blocked:
+    - AI_DRAFT_UNVERIFIED
+    - IMPLEMENTATION_OBSERVED
+    - UNKNOWN
+    - REJECTED
+  evidence:
+    - file: tools/oracle/execute_oracle.py
+      lines: "46-90"
+      citation: "check_authority() enforces BLOCKED_MISSING_AUTHORITY for blocked classes"
+    - file: tools/oracle/execute_oracle.py
+      lines: "92-136"
+      citation: "make_verdict() schema: oracle_id, case_id, result, authority_status, depth_level, diagnostics"
+  depth_levels_in_use:
+    D0: "Load didn't crash — no model property comparison"
+    D1: "Model properties compared against expected values"
+    D2: "ODF RelaxNG schema validation via lxml (FODS only, partial)"
+    D3: "External tool interop (LibreOffice) — only for SKIPPED_MISSING_PROVIDER cases"
+  known_defects:
+    - OGAP-001: "loaded: true is synthetic but earns D1"
+    - OGAP-002: "G2 test-suite fallback bypasses oracle entirely"
+    - OGAP-003: "No product_source_hash — stale evidence undetectable"
+    - OGAP-004: "assertion: schema silently ignored (abw 2/3 cases run at D0)"
+    - OGAP-005: "Invalid/roundtrip cases unexecuted for 18/20 formats"
+    - OGAP-006: "format_depth = max, hides D0 distribution"
+  verdict: FIXABLE_WITH_TARGETED_CHANGES  # The architecture is sound; 6 specific defects identified
+
+# ───────────────────────────────────────────────────────────────────────
+# BOUNDARY C — SPECIFICATION ORACLE (SAL)
+# ───────────────────────────────────────────────────────────────────────
+boundary_c:
+  id: BOUNDARY_C
+  name: Specification Oracle (SAL)
+  classification: AD_HOC  # Level 1
+  maturity_level: 1
+  primary_files:
+    - .local/sal/facts/  # gitignored — not in repository
+    - tools/spec/merge_sal_facts.py
+    - tools/spec/extract_sal_facts.py
+  question_answered: "What does the specification say about format X?"
+  total_facts: 14441
+  facts_extracted_in: run030  # one-time extraction, not continuously maintained
+  evidence_of_ad_hoc_status:
+    - file: oracle/formats/fods/oracle-package.yaml
+      citation: >
+        authorized_fact_refs contains '~4988 total FODS facts in SAL' as a STRING COMMENT,
+        not an actual machine-verifiable list of fact IDs. This is documentation, not governance.
+    - file: oracle/oracle-authority-policy.md
+      citation: >
+        Section 5 documents stale oracle detection rules but no implementation enforces them.
+        The 'spec_sha256' field is present in oracle-package.yaml but never verified.
+  gaps:
+    - "Facts have section references (e.g., 'ODF §9.4') but no machine-verifiable proof that claim matches spec text"
+    - "No acceptance workflow for new facts"
+    - "No continuous monitoring of spec version changes"
+    - "No fact rejection mechanism"
+    - "authorized_fact_refs is a string comment, not a machine-readable list"
+    - "SAL fact store is gitignored — not version-controlled with the product"
+  what_can_be_done_without_rebuild: >
+    Add provenance fields to each SAL fact record:
+    {fact_id, claim, section, review_level: 'manual_extraction_run030',
+     reviewed_at, spec_sha256}.
+    This does not validate fact text against spec, but it makes the review_level explicit
+    and honest, and allows oracle-package.yaml to reference specific fact IDs that can be
+    verified to exist.
+  verdict: NEEDS_PROVENANCE_FIELDS  # Valuable data, needs governance formalization
+
+# ───────────────────────────────────────────────────────────────────────
+# BOUNDARY D — CAPABILITY ORACLE
+# ───────────────────────────────────────────────────────────────────────
+boundary_d:
+  id: BOUNDARY_D
+  name: Capability Oracle
+  classification: ABSENT  # Level 0
+  maturity_level: 0
+  primary_files:
+    - reports/capability-layer/gap-ledger.json  # 398 entries — advisory only
+    - tools/supervisor/capability_feature_compiler.py  # pipeline tool
+    - tools/capability_layer/capability_to_feature_compiler.py  # planning tool (stubs)
+  question_answered: "Is the claimed capability actually implemented and spec-verified?"
+  current_state: >
+    gap-ledger.json maps 398 capabilities to formats but has no proof validation machinery.
+    The capability_feature_compiler.py produces next-work-items.json which is advisory.
+    There is no mechanism to reject a capability claim for missing fact support.
+    The capability maps reference fact IDs but no code path verifies a fact against spec text.
+  gaps:
+    - "No formal capability acceptance criteria"
+    - "No proof obligation generation from decomposed capabilities"
+    - "gap-ledger.json entries are never machine-verified"
+    - "capability_feature_compiler.py output is advisory — never consumed as authoritative by any gate"
+  verdict: SEPARATE_PROJECT_REQUIRED  # Do not build capability oracle while product oracle is defective
+
+# ───────────────────────────────────────────────────────────────────────
+# ORACLE RELATIONSHIP DIAGRAM (text)
+# ───────────────────────────────────────────────────────────────────────
+oracle_relationships: |
+  SPECIFICATION (SAL facts — boundary C)
+    │
+    ▼ provides fact authority for
+  CAPABILITY (gap-ledger — boundary D, ABSENT)
+    │
+    ▼ provides feature claims for
+  PRODUCT ORACLE (execute_oracle.py — boundary B)
+    ▲
+    │ provides VERIFIED_INTEROPERABILITY evidence for fods/fodt
+  ACQUISITION ORACLE (run_fods_oracle.py — boundary A)
+
+  Key rule: Acquisition oracle proves "agrees with LibreOffice"
+            Product oracle proves "implements the spec"
+            These are different questions with different authorities.
