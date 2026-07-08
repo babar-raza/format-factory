@@ -110,6 +110,10 @@ class TestInstalledWorkflowWithInlineToml:
 # Wheel-level tests: TOML wheel installs and exposes core API
 # ---------------------------------------------------------------------------
 
+@pytest.mark.skipif(
+    not os.path.isfile(TOML_WHEEL),
+    reason=f"TOML wheel not found at {TOML_WHEEL} (build .local/ artifact, not in CI)"
+)
 class TestTomlWheelInstalledWorkflow:
     """GAP-TOML-FOSS-INSTALLED_WO-001: TOML wheel installs and exposes installed_workflow."""
 

@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 23 items
+
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t1_blocked_gap_ledger_has_four_entries PASSED [  4%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t2_all_ledger_entries_skill_invocation_false PASSED [  8%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t3_all_ledger_entries_have_correct_blocker_type PASSED [ 13%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t4_all_ledger_entries_future_decision_required PASSED [ 17%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t5_routing_matrix_all_blocked PASSED [ 21%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t6_actionable_candidates_not_empty PASSED [ 26%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t7_actionable_candidates_not_in_blocked_ledger PASSED [ 30%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t8_top_gap_table_four_entries_score_125 PASSED [ 34%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t9_architecture_decision_record_contains_decision PASSED [ 39%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t10_target_writer_matrix_all_missing PASSED [ 43%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t11_export_policy_blocked_classification_correct PASSED [ 47%]
+tests/supervisor/test_validate_dotnet_dogfood_architecture.py::test_t12_export_policy_no_blocked_gap_in_candidates PASSED [ 52%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_architecture_blocked_seed_has_all_four_gaps PASSED [ 56%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_gap_writer_source_has_all_four_mappings PASSED [ 60%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_writer_source_file_exists[commercial-net-fods-dogfood-status-fods-to-csv-dotnet-src/net/csv/CsvWriter.cs] PASSED [ 65%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_writer_source_file_exists[commercial-net-fods-dogfood-status-fods-to-html-dotnet-src/net/html/HtmlWriter.cs] PASSED [ 69%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_writer_source_file_exists[commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet-src/net/markdown/MarkdownWriter.cs] PASSED [ 73%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_writer_source_file_exists[commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet-src/net/txt/TxtWriter.cs] PASSED [ 78%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_detect_target_writer_status_returns_empty_when_all_present PASSED [ 82%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_blocked_gap_ids_at_import_is_empty PASSED [ 86%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_detect_target_writer_status_reblocks_when_writer_absent PASSED [ 91%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_detect_target_writer_status_all_blocked_when_no_writers PASSED [ 95%]
+tests/supervisor/test_target_writer_dynamic_unblock.py::test_detect_target_writer_status_empty_when_all_writers_present PASSED [100%]
+
+============================= 23 passed in 1.26s ==============================

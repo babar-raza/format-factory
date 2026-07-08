@@ -29,14 +29,14 @@ class TestFodgFileSizeBytes:
     def test_return_type(self):
         assert isinstance(fodg_file_size_bytes(_EMPTY), int)
 
-    def test_exact_1053_for_empty(self):
-        assert fodg_file_size_bytes(_EMPTY) == 1053
+    def test_exact_for_empty(self):
+        assert fodg_file_size_bytes(_EMPTY) == Path(_EMPTY).stat().st_size
 
-    def test_exact_1473_for_minimal(self):
-        assert fodg_file_size_bytes(_MINIMAL) == 1473
+    def test_exact_for_minimal(self):
+        assert fodg_file_size_bytes(_MINIMAL) == Path(_MINIMAL).stat().st_size
 
-    def test_exact_1628_for_shapes(self):
-        assert fodg_file_size_bytes(_SHAPES) == 1628
+    def test_exact_for_shapes(self):
+        assert fodg_file_size_bytes(_SHAPES) == Path(_SHAPES).stat().st_size
 
     def test_positive(self):
         assert fodg_file_size_bytes(_EMPTY) > 0

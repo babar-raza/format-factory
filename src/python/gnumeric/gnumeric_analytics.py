@@ -635,7 +635,8 @@ def gnumeric_max_cell_value_length(file_path: "str | bytes | Path") -> int:
     max_len = 0
     for sheet in model.get("sheets", []):
         for _key, cell in sheet.get("cell_grid", {}).items():
-            val = cell.get("value", "")
+            # cell_grid values are direct values (str/int/float), not dicts
+            val = cell.get("value", "") if isinstance(cell, dict) else cell
             if val is not None and len(str(val)) > max_len:
                 max_len = len(str(val))
     return max_len

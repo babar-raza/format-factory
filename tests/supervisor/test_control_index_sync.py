@@ -35,21 +35,30 @@ class TestFullSync:
     def test_full_sync_populates_all_entity_types(self, db_path):
         report = rebuild(db_path, _REPO)
         entity_types = {r.entity_type for r in report.results}
-        expected = {"format", "capability", "skill", "layer", "failure",
+        # Core entity types must be present (TC-BF-006 added invocation types as extras)
+        required = {"format", "capability", "skill", "layer", "failure",
                     "plan_lock", "source_violation", "gap", "qname", "sprint", "event"}
-        assert entity_types == expected
+        assert required.issubset(entity_types), (
+            f"Missing entity types: {required - entity_types}"
+        )
 
     def test_full_sync_row_counts(self, db_path):
         report = rebuild(db_path, _REPO)
         counts = {r.entity_type: r.inserted for r in report.results}
+        # Committed data (always present in CI)
         assert counts["format"] >= 20
         assert counts["capability"] >= 80
         assert counts["skill"] >= 70
         assert counts["gap"] >= 1000
         assert counts["qname"] >= 60
-        assert counts["failure"] >= 20
-        assert counts["plan_lock"] >= 50
-        assert counts["event"] >= 1000
+        # .local/ data (gitignored — only present in local dev environments)
+        _local_base = _REPO / ".local" / "supervisor"
+        if (_local_base / "failure-memory.json").exists():
+            assert counts["failure"] >= 20
+        if (_local_base / "plan-locks").exists():
+            assert counts["plan_lock"] >= 50
+        if (_local_base / "continuation-ledger.jsonl").exists():
+            assert counts["event"] >= 1000
 
     def test_sync_under_60_seconds(self, db_path):
         start = time.time()
@@ -236,8 +245,11 @@ class TestParity:
             conn.close()
 
     def test_failure_count_parity(self, db_path):
+        failure_path = _REPO / ".local/supervisor/failure-memory.json"
+        if not failure_path.exists():
+            pytest.skip(".local/supervisor/failure-memory.json not present (gitignored, CI skip)")
         rebuild(db_path, _REPO)
-        data = json.loads((_REPO / ".local/supervisor/failure-memory.json").read_text())
+        data = json.loads(failure_path.read_text())
         direct_count = len([f for f in data["failures"] if f.get("id")])
         conn = get_connection(db_path)
         try:

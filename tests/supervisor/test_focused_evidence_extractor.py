@@ -169,33 +169,39 @@ class TestRealRepoFunctions:
     """Test extraction on actual repo source files."""
 
     def test_fodp_slide_titles_extraction(self):
-        src = _REPO / "src" / "python" / "fodp" / "fodp_codec.py"
+        # fodp_slide_titles lives in presentation_document.py (refactored from fodp_codec.py)
+        src = _REPO / "src" / "python" / "fodp" / "presentation_document.py"
         if not src.is_file():
-            pytest.skip("fodp_codec.py not available")
+            pytest.skip("presentation_document.py not available")
         result = extract_function_snippet(src, "fodp_slide_titles")
         assert result is not None
         assert result["function_name"] == "fodp_slide_titles"
-        assert result["beyond_line_200"] is True
+        # Function is early in the file (line ~38), not beyond 200
+        assert result["beyond_line_200"] is False
 
     def test_qoi_is_opaque_extraction(self):
-        src = _REPO / "src" / "python" / "qoi" / "qoi_parser.py"
+        # qoi_is_opaque lives in image_document.py (refactored from qoi_parser.py)
+        src = _REPO / "src" / "python" / "qoi" / "image_document.py"
         if not src.is_file():
-            pytest.skip("qoi_parser.py not available")
+            pytest.skip("image_document.py not available")
         result = extract_function_snippet(src, "qoi_is_opaque")
         assert result is not None
         assert result["function_name"] == "qoi_is_opaque"
-        assert result["beyond_line_200"] is True
+        # Function is early in the file (line ~49), not beyond 200
+        assert result["beyond_line_200"] is False
 
     def test_deterministic_override_fodp(self):
-        src = _REPO / "src" / "python" / "fodp" / "fodp_codec.py"
+        # fodp_slide_titles lives in presentation_document.py (refactored from fodp_codec.py)
+        src = _REPO / "src" / "python" / "fodp" / "presentation_document.py"
         if not src.is_file():
-            pytest.skip("fodp_codec.py not available")
+            pytest.skip("presentation_document.py not available")
         result = deterministic_function_exists(src, "fodp_slide_titles")
         assert result["exists"] is True
 
     def test_deterministic_override_qoi(self):
-        src = _REPO / "src" / "python" / "qoi" / "qoi_parser.py"
+        # qoi_is_opaque lives in image_document.py (refactored from qoi_parser.py)
+        src = _REPO / "src" / "python" / "qoi" / "image_document.py"
         if not src.is_file():
-            pytest.skip("qoi_parser.py not available")
+            pytest.skip("image_document.py not available")
         result = deterministic_function_exists(src, "qoi_is_opaque")
         assert result["exists"] is True

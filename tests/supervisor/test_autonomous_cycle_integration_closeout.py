@@ -12,6 +12,7 @@ import pytest
 
 _REPO = Path(__file__).resolve().parents[2]
 _CYCLE_PATH = _REPO / "tools" / "supervisor" / "autonomous_cycle.py"
+_CYCLE_EXT_PATH = _REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py"
 
 
 class TestCloseoutWatchdogIntegration:
@@ -21,6 +22,8 @@ class TestCloseoutWatchdogIntegration:
     def _load_source(self):
         self.source = _CYCLE_PATH.read_text(encoding="utf-8")
         self.tree = ast.parse(self.source)
+        # Extensions file (TC-SGOV-008: anti-skip logic extracted here)
+        self.ext_source = _CYCLE_EXT_PATH.read_text(encoding="utf-8") if _CYCLE_EXT_PATH.exists() else ""
 
     def test_syntax_valid(self):
         """autonomous_cycle.py parses without syntax errors."""
@@ -52,12 +55,19 @@ class TestCloseoutWatchdogIntegration:
         assert 'review["watchdog_verdict"]' in self.source
 
     def test_declared_scope_passed_to_anti_skip(self):
-        """run_all_checks is called with declared_scope parameter."""
-        assert "declared_scope=_declared_item_types" in self.source
+        """run_all_checks is called with declared_scope parameter.
+
+        TC-SGOV-008: anti-skip logic was extracted to autonomous_cycle_extensions.py.
+        The declared_scope=_declared_item_types call now lives there.
+        """
+        # Check the extensions file where anti-skip logic lives post TC-SGOV-008
+        assert "declared_scope=_declared_item_types" in self.ext_source or \
+               "declared_scope=_declared_item_types" in self.source
 
     def test_declared_scope_reads_planned_work_items(self):
         """declared_scope is extracted from planned_work_items, not work_items."""
-        assert 'decl.get("planned_work_items", [])' in self.source
+        combined = self.source + self.ext_source
+        assert 'decl.get("planned_work_items", [])' in combined
 
     def test_closeout_gate_section_comment(self):
         """The integration section has the R-CLOSEOUT marker."""

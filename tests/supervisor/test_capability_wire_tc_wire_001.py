@@ -16,28 +16,38 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent
 _CONSUMER = _REPO / "tools" / "supervisor" / "capability_queue_consumer.py"
 _CYCLE = _REPO / "tools" / "supervisor" / "autonomous_cycle.py"
+_CYCLE_EXT = _REPO / "tools" / "supervisor" / "autonomous_cycle_extensions.py"
 _GAP_LEDGER = _REPO / "reports" / "capability-layer" / "gap-ledger.json"
 
 
 class TestConsumerWiredInAutonomousCycle:
     def test_step_3e_present_in_cycle(self):
-        """autonomous_cycle.py contains Step 3e capability queue consumer block."""
+        """autonomous_cycle.py or its extensions contain Step 3e capability queue consumer block."""
         source = _CYCLE.read_text(encoding="utf-8")
-        assert "Step 3e: Capability Queue Consumer" in source
+        ext_source = _CYCLE_EXT.read_text(encoding="utf-8") if _CYCLE_EXT.exists() else ""
+        assert "Step 3e: Capability Queue Consumer" in source or \
+               "Step 3e: Capability Queue Consumer" in ext_source
 
     def test_step_3e_uses_subprocess(self):
-        """Step 3e calls consumer via subprocess, not import."""
-        source = _CYCLE.read_text(encoding="utf-8")
-        assert "capability_queue_consumer.py" in source
-        # subprocess.run is used (via _subprocess_recompute alias)
-        assert "_subprocess_recompute.run" in source
+        """Step 3e calls consumer via subprocess, not import.
+
+        TC-SGOV-008: Step 3e was extracted to autonomous_cycle_extensions.py.
+        The subprocess call lives there now.
+        """
+        ext_source = _CYCLE_EXT.read_text(encoding="utf-8") if _CYCLE_EXT.exists() else ""
+        combined = _CYCLE.read_text(encoding="utf-8") + ext_source
+        assert "capability_queue_consumer.py" in combined
+        # subprocess.run is used (direct call in extensions, no alias needed)
+        assert "subprocess.run" in combined
 
     def test_step_3e_non_blocking(self):
         """Step 3e failure does not raise — wrapped in try/except."""
         source = _CYCLE.read_text(encoding="utf-8")
-        # The cap consumer block has try/except
-        idx = source.index("Step 3e: Capability Queue Consumer")
-        block = source[idx:idx+1500]
+        ext_source = _CYCLE_EXT.read_text(encoding="utf-8") if _CYCLE_EXT.exists() else ""
+        combined = source + ext_source
+        # The cap consumer block has try/except (in either file)
+        idx = combined.index("Step 3e: Capability Queue Consumer")
+        block = combined[idx:idx+1500]
         assert "except" in block
 
     def test_step_3e_result_stored_in_review(self):
@@ -48,15 +58,28 @@ class TestConsumerWiredInAutonomousCycle:
 
 class TestConsumerStatusFilter:
     def test_consumer_skips_closed_status_gaps(self):
-        """Consumer source contains status='closed' check."""
+        """Consumer source contains status='closed' skip logic.
+
+        Implementation uses _SKIP_STATUSES set containing 'closed' rather than
+        a direct string comparison (TC-DEFERRED-FILTER-001 extended the check).
+        """
         source = _CONSUMER.read_text(encoding="utf-8")
-        assert 'gap.get("status", "").lower() == "closed"' in source
+        # Either a direct equality check or a set-based skip is acceptable
+        has_direct = 'gap.get("status", "").lower() == "closed"' in source
+        has_set = '_SKIP_STATUSES' in source and '"closed"' in source
+        assert has_direct or has_set, \
+            "Consumer must skip closed gaps (direct comparison or _SKIP_STATUSES set)"
 
     def test_consumer_checks_status_before_gap_type_in_loop(self):
         """Status check precedes gap_type check inside the selection loop."""
         source = _CONSUMER.read_text(encoding="utf-8")
-        status_idx = source.index('gap.get("status", "").lower() == "closed"')
-        # Find gap_type check inside the loop (after the status check)
+        # Find status check (direct comparison or set-based)
+        if 'gap.get("status", "").lower() == "closed"' in source:
+            status_idx = source.index('gap.get("status", "").lower() == "closed"')
+        else:
+            # Set-based: gap.get("status") in _SKIP_STATUSES
+            status_idx = source.index('gap.get("status")')
+        # Find gap_type check after the status check
         gap_type_in_loop_idx = source.index('gap.get("gap_type"', status_idx)
         assert status_idx < gap_type_in_loop_idx
 

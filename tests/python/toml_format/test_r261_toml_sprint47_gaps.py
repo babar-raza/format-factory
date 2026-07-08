@@ -41,8 +41,8 @@ class TestTomlFileSizeBytes:
     def test_return_type(self):
         assert isinstance(toml_file_size_bytes(_MINIMAL), int)
 
-    def test_exact_177_for_minimal(self):
-        assert toml_file_size_bytes(_MINIMAL) == 177
+    def test_exact_for_minimal(self):
+        assert toml_file_size_bytes(_MINIMAL) == Path(_MINIMAL).stat().st_size
 
     def test_positive(self):
         assert toml_file_size_bytes(_MINIMAL) > 0
