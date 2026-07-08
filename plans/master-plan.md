@@ -6301,11 +6301,13 @@ Executed all three plans of the Format Factory governance architecture program. 
 | TC-CQGA-020..031 | 12 Governance pilots all PASS (5 live tests, 4 live verifications, 3 documented) | CLOSED |
 | TC-CQGA-032 | Final audit report: all 35 completion counters recorded; 9 non-zero = documented design gaps | CLOSED |
 | TC-CQGA-033 | Runner exception policy: V91/V110/V111-V127 converted to named exceptions; skill-validator contract (@validator + skill_ids); validate_skill_contracts.py extended; 3 skill files updated | CLOSED |
+| TC-CQGA-FIX-001 | Fix V119/V120/V125/V126 ext4 context-level argument mismatch; V125 false-positive guard; expected_count 162→165; test + README updated | CLOSED |
 
 Acknowledged gaps: CQG-001 (pre-commit hooks inert), CQG-002 (scope-guard advisory), CQG-004 (detective-only bypass), CQG-009 (V103 WARN-only TODO), CQG-012 (19 formats lack per-file layout), CQG-013 (test-to-spec traceability not enforced).
 
-Validator count confirmed: 162 total (90 direct + 45 named-except + 4 advisory-silent + 27 contract-registry).
+Validator count confirmed: 165 total (135 explicit + 27 contract-registry + 3 ext4 context-level: V119/V120/V125).
 Deliverables committed: d8baa8db — reports/code-quality/code-quality-governance-audit-report-CQGA-001.md + reports/code-quality/code-quality-governance-ledger.yaml.
+TC-CQGA-FIX-001 committed: 31ea750a — governance_validator_runner.py (correct ext4 context-level calls), test (162→165), README (10 occurrences 162→165).
 Post-execution convergence verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED (2026-07-08).
 
 ### Arc (ARC-QNAME-001) — FORMAT_FACTORY_API_ARCHITECTURE_ENFORCED_AND_PRODUCTS_VERIFIED
@@ -6336,7 +6338,7 @@ Post-execution convergence verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOS
 
 - .NET CSV tests: **2555 passed, 0 failed**
 - Python TSV tests: **1252 passed, 0 failed**
-- Governance validators: **124 total; TestCanonicalValidatorCount PASS (185 tests, 1 formerly failing — now passing)**
+- Governance validators: **165 total (TC-CQGA-FIX-001); TestCanonicalValidatorCount PASS (1 passed in 99.63s)**
 - All 31 plan pilots: PASS (12 Blossom + 6 Arc + 3 Honey)
 - All 23 Arc completion counters: 0
 
