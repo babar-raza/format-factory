@@ -2060,3 +2060,24 @@ components:
   disposition: RETAIN
   tombstone_status: null
   notes: TC-BF-007 artifact; CI enforcement script for extension budget (autonomous_* etc naming patterns)
+- component_id: COMP-MOR-001
+  file: tools/supervisor/maintenance_obligation_register.py
+  loc: 416
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Maintenance Obligation Register — durable deferred-work tracking (feat/mor)
+- component_id: COMP-GOVREL-001
+  file: tools/supervisor/governance_validators_release.py
+  loc: 90
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Release-gate governance validators (PYREL G1-G5 checks)
+- component_id: COMP-CIDX-MOR-001
+  file: tools/supervisor/control_index/ingestors/maintenance_obligation_ingestor.py
+  loc: 97
+  classification: ESSENTIAL_INFRASTRUCTURE
+  disposition: RETAIN
+  tombstone_status: null
+  notes: Control-index ingestor for maintenance_obligations table
