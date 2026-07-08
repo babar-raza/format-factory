@@ -203,7 +203,7 @@ class TestEnfPilot005GovernanceDocPasses:
         decl = _load_fixture("enf-pilot-005-governance-doc-passes.yaml")
         summary = run_all_governance_validators(decl, REPO_ROOT)
         assert not _decl_scoped_blocks(summary), (
-            f"Expected no declaration-scoped blocks_sprint for governance-only sprint"
+            "Expected no declaration-scoped blocks_sprint for governance-only sprint"
         )
 
     def test_no_execution_method_required(self):
@@ -236,7 +236,7 @@ class TestEnfPilot006LegacyBackfillPasses:
         decl = _load_fixture("enf-pilot-006-legacy-backfill-passes.yaml")
         summary = run_all_governance_validators(decl, REPO_ROOT)
         assert not _decl_scoped_blocks(summary), (
-            f"Expected no declaration-scoped blocks_sprint for proper legacy backfill"
+            "Expected no declaration-scoped blocks_sprint for proper legacy backfill"
         )
 
     def test_manual_ungoverned_does_not_fire(self):
@@ -303,7 +303,7 @@ class TestEnfPilot008GovernedNotReplayedPasses:
         decl = _load_fixture("enf-pilot-008-governed-not-replayed-passes.yaml")
         summary = run_all_governance_validators(decl, REPO_ROOT)
         assert not _decl_scoped_blocks(summary), (
-            f"Expected no declaration-scoped blocks_sprint for honest governed claim"
+            "Expected no declaration-scoped blocks_sprint for honest governed claim"
         )
 
     def test_replay_recipe_validator_does_not_fail_for_governed_not_replayed(self):

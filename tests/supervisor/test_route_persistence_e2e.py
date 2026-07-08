@@ -19,6 +19,8 @@ import tempfile
 from pathlib import Path
 from unittest import mock
 
+import pytest
+
 
 _here = Path(__file__).resolve().parent
 _REPO = _here.parent.parent

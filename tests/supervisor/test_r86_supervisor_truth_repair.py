@@ -273,5 +273,5 @@ class TestD86SUP07ProductFactoryLanes:
         fixture_exists = (REPO_ROOT / ".supervisor" / "fixtures").exists()
         if fixture_exists:
             assert len(tasks) > 0, (
-                f"Expected tasks from gap fixture, got 0."
+                "Expected tasks from gap fixture, got 0."
             )
