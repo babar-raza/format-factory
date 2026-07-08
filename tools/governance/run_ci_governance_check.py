@@ -51,9 +51,17 @@ _CI_DECLARATION = {
 }
 
 result = run_all_governance_validators(_CI_DECLARATION)
+
+# Print FAIL details for CI debugging
+_fails = [v for v in result.get("validators", []) if v.get("result") == "FAIL"]
+for _f in _fails:
+    print(
+        f"  FAIL: {_f.get('validator', '?')} — {_f.get('summary', '')[:200]}"
+    )
+
 print(
     f"Governance validators: fail={result['fail_count']} "
     f"warn={result['warn_count']} pass={result['pass_count']} "
-    f"blocks={result['blocks_sprint']}"
+    f"blocks={result['blocks_sprint']} total={result.get('ran_count', '?')}"
 )
 sys.exit(1 if result["blocks_sprint"] else 0)
