@@ -1825,10 +1825,11 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 162, (
-            f"Expected 162 canonical validators, got {validator_count}. "
+        assert validator_count == 165, (
+            f"Expected 165 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(135 explicit + 27 from governance_validators_contract registry (TC-BF-005))"
+            "(135 explicit + 27 from governance_validators_contract registry (TC-BF-005) "
+            "+ 3 ext4 context-level: V119/V120/V125 (TC-CQGA-FIX-001))"
         )
 
 

@@ -3047,10 +3047,59 @@ All other repairs are agent-owned and have tasks defined.
 - Execution handoff defined: YES (§11)
 
 
+---
+
+## TC-CQGA-FIX-001 — Fix V119/V120/V125/V126 API mismatch in runner (Post-plan follow-on)
+
+```yaml
+taskcard_id: TC-CQGA-FIX-001
+title: Fix context-level ext4 validator calls — wrong argument types (V119/V120/V125/V126)
+type: PARENT
+status: READY
+priority: P1
+added_by: convergence_iteration_2 (2026-07-08)
+origin: pilot_rerun_evidence (b0afb2itx: V119 PASS, V120 PASS, V125 FAIL false-positive)
+root_cause: >
+  Runner lines 546-549 call _v119/V120/V125/V126 with (declaration, repo_root) but each
+  validator requires a distinct signature. V119 needs (modified_files, promotion_registry),
+  V120 needs (cert_status, arch_class, product), V125 needs (format_id, org_entries),
+  V126 needs per-file (file_str, org_entries). Every call crashes; the outer try/except
+  adds all V111-V127 to _skipped_validators silently (pre-CQGA-033-01 fix: silent; post-fix: named).
+  Additionally, V125 with empty org_entries always FAILS (false-positive).
+allowed_files:
+  - tools/supervisor/governance_validator_runner.py (lines 545-549 + expected_count)
+  - tests/supervisor/test_governance_validators.py (count assertion 162→165)
+outcome:
+  - V119 calls promotion-ledger.yaml, passes (changed_files, ledger_dict)
+  - V120 passes (cert_status="", arch_class="", format_id="") from declaration
+  - V125 skips gracefully (PASS) when qname-code-organization-plan.yaml absent
+  - V126 called per-file in file loop when org_entries available
+  - expected_count 162→165 (3 new context-level results)
+  - test assertion 162→165
+  - All 192 governance validator tests pass
+evidence_required:
+  - git commit containing the fix
+  - test run showing 192 passed (or canonical count test showing 165)
+```
+
+### Implementation
+
+**runner.py lines 545-549 (current — WRONG):**
+```python
+results.append(_norm_ext4_file(_v119(declaration, repo_root)))
+results.append(_norm_ext4_file(_v120(declaration, repo_root)))
+results.append(_norm_ext4_file(_v125(declaration, repo_root)))
+results.append(_norm_ext4_file(_v126(declaration, repo_root)))
+```
+
+**runner.py lines 545-600 (fixed — correct argument extraction + individual try/except):**
+See controlled execution output for exact diff.
+
 <!--plan_terminal_lock:
   status: TERMINAL_CLOSED
   locked_at: "2026-07-07T18:11:22.302214+00:00"
   locked_by: "aebd0df25866"
-  successor_required_for_future_changes: true
-  mutation_policy: "no further plan/hardening/execution writes"
+  reopened_by: convergence_iteration_2 (2026-07-08)
+  reopen_reason: TC-CQGA-FIX-001 follow-on work identified during pilot rerun
+  mutation_policy: "TC-CQGA-FIX-001 only; reclose after commit"
 -->

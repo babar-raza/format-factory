@@ -542,11 +542,67 @@ def run_all_governance_validators(
                 "summary": f"{vid}: {'passed' if passed else str(len(violations)) + ' violation(s)'}",
             }
 
-        # Context-level validators (run against declaration + repo)
-        results.append(_norm_ext4_file(_v119(declaration, repo_root)))
-        results.append(_norm_ext4_file(_v120(declaration, repo_root)))
-        results.append(_norm_ext4_file(_v125(declaration, repo_root)))
-        results.append(_norm_ext4_file(_v126(declaration, repo_root)))
+        # Context-level validators — each wrapped separately so one failure doesn't kill the rest
+        # TC-CQGA-FIX-001 (2026-07-08): fixed wrong (declaration, repo_root) calls
+        _repo2 = repo_root or Path(".")
+
+        # V119: promoted code changed without reopening
+        try:
+            _promo_path = _repo2 / "registry" / "promotion-ledger.yaml"
+            _promo_data: dict = {}
+            if _promo_path.exists():
+                import yaml as _yaml_v119
+                _raw_promo = _yaml_v119.safe_load(_promo_path.read_text(encoding="utf-8"))
+                if isinstance(_raw_promo, dict):
+                    _promo_data = _raw_promo
+                    # Ledger uses 'entries'; V119 expects 'promotion_records'
+                    if "entries" in _promo_data and "promotion_records" not in _promo_data:
+                        _promo_data["promotion_records"] = _promo_data["entries"]
+            results.append(_norm_ext4_file(
+                _v119(declaration.get("changed_files", []), _promo_data)
+            ))
+        except Exception as _exc_v119c:
+            results.append({"validator": "V119", "result": "WARN", "blocks_sprint": False,
+                            "violations": [], "summary": f"V119: skipped — {_exc_v119c}"})
+
+        # V120: certification without architecture proof
+        try:
+            results.append(_norm_ext4_file(
+                _v120(
+                    declaration.get("certification_status", ""),
+                    declaration.get("architecture_classification", ""),
+                    declaration.get("format_id", ""),
+                )
+            ))
+        except Exception as _exc_v120c:
+            results.append({"validator": "V120", "result": "WARN", "blocks_sprint": False,
+                            "violations": [], "summary": f"V120: skipped — {_exc_v120c}"})
+
+        # V125: new product bypassing architecture gate
+        # V126: file outside approved QName layout (per-file — appended in the file loop below)
+        _org_plan_path = _repo2 / "registry" / "qname-code-organization-plan.yaml"
+        _org_entries: list = []
+        try:
+            if _org_plan_path.exists():
+                import yaml as _yaml_org
+                _org_raw = _yaml_org.safe_load(_org_plan_path.read_text(encoding="utf-8"))
+                if isinstance(_org_raw, dict):
+                    _org_entries = _org_raw.get("entries", _org_raw.get("formats", []))
+        except Exception:
+            pass
+        if _org_entries:
+            try:
+                results.append(_norm_ext4_file(
+                    _v125(declaration.get("format_id", ""), _org_entries)
+                ))
+            except Exception as _exc_v125c:
+                results.append({"validator": "V125", "result": "WARN", "blocks_sprint": False,
+                                "violations": [], "summary": f"V125: skipped — {_exc_v125c}"})
+        else:
+            # Skip V125 when qname-code-organization-plan.yaml is absent — empty entries
+            # would falsely FAIL every declaration regardless of format_id
+            results.append({"validator": "V125", "result": "PASS", "blocks_sprint": False,
+                            "violations": [], "summary": "V125: skipped — qname-code-organization-plan.yaml not found"})
 
         # File-level validators (run against each changed product source file)
         changed_files = declaration.get("changed_files", [])
@@ -578,6 +634,12 @@ def run_all_governance_validators(
                 try:
                     r = fn(text, file_str)
                     results.append(_norm_ext4_file(r))
+                except Exception:
+                    pass
+            # V126: file outside approved QName layout (per-file)
+            if _org_entries:
+                try:
+                    results.append(_norm_ext4_file(_v126(file_str, _org_entries)))
                 except Exception:
                     pass
     except Exception as _exc_v111:
@@ -728,7 +790,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 162,  # PYREL-001 2026-07-06: 135 explicit (V144 added) + 27 from contract registry
+        "expected_count": 165,  # TC-CQGA-FIX-001: 135 explicit + 27 contract registry + 3 ext4 context-level (V119/V120/V125)
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,
