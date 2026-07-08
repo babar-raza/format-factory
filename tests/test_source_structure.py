@@ -256,6 +256,10 @@ class TestNoOrphanSourceFiles:
         "bitmap_image", "grayscale_image", "color_image", "image_document",
         "drawing_metrics", "compression_metrics", "xcf_image_metrics",
         "config_document",
+        # Analytics modules named after entity type (not format prefix)
+        "tabular_document_analytics", "text_document_analytics",
+        "drawing_document_analytics", "spreadsheet_document_analytics",
+        "word_document_analytics",
     }
     # D-group extraction target suffixes (format-prefixed domain module files)
     _DOMAIN_SUFFIXES = {

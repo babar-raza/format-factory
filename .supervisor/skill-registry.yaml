@@ -94,17 +94,19 @@ skills:
   - no_forbidden_module_target
   - no_forbidden_function_pattern
   - gap_ledger_ref_exists_and_open
-  notes: >
-    Replaces deprecated add-analytics-function for spec-backed domain analytics.
-    Arithmetic rotation patterns (_mod_N, _times_N) permanently forbidden.
-    SAL fact verification required at execution time.
-    Created TC-PGI-021 (2026-07-04, playful-giggling-island plan).
+  notes: 'Replaces deprecated add-analytics-function for spec-backed domain analytics.
+    Arithmetic rotation patterns (_mod_N, _times_N) permanently forbidden. SAL fact
+    verification required at execution time. Created TC-PGI-021 (2026-07-04, playful-giggling-island
+    plan).
+
+    '
   overflow_split_allowed: false
   product_track: foss_python
-  purpose: >
-    Add one spec-backed domain analytics function to a format's canonical domain module.
-    Enforces SAL fact verification and domain module placement.
-    Arithmetic rotation patterns permanently forbidden. Supersedes add-analytics-function.
+  purpose: 'Add one spec-backed domain analytics function to a format''s canonical
+    domain module. Enforces SAL fact verification and domain module placement. Arithmetic
+    rotation patterns permanently forbidden. Supersedes add-analytics-function.
+
+    '
   required_handoff_fields:
   - format_id
   - function_name
@@ -174,32 +176,37 @@ skills:
   spec_qname_required: true
   status: active
   test_paths: []
-  advisory_only: false  # PCG-018: Changed from true — pre_execution_requirements are now BINDING
+  advisory_only: false
   pre_execution_requirements:
   - name: qname_authority
-    description: >
-      Identify the ODF/format QName or spec fact that authorizes this API.
-      If no QName exists, the API may not be created.
+    description: 'Identify the ODF/format QName or spec fact that authorizes this
+      API. If no QName exists, the API may not be created.
+
+      '
     required: true
   - name: owning_type
-    description: >
-      Confirm the API belongs on the listed type (not root document if it is
-      a cell/row/column property).
+    description: 'Confirm the API belongs on the listed type (not root document if
+      it is a cell/row/column property).
+
+      '
     required: true
   - name: parser_connection
-    description: >
-      Identify where in the parser/XDocument the value is read.
-      The getter must read from XDocument via Attribute()/FodsStyleResolver.
+    description: 'Identify where in the parser/XDocument the value is read. The getter
+      must read from XDocument via Attribute()/FodsStyleResolver.
+
+      '
     required: true
   - name: writer_obligation
-    description: >
-      If the API mutates state, identify how the mutation reaches XML.
+    description: 'If the API mutates state, identify how the mutation reaches XML.
       Setter must call SetAttributeValue/FodsStyleEditor.
+
+      '
     required: true
   - name: roundtrip_test
-    description: >
-      A Type 4 test (Set -> ToFodsXml -> LoadFromXml -> Get -> Assert)
+    description: 'A Type 4 test (Set -> ToFodsXml -> LoadFromXml -> Get -> Assert)
       must be planned before the setter task closes.
+
+      '
     required: true
   forbidden_patterns:
   - implementing a method that returns a constant (0, false, empty) as sole body
@@ -207,14 +214,14 @@ skills:
   - adding a public API whose only consumer is a test
   - using TODO implement later as sole method body
   pre_execution_checklist:
-    # TC-ARC-011: QName authority checklist — all fields required before execution
     spec_fact_ids:
       required: true
       description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
       reject_if_missing: true
     qname:
       required: true
-      description: Target QName (e.g. table:table-cell); must exist in fods-qname-hierarchy.yaml or equivalent
+      description: Target QName (e.g. table:table-cell); must exist in fods-qname-hierarchy.yaml
+        or equivalent
       reject_if_missing: true
     canonical_owning_type:
       required: true
@@ -224,9 +231,15 @@ skills:
       description: Target folder per qname-code-organization-plan.yaml (e.g. src/net/fods/Model/Table/)
     target_file:
       required: true
-      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc,
+        Helpers, or Extra
       reject_if_missing: true
-      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+      reject_if_prohibited_filename:
+      - MissingMethods
+      - ExtendedApis
+      - Misc
+      - Helpers
+      - Extra
     parser_obligation:
       required: true
       description: What the parser reads to populate this API value
@@ -237,12 +250,13 @@ skills:
       reject_if_missing: true
     public_owning_type:
       required: true
-      description: Aspose-style collection/facade type from fods-aspose-api-design.yaml (e.g. FodsCell)
+      description: Aspose-style collection/facade type from fods-aspose-api-design.yaml
+        (e.g. FodsCell)
     roundtrip_obligation:
       required: true
-      description: Round-trip test requirement (parse → mutate → write → reload → assert)
+      description: Round-trip test requirement (parse → mutate → write → reload →
+        assert)
   traceability_required:
-    # TC-ARC-017: Full traceability chain required for every add-dotnet-api invocation
     spec_fact_ids:
       required: true
       description: Non-empty list — links to SAL-verified specification fact
@@ -285,7 +299,8 @@ skills:
       reject_if_missing: true
     qname:
       required: true
-      description: Target QName; must exist in qname-code-organization-plan.yaml or format QName hierarchy
+      description: Target QName; must exist in qname-code-organization-plan.yaml or
+        format QName hierarchy
       reject_if_missing: true
     canonical_owning_type:
       required: true
@@ -295,9 +310,15 @@ skills:
       description: Target folder per qname-code-organization-plan.yaml
     target_file:
       required: true
-      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc,
+        Helpers, or Extra
       reject_if_missing: true
-      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+      reject_if_prohibited_filename:
+      - MissingMethods
+      - ExtendedApis
+      - Misc
+      - Helpers
+      - Extra
     parser_obligation:
       required: true
       description: What the parser reads to populate this feature value
@@ -386,9 +407,15 @@ skills:
       description: Target folder per qname-code-organization-plan.yaml (e.g. src/python/fods/spec/table/)
     target_file:
       required: true
-      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc,
+        Helpers, or Extra
       reject_if_missing: true
-      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+      reject_if_prohibited_filename:
+      - MissingMethods
+      - ExtendedApis
+      - Misc
+      - Helpers
+      - Extra
     parser_obligation:
       required: true
       description: What the parser reads to populate this API value
@@ -402,7 +429,8 @@ skills:
       description: Aspose-style collection/facade type from fods-aspose-api-design.yaml
     roundtrip_obligation:
       required: true
-      description: Round-trip test requirement (parse → mutate → write → reload → assert)
+      description: Round-trip test requirement (parse → mutate → write → reload →
+        assert)
   traceability_required:
     spec_fact_ids:
       required: true
@@ -458,9 +486,15 @@ skills:
       description: Target folder per qname-code-organization-plan.yaml
     target_file:
       required: true
-      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc, Helpers, or Extra
+      description: Target filename — must NOT be MissingMethods, ExtendedApis, Misc,
+        Helpers, or Extra
       reject_if_missing: true
-      reject_if_prohibited_filename: [MissingMethods, ExtendedApis, Misc, Helpers, Extra]
+      reject_if_prohibited_filename:
+      - MissingMethods
+      - ExtendedApis
+      - Misc
+      - Helpers
+      - Extra
     parser_obligation:
       required: true
       description: What the parser reads to populate this feature value
@@ -1166,7 +1200,8 @@ skills:
   - v138_pass
   product_track: packaging
   purpose: Audit and repair Python editable-install environment for all 20 FOSS packages;
-    detect stale module dirs, remove them, create PTH files, capture consumer proof evidence.
+    detect stale module dirs, remove them, create PTH files, capture consumer proof
+    evidence.
   required_handoff_fields:
   - none_self_contained_skill
   skill_id: sync-installed-packages
@@ -1784,6 +1819,7 @@ skills:
   mandatory_validations:
   - root_tools_report_produced
   - no_product_source_mutation
+  idempotency: idempotent
 - advisory_only: false
   command_file: .claude/commands/build-obligation-register.md
   created_at: '2026-06-25'
@@ -1806,6 +1842,7 @@ skills:
   mandatory_validations:
   - obligation_register_produced
   - no_product_source_mutation
+  idempotency: create_or_update
 - advisory_only: false
   command_file: .claude/commands/create-consumer-roundtrip.md
   created_at: '2026-06-25'
@@ -1828,6 +1865,7 @@ skills:
   mandatory_validations:
   - roundtrip_test_created
   - focused_tests_pass
+  idempotency: create_or_update
 - advisory_only: false
   command_file: .claude/commands/verify-obligation-entry.md
   created_at: '2026-06-25'
@@ -1847,6 +1885,7 @@ skills:
   mandatory_validations:
   - obligation_verified
   - no_product_source_mutation
+  idempotency: idempotent
 - advisory_only: false
   command_file: .claude/commands/portfolio-reconcile.md
   created_at: '2026-06-25'
@@ -1867,6 +1906,7 @@ skills:
   mandatory_validations:
   - portfolio_report_produced
   - no_product_source_mutation
+  idempotency: idempotent
 - advisory_only: false
   command_file: .claude/commands/update-obligation-entry.md
   created_at: '2026-06-25'
@@ -1887,6 +1927,7 @@ skills:
   mandatory_validations:
   - obligation_updated
   - no_product_source_mutation
+  idempotency: state_mutating
 - advisory_only: false
   command_file: .claude/commands/check-source-loc.md
   created_at: '2026-06-25'
@@ -1907,6 +1948,7 @@ skills:
   mandatory_validations:
   - loc_check_report_produced
   - no_product_source_mutation
+  idempotency: idempotent
 - command: /ingest-spec-sal
   command_file: .claude/commands/ingest-spec-sal.md
   idempotency: create_or_update
@@ -1937,7 +1979,7 @@ skills:
   test_paths: []
 - command: /run-oracle
   command_file: .claude/commands/run-oracle.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/oracle/execute_oracle.py
   - oracle/formats/
@@ -1962,7 +2004,7 @@ skills:
   test_paths: []
 - command: /identify-primary-layer
   command_file: .claude/commands/identify-primary-layer.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/index.yaml
   mandatory_validations:
@@ -2085,7 +2127,7 @@ skills:
   test_paths: []
 - command: /append-layer-work-log
   command_file: .claude/commands/append-layer-work-log.md
-  idempotency: append_only
+  idempotency: state_mutating
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2109,7 +2151,7 @@ skills:
   test_paths: []
 - command: /append-layer-verification-log
   command_file: .claude/commands/append-layer-verification-log.md
-  idempotency: append_only
+  idempotency: state_mutating
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2207,7 +2249,7 @@ skills:
   test_paths: []
 - command: /reconcile-layer-index
   command_file: .claude/commands/reconcile-layer-index.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/index.yaml
   - plans/layers/
@@ -2227,7 +2269,7 @@ skills:
   test_paths: []
 - command: /inventory-permanent-layer-plans
   command_file: .claude/commands/inventory-permanent-layer-plans.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2268,7 +2310,7 @@ skills:
   test_paths: []
 - command: /detect-unlogged-work
   command_file: .claude/commands/detect-unlogged-work.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2289,7 +2331,7 @@ skills:
   test_paths: []
 - command: /detect-stale-layer-state
   command_file: .claude/commands/detect-stale-layer-state.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2334,7 +2376,7 @@ skills:
   test_paths: []
 - command: /select-next-layer-task
   command_file: .claude/commands/select-next-layer-task.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/index.yaml
   - plans/layers/task-register.yaml
@@ -2355,7 +2397,7 @@ skills:
   test_paths: []
 - command: /validate-permanent-layer-plans
   command_file: .claude/commands/validate-permanent-layer-plans.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/
   mandatory_validations:
@@ -2374,7 +2416,7 @@ skills:
   test_paths: []
 - command: /reconcile-layer-task-register
   command_file: .claude/commands/reconcile-layer-task-register.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - plans/layers/task-register.yaml
   - plans/layers/
@@ -2394,7 +2436,7 @@ skills:
   test_paths: []
 - command: /capability-status
   command_file: .claude/commands/capability-status.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths: []
   mandatory_validations:
   - capability_status_report_produced
@@ -2429,7 +2471,7 @@ skills:
   test_paths: []
 - command: /validate-capability-parity
   command_file: .claude/commands/validate-capability-parity.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/capability_sync/validate_parity.py
   mandatory_validations:
@@ -2520,7 +2562,7 @@ skills:
 - command: /certification-inventory-extractor
   command_file: .claude/commands/certification-inventory-extractor.md
   created_at: '2026-07-01'
-  idempotency: deterministic
+  idempotency: idempotent
   implementation_paths:
   - tools/certification/inventory_extractor.py
   mandatory_validations:
@@ -2542,7 +2584,7 @@ skills:
 - command: /certification-stub-detector
   command_file: .claude/commands/certification-stub-detector.md
   created_at: '2026-07-01'
-  idempotency: deterministic
+  idempotency: idempotent
   implementation_paths:
   - tools/certification/stub_detector.py
   mandatory_validations:
@@ -2564,7 +2606,7 @@ skills:
 - command: /certification-exception-checker
   command_file: .claude/commands/certification-exception-checker.md
   created_at: '2026-07-01'
-  idempotency: deterministic
+  idempotency: idempotent
   implementation_paths:
   - tools/certification/exception_coverage_checker.py
   mandatory_validations:
@@ -2586,7 +2628,7 @@ skills:
 - command: /certification-assertion-scorer
   command_file: .claude/commands/certification-assertion-scorer.md
   created_at: '2026-07-01'
-  idempotency: deterministic
+  idempotency: idempotent
   implementation_paths:
   - tools/certification/assertion_quality_scorer.py
   mandatory_validations:
@@ -2608,7 +2650,7 @@ skills:
 - command: /certification-dotnet-assertion-scorer
   command_file: .claude/commands/certification-dotnet-assertion-scorer.md
   created_at: '2026-07-01'
-  idempotency: deterministic
+  idempotency: idempotent
   implementation_paths:
   - tools/certification/dotnet_assertion_scorer.py
   mandatory_validations:
@@ -2629,7 +2671,7 @@ skills:
 - command: /certification-generate-exception-tests
   command_file: .claude/commands/certification-generate-exception-tests.md
   created_at: '2026-07-01'
-  idempotency: non_deterministic
+  idempotency: create_or_update
   implementation_paths:
   - tools/certification/generate_exception_tests.py
   mandatory_validations:
@@ -2649,7 +2691,7 @@ skills:
 - command: /certification-fix-weak-assertions
   command_file: .claude/commands/certification-fix-weak-assertions.md
   created_at: '2026-07-01'
-  idempotency: non_deterministic
+  idempotency: state_mutating
   implementation_paths:
   - tools/certification/fix_weak_assertions.py
   mandatory_validations:
@@ -2669,7 +2711,7 @@ skills:
 - command: /certification-generate-security-tests
   command_file: .claude/commands/certification-generate-security-tests.md
   created_at: '2026-07-01'
-  idempotency: non_deterministic
+  idempotency: create_or_update
   implementation_paths:
   - tools/certification/generate_security_tests.py
   mandatory_validations:
@@ -2689,7 +2731,7 @@ skills:
 - command: /select-deepening-lane
   command_file: .claude/commands/select-deepening-lane.md
   created_at: '2026-06-28'
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/supervisor/lane_selector.py
   mandatory_validations:
@@ -2708,7 +2750,7 @@ skills:
 - command: /inventory-format-dom
   command_file: .claude/commands/inventory-format-dom.md
   created_at: '2026-06-28'
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/supervisor/dom_baseline_scanner.py
   mandatory_validations:
@@ -2729,7 +2771,7 @@ skills:
 - command: /check-dom-contract
   command_file: .claude/commands/check-dom-contract.md
   created_at: '2026-06-28'
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/supervisor/dom_contract_checker.py
   mandatory_validations:
@@ -2749,7 +2791,7 @@ skills:
   version: '1.0'
 - command: /query-control-index
   command_file: .claude/commands/query-control-index.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/supervisor/control_index/__main__.py
   - tools/supervisor/control_index/query.py
@@ -2773,7 +2815,7 @@ skills:
   - query_results_produced
 - command: /validate-playbook
   command_file: .claude/commands/validate-playbook.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/playbook/validate_playbook.py
   mandatory_validations:
@@ -2792,7 +2834,7 @@ skills:
   - tests/playbook/test_playbook_schema.py
 - command: /replay-acquisition-playbook
   command_file: .claude/commands/replay-acquisition-playbook.md
-  idempotency: read_only
+  idempotency: state_mutating
   implementation_paths:
   - tools/playbook/replay_acquisition_playbook.py
   mandatory_validations:
@@ -2815,7 +2857,7 @@ skills:
   - tests/playbook/test_replay_dry_run.py
 - command: /export-review-queue
   command_file: .claude/commands/export-review-queue.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/playbook/export_review_queue.py
   mandatory_validations:
@@ -2834,7 +2876,7 @@ skills:
   - tests/playbook/test_review_queue_export.py
 - command: /diff-playbook-outputs
   command_file: .claude/commands/diff-playbook-outputs.md
-  idempotency: read_only
+  idempotency: idempotent
   implementation_paths:
   - tools/playbook/diff_playbook_outputs.py
   mandatory_validations:
@@ -2863,6 +2905,7 @@ skills:
   - min_7_tests_per_function
   - no_new_external_imports
   - init_all_export_updated
+  - product_code_ledger_validator
   notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
     an acquisition playbook). Proven from R119-R122 sprints.
   product_track: foss_python
@@ -2891,6 +2934,7 @@ skills:
   - min_7_tests
   - no_new_external_imports
   - probe_never_raises
+  - product_code_ledger_validator
   notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
     an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions.
   product_track: foss_python
@@ -2919,6 +2963,7 @@ skills:
   - min_9_tests_per_function
   - no_new_external_imports
   - init_all_export_updated
+  - product_code_ledger_validator
   notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
     an acquisition playbook). General template for any bounded source change.
   product_track: foss_python
@@ -2964,7 +3009,8 @@ skills:
   status: active
   product_track: machinery_governance
   spec_qname_required: false
-  purpose: "Governed found-issue capture, classification, root-cause, healing, and closure workflow"
+  purpose: Governed found-issue capture, classification, root-cause, healing, and
+    closure workflow
   triggers:
   - discovered failing test
   - broken fixture
@@ -2991,10 +3037,11 @@ skills:
   - root_cause_identified
   - healing_verified
   anti_patterns:
-  - "'pre-existing' as sole disposition"
-  - "'unrelated to my change'"
-  - "no taskcard for discovered issue"
-  - "test deleted without behavior analysis"
+  - '''pre-existing'' as sole disposition'
+  - '''unrelated to my change'''
+  - no taskcard for discovered issue
+  - test deleted without behavior analysis
+  idempotency: create_or_update
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

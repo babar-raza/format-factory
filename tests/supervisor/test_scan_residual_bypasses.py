@@ -19,13 +19,15 @@ def test_get_src_mutations_returns_dict():
 
 def test_load_governed_commits_empty_dir_returns_empty_set(tmp_path):
     result = load_governed_commits(tmp_path)
-    assert result == set()
+    # Function returns (sha_set, path_set) tuple
+    assert result == (set(), set())
 
 
 def test_load_governed_commits_missing_dir_returns_empty_set(tmp_path):
     nonexistent = tmp_path / "transcripts_xyz"
     result = load_governed_commits(nonexistent)
-    assert result == set()
+    # Function returns (sha_set, path_set) tuple
+    assert result == (set(), set())
 
 
 def test_main_produces_output(tmp_path):

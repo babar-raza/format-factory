@@ -1,8 +1,9 @@
 """
 test_v50_analytics_bucket_forbidden.py — Tests for V50 MODULE-NAME-001 extension.
 
-Validates that *_analytics.py, *_analytics_extra.py, *_extra.py, *_misc.py,
-and bare analytics.py are all blocked by V50.
+Validates that *_analytics_extra.py, *_extra.py, *_misc.py, and bare analytics.py
+are all blocked by V50. Note: *_analytics.py is ALLOWED (canonical Analytics Layer
+name per production-library-standard-v2.md; corrected 2026-06-25 PROD-GOVERNANCE-001).
 
 Sprint: zesty-conjuring-peacock (2026-06-23)
 """
@@ -26,22 +27,34 @@ class TestV50AnalyticsBucketForbidden:
     def _make_declaration(self, changed_files: list[str]) -> dict:
         return {"changed_files": changed_files, "planned_work_items": []}
 
-    def test_format_prefixed_analytics_blocks_when_exists(self, tmp_path):
-        """Sprint modifying abw_analytics.py while it exists -> FAIL."""
+    def test_format_prefixed_analytics_allowed_when_exists(self, tmp_path):
+        """Sprint modifying abw_analytics.py (canonical name) -> PASS (V50 corrected 2026-06-25)."""
         repo = tmp_path / "repo"
         (repo / "src" / "python" / "abw").mkdir(parents=True)
         (repo / "src" / "python" / "abw" / "abw_analytics.py").write_text("x = 1\n")
         decl = self._make_declaration(["src/python/abw/abw_analytics.py"])
+        result = validate_forbidden_module_names(decl, repo_root=repo)
+        assert result["result"] == "PASS", (
+            "*_analytics.py is canonical — V50 must not block it"
+        )
+        assert result["blocks_sprint"] is False
+
+    def test_analytics_extra_blocks_when_exists(self, tmp_path):
+        """Sprint modifying abw_analytics_extra.py (overflow bucket) -> FAIL."""
+        repo = tmp_path / "repo"
+        (repo / "src" / "python" / "abw").mkdir(parents=True)
+        (repo / "src" / "python" / "abw" / "abw_analytics_extra.py").write_text("x = 1\n")
+        decl = self._make_declaration(["src/python/abw/abw_analytics_extra.py"])
         result = validate_forbidden_module_names(decl, repo_root=repo)
         assert result["result"] == "FAIL"
         assert result["blocks_sprint"] is True
         assert len(result["items"]) == 1
 
     def test_format_prefixed_analytics_passes_when_deleted(self, tmp_path):
-        """Sprint deleting abw_analytics.py (file gone) -> PASS."""
+        """Sprint deleting abw_analytics.py (file gone) -> PASS (no file to block)."""
         repo = tmp_path / "repo"
         (repo / "src" / "python" / "abw").mkdir(parents=True)
-        # File does NOT exist on disk (was deleted)
+        # File does NOT exist on disk (was deleted) — PASS regardless
         decl = self._make_declaration(["src/python/abw/abw_analytics.py"])
         result = validate_forbidden_module_names(decl, repo_root=repo)
         assert result["result"] == "PASS"

@@ -59,28 +59,34 @@ class TestCheckGuard001:
         assert result["violation"] is False
 
     def test_product_source_with_gap_ref_passes(self):
+        # AND logic (2026-06-25): requires BOTH gap_ledger_ref AND spec_fact_refs
         item = {
             "item_type": "PRODUCT_SOURCE",
             "item_id": "TC-SRC-001",
             "gap_ledger_ref": "GAP-FODT-001",
+            "spec_fact_refs": ["FACT-FODT-001"],
         }
         result = check_guard_001(item)
         assert result["exempt"] is False
         assert result["violation"] is False
 
     def test_product_source_with_capability_ref_passes(self):
+        # AND logic: requires capability_ref AND spec_fact_refs (or exception_classification)
         item = {
             "item_type": "PRODUCT_SOURCE",
             "item_id": "TC-SRC-002",
             "capability_ref": "FODT-LOAD-001",
+            "spec_fact_refs": ["FACT-FODT-001"],
         }
         result = check_guard_001(item)
         assert result["violation"] is False
 
     def test_product_source_with_spec_fact_refs_passes(self):
+        # AND logic: spec_fact_refs alone is NOT sufficient; also needs gap_ledger_ref
         item = {
             "item_type": "PRODUCT_SOURCE",
             "item_id": "TC-SRC-003",
+            "gap_ledger_ref": "GAP-FODT-001",
             "spec_fact_refs": ["FACT-FODT-001"],
         }
         result = check_guard_001(item)
@@ -121,8 +127,10 @@ class TestCheckGuard001All:
         assert check_guard_001_all(items) == []
 
     def test_product_source_with_refs_passes(self):
+        # AND logic: needs both gap_ledger_ref AND spec_fact_refs
         items = [
-            {"item_type": "PRODUCT_SOURCE", "item_id": "PS-OK", "gap_ledger_ref": "GAP-001"},
+            {"item_type": "PRODUCT_SOURCE", "item_id": "PS-OK", "gap_ledger_ref": "GAP-001",
+             "spec_fact_refs": ["FACT-001"]},
         ]
         assert check_guard_001_all(items) == []
 
@@ -133,9 +141,11 @@ class TestCheckGuard001All:
         assert check_guard_001_all(items) == ["PS-BAD"]
 
     def test_mixed_items_only_violations_returned(self):
+        # AND logic: PS-OK needs both gap_ledger_ref AND spec_fact_refs
         items = [
             {"item_type": "GOVERNANCE_ASSET", "item_id": "GOV-OK"},
-            {"item_type": "PRODUCT_SOURCE", "item_id": "PS-OK", "gap_ledger_ref": "GAP-001"},
+            {"item_type": "PRODUCT_SOURCE", "item_id": "PS-OK",
+             "gap_ledger_ref": "GAP-001", "spec_fact_refs": ["FACT-001"]},
             {"item_type": "PRODUCT_SOURCE", "item_id": "PS-BAD"},
             {"item_type": "PRODUCT_TEST", "item_id": "PT-BAD"},
         ]
