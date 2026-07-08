@@ -715,3 +715,80 @@ def validate_compat_facade_behavioral(
             "real method implementations — likely architecture marker only"
         )
     return _result("V129", "compat_facade_behavioral", not violations, violations)
+
+
+# ── V145 ──────────────────────────────────────────────────────────────────────
+
+
+def validate_maintenance_obligations_current(
+    declaration: dict,
+    repo_root: "Path | None" = None,
+) -> dict:
+    """V145: Warn when open MOR obligations are past their scheduled_date.
+
+    Verdict: WARNING (never GOV_BLOCK) — overdue maintenance does not block sprint work
+    but must be visible so authors cannot silently ignore scheduled tasks.
+    blocks_sprint: False.
+
+    MOR path: reports/supervisor/maintenance-obligations.json
+    Non-blocking: returns PASS when MOR is absent or import fails.
+    """
+    from pathlib import Path as _Path
+    from datetime import date as _date
+
+    _repo = _Path(repo_root) if repo_root is not None else _Path(__file__).resolve().parent.parent.parent
+    mor_path = _repo / "reports" / "supervisor" / "maintenance-obligations.json"
+
+    if not mor_path.exists():
+        return {
+            "validator": "validate_maintenance_obligations_current",
+            "result": "PASS",
+            "detail": "MOR absent — no obligations to check",
+            "blocks_sprint": False,
+        }
+
+    try:
+        import json as _json
+        mor = _json.loads(mor_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return {
+            "validator": "validate_maintenance_obligations_current",
+            "result": "PASS",
+            "detail": f"MOR unreadable (skip): {exc}",
+            "blocks_sprint": False,
+        }
+
+    today = _date.today()
+    overdue: list[str] = []
+    for o in mor.get("obligations", []):
+        if o.get("status") != "open":
+            continue
+        sched = o.get("scheduled_date")
+        if sched is None:
+            continue
+        try:
+            d = _date.fromisoformat(str(sched))
+            if d < today:
+                overdue.append(
+                    f"[V145] Obligation {o['obligation_id']!r} is overdue "
+                    f"(scheduled {sched}, today {today}): {o.get('action', '')[:60]}"
+                )
+        except ValueError:
+            pass  # Unparseable date — skip
+
+    if not overdue:
+        return {
+            "validator": "validate_maintenance_obligations_current",
+            "result": "PASS",
+            "detail": "All open obligations are within schedule",
+            "blocks_sprint": False,
+        }
+
+    # WARN only — overdue maintenance is advisory, never a sprint blocker.
+    return {
+        "validator": "validate_maintenance_obligations_current",
+        "result": "WARN",
+        "detail": f"{len(overdue)} overdue obligation(s)",
+        "violations": overdue,
+        "blocks_sprint": False,
+    }

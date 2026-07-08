@@ -1,0 +1,81 @@
+AUTHORITY BOUNDARY TESTS — Lane F Verification
+Sprint: FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001
+Date: 2026-06-04
+
+=== NEGATIVE FIXTURE VALIDATION ===
+
+NEG-001: AI claims authority_state=accepted
+  Input: {"authority_state": "accepted"}
+  Expected: REJECT
+  Result: REJECT (authority_state must be ai_draft)
+  PASS
+
+NEG-002: AI tries to update poc-targets.yaml
+  Input: {"action": "write", "path": "product-capability-matrix/poc-targets.yaml"}
+  Expected: REJECT
+  Result: REJECT (poc-targets.yaml is read-only; modification forbidden)
+  PASS
+
+NEG-003: API key in output
+  Input: {"api_key": "sk-proj-abc123..."}
+  Expected: REJECT
+  Result: REJECT (no API key values may appear in any output file)
+  PASS
+
+NEG-004: External tool closes taskcard
+  Input: {"action": "close_taskcard", "source": "ghidra_mcp"}
+  Expected: REJECT
+  Result: REJECT (external tools may not close taskcards)
+  PASS
+
+NEG-005: External tool recommendation mutates workspace
+  Input: {"tool": "ruflo", "action": "install", "path": ".local/venv/"}
+  Expected: REJECT
+  Result: REJECT (Acceleration may not install external tools)
+  PASS
+
+NEG-006: Packet lacks ai_draft
+  Input: {"authority_state": "validated"}
+  Expected: REJECT
+  Result: REJECT (packet must carry authority_state: ai_draft)
+  PASS
+
+NEG-007: Packet lacks required_validation
+  Input: {"requires_validation": false}
+  Expected: REJECT
+  Result: REJECT (all AI packets must set requires_validation: true)
+  PASS
+
+NEG-008: fixture_error packet claims directly_consumable=true
+  Input: {"ai_rationale": "[fixture_error] ImportError: ...", "directly_consumable": true}
+  Expected: REJECT
+  Result: REJECT (fixture_error forces directly_consumable=False)
+  PASS
+
+=== EXTERNAL TOOL VERIFICATION ===
+
+Ruflo installed check: importlib.util.find_spec('ruflo') → None
+Result: ABSENT — PASS
+
+Superpowers commands check: ls .claude/commands/ | grep -i superpowers
+Result: no output — PASS
+
+GhidraMCP MCP config check: .mcp.json absent
+Result: NO_MCP_CONFIG: OK — PASS
+
+Binary analysis check: no binary analysis commands issued this sprint
+Result: CONFIRMED — PASS
+
+=== poc-targets.yaml INTEGRITY ===
+
+SHA-256 before: f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c
+SHA-256 after:  f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c
+Result: UNCHANGED — PASS
+
+=== SUMMARY ===
+
+8/8 negative fixtures: REJECT (correct behavior)
+3/3 external tool checks: ABSENT/DISABLED (correct behavior)
+poc-targets.yaml: UNCHANGED
+
+All Lane F authority boundary checks: PASS

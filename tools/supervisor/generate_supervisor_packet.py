@@ -1200,10 +1200,51 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
     return "\n".join(lines) + "\n"
 
 
-def generate_session_resume_md(review: dict, contradictions: dict, memory_snippet: str, current_mode: int) -> str:
+def _load_due_obligations(repo_root: Path, lookahead_days: int = 14) -> list:
+    """C4 (MOR read path): Load open obligations due within lookahead window.
+
+    Returns empty list if MOR absent, MOR import fails, or no obligations are due.
+    Non-blocking — never raises.
+    """
+    try:
+        mor_path = repo_root / "reports" / "supervisor" / "maintenance-obligations.json"
+        import importlib as _il
+        _mor = _il.import_module("tools.supervisor.maintenance_obligation_register")
+        return _mor.surface_due_obligations(mor_path, lookahead_days=lookahead_days)
+    except Exception:
+        return []
+
+
+def generate_session_resume_md(
+    review: dict,
+    contradictions: dict,
+    memory_snippet: str,
+    current_mode: int,
+    due_obligations: list | None = None,
+) -> str:
     facts = review.get("facts", {})
     _sprint_id = review.get('sprint_id', 'unknown')
     _now_iso = datetime.now().isoformat()
+
+    # Build optional ## Maintenance Obligations Due section
+    _mor_section = ""
+    if due_obligations:
+        rows = []
+        for o in due_obligations:
+            sched = o.get("scheduled_date") or "(no date)"
+            action = o.get("action", "")[:80]
+            rows.append(
+                f"| {o['obligation_id']} | {o.get('type', '')} | {sched} "
+                f"| {action} | {o.get('owner', '')} |"
+            )
+        _mor_section = (
+            "\n## Maintenance Obligations Due\n"
+            "| obligation_id | type | scheduled_date | action | owner |\n"
+            "|---|---|---|---|---|\n"
+            + "\n".join(rows)
+            + "\n"
+        )
+
     return f"""<!-- generated_at: {_now_iso} | source_sprint: {_sprint_id} -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
@@ -1218,7 +1259,7 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 - Autonomous continue: {contradictions.get('autonomous_continue', True)}
 - Current supervisor mode: MODE {current_mode}
 - MCP status: {'ACTIVE (.vscode/mcp.json present)' if current_mode >= 4 else 'NOT_ACTIVATED'}
-
+{_mor_section}
 ## What Was Done Last Sprint
 (Read reports/supervisor/evidence-review.md for full details)
 
@@ -1302,7 +1343,10 @@ def generate_packet(repo_root: Path, output_dir: Path = None, stream: str = None
         generate_approval_gates_md(review, contradictions, current_mode, repo_root), encoding="utf-8"
     )
     (output_dir / "session-resume.md").write_text(
-        generate_session_resume_md(review, contradictions, memory_snippet, current_mode), encoding="utf-8"
+        generate_session_resume_md(
+            review, contradictions, memory_snippet, current_mode,
+            due_obligations=_load_due_obligations(repo_root),
+        ), encoding="utf-8"
     )
 
     # Also write contradiction/evidence-review markdown
@@ -1415,8 +1459,11 @@ def main() -> int:
     gates_text = generate_approval_gates_md(review, contradictions, current_mode, repo_root)
     atomic_write_text(output_dir / "approval-gates.md", gates_text)
 
-    # Generate session-resume.md
-    resume_text = generate_session_resume_md(review, contradictions, memory_snippet, current_mode)
+    # Generate session-resume.md (C4: surface due MOR obligations)
+    resume_text = generate_session_resume_md(
+        review, contradictions, memory_snippet, current_mode,
+        due_obligations=_load_due_obligations(repo_root),
+    )
     atomic_write_text(output_dir / "session-resume.md", resume_text)
 
     critical_count = contradictions.get("critical_count", 0)

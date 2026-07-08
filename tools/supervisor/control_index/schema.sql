@@ -346,3 +346,26 @@ CREATE TABLE IF NOT EXISTS concurrency_checkpoints (
                     CHECK(status IN ('VALID','APPLIED','SUPERSEDED'))
 );
 CREATE INDEX IF NOT EXISTS idx_checkpoints_task ON concurrency_checkpoints(task_id, created_at);
+
+-- T15: Maintenance obligations (from reports/supervisor/maintenance-obligations.json)
+CREATE TABLE IF NOT EXISTS maintenance_obligations (
+    obligation_id   TEXT PRIMARY KEY,
+    type            TEXT,
+    status          TEXT NOT NULL DEFAULT 'open',
+    scheduled_date  TEXT,
+    owner           TEXT,
+    source_plan     TEXT,
+    source_taskcard TEXT,
+    action          TEXT,
+    reason          TEXT,
+    created_at      TEXT,
+    completed_at    TEXT,
+    completion_evidence TEXT,
+    raw_json        TEXT NOT NULL,
+    source_file     TEXT NOT NULL,
+    ingested_at     TEXT NOT NULL,
+    source_hash     TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_mor_status ON maintenance_obligations(status);
+CREATE INDEX IF NOT EXISTS idx_mor_scheduled ON maintenance_obligations(scheduled_date);
+CREATE INDEX IF NOT EXISTS idx_mor_owner ON maintenance_obligations(owner);

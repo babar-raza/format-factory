@@ -744,6 +744,16 @@ def run_all_governance_validators(
     except Exception as _exc_v144:
         _skipped_validators.append({"validators": ["V144"], "error": str(_exc_v144)})
 
+    # V145 (TC-MOR-C5, 2026-07-08): Overdue maintenance obligation warnings
+    # WARN only (blocks_sprint=False) — overdue maintenance is advisory, not a sprint blocker.
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_maintenance_obligations_current as _v145,
+        )
+        results.append(_v145(declaration, repo_root))
+    except Exception as _exc_v145:
+        _skipped_validators.append({"validators": ["V145"], "error": str(_exc_v145)})
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -790,7 +800,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 165,  # TC-CQGA-FIX-001: 135 explicit + 27 contract registry + 3 ext4 context-level (V119/V120/V125)
+        "expected_count": 166,  # TC-CQGA-FIX-001: 135 explicit + 27 contract registry + 3 ext4 context-level (V119/V120/V125) + V145 MOR
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,

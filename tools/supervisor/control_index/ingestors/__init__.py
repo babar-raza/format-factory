@@ -57,6 +57,7 @@ class BaseIngestor:
             "plan_lock": "plan_locks",
             "source_violation": "source_violations",
             "event": "events",
+            "maintenance_obligation": "maintenance_obligations",
         }
         table_name = table_map.get(self.entity_type, table)
         try:

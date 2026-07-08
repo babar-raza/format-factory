@@ -183,6 +183,7 @@ def _write_terminal_closure_record(
     locked_at: str,
     plan_hash: str = "",
     audit_result: dict | None = None,
+    deferred_obligation_ids: list[str] | None = None,
 ) -> None:
     """TC-TCF-004: Write terminal_closure_record.json when TERMINAL_CLOSED is set.
 
@@ -203,6 +204,9 @@ def _write_terminal_closure_record(
         "open_taskcards": (audit_result or {}).get("open_taskcards", []),
         "guard_results": (audit_result or {}).get("guard_results", []),
         "closure_contract": (audit_result or {}).get("closure_contract"),
+        # TC-MOR-001: deferred obligations registered at closure (IDs only; full
+        # records are in reports/supervisor/maintenance-obligations.json)
+        "deferred_obligations": deferred_obligation_ids or [],
     }
     try:
         ph = plan_hash or _hashlib_tcf.sha256(plan_path.encode()).hexdigest()[:16]
@@ -329,13 +333,60 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         _ph = _hl.sha256(plan_path.encode()).hexdigest()[:16]
         _now_iso = datetime.now(timezone.utc).isoformat()
         _sid_for_record = session_id or _get_session_id()
+
+        # TC-MOR-001 (pre-step): Extract deferred obligations BEFORE writing the closure
+        # record so their IDs can be embedded in deferred_obligations field.
+        # Non-blocking — extraction failure must not prevent TERMINAL_CLOSED write.
+        _mor_obligations: list = []
+        _mor_mod = None
+        try:
+            import importlib.util as _ilu
+            _mor_spec = _ilu.spec_from_file_location(
+                "maintenance_obligation_register",
+                _here / "maintenance_obligation_register.py",
+            )
+            _mor_mod = _ilu.module_from_spec(_mor_spec)
+            _mor_spec.loader.exec_module(_mor_mod)
+            _mor_plan_p = (
+                Path(plan_path) if Path(plan_path).is_absolute() else _repo_root / plan_path
+            )
+            _mor_obligations = _mor_mod.extract_from_plan(_mor_plan_p)
+        except Exception as _mor_pre_exc:
+            print(
+                f"[write_plan_lock] TC-MOR-001: pre-extraction failed (non-blocking): {_mor_pre_exc}",
+                file=sys.stderr,
+            )
+
+        _mor_obligation_ids = [o["obligation_id"] for o in _mor_obligations]
+
         _write_terminal_closure_record(
             plan_path=plan_path,
             session_id=_sid_for_record,
             locked_at=_now_iso,
             plan_hash=_ph,
             audit_result=audit_result,
+            deferred_obligation_ids=_mor_obligation_ids,
         )
+
+        # TC-MOR-001 (write step): Register extracted obligations to MOR.
+        # Runs after closure record so closure record write is never blocked.
+        try:
+            if _mor_obligations and _mor_mod is not None:
+                _mor_path = _repo_root / "reports" / "supervisor" / "maintenance-obligations.json"
+                _mor_added, _mor_existed = _mor_mod.register_obligations(
+                    _mor_obligations, plan_path, _ph, _mor_path
+                )
+                print(
+                    f"[write_plan_lock] TC-MOR-001: {_mor_added} obligation(s) registered, "
+                    f"{_mor_existed} already existed"
+                )
+            elif not _mor_obligations:
+                print("[write_plan_lock] TC-MOR-001: no ## Deferred Work Register section found")
+        except Exception as _mor_exc:
+            print(
+                f"[write_plan_lock] TC-MOR-001: MOR write failed (non-blocking): {_mor_exc}",
+                file=sys.stderr,
+            )
 
     # B2: get session_id BEFORE writing either file so both files have it
     sid = session_id or _get_session_id()

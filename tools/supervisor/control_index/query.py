@@ -136,6 +136,36 @@ def cmd_plan_locks(args):
         conn.close()
 
 
+def cmd_obligations(args):
+    """TC-MOR-C6: Query maintenance_obligations table."""
+    from datetime import date
+    conn = get_connection(Path(args.db_path))
+    try:
+        sql = (
+            "SELECT obligation_id, type, status, scheduled_date, owner, action "
+            "FROM maintenance_obligations WHERE 1=1"
+        )
+        params: list = []
+        if args.status:
+            sql += " AND LOWER(status) = LOWER(?)"
+            params.append(args.status)
+        if args.owner:
+            sql += " AND LOWER(owner) = LOWER(?)"
+            params.append(args.owner)
+        if args.overdue:
+            today = date.today().isoformat()
+            sql += " AND status = 'open' AND scheduled_date IS NOT NULL AND scheduled_date < ?"
+            params.append(today)
+        sql += " ORDER BY scheduled_date ASC NULLS LAST"
+        rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
 def cmd_format(args):
     conn = get_connection(Path(args.db_path))
     try:
@@ -279,6 +309,12 @@ def main():
     p = sub.add_parser("sql", help="Execute read-only SQL")
     p.add_argument("statement", help="SQL SELECT statement")
 
+    # maintenance obligations
+    p = sub.add_parser("obligations", help="Query maintenance obligations")
+    p.add_argument("--status", help="Filter by status (open/completed)")
+    p.add_argument("--owner", help="Filter by owner")
+    p.add_argument("--overdue", action="store_true", help="Show only overdue obligations")
+
     args = parser.parse_args()
     commands = {
         "search": cmd_search,
@@ -290,6 +326,7 @@ def main():
         "chain": cmd_chain,
         "stale": cmd_stale,
         "sql": cmd_sql,
+        "obligations": cmd_obligations,
     }
     commands[args.command](args)
 

@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "generated_by": "maintenance_obligation_register",
+  "last_updated": "2026-07-08T09:19:37.278620+00:00",
+  "obligations": [
+    {
+      "obligation_id": "MO-BGG-001",
+      "type": "observation_window",
+      "action": "run check_tombstone_records.py in tools/supervisor/; classify external_host_loop.py as FIRED or CONFIRMED_DEAD; update COMPONENT-REGISTER.yaml entry tombstone_status field",
+      "scheduled_date": "2026-08-05",
+      "owner": "governance",
+      "reason": "30-day observation window from tombstone_date 2026-07-06; checks whether suspected ghost file was invoked in production within the window",
+      "source_plan": "plans/.claude/bright-greeting-goose.md",
+      "source_plan_hash": "6bd4de8d3c591221",
+      "source_taskcard": "TC-BF-004",
+      "status": "open",
+      "created_at": "2026-07-08T08:48:13.814111+00:00",
+      "completed_at": null,
+      "completion_evidence": null
+    }
+  ]
+}

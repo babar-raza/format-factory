@@ -101,6 +101,8 @@ from .ingestors import event_ingestor      # noqa: F401, E402
 from .ingestors import subprocess_calls_ingestor   # noqa: F401, E402
 from .ingestors import command_invocations_ingestor  # noqa: F401, E402
 from .ingestors import skill_invocations_ingestor   # noqa: F401, E402
+# TC-MOR-C6: Maintenance obligation register ingestor
+from .ingestors import maintenance_obligation_ingestor  # noqa: F401, E402
 
 
 def sync_all(db_path: Path, repo_root: Path, *, force: bool = False) -> SyncReport:
