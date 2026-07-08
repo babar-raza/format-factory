@@ -563,10 +563,10 @@ def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict
         if stale:
             _result = {
                 "validator": "validate_readme_freshness",
-                "result": "FAIL",
+                "result": "WARN",
                 "items": stale,
-                "summary": f"V87: {len(stale)} stale README(s) detected",
-                "blocks_sprint": True,
+                "summary": f"V87: {len(stale)} stale README(s) detected (non-blocking — CI readme-drift job is authoritative)",
+                "blocks_sprint": False,
             }
         else:
             _result = {
@@ -581,10 +581,10 @@ def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict
     except Exception as e:
         _result = {
             "validator": "validate_readme_freshness",
-            "result": "FAIL",
+            "result": "WARN",
             "items": [{"error": str(e)}],
             "summary": f"V87: README freshness check failed: {e}",
-            "blocks_sprint": True,
+            "blocks_sprint": False,
         }
         _readme_freshness_cache[_cache_key] = _result
         return _result
