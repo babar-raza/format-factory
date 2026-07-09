@@ -60,6 +60,7 @@ class TestTomlInstalledWorkflow:
             f"Expected spec_qname='toml:table', got '{doc.spec_qname}'"
         )
 
+    @pytest.mark.skipif(sys.version_info < (3, 11), reason="tomllib requires Python 3.11+")
     def test_domain_model_key_count(self):
         """TomlDocument.key_count matches Python stdlib tomllib."""
         import tomllib
