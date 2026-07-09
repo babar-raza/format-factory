@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: ff-gates-advancement-20260625
+# Source sprint: hazy-questing-peach
 # Stream: mainstream
-# Generated: 2026-06-25T17:41:06.298670
+# Generated: 2026-07-09T18:37:10.238247
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: ff-gates-advancement-20260625
+- Sprint ID: hazy-questing-peach
 - Evidence verdict: ACCEPTED
-- Tests: 1609 passed, 0 failed, 0 skipped
+- Tests: 1634 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -82,56 +82,56 @@ None
 
 ## Project Memory Context
 ```
+- test_delta: -5955
+- test_delta_from: 6357
 
-## Entry: eager-wishing-bear-ci-estate-20260625
-- timestamp: 2026-06-25T17:09:07.083470
+## Entry: R1264-R1269-BATCH
+- timestamp: 2026-07-02T20:57:14.552431
+- verdict: ACCEPTED
+- test_count: 109
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1264-r1269-batch\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 81
+- bundle_validation_pass: True
+- test_delta: -293
+- test_delta_from: 402
+
+## Entry: BULK-PROPERTIES-R1233-R1291
+- timestamp: 2026-07-02T22:05:10.502981
+- verdict: ACCEPTED
+- test_count: 1775
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 96
+- bundle_validation_pass: True
+- test_delta: +1666
+- test_delta_from: 109
+
+## Entry: PQLM-GOV-001
+- timestamp: 2026-07-04T16:37:13.503440
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ci-estate-20260625\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pqlm-gov-001-20260704-001\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 76
+- bundle_entry_count: 67
 - bundle_validation_pass: True
 
-## Entry: ff-poc-promotion-20260625
-- timestamp: 2026-06-25T17:15:06.193356
+## Entry: bright-greeting-goose-20260706T104442Z
+- timestamp: 2026-07-06T15:49:10.375834
 - verdict: ACCEPTED
-- test_count: 15891
+- test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-poc-promotion-20260625\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bright-greeting-goose-20260706T104442Z\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 55
+- bundle_entry_count: 70
 - bundle_validation_pass: True
-- test_delta: +15891
-- test_delta_from: 0
-
-## Entry: ff-ods-dogfood-20260625
-- timestamp: 2026-06-25T17:21:06.862111
-- verdict: ACCEPTED
-- test_count: 981
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-ods-dogfood-20260625\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 57
-- bundle_validation_pass: True
-- test_delta: -14910
-- test_delta_from: 15891
-
-## Entry: ff-format-promotion-final-20260625
-- timestamp: 2026-06-25T17:27:06.661284
-- verdict: ACCEPTED
-- test_count: 981
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-format-promotion-final-20260625\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 57
-- bundle_validation_pass: True
-- test_delta: 0
-- test_delta_from: 981
 ```
 
 ---

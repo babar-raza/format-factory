@@ -1,9 +1,17 @@
 fail_count: 0
-generated_at: '2026-07-01'
 generated_by: validate_skill_contracts.py
-mission_id: SKILL-FIRST-002
-overall_verdict: PASS
+mission_id: SKILL-FIRST-001
+overall_verdict: WARN
 results:
+- note: deprecated skill excluded from contract validation
+  skill_id: add-analytics-function
+  verdict: SKIP
+- fail_count: 0
+  findings: []
+  skill_id: add-spec-analytics-function
+  status: active
+  verdict: PASS
+  warn_count: 0
 - fail_count: 0
   findings: []
   skill_id: add-dogfood-export
@@ -95,6 +103,15 @@ results:
   verdict: PASS
   warn_count: 0
 - fail_count: 0
+  findings:
+  - check: status_enum
+    detail: Status 'deferred' not in ['active', 'deprecated', 'experimental', 'retired']
+    result: WARN
+  skill_id: check-mcp-status
+  status: deferred
+  verdict: WARN
+  warn_count: 1
+- fail_count: 0
   findings: []
   skill_id: check-release-boundary
   status: active
@@ -124,6 +141,9 @@ results:
   status: active
   verdict: PASS
   warn_count: 0
+- note: deprecated skill excluded from contract validation
+  skill_id: decompose-monolithic-codec
+  verdict: SKIP
 - fail_count: 0
   findings: []
   skill_id: detect-ad-hoc-execution
@@ -211,6 +231,12 @@ results:
 - fail_count: 0
   findings: []
   skill_id: package-install-proof
+  status: active
+  verdict: PASS
+  warn_count: 0
+- fail_count: 0
+  findings: []
+  skill_id: sync-installed-packages
   status: active
   verdict: PASS
   warn_count: 0
@@ -706,5 +732,11 @@ results:
   status: active
   verdict: PASS
   warn_count: 0
-total_skills_validated: 117
-warn_count: 0
+- fail_count: 0
+  findings: []
+  skill_id: found-issue-ownership
+  status: active
+  verdict: PASS
+  warn_count: 0
+total_skills: 123
+warn_count: 1

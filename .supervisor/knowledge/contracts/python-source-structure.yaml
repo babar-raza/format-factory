@@ -1,139 +1,162 @@
-knowledge_id: "KC-PYTHON-002"
-stable_semantic_key: "python_format_source_structure"
-title: "Python Format Package Directory Layout (Three-Layer)"
-subject_type: "DIRECTORY_LAYOUT"
-scope: "All Python format packages in src/python/*/"
-status: "VERIFIED_CURRENT"
-enforcement: "PARTIALLY_ENFORCED"
-
-authority: >
-  Verified from full survey of all 20 Python format packages:
-  abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, odt,
-  pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst.
-  All 20 formats exhibit the three-layer structure without exception.
+knowledge_id: KC-PYTHON-002
+stable_semantic_key: python_format_source_structure
+title: Python Format Package Directory Layout (Three-Layer)
+subject_type: DIRECTORY_LAYOUT
+scope: All Python format packages in src/python/*/
+status: VERIFIED_CURRENT
+enforcement: PARTIALLY_ENFORCED
+authority: 'Verified from full survey of all 20 Python format packages: abw, csv,
+  dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk,
+  toml, tsv, xcf, zst. All 20 formats exhibit the three-layer structure without exception.
   Survey performed 2026-06-24 (plan: hidden-puzzling-rain TC-P2-002).
 
+  '
 authoritative_sources:
-  - "src/python/csv/__init__.py"
-  - "src/python/ndjson/__init__.py"
-  - "src/python/odt/__init__.py"
-
-# SHA-256 hashes for drift detection — computed 2026-06-24.
-# Validator compares these against current file state to detect contract staleness.
+- src/python/csv/__init__.py
+- src/python/ndjson/__init__.py
+- src/python/odt/__init__.py
 source_hashes:
-  - path: "src/python/csv/__init__.py"
-    sha256: "34038735cd87255e11eae768b84d7e4762c6175e64bde88c86e13fa7baebeca1"
-  - path: "src/python/ndjson/__init__.py"
-    sha256: "0e46d5ec64231000504288bef70116a5e08045da9188258c7e2f3319ad7d7823"
-  - path: "src/python/odt/__init__.py"
-    sha256: "c965c7ee41e045e523c5dc642182756f68ad740796535b91fbd3337cd90d79b8"
-
+- path: src/python/csv/__init__.py
+  sha256: c0ddf9a71fbd5b9af0fa63d0877a2b2ab3414a3fa684346bac58b187af243543
+- path: src/python/ndjson/__init__.py
+  sha256: ddb1b9aab040f247704f012ffd0de9d282f966d6fc95e70d1d8d2b9b85cb2642
+- path: src/python/odt/__init__.py
+  sha256: 068aae74b17225328e799a87ced9573cc5934b9d6600579a85fcee1b6d7d4d6e
 applies_to:
-  - "src/python/*/"
-
+- src/python/*/
 required_fields_or_components:
-  - name: "__init__.py (root)"
-    description: >
-      Every format package root must have __init__.py.
-      Exports public API via dynamic __all__ pattern (types.ModuleType filter,
-      FF_API_EXCLUDE frozenset). Added noqa: F401 re-exports for Compat/ classes.
-    example: "src/python/csv/__init__.py"
-  - name: "spec/ subdirectory"
-    description: >
-      All 20 formats have a spec/ subdirectory with at least one domain namespace
-      subdirectory (e.g., spec/record/, spec/table/, spec/layer/, spec/office/).
-      Each namespace dir contains __init__.py + class files named after spec elements.
-      Classes set spec_qname as bare class attribute (ClassVar[str] for dataclasses).
-      All spec classes are architecture_only stubs or partial implementations.
-    example: "src/python/csv/spec/record/record.py"
-  - name: "Compat/ subdirectory"
-    description: >
-      All 20 formats have a Compat/ subdirectory with __init__.py + facade class files.
-      Naming: {Format}{Element}.py (e.g., CsvRecord, NdjsonField, OdtDocument).
-      Facades inherit from spec/ classes and add format-prefixed names for backward
-      compatibility. Primary implementations live in the root codec/parser/models files.
-    example: "src/python/csv/Compat/csv_record.py"
-  - name: "codec or parser file"
-    description: >
-      Exactly one primary codec/parser file per package. Naming: either {format}_codec.py
-      (most formats) or {format}_parser.py (dif, ods, odt, pbm, pgm, ppm, sylk, xcf).
-      Contains load() or parse() functions returning neutral model dict or list.
-    example: "src/python/csv/csv_parser.py"
-  - name: "exceptions.py"
-    description: >
-      All 20 formats have exceptions.py defining format-specific exception classes
-      (typically subclass of a shared base or builtin). Present in all surveyed formats.
-    example: "src/python/csv/exceptions.py"
-  - name: "domain document file (optional pattern)"
-    description: >
-      Most formats have a domain document file that is NOT models.py: named after
-      the document type (text_document.py, spreadsheet_document.py, bitmap_image.py,
-      workbook_document.py, config_document.py, etc.). These predate the models.py pattern.
-      When models.py exists alongside these files, models.py is the canonical KC-PYTHON-001
-      domain model class and the document file is legacy.
-    example: "src/python/csv/tabular_document.py"
+- name: __init__.py (root)
+  description: 'Every format package root must have __init__.py. Exports public API
+    via dynamic __all__ pattern (types.ModuleType filter, FF_API_EXCLUDE frozenset).
+    Added noqa: F401 re-exports for Compat/ classes.
 
+    '
+  example: src/python/csv/__init__.py
+- name: spec/ subdirectory
+  description: 'All 20 formats have a spec/ subdirectory with at least one domain
+    namespace subdirectory (e.g., spec/record/, spec/table/, spec/layer/, spec/office/).
+    Each namespace dir contains __init__.py + class files named after spec elements.
+    Classes set spec_qname as bare class attribute (ClassVar[str] for dataclasses).
+    All spec classes are architecture_only stubs or partial implementations.
+
+    '
+  example: src/python/csv/spec/record/record.py
+- name: Compat/ subdirectory
+  description: 'All 20 formats have a Compat/ subdirectory with __init__.py + facade
+    class files. Naming: {Format}{Element}.py (e.g., CsvRecord, NdjsonField, OdtDocument).
+    Facades inherit from spec/ classes and add format-prefixed names for backward
+    compatibility. Primary implementations live in the root codec/parser/models files.
+
+    '
+  example: src/python/csv/Compat/csv_record.py
+- name: codec or parser file
+  description: 'Exactly one primary codec/parser file per package. Naming: either
+    {format}_codec.py (most formats) or {format}_parser.py (dif, ods, odt, pbm, pgm,
+    ppm, sylk, xcf). Contains load() or parse() functions returning neutral model
+    dict or list.
+
+    '
+  example: src/python/csv/csv_parser.py
+- name: exceptions.py
+  description: 'All 20 formats have exceptions.py defining format-specific exception
+    classes (typically subclass of a shared base or builtin). Present in all surveyed
+    formats.
+
+    '
+  example: src/python/csv/exceptions.py
+- name: domain document file (optional pattern)
+  description: 'Most formats have a domain document file that is NOT models.py: named
+    after the document type (text_document.py, spreadsheet_document.py, bitmap_image.py,
+    workbook_document.py, config_document.py, etc.). These predate the models.py pattern.
+    When models.py exists alongside these files, models.py is the canonical KC-PYTHON-001
+    domain model class and the document file is legacy.
+
+    '
+  example: src/python/csv/tabular_document.py
 spec_file_patterns:
-  description: >
-    Within spec/{domain_namespace}/, class files follow the pattern:
-    {element}.py where {element} is the local_name from the qname registry entry
-    (e.g., qname "csv:record" → element "record" → spec/record/record.py).
-    The namespace directory name matches the domain concept (record, table, layer, office,
-    text, image). Each namespace directory has __init__.py + at least one element .py file.
-    Multiple element files may exist in one namespace (e.g., ndjson/spec/record/ has
-    record.py AND field.py).
+  description: "Within spec/{domain_namespace}/, class files follow the pattern: {element}.py\
+    \ where {element} is the local_name from the qname registry entry (e.g., qname\
+    \ \"csv:record\" \xE2\u2020\u2019 element \"record\" \xE2\u2020\u2019 spec/record/record.py).\
+    \ The namespace directory name matches the domain concept (record, table, layer,\
+    \ office, text, image). Each namespace directory has __init__.py + at least one\
+    \ element .py file. Multiple element files may exist in one namespace (e.g., ndjson/spec/record/\
+    \ has record.py AND field.py).\n"
   concrete_examples:
-    - path: "src/python/csv/spec/record/record.py"
-      qname: "csv:record"
-      namespace_dir: "record"
-      element_file: "record.py"
-      note: "Primary spec class for CSV; also field.py, header.py in same dir"
-    - path: "src/python/ndjson/spec/record/field.py"
-      qname: "ndjson:field"
-      namespace_dir: "record"
-      element_file: "field.py"
-      note: "Field element; record.py also present in same namespace dir"
-    - path: "src/python/odt/spec/text/paragraph.py"
-      qname: "odt:text"
-      namespace_dir: "text"
-      element_file: "paragraph.py"
-      note: "ODT uses two namespace dirs (text/, office/); heading.py also in text/"
-  remaining_ambiguity: >
-    KC-PYTHON-002 confirms at least one namespace subdirectory and element file exist
-    per format, but does NOT enumerate ALL files within each namespace dir.
-    Agents needing a complete file listing should ls spec/{namespace}/ directly.
-    This is LOW severity for most tasks (adding a models.py method never requires
-    knowing all spec file names).
+  - path: src/python/csv/spec/record/record.py
+    qname: csv:record
+    namespace_dir: record
+    element_file: record.py
+    note: Primary spec class for CSV; also field.py, header.py in same dir
+  - path: src/python/ndjson/spec/record/field.py
+    qname: ndjson:field
+    namespace_dir: record
+    element_file: field.py
+    note: Field element; record.py also present in same namespace dir
+  - path: src/python/odt/spec/text/paragraph.py
+    qname: odt:text
+    namespace_dir: text
+    element_file: paragraph.py
+    note: ODT uses two namespace dirs (text/, office/); heading.py also in text/
+  remaining_ambiguity: 'KC-PYTHON-002 confirms at least one namespace subdirectory
+    and element file exist per format, but does NOT enumerate ALL files within each
+    namespace dir. Agents needing a complete file listing should ls spec/{namespace}/
+    directly. This is LOW severity for most tasks (adding a models.py method never
+    requires knowing all spec file names).
 
+    '
 invariants:
-  - "Every format has EXACTLY ONE spec/ directory at the package root."
-  - "Every spec/ has at least one namespace subdirectory (never empty)."
-  - "Namespace subdirectory name is a domain concept word, NOT the format name."
-  - "Each namespace dir has __init__.py (may be empty)."
-  - "Element .py files use lowercase with underscores (matches local_name in qname registry)."
-  - "All spec classes set spec_qname as bare class attribute or ClassVar[str] (never instance field)."
-  - "Spec classes are architecture_only or partial — behavior lives in codec/parser/models.py."
-
+- Every format has EXACTLY ONE spec/ directory at the package root.
+- Every spec/ has at least one namespace subdirectory (never empty).
+- Namespace subdirectory name is a domain concept word, NOT the format name.
+- Each namespace dir has __init__.py (may be empty).
+- Element .py files use lowercase with underscores (matches local_name in qname registry).
+- All spec classes set spec_qname as bare class attribute or ClassVar[str] (never
+  instance field).
+- "Spec classes are architecture_only or partial \xE2\u20AC\u201D behavior lives in\
+  \ codec/parser/models.py."
 naming_rules:
-  - "Package root dir: src/python/{format_id}/ (all lowercase)"
-  - "Spec class dir: spec/{domain_namespace}/{class}.py (lowercase, underscore)"
-  - "Compat facade dir: Compat/{format}_{element}.py (lowercase, underscore)"
-  - "Primary codec/parser: {format}_codec.py or {format}_parser.py"
-
+- 'Package root dir: src/python/{format_id}/ (all lowercase)'
+- 'Spec class dir: spec/{domain_namespace}/{class}.py (lowercase, underscore)'
+- 'Compat facade dir: Compat/{format}_{element}.py (lowercase, underscore)'
+- 'Primary codec/parser: {format}_codec.py or {format}_parser.py'
 allowed_variants:
-  - key: "analytics file present"
-    description: "Some formats have a {format}_analytics.py file (zst, xcf, fodg) — extracted from codec/parser. Not universally present."
-    examples: ["zst", "xcf", "fodg"]
-  - key: "stats/metrics file"
-    description: "Some formats have {format}_stats.py or {format}_metrics.py for lightweight analytics. Optional."
-    examples: ["csv", "dif", "ods", "ppm", "xcf"]
-  - key: "writer file"
-    description: "Some formats have {format}_writer.py or writer.py for write/export operations."
-    examples: ["csv", "fods", "fodt", "ods"]
-  - key: "models.py present"
-    description: "9 of 20 formats have models.py (KC-PYTHON-001 domain model class). Others use legacy document files."
-    examples: ["abw", "csv", "fods", "fodt", "gnumeric", "ndjson", "toml", "tsv", "zst"]
-
+- key: analytics file present
+  description: "Some formats have a {format}_analytics.py file (zst, xcf, fodg) \xE2\
+    \u20AC\u201D extracted from codec/parser. Not universally present."
+  examples:
+  - zst
+  - xcf
+  - fodg
+- key: stats/metrics file
+  description: Some formats have {format}_stats.py or {format}_metrics.py for lightweight
+    analytics. Optional.
+  examples:
+  - csv
+  - dif
+  - ods
+  - ppm
+  - xcf
+- key: writer file
+  description: Some formats have {format}_writer.py or writer.py for write/export
+    operations.
+  examples:
+  - csv
+  - fods
+  - fodt
+  - ods
+- key: models.py present
+  description: 9 of 20 formats have models.py (KC-PYTHON-001 domain model class).
+    Others use legacy document files.
+  examples:
+  - abw
+  - csv
+  - fods
+  - fodt
+  - gnumeric
+  - ndjson
+  - toml
+  - tsv
+  - zst
 survey_coverage:
   total_formats: 20
   all_have_spec: true
@@ -143,15 +166,12 @@ survey_coverage:
   formats_with_models: 9
   formats_with_analytics: 3
   formats_with_writer: 4
-
 consumers:
-  - "Any agent creating a new Python format package in src/python/"
-  - "Any agent adding spec/, Compat/, or codec files to an existing format"
-  - "docs/agent-methodology-index.md Section 12"
-
+- Any agent creating a new Python format package in src/python/
+- Any agent adding spec/, Compat/, or codec files to an existing format
+- docs/agent-methodology-index.md Section 12
 update_triggers:
-  - "Any authoritative_sources __init__.py is modified (hash will diverge)"
-  - "A 21st format package is added to src/python/"
-  - "The three-layer structure changes (new mandatory component)"
-
-last_verified_revision: "2026-06-24"
+- Any authoritative_sources __init__.py is modified (hash will diverge)
+- A 21st format package is added to src/python/
+- The three-layer structure changes (new mandatory component)
+last_verified_revision: '2026-06-24'

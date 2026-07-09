@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: ff-gates-advancement-20260625
-Generated: 2026-06-25T17:41:06.328648
+Sprint ID: hazy-questing-peach
+Generated: 2026-07-09T18:37:10.259937
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

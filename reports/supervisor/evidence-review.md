@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: pqlm-gov-001-20260704
-Timestamp: 2026-07-04T16:51:13.726689
-Verdict: ACCEPTED_WITH_WARNINGS
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pqlm-gov-001-20260704\declaration-review-package.zip
+Sprint ID: hazy-questing-peach
+Timestamp: 2026-07-09T18:37:08.247768
+Verdict: ACCEPTED
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hazy-questing-peach-20260709T133041Z\declaration-review-package.zip
 
 ## Facts
-- Tests: 5799 passed, 95 failed, 0 skipped
+- Tests: 0 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 47
+- Bundle entries: 23
 - PENDING markers: 0
 
 ## Gate States
