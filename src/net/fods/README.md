@@ -93,3 +93,15 @@ dotnet add package FormatFactory.Fods
 | Source files | 49 |
 | Test files | 567 |
 <!-- END:README-PACKAGE_INFO -->
+
+## Build Verification
+
+Always build with `--no-incremental` when verifying correctness:
+
+```
+dotnet build src/net/fods/FormatFactory.Fods.csproj --no-incremental
+```
+
+Do NOT use `dotnet build` without `--no-incremental` as a correctness gate.
+Incremental caching can mask missing field declarations and partial compilation errors.
+Confirmed in TC-PQLM-021 (commit b0ec6ad8, 2026-07-03).

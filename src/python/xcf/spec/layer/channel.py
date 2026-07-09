@@ -30,21 +30,26 @@ class Channel:
 
     @property
     def width(self) -> int:
+        """Return the channel width in pixels."""
         return int(self._data.get("width", 0))
 
     @property
     def height(self) -> int:
+        """Return the channel height in pixels."""
         return int(self._data.get("height", 0))
 
     @property
     def visible(self) -> bool:
+        """Return True if the channel is visible."""
         return bool(self._data.get("visible", True))
 
     @property
     def opacity(self) -> int:
+        """Return the channel opacity (0–255)."""
         return int(self._data.get("opacity", 255))
 
     def to_dict(self) -> dict[str, Any]:
+        """Return the channel data as a plain dictionary."""
         return dict(self._data)
 
     def __repr__(self) -> str:

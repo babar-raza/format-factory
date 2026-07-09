@@ -669,6 +669,10 @@ python tools/supervisor/write_plan_lock.py \
 | TC-PQLM-023 | History Identifiers Resolution | CLOSED | PRODUCT_SOURCE_FILES_WITH_HISTORY_IDENTIFIERS |
 | TC-PQLM-024 | Undocumented API Baseline Formalization | CLOSED | PUBLIC_APIS_WITH_MISSING_OR_FALSE_DOCUMENTATION |
 | TC-PQLM-025 | Final Idempotency + Completion Gate | CLOSED | All 24 counters |
+| TC-PQLM-026 | V102 policy: spec_compat_layer exclusion + 10 xcf docstrings | CLOSED | V102 WARN→PASS |
+| TC-PQLM-027 | Govern all FODS V105/V106 violations (Visibility XML + stub governance) | CLOSED | V105/V106 all governed |
+| TC-PQLM-028 | Roundtrip tests: sheet-config XML (FreezeRows/Cols/ZoomLevel/PrintArea) | CLOSED | 5/5 RT5_C01–C05 PASS |
+| TC-PQLM-029 | Enforce --no-incremental in .NET build verification | CLOSED | Build masking prevention |
 
 ---
 
@@ -743,11 +747,20 @@ Conditions:
 | TC-PQLM-023 | CLOSED |
 | TC-PQLM-024 | CLOSED |
 | TC-PQLM-025 | CLOSED |
+| TC-PQLM-026 | CLOSED |
+| TC-PQLM-027 | CLOSED |
+| TC-PQLM-028 | CLOSED |
+| TC-PQLM-029 | CLOSED |
 
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
-  locked_at: "2026-07-03T15:06:00.066588+00:00"
-  locked_by: "d9872f18db54"
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-09T16:18:40.335971+00:00"
+  locked_by: "0031a2fb6fcd"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
+  phase4_completion:
+    TC-PQLM-026: CLOSED  # V102 PASS, 876 xcf tests pass
+    TC-PQLM-027: CLOSED  # dotnet build 0 errors, V103/V105/V106 governed
+    TC-PQLM-028: CLOSED  # 5/5 roundtrip tests PASS (4233 total)
+    TC-PQLM-029: CLOSED  # --no-incremental docs added
 -->

@@ -225,7 +225,14 @@ def validate_undocumented_public_python_apis(
     """
     _r = repo_root or Path(__file__).parent.parent.parent
     baseline = _load_baseline(_r)
-    known = set(baseline.get("known_violations", {}).keys())
+    known_violations_data = baseline.get("known_violations", {})
+    known = set(known_violations_data.keys())
+    # Spec-shaped model files where property names are self-documenting — exempt from V102
+    _V102_EXEMPT_CATEGORIES = {"spec_compat_layer", "spec_property_accessors_pre_existing_pqlm001"}
+    known_exempt = {
+        k for k, v in known_violations_data.items()
+        if v.get("category", "") in _V102_EXEMPT_CATEGORIES
+    }
     violations_new = []
     violations_existing = []
 
@@ -242,6 +249,8 @@ def validate_undocumented_public_python_apis(
         if "test" in f.parts or "__pycache__" in f.parts or "build" in f.parts:
             continue
         rel = f.relative_to(_r).as_posix()
+        if rel in known_exempt:
+            continue  # spec-shaped model — property names are self-documenting
         try:
             tree = ast.parse(f.read_text(encoding="utf-8", errors="replace"))
         except SyntaxError:

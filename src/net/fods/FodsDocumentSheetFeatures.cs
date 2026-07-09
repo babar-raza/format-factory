@@ -50,6 +50,7 @@ public sealed partial class FodsDocument
     /// <summary>R291: Apply protection to the named sheet with optional password.</summary>
     public void SetSheetProtection(string sheetName, string? password = null)
     {
+        // TODO(GI-FODS-NET-003): implement ODF table:table-protection write (SHA256 hash per ODF 1.3 §19.708)
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         _sheetProtection[sheetName] = password;
@@ -91,6 +92,7 @@ public sealed partial class FodsDocument
     /// <summary>R340: Enable or disable sheet protection with a password (3-arg: bool protect).</summary>
     public void SetSheetProtection(string sheetName, bool protect, string? password = null)
     {
+        // TODO(GI-FODS-NET-003): implement ODF table:table-protection write (SHA256 hash per ODF 1.3 §19.708)
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (protect)
@@ -112,6 +114,7 @@ public sealed partial class FodsDocument
     /// <summary>R366: Set the protection state of the named sheet.</summary>
     public void SetSheetProtected(string sheetName, bool protect)
     {
+        // TODO(GI-FODS-NET-003): ODF table:table-protection write (SHA256 per §19.708)
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         _ = GetSheetByName(sheetName)

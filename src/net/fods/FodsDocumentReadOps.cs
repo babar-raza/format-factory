@@ -30,7 +30,6 @@ public sealed partial class FodsDocument
     private string? _activeSheet;
     private readonly Dictionary<(string sheet, int row, int col), string> _cellComments = new();
     private readonly Dictionary<string, string> _sheetProtectionPasswords = new();
-    private readonly Dictionary<string, string> _sheetVisibility = new();
     private readonly Dictionary<(string sheet, int row), double> _rowHeights = new();
     private readonly Dictionary<string, string> _namedRanges = new();
 

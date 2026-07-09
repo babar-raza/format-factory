@@ -20,6 +20,7 @@ public sealed partial class FodsDocument
     /// <summary>R305: Return the title of the chart at the given index on the named sheet.</summary>
     public string GetChartTitle(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-006): implement ODF §9.8 chart:chart XML read for chart title
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_charts.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
@@ -141,6 +142,7 @@ public sealed partial class FodsDocument
     /// <summary>R308: Return the number of conditional formats on the sheet.</summary>
     public int GetConditionalFormatCount(string sheetName)
     {
+        // TODO(GI-FODS-NET-007): implement ODF §11.6 table:content-validation read for count
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
         return _conditionalFormats.TryGetValue(sheetName, out var list) ? list.Count : 0;
     }
@@ -152,6 +154,7 @@ public sealed partial class FodsDocument
     /// <summary>R308: Return the condition expression of the conditional format at the given index.</summary>
     public string GetConditionalFormatRule(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-007): implement ODF §11.6 table:content-validation rule expression read
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_conditionalFormats.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
@@ -191,6 +194,7 @@ public sealed partial class FodsDocument
     /// <summary>R310: Return the number of data validations on the sheet.</summary>
     public int GetDataValidationCount(string sheetName)
     {
+        // TODO(GI-FODS-NET-008): implement ODF §11.4 table:content-validation count from XML
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
         return _dataValidations.TryGetValue(sheetName, out var list) ? list.Count : 0;
     }
@@ -201,6 +205,7 @@ public sealed partial class FodsDocument
     /// <summary>R314: Return the rule expression of the data validation at the given index.</summary>
     public string GetDataValidationRule(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-008): implement ODF §11.4 table:content-validation rule read from XML
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_dataValidations.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
@@ -240,6 +245,7 @@ public sealed partial class FodsDocument
     /// <summary>R315: Return the number of hyperlinks on the sheet.</summary>
     public int GetHyperlinkCount(string sheetName)
     {
+        // TODO(GI-FODS-NET-009): implement ODF text:a hyperlink count from cell XML
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
         return _hyperlinks.TryGetValue(sheetName, out var list) ? list.Count : 0;
     }
@@ -247,6 +253,7 @@ public sealed partial class FodsDocument
     /// <summary>R317: Return the URL of the hyperlink at the given index.</summary>
     public string GetHyperlinkUrl(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-009): implement ODF text:a/@xlink:href read for sheet-level hyperlink
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_hyperlinks.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
@@ -269,6 +276,7 @@ public sealed partial class FodsDocument
     /// <summary>R310: Return the URL at the specified cell.</summary>
     public string GetHyperlinkUrl(string sheetName, int row, int col)
     {
+        // TODO(GI-FODS-NET-009): implement ODF text:a/@xlink:href read for cell-level hyperlink
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (_cellHyperlinks.TryGetValue((sheetName, row, col), out var link))
@@ -381,6 +389,7 @@ public sealed partial class FodsDocument
     /// <summary>R317/R333: Return the number of pivot tables on the specified sheet.</summary>
     public int GetPivotTableCount(string sheetName)
     {
+        // TODO(GI-FODS-NET-012): implement ODF §9.6 table:data-pilot-table count from XML
         if (string.IsNullOrWhiteSpace(sheetName)) return 0;
         return _sheetPivotTables.TryGetValue(sheetName, out var list) ? list.Count : 0;
     }
@@ -388,6 +397,7 @@ public sealed partial class FodsDocument
     /// <summary>R317: Return the name of the pivot table at the given index on the specified sheet.</summary>
     public string GetPivotTableName(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-012): implement ODF §9.6 table:data-pilot-table/@table:name read
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_sheetPivotTables.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
@@ -398,6 +408,7 @@ public sealed partial class FodsDocument
     /// <summary>R333: Return the source range of the pivot table at the given index on the specified sheet.</summary>
     public string GetPivotTableSourceRange(string sheetName, int index)
     {
+        // TODO(GI-FODS-NET-012): implement ODF §9.6 table:data-pilot-table source-range read
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
         if (!_sheetPivotTables.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)

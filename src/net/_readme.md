@@ -99,3 +99,8 @@ Never use `XDocument.Load()` or `XmlDocument.Load()` with default settings on un
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation
 - `registry/repository-layout.yaml` — Canonical path authority
 - `tools/supervisor/path_resolver.py` — Path resolution utility
+
+## Build Verification Note
+
+Always use `dotnet build --no-incremental` for correctness verification.
+Incremental builds can mask missing declarations (confirmed TC-PQLM-021, 2026-07-03).

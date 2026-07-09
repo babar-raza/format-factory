@@ -27,22 +27,27 @@ class Header:
 
     @property
     def version(self) -> str:
+        """Return the XCF version string (e.g. 'v011')."""
         return str(self._data.get("version", ""))
 
     @property
     def width(self) -> int:
+        """Return the canvas width in pixels."""
         return int(self._data.get("width", 0))
 
     @property
     def height(self) -> int:
+        """Return the canvas height in pixels."""
         return int(self._data.get("height", 0))
 
     @property
     def color_mode(self) -> int:
+        """Return the color mode integer (0=RGB, 1=GRAYSCALE, 2=INDEXED)."""
         return int(self._data.get("color_mode", 0))
 
     @property
     def layer_count(self) -> int:
+        """Return the number of layers in the file."""
         return int(self._data.get("layer_count", 0))
 
     def to_dict(self) -> dict[str, Any]:

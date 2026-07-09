@@ -249,35 +249,45 @@ public sealed partial class FodsDocument
     }
 
     /// <summary>R469: Return the protection password for the named sheet (empty string if none).</summary>
-    // TODO: GI-FODS-NET-001 — read from table:table/@table:protection-key
+    /// <remarks>STUB — ODF requires SHA256-encoded hash (ODF 1.3 §19.708). See GI-FODS-NET-003.</remarks>
     public string GetSheetProtectionPassword(string sheetName)
     {
         RequireSheet(sheetName);
+        // TODO(GI-FODS-NET-003): implement ODF table:table-protection/@table:password read (SHA256+base64)
         return _sheetProtectionPasswords.TryGetValue(sheetName, out var v) ? v : string.Empty;
     }
 
     /// <summary>R469: Set the protection password for the named sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write to ODF XML protection attributes
+    /// <remarks>STUB — ODF requires SHA256-encoded hash (ODF 1.3 §19.708). See GI-FODS-NET-003.</remarks>
     public void SetSheetProtectionPassword(string sheetName, string password)
     {
         RequireSheet(sheetName);
+        // TODO(GI-FODS-NET-003): implement ODF table:table-protection/@table:password write (SHA256+base64)
         _sheetProtectionPasswords[sheetName] = password ?? string.Empty;
     }
 
     /// <summary>R465: Return the visibility string for the sheet ("visible" by default).</summary>
-    // TODO: GI-FODS-NET-001 — read from table:table/@table:display
+    /// <remarks>ODF 1.3 §9.4.2 table:table/@table:visibility. Absent attribute = "visible".</remarks>
     public string GetSheetVisibility(string sheetName)
     {
         RequireSheet(sheetName);
-        return _sheetVisibility.TryGetValue(sheetName, out var v) ? v : "visible";
+        var sheet = GetSheetByName(sheetName);
+        if (sheet is null) return "visible";
+        return sheet.Element.Attribute(NsTable + "visibility")?.Value ?? "visible";
     }
 
-    /// <summary>R465: Set the visibility string for the sheet.</summary>
-    // TODO: GI-FODS-NET-001 — write to table:table/@table:display
+    /// <summary>R465: Set the visibility string for the sheet ("visible", "hidden", or "filter").</summary>
+    /// <remarks>ODF 1.3 §9.4.2 table:table/@table:visibility. Default "visible" omits the attribute.</remarks>
     public void SetSheetVisibility(string sheetName, string visibility)
     {
         RequireSheet(sheetName);
-        _sheetVisibility[sheetName] = visibility ?? "visible";
+        var sheet = GetSheetByName(sheetName);
+        if (sheet is null) return;
+        var val = visibility ?? "visible";
+        if (val == "visible")
+            sheet.Element.Attribute(NsTable + "visibility")?.Remove();  // default — omit attribute
+        else
+            sheet.Element.SetAttributeValue(NsTable + "visibility", val);
     }
 
     /// <summary>R481: Return right-to-left flag for the named sheet (default false).</summary>

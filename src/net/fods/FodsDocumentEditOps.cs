@@ -309,6 +309,7 @@ public sealed partial class FodsDocument
     /// <summary>Set the row height for a row (in-memory). R247.</summary>
     public void SetRowHeight(string sheetName, int rowIndex, double height)
     {
+        // TODO(GI-FODS-NET-010): wire row height to ODF XML
         if (string.IsNullOrWhiteSpace(sheetName))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         if (rowIndex < 0) throw new ArgumentOutOfRangeException(nameof(rowIndex));
@@ -593,6 +594,7 @@ public sealed partial class FodsDocument
     /// <summary>Define a named range (in-memory only). R264.</summary>
     public void SetNamedRange(string name, string sheetName, string range)
     {
+        // TODO(GI-FODS-NET-011): wire to ODF table:named-expressions/table:named-range XML for persistence
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name must not be null or empty.", nameof(name));
         _namedRanges[name] = range;
