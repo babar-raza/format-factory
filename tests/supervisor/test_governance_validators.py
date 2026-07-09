@@ -3377,3 +3377,44 @@ class TestValidatorCountInvariant:
             f"Expected >= 154 validators in _VALIDATOR_REGISTRY, got {count}. "
             "TC-BF-005 requires @validator decorator on all validate_* functions."
         )
+
+
+# ---------------------------------------------------------------------------
+# V149: validate_source_stubs — stub enforcement via no_stub_scan.py
+# ---------------------------------------------------------------------------
+
+
+class TestV149ValidateSourceStubs:
+    """V149 must not block sprints while pre-existing violations exist."""
+
+    def test_v149_does_not_block_for_current_source(self):
+        """V149 must not block sprints (WARN-only until pre-existing violations cleaned)."""
+        supervisor_path = str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor")
+        if supervisor_path not in sys.path:
+            sys.path.insert(0, supervisor_path)
+
+        from governance_validators_ext4 import validate_source_stubs
+
+        declaration = {"planned_work_items": [
+            {"id": "X", "work_item_type": "PRODUCT_SOURCE"},
+        ]}
+        result = validate_source_stubs(declaration)
+        assert result["result"] in ("PASS", "WARN"), (
+            f"V149 should be PASS or WARN (not FAIL/blocking). "
+            f"Got: {result.get('summary')}"
+        )
+        assert result["blocks_sprint"] is False, (
+            "V149 must not block sprints until pre-existing violations are resolved"
+        )
+
+    def test_v149_skips_when_no_src(self, tmp_path):
+        """V149 must PASS when src/python doesn't exist."""
+        supervisor_path = str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor")
+        if supervisor_path not in sys.path:
+            sys.path.insert(0, supervisor_path)
+
+        from governance_validators_ext4 import validate_source_stubs
+
+        result = validate_source_stubs({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert "not found" in result["summary"]

@@ -65,7 +65,7 @@ class TestGlobalExemptPaths:
         """
         declaration = {
             "changed_files": [
-                "src/python/toml/config_document.py",
+                "src/python/toml/models.py",
                 "tests/python/toml_format/test_r120_toml_gap_closure.py",
                 "reports/capability-layer/gap-ledger.json",
                 "registry/source-structure-baseline.json",
@@ -96,7 +96,7 @@ class TestGlobalExemptPaths:
         """Exempt file outside declared lane must not produce a cross-lane violation."""
         declaration = {
             "changed_files": [
-                "src/python/toml/config_document.py",
+                "src/python/toml/models.py",
                 "reports/capability-layer/gap-ledger.json",  # REPORTING, but exempt
                 "registry/source-structure-baseline.json",   # GOVERNANCE, but exempt
             ]

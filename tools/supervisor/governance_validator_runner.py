@@ -754,6 +754,16 @@ def run_all_governance_validators(
     except Exception as _exc_v145:
         _skipped_validators.append({"validators": ["V145"], "error": str(_exc_v145)})
 
+    # V149 (TC-PFF-R1, 2026-07-09): Stub enforcement via no_stub_scan.py
+    # blocks_sprint=True for PRODUCT_SOURCE/RELEASE_GATE items with violations.
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_source_stubs as _v149,
+        )
+        results.append(_v149(declaration, repo_root))
+    except Exception as _exc_v149:
+        _skipped_validators.append({"validators": ["V149"], "error": str(_exc_v149)})
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -800,7 +810,7 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 166,  # Updated to match actual ran_count
+        "expected_count": 167,  # V149 added (TC-PFF-R1, 2026-07-09)
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,

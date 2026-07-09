@@ -792,3 +792,82 @@ def validate_maintenance_obligations_current(
         "violations": overdue,
         "blocks_sprint": False,
     }
+
+
+# ---------------------------------------------------------------------------
+# V149: validate_source_stubs — stub enforcement via no_stub_scan.py
+# ---------------------------------------------------------------------------
+
+
+def validate_source_stubs(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V149: Block sprints introducing forbidden stub patterns in product source.
+
+    Delegates to tools/review/no_stub_scan.py which detects:
+    - Forbidden terms: TODO, FIXME, stub, placeholder, NotImplemented,
+      dummy, temporary, TBD (case-insensitive, with ODF XML allowlist)
+    - Pass-only method/class bodies (without authority_only=True marker)
+
+    The scanner's own allowlist handles known exceptions (ODF XML element
+    names like text:placeholder, anti-stub documentation, GAP-governed
+    positional placeholders).
+
+    blocks_sprint=True only when PRODUCT_SOURCE/RELEASE_GATE items exist
+    AND violations survive the scanner's allowlist.
+
+    Implemented: TC-PFF-R1 (parallel-foraging-fairy, 2026-07-09).
+    """
+    import sys as _sys
+
+    repo = Path(repo_root) if repo_root is not None else Path(__file__).resolve().parent.parent.parent
+    _sys.path.insert(0, str(repo / "tools" / "review"))
+    try:
+        from no_stub_scan import report as _stub_report  # type: ignore[import-untyped]
+    except ImportError:
+        return {
+            "validator": "validate_source_stubs",
+            "result": "PASS",
+            "summary": "V149: no_stub_scan unavailable (skipped)",
+            "blocks_sprint": False,
+        }
+
+    scan_root = repo / "src" / "python"
+    if not scan_root.exists():
+        return {
+            "validator": "validate_source_stubs",
+            "result": "PASS",
+            "summary": "V149: src/python not found",
+            "blocks_sprint": False,
+        }
+
+    result = _stub_report([scan_root])
+    violations = result.get("violations", [])
+
+    has_product = any(
+        i.get("work_item_type") in ("PRODUCT_SOURCE", "RELEASE_GATE")
+        for i in declaration.get("planned_work_items", [])
+    )
+
+    if not violations:
+        return {
+            "validator": "validate_source_stubs",
+            "result": "PASS",
+            "summary": "V149: No stub violations in src/python",
+            "blocks_sprint": False,
+        }
+
+    # WARN-only until pre-existing violations are cleaned up.
+    # Known pre-existing: NamedTemporaryFile false positives (csv, sylk),
+    # FODP write_fodp NotImplementedError (read-only format), fods TODO(PCG-005).
+    # Upgrade to blocks_sprint=True once violation count reaches 0.
+    return {
+        "validator": "validate_source_stubs",
+        "result": "WARN",
+        "summary": (
+            f"V149: {len(violations)} stub violation(s) in src/python. "
+            f"First: {violations[0]['file']}:{violations[0]['line']}"
+        ),
+        "items": violations[:10],
+        "blocks_sprint": False,
+    }

@@ -6759,3 +6759,43 @@ All 5 taskcards closed in a single session (2026-07-07):
 - LibreOffice D3 depth (fods-lo-001): requires user to install LibreOffice — executor ready, SKIPPED gracefully
 
 **Final Verdict:** ORACLE_DEPTH_ALL_D1_VERIFIED | TERMINAL_CLOSED
+
+## Section 98 — parallel-foraging-fairy: Stub Enforcement Wiring (CLOSED)
+
+**Mission ID:** PFF-FORENSICS-001
+**Plan Type:** machinery_hardening
+**Date:** 2026-07-09
+**Plan Path:** `plans/.claude/parallel-foraging-fairy.md`
+
+### Problem Statement
+
+`tools/review/no_stub_scan.py` existed as a standalone scanner detecting forbidden stub
+patterns (TODO, FIXME, stub, placeholder, NotImplemented, dummy, temporary, TBD, pass-only
+methods) but was never wired into the governance validator pipeline. V36 checks test
+assertion quality only. V48 checks the `architecture_only` marker only. Neither calls the
+scanner. Stub patterns could enter product source without triggering any governance validator.
+
+### Deliverables
+
+| Taskcard | Description | Status |
+|---|---|---|
+| TC-PFF-R1 | V149 `validate_source_stubs` — governance validator delegating to `no_stub_scan.report()` | CLOSED |
+| TC-PFF-R2 | `.gitignore` cleanup for nested `src/python/fods/fods/` duplicate (pip editable-install artifact) | CLOSED |
+| TC-PFF-R3 | Stale test fixture: `config_document.py` → `models.py` in `test_lane_enforcement_validator.py` | CLOSED |
+
+### Implementation Details
+
+- V149 added to `tools/supervisor/governance_validators_ext4.py` (lines 798-870)
+- Registered in `tools/supervisor/governance_validator_runner.py` (expected_count 166→167)
+- Tests: `TestV149ValidateSourceStubs` in `tests/supervisor/test_governance_validators.py` (2/2 PASS)
+- V149 is WARN-only (`blocks_sprint: False`) due to 9 pre-existing violations in csv, fodp, fods, sylk, xcf packages
+- Future work: clean pre-existing violations, then upgrade V149 to `blocks_sprint: True`
+
+### Verification
+
+- Governance runner: 167/167 validators (V149 included)
+- V149 integration pilot: WARN with 9 pre-existing violations, `blocks_sprint: False`
+- Lane enforcement tests: 11/11 PASS (stale fixture fixed)
+- Lifecycle audit: AUDIT_PASS, all taskcards closed
+
+**Final Verdict:** STUB_ENFORCEMENT_WIRED | TERMINAL_CLOSED
