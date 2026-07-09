@@ -109,8 +109,10 @@ desktop.ini
 # pip may create a copy of the package inside its own directory.
 # Example: src/python/fods/fods/fods/ is a copy of src/python/fods/fods/
 # These are build artifacts and must NOT be committed.
+# NOTE: Only exclude build artifacts and nested pip copies — NOT the source tree itself.
 # ============================================================
-src/python/fods/fods/
+src/python/fods/fods/build/
+src/python/fods/fods/__pycache__/
 src/python/fods/fods/fods/
 
 # ============================================================

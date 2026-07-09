@@ -38658,6 +38658,56 @@
       "change_type": "ADD_DOMAIN_MODEL",
       "gap_ref": "GAP-PROD-INV-MODEL-001",
       "tests": "tests/python/xcf/test_xcf_domain_model.py"
+    },
+    {
+      "file": "src/python/fods/fods/models.py",
+      "class": "FodsDocument,FodsSheet,FodsCell",
+      "spec_qname": "office:document,table:table,table:table-cell",
+      "spec_fact_ref": "FACT-FODS-001",
+      "sprint": "hazy-questing-peach",
+      "change_type": "ADD_DOMAIN_MODEL",
+      "gap_ref": "TC-HQP-006",
+      "tests": "tests/python/fods/"
+    },
+    {
+      "file": "src/python/fods/fods/Compat/",
+      "class": "FodsDocument,FodsSheet,FodsCell (facades)",
+      "spec_qname": "office:document,table:table,table:table-cell",
+      "spec_fact_ref": "FACT-FODS-001",
+      "sprint": "hazy-questing-peach",
+      "change_type": "ADD_COMPAT_FACADE",
+      "gap_ref": "TC-HQP-006",
+      "tests": "tests/python/fods/"
+    },
+    {
+      "file": "src/python/fods/fods/spec/",
+      "class": "Table,Document,TableCell,etc",
+      "spec_qname": "table:table,office:document,table:table-cell",
+      "spec_fact_ref": "FACT-FODS-001",
+      "sprint": "hazy-questing-peach",
+      "change_type": "ADD_SPEC_HIERARCHY",
+      "gap_ref": "TC-HQP-006",
+      "tests": "tests/python/fods/"
+    },
+    {
+      "file": "src/python/fods/fods/fods_analytics.py",
+      "class": "FodsAnalytics",
+      "spec_qname": "office:spreadsheet",
+      "spec_fact_ref": "FACT-FODS-001",
+      "sprint": "hazy-questing-peach",
+      "change_type": "ADD_ANALYTICS_MODULE",
+      "gap_ref": "TC-HQP-006",
+      "tests": "tests/python/fods/"
+    },
+    {
+      "file": "src/python/fods/fods/parser.py,neutral_model.py,writer.py",
+      "class": "FodsParser,FodsNeutralModel,FodsWriter",
+      "spec_qname": "office:document",
+      "spec_fact_ref": "FACT-FODS-001",
+      "sprint": "hazy-questing-peach",
+      "change_type": "ADD_PARSER_WRITER",
+      "gap_ref": "TC-HQP-006",
+      "tests": "tests/python/fods/"
     }
   ]
 }
