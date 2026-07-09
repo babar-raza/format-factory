@@ -113,6 +113,38 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception:
             pass  # best-effort
 
+    # Step 0-pre-aq (TC-HQP-005): GC action-queue.jsonl entries older than 7 days.
+    # The queue is append-only with no consumer TTL; without GC it grows unbounded.
+    # Entries from closed sprints >7 days ago are stale and cannot be actioned.
+    _aq_path_gc = repo_root / ".local" / "supervisor" / "action-queue.jsonl"
+    if _aq_path_gc.exists():
+        try:
+            from datetime import datetime as _dt_gc, timezone as _tz_gc, timedelta as _td_gc
+            _aq_cutoff = _dt_gc.now(_tz_gc.utc) - _td_gc(days=7)
+            _aq_lines = _aq_path_gc.read_text(encoding="utf-8").splitlines()
+            _aq_kept, _aq_dropped = [], 0
+            for _aq_line in _aq_lines:
+                if not _aq_line.strip():
+                    continue
+                try:
+                    _aq_entry = json.loads(_aq_line)
+                    _aq_ts_str = _aq_entry.get("queued_at") or _aq_entry.get("created_at")
+                    if _aq_ts_str:
+                        _aq_ts = datetime.fromisoformat(_aq_ts_str)
+                        if _aq_ts.tzinfo is None:
+                            _aq_ts = _aq_ts.replace(tzinfo=timezone.utc)
+                        if _aq_ts < _aq_cutoff:
+                            _aq_dropped += 1
+                            continue
+                except Exception:
+                    pass
+                _aq_kept.append(_aq_line)
+            if _aq_dropped > 0:
+                _aq_path_gc.write_text("\n".join(_aq_kept) + "\n", encoding="utf-8")
+                print(f"  [TC-HQP-005] action-queue GC: dropped {_aq_dropped} entries older than 7 days, kept {len(_aq_kept)}")
+        except Exception as _aq_gc_err:
+            print(f"  [TC-HQP-005] action-queue GC skipped (non-blocking): {_aq_gc_err}", file=sys.stderr)
+
     # Step 0 (pre-cycle): Stale queue repair (disabled by default, dry-run safe)
     print("=== STEP 0: PRE-CYCLE STALE REPAIR ===")
     repair_result = run_stale_repair_pre_cycle(repo_root, dry_run=True, enabled=False)
@@ -2083,13 +2115,33 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print(f"  WARNING: Signal unification patch failed (non-blocking): {_unify_err}")
 
         # CCI-MVP: Stable session_id for cross-chat isolation (TC-CCI-200)
+        # TC-HQP-004: Two-tier session scoping — only embed session_id when a per-chat
+        # plan is IN_PROGRESS. Product-track signals are session-agnostic (null session_id)
+        # so SESSION_MISMATCH never fires at session boundaries for ledger work.
+        # check_continuation.py line 69: `if session_id and signal_session_id:` already
+        # short-circuits the mismatch check when signal_session_id is None.
+        _alp_path_hqp004 = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+        _plan_is_active_hqp004 = False
         try:
-            from continuation_identity import get_or_create_session_identity
-            _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
-            session_id = _cci_identity.session_id
-        except Exception as _cci_err:
-            print(f"  WARNING: CCI identity fallback: {_cci_err}", file=sys.stderr)
-            session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
+            if _alp_path_hqp004.exists():
+                _alp_data = json.loads(_alp_path_hqp004.read_text(encoding="utf-8"))
+                _plan_is_active_hqp004 = _alp_data.get("status") == "IN_PROGRESS"
+        except Exception:
+            pass  # If we can't read the lock, treat as no active plan (safe default)
+
+        if _plan_is_active_hqp004:
+            # Per-chat plan is running — session-scope the signal so CCI-MVP protects it
+            try:
+                from continuation_identity import get_or_create_session_identity
+                _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
+                session_id = _cci_identity.session_id
+            except Exception as _cci_err:
+                print(f"  WARNING: CCI identity fallback: {_cci_err}", file=sys.stderr)
+                session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
+        else:
+            # Product-track or no active plan — emit null so next session is never blocked
+            session_id = None
+            print("  [TC-HQP-004] No active per-chat plan: session_id=null in signal (product-agnostic)")
 
         # TC-P2-002: Include track and chat_id (for Track M) in signal.
         _chat_id_value = None

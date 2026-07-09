@@ -489,32 +489,44 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     if terminal and status in ("TERMINAL_CLOSED", "ITERATION_REQUIRED"):
         _append_terminal_lock_to_plan(plan_path, sid, status, datetime.now(timezone.utc).isoformat())
 
-    # TC-PGI-041: Mark next-work-items.json stale when this plan terminally closes.
-    # Prevents ledger_items_suppressed from persisting across bootstrap cycles.
+    # TC-PGI-041 (healed by TC-HQP-003): Clear ledger suppression on plan close.
+    # Original bug: only set ledger_items_suppressed_stale (new field), never cleared
+    # ledger_items_suppressed (the actual blocking flag), and required path match that
+    # fails when work items already point to a different stale plan.
+    # Fix: always clear the suppression flag and promote gap_sourced_items on any
+    # TERMINAL_CLOSED (no path match required — stale work items are always safe to unblock).
     if status == "TERMINAL_CLOSED" and not _is_temp_path(str(plan_path)):
         _repo = Path(__file__).resolve().parent.parent.parent
         _nwi_path_041 = _repo / ".local" / "supervisor" / "next-work-items.json"
         if _nwi_path_041.exists():
             try:
                 _nwi_041 = json.loads(_nwi_path_041.read_text(encoding="utf-8"))
-                _active_041 = _nwi_041.get("active_plan", "")
-                if _active_041 and Path(plan_path).resolve() == Path(_active_041).resolve():
-                    _nwi_041["ledger_items_suppressed_stale"] = True
-                    _nwi_041["stale_reason"] = (
-                        f"Plan '{plan_path}' reached TERMINAL_CLOSED at "
-                        f"{datetime.now(timezone.utc).isoformat()}. Regenerate via bootstrap cycle."
-                    )
-                    _nwi_tmp_041 = _nwi_path_041.with_suffix(".tmp")
-                    _nwi_tmp_041.write_text(json.dumps(_nwi_041, indent=2) + "\n", encoding="utf-8")
-                    import os as _os
-                    _os.replace(str(_nwi_tmp_041), str(_nwi_path_041))
-                    print(
-                        f"[write_plan_lock] TC-PGI-041: marked next-work-items.json stale for plan '{plan_path}'",
-                        file=sys.stderr,
-                    )
+                # Clear the active plan references so ledger work becomes visible
+                _nwi_041["active_plan"] = None
+                _nwi_041["last_taskcard"] = None
+                _nwi_041["ledger_items_suppressed"] = False
+                _nwi_041["ledger_items_suppressed_stale"] = False
+                _nwi_041.pop("stale_reason", None)
+                # Promote gap_sourced_items to items when items only has PLAN-ACTIVE stub
+                _items_041 = _nwi_041.get("items", [])
+                _gap_items_041 = _nwi_041.get("gap_sourced_items", [])
+                if (
+                    len(_items_041) == 1
+                    and _items_041[0].get("item_id") == "PLAN-ACTIVE"
+                    and _gap_items_041
+                ):
+                    _nwi_041["items"] = _gap_items_041
+                _nwi_tmp_041 = _nwi_path_041.with_suffix(".tmp")
+                _nwi_tmp_041.write_text(json.dumps(_nwi_041, indent=2) + "\n", encoding="utf-8")
+                import os as _os
+                _os.replace(str(_nwi_tmp_041), str(_nwi_path_041))
+                print(
+                    f"[write_plan_lock] TC-PGI-041(healed): next-work-items.json unblocked — "
+                    f"ledger_items_suppressed=False, active_plan=null, {len(_nwi_041.get('items',[]))} items promoted",
+                )
             except Exception as _e_041:
                 print(
-                    f"[write_plan_lock] WARNING (TC-PGI-041): could not mark work items stale: {_e_041}",
+                    f"[write_plan_lock] WARNING (TC-PGI-041): could not clear work items suppression: {_e_041}",
                     file=sys.stderr,
                 )
 
