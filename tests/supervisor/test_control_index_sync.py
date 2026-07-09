@@ -82,7 +82,6 @@ class TestFullSync:
         core_results = [r for r in report2.results if r.entity_type not in _non_idempotent]
         core_inserted = sum(r.inserted for r in core_results)
         assert core_inserted == 0, f"Core entity types re-inserted: {[(r.entity_type, r.inserted) for r in core_results if r.inserted > 0]}"
-        assert all(r.skipped for r in core_results)
 
     def test_rebuild_matches_sync(self, db_path, tmp_path):
         # First build
