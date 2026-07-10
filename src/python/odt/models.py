@@ -158,6 +158,37 @@ class OdtModelDocument:
         """True if paragraph_ratio > 0.8."""
         return self.paragraph_ratio > 0.8
 
+    def add_paragraph(self, text: str) -> None:
+        """Append a paragraph to this document in place.
+
+        Args:
+            text: Paragraph text to append.
+
+        Raises:
+            OdtError: If text is None.
+        """
+        from .odt_parser import OdtError, OdtParagraph
+        if text is None:
+            raise OdtError("text must not be None")
+        self._parsed.paragraphs.append(OdtParagraph(text=str(text)))
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to an .odt file.
+
+        Extracts paragraph texts from the model and delegates to write_odt().
+
+        Raises:
+            OdtError: If path is empty or write fails.
+        """
+        from .odt_parser import OdtError
+        from .odt_writer import write_odt
+        if not path:
+            raise OdtError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        para_texts = [p.text for p in self._parsed.paragraphs]
+        write_odt(para_texts, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
