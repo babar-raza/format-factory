@@ -187,6 +187,38 @@ class QoiDocument:
             return "medium"
         return "large"
 
+    def set_pixel(self, index: int, value: tuple[int, ...]) -> None:
+        """Set a pixel value in place by flat index.
+
+        Args:
+            index: Zero-based flat (row-major) pixel index.
+            value: New pixel value as (R, G, B) or (R, G, B, A) tuple.
+
+        Raises:
+            QoiError: If index is out of range or value has wrong channel count.
+        """
+        from .qoi_parser import QoiError
+        pixels = self._parsed.pixels
+        if index < 0 or index >= len(pixels):
+            raise QoiError(f"pixel index {index} out of range (0..{len(pixels) - 1})")
+        if not (isinstance(value, (tuple, list)) and len(value) in (3, 4)):
+            raise QoiError("value must be an (R, G, B) or (R, G, B, A) tuple")
+        pixels[index] = tuple(int(c) for c in value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this image to a .qoi file.
+
+        Raises:
+            QoiError: If path is empty or encoding fails.
+        """
+        from .qoi_parser import QoiError
+        from .qoi_encoder import encode_qoi_to_file
+        if not path:
+            raise QoiError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        encode_qoi_to_file(self._parsed, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {
