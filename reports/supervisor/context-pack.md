@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-07-10T17:27:25.917364
+# Generated: 2026-07-10T17:33:54.289253
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 54bbdb81 |
+| Git HEAD | 2c2a15b1 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | GAP-LEDGER-TRIAGE-AND-COMMIT-001... |
+| Sprint ID | FOSS-NDJSON-MUTATION-001... |
 | Autonomous continue | True |
-| Iteration | 10/12 |
+| Iteration | 11/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 120 |
 | Ledger entries | 2450 total (901 governed) |

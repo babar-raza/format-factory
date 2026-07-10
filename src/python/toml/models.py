@@ -188,6 +188,57 @@ class TomlDocument:
         lengths = [len(v) for v in self._doc().values() if isinstance(v, list)]
         return max(lengths) if lengths else 0
 
+    def set_key(self, key_path: str, value: Any) -> None:
+        """Set a value at the given dot-separated key path, mutating this document in place.
+
+        Args:
+            key_path: Dot-separated key path (e.g., ``"section.key"``).
+            value: The new value to set.
+        """
+        from .toml_codec import set_value
+        updated = set_value(self._doc(), key_path, value)
+        if "data" in self._data:
+            self._data["data"] = updated
+        else:
+            self._data = updated
+
+    def delete_key(self, key_path: str) -> None:
+        """Delete the key at the given dot-separated key path, mutating this document in place.
+
+        Args:
+            key_path: Dot-separated key path (e.g., ``"section.key"``).
+        """
+        from .toml_codec import delete_key as _delete_key
+        updated = _delete_key(self._doc(), key_path)
+        if "data" in self._data:
+            self._data["data"] = updated
+        else:
+            self._data = updated
+
+    def to_toml_string(self) -> str:
+        """Serialize this document back to a TOML-formatted string."""
+        from .toml_codec import _write_section  # type: ignore[attr-defined]
+        lines: list[str] = []
+        _write_section(lines, self._doc())
+        return "\n".join(lines) + "\n"
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a TOML file (UTF-8).
+
+        Args:
+            path: Destination file path. Parent directories are created as needed.
+
+        Raises:
+            TomlError: If path is empty or None.
+        """
+        from .exceptions import TomlError
+        from .toml_codec import write_toml
+        if not path:
+            raise TomlError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_toml(self._doc(), dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FOSS-NDJSON-MUTATION-001
+# Source sprint: FOSS-TOML-MUTATION-001
 # Stream: mainstream
-# Generated: 2026-07-10T17:27:25.895377
+# Generated: 2026-07-10T17:33:54.268143
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FOSS-NDJSON-MUTATION-001
+- Sprint ID: FOSS-TOML-MUTATION-001
 - Evidence verdict: ACCEPTED
-- Tests: 14 passed, 0 failed, 0 skipped
+- Tests: 15 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)

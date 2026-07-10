@@ -1,13 +1,13 @@
-- item_id: NDJSON-PYTHON-MUTATION-API
-  item_title: Add append_record(), to_ndjson(), save_to_file() to Python NdjsonDocument
+- item_id: TOML-DOCUMENT-MUTATION-API
+  item_title: Add set_key(), delete_key(), to_toml_string(), save_to_file() to TomlDocument
   declared_status: completed
   supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - src/python/ndjson/models.py
-  - tests/python/ndjson/test_ndjson_append_record_roundtrip.py
+  - src/python/toml/models.py
+  - tests/python/toml/test_toml_document_mutation.py
   tests_supporting: &id001
-  - tests/python/ndjson/test_ndjson_append_record_roundtrip.py
+  - tests/python/toml/test_toml_document_mutation.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
@@ -27,7 +27,7 @@
     note: non-product item, skip
   semantic_verification:
     adequate: true
-    confidence: 0.95
+    confidence: 0.96
     stub_detected: false
     deficiencies: []
     llm_used: true

@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: FOSS-NDJSON-MUTATION-001
-Generated: 2026-07-10T17:27:25.899642
+Sprint ID: FOSS-TOML-MUTATION-001
+Generated: 2026-07-10T17:33:54.273270
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

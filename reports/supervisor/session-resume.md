@@ -1,12 +1,12 @@
-<!-- generated_at: 2026-07-10T17:27:25.905471 | source_sprint: FOSS-NDJSON-MUTATION-001 -->
+<!-- generated_at: 2026-07-10T17:33:54.278785 | source_sprint: FOSS-TOML-MUTATION-001 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-10T17:27:25.905471
+# Generated: 2026-07-10T17:33:54.278785
 
 ## Quick State
-- Last sprint: FOSS-NDJSON-MUTATION-001
+- Last sprint: FOSS-TOML-MUTATION-001
 - Evidence verdict: ACCEPTED
-- Tests: 14 passed / 0 failed
+- Tests: 15 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -24,7 +24,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/56555b3d50cd
+- Last evidence bundle: .local/evidences/e7bdbd0e6144
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
