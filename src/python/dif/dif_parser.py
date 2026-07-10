@@ -41,6 +41,8 @@ class DifSizeError(DifError):
 
 @dataclass
 class DifCell:
+    """A single cell in a DIF data row, holding a typed value."""
+
     spec_qname: ClassVar[str] = "dif:cell"
     value: Any = None
     value_type: str = "string"  # "numeric", "string", "special"
