@@ -48,11 +48,47 @@ class DifCell:
 
 @dataclass
 class DifDocument:
+    """In-memory model of a DIF (Data Interchange Format) document."""
+
     spec_qname: ClassVar[str] = "dif:document"
     title: str = ""
     vectors: int = 0  # columns
     tuples: int = 0   # rows
     rows: list[list[DifCell]] = field(default_factory=list)
+
+    def set_cell_value(
+        self, row: int, col: int, value: Any, value_type: str = "string"
+    ) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Args:
+            row:        0-based row index.
+            col:        0-based column index.
+            value:      New cell value.
+            value_type: One of 'numeric', 'string', 'boolean', 'special'.
+
+        Raises:
+            DifError: If row or col is out of range.
+        """
+        if row < 0 or row >= len(self.rows):
+            raise DifError(f"Row {row} out of range (0..{len(self.rows) - 1})")
+        r = self.rows[row]
+        if col < 0 or col >= len(r):
+            raise DifError(f"Col {col} out of range (0..{len(r) - 1})")
+        r[col] = DifCell(value=value, value_type=value_type)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .dif file.
+
+        Raises:
+            DifError: If path is empty or write fails.
+        """
+        from pathlib import Path as _Path
+        if not path:
+            raise DifError("path must not be empty")
+        dest = _Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_dif(self, dest)
 
 
 def _read_lines(file_path: Path) -> list[str]:

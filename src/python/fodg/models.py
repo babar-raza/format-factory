@@ -139,6 +139,40 @@ class FodgDocument:
         counts = [p.get("shape_count", 0) for p in pages]
         return len(set(counts)) == 1
 
+    def add_page(self, name: str | None = None, texts: list[str] | None = None) -> None:
+        """Append a new page to this document in place.
+
+        Args:
+            name:  Page name (default: auto-generated 'Page<N>').
+            texts: List of text strings; each becomes a shape on the page.
+
+        Raises:
+            FodgError: If name is not str or None.
+        """
+        from .fodg_codec import FodgError, create_fodg
+        if name is not None and not isinstance(name, str):
+            raise FodgError("name must be a str or None")
+        pages = self._data.setdefault("pages", [])
+        idx = len(pages)
+        auto_name = name if name is not None else f"Page{idx + 1}"
+        new_page = create_fodg([{"name": auto_name, "texts": texts or []}])["pages"][0]
+        pages.append(new_page)
+        self._data["page_count"] = len(pages)
+        self._data["shapes_total"] = sum(p.get("shape_count", 0) for p in pages)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .fodg file (flat OpenDocument XML).
+
+        Raises:
+            FodgError: If path is empty or write fails.
+        """
+        from .fodg_codec import FodgError, write_fodg
+        if not path:
+            raise FodgError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_fodg(self._data, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
