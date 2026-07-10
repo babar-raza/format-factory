@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "DIF-TO-CSV-DOGFOOD-001",
+  "latest_sprint": "GNUMERIC-TO-CSV-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38751,9 +38751,33 @@
         }
       ],
       "format": "DIF"
+    },
+    {
+      "entry_id": "R90-GNUMERIC-TO-CSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "Gnumeric Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "gnumeric_to_csv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_to_csv.py",
+          "state": "present",
+          "sha256": "a7b4ece3d6a776b616ee2151826068e1f45837df6d07d5467139fdd92f5e7f32"
+        },
+        {
+          "path": "tests/python/gnumeric/test_gnumeric_to_csv.py",
+          "state": "present",
+          "sha256": "b5b00b5e4bdcc4c364edf9c2523b53a952b93e0cb3bfe27d68a9b05e61a20b6b"
+        }
+      ],
+      "format": "Gnumeric"
     }
   ],
-  "total_entries": 2455,
+  "total_entries": 2456,
   "changes": [
     {
       "file": "src/python/dif/models.py",
