@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "TOML-TO-NDJSON-DOGFOOD-001",
+  "latest_sprint": "ABW-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38703,9 +38703,33 @@
         }
       ],
       "format": "TOML"
+    },
+    {
+      "entry_id": "R90-ABW-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "ABW Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "abw_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_to_ndjson.py",
+          "state": "present",
+          "sha256": "8e058b95da9963b5ef2e6e230bed356e7855d5c1f6c8885b58c88fdc0d1c7438"
+        },
+        {
+          "path": "tests/python/abw/test_abw_to_ndjson.py",
+          "state": "present",
+          "sha256": "fd21966dd3c45a5db6a5d2afa7b6207baba3616b4c88848428d71eee56e77f08"
+        }
+      ],
+      "format": "ABW"
     }
   ],
-  "total_entries": 2453,
+  "total_entries": 2454,
   "changes": [
     {
       "file": "src/python/dif/models.py",
