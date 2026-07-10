@@ -1,24 +1,24 @@
-- item_id: COMMIT-PQ-BUNDLE
-  item_title: Commit PQ-BUNDLE-FORENSICS-REPAIR-001 sprint results
+- item_id: NDJSON-PYTHON-MUTATION-API
+  item_title: Add append_record(), to_ndjson(), save_to_file() to Python NdjsonDocument
   declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - reports/r90/product-code-change-ledger.json
-  tests_supporting: []
+  - src/python/ndjson/models.py
+  - tests/python/ndjson/test_ndjson_append_record_roundtrip.py
+  tests_supporting: &id001
+  - tests/python/ndjson/test_ndjson_append_record_roundtrip.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    COMMIT-PQ-BUNDLE'
+  next_prompt_instruction: ''
+  tests_evidence_verified: *id001
   purpose_check:
-    item_type: RELEASE
+    item_type: FEATURE
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
@@ -27,63 +27,7 @@
     note: non-product item, skip
   semantic_verification:
     adequate: true
-    confidence: 0.62
+    confidence: 0.95
     stub_detected: false
-    deficiencies:
-    - Evidence consists only of a ledger JSON file; actual test code or detailed test
-      reports are not included, preventing verification of test quality.
-    - No direct evidence that the listed test files (e.g., tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py,
-      tests/net/fods/FodsR91SetCellValueTests.cs) contain meaningful assertions; they
-      could be stubs.
-    - Scope verification is limited to ledger entries; without seeing the source changes
-      or test implementations, we cannot confirm that the changes align with the claimed
-      sprint work.
-    - "Thin coverage cannot be assessed because test contents are absent; the ledger\u2019\
-      s summary of \"5 passed\" or \"8 new tests pass\" is insufficient to prove comprehensive\
-      \ validation."
+    deficiencies: []
     llm_used: true
-    low_confidence_override: true
-- item_id: GAP-TRIAGE-12-STALE
-  item_title: Close 12 stale P2 gaps in gap ledger
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - reports/capability-layer/gap-ledger.json
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    GAP-TRIAGE-12-STALE'
-  purpose_check:
-    item_type: CLEANUP
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.32
-    stub_detected: false
-    deficiencies:
-    - Evidence is a raw JSON dump without explicit count or list of the 12 specific
-      P2 gaps that were closed.
-    - No indication of the gaps' prior status (e.g., stale, open) to demonstrate they
-      were stale before closure.
-    - The JSON does not filter or highlight P2 priority gaps; priority field is present
-      but not used to verify that exactly 12 P2 gaps were addressed.
-    - "No before\u2011and\u2011after comparison or change log to prove that the gaps\
-      \ transitioned from open to closed during the sprint."
-    - Absence of any test code, validation script, or automated check confirming the
-      closure criteria were met.
-    llm_used: true
-    low_confidence_override: true

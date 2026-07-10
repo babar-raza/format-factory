@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: GAP-LEDGER-TRIAGE-AND-COMMIT-001
-Generated: 2026-07-10T17:20:40.897666
+Sprint ID: FOSS-NDJSON-MUTATION-001
+Generated: 2026-07-10T17:27:25.899642
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

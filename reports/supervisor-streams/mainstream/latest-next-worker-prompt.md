@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-07-10T17:20:21.565007
-# Source: Supervisor autonomous-cycle review of GAP-LEDGER-TRIAGE-AND-COMMIT-001
+# Generated: 2026-07-10T17:27:06.516780
+# Source: Supervisor autonomous-cycle review of FOSS-NDJSON-MUTATION-001
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: FOSS-NDJSON-MUTATION-001
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -629,7 +629,7 @@ Address escalated failures with priority.
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 505x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 506x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 - **TEST_FAILURE** (seen 340x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 - **TEST_FAILURE** (seen 4x): Sprint ended with 2 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 

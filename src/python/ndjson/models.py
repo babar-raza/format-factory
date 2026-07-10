@@ -197,6 +197,41 @@ class NdjsonDocument:
             return 0.0
         return self.object_count / self.record_count
 
+    def append_record(self, record: Any) -> None:
+        """Append a new record to this document in place.
+
+        Args:
+            record: Any JSON-serializable value (dict, list, scalar).
+
+        Raises:
+            NdjsonError: If record is None.
+        """
+        from .exceptions import NdjsonError
+        if record is None:
+            raise NdjsonError("record must not be None")
+        self._records.append(record)
+
+    def to_ndjson(self) -> str:
+        """Serialize all records back to an NDJSON string (one JSON object per line, LF-terminated)."""
+        import json as _json
+        return "".join(_json.dumps(r, ensure_ascii=False) + "\n" for r in self._records)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a file as NDJSON (UTF-8, LF line endings, no BOM).
+
+        Args:
+            path: Destination file path. Parent directories are created as needed.
+
+        Raises:
+            NdjsonError: If path is empty or None.
+        """
+        from .exceptions import NdjsonError
+        if not path:
+            raise NdjsonError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(self.to_ndjson(), encoding="utf-8")
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)

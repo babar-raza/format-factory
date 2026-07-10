@@ -1,7 +1,7 @@
 # Materialized Evidence Review
-# Run ID: d301c4faf016
-# Sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001
-# Generated: 2026-07-10T17:18:54.804032
+# Run ID: 56555b3d50cd
+# Sprint: FOSS-NDJSON-MUTATION-001
+# Generated: 2026-07-10T17:24:34.231821
 
 ## Materialization Summary
 
@@ -13,11 +13,10 @@
 
 | Item | Grade | Note |
 |------|-------|------|
-| COMMIT-PQ-BUNDLE | ACCEPTED | All 1 evidence path(s) verified |
-| GAP-TRIAGE-12-STALE | ACCEPTED | All 1 evidence path(s) verified |
+| NDJSON-PYTHON-MUTATION-API | ACCEPTED | All 2 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\d301c4faf016\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\56555b3d50cd\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\d301c4faf016\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\56555b3d50cd\source-change-diffs.patch

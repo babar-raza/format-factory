@@ -1,12 +1,12 @@
-<!-- generated_at: 2026-07-10T17:20:40.904446 | source_sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001 -->
+<!-- generated_at: 2026-07-10T17:27:25.905471 | source_sprint: FOSS-NDJSON-MUTATION-001 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-10T17:20:40.904446
+# Generated: 2026-07-10T17:27:25.905471
 
 ## Quick State
-- Last sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001
-- Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 6801 passed / 0 failed
+- Last sprint: FOSS-NDJSON-MUTATION-001
+- Evidence verdict: ACCEPTED
+- Tests: 14 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -24,7 +24,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/d301c4faf016
+- Last evidence bundle: .local/evidences/56555b3d50cd
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
