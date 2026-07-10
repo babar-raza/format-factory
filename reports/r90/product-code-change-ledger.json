@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "GNUMERIC-TO-CSV-DOGFOOD-001",
+  "latest_sprint": "SYLK-TO-CSV-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38775,9 +38775,33 @@
         }
       ],
       "format": "Gnumeric"
+    },
+    {
+      "entry_id": "R90-SYLK-TO-CSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "SYLK Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "sylk_to_csv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_to_csv.py",
+          "state": "present",
+          "sha256": "076ab8941f5aabd38297291f0d8659ff96f713dc17503b6bf707284eae256a27"
+        },
+        {
+          "path": "tests/python/sylk/test_sylk_to_csv.py",
+          "state": "present",
+          "sha256": "4dfd500fdd8a954880d036cffc468c55b52f7d0b7ef47fb012037dc42c401bf4"
+        }
+      ],
+      "format": "SYLK"
     }
   ],
-  "total_entries": 2456,
+  "total_entries": 2457,
   "changes": [
     {
       "file": "src/python/dif/models.py",
