@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ODS-TO-CSV-DOGFOOD-001",
+  "latest_sprint": "TOML-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38679,9 +38679,33 @@
         }
       ],
       "format": "ODS"
+    },
+    {
+      "entry_id": "R90-TOML-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "TOML Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "toml_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_to_ndjson.py",
+          "state": "present",
+          "sha256": "858a4e8a3e4fd67c4be2595703c915efbc301d8b55a5c0b80114f55508568e67"
+        },
+        {
+          "path": "tests/python/toml/test_toml_to_ndjson.py",
+          "state": "present",
+          "sha256": "d45c694c2b3a091449fb2bdb8b0efe101e152d40e87dbb53d3cd98567fb9910a"
+        }
+      ],
+      "format": "TOML"
     }
   ],
-  "total_entries": 2452,
+  "total_entries": 2453,
   "changes": [
     {
       "file": "src/python/dif/models.py",
