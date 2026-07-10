@@ -232,6 +232,44 @@ class OdsModelDocument:
         """True if largest_sheet_fraction > 0.8."""
         return self.largest_sheet_fraction > 0.8
 
+    def set_cell_value(
+        self,
+        sheet_index: int,
+        row: int,
+        col: int,
+        value: Any,
+        value_type: str = "string",
+    ) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Delegates to ods_writer.set_cell_value(); extends rows/cells as needed.
+
+        Raises:
+            OdsError: If sheet_index is out of range.
+        """
+        from .ods_parser import OdsError
+        from .ods_writer import set_cell_value as _set_cell_value
+        success, msg = _set_cell_value(
+            self._parsed, sheet_index, row, col, value, value_type
+        )
+        if not success:
+            raise OdsError(msg)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to an .ods file.
+
+        Raises:
+            OdsError: If path is empty or write fails.
+        """
+        from pathlib import Path as _Path
+        from .ods_parser import OdsError
+        from .ods_writer import write_ods
+        if not path:
+            raise OdsError("path must not be empty")
+        dest = _Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_ods(self._parsed, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
