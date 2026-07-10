@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+  "latest_sprint": "ODT-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38631,9 +38631,33 @@
       "change_type": "FEATURE",
       "description": "CLI entry points (ff-{format}) and __init__.pyi type stubs for all 20 Python FOSS packages",
       "validated": true
+    },
+    {
+      "entry_id": "R90-ODT-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "ODT Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "odt_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_to_ndjson.py",
+          "state": "present",
+          "sha256": "fbac385c87dc2e7c8196a5f84e00d93190047754361e1c7206d9cb73b363aafa"
+        },
+        {
+          "path": "tests/python/odt/test_odt_to_ndjson.py",
+          "state": "present",
+          "sha256": "be422deefcf732b604b3607c5c683b5a0390c53a62679a073a86e1a6b208e35a"
+        }
+      ],
+      "format": "ODT"
     }
   ],
-  "total_entries": 2450,
+  "total_entries": 2451,
   "changes": [
     {
       "file": "src/python/dif/models.py",
