@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-03 (v7.0: PQLM-001 Phase 3 closure — glowing-foraging-starlight; all 5 counters→0; PCG-001/002 CLOSED; governed convergence lifecycle COMPLETE)
+**Last updated:** 2026-07-10 (v8.0: PQLM-001 Phase 4 closure — TC-PQLM-026/027/028/029 CLOSED, commit 2102bd63; GOV-WINDOW-FIX-001 — V105/V106 detection windows extended 300→500/400→600, commit 6bc5ad75; 4 governance-masked methods restored; 4233 .NET + 876 Python xcf tests pass)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
