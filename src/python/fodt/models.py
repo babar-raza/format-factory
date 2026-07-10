@@ -235,6 +235,38 @@ class FodtDocument:
         """True if paragraph_ratio > 0.8."""
         return self.paragraph_ratio > 0.8
 
+    def add_paragraph(self, text: str) -> None:
+        """Append a paragraph block to this document in place.
+
+        Args:
+            text: Paragraph text to append.
+
+        Raises:
+            FodtError: If text is None.
+        """
+        from .exceptions import FodtError
+        if text is None:
+            raise FodtError("text must not be None")
+        block = {"type": "paragraph", "kind": "paragraph", "text": str(text), "heading_level": None, "runs": []}
+        self._data.setdefault("blocks", []).append(block)
+        if "content" in self._data:
+            self._data["content"].append({"kind": "block", "data": block})
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .fodt file (flat OpenDocument XML).
+
+        Raises:
+            FodtError: If path is empty or write fails.
+        """
+        from pathlib import Path as _Path
+        from .exceptions import FodtError
+        if not path:
+            raise FodtError("path must not be empty")
+        dest = _Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        from .writer import write_fodt
+        write_fodt(self._data, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying document dict."""
         return self._data
