@@ -175,6 +175,35 @@ class PgmDocument:
             return "medium"
         return "large"
 
+    def set_pixel(self, index: int, value: int) -> None:
+        """Set a grayscale pixel value in place by flat index.
+
+        Args:
+            index: Zero-based flat (row-major) pixel index.
+            value: New grayscale value in range [0, maxval].
+
+        Raises:
+            PgmError: If index is out of range.
+        """
+        from .pgm_parser import PgmError
+        pixels = self._parsed.pixels
+        if index < 0 or index >= len(pixels):
+            raise PgmError(f"pixel index {index} out of range (0..{len(pixels) - 1})")
+        pixels[index] = int(value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this image to a .pgm file.
+
+        Raises:
+            PgmError: If path is empty or write fails.
+        """
+        from .pgm_parser import PgmError, write_pgm
+        if not path:
+            raise PgmError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_pgm(self._parsed.pixels, self._parsed.width, self._parsed.height, self._parsed.maxval, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

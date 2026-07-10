@@ -175,6 +175,37 @@ class PpmDocument:
             return "medium"
         return "large"
 
+    def set_pixel(self, index: int, value: tuple[int, int, int]) -> None:
+        """Set an RGB pixel value in place by flat index.
+
+        Args:
+            index: Zero-based flat (row-major) pixel index.
+            value: New (R, G, B) tuple.
+
+        Raises:
+            PpmError: If index is out of range or value is not a 3-tuple.
+        """
+        from .ppm_parser import PpmError
+        pixels = self._parsed.pixels
+        if index < 0 or index >= len(pixels):
+            raise PpmError(f"pixel index {index} out of range (0..{len(pixels) - 1})")
+        if not (isinstance(value, (tuple, list)) and len(value) == 3):
+            raise PpmError("value must be a (R, G, B) tuple of 3 integers")
+        pixels[index] = tuple(int(c) for c in value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this image to a .ppm file.
+
+        Raises:
+            PpmError: If path is empty or write fails.
+        """
+        from .ppm_parser import PpmError, write_ppm
+        if not path:
+            raise PpmError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_ppm(self._parsed.pixels, self._parsed.width, self._parsed.height, self._parsed.maxval, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

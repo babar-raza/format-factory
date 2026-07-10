@@ -165,6 +165,35 @@ class PbmDocument:
             return "medium"
         return "large"
 
+    def set_pixel(self, index: int, value: int) -> None:
+        """Set a pixel value in place by flat index.
+
+        Args:
+            index: Zero-based flat (row-major) pixel index.
+            value: New pixel value (0=white, 1=black for PBM).
+
+        Raises:
+            PbmError: If index is out of range.
+        """
+        from .pbm_parser import PbmError
+        pixels = self._parsed.pixels
+        if index < 0 or index >= len(pixels):
+            raise PbmError(f"pixel index {index} out of range (0..{len(pixels) - 1})")
+        pixels[index] = int(value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this image to a .pbm file.
+
+        Raises:
+            PbmError: If path is empty or write fails.
+        """
+        from .pbm_parser import PbmError, write_pbm
+        if not path:
+            raise PbmError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_pbm(self._parsed.pixels, self._parsed.width, self._parsed.height, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {
