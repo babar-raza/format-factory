@@ -1,39 +1,30 @@
 [
   {
-    "item_id": "WI-SJR2-FODS-NET-CELL-STYLE",
-    "item_title": "Fix 16 failing FODS .NET cell style roundtrip tests",
+    "item_id": "PQ-029-ADDRECORD",
+    "item_title": "Add AddRecord() to NdjsonDocument (.NET)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "src/net/fods/FodsDocumentCellProps.cs",
-      "src/net/fods/FodsStyleEditor.cs",
-      "src/net/fods/FodsStyleResolver.cs",
-      "src/net/fods/Model/FodsOdfCellStyle.cs",
-      "src/net/fods/FodsDocumentReadOps.cs"
+      ".local/evidences/667b7d640797/ndjson-addrecord-test-output.txt",
+      "src/net/ndjson/NdjsonDocument.cs",
+      "tests/net/ndjson/NdjsonAddRecordRoundtripTests.cs"
     ],
-    "tests_supporting": [
-      "tests/net/fods/FodsR472GetCellFontStyleDedicatedTests.cs",
-      "tests/net/fods/FodsR455GetCellHorizontalAlignmentDedicatedTests.cs",
-      "tests/net/fods/FodsR446GetCellProtectionDedicatedTests.cs",
-      "tests/net/fods/FodsR467GetCellIndentLevelDedicatedTests.cs",
-      "tests/net/fods/FodsR456GetCellVerticalAlignmentDedicatedTests.cs",
-      "tests/net/fods/FodsR450GetCellShrinkToFitDedicatedTests.cs"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (6 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "grade_capped_to_ACCEPTED_WITH_LIMITATIONS: LLM unavailable; only intermediate verification used"
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for PQ-029-ADDRECORD",
     "purpose_check": {
-      "item_type": "",
+      "item_type": "FEATURE",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
@@ -44,53 +35,258 @@
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.7,
+      "confidence": 0.78,
       "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsDocumentCellProps.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (31792 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsDocumentCellProps.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsStyleEditor.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (11130 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsStyleEditor.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsStyleResolver.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (13976 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsStyleResolver.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\Model\\FodsOdfCellStyle.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (2745 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\Model\\FodsOdfCellStyle.cs",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsDocumentReadOps.cs",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (42166 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\net\\fods\\FodsDocumentReadOps.cs",
-          "check_type": "nonzero_existence"
-        }
+      "deficiencies": [
+        "The NdjsonDocument.cs excerpt does not contain the AddRecord method implementation; the method is missing from the provided evidence.",
+        "Only test run output is provided; the actual test source code is absent, preventing verification that the tests contain meaningful assertions rather than stubs.",
+        "The source file is truncated mid\u2011method, so it is unclear whether the AddRecord method exists elsewhere in the file or repository."
       ],
-      "summary": "5/5 evidence files passed content check",
-      "fallback_grade_cap": "ACCEPTED_WITH_LIMITATIONS",
-      "_cached_at": "2026-07-04T17:13:15.556553+00:00",
+      "llm_used": true,
+      "low_confidence_override": true,
+      "_cached_at": "2026-07-10T11:50:53.666493+00:00",
       "_from_cache": true
     }
+  },
+  {
+    "item_id": "PQ-025-VERSION",
+    "item_title": "Normalize .NET csproj version suffixes to 0.1.0-alpha.1",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/net/fods/FormatFactory.Fods.csproj",
+      "src/net/fodt/FormatFactory.Fodt.csproj",
+      "src/net/ndjson/FormatFactory.Ndjson.csproj",
+      "src/net/csv/FormatFactory.Csv.csproj",
+      "src/net/tsv/FormatFactory.Tsv.csproj",
+      "src/net/netpbm/FormatFactory.Netpbm.csproj",
+      "src/net/zst/FormatFactory.Zst.csproj",
+      "src/net/html/FormatFactory.Html.csproj"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for PQ-025-VERSION",
+    "purpose_check": {
+      "item_type": "PACKAGING",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true,
+      "_cached_at": "2026-07-10T11:22:55.189005+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "PQ-021-SYLK",
+    "item_title": "Add set_cell_value_on_model() model-based SYLK edit",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/sylk/sylk_parser.py",
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "tests_supporting": [
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "purpose_check": {
+      "item_type": "FEATURE",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.97,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true,
+      "_cached_at": "2026-07-10T11:33:33.565633+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "PQ-016-SHARED",
+    "item_title": "Remove dead _base_codec.py and _base_parser.py",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/_shared/__init__.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for PQ-016-SHARED",
+    "purpose_check": {
+      "item_type": "CLEANUP",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.1,
+      "stub_detected": false,
+      "deficiencies": [
+        "No evidence showing that _base_codec.py and _base_parser.py have been removed.",
+        "Provided file (__init__.py) is unrelated to the removal task.",
+        "Missing verification such as repository diff, file existence checks, or tests confirming import failures."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true,
+      "_cached_at": "2026-07-10T11:44:09.272737+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "PQ-019-020-CLI-STUBS",
+    "item_title": "Extend CLI entry points and type stubs to all 20 Python packages",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/667b7d640797/cli-stubs-verification-report.txt",
+      "src/python/fods/cli.py",
+      "src/python/fods/__init__.pyi",
+      "src/python/abw/cli.py",
+      "src/python/abw/__init__.pyi",
+      "src/python/zst/cli.py",
+      "src/python/zst/__init__.pyi",
+      "src/python/sylk/cli.py",
+      "src/python/sylk/__init__.pyi"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for PQ-019-020-CLI-STUBS",
+    "purpose_check": {
+      "item_type": "FEATURE",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.93,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "PILOTS-A-O",
+    "item_title": "15 pilots: new API tests + regression suites",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/net/ndjson/NdjsonAddRecordRoundtripTests.cs",
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "tests_supporting": [
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/python/sylk/test_set_cell_value_on_model.py"
+    ],
+    "purpose_check": {
+      "item_type": "TEST",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.78,
+      "stub_detected": false,
+      "deficiencies": [
+        "Python test file is truncated and appears incomplete (ends abruptly at 'test_set_cell_v')",
+        "Evidence only covers two pilots (Ndjson AddRecord and Sylk model edit) while the work item references 15 pilots and broader regression suites",
+        "No regression suite tests for other formats or APIs mentioned in the work item",
+        "Potential missing edge\u2011case tests (e.g., large NDJSON files, concurrent modifications, error handling beyond basic invalid JSON) that would be expected in a comprehensive regression suite"
+      ],
+      "llm_used": true,
+      "low_confidence_override": true,
+      "_cached_at": "2026-07-10T11:23:12.909425+00:00",
+      "_from_cache": true
+    },
+    "csharp_assertion_grade": "STRONG_PROOF"
   }
 ]

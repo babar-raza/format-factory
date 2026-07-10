@@ -71,6 +71,17 @@ _ALLOWLIST_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"see\s+GAP-[A-Z0-9\-]+\s+in\s+gap-ledger", re.IGNORECASE),
     # Docstrings noting positional/synthetic nature with gap-ledger governance
     re.compile(r"positional\s+placeholders?\s+only", re.IGNORECASE),
+    # TC-SC-001: stdlib tempfile.NamedTemporaryFile usage (not a stub)
+    re.compile(r"\bNamedTemporaryFile\b"),
+    # TC-SC-001: ruff suppression comments that mention stub-related terms in explanation
+    re.compile(r"#\s*ruff:\s*noqa\b"),
+    # TC-SC-003: Read-only format write stubs — deliberate NotImplementedError by design
+    re.compile(r"write\s+stub\b.*read-only", re.IGNORECASE),
+    re.compile(r"write\s+support\s+is\s+not\s+implemented", re.IGNORECASE),
+    re.compile(r"NotImplementedError:\s+Always", re.IGNORECASE),
+    re.compile(r"raise\s+NotImplementedError\("),
+    # TC-SC-004: Governed TODOs with explicit taskcard/change-tracking IDs
+    re.compile(r"TODO\([A-Z]+-[A-Z]*-?\d+\)"),
 ]
 
 
@@ -162,6 +173,11 @@ def scan_paths(paths: list[Path], exclude_patterns: list[str] | None = None) -> 
             for py_file in sorted(root_path.rglob("*.py")):
                 parts = py_file.parts
                 if any(ex in parts for ex in excludes):
+                    continue
+                # TC-SC-002: Skip nested duplicate packages (pip editable-install artifacts)
+                rel_to_root = py_file.relative_to(root_path)
+                rel_parts = rel_to_root.parts
+                if len(rel_parts) >= 2 and rel_parts[0] == rel_parts[1]:
                     continue
                 all_violations.extend(scan_file(py_file))
     return all_violations

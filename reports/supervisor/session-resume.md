@@ -1,12 +1,12 @@
-<!-- generated_at: 2026-07-09T18:37:10.266153 | source_sprint: hazy-questing-peach -->
+<!-- generated_at: 2026-07-10T17:09:14.473071 | source_sprint: PQ-BUNDLE-FORENSICS-REPAIR-001 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-09T18:37:10.266153
+# Generated: 2026-07-10T17:09:14.473071
 
 ## Quick State
-- Last sprint: hazy-questing-peach
+- Last sprint: PQ-BUNDLE-FORENSICS-REPAIR-001
 - Evidence verdict: ACCEPTED
-- Tests: 1634 passed / 0 failed
+- Tests: 21558 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -24,49 +24,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hazy-questing-peach-20260709T133041Z\declaration-review-package.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\667b7d640797\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- test_delta: -5955
-- test_delta_from: 6357
-
-## Entry: R1264-R1269-BATCH
-- timestamp: 2026-07-02T20:57:14.552431
-- verdict: ACCEPTED
-- test_count: 109
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1264-r1269-batch\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 81
-- bundle_validation_pass: True
-- test_delta: -293
-- test_delta_from: 402
-
-## Entry: BULK-PROPERTIES-R1233-R1291
-- timestamp: 2026-07-02T22:05:10.502981
-- verdict: ACCEPTED
-- test_count: 1775
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MA-2026-07-02-BULK-R1233-R1291\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 96
-- bundle_validation_pass: True
-- test_delta: +1666
-- test_delta_from: 109
-
-## Entry: PQLM-GOV-001
-- timestamp: 2026-07-04T16:37:13.503440
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pqlm-gov-001-20260704-001\declaration-review-package.zip
-- pending_marker_count: 0
 - bundle_entry_count: 67
 - bundle_validation_pass: True
 
@@ -80,6 +43,43 @@
 - pending_marker_count: 0
 - bundle_entry_count: 70
 - bundle_validation_pass: True
+
+## Entry: hazy-questing-peach
+- timestamp: 2026-07-09T18:37:10.368879
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hazy-questing-peach-20260709T133041Z\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 23
+- bundle_validation_pass: True
+
+## Entry: vast-weaving-lampson
+- timestamp: 2026-07-10T14:31:28.394759
+- verdict: ACCEPTED
+- test_count: 1169
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\vwl-20260710\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 38
+- bundle_validation_pass: True
+- test_delta: +1169
+- test_delta_from: 0
+
+## Entry: PQ-BUNDLE-FORENSICS-REPAIR-001
+- timestamp: 2026-07-10T16:37:12.587919
+- verdict: ACCEPTED
+- test_count: 21558
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\667b7d640797\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 89
+- bundle_validation_pass: True
+- test_delta: +20389
+- test_delta_from: 1169
 ```
 
 ## IMPORTANT REMINDERS

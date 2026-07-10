@@ -157,6 +157,33 @@ public sealed class NdjsonDocument
         new NdjsonRecord(Records[index]);
 
     /// <summary>
+    /// Appends a JSON object string as a new record to this document.
+    /// The string must be a valid JSON value (object, array, or primitive).
+    /// </summary>
+    /// <param name="jsonString">A valid JSON string representing a single record.</param>
+    /// <exception cref="NdjsonException">Thrown if <paramref name="jsonString"/> is null, empty, or not valid JSON.</exception>
+    public void AddRecord(string jsonString)
+    {
+        if (string.IsNullOrWhiteSpace(jsonString))
+            throw new NdjsonException("jsonString must not be null or empty.");
+        try
+        {
+            var doc = JsonDocument.Parse(jsonString);
+            Records.Add(doc.RootElement.Clone());
+        }
+        catch (JsonException ex)
+        {
+            throw new NdjsonException($"jsonString is not valid JSON: {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>
+    /// Appends an already-parsed <see cref="JsonElement"/> as a new record to this document.
+    /// </summary>
+    /// <param name="element">The JSON element to add.</param>
+    public void AddRecord(JsonElement element) => Records.Add(element);
+
+    /// <summary>
     /// Named alias for <see cref="Load(string)"/> making intent explicit.
     /// Prefer LoadContent() for clarity over the ambiguous Load(string) overload.
     /// </summary>

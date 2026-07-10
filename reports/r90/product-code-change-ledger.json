@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "R556",
+  "latest_sprint": "PQ-BUNDLE-FORENSICS-REPAIR-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38545,9 +38545,95 @@
       ],
       "tests_added": 16,
       "status": "active"
+    },
+    {
+      "entry_id": "PQ-BUNDLE-NDJSON-ADDRECORD-001",
+      "sprint_id": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+      "format": "ndjson",
+      "run_id": "667b7d640797",
+      "capability_id": "add-dotnet-api",
+      "language": "dotnet",
+      "change_type": "FEATURE",
+      "files_modified": [
+        "src/net/ndjson/NdjsonDocument.cs"
+      ],
+      "files_added": [
+        "tests/net/ndjson/NdjsonAddRecordRoundtripTests.cs"
+      ],
+      "description": "Add AddRecord(string) and AddRecord(JsonElement) to NdjsonDocument",
+      "test_count_delta": 8,
+      "validated": true
+    },
+    {
+      "entry_id": "PQ-BUNDLE-VERSION-NORMALIZE-001",
+      "sprint_id": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+      "format": "multi",
+      "run_id": "667b7d640797",
+      "capability_id": "add-dotnet-api",
+      "language": "dotnet",
+      "change_type": "PACKAGING",
+      "files_modified": [
+        "src/net/fods/FormatFactory.Fods.csproj",
+        "src/net/fodt/FormatFactory.Fodt.csproj",
+        "src/net/ndjson/FormatFactory.Ndjson.csproj",
+        "src/net/csv/FormatFactory.Csv.csproj",
+        "src/net/tsv/FormatFactory.Tsv.csproj",
+        "src/net/netpbm/FormatFactory.Netpbm.csproj",
+        "src/net/zst/FormatFactory.Zst.csproj",
+        "src/net/html/FormatFactory.Html.csproj"
+      ],
+      "description": "Normalize .NET csproj version suffixes to 0.1.0-alpha.1",
+      "validated": true
+    },
+    {
+      "entry_id": "PQ-BUNDLE-SYLK-MODEL-EDIT-001",
+      "sprint_id": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+      "format": "sylk",
+      "run_id": "667b7d640797",
+      "capability_id": "add-python-api",
+      "language": "python",
+      "change_type": "FEATURE",
+      "files_modified": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "files_added": [
+        "tests/python/sylk/test_set_cell_value_on_model.py"
+      ],
+      "description": "Add set_cell_value_on_model() in-memory SYLK model mutation API",
+      "test_count_delta": 6,
+      "validated": true
+    },
+    {
+      "entry_id": "PQ-BUNDLE-SHARED-CLEANUP-001",
+      "sprint_id": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+      "format": "_shared",
+      "run_id": "667b7d640797",
+      "capability_id": "product-source-task",
+      "language": "python",
+      "change_type": "CLEANUP",
+      "files_modified": [
+        "src/python/_shared/__init__.py"
+      ],
+      "files_deleted": [
+        "src/python/_shared/_base_codec.py",
+        "src/python/_shared/_base_parser.py"
+      ],
+      "description": "Remove dead _base_codec.py and _base_parser.py (zero consumers)",
+      "validated": true
+    },
+    {
+      "entry_id": "PQ-BUNDLE-CLI-STUBS-ALL20-001",
+      "sprint_id": "PQ-BUNDLE-FORENSICS-REPAIR-001",
+      "format": "multi",
+      "run_id": "667b7d640797",
+      "capability_id": "add-python-api",
+      "language": "python",
+      "change_type": "FEATURE",
+      "description": "CLI entry points (ff-{format}) and __init__.pyi type stubs for all 20 Python FOSS packages",
+      "validated": true
     }
   ],
-  "total_entries": 2419,
+  "total_entries": 2450,
   "changes": [
     {
       "file": "src/python/dif/models.py",

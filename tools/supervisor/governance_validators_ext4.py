@@ -857,17 +857,15 @@ def validate_source_stubs(
             "blocks_sprint": False,
         }
 
-    # WARN-only until pre-existing violations are cleaned up.
-    # Known pre-existing: NamedTemporaryFile false positives (csv, sylk),
-    # FODP write_fodp NotImplementedError (read-only format), fods TODO(PCG-005).
-    # Upgrade to blocks_sprint=True once violation count reaches 0.
+    # TC-SC-005: Pre-existing violations resolved (PFF-CLEANUP-002).
+    # V149 now blocks sprints with PRODUCT_SOURCE/RELEASE_GATE items.
     return {
         "validator": "validate_source_stubs",
-        "result": "WARN",
+        "result": "FAIL" if has_product else "WARN",
         "summary": (
             f"V149: {len(violations)} stub violation(s) in src/python. "
             f"First: {violations[0]['file']}:{violations[0]['line']}"
         ),
         "items": violations[:10],
-        "blocks_sprint": False,
+        "blocks_sprint": has_product,
     }

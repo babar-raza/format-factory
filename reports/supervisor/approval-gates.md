@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: hazy-questing-peach
-Generated: 2026-07-09T18:37:10.259937
+Sprint ID: PQ-BUNDLE-FORENSICS-REPAIR-001
+Generated: 2026-07-10T17:09:14.464979
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

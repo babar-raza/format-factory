@@ -47,6 +47,8 @@ class SylkParseError(SylkError):
 
 @dataclass
 class SylkCell:
+    """Represents a single cell in a SYLK spreadsheet document."""
+
     spec_qname: ClassVar[str] = "slk:cell"
     row: int = 1
     col: int = 1
@@ -56,6 +58,8 @@ class SylkCell:
 
 @dataclass
 class SylkDocument:
+    """In-memory model of a SYLK spreadsheet, holding cells, dimensions, and metadata."""
+
     spec_qname: ClassVar[str] = "sylk:document"
     cells: list[SylkCell] = field(default_factory=list)
     rows: int = 0
@@ -433,22 +437,20 @@ def get_all_values(file_path: str | Path) -> list[Any]:
     return [c.value for c in doc.cells]
 
 
-def set_cell_value(
-    file_path: str | Path,
-    dest_path: str | Path,
+def set_cell_value_on_model(
+    doc: SylkDocument,
     row: int,
     col: int,
     value: Any,
     value_type: str = "string",
 ) -> dict[str, Any]:
-    """Set a cell value in a SYLK file and write the result.
+    """Set a cell value directly on an in-memory SylkDocument (model-based edit).
 
-    Parses the source file, modifies the cell at (row, col) (1-based),
-    and writes the updated document to dest_path.
+    Mutates *doc* in place without any file I/O.  Use this when you already have
+    a loaded ``SylkDocument`` and want to edit it before calling ``write_sylk()``.
 
     Args:
-        file_path:  Source SYLK file path.
-        dest_path:  Destination file path.
+        doc:        An already-parsed SylkDocument to mutate.
         row:        1-based row index.
         col:        1-based column index.
         value:      New cell value.
@@ -458,9 +460,8 @@ def set_cell_value(
         Dict with ok, row, col, old_value, new_value keys.
 
     Raises:
-        SylkError on parse failure or invalid coordinates.
+        SylkError on invalid coordinates.
     """
-    doc = parse_sylk_strict(file_path)
     if row < 1:
         raise SylkError(f"Row {row} must be >= 1")
     if col < 1:
@@ -478,7 +479,6 @@ def set_cell_value(
         doc.cells.append(SylkCell(row=row, col=col, value=value, value_type=value_type))
         doc.rows = max(doc.rows, row)
         doc.cols = max(doc.cols, col)
-    write_sylk(doc, dest_path)
     return {
         "ok": True,
         "row": row,
@@ -486,6 +486,41 @@ def set_cell_value(
         "old_value": old_value,
         "new_value": value,
     }
+
+
+def set_cell_value(
+    file_path: str | Path,
+    dest_path: str | Path,
+    row: int,
+    col: int,
+    value: Any,
+    value_type: str = "string",
+) -> dict[str, Any]:
+    """Set a cell value in a SYLK file and write the result.
+
+    Parses the source file, modifies the cell at (row, col) (1-based),
+    and writes the updated document to dest_path.
+
+    For model-based editing without file I/O, use :func:`set_cell_value_on_model`.
+
+    Args:
+        file_path:  Source SYLK file path.
+        dest_path:  Destination file path.
+        row:        1-based row index.
+        col:        1-based column index.
+        value:      New cell value.
+        value_type: One of "numeric", "string".
+
+    Returns:
+        Dict with ok, row, col, old_value, new_value keys.
+
+    Raises:
+        SylkError on parse failure or invalid coordinates.
+    """
+    doc = parse_sylk_strict(file_path)
+    result = set_cell_value_on_model(doc, row, col, value, value_type)
+    write_sylk(doc, dest_path)
+    return result
 
 
 def get_column_values(file_path: str | Path, col: int) -> list[Any]:

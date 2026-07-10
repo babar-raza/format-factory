@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-07-06T15:47:06.284184
+# Generated: 2026-07-10T17:08:16.512419
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 54bfa17f |
+| Git HEAD | af879e55 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | stateless-juggling-robin-sprint2... |
-| Autonomous continue | True |
-| Iteration | 0/12 |
+| Sprint ID | PQ-BUNDLE-FORENSICS-REPAIR-001... |
+| Autonomous continue | true_with_rework |
+| Iteration | 8/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 120 |
 | Ledger entries | 2445 total (901 governed) |

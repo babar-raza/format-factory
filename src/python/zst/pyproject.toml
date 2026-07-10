@@ -34,6 +34,10 @@ Homepage = "https://github.com/format-factory/format-factory"
 Repository = "https://github.com/format-factory/format-factory"
 "Bug Tracker" = "https://github.com/format-factory/format-factory/issues"
 
+
+[project.scripts]
+ff-zst = "zst.cli:main"
+
 [tool.setuptools.packages.find]
 where = [".."]
 include = ["zst*"]
