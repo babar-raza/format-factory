@@ -199,6 +199,53 @@ class SylkModelDocument:
         """True if string_ratio > 0.5."""
         return self.string_ratio > 0.5
 
+    def set_cell_value(
+        self,
+        row: int,
+        col: int,
+        value: Any,
+        value_type: str = "string",
+    ) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Finds existing cell by (row, col) or creates a new one.
+        SYLK uses 1-based row and column indices.
+
+        Args:
+            row: 1-based row index.
+            col: 1-based column index.
+            value: New cell value.
+            value_type: 'string', 'numeric', or 'empty'.
+
+        Raises:
+            SylkError: If row or col is less than 1.
+        """
+        from .sylk_parser import SylkCell, SylkError
+        if row < 1 or col < 1:
+            raise SylkError(f"row and col must be >= 1 (got row={row}, col={col})")
+        for cell in self._parsed.cells:
+            if cell.row == row and cell.col == col:
+                cell.value = value
+                cell.value_type = value_type
+                return
+        self._parsed.cells.append(SylkCell(row=row, col=col, value=value, value_type=value_type))
+        self._parsed.rows = max(self._parsed.rows, row)
+        self._parsed.cols = max(self._parsed.cols, col)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .slk file.
+
+        Raises:
+            SylkError: If path is empty or write fails.
+        """
+        from pathlib import Path as _Path
+        from .sylk_parser import SylkError, write_sylk
+        if not path:
+            raise SylkError("path must not be empty")
+        dest = _Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_sylk(self._parsed, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
