@@ -169,6 +169,34 @@ class AbwDocument:
         """True if total_text_length > 10000."""
         return self.total_text_length > 10000
 
+    def add_paragraph(self, text: str) -> None:
+        """Append a paragraph to this document in place.
+
+        Mutates the internal paragraphs list and increments paragraph_count.
+
+        Raises:
+            AbwError: If text is None.
+        """
+        from .abw_codec import AbwError
+        if text is None:
+            raise AbwError("text must not be None")
+        paras = self._data.setdefault("paragraphs", [])
+        paras.append(str(text))
+        self._data["paragraph_count"] = len(paras)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to an .abw file (UTF-8 XML).
+
+        Raises:
+            AbwError: If path is empty or write fails.
+        """
+        from .abw_codec import AbwError, write_abw
+        if not path:
+            raise AbwError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_abw(self._data, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

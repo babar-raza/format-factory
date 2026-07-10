@@ -194,6 +194,32 @@ class GnumericDocument:
         """True if max_cells_per_sheet > 1000."""
         return self.max_cells_per_sheet > 1000
 
+    def set_cell_value(self, sheet_idx: int, row: int, col: int, value: str) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Delegates to set_cell_value() from gnumeric_codec (returns new model),
+        then replaces _data in place.
+
+        Raises:
+            TypeError: If value is not a str.
+            GnumericError: If sheet_idx is out of range.
+        """
+        from .gnumeric_codec import set_cell_value as _set_cell_value
+        self._data = _set_cell_value(self._data, sheet_idx, row, col, value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .gnumeric file (gzip-compressed XML).
+
+        Raises:
+            GnumericError: If path is empty or write fails.
+        """
+        from .gnumeric_codec import GnumericError, write_gnumeric
+        if not path:
+            raise GnumericError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_gnumeric(self._data, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
