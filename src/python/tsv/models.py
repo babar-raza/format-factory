@@ -220,6 +220,57 @@ class TsvDocument:
         """Number of empty cells: round((1 - fill_density) * total_cell_count)."""
         return round((1.0 - self.fill_density) * self.total_cell_count)
 
+    def add_row(self, row: list[str]) -> None:
+        """Append a data row to this document in place.
+
+        Args:
+            row: List of cell values to append as a new row.
+
+        Raises:
+            TsvError: If row is None.
+        """
+        from .exceptions import TsvError
+        if row is None:
+            raise TsvError("row must not be None")
+        rows = self._data.setdefault("rows", [])
+        rows.append([str(c) for c in row])
+        self._data["row_count"] = len(rows)
+
+    def set_cell(self, row_index: int, col_index: int, value: str) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Args:
+            row_index: Zero-based row index.
+            col_index: Zero-based column index.
+            value: New cell value.
+
+        Raises:
+            TsvError: If row_index or col_index is out of range.
+        """
+        from .exceptions import TsvError
+        rows = self._data.get("rows", [])
+        if row_index < 0 or row_index >= len(rows):
+            raise TsvError(f"row_index {row_index} out of range (0..{len(rows) - 1})")
+        row = rows[row_index]
+        if col_index < 0 or col_index >= len(row):
+            raise TsvError(f"col_index {col_index} out of range (0..{len(row) - 1})")
+        rows[row_index][col_index] = str(value)
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .tsv file.
+
+        Raises:
+            TsvError: If path is empty or write fails.
+        """
+        from .exceptions import TsvError
+        from .tsv_parser import write_tsv
+        if not path:
+            raise TsvError("path must not be empty")
+        dest = Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        headers = self._data.get("headers") or None
+        write_tsv(self._data.get("rows", []), dest, headers=headers)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
