@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: PQ-BUNDLE-FORENSICS-REPAIR-001
-Generated: 2026-07-10T17:09:14.464979
+Sprint ID: GAP-LEDGER-TRIAGE-AND-COMMIT-001
+Generated: 2026-07-10T17:20:40.897666
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

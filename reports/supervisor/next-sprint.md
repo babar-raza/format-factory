@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: PQ-BUNDLE-FORENSICS-REPAIR-001
+# Source sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001
 # Stream: mainstream
-# Generated: 2026-07-10T17:09:14.433071
+# Generated: 2026-07-10T17:20:40.892542
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: PQ-BUNDLE-FORENSICS-REPAIR-001
-- Evidence verdict: ACCEPTED
-- Tests: 21558 passed, 0 failed, 9 skipped
+- Sprint ID: GAP-LEDGER-TRIAGE-AND-COMMIT-001
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 6801 passed, 0 failed, 13 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -37,14 +37,12 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (SCM Agent task — AGENTS.md §AG4.1)
-- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-008: Build package artifacts and run installed-workflow proof
-- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-006: Build package artifacts and run installed-workflow proof
+- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None

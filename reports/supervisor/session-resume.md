@@ -1,12 +1,12 @@
-<!-- generated_at: 2026-07-10T17:09:14.473071 | source_sprint: PQ-BUNDLE-FORENSICS-REPAIR-001 -->
+<!-- generated_at: 2026-07-10T17:20:40.904446 | source_sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-10T17:09:14.473071
+# Generated: 2026-07-10T17:20:40.904446
 
 ## Quick State
-- Last sprint: PQ-BUNDLE-FORENSICS-REPAIR-001
-- Evidence verdict: ACCEPTED
-- Tests: 21558 passed / 0 failed
+- Last sprint: GAP-LEDGER-TRIAGE-AND-COMMIT-001
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 6801 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -24,7 +24,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\667b7d640797\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/d301c4faf016
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
@@ -87,3 +87,9 @@
 - No push: SCM Agent task (AGENTS.md §AG4.2). Execute when credentials and branch policy allow.
 - Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 - MCP activation (MODE 4): COMPLETE.
+
+
+## Maturity Trend
+
+Maturity trend written: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\supervisor\maturity-trend.json
+  Sprints: 840, avg quality: 0.756, trend: stable

@@ -1,12 +1,10 @@
-- item_id: PQ-029-ADDRECORD
-  item_title: Add AddRecord() to NdjsonDocument (.NET)
+- item_id: COMMIT-PQ-BUNDLE
+  item_title: Commit PQ-BUNDLE-FORENSICS-REPAIR-001 sprint results
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/667b7d640797/ndjson-addrecord-test-output.txt
-  - src/net/ndjson/NdjsonDocument.cs
-  - tests/net/ndjson/NdjsonAddRecordRoundtripTests.cs
+  - reports/r90/product-code-change-ledger.json
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -18,9 +16,9 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    PQ-029-ADDRECORD'
+    COMMIT-PQ-BUNDLE'
   purpose_check:
-    item_type: FEATURE
+    item_type: RELEASE
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
@@ -29,33 +27,29 @@
     note: non-product item, skip
   semantic_verification:
     adequate: true
-    confidence: 0.78
+    confidence: 0.62
     stub_detected: false
     deficiencies:
-    - The NdjsonDocument.cs excerpt does not contain the AddRecord method implementation;
-      the method is missing from the provided evidence.
-    - Only test run output is provided; the actual test source code is absent, preventing
-      verification that the tests contain meaningful assertions rather than stubs.
-    - "The source file is truncated mid\u2011method, so it is unclear whether the\
-      \ AddRecord method exists elsewhere in the file or repository."
+    - Evidence consists only of a ledger JSON file; actual test code or detailed test
+      reports are not included, preventing verification of test quality.
+    - No direct evidence that the listed test files (e.g., tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py,
+      tests/net/fods/FodsR91SetCellValueTests.cs) contain meaningful assertions; they
+      could be stubs.
+    - Scope verification is limited to ledger entries; without seeing the source changes
+      or test implementations, we cannot confirm that the changes align with the claimed
+      sprint work.
+    - "Thin coverage cannot be assessed because test contents are absent; the ledger\u2019\
+      s summary of \"5 passed\" or \"8 new tests pass\" is insufficient to prove comprehensive\
+      \ validation."
     llm_used: true
     low_confidence_override: true
-    _cached_at: '2026-07-10T11:50:53.666493+00:00'
-    _from_cache: true
-- item_id: PQ-025-VERSION
-  item_title: Normalize .NET csproj version suffixes to 0.1.0-alpha.1
+- item_id: GAP-TRIAGE-12-STALE
+  item_title: Close 12 stale P2 gaps in gap ledger
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - src/net/fods/FormatFactory.Fods.csproj
-  - src/net/fodt/FormatFactory.Fodt.csproj
-  - src/net/ndjson/FormatFactory.Ndjson.csproj
-  - src/net/csv/FormatFactory.Csv.csproj
-  - src/net/tsv/FormatFactory.Tsv.csproj
-  - src/net/netpbm/FormatFactory.Netpbm.csproj
-  - src/net/zst/FormatFactory.Zst.csproj
-  - src/net/html/FormatFactory.Html.csproj
+  - reports/capability-layer/gap-ledger.json
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -67,77 +61,7 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    PQ-025-VERSION'
-  purpose_check:
-    item_type: PACKAGING
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.85
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-    _cached_at: '2026-07-10T11:22:55.189005+00:00'
-    _from_cache: true
-- item_id: PQ-021-SYLK
-  item_title: Add set_cell_value_on_model() model-based SYLK edit
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - src/python/sylk/sylk_parser.py
-  - tests/python/sylk/test_set_cell_value_on_model.py
-  tests_supporting: &id001
-  - tests/python/sylk/test_set_cell_value_on_model.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  tests_evidence_verified: *id001
-  purpose_check:
-    item_type: FEATURE
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.97
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-    _cached_at: '2026-07-10T11:33:33.565633+00:00'
-    _from_cache: true
-- item_id: PQ-016-SHARED
-  item_title: Remove dead _base_codec.py and _base_parser.py
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - src/python/_shared/__init__.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    PQ-016-SHARED'
+    GAP-TRIAGE-12-STALE'
   purpose_check:
     item_type: CLEANUP
     has_gap_ref: null
@@ -148,99 +72,18 @@
     note: non-product item, skip
   semantic_verification:
     adequate: true
-    confidence: 0.1
+    confidence: 0.32
     stub_detected: false
     deficiencies:
-    - No evidence showing that _base_codec.py and _base_parser.py have been removed.
-    - Provided file (__init__.py) is unrelated to the removal task.
-    - Missing verification such as repository diff, file existence checks, or tests
-      confirming import failures.
+    - Evidence is a raw JSON dump without explicit count or list of the 12 specific
+      P2 gaps that were closed.
+    - No indication of the gaps' prior status (e.g., stale, open) to demonstrate they
+      were stale before closure.
+    - The JSON does not filter or highlight P2 priority gaps; priority field is present
+      but not used to verify that exactly 12 P2 gaps were addressed.
+    - "No before\u2011and\u2011after comparison or change log to prove that the gaps\
+      \ transitioned from open to closed during the sprint."
+    - Absence of any test code, validation script, or automated check confirming the
+      closure criteria were met.
     llm_used: true
     low_confidence_override: true
-    _cached_at: '2026-07-10T11:44:09.272737+00:00'
-    _from_cache: true
-- item_id: PQ-019-020-CLI-STUBS
-  item_title: Extend CLI entry points and type stubs to all 20 Python packages
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/667b7d640797/cli-stubs-verification-report.txt
-  - src/python/fods/cli.py
-  - src/python/fods/__init__.pyi
-  - src/python/abw/cli.py
-  - src/python/abw/__init__.pyi
-  - src/python/zst/cli.py
-  - src/python/zst/__init__.pyi
-  - src/python/sylk/cli.py
-  - src/python/sylk/__init__.pyi
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    PQ-019-020-CLI-STUBS'
-  purpose_check:
-    item_type: FEATURE
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.93
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: PILOTS-A-O
-  item_title: '15 pilots: new API tests + regression suites'
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - tests/net/ndjson/NdjsonAddRecordRoundtripTests.cs
-  - tests/python/sylk/test_set_cell_value_on_model.py
-  tests_supporting: &id002
-  - tests/python/sylk/test_set_cell_value_on_model.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  tests_evidence_verified: *id002
-  purpose_check:
-    item_type: TEST
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.78
-    stub_detected: false
-    deficiencies:
-    - Python test file is truncated and appears incomplete (ends abruptly at 'test_set_cell_v')
-    - Evidence only covers two pilots (Ndjson AddRecord and Sylk model edit) while
-      the work item references 15 pilots and broader regression suites
-    - No regression suite tests for other formats or APIs mentioned in the work item
-    - "Potential missing edge\u2011case tests (e.g., large NDJSON files, concurrent\
-      \ modifications, error handling beyond basic invalid JSON) that would be expected\
-      \ in a comprehensive regression suite"
-    llm_used: true
-    low_confidence_override: true
-    _cached_at: '2026-07-10T11:23:12.909425+00:00'
-    _from_cache: true
-  csharp_assertion_grade: STRONG_PROOF
