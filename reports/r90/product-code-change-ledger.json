@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ODT-TO-NDJSON-DOGFOOD-001",
+  "latest_sprint": "ODS-TO-CSV-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38655,9 +38655,33 @@
         }
       ],
       "format": "ODT"
+    },
+    {
+      "entry_id": "R90-ODS-TO-CSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "ODS Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "ods_to_csv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_to_csv.py",
+          "state": "present",
+          "sha256": "250940d3a4e28b9e2704847497032a964ffcfed9759ef9a9a44801a673aaab5c"
+        },
+        {
+          "path": "tests/python/ods/test_ods_to_csv.py",
+          "state": "present",
+          "sha256": "9851671c6f217d8869d39de9f214348ffbebd8c245b46f9ae5416d17ceaf203b"
+        }
+      ],
+      "format": "ODS"
     }
   ],
-  "total_entries": 2451,
+  "total_entries": 2452,
   "changes": [
     {
       "file": "src/python/dif/models.py",
