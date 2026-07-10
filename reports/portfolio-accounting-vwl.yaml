@@ -1,0 +1,179 @@
+generated_at: "2026-07-10"
+source_recon: "reports/portfolio-recon-20260627/"
+source_ledger: "registry/product-deepening-ledger.yaml"
+source_format_registry: "registry/format-registry.yaml"
+source_gap_ledger: "reports/capability-layer/gap-ledger.json"
+total_formats: 20
+accounting_equation: "total = queued + active + completed_and_verified + waiting_gate11 + blocked_true_external + omitted + deferred + unknown"
+queued: 17
+active: 1
+completed_and_verified: 0
+waiting_gate11: 2
+blocked_true_external: 0
+omitted: 0
+deferred: 0
+unknown: 0
+# Equation check: 17 + 1 + 0 + 2 + 0 + 0 + 0 + 0 = 20 ✓
+
+derivation_notes:
+  waiting_gate11: >
+    Derived from registry/format-registry.yaml. FODS and FODT both have
+    gate_11.g11g_status = APPROVED_BY_BABAR_RAZA_2026_06_05 (set 2026-06-05).
+    These are approved for Gate 11 commercial release but commercial_product_ready=false
+    pending final publication execution.
+  completed_and_verified: >
+    0 formats qualify. The criterion requires current_gate >= G7 AND oracle VERIFIED
+    AND no open gaps in gap-ledger.json. All 20 Python formats have at least 1 open gap
+    (state != closed AND != implementation_verified) in gap-ledger.json.
+    Gaps are predominantly architecture_only (20) or spec_stub_only (5) — incremental,
+    not blocking — but the strict criterion cannot be satisfied until gap ledger is updated.
+  active: >
+    DIF is the format being addressed in this sprint (TC-VWL-DIF: gap-ledger staleness
+    verification + obligation entry confirmation).
+  queued: >
+    17 remaining formats all have continuation_allowed=true in product-deepening-ledger.yaml
+    and open gaps in gap-ledger.json. Ordered by gate maturity (highest first).
+
+formats:
+  # waiting_gate11 (2)
+  - format_id: fods
+    category: waiting_gate11
+    current_gate: G10-passed
+    g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05
+    open_gaps: 1
+    notes: "Gate 11-G approved 2026-06-05. 8/31 G11 criteria met. commercial_product_ready=false."
+
+  - format_id: fodt
+    category: waiting_gate11
+    current_gate: G10-passed
+    g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05
+    open_gaps: 6
+    notes: "Gate 11-G approved 2026-06-05. All 8 customer-readiness criteria PASS. commercial_product_ready=false."
+
+  # active (1)
+  - format_id: dif
+    category: active
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 2
+    notes: "Active in this sprint (TC-VWL-DIF). Gap ledger staleness verified; obligation ALLF-DIF-PY = PROOF_LEVEL_4."
+
+  # queued (17) — sorted by gate maturity descending
+  - format_id: zst
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 1
+    notes: "continuation_allowed=true. Gate 8 passed (python_foss scope)."
+
+  - format_id: fodp
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 2
+    notes: "continuation_allowed=true. Gate 8 passed (python_foss scope)."
+
+  - format_id: fodg
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 1
+    notes: "continuation_allowed=true. Gate 8 passed (python_foss scope)."
+
+  - format_id: gnumeric
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 2
+    notes: "continuation_allowed=true. Gate 8 passed (python_foss scope)."
+
+  - format_id: abw
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_started
+    open_gaps: 2
+    notes: "continuation_allowed=true. Gate 8 passed (python_foss scope)."
+
+  - format_id: ods
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_applicable
+    open_gaps: 1
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=passed. No gate_11 entry."
+
+  - format_id: odt
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_applicable
+    open_gaps: 1
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=passed. No gate_11 entry."
+
+  - format_id: qoi
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=passed. No gate_11 entry."
+
+  - format_id: xcf
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_applicable
+    open_gaps: 3
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=passed. No gate_11 entry."
+
+  - format_id: ppm
+    category: queued
+    current_gate: G10-passed
+    g11g_status: not_applicable
+    open_gaps: 1
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=passed. No gate_11 entry."
+
+  - format_id: pgm
+    category: queued
+    current_gate: G8-passed
+    g11g_status: not_applicable
+    open_gaps: 1
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=not_started."
+
+  - format_id: pbm
+    category: queued
+    current_gate: G8-passed
+    g11g_status: not_applicable
+    open_gaps: 1
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=not_started."
+
+  - format_id: sylk
+    category: queued
+    current_gate: G8-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. g7=pass, g8=pass, g10=not_started."
+
+  - format_id: csv
+    category: queued
+    current_gate: G4-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. No g7/g8 gates recorded. g10=not_started."
+
+  - format_id: tsv
+    category: queued
+    current_gate: G4-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. No g7/g8 gates recorded. g10=not_started."
+
+  - format_id: ndjson
+    category: queued
+    current_gate: G4-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. No g7/g8 gates recorded. g10=not_started."
+
+  - format_id: toml
+    category: queued
+    current_gate: G4-passed
+    g11g_status: not_applicable
+    open_gaps: 2
+    notes: "continuation_allowed=true. No g7/g8 gates recorded. g10=not_started."

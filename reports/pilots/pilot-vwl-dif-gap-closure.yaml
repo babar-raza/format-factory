@@ -1,0 +1,20 @@
+pilot_id: pilot-vwl-dif-gap-closure
+plan: vast-weaving-lampson
+taskcard: TC-VWL-DIF
+generated_at: "2026-07-10"
+gap_id: GAP-DIF-FOSS-DIF_BOOLEAN_-001
+gap_type: missing_test_coverage
+branch_taken: A
+verdict: STALE_GAP
+summary: >
+  GAP-DIF-FOSS-DIF_BOOLEAN_-001 targets dif_boolean_cell_count() in
+  src/python/dif/dif_stats.py. Staleness check found that
+  test_r1292_dif_gap_closure_cell_counts.py (the gap closure test file)
+  directly imports and calls dif_boolean_cell_count 8 times.
+  test_r1290_dif_spec_header_analytics.py calls it 4 additional times.
+  All 1169 DIF tests PASS. Obligation register entry ALLF-DIF-PY already
+  shows PROOF_LEVEL_4 / COMPLETED_AND_VERIFIED. No new test needed.
+evidence:
+  - .local/evidences/vast-weaving-lampson-20260710/dif-boolean-cell-count-evidence.yaml
+obligation_verified: true
+proof_level: PROOF_LEVEL_4

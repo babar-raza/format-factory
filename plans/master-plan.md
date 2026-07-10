@@ -6799,3 +6799,42 @@ scanner. Stub patterns could enter product source without triggering any governa
 - Lifecycle audit: AUDIT_PASS, all taskcards closed
 
 **Final Verdict:** STUB_ENFORCEMENT_WIRED | TERMINAL_CLOSED
+
+---
+
+## §124 — vast-weaving-lampson: Machinery Hardening (TERMINAL_CLOSED 2026-07-10)
+
+**Plan type:** machinery_hardening
+**Mission ID:** VAST-WEAVING-LAMPSON-001
+**Plan path:** `plans/.claude/vast-weaving-lampson.md`
+**Forensic audit:** 2026-07-10 (16 findings F-001 through F-016 — all incorporated pre-execution)
+
+### What Was Completed
+
+| Taskcard | Result |
+|---|---|
+| TC-VWL-001 | CLOSED — historical violations confirmed clean (rework_items=[], contradictions=CLEAN, 11/11 lane tests PASS) |
+| TC-VWL-SETUP | CLOSED — plan copied to `plans/.claude/vast-weaving-lampson.md`; plan lock IN_PROGRESS; `ACTIVE_PLAN_INCOMPLETE` confirmed |
+| TC-VWL-DIF | CLOSED — Branch A: `GAP-DIF-FOSS-DIF_BOOLEAN_-001` stale; `dif_boolean_cell_count` already covered (12 test calls in 2 files); 1169 DIF tests PASS; `ALLF-DIF-PY` = PROOF_LEVEL_4 / COMPLETED_AND_VERIFIED |
+| TC-VWL-PORTFOLIO | CLOSED — `reports/portfolio-accounting-vwl.yaml` written; 20 formats classified; equation 17+1+0+2+0+0+0+0=20; `waiting_gate11=2` derived from `g11g_status=APPROVED_BY_BABAR_RAZA_2026_06_05` (FODS+FODT) |
+| TC-VWL-CLOSE | CLOSED — declaration PASS, lifecycle audit MISSION_COMPLETE (5/5), TERMINAL_CLOSED written |
+
+### Changes
+
+- `plans/.claude/vast-weaving-lampson.md` — in-repo plan file (copied from external seed + terminal lock appended)
+- `reports/pilots/pilot-vwl-dif-gap-closure.yaml` — DIF gap staleness pilot result
+- `reports/portfolio-accounting-vwl.yaml` — portfolio accounting for 20 Python FOSS formats
+
+### Verification
+
+- Evidence declaration: VALIDATION PASS
+- Review package: `78c58d1cb645923981c64e3b0b17b1a78f7e7e39495b7a1225011dbf9624d99a`
+- Lifecycle audit: AUDIT_PASS, `recommended_action: MISSION_COMPLETE`, all 5/5 taskcards closed
+- `check_continuation.py`: `POST_PLAN_TERMINAL` — session durably closed
+
+### Remaining (Non-blocking)
+
+- Gap ledger `GAP-DIF-FOSS-DIF_BOOLEAN_-001` state is `implementation_verified` — stale (tests exist and pass). Not updated in this plan; tracked in evidence.
+- FODS/FODT Gate 11 G-approved (2026-06-05) — publication awaiting credentials/sign-off.
+
+**Final Verdict:** MACHINERY_HARDENED | TERMINAL_CLOSED
