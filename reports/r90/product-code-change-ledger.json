@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "NDJSON-TO-TSV-DOGFOOD-001",
+  "latest_sprint": "TSV-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38823,9 +38823,33 @@
         }
       ],
       "format": "NDJSON"
+    },
+    {
+      "entry_id": "R90-TSV-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "product": "TSV Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "tsv_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_to_ndjson.py",
+          "state": "present",
+          "sha256": "b2125aba856781c47c4fbbd14c7dfa8c86131fcf415159999ab1657efd1d6bea"
+        },
+        {
+          "path": "tests/python/tsv/test_tsv_to_ndjson.py",
+          "state": "present",
+          "sha256": "1e7325b7ee46c2c398fe32621a6ff62bf85c4fc5cbba98f6ec00a73aa946a23f"
+        }
+      ],
+      "format": "TSV"
     }
   ],
-  "total_entries": 2458,
+  "total_entries": 2459,
   "changes": [
     {
       "file": "src/python/dif/models.py",
