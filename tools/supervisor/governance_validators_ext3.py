@@ -493,9 +493,12 @@ def validate_getter_without_parser_source(
         )
         for m in matches:
             method_name = m.group(1)
-            # Get the next 5 lines after the method signature
+            # Scan up to 500 chars after the signature to catch dict access
+            # behind long guard clauses or TODO comments (window was 300,
+            # which masked GetConditionalFormatRule/GetDataValidationRule
+            # after TC-PQLM-027 added ~97-char TODO comments; see GOV-WINDOW-FIX-001).
             start = m.end()
-            snippet = content[start:start + 300]
+            snippet = content[start:start + 500]
             if _DICT_GETTER_PATTERN.search(snippet):
                 entry = f"{rel}:{method_name}"
                 if rel in known:
@@ -576,7 +579,10 @@ def validate_setter_without_writer_path(
         ):
             method_name = m.group(1)
             start = m.end()
-            snippet = content[start:start + 400]
+            # Scan up to 600 chars to catch dict writes behind guard clauses or
+            # TODO comments (window was 400, which masked SetRowHeight at char 441
+            # and SetSheetProtected at char 406 after TC-PQLM-027; GOV-WINDOW-FIX-001).
+            snippet = content[start:start + 600]
             if _DICT_SETTER_PATTERN.search(snippet) and not _xml_write_patterns.search(snippet):
                 entry = f"{rel}:{method_name}"
                 if rel in known:
