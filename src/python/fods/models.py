@@ -254,6 +254,54 @@ class FodsDocument:
             return True
         return len(set(counts)) == 1
 
+    def set_cell_value(
+        self,
+        sheet_index: int,
+        row_index: int,
+        col_index: int,
+        value: Any,
+        value_type: str = "string",
+    ) -> None:
+        """Set a cell value in place, mutating this document.
+
+        Args:
+            sheet_index: Zero-based sheet index.
+            row_index: Zero-based row index within the sheet.
+            col_index: Zero-based column index within the row.
+            value: New cell value.
+            value_type: ODF value type ('string', 'float', etc.).
+
+        Raises:
+            FodsError: If any index is out of range.
+        """
+        from .exceptions import FodsError
+        sheets = self._spec_doc._data.get("sheets", [])
+        if sheet_index < 0 or sheet_index >= len(sheets):
+            raise FodsError(f"sheet_index {sheet_index} out of range (0..{len(sheets) - 1})")
+        rows = sheets[sheet_index].get("rows", [])
+        if row_index < 0 or row_index >= len(rows):
+            raise FodsError(f"row_index {row_index} out of range (0..{len(rows) - 1})")
+        cells = rows[row_index].get("cells", [])
+        if col_index < 0 or col_index >= len(cells):
+            raise FodsError(f"col_index {col_index} out of range (0..{len(cells) - 1})")
+        cells[col_index]["value"] = value
+        cells[col_index]["value_type"] = value_type
+
+    def save_to_file(self, path: "str | Path") -> None:
+        """Save this document to a .fods file (flat OpenDocument XML).
+
+        Raises:
+            FodsError: If path is empty or write fails.
+        """
+        from pathlib import Path as _Path
+        from .exceptions import FodsError
+        from .writer import write_fods
+        if not path:
+            raise FodsError("path must not be empty")
+        dest = _Path(path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_fods(self._spec_doc._data, dest)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""
         return self._spec_doc.to_dict()
