@@ -86,3 +86,12 @@ from governance tracking ("governance masking").
 | TC-GWF-002 | CLOSED |
 | TC-GWF-003 | CLOSED |
 | TC-GWF-004 | CLOSED |
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-10T08:09:49.090214+00:00"
+  locked_by: "033f6a1ae2f3"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
