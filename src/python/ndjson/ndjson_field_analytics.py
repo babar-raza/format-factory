@@ -94,3 +94,84 @@ def ndjson_sorted_key_names(source: "str | bytes | Path") -> list:
         if isinstance(rec, dict):
             keys.update(rec.keys())
     return sorted(keys)
+
+
+def ndjson_all_key_names(source: "str | bytes | Path") -> list:
+    """Return list of all unique key names across all dict records (insertion order).
+
+    Spec: NDJSON record field names (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    seen: dict = {}
+    for rec in records:
+        if isinstance(rec, dict):
+            for k in rec.keys():
+                seen[k] = None
+    return list(seen.keys())
+
+
+def ndjson_last_record_keys(source: "str | bytes | Path") -> list:
+    """Return list of keys from the last dict record. Empty list if no dict records.
+
+    Spec: NDJSON record field names (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    last = None
+    for rec in records:
+        if isinstance(rec, dict):
+            last = rec
+    return list(last.keys()) if last is not None else []
+
+
+def ndjson_numeric_field_count(source: "str | bytes | Path") -> int:
+    """Return count of numeric (int or float) values across all fields in all records.
+
+    Spec: NDJSON record numeric values (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    count = 0
+    for rec in records:
+        if isinstance(rec, dict):
+            for v in rec.values():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    count += 1
+    return count
+
+
+def ndjson_string_field_count(source: "str | bytes | Path") -> int:
+    """Return count of string values across all fields in all records.
+
+    Spec: NDJSON record string values (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    count = 0
+    for rec in records:
+        if isinstance(rec, dict):
+            for v in rec.values():
+                if isinstance(v, str):
+                    count += 1
+    return count
+
+
+def ndjson_has_nested_records(source: "str | bytes | Path") -> bool:
+    """Return True if any field value is itself a dict (nested object).
+
+    Spec: NDJSON record nested values (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    for rec in records:
+        if isinstance(rec, dict):
+            for v in rec.values():
+                if isinstance(v, dict):
+                    return True
+    return False
+
+
+def ndjson_max_field_count(source: "str | bytes | Path") -> int:
+    """Return maximum field count across all dict records. 0 if no dict records.
+
+    Spec: NDJSON record field count (FACT-NDJSON-001)
+    """
+    records = load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    return max(counts) if counts else 0
