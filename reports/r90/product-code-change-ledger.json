@@ -41374,9 +41374,39 @@
       "date": "2026-07-11",
       "test_file": "tests/python/sylk/test_sylk_value_analytics.py",
       "sprint_id": "SYLK-FOSS-VALUE-ANALYTICS-001"
+    },
+    {
+      "entry_id": "TOML-TABLE-ANALYTICS-EXT-001",
+      "format_id": "toml",
+      "file_path": "src/python/toml/toml_table_analytics.py",
+      "change_type": "feature",
+      "description": "New toml_table_analytics.py: 8 recursive analytics — recursive_key_count, recursive_numeric_sum, recursive_string_count, nested_boolean_count, leaf_value_count, has_array_of_tables, max/min_numeric_value_recursive",
+      "date": "2026-07-11",
+      "test_file": "tests/python/toml/test_toml_table_analytics.py",
+      "sprint_id": "TOML-FOSS-TABLE-ANALYTICS-001"
+    },
+    {
+      "entry_id": "TOML-INIT-EXT-001",
+      "format_id": "toml",
+      "file_path": "src/python/toml/__init__.py",
+      "change_type": "feature",
+      "description": "Export toml_table_analytics functions via __init__.py wildcard import",
+      "date": "2026-07-11",
+      "test_file": "tests/python/toml/test_toml_table_analytics.py",
+      "sprint_id": "TOML-FOSS-TABLE-ANALYTICS-001"
+    },
+    {
+      "entry_id": "TOML-TABLE-ANALYTICS-EXT-TEST-001",
+      "format_id": "toml",
+      "file_path": "tests/python/toml/test_toml_table_analytics.py",
+      "change_type": "test",
+      "description": "Add 29 tests for 8 new TOML recursive table analytics functions",
+      "date": "2026-07-11",
+      "test_file": "tests/python/toml/test_toml_table_analytics.py",
+      "sprint_id": "TOML-FOSS-TABLE-ANALYTICS-001"
     }
   ],
-  "total_entries": 2675,
+  "total_entries": 2678,
   "changes": [
     {
       "file": "src/python/dif/models.py",
