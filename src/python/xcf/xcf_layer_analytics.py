@@ -109,3 +109,60 @@ def xcf_all_layers_named(source: "str | Path") -> bool:
     """
     img = parse_xcf_strict(source)
     return all(name.strip() for name in img.layer_names)
+
+
+def xcf_width(source: "str | Path") -> int:
+    """Return image width in pixels.
+
+    Spec: XCF image header width (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.width
+
+
+def xcf_height(source: "str | Path") -> int:
+    """Return image height in pixels.
+
+    Spec: XCF image header height (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.height
+
+
+def xcf_image_type(source: "str | Path") -> int:
+    """Return image type integer (0=RGB, 1=Grayscale, 2=Indexed).
+
+    Spec: XCF image header image_type (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.image_type
+
+
+def xcf_is_landscape(source: "str | Path") -> bool:
+    """Return True if the image is wider than it is tall.
+
+    Spec: XCF image header width/height (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.width > img.height
+
+
+def xcf_aspect_ratio(source: "str | Path") -> float:
+    """Return width / height as a float. 0.0 if height is zero.
+
+    Spec: XCF image header width/height (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def xcf_first_layer_name(source: "str | Path") -> str:
+    """Return the name of the first layer. Empty string if no layers.
+
+    Spec: XCF image layer (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    names = list(img.layer_names)
+    return names[0] if names else ""

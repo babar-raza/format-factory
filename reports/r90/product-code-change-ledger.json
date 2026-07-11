@@ -42120,9 +42120,27 @@
       ],
       "test_count": 22,
       "description": "qoi_image_analytics_ext2 added to qoi: qoi_channels, qoi_is_single_pixel, qoi_aspect_ratio, qoi_is_opaque, qoi_unique_pixel_count, qoi_is_srgb"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-XCF-LAYER-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_layer_analytics.py",
+          "sha256_before": "9f9c230b6cc47a106e2a0efd5aee6a2ea3c108bf9256035a11259dc4cf7fd68d",
+          "sha256_after": "4f9aed138fdf7b90c52743529dbfb035151f074155f00dfb8e933e99053e8cf7"
+        }
+      ],
+      "tests_added": [
+        "tests/python/xcf/test_xcf_layer_analytics_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "xcf_layer_analytics_ext2 added to xcf: xcf_width, xcf_height, xcf_image_type, xcf_is_landscape, xcf_aspect_ratio, xcf_first_layer_name"
     }
   ],
-  "total_entries": 2716,
+  "total_entries": 2717,
   "changes": [
     {
       "file": "src/python/dif/models.py",
