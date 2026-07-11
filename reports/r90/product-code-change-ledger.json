@@ -42048,9 +42048,27 @@
       ],
       "test_count": 21,
       "description": "sylk value analytics ext (col_count, id_line, all_cells_same_type, has_only_strings, has_only_numeric, first_cell_value) added to sylk"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-NDJSON-FIELD-ANALYTICS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_field_analytics.py",
+          "sha256_before": "new_file",
+          "sha256_after": "294fb18968138571d73fda2d94951f6385bd87626b79ebc38cbbbac3e1c6fbd9"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ndjson/test_ndjson_field_analytics.py"
+      ],
+      "test_count": 17,
+      "description": "ndjson field analytics (first_record_keys, first_record_field_count, has_consistent_keys, bool_value_count, null_field_count, sorted_key_names) added to ndjson"
     }
   ],
-  "total_entries": 2712,
+  "total_entries": 2713,
   "changes": [
     {
       "file": "src/python/dif/models.py",
