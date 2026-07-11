@@ -42498,9 +42498,27 @@
       ],
       "test_count": 14,
       "description": "QOI image analytics ext3: qoi_is_linear, qoi_has_pixels, qoi_pixel_count, qoi_avg_red, qoi_avg_green, qoi_avg_blue"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ABW-PARAGRAPH-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_paragraph_analytics.py",
+          "sha256_before": "ef21ff99b42aa8c58e01bcc1a7a232e6f4e63896f3a1c3636a15de02d5256ff8",
+          "sha256_after": "50d807e0bc7b7e03719723762c62e8e08979ab5111a70a8d55fc56460d4785f2"
+        }
+      ],
+      "tests_added": [
+        "tests/python/abw/test_abw_paragraph_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "ABW paragraph analytics ext3: abw_nonempty_paragraph_count, abw_longest_paragraph, abw_total_section_paragraph_count, abw_all_paragraphs_nonempty, abw_paragraph_char_counts, abw_has_long_paragraphs"
     }
   ],
-  "total_entries": 2737,
+  "total_entries": 2738,
   "changes": [
     {
       "file": "src/python/dif/models.py",

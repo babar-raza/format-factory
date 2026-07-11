@@ -173,3 +173,64 @@ def abw_has_empty_paragraphs(source: "str | bytes | Path") -> bool:
     """
     doc = load(source)
     return any(not p.strip() for p in doc.get("paragraphs", []))
+
+
+def abw_nonempty_paragraph_count(source: "str | bytes | Path") -> int:
+    """Return count of paragraphs that have at least one non-whitespace character.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return sum(1 for p in doc.get("paragraphs", []) if p.strip())
+
+
+def abw_longest_paragraph(source: "str | bytes | Path") -> str:
+    """Return the longest paragraph text by character count. Empty string if no paragraphs.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    paras = doc.get("paragraphs", [])
+    return max(paras, key=len) if paras else ""
+
+
+def abw_total_section_paragraph_count(source: "str | bytes | Path") -> int:
+    """Return total paragraph count (synonym for abw_paragraph_count for clarity).
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("paragraph_count", 0)
+
+
+def abw_all_paragraphs_nonempty(source: "str | bytes | Path") -> bool:
+    """Return True if every paragraph has non-empty, non-whitespace text.
+
+    True vacuously when there are no paragraphs.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return all(p.strip() for p in doc.get("paragraphs", []))
+
+
+def abw_paragraph_char_counts(source: "str | bytes | Path") -> list:
+    """Return list of character counts per paragraph in document order.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return [len(p) for p in doc.get("paragraphs", [])]
+
+
+def abw_has_long_paragraphs(source: "str | bytes | Path", threshold: int = 200) -> bool:
+    """Return True if any paragraph exceeds the character count threshold.
+
+    Args:
+        source: ABW file path.
+        threshold: Minimum character count to consider a paragraph 'long' (default 200).
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return any(len(p) >= threshold for p in doc.get("paragraphs", []))
