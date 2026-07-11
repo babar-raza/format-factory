@@ -42588,9 +42588,27 @@
       ],
       "test_count": 15,
       "description": "ABW word stats ext2: paragraph_count, total_char_count, most_frequent_word, avg_words_per_paragraph, nonempty_paragraph_count, max_word_length"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-SYLK-VALUE-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_value_analytics.py",
+          "sha256_before": "b1934134d33a19f064276199c757b083cde147ac2c1abe53869ba601db9b9c43",
+          "sha256_after": "345b28cfb27e89d0f047a1b250e5f80067cfce3963b547af4c0c50675c2379bf"
+        }
+      ],
+      "tests_added": [
+        "tests/python/sylk/test_sylk_value_analytics_ext2.py"
+      ],
+      "test_count": 19,
+      "description": "Add 6 analytics functions to sylk_value_analytics: cell_count, row_count, unique_value_count, numeric_cell_count, string_cell_count, last_cell_value"
     }
   ],
-  "total_entries": 2742,
+  "total_entries": 2743,
   "changes": [
     {
       "file": "src/python/dif/models.py",

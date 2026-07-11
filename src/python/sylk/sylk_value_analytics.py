@@ -258,3 +258,79 @@ def sylk_first_cell_value(file_path: "str | Path") -> object:
     """
     doc = parse_sylk_strict(file_path)
     return doc.cells[0].value if doc.cells else None
+
+
+def sylk_cell_count(file_path: "str | Path") -> int:
+    """Return total count of cells in the SYLK document.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — total cell count.
+    """
+    return _sylk_probe(file_path).get("cell_count", 0)
+
+
+def sylk_row_count(file_path: "str | Path") -> int:
+    """Return the number of rows in the SYLK document.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — row count.
+    """
+    return _sylk_probe(file_path).get("rows", 0)
+
+
+def sylk_unique_value_count(file_path: "str | Path") -> int:
+    """Return count of distinct cell values (as strings) across all cells.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — number of unique value strings.
+    """
+    doc = parse_sylk_strict(file_path)
+    return len({str(c.value) for c in doc.cells if c.value is not None})
+
+
+def sylk_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return count of cells with value_type 'numeric'.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — numeric cell count.
+    """
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if c.value_type == "numeric")
+
+
+def sylk_string_cell_count(file_path: "str | Path") -> int:
+    """Return count of cells with value_type 'string'.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — string cell count.
+    """
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if c.value_type == "string")
+
+
+def sylk_last_cell_value(file_path: "str | Path") -> object:
+    """Return the value of the last cell in document order. None if no cells.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        object — last cell value, or None.
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.cells[-1].value if doc.cells else None
