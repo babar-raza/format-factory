@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODG-TO-FODT-DOGFOOD-001",
+  "latest_sprint": "ABW-TO-TOML-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39937,6 +39937,84 @@
       "description": "FODG -> FODT dogfood export",
       "authority": "TASK-007",
       "tests_added": 9
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-TOML-DOGFOOD-001",
+      "sprint": "NDJSON-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "ndjson",
+      "target_format": "toml",
+      "source_file": "src/python/ndjson/ndjson_to_toml.py",
+      "test_file": "tests/python/ndjson/test_ndjson_to_toml.py",
+      "description": "NDJSON -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 7
+    },
+    {
+      "entry_id": "R90-CSV-TO-TOML-DOGFOOD-001",
+      "sprint": "CSV-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "csv",
+      "target_format": "toml",
+      "source_file": "src/python/csv/csv_to_toml.py",
+      "test_file": "tests/python/csv/test_csv_to_toml.py",
+      "description": "CSV -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 7
+    },
+    {
+      "entry_id": "R90-TSV-TO-TOML-DOGFOOD-001",
+      "sprint": "TSV-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "tsv",
+      "target_format": "toml",
+      "source_file": "src/python/tsv/tsv_to_toml.py",
+      "test_file": "tests/python/tsv/test_tsv_to_toml.py",
+      "description": "TSV -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 7
+    },
+    {
+      "entry_id": "R90-FODS-TO-TOML-DOGFOOD-001",
+      "sprint": "FODS-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "fods",
+      "target_format": "toml",
+      "source_file": "src/python/fods/fods_to_toml.py",
+      "test_file": "tests/python/fods/test_fods_to_toml.py",
+      "description": "FODS -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 6
+    },
+    {
+      "entry_id": "R90-ODS-TO-TOML-DOGFOOD-001",
+      "sprint": "ODS-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "ods",
+      "target_format": "toml",
+      "source_file": "src/python/ods/ods_to_toml.py",
+      "test_file": "tests/python/ods/test_ods_to_toml.py",
+      "description": "ODS -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 6
+    },
+    {
+      "entry_id": "R90-ABW-TO-TOML-DOGFOOD-001",
+      "sprint": "ABW-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "abw",
+      "target_format": "toml",
+      "source_file": "src/python/abw/abw_to_toml.py",
+      "test_file": "tests/python/abw/test_abw_to_toml.py",
+      "description": "ABW -> TOML dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 7
     }
   ],
   "total_entries": 2518,
