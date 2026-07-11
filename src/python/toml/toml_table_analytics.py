@@ -243,3 +243,91 @@ def toml_top_level_scalar_count(source: "str | bytes | Path") -> int:
         1 for v in doc.get("data", {}).values()
         if isinstance(v, (str, int, float, bool)) and not isinstance(v, dict)
     )
+
+
+def toml_recursive_numeric_count(source: "str | bytes | Path") -> int:
+    """Return count of numeric (int or float, excluding bool) values at all nesting levels.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — total numeric value count across all levels.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    return sum(
+        1 for v in _iter_values(data)
+        if isinstance(v, (int, float)) and not isinstance(v, bool)
+    )
+
+
+def toml_is_empty(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document has no top-level keys.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        bool — True if the data dict is empty.
+    """
+    doc = load_toml(source)
+    return len(doc.get("data", {})) == 0
+
+
+def toml_has_top_level_lists(source: "str | bytes | Path") -> bool:
+    """Return True if any top-level value is a list (TOML array).
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        bool — True if at least one top-level value is a list.
+    """
+    doc = load_toml(source)
+    return any(isinstance(v, list) for v in doc.get("data", {}).values())
+
+
+def toml_top_level_list_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level list (array) values in the document.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — number of top-level keys whose value is a list.
+    """
+    doc = load_toml(source)
+    return sum(1 for v in doc.get("data", {}).values() if isinstance(v, list))
+
+
+def toml_max_string_length(source: "str | bytes | Path") -> int:
+    """Return the character length of the longest string value at any nesting level.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — maximum string length. 0 if no string values exist.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    lengths = [len(v) for v in _iter_values(data) if isinstance(v, str)]
+    return max(lengths, default=0)
+
+
+def toml_nested_table_count(source: "str | bytes | Path") -> int:
+    """Return total count of dict (table) values at all nesting levels below root.
+
+    Counts every dict encountered during full recursive traversal,
+    excluding the root-level data dict itself.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — nested table count. 0 if no nested tables.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    return sum(1 for v in _iter_values(data) if isinstance(v, dict))

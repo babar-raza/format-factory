@@ -42606,9 +42606,27 @@
       ],
       "test_count": 19,
       "description": "Add 6 analytics functions to sylk_value_analytics: cell_count, row_count, unique_value_count, numeric_cell_count, string_cell_count, last_cell_value"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-TOML-TABLE-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_table_analytics.py",
+          "sha256_before": "59ae880681b052e91336b1e3e3975840473567f10fcc792a02a1e2c33f55a869",
+          "sha256_after": "450d473587f66d6971730424975c6c3b864d6d9373dca0bf3db9e53d6805ede3"
+        }
+      ],
+      "tests_added": [
+        "tests/python/toml/test_toml_table_analytics_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "Add 6 analytics functions to toml_table_analytics: recursive_numeric_count, is_empty, has_top_level_lists, top_level_list_count, max_string_length, nested_table_count"
     }
   ],
-  "total_entries": 2743,
+  "total_entries": 2744,
   "changes": [
     {
       "file": "src/python/dif/models.py",
