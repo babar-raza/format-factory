@@ -41463,6 +41463,29 @@
       ],
       "test_count": 20,
       "description": "New tsv_row_analytics.py: tsv_numeric_column_count, tsv_max/min_row_field_count, tsv_has_uniform_row_length, tsv_empty_cell_count, tsv_column_unique_value_counts"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-ABW-PARAGRAPH-ANALYTICS-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_paragraph_analytics.py",
+          "sha256_before": "new-file",
+          "sha256_after": "8bda78fc7d5cd010399cc0039680f48c071d1f4ab275d2c7bee5a1038a28ff0e"
+        },
+        {
+          "path": "src/python/abw/__init__.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "post-change"
+        }
+      ],
+      "tests_added": [
+        "tests/python/abw/test_abw_paragraph_analytics.py"
+      ],
+      "test_count": 24,
+      "description": "New abw_paragraph_analytics.py: abw_total_char_count, abw_unique_paragraph_count, abw_has_repeated_paragraphs, abw_max/min/avg_paragraph_char_count"
     }
   ],
   "total_entries": 2678,

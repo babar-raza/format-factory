@@ -9,6 +9,7 @@ FOSS track only — no commercial readiness implied.
 from .abw_codec import *  # noqa: F401, F403
 from .abw_word_stats import *  # noqa: F401, F403
 from .word_document import *  # noqa: F401, F403
+from .abw_paragraph_analytics import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import AbwDocument  # noqa: F401
 from .abw_workflow import abw_installed_workflow  # noqa: F401
