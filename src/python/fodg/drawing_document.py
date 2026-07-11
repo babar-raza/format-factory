@@ -677,6 +677,70 @@ def fodg_has_multiple_shapes(file_path: "str | bytes | Path") -> bool:
     return fodg_total_shape_count(file_path) > 1
 
 
+def fodg_has_single_page(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document contains exactly one page.
+
+    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-001)
+    """
+    doc = load(file_path)
+    return doc.get("page_count", 0) == 1
+
+
+def fodg_page_names(file_path: "str | bytes | Path") -> list:
+    """Return list of page names in document order.
+
+    Spec: ODF 1.3 draw:page@draw:name attribute (FACT-FODG-001)
+    """
+    doc = load(file_path)
+    return [p.get("name", "") for p in doc.get("pages", [])]
+
+
+def fodg_average_shape_count(file_path: "str | bytes | Path") -> float:
+    """Return average number of shapes per page. 0.0 if no pages.
+
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    """
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    return doc.get("shapes_total", 0) / len(pages)
+
+
+def fodg_pages_with_shapes_count(file_path: "str | bytes | Path") -> int:
+    """Return count of pages that contain at least one shape.
+
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    """
+    doc = load(file_path)
+    return sum(1 for p in doc.get("pages", []) if p.get("shape_count", 0) > 0)
+
+
+def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
+    """Return total character count across all text items on all pages.
+
+    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    """
+    doc = load(file_path)
+    total = 0
+    for page in doc.get("pages", []):
+        for text in page.get("text_content", []):
+            total += len(text)
+    return total
+
+
+def fodg_has_text_on_all_pages(file_path: "str | bytes | Path") -> bool:
+    """Return True if every page has at least one text item.
+
+    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    """
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return False
+    return all(len(p.get("text_content", [])) > 0 for p in pages)
+
+
 try:
     from .drawing_metrics import *  # noqa: F401, F403
 except ImportError:
