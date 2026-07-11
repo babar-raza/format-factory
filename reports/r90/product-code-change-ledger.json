@@ -42426,9 +42426,27 @@
       ],
       "test_count": 15,
       "description": "CSV stats ext3: csv_row_count, csv_column_count, csv_delimiter, csv_is_empty, csv_has_data_rows, csv_first_header"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PPM-STATS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_stats.py",
+          "sha256_before": "4a1861c2ef282d8500b2f5fbb9614c4703c0f7929bf18669a90b6c9b9aaea819",
+          "sha256_after": "e3c4c43b5c42c795fecb06adc679586a565ecd79b0710790e4d1d4bb09623e87"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ppm/test_ppm_stats_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "PPM stats ext2: ppm_magic_from_doc, ppm_maxval_from_doc, ppm_width_from_doc, ppm_height_from_doc, ppm_is_binary_ppm, ppm_is_high_depth_doc"
     }
   ],
-  "total_entries": 2733,
+  "total_entries": 2734,
   "changes": [
     {
       "file": "src/python/dif/models.py",

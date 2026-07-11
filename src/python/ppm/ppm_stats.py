@@ -291,3 +291,75 @@ def ppm_aspect_ratio_from_doc(ppm_doc: dict[str, Any]) -> float:
     if h == 0:
         return 0.0
     return ppm_doc.get("width", 0) / h
+
+
+def ppm_magic_from_doc(ppm_doc: dict[str, Any]) -> str:
+    """Return the magic number string from the PPM document dict.
+
+    Args:
+        ppm_doc: Parsed PPM document dict (from parse_ppm()).
+
+    Returns:
+        str — 'P3' (ASCII) or 'P6' (binary), or '' if missing.
+    """
+    return ppm_doc.get("magic", "")
+
+
+def ppm_maxval_from_doc(ppm_doc: dict[str, Any]) -> int:
+    """Return the maxval field from the PPM document dict.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        int — maxval. 255 if not present.
+    """
+    return ppm_doc.get("maxval", 255)
+
+
+def ppm_width_from_doc(ppm_doc: dict[str, Any]) -> int:
+    """Return the image width from the PPM document dict.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        int — width in pixels. 0 if missing.
+    """
+    return ppm_doc.get("width", 0)
+
+
+def ppm_height_from_doc(ppm_doc: dict[str, Any]) -> int:
+    """Return the image height from the PPM document dict.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        int — height in pixels. 0 if missing.
+    """
+    return ppm_doc.get("height", 0)
+
+
+def ppm_is_binary_ppm(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if the image is binary PPM format (magic == 'P6').
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if magic == 'P6'.
+    """
+    return ppm_doc.get("magic", "") == "P6"
+
+
+def ppm_is_high_depth_doc(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if the image uses 16-bit depth (maxval > 255).
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if maxval > 255.
+    """
+    return ppm_doc.get("maxval", 255) > 255
