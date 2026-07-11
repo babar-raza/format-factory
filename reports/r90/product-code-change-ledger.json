@@ -42570,9 +42570,27 @@
       ],
       "test_count": 17,
       "description": "PPM image analytics ext3: ppm_is_ascii, ppm_is_landscape, ppm_is_portrait, ppm_is_square, ppm_aspect_ratio, ppm_min_channel_value"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ABW-WORD-STATS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_word_stats.py",
+          "sha256_before": "7790331a9a60e9303024658c008cb2f4ce629a157c04191b4c1f20c066e13028",
+          "sha256_after": "2ae3e56b1e95eaba6ea2c2f12c417309d9e6707d4ca9a80f73a90840937b99c1"
+        }
+      ],
+      "tests_added": [
+        "tests/python/abw/test_abw_word_stats_ext2.py"
+      ],
+      "test_count": 15,
+      "description": "ABW word stats ext2: paragraph_count, total_char_count, most_frequent_word, avg_words_per_paragraph, nonempty_paragraph_count, max_word_length"
     }
   ],
-  "total_entries": 2741,
+  "total_entries": 2742,
   "changes": [
     {
       "file": "src/python/dif/models.py",

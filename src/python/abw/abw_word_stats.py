@@ -343,3 +343,96 @@ def total_sentence_count(model: dict) -> int:
     for para in model.get("paragraphs", []):
         count += para.count(".") + para.count("!") + para.count("?")
     return count
+
+
+def paragraph_count(model: dict) -> int:
+    """Return the total number of paragraphs in the model.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — paragraph count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    return len(model.get("paragraphs", []))
+
+
+def total_char_count(model: dict) -> int:
+    """Return total character count across all paragraphs.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — total character count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    return sum(len(p) for p in model.get("paragraphs", []))
+
+
+def most_frequent_word(model: dict) -> str:
+    """Return the most frequently occurring word (lowercased). Empty string if no words.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        str — most frequent word, or '' if model has no words.
+    """
+    if not isinstance(model, dict):
+        return ""
+    freq = word_frequency(model)
+    if not freq:
+        return ""
+    return max(freq, key=lambda w: freq[w])
+
+
+def avg_words_per_paragraph(model: dict) -> float:
+    """Return the average number of words per paragraph. 0.0 if no paragraphs.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        float — average word count per paragraph.
+    """
+    if not isinstance(model, dict):
+        return 0.0
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    return sum(len(p.split()) for p in paras) / len(paras)
+
+
+def nonempty_paragraph_count(model: dict) -> int:
+    """Return count of paragraphs with at least one non-whitespace character.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — non-empty paragraph count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    return sum(1 for p in model.get("paragraphs", []) if p.strip())
+
+
+def max_word_length(model: dict) -> int:
+    """Return the length of the longest word across all paragraphs. 0 if no words.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — maximum word length.
+    """
+    if not isinstance(model, dict):
+        return 0
+    words = []
+    for p in model.get("paragraphs", []):
+        words.extend(p.split())
+    return max(len(w) for w in words) if words else 0
