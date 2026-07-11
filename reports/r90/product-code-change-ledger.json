@@ -39612,9 +39612,35 @@
       "description": "Dogfood export: CSV->FODS using FF CSV parser + FODS writer",
       "added_at": "2026-07-11T12:08:03.557925+00:00",
       "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-TSV-TO-FODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "tsv",
+      "target_format": "fods",
+      "sprint_id": "TSV-TO-FODS-DOGFOOD-001",
+      "source_file": "src/python/tsv/tsv_to_fods.py",
+      "test_file": "tests/python/tsv/test_tsv_to_fods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: TSV->FODS using FF TSV parser + FODS writer",
+      "added_at": "2026-07-11T12:09:48.508945+00:00",
+      "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-FODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "ndjson",
+      "target_format": "fods",
+      "sprint_id": "NDJSON-TO-FODS-DOGFOOD-001",
+      "source_file": "src/python/ndjson/ndjson_to_fods.py",
+      "test_file": "tests/python/ndjson/test_ndjson_to_fods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: NDJSON->FODS using FF NDJSON codec + FODS writer",
+      "added_at": "2026-07-11T12:09:48.508945+00:00",
+      "tests_passed": 11
     }
   ],
-  "total_entries": 2514,
+  "total_entries": 2516,
   "changes": [
     {
       "file": "src/python/dif/models.py",
