@@ -69,3 +69,63 @@ def odt_total_text_length(source: "str | bytes | Path") -> int:
     """
     doc = parse_odt(source)
     return sum(len(p.get("text", "")) for p in doc.get("paragraphs", []))
+
+
+def odt_has_paragraphs(source: "str | bytes | Path") -> bool:
+    """Return True if the ODT document contains at least one paragraph.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return doc.get("paragraph_count", 0) > 0
+
+
+def odt_has_headings(source: "str | bytes | Path") -> bool:
+    """Return True if the ODT document contains at least one heading.
+
+    Spec: ODF 1.3 text:h element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return doc.get("heading_count", 0) > 0
+
+
+def odt_avg_paragraph_length(source: "str | bytes | Path") -> float:
+    """Return average character length of all paragraphs. 0.0 if no paragraphs.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    paras = doc.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    return sum(len(p.get("text", "")) for p in paras) / len(paras)
+
+
+def odt_max_paragraph_length(source: "str | bytes | Path") -> int:
+    """Return maximum character length among all paragraphs. 0 if no paragraphs.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    paras = doc.get("paragraphs", [])
+    if not paras:
+        return 0
+    return max(len(p.get("text", "")) for p in paras)
+
+
+def odt_paragraph_texts(source: "str | bytes | Path") -> list:
+    """Return list of all paragraph text strings in document order.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return [p.get("text", "") for p in doc.get("paragraphs", [])]
+
+
+def odt_is_single_paragraph(source: "str | bytes | Path") -> bool:
+    """Return True if the document contains exactly one paragraph.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return doc.get("paragraph_count", 0) == 1

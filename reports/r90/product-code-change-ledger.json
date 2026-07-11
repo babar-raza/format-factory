@@ -42084,9 +42084,27 @@
       ],
       "test_count": 22,
       "description": "zst_file_stats_ext added to zst: zst_compressed_size_kb, zst_decompressed_size_kb, zst_has_space_savings, zst_ratio_below_half, zst_size_category, zst_is_ratio_above_one"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODT-DOC-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_doc_analytics.py",
+          "sha256_before": "e10ec54f6050be61d1de3ee8636c696d068bd7c638dd60a7ffdfa339d9c61a01",
+          "sha256_after": "cb509ee8438f87628f3ee43d864eec292f620ce0eae941f9f730aee135597f3f"
+        }
+      ],
+      "tests_added": [
+        "tests/python/odt/test_odt_doc_analytics_ext.py"
+      ],
+      "test_count": 18,
+      "description": "odt_doc_analytics_ext added to odt: odt_has_paragraphs, odt_has_headings, odt_avg_paragraph_length, odt_max_paragraph_length, odt_paragraph_texts, odt_is_single_paragraph"
     }
   ],
-  "total_entries": 2714,
+  "total_entries": 2715,
   "changes": [
     {
       "file": "src/python/dif/models.py",
