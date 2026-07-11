@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "TOML-TO-ODS-DOGFOOD-001",
+  "latest_sprint": "SYLK-TO-ODS-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39391,6 +39391,32 @@
       "description": "TOML->ODS dogfood export: each top-level key as ODS row",
       "added_at": "2026-07-12",
       "tests_passed": 13
+    },
+    {
+      "entry_id": "R90-DIF-TO-ODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "dif",
+      "target_format": "ods",
+      "sprint_id": "DIF-TO-ODS-DOGFOOD-001",
+      "source_file": "src/python/dif/dif_to_ods.py",
+      "test_file": "tests/python/dif/test_dif_to_ods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "DIF->ODS dogfood export: each DIF row as ODS row",
+      "added_at": "2026-07-12",
+      "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-SYLK-TO-ODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "sylk",
+      "target_format": "ods",
+      "sprint_id": "SYLK-TO-ODS-DOGFOOD-001",
+      "source_file": "src/python/sylk/sylk_to_ods.py",
+      "test_file": "tests/python/sylk/test_sylk_to_ods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "SYLK->ODS dogfood export: SYLK grid as ODS spreadsheet",
+      "added_at": "2026-07-12",
+      "tests_passed": 12
     }
   ],
   "total_entries": 2459,
