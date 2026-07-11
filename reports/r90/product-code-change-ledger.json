@@ -41591,6 +41591,24 @@
       ],
       "test_count": 21,
       "description": "New qoi_image_analytics.py: qoi_is_landscape, qoi_is_portrait, qoi_is_square, qoi_has_alpha, qoi_total_pixels, qoi_is_monochrome"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-DIF-STATS-EXT-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_stats.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "348a2811be8843c9ab3ac37bdfd0bef8905296cb601c67a81c96acd8535cb17a"
+        }
+      ],
+      "tests_added": [
+        "tests/python/dif/test_dif_stats_ext.py"
+      ],
+      "test_count": 24,
+      "description": "6 new file-path analytics in dif_stats.py: dif_total_cell_count, dif_min_row_width, dif_has_string_cells, dif_file_numeric_cell_count, dif_title_length, dif_all_cells_numeric"
     }
   ],
   "total_entries": 2678,

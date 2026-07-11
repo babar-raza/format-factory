@@ -370,3 +370,58 @@ def dif_special_cell_count(file_path: "str | _Path") -> int:
         1 for row in doc.rows for cell in row
         if cell.value_type == 'special'
     )
+
+
+def dif_total_cell_count(file_path: "str | _Path") -> int:
+    """Return the total count of cells across all data rows in the DIF file."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return sum(len(row) for row in doc.rows)
+
+
+def dif_min_row_width(file_path: "str | _Path") -> int:
+    """Return the minimum cell count in any single row. 0 if no rows."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    if not doc.rows:
+        return 0
+    return min(len(row) for row in doc.rows)
+
+
+def dif_has_string_cells(file_path: "str | _Path") -> bool:
+    """Return True if any cell in the DIF file has value_type='string'."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return any(
+        cell.value_type == 'string'
+        for row in doc.rows for cell in row
+    )
+
+
+def dif_file_numeric_cell_count(file_path: "str | _Path") -> int:
+    """Return count of cells with value_type='numeric' in the DIF file."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row
+        if cell.value_type == 'numeric'
+    )
+
+
+def dif_title_length(file_path: "str | _Path") -> int:
+    """Return character length of the DIF document title. 0 if no title."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    return len(doc.title) if doc.title else 0
+
+
+def dif_all_cells_numeric(file_path: "str | _Path") -> bool:
+    """Return True if every cell in every data row is numeric. True if no rows."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    if not doc.rows:
+        return True
+    return all(
+        cell.value_type == 'numeric'
+        for row in doc.rows for cell in row
+    )
