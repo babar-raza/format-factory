@@ -42462,9 +42462,27 @@
       ],
       "test_count": 14,
       "description": "Gnumeric sheet analytics ext3: gnumeric_last_sheet_name, gnumeric_min_sheet_cell_count, gnumeric_avg_sheet_cell_count, gnumeric_sheets_with_cells_count, gnumeric_total_numeric_value_count, gnumeric_all_sheet_cell_counts"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-XCF-LAYER-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_layer_analytics.py",
+          "sha256_before": "4f9aed138fdf7b90c52743529dbfb035151f074155f00dfb8e933e99053e8cf7",
+          "sha256_after": "3d232431207cada077c8d5a21f9b121d56e220bcee0b6b6342ab80efcd0d94ba"
+        }
+      ],
+      "tests_added": [
+        "tests/python/xcf/test_xcf_layer_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "XCF layer analytics ext3: xcf_last_layer_name, xcf_is_portrait, xcf_is_indexed, xcf_total_pixels, xcf_version, xcf_has_multiple_layers"
     }
   ],
-  "total_entries": 2735,
+  "total_entries": 2736,
   "changes": [
     {
       "file": "src/python/dif/models.py",

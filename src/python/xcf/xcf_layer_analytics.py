@@ -166,3 +166,58 @@ def xcf_first_layer_name(source: "str | Path") -> str:
     img = parse_xcf_strict(source)
     names = list(img.layer_names)
     return names[0] if names else ""
+
+
+def xcf_last_layer_name(source: "str | Path") -> str:
+    """Return the name of the last layer. Empty string if no layers.
+
+    Spec: XCF image layer (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    names = list(img.layer_names)
+    return names[-1] if names else ""
+
+
+def xcf_is_portrait(source: "str | Path") -> bool:
+    """Return True if the image is taller than it is wide.
+
+    Spec: XCF image header width/height (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.height > img.width
+
+
+def xcf_is_indexed(source: "str | Path") -> bool:
+    """Return True if the XCF image is indexed type (image_type == 2).
+
+    Spec: XCF image header image_type (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.image_type == _IMAGE_TYPE_INDEXED
+
+
+def xcf_total_pixels(source: "str | Path") -> int:
+    """Return total pixel count (width * height).
+
+    Spec: XCF image header width/height (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.width * img.height
+
+
+def xcf_version(source: "str | Path") -> str:
+    """Return the XCF format version string.
+
+    Spec: XCF image header version (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.version
+
+
+def xcf_has_multiple_layers(source: "str | Path") -> bool:
+    """Return True if the image has more than one layer.
+
+    Spec: XCF image layer count (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.num_layers > 1
