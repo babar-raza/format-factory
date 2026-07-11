@@ -39456,9 +39456,35 @@
       "description": "Dogfood export: SYLK->ODT using FF SYLK parser + ODT writer",
       "added_at": "2026-07-11T11:44:28.524664+00:00",
       "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-GNUMERIC-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "gnumeric",
+      "target_format": "odt",
+      "sprint_id": "GNUMERIC-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/gnumeric/gnumeric_to_odt.py",
+      "test_file": "tests/python/gnumeric/test_gnumeric_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: Gnumeric->ODT using FF gnumeric codec + ODT writer",
+      "added_at": "2026-07-11T11:50:36.395138+00:00",
+      "tests_passed": 13
+    },
+    {
+      "entry_id": "R90-FODS-TO-ODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "fods",
+      "target_format": "ods",
+      "sprint_id": "FODS-TO-ODS-DOGFOOD-001",
+      "source_file": "src/python/fods/fods_to_ods.py",
+      "test_file": "tests/python/fods/test_fods_to_ods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: FODS->ODS using FF FODS parser + ODS writer",
+      "added_at": "2026-07-11T11:50:36.395138+00:00",
+      "tests_passed": 13
     }
   ],
-  "total_entries": 2502,
+  "total_entries": 2504,
   "changes": [
     {
       "file": "src/python/dif/models.py",
