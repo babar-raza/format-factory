@@ -39040,6 +39040,19 @@
       "description": "NDJSON to CSV dogfood export using FF ndjson reader + CSV writer",
       "added_at": "2026-07-11T09:38:16Z",
       "tests_passed": 13
+    },
+    {
+      "entry_id": "R90-CSV-TO-TSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "csv",
+      "target_format": "tsv",
+      "sprint_id": "CSV-TO-TSV-DOGFOOD-001",
+      "source_file": "src/python/csv/csv_to_tsv.py",
+      "test_file": "tests/python/csv/test_csv_to_tsv.py",
+      "capability_id": "add-dogfood-export",
+      "description": "CSV to TSV dogfood export using FF CSV parser + TSV writer",
+      "added_at": "2026-07-11T09:42:25Z",
+      "tests_passed": 14
     }
   ],
   "total_entries": 2459,
