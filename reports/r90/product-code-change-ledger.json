@@ -40411,9 +40411,139 @@
         "tests/python/fodg/test_fodg_to_gnumeric.py"
       ],
       "description": "FODG -> Gnumeric dogfood export using FF fodg reader and gnumeric writer"
+    },
+    {
+      "id": "R90-CSV-TO-DIF-DOGFOOD-001",
+      "sprint": "CSV-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "csv",
+      "target_format": "dif",
+      "module": "src/python/csv/csv_to_dif.py",
+      "test": "tests/python/csv/test_csv_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-TSV-TO-DIF-DOGFOOD-001",
+      "sprint": "TSV-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "tsv",
+      "target_format": "dif",
+      "module": "src/python/tsv/tsv_to_dif.py",
+      "test": "tests/python/tsv/test_tsv_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-NDJSON-TO-DIF-DOGFOOD-001",
+      "sprint": "NDJSON-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "ndjson",
+      "target_format": "dif",
+      "module": "src/python/ndjson/ndjson_to_dif.py",
+      "test": "tests/python/ndjson/test_ndjson_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-ODS-TO-DIF-DOGFOOD-001",
+      "sprint": "ODS-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "ods",
+      "target_format": "dif",
+      "module": "src/python/ods/ods_to_dif.py",
+      "test": "tests/python/ods/test_ods_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-ABW-TO-DIF-DOGFOOD-001",
+      "sprint": "ABW-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "abw",
+      "target_format": "dif",
+      "module": "src/python/abw/abw_to_dif.py",
+      "test": "tests/python/abw/test_abw_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-GNUMERIC-TO-DIF-DOGFOOD-001",
+      "sprint": "GNUMERIC-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "gnumeric",
+      "target_format": "dif",
+      "module": "src/python/gnumeric/gnumeric_to_dif.py",
+      "test": "tests/python/gnumeric/test_gnumeric_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-SYLK-TO-DIF-DOGFOOD-001",
+      "sprint": "SYLK-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "sylk",
+      "target_format": "dif",
+      "module": "src/python/sylk/sylk_to_dif.py",
+      "test": "tests/python/sylk/test_sylk_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-TOML-TO-DIF-DOGFOOD-001",
+      "sprint": "TOML-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "toml",
+      "target_format": "dif",
+      "module": "src/python/toml/toml_to_dif.py",
+      "test": "tests/python/toml/test_toml_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-ODT-TO-DIF-DOGFOOD-001",
+      "sprint": "ODT-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "odt",
+      "target_format": "dif",
+      "module": "src/python/odt/odt_to_dif.py",
+      "test": "tests/python/odt/test_odt_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-FODT-TO-DIF-DOGFOOD-001",
+      "sprint": "FODT-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "fodt",
+      "target_format": "dif",
+      "module": "src/python/fodt/fodt_to_dif.py",
+      "test": "tests/python/fodt/test_fodt_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-FODS-TO-DIF-DOGFOOD-001",
+      "sprint": "FODS-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "fods",
+      "target_format": "dif",
+      "module": "src/python/fods/fods_to_dif.py",
+      "test": "tests/python/fods/test_fods_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-FODP-TO-DIF-DOGFOOD-001",
+      "sprint": "FODP-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "fodp",
+      "target_format": "dif",
+      "module": "src/python/fodp/fodp_to_dif.py",
+      "test": "tests/python/fodp/test_fodp_to_dif.py",
+      "status": "COMPLETE"
+    },
+    {
+      "id": "R90-FODG-TO-DIF-DOGFOOD-001",
+      "sprint": "FODG-TO-DIF-DOGFOOD-001",
+      "type": "DOGFOOD_EXPORT",
+      "source_format": "fodg",
+      "target_format": "dif",
+      "module": "src/python/fodg/fodg_to_dif.py",
+      "test": "tests/python/fodg/test_fodg_to_dif.py",
+      "status": "COMPLETE"
     }
   ],
-  "total_entries": 2518,
+  "total_entries": 2591,
   "changes": [
     {
       "file": "src/python/dif/models.py",
