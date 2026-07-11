@@ -41568,6 +41568,29 @@
       ],
       "test_count": 14,
       "description": "4 new analytics in text_document.py: odt_has_headings, odt_avg_paragraph_length, odt_max_paragraph_length, odt_has_single_paragraph"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-QOI-IMAGE-ANALYTICS-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/qoi/qoi_image_analytics.py",
+          "sha256_before": "new-file",
+          "sha256_after": "ace719da5307639b0d1229b0ddb914ce83e1a7d545d6ac9400b24d89e35c3680"
+        },
+        {
+          "path": "src/python/qoi/__init__.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "post-change"
+        }
+      ],
+      "tests_added": [
+        "tests/python/qoi/test_qoi_image_analytics.py"
+      ],
+      "test_count": 21,
+      "description": "New qoi_image_analytics.py: qoi_is_landscape, qoi_is_portrait, qoi_is_square, qoi_has_alpha, qoi_total_pixels, qoi_is_monochrome"
     }
   ],
   "total_entries": 2678,

@@ -8,6 +8,7 @@ FOSS track only — no commercial readiness implied.
 from .qoi_parser import *  # noqa: F401, F403
 from .qoi_encoder import *  # noqa: F401, F403
 from .image_document import *  # noqa: F401, F403
+from .qoi_image_analytics import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import QoiDocument  # noqa: F401
 from .qoi_workflow import qoi_installed_workflow  # noqa: F401
