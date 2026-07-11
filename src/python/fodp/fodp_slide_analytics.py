@@ -115,3 +115,63 @@ def fodp_has_text(source: "str | bytes | Path") -> bool:
     """
     meta = get_page_metadata(source)
     return any(s.get("text_content") for s in meta)
+
+
+def fodp_slide_titles(source: "str | bytes | Path") -> list:
+    """Return list of all slide title strings in presentation order.
+
+    Spec: ODF 1.3 draw:page title text (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return [s.get("title", "") for s in meta]
+
+
+def fodp_has_multiple_slides(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation contains more than one slide.
+
+    Spec: ODF 1.3 draw:page element (FACT-FODP-001)
+    """
+    doc = load(source)
+    return doc.get("page_count", 0) > 1
+
+
+def fodp_avg_shapes_per_slide(source: "str | bytes | Path") -> float:
+    """Return average number of shapes per slide. 0.0 if no slides.
+
+    Spec: ODF 1.3 draw:page child shapes (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    if not meta:
+        return 0.0
+    return sum(s.get("shape_count", 0) for s in meta) / len(meta)
+
+
+def fodp_slides_with_shapes_count(source: "str | bytes | Path") -> int:
+    """Return count of slides that contain at least one shape.
+
+    Spec: ODF 1.3 draw:page child shapes (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return sum(1 for s in meta if s.get("shape_count", 0) > 0)
+
+
+def fodp_all_text_items(source: "str | bytes | Path") -> list:
+    """Return flat list of all text items across all slides in order.
+
+    Spec: ODF 1.3 text:p child of draw elements (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    result = []
+    for s in meta:
+        result.extend(s.get("text_content", []))
+    return result
+
+
+def fodp_slide_names_are_unique(source: "str | bytes | Path") -> bool:
+    """Return True if all slide internal names are distinct.
+
+    Spec: ODF 1.3 draw:page@draw:name (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    names = [s.get("name", "") for s in meta]
+    return len(names) == len(set(names))

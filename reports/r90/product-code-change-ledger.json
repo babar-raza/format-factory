@@ -42138,9 +42138,27 @@
       ],
       "test_count": 18,
       "description": "xcf_layer_analytics_ext2 added to xcf: xcf_width, xcf_height, xcf_image_type, xcf_is_landscape, xcf_aspect_ratio, xcf_first_layer_name"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODP-SLIDE-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_slide_analytics.py",
+          "sha256_before": "39ba01449d32731398a0c5d23ba7481030d79ed006a9c8628233d7b59b66ab4e",
+          "sha256_after": "0a99aa118abc2f32096b7b567539060c59764f1c77c7550fd6b14aa4eaf823ff"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodp/test_fodp_slide_analytics_ext2.py"
+      ],
+      "test_count": 20,
+      "description": "fodp_slide_analytics_ext2 added to fodp: fodp_slide_titles, fodp_has_multiple_slides, fodp_avg_shapes_per_slide, fodp_slides_with_shapes_count, fodp_all_text_items, fodp_slide_names_are_unique"
     }
   ],
-  "total_entries": 2717,
+  "total_entries": 2718,
   "changes": [
     {
       "file": "src/python/dif/models.py",
