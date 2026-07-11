@@ -42228,9 +42228,27 @@
       ],
       "test_count": 20,
       "description": "ppm_image_analytics_ext2 added to ppm: ppm_width, ppm_height, ppm_maxval, ppm_magic, ppm_total_pixels, ppm_is_standard_depth"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-CSV-STATS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_stats.py",
+          "sha256_before": "6c03e3de0c9888b4488044519e176011fa13772a5ef488b428bfe27ce8f87934",
+          "sha256_after": "30dfcac221cddcb2eefa98c8c159a6f5ff7c1ad2514519052f97cccce31e29b5"
+        }
+      ],
+      "tests_added": [
+        "tests/python/csv/test_csv_stats_ext2.py"
+      ],
+      "test_count": 20,
+      "description": "csv_stats_ext2 added to csv: csv_header_count, csv_has_headers, csv_first_row, csv_last_row, csv_is_square, csv_is_tall"
     }
   ],
-  "total_entries": 2722,
+  "total_entries": 2723,
   "changes": [
     {
       "file": "src/python/dif/models.py",

@@ -178,3 +178,82 @@ def csv_max_field_length(rows: list) -> int:
             if field_len > max_len:
                 max_len = field_len
     return max_len
+
+
+def csv_header_count(csv_doc: dict[str, Any]) -> int:
+    """Return count of header columns. 0 if no header row.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        int — number of header columns.
+    """
+    headers = csv_doc.get("headers")
+    return len(headers) if headers else 0
+
+
+def csv_has_headers(csv_doc: dict[str, Any]) -> bool:
+    """Return True if the CSV document was parsed as having a header row.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        bool — True if has_header is set.
+    """
+    return bool(csv_doc.get("has_header", False))
+
+
+def csv_first_row(csv_doc: dict[str, Any]) -> list:
+    """Return the first data row as a list of values. Empty list if no rows.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        list — first data row, or [].
+    """
+    rows = csv_doc.get("rows", [])
+    return list(rows[0]) if rows else []
+
+
+def csv_last_row(csv_doc: dict[str, Any]) -> list:
+    """Return the last data row as a list of values. Empty list if no rows.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        list — last data row, or [].
+    """
+    rows = csv_doc.get("rows", [])
+    return list(rows[-1]) if rows else []
+
+
+def csv_is_square(csv_doc: dict[str, Any]) -> bool:
+    """Return True if row count equals column count.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        bool — True if len(rows) == column_count.
+    """
+    rows = csv_doc.get("rows", [])
+    col_count = csv_doc.get("column_count", 0)
+    return len(rows) == col_count
+
+
+def csv_is_tall(csv_doc: dict[str, Any]) -> bool:
+    """Return True if row count exceeds column count.
+
+    Args:
+        csv_doc: dict output of parse_csv() / parse_csv_strict().
+
+    Returns:
+        bool — True if len(rows) > column_count.
+    """
+    rows = csv_doc.get("rows", [])
+    col_count = csv_doc.get("column_count", 0)
+    return len(rows) > col_count
