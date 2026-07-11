@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODG-TO-FODS-DOGFOOD-001",
+  "latest_sprint": "TOML-TO-FODT-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39768,6 +39768,84 @@
       "description": "FODG -> FODS dogfood export using FF FODG codec + FODS writer",
       "authority": "TASK-007",
       "tests_added": 12
+    },
+    {
+      "entry_id": "R90-CSV-TO-FODT-DOGFOOD-001",
+      "sprint": "CSV-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "csv",
+      "target_format": "fodt",
+      "source_file": "src/python/csv/csv_to_fodt.py",
+      "test_file": "tests/python/csv/test_csv_to_fodt.py",
+      "description": "CSV -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-TSV-TO-FODT-DOGFOOD-001",
+      "sprint": "TSV-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "tsv",
+      "target_format": "fodt",
+      "source_file": "src/python/tsv/tsv_to_fodt.py",
+      "test_file": "tests/python/tsv/test_tsv_to_fodt.py",
+      "description": "TSV -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-FODT-DOGFOOD-001",
+      "sprint": "NDJSON-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "ndjson",
+      "target_format": "fodt",
+      "source_file": "src/python/ndjson/ndjson_to_fodt.py",
+      "test_file": "tests/python/ndjson/test_ndjson_to_fodt.py",
+      "description": "NDJSON -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 9
+    },
+    {
+      "entry_id": "R90-ODS-TO-FODT-DOGFOOD-001",
+      "sprint": "ODS-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "ods",
+      "target_format": "fodt",
+      "source_file": "src/python/ods/ods_to_fodt.py",
+      "test_file": "tests/python/ods/test_ods_to_fodt.py",
+      "description": "ODS -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-FODS-TO-FODT-DOGFOOD-001",
+      "sprint": "FODS-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "fods",
+      "target_format": "fodt",
+      "source_file": "src/python/fods/fods_to_fodt.py",
+      "test_file": "tests/python/fods/test_fods_to_fodt.py",
+      "description": "FODS -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-TOML-TO-FODT-DOGFOOD-001",
+      "sprint": "TOML-TO-FODT-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "toml",
+      "target_format": "fodt",
+      "source_file": "src/python/toml/toml_to_fodt.py",
+      "test_file": "tests/python/toml/test_toml_to_fodt.py",
+      "description": "TOML -> FODT dogfood export",
+      "authority": "TASK-007",
+      "tests_added": 10
     }
   ],
   "total_entries": 2518,

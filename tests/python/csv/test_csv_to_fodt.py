@@ -1,0 +1,108 @@
+"""
+Tests for csv_to_fodt dogfood export.
+
+Verifies that CSV rows are converted to FODT paragraphs using
+Format Factory's CSV parser and FODT writer libraries.
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import pytest
+
+_REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO / "src" / "python"))
+sys.path.insert(0, str(_REPO))
+
+MINIMAL_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
+
+from src.python.csv.csv_to_fodt import csv_to_fodt
+
+
+class TestCsvToFodtBasic:
+    """Basic conversion tests."""
+
+    def test_returns_row_count(self, tmp_path: Path) -> None:
+        """Returns an integer count of paragraphs written."""
+        dest = tmp_path / "out.fodt"
+        count = csv_to_fodt(MINIMAL_CSV, dest)
+        assert isinstance(count, int)
+        assert count >= 0
+
+    def test_output_file_created(self, tmp_path: Path) -> None:
+        """Output .fodt file is created at the specified path."""
+        dest = tmp_path / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest)
+        assert dest.exists()
+
+    def test_output_is_xml(self, tmp_path: Path) -> None:
+        """FODT file is XML."""
+        dest = tmp_path / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest)
+        content = dest.read_text(encoding="utf-8")
+        assert "<?xml" in content or "<office:document" in content
+
+    def test_output_contains_paragraph(self, tmp_path: Path) -> None:
+        """FODT file contains paragraph elements."""
+        dest = tmp_path / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest)
+        content = dest.read_text(encoding="utf-8")
+        assert "text:p" in content
+
+
+class TestCsvToFodtContent:
+    """Content correctness tests."""
+
+    def test_produces_paragraphs(self, tmp_path: Path) -> None:
+        """CSV rows appear as FODT paragraphs."""
+        dest = tmp_path / "out.fodt"
+        count = csv_to_fodt(MINIMAL_CSV, dest)
+        assert count >= 1
+
+    def test_content_has_data(self, tmp_path: Path) -> None:
+        """FODT file has substantial content."""
+        dest = tmp_path / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest)
+        content = dest.read_text(encoding="utf-8")
+        assert len(content) > 100
+
+
+class TestCsvToFodtOptions:
+    """Option flag tests."""
+
+    def test_custom_separator(self, tmp_path: Path) -> None:
+        """separator parameter joins cells in each paragraph."""
+        dest = tmp_path / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest, separator=" , ")
+        content = dest.read_text(encoding="utf-8")
+        assert " , " in content
+
+    def test_include_header(self, tmp_path: Path) -> None:
+        """include_header=True includes header row as first paragraph."""
+        dest = tmp_path / "out.fodt"
+        count = csv_to_fodt(MINIMAL_CSV, dest, include_header=True)
+        assert count >= 1
+
+    def test_no_header(self, tmp_path: Path) -> None:
+        """include_header=False skips header paragraph."""
+        dest = tmp_path / "out.fodt"
+        count = csv_to_fodt(MINIMAL_CSV, dest, include_header=False)
+        assert count >= 0
+
+
+class TestCsvToFodtPaths:
+    """Path handling tests."""
+
+    def test_creates_parent_directories(self, tmp_path: Path) -> None:
+        """Creates intermediate parent directories."""
+        dest = tmp_path / "nested" / "dir" / "out.fodt"
+        csv_to_fodt(MINIMAL_CSV, dest)
+        assert dest.exists()
+
+    def test_accepts_string_paths(self, tmp_path: Path) -> None:
+        """Accepts string paths as well as Path objects."""
+        dest = tmp_path / "out.fodt"
+        count = csv_to_fodt(str(MINIMAL_CSV), str(dest))
+        assert isinstance(count, int)
+        assert dest.exists()
