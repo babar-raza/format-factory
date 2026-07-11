@@ -684,3 +684,107 @@ def ndjson_numeric_field_count(source) -> int:
                 if isinstance(v, (int, float)) and not isinstance(v, bool):
                     numeric_keys.add(k)
     return len(numeric_keys)
+
+
+def ndjson_has_boolean_values(source) -> bool:
+    """Return True if any dict record contains at least one boolean field value.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        bool — True if any field value is a Python bool (True or False).
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return any(
+        isinstance(v, bool)
+        for r in records if isinstance(r, dict)
+        for v in r.values()
+    )
+
+
+def ndjson_string_field_names(source) -> list:
+    """Return sorted list of field names whose values are strings in ALL dict records.
+
+    A field name is included only if every dict record that contains that key
+    has a string value for it.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        list[str] — Sorted field names with universally string values.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    dict_records = [r for r in records if isinstance(r, dict)]
+    if not dict_records:
+        return []
+    all_keys: set = set()
+    for r in dict_records:
+        all_keys.update(r.keys())
+    result = []
+    for key in all_keys:
+        if all(isinstance(r.get(key), str) for r in dict_records if key in r):
+            result.append(key)
+    return sorted(result)
+
+
+def ndjson_max_record_field_count(source) -> int:
+    """Return the maximum field count of any dict record.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        int — Maximum number of fields in any single dict record. 0 if no dicts.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    return max(counts, default=0)
+
+
+def ndjson_min_record_field_count(source) -> int:
+    """Return the minimum field count of any dict record.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        int — Minimum number of fields in any single dict record. 0 if no dicts.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    return min(counts, default=0)
+
+
+def ndjson_all_records_have_same_keys(source) -> bool:
+    """Return True if all dict records have exactly the same set of field names.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        bool — True if all dict records share identical key sets.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    dict_records = [r for r in records if isinstance(r, dict)]
+    if not dict_records:
+        return True
+    first_keys = frozenset(dict_records[0].keys())
+    return all(frozenset(r.keys()) == first_keys for r in dict_records[1:])
+
+
+def ndjson_total_value_count(source) -> int:
+    """Return the total count of field values across all dict records.
+
+    Sums the number of key-value pairs in every dict record. This equals
+    the sum of field counts for each record.
+
+    Args:
+        source: File path, list of parsed records, or bytes/str NDJSON content.
+
+    Returns:
+        int — Total number of field values across all dict records.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return sum(len(r) for r in records if isinstance(r, dict))

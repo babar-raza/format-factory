@@ -41725,9 +41725,26 @@
       ],
       "test_count": 24,
       "description": "ppm_image_analytics.py: 6 new analytics: ppm_has_single_pixel, ppm_has_single_row, ppm_has_single_column, ppm_is_high_depth, ppm_all_white, ppm_all_black"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-NDJSON-RECORD-STATS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_record_stats.py",
+          "sha256_after": "12b9cd1e02e2105f40f97ed5222ee3750951e2976e9e4f184203611c38709f65"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ndjson/test_ndjson_record_stats_ext2.py"
+      ],
+      "test_count": 22,
+      "description": "6 new NDJSON analytics: ndjson_has_boolean_values, ndjson_string_field_names, ndjson_max_record_field_count, ndjson_min_record_field_count, ndjson_all_records_have_same_keys, ndjson_total_value_count"
     }
   ],
-  "total_entries": 2694,
+  "total_entries": 2695,
   "changes": [
     {
       "file": "src/python/dif/models.py",
