@@ -42624,9 +42624,27 @@
       ],
       "test_count": 18,
       "description": "Add 6 analytics functions to toml_table_analytics: recursive_numeric_count, is_empty, has_top_level_lists, top_level_list_count, max_string_length, nested_table_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODS-STATS-EXT4-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_stats.py",
+          "sha256_before": "2dcac73b8a1410ef2fd7d1ec210d15b061189c35254640d2d9eb540d59005cb2",
+          "sha256_after": "fcd8a5710ef8d9a8dfda05564c7c18829bc3bdb312a06abfab1ef4baaed11df9"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ods/test_ods_stats_ext4.py"
+      ],
+      "test_count": 18,
+      "description": "Add 6 analytics to ods_stats: avg_sheet_row_count, total_cell_count, is_multi_sheet, last_sheet_row_count, has_text_cells, sheet_names_list"
     }
   ],
-  "total_entries": 2744,
+  "total_entries": 2745,
   "changes": [
     {
       "file": "src/python/dif/models.py",

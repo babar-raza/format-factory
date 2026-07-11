@@ -418,3 +418,98 @@ def ods_last_sheet_name(file_path: "str | Path") -> str:
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
     return sheets[-1].get("name", "") if sheets else ""
+
+
+def ods_avg_sheet_row_count(file_path: "str | Path") -> float:
+    """Return the average row count per sheet. 0.0 if no sheets.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        float — mean row count across all sheets.
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0.0
+    return sum(sheet.get("row_count", 0) for sheet in sheets) / len(sheets)
+
+
+def ods_total_cell_count(file_path: "str | Path") -> int:
+    """Return total cell count across all rows and sheets in the ODS file.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        int — total cell count.
+    """
+    doc = _ods_load(file_path)
+    count = 0
+    for sheet in doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            count += len(row.get("cells", []))
+    return count
+
+
+def ods_is_multi_sheet(file_path: "str | Path") -> bool:
+    """Return True if the ODS workbook contains more than one sheet.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        bool — True if sheet count > 1.
+    """
+    doc = _ods_load(file_path)
+    return len(doc.get("sheets", [])) > 1
+
+
+def ods_last_sheet_row_count(file_path: "str | Path") -> int:
+    """Return the row count of the last sheet. 0 if no sheets.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        int — row count of last sheet.
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0
+    return sheets[-1].get("row_count", 0)
+
+
+def ods_has_text_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell has value_type 'string' or non-empty text.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        bool — True if at least one cell has string content.
+    """
+    doc = _ods_load(file_path)
+    for sheet in doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell.get("value_type") == "string" or (
+                    isinstance(cell.get("text"), str) and cell["text"].strip()
+                ):
+                    return True
+    return False
+
+
+def ods_sheet_names_list(file_path: "str | Path") -> list:
+    """Return list of sheet names in document order.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        list[str] — sheet names in order.
+    """
+    doc = _ods_load(file_path)
+    return [sheet.get("name", "") for sheet in doc.get("sheets", [])]
