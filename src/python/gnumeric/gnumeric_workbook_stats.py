@@ -369,3 +369,90 @@ def count_nonempty_cells(model: dict, sheet_idx: int) -> int:
         raise GnumericError(f"sheet_index {sheet_idx} out of range")
     grid = sheets[sheet_idx].get("cell_grid", {})
     return sum(1 for v in grid.values() if v)
+
+
+def workbook_sheet_count(model: dict) -> int:
+    """Return total number of sheets in the workbook.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        int — sheet count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    return model.get("sheet_count", 0)
+
+
+def workbook_total_cell_count(model: dict) -> int:
+    """Return total cell count across all sheets.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        int — total cell count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    return model.get("cell_count", 0)
+
+
+def workbook_sheet_names(model: dict) -> list:
+    """Return list of all sheet names in workbook order.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        list — sheet name strings.
+    """
+    if not isinstance(model, dict):
+        return []
+    return [s.get("name", "") for s in model.get("sheets", [])]
+
+
+def workbook_has_data(model: dict) -> bool:
+    """Return True if the workbook contains at least one cell.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        bool — True if cell_count > 0.
+    """
+    if not isinstance(model, dict):
+        return False
+    return model.get("cell_count", 0) > 0
+
+
+def workbook_is_gnumeric(model: dict) -> bool:
+    """Return True if the model is identified as a Gnumeric document.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        bool — True if is_gnumeric is truthy.
+    """
+    if not isinstance(model, dict):
+        return False
+    return bool(model.get("is_gnumeric", False))
+
+
+def workbook_max_sheet_cell_count(model: dict) -> int:
+    """Return the cell count of the sheet with the most cells. 0 if no sheets.
+
+    Args:
+        model: Gnumeric workbook dict.
+
+    Returns:
+        int — max sheet cell count.
+    """
+    if not isinstance(model, dict):
+        return 0
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(s.get("cell_count", 0) for s in sheets)

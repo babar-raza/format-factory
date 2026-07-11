@@ -42300,9 +42300,27 @@
       ],
       "test_count": 18,
       "description": "ppm_stats_ext added to ppm: ppm_is_square, ppm_is_landscape, ppm_is_portrait, ppm_is_ok, ppm_is_ascii_ppm, ppm_aspect_ratio_from_doc"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-GNUMERIC-WORKBOOK-STATS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_workbook_stats.py",
+          "sha256_before": "eb457a603e6d345b8ff642e1b162cbda1535c536b90fb118acda5f9875a916c1",
+          "sha256_after": "87917a9770c9df887d1582286f3042e47c1dd75b96ba9eca433c218523d52877"
+        }
+      ],
+      "tests_added": [
+        "tests/python/gnumeric/test_gnumeric_workbook_stats_ext.py"
+      ],
+      "test_count": 19,
+      "description": "workbook-level stats functions added to gnumeric (workbook_sheet_count, workbook_total_cell_count, workbook_sheet_names, workbook_has_data, workbook_is_gnumeric, workbook_max_sheet_cell_count)"
     }
   ],
-  "total_entries": 2726,
+  "total_entries": 2727,
   "changes": [
     {
       "file": "src/python/dif/models.py",
