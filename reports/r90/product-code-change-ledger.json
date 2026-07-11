@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODG-TO-TOML-DOGFOOD-001",
+  "latest_sprint": "FODG-TO-ABW-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -40099,6 +40099,162 @@
         "tests/python/fodg/test_fodg_to_toml.py"
       ],
       "description": "FODG -> TOML dogfood export using FF FODG codec and toml writer"
+    },
+    {
+      "entry_id": "R90-CSV-TO-ABW-DOGFOOD-001",
+      "sprint": "CSV-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "csv",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/csv/csv_to_abw.py",
+        "tests/python/csv/test_csv_to_abw.py"
+      ],
+      "description": "CSV -> ABW dogfood export using FF csv reader and abw writer"
+    },
+    {
+      "entry_id": "R90-TSV-TO-ABW-DOGFOOD-001",
+      "sprint": "TSV-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "tsv",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/tsv/tsv_to_abw.py",
+        "tests/python/tsv/test_tsv_to_abw.py"
+      ],
+      "description": "TSV -> ABW dogfood export using FF tsv reader and abw writer"
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-ABW-DOGFOOD-001",
+      "sprint": "NDJSON-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "ndjson",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/ndjson/ndjson_to_abw.py",
+        "tests/python/ndjson/test_ndjson_to_abw.py"
+      ],
+      "description": "NDJSON -> ABW dogfood export using FF ndjson reader and abw writer"
+    },
+    {
+      "entry_id": "R90-ODS-TO-ABW-DOGFOOD-001",
+      "sprint": "ODS-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "ods",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/ods/ods_to_abw.py",
+        "tests/python/ods/test_ods_to_abw.py"
+      ],
+      "description": "ODS -> ABW dogfood export using FF ods reader and abw writer"
+    },
+    {
+      "entry_id": "R90-FODS-TO-ABW-DOGFOOD-001",
+      "sprint": "FODS-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fods",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/fods/fods_to_abw.py",
+        "tests/python/fods/test_fods_to_abw.py"
+      ],
+      "description": "FODS -> ABW dogfood export using FF fods reader and abw writer"
+    },
+    {
+      "entry_id": "R90-FODT-TO-ABW-DOGFOOD-001",
+      "sprint": "FODT-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodt",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/fodt/fodt_to_abw.py",
+        "tests/python/fodt/test_fodt_to_abw.py"
+      ],
+      "description": "FODT -> ABW dogfood export using FF fodt reader and abw writer"
+    },
+    {
+      "entry_id": "R90-ODT-TO-ABW-DOGFOOD-001",
+      "sprint": "ODT-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "odt",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/odt/odt_to_abw.py",
+        "tests/python/odt/test_odt_to_abw.py"
+      ],
+      "description": "ODT -> ABW dogfood export using FF odt reader and abw writer"
+    },
+    {
+      "entry_id": "R90-GNUMERIC-TO-ABW-DOGFOOD-001",
+      "sprint": "GNUMERIC-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "gnumeric",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/gnumeric/gnumeric_to_abw.py",
+        "tests/python/gnumeric/test_gnumeric_to_abw.py"
+      ],
+      "description": "GNUMERIC -> ABW dogfood export using FF gnumeric reader and abw writer"
+    },
+    {
+      "entry_id": "R90-DIF-TO-ABW-DOGFOOD-001",
+      "sprint": "DIF-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "dif",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/dif/dif_to_abw.py",
+        "tests/python/dif/test_dif_to_abw.py"
+      ],
+      "description": "DIF -> ABW dogfood export using FF dif reader and abw writer"
+    },
+    {
+      "entry_id": "R90-SYLK-TO-ABW-DOGFOOD-001",
+      "sprint": "SYLK-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "sylk",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/sylk/sylk_to_abw.py",
+        "tests/python/sylk/test_sylk_to_abw.py"
+      ],
+      "description": "SYLK -> ABW dogfood export using FF sylk reader and abw writer"
+    },
+    {
+      "entry_id": "R90-TOML-TO-ABW-DOGFOOD-001",
+      "sprint": "TOML-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "toml",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/toml/toml_to_abw.py",
+        "tests/python/toml/test_toml_to_abw.py"
+      ],
+      "description": "TOML -> ABW dogfood export using FF toml reader and abw writer"
+    },
+    {
+      "entry_id": "R90-FODP-TO-ABW-DOGFOOD-001",
+      "sprint": "FODP-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodp",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/fodp/fodp_to_abw.py",
+        "tests/python/fodp/test_fodp_to_abw.py"
+      ],
+      "description": "FODP -> ABW dogfood export using FF fodp reader and abw writer"
+    },
+    {
+      "entry_id": "R90-FODG-TO-ABW-DOGFOOD-001",
+      "sprint": "FODG-TO-ABW-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodg",
+      "target_format": "abw",
+      "files_added": [
+        "src/python/fodg/fodg_to_abw.py",
+        "tests/python/fodg/test_fodg_to_abw.py"
+      ],
+      "description": "FODG -> ABW dogfood export using FF fodg reader and abw writer"
     }
   ],
   "total_entries": 2518,
