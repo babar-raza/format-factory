@@ -229,3 +229,59 @@ def tsv_has_header(source: "str | bytes | Path") -> bool:
     """
     result = parse_tsv(source)
     return bool(result.get("has_header", False))
+
+
+def tsv_first_header(source: "str | bytes | Path") -> str:
+    """Return the name of the first header column. Empty string if no headers.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers") or []
+    return headers[0] if headers else ""
+
+
+def tsv_last_header(source: "str | bytes | Path") -> str:
+    """Return the name of the last header column. Empty string if no headers.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers") or []
+    return headers[-1] if headers else ""
+
+
+def tsv_is_empty(source: "str | bytes | Path") -> bool:
+    """Return True if the TSV file has no rows and no headers.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0) == 0 and not (result.get("headers") or [])
+
+
+def tsv_total_cells(source: "str | bytes | Path") -> int:
+    """Return total cell count (row_count * column_count).
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0) * result.get("column_count", 0)
+
+
+def tsv_is_tall(source: "str | bytes | Path") -> bool:
+    """Return True if row count exceeds column count.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0) > result.get("column_count", 0)
+
+
+def tsv_delimiter(source: "str | bytes | Path") -> str:
+    """Return the delimiter character used in the TSV file.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("delimiter", "\t")

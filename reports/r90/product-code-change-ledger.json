@@ -42516,9 +42516,45 @@
       ],
       "test_count": 14,
       "description": "ABW paragraph analytics ext3: abw_nonempty_paragraph_count, abw_longest_paragraph, abw_total_section_paragraph_count, abw_all_paragraphs_nonempty, abw_paragraph_char_counts, abw_has_long_paragraphs"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODP-SLIDE-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_slide_analytics.py",
+          "sha256_before": "0a99aa118abc2f32096b7b567539060c59764f1c77c7550fd6b14aa4eaf823ff",
+          "sha256_after": "5a23a1b35a2569ed56b3006d72d081a5b77817c5ed01818ed098a8aece0f0da3"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodp/test_fodp_slide_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "FODP slide analytics ext3: fodp_last_slide_title, fodp_slide_text_counts, fodp_max_shape_count, fodp_min_shape_count, fodp_all_text_items_flat, fodp_slides_without_text_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-TSV-ROW-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_row_analytics.py",
+          "sha256_before": "e10f30306ad7505b73bc65c51c5cec4cdd6a928b96c10cc475be6742092a79b0",
+          "sha256_after": "110d01c0b6a9413b5226d1b4a8c7db7e1d1feee402469469d839900f7b8bb5be"
+        }
+      ],
+      "tests_added": [
+        "tests/python/tsv/test_tsv_row_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "TSV row analytics ext3: tsv_first_header, tsv_last_header, tsv_is_empty, tsv_total_cells, tsv_is_tall, tsv_delimiter"
     }
   ],
-  "total_entries": 2738,
+  "total_entries": 2740,
   "changes": [
     {
       "file": "src/python/dif/models.py",
