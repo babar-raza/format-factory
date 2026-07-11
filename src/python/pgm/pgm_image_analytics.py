@@ -126,3 +126,61 @@ def pgm_max_pixel_value(file_path: "str | Path") -> int:
     """
     img = parse_pgm_strict(file_path)
     return max(img.pixels) if img.pixels else 0
+
+
+def pgm_is_standard_depth(file_path: "str | Path") -> bool:
+    """Return True if maxval is exactly 255 (standard 8-bit depth).
+
+    Spec: Netpbm PGM maxval field (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.maxval == 255
+
+
+def pgm_is_high_depth(file_path: "str | Path") -> bool:
+    """Return True if maxval exceeds 255 (16-bit or higher depth).
+
+    Spec: Netpbm PGM maxval field (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.maxval > 255
+
+
+def pgm_avg_pixel_value(file_path: "str | Path") -> float:
+    """Return the mean pixel value across all pixels. 0.0 if no pixels.
+
+    Spec: Netpbm PGM pixel data (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(img.pixels) / len(img.pixels)
+
+
+def pgm_is_portrait(file_path: "str | Path") -> bool:
+    """Return True if the image is taller than it is wide (height > width).
+
+    Spec: Netpbm PGM width/height fields (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.height > img.width
+
+
+def pgm_is_ascii(file_path: "str | Path") -> bool:
+    """Return True if the PGM file uses ASCII format (magic == 'P2').
+
+    Spec: Netpbm PGM magic number (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.magic == "P2"
+
+
+def pgm_is_all_white(file_path: "str | Path") -> bool:
+    """Return True if every pixel equals maxval (all-white image).
+
+    Spec: Netpbm PGM pixel data (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return False
+    return all(p == img.maxval for p in img.pixels)

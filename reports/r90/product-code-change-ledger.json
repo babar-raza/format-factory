@@ -42642,9 +42642,27 @@
       ],
       "test_count": 18,
       "description": "Add 6 analytics to ods_stats: avg_sheet_row_count, total_cell_count, is_multi_sheet, last_sheet_row_count, has_text_cells, sheet_names_list"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PGM-IMAGE-ANALYTICS-EXT4-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_image_analytics.py",
+          "sha256_before": "83e67efd2e6781b53dae350b0de68d9be4e37fc544445bd279ff8aeb2935b7a3",
+          "sha256_after": "250f1c13fbbd5738e10f7bf9a9ab77bdacf636fb6d27103ee77308ea75b158ce"
+        }
+      ],
+      "tests_added": [
+        "tests/python/pgm/test_pgm_image_analytics_ext4.py"
+      ],
+      "test_count": 18,
+      "description": "Add 6 analytics to pgm_image_analytics: is_standard_depth, is_high_depth, avg_pixel_value, is_portrait, is_ascii, is_all_white"
     }
   ],
-  "total_entries": 2745,
+  "total_entries": 2746,
   "changes": [
     {
       "file": "src/python/dif/models.py",
