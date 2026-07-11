@@ -41532,6 +41532,24 @@
       ],
       "test_count": 24,
       "description": "New fodp_slide_analytics.py: fodp_slide_name_list, fodp_total_text_items, fodp_slides_with_text_count, fodp_max/min_slide_text_items, fodp_all_slides_have_titles"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-CSV-ANALYTICS-EXT-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_analytics.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "76695c64ee735c66b5599130ad1d091aa0c8f04dbe2787b80ebd0ddf3d666dff"
+        }
+      ],
+      "tests_added": [
+        "tests/python/csv/test_csv_analytics_ext.py"
+      ],
+      "test_count": 19,
+      "description": "6 new analytics in csv_analytics.py: csv_max/min_row_length, csv_has_uniform_row_length, csv_column_count, csv_total_cell_count, csv_has_header"
     }
   ],
   "total_entries": 2678,

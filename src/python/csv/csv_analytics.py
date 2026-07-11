@@ -178,3 +178,50 @@ def csv_numeric_cell_ratio(file_path: "str | Path") -> float:
                 except (ValueError, TypeError):
                     pass
     return numeric / total
+
+
+def csv_max_row_length(file_path: "str | Path") -> int:
+    """Return the maximum field count observed in any single data row. 0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return max(len(row) for row in rows)
+
+
+def csv_min_row_length(file_path: "str | Path") -> int:
+    """Return the minimum field count observed in any single data row. 0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return min(len(row) for row in rows)
+
+
+def csv_has_uniform_row_length(file_path: "str | Path") -> bool:
+    """Return True if all data rows have the same number of fields. True if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return True
+    lengths = {len(row) for row in rows}
+    return len(lengths) == 1
+
+
+def csv_column_count(file_path: "str | Path") -> int:
+    """Return the number of columns (header fields) in the CSV."""
+    model = parse_csv_strict(file_path)
+    return model.get("column_count", 0)
+
+
+def csv_total_cell_count(file_path: "str | Path") -> int:
+    """Return total count of cells across all data rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return sum(len(row) for row in rows)
+
+
+def csv_has_header(file_path: "str | Path") -> bool:
+    """Return True if the parsed CSV has a header row."""
+    model = parse_csv_strict(file_path)
+    return bool(model.get("has_header", False))
