@@ -42174,9 +42174,27 @@
       ],
       "test_count": 22,
       "description": "abw_paragraph_analytics_ext2 added to abw: abw_has_sections, abw_last_paragraph, abw_is_single_paragraph, abw_paragraph_texts, abw_avg_word_count, abw_has_empty_paragraphs"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-TSV-ROW-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_row_analytics.py",
+          "sha256_before": "78386c9cdb491d9f57714f266d2bb884d8bc6f1313438e6938802b5f8846fc73",
+          "sha256_after": "e10f30306ad7505b73bc65c51c5cec4cdd6a928b96c10cc475be6742092a79b0"
+        }
+      ],
+      "tests_added": [
+        "tests/python/tsv/test_tsv_row_analytics_ext2.py"
+      ],
+      "test_count": 21,
+      "description": "tsv_row_analytics_ext2 added to tsv: tsv_row_count, tsv_column_count, tsv_has_rows, tsv_is_single_row, tsv_header_count, tsv_has_header"
     }
   ],
-  "total_entries": 2719,
+  "total_entries": 2720,
   "changes": [
     {
       "file": "src/python/dif/models.py",

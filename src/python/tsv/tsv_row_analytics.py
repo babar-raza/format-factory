@@ -174,3 +174,58 @@ def tsv_is_wide(source: "str | bytes | Path") -> bool:
     """
     result = parse_tsv(source)
     return result.get("column_count", 0) > result.get("row_count", 0)
+
+
+def tsv_row_count(source: "str | bytes | Path") -> int:
+    """Return the number of data rows in the TSV file (excluding header).
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0)
+
+
+def tsv_column_count(source: "str | bytes | Path") -> int:
+    """Return the number of columns in the TSV file.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("column_count", 0)
+
+
+def tsv_has_rows(source: "str | bytes | Path") -> bool:
+    """Return True if the TSV file contains at least one data row.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0) > 0
+
+
+def tsv_is_single_row(source: "str | bytes | Path") -> bool:
+    """Return True if the TSV file contains exactly one data row.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("row_count", 0) == 1
+
+
+def tsv_header_count(source: "str | bytes | Path") -> int:
+    """Return the number of header columns. 0 if no header row.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers") or []
+    return len(headers)
+
+
+def tsv_has_header(source: "str | bytes | Path") -> bool:
+    """Return True if the TSV file was parsed as having a header row.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return bool(result.get("has_header", False))
