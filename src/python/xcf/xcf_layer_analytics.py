@@ -53,3 +53,59 @@ def xcf_layer_names(source: "str | Path") -> list:
     """Return list of layer names in the XCF image."""
     img = parse_xcf_strict(source)
     return list(img.layer_names)
+
+
+def xcf_num_layers(source: "str | Path") -> int:
+    """Return the number of layers in the XCF image.
+
+    Spec: XCF image layer count (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.num_layers
+
+
+def xcf_local_name(source: "str | Path") -> str:
+    """Return the local element name for the XCF image object.
+
+    Spec: XCF image namespace (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.local_name
+
+
+def xcf_namespace_uri(source: "str | Path") -> str:
+    """Return the namespace URI for the XCF format.
+
+    Spec: XCF image namespace (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return img.namespace_uri
+
+
+def xcf_layer_names_sorted(source: "str | Path") -> list:
+    """Return alphabetically sorted list of layer names.
+
+    Spec: XCF image layer (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return sorted(img.layer_names)
+
+
+def xcf_has_named_layers(source: "str | Path") -> bool:
+    """Return True if the image has at least one layer with a non-empty name.
+
+    Spec: XCF image layer (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return any(name.strip() for name in img.layer_names)
+
+
+def xcf_all_layers_named(source: "str | Path") -> bool:
+    """Return True if every layer has a non-empty, non-whitespace name.
+
+    True vacuously when there are no layers.
+
+    Spec: XCF image layer (FACT-XCF-001)
+    """
+    img = parse_xcf_strict(source)
+    return all(name.strip() for name in img.layer_names)

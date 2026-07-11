@@ -41904,9 +41904,27 @@
       ],
       "test_count": 22,
       "description": "dif_stats_ext added to dif: title, row_count, first_row_cell_count, has_numeric_cells, numeric_cell_values, cell_type_set"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-XCF-LAYER-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_layer_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "9f9c230b6cc47a106e2a0efd5aee6a2ea3c108bf9256035a11259dc4cf7fd68d"
+        }
+      ],
+      "tests_added": [
+        "tests/python/xcf/test_xcf_layer_analytics_ext.py"
+      ],
+      "test_count": 19,
+      "description": "xcf_layer_analytics_ext added to xcf: num_layers, local_name, namespace_uri, layer_names_sorted, has_named_layers, all_layers_named"
     }
   ],
-  "total_entries": 2704,
+  "total_entries": 2705,
   "changes": [
     {
       "file": "src/python/dif/models.py",
