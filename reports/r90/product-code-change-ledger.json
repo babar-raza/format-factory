@@ -42192,9 +42192,27 @@
       ],
       "test_count": 21,
       "description": "tsv_row_analytics_ext2 added to tsv: tsv_row_count, tsv_column_count, tsv_has_rows, tsv_is_single_row, tsv_header_count, tsv_has_header"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-GNUMERIC-SHEET-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_sheet_analytics.py",
+          "sha256_before": "d38795f4f15e67186024585e3551c13253533c5f40498b68f43a4c1659d86277",
+          "sha256_after": "a65c393e54907cee7d33d9c259a30f6eba19e3305153004760386bf0b41bef23"
+        }
+      ],
+      "tests_added": [
+        "tests/python/gnumeric/test_gnumeric_sheet_analytics_ext2.py"
+      ],
+      "test_count": 21,
+      "description": "gnumeric_sheet_analytics_ext2 added to gnumeric: gnumeric_has_data, gnumeric_unique_value_count, gnumeric_sheet_names_sorted, gnumeric_total_value_count, gnumeric_has_multiple_sheets, gnumeric_max_sheet_cell_count"
     }
   ],
-  "total_entries": 2720,
+  "total_entries": 2721,
   "changes": [
     {
       "file": "src/python/dif/models.py",

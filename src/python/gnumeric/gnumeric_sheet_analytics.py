@@ -107,3 +107,57 @@ def gnumeric_all_values(source: "str | bytes | Path") -> list:
     Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
     """
     return list(extract_values(source))
+
+
+def gnumeric_has_data(source: "str | bytes | Path") -> bool:
+    """Return True if the workbook contains at least one cell.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    doc = load(source)
+    return doc.get("cell_count", 0) > 0
+
+
+def gnumeric_unique_value_count(source: "str | bytes | Path") -> int:
+    """Return count of distinct string cell values in the workbook.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    return len(set(extract_values(source)))
+
+
+def gnumeric_sheet_names_sorted(source: "str | bytes | Path") -> list:
+    """Return alphabetically sorted list of sheet names.
+
+    Spec: Gnumeric workbook gnm:Sheet element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    return sorted(s.get("name", "") for s in meta)
+
+
+def gnumeric_total_value_count(source: "str | bytes | Path") -> int:
+    """Return count of all cell values (not unique) across the workbook.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    return len(list(extract_values(source)))
+
+
+def gnumeric_has_multiple_sheets(source: "str | bytes | Path") -> bool:
+    """Return True if the workbook contains more than one sheet.
+
+    Spec: Gnumeric workbook gnm:Sheet element (FACT-GNUMERIC-001)
+    """
+    doc = load(source)
+    return doc.get("sheet_count", 0) > 1
+
+
+def gnumeric_max_sheet_cell_count(source: "str | bytes | Path") -> int:
+    """Return the cell count of the sheet with the most cells. 0 if no sheets.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    if not meta:
+        return 0
+    return max(s.get("cell_count", 0) for s in meta)
