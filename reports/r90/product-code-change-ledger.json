@@ -41994,9 +41994,27 @@
       ],
       "test_count": 18,
       "description": "pbm bitmap analytics ext2 (width, height, magic, is_ascii_format, is_single_pixel) added to pbm"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PGM-IMAGE-ANALYTICS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_image_analytics.py",
+          "sha256_before": "new_file",
+          "sha256_after": "19802c458ae3d9bac9f79ca12827dbed2f07b681d92d72980763292e447a9484"
+        }
+      ],
+      "tests_added": [
+        "tests/python/pgm/test_pgm_image_analytics.py"
+      ],
+      "test_count": 22,
+      "description": "pgm image analytics (width, height, maxval, magic, is_single_pixel, is_full_range) added to pgm"
     }
   ],
-  "total_entries": 2709,
+  "total_entries": 2710,
   "changes": [
     {
       "file": "src/python/dif/models.py",
