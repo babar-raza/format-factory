@@ -39638,9 +39638,35 @@
       "description": "Dogfood export: NDJSON->FODS using FF NDJSON codec + FODS writer",
       "added_at": "2026-07-11T12:09:48.508945+00:00",
       "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-FODT-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "fodt",
+      "target_format": "odt",
+      "sprint_id": "FODT-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/fodt/fodt_to_odt.py",
+      "test_file": "tests/python/fodt/test_fodt_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: FODT->ODT using FF FODT parser + ODT writer",
+      "added_at": "2026-07-11T12:11:30.996913+00:00",
+      "tests_passed": 12
+    },
+    {
+      "entry_id": "R90-ABW-TO-FODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "abw",
+      "target_format": "fods",
+      "sprint_id": "ABW-TO-FODS-DOGFOOD-001",
+      "source_file": "src/python/abw/abw_to_fods.py",
+      "test_file": "tests/python/abw/test_abw_to_fods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: ABW->FODS using FF ABW codec + FODS writer",
+      "added_at": "2026-07-11T12:11:30.996913+00:00",
+      "tests_passed": 11
     }
   ],
-  "total_entries": 2516,
+  "total_entries": 2518,
   "changes": [
     {
       "file": "src/python/dif/models.py",
