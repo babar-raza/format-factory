@@ -99,3 +99,99 @@ def toml_min_numeric_value_recursive(source: "str | bytes | Path") -> float:
     data = doc.get("data", {})
     nums = [float(v) for v in _iter_values(data) if isinstance(v, (int, float)) and not isinstance(v, bool)]
     return min(nums, default=0.0)
+
+
+def toml_top_level_key_count(source: "str | bytes | Path") -> int:
+    """Return the count of keys at the top (root) level of the TOML document.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — number of top-level keys. 0 if the document is empty.
+    """
+    doc = load_toml(source)
+    return len(doc.get("data", {}).keys())
+
+
+def toml_has_nested_tables(source: "str | bytes | Path") -> bool:
+    """Return True if any top-level value in the TOML document is a table (dict).
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        bool — True if at least one top-level value is a dict.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    return any(isinstance(v, dict) for v in data.values())
+
+
+def toml_recursive_list_count(source: "str | bytes | Path") -> int:
+    """Return the total count of list (array) values at all nesting levels.
+
+    Counts every list encountered during a full recursive traversal of the
+    document, including lists nested inside tables and other lists.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — total list count. 0 if no arrays exist.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    return sum(1 for v in _iter_values(data) if isinstance(v, list))
+
+
+def toml_is_deep(source: "str | bytes | Path") -> bool:
+    """Return True if the document nesting depth is 3 or greater.
+
+    Uses the same depth calculation as toml_depth: recursive maximum nesting
+    level of dict values. A depth of 3 means at least triple-nested tables.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        bool — True if depth >= 3.
+    """
+    def _depth(obj: object) -> int:
+        if isinstance(obj, dict) and obj:
+            return 1 + max((_depth(v) for v in obj.values()), default=0)
+        return 0
+
+    doc = load_toml(source)
+    return _depth(doc.get("data", {})) >= 3
+
+
+def toml_avg_string_length(source: "str | bytes | Path") -> float:
+    """Return the average length of all string values at all nesting levels.
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        float — mean string value length. 0.0 if no string values exist.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    lengths = [len(v) for v in _iter_values(data) if isinstance(v, str)]
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def toml_top_level_table_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level dict values (inline or section tables).
+
+    Args:
+        source: Path to the .toml file, or raw TOML bytes/str.
+
+    Returns:
+        int — number of top-level keys whose value is a dict. 0 if none.
+    """
+    doc = load_toml(source)
+    data = doc.get("data", {})
+    return sum(1 for v in data.values() if isinstance(v, dict))
