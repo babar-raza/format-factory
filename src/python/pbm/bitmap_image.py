@@ -680,3 +680,55 @@ def pbm_isolation_score(file_path: "str | Path") -> float:
             if not has_neighbour:
                 isolated += 1
     return isolated / black_total
+
+
+def pbm_width(file_path: "str | Path") -> int:
+    """Return the width (number of columns) of the PBM image.
+
+    Spec: Netpbm PBM header width field (FACT-PBM-001)
+    """
+    from .pbm_parser import parse_pbm_strict
+    img = parse_pbm_strict(file_path)
+    return img.width
+
+
+def pbm_height(file_path: "str | Path") -> int:
+    """Return the height (number of rows) of the PBM image.
+
+    Spec: Netpbm PBM header height field (FACT-PBM-001)
+    """
+    from .pbm_parser import parse_pbm_strict
+    img = parse_pbm_strict(file_path)
+    return img.height
+
+
+def pbm_magic(file_path: "str | Path") -> str:
+    """Return the magic number of the PBM file ('P1' ASCII or 'P4' binary).
+
+    Spec: Netpbm PBM magic number (FACT-PBM-001)
+    """
+    from .pbm_parser import parse_pbm_strict
+    img = parse_pbm_strict(file_path)
+    return img.magic
+
+
+def pbm_is_ascii_format(file_path: "str | Path") -> bool:
+    """Return True if the PBM file uses ASCII (P1) encoding.
+
+    Spec: Netpbm PBM P1 magic (FACT-PBM-001)
+    """
+    from .pbm_parser import parse_pbm_strict
+    img = parse_pbm_strict(file_path)
+    return img.magic == "P1"
+
+
+def pbm_is_single_pixel(file_path: "str | Path") -> bool:
+    """Return True if the PBM image is exactly 1×1 pixels.
+
+    Spec: Netpbm PBM width/height fields (FACT-PBM-001)
+    """
+    from .pbm_parser import parse_pbm_strict
+    img = parse_pbm_strict(file_path)
+    return img.width == 1 and img.height == 1
+
+

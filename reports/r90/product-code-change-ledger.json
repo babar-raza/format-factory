@@ -41976,9 +41976,27 @@
       ],
       "test_count": 20,
       "description": "fods file-path analytics (file_sheet_count, file_is_fods, file_first_sheet_name, file_sheet_names, file_has_multiple_sheets, file_total_rows) added to fods"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PBM-BITMAP-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/pbm/bitmap_image.py",
+          "sha256_before": "6935ed3a37cd2441c2974f1b0a3fa955f5383d1c1663468193e66361224c5d35",
+          "sha256_after": "282892aacd2d2e732ac5057c96b4151d1fbdb258b27919c3c2a838c70728e76e"
+        }
+      ],
+      "tests_added": [
+        "tests/python/pbm/test_pbm_bitmap_analytics_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "pbm bitmap analytics ext2 (width, height, magic, is_ascii_format, is_single_pixel) added to pbm"
     }
   ],
-  "total_entries": 2708,
+  "total_entries": 2709,
   "changes": [
     {
       "file": "src/python/dif/models.py",
