@@ -70,3 +70,59 @@ def pgm_is_full_range(file_path: "str | Path") -> bool:
     if not img.pixels:
         return False
     return min(img.pixels) == 0 and max(img.pixels) == img.maxval
+
+
+def pgm_total_pixels(file_path: "str | Path") -> int:
+    """Return total pixel count (width * height).
+
+    Spec: Netpbm PGM width/height fields (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.width * img.height
+
+
+def pgm_is_square(file_path: "str | Path") -> bool:
+    """Return True if image width equals height.
+
+    Spec: Netpbm PGM width/height fields (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.width == img.height
+
+
+def pgm_is_landscape(file_path: "str | Path") -> bool:
+    """Return True if the image is wider than it is tall.
+
+    Spec: Netpbm PGM width/height fields (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return img.width > img.height
+
+
+def pgm_aspect_ratio(file_path: "str | Path") -> float:
+    """Return width / height as a float. 0.0 if height is zero.
+
+    Spec: Netpbm PGM width/height fields (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def pgm_min_pixel_value(file_path: "str | Path") -> int:
+    """Return the minimum pixel value in the image. 0 if no pixels.
+
+    Spec: Netpbm PGM pixel data (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return min(img.pixels) if img.pixels else 0
+
+
+def pgm_max_pixel_value(file_path: "str | Path") -> int:
+    """Return the maximum pixel value in the image. 0 if no pixels.
+
+    Spec: Netpbm PGM pixel data (FACT-PGM-001)
+    """
+    img = parse_pgm_strict(file_path)
+    return max(img.pixels) if img.pixels else 0

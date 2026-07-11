@@ -42336,9 +42336,27 @@
       ],
       "test_count": 19,
       "description": "FODS file analytics ext: fods_file_has_parse_errors, fods_file_odf_version, fods_file_has_warnings, fods_file_last_sheet_name, fods_file_sheet_row_counts, fods_file_max_sheet_row_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PGM-IMAGE-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_image_analytics.py",
+          "sha256_before": "19802c458ae3d9bac9f79ca12827dbed2f07b681d92d72980763292e447a9484",
+          "sha256_after": "83e67efd2e6781b53dae350b0de68d9be4e37fc544445bd279ff8aeb2935b7a3"
+        }
+      ],
+      "tests_added": [
+        "tests/python/pgm/test_pgm_image_analytics_ext.py"
+      ],
+      "test_count": 20,
+      "description": "PGM analytics ext: pgm_total_pixels, pgm_is_square, pgm_is_landscape, pgm_aspect_ratio, pgm_min_pixel_value, pgm_max_pixel_value"
     }
   ],
-  "total_entries": 2728,
+  "total_entries": 2729,
   "changes": [
     {
       "file": "src/python/dif/models.py",
