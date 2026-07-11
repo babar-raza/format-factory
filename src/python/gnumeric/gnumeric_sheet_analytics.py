@@ -161,3 +161,67 @@ def gnumeric_max_sheet_cell_count(source: "str | bytes | Path") -> int:
     if not meta:
         return 0
     return max(s.get("cell_count", 0) for s in meta)
+
+
+def gnumeric_last_sheet_name(source: "str | bytes | Path") -> str:
+    """Return the name of the last sheet. Empty string if no sheets.
+
+    Spec: Gnumeric workbook gnm:Sheet element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    return meta[-1].get("name", "") if meta else ""
+
+
+def gnumeric_min_sheet_cell_count(source: "str | bytes | Path") -> int:
+    """Return the minimum cell count across all sheets. 0 if no sheets.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    if not meta:
+        return 0
+    return min(s.get("cell_count", 0) for s in meta)
+
+
+def gnumeric_avg_sheet_cell_count(source: "str | bytes | Path") -> float:
+    """Return the average cell count across all sheets. 0.0 if no sheets.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    if not meta:
+        return 0.0
+    return sum(s.get("cell_count", 0) for s in meta) / len(meta)
+
+
+def gnumeric_sheets_with_cells_count(source: "str | bytes | Path") -> int:
+    """Return the count of sheets that have at least one cell.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    return sum(1 for s in meta if s.get("cell_count", 0) > 0)
+
+
+def gnumeric_total_numeric_value_count(source: "str | bytes | Path") -> int:
+    """Return count of numeric (convertible to float) values across all sheets.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    count = 0
+    for v in extract_values(source):
+        try:
+            float(v)
+            count += 1
+        except (ValueError, TypeError):
+            pass
+    return count
+
+
+def gnumeric_all_sheet_cell_counts(source: "str | bytes | Path") -> list:
+    """Return list of cell counts per sheet in workbook order.
+
+    Spec: Gnumeric workbook gnm:Cell element (FACT-GNUMERIC-001)
+    """
+    meta = get_sheet_metadata(source)
+    return [s.get("cell_count", 0) for s in meta]

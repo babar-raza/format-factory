@@ -42444,9 +42444,27 @@
       ],
       "test_count": 18,
       "description": "PPM stats ext2: ppm_magic_from_doc, ppm_maxval_from_doc, ppm_width_from_doc, ppm_height_from_doc, ppm_is_binary_ppm, ppm_is_high_depth_doc"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-GNUMERIC-SHEET-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_sheet_analytics.py",
+          "sha256_before": "a65c393e54907cee7d33d9c259a30f6eba19e3305153004760386bf0b41bef23",
+          "sha256_after": "8040f5346c6e859c74a628b6ee1e92c1d7ef0971a9e324961f7f7b6bdae8a467"
+        }
+      ],
+      "tests_added": [
+        "tests/python/gnumeric/test_gnumeric_sheet_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "Gnumeric sheet analytics ext3: gnumeric_last_sheet_name, gnumeric_min_sheet_cell_count, gnumeric_avg_sheet_cell_count, gnumeric_sheets_with_cells_count, gnumeric_total_numeric_value_count, gnumeric_all_sheet_cell_counts"
     }
   ],
-  "total_entries": 2734,
+  "total_entries": 2735,
   "changes": [
     {
       "file": "src/python/dif/models.py",
