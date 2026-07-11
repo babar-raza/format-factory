@@ -41609,6 +41609,29 @@
       ],
       "test_count": 24,
       "description": "6 new file-path analytics in dif_stats.py: dif_total_cell_count, dif_min_row_width, dif_has_string_cells, dif_file_numeric_cell_count, dif_title_length, dif_all_cells_numeric"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-XCF-LAYER-ANALYTICS-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_layer_analytics.py",
+          "sha256_before": "new-file",
+          "sha256_after": "e75a02bd0c93b22454ea914365c72c6d683b9b2cbfc517a46b8a81a3b69cdded"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "post-change"
+        }
+      ],
+      "tests_added": [
+        "tests/python/xcf/test_xcf_layer_analytics.py"
+      ],
+      "test_count": 21,
+      "description": "New xcf_layer_analytics.py: xcf_is_rgb, xcf_is_grayscale, xcf_is_square, xcf_total_pixels, xcf_has_single_layer, xcf_layer_names"
     }
   ],
   "total_entries": 2678,

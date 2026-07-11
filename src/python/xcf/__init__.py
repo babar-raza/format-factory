@@ -13,6 +13,7 @@ from .xcf_parser import *  # noqa: F401, F403
 # This import happens BEFORE __all__ computation so xcf_is_landscape
 # and other spec-level functions are part of the public API.
 from .image_document import *  # noqa: F401, F403
+from .xcf_layer_analytics import *  # noqa: F401, F403
 from .models import XcfDocument  # noqa: F401
 from .xcf_workflow import xcf_installed_workflow  # noqa: F401
 from .xcf_layer_iterator import xcf_iter_layers  # noqa: F401
