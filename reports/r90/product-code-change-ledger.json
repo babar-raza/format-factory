@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODP-TO-NDJSON-DOGFOOD-001",
+  "latest_sprint": "FODG-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38917,6 +38917,24 @@
         {
           "path": "src/python/fodp/fodp_to_ndjson.py",
           "sha256": "4c7255e1f422714bf710b16f1fbb56f6203980509b9260590fc8aab20a2c267a"
+        }
+      ]
+    },
+    {
+      "entry_id": "R90-FODG-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "origin_sprint": "FODG-TO-NDJSON-DOGFOOD-001",
+      "product": "FODG Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "fodg_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_to_ndjson.py",
+          "sha256": "ed81ab6fc5b8403651b2f7d2811c9b2648db24d17b98eed0e70244eacc769a2c"
         }
       ]
     }
