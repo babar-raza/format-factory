@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ABW-TO-TOML-DOGFOOD-001",
+  "latest_sprint": "FODG-TO-TOML-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -40015,6 +40015,90 @@
       "description": "ABW -> TOML dogfood export",
       "authority": "TASK-007",
       "tests_added": 7
+    },
+    {
+      "entry_id": "R90-GNUMERIC-TO-TOML-DOGFOOD-001",
+      "sprint": "GNUMERIC-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "gnumeric",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/gnumeric/gnumeric_to_toml.py",
+        "tests/python/gnumeric/test_gnumeric_to_toml.py"
+      ],
+      "description": "Gnumeric -> TOML dogfood export using FF gnumeric codec and toml writer"
+    },
+    {
+      "entry_id": "R90-DIF-TO-TOML-DOGFOOD-001",
+      "sprint": "DIF-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "dif",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/dif/dif_to_toml.py",
+        "tests/python/dif/test_dif_to_toml.py"
+      ],
+      "description": "DIF -> TOML dogfood export using FF DIF parser and toml writer"
+    },
+    {
+      "entry_id": "R90-SYLK-TO-TOML-DOGFOOD-001",
+      "sprint": "SYLK-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "sylk",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/sylk/sylk_to_toml.py",
+        "tests/python/sylk/test_sylk_to_toml.py"
+      ],
+      "description": "SYLK -> TOML dogfood export using FF SYLK parser and toml writer"
+    },
+    {
+      "entry_id": "R90-ODT-TO-TOML-DOGFOOD-001",
+      "sprint": "ODT-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "odt",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/odt/odt_to_toml.py",
+        "tests/python/odt/test_odt_to_toml.py"
+      ],
+      "description": "ODT -> TOML dogfood export using FF ODT parser and toml writer"
+    },
+    {
+      "entry_id": "R90-FODT-TO-TOML-DOGFOOD-001",
+      "sprint": "FODT-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodt",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/fodt/fodt_to_toml.py",
+        "tests/python/fodt/test_fodt_to_toml.py"
+      ],
+      "description": "FODT -> TOML dogfood export using FF FODT parser and toml writer"
+    },
+    {
+      "entry_id": "R90-FODP-TO-TOML-DOGFOOD-001",
+      "sprint": "FODP-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodp",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/fodp/fodp_to_toml.py",
+        "tests/python/fodp/test_fodp_to_toml.py"
+      ],
+      "description": "FODP -> TOML dogfood export using FF FODP codec and toml writer"
+    },
+    {
+      "entry_id": "R90-FODG-TO-TOML-DOGFOOD-001",
+      "sprint": "FODG-TO-TOML-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodg",
+      "target_format": "toml",
+      "files_added": [
+        "src/python/fodg/fodg_to_toml.py",
+        "tests/python/fodg/test_fodg_to_toml.py"
+      ],
+      "description": "FODG -> TOML dogfood export using FF FODG codec and toml writer"
     }
   ],
   "total_entries": 2518,
