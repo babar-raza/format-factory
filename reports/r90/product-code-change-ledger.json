@@ -41940,9 +41940,27 @@
       ],
       "test_count": 22,
       "description": "ods sheet analytics ext2 (sheet_names_sorted, has_single_sheet, first_sheet_row_count, all_sheets_named, has_uniform_sheet_row_count, min_sheet_row_count) added to ods"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODT-TEXT-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodt/text_document_analytics.py",
+          "sha256_before": "9f4af93bb6d4fae8396a4e299530003f1b8b0da1195615af31a3255c9a6127a8",
+          "sha256_after": "2bc8af3b3139e31421b3616c6a94f11fdd56ce0043eab888c856f4bb021b5d7a"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodt/test_fodt_text_analytics_ext.py"
+      ],
+      "test_count": 19,
+      "description": "fodt text analytics ext (has_content, first_block_type, first_block_text, heading_texts, paragraph_texts, all_blocks_have_text) added to fodt"
     }
   ],
-  "total_entries": 2706,
+  "total_entries": 2707,
   "changes": [
     {
       "file": "src/python/dif/models.py",

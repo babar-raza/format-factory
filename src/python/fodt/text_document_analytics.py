@@ -445,3 +445,66 @@ def fodt_paragraph_count_total(file_path: "str | os.PathLike[str]") -> int:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     return sum(1 for b in doc.get("blocks", []) if b.get("type") == "paragraph")
+
+
+def fodt_has_content(file_path: "str | os.PathLike[str]") -> bool:
+    """Return True if any block has non-empty text content.
+
+    Spec: FODT text:p element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return any(b.get("text", "").strip() for b in doc.get("blocks", []))
+
+
+def fodt_first_block_type(file_path: "str | os.PathLike[str]") -> str:
+    """Return the type of the first block ('heading' or 'paragraph'). '' if no blocks.
+
+    Spec: FODT text:h / text:p element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    blocks = doc.get("blocks", [])
+    return blocks[0].get("type", "") if blocks else ""
+
+
+def fodt_first_block_text(file_path: "str | os.PathLike[str]") -> str:
+    """Return the text of the first block. Empty string if no blocks.
+
+    Spec: FODT text:p element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    blocks = doc.get("blocks", [])
+    return blocks[0].get("text", "") if blocks else ""
+
+
+def fodt_heading_texts(file_path: "str | os.PathLike[str]") -> list:
+    """Return list of text strings from all heading blocks in order.
+
+    Spec: FODT text:h element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return [b.get("text", "") for b in doc.get("blocks", []) if b.get("type") == "heading"]
+
+
+def fodt_paragraph_texts(file_path: "str | os.PathLike[str]") -> list:
+    """Return list of text strings from all paragraph blocks in order.
+
+    Spec: FODT text:p element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return [b.get("text", "") for b in doc.get("blocks", []) if b.get("type") == "paragraph"]
+
+
+def fodt_all_blocks_have_text(file_path: "str | os.PathLike[str]") -> bool:
+    """Return True if every block has non-empty text. True vacuously if no blocks.
+
+    Spec: FODT text:p / text:h element (FACT-FODT-001)
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    blocks = doc.get("blocks", [])
+    return all(b.get("text", "").strip() for b in blocks)
