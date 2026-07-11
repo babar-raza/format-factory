@@ -575,3 +575,108 @@ def pbm_center_black_count(file_path: "str | Path") -> int:
             if img.pixels[r * img.width + c] == 1:
                 count += 1
     return count
+
+
+def pbm_row_transition_count(file_path: "str | Path") -> int:
+    """Return total count of adjacent horizontal pixel transitions across all rows."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 2 or img.height < 1 or not img.pixels:
+        return 0
+    count = 0
+    for row in range(img.height):
+        for col in range(img.width - 1):
+            if img.pixels[row * img.width + col] != img.pixels[row * img.width + col + 1]:
+                count += 1
+    return count
+
+
+def pbm_max_black_run_length(file_path: "str | Path") -> int:
+    """Return the length of the longest consecutive run of black pixels in any row."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels:
+        return 0
+    max_run = 0
+    for row in range(img.height):
+        run = 0
+        for col in range(img.width):
+            if img.pixels[row * img.width + col] == 1:
+                run += 1
+                if run > max_run:
+                    max_run = run
+            else:
+                run = 0
+    return max_run
+
+
+def pbm_black_run_count(file_path: "str | Path") -> int:
+    """Return the total number of horizontal black-pixel runs (consecutive sequences)."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels:
+        return 0
+    count = 0
+    for row in range(img.height):
+        in_run = False
+        for col in range(img.width):
+            px = img.pixels[row * img.width + col]
+            if px == 1 and not in_run:
+                count += 1
+                in_run = True
+            elif px == 0:
+                in_run = False
+    return count
+
+
+def pbm_row_black_ratio_variance(file_path: "str | Path") -> float:
+    """Return the variance of per-row black-pixel ratios. 0.0 for single-row images."""
+    img = parse_pbm_strict(file_path)
+    if img.height < 2 or not img.pixels:
+        return 0.0
+    ratios = []
+    for row in range(img.height):
+        black = sum(img.pixels[row * img.width + col] for col in range(img.width))
+        ratios.append(black / img.width if img.width > 0 else 0.0)
+    mean = sum(ratios) / len(ratios)
+    return sum((r - mean) ** 2 for r in ratios) / len(ratios)
+
+
+def pbm_edge_black_ratio(file_path: "str | Path") -> float:
+    """Return ratio of black pixels on the image border to total border pixel count."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 1 or img.height < 1 or not img.pixels:
+        return 0.0
+    border = set()
+    for col in range(img.width):
+        border.add((0, col))
+        border.add((img.height - 1, col))
+    for row in range(1, img.height - 1):
+        border.add((row, 0))
+        border.add((row, img.width - 1))
+    if not border:
+        return 0.0
+    black_border = sum(1 for r, c in border if img.pixels[r * img.width + c] == 1)
+    return black_border / len(border)
+
+
+def pbm_isolation_score(file_path: "str | Path") -> float:
+    """Return fraction of black pixels with no adjacent black neighbour (4-connected)."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    black_total = sum(img.pixels)
+    if black_total == 0:
+        return 0.0
+    isolated = 0
+    for row in range(img.height):
+        for col in range(img.width):
+            if img.pixels[row * img.width + col] != 1:
+                continue
+            has_neighbour = False
+            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                nr, nc = row + dr, col + dc
+                if 0 <= nr < img.height and 0 <= nc < img.width:
+                    if img.pixels[nr * img.width + nc] == 1:
+                        has_neighbour = True
+                        break
+            if not has_neighbour:
+                isolated += 1
+    return isolated / black_total

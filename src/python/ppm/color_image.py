@@ -617,3 +617,42 @@ def ppm_channel_contrast_sum(file_path: "str | Path") -> int:
     """Return sum of |R-G| + |G-B| + |R-B| for each pixel across all pixels."""
     img = parse_ppm_strict(file_path)
     return sum(abs(p[0] - p[1]) + abs(p[1] - p[2]) + abs(p[0] - p[2]) for p in img.pixels)
+
+
+def ppm_is_grayscale(file_path: "str | Path") -> bool:
+    """Return True if all pixels have equal R, G, B channel values."""
+    img = parse_ppm_strict(file_path)
+    return all(p[0] == p[1] == p[2] for p in img.pixels)
+
+
+def ppm_red_channel_ratio(file_path: "str | Path") -> float:
+    """Return fraction of total channel energy carried by the red channel."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return sum(p[0] for p in img.pixels) / total
+
+
+def ppm_green_channel_ratio(file_path: "str | Path") -> float:
+    """Return fraction of total channel energy carried by the green channel."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return sum(p[1] for p in img.pixels) / total
+
+
+def ppm_blue_channel_ratio(file_path: "str | Path") -> float:
+    """Return fraction of total channel energy carried by the blue channel."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return sum(p[2] for p in img.pixels) / total

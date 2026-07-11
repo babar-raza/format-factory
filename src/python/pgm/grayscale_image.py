@@ -649,3 +649,16 @@ def pgm_edge_pixel_mean(file_path: "str | Path") -> float:
     if not vals:
         return 0.0
     return float(sum(vals)) / len(vals)
+
+
+def pgm_row_intensity_variance(file_path: "str | Path") -> float:
+    """Return variance of per-row mean intensities. 0.0 for single-row images."""
+    img = parse_pgm_strict(file_path)
+    if img.height < 2 or not img.pixels:
+        return 0.0
+    row_means = []
+    for row in range(img.height):
+        vals = img.pixels[row * img.width: row * img.width + img.width]
+        row_means.append(sum(vals) / len(vals) if vals else 0.0)
+    mean = sum(row_means) / len(row_means)
+    return sum((v - mean) ** 2 for v in row_means) / len(row_means)
