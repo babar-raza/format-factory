@@ -1,7 +1,7 @@
 # Repository Root Folder Registry
 # Canonical catalog of all top-level directories in the format-factory repository.
 # Produced by TC-ROOT-001. Validated by V87 (validate_root_structure).
-# 51 entries — one per top-level directory at initial census.
+# 52 entries — one per top-level directory at initial census.
 schema_version: "1.0"
 created: "2026-06-29"
 
@@ -731,6 +731,18 @@ folders:
     deletion_reason: "1 file (summary.yaml). R83 snapshot with zero tool references. Consolidated into examples/."
     deletion_taskcard: TC-ROOT-002
     relocated_to: "examples/docs-readiness-summary.yaml"
+
+  - folder_path: ".portfolio/"
+    display_name: "Portfolio Plans"
+    classification: PLANNING
+    git_tracked: false
+    gitignored: true
+    tracked_files: 0
+    retention: RETAIN
+    purpose: "Active per-chat plan workspace directories (goofy-orbiting-scroll, etc.)"
+    layer_id: L09
+    producers: ["autonomous loop", "plan mode"]
+    consumers: ["check_continuation", "supervisor"]
 
   - folder_path: "state/"
     display_name: "State (deleted)"
