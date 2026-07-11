@@ -42552,9 +42552,27 @@
       ],
       "test_count": 14,
       "description": "TSV row analytics ext3: tsv_first_header, tsv_last_header, tsv_is_empty, tsv_total_cells, tsv_is_tall, tsv_delimiter"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PPM-IMAGE-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_image_analytics.py",
+          "sha256_before": "b1934134d33a19f064276199c757b083cde147ac2c1abe53869ba601db9b9c43",
+          "sha256_after": "25882103955acb37e8cc270a11ef1d18b1b53749c5c9be3d75a65ef4af615924"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ppm/test_ppm_image_analytics_ext3.py"
+      ],
+      "test_count": 17,
+      "description": "PPM image analytics ext3: ppm_is_ascii, ppm_is_landscape, ppm_is_portrait, ppm_is_square, ppm_aspect_ratio, ppm_min_channel_value"
     }
   ],
-  "total_entries": 2740,
+  "total_entries": 2741,
   "changes": [
     {
       "file": "src/python/dif/models.py",

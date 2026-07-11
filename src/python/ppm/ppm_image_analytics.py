@@ -182,3 +182,85 @@ def ppm_is_standard_depth(file_path: "str | Path") -> bool:
     """
     img = _load_ppm(file_path)
     return img.maxval == 255
+
+
+def ppm_is_ascii(file_path: "str | Path") -> bool:
+    """Return True if the PPM file is ASCII format (magic == 'P3').
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        bool — True if magic == 'P3'.
+    """
+    img = _load_ppm(file_path)
+    return img.magic == "P3"
+
+
+def ppm_is_landscape(file_path: "str | Path") -> bool:
+    """Return True if the image is wider than it is tall.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        bool — True if width > height.
+    """
+    img = _load_ppm(file_path)
+    return img.width > img.height
+
+
+def ppm_is_portrait(file_path: "str | Path") -> bool:
+    """Return True if the image is taller than it is wide.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        bool — True if height > width.
+    """
+    img = _load_ppm(file_path)
+    return img.height > img.width
+
+
+def ppm_is_square(file_path: "str | Path") -> bool:
+    """Return True if image width equals height.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        bool — True if width == height.
+    """
+    img = _load_ppm(file_path)
+    return img.width == img.height
+
+
+def ppm_aspect_ratio(file_path: "str | Path") -> float:
+    """Return width / height as a float. 0.0 if height is zero.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        float — width / height.
+    """
+    img = _load_ppm(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def ppm_min_channel_value(file_path: "str | Path") -> int:
+    """Return the minimum individual channel value across all pixels. 0 if no pixels.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        int — minimum channel value (0-maxval range).
+    """
+    img = _load_ppm(file_path)
+    if not img.pixels:
+        return 0
+    return min(v for p in img.pixels for v in p)
