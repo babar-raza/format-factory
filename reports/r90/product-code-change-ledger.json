@@ -41778,9 +41778,27 @@
       ],
       "test_count": 23,
       "description": "tsv_row_analytics_ext added to tsv: header_names, first_row_values, last_row_values, has_duplicate_headers, all_headers_nonempty, is_wide"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ABW-PARAGRAPH-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_paragraph_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "cb7a1ae5dfe9007ceb5cdc4e73d9afcf409b165d7da5a5384b1753af96f64270"
+        }
+      ],
+      "tests_added": [
+        "tests/python/abw/test_abw_paragraph_analytics_ext.py"
+      ],
+      "test_count": 22,
+      "description": "abw_paragraph_analytics_ext added to abw: paragraph_count, section_count, is_abw, has_content, first_paragraph, total_word_count"
     }
   ],
-  "total_entries": 2697,
+  "total_entries": 2698,
   "changes": [
     {
       "file": "src/python/dif/models.py",

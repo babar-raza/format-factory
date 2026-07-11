@@ -58,3 +58,60 @@ def abw_avg_paragraph_char_count(source: "str | bytes | Path") -> float:
     if not paras:
         return 0.0
     return sum(len(p) for p in paras) / len(paras)
+
+
+def abw_paragraph_count(source: "str | bytes | Path") -> int:
+    """Return the total number of paragraphs in the ABW document.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("paragraph_count", 0)
+
+
+def abw_section_count(source: "str | bytes | Path") -> int:
+    """Return the total number of sections in the ABW document.
+
+    Spec: ABW document section element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("section_count", 0)
+
+
+def abw_is_abw(source: "str | bytes | Path") -> bool:
+    """Return True if the document is identified as a valid ABW file.
+
+    Spec: ABW document format (FACT-ABW-001)
+    """
+    doc = load(source)
+    return bool(doc.get("is_abw", False))
+
+
+def abw_has_content(source: "str | bytes | Path") -> bool:
+    """Return True if the document contains at least one paragraph.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("paragraph_count", 0) > 0
+
+
+def abw_first_paragraph(source: "str | bytes | Path") -> str:
+    """Return the text of the first paragraph, or empty string if none.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    paras = doc.get("paragraphs", [])
+    return paras[0] if paras else ""
+
+
+def abw_total_word_count(source: "str | bytes | Path") -> int:
+    """Return the total word count across all paragraphs.
+
+    Words are split by whitespace. Empty paragraphs contribute 0 words.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return sum(len(p.split()) for p in doc.get("paragraphs", []))
