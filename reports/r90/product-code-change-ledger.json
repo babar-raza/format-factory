@@ -42282,9 +42282,27 @@
       ],
       "test_count": 15,
       "description": "ods_stats_ext3 added to ods: ods_sheet_count, ods_has_sheets, ods_first_sheet_name, ods_has_data, ods_max_sheet_name_length, ods_last_sheet_name"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PPM-STATS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_stats.py",
+          "sha256_before": "d8a3f4357c02f685164d78d88053964c7ff0d73985183a641bd2daa4ce16bc19",
+          "sha256_after": "4a1861c2ef282d8500b2f5fbb9614c4703c0f7929bf18669a90b6c9b9aaea819"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ppm/test_ppm_stats_ext.py"
+      ],
+      "test_count": 18,
+      "description": "ppm_stats_ext added to ppm: ppm_is_square, ppm_is_landscape, ppm_is_portrait, ppm_is_ok, ppm_is_ascii_ppm, ppm_aspect_ratio_from_doc"
     }
   ],
-  "total_entries": 2725,
+  "total_entries": 2726,
   "changes": [
     {
       "file": "src/python/dif/models.py",

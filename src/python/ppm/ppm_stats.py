@@ -216,3 +216,78 @@ def ppm_channel_histogram(ppm_doc: dict[str, Any]) -> dict[str, list[int]]:
         blue[b] += 1
 
     return {"red": red, "green": green, "blue": blue}
+
+
+def ppm_is_square(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if image width equals height.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if width == height.
+    """
+    return ppm_doc.get("width", 0) == ppm_doc.get("height", 0)
+
+
+def ppm_is_landscape(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if image is wider than it is tall.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if width > height.
+    """
+    return ppm_doc.get("width", 0) > ppm_doc.get("height", 0)
+
+
+def ppm_is_portrait(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if image is taller than it is wide.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if height > width.
+    """
+    return ppm_doc.get("height", 0) > ppm_doc.get("width", 0)
+
+
+def ppm_is_ok(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if the PPM parse succeeded without errors.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if 'ok' is truthy.
+    """
+    return bool(ppm_doc.get("ok", False))
+
+
+def ppm_is_ascii_ppm(ppm_doc: dict[str, Any]) -> bool:
+    """Return True if the image is ASCII PPM format (magic == 'P3').
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        bool — True if magic == 'P3'.
+    """
+    return ppm_doc.get("magic", "") == "P3"
+
+
+def ppm_aspect_ratio_from_doc(ppm_doc: dict[str, Any]) -> float:
+    """Return width / height as a float. 0.0 if height is zero.
+
+    Args:
+        ppm_doc: Parsed PPM document dict.
+
+    Returns:
+        float — width / height, or 0.0 if height is 0.
+    """
+    h = ppm_doc.get("height", 0)
+    if h == 0:
+        return 0.0
+    return ppm_doc.get("width", 0) / h
