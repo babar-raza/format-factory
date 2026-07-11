@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODG-TO-TSV-DOGFOOD-001",
+  "latest_sprint": "CSV-TO-ODS-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39261,6 +39261,19 @@
       "description": "FODG->TSV dogfood export: each drawing page as TSV row",
       "added_at": "2026-07-12",
       "tests_passed": 14
+    },
+    {
+      "entry_id": "R90-CSV-TO-ODS-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "csv",
+      "target_format": "ods",
+      "sprint_id": "CSV-TO-ODS-DOGFOOD-001",
+      "source_file": "src/python/csv/csv_to_ods.py",
+      "test_file": "tests/python/csv/test_csv_to_ods.py",
+      "capability_id": "add-dogfood-export",
+      "description": "CSV->ODS dogfood export: CSV rows to ODS spreadsheet",
+      "added_at": "2026-07-12",
+      "tests_passed": 12
     }
   ],
   "total_entries": 2459,
