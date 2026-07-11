@@ -19,7 +19,7 @@ MINIMAL_2X2_SLK = _REPO / "samples" / "by-format" / "sylk" / "valid" / "minimal-
 NUMERIC_ROW_SLK = _REPO / "samples" / "by-format" / "sylk" / "valid" / "numeric-row.slk"
 SINGLE_CELL_SLK = _REPO / "samples" / "by-format" / "sylk" / "valid" / "single-cell.slk"
 
-from sylk.sylk_to_csv import sylk_to_csv
+from src.python.sylk.sylk_to_csv import sylk_to_csv
 
 
 class TestSylkToCsvBasic:
