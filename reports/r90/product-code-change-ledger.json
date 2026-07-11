@@ -41850,9 +41850,27 @@
       ],
       "test_count": 23,
       "description": "csv_analytics_ext2 added to csv: header_names, first_row_values, last_row_values, has_duplicate_headers, all_headers_nonempty, is_wide"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODT-DOC-ANALYTICS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_doc_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "e10ec54f6050be61d1de3ee8636c696d068bd7c638dd60a7ffdfa339d9c61a01"
+        }
+      ],
+      "tests_added": [
+        "tests/python/odt/test_odt_doc_analytics.py"
+      ],
+      "test_count": 19,
+      "description": "odt_doc_analytics created for odt: paragraph_count, heading_count, element_count, is_ok, first_paragraph_text, total_text_length"
     }
   ],
-  "total_entries": 2701,
+  "total_entries": 2702,
   "changes": [
     {
       "file": "src/python/dif/models.py",
