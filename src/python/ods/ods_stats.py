@@ -359,3 +359,62 @@ def ods_min_sheet_row_count(file_path: "str | Path") -> int:
     if not sheets:
         return 0
     return min(sheet.get("row_count", 0) for sheet in sheets)
+
+
+def ods_sheet_count(file_path: "str | Path") -> int:
+    """Return the number of sheets in the ODS workbook.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    return len(doc.get("sheets", []))
+
+
+def ods_has_sheets(file_path: "str | Path") -> bool:
+    """Return True if the ODS workbook contains at least one sheet.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    return len(doc.get("sheets", [])) > 0
+
+
+def ods_first_sheet_name(file_path: "str | Path") -> str:
+    """Return the name of the first sheet, or empty string if no sheets.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    return sheets[0].get("name", "") if sheets else ""
+
+
+def ods_has_data(file_path: "str | Path") -> bool:
+    """Return True if any sheet has at least one row.
+
+    Spec: ODS table:table-row element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    return any(sheet.get("row_count", 0) > 0 for sheet in doc.get("sheets", []))
+
+
+def ods_max_sheet_name_length(file_path: "str | Path") -> int:
+    """Return the maximum character length of any sheet name. 0 if no sheets.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(len(sheet.get("name", "")) for sheet in sheets)
+
+
+def ods_last_sheet_name(file_path: "str | Path") -> str:
+    """Return the name of the last sheet, or empty string if no sheets.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    return sheets[-1].get("name", "") if sheets else ""

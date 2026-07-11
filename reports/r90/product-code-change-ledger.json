@@ -42264,9 +42264,27 @@
       ],
       "test_count": 20,
       "description": "abw_word_stats_ext added to abw: has_paragraphs, first_paragraph, last_paragraph, unique_word_count, all_paragraphs_nonempty, total_sentence_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODS-STATS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_stats.py",
+          "sha256_before": "d0962a86adc9d6c35d84b7b3a0ff153314ac72054b2ddeb4f401ff5b69775cfd",
+          "sha256_after": "2dcac73b8a1410ef2fd7d1ec210d15b061189c35254640d2d9eb540d59005cb2"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ods/test_ods_stats_ext3.py"
+      ],
+      "test_count": 15,
+      "description": "ods_stats_ext3 added to ods: ods_sheet_count, ods_has_sheets, ods_first_sheet_name, ods_has_data, ods_max_sheet_name_length, ods_last_sheet_name"
     }
   ],
-  "total_entries": 2724,
+  "total_entries": 2725,
   "changes": [
     {
       "file": "src/python/dif/models.py",
