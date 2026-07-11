@@ -42246,9 +42246,27 @@
       ],
       "test_count": 20,
       "description": "csv_stats_ext2 added to csv: csv_header_count, csv_has_headers, csv_first_row, csv_last_row, csv_is_square, csv_is_tall"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ABW-WORD-STATS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_word_stats.py",
+          "sha256_before": "41f7f41bb4232ae2e25ae6998b0fac289ad2b289fe8d5df7d408412a769d294d",
+          "sha256_after": "7790331a9a60e9303024658c008cb2f4ce629a157c04191b4c1f20c066e13028"
+        }
+      ],
+      "tests_added": [
+        "tests/python/abw/test_abw_word_stats_ext.py"
+      ],
+      "test_count": 20,
+      "description": "abw_word_stats_ext added to abw: has_paragraphs, first_paragraph, last_paragraph, unique_word_count, all_paragraphs_nonempty, total_sentence_count"
     }
   ],
-  "total_entries": 2723,
+  "total_entries": 2724,
   "changes": [
     {
       "file": "src/python/dif/models.py",

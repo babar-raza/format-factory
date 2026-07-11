@@ -245,3 +245,101 @@ def count_paragraphs_matching(model: dict, pattern: str, case_sensitive: bool = 
         if search in haystack:
             count += 1
     return count
+
+
+def has_paragraphs(model: dict) -> bool:
+    """Return True if the model contains at least one paragraph.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        bool — True if paragraph_count > 0.
+    """
+    if not isinstance(model, dict):
+        return False
+    return len(model.get("paragraphs", [])) > 0
+
+
+def first_paragraph(model: dict) -> str:
+    """Return the first paragraph text, or empty string if none.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        str — first paragraph text, or ''.
+    """
+    if not isinstance(model, dict):
+        return ""
+    paras = model.get("paragraphs", [])
+    return paras[0] if paras else ""
+
+
+def last_paragraph(model: dict) -> str:
+    """Return the last paragraph text, or empty string if none.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        str — last paragraph text, or ''.
+    """
+    if not isinstance(model, dict):
+        return ""
+    paras = model.get("paragraphs", [])
+    return paras[-1] if paras else ""
+
+
+def unique_word_count(model: dict) -> int:
+    """Return count of distinct lowercased words across all paragraphs.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — number of unique words.
+    """
+    if not isinstance(model, dict):
+        return 0
+    words: set = set()
+    for para in model.get("paragraphs", []):
+        for word in para.lower().split():
+            words.add(word)
+    return len(words)
+
+
+def all_paragraphs_nonempty(model: dict) -> bool:
+    """Return True if every paragraph is non-empty (non-whitespace).
+
+    True vacuously when there are no paragraphs.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        bool — True if all paragraphs have non-whitespace content.
+    """
+    if not isinstance(model, dict):
+        return True
+    return all(p.strip() for p in model.get("paragraphs", []))
+
+
+def total_sentence_count(model: dict) -> int:
+    """Return approximate total sentence count across all paragraphs.
+
+    Counts sentence-ending punctuation (., !, ?) as sentence boundaries.
+    May overcount for abbreviations or undercount for missing punctuation.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        int — estimated sentence count. 0 if no paragraphs or no sentences.
+    """
+    if not isinstance(model, dict):
+        return 0
+    count = 0
+    for para in model.get("paragraphs", []):
+        count += para.count(".") + para.count("!") + para.count("?")
+    return count
