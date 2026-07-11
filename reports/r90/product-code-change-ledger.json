@@ -41922,9 +41922,27 @@
       ],
       "test_count": 19,
       "description": "xcf_layer_analytics_ext added to xcf: num_layers, local_name, namespace_uri, layer_names_sorted, has_named_layers, all_layers_named"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODS-SHEET-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_stats.py",
+          "sha256_before": "cc747622a33cfae73dc8faec5571ce3d89ffa9de03f1ba281e9c925f4bfb2bb9",
+          "sha256_after": "d0962a86adc9d6c35d84b7b3a0ff153314ac72054b2ddeb4f401ff5b69775cfd"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ods/test_ods_stats_ext2.py"
+      ],
+      "test_count": 22,
+      "description": "ods sheet analytics ext2 (sheet_names_sorted, has_single_sheet, first_sheet_row_count, all_sheets_named, has_uniform_sheet_row_count, min_sheet_row_count) added to ods"
     }
   ],
-  "total_entries": 2705,
+  "total_entries": 2706,
   "changes": [
     {
       "file": "src/python/dif/models.py",

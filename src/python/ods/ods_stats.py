@@ -292,3 +292,70 @@ def ods_max_sheet_row_count(file_path: "str | Path") -> int:
     if not sheets:
         return 0
     return max(sheet.get("row_count", 0) for sheet in sheets)
+
+
+def ods_sheet_names_sorted(file_path: "str | Path") -> list:
+    """Return alphabetically sorted list of sheet names from the ODS file.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    return sorted(sheet.get("name", "") for sheet in doc.get("sheets", []))
+
+
+def ods_has_single_sheet(file_path: "str | Path") -> bool:
+    """Return True if the ODS file contains exactly one sheet.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    return len(doc.get("sheets", [])) == 1
+
+
+def ods_first_sheet_row_count(file_path: "str | Path") -> int:
+    """Return the row count of the first sheet. 0 if no sheets.
+
+    Spec: ODS table:table-row element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0
+    return sheets[0].get("row_count", 0)
+
+
+def ods_all_sheets_named(file_path: "str | Path") -> bool:
+    """Return True if every sheet has a non-empty, non-whitespace name.
+
+    True vacuously when there are no sheets.
+
+    Spec: ODS table:table element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    return all(sheet.get("name", "").strip() for sheet in sheets)
+
+
+def ods_has_uniform_sheet_row_count(file_path: "str | Path") -> bool:
+    """Return True if all sheets have the same row count. True if ≤1 sheet.
+
+    Spec: ODS table:table-row element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if len(sheets) <= 1:
+        return True
+    counts = {sheet.get("row_count", 0) for sheet in sheets}
+    return len(counts) == 1
+
+
+def ods_min_sheet_row_count(file_path: "str | Path") -> int:
+    """Return the minimum row count across all sheets. 0 if no sheets.
+
+    Spec: ODS table:table-row element (FACT-ODS-001)
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0
+    return min(sheet.get("row_count", 0) for sheet in sheets)
