@@ -16,6 +16,10 @@ from src.python.csv.csv_parser import parse_csv_strict  # FF source reader
 from gnumeric.gnumeric_codec import write_gnumeric  # FF target writer
 
 def csv_to_gnumeric(csv_path, dest_path, *, sheet_name="Sheet1"):
+    """Convert a CSV file to Gnumeric format using Format Factory libraries.
+
+    Returns the number of data rows written (excluding header row).
+    """
     csv_path = Path(csv_path); dest_path = Path(dest_path)
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     result = parse_csv_strict(csv_path)
