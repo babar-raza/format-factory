@@ -41868,9 +41868,27 @@
       ],
       "test_count": 19,
       "description": "odt_doc_analytics created for odt: paragraph_count, heading_count, element_count, is_ok, first_paragraph_text, total_text_length"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-QOI-IMAGE-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/qoi/qoi_image_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "ba4eef1ae2d7c0e227bcdb86d128c2b2178fb56dad3a0133232ad69925170a50"
+        }
+      ],
+      "tests_added": [
+        "tests/python/qoi/test_qoi_image_analytics_ext.py"
+      ],
+      "test_count": 21,
+      "description": "qoi_image_analytics_ext added to qoi: width, height, colorspace, is_rgb, min_channel_value, max_channel_value"
     }
   ],
-  "total_entries": 2702,
+  "total_entries": 2703,
   "changes": [
     {
       "file": "src/python/dif/models.py",

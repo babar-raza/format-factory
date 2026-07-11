@@ -48,3 +48,63 @@ def qoi_is_monochrome(source: "str | Path") -> bool:
     """Return True if all pixels have equal R, G, B channel values (greyscale image)."""
     img = parse_qoi_strict(source)
     return all(p[0] == p[1] == p[2] for p in img.pixels)
+
+
+def qoi_width(source: "str | Path") -> int:
+    """Return image width in pixels.
+
+    Spec: QOI header width field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.width
+
+
+def qoi_height(source: "str | Path") -> int:
+    """Return image height in pixels.
+
+    Spec: QOI header height field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.height
+
+
+def qoi_colorspace(source: "str | Path") -> int:
+    """Return the colorspace tag from the QOI header.
+
+    0 = sRGB with linear alpha, 1 = all channels linear.
+
+    Spec: QOI header colorspace field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.colorspace
+
+
+def qoi_is_rgb(source: "str | Path") -> bool:
+    """Return True if the image uses 3-channel RGB (no alpha channel).
+
+    Spec: QOI header channels field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.channels == 3
+
+
+def qoi_min_channel_value(source: "str | Path") -> int:
+    """Return the minimum individual channel value across all pixels. 0 if no pixels.
+
+    Spec: QOI pixel data channels (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if not img.pixels:
+        return 0
+    return min(v for p in img.pixels for v in p)
+
+
+def qoi_max_channel_value(source: "str | Path") -> int:
+    """Return the maximum individual channel value across all pixels. 0 if no pixels.
+
+    Spec: QOI pixel data channels (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if not img.pixels:
+        return 0
+    return max(v for p in img.pixels for v in p)
