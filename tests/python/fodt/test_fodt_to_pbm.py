@@ -1,0 +1,46 @@
+"""Tests for fodt_to_pbm dogfood export."""
+from __future__ import annotations
+import sys
+from pathlib import Path
+import pytest
+
+_REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO / "src" / "python"))
+sys.path.insert(0, str(_REPO))
+
+SAMPLE = _REPO / "samples" / "by-format" / "fodt" / "minimal-document.fodt"
+from src.python.fodt.fodt_to_pbm import fodt_to_pbm
+
+
+class TestFODTToPbmBasic:
+    def test_returns_row_count(self, tmp_path):
+        dest = tmp_path / "out.pbm"
+        count = fodt_to_pbm(SAMPLE, dest)
+        assert isinstance(count, int) and count >= 0
+
+    def test_output_file_created(self, tmp_path):
+        dest = tmp_path / "out.pbm"
+        fodt_to_pbm(SAMPLE, dest)
+        assert dest.exists()
+
+    def test_produces_rows(self, tmp_path):
+        dest = tmp_path / "out.pbm"
+        count = fodt_to_pbm(SAMPLE, dest)
+        assert count >= 1
+
+    def test_output_nonempty(self, tmp_path):
+        dest = tmp_path / "out.pbm"
+        fodt_to_pbm(SAMPLE, dest)
+        assert dest.stat().st_size > 0
+
+
+class TestFODTToPbmPaths:
+    def test_creates_parent_directories(self, tmp_path):
+        dest = tmp_path / "nested" / "dir" / "out.pbm"
+        fodt_to_pbm(SAMPLE, dest)
+        assert dest.exists()
+
+    def test_accepts_string_paths(self, tmp_path):
+        dest = tmp_path / "out.pbm"
+        count = fodt_to_pbm(str(SAMPLE), str(dest))
+        assert isinstance(count, int) and dest.exists()
