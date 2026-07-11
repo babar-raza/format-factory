@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "SYLK-TO-ODS-DOGFOOD-001",
+  "latest_sprint": "SYLK-TO-FODS-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39664,6 +39664,58 @@
       "description": "Dogfood export: ABW->FODS using FF ABW codec + FODS writer",
       "added_at": "2026-07-11T12:11:30.996913+00:00",
       "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-TOML-TO-FODS-DOGFOOD-001",
+      "sprint": "TOML-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "toml",
+      "target_format": "fods",
+      "source_file": "src/python/toml/toml_to_fods.py",
+      "test_file": "tests/python/toml/test_toml_to_fods.py",
+      "description": "TOML -> FODS dogfood export using FF TOML codec + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-GNUMERIC-TO-FODS-DOGFOOD-001",
+      "sprint": "GNUMERIC-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "gnumeric",
+      "target_format": "fods",
+      "source_file": "src/python/gnumeric/gnumeric_to_fods.py",
+      "test_file": "tests/python/gnumeric/test_gnumeric_to_fods.py",
+      "description": "Gnumeric -> FODS dogfood export using FF Gnumeric codec + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 11
+    },
+    {
+      "entry_id": "R90-DIF-TO-FODS-DOGFOOD-001",
+      "sprint": "DIF-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "dif",
+      "target_format": "fods",
+      "source_file": "src/python/dif/dif_to_fods.py",
+      "test_file": "tests/python/dif/test_dif_to_fods.py",
+      "description": "DIF -> FODS dogfood export using FF DIF parser + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 10
+    },
+    {
+      "entry_id": "R90-SYLK-TO-FODS-DOGFOOD-001",
+      "sprint": "SYLK-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "sylk",
+      "target_format": "fods",
+      "source_file": "src/python/sylk/sylk_to_fods.py",
+      "test_file": "tests/python/sylk/test_sylk_to_fods.py",
+      "description": "SYLK -> FODS dogfood export using FF SYLK parser + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 10
     }
   ],
   "total_entries": 2518,
