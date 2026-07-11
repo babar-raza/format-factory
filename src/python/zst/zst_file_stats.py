@@ -113,3 +113,77 @@ def zst_byte_overhead(path: "str | Path") -> int:
     """
     from .compression_metrics import zst_compressed_size, zst_decompressed_size
     return zst_compressed_size(path) - zst_decompressed_size(path)
+
+
+def zst_compressed_size_kb(path: "str | Path") -> float:
+    """Return the compressed file size in kilobytes.
+
+    Spec: Zstandard frame compressed size (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_compressed_size
+    return zst_compressed_size(path) / 1024.0
+
+
+def zst_decompressed_size_kb(path: "str | Path") -> float:
+    """Return the decompressed content size in kilobytes.
+
+    Spec: Zstandard frame decompressed content size (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_decompressed_size
+    return zst_decompressed_size(path) / 1024.0
+
+
+def zst_has_space_savings(path: "str | Path") -> bool:
+    """Return True if the compressed size is strictly less than decompressed size.
+
+    Spec: Zstandard compression effectiveness (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_compressed_size, zst_decompressed_size
+    return zst_compressed_size(path) < zst_decompressed_size(path)
+
+
+def zst_ratio_below_half(path: "str | Path") -> bool:
+    """Return True if the compression ratio is below 0.5 (high compression).
+
+    Ratio = compressed_size / decompressed_size. Returns False when
+    decompressed_size is 0.
+
+    Spec: Zstandard compression ratio (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_compressed_size, zst_decompressed_size
+    ds = zst_decompressed_size(path)
+    if ds == 0:
+        return False
+    return zst_compressed_size(path) / ds < 0.5
+
+
+def zst_size_category(path: "str | Path") -> str:
+    """Return a size category string based on decompressed content size.
+
+    Categories: 'empty' (0 bytes), 'tiny' (<1 KB), 'small' (<1 MB),
+    'medium' (<100 MB), 'large' (>=100 MB).
+
+    Spec: Zstandard decompressed content size (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_decompressed_size
+    ds = zst_decompressed_size(path)
+    if ds == 0:
+        return "empty"
+    if ds < 1024:
+        return "tiny"
+    if ds < 1024 * 1024:
+        return "small"
+    if ds < 100 * 1024 * 1024:
+        return "medium"
+    return "large"
+
+
+def zst_is_ratio_above_one(path: "str | Path") -> bool:
+    """Return True if compressed size exceeds decompressed size (expansion).
+
+    This occurs when Zstandard cannot compress the content effectively.
+
+    Spec: Zstandard compression ratio (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_compressed_size, zst_decompressed_size
+    return zst_compressed_size(path) > zst_decompressed_size(path)

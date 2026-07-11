@@ -42066,9 +42066,27 @@
       ],
       "test_count": 17,
       "description": "ndjson field analytics (first_record_keys, first_record_field_count, has_consistent_keys, bool_value_count, null_field_count, sorted_key_names) added to ndjson"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ZST-FILE-STATS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_file_stats.py",
+          "sha256_before": "32401acf950bd9d3ba0fc8bd856479ba8bc7994d768cd834b8a0b6f72029db7a",
+          "sha256_after": "4f3344063b6c139f1143e6cda8875a4d28a532c60d08395e865c979c70c54619"
+        }
+      ],
+      "tests_added": [
+        "tests/python/zst/test_zst_file_stats_ext.py"
+      ],
+      "test_count": 22,
+      "description": "zst_file_stats_ext added to zst: zst_compressed_size_kb, zst_decompressed_size_kb, zst_has_space_savings, zst_ratio_below_half, zst_size_category, zst_is_ratio_above_one"
     }
   ],
-  "total_entries": 2713,
+  "total_entries": 2714,
   "changes": [
     {
       "file": "src/python/dif/models.py",
