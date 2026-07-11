@@ -41670,9 +41670,26 @@
       ],
       "test_count": 25,
       "description": "zst_file_stats.py: 6 new file-path analytics: zst_is_well_compressed, zst_frames_are_equal_size, zst_is_tiny, zst_decompressed_per_frame, zst_is_size_reducing, zst_byte_overhead"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-SYLK-VALUE-ANALYTICS-GRID-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_value_analytics.py",
+          "sha256_after": "d7d296666cb22ca458fbb0c2c40a1f76f503c33bc2d164a4eab4196511224dc1"
+        }
+      ],
+      "tests_added": [
+        "tests/python/sylk/test_sylk_value_analytics_ext.py"
+      ],
+      "test_count": 25,
+      "description": "sylk_value_analytics.py: 6 new grid-level analytics: sylk_has_data, sylk_is_square_grid, sylk_grid_size, sylk_cell_fill_ratio, sylk_is_wide, sylk_is_tall"
     }
   ],
-  "total_entries": 2691,
+  "total_entries": 2692,
   "changes": [
     {
       "file": "src/python/dif/models.py",

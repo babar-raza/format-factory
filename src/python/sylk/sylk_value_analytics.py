@@ -103,3 +103,91 @@ def sylk_numeric_cells_per_row(file_path: "str | Path") -> float:
     if not row_num_counts:
         return 0.0
     return sum(row_num_counts.values()) / len(row_num_counts)
+
+
+# --- Grid-level analytics (use parse_sylk probe dict) ---
+
+def _sylk_probe(file_path: "str | Path") -> dict:
+    """Return the parse_sylk probe dict for grid-level stats."""
+    from .sylk_parser import parse_sylk
+    return parse_sylk(file_path)
+
+
+def sylk_has_data(file_path: "str | Path") -> bool:
+    """Return True if the SYLK file contains at least one cell.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        bool — True if cell_count > 0.
+    """
+    return _sylk_probe(file_path).get("cell_count", 0) > 0
+
+
+def sylk_is_square_grid(file_path: "str | Path") -> bool:
+    """Return True if the row count equals the column count.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        bool — True if rows == cols.
+    """
+    probe = _sylk_probe(file_path)
+    return probe.get("rows", 0) == probe.get("cols", 0)
+
+
+def sylk_grid_size(file_path: "str | Path") -> int:
+    """Return the total grid size as rows * cols.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        int — rows * cols. 0 if either dimension is 0.
+    """
+    probe = _sylk_probe(file_path)
+    return probe.get("rows", 0) * probe.get("cols", 0)
+
+
+def sylk_cell_fill_ratio(file_path: "str | Path") -> float:
+    """Return the ratio of actual cells to grid capacity (rows * cols).
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        float — cell_count / (rows * cols). 0.0 if grid_size is 0.
+    """
+    probe = _sylk_probe(file_path)
+    grid = probe.get("rows", 0) * probe.get("cols", 0)
+    if grid == 0:
+        return 0.0
+    return probe.get("cell_count", 0) / grid
+
+
+def sylk_is_wide(file_path: "str | Path") -> bool:
+    """Return True if the number of columns exceeds the number of rows.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        bool — True if cols > rows.
+    """
+    probe = _sylk_probe(file_path)
+    return probe.get("cols", 0) > probe.get("rows", 0)
+
+
+def sylk_is_tall(file_path: "str | Path") -> bool:
+    """Return True if the number of rows exceeds the number of columns.
+
+    Args:
+        file_path: Path to the .slk SYLK file.
+
+    Returns:
+        bool — True if rows > cols.
+    """
+    probe = _sylk_probe(file_path)
+    return probe.get("rows", 0) > probe.get("cols", 0)
