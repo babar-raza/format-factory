@@ -1,0 +1,108 @@
+"""
+TSV row analytics — statistics derived from TSV row and column data.
+
+Extends tabular_document.py with analytics that inspect individual rows and
+columns. Uses parse_tsv from tsv_parser.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+
+from .tsv_parser import parse_tsv
+
+spec_qname = "tsv:tabular-data"
+spec_fact_ref = "FACT-TSV-001"
+
+
+def tsv_numeric_column_count(source: "str | bytes | Path") -> int:
+    """Return count of columns where all non-empty values parse as floats.
+
+    A column is numeric if every data row value, when stripped, is a valid
+    float literal.
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    headers = result.get("headers", [])
+    if not rows or not headers:
+        return 0
+    col_count = len(headers)
+    numeric = 0
+    for col_idx in range(col_count):
+        col_vals = [r[col_idx] for r in rows if col_idx < len(r)]
+        if not col_vals:
+            continue
+        all_numeric = True
+        for v in col_vals:
+            v = v.strip()
+            if not v:
+                continue
+            try:
+                float(v)
+            except ValueError:
+                all_numeric = False
+                break
+        if all_numeric:
+            numeric += 1
+    return numeric
+
+
+def tsv_max_row_field_count(source: "str | bytes | Path") -> int:
+    """Return the maximum field count observed in any single data row.
+
+    0 if there are no data rows.
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    if not rows:
+        return 0
+    return max(len(r) for r in rows)
+
+
+def tsv_min_row_field_count(source: "str | bytes | Path") -> int:
+    """Return the minimum field count observed in any single data row.
+
+    0 if there are no data rows.
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    if not rows:
+        return 0
+    return min(len(r) for r in rows)
+
+
+def tsv_has_uniform_row_length(source: "str | bytes | Path") -> bool:
+    """Return True if all data rows have the same number of fields.
+
+    True for empty files (vacuously).
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    if not rows:
+        return True
+    lengths = {len(r) for r in rows}
+    return len(lengths) == 1
+
+
+def tsv_empty_cell_count(source: "str | bytes | Path") -> int:
+    """Return count of cells (across all data rows) that are empty or whitespace-only."""
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    return sum(1 for r in rows for cell in r if not cell.strip())
+
+
+def tsv_column_unique_value_counts(source: "str | bytes | Path") -> list:
+    """Return list of distinct-value counts, one per column in header order.
+
+    Each element is an int — the number of unique stripped values in that column.
+    Returns empty list if no headers or rows.
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers", [])
+    rows = result.get("rows", [])
+    if not headers or not rows:
+        return []
+    counts = []
+    for col_idx in range(len(headers)):
+        vals = {r[col_idx].strip() for r in rows if col_idx < len(r)}
+        counts.append(len(vals))
+    return counts

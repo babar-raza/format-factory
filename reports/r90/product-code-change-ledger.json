@@ -41440,6 +41440,29 @@
       ],
       "test_count": 23,
       "description": "6 extended drawing analytics added to drawing_document.py: fodg_has_single_page, fodg_page_names, fodg_average_shape_count, fodg_pages_with_shapes_count, fodg_total_text_length, fodg_has_text_on_all_pages"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-TSV-ROW-ANALYTICS-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_row_analytics.py",
+          "sha256_before": "new-file",
+          "sha256_after": "73704cbb406983c11f2a7ea6e488e55e2f104c75d3e50237b675cfc9974974ad"
+        },
+        {
+          "path": "src/python/tsv/__init__.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "post-change"
+        }
+      ],
+      "tests_added": [
+        "tests/python/tsv/test_tsv_row_analytics.py"
+      ],
+      "test_count": 20,
+      "description": "New tsv_row_analytics.py: tsv_numeric_column_count, tsv_max/min_row_field_count, tsv_has_uniform_row_length, tsv_empty_cell_count, tsv_column_unique_value_counts"
     }
   ],
   "total_entries": 2678,
