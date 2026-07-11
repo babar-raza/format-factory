@@ -41509,6 +41509,29 @@
       ],
       "test_count": 24,
       "description": "New gnumeric_sheet_analytics.py: gnumeric_has_single_sheet, gnumeric_sheet_names_list, gnumeric_is_empty_workbook, gnumeric_sheets_with_data_count, gnumeric_total_unique_value_count, gnumeric_has_numeric_values"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-FODP-SLIDE-ANALYTICS-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_slide_analytics.py",
+          "sha256_before": "new-file",
+          "sha256_after": "a883bb5944c30a83cafa149f0e1737804e5b4b9a49aa5188e4d34a21c3e289c9"
+        },
+        {
+          "path": "src/python/fodp/__init__.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "post-change"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodp/test_fodp_slide_analytics.py"
+      ],
+      "test_count": 24,
+      "description": "New fodp_slide_analytics.py: fodp_slide_name_list, fodp_total_text_items, fodp_slides_with_text_count, fodp_max/min_slide_text_items, fodp_all_slides_have_titles"
     }
   ],
   "total_entries": 2678,

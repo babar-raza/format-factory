@@ -19,6 +19,7 @@ from .fodp_codec import (
     write_fodp,
 )
 from .presentation_document import *  # noqa: F401, F403
+from .fodp_slide_analytics import *  # noqa: F401, F403
 from .models import FodpDocument  # noqa: F401
 from .fodp_workflow import fodp_installed_workflow  # noqa: F401
 from .fodp_slide_iterator import fodp_iter_slides  # noqa: F401
