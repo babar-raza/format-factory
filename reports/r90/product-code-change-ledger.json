@@ -39560,9 +39560,35 @@
       "description": "Dogfood export: FODG->ODS using FF FODG codec + ODS writer",
       "added_at": "2026-07-11T12:03:10.645994+00:00",
       "tests_passed": 13
+    },
+    {
+      "entry_id": "R90-FODP-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "fodp",
+      "target_format": "odt",
+      "sprint_id": "FODP-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/fodp/fodp_to_odt.py",
+      "test_file": "tests/python/fodp/test_fodp_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: FODP->ODT using FF FODP codec + ODT writer",
+      "added_at": "2026-07-11T12:04:45.022318+00:00",
+      "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-FODG-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "fodg",
+      "target_format": "odt",
+      "sprint_id": "FODG-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/fodg/fodg_to_odt.py",
+      "test_file": "tests/python/fodg/test_fodg_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "Dogfood export: FODG->ODT using FF FODG codec + ODT writer",
+      "added_at": "2026-07-11T12:04:45.022318+00:00",
+      "tests_passed": 11
     }
   ],
-  "total_entries": 2510,
+  "total_entries": 2512,
   "changes": [
     {
       "file": "src/python/dif/models.py",
