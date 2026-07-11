@@ -41796,9 +41796,27 @@
       ],
       "test_count": 22,
       "description": "abw_paragraph_analytics_ext added to abw: paragraph_count, section_count, is_abw, has_content, first_paragraph, total_word_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-GNUMERIC-SHEET-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_sheet_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "d38795f4f15e67186024585e3551c13253533c5f40498b68f43a4c1659d86277"
+        }
+      ],
+      "tests_added": [
+        "tests/python/gnumeric/test_gnumeric_sheet_analytics_ext.py"
+      ],
+      "test_count": 21,
+      "description": "gnumeric_sheet_analytics_ext added to gnumeric: sheet_count, is_gnumeric, cell_count, first_sheet_name, first_sheet_cell_count, all_values"
     }
   ],
-  "total_entries": 2698,
+  "total_entries": 2699,
   "changes": [
     {
       "file": "src/python/dif/models.py",
