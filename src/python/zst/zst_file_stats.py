@@ -187,3 +187,59 @@ def zst_is_ratio_above_one(path: "str | Path") -> bool:
     """
     from .compression_metrics import zst_compressed_size, zst_decompressed_size
     return zst_compressed_size(path) > zst_decompressed_size(path)
+
+
+def zst_frame_count(path: "str | Path") -> int:
+    """Return the number of Zstandard frames in the file.
+
+    Spec: Zstandard frame format (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_frame_count as _frame_count
+    return _frame_count(path)
+
+
+def zst_is_single_frame(path: "str | Path") -> bool:
+    """Return True if the ZST file contains exactly one frame.
+
+    Spec: Zstandard frame format (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_is_single_frame as _is_single
+    return _is_single(path)
+
+
+def zst_magic_valid(path: "str | Path") -> bool:
+    """Return True if the file begins with a valid Zstandard magic number.
+
+    Spec: Zstandard frame header magic (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_magic_valid as _magic_valid
+    return _magic_valid(path)
+
+
+def zst_is_valid_file(path: "str | Path") -> bool:
+    """Return True if the file is a structurally valid Zstandard archive.
+
+    Spec: Zstandard file format (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_is_valid_file as _is_valid
+    return _is_valid(path)
+
+
+def zst_bytes_saved(path: "str | Path") -> int:
+    """Return the number of bytes saved by compression (decompressed - compressed).
+
+    Negative when the compressed file is larger than the original.
+
+    Spec: Zstandard compression effectiveness (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_bytes_saved as _bytes_saved
+    return _bytes_saved(path)
+
+
+def zst_is_empty_content(path: "str | Path") -> bool:
+    """Return True if the decompressed content is empty (zero bytes).
+
+    Spec: Zstandard decompressed content (FACT-ZST-001)
+    """
+    from .compression_metrics import zst_is_empty_content as _is_empty
+    return _is_empty(path)

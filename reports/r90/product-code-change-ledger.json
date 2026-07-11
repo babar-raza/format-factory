@@ -42390,9 +42390,27 @@
       ],
       "test_count": 15,
       "description": "ODT analytics ext2: odt_heading_texts, odt_is_empty, odt_min_paragraph_length, odt_last_paragraph_text, odt_total_heading_length, odt_has_content"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ZST-FILE-STATS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_file_stats.py",
+          "sha256_before": "4f3344063b6c139f1143e6cda8875a4d28a532c60d08395e865c979c70c54619",
+          "sha256_after": "19bf5f1def547ed52519266606cb8f2730ba0ae12bde4bb59b76b28922688329"
+        }
+      ],
+      "tests_added": [
+        "tests/python/zst/test_zst_file_stats_ext2.py"
+      ],
+      "test_count": 16,
+      "description": "ZST file stats ext2: zst_frame_count, zst_is_single_frame, zst_magic_valid, zst_is_valid_file, zst_bytes_saved, zst_is_empty_content"
     }
   ],
-  "total_entries": 2731,
+  "total_entries": 2732,
   "changes": [
     {
       "file": "src/python/dif/models.py",
