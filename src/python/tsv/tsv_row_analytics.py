@@ -106,3 +106,71 @@ def tsv_column_unique_value_counts(source: "str | bytes | Path") -> list:
         vals = {r[col_idx].strip() for r in rows if col_idx < len(r)}
         counts.append(len(vals))
     return counts
+
+
+def tsv_header_names(source: "str | bytes | Path") -> list:
+    """Return the list of header names from the TSV file.
+
+    Returns an empty list if the file has no header row or no columns.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("headers") or []
+
+
+def tsv_first_row_values(source: "str | bytes | Path") -> list:
+    """Return the field values of the first data row.
+
+    Returns an empty list if there are no data rows.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    return list(rows[0]) if rows else []
+
+
+def tsv_last_row_values(source: "str | bytes | Path") -> list:
+    """Return the field values of the last data row.
+
+    Returns an empty list if there are no data rows.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    rows = result.get("rows", [])
+    return list(rows[-1]) if rows else []
+
+
+def tsv_has_duplicate_headers(source: "str | bytes | Path") -> bool:
+    """Return True if any two header names are identical (case-sensitive).
+
+    False when there are no headers or only a single header.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers") or []
+    return len(headers) != len(set(headers))
+
+
+def tsv_all_headers_nonempty(source: "str | bytes | Path") -> bool:
+    """Return True if every header name is a non-empty, non-whitespace string.
+
+    Returns True vacuously when there are no headers.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    headers = result.get("headers") or []
+    return all(h.strip() for h in headers)
+
+
+def tsv_is_wide(source: "str | bytes | Path") -> bool:
+    """Return True if the file has more columns than data rows.
+
+    Spec: TSV tabular-data (FACT-TSV-001)
+    """
+    result = parse_tsv(source)
+    return result.get("column_count", 0) > result.get("row_count", 0)

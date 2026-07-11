@@ -41760,9 +41760,27 @@
       ],
       "test_count": 24,
       "description": "fodg_drawing_analytics_ext2 added to fodg: page_count, is_fodg, shapes_total, pages_without_shapes_count, text_items_per_page, has_mixed_content"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-TSV-ROW-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_row_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "78386c9cdb491d9f57714f266d2bb884d8bc6f1313438e6938802b5f8846fc73"
+        }
+      ],
+      "tests_added": [
+        "tests/python/tsv/test_tsv_row_analytics_ext.py"
+      ],
+      "test_count": 23,
+      "description": "tsv_row_analytics_ext added to tsv: header_names, first_row_values, last_row_values, has_duplicate_headers, all_headers_nonempty, is_wide"
     }
   ],
-  "total_entries": 2696,
+  "total_entries": 2697,
   "changes": [
     {
       "file": "src/python/dif/models.py",
