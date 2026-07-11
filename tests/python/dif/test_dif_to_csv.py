@@ -18,7 +18,7 @@ sys.path.insert(0, str(_REPO))
 NUMERIC_DIF = _REPO / "samples" / "by-format" / "dif" / "valid" / "numeric-row.dif"
 SINGLE_CELL_DIF = _REPO / "samples" / "by-format" / "dif" / "valid" / "single-cell.dif"
 
-from dif.dif_to_csv import dif_to_csv
+from src.python.dif.dif_to_csv import dif_to_csv
 
 
 class TestDifToCsvBasic:
