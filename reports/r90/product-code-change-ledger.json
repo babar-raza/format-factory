@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ABW-TO-ODT-DOGFOOD-001",
+  "latest_sprint": "TOML-TO-ODT-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39350,6 +39350,19 @@
       "test_file": "tests/python/abw/test_abw_to_odt.py",
       "capability_id": "add-dogfood-export",
       "description": "ABW->ODT dogfood export: each ABW paragraph as ODT paragraph",
+      "added_at": "2026-07-12",
+      "tests_passed": 11
+    },
+    {
+      "entry_id": "R90-TOML-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "toml",
+      "target_format": "odt",
+      "sprint_id": "TOML-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/toml/toml_to_odt.py",
+      "test_file": "tests/python/toml/test_toml_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "TOML->ODT dogfood export: each top-level key as ODT paragraph",
       "added_at": "2026-07-12",
       "tests_passed": 11
     }
