@@ -257,3 +257,76 @@ def csv_is_tall(csv_doc: dict[str, Any]) -> bool:
     rows = csv_doc.get("rows", [])
     col_count = csv_doc.get("column_count", 0)
     return len(rows) > col_count
+
+
+def csv_row_count(csv_doc: dict[str, Any]) -> int:
+    """Return the number of data rows in the CSV document.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        int — row count (not including header row).
+    """
+    return csv_doc.get("row_count", 0)
+
+
+def csv_column_count(csv_doc: dict[str, Any]) -> int:
+    """Return the number of columns in the CSV document.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        int — column count.
+    """
+    return csv_doc.get("column_count", 0)
+
+
+def csv_delimiter(csv_doc: dict[str, Any]) -> str:
+    """Return the field delimiter character used in the CSV document.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        str — delimiter (e.g. ',' or '\t').
+    """
+    return csv_doc.get("delimiter", ",")
+
+
+def csv_is_empty(csv_doc: dict[str, Any]) -> bool:
+    """Return True if the CSV document has no rows and no headers.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        bool — True if both row_count == 0 and headers is empty.
+    """
+    return csv_doc.get("row_count", 0) == 0 and not csv_doc.get("headers", [])
+
+
+def csv_has_data_rows(csv_doc: dict[str, Any]) -> bool:
+    """Return True if the CSV document has at least one data row.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        bool — True if row_count > 0.
+    """
+    return csv_doc.get("row_count", 0) > 0
+
+
+def csv_first_header(csv_doc: dict[str, Any]) -> str:
+    """Return the name of the first header column. Empty string if no headers.
+
+    Args:
+        csv_doc: dict output of parse_csv().
+
+    Returns:
+        str — first header string, or '' if headers is empty.
+    """
+    headers = csv_doc.get("headers", [])
+    return headers[0] if headers else ""

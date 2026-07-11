@@ -42408,9 +42408,27 @@
       ],
       "test_count": 16,
       "description": "ZST file stats ext2: zst_frame_count, zst_is_single_frame, zst_magic_valid, zst_is_valid_file, zst_bytes_saved, zst_is_empty_content"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-CSV-STATS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_stats.py",
+          "sha256_before": "30dfcac221cddcb2eefa98c8c159a6f5ff7c1ad2514519052f97cccce31e29b5",
+          "sha256_after": "438c7f304e036aaf78f80285815fa5580bb91ef538aca12890a17416518d4884"
+        }
+      ],
+      "tests_added": [
+        "tests/python/csv/test_csv_stats_ext3.py"
+      ],
+      "test_count": 15,
+      "description": "CSV stats ext3: csv_row_count, csv_column_count, csv_delimiter, csv_is_empty, csv_has_data_rows, csv_first_header"
     }
   ],
-  "total_entries": 2732,
+  "total_entries": 2733,
   "changes": [
     {
       "file": "src/python/dif/models.py",
