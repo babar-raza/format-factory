@@ -42678,9 +42678,27 @@
       ],
       "test_count": 18,
       "description": "Add 6 analytics to ndjson_field_analytics: record_count, dict_record_count, unique_key_count, min_field_count, has_arrays, total_field_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODS-FILE-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/fods/fods_file_analytics.py",
+          "sha256_before": "aed1a3b74689d238895a2dd57698568b2c1223b9a799c67e6ce66458241e04d1",
+          "sha256_after": "a3c457c68e80a6efad3ac3903fc90b245dc31e82c3b5d0b52adefd675bab231c"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fods/test_fods_file_analytics_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "Add 6 analytics to fods_file_analytics: min/avg_sheet_row_count, has_single_sheet, sheet_names_sorted, first/last_sheet_row_count"
     }
   ],
-  "total_entries": 2747,
+  "total_entries": 2748,
   "changes": [
     {
       "file": "src/python/dif/models.py",

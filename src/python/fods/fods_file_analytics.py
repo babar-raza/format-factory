@@ -126,3 +126,69 @@ def fods_file_max_sheet_row_count(source: "str | Path") -> int:
     if not sheets:
         return 0
     return max(s.get("row_count", 0) for s in sheets)
+
+
+def fods_file_min_sheet_row_count(source: "str | Path") -> int:
+    """Return the minimum row count across all sheets. 0 if no sheets.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    if not sheets:
+        return 0
+    return min(s.get("row_count", 0) for s in sheets)
+
+
+def fods_file_avg_sheet_row_count(source: "str | Path") -> float:
+    """Return the average row count per sheet. 0.0 if no sheets.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    if not sheets:
+        return 0.0
+    return sum(s.get("row_count", 0) for s in sheets) / len(sheets)
+
+
+def fods_file_has_single_sheet(source: "str | Path") -> bool:
+    """Return True if the FODS workbook contains exactly one sheet.
+
+    Spec: ODF 1.3 table:table element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return len(wb.get("sheets", [])) == 1
+
+
+def fods_file_sheet_names_sorted(source: "str | Path") -> list:
+    """Return alphabetically sorted list of sheet names.
+
+    Spec: ODF 1.3 table:table@table:name (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return sorted(s.get("name", "") for s in wb.get("sheets", []))
+
+
+def fods_file_first_sheet_row_count(source: "str | Path") -> int:
+    """Return the row count of the first sheet. 0 if no sheets.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    if not sheets:
+        return 0
+    return sheets[0].get("row_count", 0)
+
+
+def fods_file_last_sheet_row_count(source: "str | Path") -> int:
+    """Return the row count of the last sheet. 0 if no sheets.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    if not sheets:
+        return 0
+    return sheets[-1].get("row_count", 0)
