@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "TSV-TO-ODT-DOGFOOD-001",
+  "latest_sprint": "NDJSON-TO-ODT-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39326,6 +39326,19 @@
       "description": "TSV->ODT dogfood export: each TSV row as ODT paragraph",
       "added_at": "2026-07-12",
       "tests_passed": 12
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-ODT-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "format_id": "ndjson",
+      "target_format": "odt",
+      "sprint_id": "NDJSON-TO-ODT-DOGFOOD-001",
+      "source_file": "src/python/ndjson/ndjson_to_odt.py",
+      "test_file": "tests/python/ndjson/test_ndjson_to_odt.py",
+      "capability_id": "add-dogfood-export",
+      "description": "NDJSON->ODT dogfood export: each record as ODT paragraph",
+      "added_at": "2026-07-12",
+      "tests_passed": 11
     }
   ],
   "total_entries": 2459,
