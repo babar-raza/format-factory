@@ -628,3 +628,59 @@ def ndjson_field_value_mean(source) -> float:
     if not nums:
         return 0.0
     return sum(nums) / len(nums)
+
+
+def ndjson_record_count(source) -> int:
+    """Return the total number of records in the NDJSON source."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return len(records)
+
+
+def ndjson_dict_record_count(source) -> int:
+    """Return count of records that are dicts (object records)."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return sum(1 for r in records if isinstance(r, dict))
+
+
+def ndjson_common_keys(source) -> list:
+    """Return list of keys present in ALL dict records. Empty list if none or no dicts."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    dict_records = [r for r in records if isinstance(r, dict)]
+    if not dict_records:
+        return []
+    common = set(dict_records[0].keys())
+    for r in dict_records[1:]:
+        common &= set(r.keys())
+    return sorted(common)
+
+
+def ndjson_unique_key_count(source) -> int:
+    """Return count of distinct field names appearing in any dict record."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    keys: set = set()
+    for r in records:
+        if isinstance(r, dict):
+            keys.update(r.keys())
+    return len(keys)
+
+
+def ndjson_has_null_values(source) -> bool:
+    """Return True if any dict record contains a None (null) value for any field."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return any(
+        v is None
+        for r in records if isinstance(r, dict)
+        for v in r.values()
+    )
+
+
+def ndjson_numeric_field_count(source) -> int:
+    """Return count of fields whose top-level value is numeric in ANY dict record."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    numeric_keys: set = set()
+    for r in records:
+        if isinstance(r, dict):
+            for k, v in r.items():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    numeric_keys.add(k)
+    return len(numeric_keys)

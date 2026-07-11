@@ -41404,6 +41404,24 @@
       "date": "2026-07-11",
       "test_file": "tests/python/toml/test_toml_table_analytics.py",
       "sprint_id": "TOML-FOSS-TABLE-ANALYTICS-001"
+    },
+    {
+      "entry_id": "R91-GOVERNED-PYTHON-NDJSON-RECORD-STATS-EXT-001",
+      "sprint": "R91",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_record_stats.py",
+          "sha256_before": "pre-change",
+          "sha256_after": "cd5b3de30437361a52b989322debbfd2aa62eb11276748f941bd72d1e75e0e01"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ndjson/test_ndjson_record_stats_ext.py"
+      ],
+      "test_count": 27,
+      "description": "6 extended record analytics added to ndjson_record_stats.py: ndjson_record_count, ndjson_dict_record_count, ndjson_common_keys, ndjson_unique_key_count, ndjson_has_null_values, ndjson_numeric_field_count"
     }
   ],
   "total_entries": 2678,
