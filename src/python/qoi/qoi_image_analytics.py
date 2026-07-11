@@ -108,3 +108,63 @@ def qoi_max_channel_value(source: "str | Path") -> int:
     if not img.pixels:
         return 0
     return max(v for p in img.pixels for v in p)
+
+
+def qoi_channels(source: "str | Path") -> int:
+    """Return the channel count from the QOI header (3=RGB, 4=RGBA).
+
+    Spec: QOI header channels field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.channels
+
+
+def qoi_is_single_pixel(source: "str | Path") -> bool:
+    """Return True if the image is exactly 1x1 pixel.
+
+    Spec: QOI header width/height fields (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.width == 1 and img.height == 1
+
+
+def qoi_aspect_ratio(source: "str | Path") -> float:
+    """Return width / height as a float. 0.0 if height is 0.
+
+    Spec: QOI header width/height fields (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def qoi_is_opaque(source: "str | Path") -> bool:
+    """Return True if all alpha channel values are 255 (fully opaque).
+
+    For RGB images (3 channels) this always returns True.
+
+    Spec: QOI pixel data alpha channel (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if img.channels == 3:
+        return True
+    return all(p[3] == 255 for p in img.pixels)
+
+
+def qoi_unique_pixel_count(source: "str | Path") -> int:
+    """Return the count of distinct pixel tuples in the image.
+
+    Spec: QOI pixel data (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return len(set(img.pixels))
+
+
+def qoi_is_srgb(source: "str | Path") -> bool:
+    """Return True if the image uses sRGB colorspace (colorspace == 0).
+
+    Spec: QOI header colorspace field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.colorspace == 0
