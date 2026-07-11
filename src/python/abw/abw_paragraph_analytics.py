@@ -115,3 +115,61 @@ def abw_total_word_count(source: "str | bytes | Path") -> int:
     """
     doc = load(source)
     return sum(len(p.split()) for p in doc.get("paragraphs", []))
+
+
+def abw_has_sections(source: "str | bytes | Path") -> bool:
+    """Return True if the document contains at least one section.
+
+    Spec: ABW document section element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("section_count", 0) > 0
+
+
+def abw_last_paragraph(source: "str | bytes | Path") -> str:
+    """Return text of the last paragraph, or empty string if none.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    paras = doc.get("paragraphs", [])
+    return paras[-1] if paras else ""
+
+
+def abw_is_single_paragraph(source: "str | bytes | Path") -> bool:
+    """Return True if the document contains exactly one paragraph.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return doc.get("paragraph_count", 0) == 1
+
+
+def abw_paragraph_texts(source: "str | bytes | Path") -> list:
+    """Return list of all paragraph text strings in document order.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return list(doc.get("paragraphs", []))
+
+
+def abw_avg_word_count(source: "str | bytes | Path") -> float:
+    """Return average word count per paragraph. 0.0 if no paragraphs.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    paras = doc.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    return sum(len(p.split()) for p in paras) / len(paras)
+
+
+def abw_has_empty_paragraphs(source: "str | bytes | Path") -> bool:
+    """Return True if any paragraph text is empty or whitespace-only.
+
+    Spec: ABW document paragraph element (FACT-ABW-001)
+    """
+    doc = load(source)
+    return any(not p.strip() for p in doc.get("paragraphs", []))
