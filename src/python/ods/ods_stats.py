@@ -11,6 +11,7 @@ Package: format-factory-ods v0.1.0
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 
@@ -179,3 +180,115 @@ def ods_data_validation_count(ods_doc: dict[str, Any]) -> int:
                         count += 1
 
     return count
+
+
+# --- File-path based analytics ---
+
+def _ods_load(file_path: "str | Path") -> dict[str, Any]:
+    """Load an ODS file and return the parse_ods dict."""
+    from .ods_parser import parse_ods
+    return parse_ods(file_path)
+
+
+def ods_has_data(file_path: "str | Path") -> bool:
+    """Return True if any cell in the ODS file has a non-empty value.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        bool — True if at least one cell has a non-empty value or text.
+    """
+    doc = _ods_load(file_path)
+    for sheet in doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                val = cell.get("value")
+                text = cell.get("text", "")
+                if val not in (None, "", 0) or (isinstance(text, str) and text.strip()):
+                    return True
+    return False
+
+
+def ods_first_sheet_name(file_path: "str | Path") -> str:
+    """Return the name of the first sheet in the ODS file.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        str — Name of the first sheet, or empty string if no sheets.
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return ""
+    return sheets[0].get("name", "")
+
+
+def ods_total_row_count(file_path: "str | Path") -> int:
+    """Return the total row count across all sheets in the ODS file.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        int — Sum of row_count for every sheet. 0 if no sheets or no rows.
+    """
+    doc = _ods_load(file_path)
+    return sum(sheet.get("row_count", 0) for sheet in doc.get("sheets", []))
+
+
+def ods_unique_sheet_names(file_path: "str | Path") -> list[str]:
+    """Return a list of distinct sheet names from the ODS file.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        list[str] — Unique sheet names preserving first-occurrence order.
+    """
+    doc = _ods_load(file_path)
+    seen: set[str] = set()
+    result: list[str] = []
+    for sheet in doc.get("sheets", []):
+        name = sheet.get("name", "")
+        if name not in seen:
+            seen.add(name)
+            result.append(name)
+    return result
+
+
+def ods_has_float_cells(file_path: "str | Path") -> bool:
+    """Return True if the ODS file contains at least one float/numeric cell.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        bool — True if any cell has value_type 'float', 'percentage', or 'currency'.
+    """
+    doc = _ods_load(file_path)
+    float_types = {"float", "percentage", "currency"}
+    for sheet in doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell.get("value_type", "") in float_types:
+                    return True
+    return False
+
+
+def ods_max_sheet_row_count(file_path: "str | Path") -> int:
+    """Return the maximum row count across all sheets in the ODS file.
+
+    Args:
+        file_path: Path to the .ods file.
+
+    Returns:
+        int — Maximum row_count of any single sheet. 0 if no sheets.
+    """
+    doc = _ods_load(file_path)
+    sheets = doc.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(sheet.get("row_count", 0) for sheet in sheets)
