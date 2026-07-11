@@ -41832,9 +41832,27 @@
       ],
       "test_count": 23,
       "description": "fodp_slide_analytics_ext added to fodp: slide_count, is_fodp, first_slide_title, slide_shape_counts, total_shape_count, has_text"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-CSV-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "a4ddbcb3ac9f4ddb8d173358c1fb52762e87c4c08f8c91e96d58c9d9908feccf"
+        }
+      ],
+      "tests_added": [
+        "tests/python/csv/test_csv_analytics_ext2.py"
+      ],
+      "test_count": 23,
+      "description": "csv_analytics_ext2 added to csv: header_names, first_row_values, last_row_values, has_duplicate_headers, all_headers_nonempty, is_wide"
     }
   ],
-  "total_entries": 2700,
+  "total_entries": 2701,
   "changes": [
     {
       "file": "src/python/dif/models.py",

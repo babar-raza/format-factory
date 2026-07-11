@@ -225,3 +225,58 @@ def csv_has_header(file_path: "str | Path") -> bool:
     """Return True if the parsed CSV has a header row."""
     model = parse_csv_strict(file_path)
     return bool(model.get("has_header", False))
+
+
+def csv_header_names(file_path: "str | Path") -> list:
+    """Return the list of header names from the CSV file.
+
+    Returns an empty list if the file has no header row or no columns.
+    """
+    model = parse_csv_strict(file_path)
+    return model.get("headers") or []
+
+
+def csv_first_row_values(file_path: "str | Path") -> list:
+    """Return the field values of the first data row.
+
+    Returns an empty list if there are no data rows.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return list(rows[0]) if rows else []
+
+
+def csv_last_row_values(file_path: "str | Path") -> list:
+    """Return the field values of the last data row.
+
+    Returns an empty list if there are no data rows.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return list(rows[-1]) if rows else []
+
+
+def csv_has_duplicate_headers(file_path: "str | Path") -> bool:
+    """Return True if any two header names are identical (case-sensitive).
+
+    False when there are no headers or only a single header.
+    """
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers") or []
+    return len(headers) != len(set(headers))
+
+
+def csv_all_headers_nonempty(file_path: "str | Path") -> bool:
+    """Return True if every header name is a non-empty, non-whitespace string.
+
+    Returns True vacuously when there are no headers.
+    """
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers") or []
+    return all(h.strip() for h in headers)
+
+
+def csv_is_wide(file_path: "str | Path") -> bool:
+    """Return True if the file has more columns than data rows."""
+    model = parse_csv_strict(file_path)
+    return model.get("column_count", 0) > model.get("row_count", 0)
