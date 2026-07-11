@@ -195,3 +195,51 @@ def toml_top_level_table_count(source: "str | bytes | Path") -> int:
     doc = load_toml(source)
     data = doc.get("data", {})
     return sum(1 for v in data.values() if isinstance(v, dict))
+
+
+def toml_top_level_keys(source: "str | bytes | Path") -> list:
+    """Return list of top-level key names from the TOML document.
+
+    Returns keys in their original order.
+    """
+    doc = load_toml(source)
+    return list(doc.get("data", {}).keys())
+
+
+def toml_has_boolean_values(source: "str | bytes | Path") -> bool:
+    """Return True if any top-level value is a boolean."""
+    doc = load_toml(source)
+    return any(isinstance(v, bool) for v in doc.get("data", {}).values())
+
+
+def toml_top_level_string_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level string values in the document."""
+    doc = load_toml(source)
+    return sum(1 for v in doc.get("data", {}).values() if isinstance(v, str))
+
+
+def toml_top_level_int_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level integer values (not float, not bool)."""
+    doc = load_toml(source)
+    return sum(
+        1 for v in doc.get("data", {}).values()
+        if isinstance(v, int) and not isinstance(v, bool)
+    )
+
+
+def toml_top_level_keys_sorted(source: "str | bytes | Path") -> list:
+    """Return alphabetically sorted list of top-level key names."""
+    doc = load_toml(source)
+    return sorted(doc.get("data", {}).keys())
+
+
+def toml_top_level_scalar_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level scalar values (str, int, float, bool).
+
+    Excludes dicts and lists.
+    """
+    doc = load_toml(source)
+    return sum(
+        1 for v in doc.get("data", {}).values()
+        if isinstance(v, (str, int, float, bool)) and not isinstance(v, dict)
+    )

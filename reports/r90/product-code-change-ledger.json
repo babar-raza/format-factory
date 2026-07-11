@@ -42012,9 +42012,27 @@
       ],
       "test_count": 22,
       "description": "pgm image analytics (width, height, maxval, magic, is_single_pixel, is_full_range) added to pgm"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-TOML-TABLE-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_table_analytics.py",
+          "sha256_before": "277625ef2a449e13b24fc0459df8f0ffe434cee9d719a032327b0ebdde7c0aba",
+          "sha256_after": "59ae880681b052e91336b1e3e3975840473567f10fcc792a02a1e2c33f55a869"
+        }
+      ],
+      "tests_added": [
+        "tests/python/toml/test_toml_table_analytics_ext.py"
+      ],
+      "test_count": 15,
+      "description": "toml table analytics ext (top_level_keys, has_boolean_values, top_level_string_count, top_level_int_count, top_level_keys_sorted, top_level_scalar_count) added to toml"
     }
   ],
-  "total_entries": 2710,
+  "total_entries": 2711,
   "changes": [
     {
       "file": "src/python/dif/models.py",
