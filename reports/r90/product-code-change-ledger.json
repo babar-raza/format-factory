@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FODG-TO-ABW-DOGFOOD-001",
+  "latest_sprint": "FODG-TO-GNUMERIC-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -40255,6 +40255,162 @@
         "tests/python/fodg/test_fodg_to_abw.py"
       ],
       "description": "FODG -> ABW dogfood export using FF fodg reader and abw writer"
+    },
+    {
+      "entry_id": "R90-CSV-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "CSV-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "csv",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/csv/csv_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py"
+      ],
+      "description": "CSV -> Gnumeric dogfood export using FF csv reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-TSV-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "TSV-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "tsv",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/tsv/tsv_to_gnumeric.py",
+        "tests/python/tsv/test_tsv_to_gnumeric.py"
+      ],
+      "description": "TSV -> Gnumeric dogfood export using FF tsv reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-NDJSON-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "NDJSON-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "ndjson",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/ndjson/ndjson_to_gnumeric.py",
+        "tests/python/ndjson/test_ndjson_to_gnumeric.py"
+      ],
+      "description": "NDJSON -> Gnumeric dogfood export using FF ndjson reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-ODS-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "ODS-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "ods",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/ods/ods_to_gnumeric.py",
+        "tests/python/ods/test_ods_to_gnumeric.py"
+      ],
+      "description": "ODS -> Gnumeric dogfood export using FF ods reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-ABW-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "ABW-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "abw",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/abw/abw_to_gnumeric.py",
+        "tests/python/abw/test_abw_to_gnumeric.py"
+      ],
+      "description": "ABW -> Gnumeric dogfood export using FF abw reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-DIF-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "DIF-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "dif",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/dif/dif_to_gnumeric.py",
+        "tests/python/dif/test_dif_to_gnumeric.py"
+      ],
+      "description": "DIF -> Gnumeric dogfood export using FF dif reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-SYLK-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "SYLK-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "sylk",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/sylk/sylk_to_gnumeric.py",
+        "tests/python/sylk/test_sylk_to_gnumeric.py"
+      ],
+      "description": "SYLK -> Gnumeric dogfood export using FF sylk reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-TOML-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "TOML-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "toml",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/toml/toml_to_gnumeric.py",
+        "tests/python/toml/test_toml_to_gnumeric.py"
+      ],
+      "description": "TOML -> Gnumeric dogfood export using FF toml reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-ODT-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "ODT-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "odt",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/odt/odt_to_gnumeric.py",
+        "tests/python/odt/test_odt_to_gnumeric.py"
+      ],
+      "description": "ODT -> Gnumeric dogfood export using FF odt reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-FODT-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "FODT-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodt",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/fodt/fodt_to_gnumeric.py",
+        "tests/python/fodt/test_fodt_to_gnumeric.py"
+      ],
+      "description": "FODT -> Gnumeric dogfood export using FF fodt reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-FODS-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "FODS-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fods",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/fods/fods_to_gnumeric.py",
+        "tests/python/fods/test_fods_to_gnumeric.py"
+      ],
+      "description": "FODS -> Gnumeric dogfood export using FF fods reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-FODP-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "FODP-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodp",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/fodp/fodp_to_gnumeric.py",
+        "tests/python/fodp/test_fodp_to_gnumeric.py"
+      ],
+      "description": "FODP -> Gnumeric dogfood export using FF fodp reader and gnumeric writer"
+    },
+    {
+      "entry_id": "R90-FODG-TO-GNUMERIC-DOGFOOD-001",
+      "sprint": "FODG-TO-GNUMERIC-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "format_id": "fodg",
+      "target_format": "gnumeric",
+      "files_added": [
+        "src/python/fodg/fodg_to_gnumeric.py",
+        "tests/python/fodg/test_fodg_to_gnumeric.py"
+      ],
+      "description": "FODG -> Gnumeric dogfood export using FF fodg reader and gnumeric writer"
     }
   ],
   "total_entries": 2518,
