@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "DIF-TO-NDJSON-DOGFOOD-001",
+  "latest_sprint": "SYLK-TO-NDJSON-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -38971,6 +38971,24 @@
         {
           "path": "src/python/dif/dif_to_ndjson.py",
           "sha256": "580cdcaa5ce8a065e1d980dcccbdb29b970b08bb00f617954ccbb24b666dc838"
+        }
+      ]
+    },
+    {
+      "entry_id": "R90-SYLK-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "origin_sprint": "SYLK-TO-NDJSON-DOGFOOD-001",
+      "product": "SYLK Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "sylk_to_ndjson"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_to_ndjson.py",
+          "sha256": "4d89a9008612fd410aace11b43c9f85768986477f743eeaecd6fc665f6d13c51"
         }
       ]
     }
