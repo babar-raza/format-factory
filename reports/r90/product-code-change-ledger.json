@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "TOML-TO-CSV-DOGFOOD-001",
+  "latest_sprint": "ABW-TO-CSV-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39007,6 +39007,24 @@
         {
           "path": "src/python/toml/toml_to_csv.py",
           "sha256": "7ee45a2dd973e023f80edea8c8843651a48ad417a754381b7775f431e9a70e70"
+        }
+      ]
+    },
+    {
+      "entry_id": "R90-ABW-TO-CSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "origin_sprint": "ABW-TO-CSV-DOGFOOD-001",
+      "product": "ABW Python",
+      "capability_refs": [
+        "add-dogfood-export"
+      ],
+      "api_symbols": [
+        "abw_to_csv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_to_csv.py",
+          "sha256": "db24c3952ec84a1ef29e4045ae03aca817cef6081fee5f47ff7df4dea70d882e"
         }
       ]
     }
