@@ -129,3 +129,61 @@ def odt_is_single_paragraph(source: "str | bytes | Path") -> bool:
     """
     doc = parse_odt(source)
     return doc.get("paragraph_count", 0) == 1
+
+
+def odt_heading_texts(source: "str | bytes | Path") -> list:
+    """Return list of all heading text strings in document order.
+
+    Spec: ODF 1.3 text:h element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return [h.get("text", "") for h in doc.get("headings", [])]
+
+
+def odt_is_empty(source: "str | bytes | Path") -> bool:
+    """Return True if the document has no paragraphs and no headings.
+
+    Spec: ODF 1.3 text:p / text:h elements (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return doc.get("paragraph_count", 0) == 0 and doc.get("heading_count", 0) == 0
+
+
+def odt_min_paragraph_length(source: "str | bytes | Path") -> int:
+    """Return the character length of the shortest paragraph. 0 if no paragraphs.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    paras = doc.get("paragraphs", [])
+    if not paras:
+        return 0
+    return min(len(p.get("text", "")) for p in paras)
+
+
+def odt_last_paragraph_text(source: "str | bytes | Path") -> str:
+    """Return the text of the last paragraph. Empty string if no paragraphs.
+
+    Spec: ODF 1.3 text:p element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    paras = doc.get("paragraphs", [])
+    return paras[-1].get("text", "") if paras else ""
+
+
+def odt_total_heading_length(source: "str | bytes | Path") -> int:
+    """Return total character count of all heading texts combined.
+
+    Spec: ODF 1.3 text:h element (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return sum(len(h.get("text", "")) for h in doc.get("headings", []))
+
+
+def odt_has_content(source: "str | bytes | Path") -> bool:
+    """Return True if the document has at least one element (paragraph, heading, etc.).
+
+    Spec: ODF 1.3 text body elements (FACT-ODT-001)
+    """
+    doc = parse_odt(source)
+    return doc.get("element_count", 0) > 0

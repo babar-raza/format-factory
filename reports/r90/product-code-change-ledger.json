@@ -42372,9 +42372,27 @@
       ],
       "test_count": 15,
       "description": "NDJSON field analytics ext: ndjson_all_key_names, ndjson_last_record_keys, ndjson_numeric_field_count, ndjson_string_field_count, ndjson_has_nested_records, ndjson_max_field_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ODT-DOC-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_doc_analytics.py",
+          "sha256_before": "cb509ee8438f87628f3ee43d864eec292f620ce0eae941f9f730aee135597f3f",
+          "sha256_after": "10e16f39466d691cf3f1d83a420ecee7891ec52d3a51311d14166094ff70a793"
+        }
+      ],
+      "tests_added": [
+        "tests/python/odt/test_odt_doc_analytics_ext2.py"
+      ],
+      "test_count": 15,
+      "description": "ODT analytics ext2: odt_heading_texts, odt_is_empty, odt_min_paragraph_length, odt_last_paragraph_text, odt_total_heading_length, odt_has_content"
     }
   ],
-  "total_entries": 2730,
+  "total_entries": 2731,
   "changes": [
     {
       "file": "src/python/dif/models.py",
