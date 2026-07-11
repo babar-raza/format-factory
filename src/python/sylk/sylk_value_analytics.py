@@ -191,3 +191,70 @@ def sylk_is_tall(file_path: "str | Path") -> bool:
     """
     probe = _sylk_probe(file_path)
     return probe.get("rows", 0) > probe.get("cols", 0)
+
+
+def sylk_col_count(file_path: "str | Path") -> int:
+    """Return the number of columns in the SYLK document.
+
+    Spec: SYLK B;Y record column count (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.cols
+
+
+def sylk_id_line(file_path: "str | Path") -> str:
+    """Return the ID line (first record) of the SYLK file.
+
+    Spec: SYLK ID; record (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.id_line
+
+
+def sylk_all_cells_same_type(file_path: "str | Path") -> bool:
+    """Return True if all cells in the SYLK document have the same value_type.
+
+    True vacuously when there are no cells.
+
+    Spec: SYLK C; record value type (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return True
+    types = {c.value_type for c in doc.cells}
+    return len(types) == 1
+
+
+def sylk_has_only_strings(file_path: "str | Path") -> bool:
+    """Return True if all cells have value_type 'string'.
+
+    False if no cells.
+
+    Spec: SYLK C; record string value (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return False
+    return all(c.value_type == "string" for c in doc.cells)
+
+
+def sylk_has_only_numeric(file_path: "str | Path") -> bool:
+    """Return True if all cells have value_type 'numeric'.
+
+    False if no cells.
+
+    Spec: SYLK C; record numeric value (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return False
+    return all(c.value_type == "numeric" for c in doc.cells)
+
+
+def sylk_first_cell_value(file_path: "str | Path") -> object:
+    """Return the value of the first cell in row/col order. None if no cells.
+
+    Spec: SYLK C; record value (FACT-SYLK-001)
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.cells[0].value if doc.cells else None
