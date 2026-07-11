@@ -104,3 +104,81 @@ def ppm_all_black(file_path: "str | Path") -> bool:
     """
     img = _load_ppm(file_path)
     return all(r == 0 and g == 0 and b == 0 for r, g, b in img.pixels)
+
+
+def ppm_width(file_path: "str | Path") -> int:
+    """Return the image width in pixels.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        int — image width.
+    """
+    img = _load_ppm(file_path)
+    return img.width
+
+
+def ppm_height(file_path: "str | Path") -> int:
+    """Return the image height in pixels.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        int — image height.
+    """
+    img = _load_ppm(file_path)
+    return img.height
+
+
+def ppm_maxval(file_path: "str | Path") -> int:
+    """Return the maximum channel value (color depth) declared in the PPM header.
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        int — maxval from the PPM header.
+    """
+    img = _load_ppm(file_path)
+    return img.maxval
+
+
+def ppm_magic(file_path: "str | Path") -> str:
+    """Return the PPM magic number ('P3' for ASCII, 'P6' for binary).
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        str — 'P3' or 'P6'.
+    """
+    img = _load_ppm(file_path)
+    return img.magic
+
+
+def ppm_total_pixels(file_path: "str | Path") -> int:
+    """Return total pixel count (width * height).
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        int — width * height.
+    """
+    img = _load_ppm(file_path)
+    return img.width * img.height
+
+
+def ppm_is_standard_depth(file_path: "str | Path") -> bool:
+    """Return True if maxval is exactly 255 (standard 8-bit depth).
+
+    Args:
+        file_path: Path to the .ppm file.
+
+    Returns:
+        bool — True if maxval == 255.
+    """
+    img = _load_ppm(file_path)
+    return img.maxval == 255
