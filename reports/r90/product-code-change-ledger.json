@@ -41742,9 +41742,27 @@
       ],
       "test_count": 22,
       "description": "6 new NDJSON analytics: ndjson_has_boolean_values, ndjson_string_field_names, ndjson_max_record_field_count, ndjson_min_record_field_count, ndjson_all_records_have_same_keys, ndjson_total_value_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODG-DRAWING-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodg/drawing_document.py",
+          "sha256_before": "",
+          "sha256_after": "51c1bc169268f389051b5f9df85a7adab9673f3d250c95dc8aa0a49bfda87ab0"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodg/test_fodg_drawing_analytics_ext2.py"
+      ],
+      "test_count": 24,
+      "description": "fodg_drawing_analytics_ext2 added to fodg: page_count, is_fodg, shapes_total, pages_without_shapes_count, text_items_per_page, has_mixed_content"
     }
   ],
-  "total_entries": 2695,
+  "total_entries": 2696,
   "changes": [
     {
       "file": "src/python/dif/models.py",

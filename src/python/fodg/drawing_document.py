@@ -741,6 +741,67 @@ def fodg_has_text_on_all_pages(file_path: "str | bytes | Path") -> bool:
     return all(len(p.get("text_content", [])) > 0 for p in pages)
 
 
+def fodg_page_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of pages in the FODG drawing document.
+
+    Spec: ODF 1.3 draw:page element (FACT-FODG-001)
+    """
+    doc = load(file_path)
+    return doc.get("page_count", 0)
+
+
+def fodg_is_fodg(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document is identified as a flat FODG file.
+
+    Spec: ODF 1.3 MIME type application/vnd.oasis.opendocument.graphics-flat-xml
+    (FACT-FODG-001)
+    """
+    doc = load(file_path)
+    return bool(doc.get("is_fodg", False))
+
+
+def fodg_shapes_total(file_path: "str | bytes | Path") -> int:
+    """Return the aggregate shape count across all pages in the document.
+
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    """
+    doc = load(file_path)
+    return doc.get("shapes_total", 0)
+
+
+def fodg_pages_without_shapes_count(file_path: "str | bytes | Path") -> int:
+    """Return count of pages that contain no shapes.
+
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    """
+    doc = load(file_path)
+    return sum(1 for p in doc.get("pages", []) if p.get("shape_count", 0) == 0)
+
+
+def fodg_text_items_per_page(file_path: "str | bytes | Path") -> list:
+    """Return a list of text item counts, one entry per page in document order.
+
+    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    """
+    doc = load(file_path)
+    return [len(p.get("text_content", [])) for p in doc.get("pages", [])]
+
+
+def fodg_has_mixed_content(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has pages both with and without shapes.
+
+    A document has mixed content when at least one page has shapes and at
+    least one page has no shapes — indicating heterogeneous page layouts.
+
+    Spec: ODF 1.3 draw:page (FACT-FODG-001), draw:custom-shape (FACT-FODG-002)
+    """
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    has_shapes = any(p.get("shape_count", 0) > 0 for p in pages)
+    has_empty = any(p.get("shape_count", 0) == 0 for p in pages)
+    return has_shapes and has_empty
+
+
 try:
     from .drawing_metrics import *  # noqa: F401, F403
 except ImportError:
