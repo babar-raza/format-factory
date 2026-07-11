@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "SYLK-TO-FODS-DOGFOOD-001",
+  "latest_sprint": "FODT-TO-FODS-DOGFOOD-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -39716,6 +39716,32 @@
       "description": "SYLK -> FODS dogfood export using FF SYLK parser + FODS writer",
       "authority": "TASK-007",
       "tests_added": 10
+    },
+    {
+      "entry_id": "R90-ODT-TO-FODS-DOGFOOD-001",
+      "sprint": "ODT-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "odt",
+      "target_format": "fods",
+      "source_file": "src/python/odt/odt_to_fods.py",
+      "test_file": "tests/python/odt/test_odt_to_fods.py",
+      "description": "ODT -> FODS dogfood export using FF ODT parser + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 12
+    },
+    {
+      "entry_id": "R90-FODT-TO-FODS-DOGFOOD-001",
+      "sprint": "FODT-TO-FODS-DOGFOOD-001",
+      "change_type": "DOGFOOD_EXPORT",
+      "language": "python",
+      "format": "fodt",
+      "target_format": "fods",
+      "source_file": "src/python/fodt/fodt_to_fods.py",
+      "test_file": "tests/python/fodt/test_fodt_to_fods.py",
+      "description": "FODT -> FODS dogfood export using FF FODT parser + FODS writer",
+      "authority": "TASK-007",
+      "tests_added": 12
     }
   ],
   "total_entries": 2518,
