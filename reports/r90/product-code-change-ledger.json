@@ -42480,9 +42480,27 @@
       ],
       "test_count": 14,
       "description": "XCF layer analytics ext3: xcf_last_layer_name, xcf_is_portrait, xcf_is_indexed, xcf_total_pixels, xcf_version, xcf_has_multiple_layers"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-QOI-IMAGE-ANALYTICS-EXT3-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/qoi/qoi_image_analytics.py",
+          "sha256_before": "bcdd906379f7900bb376728a84e06fee56477ea92c713d2aa1b28f40466da7a6",
+          "sha256_after": "dd9d9db20ca67c688a4520bb129540b35e82ec31ab5a3670bf4968e97cfdeaca"
+        }
+      ],
+      "tests_added": [
+        "tests/python/qoi/test_qoi_image_analytics_ext3.py"
+      ],
+      "test_count": 14,
+      "description": "QOI image analytics ext3: qoi_is_linear, qoi_has_pixels, qoi_pixel_count, qoi_avg_red, qoi_avg_green, qoi_avg_blue"
     }
   ],
-  "total_entries": 2736,
+  "total_entries": 2737,
   "changes": [
     {
       "file": "src/python/dif/models.py",

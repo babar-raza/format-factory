@@ -168,3 +168,63 @@ def qoi_is_srgb(source: "str | Path") -> bool:
     """
     img = parse_qoi_strict(source)
     return img.colorspace == 0
+
+
+def qoi_is_linear(source: "str | Path") -> bool:
+    """Return True if the image uses all-linear colorspace (colorspace == 1).
+
+    Spec: QOI header colorspace field (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return img.colorspace == 1
+
+
+def qoi_has_pixels(source: "str | Path") -> bool:
+    """Return True if the image has at least one pixel.
+
+    Spec: QOI pixel data (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return len(img.pixels) > 0
+
+
+def qoi_pixel_count(source: "str | Path") -> int:
+    """Return the actual number of decoded pixels stored.
+
+    Spec: QOI pixel data (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    return len(img.pixels)
+
+
+def qoi_avg_red(source: "str | Path") -> float:
+    """Return the average red channel value across all pixels. 0.0 if no pixels.
+
+    Spec: QOI pixel data channels (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if not img.pixels:
+        return 0.0
+    return sum(p[0] for p in img.pixels) / len(img.pixels)
+
+
+def qoi_avg_green(source: "str | Path") -> float:
+    """Return the average green channel value across all pixels. 0.0 if no pixels.
+
+    Spec: QOI pixel data channels (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if not img.pixels:
+        return 0.0
+    return sum(p[1] for p in img.pixels) / len(img.pixels)
+
+
+def qoi_avg_blue(source: "str | Path") -> float:
+    """Return the average blue channel value across all pixels. 0.0 if no pixels.
+
+    Spec: QOI pixel data channels (FACT-QOI-001)
+    """
+    img = parse_qoi_strict(source)
+    if not img.pixels:
+        return 0.0
+    return sum(p[2] for p in img.pixels) / len(img.pixels)
