@@ -42660,9 +42660,27 @@
       ],
       "test_count": 18,
       "description": "Add 6 analytics to pgm_image_analytics: is_standard_depth, is_high_depth, avg_pixel_value, is_portrait, is_ascii, is_all_white"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-NDJSON-FIELD-ANALYTICS-EXT2-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-analytics-function",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_field_analytics.py",
+          "sha256_before": "eb338585d4553bac521a8ffab0ef69bfe688dbcd59fd0bac210984600f223748",
+          "sha256_after": "e33fdb44bd85b2e48fc2f65f49d7a829fd655ce8d7b3408e026236ab8f9777eb"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ndjson/test_ndjson_field_analytics_ext2.py"
+      ],
+      "test_count": 18,
+      "description": "Add 6 analytics to ndjson_field_analytics: record_count, dict_record_count, unique_key_count, min_field_count, has_arrays, total_field_count"
     }
   ],
-  "total_entries": 2746,
+  "total_entries": 2747,
   "changes": [
     {
       "file": "src/python/dif/models.py",

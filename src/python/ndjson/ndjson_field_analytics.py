@@ -175,3 +175,89 @@ def ndjson_max_field_count(source: "str | bytes | Path") -> int:
     records = load_ndjson(source)
     counts = [len(r) for r in records if isinstance(r, dict)]
     return max(counts) if counts else 0
+
+
+def ndjson_record_count(source: "str | bytes | Path") -> int:
+    """Return total count of records (lines) in the NDJSON stream.
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        int — total record count.
+    """
+    return len(load_ndjson(source))
+
+
+def ndjson_dict_record_count(source: "str | bytes | Path") -> int:
+    """Return count of records that are JSON objects (dicts).
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        int — dict record count.
+    """
+    return sum(1 for r in load_ndjson(source) if isinstance(r, dict))
+
+
+def ndjson_unique_key_count(source: "str | bytes | Path") -> int:
+    """Return count of distinct field names across all dict records.
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        int — number of unique keys.
+    """
+    records = load_ndjson(source)
+    keys: set = set()
+    for rec in records:
+        if isinstance(rec, dict):
+            keys.update(rec.keys())
+    return len(keys)
+
+
+def ndjson_min_field_count(source: "str | bytes | Path") -> int:
+    """Return minimum field count across all dict records. 0 if no dict records.
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        int — minimum field count.
+    """
+    records = load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    return min(counts) if counts else 0
+
+
+def ndjson_has_arrays(source: "str | bytes | Path") -> bool:
+    """Return True if any field value across all dict records is a list.
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        bool — True if any value is a list.
+    """
+    for rec in load_ndjson(source):
+        if isinstance(rec, dict):
+            for v in rec.values():
+                if isinstance(v, list):
+                    return True
+    return False
+
+
+def ndjson_total_field_count(source: "str | bytes | Path") -> int:
+    """Return total field count across all dict records.
+
+    Sums the number of keys in each dict record.
+
+    Args:
+        source: Path to an .ndjson file, or raw NDJSON bytes.
+
+    Returns:
+        int — total fields. 0 if no dict records.
+    """
+    return sum(len(r) for r in load_ndjson(source) if isinstance(r, dict))
