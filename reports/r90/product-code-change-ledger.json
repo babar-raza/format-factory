@@ -41704,9 +41704,30 @@
       ],
       "test_count": 16,
       "description": "toml_table_analytics.py: 6 new analytics: toml_top_level_key_count, toml_has_nested_tables, toml_recursive_list_count, toml_is_deep, toml_avg_string_length, toml_top_level_table_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-PPM-IMAGE-ANALYTICS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_image_analytics.py",
+          "sha256_after": "05db01cbadf26a0b3f807e6346033af492e57e9422bf583a03659215590143ed"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "sha256_after": "9ccf0b943ed139c62880bdf897629bf58a1517c5861c5ced6926d1759db5d3d5"
+        }
+      ],
+      "tests_added": [
+        "tests/python/ppm/test_ppm_image_analytics.py"
+      ],
+      "test_count": 24,
+      "description": "ppm_image_analytics.py: 6 new analytics: ppm_has_single_pixel, ppm_has_single_row, ppm_has_single_column, ppm_is_high_depth, ppm_all_white, ppm_all_black"
     }
   ],
-  "total_entries": 2693,
+  "total_entries": 2694,
   "changes": [
     {
       "file": "src/python/dif/models.py",

@@ -8,6 +8,7 @@ FOSS track only — no commercial readiness implied.
 from .ppm_parser import *  # noqa: F401, F403
 from .ppm_stats import *  # noqa: F401, F403
 from .color_image import *  # noqa: F401, F403
+from .ppm_image_analytics import *  # noqa: F401, F403
 from .ppm_to_pgm import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import PpmDocument  # noqa: F401
