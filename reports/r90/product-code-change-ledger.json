@@ -41958,9 +41958,27 @@
       ],
       "test_count": 19,
       "description": "fodt text analytics ext (has_content, first_block_type, first_block_text, heading_texts, paragraph_texts, all_blocks_have_text) added to fodt"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODS-FILE-ANALYTICS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fods/fods_file_analytics.py",
+          "sha256_before": "new_file",
+          "sha256_after": "b2f10ac504c81d87f687e96e1334b485e6e2511da57bf6fcb69e89aece7f98df"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fods/test_fods_file_analytics.py"
+      ],
+      "test_count": 20,
+      "description": "fods file-path analytics (file_sheet_count, file_is_fods, file_first_sheet_name, file_sheet_names, file_has_multiple_sheets, file_total_rows) added to fods"
     }
   ],
-  "total_entries": 2707,
+  "total_entries": 2708,
   "changes": [
     {
       "file": "src/python/dif/models.py",
