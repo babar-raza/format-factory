@@ -80,12 +80,27 @@ __all__ = [
     "get_compression_summary",
     "zst_installed_workflow",
     "zst_inspect_frame",
+    # File-level statistics (zst_file_stats module)
+    "zst_is_well_compressed",
+    "zst_frames_are_equal_size",
+    "zst_is_tiny",
+    "zst_decompressed_per_frame",
+    "zst_is_size_reducing",
+    "zst_byte_overhead",
 ]
 
 from .models import ZstDocument  # noqa: F401
 from .zst_codec import get_compression_summary  # noqa: F401
 from .zst_workflow import zst_installed_workflow  # noqa: F401
 from .zst_frame_inspector import zst_inspect_frame  # noqa: F401
+from .zst_file_stats import (  # noqa: F401
+    zst_is_well_compressed,
+    zst_frames_are_equal_size,
+    zst_is_tiny,
+    zst_decompressed_per_frame,
+    zst_is_size_reducing,
+    zst_byte_overhead,
+)
 
 __version__ = "0.1.0.dev0"
 __track__ = "python-foss"

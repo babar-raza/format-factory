@@ -41649,9 +41649,30 @@
       ],
       "test_count": 25,
       "description": "ods_stats.py extended with 6 file-path based analytics: ods_has_data, ods_first_sheet_name, ods_total_row_count, ods_unique_sheet_names, ods_has_float_cells, ods_max_sheet_row_count"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-ZST-FILE-STATS-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_file_stats.py",
+          "sha256_after": "32401acf950bd9d3ba0fc8bd856479ba8bc7994d768cd834b8a0b6f72029db7a"
+        },
+        {
+          "path": "src/python/zst/__init__.py",
+          "sha256_after": "6106e79b14e80958ff55663b773764d57d1a92fb472ee5c0a34beaf0c6750861"
+        }
+      ],
+      "tests_added": [
+        "tests/python/zst/test_zst_file_stats.py"
+      ],
+      "test_count": 25,
+      "description": "zst_file_stats.py: 6 new file-path analytics: zst_is_well_compressed, zst_frames_are_equal_size, zst_is_tiny, zst_decompressed_per_frame, zst_is_size_reducing, zst_byte_overhead"
     }
   ],
-  "total_entries": 2690,
+  "total_entries": 2691,
   "changes": [
     {
       "file": "src/python/dif/models.py",
