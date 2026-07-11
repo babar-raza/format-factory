@@ -42318,9 +42318,27 @@
       ],
       "test_count": 19,
       "description": "workbook-level stats functions added to gnumeric (workbook_sheet_count, workbook_total_cell_count, workbook_sheet_names, workbook_has_data, workbook_is_gnumeric, workbook_max_sheet_cell_count)"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODS-FILE-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fods/fods_file_analytics.py",
+          "sha256_before": "b2f10ac504c81d87f687e96e1334b485e6e2511da57bf6fcb69e89aece7f98df",
+          "sha256_after": "aed1a3b74689d238895a2dd57698568b2c1223b9a799c67e6ce66458241e04d1"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fods/test_fods_file_analytics_ext.py"
+      ],
+      "test_count": 19,
+      "description": "FODS file analytics ext: fods_file_has_parse_errors, fods_file_odf_version, fods_file_has_warnings, fods_file_last_sheet_name, fods_file_sheet_row_counts, fods_file_max_sheet_row_count"
     }
   ],
-  "total_entries": 2727,
+  "total_entries": 2728,
   "changes": [
     {
       "file": "src/python/dif/models.py",

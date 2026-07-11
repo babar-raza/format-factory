@@ -68,3 +68,61 @@ def fods_file_total_rows(source: "str | Path") -> int:
     """
     wb = parse_fods_strict(source)
     return sum(len(s.get("rows", [])) for s in wb.get("sheets", []))
+
+
+def fods_file_has_parse_errors(source: "str | Path") -> bool:
+    """Return True if the FODS file produced any parse errors during loading.
+
+    Spec: ODF 1.3 table:table element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return bool(wb.get("parse_errors", []))
+
+
+def fods_file_odf_version(source: "str | Path") -> str:
+    """Return the ODF version attribute string from the FODS document.
+
+    Spec: ODF 1.3 office:document@office:version (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return str(wb.get("odf_version_attr", ""))
+
+
+def fods_file_has_warnings(source: "str | Path") -> bool:
+    """Return True if the FODS parser emitted any warnings.
+
+    Spec: ODF 1.3 table:table element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return bool(wb.get("warnings", []))
+
+
+def fods_file_last_sheet_name(source: "str | Path") -> str:
+    """Return the name of the last sheet. Empty string if no sheets.
+
+    Spec: ODF 1.3 table:table@table:name (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    return sheets[-1].get("name", "") if sheets else ""
+
+
+def fods_file_sheet_row_counts(source: "str | Path") -> list:
+    """Return list of row counts per sheet in workbook order.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    return [s.get("row_count", 0) for s in wb.get("sheets", [])]
+
+
+def fods_file_max_sheet_row_count(source: "str | Path") -> int:
+    """Return the maximum row count across all sheets. 0 if no sheets.
+
+    Spec: ODF 1.3 table:table-row element (FACT-FODS-001)
+    """
+    wb = parse_fods_strict(source)
+    sheets = wb.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(s.get("row_count", 0) for s in sheets)
