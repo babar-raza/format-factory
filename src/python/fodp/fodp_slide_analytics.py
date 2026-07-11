@@ -60,3 +60,58 @@ def fodp_all_slides_have_titles(source: "str | bytes | Path") -> bool:
     if not meta:
         return True
     return all(bool(s.get("title", "").strip()) for s in meta)
+
+
+def fodp_slide_count(source: "str | bytes | Path") -> int:
+    """Return the total number of slides in the FODP presentation.
+
+    Spec: ODF 1.3 draw:page element (FACT-FODP-001)
+    """
+    doc = load(source)
+    return doc.get("page_count", 0)
+
+
+def fodp_is_fodp(source: "str | bytes | Path") -> bool:
+    """Return True if the document is identified as a flat FODP file.
+
+    Spec: ODF 1.3 MIME type application/vnd.oasis.opendocument.presentation-flat-xml
+    (FACT-FODP-001)
+    """
+    doc = load(source)
+    return bool(doc.get("is_fodp", False))
+
+
+def fodp_first_slide_title(source: "str | bytes | Path") -> str:
+    """Return the title text of the first slide. Empty string if no slides.
+
+    Spec: ODF 1.3 draw:page title text (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return meta[0].get("title", "") if meta else ""
+
+
+def fodp_slide_shape_counts(source: "str | bytes | Path") -> list:
+    """Return list of shape counts, one entry per slide in presentation order.
+
+    Spec: ODF 1.3 draw:page child shapes (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return [s.get("shape_count", 0) for s in meta]
+
+
+def fodp_total_shape_count(source: "str | bytes | Path") -> int:
+    """Return total shape count across all slides.
+
+    Spec: ODF 1.3 draw:page child shapes (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return sum(s.get("shape_count", 0) for s in meta)
+
+
+def fodp_has_text(source: "str | bytes | Path") -> bool:
+    """Return True if any slide contains at least one text item.
+
+    Spec: ODF 1.3 text:p child of draw elements (FACT-FODP-001)
+    """
+    meta = get_page_metadata(source)
+    return any(s.get("text_content") for s in meta)

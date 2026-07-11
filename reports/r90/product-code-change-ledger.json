@@ -41814,9 +41814,27 @@
       ],
       "test_count": 21,
       "description": "gnumeric_sheet_analytics_ext added to gnumeric: sheet_count, is_gnumeric, cell_count, first_sheet_name, first_sheet_cell_count, all_values"
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-FODP-SLIDE-ANALYTICS-EXT-001",
+      "sprint": "R90",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_slide_analytics.py",
+          "sha256_before": "",
+          "sha256_after": "39ba01449d32731398a0c5d23ba7481030d79ed006a9c8628233d7b59b66ab4e"
+        }
+      ],
+      "tests_added": [
+        "tests/python/fodp/test_fodp_slide_analytics_ext.py"
+      ],
+      "test_count": 23,
+      "description": "fodp_slide_analytics_ext added to fodp: slide_count, is_fodp, first_slide_title, slide_shape_counts, total_shape_count, has_text"
     }
   ],
-  "total_entries": 2699,
+  "total_entries": 2700,
   "changes": [
     {
       "file": "src/python/dif/models.py",
