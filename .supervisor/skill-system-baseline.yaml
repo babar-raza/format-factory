@@ -1,57 +1,52 @@
 ---
 # Skill-First Execution — System Baseline Snapshot
-# Mission: SKILL-FIRST-002
-# Plan: twinkly-gliding-thimble
-# Written: TC-SFE2-000-A (re-executed convergence iteration 2, 2026-07-01)
-# Supersedes: SKILL-FIRST-001 baseline (cached-growing-snail, 2026-06-24, 48 skills)
+# Mission: SKILL-FIRST-003
+# Plan: wild-napping-cherny
+# Written: TC-SFE3-000 (2026-07-12)
+# Supersedes: SKILL-FIRST-002 baseline (twinkly-gliding-thimble, 2026-07-01)
 
-mission_id: SKILL-FIRST-002
-plan_id: twinkly-gliding-thimble
-generated: "2026-07-01"
-head: 83e3cc07e17a70d9b032fc39a4f7240642ed60a7
+mission_id: SKILL-FIRST-003
+plan_id: wild-napping-cherny
+generated: "2026-07-12"
+head: 8192b723ecfb436e4bdc7cfe99cacbb9ec508e0a
 branch: main
-active_plan: plans/.claude/twinkly-gliding-thimble.md
-prior_mission: SKILL-FIRST-001
-prior_mission_plan: cached-growing-snail
-prior_mission_date: "2026-06-24"
+active_plan: plans/.claude/wild-napping-cherny.md
+prior_mission: SKILL-FIRST-002
+prior_mission_plan: twinkly-gliding-thimble
+prior_mission_date: "2026-07-01"
 
 counts_at_baseline:
-  registered_skills: 103
-  active_skills: 100
+  registered_skills: 145
+  active_skills: 142
   deprecated_skills: 3
-  command_files: 103
+  command_files: 146
   capability_routes_active: 30
-  capability_routes_total: 30
-  python_supervisor_tools: 202  # audited in TC-SFE2-002; 198 KEPT, 4 QUARANTINE
+  python_supervisor_tools: 597
 
 known_open_gaps:
+  - id: SKILL-GAP-003
+    description: "capability_compiler work-type not registered as skill"
+    status: OPEN
+  - id: SKILL-GAP-009
+    description: "ci_transcript_verification missing from work-type-skill-map active_mappings"
+    status: OPEN
+  - id: SKILL-GAP-010
+    description: "supervision_audit missing from work-type-skill-map active_mappings"
+    status: OPEN
   - id: SKILL-GAP-012
     description: "runtime tool-layer interception not automatic (EP-002-GAP)"
     status: STRUCTURAL_GAP
     bounded_by: "commit-time hook catches all bypasses before they enter git history"
 
-known_closed_gaps:
-  - id: SKILL-GAP-008
-    description: "pre-commit hook installed and verified"
-    status: CLOSED
-    closed_by: TC-SFE2-000-HOOK
-    evidence: .supervisor/skill-gap-008-closure-proof.yaml
-    date: "2026-07-01"
-  - id: SKILL-GAP-011
-    description: "capability routing fixed (30/30 ACTIVE)"
-    status: CLOSED
-    closed_by: rollback-and-recovery route activation
-    evidence: .supervisor/capability-routing-results.yaml
-
-pilot_receipts:
-  location: reports/skill-first/pilots/
-  pilots: [A, B, C, D, E, F, G, H]
-  all_verdict: PASS
-  completed: "2026-06-24"
+ungoverned_mutations_since_prior:
+  - tools/review/generate_cli_stubs.py
+  - tools/supervisor/governance_validators_ext4.py
+  - src/python/*/cli.py (15 stubs from VWL sprint)
+  - _shared/_base_codec.py (deleted)
+  - _shared/_base_parser.py (deleted)
 
 notes: >
-  Refreshed for SKILL-FIRST-002 from 48 skills (SKILL-FIRST-001).
-  Current registry: 103 total (100 active, 3 deprecated).
-  SKILL-GAP-008 closed: .hooks/pre-commit-skill-guard installed, ci_skill_attribution_check.py
-  verified exit 0, fallback transcript detection PASS.
-  EP-002-GAP remains structural and out of repository scope (requires Claude Code SDK hooks).
+  Refreshed for SKILL-FIRST-003 from SKILL-FIRST-002 (103 skills).
+  Current registry: 145 total (142 active, 3 deprecated).
+  Since SKILL-FIRST-002: ~39 new skills added across governance/oracle/layer work.
+  5 ungoverned mutations identified for retroactive transcript creation in TC-SFE3-002.

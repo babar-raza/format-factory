@@ -1,115 +1,103 @@
----
-# Ad-Hoc Migration Register — Root-Level tools/*.py Scripts
-# Skill: audit-root-tools / TC-SFE2-003
-# Plan: twinkly-gliding-thimble / SKILL-FIRST-002
-# Date: 2026-07-01
-# Scope: tools/*.py (root level; NOT tools/supervisor/)
-# Note: tools/supervisor/ is handled separately in reports/skill-audit/root-tools-audit-2026-07-01.yaml
-#
-# Prior work: Pilot G (skill-first-89e03009, 2026-06-24) archived _test_xcf_tmp.py → .local/archive/
-
 adhoc_migration_register:
   mission_id: SKILL-FIRST-002
   plan_id: twinkly-gliding-thimble
-  generated: "2026-07-01"
-  scope: "tools/*.py (root level, not tools/supervisor/)"
-  prior_work: "Pilot G (skill-first-89e03009) archived _test_xcf_tmp.py → .local/archive/"
+  generated: '2026-07-01'
+  scope: tools/*.py (root level, not tools/supervisor/)
+  prior_work: Pilot G (skill-first-89e03009) archived _test_xcf_tmp.py → .local/archive/
   total_scripts: 11
-
   disposition_records:
-    # --- QUARANTINED: One-time gap closers (gaps already closed) ---
-    - path: tools/close_xcf_zst_gaps.py
-      disposition: RETAINED_AS_INERT_HISTORICAL
-      reason: >
-        One-time gap closer for XCF/ZST format gaps. Gaps confirmed closed per MEMORY.md
-        2026-06-25 sprint. Script has no ongoing purpose; inert in place. Retained for
-        traceability. Resolved 2026-07-02 (TC-FPSH-004, option A).
-      verified_gaps_closed: true
-      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+  - path: tools/close_xcf_zst_gaps.py
+    disposition: RETAINED_AS_INERT_HISTORICAL
+    reason: 'One-time gap closer for XCF/ZST format gaps. Gaps confirmed closed per
+      MEMORY.md 2026-06-25 sprint. Script has no ongoing purpose; inert in place.
+      Retained for traceability. Resolved 2026-07-02 (TC-FPSH-004, option A).
 
-    - path: tools/close_fods_fodt_ppm_gaps.py
-      disposition: RETAINED_AS_INERT_HISTORICAL
-      reason: >
-        One-time gap closer for FODS/FODT/PPM format gaps. Gaps confirmed closed per
-        MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
-        Resolved 2026-07-02 (TC-FPSH-004, option A).
-      verified_gaps_closed: true
-      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+      '
+    verified_gaps_closed: true
+    evidence: MEMORY.md 2026-06-25 entry; gap-ledger.json
+  - path: tools/close_fods_fodt_ppm_gaps.py
+    disposition: RETAINED_AS_INERT_HISTORICAL
+    reason: 'One-time gap closer for FODS/FODT/PPM format gaps. Gaps confirmed closed
+      per MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
+      Resolved 2026-07-02 (TC-FPSH-004, option A).
 
-    - path: tools/close_comm_gaps.py
-      disposition: RETAINED_AS_INERT_HISTORICAL
-      reason: >
-        One-time gap closer for communications format gaps. Gaps confirmed closed per
-        MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
-        Resolved 2026-07-02 (TC-FPSH-004, option A).
-      verified_gaps_closed: true
-      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+      '
+    verified_gaps_closed: true
+    evidence: MEMORY.md 2026-06-25 entry; gap-ledger.json
+  - path: tools/close_comm_gaps.py
+    disposition: RETAINED_AS_INERT_HISTORICAL
+    reason: 'One-time gap closer for communications format gaps. Gaps confirmed closed
+      per MEMORY.md 2026-06-25 sprint. Inert in place; retained for traceability.
+      Resolved 2026-07-02 (TC-FPSH-004, option A).
 
-    # --- RETAINED: Read-only audit diagnostics with ongoing utility ---
-    - path: tools/audit_qname_coverage.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Read-only audit of QName coverage across format implementations. Ongoing utility
-        for parity verification sprints. 99.4% coverage tracked (65/66 active entries as
-        of 2026-06-26). Called as part of spec-parity verification workflow.
+      '
+    verified_gaps_closed: true
+    evidence: MEMORY.md 2026-06-25 entry; gap-ledger.json
+  - path: tools/audit_qname_coverage.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Read-only audit of QName coverage across format implementations. Ongoing
+      utility for parity verification sprints. 99.4% coverage tracked (65/66 active
+      entries as of 2026-06-26). Called as part of spec-parity verification workflow.
 
-    - path: tools/audit_deepening_tests.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Read-only audit of deepening test coverage. Ongoing utility for product deepening
-        governance. Tracks test adequacy per format.
+      '
+  - path: tools/audit_deepening_tests.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Read-only audit of deepening test coverage. Ongoing utility for product
+      deepening governance. Tracks test adequacy per format.
 
-    - path: tools/audit_gap_ledger_sal_refs.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Read-only audit of gap ledger entries for SAL fact references. Ongoing utility
-        for SAL ingestion and gap closure verification.
+      '
+  - path: tools/audit_gap_ledger_sal_refs.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Read-only audit of gap ledger entries for SAL fact references. Ongoing
+      utility for SAL ingestion and gap closure verification.
 
-    - path: tools/audit_parity_compliance.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Read-only parity compliance audit. Ongoing utility for spec-parity governance
-        and CLAUDE.md "no fake progress" enforcement.
+      '
+  - path: tools/audit_parity_compliance.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Read-only parity compliance audit. Ongoing utility for spec-parity governance
+      and CLAUDE.md "no fake progress" enforcement.
 
-    - path: tools/audit_sal_to_qname.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Read-only SAL-to-QName mapping audit. Ongoing utility for SAL pipeline validation
-        and QName backfill tracking.
+      '
+  - path: tools/audit_sal_to_qname.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Read-only SAL-to-QName mapping audit. Ongoing utility for SAL pipeline
+      validation and QName backfill tracking.
 
-    - path: tools/health_check.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        System health check tool. Ongoing utility for pre-sprint health verification
-        and session recovery. Called by autonomous loop for environment validation.
+      '
+  - path: tools/health_check.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'System health check tool. Ongoing utility for pre-sprint health verification
+      and session recovery. Called by autonomous loop for environment validation.
 
-    - path: tools/test_runner.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Test runner utility. Ongoing utility for format test execution coordination.
-        Wraps pytest with format-factory-specific configuration.
+      '
+  - path: tools/test_runner.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Test runner utility. Ongoing utility for format test execution coordination.
+      Wraps pytest with format-factory-specific configuration.
 
-    - path: tools/build_cross_format_index.py
-      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
-      reason: >
-        Cross-format index builder. Ongoing utility for capability indexing and
-        format discovery. Produces registry/cross-format-index.yaml.
+      '
+  - path: tools/build_cross_format_index.py
+    disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+    reason: 'Cross-format index builder. Ongoing utility for capability indexing and
+      format discovery. Produces registry/cross-format-index.yaml.
 
+      '
   quarantine_action:
     deferred: false
-    resolution_date: "2026-07-02"
+    resolution_date: '2026-07-02'
     resolution_taskcard: TC-FPSH-004
     resolution_option: A
-    resolution_note: >
-      Original disposition QUARANTINED_PENDING_AUTHORITY resolved via option A
-      (RETAINED_AS_INERT_HISTORICAL). Scripts are inert one-time gap closers with
-      zero blast radius; retained in tools/ for traceability. Physical move deferred
-      in TC-SFE2-003 was resolved without move (no authority needed for option A).
-    scripts_retained_in_place:
-      - tools/close_xcf_zst_gaps.py
-      - tools/close_fods_fodt_ppm_gaps.py
-      - tools/close_comm_gaps.py
+    resolution_note: 'Original disposition QUARANTINED_PENDING_AUTHORITY resolved
+      via option A (RETAINED_AS_INERT_HISTORICAL). Scripts are inert one-time gap
+      closers with zero blast radius; retained in tools/ for traceability. Physical
+      move deferred in TC-SFE2-003 was resolved without move (no authority needed
+      for option A).
 
+      '
+    scripts_retained_in_place:
+    - tools/close_xcf_zst_gaps.py
+    - tools/close_fods_fodt_ppm_gaps.py
+    - tools/close_comm_gaps.py
   acceptance_criteria:
     all_scripts_dispositioned: true
     total: 11
@@ -118,3 +106,16 @@ adhoc_migration_register:
     quarantined_pending_authority: 0
     move_deferred: false
     evidence_confirmed: true
+entries:
+- path: tools/review/generate_cli_stubs.py
+  disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+  reasoning: Read-only diagnostic tool, never mutates product source. Added in VWL
+    sprint.
+  registered_by: TC-SFE3-002
+  date: '2026-07-12'
+- path: tools/supervisor/governance_validators_ext4.py
+  disposition: GOVERNED_INFRASTRUCTURE
+  reasoning: Governance validator module - owned by governance layer, added by TC-OCRD-C6
+    sprint.
+  registered_by: TC-SFE3-002
+  date: '2026-07-12'

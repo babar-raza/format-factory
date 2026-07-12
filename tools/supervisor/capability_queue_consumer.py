@@ -29,6 +29,15 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
+# TC-OCRD-B2: Optional control index integration — non-blocking if DB absent
+try:
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from control_index import get_connection, DEFAULT_DB_PATH
+    from control_index.gap_selection import get_exhausted_gaps, write_exhausted_gaps_json
+    _CONTROL_INDEX_AVAILABLE = True
+except ImportError:
+    _CONTROL_INDEX_AVAILABLE = False
+
 # TC-CAP-011: capability_compiler is in tools/capability_layer, not tools/supervisor
 sys.path.insert(0, str(REPO_ROOT / "tools" / "capability_layer"))
 from capability_compiler import compile_gap, compile_gap_to_feature_ir, compile_feature_ir_to_taskcard
@@ -48,14 +57,16 @@ _GAP_LEDGER_PATH = _GAP_LEDGER_ACTIVE if _GAP_LEDGER_ACTIVE.exists() else _GAP_L
 _ELIGIBLE_PRODUCT_TYPES = {"foss", "foss_reduced", "open_source", "both"}
 
 # Gaps already implemented (skip compilation)
-_SKIP_GAP_TYPES = {"implementation_verified", "already_closed"}
+_SKIP_GAP_TYPES = {"implementation_verified_no_tests", "already_closed"}
 
 # Statuses that exclude a gap from work selection (mirrors capability_feature_compiler.py).
 # TC-DEFERRED-FILTER-001: extended to cover all non-actionable statuses.
+# TC-BOOL-003 (2026-07-12): replaced "implementation_verified" with
+#   "implementation_verified_no_tests" — see capability_feature_compiler.py for rationale.
 _SKIP_STATUSES = {
     "closed", "CLOSED",
     "DEFERRED_BY_DESIGN", "DEFERRED",
-    "test_verified", "implementation_verified",
+    "test_verified", "implementation_verified_no_tests",
 }
 
 
@@ -155,6 +166,33 @@ def load_foss_gaps(max_gaps: int = 5) -> list[dict]:
     if not unassigned and eligible:
         _log("All eligible gaps previously assigned — resetting assignment tracking")
         unassigned = eligible
+
+    # TC-OCRD-B2: Filter exhausted gaps (non-blocking — DB may not be available)
+    if _CONTROL_INDEX_AVAILABLE and DEFAULT_DB_PATH.exists():
+        try:
+            _db_conn = get_connection(DEFAULT_DB_PATH)
+            _exhausted = get_exhausted_gaps(_db_conn, max_failed_attempts=3)
+            _db_conn.close()
+            if _exhausted:
+                _before = len(unassigned)
+                unassigned = [g for g in unassigned if g.get("gap_id", "") not in _exhausted]
+                _removed = _before - len(unassigned)
+                if _removed > 0:
+                    print(
+                        f"[gap-filter] Excluded {_removed} exhausted gap(s) "
+                        f"from {_before} candidates (max_failed_attempts=3).",
+                        file=sys.stderr,
+                    )
+            # Write exhausted gaps report for human inspection (best-effort)
+            try:
+                _report_path = REPO_ROOT / "reports" / "control-layer" / "exhausted-gaps.json"
+                _db_conn2 = get_connection(DEFAULT_DB_PATH)
+                write_exhausted_gaps_json(_db_conn2, _report_path, max_failed_attempts=3)
+                _db_conn2.close()
+            except Exception:
+                pass
+        except Exception as _e:
+            print(f"[gap-filter] DB unavailable, skipping exhaustion filter: {_e}", file=sys.stderr)
 
     selected = unassigned[:max_gaps]
     _log(f"Selected {len(selected)} FOSS gaps for compilation (priority-ordered, deterministic)")

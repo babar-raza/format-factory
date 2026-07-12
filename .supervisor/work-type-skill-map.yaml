@@ -1,12 +1,12 @@
-version: "1.0"
-generated_at: "2026-06-22"
-authority: ".claude/commands/check-skill-coverage.md"
-note: >
-  Canonical mapping of work types to registered skills. Consolidated from the
+version: '1.0'
+generated_at: '2026-06-22'
+authority: .claude/commands/check-skill-coverage.md
+note: 'Canonical mapping of work types to registered skills. Consolidated from the
   embedded routing table in check-skill-coverage.md. Updated whenever a new skill
   is registered or a gap is resolved. Machine-readable authority for Step 2a lookups
   in autonomous-loop.md.
 
+  '
 active_mappings:
   python_api: add-python-api
   dotnet_api: add-dotnet-api
@@ -16,8 +16,8 @@ active_mappings:
   writer_feature: add-same-format-writer-feature
   roundtrip_test: add-roundtrip-test
   installed_example: add-installed-package-example
-  analytics_function: add-spec-analytics-function  # TC-PGI-021 (2026-07-04): updated from deprecated add-analytics-function
-  extract_analytics_from_monolith: extract-analytics-from-monolith  # SKILL-GAP-005 CLOSED: command exists
+  analytics_function: add-spec-analytics-function
+  extract_analytics_from_monolith: extract-analytics-from-monolith
   spec_literal_migration: spec-parity-source-regeneration-and-migration
   python_reduced_parity: python-reduced-spec-parity-model
   qname_mapping: spec-literal-qname-to-code-mapping
@@ -29,30 +29,21 @@ active_mappings:
   detect_ad_hoc_execution: detect-ad-hoc-execution
   scan_residual_bypasses: scan-residual-bypasses
   sync_skill_command_registry: sync-skill-command-registry
-
+  ci_transcript_verification: check-release-boundary
+  supervision_audit: check-skill-coverage
 gap_mappings:
   capability_compiler:
     status: gap
     verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "spec-to-feature plan Lane 3, ROOT-08"
+    master_plan_clause: spec-to-feature plan Lane 3, ROOT-08
     gap_register_id: SKILL-GAP-003
   pre_sprint_governance_hook:
     status: gap
     verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "CLAUDE.md GOV_BLOCK exception"
+    master_plan_clause: CLAUDE.md GOV_BLOCK exception
     gap_register_id: SKILL-GAP-008
-  ci_transcript_verification:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "skill_invocation_transcript_required global_control"
-    gap_register_id: SKILL-GAP-009
-  supervision_audit:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "spec-to-feature plan Lane 14"
-    gap_register_id: SKILL-GAP-010
   rollback_and_recovery:
     status: gap
     verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "SKILL-FIRST-001 capability-routing-registry.yaml route: rollback_and_recovery"
+    master_plan_clause: 'SKILL-FIRST-001 capability-routing-registry.yaml route: rollback_and_recovery'
     gap_register_id: SKILL-GAP-011

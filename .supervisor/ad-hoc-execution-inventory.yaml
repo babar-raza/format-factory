@@ -1,4 +1,4 @@
-ad_hoc_count: 169
+ad_hoc_count: 219
 entries:
 - classification: AD_HOC
   file: action_queue.py
@@ -49,6 +49,9 @@ entries:
   file: autonomous_cycle_extensions.py
   path: tools/supervisor/autonomous_cycle_extensions.py
 - classification: AD_HOC
+  file: autonomous_cycle_utils.py
+  path: tools/supervisor/autonomous_cycle_utils.py
+- classification: AD_HOC
   file: autonomous_host_daemon.py
   path: tools/supervisor/autonomous_host_daemon.py
 - classification: AD_HOC
@@ -81,6 +84,9 @@ entries:
 - classification: AD_HOC
   file: backend_selector.py
   path: tools/supervisor/backend_selector.py
+- classification: AD_HOC
+  file: before_after_evidence.py
+  path: tools/supervisor/before_after_evidence.py
 - classification: AD_HOC
   file: bounded_repair_engine.py
   path: tools/supervisor/bounded_repair_engine.py
@@ -123,6 +129,9 @@ entries:
 - classification: AD_HOC
   file: cci_migration.py
   path: tools/supervisor/cci_migration.py
+- classification: AD_HOC
+  file: check_component_register.py
+  path: tools/supervisor/check_component_register.py
 - classification: GOVERNED
   file: check_continuation.py
   path: tools/supervisor/check_continuation.py
@@ -130,17 +139,26 @@ entries:
   file: check_cross_stream_consumption.py
   path: tools/supervisor/check_cross_stream_consumption.py
 - classification: AD_HOC
+  file: check_extension_budget.py
+  path: tools/supervisor/check_extension_budget.py
+- classification: AD_HOC
   file: check_mcp_status.py
   path: tools/supervisor/check_mcp_status.py
 - classification: AD_HOC
   file: check_system_healing_gate.py
   path: tools/supervisor/check_system_healing_gate.py
 - classification: AD_HOC
+  file: check_tombstone_records.py
+  path: tools/supervisor/check_tombstone_records.py
+- classification: AD_HOC
   file: check_track_health.py
   path: tools/supervisor/check_track_health.py
 - classification: AD_HOC
   file: choose_skill_or_handoff.py
   path: tools/supervisor/choose_skill_or_handoff.py
+- classification: AD_HOC
+  file: closure_challenger.py
+  path: tools/supervisor/closure_challenger.py
 - classification: AD_HOC
   file: compare_goal_to_evidence.py
   path: tools/supervisor/compare_goal_to_evidence.py
@@ -162,6 +180,12 @@ entries:
 - classification: AD_HOC
   file: continuation_state.py
   path: tools/supervisor/continuation_state.py
+- classification: AD_HOC
+  file: delegate_gap.py
+  path: tools/supervisor/delegate_gap.py
+- classification: AD_HOC
+  file: delegation_gate.py
+  path: tools/supervisor/delegation_gate.py
 - classification: GOVERNED
   file: detect_ad_hoc_execution.py
   path: tools/supervisor/detect_ad_hoc_execution.py
@@ -171,6 +195,21 @@ entries:
 - classification: AD_HOC
   file: discover_latest_evidence.py
   path: tools/supervisor/discover_latest_evidence.py
+- classification: GOVERNED
+  file: dom_baseline_scanner.py
+  path: tools/supervisor/dom_baseline_scanner.py
+- classification: GOVERNED
+  file: dom_contract_checker.py
+  path: tools/supervisor/dom_contract_checker.py
+- classification: AD_HOC
+  file: dom_maturity_gap_generator.py
+  path: tools/supervisor/dom_maturity_gap_generator.py
+- classification: AD_HOC
+  file: dom_maturity_promoter.py
+  path: tools/supervisor/dom_maturity_promoter.py
+- classification: AD_HOC
+  file: drivers_promotion.py
+  path: tools/supervisor/drivers_promotion.py
 - classification: AD_HOC
   file: embedding_retrieval.py
   path: tools/supervisor/embedding_retrieval.py
@@ -210,6 +249,9 @@ entries:
 - classification: AD_HOC
   file: gap_closure_engine.py
   path: tools/supervisor/gap_closure_engine.py
+- classification: AD_HOC
+  file: gap_ledger_hygiene.py
+  path: tools/supervisor/gap_ledger_hygiene.py
 - classification: GOVERNED
   file: gap_ledger_to_work_items.py
   path: tools/supervisor/gap_ledger_to_work_items.py
@@ -217,11 +259,17 @@ entries:
   file: gap_verification_engine.py
   path: tools/supervisor/gap_verification_engine.py
 - classification: AD_HOC
+  file: gate_executor.py
+  path: tools/supervisor/gate_executor.py
+- classification: AD_HOC
   file: gen_readiness_registry.py
   path: tools/supervisor/gen_readiness_registry.py
 - classification: AD_HOC
   file: gen_skill_transcripts.py
   path: tools/supervisor/gen_skill_transcripts.py
+- classification: AD_HOC
+  file: generate_closure_artifacts.py
+  path: tools/supervisor/generate_closure_artifacts.py
 - classification: AD_HOC
   file: generate_execution_handoff.py
   path: tools/supervisor/generate_execution_handoff.py
@@ -258,15 +306,63 @@ entries:
 - classification: GOVERNED
   file: governance_validators.py
   path: tools/supervisor/governance_validators.py
+- classification: GOVERNED
+  file: governance_validators_consumer_proof.py
+  path: tools/supervisor/governance_validators_consumer_proof.py
+- classification: AD_HOC
+  file: governance_validators_contract.py
+  path: tools/supervisor/governance_validators_contract.py
 - classification: AD_HOC
   file: governance_validators_dotnet.py
   path: tools/supervisor/governance_validators_dotnet.py
+- classification: AD_HOC
+  file: governance_validators_dotnet_semantic.py
+  path: tools/supervisor/governance_validators_dotnet_semantic.py
 - classification: GOVERNED
   file: governance_validators_ext.py
   path: tools/supervisor/governance_validators_ext.py
 - classification: AD_HOC
+  file: governance_validators_ext2.py
+  path: tools/supervisor/governance_validators_ext2.py
+- classification: AD_HOC
+  file: governance_validators_ext3.py
+  path: tools/supervisor/governance_validators_ext3.py
+- classification: AD_HOC
+  file: governance_validators_ext4.py
+  path: tools/supervisor/governance_validators_ext4.py
+- classification: AD_HOC
+  file: governance_validators_found_issue.py
+  path: tools/supervisor/governance_validators_found_issue.py
+- classification: AD_HOC
+  file: governance_validators_gate_auth.py
+  path: tools/supervisor/governance_validators_gate_auth.py
+- classification: AD_HOC
+  file: governance_validators_layers.py
+  path: tools/supervisor/governance_validators_layers.py
+- classification: AD_HOC
   file: governance_validators_ledger.py
   path: tools/supervisor/governance_validators_ledger.py
+- classification: AD_HOC
+  file: governance_validators_oracle.py
+  path: tools/supervisor/governance_validators_oracle.py
+- classification: AD_HOC
+  file: governance_validators_output_quality.py
+  path: tools/supervisor/governance_validators_output_quality.py
+- classification: AD_HOC
+  file: governance_validators_path.py
+  path: tools/supervisor/governance_validators_path.py
+- classification: AD_HOC
+  file: governance_validators_release.py
+  path: tools/supervisor/governance_validators_release.py
+- classification: AD_HOC
+  file: governance_validators_root_struct.py
+  path: tools/supervisor/governance_validators_root_struct.py
+- classification: AD_HOC
+  file: governance_validators_sal.py
+  path: tools/supervisor/governance_validators_sal.py
+- classification: AD_HOC
+  file: governance_validators_sgov.py
+  path: tools/supervisor/governance_validators_sgov.py
 - classification: AD_HOC
   file: governance_validators_signal.py
   path: tools/supervisor/governance_validators_signal.py
@@ -283,6 +379,12 @@ entries:
   file: grade_to_quality_adapter.py
   path: tools/supervisor/grade_to_quality_adapter.py
 - classification: AD_HOC
+  file: grader_reliability.py
+  path: tools/supervisor/grader_reliability.py
+- classification: AD_HOC
+  file: grading_retrieval_bridge.py
+  path: tools/supervisor/grading_retrieval_bridge.py
+- classification: AD_HOC
   file: guard_001_checker.py
   path: tools/supervisor/guard_001_checker.py
 - classification: AD_HOC
@@ -295,11 +397,17 @@ entries:
   file: knowledge_freshness_validator.py
   path: tools/supervisor/knowledge_freshness_validator.py
 - classification: AD_HOC
+  file: lane_dependency_checker.py
+  path: tools/supervisor/lane_dependency_checker.py
+- classification: AD_HOC
   file: lane_enforcement_validator.py
   path: tools/supervisor/lane_enforcement_validator.py
 - classification: AD_HOC
   file: lane_execution_ledger.py
   path: tools/supervisor/lane_execution_ledger.py
+- classification: GOVERNED
+  file: lane_selector.py
+  path: tools/supervisor/lane_selector.py
 - classification: AD_HOC
   file: learning_consumer.py
   path: tools/supervisor/learning_consumer.py
@@ -331,6 +439,9 @@ entries:
   file: mainstream_acceleration_packet.py
   path: tools/supervisor/mainstream_acceleration_packet.py
 - classification: AD_HOC
+  file: maintenance_obligation_register.py
+  path: tools/supervisor/maintenance_obligation_register.py
+- classification: AD_HOC
   file: materialize_and_review.py
   path: tools/supervisor/materialize_and_review.py
 - classification: AD_HOC
@@ -342,6 +453,12 @@ entries:
 - classification: AD_HOC
   file: mcp_bridge.py
   path: tools/supervisor/mcp_bridge.py
+- classification: AD_HOC
+  file: migrate_command_sections.py
+  path: tools/supervisor/migrate_command_sections.py
+- classification: AD_HOC
+  file: neighboring_risk_reviewer.py
+  path: tools/supervisor/neighboring_risk_reviewer.py
 - classification: AD_HOC
   file: next_action_generator.py
   path: tools/supervisor/next_action_generator.py
@@ -364,14 +481,32 @@ entries:
   file: patch_ledger_csproj.py
   path: tools/supervisor/patch_ledger_csproj.py
 - classification: AD_HOC
+  file: patch_registry_missing_fields.py
+  path: tools/supervisor/patch_registry_missing_fields.py
+- classification: AD_HOC
+  file: path_resolver.py
+  path: tools/supervisor/path_resolver.py
+- classification: AD_HOC
   file: plan_identity.py
   path: tools/supervisor/plan_identity.py
+- classification: AD_HOC
+  file: plan_importer.py
+  path: tools/supervisor/plan_importer.py
+- classification: AD_HOC
+  file: plan_lock_gc.py
+  path: tools/supervisor/plan_lock_gc.py
+- classification: AD_HOC
+  file: plan_placement.py
+  path: tools/supervisor/plan_placement.py
 - classification: AD_HOC
   file: post_sprint_loop_controller.py
   path: tools/supervisor/post_sprint_loop_controller.py
 - classification: AD_HOC
   file: preflight_skill_entry.py
   path: tools/supervisor/preflight_skill_entry.py
+- classification: AD_HOC
+  file: prior_closure_auditor.py
+  path: tools/supervisor/prior_closure_auditor.py
 - classification: AD_HOC
   file: product_action_guard.py
   path: tools/supervisor/product_action_guard.py
@@ -394,6 +529,12 @@ entries:
   file: project_product_ledger_to_proof_graph.py
   path: tools/supervisor/project_product_ledger_to_proof_graph.py
 - classification: AD_HOC
+  file: promotion_manager.py
+  path: tools/supervisor/promotion_manager.py
+- classification: AD_HOC
+  file: proof_adequacy_contract.py
+  path: tools/supervisor/proof_adequacy_contract.py
+- classification: AD_HOC
   file: proof_backed_poc_gate.py
   path: tools/supervisor/proof_backed_poc_gate.py
 - classification: AD_HOC
@@ -402,6 +543,9 @@ entries:
 - classification: AD_HOC
   file: quality_scorer.py
   path: tools/supervisor/quality_scorer.py
+- classification: AD_HOC
+  file: readme_lane_injector.py
+  path: tools/supervisor/readme_lane_injector.py
 - classification: AD_HOC
   file: reconcile_exports_vs_capabilities.py
   path: tools/supervisor/reconcile_exports_vs_capabilities.py
@@ -420,6 +564,12 @@ entries:
 - classification: AD_HOC
   file: rework_orchestrator.py
   path: tools/supervisor/rework_orchestrator.py
+- classification: AD_HOC
+  file: risk_taxonomy.py
+  path: tools/supervisor/risk_taxonomy.py
+- classification: AD_HOC
+  file: run_regression_baseline.py
+  path: tools/supervisor/run_regression_baseline.py
 - classification: GOVERNED
   file: run_skill_idempotency.py
   path: tools/supervisor/run_skill_idempotency.py
@@ -429,6 +579,9 @@ entries:
 - classification: GOVERNED
   file: scan_residual_bypasses.py
   path: tools/supervisor/scan_residual_bypasses.py
+- classification: AD_HOC
+  file: scope_guard.py
+  path: tools/supervisor/scope_guard.py
 - classification: AD_HOC
   file: select_poc_gaps.py
   path: tools/supervisor/select_poc_gaps.py
@@ -472,6 +625,9 @@ entries:
   file: sync_skill_command_registry.py
   path: tools/supervisor/sync_skill_command_registry.py
 - classification: AD_HOC
+  file: terminal_closure_validators.py
+  path: tools/supervisor/terminal_closure_validators.py
+- classification: AD_HOC
   file: test_drivers.py
   path: tools/supervisor/test_drivers.py
 - classification: AD_HOC
@@ -504,6 +660,12 @@ entries:
 - classification: AD_HOC
   file: validate_execution_plan.py
   path: tools/supervisor/validate_execution_plan.py
+- classification: AD_HOC
+  file: validate_governance_binding.py
+  path: tools/supervisor/validate_governance_binding.py
+- classification: AD_HOC
+  file: validate_governance_schemas.py
+  path: tools/supervisor/validate_governance_schemas.py
 - classification: AD_HOC
   file: validate_ledger_entry.py
   path: tools/supervisor/validate_ledger_entry.py
@@ -556,8 +718,16 @@ entries:
   file: write_track_handoff.py
   path: tools/supervisor/write_track_handoff.py
 generated_by: detect_ad_hoc_execution.py
-governed_count: 16
+governed_count: 20
 mission_id: SKILL-FIRST-001
 note: GOVERNED = referenced in skill-registry.yaml; AD_HOC = not referenced
 status: complete
-total_files: 185
+total_files: 239
+last_audited: '2026-07-12T18:34:08.972819+00:00'
+audit_mission: SKILL-FIRST-003
+ungoverned_since_prior_mission:
+- tools/review/generate_cli_stubs.py
+- tools/supervisor/governance_validators_ext4.py
+- src/python/*/cli.py (15 stubs from VWL sprint)
+- _shared/_base_codec.py (deleted)
+- _shared/_base_parser.py (deleted)

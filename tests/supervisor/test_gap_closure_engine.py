@@ -15,6 +15,9 @@ from gap_closure_engine import (
     close_gaps_from_grades,
     _match_grades_to_gaps,
     _evaluate_closure_criteria,
+    close_implementation_verified_gaps,
+    _derive_function_name,
+    _scan_test_files_for_function,
 )
 
 
@@ -360,3 +363,127 @@ class TestMatchGradesToGaps:
         }])
         matches = _match_grades_to_gaps(review, decl)
         assert len(matches) == 0
+
+
+# ── TC-BOOL-001 tests: close_implementation_verified_gaps ─────────────────────
+
+def _make_impl_gap(gap_id: str, cap_id: str, current_state: str = "implementation_verified") -> dict:
+    return {
+        "gap_id": gap_id,
+        "status": "open",
+        "current_state": current_state,
+        "related_capability_id": cap_id,
+        "format": "DIF",
+        "priority": "P1",
+    }
+
+
+class TestCloseImplVerifiedHappyPath:
+    """TC-BOOL-001 test 1: happy path — gap closed when test file exists."""
+
+    def test_gap_closed(self, tmp_path):
+        gl_path = _write_ledger(tmp_path, [
+            _make_impl_gap("GAP-DIF-FOSS-DIF_BOOLEAN_-001", "DIF-FOSS-DIF_BOOLEAN_CELL_COUNT-SRC-001"),
+        ])
+        test_dir = tmp_path / "tests"
+        test_dir.mkdir()
+        (test_dir / "test_dif.py").write_text("def test_x():\n    dif_boolean_cell_count(data)\n")
+
+        result = close_implementation_verified_gaps(gl_path, test_dir, sprint_id="test-sprint")
+
+        assert result["closed"] == 1
+        assert result["no_tests_found"] == 0
+        ledger = json.loads(gl_path.read_text())
+        gap = ledger["gaps"][0]
+        assert gap["status"] == "closed"
+        assert gap["closure_method"] == "implementation_verified_test_scan"
+
+
+class TestCloseImplVerifiedNoTestFound:
+    """TC-BOOL-001 test 2: no test file → promoted to implementation_verified_no_tests."""
+
+    def test_promoted(self, tmp_path):
+        gl_path = _write_ledger(tmp_path, [
+            _make_impl_gap("GAP-DIF-001", "DIF-FOSS-DIF_SPECIAL_-001"),
+        ])
+        test_dir = tmp_path / "tests"
+        test_dir.mkdir()  # Empty test dir — no matching files
+
+        result = close_implementation_verified_gaps(gl_path, test_dir, sprint_id="test-sprint")
+
+        assert result["closed"] == 0
+        assert result["no_tests_found"] == 1
+        ledger = json.loads(gl_path.read_text())
+        gap = ledger["gaps"][0]
+        assert gap["status"] == "open"
+        assert gap["current_state"] == "implementation_verified_no_tests"
+
+
+class TestCloseImplVerifiedAlreadyClosed:
+    """TC-BOOL-001 test 3: already-closed gap is not re-processed."""
+
+    def test_skipped(self, tmp_path):
+        gap = _make_impl_gap("GAP-DIF-CLOSED", "DIF-FOSS-DIF_BOOLEAN_-001")
+        gap["status"] = "closed"
+        gl_path = _write_ledger(tmp_path, [gap])
+        test_dir = tmp_path / "tests"
+        test_dir.mkdir()
+        (test_dir / "test_dif.py").write_text("dif_boolean_cell_count(x)\n")
+
+        result = close_implementation_verified_gaps(gl_path, test_dir, sprint_id="test-sprint")
+
+        assert result["closed"] == 0  # Already closed, not re-processed
+
+
+class TestCloseImplVerifiedClosureMethod:
+    """TC-BOOL-001 test 4: closure_method field set correctly."""
+
+    def test_closure_method(self, tmp_path):
+        gl_path = _write_ledger(tmp_path, [
+            _make_impl_gap("GAP-DIF-002", "DIF-FOSS-DIF_DECLARED-001"),
+        ])
+        test_dir = tmp_path / "tests"
+        test_dir.mkdir()
+        (test_dir / "test_dif2.py").write_text("result = dif_declared(doc)\n")
+
+        close_implementation_verified_gaps(gl_path, test_dir, sprint_id="test-sprint")
+
+        ledger = json.loads(gl_path.read_text())
+        assert ledger["gaps"][0]["closure_method"] == "implementation_verified_test_scan"
+
+
+class TestCloseImplVerifiedCommentOnlyNoClose:
+    """TC-BOOL-001 test 5: comment-only reference does not close gap."""
+
+    def test_comment_not_counted(self, tmp_path):
+        gl_path = _write_ledger(tmp_path, [
+            _make_impl_gap("GAP-DIF-003", "DIF-FOSS-DIF_COMMENT_-001"),
+        ])
+        test_dir = tmp_path / "tests"
+        test_dir.mkdir()
+        # Only a comment reference — should NOT close
+        (test_dir / "test_comment.py").write_text("# dif_comment_ is tested elsewhere\n")
+
+        result = close_implementation_verified_gaps(gl_path, test_dir, sprint_id="test-sprint")
+
+        assert result["closed"] == 0
+        assert result["no_tests_found"] == 1
+
+
+class TestSkipStatusesRegression:
+    """TC-BOOL-001 test 6: assert implementation_verified not in _SKIP_STATUSES after fix."""
+
+    def test_skip_statuses_correct(self):
+        import importlib
+        # We test the compiler
+        import sys
+        repo = Path(__file__).resolve().parents[2]
+        if str(repo / "tools" / "supervisor") not in sys.path:
+            sys.path.insert(0, str(repo / "tools" / "supervisor"))
+        import capability_feature_compiler as cfc
+        assert "implementation_verified" not in cfc._SKIP_STATUSES, (
+            "implementation_verified must NOT be in _SKIP_STATUSES after TC-BOOL-003 fix"
+        )
+        assert "implementation_verified_no_tests" in cfc._SKIP_STATUSES, (
+            "implementation_verified_no_tests must be in _SKIP_STATUSES after TC-BOOL-003 fix"
+        )

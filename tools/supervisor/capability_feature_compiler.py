@@ -157,17 +157,22 @@ _MAX_PRODUCT_LANE = 13
 
 # Statuses that exclude a gap from work selection.
 # CLOSED/closed: already implemented; DEFERRED_BY_DESIGN/DEFERRED: intentionally deferred;
-# test_verified/implementation_verified: state beyond gap-level (capability is done).
+# test_verified: state beyond gap-level (capability is done).
+# implementation_verified_no_tests: promoted by close_implementation_verified_gaps() —
+#   re-enter work queue for test writing, NOT selected as product work item.
 # TC-DEFERRED-FILTER-001 (2026-06-25): extended to handle all non-actionable statuses.
+# TC-BOOL-003 (2026-07-12): replaced "implementation_verified" with
+#   "implementation_verified_no_tests" so that gaps with confirmed test coverage are
+#   closed by the scanner, not stuck in limbo. Gaps without tests re-enter queue.
 _SKIP_STATUSES = {
     "closed", "CLOSED",
     "DEFERRED_BY_DESIGN", "DEFERRED",
-    "test_verified", "implementation_verified",
+    "test_verified", "implementation_verified_no_tests",
     "SAL_UNGROUNDED",  # RC-4 fix: no SAL fact authority; excluded until spec facts exist
 }
 
 # Statuses that mean "not yet an open gap"
-_FAIL_STATUSES = {"implementation_verified"}
+_FAIL_STATUSES = {"implementation_verified_no_tests"}
 
 
 def _base_priority(gap: dict) -> int:
@@ -281,10 +286,43 @@ def _human_required(gap: dict) -> bool:
     return any("TRUE_EXTERNAL_GATE" in str(b) for b in blockers)
 
 
+def _is_unknown_capability(gap: dict) -> bool:
+    """RC-001 quality gate: detect unresolved spec gaps with no real capability name.
+
+    Returns True if capability_name is exactly "unknown" (case-insensitive), None, or "".
+    Substring check is intentionally avoided to avoid false positives on legitimate names
+    like "parse_unknown_tags" or similar. Exact equality only (shimmering-rolling-meerkat).
+    """
+    cap_name = gap.get("capability_name") or ""
+    return cap_name.strip().lower() == "unknown" or cap_name.strip() == ""
+
+
 def _gap_to_work_item(gap: dict, score: int) -> dict:
     gap_id = gap.get("gap_id", "")
     blockers = gap.get("blockers") or []
     verification = gap.get("suggested_verification", "")
+
+    # RC-001 (Fix-RC-001, shimmering-rolling-meerkat): quarantine items with no spec authority.
+    # Items where capability_name == "unknown" or "" cannot satisfy RULE-LIB-002
+    # (every symbol must trace to a QName). Route to quarantine lane, mark non-executable.
+    if _is_unknown_capability(gap):
+        return {
+            "item_id": f"WI-{gap_id}",
+            "title": f"[QUARANTINE] {gap.get('capability_name', 'unknown')} for {gap.get('format', 'Unknown')}",
+            "lane": "quarantine-needs-sal",
+            "quarantine_reason": "spec_fact_not_established",
+            "blocked_by": "TC-SAL-001",
+            "agent_can_execute": False,
+            "execution_status": "blocked-missing-spec-authority",
+            "priority": score,
+            "source": "gap_ledger",
+            "gap_id": gap_id,
+            "gap_ref": gap_id,
+            "gap_ledger_ref": gap_id,
+            "human_required": False,
+            "external_gate": False,
+        }
+
     return {
         "item_id": f"WI-{gap_id}",
         "title": f"{gap.get('capability_name', 'Unknown')} for {gap.get('format', 'Unknown')}",

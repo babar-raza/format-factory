@@ -1,62 +1,9 @@
----
-pilot_id: G
-skill_ids:
-  - detect-ad-hoc-execution
-  - scan-residual-bypasses
-run_id: skill-first-89e03009
-started_at: "2026-06-24T00:00:00Z"
-completed_at: "2026-06-24T00:00:00Z"
-verdict: PASS
-final_disposition: ARCHIVED_DISPOSABLE
-
-target_file: _test_xcf_tmp.py
-
-steps_completed:
-  - step: 1
-    action: read_file_content
-    result: PASS
-    detail: |
-      _test_xcf_tmp.py (6 lines):
-        import sys
-        sys.path.insert(0, "src/python")
-        from xcf.xcf_parser import xcf_layer_name_list
-        print("Doc:", xcf_layer_name_list.__doc__[:50])
-      Content: one-off diagnostic to print xcf_layer_name_list docstring.
-      No test assertions, no reusable logic, no promotable functions.
-  - step: 2
-    action: classify_content
-    result: PASS
-    detail: >
-      Classification: DISPOSABLE_FIXTURE.
-      Rationale: (a) No test assertions — just a print statement. (b) No new
-      functions or logic beyond importing an existing function. (c) Designed for
-      a one-time investigation into xcf_layer_name_list docstring. (d) Not
-      wired into any test suite (untracked in git). (e) Does not contain
-      promotable analytics logic — xcf_layer_name_list already exists in
-      xcf_parser.py. No overlap with any registered skill.
-  - step: 3
-    action: archive
-    result: PASS
-    detail: >
-      Moved to .local/archive/_test_xcf_tmp.py (recoverable).
-      Removed from repo root (no longer in working tree).
-  - step: 4
-    action: record_in_ad_hoc_inventory
-    result: PASS
-    detail: >
-      Disposition recorded in pilot receipt.
-      scan-residual-bypasses will not flag _test_xcf_tmp.py after archival
-      since it no longer exists in the working tree.
-  - step: 5
-    action: write_receipt
-    result: PASS
-    detail: "final_disposition: ARCHIVED_DISPOSABLE"
-
-notes: >
-  The file was a one-off debugging snippet (6 lines) used to inspect the
-  xcf_layer_name_list docstring. It contained no promotable logic, no test
-  assertions, and no reusable infrastructure. Moving to .local/archive/ is the
-  correct disposition. No migration taskcard required.
-
-evidence_paths:
-  - .local/archive/_test_xcf_tmp.py
+pilot: G
+mission_id: SKILL-FIRST-003
+run_id: sfe3-004
+scenario: 'Ad-hoc migration: generate_cli_stubs.py disposition applied'
+tool: tools/review/generate_cli_stubs.py
+disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+migration_register_entry: true
+verdict: MIGRATION_VERIFIED
+date: '2026-07-12'

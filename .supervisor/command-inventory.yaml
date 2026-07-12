@@ -1,690 +1,442 @@
+schema_version: '1.0'
+mission_id: SKILL-FIRST-003
+command_count: 146
 commands:
-- command_id: score-format
-  created: '2026-06-18'
-  description: Apply scoring model to a format candidate; produce a scoring sheet
-  file: .claude/commands/score-format.md
-  phase: 1
-  skill_id: score-format
-  skill_registry_ref: true
+- command: /_readme
+  file: .claude\commands\_readme.md
   status: active
-- command_id: create-acquisition-pack
-  created: '2026-06-18'
-  description: Initialize a format acquisition pack from the template
-  file: .claude/commands/create-acquisition-pack.md
-  phase: 1
-  skill_id: create-acquisition-pack
-  skill_registry_ref: true
+- command: /add-analytics-function
+  file: .claude\commands\add-analytics-function.md
   status: active
-- command_id: check-gate
-  created: '2026-06-18'
-  description: Verify whether a format has met the criteria for a given gate
-  file: .claude/commands/check-gate.md
-  phase: 1
-  skill_id: check-gate
-  skill_registry_ref: true
+- command: /add-dogfood-export
+  file: .claude\commands\add-dogfood-export.md
   status: active
-- command_id: create-taskcard
-  created: '2026-06-18'
-  description: Create a new taskcard from the template with all required fields
-  file: .claude/commands/create-taskcard.md
-  phase: 1
-  skill_id: create-taskcard
-  skill_registry_ref: true
+- command: /add-dotnet-api
+  file: .claude\commands\add-dotnet-api.md
   status: active
-- command_id: reproduce-master-plan
-  created: '2026-06-18'
-  description: Generate a current-state summary from repo artifacts (read-only)
-  file: .claude/commands/reproduce-master-plan.md
-  phase: 1
-  skill_id: reproduce-master-plan
-  skill_registry_ref: true
+- command: /add-dotnet-object-model-feature
+  file: .claude\commands\add-dotnet-object-model-feature.md
   status: active
-- command_id: build-evidence-bundle
-  created: '2026-06-18'
-  description: Build and validate an evidence bundle for the current phase/sprint
-  file: .claude/commands/build-evidence-bundle.md
-  phase: 1
-  skill_id: build-evidence-bundle
-  skill_registry_ref: true
+- command: /add-installed-package-example
+  file: .claude\commands\add-installed-package-example.md
   status: active
-- command_id: check-release-boundary
-  created: '2026-06-18'
-  description: Verify no commercial artifacts are in OSS release scope (Phase 3+)
-  file: .claude/commands/check-release-boundary.md
-  phase: 3
-  skill_id: check-release-boundary
-  skill_registry_ref: true
+- command: /add-python-api
+  file: .claude\commands\add-python-api.md
   status: active
-- command_id: check-skill-coverage
-  created: '2026-06-21'
-  description: Pre-gate check for skill coverage before product source changes
-  file: .claude/commands/check-skill-coverage.md
-  phase: all
-  skill_id: check-skill-coverage
-  skill_registry_ref: true
+- command: /add-python-object-model-feature
+  file: .claude\commands\add-python-object-model-feature.md
   status: active
-- command_id: autonomous-loop
-  created: '2026-06-21'
-  description: Execute the autonomous sprint loop with skill coverage pre-check
-  file: .claude/commands/autonomous-loop.md
-  phase: all
-  skill_id: autonomous-loop
-  skill_registry_ref: true
+- command: /add-roundtrip-test
+  file: .claude\commands\add-roundtrip-test.md
   status: active
-- command_id: sync-memory
-  created: '2026-06-21'
-  description: Sync memory files against master-plan.md; detect contradictions
-  file: .claude/commands/sync-memory.md
-  phase: all
-  skill_id: sync-memory
-  skill_registry_ref: true
+- command: /add-same-format-writer-feature
+  file: .claude\commands\add-same-format-writer-feature.md
   status: active
-- command_id: sal-pipeline-heal
-  created: '2026-06-21'
-  description: Execute one governed sprint of SAL pipeline healing (ROOT-01..ROOT-08)
-  file: .claude/commands/sal-pipeline-heal.md
-  phase: all
-  skill_id: sal-pipeline-heal
-  skill_registry_ref: true
+- command: /add-spec-analytics-function
+  file: .claude\commands\add-spec-analytics-function.md
   status: active
-- command_id: add-dotnet-api
-  created: '2026-06-03'
-  description: Add one bounded .NET commercial product API with spec-literal requirements
-  enforcement_type: soft
-  file: .claude/commands/add-dotnet-api.md
-  gate_criteria:
-  - C3
-  - C4
-  master_plan_lanes:
-  - 7
-  - 9
-  phase: 3+
-  skill_id: add-dotnet-api
-  skill_registry_ref: true
+- command: /allocate-sprint-number
+  file: .claude\commands\allocate-sprint-number.md
   status: active
-  writes_product_source: true
-- command_id: add-python-api
-  created: '2026-06-03'
-  description: Add one bounded Python FOSS product API with spec-literal requirements
-  enforcement_type: soft
-  file: .claude/commands/add-python-api.md
-  gate_criteria:
-  - P1
-  - P3
-  master_plan_lanes:
-  - 8
-  - 11
-  phase: 3+
-  skill_id: add-python-api
-  skill_registry_ref: true
+- command: /append-layer-verification-log
+  file: .claude\commands\append-layer-verification-log.md
   status: active
-  writes_product_source: true
-- command_id: add-dotnet-object-model-feature
-  created: '2026-06-03'
-  description: Add one object model feature to the .NET commercial product library
-  enforcement_type: soft
-  file: .claude/commands/add-dotnet-object-model-feature.md
-  gate_criteria:
-  - C4
-  master_plan_lanes:
-  - 7
-  - 9
-  phase: 3+
-  skill_id: add-dotnet-object-model-feature
-  skill_registry_ref: true
+- command: /append-layer-work-log
+  file: .claude\commands\append-layer-work-log.md
   status: active
-  writes_product_source: true
-- command_id: add-python-object-model-feature
-  created: '2026-06-03'
-  description: Add one object model feature to the Python FOSS product library
-  enforcement_type: soft
-  file: .claude/commands/add-python-object-model-feature.md
-  gate_criteria:
-  - P1
-  master_plan_lanes:
-  - 8
-  - 11
-  phase: 3+
-  skill_id: add-python-object-model-feature
-  skill_registry_ref: true
+- command: /audit-enhanced-control-layer
+  file: .claude\commands\audit-enhanced-control-layer.md
   status: active
-  writes_product_source: true
-- command_id: add-roundtrip-test
-  created: '2026-06-02'
-  description: Add a roundtrip parse-write-parse test with fixture and XML verification
-  enforcement_type: soft
-  file: .claude/commands/add-roundtrip-test.md
-  gate_criteria:
-  - C6
-  - P3
-  master_plan_lanes:
-  - 9
-  - 10
-  - 11
-  phase: 3+
-  skill_id: add-roundtrip-test
-  skill_registry_ref: true
+- command: /audit-root-tools
+  file: .claude\commands\audit-root-tools.md
   status: active
-  writes_product_source: false
-- command_id: add-same-format-writer-feature
-  created: '2026-06-03'
-  description: Add a same-format write/export feature to an existing format library
-  enforcement_type: soft
-  file: .claude/commands/add-same-format-writer-feature.md
-  gate_criteria:
-  - C3
-  - P3
-  master_plan_lanes:
-  - 7
-  - 8
-  phase: 3+
-  skill_id: add-same-format-writer-feature
-  skill_registry_ref: true
+- command: /autonomous-loop
+  file: .claude\commands\autonomous-loop.md
   status: active
-  writes_product_source: true
-- command_id: add-analytics-function
-  created: '2026-06-18'
-  description: Add analytics/arithmetic function to <format>_analytics.py (rotation
-    SUSPENDED by V42)
-  enforcement_type: hard
-  file: .claude/commands/add-analytics-function.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 8
-  phase: all
-  skill_id: add-analytics-function
-  skill_registry_ref: true
-  status: deferred
-  suspension_note: Rotation suspended 2026-06-18 by keen-dancing-hopper plan. V42
-    blocks sprint if used.
-  writes_product_source: true
-- command_id: add-dogfood-export
-  created: '2026-06-03'
-  description: Add a cross-format dogfood export path using an installed Format Factory
-    library
-  enforcement_type: soft
-  file: .claude/commands/add-dogfood-export.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 12
-  phase: 3+
-  skill_id: add-dogfood-export
-  skill_registry_ref: true
+- command: /backfill-gate4-prototype-evidence
+  file: .claude\commands\backfill-gate4-prototype-evidence.md
   status: active
-  writes_product_source: false
-- command_id: add-installed-package-example
-  created: '2026-06-03'
-  description: Add a working example using the installed wheel package (not dev source)
-  enforcement_type: soft
-  file: .claude/commands/add-installed-package-example.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 12
-  phase: 3+
-  skill_id: add-installed-package-example
-  skill_registry_ref: true
+- command: /backfill-task-skill-ownership
+  file: .claude\commands\backfill-task-skill-ownership.md
   status: active
-  writes_product_source: false
-- command_id: package-install-proof
-  created: '2026-06-18'
-  description: Build wheel, install it, import from site-packages, run API smoke test
-  enforcement_type: soft
-  file: .claude/commands/package-install-proof.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 12
-  phase: 3+
-  skill_id: package-install-proof
-  skill_registry_ref: true
+- command: /build-capability-routes
+  file: .claude\commands\build-capability-routes.md
   status: active
-  writes_product_source: false
-- command_id: spec-literal-qname-to-code-mapping
-  created: '2026-06-12'
-  description: Map spec QNames to canonical namespace/class structure per ODF spec
-  enforcement_type: soft
-  file: .claude/commands/spec-literal-qname-to-code-mapping.md
-  gate_criteria:
-  - C11
-  - P6
-  master_plan_lanes:
-  - 6
-  phase: all
-  skill_id: spec-literal-qname-to-code-mapping
-  skill_registry_ref: true
+- command: /build-context-pack
+  file: .claude\commands\build-context-pack.md
   status: active
-  writes_product_source: false
-- command_id: spec-shaped-product-architecture-blueprint
-  created: '2026-06-12'
-  description: Generate spec-shaped architecture blueprint from QName-to-code ontology
-  enforcement_type: soft
-  file: .claude/commands/spec-shaped-product-architecture-blueprint.md
-  gate_criteria:
-  - C11
-  - C12
-  master_plan_lanes:
-  - 7
-  - 8
-  phase: all
-  skill_id: spec-shaped-product-architecture-blueprint
-  skill_registry_ref: true
+- command: /build-evidence-bundle
+  file: .claude\commands\build-evidence-bundle.md
   status: active
-  writes_product_source: false
-- command_id: spec-parity-source-regeneration-and-migration
-  created: '2026-06-12'
-  description: Regenerate and migrate source files to canonical QName-based namespace
-    hierarchy
-  enforcement_type: soft
-  file: .claude/commands/spec-parity-source-regeneration-and-migration.md
-  gate_criteria:
-  - C11
-  - C12
-  - P6
-  - P7
-  master_plan_lanes:
-  - 7
-  - 8
-  - 9
-  - 10
-  phase: all
-  skill_id: spec-parity-source-regeneration-and-migration
-  skill_registry_ref: true
+- command: /build-obligation-register
+  file: .claude\commands\build-obligation-register.md
   status: active
-  writes_product_source: true
-- command_id: python-reduced-spec-parity-model
-  created: '2026-06-12'
-  description: Ensure Python FOSS library follows canonical concept graph with explicit
-    reduced scope
-  enforcement_type: soft
-  file: .claude/commands/python-reduced-spec-parity-model.md
-  gate_criteria:
-  - P6
-  - P7
-  master_plan_lanes:
-  - 8
-  - 11
-  phase: all
-  skill_id: python-reduced-spec-parity-model
-  skill_registry_ref: true
+- command: /build-product-context
+  file: .claude\commands\build-product-context.md
   status: active
-  writes_product_source: true
-- command_id: spec-parity-verification
-  created: '2026-06-12'
-  description: Validate namespace tree, class inventory, attribute map, containment
-    graph
-  enforcement_type: soft
-  file: .claude/commands/spec-parity-verification.md
-  gate_criteria:
-  - C12
-  - C13
-  - P7
-  - P8
-  master_plan_lanes:
-  - 5
-  - 7
-  - 8
-  phase: all
-  skill_id: spec-parity-verification
-  skill_registry_ref: true
+- command: /build-resume-context
+  file: .claude\commands\build-resume-context.md
   status: active
-  writes_product_source: false
-- command_id: build-context-pack
-  created: '2026-06-12'
-  description: Build or rebuild spec context pack from verified spec facts in the
-    workbench
-  enforcement_type: soft
-  file: .claude/commands/build-context-pack.md
-  gate_criteria:
-  - P10
-  master_plan_lanes:
-  - 1
-  phase: all
-  skill_id: build-context-pack
-  skill_registry_ref: true
+- command: /build-supervisor-packet
+  file: .claude\commands\build-supervisor-packet.md
   status: active
-  writes_product_source: false
-- command_id: select-poc-gap
-  created: '2026-06-03'
-  description: Select the next governed product gap from the gap ledger for execution
-  enforcement_type: soft
-  file: .claude/commands/select-poc-gap.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 2
-  - 3
-  phase: all
-  skill_id: select-poc-gap
-  skill_registry_ref: true
+- command: /build-task-context
+  file: .claude\commands\build-task-context.md
   status: active
-  writes_product_source: false
-- command_id: promote-gap-to-taskcard
-  created: '2026-06-03'
-  description: Promote a gap-ledger entry into an actionable governed taskcard
-  enforcement_type: soft
-  file: .claude/commands/promote-gap-to-taskcard.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 2
-  - 3
-  phase: all
-  skill_id: promote-gap-to-taskcard
-  skill_registry_ref: true
+- command: /calculate-oracle-coverage
+  file: .claude\commands\calculate-oracle-coverage.md
   status: active
-  writes_product_source: false
-- command_id: update-capability-matrix
-  created: '2026-06-03'
-  description: Update the format capability matrix and gap ledger from current source
-    state
-  enforcement_type: soft
-  file: .claude/commands/update-capability-matrix.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 2
-  - 3
-  phase: all
-  skill_id: update-capability-matrix
-  skill_registry_ref: true
+- command: /capability-status
+  file: .claude\commands\capability-status.md
   status: active
-  writes_product_source: false
-- command_id: validate-product-code-ledger
-  created: '2026-06-18'
-  description: Validate the product-code-change-ledger against actual src/ SHA-256
-    hashes
-  enforcement_type: soft
-  file: .claude/commands/validate-product-code-ledger.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: validate-product-code-ledger
-  skill_registry_ref: true
+- command: /certification-assertion-scorer
+  file: .claude\commands\certification-assertion-scorer.md
   status: active
-  writes_product_source: false
-- command_id: validate-skill-transcript
-  created: '2026-06-21'
-  description: Validate a skill invocation transcript against the schema and required
-    fields
-  enforcement_type: soft
-  file: .claude/commands/validate-skill-transcript.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: validate-skill-transcript
-  skill_registry_ref: true
+- command: /certification-dashboard
+  file: .claude\commands\certification-dashboard.md
   status: active
-  writes_product_source: false
-- command_id: verify-dogfood-path
-  created: '2026-06-03'
-  description: Verify an end-to-end dogfood export path using an installed package
-  enforcement_type: soft
-  file: .claude/commands/verify-dogfood-path.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 12
-  phase: 3+
-  skill_id: verify-dogfood-path
-  skill_registry_ref: true
+- command: /certification-dotnet-assertion-scorer
+  file: .claude\commands\certification-dotnet-assertion-scorer.md
   status: active
-  writes_product_source: false
-- command_id: materialize-declaration-review
-  created: '2026-06-03'
-  description: Materialize the evidence declaration review package and print its path+SHA256
-  enforcement_type: soft
-  file: .claude/commands/materialize-declaration-review.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: materialize-declaration-review
-  skill_registry_ref: true
+- command: /certification-exception-checker
+  file: .claude\commands\certification-exception-checker.md
   status: active
-  writes_product_source: false
-- command_id: evidence-review-next-prompt
-  created: '2026-06-03'
-  description: Read evidence-review.json and generate the next sprint prompt from
-    it
-  enforcement_type: soft
-  file: .claude/commands/evidence-review-next-prompt.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: evidence-review-next-prompt
-  skill_registry_ref: true
+- command: /certification-fix-weak-assertions
+  file: .claude\commands\certification-fix-weak-assertions.md
   status: active
-  writes_product_source: false
-- command_id: post-sprint-audit
-  created: '2026-06-03'
-  description: Conduct post-sprint audit classifying all work items into 6 audit categories
-  enforcement_type: soft
-  file: .claude/commands/post-sprint-audit.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: post-sprint-audit
-  skill_registry_ref: true
+- command: /certification-generate-exception-tests
+  file: .claude\commands\certification-generate-exception-tests.md
   status: active
-  writes_product_source: false
-- command_id: post-sprint-loop
-  created: '2026-06-03'
-  description: Run post-sprint closeout loop (audit, hardening, evidence, supervisor
-    cycle)
-  enforcement_type: soft
-  file: .claude/commands/post-sprint-loop.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: post-sprint-loop
-  skill_registry_ref: true
+- command: /certification-generate-security-tests
+  file: .claude\commands\certification-generate-security-tests.md
   status: active
-  writes_product_source: false
-- command_id: plan-hardening
-  created: '2026-06-03'
-  description: Convert all partially-done and not-attempted audit findings into governed
-    taskcards
-  enforcement_type: soft
-  file: .claude/commands/plan-hardening.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: plan-hardening
-  skill_registry_ref: true
+- command: /certification-inventory-extractor
+  file: .claude\commands\certification-inventory-extractor.md
   status: active
-  writes_product_source: false
-- command_id: execution-handoff
-  created: '2026-06-03'
-  description: Generate a structured execution handoff packet for agent-to-agent sprint
-    transfer
-  enforcement_type: soft
-  file: .claude/commands/execution-handoff.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: execution-handoff
-  skill_registry_ref: true
+- command: /certification-stub-detector
+  file: .claude\commands\certification-stub-detector.md
   status: active
-  writes_product_source: false
-- command_id: generate-execution-handoff
-  created: '2026-06-03'
-  description: Generate a detailed execution handoff document with full context for
-    next agent
-  enforcement_type: soft
-  file: .claude/commands/generate-execution-handoff.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: generate-execution-handoff
-  skill_registry_ref: true
+- command: /check-dom-contract
+  file: .claude\commands\check-dom-contract.md
   status: active
-  writes_product_source: false
-- command_id: export-plan-context
-  created: '2026-06-03'
-  description: Export the current plan context as a portable summary for cross-session
-    continuity
-  enforcement_type: soft
-  file: .claude/commands/export-plan-context.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: export-plan-context
-  skill_registry_ref: true
+- command: /check-gate
+  file: .claude\commands\check-gate.md
   status: active
-  writes_product_source: false
-- command_id: record-lane-execution
-  created: '2026-06-12'
-  description: Record the execution of a spec-to-feature correction plan lane with
-    evidence
-  enforcement_type: soft
-  file: .claude/commands/record-lane-execution.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  phase: all
-  skill_id: record-lane-execution
-  skill_registry_ref: true
+- command: /check-mcp-status
+  file: .claude\commands\check-mcp-status.md
   status: active
-  writes_product_source: false
-- command_id: memory-sprint
-  created: '2026-06-03'
-  description: Run a memory sprint to update MEMORY.md and sync project knowledge
-    files
-  enforcement_type: soft
-  file: .claude/commands/memory-sprint.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 0
-  - 15
-  phase: all
-  skill_id: memory-sprint
-  skill_registry_ref: true
+- command: /check-release-boundary
+  file: .claude\commands\check-release-boundary.md
   status: active
-  writes_product_source: false
-- command_id: implement-spec-stub
-  created: '2026-06-22'
-  description: Fill one architecture_only spec/ stub with behavioral implementation
-    and equivalence proof
-  enforcement_type: hard
-  file: .claude/commands/implement-spec-stub.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 8
-  - 11
-  phase: 3
-  skill_id: implement-spec-stub
-  skill_registry_ref: true
+- command: /check-skill-coverage
+  file: .claude\commands\check-skill-coverage.md
   status: active
-  writes_product_source: true
-- command_id: decompose-monolithic-codec
-  created: '2026-06-22'
-  description: Move arithmetic functions from monolithic codec to analytics file to
-    reduce LOC
-  enforcement_type: hard
-  file: .claude/commands/decompose-monolithic-codec.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 8
-  phase: 3
-  skill_id: decompose-monolithic-codec
-  skill_registry_ref: true
+- command: /check-source-loc
+  file: .claude\commands\check-source-loc.md
   status: active
-  writes_product_source: true
-- command_id: python-qname-code-reviewer
-  created: '2026-06-23'
-  description: Review Python format package against QName architecture standard (13
-    checks, 4 verdicts, 9 evidence artifacts)
-  enforcement_type: hard
-  file: .claude/commands/python-qname-code-reviewer.md
-  gate_criteria: []
-  master_plan_lanes:
-  - 1
-  - 2
-  - 3
-  - 11
-  phase: 0
-  skill_id: python-qname-code-reviewer
-  skill_registry_ref: true
+- command: /close-layer-task
+  file: .claude\commands\close-layer-task.md
   status: active
-  writes_product_source: false
-- command_id: inventory-skills
-  created: '2026-06-24'
-  created_by: TC-SF-006C Pilot C
-  description: Scan skill registry and .claude/commands/ to produce complete mechanism
-    inventory; supports partial-state resume
-  file: .claude/commands/inventory-skills.md
-  mission_id: SKILL-FIRST-001
-  phase: 0
-  skill_id: inventory-skills
-  skill_registry_ref: true
+- command: /collect-skill-execution-receipts
+  file: .claude\commands\collect-skill-execution-receipts.md
   status: active
-- command_file: .claude/commands/check-mcp-status.md
-  command_id: check-mcp-status
-  skill_id: check-mcp-status
-  status: deferred
-- command_file: .claude/commands/extract-analytics-from-monolith.md
-  command_id: extract-analytics-from-monolith
-  skill_id: extract-analytics-from-monolith
+- command: /create-acquisition-pack
+  file: .claude\commands\create-acquisition-pack.md
   status: active
-- command_file: .claude/commands/inventory-commands.md
-  command_id: inventory-commands
-  skill_id: inventory-commands
+- command: /create-consumer-roundtrip
+  file: .claude\commands\create-consumer-roundtrip.md
   status: active
-- command_file: .claude/commands/detect-ad-hoc-execution.md
-  command_id: detect-ad-hoc-execution
-  skill_id: detect-ad-hoc-execution
+- command: /create-cross-layer-handoff
+  file: .claude\commands\create-cross-layer-handoff.md
   status: active
-- command_file: .claude/commands/validate-skill-contracts.md
-  command_id: validate-skill-contracts
-  skill_id: validate-skill-contracts
+- command: /create-permanent-layer-plan
+  file: .claude\commands\create-permanent-layer-plan.md
   status: active
-- command_file: .claude/commands/normalize-skill-registry.md
-  command_id: normalize-skill-registry
-  skill_id: normalize-skill-registry
+- command: /create-taskcard
+  file: .claude\commands\create-taskcard.md
   status: active
-- command_file: .claude/commands/build-capability-routes.md
-  command_id: build-capability-routes
-  skill_id: build-capability-routes
+- command: /decompose-monolithic-codec
+  file: .claude\commands\decompose-monolithic-codec.md
   status: active
-- command_file: .claude/commands/detect-duplicate-skills.md
-  command_id: detect-duplicate-skills
-  skill_id: detect-duplicate-skills
+- command: /detect-ad-hoc-execution
+  file: .claude\commands\detect-ad-hoc-execution.md
   status: active
-- command_file: .claude/commands/backfill-task-skill-ownership.md
-  command_id: backfill-task-skill-ownership
-  skill_id: backfill-task-skill-ownership
+- command: /detect-duplicate-skills
+  file: .claude\commands\detect-duplicate-skills.md
   status: active
-- command_file: .claude/commands/validate-mutation-guard.md
-  command_id: validate-mutation-guard
-  skill_id: validate-mutation-guard
+- command: /detect-stale-layer-state
+  file: .claude\commands\detect-stale-layer-state.md
   status: active
-- command_file: .claude/commands/run-skill-idempotency.md
-  command_id: run-skill-idempotency
-  skill_id: run-skill-idempotency
+- command: /detect-stale-oracles
+  file: .claude\commands\detect-stale-oracles.md
   status: active
-- command_file: .claude/commands/collect-skill-execution-receipts.md
-  command_id: collect-skill-execution-receipts
-  skill_id: collect-skill-execution-receipts
+- command: /detect-unlogged-work
+  file: .claude\commands\detect-unlogged-work.md
   status: active
-- command_file: .claude/commands/scan-residual-bypasses.md
-  command_id: scan-residual-bypasses
-  skill_id: scan-residual-bypasses
+- command: /diff-playbook-outputs
+  file: .claude\commands\diff-playbook-outputs.md
   status: active
-- command_file: .claude/commands/sync-skill-command-registry.md
-  command_id: sync-skill-command-registry
-  skill_id: sync-skill-command-registry
+- command: /discover-existing-control-layers
+  file: .claude\commands\discover-existing-control-layers.md
   status: active
-- command_file: .claude/commands/enforce-skill-first-execution.md
-  command_id: enforce-skill-first-execution
-  skill_id: enforce-skill-first-execution
+- command: /documentation-structure-migration
+  file: .claude\commands\documentation-structure-migration.md
   status: active
-generated_by: inventory-commands
-mission_id: SKILL-FIRST-001
-status_counts:
-  active: 60
-  deferred: 2
-total_commands: 62
+- command: /enforce-skill-first-execution
+  file: .claude\commands\enforce-skill-first-execution.md
+  status: active
+- command: /evaluate-roundtrip-oracle
+  file: .claude\commands\evaluate-roundtrip-oracle.md
+  status: active
+- command: /evidence-review-next-prompt
+  file: .claude\commands\evidence-review-next-prompt.md
+  status: active
+- command: /execution-handoff
+  file: .claude\commands\execution-handoff.md
+  status: active
+- command: /export-plan-context
+  file: .claude\commands\export-plan-context.md
+  status: active
+- command: /export-review-queue
+  file: .claude\commands\export-review-queue.md
+  status: active
+- command: /extract-analytics-from-monolith
+  file: .claude\commands\extract-analytics-from-monolith.md
+  status: active
+- command: /format-feature-expansion
+  file: .claude\commands\format-feature-expansion.md
+  status: active
+- command: /found-issue-ownership
+  file: .claude\commands\found-issue-ownership.md
+  status: active
+- command: /generate-execution-handoff
+  file: .claude\commands\generate-execution-handoff.md
+  status: active
+- command: /generate-oracle-verdict-report
+  file: .claude\commands\generate-oracle-verdict-report.md
+  status: active
+- command: /generate-root-status
+  file: .claude\commands\generate-root-status.md
+  status: active
+- command: /identify-primary-layer
+  file: .claude\commands\identify-primary-layer.md
+  status: active
+- command: /implement-spec-stub
+  file: .claude\commands\implement-spec-stub.md
+  status: active
+- command: /ingest-spec-sal
+  file: .claude\commands\ingest-spec-sal.md
+  status: active
+- command: /inventory-commands
+  file: .claude\commands\inventory-commands.md
+  status: active
+- command: /inventory-existing-control-features
+  file: .claude\commands\inventory-existing-control-features.md
+  status: active
+- command: /inventory-format-dom
+  file: .claude\commands\inventory-format-dom.md
+  status: active
+- command: /inventory-permanent-layer-plans
+  file: .claude\commands\inventory-permanent-layer-plans.md
+  status: active
+- command: /inventory-skills
+  file: .claude\commands\inventory-skills.md
+  status: active
+- command: /materialize-declaration-review
+  file: .claude\commands\materialize-declaration-review.md
+  status: active
+- command: /memory-sprint
+  file: .claude\commands\memory-sprint.md
+  status: active
+- command: /migrate-temporary-agent-plan
+  file: .claude\commands\migrate-temporary-agent-plan.md
+  status: active
+- command: /new-format-kickstart
+  file: .claude\commands\new-format-kickstart.md
+  status: active
+- command: /normalize-skill-registry
+  file: .claude\commands\normalize-skill-registry.md
+  status: active
+- command: /onboard-future-format-oracle
+  file: .claude\commands\onboard-future-format-oracle.md
+  status: active
+- command: /package-install-proof
+  file: .claude\commands\package-install-proof.md
+  status: active
+- command: /plan-hardening
+  file: .claude\commands\plan-hardening.md
+  status: active
+- command: /portfolio-reconcile
+  file: .claude\commands\portfolio-reconcile.md
+  status: active
+- command: /post-sprint-audit
+  file: .claude\commands\post-sprint-audit.md
+  status: active
+- command: /post-sprint-loop
+  file: .claude\commands\post-sprint-loop.md
+  status: active
+- command: /preflight-skill-entry
+  file: .claude\commands\preflight-skill-entry.md
+  status: active
+- command: /product-source-task
+  file: .claude\commands\product-source-task.md
+  status: active
+- command: /promote-gap-to-taskcard
+  file: .claude\commands\promote-gap-to-taskcard.md
+  status: active
+- command: /python-qname-code-reviewer
+  file: .claude\commands\python-qname-code-reviewer.md
+  status: active
+- command: /python-reduced-spec-parity-model
+  file: .claude\commands\python-reduced-spec-parity-model.md
+  status: active
+- command: /qname-backfill
+  file: .claude\commands\qname-backfill.md
+  status: active
+- command: /quarantine-invalid-artifact
+  file: .claude\commands\quarantine-invalid-artifact.md
+  status: active
+- command: /query-control-index
+  file: .claude\commands\query-control-index.md
+  status: active
+- command: /rebuild-operational-index
+  file: .claude\commands\rebuild-operational-index.md
+  status: active
+- command: /reconcile-layer-index
+  file: .claude\commands\reconcile-layer-index.md
+  status: active
+- command: /reconcile-layer-task-register
+  file: .claude\commands\reconcile-layer-task-register.md
+  status: active
+- command: /record-lane-execution
+  file: .claude\commands\record-lane-execution.md
+  status: active
+- command: /register-layer-gap
+  file: .claude\commands\register-layer-gap.md
+  status: active
+- command: /register-layer-task
+  file: .claude\commands\register-layer-task.md
+  status: active
+- command: /replay-acquisition-playbook
+  file: .claude\commands\replay-acquisition-playbook.md
+  status: active
+- command: /reproduce-master-plan
+  file: .claude\commands\reproduce-master-plan.md
+  status: active
+- command: /reset-track-signal
+  file: .claude\commands\reset-track-signal.md
+  status: active
+- command: /rollback-and-recovery
+  file: .claude\commands\rollback-and-recovery.md
+  status: active
+- command: /run-governance-validators
+  file: .claude\commands\run-governance-validators.md
+  status: active
+- command: /run-lifecycle-audit
+  file: .claude\commands\run-lifecycle-audit.md
+  status: active
+- command: /run-oracle
+  file: .claude\commands\run-oracle.md
+  status: active
+- command: /run-skill-idempotency
+  file: .claude\commands\run-skill-idempotency.md
+  status: active
+- command: /sal-pipeline-heal
+  file: .claude\commands\sal-pipeline-heal.md
+  status: active
+- command: /scan-residual-bypasses
+  file: .claude\commands\scan-residual-bypasses.md
+  status: active
+- command: /score-format
+  file: .claude\commands\score-format.md
+  status: active
+- command: /select-deepening-lane
+  file: .claude\commands\select-deepening-lane.md
+  status: active
+- command: /select-next-layer-task
+  file: .claude\commands\select-next-layer-task.md
+  status: active
+- command: /select-poc-gap
+  file: .claude\commands\select-poc-gap.md
+  status: active
+- command: /spec-literal-qname-to-code-mapping
+  file: .claude\commands\spec-literal-qname-to-code-mapping.md
+  status: active
+- command: /spec-parity-source-regeneration-and-migration
+  file: .claude\commands\spec-parity-source-regeneration-and-migration.md
+  status: active
+- command: /spec-parity-verification
+  file: .claude\commands\spec-parity-verification.md
+  status: active
+- command: /spec-shaped-product-architecture-blueprint
+  file: .claude\commands\spec-shaped-product-architecture-blueprint.md
+  status: active
+- command: /sync-capabilities
+  file: .claude\commands\sync-capabilities.md
+  status: active
+- command: /sync-installed-packages
+  file: .claude\commands\sync-installed-packages.md
+  status: active
+- command: /sync-memory
+  file: .claude\commands\sync-memory.md
+  status: active
+- command: /sync-readmes
+  file: .claude\commands\sync-readmes.md
+  status: active
+- command: /sync-skill-command-registry
+  file: .claude\commands\sync-skill-command-registry.md
+  status: active
+- command: /update-capability-matrix
+  file: .claude\commands\update-capability-matrix.md
+  status: active
+- command: /update-layer-current-state
+  file: .claude\commands\update-layer-current-state.md
+  status: active
+- command: /update-layer-master-index
+  file: .claude\commands\update-layer-master-index.md
+  status: active
+- command: /update-layer-session-handoff
+  file: .claude\commands\update-layer-session-handoff.md
+  status: active
+- command: /update-obligation-entry
+  file: .claude\commands\update-obligation-entry.md
+  status: active
+- command: /validate-capability-parity
+  file: .claude\commands\validate-capability-parity.md
+  status: active
+- command: /validate-evidence-declaration
+  file: .claude\commands\validate-evidence-declaration.md
+  status: active
+- command: /validate-missing-skill-workflow
+  file: .claude\commands\validate-missing-skill-workflow.md
+  status: active
+- command: /validate-mutation-guard
+  file: .claude\commands\validate-mutation-guard.md
+  status: active
+- command: /validate-operational-index
+  file: .claude\commands\validate-operational-index.md
+  status: active
+- command: /validate-permanent-layer-plans
+  file: .claude\commands\validate-permanent-layer-plans.md
+  status: active
+- command: /validate-playbook
+  file: .claude\commands\validate-playbook.md
+  status: active
+- command: /validate-product-code-ledger
+  file: .claude\commands\validate-product-code-ledger.md
+  status: active
+- command: /validate-skill-contracts
+  file: .claude\commands\validate-skill-contracts.md
+  status: active
+- command: /validate-skill-transcript
+  file: .claude\commands\validate-skill-transcript.md
+  status: active
+- command: /verify-control-feature-parity
+  file: .claude\commands\verify-control-feature-parity.md
+  status: active
+- command: /verify-dogfood-path
+  file: .claude\commands\verify-dogfood-path.md
+  status: active
+- command: /verify-obligation-entry
+  file: .claude\commands\verify-obligation-entry.md
+  status: active

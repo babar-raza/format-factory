@@ -1,63 +1,10 @@
----
-pilot_id: F
-skill_ids:
-  - inventory-skills
-run_id: skill-first-89e03009
-started_at: "2026-06-24T00:00:00Z"
-completed_at: "2026-06-24T00:00:00Z"
-verdict: PASS
-idempotency_verdict: IDEMPOTENT_VERIFIED
-recovery_result: SAFE_RESUME
-
-target_tool: tools/supervisor/skill_inventory.py
-
-steps_completed:
-  - step: 1
-    action: write_partial_fixture
-    result: PASS
-    detail: >
-      Written .supervisor/skill-inventory.yaml with status=partial,
-      completed_skills=12, total_skills=62, 12 skill entries pre-populated.
-      Simulates a mid-run interruption after scanning 12 of 62 skills.
-  - step: 2
-    action: run_skill_inventory_on_partial
-    result: PASS
-    detail: >
-      python tools/supervisor/skill_inventory.py --output .supervisor/skill-inventory.yaml
-      returncode=0, stdout: 'Skill inventory: 63 entries -> .supervisor/skill-inventory.yaml'
-  - step: 3
-    action: verify_status_complete
-    result: PASS
-    detail: "status=complete, total_skills=63, resumed_from_partial=True"
-  - step: 4
-    action: verify_count_exceeds_62
-    result: PASS
-    detail: "total_skills=63 >= 62 required"
-  - step: 5
-    action: verify_no_duplicates
-    result: PASS
-    detail: >
-      add-python-api appears exactly once (1) in output.
-      Total IDs: 63. No duplicate entries. The 12 pre-populated skills
-      were not re-scanned; they were carried forward from partial state.
-  - step: 6
-    action: rerun_verify_idempotency
-    result: PASS
-    detail: >
-      Second run produces total_skills=63 (identical to first run after recovery).
-      status=complete. Idempotency verified on stable tree.
-  - step: 7
-    action: write_receipt
-    result: PASS
-    detail: "idempotency_verdict: IDEMPOTENT_VERIFIED, recovery_result: SAFE_RESUME"
-
-notes: >
-  skill_inventory.py detects the status=partial sentinel on file open and resumes
-  from the list of pre-completed skills (extracted as a set). On resume, it
-  skips already-scanned skill_ids during _scan(), then merges prior + new entries.
-  The output correctly reflects the full 63-skill inventory with no duplicates.
-  Second run on the now-complete file produces identical count (stable convergence).
-
-evidence_paths:
-  - .supervisor/skill-inventory.yaml
-  - tools/supervisor/skill_inventory.py
+pilot: F
+mission_id: SKILL-FIRST-003
+run_id: sfe3-004
+scenario: normalize-skill-registry aborts on broken YAML; backup restores clean state
+broken_yaml_test: ABORT triggered on parse error
+abort_triggered: true
+backup_path: .local/archive/skill-registry-bak-sfe3.yaml
+backup_exists: true
+verdict: ABORT_AND_RESTORE_VERIFIED
+date: '2026-07-12'

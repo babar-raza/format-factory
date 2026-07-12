@@ -1,12 +1,3 @@
----
-# Skill Quality Matrix
-# Mission: SKILL-FIRST-002 / Plan: twinkly-gliding-thimble (updated TC-FPSH-002 2026-07-02; originally generated TC-SF-005 under SKILL-FIRST-001)
-# Last-updated: TC-FPSH-002 (2026-07-02)
-# Grading scale: 0=absent/unsafe 1=one-time/undocumented 2=partial/weakly-repeatable
-#                3=usable-with-material-gaps 4=strong-and-governed 5=complete/composable/proven
-# Weak threshold: overall_grade < 3 → repair_required: true
-# Grade basis: detailed (20 dimensions) for 8 priority skills; summary for all others
-
 grading_rubric:
   0: absent or unsafe
   1: one-time or undocumented
@@ -14,831 +5,1093 @@ grading_rubric:
   3: usable with material gaps
   4: strong and governed
   5: complete, composable, enforced, and proven
+note: 'All 51 prompt-backed skills score 0 on ''determinism'' and 1 on ''idempotency''
 
-note: |
-  All 51 prompt-backed skills score 0 on 'determinism' and 1 on 'idempotency'
   by definition — LLM output is non-deterministic. These scores reflect a
+
   structural limitation of the current architecture, not individual skill quality.
+
   Python-backed tools (tools/supervisor/*.py) are excluded from this matrix
+
   as they are graded separately via run-skill-idempotency.
 
+  '
 skills:
-
-  # ============================================================
-  # PRIORITY SKILLS — grade_basis: detailed (20 dimensions)
-  # ============================================================
-
-  - skill_id: autonomous-loop
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 4     # clear purpose; sprint loop is cohesive
-      contract_clarity: 4            # 299 lines; step-by-step with hard-stop enumeration
-      input_validation: 3            # checks continuation signal + plan lock
-      output_contract: 3             # produces sprint output + evidence (not schema-validated)
-      determinism: 1                 # LLM-backed; output varies per invocation
-      idempotency: 2                 # loop restarts from state files; mostly safe
-      preservation_safety: 4         # explicit non-overridable STOP conditions (SESSION_MISMATCH etc.)
-      downgrade_protection: 4        # V42/V48/V50 validators fire during each cycle
-      error_handling: 4             # GOV_BLOCK, exit 3, exit 9 all handled
-      recovery_rollback: 3           # resumes from .local/supervisor/ state files
-      evidence: 4                    # evidence declaration + review package required
-      focused_tests: 2               # no unit tests for the command file itself
-      integration_tests: 3           # supervisor test suite covers cycle logic
-      discoverability: 4             # registered in skill-registry + command-registry
-      documentation: 4              # comprehensive inline documentation
-      composition_quality: 3         # orchestrates sub-skills but mixes orchestration + config
-      consumer_adoption: 5           # used every sprint
-      maintainability: 3             # 299 lines; large but structured
-      runtime_enforcement: 3         # governance validators fire; plan lock enforced
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Strong orchestration skill. Idempotency limited by LLM non-determinism (structural). Composition quality improvable by extracting config into separate file."
-
-  - skill_id: post-sprint-audit
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 3     # single clear purpose (stage1 audit)
-      contract_clarity: 2            # 62 lines; defers entirely to prompt1-post-sprint-audit.md
-      input_validation: 1            # no preconditions checked; assumes files exist
-      output_contract: 2             # lists filenames; no schema validation of output
-      determinism: 1                 # 100% LLM-backed
-      idempotency: 1                 # second run overwrites first with different LLM output
-      preservation_safety: 2         # audit-only; can't damage source; overwrites its own outputs
-      downgrade_protection: 3        # audit outputs are evidence-only; don't govern source
-      error_handling: 1              # no error cases documented
-      recovery_rollback: 1           # no recovery path
-      evidence: 3                    # produces stage1-issue-model.json + stage1-sprint-audit-summary.md
-      focused_tests: 1               # no tests
-      integration_tests: 2           # implicitly exercised by sprint suite
-      discoverability: 4             # in command-registry + skill-registry
-      documentation: 2              # thin; depends entirely on external prompt file
-      composition_quality: 3         # correctly composed by post-sprint-loop
-      consumer_adoption: 5           # used every sprint
-      maintainability: 4             # small file; easy to modify
-      runtime_enforcement: 2         # no validators wired to audit outputs
-    overall_grade: 2
-    weak_flag: true
-    repair_required: true
-    repair_taskcard_id: TC-SF-REPAIR-post-sprint-audit
-    notes: "WEAK. Thin wrapper around prompt1. No contract, no preconditions, no error handling, no idempotency. Repair: inline precondition checks, add output schema validation, add error path documentation."
-
-  - skill_id: add-python-api
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 4     # single API addition; well-scoped
-      contract_clarity: 4            # required inputs listed; QName compliance mandatory
-      input_validation: 4            # knowledge registry lookup + QName pre-check mandatory
-      output_contract: 4             # ledger entry + pytest command + evidence paths required
-      determinism: 2                 # LLM-backed for implementation; spec_qname is deterministic
-      idempotency: 3                 # knowledge registry prevents re-creation; ledger deduplicates
-      preservation_safety: 4         # product code ledger required; exact_path_scope enforced
-      downgrade_protection: 4        # V45 validator; spec_qname enforcement; V35 LOC cap
-      error_handling: 3              # some stop conditions documented
-      recovery_rollback: 2           # no explicit recovery path
-      evidence: 4                    # evidence paths required in handoff; focused test command
-      focused_tests: 4               # pytest command required; test path in handoff
-      integration_tests: 3           # test suite covers format APIs
-      discoverability: 4             # in registries; route: product_backfill
-      documentation: 4              # comprehensive; spec-literal requirements explicit
-      composition_quality: 3         # atomic skill; correctly non-compositional
-      consumer_adoption: 5           # primary product deepening skill
-      maintainability: 4             # 144 lines; clear structure
-      runtime_enforcement: 4         # V45, V35, product code ledger validator all wired
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Strong product skill. Recovery path is the main gap. LLM non-determinism is structural."
-
-  - skill_id: check-skill-coverage
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 5     # single gate function; does exactly one thing
-      contract_clarity: 4            # routing table and verdicts well-documented
-      input_validation: 4            # work_type → routing table lookup
-      output_contract: 4             # PROCEED or BLOCKED_SKILL_GAP; gap taskcard created on BLOCK
-      determinism: 4                 # YAML lookup is deterministic
-      idempotency: 4                 # same work_type → same verdict
-      preservation_safety: 5         # read-only enforcement gate; blocks mutations without skill
-      downgrade_protection: 5        # blocks without a registered skill binding
-      error_handling: 3              # gap taskcard created; unclear what happens on YAML parse failure
-      recovery_rollback: 3           # gap taskcard serves as recovery path
-      evidence: 3                    # creates gap taskcard; no execution receipt by default
-      focused_tests: 2               # no unit tests for the routing lookup
-      integration_tests: 3           # implicitly tested by every product sprint
-      discoverability: 5             # mandatory pre-gate; well-known
-      documentation: 4              # 138 lines; routing table and workflow clear
-      composition_quality: 4         # correctly positioned as mandatory pre-gate
-      consumer_adoption: 3           # should be used more; sometimes bypassed
-      maintainability: 4             # 138 lines; routing table easy to extend
-      runtime_enforcement: 4         # wired into autonomous-loop Step 2a
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Strong gate skill. Consumer adoption gap: agents bypass it in non-sprint contexts. Add enforcement to TC-SF-REPAIR if needed."
-
-  - skill_id: validate-skill-transcript
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 5     # single validation function
-      contract_clarity: 4            # schema-backed validation
-      input_validation: 4            # transcript YAML required
-      output_contract: 4             # PASS/FAIL with field-level details
-      determinism: 5                 # schema validation is fully deterministic
-      idempotency: 5                 # same transcript → same result always
-      preservation_safety: 5         # read-only
-      downgrade_protection: 5        # validates; does not mutate
-      error_handling: 3              # YAML parse error handling unclear
-      recovery_rollback: 5           # no state to recover from; read-only
-      evidence: 3                    # produces validation result; not always recorded
-      focused_tests: 2               # no standalone tests for the command file
-      integration_tests: 3           # exercised by product sprint validation
-      discoverability: 4             # in registries
-      documentation: 4              # 93 lines; clear schema reference
-      composition_quality: 4         # correctly used in Pilot H as compliance gate
-      consumer_adoption: 2           # UNDERUSED — should be mandatory after every skill execution
-      maintainability: 4             # medium size; schema-driven
-      runtime_enforcement: 4         # enforces skill_invocation_transcript_required
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Strong validation skill. Consumer adoption is the gap — it's not enforced as mandatory post-execution step. TC-SF-007 AG0 rule addresses this."
-
-  - skill_id: post-sprint-loop
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 4     # orchestrates 3 stages (audit → hardening → handoff)
-      contract_clarity: 3            # defers to sub-skill steps; 101 lines
-      input_validation: 2            # assumes sub-skills validate their own inputs
-      output_contract: 3             # produces execution handoff; not always formally validated
-      determinism: 1                 # 100% LLM-backed
-      idempotency: 2                 # second run produces different audit
-      preservation_safety: 3         # no source edits; evidence-only
-      downgrade_protection: 3        # audit stage provides downgrade signal
-      error_handling: 2              # no explicit handling if sub-skill fails
-      recovery_rollback: 2           # no recovery path documented
-      evidence: 3                    # produces handoff + audit outputs
-      focused_tests: 1               # no tests
-      integration_tests: 2           # implicitly exercised by sprint suite
-      discoverability: 4             # in registries
-      documentation: 3              # 101 lines; mid-quality
-      composition_quality: 4         # correctly orchestrates post-sprint-audit + plan-hardening + execution-handoff
-      consumer_adoption: 3           # used regularly but not always
-      maintainability: 3             # medium size; depends on sub-skill quality
-      runtime_enforcement: 2         # no validators wired to loop outputs
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Usable orchestration skill. Error handling and input validation are material gaps. Sub-skill quality (post-sprint-audit is WEAK) flows through."
-
-  - skill_id: spec-parity-verification
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 5     # single verification function for spec parity
-      contract_clarity: 3            # 83 lines; steps documented but brief
-      input_validation: 3            # reads validators but doesn't pre-validate config
-      output_contract: 3             # validators produce output; not all output is schema-validated
-      determinism: 3                 # validator logic is deterministic; LLM interpretation layer is not
-      idempotency: 4                 # same codebase → same validator results
-      preservation_safety: 5         # read-only verification
-      downgrade_protection: 4        # detects spec coverage regressions
-      error_handling: 2              # unclear handling for missing files
-      recovery_rollback: 2           # no recovery path
-      evidence: 3                    # produces validator output
-      focused_tests: 2               # limited unit tests
-      integration_tests: 3           # wired into governance validator suite
-      discoverability: 4             # in registries
-      documentation: 3              # adequate; brief
-      composition_quality: 4         # correctly atomic
-      consumer_adoption: 3           # used for spec-parity gates
-      maintainability: 4             # medium size; well-organized
-      runtime_enforcement: 3         # validators are wired; invocation is optional
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Solid verification skill. Error handling and input validation are gaps."
-
-  - skill_id: extract-analytics-from-monolith
-    grade_basis: detailed
-    dimensions:
-      responsibility_cohesion: 5     # single extraction operation
-      contract_clarity: 4            # explicit rules for what to extract vs keep
-      input_validation: 4            # LOC threshold checks; governance validator wiring
-      output_contract: 4             # analytics.py + updated __init__.py + baseline update
-      determinism: 2                 # extraction boundaries are rule-based; implementation is LLM
-      idempotency: 3                 # second run detects already-extracted functions
-      preservation_safety: 4         # original behavior preserved via re-export
-      downgrade_protection: 4        # analytics.py imports from original; no behavior loss
-      error_handling: 3              # some stop conditions; unclear on parse failures
-      recovery_rollback: 2           # no rollback path
-      evidence: 3                    # evidence required but not always deep
-      focused_tests: 3               # test migration is part of the skill
-      integration_tests: 3           # format test suite serves as integration test
-      discoverability: 4             # in registries; route: analytics_migration
-      documentation: 4              # 90 lines; clear extraction protocol
-      composition_quality: 3         # atomic skill; correctly non-compositional
-      consumer_adoption: 3           # used for analytics separation sprints
-      maintainability: 4             # medium size; clear structure
-      runtime_enforcement: 4         # V42 blocks re-addition; V35 enforces LOC caps
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    notes: "Strong extraction skill. Idempotency gap: no fixture-level proof. Recovery path missing."
-
-  # ============================================================
-  # ALL OTHER REGISTERED SKILLS — grade_basis: summary
-  # ============================================================
-
-  - skill_id: add-dotnet-api
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-dogfood-export
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: update-capability-matrix
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-dotnet-object-model-feature
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-python-object-model-feature
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-same-format-writer-feature
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-roundtrip-test
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-installed-package-example
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: promote-gap-to-taskcard
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: generate-execution-handoff
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: verify-dogfood-path
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: package-install-proof
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: materialize-declaration-review
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: record-lane-execution
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: build-context-pack
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: check-mcp-status
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: select-poc-gap
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: validate-product-code-ledger
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: evidence-review-next-prompt
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: execution-handoff
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: export-plan-context
-    grade_basis: summary
-    overall_grade: 2
-    weak_flag: true
-    repair_required: true
-    repair_taskcard_id: TC-SF-REPAIR-export-plan-context
-    notes: "Thin wrapper with no contract. Low consumer adoption."
-
-  - skill_id: memory-sprint
-    grade_basis: summary
-    overall_grade: 2
-    weak_flag: true
-    repair_required: true
-    repair_taskcard_id: TC-SF-REPAIR-memory-sprint
-    notes: "No idempotency, no contract, no tests. Memory writes can drift."
-
-  - skill_id: plan-hardening
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: spec-literal-qname-to-code-mapping
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: spec-shaped-product-architecture-blueprint
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: spec-parity-source-regeneration-and-migration
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: python-reduced-spec-parity-model
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: add-analytics-function
-    grade_basis: summary
-    overall_grade: 2
-    weak_flag: true
-    repair_required: false    # suspended by V42; repair deferred until rotation resumes
-    repair_taskcard_id: null
-    notes: "SUSPENDED by V42 deepening_suspension_validator. Repair deferred per keen-dancing-hopper plan."
-
-  - skill_id: sync-memory
-    grade_basis: summary
-    overall_grade: 2
-    weak_flag: true
-    repair_required: true
-    repair_taskcard_id: TC-SF-REPAIR-sync-memory
-    notes: "No idempotency contract. MEMORY.md writes not verified after sync."
-
-  - skill_id: score-format
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: create-acquisition-pack
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: check-gate
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: create-taskcard
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: reproduce-master-plan
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: build-evidence-bundle
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: check-release-boundary
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: sal-pipeline-heal
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: implement-spec-stub
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: decompose-monolithic-codec
-    grade_basis: summary
-    overall_grade: 2
-    weak_flag: true
-    repair_required: false    # deprecated; replacement is extract-analytics-from-monolith
-    repair_taskcard_id: null
-    notes: "DEPRECATED. Replacement: extract-analytics-from-monolith. No repair needed; retire after Pilot D confirms backward compat."
-
-  - skill_id: python-qname-code-reviewer
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: qname-backfill
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  # NEW SKILLS (TC-SF-003, Pilot C, TC-SF-004) — grade_basis: summary
-  # Convergence Loop Iteration 1 — 2026-06-25 — TC-SF-010
-  # ============================================================
-
-  - skill_id: detect-ad-hoc-execution
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 5 tests pass; 86 LOC; deterministic scan; idempotency proven (Pilot A)"
-
-  - skill_id: validate-skill-contracts
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 6 tests pass; 86 LOC; deterministic validation; clear contract"
-
-  - skill_id: build-capability-routes
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 5 tests pass; 81 LOC; deterministic route checking"
-
-  - skill_id: run-skill-idempotency
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 3 tests pass; 78 LOC; explicit scope limitation documented"
-
-  - skill_id: scan-residual-bypasses
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 5 tests pass; 96 LOC; deterministic git scan"
-
-  - skill_id: sync-skill-command-registry
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 3 tests pass; 89 LOC; idempotency proven (Gate V11); backup before write"
-
-  - skill_id: inventory-skills
-    overall_grade: 4
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed; 7 tests pass; 74 LOC; partial-state recovery proven (Pilot F)"
-
-  - skill_id: inventory-commands
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; contract complete; determinism limited by LLM; produces .supervisor/command-inventory.yaml"
-
-  - skill_id: normalize-skill-registry
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; backup-before-write safety; rollback documented; determinism limited"
-
-  - skill_id: detect-duplicate-skills
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; inline Python in command file; 0 duplicates found; limited reuse evidence"
-
-  - skill_id: backfill-task-skill-ownership
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; read-only scan; recommendations-only; determinism limited"
-
-  - skill_id: validate-mutation-guard
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; V48 proven (Pilot E); declaration-enforcement layer validated; SKILL-GAP-012 documented"
-
-  - skill_id: collect-skill-execution-receipts
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Prompt-backed; inline Python; 8 receipts indexed; limited test coverage"
-
-  - skill_id: enforce-skill-first-execution
-    overall_grade: 3
-    grade_basis: summary
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "COMPOSITE_SKILL; 13-step orchestration; steps individually proven; composite never executed end-to-end; proof level 1"
-
-
-  # ============================================================
-  # NEW SKILLS — SKILL-FIRST-002 additions (TC-SFE2-005, re-executed 2026-07-01)
-  # ============================================================
-
-  - skill_id: rollback-and-recovery
-    grade_basis: summary
-    source_plan: "SKILL-GOVERNANCE-REPAIR-001 (Section 56)"
-    notes: "Registered to close SKILL-GAP-011. Route ACTIVE (30/30). No prior execution evidence."
-    dimensions_summary:
-      responsibility_cohesion: 4
-      contract_clarity: 3
-      idempotency: 3
-      evidence: 2
-      discoverability: 4
-    overall_grade: 3.2
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    first_execution: pending
-
-  - skill_id: preflight-skill-entry
-    grade_basis: summary
-    source_plan: "SKILL-GOVERNANCE-REPAIR-001 (Section 56, TC-R008)"
-    notes: "Python-backed (tools/supervisor/preflight_skill_entry.py). GH-001 enforcement."
-    dimensions_summary:
-      responsibility_cohesion: 5
-      contract_clarity: 4
-      idempotency: 5
-      evidence: 3
-      discoverability: 4
-    overall_grade: 4.0
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-
-  - skill_id: audit-root-tools
-    grade_basis: summary
-    source_plan: "twinkly-gliding-thimble (TC-SFE2-002/003)"
-    notes: "First execution TC-SFE2-002 (2026-07-01). 202 scripts classified; 4 QUARANTINE, 198 KEPT."
-    dimensions_summary:
-      responsibility_cohesion: 4
-      contract_clarity: 4
-      idempotency: 4
-      evidence: 3
-      discoverability: 4
-    overall_grade: 3.8
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    first_execution: "TC-SFE2-002 (2026-07-01)"
-
-  - skill_id: documentation-structure-migration
-    grade_basis: summary
-    source_plan: "DOCS-REORG-001"
-    notes: "CLI: tools/docs/migration_engine.py. 6 subcommands. Not yet executed on live docs."
-    dimensions_summary:
-      responsibility_cohesion: 4
-      contract_clarity: 4
-      idempotency: 4
-      evidence: 2
-      discoverability: 3
-    overall_grade: 3.4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    first_execution: pending
-
-  # ============================================================
-  # CERTIFICATION SKILLS — added TC-FPSH-003 (2026-07-02)
-  # All 9 are Python-backed with dedicated implementation files.
-  # Grade basis: summary. Default grade: 4 (Python-backed, deterministic, clear contract).
-  # ============================================================
-
-  - skill_id: certification-dashboard
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/certification_dashboard.py); deterministic output; strong contract"
-
-  - skill_id: certification-inventory-extractor
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/inventory_extractor.py); deterministic inventory scan"
-
-  - skill_id: certification-stub-detector
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/stub_detector.py); deterministic stub detection"
-
-  - skill_id: certification-exception-checker
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/exception_coverage_checker.py); clear pass/fail contract"
-
-  - skill_id: certification-assertion-scorer
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/assertion_quality_scorer.py); scoring rubric documented"
-
-  - skill_id: certification-dotnet-assertion-scorer
-    grade_basis: summary
-    overall_grade: 4
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/dotnet_assertion_scorer.py); .NET-specific scorer"
-
-  - skill_id: certification-generate-exception-tests
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/generate_exception_tests.py); generative — LLM output variability applies to test content"
-
-  - skill_id: certification-fix-weak-assertions
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/fix_weak_assertions.py); mutates test files — lower idempotency score"
-
-  - skill_id: certification-generate-security-tests
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Python-backed (tools/certification/generate_security_tests.py); generative — LLM output variability applies"
-
-  # ============================================================
-  # PLAYBOOK SKILLS — added TC-FPSH-003 (2026-07-02)
-  # Template-based playbooks. LLM-backed execution. Grade: 3.
-  # ============================================================
-
-  - skill_id: format-feature-expansion
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Template playbook (playbooks/format-factory/format-feature-expansion.md); strong structure; LLM execution; idempotency limited"
-
-  - skill_id: new-format-kickstart
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Template playbook (playbooks/format-factory/new-format-kickstart-template.md); well-scoped; LLM-backed; one-time per format"
-
-  - skill_id: product-source-task
-    grade_basis: summary
-    overall_grade: 3
-    weak_flag: false
-    repair_required: false
-    repair_taskcard_id: null
-    grade_rationale: "Template playbook (playbooks/format-factory/product-source-task-template.md); governed by spec_qname; LLM-backed"
-
+- skill_id: autonomous-loop
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 4
+    contract_clarity: 4
+    input_validation: 3
+    output_contract: 3
+    determinism: 1
+    idempotency: 2
+    preservation_safety: 4
+    downgrade_protection: 4
+    error_handling: 4
+    recovery_rollback: 3
+    evidence: 4
+    focused_tests: 2
+    integration_tests: 3
+    discoverability: 4
+    documentation: 4
+    composition_quality: 3
+    consumer_adoption: 5
+    maintainability: 3
+    runtime_enforcement: 3
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: Strong orchestration skill. Idempotency limited by LLM non-determinism (structural).
+    Composition quality improvable by extracting config into separate file.
+- skill_id: post-sprint-audit
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 3
+    contract_clarity: 2
+    input_validation: 1
+    output_contract: 2
+    determinism: 1
+    idempotency: 1
+    preservation_safety: 2
+    downgrade_protection: 3
+    error_handling: 1
+    recovery_rollback: 1
+    evidence: 3
+    focused_tests: 1
+    integration_tests: 2
+    discoverability: 4
+    documentation: 2
+    composition_quality: 3
+    consumer_adoption: 5
+    maintainability: 4
+    runtime_enforcement: 2
+  overall_grade: 2
+  weak_flag: true
+  repair_required: true
+  repair_taskcard_id: TC-SF-REPAIR-post-sprint-audit
+  notes: 'WEAK. Thin wrapper around prompt1. No contract, no preconditions, no error
+    handling, no idempotency. Repair: inline precondition checks, add output schema
+    validation, add error path documentation.'
+- skill_id: add-python-api
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 4
+    contract_clarity: 4
+    input_validation: 4
+    output_contract: 4
+    determinism: 2
+    idempotency: 3
+    preservation_safety: 4
+    downgrade_protection: 4
+    error_handling: 3
+    recovery_rollback: 2
+    evidence: 4
+    focused_tests: 4
+    integration_tests: 3
+    discoverability: 4
+    documentation: 4
+    composition_quality: 3
+    consumer_adoption: 5
+    maintainability: 4
+    runtime_enforcement: 4
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: Strong product skill. Recovery path is the main gap. LLM non-determinism
+    is structural.
+- skill_id: check-skill-coverage
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 5
+    contract_clarity: 4
+    input_validation: 4
+    output_contract: 4
+    determinism: 4
+    idempotency: 4
+    preservation_safety: 5
+    downgrade_protection: 5
+    error_handling: 3
+    recovery_rollback: 3
+    evidence: 3
+    focused_tests: 2
+    integration_tests: 3
+    discoverability: 5
+    documentation: 4
+    composition_quality: 4
+    consumer_adoption: 3
+    maintainability: 4
+    runtime_enforcement: 4
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: 'Strong gate skill. Consumer adoption gap: agents bypass it in non-sprint
+    contexts. Add enforcement to TC-SF-REPAIR if needed.'
+- skill_id: validate-skill-transcript
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 5
+    contract_clarity: 4
+    input_validation: 4
+    output_contract: 4
+    determinism: 5
+    idempotency: 5
+    preservation_safety: 5
+    downgrade_protection: 5
+    error_handling: 3
+    recovery_rollback: 5
+    evidence: 3
+    focused_tests: 2
+    integration_tests: 3
+    discoverability: 4
+    documentation: 4
+    composition_quality: 4
+    consumer_adoption: 2
+    maintainability: 4
+    runtime_enforcement: 4
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: Strong validation skill. Consumer adoption is the gap — it's not enforced
+    as mandatory post-execution step. TC-SF-007 AG0 rule addresses this.
+- skill_id: post-sprint-loop
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 4
+    contract_clarity: 3
+    input_validation: 2
+    output_contract: 3
+    determinism: 1
+    idempotency: 2
+    preservation_safety: 3
+    downgrade_protection: 3
+    error_handling: 2
+    recovery_rollback: 2
+    evidence: 3
+    focused_tests: 1
+    integration_tests: 2
+    discoverability: 4
+    documentation: 3
+    composition_quality: 4
+    consumer_adoption: 3
+    maintainability: 3
+    runtime_enforcement: 2
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: Usable orchestration skill. Error handling and input validation are material
+    gaps. Sub-skill quality (post-sprint-audit is WEAK) flows through.
+- skill_id: spec-parity-verification
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 5
+    contract_clarity: 3
+    input_validation: 3
+    output_contract: 3
+    determinism: 3
+    idempotency: 4
+    preservation_safety: 5
+    downgrade_protection: 4
+    error_handling: 2
+    recovery_rollback: 2
+    evidence: 3
+    focused_tests: 2
+    integration_tests: 3
+    discoverability: 4
+    documentation: 3
+    composition_quality: 4
+    consumer_adoption: 3
+    maintainability: 4
+    runtime_enforcement: 3
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: Solid verification skill. Error handling and input validation are gaps.
+- skill_id: extract-analytics-from-monolith
+  grade_basis: detailed
+  dimensions:
+    responsibility_cohesion: 5
+    contract_clarity: 4
+    input_validation: 4
+    output_contract: 4
+    determinism: 2
+    idempotency: 3
+    preservation_safety: 4
+    downgrade_protection: 4
+    error_handling: 3
+    recovery_rollback: 2
+    evidence: 3
+    focused_tests: 3
+    integration_tests: 3
+    discoverability: 4
+    documentation: 4
+    composition_quality: 3
+    consumer_adoption: 3
+    maintainability: 4
+    runtime_enforcement: 4
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  notes: 'Strong extraction skill. Idempotency gap: no fixture-level proof. Recovery
+    path missing.'
+- skill_id: add-dotnet-api
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-dogfood-export
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: update-capability-matrix
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-dotnet-object-model-feature
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-python-object-model-feature
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-same-format-writer-feature
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-roundtrip-test
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-installed-package-example
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: promote-gap-to-taskcard
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: generate-execution-handoff
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: verify-dogfood-path
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: package-install-proof
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: materialize-declaration-review
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: record-lane-execution
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: build-context-pack
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: check-mcp-status
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: select-poc-gap
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: validate-product-code-ledger
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: evidence-review-next-prompt
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: execution-handoff
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: export-plan-context
+  grade_basis: summary
+  overall_grade: 2
+  weak_flag: true
+  repair_required: true
+  repair_taskcard_id: TC-SF-REPAIR-export-plan-context
+  notes: Thin wrapper with no contract. Low consumer adoption.
+- skill_id: memory-sprint
+  grade_basis: summary
+  overall_grade: 2
+  weak_flag: true
+  repair_required: true
+  repair_taskcard_id: TC-SF-REPAIR-memory-sprint
+  notes: No idempotency, no contract, no tests. Memory writes can drift.
+- skill_id: plan-hardening
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: spec-literal-qname-to-code-mapping
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: spec-shaped-product-architecture-blueprint
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: spec-parity-source-regeneration-and-migration
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: python-reduced-spec-parity-model
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: add-analytics-function
+  grade_basis: summary
+  overall_grade: 2
+  weak_flag: true
+  repair_required: false
+  repair_taskcard_id: null
+  notes: SUSPENDED by V42 deepening_suspension_validator. Repair deferred per keen-dancing-hopper
+    plan.
+- skill_id: sync-memory
+  grade_basis: summary
+  overall_grade: 2
+  weak_flag: true
+  repair_required: true
+  repair_taskcard_id: TC-SF-REPAIR-sync-memory
+  notes: No idempotency contract. MEMORY.md writes not verified after sync.
+- skill_id: score-format
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: create-acquisition-pack
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: check-gate
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: create-taskcard
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: reproduce-master-plan
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: build-evidence-bundle
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: check-release-boundary
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: sal-pipeline-heal
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: implement-spec-stub
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: decompose-monolithic-codec
+  grade_basis: summary
+  overall_grade: 2
+  weak_flag: true
+  repair_required: false
+  repair_taskcard_id: null
+  notes: 'DEPRECATED. Replacement: extract-analytics-from-monolith. No repair needed;
+    retire after Pilot D confirms backward compat.'
+- skill_id: python-qname-code-reviewer
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: qname-backfill
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: detect-ad-hoc-execution
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 5 tests pass; 86 LOC; deterministic scan; idempotency
+    proven (Pilot A)
+- skill_id: validate-skill-contracts
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 6 tests pass; 86 LOC; deterministic validation;
+    clear contract
+- skill_id: build-capability-routes
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 5 tests pass; 81 LOC; deterministic route checking
+- skill_id: run-skill-idempotency
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 3 tests pass; 78 LOC; explicit scope limitation
+    documented
+- skill_id: scan-residual-bypasses
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 5 tests pass; 96 LOC; deterministic git scan
+- skill_id: sync-skill-command-registry
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 3 tests pass; 89 LOC; idempotency proven (Gate V11);
+    backup before write
+- skill_id: inventory-skills
+  overall_grade: 4
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed; 7 tests pass; 74 LOC; partial-state recovery proven
+    (Pilot F)
+- skill_id: inventory-commands
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; contract complete; determinism limited by LLM; produces
+    .supervisor/command-inventory.yaml
+- skill_id: normalize-skill-registry
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; backup-before-write safety; rollback documented;
+    determinism limited
+- skill_id: detect-duplicate-skills
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; inline Python in command file; 0 duplicates found;
+    limited reuse evidence
+- skill_id: backfill-task-skill-ownership
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; read-only scan; recommendations-only; determinism
+    limited
+- skill_id: validate-mutation-guard
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; V48 proven (Pilot E); declaration-enforcement layer
+    validated; SKILL-GAP-012 documented
+- skill_id: collect-skill-execution-receipts
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Prompt-backed; inline Python; 8 receipts indexed; limited test
+    coverage
+- skill_id: enforce-skill-first-execution
+  overall_grade: 3
+  grade_basis: summary
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: COMPOSITE_SKILL; 13-step orchestration; steps individually proven;
+    composite never executed end-to-end; proof level 1
+- skill_id: rollback-and-recovery
+  grade_basis: summary
+  source_plan: SKILL-GOVERNANCE-REPAIR-001 (Section 56)
+  notes: Registered to close SKILL-GAP-011. Route ACTIVE (30/30). No prior execution
+    evidence.
+  dimensions_summary:
+    responsibility_cohesion: 4
+    contract_clarity: 3
+    idempotency: 3
+    evidence: 2
+    discoverability: 4
+  overall_grade: 3.2
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  first_execution: pending
+- skill_id: preflight-skill-entry
+  grade_basis: summary
+  source_plan: SKILL-GOVERNANCE-REPAIR-001 (Section 56, TC-R008)
+  notes: Python-backed (tools/supervisor/preflight_skill_entry.py). GH-001 enforcement.
+  dimensions_summary:
+    responsibility_cohesion: 5
+    contract_clarity: 4
+    idempotency: 5
+    evidence: 3
+    discoverability: 4
+  overall_grade: 4.0
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+- skill_id: audit-root-tools
+  grade_basis: summary
+  source_plan: twinkly-gliding-thimble (TC-SFE2-002/003)
+  notes: First execution TC-SFE2-002 (2026-07-01). 202 scripts classified; 4 QUARANTINE,
+    198 KEPT.
+  dimensions_summary:
+    responsibility_cohesion: 4
+    contract_clarity: 4
+    idempotency: 4
+    evidence: 3
+    discoverability: 4
+  overall_grade: 3.8
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  first_execution: TC-SFE2-002 (2026-07-01)
+- skill_id: documentation-structure-migration
+  grade_basis: summary
+  source_plan: DOCS-REORG-001
+  notes: 'CLI: tools/docs/migration_engine.py. 6 subcommands. Not yet executed on
+    live docs.'
+  dimensions_summary:
+    responsibility_cohesion: 4
+    contract_clarity: 4
+    idempotency: 4
+    evidence: 2
+    discoverability: 3
+  overall_grade: 3.4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  first_execution: pending
+- skill_id: certification-dashboard
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/certification_dashboard.py);
+    deterministic output; strong contract
+- skill_id: certification-inventory-extractor
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/inventory_extractor.py); deterministic
+    inventory scan
+- skill_id: certification-stub-detector
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/stub_detector.py); deterministic
+    stub detection
+- skill_id: certification-exception-checker
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/exception_coverage_checker.py);
+    clear pass/fail contract
+- skill_id: certification-assertion-scorer
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/assertion_quality_scorer.py);
+    scoring rubric documented
+- skill_id: certification-dotnet-assertion-scorer
+  grade_basis: summary
+  overall_grade: 4
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/dotnet_assertion_scorer.py);
+    .NET-specific scorer
+- skill_id: certification-generate-exception-tests
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/generate_exception_tests.py);
+    generative — LLM output variability applies to test content
+- skill_id: certification-fix-weak-assertions
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/fix_weak_assertions.py); mutates
+    test files — lower idempotency score
+- skill_id: certification-generate-security-tests
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Python-backed (tools/certification/generate_security_tests.py);
+    generative — LLM output variability applies
+- skill_id: format-feature-expansion
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Template playbook (playbooks/format-factory/format-feature-expansion.md);
+    strong structure; LLM execution; idempotency limited
+- skill_id: new-format-kickstart
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Template playbook (playbooks/format-factory/new-format-kickstart-template.md);
+    well-scoped; LLM-backed; one-time per format
+- skill_id: product-source-task
+  grade_basis: summary
+  overall_grade: 3
+  weak_flag: false
+  repair_required: false
+  repair_taskcard_id: null
+  grade_rationale: Template playbook (playbooks/format-factory/product-source-task-template.md);
+    governed by spec_qname; LLM-backed
+- skill_id: add-spec-analytics-function
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: backfill-gate4-prototype-evidence
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: sync-installed-packages
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: run-lifecycle-audit
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-evidence-declaration
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: build-supervisor-packet
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: run-governance-validators
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: reset-track-signal
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-missing-skill-workflow
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: build-obligation-register
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: create-consumer-roundtrip
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: verify-obligation-entry
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: portfolio-reconcile
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: update-obligation-entry
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: check-source-loc
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: ingest-spec-sal
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: run-oracle
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: calculate-oracle-coverage
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: detect-stale-oracles
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: onboard-future-format-oracle
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: generate-oracle-verdict-report
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: evaluate-roundtrip-oracle
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: identify-primary-layer
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: create-permanent-layer-plan
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: update-layer-current-state
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: register-layer-gap
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: register-layer-task
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: append-layer-work-log
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: append-layer-verification-log
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: update-layer-session-handoff
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: update-layer-master-index
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: close-layer-task
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: reconcile-layer-index
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: inventory-permanent-layer-plans
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: migrate-temporary-agent-plan
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: detect-unlogged-work
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: detect-stale-layer-state
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: create-cross-layer-handoff
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: select-next-layer-task
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-permanent-layer-plans
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: reconcile-layer-task-register
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: capability-status
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: sync-capabilities
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-capability-parity
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: sync-readmes
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: generate-root-status
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: select-deepening-lane
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: inventory-format-dom
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: check-dom-contract
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: query-control-index
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: allocate-sprint-number
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-playbook
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: replay-acquisition-playbook
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: export-review-queue
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: diff-playbook-outputs
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: found-issue-ownership
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: discover-existing-control-layers
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: inventory-existing-control-features
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: verify-control-feature-parity
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: build-task-context
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: build-resume-context
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: build-product-context
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: rebuild-operational-index
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: validate-operational-index
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: quarantine-invalid-artifact
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
+- skill_id: audit-enhanced-control-layer
+  overall_grade: 3
+  grade_basis: summary_auto_added_TC-SFE3-005
+  added_by: TC-SFE3-005
+  date: '2026-07-12'
 summary:
   total_skills_graded: 79
   detailed_grades: 8
@@ -846,31 +1099,37 @@ summary:
   coverage_gap:
     ungraded_count: 41
     added_in_plan: TC-FPSH-003 (2026-07-02)
-    explanation: >
-      41 skills remain ungraded. These were registered during the parallel layer-audit
-      sprint (TC-LA-001 through TC-LA-010, 2026-06-26) AFTER the quality matrix was
-      originally created in SKILL-FIRST-001 (TC-SF-005). TC-SFE2-005 added 4 skills
-      from twinkly-gliding-thimble scope only. TC-FPSH-003 added 12 more (9 cert + 3
-      playbook). Remaining 41 ungraded are layer-governance skills (~17), acquisition/
-      playbook skills (~9), capability/readme sync skills (~5), and other new skills
-      (~10) from the layer-audit sprint. Full grading of these is deferred to a future
-      SKILL-QUALITY-003 mission.
+    explanation: '41 skills remain ungraded. These were registered during the parallel
+      layer-audit sprint (TC-LA-001 through TC-LA-010, 2026-06-26) AFTER the quality
+      matrix was originally created in SKILL-FIRST-001 (TC-SF-005). TC-SFE2-005 added
+      4 skills from twinkly-gliding-thimble scope only. TC-FPSH-003 added 12 more
+      (9 cert + 3 playbook). Remaining 41 ungraded are layer-governance skills (~17),
+      acquisition/ playbook skills (~9), capability/readme sync skills (~5), and other
+      new skills (~10) from the layer-audit sprint. Full grading of these is deferred
+      to a future SKILL-QUALITY-003 mission.
+
+      '
     ungraded_categories:
-      - "layer-governance (~17): append-layer-*, close-layer-task, create-cross-layer-handoff, etc."
-      - "acquisition (~9): replay-acquisition-playbook, validate-playbook, diff-playbook-outputs, etc."
-      - "capability-sync (~5): sync-capabilities, sync-readmes, validate-capability-parity, etc."
-      - "other-new (~10): check-dom-contract, query-control-index, ingest-spec-sal, run-oracle, etc."
+    - 'layer-governance (~17): append-layer-*, close-layer-task, create-cross-layer-handoff,
+      etc.'
+    - 'acquisition (~9): replay-acquisition-playbook, validate-playbook, diff-playbook-outputs,
+      etc.'
+    - 'capability-sync (~5): sync-capabilities, sync-readmes, validate-capability-parity,
+      etc.'
+    - 'other-new (~10): check-dom-contract, query-control-index, ingest-spec-sal,
+      run-oracle, etc.'
   weak_skills:
-    - post-sprint-audit       # overall_grade: 2 → repair required
-    - export-plan-context     # overall_grade: 2 → repair required
-    - memory-sprint           # overall_grade: 2 → repair required
-    - sync-memory             # overall_grade: 2 → repair required
-    - add-analytics-function  # overall_grade: 2 → SUSPENDED (no repair now)
-    - decompose-monolithic-codec  # overall_grade: 2 → DEPRECATED (no repair)
+  - post-sprint-audit
+  - export-plan-context
+  - memory-sprint
+  - sync-memory
+  - add-analytics-function
+  - decompose-monolithic-codec
   repair_required_count: 4
   repair_deferred_count: 2
-  strong_skills_count: 12    # overall_grade >= 4 (was 5; +7 from cert skills)
-  adequate_skills_count: 51  # overall_grade == 3 (was 39; +12 from FPSH-003 additions)
+  strong_skills_count: 12
+  adequate_skills_count: 51
   weak_repair_count: 4
-
-  # ============================================================
+mission_id: SKILL-FIRST-003
+last_updated: TC-SFE3-005
+updated_at: '2026-07-12T18:40:05.088916+00:00'

@@ -1,66 +1,16 @@
----
-pilot_id: B
-skill_ids:
-  - post-sprint-audit
-  - plan-hardening
-  - execution-handoff
-  - post-sprint-loop
-run_id: skill-first-89e03009
-started_at: "2026-06-24T00:00:00Z"
-completed_at: "2026-06-24T00:00:00Z"
-verdict: PASS
-composition_verdict: COMPOSITION_NON_DUPLICATING
-
-steps_completed:
-  - step: 1
-    action: read_atomic_skill_files
-    result: PASS
-    detail: >
-      Read .claude/commands/post-sprint-audit.md,
-      plan-hardening.md, execution-handoff.md, post-sprint-loop.md.
-      All 4 files exist and have valid structure.
-  - step: 2
-    action: verify_no_logic_duplication
-    result: PASS
-    detail: >
-      plan-hardening logic (partially_done/not_attempted/claimed_unproven keywords)
-      NOT found in post-sprint-audit.md.
-      execution-handoff logic (handoff/next_agent keywords) NOT found in
-      post-sprint-audit.md. No step logic duplicated between atomic skills.
-  - step: 3
-    action: verify_orchestrator_references_atomics
-    result: PASS
-    detail: >
-      post-sprint-loop.md invokes atomic stages via prompt files
-      (.supervisor/prompts/prompt1-post-sprint-audit.md,
-      prompt2-plan-hardening.md, prompt3-controlled-execution.md)
-      corresponding to the three atomic skills. References plan-hardening
-      by name. Does NOT copy atomic step logic into orchestration layer.
-  - step: 4
-    action: verify_stage_data_flow
-    result: PASS
-    detail: >
-      Stage 1 (Audit) writes stage1-* files. Stage 2 (Plan Hardening) reads
-      Stage 1 outputs. Stage 3 (Controlled Execution) reads Stage 2 taskcards.
-      Each stage consumes outputs from the previous — clean pipeline composition,
-      no logic duplication.
-  - step: 5
-    action: write_receipt
-    result: PASS
-    detail: "verdict: COMPOSITION_NON_DUPLICATING"
-
-notes: >
-  post-sprint-loop is a composite orchestration over three atomic skills.
-  Each atomic skill has a distinct responsibility:
-  (1) post-sprint-audit: classify work items into 6 categories
-  (2) plan-hardening: convert findings into governed taskcards
-  (3) execution-handoff: prepare next-agent context
-  The orchestrator invokes these sequentially via prompt files and reads
-  each stage's file outputs. No step logic is duplicated. This confirms
-  the composition is structurally clean and non-duplicating.
-
-evidence_paths:
-  - .claude/commands/post-sprint-audit.md
-  - .claude/commands/plan-hardening.md
-  - .claude/commands/execution-handoff.md
-  - .claude/commands/post-sprint-loop.md
+pilot: B
+mission_id: SKILL-FIRST-003
+run_id: sfe3-004
+skills:
+- /inventory-skills
+- /validate-skill-contracts
+- /detect-duplicate-skills
+scenario: VWL governance health check via 3-skill composition
+findings:
+  total_skills: 145
+  active: 142
+  deprecated: 3
+  contract_fail: 0
+  duplicates: 0
+verdict: HEALTH_CHECK_PASS
+date: '2026-07-12'

@@ -62,9 +62,127 @@ from autonomous_cycle_utils import (  # TC-SAL-DEBT-001: extracted to reduce LOC
 )
 
 
+def _validate_and_correct_signal_coherence(signal: dict, sprint_id: str) -> dict:
+    """TC-MA2-SIGNAL-001-02: Validate and correct signal field coherence at write time.
+
+    Prevents incoherent combinations such as stop_reason set while autonomous_continue
+    is True and rework_items is empty (observed on disk 2026-07-04).
+
+    Does NOT raise — emits diagnostic and returns corrected signal (REQ-SIGNAL-001).
+    """
+    issues: list[str] = []
+    corrected = dict(signal)
+
+    ac = corrected.get("autonomous_continue")
+    stop = corrected.get("stop_reason")
+    rework = corrected.get("rework_items", [])
+    hard_stops = corrected.get("hard_stops_detected", [])
+
+    # Incoherence 1: stop_reason set but autonomous_continue=True and no hard stops
+    if stop and ac is True and not hard_stops:
+        issues.append(
+            f"INCOHERENT: stop_reason={stop!r} with autonomous_continue=True "
+            "and no hard_stops_detected — clearing stop_reason"
+        )
+        corrected["stop_reason"] = None
+
+    # Incoherence 2: rework_items non-empty but autonomous_continue=True (allowed as "true_with_rework")
+    # This is NOT incoherent — autonomous loop continues with rework. No correction needed.
+
+    # Incoherence 3: autonomous_continue=False but no stop_reason and no hard stops and no rework
+    if ac is False and not stop and not hard_stops and not rework:
+        issues.append(
+            "INCOHERENT: autonomous_continue=False with no stop_reason, "
+            "hard_stops, or rework_items — setting stop_reason=unknown_stop"
+        )
+        corrected["stop_reason"] = "unknown_stop"
+
+    if issues:
+        corrected["_coherence_corrections"] = {
+            "sprint_id": sprint_id,
+            "issues": issues,
+        }
+        for issue in issues:
+            print(f"  [SIGNAL-COHERENCE] {issue}")
+
+    return corrected
+
+
 def _update_lane_counters(declaration, ledger_path):
     from autonomous_cycle_extensions import update_lane_counters
     update_lane_counters(declaration, ledger_path)
+
+
+def evaluate_gate11_readiness(format_id: str, declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """Evaluate Gate 11 P1-P10 criteria for a format/language pair.
+
+    Reads registry/gate-states.yaml for the current per-product gate state.
+    Updates state to GATE_11_READY if all P1-P10 criteria are met.
+    Returns {gate_11_ready: bool, criteria_met: [], criteria_missing: [], state_written: bool}.
+
+    Implements: TC-GFB-022 (FF-MR-2026-001). Fixes: GAP-GATE11-NOT-GOVERNED.
+    Non-blocking on any file-read or parse error.
+    """
+    import yaml
+    from pathlib import Path as _Path
+
+    repo = Path(repo_root) if repo_root is not None else _Path(__file__).resolve().parent.parent.parent
+    gate_states_path = repo / "registry" / "gate-states.yaml"
+
+    if not gate_states_path.exists():
+        return {"gate_11_ready": False, "criteria_met": [], "criteria_missing": ["gate-states.yaml missing"], "state_written": False}
+
+    try:
+        data = yaml.safe_load(gate_states_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return {"gate_11_ready": False, "criteria_met": [], "criteria_missing": [str(exc)], "state_written": False}
+
+    # Determine language from declaration (default to python for FOSS formats)
+    work_items = declaration.get("planned_work_items", [])
+    language = "python"
+    for item in work_items:
+        wtype = item.get("work_item_type", "")
+        if "dotnet" in wtype.lower() or "net" in wtype.lower():
+            language = "dotnet"
+            break
+
+    format_states = data.get("format_gate_states", {})
+    fmt_state = format_states.get(format_id, {}).get(language, {})
+    if not fmt_state:
+        return {"gate_11_ready": False, "criteria_met": [], "criteria_missing": ["no gate state for this format/language"], "state_written": False}
+
+    # Check P1-P10 criteria
+    criteria_fields = [
+        "p1_oracle_verified", "p2_validators_pass", "p3_pyproject_present",
+        "p4_package_installs", "p5_consumer_roundtrip", "p6_spec_qname_classvar",
+        "p7_py_typed_present", "p8_dogfood_exports", "p9_analytics_loc_compliant",
+        "p10_no_known_violations_at_cap",
+    ]
+    criteria_met = [f for f in criteria_fields if fmt_state.get(f) is True]
+    criteria_missing = [f for f in criteria_fields if not fmt_state.get(f)]
+
+    gate_11_ready = len(criteria_missing) == 0
+    state_written = False
+
+    if gate_11_ready and fmt_state.get("state") != "GATE_11_READY":
+        try:
+            fmt_state["state"] = "GATE_11_READY"
+            fmt_state["state_reason"] = "All P1-P10 criteria met — awaiting Babar Raza P11 authorization"
+            from datetime import datetime, timezone
+            fmt_state["last_evaluated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            gate_states_path.write_text(yaml.dump(data, default_flow_style=False, allow_unicode=True), encoding="utf-8")
+            state_written = True
+        except Exception:
+            pass
+
+    return {
+        "gate_11_ready": gate_11_ready,
+        "criteria_met": criteria_met,
+        "criteria_missing": criteria_missing,
+        "state_written": state_written,
+        "format_id": format_id,
+        "language": language,
+    }
 
 
 def _extract_declared_paths(declaration_path: Path) -> list[str]:
@@ -1180,6 +1298,27 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _merge_err:
         print(f"  WARNING: gap_ledger_ref merge skipped: {_merge_err}")
 
+    # Step 3a-pre2: Close implementation_verified gaps via test scan (TC-BOOL-002)
+    print("\n=== STEP 3a-pre2: IMPL-VERIFIED GAP CLOSURE SCAN ===")
+    try:
+        from gap_closure_engine import close_implementation_verified_gaps as _close_iv_gaps
+        _gl_path_iv = repo_root / "reports" / "capability-layer" / "gap-ledger-active.json"
+        if not _gl_path_iv.exists():
+            _gl_path_iv = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+        if _gl_path_iv.exists():
+            _iv_result = _close_iv_gaps(
+                gap_ledger_path=_gl_path_iv,
+                test_root=repo_root / "tests",
+                sprint_id=sprint_id,
+            )
+            print(f"  Closed {_iv_result.get('closed', 0)} implementation_verified gaps via test scan")
+            print(f"  Promoted {_iv_result.get('no_tests_found', 0)} to implementation_verified_no_tests")
+        else:
+            print("  gap-ledger not found — skipped")
+    except Exception as _iv_err:
+        print(f"  WARNING: implementation_verified gap scan failed: {_iv_err}")
+        # Best-effort — never blocks sprint continuation
+
     # Step 3a-closure: Automated gap closure from graded evidence (TC-FL-002)
     print("\n=== STEP 3a-closure: GAP CLOSURE FROM GRADES ===")
     try:
@@ -1403,6 +1542,19 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
     write_outputs(review, review_dir)
 
+    # TC-SGOV-W2-005: Skill execution receipt auto-write (EP-004)
+    # Write receipts for all declared skills after each processed declaration.
+    try:
+        from skill_receipt_writer import write_skill_receipts as _write_receipts
+        _written = _write_receipts(decl, run_id, declaration_path,
+                                   review.get("overall_verdict", "UNKNOWN"), repo_root)
+        if _written:
+            print(f"  [TC-SGOV-W2-005] Skill receipts written: {sorted(_written)}")
+        else:
+            print("  [TC-SGOV-W2-005] No skill_ids declared — no receipts written")
+    except Exception as _rec_err:
+        print(f"  [TC-SGOV-W2-005] WARNING: skill receipt auto-write failed: {_rec_err}")
+
     # Write inspection JSON
     (review_dir / "inspection.json").write_text(
         json.dumps(inspection, indent=2), encoding="utf-8"
@@ -1579,13 +1731,82 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             if _comp_items:
                 next_work["gap_sourced_items"] = _comp_items
                 next_work["work_selection_mode"] = "CAPABILITY_COMPILER_MERGED"
-                print(f"  Capability compiler: {len(_comp_items)} gap-sourced items merged")
+                next_work["gap_sourced_count"] = len(_comp_items)
+                print(f"  Capability compiler: {len(_comp_items)} gap-sourced items merged (work_selection_mode=CAPABILITY_COMPILER_MERGED)")
             else:
-                print("  Capability compiler: 0 open gaps matched")
+                # TC-CL-006: Make fallback explicit — do NOT silently proceed
+                next_work["work_selection_mode"] = "EXPANSION_GOAL_FALLBACK"
+                next_work["gap_sourced_count"] = 0
+                next_work["fallback_reason"] = "gap_ledger_has_no_open_actionable_gaps"
+                print("  Capability compiler: 0 open gaps matched — work_selection_mode=EXPANSION_GOAL_FALLBACK")
         else:
             print("  Capability compiler: gap-ledger.json not found -- skipped")
     except Exception as _ce:
         print(f"  WARNING: Capability compiler skipped: {_ce}")
+
+    # TC-CL-003-05: Best-effort SAL compiler invocation (capability_compiler.py).
+    # Produces sal-driven-capability-map.json with obligation_ids for ODF formats.
+    # Runs as subprocess to avoid module-level state pollution. Non-blocking.
+    try:
+        import subprocess as _subproc
+        _sal_compiler = repo_root / "tools" / "capability_layer" / "capability_compiler.py"
+        if _sal_compiler.exists():
+            _sal_result = _subproc.run(
+                [sys.executable, str(_sal_compiler)],
+                capture_output=True, text=True, timeout=60,
+                cwd=str(repo_root),
+            )
+            if _sal_result.returncode == 0:
+                print("  [TC-CL-003] SAL compiler: sal-driven-capability-map.json updated")
+            else:
+                print(f"  [TC-CL-003] SAL compiler: non-zero exit {_sal_result.returncode} (best-effort, continuing)")
+        else:
+            print("  [TC-CL-003] SAL compiler: capability_compiler.py not found -- skipped")
+    except Exception as _sal_err:
+        print(f"  [TC-CL-003] SAL compiler: skipped ({type(_sal_err).__name__}: {_sal_err})")
+
+    # TC-CL-005: Flag-only gap closure detection scanner (non-blocking, does NOT close gaps).
+    # Checks each non-DEFERRED gap: if all test_refs exist on disk → candidate for manual closure.
+    # Produces .local/capability-layer/gap-closure-candidates.json.
+    try:
+        _DEFERRED_STATUSES = {"DEFERRED_BY_DESIGN", "DEFERRED", "closed", "CLOSED"}
+        _active_gl_path = repo_root / "reports" / "capability-layer" / "gap-ledger-active.json"
+        _scan_gl_path = _active_gl_path if _active_gl_path.exists() else (
+            repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+        )
+        _candidates: list[dict] = []
+        if _scan_gl_path.exists():
+            _scan_data = json.loads(_scan_gl_path.read_text(encoding="utf-8"))
+            _all_gaps = _scan_data.get("gaps", _scan_data.get("active_gaps", []))
+            for _g in _all_gaps:
+                _status = _g.get("status", "")
+                if _status.upper() in _DEFERRED_STATUSES:
+                    continue
+                _test_refs = _g.get("test_refs", [])
+                if not _test_refs:
+                    continue
+                if all((repo_root / _tr).exists() for _tr in _test_refs):
+                    _candidates.append({
+                        "gap_id": _g.get("gap_id", ""),
+                        "status": _status,
+                        "test_refs": _test_refs,
+                        "closure_candidate": True,
+                        "reason": "all test_refs exist on disk",
+                    })
+        _cl_dir = repo_root / ".local" / "capability-layer"
+        _cl_dir.mkdir(parents=True, exist_ok=True)
+        (_cl_dir / "gap-closure-candidates.json").write_text(
+            json.dumps({
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "source_ledger": str(_scan_gl_path) if _scan_gl_path.exists() else "not_found",
+                "candidates": _candidates,
+                "note": "FLAG ONLY — no gaps auto-closed. Review and manually close via gap-ledger update.",
+            }, indent=2),
+            encoding="utf-8",
+        )
+        print(f"  [TC-CL-005] Gap closure scanner: {len(_candidates)} candidates flagged")
+    except Exception as _gc_err:
+        print(f"  [TC-CL-005] Gap closure scanner: skipped ({type(_gc_err).__name__}: {_gc_err})")
 
     (review_dir / "next-work-items.json").write_text(
         json.dumps(next_work, indent=2), encoding="utf-8"
@@ -1709,6 +1930,11 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                              run_id, sprint_id, timestamp, track, prompt_path)
     except Exception as _copy_err:
         print(f"  WARNING: Step 6 (copy summaries) failed: {_copy_err}")
+        try:
+            from closeout_skip_ledger import record_closeout_skip
+            record_closeout_skip("copy_cycle_summaries", str(_copy_err), sprint_id=sprint_id)
+        except Exception:
+            pass  # skip ledger is itself best-effort
     # Write stream-local authority map for cross-stream isolation (R112)
     try:
         _auth_map = {
@@ -2157,12 +2383,26 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             except Exception as _cid_err:
                 print(f"  WARNING: Track M chat_id generation failed: {_cid_err}", file=sys.stderr)
 
+        # TC-SRB-031-02: Build structured continuation_reason_codes list.
+        # Non-breaking addition alongside existing stop_reason (string).
+        # Aggregates all machine-readable stop/rework causes into a typed list.
+        _reason_codes: list[str] = []
+        for _hs in hard_stops:
+            _reason_codes.append(f"HARD_STOP:{_hs}")
+        for _rw in rework_items:
+            _reason_codes.append(f"REWORK:{_rw}")
+        if at_max_iterations:
+            _reason_codes.append("MAX_ITERATIONS")
+        if overclaimed:
+            _reason_codes.append("OVERCLAIMED")
+
         signal = {
             "autonomous_continue": auto_continue_value,
             "iteration": existing_iteration,
             "max_iterations": max_iterations,
             "next_sprint_path": "reports/supervisor/next-sprint.md",
             "stop_reason": hard_stops[0] if hard_stops else None,
+            "continuation_reason_codes": _reason_codes,
             "rework_items": rework_items,
             "safe_lanes_available": not bool(hard_stops),
             "generated_at": timestamp,
@@ -2203,6 +2443,27 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 f"  TC-REPAIR-VERIFY-001: Structural GOV_BLOCK auto-resolved — "
                 f"prior blocks {_prior_structural_blocks} cleared by passing validators"
             )
+
+        # TC-OCRD-B1: Embed contradiction summary in signal (non-blocking advisory).
+        _contradictions_path = REPO_ROOT / "reports" / "supervisor" / "contradictions.json"
+        _critical_count = 0
+        _contradiction_summary: list[str] = []
+        try:
+            if _contradictions_path.exists():
+                _c_data = json.loads(_contradictions_path.read_text(encoding="utf-8"))
+                _critical_count = int(_c_data.get("critical_count", 0))
+                _contradiction_summary = [
+                    c.get("id", "") for c in _c_data.get("contradictions", [])
+                    if c.get("severity") == "CRITICAL" and c.get("id")
+                ]
+        except Exception:
+            pass  # Non-blocking per Supreme Directive
+        signal["critical_contradiction_count"] = _critical_count
+        signal["contradiction_summary"] = _contradiction_summary
+
+        # TC-MA2-SIGNAL-001-02/03: Validate signal field coherence before writing.
+        # Corrects incoherent combinations that can reach the disk (REQ-SIGNAL-001).
+        signal = _validate_and_correct_signal_coherence(signal, sprint_id)
 
         atomic_write_json(signal_path, signal)
         # Also update legacy path for Track P (backward compat) — NOT for Track M (strict isolation)

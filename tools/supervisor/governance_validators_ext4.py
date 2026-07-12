@@ -869,3 +869,327 @@ def validate_source_stubs(
         "items": violations[:10],
         "blocks_sprint": has_product,
     }
+
+
+def validate_lane_contract_exists(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V171: Validate sprint declaration references a valid lane_id from lane-contracts.yaml.
+
+    - If .governance/lanes/lane-contracts.yaml does not exist: WARN (non-blocking).
+    - If lane_id not present in declaration: PASS (lane_id is optional).
+    - If lane_id present but not in registry: FAIL + blocks_sprint=True.
+    - If lane_id present and valid: PASS.
+
+    Implements: TC-GFB-021 (FF-MR-2026-001). Fixes: GAP-LANE-CONTRACTS-MISSING.
+    """
+    import yaml as _yaml
+
+    repo = Path(repo_root) if repo_root is not None else Path(__file__).resolve().parent.parent.parent
+    contracts_path = repo / ".governance" / "lanes" / "lane-contracts.yaml"
+
+    if not contracts_path.exists():
+        return {
+            "validator": "validate_lane_contract_exists",
+            "result": "WARN",
+            "summary": "V171: .governance/lanes/lane-contracts.yaml not found — lane governance not yet active",
+            "blocks_sprint": False,
+        }
+
+    try:
+        data = _yaml.safe_load(contracts_path.read_text(encoding="utf-8"))
+        valid_lane_ids = {lane["lane_id"] for lane in data.get("lanes", [])}
+    except Exception as exc:
+        return {
+            "validator": "validate_lane_contract_exists",
+            "result": "WARN",
+            "summary": f"V171: Could not parse lane-contracts.yaml: {exc}",
+            "blocks_sprint": False,
+        }
+
+    declared_lane_id = declaration.get("lane_id")
+    if not declared_lane_id:
+        return {
+            "validator": "validate_lane_contract_exists",
+            "result": "PASS",
+            "summary": "V171: No lane_id declared — lane governance skipped",
+            "blocks_sprint": False,
+        }
+
+    if declared_lane_id in valid_lane_ids:
+        return {
+            "validator": "validate_lane_contract_exists",
+            "result": "PASS",
+            "summary": f"V171: lane_id={declared_lane_id!r} is a valid registered lane",
+            "blocks_sprint": False,
+        }
+
+    return {
+        "validator": "validate_lane_contract_exists",
+        "result": "FAIL",
+        "summary": (
+            f"V171: lane_id={declared_lane_id!r} is not registered in "
+            f".governance/lanes/lane-contracts.yaml. "
+            f"Valid lane IDs: {sorted(valid_lane_ids)}"
+        ),
+        "blocks_sprint": True,
+    }
+
+
+# ---------------------------------------------------------------------------
+# V172-V175: V_MACH_* Lifecycle Iteration Validators (TC-VWR-007)
+# Require behavioral iteration proof for machinery_hardening plans.
+# ---------------------------------------------------------------------------
+
+
+def validate_mach_audit_after_exec(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V172: V_MACH_AUDIT_AFTER_EXEC — machinery sprints must declare lifecycle_audit was run.
+
+    For declarations with plan_type=machinery_hardening: the sprint declaration must
+    include 'lifecycle_audit_run: true' OR evidence_paths must reference lifecycle_audit output.
+    WARN-only (non-blocking) so it doesn't break existing pipelines.
+    Implements: TC-VWR-007 (velvet-swinging-wreath).
+    """
+    plan_type = declaration.get("plan_type") or ""
+    if plan_type != "machinery_hardening":
+        return {
+            "validator": "validate_mach_audit_after_exec",
+            "result": "PASS",
+            "summary": "V172: plan_type is not machinery_hardening — skipped",
+            "blocks_sprint": False,
+        }
+    lifecycle_run = declaration.get("lifecycle_audit_run")
+    evidence = [str(p) for p in (declaration.get("evidence_paths") or [])]
+    audit_evidence = any("lifecycle-audit-results" in e or "lifecycle_audit" in e for e in evidence)
+    if lifecycle_run or audit_evidence:
+        return {
+            "validator": "validate_mach_audit_after_exec",
+            "result": "PASS",
+            "summary": "V172: machinery sprint has lifecycle audit evidence",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_mach_audit_after_exec",
+        "result": "WARN",
+        "summary": (
+            "V172: machinery_hardening sprint does not declare lifecycle_audit_run=true "
+            "or reference lifecycle audit output. "
+            "Set lifecycle_audit_run: true in declaration or add .local/supervisor/lifecycle-audit-results.json "
+            "to evidence_paths."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+def validate_mach_iteration_proof(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V173: V_MACH_ITERATION_PROOF — machinery mission must have behavioral iteration count > 0.
+
+    Reads .local/supervisor/machinery/mission-ledger.json and checks
+    current_behavioral_iterations > 0 for the declared mission_id.
+    WARN-only (non-blocking).
+    Implements: TC-VWR-007 (velvet-swinging-wreath).
+    """
+    import json as _json  # noqa: PLC0415
+
+    plan_type = declaration.get("plan_type") or ""
+    if plan_type != "machinery_hardening":
+        return {
+            "validator": "validate_mach_iteration_proof",
+            "result": "PASS",
+            "summary": "V173: plan_type is not machinery_hardening — skipped",
+            "blocks_sprint": False,
+        }
+    _repo = Path(repo_root) if repo_root else Path(__file__).resolve().parent.parent.parent
+    ledger_path = _repo / ".local" / "supervisor" / "machinery" / "mission-ledger.json"
+    if not ledger_path.exists():
+        return {
+            "validator": "validate_mach_iteration_proof",
+            "result": "WARN",
+            "summary": "V173: mission-ledger.json absent — behavioral iteration not tracked yet",
+            "blocks_sprint": False,
+        }
+    try:
+        ledger = _json.loads(ledger_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {
+            "validator": "validate_mach_iteration_proof",
+            "result": "WARN",
+            "summary": "V173: mission-ledger.json unreadable",
+            "blocks_sprint": False,
+        }
+    current_iter = ledger.get("current_behavioral_iterations", 0)
+    if current_iter > 0:
+        return {
+            "validator": "validate_mach_iteration_proof",
+            "result": "PASS",
+            "summary": f"V173: behavioral_iterations={current_iter} > 0 — iteration proof present",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_mach_iteration_proof",
+        "result": "WARN",
+        "summary": (
+            f"V173: machinery mission has current_behavioral_iterations=0. "
+            "At least 1 audit-execute-reaudit cycle must complete before TERMINAL_CLOSED. "
+            "Run lifecycle_audit.py with plan_type=machinery_hardening to increment counter."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+def validate_mach_continuation_consumed(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V174: V_MACH_CONTINUATION_CONSUMED — machinery sprint signal must show consumed state.
+
+    For machinery_hardening declarations: checks that the machinery continuation signal
+    (if present) shows autonomous_continue=true or was freshly generated after execution.
+    WARN-only (non-blocking).
+    Implements: TC-VWR-007 (velvet-swinging-wreath).
+    """
+    import json as _json  # noqa: PLC0415
+
+    plan_type = declaration.get("plan_type") or ""
+    if plan_type != "machinery_hardening":
+        return {
+            "validator": "validate_mach_continuation_consumed",
+            "result": "PASS",
+            "summary": "V174: plan_type is not machinery_hardening — skipped",
+            "blocks_sprint": False,
+        }
+    _repo = Path(repo_root) if repo_root else Path(__file__).resolve().parent.parent.parent
+    signal_path = _repo / ".local" / "supervisor" / "machinery" / "continuation-signal.json"
+    if not signal_path.exists():
+        return {
+            "validator": "validate_mach_continuation_consumed",
+            "result": "WARN",
+            "summary": "V174: machinery continuation-signal.json absent",
+            "blocks_sprint": False,
+        }
+    try:
+        sig = _json.loads(signal_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {
+            "validator": "validate_mach_continuation_consumed",
+            "result": "WARN",
+            "summary": "V174: machinery continuation-signal.json unreadable",
+            "blocks_sprint": False,
+        }
+    if sig.get("autonomous_continue"):
+        return {
+            "validator": "validate_mach_continuation_consumed",
+            "result": "PASS",
+            "summary": "V174: machinery continuation signal shows autonomous_continue=true",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_mach_continuation_consumed",
+        "result": "WARN",
+        "summary": (
+            "V174: machinery continuation signal shows autonomous_continue=false. "
+            "Machinery sprint may not have been authorized by the lifecycle machinery."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+def validate_mach_task_vs_mission(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V175: V_MACH_TASK_VS_MISSION — machinery taskcards must reference active mission.
+
+    For machinery_hardening declarations: each planned_work_item must include a mission_ref
+    or the declaration must declare mission_id.
+    WARN-only (non-blocking).
+    Implements: TC-VWR-007 (velvet-swinging-wreath).
+    """
+    plan_type = declaration.get("plan_type") or ""
+    if plan_type != "machinery_hardening":
+        return {
+            "validator": "validate_mach_task_vs_mission",
+            "result": "PASS",
+            "summary": "V175: plan_type is not machinery_hardening — skipped",
+            "blocks_sprint": False,
+        }
+    mission_id = declaration.get("mission_id") or declaration.get("sprint_id") or ""
+    if mission_id:
+        return {
+            "validator": "validate_mach_task_vs_mission",
+            "result": "PASS",
+            "summary": f"V175: mission_id={mission_id!r} declared in machinery sprint",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_mach_task_vs_mission",
+        "result": "WARN",
+        "summary": (
+            "V175: machinery_hardening sprint does not declare mission_id. "
+            "Add mission_id: <MISSION_ID> to the declaration for traceability."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+@validator(rule_id="V182", domain="gap_lifecycle")
+def validate_no_open_implementation_verified_gaps(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V182 (TC-BOOL-004): WARN if any gaps have status=open AND current_state=implementation_verified.
+
+    These gaps are excluded from work item selection (_SKIP_STATUSES) and excluded from
+    the declared-sprint closure path (no work item → no gap_ledger_ref → no closure).
+    They are invisible to both pipelines — permanent limbo.
+
+    WARN only (not BLOCK): use close_implementation_verified_gaps() to resolve.
+    """
+    import json
+    _r = repo_root or Path(__file__).parent.parent.parent
+    ledger_path = _r / "reports" / "capability-layer" / "gap-ledger.json"
+    if not ledger_path.exists():
+        ledger_path = _r / "reports" / "capability-layer" / "gap-ledger-active.json"
+    if not ledger_path.exists():
+        return {
+            "validator": "validate_no_open_implementation_verified_gaps",
+            "result": "PASS",
+            "summary": "V182: gap-ledger.json not found — skipping",
+            "blocks_sprint": False,
+            "items": [],
+        }
+    try:
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {
+            "validator": "validate_no_open_implementation_verified_gaps",
+            "result": "PASS",
+            "summary": "V182: gap-ledger.json unreadable — skipping",
+            "blocks_sprint": False,
+            "items": [],
+        }
+    limbo_gaps = [
+        g.get("gap_id", "(no id)")
+        for g in ledger.get("gaps", [])
+        if g.get("status") == "open" and g.get("current_state") == "implementation_verified"
+    ]
+    if not limbo_gaps:
+        return {
+            "validator": "validate_no_open_implementation_verified_gaps",
+            "result": "PASS",
+            "summary": "V182: No open+implementation_verified limbo gaps found.",
+            "blocks_sprint": False,
+            "items": [],
+        }
+    return {
+        "validator": "validate_no_open_implementation_verified_gaps",
+        "result": "WARN",
+        "summary": (
+            f"V182: {len(limbo_gaps)} gap(s) have status=open AND "
+            "current_state=implementation_verified — excluded from both work selection "
+            "and closure pipeline. Run close_implementation_verified_gaps() to resolve."
+        ),
+        "blocks_sprint": False,
+        "items": limbo_gaps,
+    }

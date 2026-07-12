@@ -1,0 +1,10 @@
+gap_id: SKILL-GAP-003
+description: capability_compiler work-type not registered as skill
+disposition: DEFERRED_BY_DESIGN
+reasoning: tools/supervisor/capability_feature_compiler.py is a PIPELINE tool that
+  runs automatically in autonomous_cycle.py as Step 3. It is NOT user-invocable and
+  does NOT need a skill registration. The /build-capability-routes skill covers the
+  user-facing capability compilation workflow.
+closed_by: TC-SFE3-003
+date: '2026-07-12'
+proof_file: .supervisor/skill-gap-003-closure-proof.yaml

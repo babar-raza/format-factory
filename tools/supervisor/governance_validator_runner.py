@@ -65,7 +65,7 @@ from __future__ import annotations
 from pathlib import Path
 
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 187  # V176-V181 added (TC-OCRD-C6, 2026-07-12) + 6 V_VALIDATE_FI_* added (TC-FIOP-005, 2026-07-12)
+_EXPECTED_VALIDATOR_COUNT = 188  # V176-V181 added (TC-OCRD-C6, 2026-07-12) + 6 V_VALIDATE_FI_* added (TC-FIOP-005, 2026-07-12) + V182 (TC-BOOL-004, 2026-07-12)
 
 
 def get_expected_validator_count() -> int:

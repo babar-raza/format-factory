@@ -29,9 +29,9 @@
 | MCP-W1-004 | CLOSED |
 | MCP-W1-005 | CLOSED |
 | MCP-W1-006 | CLOSED |
-| MCP-W1-007 | OPEN |
-| MCP-W2-001 | OPEN |
-| MCP-W2-002 | OPEN |
+| MCP-W1-007 | CLOSED |
+| MCP-W2-001 | ALREADY_SATISFIED |
+| MCP-W2-002 | CLOSED |
 | MCP-W2-003 | OPEN |
 | MCP-W2-004 | OPEN |
 | MCP-W2-005 | OPEN |
@@ -132,9 +132,9 @@ Prior session result (2026-07-12): machinery 31/31 PASS, governance validators 1
 | 6 | W1 | bubbly-dancing-pony.md | prompt, signal, skip, lock assurance | MCP-W1-004 | CLOSED |
 | 7 | W1 | silly-popping-tower.md | operational control record foundations | MCP-W1-005 | CLOSED |
 | 8 | W1 | optimized-meandering-giraffe.md | found-issue ownership | MCP-W1-006 | CLOSED |
-| 9 | W1 | kind-crunching-coral.md | verified gap closure | MCP-W1-007 | OPEN |
-| 10 | W2 | imperative-floating-book.md | skill-only governance | MCP-W2-001 | OPEN |
-| 11 | W2 | wild-napping-cherny.md | skill-first enforcement | MCP-W2-002 | OPEN |
+| 9 | W1 | kind-crunching-coral.md | verified gap closure | MCP-W1-007 | CLOSED |
+| 10 | W2 | imperative-floating-book.md | skill-only governance | MCP-W2-001 | ALREADY_SATISFIED |
+| 11 | W2 | wild-napping-cherny.md | skill-first enforcement | MCP-W2-002 | CLOSED |
 | 12 | W2 | glimmering-hopping-kazoo.md | agent contract and parity | MCP-W2-003 | OPEN |
 | 13 | W2 | humble-hatching-lark.md | capability layer hardening | MCP-W2-004 | OPEN |
 | 14 | W2 | imperative-coalescing-bengio.md | Espanso capability integration | MCP-W2-005 | OPEN |

@@ -1,65 +1,12 @@
----
-pilot_id: C
-skill_ids:
-  - inventory-skills
-run_id: skill-first-89e03009
-started_at: "2026-06-24T00:00:00Z"
-completed_at: "2026-06-24T00:00:00Z"
-verdict: SKILL_CREATED_REGISTERED_AND_PROVEN
-idempotency_verdict: IDEMPOTENT_VERIFIED
-
-pre_condition_verified:
-  check: skill_inventory_not_in_active_mappings_before_creation
-  result: PASS
-  detail: "skill_inventory in active_mappings: False (confirmed before creating skill)"
-
-steps_completed:
-  - step: 1
-    action: verify_blocked
-    result: PASS
-    detail: "skill_inventory not in work-type-skill-map.yaml active_mappings (BLOCKED_SKILL_GAP confirmed)"
-  - step: 2
-    action: create_command_file
-    result: PASS
-    detail: ".claude/commands/inventory-skills.md created with full contract"
-  - step: 3
-    action: register_skill
-    result: PASS
-    detail: >
-      Added to .supervisor/skill-registry.yaml (49 total skills);
-      added skill_inventory: inventory-skills to work-type-skill-map.yaml active_mappings;
-      added to .claude/commands/command-registry.yaml
-  - step: 4
-    action: create_python_tool
-    result: PASS
-    detail: "tools/supervisor/skill_inventory.py created (74 LOC < 90 budget)"
-  - step: 5
-    action: run_skill
-    result: PASS
-    detail: "skill_inventory.py produced 62 entries (>= 62 required); status: complete"
-  - step: 6
-    action: verify_gate_v4
-    result: PASS
-    detail: "total_skills=62, status=complete, skill_inventory in active_mappings=True"
-
-test_results:
-  test_file: tests/supervisor/test_skill_inventory.py
-  tests_run: 7
-  tests_passed: 7
-  tests_failed: 0
-  verdict: ALL_PASS
-
-evidence_paths:
-  - .claude/commands/inventory-skills.md
-  - .supervisor/skill-registry.yaml
-  - .supervisor/work-type-skill-map.yaml
-  - .supervisor/skill-inventory.yaml
-  - tools/supervisor/skill_inventory.py
-  - tests/supervisor/test_skill_inventory.py
-
-notes: >
-  Pilot C proves the missing-skill creation workflow end-to-end:
-  (1) verified BLOCKED_SKILL_GAP pre-condition before creating skill,
-  (2) created skill from scratch following missing_skill_workflow protocol,
-  (3) registered in 3 registries, (4) ran tool, (5) verified output.
-  The skill was created AS PART of this pilot (not pre-created in TC-SF-003).
+pilot: C
+mission_id: SKILL-FIRST-003
+run_id: sfe3-004
+scenario: 'cli_stub_generation work-type: classify as one-time or create skill'
+cli_in_active_mappings: false
+disposition: DISPOSABLE_CLASSIFIED
+reasoning: cli_stub_generation was a one-time VWL sprint artifact. The 15 stubs are
+  now governed retroactively (retroactive transcript in reports/skills-r90/). No recurring
+  work-type.
+adhoc_migration_record: .supervisor/adhoc-migration-register.yaml
+verdict: DISPOSABLE_CLASSIFIED
+date: '2026-07-12'
