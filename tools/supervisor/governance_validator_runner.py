@@ -56,10 +56,25 @@ V126: validate_file_outside_approved_qname_layout — file outside approved QNam
 V127: validate_type_outside_approved_qname_hierarchy — class not in QName hierarchy (WARN, TC-ARC-012)
 V137: validate_no_stale_installed_packages — stale module dirs in site-packages defeat editable installs (FAIL+blocks for changed formats, TC-CPR-003)
 V138: validate_consumer_proof_evidence_exists — consumer-proof-manifest.json must exist with PASS entries (WARN-only, TC-CPR-003)
+V168: validate_dotnet_collection_stub_comments — COLLECTION_STUB and TODO(GI-FODS-NET-*) comments in src/net/ (WARN-only, TC-FGSQ-009)
+V169: validate_whitelist_expiry — whitelist entries past review_due date FAIL+blocks; within 30 days WARN (TC-FGSQ-006)
+V171: validate_lane_contract_exists — declaration lane_id must match .governance/lanes/lane-contracts.yaml (FAIL+blocks, TC-GFB-021)
 """
 from __future__ import annotations
 
 from pathlib import Path
+
+# RC-004: single source of truth for expected validator count
+_EXPECTED_VALIDATOR_COUNT = 187  # V176-V181 added (TC-OCRD-C6, 2026-07-12) + 6 V_VALIDATE_FI_* added (TC-FIOP-005, 2026-07-12)
+
+
+def get_expected_validator_count() -> int:
+    """Return the expected total governance validator count.
+
+    This is the single source of truth (RC-004 from shimmering-rolling-meerkat).
+    All tests and callers must import this instead of hardcoding the constant.
+    """
+    return _EXPECTED_VALIDATOR_COUNT
 
 
 def run_all_governance_validators(
@@ -317,6 +332,17 @@ def run_all_governance_validators(
         _validate_artifact_identity(declaration, repo_root),
         # V-SGF-001 (TC-SGF-002): Skill attribution in declaration — WARN on missing, BLOCK on unregistered
         _validate_skill_attribution(declaration, repo_root),
+    ]
+    # V-SGF-002 (TC-SGOV-W3-001): Skill execution receipt presence — WARN-only (EP-004)
+    # In separate try/except: sgov file is new; failures must not break the main results list.
+    try:
+        from governance_validators_sgov import (  # noqa: PLC0415
+            validate_skill_receipt_presence as _validate_receipt_presence,
+        )
+        results.append(_validate_receipt_presence(declaration, repo_root))
+    except Exception as _exc_vsgf2:
+        _skipped_validators.append({"validators": ["V-SGF-002"], "error": str(_exc_vsgf2)})
+    results += [
         # V73 (TC-DOTNET-QNAME-001): .NET Spec/ files must have SpecQName with correct value (WARN; FAIL for RELEASE_GATE)
         _validate_dotnet_spec_qname(declaration, repo_root),
         # V74 (TC-PDL-005): Block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false
@@ -433,19 +459,25 @@ def run_all_governance_validators(
         _skipped_validators.append({"validators": ["V92", "V93", "V94", "V95", "V96", "V97", "V98", "V99"], "error": str(_exc_v92)})
 
     # V87-V89 (GI-FODS-NET-001): .NET semantic stub validators
+    # V168 (TC-FGSQ-009): COLLECTION_STUB / TODO(GI-FODS-NET-*) comment detector
+    # V169 (TC-FGSQ-006): Whitelist entry expiry governance
     try:
         from governance_validators_dotnet_semantic import (  # noqa: PLC0415
             validate_dotnet_constant_return_public_api as _v87,
             validate_dotnet_detached_dictionary_fields as _v88,
             validate_dotnet_missingmethods_filename as _v89,
+            validate_dotnet_collection_stub_comments as _v168,
+            validate_whitelist_expiry as _v169,
         )
         results.extend([
             _v87(declaration, repo_root),  # V87
             _v88(declaration, repo_root),  # V88
             _v89(declaration, repo_root),  # V89
+            _v168(declaration, repo_root),  # V168
+            _v169(declaration, repo_root),  # V169
         ])
     except Exception as _exc_v87:
-        _skipped_validators.append({"validators": ["V87", "V88", "V89"], "error": str(_exc_v87)})
+        _skipped_validators.append({"validators": ["V87", "V88", "V89", "V168", "V169"], "error": str(_exc_v87)})
 
     # V100-V109 (TC-PQLM-012): Product file layout + code quality validators
     # Note: ext3 uses {validator_id, status, blocks_sprint} schema; normalize to {validator, result, blocks_sprint}
@@ -764,6 +796,67 @@ def run_all_governance_validators(
     except Exception as _exc_v149:
         _skipped_validators.append({"validators": ["V149"], "error": str(_exc_v149)})
 
+    # V171 (TC-GFB-021, 2026-07-11): Lane contract existence validator
+    # WARN if lane-contracts.yaml missing; FAIL+blocks if declared lane_id is invalid.
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_lane_contract_exists as _v171,
+        )
+        results.append(_v171(declaration, repo_root))
+    except Exception as _exc_v171:
+        _skipped_validators.append({"validators": ["V171"], "error": str(_exc_v171)})
+
+    # V176-V181 (TC-OCRD-C6, 2026-07-12): Control layer governance validators
+    try:
+        from governance_validators_control_layer import (  # noqa: PLC0415
+            validate_evidence_paths_resolve as _v176,
+            validate_receipt_claimed_before_closure as _v177,
+            validate_no_quarantined_plan_source as _v178,
+            validate_contradiction_signal_checked as _v179,
+            validate_gap_not_exhausted as _v180,
+            validate_sync_report_fresh as _v181,
+        )
+        for _vfn, _vid in [
+            (_v176, "V176"), (_v177, "V177"), (_v178, "V178"),
+            (_v179, "V179"), (_v180, "V180"), (_v181, "V181"),
+        ]:
+            try:
+                results.append(_vfn(declaration, repo_root))
+            except Exception as _exc_vn:
+                _skipped_validators.append({"validators": [_vid], "error": str(_exc_vn)})
+    except Exception as _exc_v176_block:
+        _skipped_validators.append({"validators": ["V176", "V177", "V178", "V179", "V180", "V181"],
+                                     "error": str(_exc_v176_block)})
+
+    # TC-FIOP-005 (2026-07-12): Section-21 found-issue validators
+    try:
+        from governance_validators_found_issue import (  # noqa: PLC0415
+            validate_found_issue_task_closure_unaccounted as _vfi_tc,
+            validate_found_issue_no_deleted_test_without_analysis as _vfi_nd,
+            validate_found_issue_downstream_patch_while_upstream_defective as _vfi_dp,
+            validate_found_issue_closure_without_verification as _vfi_cv,
+            validate_found_issue_untaskcarded_in_final_report as _vfi_ur,
+            validate_found_issue_no_fixture_edit_without_authority as _vfi_fx,
+        )
+        for _vfn, _vid in [
+            (_vfi_tc, "V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED"),
+            (_vfi_nd, "V_VALIDATE_FI_NO_DELETED_TEST"),
+            (_vfi_dp, "V_VALIDATE_FI_DOWNSTREAM_PATCH"),
+            (_vfi_cv, "V_VALIDATE_FI_CLOSURE_NO_VERIFY"),
+            (_vfi_ur, "V_VALIDATE_FI_UNTASKCARDED_REPORT"),
+            (_vfi_fx, "V_VALIDATE_FI_FIXTURE_EDIT"),
+        ]:
+            try:
+                results.append(_vfn(declaration, repo_root))
+            except Exception as _exc_vn:
+                _skipped_validators.append({"validators": [_vid], "error": str(_exc_vn)})
+    except Exception as _exc_vfi_block:
+        _skipped_validators.append({
+            "validators": ["V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED", "V_VALIDATE_FI_NO_DELETED_TEST",
+                           "V_VALIDATE_FI_DOWNSTREAM_PATCH", "V_VALIDATE_FI_CLOSURE_NO_VERIFY",
+                           "V_VALIDATE_FI_UNTASKCARDED_REPORT", "V_VALIDATE_FI_FIXTURE_EDIT"],
+            "error": str(_exc_vfi_block)})
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -801,6 +894,22 @@ def run_all_governance_validators(
     skipped_count = sum(len(s.get("validators", [1])) for s in _skipped_validators)
     ran_count = len(results)
 
+    # TC-MA2-VAL-001-02: Enforce validator count at runtime (REQ-VAL-001).
+    # Import failures in _skipped_validators reduce ran_count silently.
+    # Emit a WARNING when ran_count + skipped_count deviates from expected_count.
+    _count_ok = True
+    _count_delta = (ran_count + skipped_count) - _EXPECTED_VALIDATOR_COUNT
+    if _count_delta != 0:
+        _count_ok = False
+        import sys as _sys_val
+        print(
+            f"  [VALIDATOR-COUNT] WARNING: expected {_EXPECTED_VALIDATOR_COUNT} validators, "
+            f"ran {ran_count} + skipped {skipped_count} = {ran_count + skipped_count} "
+            f"(delta {_count_delta:+d}). "
+            "Update _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py or fix imports.",
+            file=_sys_val.stderr,
+        )
+
     return {
         "all_pass": fail_count == 0,
         "blocks_sprint": blocks_sprint,
@@ -810,10 +919,12 @@ def run_all_governance_validators(
         "validators": results,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
-        "expected_count": 167,  # V149 added (TC-PFF-R1, 2026-07-09)
+        "expected_count": _EXPECTED_VALIDATOR_COUNT,
         "registry_new": _registry_new,
         "registry_dedup": _registry_dedup,
         "ran_count": ran_count,
+        "count_ok": _count_ok,
+        "count_delta": _count_delta,
         "summary": (
             f"{pass_count} PASS / {warn_count} WARN / {fail_count} FAIL. "
             f"Blocks sprint: {blocks_sprint}."

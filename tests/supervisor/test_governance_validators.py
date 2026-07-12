@@ -485,11 +485,20 @@ class TestRunAllValidators:
         assert not result["all_pass"]
         assert result["fail_count"] >= 1
 
-    def test_result_has_12_validators(self):
+    def test_result_has_correct_validator_count(self):
+        # FI-016 (TC-FIOP-006, 2026-07-12): stale name "has_12_validators" and stale
+        # assertion ">= 38" replaced with authoritative-derived threshold.
+        # Authority: governance_validator_runner._EXPECTED_VALIDATOR_COUNT.
         from governance_validators import run_all_governance_validators
+        from governance_validator_runner import get_expected_validator_count
         decl = _decl([])
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) >= 38  # baseline: 38; may grow as validators are added
+        expected = get_expected_validator_count()
+        threshold = max(38, int(expected * 0.9))
+        assert len(result["validators"]) >= threshold, (
+            f"Expected >= {threshold} validators (90% of expected={expected}), "
+            f"got {len(result['validators'])}."
+        )
 
     def test_deprecated_queue_declared_fails_ungoverned(self):
         from governance_validators import run_all_governance_validators
@@ -2114,6 +2123,100 @@ class TestVSGF001SkillAttributionInDeclaration:
         )
 
 
+# ---------------------------------------------------------------------------
+# V-SGF-002 regression tests (TC-SGOV-W3-001)
+# ---------------------------------------------------------------------------
+
+class TestVSGF002SkillReceiptPresence:
+    """5 regression tests for validate_skill_receipt_presence (V-SGF-002)."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_sgov import validate_skill_receipt_presence
+        return validate_skill_receipt_presence
+
+    # T1: PASS when no PRODUCT_SOURCE items in declaration
+    def test_v_sgf_002_passes_with_no_product_source_items(self):
+        """No PRODUCT_SOURCE items → PASS (nothing to check)."""
+        validator = self._get_validator()
+        decl = {"planned_work_items": [{"item_id": "G-001", "item_type": "GOVERNANCE_CHANGE"}]}
+        result = validator(decl, None)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert "skipped" in result["summary"].lower() or "No PRODUCT" in result["summary"]
+
+    # T2: PASS when PRODUCT_SOURCE items have no declared_skill_ids (skipped — nothing to check)
+    def test_v_sgf_002_skips_items_without_declared_skill_ids(self):
+        """PRODUCT_SOURCE items without declared_skill_ids are not checked."""
+        validator = self._get_validator()
+        decl = {"planned_work_items": [{
+            "item_id": "W-001",
+            "item_type": "PRODUCT_SOURCE",
+            # no declared_skill_ids
+        }]}
+        result = validator(decl, None)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    # T3: WARN when receipts directory does not exist
+    def test_v_sgf_002_warns_when_receipts_dir_absent(self, tmp_path):
+        """If .local/skill-execution-receipts/ does not exist → WARN, not FAIL."""
+        validator = self._get_validator()
+        # tmp_path is a fresh temp dir — receipts dir guaranteed absent
+        decl = {"planned_work_items": [{
+            "item_id": "W-002",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": ["add-python-api"],
+        }]}
+        result = validator(decl, tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any(
+            item.get("reason") == "receipts_directory_absent"
+            for item in result.get("items", [])
+        )
+
+    # T4: WARN when receipts dir exists but no receipt for the declared skill
+    def test_v_sgf_002_warns_when_skill_has_no_receipt(self, tmp_path):
+        """Receipt dir exists but has no file for the declared skill → WARN."""
+        import os
+        receipts_dir = tmp_path / ".local" / "skill-execution-receipts"
+        receipts_dir.mkdir(parents=True)
+        # Create a receipt for a DIFFERENT skill
+        (receipts_dir / "some-other-skill-run001.yaml").write_text(
+            "skill_id: some-other-skill\n", encoding="utf-8"
+        )
+        validator = self._get_validator()
+        decl = {"planned_work_items": [{
+            "item_id": "W-003",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": ["add-python-api"],
+        }]}
+        result = validator(decl, tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    # T5: PASS when receipt file exists for the declared skill
+    def test_v_sgf_002_passes_when_receipt_exists(self, tmp_path):
+        """Receipt file for the declared skill exists → PASS."""
+        import os
+        receipts_dir = tmp_path / ".local" / "skill-execution-receipts"
+        receipts_dir.mkdir(parents=True)
+        (receipts_dir / "add-python-api-run001.yaml").write_text(
+            "skill_id: add-python-api\nrun_id: run001\n", encoding="utf-8"
+        )
+        validator = self._get_validator()
+        decl = {"planned_work_items": [{
+            "item_id": "W-004",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": ["add-python-api"],
+        }]}
+        result = validator(decl, tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+
 class TestV66Upgraded:
     """4 regression tests for V66 validate_multi_responsibility_file — now blocks_sprint=True."""
 
@@ -3349,7 +3452,10 @@ class TestValidatorCountInvariant:
     """TC-BF-005-05: Assert that the governance validator registry contains >= 154 entries."""
 
     def test_validator_count_invariant(self):
-        """_VALIDATOR_REGISTRY must contain >= 154 validators after decorating all validate_* functions."""
+        """_VALIDATOR_REGISTRY must contain >= 154 validators after decorating all validate_* functions.
+
+        RC-004: threshold now derived from get_expected_validator_count() (shimmering-rolling-meerkat).
+        """
         import sys
         import importlib
         import glob
@@ -3361,6 +3467,7 @@ class TestValidatorCountInvariant:
             sys.path.insert(0, supervisor_path)
 
         from governance_validators_contract import _VALIDATOR_REGISTRY
+        from governance_validator_runner import get_expected_validator_count
 
         # Import all governance validator modules to trigger @validator decorators
         for f in sorted(glob.glob(os.path.join(supervisor_path, 'governance_validators*.py'))):
@@ -3373,8 +3480,12 @@ class TestValidatorCountInvariant:
                 pass
 
         count = len(_VALIDATOR_REGISTRY)
-        assert count >= 154, (
-            f"Expected >= 154 validators in _VALIDATOR_REGISTRY, got {count}. "
+        expected = get_expected_validator_count()
+        # Registry count should be at least 90% of expected (allows for env import gaps)
+        threshold = max(154, int(expected * 0.9))
+        assert count >= threshold, (
+            f"Expected >= {threshold} validators in _VALIDATOR_REGISTRY "
+            f"(90% of expected={expected}), got {count}. "
             "TC-BF-005 requires @validator decorator on all validate_* functions."
         )
 

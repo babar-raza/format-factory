@@ -619,12 +619,6 @@ def ppm_channel_contrast_sum(file_path: "str | Path") -> int:
     return sum(abs(p[0] - p[1]) + abs(p[1] - p[2]) + abs(p[0] - p[2]) for p in img.pixels)
 
 
-def ppm_is_grayscale(file_path: "str | Path") -> bool:
-    """Return True if all pixels have equal R, G, B channel values."""
-    img = parse_ppm_strict(file_path)
-    return all(p[0] == p[1] == p[2] for p in img.pixels)
-
-
 def ppm_red_channel_ratio(file_path: "str | Path") -> float:
     """Return fraction of total channel energy carried by the red channel."""
     img = parse_ppm_strict(file_path)

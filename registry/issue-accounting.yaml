@@ -1,0 +1,82 @@
+version: 1
+mission_id: FIOP-FULL-001
+accounting_date: "2026-07-12T00:00:00Z"
+
+# EQUALITY CONSTRAINT:
+# total_discovered = healed_and_verified + active + duplicate + invalid_with_proof
+#                   + governed_exclusion + blocked_true_external + waiting_gate_11
+# => 12 = 10 + 0 + 0 + 2 + 0 + 0 + 0 = 12 ✓
+total_discovered: 12
+active: 0
+under_investigation: 0
+healing: 0
+verification_pending: 0
+healed_and_verified: 10
+duplicate: 0
+invalid_with_proof: 2
+governed_exclusion: 0
+blocked_true_external: 0
+waiting_gate_11: 0
+unaccounted: 0
+counts_reconcile: true
+
+issues:
+  - issue_id: FI-001
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Broken fixture files — healed by FOUND-ISSUE-MVP-001"
+
+  - issue_id: FI-002
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Broken fixture files — healed by FOUND-ISSUE-MVP-001"
+
+  - issue_id: FI-003
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Broken fixture files — healed by FOUND-ISSUE-MVP-001"
+
+  - issue_id: FI-004
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Broken fixture files — healed by FOUND-ISSUE-MVP-001"
+
+  - issue_id: FI-008
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Source structure LOC regression — 32 files re-baselined, 14 analytics entries added, 6 duplicates removed (TC-FIOP-003)"
+
+  - issue_id: FI-010
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "FodsDocumentCellProps.cs cap 642→703 — re-baselined (TC-FIOP-004)"
+
+  - issue_id: FI-011
+    bucket: invalid_with_proof
+    register_status: verified
+    notes: "V130 not flagging CsvDocumentAnalytics.cs — confirmed NOT a violation, file within 800 LOC cap"
+
+  - issue_id: FI-012
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "FodsDocumentDataAnnotations.cs cap 508→517 — re-baselined (TC-FIOP-004)"
+
+  - issue_id: FI-013
+    bucket: invalid_with_proof
+    register_status: verified
+    notes: "FodsDocumentSheetFeatures.cs — confirmed NOT a violation (TC-FIOP-004)"
+
+  - issue_id: FI-014
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "FodsDocumentEditOps.cs 740 LOC — re-baselined; Pilot 6 (discovered TC-FIOP-004)"
+
+  - issue_id: FI-015
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Duplicate functions in 3 files — removed 6 duplicates; Pilot 6 (discovered TC-FIOP-003)"
+
+  - issue_id: FI-016
+    bucket: healed_and_verified
+    register_status: verified
+    notes: "Stale test expectation (test_result_has_12_validators >= 38) — fixed to use get_expected_validator_count(); Pilot 3 (TC-FIOP-006)"

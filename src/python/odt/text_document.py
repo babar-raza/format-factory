@@ -590,30 +590,6 @@ def odt_nonspace_char_count(file_path: str | Path) -> int:
     return sum(1 for c in text if not c.isspace())
 
 
-def odt_has_headings(file_path: str | Path) -> bool:
-    """Return True if the document contains at least one heading element."""
-    doc = parse_odt_strict(file_path)
-    return len(doc.headings) > 0
-
-
-def odt_avg_paragraph_length(file_path: str | Path) -> float:
-    """Return average character count per paragraph. 0.0 if no paragraphs."""
-    doc = parse_odt_strict(file_path)
-    paras = doc.paragraphs
-    if not paras:
-        return 0.0
-    return sum(len(p.text) for p in paras) / len(paras)
-
-
-def odt_max_paragraph_length(file_path: str | Path) -> int:
-    """Return character count of the longest paragraph. 0 if no paragraphs."""
-    doc = parse_odt_strict(file_path)
-    paras = doc.paragraphs
-    if not paras:
-        return 0
-    return max(len(p.text) for p in paras)
-
-
 def odt_has_single_paragraph(file_path: str | Path) -> bool:
     """Return True if the document contains exactly one paragraph."""
     doc = parse_odt_strict(file_path)

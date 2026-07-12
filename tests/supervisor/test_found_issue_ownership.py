@@ -293,3 +293,132 @@ def test_all_validators_pass_missing_register():
     assert validate_issue_accounting_reconciles({}, td)["result"] == "PASS"
     assert validate_no_prose_only_findings({})["result"] == "PASS"
     assert validate_invalid_ownership_disposition({}, td)["result"] == "PASS"
+
+
+# ---------------------------------------------------------------------------
+# TC-FIOP-005: Section-21 Validators (V_VALIDATE_FI_*)
+# ---------------------------------------------------------------------------
+
+from governance_validators_found_issue import (  # noqa: E402
+    validate_found_issue_task_closure_unaccounted,
+    validate_found_issue_no_deleted_test_without_analysis,
+    validate_found_issue_downstream_patch_while_upstream_defective,
+    validate_found_issue_closure_without_verification,
+    validate_found_issue_untaskcarded_in_final_report,
+    validate_found_issue_no_fixture_edit_without_authority,
+)
+
+
+def test_vfi_task_closure_unaccounted_blocks_when_undisposed():
+    """V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED: FAIL if undisposed issues at closure."""
+    decl = {
+        "worker_self_grade": "PASS",
+        "found_issues": [{"issue_id": "FI-TEST", "disposition": None}],
+    }
+    r = validate_found_issue_task_closure_unaccounted(decl)
+    assert r["result"] == "FAIL"
+    assert r["blocks_sprint"] is True
+
+
+def test_vfi_task_closure_unaccounted_pass_when_all_disposed():
+    """V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED: PASS when all issues disposed."""
+    decl = {
+        "worker_self_grade": "PASS",
+        "found_issues": [{"issue_id": "FI-TEST", "disposition": "HEALED_AND_VERIFIED"}],
+    }
+    r = validate_found_issue_task_closure_unaccounted(decl)
+    assert r["result"] == "PASS"
+
+
+def test_vfi_no_deleted_test_pass_when_no_removed_tests():
+    """V_VALIDATE_FI_NO_DELETED_TEST: PASS if no removed test files."""
+    decl = {"changed_files": ["src/python/fods/models.py"]}
+    r = validate_found_issue_no_deleted_test_without_analysis(decl)
+    assert r["result"] == "PASS"
+    assert r["blocks_sprint"] is False
+
+
+def test_vfi_downstream_patch_warn_when_govblock_downstream_only():
+    """V_VALIDATE_FI_DOWNSTREAM_PATCH: WARN if GOV_BLOCK present but only reports/ changed."""
+    decl = {
+        "rework_items": [{"validator": "GOV_BLOCK:monolith_detection_validator"}],
+        "changed_files": ["reports/supervisor/next-sprint.md"],
+    }
+    r = validate_found_issue_downstream_patch_while_upstream_defective(decl)
+    assert r["result"] == "WARN"
+    assert r["blocks_sprint"] is False
+
+
+def test_vfi_downstream_patch_pass_when_upstream_changed():
+    """V_VALIDATE_FI_DOWNSTREAM_PATCH: PASS if src/ files changed alongside GOV_BLOCK."""
+    decl = {
+        "rework_items": ["GOV_BLOCK:monolith_detection_validator"],
+        "changed_files": ["src/python/fods/models.py", "reports/supervisor/next-sprint.md"],
+    }
+    r = validate_found_issue_downstream_patch_while_upstream_defective(decl)
+    assert r["result"] == "PASS"
+
+
+def test_vfi_closure_no_verify_fails_when_missing_verdict(tmp_path):
+    """V_VALIDATE_FI_CLOSURE_NO_VERIFY: FAIL if closed issue has no verification_verdict."""
+    reg = tmp_path / "registry" / "found-issue-register.yaml"
+    reg.parent.mkdir(parents=True)
+    reg.write_text(
+        "issues:\n"
+        "  - issue_id: FI-X\n"
+        "    disposition: HEALED_AND_VERIFIED\n"
+        "    verification_verdict: null\n"
+    )
+    r = validate_found_issue_closure_without_verification({}, tmp_path)
+    assert r["result"] == "FAIL"
+    assert r["blocks_sprint"] is True
+
+
+def test_vfi_closure_no_verify_pass_when_verdict_present(tmp_path):
+    """V_VALIDATE_FI_CLOSURE_NO_VERIFY: PASS if closed issue has verification_verdict."""
+    reg = tmp_path / "registry" / "found-issue-register.yaml"
+    reg.parent.mkdir(parents=True)
+    reg.write_text(
+        "issues:\n"
+        "  - issue_id: FI-X\n"
+        "    disposition: HEALED_AND_VERIFIED\n"
+        "    verification_verdict: 'All tests PASS'\n"
+    )
+    r = validate_found_issue_closure_without_verification({}, tmp_path)
+    assert r["result"] == "PASS"
+
+
+def test_vfi_untaskcarded_report_warn_when_issue_lang_no_found_issues():
+    """V_VALIDATE_FI_UNTASKCARDED_REPORT: WARN if issue language without found_issues."""
+    decl = {"worker_self_verdict": "The test failed unexpectedly.", "found_issues": []}
+    r = validate_found_issue_untaskcarded_in_final_report(decl)
+    assert r["result"] == "WARN"
+    assert r["blocks_sprint"] is False
+
+
+def test_vfi_untaskcarded_report_pass_when_found_issues_present():
+    """V_VALIDATE_FI_UNTASKCARDED_REPORT: PASS if found_issues present."""
+    decl = {
+        "worker_self_verdict": "The test failed unexpectedly.",
+        "found_issues": [{"issue_id": "FI-X", "disposition": "HEALED_AND_VERIFIED"}],
+    }
+    r = validate_found_issue_untaskcarded_in_final_report(decl)
+    assert r["result"] == "PASS"
+
+
+def test_vfi_fixture_edit_warn_when_fixture_changed_no_authority():
+    """V_VALIDATE_FI_FIXTURE_EDIT: WARN if fixture file changed without authority."""
+    decl = {"changed_files": ["tests/fods/fixtures/sample.yaml"]}
+    r = validate_found_issue_no_fixture_edit_without_authority(decl)
+    assert r["result"] == "WARN"
+    assert r["blocks_sprint"] is False
+
+
+def test_vfi_fixture_edit_pass_when_found_issues_present():
+    """V_VALIDATE_FI_FIXTURE_EDIT: PASS if found_issues present (authority established)."""
+    decl = {
+        "changed_files": ["tests/fods/fixtures/sample.yaml"],
+        "found_issues": [{"issue_id": "FI-X"}],
+    }
+    r = validate_found_issue_no_fixture_edit_without_authority(decl)
+    assert r["result"] == "PASS"

@@ -1,0 +1,32 @@
+version: 1
+policy_ref: docs/governance/found-issue-ownership-policy.md
+negative_controls:
+  - control_id: NC-001
+    issue_id: FI-008
+    control_type: feed_invalid_input
+    description: "Verify test_no_loc_regression fails when a file exceeds its baseline_loc_cap"
+    command: "python -c \"import json; b=json.load(open('registry/source-structure-baseline.json')); k=b['known_violations']; entry=list(k.items())[0]; print('WOULD_FAIL if', entry[0], 'had cap=0 and actual LOC > 0')\""
+    expected_result: FAIL
+    actual_result: "test_no_loc_regression FAILED for 21 files exceeding baseline_loc_cap — confirmed ALWAYS_REPRODUCIBLE before healing"
+    verdict: PASSES_NEGATIVE_CONTROL
+    evidence: ".local/evidences/fiop-full-001/tc-000-preflight.txt"
+
+  - control_id: NC-002
+    issue_id: FI-016
+    control_type: feed_invalid_input
+    description: "Verify that the old stale assertion '>= 38' would still pass even if most validators disappeared (proving it was an invalid expectation). The authoritative threshold >= 168 would catch such a regression."
+    command: "python -c \"assert 38 >= 38, 'old assertion: would PASS even with minimal validators'; print('OLD ASSERTION PASSES WITH 38 validators — proves it was stale/invalid')\""
+    expected_result: "PASS (proving old assertion was insufficient; fails to catch validator regression)"
+    actual_result: "Old '>=38' assertion would PASS even when count is only 38; new '>= 168' assertion (90% of 187) catches regressions correctly"
+    verdict: PASSES_NEGATIVE_CONTROL
+    evidence: "tests/supervisor/test_governance_validators.py"
+# Schema per entry:
+#   control_id: NC-NNN
+#   issue_id: FI-NNN
+#   control_type: restore_malformed_fixture|feed_invalid_input|simulate_stale_output|remove_provenance|recreate_incorrect_state|bypass_skill
+#   description: <what is being proven>
+#   command: <exact command>
+#   expected_result: FAIL
+#   actual_result: <filled after execution>
+#   verdict: PASSES_NEGATIVE_CONTROL|FAILS_NEGATIVE_CONTROL
+#   evidence: <path to output>

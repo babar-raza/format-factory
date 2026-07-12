@@ -434,3 +434,166 @@ def validate_invalid_ownership_disposition(
             )
 
     return _result("V142", "invalid_ownership_disposition", not invalid, invalid, True)
+
+
+# ---------------------------------------------------------------------------
+# TC-FIOP-005: Section-21 Validators (V_VALIDATE_FI_*)
+# ---------------------------------------------------------------------------
+
+
+@validator(rule_id="V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED", domain="found_issue")
+def validate_found_issue_task_closure_unaccounted(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED: Block sprint if undisposed issues exist at closure.
+
+    FAIL+blocks_sprint if declaration has any found_issues entry without disposition
+    AND the worker_self_grade is PASS or PARTIAL (indicating a closure attempt).
+    """
+    grade = declaration.get("worker_self_grade", "")
+    if grade not in ("PASS", "PARTIAL"):
+        return _result("V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED",
+                       "found_issue_task_closure_unaccounted", True, [], True)
+    found_issues = declaration.get("found_issues") or []
+    undisposed = [
+        fi.get("issue_id", "(no id)")
+        for fi in found_issues
+        if isinstance(fi, dict) and not fi.get("disposition")
+    ]
+    return _result("V_VALIDATE_FI_TASK_CLOSURE_UNACCOUNTED",
+                   "found_issue_task_closure_unaccounted", not undisposed,
+                   [f"{iid}: no disposition set" for iid in undisposed], True)
+
+
+@validator(rule_id="V_VALIDATE_FI_NO_DELETED_TEST", domain="found_issue")
+def validate_found_issue_no_deleted_test_without_analysis(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_NO_DELETED_TEST: WARN if tests removed without analysis.
+
+    WARN-only (blocks_sprint=False) — test_removal_analysis is a new optional field.
+    """
+    import re
+    changed = declaration.get("changed_files") or []
+    removed_tests = [
+        f for f in changed
+        if isinstance(f, str) and re.search(r"tests[/\\].*test_.*\.py$", f)
+        and declaration.get("removed_files") and f in declaration.get("removed_files", [])
+    ]
+    if not removed_tests or declaration.get("test_removal_analysis"):
+        return _result("V_VALIDATE_FI_NO_DELETED_TEST",
+                       "found_issue_no_deleted_test_without_analysis", True, [], False)
+    return _result("V_VALIDATE_FI_NO_DELETED_TEST",
+                   "found_issue_no_deleted_test_without_analysis", False,
+                   [f"Removed test file without analysis: {f}" for f in removed_tests], False)
+
+
+@validator(rule_id="V_VALIDATE_FI_DOWNSTREAM_PATCH", domain="found_issue")
+def validate_found_issue_downstream_patch_while_upstream_defective(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_DOWNSTREAM_PATCH: WARN if only downstream changes with active GOV_BLOCK.
+
+    Advisory — warns when rework_items contains GOV_BLOCK but all changed files are reports/registry.
+    """
+    rework = declaration.get("rework_items") or []
+    has_govblock = any(
+        "GOV_BLOCK" in str(item) for item in rework
+        if isinstance(item, (str, dict))
+    )
+    if not has_govblock:
+        return _result("V_VALIDATE_FI_DOWNSTREAM_PATCH",
+                       "found_issue_downstream_patch_while_upstream_defective", True, [], False)
+    changed = declaration.get("changed_files") or []
+    has_upstream = any(
+        isinstance(f, str) and (f.startswith("src/") or f.startswith("tools/"))
+        for f in changed
+    )
+    if has_upstream:
+        return _result("V_VALIDATE_FI_DOWNSTREAM_PATCH",
+                       "found_issue_downstream_patch_while_upstream_defective", True, [], False)
+    return _result("V_VALIDATE_FI_DOWNSTREAM_PATCH",
+                   "found_issue_downstream_patch_while_upstream_defective", False,
+                   ["Evidence suggests downstream-only changes while upstream GOV_BLOCK remains unresolved"],
+                   False)
+
+
+@validator(rule_id="V_VALIDATE_FI_CLOSURE_NO_VERIFY", domain="found_issue")
+def validate_found_issue_closure_without_verification(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_CLOSURE_NO_VERIFY: FAIL if any closed issue lacks verification_verdict.
+
+    FAIL+blocks_sprint if a HEALED_AND_VERIFIED or closed issue has null/empty verification_verdict.
+    """
+    repo = repo_root or Path(__file__).parent.parent.parent
+    register_path = repo / "registry" / "found-issue-register.yaml"
+    if not register_path.exists():
+        return _result("V_VALIDATE_FI_CLOSURE_NO_VERIFY",
+                       "found_issue_closure_without_verification", True, [], True)
+    try:
+        import yaml as _yaml
+        data = _yaml.safe_load(register_path.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return _result("V_VALIDATE_FI_CLOSURE_NO_VERIFY",
+                       "found_issue_closure_without_verification", True, [], True)
+    issues = data.get("issues") or []
+    unverified = [
+        issue.get("issue_id", "(no id)")
+        for issue in issues
+        if isinstance(issue, dict)
+        and issue.get("disposition") in ("HEALED_AND_VERIFIED",)
+        and not issue.get("verification_verdict")
+    ]
+    return _result("V_VALIDATE_FI_CLOSURE_NO_VERIFY",
+                   "found_issue_closure_without_verification", not unverified,
+                   [f"{iid}: closed as HEALED_AND_VERIFIED but no verification_verdict" for iid in unverified],
+                   True)
+
+
+@validator(rule_id="V_VALIDATE_FI_UNTASKCARDED_REPORT", domain="found_issue")
+def validate_found_issue_untaskcarded_in_final_report(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_UNTASKCARDED_REPORT: WARN if issue-language in verdict without found_issues.
+
+    Advisory — WARN if worker_self_verdict contains issue keywords but found_issues is empty.
+    """
+    import re
+    verdict = declaration.get("worker_self_verdict", "") or ""
+    issue_pattern = re.compile(
+        r"\b(failed|broken|error in|cannot|exception|invalid)\b", re.IGNORECASE
+    )
+    ok_pattern = re.compile(r"\b(no |all |0 |zero )\w*\s*(failed|broken|error|invalid)\b", re.IGNORECASE)
+    has_issue_lang = bool(issue_pattern.search(verdict)) and not bool(ok_pattern.search(verdict))
+    found_issues = declaration.get("found_issues") or []
+    if not has_issue_lang or found_issues:
+        return _result("V_VALIDATE_FI_UNTASKCARDED_REPORT",
+                       "found_issue_untaskcarded_in_final_report", True, [], False)
+    return _result("V_VALIDATE_FI_UNTASKCARDED_REPORT",
+                   "found_issue_untaskcarded_in_final_report", False,
+                   ["Issue-language detected in worker_self_verdict but found_issues is empty — consider registering"],
+                   False)
+
+
+@validator(rule_id="V_VALIDATE_FI_FIXTURE_EDIT", domain="found_issue")
+def validate_found_issue_no_fixture_edit_without_authority(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V_VALIDATE_FI_FIXTURE_EDIT: WARN if fixture files changed without authority reference.
+
+    Advisory — WARN if test fixture files are changed without found_issues entries or fixture_authority_ref.
+    """
+    import re
+    changed = declaration.get("changed_files") or []
+    fixture_pattern = re.compile(r"tests[/\\].*\.(yaml|json|txt|csv|ods|fods|tsv)$")
+    fixture_changes = [f for f in changed if isinstance(f, str) and fixture_pattern.search(f)]
+    found_issues = declaration.get("found_issues") or []
+    has_authority = bool(declaration.get("fixture_authority_ref")) or bool(found_issues)
+    if not fixture_changes or has_authority:
+        return _result("V_VALIDATE_FI_FIXTURE_EDIT",
+                       "found_issue_no_fixture_edit_without_authority", True, [], False)
+    return _result("V_VALIDATE_FI_FIXTURE_EDIT",
+                   "found_issue_no_fixture_edit_without_authority", False,
+                   [f"Fixture file changed without authority: {f}" for f in fixture_changes[:5]],
+                   False)

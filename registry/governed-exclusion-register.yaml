@@ -1,0 +1,25 @@
+version: 1
+policy_ref: docs/governance/found-issue-ownership-policy.md
+exclusions:
+  - exclusion_id: GE-001
+    issue_id: null
+    authority: TC-FIOP-008 (Pilot 5)
+    rationale: "3 consecutive governance validator runs produced identical output (169 PASS / 20 WARN / 0 FAIL). No flaky behavior observed. Stability proof satisfies Pilot 5 requirement per FIOP-FULL-001 §4.5."
+    evidence:
+      - ".local/evidences/fiop-full-001/tc-008-pilot5.txt"
+    affected_scope: "governance_validator_runner — all 187 validators"
+    risks: "Flakiness could emerge with different input declarations (time-dependent or path-dependent validators). Current stability proven only for empty declaration."
+    future_trigger: "If governance test suite introduces intermittent failures, register a new FI entry."
+    reviewer: FIOP-FULL-001 autonomous agent
+    status: active
+# Schema per entry:
+#   exclusion_id: GE-NNN
+#   issue_id: FI-NNN
+#   authority: <who authorized>
+#   rationale: <proof-backed reason, not "pre-existing">
+#   evidence: []
+#   affected_scope: <what is excluded>
+#   risks: <known risks>
+#   future_trigger: <condition that re-opens>
+#   reviewer: <approver>
+#   status: active | superseded

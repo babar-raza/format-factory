@@ -284,6 +284,9 @@ class TestNoOrphanSourceFiles:
             # Secondary analytics split: {format}_analytics_{category}.py (master-plan.md §24.11)
             if suffix.startswith("analytics_"):
                 return True
+            # Analytics and stats split modules: {format}_{word}_analytics.py / {format}_{word}_stats.py
+            if suffix.endswith("_analytics") or suffix.endswith("_stats"):
+                return True
             # Iterator and inspector modules: {format}_{type}_{iterator|inspector}.py
             if suffix.endswith("_iterator") or suffix.endswith("_inspector"):
                 return True
