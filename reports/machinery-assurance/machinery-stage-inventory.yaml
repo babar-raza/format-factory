@@ -1,9 +1,10 @@
 ---
 # Machinery Stage Inventory
-# Mission: MA-2026-07-02-R1227-NDJSON-TOML
+# Mission: VWM-2026-07-10
 # Scope: Python FOSS product deepening pipeline + supervisor automation loop
-# Generated: 2026-07-02
+# Generated: 2026-07-13; supervisor_pipeline_stages added 2026-07-14 (CT-VWM-002)
 # Required: UNINVENTORIED_MACHINERY_STAGES = 0, UNCLASSIFIED_BYPASS_PATHS = 0
+mission_id: VWM-2026-07-10
 
 machinery_stages:
 
@@ -465,3 +466,266 @@ bypass_paths_summary:
 counters:
   UNINVENTORIED_MACHINERY_STAGES: 0
   UNCLASSIFIED_BYPASS_PATHS: 0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SUPERVISOR PIPELINE MACHINERY STAGES (added CT-VWM-002, 2026-07-14)
+# These are the autonomous_cycle.py pipeline stages, distinct from the
+# product-sprint workflow stages above.
+# ─────────────────────────────────────────────────────────────────────────────
+supervisor_pipeline_stages:
+
+  - stage_id: S01
+    name: evidence-declaration-validation
+    module: tools/supervisor/evidence_declaration.py
+    function: validate_declaration
+    description: >
+      Validates the evidence-declaration.yaml against the canonical schema.
+      Checks required fields (sprint_id, work_items, changed_files), status values,
+      and evidence_paths presence. Blocking — cycle fails on schema error.
+    state_reads: []
+    state_writes: []
+    blocking: true
+    bypass_flags: []
+
+  - stage_id: S02
+    name: evidence-inspection
+    module: tools/supervisor/inspect_declared_evidence.py
+    function: inspect_declaration
+    description: >
+      Confirms each evidence_paths entry exists on disk. Checks SHA-256 where
+      declared. Extracts test result metadata (pass/fail counts).
+    state_reads:
+      - .local/evidences/<run_id>/ (evidence files)
+    state_writes: []
+    blocking: true
+    bypass_flags: []
+
+  - stage_id: S03
+    name: evidence-grading
+    module: tools/supervisor/grade_declared_work.py
+    function: grade_all / write_outputs
+    description: >
+      Grades each work_item independently. Applies grader_reliability.py checks.
+      Shadow grading path (_grade_item_shadow) is active when
+      .local/supervisor/grader-shadow-registry.yaml has entries.
+      Writes evidence-review.json with per-item verdicts.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml
+    state_writes:
+      - .local/supervisor/reviews/<run_id>/evidence-review.json
+      - .local/supervisor/canary/grader-shadow-observations.jsonl (if shadow active)
+    blocking: true
+    bypass_flags:
+      - SHADOW_GRADE_ONLY (writes shadow log but does not change main verdict)
+
+  - stage_id: S04
+    name: next-worker-prompt-generation
+    module: tools/supervisor/generate_next_worker_prompt.py
+    function: generate_prompt / generate_next_work_items
+    description: >
+      Generates next-sprint.md, approval-gates.md, session-resume.md, and
+      next-work-items.json based on grading results and gap ledger state.
+    state_reads:
+      - .local/supervisor/reviews/<run_id>/evidence-review.json
+      - reports/supervisor/product-quality/product-code-gap-ledger.yaml
+      - .local/supervisor/continuation-signal.json
+    state_writes:
+      - reports/supervisor/next-sprint.md
+      - reports/supervisor/approval-gates.md
+      - reports/supervisor/session-resume.md
+      - reports/supervisor/next-work-items.json
+    blocking: false
+    bypass_flags:
+      - GOVERNED_FALLBACK: agent reads next-sprint.md directly when generator fails
+
+  - stage_id: S05
+    name: evidence-manifest
+    module: tools/supervisor/evidence_manifest.py
+    function: generate_from_declaration / validate_manifest / write_manifest
+    description: >
+      Generates a canonical evidence manifest from the declaration,
+      validates against the manifest schema, and writes alongside the declaration.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml
+    state_writes:
+      - .local/evidences/<run_id>/evidence-manifest.json
+    blocking: false
+    bypass_flags: []
+
+  - stage_id: S06
+    name: evidence-materialization
+    module: tools/supervisor/materialize_declared_evidence.py
+    function: materialize
+    description: >
+      Confirms declared evidence_paths files exist and copies referenced artifacts
+      into the review staging area.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml (paths)
+    state_writes:
+      - .local/supervisor/reviews/<run_id>/materialized/ (directory copy)
+    blocking: false
+    bypass_flags: []
+
+  - stage_id: S07
+    name: context-pack-build
+    module: tools/supervisor/build_context_pack.py
+    function: build_context_pack / generate_md
+    description: >
+      Builds .supervisor/context-pack.yaml summarizing repository state, active
+      plans, and continuation context for the next agent session.
+    state_reads:
+      - .supervisor/context-pack.yaml (template)
+      - .local/supervisor/continuation-signal.json
+    state_writes:
+      - .supervisor/context-pack.yaml
+    blocking: false
+    bypass_flags: []
+
+  - stage_id: S08
+    name: anti-skip-check
+    module: tools/supervisor/anti_skip_checker.py
+    function: run_all_checks
+    description: >
+      Verifies critical work items were not silently skipped. Produces
+      anti-skip-result.json. Blocking — hard stops detected here propagate.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml
+      - .local/supervisor/reviews/<run_id>/evidence-review.json
+    state_writes:
+      - .local/supervisor/reviews/<run_id>/anti-skip-result.json
+    blocking: true
+    bypass_flags:
+      - anti_skip_critical_block with empty rework_items = false positive (continue)
+
+  - stage_id: S09
+    name: failure-memory-update
+    module: tools/supervisor/failure_memory.py
+    function: FailureMemory.record()
+    description: >
+      Records grading failures to failure-memory.json to avoid repeated patterns
+      in future sprint prompts. Best-effort — failure does not block sprint.
+    state_reads:
+      - .local/supervisor/reviews/<run_id>/evidence-review.json
+    state_writes:
+      - .local/supervisor/failure-memory.json
+    blocking: false
+    bypass_flags: []
+
+  - stage_id: S10
+    name: governance-validation
+    module: tools/supervisor/governance_validator_runner.py
+    function: run_all_governance_validators
+    description: >
+      Runs all 210 governance validators. Validator shadow routing via
+      _apply_shadow_routing() suppresses shadow entries in validator-shadow-registry.yaml.
+      Four named validators are GOV_BLOCK structural failures that prevent product
+      deepening until resolved.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml
+      - src/ (changed product files)
+      - .supervisor/validator-shadow-registry.yaml (optional)
+    state_writes:
+      - .local/supervisor/reviews/<run_id>/governance-validation-result.json
+      - .local/supervisor/canary/validator-shadow-observations.jsonl (if shadow active)
+    blocking: true
+    bypass_flags:
+      - validator exception fallback degrades to WARN (blocks_sprint=False) — not a bypass
+    gov_block_validators:
+      - GOV_BLOCK:monolith_detection_validator
+      - GOV_BLOCK:validate_source_architecture
+      - GOV_BLOCK:validate_multi_responsibility_file
+      - GOV_BLOCK:validate_analytics_naming_enforced
+
+  - stage_id: S11
+    name: continuation-signal-write
+    module: tools/supervisor/autonomous_cycle.py (inline) + continuation_state.py
+    function: _validate_and_correct_signal_coherence (inline in autonomous_cycle.py)
+    description: >
+      Writes updated continuation-signal.json based on grading results and governance
+      outcomes. Validates signal coherence (stop_reason/autonomous_continue agreement).
+      Increments iteration counter.
+    state_reads:
+      - .local/supervisor/continuation-signal.json (current)
+    state_writes:
+      - .local/supervisor/continuation-signal.json (updated)
+    blocking: true
+    bypass_flags: []
+
+  - stage_id: S12
+    name: plan-lock-management
+    module: tools/supervisor/write_plan_lock.py
+    function: main (CLI)
+    description: >
+      Updates plan lock files for the active per-chat plan. Writes status:
+      IN_PROGRESS, COMPLETE, or TERMINAL_CLOSED. check_continuation.py reads
+      plan-locks/<session_id>.json to enforce POST_PLAN_TERMINAL hard stop.
+    state_reads:
+      - .local/supervisor/active-plan-lock.json
+      - .local/supervisor/plan-locks/<session_id>.json (current)
+    state_writes:
+      - .local/supervisor/plan-locks/<session_id>.json
+      - .local/supervisor/active-plan-lock.json
+    blocking: true
+    bypass_flags: []
+
+  - stage_id: S13
+    name: lifecycle-audit
+    module: tools/supervisor/lifecycle_audit.py
+    function: main (CLI: --mission-id, --sprint-id)
+    description: >
+      Runs lifecycle audit for machinery_hardening plans. Checks mission ledger
+      B1 guard (current >= required completions). If unresolved work found,
+      write_plan_lock writes ITERATION_REQUIRED (not TERMINAL_CLOSED) — loop continues.
+    state_reads:
+      - .local/supervisor/machinery/mission-ledger.json
+      - plans/.claude/<plan-name>.md
+    state_writes:
+      - .local/supervisor/lifecycle-audit-results.json
+    blocking: true
+    notes: Only invoked for plan_type=machinery_hardening
+
+  - stage_id: S14
+    name: review-package-build
+    module: tools/supervisor/build_declaration_review_package.py
+    function: main (CLI: --declaration)
+    description: >
+      Builds the declaration review package ZIP for archival. Best-effort — failure
+      logs and continues. Prints absolute path and SHA-256.
+    state_reads:
+      - .local/evidences/<run_id>/evidence-declaration.yaml
+      - .local/supervisor/reviews/<run_id>/
+    state_writes:
+      - .local/supervisor/reviews/<run_id>/declaration-review-package.zip
+    blocking: false
+    bypass_flags:
+      - failure is logged and skipped — not a blocking error
+
+  - stage_id: S15
+    name: continuation-check-and-gate
+    module: tools/supervisor/check_continuation.py
+    function: main (CLI, no args)
+    description: >
+      Machine-readable gate: returns {verdict, reason, next_work_items_path, rework_items}.
+      Hard stops: SESSION_MISMATCH, POST_PLAN_TERMINAL, PLAN_COMPLETED_IN_SESSION.
+      MAX_ITERATIONS triggers rollover (reset to 0, continue). GOV_BLOCK structural
+      failures produce STOP with reason=structural_govblock_must_be_resolved_first.
+    state_reads:
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/plan-locks/<session_id>.json
+      - .local/supervisor/active-plan-lock.json
+    state_writes: []
+    blocking: true
+    stop_reasons:
+      - SESSION_MISMATCH: cross-chat contamination (non-overridable)
+      - CHAT_ID_MISMATCH: same as SESSION_MISMATCH (non-overridable)
+      - POST_PLAN_TERMINAL: plan closed with --terminal (non-overridable)
+      - PLAN_COMPLETED_IN_SESSION: plan closed with --complete (non-overridable)
+      - MAX_ITERATIONS: rollover trigger — NOT a true stop
+      - structural_govblock_must_be_resolved_first: GOV_BLOCK active
+      - TRUE_EXTERNAL_GATE: git push creds, Gate 11 exec, PyPI/NuGet creds
+
+supervisor_pipeline_counters:
+  total_supervisor_stages: 15
+  blocking_stages: 9
+  best_effort_stages: 6
+  UNINVENTORIED_MACHINERY_STAGES: 0

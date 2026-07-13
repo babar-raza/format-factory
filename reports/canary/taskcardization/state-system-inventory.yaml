@@ -1,0 +1,112 @@
+# State System Inventory — Canary Shadow Taskcardization
+# CT-INV-001 artifact
+# Generated: 2026-07-13
+
+mission_id: CT-INV-001
+generated_at: "2026-07-13T00:00:00Z"
+scope: "All state machines in the supervisor pipeline that are candidates for canary shadowing"
+
+state_systems:
+
+  - system_id: SS-001
+    name: "Continuation Signal"
+    file: ".local/supervisor/continuation-signal.json"
+    description: "Tracks iteration count, autonomous_continue flag, and rework_items across sprints"
+    state_fields: [autonomous_continue, iteration, max_iterations, rework_items, session_id]
+    transitions: ["CONTINUE → STOP (on govblock)", "STOP → CONTINUE (on fix)", "CONTINUE → STOP (MAX_ITERATIONS)"]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "Read-only by check_continuation.py; mutations are atomic writes from autonomous_cycle.py"
+
+  - system_id: SS-002
+    name: "Plan Lock State"
+    file: ".local/supervisor/active-plan-lock.json"
+    description: "Tracks active per-chat plan, current taskcard, completion status"
+    state_fields: [plan_path, status, last_taskcard, session_id]
+    transitions: ["IN_PROGRESS → TERMINAL_CLOSED", "IN_PROGRESS → SUPERSEDED", "IN_PROGRESS → ITERATION_REQUIRED"]
+    canary_candidate: true
+    canary_risk: MEDIUM
+    reason: "write_plan_lock.py is the sole writer; mutations affect sprint authorization"
+
+  - system_id: SS-003
+    name: "Session-Keyed Plan Locks"
+    file: ".local/supervisor/plan-locks/<session_id>-<name>.json"
+    description: "Per-session plan lock files; check_continuation checks these for PLAN_COMPLETED_IN_SESSION"
+    state_fields: [status, plan_path, session_id]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "One file per plan per session; stale locks accumulate but are detected by status check"
+
+  - system_id: SS-004
+    name: "Approval Gates"
+    file: "reports/supervisor/approval-gates.md"
+    description: "AUTONOMOUS_CONTINUE flag, MODE, pending actions generated after each sprint"
+    state_fields: [AUTONOMOUS_CONTINUE, MODE, pending_actions]
+    transitions: ["YES → NO (on contradiction)", "NO → YES (on resolution)"]
+    canary_candidate: false
+    canary_risk: N_A
+    reason: "Generated artifact, not a true state machine; regenerated each sprint by autonomous_cycle.py"
+
+  - system_id: SS-005
+    name: "Gap Ledger"
+    file: "reports/machinery-assurance/gap-ledger.yaml"
+    description: "Tracks gap entries from machinery assurance; each gap has status OPEN/CLOSED/TRANSFERRED"
+    state_fields: [gap_id, status, evidence_path, resolution_commit]
+    transitions: ["OPEN → CLOSED (on fix + evidence)", "OPEN → TRANSFERRED (on scope change)"]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "Append-only pattern; canary can shadow gap creation without affecting production"
+
+  - system_id: SS-006
+    name: "Promotion Ledger"
+    file: "registry/promotion-ledger.yaml"
+    description: "Tracks source file promotion state from DRAFT → PROMOTED_STABLE"
+    state_fields: [format_id, state, api_baseline_hash, promoted_files]
+    transitions: ["DRAFT → IMPLEMENTATION_VERIFIED → PILOT_ACCEPTED → PROMOTED_STABLE → REOPENED"]
+    canary_candidate: true
+    canary_risk: HIGH
+    reason: "Hash-locked state; canary must not mutate hashes. Shadow reads only."
+
+  - system_id: SS-007
+    name: "Oracle Execution Results"
+    file: "oracle/formats/{fmt}/reports/oracle-run-summary.json"
+    description: "Per-format oracle test results including PASS/FAIL counts"
+    state_fields: [verdict, pass_count, fail_count, cases_run]
+    transitions: ["OBLIGATION_CREATED → CASES_DEFINED → VERIFIED (on all pass)"]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "Read-only summary files; canary can re-run oracle in shadow mode"
+
+  - system_id: SS-008
+    name: "Evidence Declaration Store"
+    file: ".local/evidences/<run_id>/evidence-declaration.yaml"
+    description: "Per-sprint evidence declarations written by agent; graded by autonomous_cycle"
+    state_fields: [run_id, planned_work_items, completed_work_items, sprint_verdict]
+    transitions: ["DECLARED → ACCEPTED (exit 0)", "DECLARED → REWORK (exit 3)"]
+    canary_candidate: false
+    canary_risk: N_A
+    reason: "One-time write per sprint; not a persistent state machine"
+
+  - system_id: SS-009
+    name: "Control Index DB"
+    file: ".local/supervisor/control-index.db"
+    description: "SQLite+FTS5 operational control index for querying sprints, gaps, failures, plan locks"
+    state_fields: [sprint_records, gap_records, plan_lock_records, failure_records]
+    transitions: ["sync adds rows; no deletes (append-only log semantics)"]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "Append-only; canary can shadow sync writes without production impact"
+
+  - system_id: SS-010
+    name: "Skill Execution Receipts"
+    file: ".local/skill-execution-receipts/<skill>-<timestamp>.yaml"
+    description: "Receipts written by skill_receipt_writer.py for each skill invocation"
+    state_fields: [skill_id, timestamp, mission_id, taskcard_id, src_files_modified]
+    transitions: ["RECEIPT_WRITTEN (terminal)"]
+    canary_candidate: true
+    canary_risk: LOW
+    reason: "Append-only; canary can shadow receipt creation for src/ changes"
+
+total_systems: 10
+canary_candidates: 7
+high_risk: 1

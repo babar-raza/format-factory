@@ -1,0 +1,111 @@
+---
+# File Classification for VWM-2026-07-10 Machinery Assurance
+# Scope: tools/supervisor/ (305 Python files total)
+# Generated: 2026-07-14 (CT-VWM-002)
+mission_id: VWM-2026-07-10
+total_python_files: 305
+
+entry_points:
+  count: 13
+  files:
+    - tools/supervisor/autonomous_cycle.py
+    - tools/supervisor/check_continuation.py
+    - tools/supervisor/write_plan_lock.py
+    - tools/supervisor/sprint_executor.py
+    - tools/supervisor/supervisor_loop.py
+    - tools/supervisor/lifecycle_audit.py
+    - tools/supervisor/build_declaration_review_package.py
+    - tools/supervisor/scan_residual_bypasses.py
+    - tools/supervisor/detect_ad_hoc_execution.py
+    - tools/supervisor/run_skill_idempotency.py
+    - tools/supervisor/validate_product_code_ledger.py
+    - tools/supervisor/init_mission_ledger.py
+    - tools/supervisor/reset_track_signal.py
+
+pipeline_stages:
+  count: 10
+  files:
+    - tools/supervisor/evidence_declaration.py
+    - tools/supervisor/inspect_declared_evidence.py
+    - tools/supervisor/grade_declared_work.py
+    - tools/supervisor/generate_next_worker_prompt.py
+    - tools/supervisor/evidence_manifest.py
+    - tools/supervisor/materialize_declared_evidence.py
+    - tools/supervisor/build_context_pack.py
+    - tools/supervisor/anti_skip_checker.py
+    - tools/supervisor/failure_memory.py
+    - tools/supervisor/autonomous_cycle_utils.py
+
+governance_validators:
+  count: 27
+  files:
+    - tools/supervisor/governance_validator_runner.py
+    - tools/supervisor/governance_validators.py
+    - tools/supervisor/governance_validators_ext.py
+    - tools/supervisor/governance_validators_ext2.py
+    - tools/supervisor/governance_validators_ext3.py
+    - tools/supervisor/governance_validators_ext4.py
+    - tools/supervisor/governance_validators_dotnet.py
+    - tools/supervisor/governance_validators_dotnet_semantic.py
+    - tools/supervisor/governance_validators_contract.py
+    - tools/supervisor/governance_validators_layers.py
+    - tools/supervisor/governance_validators_oracle.py
+    - tools/supervisor/governance_validators_sal.py
+    - tools/supervisor/governance_validators_signal.py
+    - tools/supervisor/governance_validators_spec.py
+    - tools/supervisor/governance_validators_release.py
+    - tools/supervisor/governance_validators_sgov.py
+    - tools/supervisor/governance_validators_ledger.py
+    - tools/supervisor/governance_validators_found_issue.py
+    - tools/supervisor/governance_validators_gate_auth.py
+    - tools/supervisor/governance_validators_certification.py
+    - tools/supervisor/governance_validators_consumer_proof.py
+    - tools/supervisor/governance_validators_output_quality.py
+    - tools/supervisor/governance_validators_path.py
+    - tools/supervisor/governance_validators_root_struct.py
+    - tools/supervisor/governance_validators_agent_parity.py
+    - tools/supervisor/governance_validators_control_layer.py
+    - tools/supervisor/governance_block_registry.py
+    - tools/supervisor/governance_validator_utils.py
+
+state_writers:
+  count: 6
+  files:
+    - tools/supervisor/continuation_state.py
+    - tools/supervisor/autonomous_cycle.py
+    - tools/supervisor/write_plan_lock.py
+    - tools/supervisor/generate_next_worker_prompt.py
+    - tools/supervisor/atomic_io.py
+    - tools/supervisor/write_track_handoff.py
+
+ai_modules:
+  count: 6
+  files:
+    - tools/supervisor/ai_evidence_critic.py
+    - tools/supervisor/ai_implementation_designer.py
+    - tools/supervisor/ai_learning_loop.py
+    - tools/supervisor/ai_product_brain.py
+    - tools/supervisor/ai_sprint_manager.py
+    - tools/supervisor/ai_supervisor_advisor.py
+
+backends:
+  count: 9
+  subsystem: tools/supervisor/backends/
+
+control_index:
+  count: 33
+  subsystem: tools/supervisor/control_index/
+  db_path: .local/supervisor/control-index.db
+  schema_version: 4
+
+tests:
+  count: 4
+  files:
+    - tools/supervisor/test_drivers.py
+    - tools/supervisor/test_layer_utils.py
+    - tools/supervisor/test_plan_generator.py
+    - tools/supervisor/pilots/pilot_grader.py
+
+utilities:
+  count: 197
+  note: all remaining files classified as utility/support

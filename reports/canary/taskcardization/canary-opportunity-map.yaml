@@ -1,0 +1,81 @@
+# Canary Opportunity Map — CT-INV-001
+# Maps supervisor pipeline stages to canary shadow opportunities
+# Generated: 2026-07-13
+
+mission_id: CT-INV-001
+generated_at: "2026-07-13T00:00:00Z"
+
+opportunities:
+
+  - opp_id: CAN-001
+    stage: "check_continuation.py verdict computation"
+    current_behavior: "Reads continuation-signal.json, plan locks, rework_items; returns CONTINUE or STOP"
+    canary_shadow: "Second independent continuation check using alternative signal reader"
+    shadow_tool: "tools/canary/validator_promotion.py"
+    divergence_action: "log and alert; do NOT change primary verdict"
+    implementation_status: IMPLEMENTED
+    test_file: "tests/canary/test_validator_shadow.py"
+
+  - opp_id: CAN-002
+    stage: "governance_validator_runner.py execution"
+    current_behavior: "Runs 210 validators; returns fail_count, pass_count, ran_count"
+    canary_shadow: "Shadow run of governance validators on declaration before primary run"
+    shadow_tool: "tools/canary/compilation_diff.py"
+    divergence_action: "log divergence between shadow and primary counts"
+    implementation_status: IMPLEMENTED
+    test_file: "tests/canary/test_compilation_diff.py"
+
+  - opp_id: CAN-003
+    stage: "sprint_executor_validate.py phase execution"
+    current_behavior: "Validates evidence declaration through 14 phases; exits 0 or 1"
+    canary_shadow: "Shadow validation run before primary; compare phase results"
+    shadow_tool: "tools/canary/grader_promotion.py"
+    divergence_action: "log phase divergences; surface to supervisor"
+    implementation_status: IMPLEMENTED
+    test_file: "tests/canary/test_grader_shadow.py"
+
+  - opp_id: CAN-004
+    stage: "autonomous_cycle.py grading"
+    current_behavior: "Grades each work item; writes evidence-review.json"
+    canary_shadow: "Shadow grading run comparing LLM grader vs rule-based grader"
+    shadow_tool: "tools/canary/grader_promotion.py (extended)"
+    divergence_action: "log grade divergences for analysis; use primary grade"
+    implementation_status: PARTIALLY_IMPLEMENTED
+    blockers: ["Requires LLM grader endpoint access (GPT_OSS_ENDPOINT env var)"]
+
+  - opp_id: CAN-005
+    stage: "promotion-ledger.yaml hash verification"
+    current_behavior: "V119 checks if PROMOTED_STABLE files changed without reopening"
+    canary_shadow: "Pre-sprint hash pre-computation to predict V119 outcome"
+    shadow_tool: "tools/canary/validator_promotion.py (promotion shadow)"
+    divergence_action: "alert if shadow predicts V119 FAIL before sprint runs"
+    implementation_status: DESIGNED
+    blockers: ["No PROMOTED_STABLE entries exist yet in promotion-ledger.yaml"]
+
+  - opp_id: CAN-006
+    stage: "plan lock write (write_plan_lock.py)"
+    current_behavior: "Writes active-plan-lock.json; session-keyed locks in plan-locks/"
+    canary_shadow: "Shadow dry-run of lock write; compare computed status"
+    shadow_tool: "tools/canary/schema_migration.py"
+    divergence_action: "log if shadow and primary would write different status"
+    implementation_status: DESIGNED
+    blockers: ["Lock write is high-stakes; shadow must be truly read-only"]
+
+  - opp_id: CAN-007
+    stage: "control index sync (--sync-index in autonomous_cycle.py)"
+    current_behavior: "Syncs plan locks, sprints, gaps into control-index.db"
+    canary_shadow: "Shadow sync to temporary in-memory SQLite; compare row counts"
+    shadow_tool: "tools/supervisor/control_index/ingestors/canary_shadow_ingestor.py"
+    divergence_action: "log row count divergences"
+    implementation_status: IMPLEMENTED
+    test_file: "tests/canary/test_schema_migration.py"
+
+total_opportunities: 7
+implemented: 4
+partially_implemented: 1
+designed: 2
+
+next_actions:
+  - "Implement CAN-004 grader divergence when LLM endpoint is available"
+  - "Implement CAN-005 when first PROMOTED_STABLE entry exists in promotion-ledger.yaml"
+  - "Implement CAN-006 lock write shadow (priority: after CAN-005)"

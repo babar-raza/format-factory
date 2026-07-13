@@ -1,0 +1,114 @@
+---
+# Bypass Flags Analysis — supervisor pipeline
+# Mission: VWM-2026-07-10 | Generated: 2026-07-14 (CT-VWM-002)
+mission_id: VWM-2026-07-10
+analysis_scope: tools/supervisor/autonomous_cycle.py and all pipeline stages
+
+bypass_flags:
+
+  - id: BP-GOV-001
+    name: governed-fallback-next-sprint-direct
+    stage: S04 / S15
+    description: >
+      Agent is authorized by CLAUDE.md to read reports/supervisor/next-sprint.md
+      directly when check_continuation.py fails or returns STOP for non-gated reasons.
+    mechanism: Explicit CLAUDE.md policy ("If check_continuation.py itself fails → read next-sprint.md directly")
+    classification: GOVERNED_FALLBACK
+    risk: LOW
+    enforcement: Policy-only (no mechanical block)
+    finding: This is the intended fallback — not an uncontrolled bypass.
+
+  - id: BP-GOV-002
+    name: anti-skip-false-positive-continuation
+    stage: S08
+    description: >
+      anti_skip_critical_block with empty rework_items is documented as a false positive.
+      CLAUDE.md instructs agents to continue rather than treat it as a stop.
+    mechanism: CLAUDE.md: "anti_skip_critical_block with empty rework_items -> false positive, continue"
+    classification: GOVERNED_EXCEPTION
+    risk: LOW
+    enforcement: Documented; no mechanical enforcement needed.
+
+  - id: BP-GOV-003
+    name: validator-exception-degradation
+    stage: S10
+    description: >
+      When a governance validator module fails to import or its function raises an
+      unhandled exception, the validator falls back to WARN with blocks_sprint=False.
+      This prevents one validator failure from blocking an entire sprint cycle.
+    mechanism: Per-validator try/except in governance_validator_runner.py; _skipped_validators list
+    classification: ARCHITECTURAL_PATTERN
+    risk: MEDIUM — a broken validator is silently skipped
+    enforcement: _skipped_validators is included in cycle output; visible to agent.
+    finding: >
+      V119, V120, V125 etc. each have individual try/except blocks that degrade to WARN.
+      The outer V111 block exception at line 755 adds a bulk skip entry for V111-V127.
+      No silent masking — all skips are recorded.
+
+  - id: BP-GOV-004
+    name: shadow-routing-suppression
+    stage: S10
+    description: >
+      Validators listed in .supervisor/validator-shadow-registry.yaml have their
+      blocks_sprint flag set to False by _apply_shadow_routing(). This allows
+      tracking a failing validator without blocking the sprint.
+    mechanism: _apply_shadow_routing() in governance_validator_runner.py
+    classification: CANARY_SHADOW_CONTROL
+    risk: MEDIUM — GOV_BLOCK validators MUST NOT be in the shadow registry
+    enforcement: Shadow registry starts empty (opt-in); shadow observations written to JSONL log.
+    finding: Current .supervisor/validator-shadow-registry.yaml has validator_shadow_entries: [] (safe)
+
+  - id: BP-GOV-005
+    name: max-iterations-rollover
+    stage: S15
+    description: >
+      When check_continuation.py returns reason=MAX_ITERATIONS, CLAUDE.md instructs
+      agents to reset iteration to 0 and continue. MAX_ITERATIONS is NOT a true stop.
+    mechanism: CLAUDE.md Max Iterations section; sprint_executor.py run-loop resets
+    classification: GOVERNED_ROLLOVER
+    risk: LOW
+    enforcement: Documented; iteration counter in continuation-signal.json.
+
+  - id: BP-GOV-006
+    name: closeout-best-effort-skip
+    stage: S14 (and others)
+    description: >
+      Sprint closeout steps (S14 review-package-build, S05 manifest, S06 materialization)
+      are best-effort. If any fail, CLAUDE.md instructs: log and continue immediately.
+      Only S01-S03, S08, S10-S12, S15 are blocking.
+    mechanism: CLAUDE.md Supreme Directive: "If any step fails, log the failure and proceed"
+    classification: GOVERNED_SKIP
+    risk: LOW — only best-effort steps may be skipped
+    enforcement: Blocking stages cannot be skipped.
+
+  - id: BP-FORBIDDEN-001
+    name: no-verify-commit-flag
+    stage: S10 (pre-commit hooks)
+    description: >
+      git commit --no-verify bypasses pre-commit hooks including governance validators.
+      Explicitly FORBIDDEN by CLAUDE.md.
+    mechanism: CLAUDE.md: "Never skip hooks (--no-verify) unless the user has explicitly asked for it"
+    classification: FORBIDDEN
+    risk: HIGH
+    enforcement: Policy prohibition. No mechanical block (git allows it).
+    finding: No use of --no-verify found in current session work.
+
+  - id: BP-FORBIDDEN-002
+    name: direct-src-edit-without-skill
+    stage: S02 (feature implementation)
+    description: >
+      EP-3 (CLAUDE.md Espanso rules) requires governed skill invocation for all
+      src/ edits. Direct Edit without skill is bypassed execution.
+    mechanism: EP-3: "Agents MUST NOT directly edit files under src/ without invoking a governed skill"
+    classification: FORBIDDEN
+    risk: HIGH — edits cannot be replayed by supervisor
+    enforcement: detect_ad_hoc_execution.py; EP-3 audit trail.
+
+summary:
+  total_bypass_paths: 8
+  governed_fallbacks: 3   # BP-GOV-001, BP-GOV-002, BP-GOV-006
+  architectural_patterns: 1  # BP-GOV-003
+  canary_controls: 1      # BP-GOV-004
+  rollovers: 1            # BP-GOV-005
+  forbidden: 2            # BP-FORBIDDEN-001, BP-FORBIDDEN-002
+  UNCLASSIFIED_BYPASS_PATHS: 0

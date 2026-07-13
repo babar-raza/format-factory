@@ -1,0 +1,153 @@
+---
+# State Writes Map — supervisor pipeline autonomous_cycle.py
+# Mission: VWM-2026-07-10 | Generated: 2026-07-14 (CT-VWM-002)
+mission_id: VWM-2026-07-10
+
+# All state files written by the supervisor pipeline (per stage)
+
+state_writes:
+
+  # ── .local/supervisor/ ────────────────────────────────────────────────────
+  - path: .local/supervisor/continuation-signal.json
+    written_by:
+      - tools/supervisor/autonomous_cycle.py (S11)
+      - tools/supervisor/continuation_state.py
+    read_by:
+      - tools/supervisor/check_continuation.py (S15)
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+    schema_fields:
+      - autonomous_continue (bool)
+      - stop_reason (str | null)
+      - rework_items (list)
+      - hard_stops_detected (list)
+      - iteration (int)
+      - session_id (str)
+      - track (str)
+    coherence_validator: _validate_and_correct_signal_coherence (in autonomous_cycle.py)
+
+  - path: .local/supervisor/active-plan-lock.json
+    written_by:
+      - tools/supervisor/write_plan_lock.py (S12)
+    read_by:
+      - tools/supervisor/check_continuation.py (S15)
+    schema_fields:
+      - plan_path (str)
+      - status (IN_PROGRESS | COMPLETE | TERMINAL_CLOSED | SUPERSEDED)
+      - last_taskcard (str)
+
+  - path: .local/supervisor/plan-locks/<session_id>.json
+    written_by:
+      - tools/supervisor/write_plan_lock.py (S12)
+    read_by:
+      - tools/supervisor/check_continuation.py (S15)
+    schema_fields:
+      - plan_path (str)
+      - status (IN_PROGRESS | COMPLETE | TERMINAL_CLOSED | SUPERSEDED)
+      - session_id (str)
+      - last_taskcard (str)
+
+  - path: .local/supervisor/lifecycle-audit-results.json
+    written_by:
+      - tools/supervisor/lifecycle_audit.py (S13)
+    read_by:
+      - CLAUDE.md (agent reads for next action after ITERATION_REQUIRED)
+    schema_fields:
+      - mission_id (str)
+      - audit_verdict (PASSED | ITERATION_REQUIRED)
+      - unresolved_items (list)
+
+  - path: .local/supervisor/failure-memory.json
+    written_by:
+      - tools/supervisor/failure_memory.py (S09)
+    read_by:
+      - tools/supervisor/generate_next_worker_prompt.py (influences prompt)
+    schema_fields:
+      - failures (list of {sprint_id, item_id, reason, timestamp})
+
+  - path: .local/supervisor/reviews/<run_id>/evidence-review.json
+    written_by:
+      - tools/supervisor/grade_declared_work.py (S03)
+    read_by:
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+      - tools/supervisor/anti_skip_checker.py (S08)
+
+  - path: .local/supervisor/reviews/<run_id>/anti-skip-result.json
+    written_by:
+      - tools/supervisor/anti_skip_checker.py (S08)
+    read_by:
+      - tools/supervisor/autonomous_cycle.py (continuation logic)
+
+  - path: .local/supervisor/reviews/<run_id>/governance-validation-result.json
+    written_by:
+      - tools/supervisor/governance_validator_runner.py (S10)
+    read_by:
+      - tools/supervisor/autonomous_cycle.py (S11 — continuation signal write)
+
+  - path: .local/supervisor/reviews/<run_id>/declaration-review-package.zip
+    written_by:
+      - tools/supervisor/build_declaration_review_package.py (S14)
+    read_by: []
+    notes: archive only; best-effort
+
+  - path: .local/supervisor/reviews/<run_id>/materialized/
+    written_by:
+      - tools/supervisor/materialize_declared_evidence.py (S06)
+    read_by: []
+
+  - path: .local/supervisor/canary/validator-shadow-observations.jsonl
+    written_by:
+      - tools/supervisor/governance_validator_runner.py (S10, shadow path)
+    read_by:
+      - tools/supervisor/control_index/ingestors/canary_shadow_ingestor.py
+
+  - path: .local/supervisor/canary/grader-shadow-observations.jsonl
+    written_by:
+      - tools/supervisor/grade_declared_work.py (S03, shadow path)
+    read_by:
+      - tools/supervisor/control_index/ingestors/canary_shadow_ingestor.py
+
+  - path: .local/evidences/<run_id>/evidence-manifest.json
+    written_by:
+      - tools/supervisor/evidence_manifest.py (S05)
+    read_by: []
+
+  - path: .local/supervisor/control-index.db
+    written_by:
+      - tools/supervisor/control_index/db.py (init_db, sync)
+    read_by:
+      - tools/supervisor/control_index/query.py
+      - tools/supervisor/control_index/search.py
+
+  # ── reports/supervisor/ ───────────────────────────────────────────────────
+  - path: reports/supervisor/next-sprint.md
+    written_by:
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+    read_by:
+      - Agent (next sprint prompt)
+    bypass: agent may read directly if S04 fails
+
+  - path: reports/supervisor/approval-gates.md
+    written_by:
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+    read_by:
+      - Agent (gate status)
+
+  - path: reports/supervisor/session-resume.md
+    written_by:
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+    read_by:
+      - Agent (session start — mandatory)
+
+  - path: reports/supervisor/next-work-items.json
+    written_by:
+      - tools/supervisor/generate_next_worker_prompt.py (S04)
+    read_by:
+      - tools/supervisor/check_continuation.py (S15 — returns path in verdict)
+      - tools/supervisor/control_index/ingestors/ (various)
+
+  # ── .supervisor/ ──────────────────────────────────────────────────────────
+  - path: .supervisor/context-pack.yaml
+    written_by:
+      - tools/supervisor/build_context_pack.py (S07)
+    read_by:
+      - Agent (context reference)

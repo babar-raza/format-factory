@@ -1,0 +1,109 @@
+---
+# Import Chain Analysis — autonomous_cycle.py
+# Mission: VWM-2026-07-10 | Generated: 2026-07-14 (CT-VWM-002)
+mission_id: VWM-2026-07-10
+entry_point: tools/supervisor/autonomous_cycle.py
+
+# Direct imports from autonomous_cycle.py (confirmed from file header)
+direct_imports:
+  stdlib:
+    - argparse
+    - json
+    - os
+    - shutil
+    - sys
+    - uuid
+    - datetime / timedelta / timezone
+    - pathlib.Path
+
+  third_party:
+    - yaml
+
+  project_modules:
+    - atomic_io: [atomic_write_json, atomic_write_text]
+    - logging_config: [configure_supervisor_logging]
+    - evidence_declaration: [validate_declaration]
+    - inspect_declared_evidence: [inspect_declaration]
+    - grade_declared_work: [grade_all, write_outputs]
+    - generate_next_worker_prompt: [generate_prompt, generate_next_work_items]
+    - evidence_manifest: [generate_from_declaration, validate_manifest, write_manifest]
+    - materialize_declared_evidence: [materialize]
+    - build_context_pack: [build_context_pack, generate_md]
+    - anti_skip_checker: [run_all_checks]
+    - failure_memory: [FailureMemory]
+    - autonomous_cycle_utils:
+        - classify_continuation_state
+        - run_stale_repair_pre_cycle
+        - _PRODUCT_SOURCE_TYPES
+        - _sync_hard_stops_after_repair
+        - _compute_exit_code
+        - bridge_to_legacy_format
+
+# Lazily imported (inside functions / try blocks)
+lazy_imports:
+  - autonomous_cycle_extensions: [update_lane_counters]
+  - governance_validator_runner: [run_all_governance_validators]
+  - grade_declared_work: [grade_all]  # also directly imported
+  - lane_enforcement_validator: [LaneEnforcementValidator]
+  - sal_format_advisory: [build_advisory, _load_sal_facts]
+  - adversarial_check: (referenced)
+  - closure_challenger: (referenced)
+  - proof_backed_poc_gate: (referenced)
+
+# Second-level imports (key dependencies of stage modules)
+second_level:
+  grade_declared_work:
+    - grader_reliability
+    - grade_intermediate_verify
+    - grade_to_quality_adapter
+  generate_next_worker_prompt:
+    - continuation_state
+    - atomic_io
+  governance_validator_runner:
+    - governance_validators
+    - governance_validators_ext
+    - governance_validators_ext2
+    - governance_validators_ext3
+    - governance_validators_ext4
+    - governance_validators_dotnet
+    - governance_validators_dotnet_semantic
+    - governance_validators_contract
+    - governance_validators_layers
+    - governance_validators_oracle
+    - governance_validators_sal
+    - governance_validators_signal
+    - governance_validators_spec
+    - governance_validators_release
+    - governance_validators_sgov
+    - governance_validators_ledger
+    - governance_validators_found_issue
+    - governance_validators_gate_auth
+    - governance_validators_certification
+    - governance_validators_consumer_proof
+    - governance_validators_output_quality
+    - governance_validators_path
+    - governance_validators_root_struct
+    - governance_validators_agent_parity
+    - governance_validators_control_layer
+    - governance_block_registry
+    - governance_validator_utils
+  check_continuation:
+    - continuation_identity
+    - continuation_router
+    - continuation_selector
+    - continuation_ledger
+    - continuation_state
+
+# Critical import failure paths
+failure_paths:
+  - module: governance_validators_ext4
+    consequence: >
+      V111-V127 block skipped; validators appended to _skipped_validators
+      with error message. Individual exception handlers for V119, V120 etc.
+      still produce WARN entries (blocks_sprint=False).
+  - module: governance_validators
+    consequence: >
+      Base validators (V01-V60) block skipped.
+  - module: grade_declared_work
+    consequence: >
+      Sprint grading fails; cycle exits non-zero.
