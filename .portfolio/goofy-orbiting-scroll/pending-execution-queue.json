@@ -1,0 +1,467 @@
+[
+  {
+    "canonical_task_id": "CT-VWM-002",
+    "priority": 1,
+    "description": "Produce real machinery-stage-inventory.yaml for VWM-2026-07-10 scope",
+    "exact_work_required": "Enumerate all files under tools/supervisor/ (≥242 files), classify each by role (entry-point, pipeline-stage, state-writer, utility, test). Trace import chains from autonomous_cycle.py. Map all state writes to .local/supervisor/ and reports/supervisor/. Find all bypass flags. Write reports/machinery-assurance/machinery-stage-inventory.yaml with mission_id=VWM-2026-07-10 and ≥15 supervisor machinery stages S01 (evidence-declaration-validation) through S15 (lifecycle-audit). Write file-classification.yaml, import-chain.yaml, state-writes-map.yaml, and bypass-flags.yaml to reports/machinery-assurance/vwm-analysis/.",
+    "acceptance_criteria": [
+      "machinery-stage-inventory.yaml header contains mission_id: VWM-2026-07-10 (not MA-2026-07-02)",
+      "≥15 stages S01-S15 describing supervisor pipeline machinery (not product-sprint stages)",
+      "vwm-analysis/file-classification.yaml, import-chain.yaml, state-writes-map.yaml all written",
+      "UNINVENTORIED_MACHINERY_STAGES = 0"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "target_files": [
+      "reports/machinery-assurance/machinery-stage-inventory.yaml",
+      "reports/machinery-assurance/vwm-analysis/file-classification.yaml",
+      "reports/machinery-assurance/vwm-analysis/import-chain.yaml",
+      "reports/machinery-assurance/vwm-analysis/state-writes-map.yaml",
+      "reports/machinery-assurance/vwm-analysis/bypass-flags.yaml"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-PHANTOM-001",
+    "priority": 1,
+    "description": "Remove phantom TC-0015/TC-0016/TC-0020 references from next-sprint.md",
+    "exact_work_required": "Edit reports/supervisor/next-sprint.md to remove or replace lines 56-58 containing TC-0015, TC-0016, TC-0020 phantom IDs. Replace with real tasks sourced from next-work-items.json priority ordering (P1=ABW SAL-MRH, P2=CSV SAL-MRH, P3=DIF SAL-MRH).",
+    "acceptance_criteria": [
+      "grep for 'TC-0015\\|TC-0016\\|TC-0020' in reports/supervisor/next-sprint.md returns 0 matches",
+      "Replacement tasks trace to valid entries in next-work-items.json",
+      "next-sprint.md priority ordering matches next-work-items.json P1-P3"
+    ],
+    "plan_sources": [
+      "vast-splashing-allen.md"
+    ],
+    "target_files": [
+      "reports/supervisor/next-sprint.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-GOV-001",
+    "priority": 1,
+    "description": "Fix V119 governance validator: remove from skip list and set blocks_sprint=True",
+    "exact_work_required": "In tools/supervisor/governance_validator_runner.py: (1) remove V119 from _skipped_validators list; (2) set blocks_sprint=True for V119 result (currently False at line 644); (3) verify V120 is wired with correct certification_status and architecture_classification inputs from format-registry.yaml. Run governance validator test suite to confirm no regressions.",
+    "acceptance_criteria": [
+      "grep for V119 in _skipped_validators list returns 0 matches",
+      "V119 result has blocks_sprint=True in runner code",
+      "V120 receives certification_status and architecture_classification parameters",
+      "governance validator tests pass after change"
+    ],
+    "plan_sources": [
+      "memoized-frolicking-donut.md"
+    ],
+    "target_files": [
+      "tools/supervisor/governance_validator_runner.py"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-TEST-GRADER-001",
+    "priority": 1,
+    "description": "Run REL-001 through REL-026 grader reliability tests and capture pass evidence",
+    "exact_work_required": "Run .venv/Scripts/pytest tests/supervisor/test_grader_reliability.py -v and capture full output. Verify: (1) all REL-021 through REL-026 (new tests from warm-enchanting-grove) pass; (2) REL-001 through REL-020 (existing tests) still pass; (3) production grader-events.jsonl contains zero test artifact entries (GRADER_LOG_DIR isolation works).",
+    "acceptance_criteria": [
+      ".venv/Scripts/pytest tests/supervisor/test_grader_reliability.py exits 0",
+      "REL-021, REL-022, REL-023, REL-024, REL-025, REL-026 all PASS in output",
+      "No production log contamination from test run",
+      "Test output captured and saved to evidence file"
+    ],
+    "plan_sources": [
+      "warm-enchanting-grove.md"
+    ],
+    "target_files": [
+      "tests/supervisor/test_grader_reliability.py"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-COMMIT-003",
+    "priority": 1,
+    "description": "Commit warm-enchanting-grove grader hardening changes after test verification",
+    "exact_work_required": "After CT-TEST-GRADER-001 passes: git add tools/supervisor/grader_reliability.py tools/supervisor/grade_declared_work.py tools/supervisor/adversarial_check.py tests/supervisor/test_grader_reliability.py plans/.claude/warm-enchanting-grove.md and commit with message referencing warm-enchanting-grove TC-LGT-001 through TC-LGT-007.",
+    "acceptance_criteria": [
+      "All 4 modified files appear in git log after commit",
+      "plans/.claude/warm-enchanting-grove.md committed and tracked",
+      "Pre-commit hook passes",
+      "git status shows clean working tree for these files"
+    ],
+    "plan_sources": [
+      "warm-enchanting-grove.md"
+    ],
+    "dependency_on": [
+      "CT-TEST-GRADER-001"
+    ],
+    "target_files": [
+      "tools/supervisor/grader_reliability.py",
+      "tools/supervisor/grade_declared_work.py",
+      "tools/supervisor/adversarial_check.py",
+      "tests/supervisor/test_grader_reliability.py",
+      "plans/.claude/warm-enchanting-grove.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-COMMIT-002",
+    "priority": 1,
+    "description": "Commit clever-tickling-island canary shadow system after test verification",
+    "exact_work_required": "After CT-TEST-CANARY-001 passes and CT-INV-001 discovery reports are written: git add tools/canary/ tools/supervisor/control_index/ingestors/canary_shadow_ingestor.py .supervisor/validator-shadow-registry.yaml tests/canary/ schema.sql and commit all modified files (governance_validator_runner.py, grade_declared_work.py) plus plans/.claude/clever-tickling-island.md.",
+    "acceptance_criteria": [
+      "tools/canary/ directory appears as tracked in git log",
+      "governance_validator_runner.py shadow registry changes committed",
+      "grade_declared_work.py --shadow-provider changes committed",
+      "schema.sql canary shadow tables committed",
+      "Pre-commit hook passes",
+      "plans/.claude/clever-tickling-island.md committed"
+    ],
+    "plan_sources": [
+      "clever-tickling-island.md"
+    ],
+    "dependency_on": [
+      "CT-TEST-CANARY-001",
+      "CT-INV-001"
+    ],
+    "target_files": [
+      "tools/canary/__init__.py",
+      "tools/canary/validator_promotion.py",
+      "tools/canary/grader_promotion.py",
+      "tools/canary/compilation_diff.py",
+      "tools/supervisor/control_index/ingestors/canary_shadow_ingestor.py",
+      "tools/supervisor/governance_validator_runner.py",
+      "tools/supervisor/grade_declared_work.py",
+      ".supervisor/validator-shadow-registry.yaml",
+      "schema.sql",
+      "plans/.claude/clever-tickling-island.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-TEST-PBHP-001",
+    "priority": 1,
+    "description": "Run playbook integration test and verify it passes",
+    "exact_work_required": "Run .venv/Scripts/pytest tests/playbook/ -v -k test_next_sprint_md_includes_playbook_context and capture output. Verify the Playbook Guidance block appears in generated next-sprint.md output. Fix any failures before committing generate_supervisor_packet.py.",
+    "acceptance_criteria": [
+      "test_next_sprint_md_includes_playbook_context passes",
+      "Generated next-sprint.md contains Playbook Guidance section",
+      "PLAYBOOK_DRIFT_FOLLOWUP tasks are injected (capped at 3) when drift_findings_path is supplied"
+    ],
+    "plan_sources": [
+      "glowing-swinging-grove.md"
+    ],
+    "target_files": [
+      "tests/playbook/"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-COMMIT-001",
+    "priority": 1,
+    "description": "Commit glowing-swinging-grove playbook pipeline changes after test verification",
+    "exact_work_required": "After CT-TEST-PBHP-001 passes: git add tools/supervisor/generate_supervisor_packet.py tools/playbook/playbook_drift_checker.py tools/supervisor/autonomous_cycle.py .github/workflows/ci.yml tools/supervisor/governance_validators_ext2.py (V92 escalation) plans/.claude/glowing-swinging-grove.md and commit.",
+    "acceptance_criteria": [
+      "All 5 implementation files committed and tracked in git",
+      "plans/.claude/glowing-swinging-grove.md committed",
+      "ci.yml playbook test step appears in git log",
+      "Pre-commit hook passes"
+    ],
+    "plan_sources": [
+      "glowing-swinging-grove.md"
+    ],
+    "dependency_on": [
+      "CT-TEST-PBHP-001"
+    ],
+    "target_files": [
+      "tools/supervisor/generate_supervisor_packet.py",
+      "tools/playbook/playbook_drift_checker.py",
+      "tools/supervisor/autonomous_cycle.py",
+      ".github/workflows/ci.yml",
+      "plans/.claude/glowing-swinging-grove.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VWM-004",
+    "priority": 1,
+    "description": "Execute VWM machinery healing with committed evidence (TC-VWM-023)",
+    "exact_work_required": "For each open VWM gap: (1) TC-VWM-023-01: fix continuation signal inconsistency — root cause the stop_reason non-null + empty rework_items I-001 at specific file:line in check_continuation.py, implement fix, write tc-023-01-before.json and tc-023-01-after.json to .local/evidences/vwm-2026-07-10/. (2) TC-VWM-023-02: verify V137 site-packages enforcement is attributed correctly (sparkling-waddling-narwhal, not VWM — do not re-claim). (3) TC-VWM-023-03: verify MEMORY.md validator count matches code. Commit all tools/supervisor/ healing changes to git.",
+    "acceptance_criteria": [
+      ".local/evidences/vwm-2026-07-10/ directory contains tc-023-01-before.json and tc-023-01-after.json",
+      "Root cause of I-001 documented at specific file:line in check_continuation.py",
+      "All tools/supervisor/ healing changes committed with pre-commit hook passing",
+      "tc-023 child evidence files exist for each gap addressed"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "dependency_on": [
+      "CT-VWM-002"
+    ],
+    "target_files": [
+      ".local/evidences/vwm-2026-07-10/tc-023-01-before.json",
+      ".local/evidences/vwm-2026-07-10/tc-023-01-after.json",
+      "tools/supervisor/check_continuation.py"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VWM-027-PILOTS",
+    "priority": 2,
+    "description": "Execute all 10 VWM required pilots and write log files to vwm-pilots/",
+    "exact_work_required": "Create reports/machinery-assurance/vwm-pilots/ directory. Execute each pilot and write output log: pilot-01-simple.log (run autonomous_cycle.py with real declaration), pilot-02-complex.log (run governance_validator_runner.py and capture all validator results), pilot-03-negative.log (submit malformed declaration and capture exit code + error), pilot-04-interrupt.log (state interruption recovery), pilot-05-regression.log (stub detection via certification-stub-detector), pilot-06-regeneration.log (output regeneration), pilot-07-consumer.log (fods package import), pilot-08-portfolio.log (multi-format validator run), pilot-09-rollback.log (rollback path exercise), pilot-10-idempotency.log (two sequential autonomous_cycle runs confirming same output). Do NOT mark any pilot PASS until its log file exists with actual command output.",
+    "acceptance_criteria": [
+      "reports/machinery-assurance/vwm-pilots/ contains exactly 10 .log files",
+      "Each log file contains actual command output with timestamps",
+      "FAILED_REQUIRED_PILOTS = 0 after reviewing all logs",
+      "No pilot log file is a placeholder or claims prior evidence"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "dependency_on": [
+      "CT-VWM-004"
+    ],
+    "target_files": [
+      "reports/machinery-assurance/vwm-pilots/pilot-01-simple.log",
+      "reports/machinery-assurance/vwm-pilots/pilot-02-complex.log",
+      "reports/machinery-assurance/vwm-pilots/pilot-03-negative.log",
+      "reports/machinery-assurance/vwm-pilots/pilot-10-idempotency.log"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VWM-003",
+    "priority": 2,
+    "description": "Write claim-reconciliation.yaml reconciling MEMORY.md and session-resume.md claims against code",
+    "exact_work_required": "Write reports/machinery-assurance/claim-reconciliation.yaml answering CL-001 through CL-015 checklist items from TC-VWM-020. Each entry must cite direct code evidence (file:line) or test output. Claims to reconcile include: validator count (CL-001), oracle VERIFIED status (CL-002), gate status (CL-003), SAL fact count (CL-004), grader circuit breaker (CL-005), site-packages sync enforcement (CL-006), layer architecture count (CL-007).",
+    "acceptance_criteria": [
+      "reports/machinery-assurance/claim-reconciliation.yaml exists with CL-001 through CL-015 all answered",
+      "Each entry has a direct_evidence field with file:line citation",
+      "Claims marked CONFIRMED cite verifiable code or test output",
+      "Claims marked UNVERIFIED or STALE are flagged for follow-up"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "dependency_on": [
+      "CT-VWM-002"
+    ],
+    "target_files": [
+      "reports/machinery-assurance/claim-reconciliation.yaml"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VWM-005",
+    "priority": 2,
+    "description": "Write output-healing-run.yaml after machinery healing completes (TC-VWM-025)",
+    "exact_work_required": "After CT-VWM-004 completes, identify all downstream outputs affected by healed machinery stages (session-resume.md, next-sprint.md, approval-gates.md, continuation-signal.json, evidence-review.json). Regenerate each affected output by re-running the producing tool. Write reports/machinery-assurance/output-healing-run.yaml listing each output with regeneration status.",
+    "acceptance_criteria": [
+      "reports/machinery-assurance/output-healing-run.yaml exists",
+      "All outputs affected by healed machinery stages listed",
+      "Each output entry has regeneration_status (REGENERATED or NOT_AFFECTED)",
+      "Regenerated outputs contain timestamps post-healing"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "dependency_on": [
+      "CT-VWM-004"
+    ],
+    "target_files": [
+      "reports/machinery-assurance/output-healing-run.yaml"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VWM-006",
+    "priority": 2,
+    "description": "Run lifecycle audit, write real evidence declaration, and execute terminal closure for VWM-2026-07-10 (TC-VWM-029)",
+    "exact_work_required": "After CT-VWM-027-PILOTS and CT-VWM-003 and CT-VWM-005 complete: (1) verify all 11 completion gate counters equal zero; (2) write .local/evidences/vwm-2026-07-10/evidence-declaration.yaml with all work items; (3) run python tools/supervisor/autonomous_cycle.py with declaration and capture exit code; (4) run python tools/supervisor/lifecycle_audit.py --mission-id VWM-2026-07-10 and capture output; (5) run second autonomous_cycle.py to confirm idempotency; (6) write TERMINAL lock via write_plan_lock.py --plan-path plans/.claude/vast-wibbling-moon.md --terminal --audit-gate only if all criteria pass. Update final-report-vwm-2026-07-10.md with real verdict based on actual pilot evidence (not fabricated).",
+    "acceptance_criteria": [
+      ".local/evidences/vwm-2026-07-10/evidence-declaration.yaml exists and is non-empty",
+      "lifecycle_audit.py --mission-id VWM-2026-07-10 exits 0",
+      "autonomous_cycle.py exits 0 or 3 (not 1 or 9) on first run",
+      "Second autonomous_cycle.py run produces zero material changes",
+      "final-report-vwm-2026-07-10.md committed to git with verdict based on real evidence"
+    ],
+    "plan_sources": [
+      "vast-wibbling-moon.md"
+    ],
+    "dependency_on": [
+      "CT-VWM-027-PILOTS",
+      "CT-VWM-003",
+      "CT-VWM-005"
+    ],
+    "target_files": [
+      ".local/evidences/vwm-2026-07-10/evidence-declaration.yaml",
+      "reports/machinery-assurance/final-report-vwm-2026-07-10.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-VERIFY-DOTNET-001",
+    "priority": 2,
+    "description": "Verify Assert.True(true) stub pattern removed from fodt and zst .NET tests",
+    "exact_work_required": "Run grep -r 'Assert.True(true)' tests/net/fodt/ tests/net/zst/ and confirm 0 matches. If matches remain, replace each with a substantive assertion using actual parsed document properties.",
+    "acceptance_criteria": [
+      "grep -r 'Assert.True(true)' tests/net/fodt/ tests/net/zst/ returns 0 matches",
+      "Each former stub location now has an assertion verifying a real property of parsed output"
+    ],
+    "plan_sources": [
+      "fizzy-imagining-hinton.md"
+    ],
+    "target_files": [
+      "tests/net/fodt/",
+      "tests/net/zst/"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-GOV-002",
+    "priority": 2,
+    "description": "Create governance_validators_product_gov.py with V150-V155",
+    "exact_work_required": "Create tools/supervisor/governance_validators_product_gov.py with validators V150 through V155 as defined in memoized-frolicking-donut.md TC-GOV-007. Update expected_count in governance_validator_runner.py to reflect new validators. Register new file in runner import chain. Add tests for each new validator.",
+    "acceptance_criteria": [
+      "tools/supervisor/governance_validators_product_gov.py exists with V150-V155 implemented",
+      "each validator has blocks_sprint field set appropriately",
+      "governance_validator_runner.py imports and loads new file",
+      "expected_count updated to reflect addition",
+      "Tests for V150-V155 pass"
+    ],
+    "plan_sources": [
+      "memoized-frolicking-donut.md"
+    ],
+    "target_files": [
+      "tools/supervisor/governance_validators_product_gov.py"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-INV-001",
+    "priority": 3,
+    "description": "Create reports/canary/taskcardization/ discovery reports (TC-INV-001)",
+    "exact_work_required": "Create directory reports/canary/taskcardization/ and write: (1) state-system-inventory.yaml — inventory of all state machines in the supervisor pipeline; (2) canary-opportunity-map.yaml — mapping of which stages are candidates for canary shadowing; (3) risk-register.md — risk assessment for promoting each shadow validator.",
+    "acceptance_criteria": [
+      "reports/canary/taskcardization/state-system-inventory.yaml exists with real content",
+      "reports/canary/taskcardization/canary-opportunity-map.yaml exists with real content",
+      "reports/canary/taskcardization/risk-register.md exists with real content",
+      "All 3 files committed to git"
+    ],
+    "plan_sources": [
+      "clever-tickling-island.md"
+    ],
+    "target_files": [
+      "reports/canary/taskcardization/state-system-inventory.yaml",
+      "reports/canary/taskcardization/canary-opportunity-map.yaml",
+      "reports/canary/taskcardization/risk-register.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-INSTALL-001",
+    "priority": 3,
+    "description": "Create tools/assurance/verify_package_install.py for non-editable install sync verification",
+    "exact_work_required": "Create tools/assurance/verify_package_install.py that verifies non-editable install sync for all 4 affected packages (abw, sylk, zst, dif). Script must compare source files under src/python/{pkg}/ with installed files under .venv/Lib/site-packages/{pkg}/ and report any stale copies. Must be runnable standalone and exit non-zero on sync failure.",
+    "acceptance_criteria": [
+      "tools/assurance/verify_package_install.py exists and is importable",
+      "Script checks abw, sylk, zst, and dif packages for sync",
+      "Script exits 0 when all packages in sync",
+      "Script exits 1 and prints specific stale file paths when out of sync",
+      "File committed to git"
+    ],
+    "plan_sources": [
+      "fizzy-imagining-hinton.md"
+    ],
+    "target_files": [
+      "tools/assurance/verify_package_install.py"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-GOV-V87-001",
+    "priority": 3,
+    "description": "Remove V87 PRODUCT_SOURCE exemption and create dotnet-semantic-stub-whitelist.yaml",
+    "exact_work_required": "In tools/supervisor/governance_validators_dotnet_semantic.py: set V87 blocks_sprint=True for PRODUCT_SOURCE item type (not only RELEASE_GATE). Create registry/dotnet-semantic-stub-whitelist.yaml to grandfather existing constant-return methods with review_date and expiry fields. V87 must block production source with constant-return setter patterns that are not whitelisted.",
+    "acceptance_criteria": [
+      "V87 blocks_sprint=True for PRODUCT_SOURCE items",
+      "registry/dotnet-semantic-stub-whitelist.yaml exists with review_date and expiry per entry",
+      "Existing constant-return methods in whitelist are not blocked",
+      "New constant-return methods not in whitelist are blocked",
+      "Changes committed to git"
+    ],
+    "plan_sources": [
+      "splendid-squishing-orbit.md"
+    ],
+    "target_files": [
+      "tools/supervisor/governance_validators_dotnet_semantic.py",
+      "registry/dotnet-semantic-stub-whitelist.yaml"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-GAP-RECONCILE-001",
+    "priority": 3,
+    "description": "Execute gap ledger reconciliation against HEAD code (splendid-squishing-orbit TC-FGSQ-002)",
+    "exact_work_required": "For each gap ledger entry referencing fods .NET source: verify the cited file and line number exist at HEAD. Update PCG-006 and PCG-007 entries to reflect current file structure. Map GI-FODS-NET-* comment markers to current file and line numbers. Write reconciliation report to reports/product-quality/fods-govheal/gap-reconciliation.yaml.",
+    "acceptance_criteria": [
+      "reports/product-quality/fods-govheal/gap-reconciliation.yaml exists",
+      "All PCG-006 and PCG-007 entries verified against HEAD code",
+      "GI-FODS-NET-* markers mapped to current file:line",
+      "Stale references marked STALE with current_location field",
+      "Directory committed to git"
+    ],
+    "plan_sources": [
+      "splendid-squishing-orbit.md"
+    ],
+    "target_files": [
+      "reports/product-quality/fods-govheal/gap-reconciliation.yaml"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-MIGRATE-PLANS-001",
+    "priority": 3,
+    "description": "Migrate unexecuted and untracked plans to plans/.claude/ and commit all plan files",
+    "exact_work_required": "For each plan not in plans/.claude/: copy to plans/.claude/{plan-name}.md. Also git add all untracked plan files (vast-wibbling-moon.md, glowing-swinging-grove.md, clever-tickling-island.md, warm-enchanting-grove.md). Commit all plan files to git. Do NOT write plan locks yet — locking is per-session when executing the plan.",
+    "acceptance_criteria": [
+      "vast-splashing-allen.md, fizzy-imagining-hinton.md, splendid-squishing-orbit.md, memoized-frolicking-donut.md all exist in plans/.claude/",
+      "All 8 plan files tracked in git (git ls-files plans/.claude/ shows all 8)",
+      "Plans committed without status changes (keep existing PROPOSED/TODO status)"
+    ],
+    "plan_sources": [
+      "vast-splashing-allen.md",
+      "fizzy-imagining-hinton.md",
+      "splendid-squishing-orbit.md",
+      "memoized-frolicking-donut.md"
+    ],
+    "target_files": [
+      "plans/.claude/vast-splashing-allen.md",
+      "plans/.claude/fizzy-imagining-hinton.md",
+      "plans/.claude/splendid-squishing-orbit.md",
+      "plans/.claude/memoized-frolicking-donut.md"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  },
+  {
+    "canonical_task_id": "CT-COMMIT-BLOCKED",
+    "priority": 1,
+    "description": "Git commit blocked by VSCode extension permission system",
+    "exact_work_required": "After VSCode extension permission grants become available, commit all staged clever-tickling-island canary shadow system files: tools/canary/, tests/canary/, .supervisor/validator-shadow-registry.yaml, schema.sql, tools/supervisor/governance_validator_runner.py, tools/supervisor/grade_declared_work.py, plans/.claude/clever-tickling-island.md. Pre-commit hook must pass before commit is recorded.",
+    "acceptance_criteria": [
+      "git commit exits 0 with pre-commit hook passing",
+      "All canary system files appear in git log",
+      "plans/.claude/clever-tickling-island.md committed",
+      "git status shows clean working tree for committed files"
+    ],
+    "plan_sources": [
+      "clever-tickling-island.md"
+    ],
+    "blockers": [
+      "VSCode extension permission system preventing git commit"
+    ],
+    "evidence_state_required": "VERIFIED_COMPLETE"
+  }
+]

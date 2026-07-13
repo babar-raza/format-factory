@@ -1,106 +1,102 @@
-# ABW Oracle Package — Format Factory
-# Format: AbiWord Document
-# Authority: AbiWord project format documentation (LibreOffice compatibility)
-# Oracle version: 1
-# Status: VERIFIED
-# Mission: TC-LA-003 / TC-LA-010 — oracle extension to additional Gen4-GREEN formats
-
 oracle_id: oracle-abw-v1
 format_id: abw
-format_version: "AbiWord 2.x"
+format_version: AbiWord 2.x
 oracle_version: 1
 family: document
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: ABIWORD-FORMAT
-      title: "AbiWord File Format Documentation"
-      body: AbiWord Project
-      url: "https://abisource.com/wiki/AbiWord_File_Format"
-      legal_category: 1
-      authority_class: SPEC_INFORMATIVE
-  authorized_fact_refs:
-    - "FACT-ABW-001"
-    - "FACT-ABW-002"
-    - "FACT-ABW-003"
-  authority_summary: >
-    ABW is the native XML format of AbiWord. Structure: <abiword> root containing
-    <section> and <p> elements for paragraphs. Python load() function provides
-    the reference parse result for format conformance.
-
-corpus_refs:
-  - corpus_id: abw-minimal-document
-    sample_ref: samples/by-format/abw/minimal-document.abw
-    sha256: "sha256:b4ec41a05ed15a26f7decdefe36475aa1b61419c533477667c50cc4866b8fb3f"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Minimal AbiWord document with single paragraph"
-
-valid_cases:
-  - case_id: abw-valid-001
-    profile: PARSE_VALIDITY
-    description: "minimal-document.abw parses without error and returns dict"
-    input_ref: samples/by-format/abw/minimal-document.abw
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: abw.abw_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-ABW-001
-
-  - case_id: abw-valid-002
-    profile: ROUNDTRIP
-    description: "load on minimal-document returns a dict with expected keys"
-    input_ref: samples/by-format/abw/minimal-document.abw
-    oracle_verdict: PASS
-    oracle_class: STRUCTURAL
-    assertion:
-      type: python_callable
-      module: abw.abw_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-ABW-001
-
-  - case_id: abw-valid-003
-    purpose: "Two-paragraph ABW document loads successfully"
+  - id: ABIWORD-FORMAT
+    title: AbiWord File Format Documentation
+    body: AbiWord Project
+    url: https://abisource.com/wiki/AbiWord_File_Format
+    legal_category: 1
     authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "ABIWORD-FORMAT -- multiple paragraph support"
-    sample_ref: samples/by-format/abw/two-paragraphs.abw
-    input_hash: "sha256:1b8f8ec1396aeec54c71bbd3c30707db136d97a8a05ca2608cfe1cd0d67dddca"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: is_abw
-        value: true
-        authority: ABIWORD-FORMAT
-    applicable_profiles:
-      - PARSE_VALIDITY
+  authorized_fact_refs:
+  - FACT-ABW-001
+  - FACT-ABW-002
+  - FACT-ABW-003
+  authority_summary: 'ABW is the native XML format of AbiWord. Structure: <abiword>
+    root containing <section> and <p> elements for paragraphs. Python load() function
+    provides the reference parse result for format conformance.
 
+    '
+corpus_refs:
+- corpus_id: abw-minimal-document
+  sample_ref: samples/by-format/abw/minimal-document.abw
+  sha256: sha256:b4ec41a05ed15a26f7decdefe36475aa1b61419c533477667c50cc4866b8fb3f
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal AbiWord document with single paragraph
+valid_cases:
+- case_id: abw-valid-001
+  profile: PARSE_VALIDITY
+  description: minimal-document.abw parses without error and returns dict
+  input_ref: samples/by-format/abw/minimal-document.abw
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: abw.abw_codec
+    callable: load
+    args:
+    - ${input_ref}
+    expect_type: dict
+    expect_no_exception: true
+  authority_ref: FACT-ABW-001
+- case_id: abw-valid-002
+  profile: ROUNDTRIP
+  description: load on minimal-document returns a dict with expected keys
+  input_ref: samples/by-format/abw/minimal-document.abw
+  oracle_verdict: PASS
+  oracle_class: STRUCTURAL
+  assertion:
+    type: python_callable
+    module: abw.abw_codec
+    callable: load
+    args:
+    - ${input_ref}
+    expect_type: dict
+    expect_no_exception: true
+  authority_ref: FACT-ABW-001
+- case_id: abw-valid-003
+  purpose: Two-paragraph ABW document loads successfully
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - ABIWORD-FORMAT -- multiple paragraph support
+  sample_ref: samples/by-format/abw/two-paragraphs.abw
+  input_hash: sha256:1b8f8ec1396aeec54c71bbd3c30707db136d97a8a05ca2608cfe1cd0d67dddca
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: is_abw
+    value: true
+    authority: ABIWORD-FORMAT
+  applicable_profiles:
+  - PARSE_VALIDITY
+executor_config:
+  module: abw.abw_codec
+  callable: load
 invalid_cases:
-  - case_id: abw-invalid-001
-    profile: INVALID_INPUT_REJECTION
-    purpose: "Malformed XML (unclosed tag) must raise an exception on load"
-    defect_class: malformed-xml
-    authority_refs:
-      - "ABIWORD-FORMAT -- XML well-formedness is a prerequisite"
-    inline_input: "<abiword><section><p>unclosed"
-    expected_failure_stage: PARSE_BODY
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: abw.abw_codec
-      callable: load
-      args: []
-      expect_exception: true
+- case_id: abw-invalid-001
+  profile: INVALID_INPUT_REJECTION
+  purpose: Malformed XML (unclosed tag) must raise an exception on load
+  defect_class: malformed-xml
+  authority_refs:
+  - ABIWORD-FORMAT -- XML well-formedness is a prerequisite
+  input_inline: <abiword><section><p>unclosed
+  expected_failure_stage: PARSE_BODY
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: abw.abw_codec
+    callable: load
+    expect_exception: true
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

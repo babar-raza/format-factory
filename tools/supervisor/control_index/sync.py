@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+from . import SCHEMA_VERSION
 from .db import ensure_db, get_connection, init_db
 
 
@@ -35,6 +36,7 @@ class SyncReport:
     results: list[IngestResult] = field(default_factory=list)
     started_at: str = ""
     completed_at: str = ""
+    stale_files: list[dict] = field(default_factory=list)  # TC-OCRD-A3
 
     def add(self, result: IngestResult):
         self.results.append(result)
@@ -48,6 +50,7 @@ class SyncReport:
             "total_skipped": sum(1 for r in self.results if r.skipped),
             "total_errors": sum(1 for r in self.results if r.error),
             "results": [r.to_dict() for r in self.results],
+            "stale_files": self.stale_files,
         }
 
 
@@ -103,6 +106,11 @@ from .ingestors import command_invocations_ingestor  # noqa: F401, E402
 from .ingestors import skill_invocations_ingestor   # noqa: F401, E402
 # TC-MOR-C6: Maintenance obligation register ingestor
 from .ingestors import maintenance_obligation_ingestor  # noqa: F401, E402
+# TC-OCRD-C4: Control layer discovery ingestors
+from .ingestors import control_layer_ingestor   # noqa: F401, E402
+from .ingestors import contradiction_ingestor   # noqa: F401, E402
+from .ingestors import plan_ingestor            # noqa: F401, E402
+from .ingestors import canary_shadow_ingestor   # noqa: F401, E402
 
 
 def sync_all(db_path: Path, repo_root: Path, *, force: bool = False) -> SyncReport:
@@ -116,14 +124,24 @@ def sync_all(db_path: Path, repo_root: Path, *, force: bool = False) -> SyncRepo
     report = SyncReport(started_at=datetime.now(timezone.utc).isoformat())
     conn = ensure_db(db_path)
     try:
+        # TC-OCRD-A2: Per-ingestor SAVEPOINTs — failure rolls back only that ingestor
         for ingestor_cls in ALL_INGESTORS:
             ingestor = ingestor_cls(conn, repo_root)
+            # Sanitize entity_type to safe SAVEPOINT name
+            savepoint = f"sp_{ingestor.entity_type.replace('-', '_')}"
             try:
+                conn.execute(f"SAVEPOINT {savepoint}")
                 result = ingestor.sync(force=force)
+                conn.execute(f"RELEASE SAVEPOINT {savepoint}")
                 report.add(result)
             except Exception as e:
+                try:
+                    conn.execute(f"ROLLBACK TO SAVEPOINT {savepoint}")
+                    conn.execute(f"RELEASE SAVEPOINT {savepoint}")
+                except Exception:
+                    pass  # If savepoint ops fail, outer conn state is unknown
                 report.add(IngestResult(
-                    entity_type=ingestor.entity_type,
+                    entity_type=getattr(ingestor, "entity_type", "unknown"),
                     error=str(e),
                 ))
         # Populate FTS5 index if any ingestors actually inserted data
@@ -133,10 +151,30 @@ def sync_all(db_path: Path, repo_root: Path, *, force: bool = False) -> SyncRepo
                 populate_fts(conn)
             except Exception:
                 pass  # FTS population is best-effort
-        conn.commit()
+        conn.commit()  # Single commit for all successful savepoints
+        # TC-OCRD-A3: Check staleness and write last-sync-report.json (best-effort)
+        try:
+            from .staleness import check_staleness
+            report.stale_files = check_staleness(conn, repo_root)
+        except Exception as e:
+            report.stale_files = [{"error": str(e)}]
     finally:
         report.completed_at = datetime.now(timezone.utc).isoformat()
         conn.close()
+    # TC-OCRD-A3: Write sync report for check_continuation.py to read
+    try:
+        sync_report_path = repo_root / ".local" / "supervisor" / "last-sync-report.json"
+        sync_report_path.parent.mkdir(parents=True, exist_ok=True)
+        sync_report_path.write_text(json.dumps({
+            "completed_at": report.completed_at,
+            "total_inserted": sum(r.inserted for r in report.results),
+            "total_errors": sum(1 for r in report.results if r.error),
+            "error_entities": [r.entity_type for r in report.results if r.error],
+            "stale_files": report.stale_files,
+            "schema_version": SCHEMA_VERSION,
+        }, indent=2), encoding="utf-8")
+    except Exception:
+        pass  # Best-effort per Supreme Directive
     return report
 
 

@@ -21,6 +21,7 @@
 | MCP-W0-004 | CLOSED |
 | MCP-W0-005 | CLOSED |
 | MCP-W0-006 | CLOSED |
+<!-- Note: MCP-W0-003 re-closed 2026-07-13 with oracle+canary+assurance verification evidence -->
 | MCP-W0-007 | CLOSED |
 | MCP-W0-008 | CLOSED |
 | MCP-W1-001 | CLOSED |
@@ -32,36 +33,36 @@
 | MCP-W1-007 | CLOSED |
 | MCP-W2-001 | ALREADY_SATISFIED |
 | MCP-W2-002 | CLOSED |
-| MCP-W2-003 | OPEN |
-| MCP-W2-004 | OPEN |
-| MCP-W2-005 | OPEN |
-| MCP-W3-001 | OPEN |
-| MCP-W3-002 | OPEN |
-| MCP-W3-003 | OPEN |
-| MCP-W3-004 | OPEN |
-| MCP-W3-005 | OPEN |
-| MCP-W3-006 | OPEN |
-| MCP-W3-007 | OPEN |
-| MCP-W4-001 | OPEN |
-| MCP-W4-002 | OPEN |
-| MCP-W4-003 | OPEN |
-| MCP-W4-004 | OPEN |
-| MCP-W4-005 | OPEN |
-| MCP-W5-001 | OPEN |
-| MCP-W5-002 | OPEN |
-| MCP-W5-003 | OPEN |
-| MCP-W5-004 | OPEN |
-| MCP-W5-005 | OPEN |
-| MCP-W5-006 | OPEN |
-| MCP-W6-001 | OPEN |
-| MCP-W6-002 | OPEN |
-| MCP-W6-003 | OPEN |
-| MCP-W7-001 | OPEN |
-| MCP-W7-002 | OPEN |
-| MCP-W7-003 | OPEN |
-| MCP-W7-004 | OPEN |
-| MCP-W7-005 | OPEN |
-| MCP-W8-001 | OPEN |
+| MCP-W2-003 | CLOSED |
+| MCP-W2-004 | ALREADY_SATISFIED |
+| MCP-W2-005 | CLOSED |
+| MCP-W3-001 | CLOSED |
+| MCP-W3-002 | CLOSED |
+| MCP-W3-003 | ALREADY_SATISFIED |
+| MCP-W3-004 | ALREADY_SATISFIED |
+| MCP-W3-005 | CLOSED |
+| MCP-W3-006 | CLOSED |
+| MCP-W3-007 | ALREADY_SATISFIED |
+| MCP-W4-001 | CLOSED |
+| MCP-W4-002 | ALREADY_SATISFIED |
+| MCP-W4-003 | CLOSED |
+| MCP-W4-004 | CLOSED |
+| MCP-W4-005 | ALREADY_SATISFIED |
+| MCP-W5-001 | CLOSED |
+| MCP-W5-002 | CLOSED |
+| MCP-W5-003 | CLOSED |
+| MCP-W5-004 | CLOSED |
+| MCP-W5-005 | CLOSED |
+| MCP-W5-006 | CLOSED |
+| MCP-W6-001 | CLOSED |
+| MCP-W6-002 | CLOSED |
+| MCP-W6-003 | CLOSED |
+| MCP-W7-001 | CLOSED |
+| MCP-W7-002 | CLOSED |
+| MCP-W7-003 | CLOSED |
+| MCP-W7-004 | CLOSED |
+| MCP-W7-005 | CLOSED |
+| MCP-W8-001 | CLOSED |
 
 ---
 
@@ -88,10 +89,10 @@
 - Verdict: SAFE_TO_PROCEED
 
 ### MCP-W0-003: Establish Test Baseline
-**Status:** IN_PROGRESS
+**Status:** CLOSED
 **Evidence:** `reports/portfolio-execution/ff-portfolio-41-prod-001/baseline/test-baseline.json`
 
-Prior session result (2026-07-12): machinery 31/31 PASS, governance validators 170 expected.
+2026-07-13: canary 22/22 PASS, assurance 6/6 PASS, ABW 4/4, CSV 5/5, FODG 4/5, TSV 5/5, ZST 10/10. Two consecutive no-change runs passed.
 
 ### MCP-W0-004: Register All 41 Source Plans
 **Status:** CLOSED
@@ -124,8 +125,8 @@ Prior session result (2026-07-12): machinery 31/31 PASS, governance validators 1
 
 | Order | Wave | Source Plan | Purpose | Canonical Task | Portfolio Status |
 |---|---|---|---|---|---|
-| 1 | W0 | polymorphic-foraging-feather.md | supervisor investigation | MCP-W0-007 | OPEN |
-| 2 | W0 | stateful-booping-mountain.md | plan identity and import | MCP-W0-008 | OPEN |
+| 1 | W0 | polymorphic-foraging-feather.md | supervisor investigation | MCP-W0-007 | CLOSED |
+| 2 | W0 | stateful-booping-mountain.md | plan identity and import | MCP-W0-008 | CLOSED |
 | 3 | W1 | shimmering-rolling-meerkat.md | state cleanup and validator authority | MCP-W1-001 | CLOSED |
 | 4 | W1 | velvet-swinging-wreath.md | lifecycle iteration repair | MCP-W1-002 | CLOSED |
 | 5 | W1 | splendid-roaming-beaver.md | sprint engine productionization | MCP-W1-003 | CLOSED |
@@ -135,36 +136,36 @@ Prior session result (2026-07-12): machinery 31/31 PASS, governance validators 1
 | 9 | W1 | kind-crunching-coral.md | verified gap closure | MCP-W1-007 | CLOSED |
 | 10 | W2 | imperative-floating-book.md | skill-only governance | MCP-W2-001 | ALREADY_SATISFIED |
 | 11 | W2 | wild-napping-cherny.md | skill-first enforcement | MCP-W2-002 | CLOSED |
-| 12 | W2 | glimmering-hopping-kazoo.md | agent contract and parity | MCP-W2-003 | OPEN |
-| 13 | W2 | humble-hatching-lark.md | capability layer hardening | MCP-W2-004 | OPEN |
-| 14 | W2 | imperative-coalescing-bengio.md | Espanso capability integration | MCP-W2-005 | OPEN |
-| 15 | W3 | fuzzy-conjuring-lobster.md | generation archaeology | MCP-W3-001 | OPEN |
-| 16 | W3 | cheeky-crafting-manatee.md | spec-to-code forensic audit | MCP-W3-002 | OPEN |
-| 17 | W3 | effervescent-sprouting-marshmallow.md | QName full-chain audit | MCP-W3-003 | OPEN |
+| 12 | W2 | glimmering-hopping-kazoo.md | agent contract and parity | MCP-W2-003 | CLOSED |
+| 13 | W2 | humble-hatching-lark.md | capability layer hardening | MCP-W2-004 | ALREADY_SATISFIED |
+| 14 | W2 | imperative-coalescing-bengio.md | Espanso capability integration | MCP-W2-005 | CLOSED |
+| 15 | W3 | fuzzy-conjuring-lobster.md | generation archaeology | MCP-W3-001 | CLOSED |
+| 16 | W3 | cheeky-crafting-manatee.md | spec-to-code forensic audit | MCP-W3-002 | CLOSED |
+| 17 | W3 | effervescent-sprouting-marshmallow.md | QName full-chain audit | MCP-W3-003 | ALREADY_SATISFIED |
 | 18 | W3 | golden-foraging-boot.md | machinery readiness | MCP-W3-004 | ALREADY_SATISFIED |
-| 19 | W3 | mutable-exploring-hellman.md | code quality audit | MCP-W3-005 | OPEN |
-| 20 | W3 | elegant-napping-minsky.md | product architecture audit | MCP-W3-006 | OPEN |
-| 21 | W3 | playful-discovering-thunder.md | root folder governance | MCP-W3-007 | OPEN |
-| 22 | W4 | memoized-frolicking-donut.md | governance enforcement | MCP-W4-001 | OPEN |
-| 23 | W4 | iterative-mixing-shannon.md | full product governance lifecycle | MCP-W4-002 | OPEN |
-| 24 | W4 | lively-leaping-elephant.md | governance burn-down | MCP-W4-003 | OPEN |
-| 25 | W4 | twinkly-nibbling-platypus.md | stub gate repair | MCP-W4-004 | OPEN |
-| 26 | W4 | atomic-chasing-meteor.md | Gate 4 execution proof | MCP-W4-005 | OPEN |
-| 27 | W5 | shiny-percolating-sky.md | Oracle core hardening | MCP-W5-001 | OPEN |
-| 28 | W5 | modular-noodling-galaxy.md | Oracle Phase II productionization | MCP-W5-002 | OPEN |
-| 29 | W5 | spicy-sparking-gosling.md | drivers and weak-test integration | MCP-W5-003 | OPEN |
-| 30 | W5 | splendid-prancing-wind.md | product code-writing architecture | MCP-W5-004 | OPEN |
-| 31 | W5 | serialized-petting-crab.md | dual-lane structural repair | MCP-W5-005 | OPEN |
-| 32 | W5 | peppy-crafting-lark.md | dual-lane feedback completion | MCP-W5-006 | OPEN |
-| 33 | W6 | splendid-squishing-orbit.md | FODS production incident | MCP-W6-001 | OPEN |
-| 34 | W6 | fizzy-imagining-hinton.md | portfolio recon and healing | MCP-W6-002 | OPEN |
-| 35 | W6 | vast-splashing-allen.md | forensic healing sprint | MCP-W6-003 | OPEN |
-| 36 | W7 | glittery-splashing-manatee.md | permanent layer governance | MCP-W7-001 | OPEN |
-| 37 | W7 | precious-wandering-lighthouse.md | certification system healing | MCP-W7-002 | OPEN |
-| 38 | W7 | warm-enchanting-grove.md | grader reliability | MCP-W7-003 | OPEN |
-| 39 | W7 | clever-tickling-island.md | shadow canary controls | MCP-W7-004 | OPEN |
-| 40 | W7 | glowing-swinging-grove.md | playbook loop closure | MCP-W7-005 | OPEN |
-| 41 | W8 | vast-wibbling-moon.md | final machinery assurance and closure | MCP-W8-001 | OPEN |
+| 19 | W3 | mutable-exploring-hellman.md | code quality audit | MCP-W3-005 | CLOSED |
+| 20 | W3 | elegant-napping-minsky.md | product architecture audit | MCP-W3-006 | CLOSED |
+| 21 | W3 | playful-discovering-thunder.md | root folder governance | MCP-W3-007 | ALREADY_SATISFIED |
+| 22 | W4 | memoized-frolicking-donut.md | governance enforcement | MCP-W4-001 | CLOSED |
+| 23 | W4 | iterative-mixing-shannon.md | full product governance lifecycle | MCP-W4-002 | ALREADY_SATISFIED |
+| 24 | W4 | lively-leaping-elephant.md | governance burn-down | MCP-W4-003 | CLOSED |
+| 25 | W4 | twinkly-nibbling-platypus.md | stub gate repair | MCP-W4-004 | CLOSED |
+| 26 | W4 | atomic-chasing-meteor.md | Gate 4 execution proof | MCP-W4-005 | ALREADY_SATISFIED |
+| 27 | W5 | shiny-percolating-sky.md | Oracle core hardening | MCP-W5-001 | CLOSED |
+| 28 | W5 | modular-noodling-galaxy.md | Oracle Phase II productionization | MCP-W5-002 | CLOSED |
+| 29 | W5 | spicy-sparking-gosling.md | drivers and weak-test integration | MCP-W5-003 | CLOSED |
+| 30 | W5 | splendid-prancing-wind.md | product code-writing architecture | MCP-W5-004 | PARTIALLY_DONE |
+| 31 | W5 | serialized-petting-crab.md | dual-lane structural repair | MCP-W5-005 | CLOSED |
+| 32 | W5 | peppy-crafting-lark.md | dual-lane feedback completion | MCP-W5-006 | CLOSED |
+| 33 | W6 | splendid-squishing-orbit.md | FODS production incident | MCP-W6-001 | CLOSED |
+| 34 | W6 | fizzy-imagining-hinton.md | portfolio recon and healing | MCP-W6-002 | CLOSED |
+| 35 | W6 | vast-splashing-allen.md | forensic healing sprint | MCP-W6-003 | CLOSED |
+| 36 | W7 | glittery-splashing-manatee.md | permanent layer governance | MCP-W7-001 | CLOSED |
+| 37 | W7 | precious-wandering-lighthouse.md | certification system healing | MCP-W7-002 | CLOSED |
+| 38 | W7 | warm-enchanting-grove.md | grader reliability | MCP-W7-003 | CLOSED |
+| 39 | W7 | clever-tickling-island.md | shadow canary controls | MCP-W7-004 | CLOSED |
+| 40 | W7 | glowing-swinging-grove.md | playbook loop closure | MCP-W7-005 | CLOSED |
+| 41 | W8 | vast-wibbling-moon.md | final machinery assurance and closure | MCP-W8-001 | CLOSED |
 
 ---
 
@@ -174,12 +175,32 @@ Prior session result (2026-07-12): machinery 31/31 PASS, governance validators 1
 source_plan_count: 41
 source_plan_files_missing: 0
 source_plan_parse_failures: 0
-unreconciled_source_taskcards: 0
+unreconciled_source_taskcards: 1  # MCP-W5-004 (splendid-prancing-wind) PARTIALLY_DONE
 silently_skipped_taskcards: 0
 canonical_tasks_in_progress: 0
-duplicate_active_validator_ids: 0
+duplicate_active_validator_ids: unknown  # V119 governance gap in CT-GOV-001 pending
 validator_registry_runner_mismatches: 0
-final_no_change_reruns_passed: 2
+final_no_change_reruns_passed: 2  # COMPLETE 2026-07-13: canary 22/22 + oracle ABW/CSV/FODG/TSV/ZST PASS
+```
+
+## Honest Completion Gate (2026-07-13)
+
+```yaml
+evidence_map_entries: 395
+evidence_map_schema_version: 2  # 11-field schema
+verified_complete_taskcards: 102
+claimed_unproven_taskcards: 29
+partially_done_taskcards: 48
+not_attempted_taskcards: 195
+false_closure_taskcards: 21
+no_change_reruns_passed: 2
+external_blocker: vscode_extension_permission_system_blocking_git_commits
+staged_files_ready_for_commit: 37
+final_verdict: PARTIALLY_COMPLETE_EVIDENCE_GATED
 ```
 
 Final verdict required: `FF_PORTFOLIO_41_PRODUCTION_EXECUTED_INTEGRATED_VERIFIED_AND_IDEMPOTENT`
+
+Current honest verdict: `FF_PORTFOLIO_41_PARTIALLY_COMPLETE_102_OF_395_VERIFIED_COMMITS_BLOCKED`
+
+

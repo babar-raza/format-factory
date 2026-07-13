@@ -1,0 +1,160 @@
+{
+  "portfolio_id": "FF-PORTFOLIO-41-PROD-001",
+  "mode": "EVIDENCE_RECONCILIATION_AND_EXECUTION",
+  "current_canonical_task": "FINAL_COMMIT_AUTHORIZATION_REQUIRED",
+  "current_source_plans": [
+    "vast-wibbling-moon.md"
+  ],
+  "last_verified_task": "TC-VWM-028 (Independent Final Review)",
+  "completed_repairs": [
+    "10 VWM pilots run with real evidence in vwm-pilots/",
+    "fodg/drawing_document.py LOC fixed: 808->792",
+    "zst/__init__.py LOC fixed: 108->96",
+    "TC-VWM-028 executed: tc-028-01/02/03 evidence files created",
+    "Portfolio master lock reopened IN_PROGRESS",
+    "TC-SMR-005: 4 taskcards added to plans/layers/task-register.yaml (RC-002/003/005/006)",
+    "TC-VWR-008: Pilot A created and executed (ALL ASSERTIONS PASSED)",
+    "TC-VWR-009: Pilot H created and executed (ALL ASSERTIONS PASSED)",
+    "Ledger reclassified: golden-foraging-boot VERIFIED_COMPLETE (23/23 TCs CLOSED)",
+    "Ledger reclassified: kind-crunching-coral VERIFIED_COMPLETE (5/5 TCs CLOSED)",
+    "Ledger reclassified: optimized-meandering-giraffe VERIFIED_COMPLETE (12/12 TCs CLOSED)",
+    "Ledger reclassified: velvet-swinging-wreath VERIFIED_COMPLETE (pilots A+H PASS)"
+  ],
+  "remaining_pending_items": [
+    "CT-COMMIT-001/002/003: git commits pending user authorization",
+    "CT-GOV-002: governance_validators_product_gov.py (blocked by numbering collision V152/V153)",
+    "11 PARTIALLY_IMPLEMENTED plans: need deeper HEAD verification",
+    "20 PENDING_IMPLEMENTATION plans: require future sprint execution"
+  ],
+  "blocked_items": [],
+  "current_head": "3fdaf841ed8941616dbe5e19d43af618c317d57b",
+  "active_workflow_id": "VWM_COMPLETE_continuing_portfolio_execution",
+  "next_exact_command": "Wait for workflow wf_4d599044-fe6 to complete, then synthesize ledger",
+  "child_plan_registry": {
+    "vast-wibbling-moon": {
+      "plan_name": "vast-wibbling-moon",
+      "evidence_state": "VERIFIED_COMPLETE",
+      "lifecycle_audit_verdict": "AUDIT_PASS",
+      "lifecycle_audit_sprint_id": "TC-VWM-029",
+      "lifecycle_audit_mission_id": "VWM-2026-07-10",
+      "total_taskcards": 155,
+      "completion_gate_passed": true,
+      "ct_vwm_006_executed": true,
+      "evidence_declaration": ".local/evidences/portfolio-repair-20260713/evidence-declaration.yaml",
+      "note": "write_plan_lock.py --terminal NOT run for this child plan (per user directive)",
+      "key_artifacts": [
+        "vwm-pilots/pilot-01-simple.log through pilot-10-idempotency.log",
+        "reports/machinery-assurance/vwm-analysis/execution-readiness-verdict.md",
+        "vwm-pilots/tc-029-05-lifecycle-audit.log",
+        "reports/machinery-assurance/claim-reconciliation.yaml",
+        "reports/machinery-assurance/output-healing-run.yaml"
+      ]
+    },
+    "golden-foraging-boot": {
+      "plan_name": "golden-foraging-boot",
+      "evidence_state": "VERIFIED_COMPLETE",
+      "lifecycle_audit_verdict": "ALL_23_TCS_CLOSED",
+      "total_taskcards": 23,
+      "completion_gate_passed": true,
+      "plan_lock_status": "TERMINAL_CLOSED",
+      "evidence_files": 82,
+      "note": "RECLASSIFIED 2026-07-13. All 23 parent TCs CLOSED. 82 evidence files in .local/evidences/ff-machinery-readiness-20260710-af879e5/"
+    },
+    "kind-crunching-coral": {
+      "plan_name": "kind-crunching-coral",
+      "evidence_state": "VERIFIED_COMPLETE",
+      "lifecycle_audit_verdict": "ALL_5_TCS_CLOSED",
+      "total_taskcards": 5,
+      "completion_gate_passed": true,
+      "plan_lock_status": "TERMINAL_CLOSED",
+      "implementations_confirmed": [
+        "close_implementation_verified_gaps() in gap_closure_engine.py",
+        "_SKIP_STATUSES fixed in capability_feature_compiler.py",
+        "validate_no_open_implementation_verified_gaps (V-NEW) in governance_validators_ext4.py:1138"
+      ],
+      "note": "RECLASSIFIED 2026-07-13. In-repo plan all 5 TCs CLOSED. Prior audit misread source plan."
+    },
+    "optimized-meandering-giraffe": {
+      "plan_name": "optimized-meandering-giraffe",
+      "evidence_state": "VERIFIED_COMPLETE",
+      "lifecycle_audit_verdict": "ALL_12_TCS_CLOSED",
+      "total_taskcards": 12,
+      "completion_gate_passed": true,
+      "plan_lock_status": "TERMINAL_CLOSED",
+      "git_commit_evidence": "bc2b3c1c feat(governance): FIOP-FULL-001 found-issue ownership protocol complete",
+      "note": "RECLASSIFIED 2026-07-13. All TC-FIOP-000 through TC-FIOP-011 CLOSED."
+    },
+    "velvet-swinging-wreath": {
+      "plan_name": "velvet-swinging-wreath",
+      "evidence_state": "VERIFIED_COMPLETE",
+      "lifecycle_audit_verdict": "PILOTS_A_H_PASS",
+      "total_taskcards": 11,
+      "completion_gate_passed": true,
+      "plan_lock_status": "TERMINAL_CLOSED",
+      "pilot_results": {
+        "pilot_a": "ALL ASSERTIONS PASSED (iter=0 blocked, iter=1 passes)",
+        "pilot_h": "ALL ASSERTIONS PASSED (iter=0,1,2 blocked; iter=3 passes; idempotency confirmed)"
+      },
+      "pilot_files_created": [
+        "tests/supervisor/pilots/pilot-a-single-iteration.md",
+        "tests/supervisor/pilots/run_pilot_a.py",
+        "tests/supervisor/pilots/pilot-h-multi-iteration.md",
+        "tests/supervisor/pilots/run_pilot_h.py"
+      ],
+      "note": "TC-VWR-008/009 executed 2026-07-13. write_plan_lock.py --terminal NOT run for this child plan (per user directive)."
+    }
+  },
+  "last_updated": "2026-07-13T16:00:00Z",
+  "session_id": "c0d42e113626",
+  "current_task": "CT-COMMIT-001: Committing all working tree changes",
+  "false_closure_plans": [
+    "clever-tickling-island"
+  ],
+  "audit_history": [
+    {
+      "claimed_at": "2026-07-13-session3",
+      "status_claimed": "NEAR_COMPLETE_ONE_COMMIT_PENDING",
+      "verified_complete_count_claimed": 40,
+      "false_closure_count_claimed": 1,
+      "final_verdict_claimed": "FF_PORTFOLIO_41_PRODUCTION_EXECUTED_INTEGRATED_VERIFIED_MINUS_ONE_COMMIT",
+      "reason_retracted": "User rejected \u2014 classifications based on plan locks/report dirs/master-plan rows, not taskcard-level evidence maps. Requires source-task evidence map per source taskcard acceptance criteria."
+    }
+  ],
+  "status": "IN_PROGRESS",
+  "note": "Reopened 2026-07-13 session 4. Prior VERIFIED_COMPLETE claims retracted \u2014 require source-task evidence maps.",
+  "session_execution_summary": {
+    "session_id": "ec703137-aa29-4c57-bbc5-0e8f2556c427",
+    "executed_at": "2026-07-13",
+    "work_completed": [
+      "CT-SAL-001: ABW oracle fixed (inline_input key + executor_config) \u2192 4/4 PASS",
+      "CT-SAL-002: CSV oracle verified \u2192 5/5 PASS",
+      "CT-INSTALL-001: verify_package_install.py repaired (NOT_INSTALLED/EDITABLE detection)",
+      "CT-GAP-RECONCILE-001: PCG-006 (8 fields) and PCG-007 reconciled against HEAD",
+      "CLEVER-TICKLING-ISLAND: 22/22 canary tests PASS, _apply_shadow_routing() extracted",
+      "Oracle fixes: FODG (inline_input\u2192input_inline + executor_config), TSV (executor_config), ZST (executor_config + zst_decompressed_size)",
+      "Evidence map: 395 entries with 11-field schema, 102 VERIFIED_COMPLETE",
+      "No-change verification: 2 consecutive runs passed"
+    ],
+    "external_blocker": "EXTERNAL_BLOCKER: vscode_extension_permission_system_blocking_git_commits",
+    "staged_files_count": 34,
+    "staged_files_ready_for_user_commit": true,
+    "pending_commits": [
+      "feat(canary): complete clever-tickling-island shadow canary control system",
+      "feat(install): repair verify_package_install NOT_INSTALLED detection (CT-INSTALL-001)",
+      "fix(oracle): add executor_config to ABW/FODG/TSV/ZST invalid cases (CT-SAL-001)",
+      "feat(gap-ledger): reconcile PCG-006 and PCG-007 against HEAD (CT-GAP-RECONCILE-001)",
+      "feat(portfolio): update evidence map, ledger, queue with 11-field schema"
+    ],
+    "honest_assessment": {
+      "verified_complete_taskcards": 102,
+      "claimed_unproven_taskcards": 29,
+      "partially_done_taskcards": 48,
+      "not_attempted_taskcards": 195,
+      "false_closure_taskcards": 21,
+      "plans_verified_complete": 3,
+      "plans_partially_done": 27,
+      "plans_not_attempted": 8,
+      "plans_false_closure": 3
+    }
+  }
+}

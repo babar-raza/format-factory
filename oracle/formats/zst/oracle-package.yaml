@@ -1,440 +1,392 @@
-# ZST Oracle Package — Format Factory
-# Format: Zstandard Compressed Data
-# Authority: RFC 8878 (IETF)
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Pilot 5 (Compression)
-
 oracle_id: oracle-zst-v1
 format_id: zst
-format_version: "RFC 8878"
+format_version: RFC 8878
 oracle_version: 1
 family: archive
-generated_at: "2026-06-25"
+generated_at: '2026-06-25'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
-# ==============================================================================
-# AUTHORITY
-# ==============================================================================
 authority:
   specification_refs:
-    - id: RFC-8878
-      title: "Zstandard Compression and the application/zstd Media Type"
-      body: IETF
-      url: "https://www.rfc-editor.org/rfc/rfc8878"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-    - id: ZSTD-SPEC-INTERNAL
-      title: "Zstandard Compression Format (internal spec document)"
-      body: Meta Platforms / phoboslab
-      url: "https://github.com/facebook/zstd/blob/dev/doc/zstd_compression_format.md"
-      authority_class: SPEC_INFORMATIVE
-  authorized_fact_refs:  # TC-LA-001: 94 ZST SAL facts in sal-facts-latest.json
-    - "FACT-ZST-001"
-    - "FACT-ZST-002"
-    - "FACT-ZST-003"
-  authority_summary: >
-    RFC 8878 is normative (IETF, royalty-free). The Zstandard compression format
-    is fully specified in the RFC. Decompression behavior is deterministic:
+  - id: RFC-8878
+    title: Zstandard Compression and the application/zstd Media Type
+    body: IETF
+    url: https://www.rfc-editor.org/rfc/rfc8878
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+  - id: ZSTD-SPEC-INTERNAL
+    title: Zstandard Compression Format (internal spec document)
+    body: Meta Platforms / phoboslab
+    url: https://github.com/facebook/zstd/blob/dev/doc/zstd_compression_format.md
+    authority_class: SPEC_INFORMATIVE
+  authorized_fact_refs:
+  - FACT-ZST-001
+  - FACT-ZST-002
+  - FACT-ZST-003
+  authority_summary: 'RFC 8878 is normative (IETF, royalty-free). The Zstandard compression
+    format is fully specified in the RFC. Decompression behavior is deterministic:
     any conforming decompressor must produce byte-identical output from the same input.
-    Test corpus from facebook/zstd (BSD-3-Clause) provides authoritative reference vectors.
+    Test corpus from facebook/zstd (BSD-3-Clause) provides authoritative reference
+    vectors.
 
-# ==============================================================================
-# CORPUS REFERENCES (from _corpus-manifest.yaml — all BSD-3-Clause from facebook/zstd)
-# ==============================================================================
+    '
 corpus_refs:
-  - corpus_id: zst-block-128k
-    sample_ref: samples/by-format/zst/valid/block-128k.zst
-    sha256: "sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: core-data
-    decompressed_size_bytes: 131068
-  - corpus_id: zst-empty-block
-    sample_ref: samples/by-format/zst/valid/empty-block.zst
-    sha256: "sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: empty-trivial
-    decompressed_size_bytes: 0
-  - corpus_id: zst-rle-first-block
-    sample_ref: samples/by-format/zst/valid/rle-first-block.zst
-    sha256: "sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: structural-variant-rle
-    decompressed_size_bytes: 1048576
-  - corpus_id: zst-zerogen-2b
-    sample_ref: samples/by-format/zst/valid/zeroSeq_2B.zst
-    sha256: "sha256:8505867ac00fb49eb455da1b1e44e7cba5126f03114a72fb195170f7c95f2ca7"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: edge-case-zero-sequence
-    decompressed_size_bytes: 13
-  - corpus_id: zst-minimal-synthetic
-    sample_ref: samples/by-format/zst/valid/minimal-synthetic.zst
-    sha256: "sha256:7a4c6310840830c5b9c7f58c5b50fbf6489f91d9dcb538a69e0682c06244defe"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    decompressed_size_bytes: 1
-  - corpus_id: zst-text-compressed
-    sample_ref: samples/by-format/zst/valid/text-compressed.zst
-    sha256: "sha256:3f4e90410fee63e1d355f7d6f90608bda9e697be406c31f7967662a45f2a05fb"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    decompressed_size_bytes: 390
-  - corpus_id: zst-invalid-offset-zero
-    sample_ref: samples/by-format/zst/invalid/off0.bin.zst
-    sha256: "sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression-errors
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: invalid-offset-zero
-    expected_error: ZstdError
-  - corpus_id: zst-invalid-truncated-huff
-    sample_ref: samples/by-format/zst/invalid/truncated_huff_state.zst
-    sha256: "sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8"
-    license: BSD-3-Clause
-    source: facebook/zstd golden-decompression-errors
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    category: invalid-truncated-huffman
-    expected_error: ZstdError
-  - corpus_id: zst-invalid-generated-wrong-magic
-    sample_ref: samples/by-format/zst/invalid/generated/wrong-magic.zst
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    category: invalid-wrong-magic
-    expected_error: ZstdError
-  - corpus_id: zst-invalid-generated-truncated-header
-    sample_ref: samples/by-format/zst/invalid/generated/truncated-header-2b.zst
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    category: invalid-truncated-header
-    expected_error: ZstdError
-
-# ==============================================================================
-# PROFILES
-# ==============================================================================
+- corpus_id: zst-block-128k
+  sample_ref: samples/by-format/zst/valid/block-128k.zst
+  sha256: sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: core-data
+  decompressed_size_bytes: 131068
+- corpus_id: zst-empty-block
+  sample_ref: samples/by-format/zst/valid/empty-block.zst
+  sha256: sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: empty-trivial
+  decompressed_size_bytes: 0
+- corpus_id: zst-rle-first-block
+  sample_ref: samples/by-format/zst/valid/rle-first-block.zst
+  sha256: sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: structural-variant-rle
+  decompressed_size_bytes: 1048576
+- corpus_id: zst-zerogen-2b
+  sample_ref: samples/by-format/zst/valid/zeroSeq_2B.zst
+  sha256: sha256:8505867ac00fb49eb455da1b1e44e7cba5126f03114a72fb195170f7c95f2ca7
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: edge-case-zero-sequence
+  decompressed_size_bytes: 13
+- corpus_id: zst-minimal-synthetic
+  sample_ref: samples/by-format/zst/valid/minimal-synthetic.zst
+  sha256: sha256:7a4c6310840830c5b9c7f58c5b50fbf6489f91d9dcb538a69e0682c06244defe
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  decompressed_size_bytes: 1
+- corpus_id: zst-text-compressed
+  sample_ref: samples/by-format/zst/valid/text-compressed.zst
+  sha256: sha256:3f4e90410fee63e1d355f7d6f90608bda9e697be406c31f7967662a45f2a05fb
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  decompressed_size_bytes: 390
+- corpus_id: zst-invalid-offset-zero
+  sample_ref: samples/by-format/zst/invalid/off0.bin.zst
+  sha256: sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression-errors
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: invalid-offset-zero
+  expected_error: ZstdError
+- corpus_id: zst-invalid-truncated-huff
+  sample_ref: samples/by-format/zst/invalid/truncated_huff_state.zst
+  sha256: sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8
+  license: BSD-3-Clause
+  source: facebook/zstd golden-decompression-errors
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  category: invalid-truncated-huffman
+  expected_error: ZstdError
+- corpus_id: zst-invalid-generated-wrong-magic
+  sample_ref: samples/by-format/zst/invalid/generated/wrong-magic.zst
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  category: invalid-wrong-magic
+  expected_error: ZstdError
+- corpus_id: zst-invalid-generated-truncated-header
+  sample_ref: samples/by-format/zst/invalid/generated/truncated-header-2b.zst
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  category: invalid-truncated-header
+  expected_error: ZstdError
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- INVALID_INPUT_REJECTION
+- DOMAIN_MODEL_MAPPING
+- LOSSLESS_TRANSFORMATION
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- ERROR_CONTRACT
+- LIMITS_AND_BOUNDARIES
+- PACKAGE_CONSUMER
+- SECURITY_ROBUSTNESS
+profiles_not_applicable:
+- profile: MUTATION_BEHAVIOR
+  reason: ZST has no mutation API — compress/decompress only
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Compression output varies by level/algorithm version; only decompressed
+    output is invariant
+- profile: EXPORT_CONFORMANCE
+  reason: ZST does not export to other formats
+- profile: NORMALIZATION
+  reason: No normalization in compression
+- profile: INTEROPERABILITY
+  reason: Facebook/zstd reference corpus IS the interoperability test — already in
+    valid cases
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: ZST frames contain only compressed data; no unknown-content extension mechanism
+valid_cases:
+- case_id: zst-valid-001
+  purpose: Core data block (128KB) — authoritative decompression from facebook/zstd
+    golden corpus
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - RFC 8878 §3 — Zstandard Frame format
+  - facebook/zstd golden-decompression corpus (BSD-3-Clause)
+  sample_ref: samples/by-format/zst/valid/block-128k.zst
+  input_hash: sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: compressed_size
+    value: 131081
+    authority: RFC-8878
+  - property: decompressed_size
+    value: 131068
+    authority: facebook/zstd golden corpus — known decompressed size
+  - property: is_empty
+    value: false
+  - property: frame_count
+    value: 1
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
-  - INVALID_INPUT_REJECTION
   - DOMAIN_MODEL_MAPPING
-  - LOSSLESS_TRANSFORMATION
-  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-  - ERROR_CONTRACT
+- case_id: zst-valid-002
+  purpose: Empty block (0 bytes decompressed) — minimal boundary case
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - RFC 8878 §3.1.2 — Empty frames are valid
+  - facebook/zstd golden-decompression corpus
+  sample_ref: samples/by-format/zst/valid/empty-block.zst
+  input_hash: sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: decompressed_size
+    value: 0
+    authority: facebook/zstd golden corpus — known decompressed size is 0
+  - property: is_empty
+    value: false
+    authority: ACCEPTED_EMPIRICAL — ZstDocument.is_empty means frame_count==0, not
+      decompressed_size==0; empty-block.zst has 1 valid frame
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
   - LIMITS_AND_BOUNDARIES
-  - PACKAGE_CONSUMER
-  - SECURITY_ROBUSTNESS
-
-profiles_not_applicable:
-  - profile: MUTATION_BEHAVIOR
-    reason: "ZST has no mutation API — compress/decompress only"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Compression output varies by level/algorithm version; only decompressed output is invariant"
-  - profile: EXPORT_CONFORMANCE
-    reason: "ZST does not export to other formats"
-  - profile: NORMALIZATION
-    reason: "No normalization in compression"
-  - profile: INTEROPERABILITY
-    reason: "Facebook/zstd reference corpus IS the interoperability test — already in valid cases"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "ZST frames contain only compressed data; no unknown-content extension mechanism"
-
-# ==============================================================================
-# VALID CASES
-# ==============================================================================
-valid_cases:
-
-  - case_id: zst-valid-001
-    purpose: "Core data block (128KB) — authoritative decompression from facebook/zstd golden corpus"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "RFC 8878 §3 — Zstandard Frame format"
-      - "facebook/zstd golden-decompression corpus (BSD-3-Clause)"
-    sample_ref: samples/by-format/zst/valid/block-128k.zst
-    input_hash: "sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: compressed_size
-        value: 131081
-        authority: RFC-8878
-      - property: decompressed_size
-        value: 131068
-        authority: "facebook/zstd golden corpus — known decompressed size"
-      - property: is_empty
-        value: false
-      - property: frame_count
-        value: 1
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: zst-valid-002
-    purpose: "Empty block (0 bytes decompressed) — minimal boundary case"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "RFC 8878 §3.1.2 — Empty frames are valid"
-      - "facebook/zstd golden-decompression corpus"
-    sample_ref: samples/by-format/zst/valid/empty-block.zst
-    input_hash: "sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: decompressed_size
-        value: 0
-        authority: "facebook/zstd golden corpus — known decompressed size is 0"
-      - property: is_empty
-        value: false
-        authority: "ACCEPTED_EMPIRICAL — ZstDocument.is_empty means frame_count==0, not decompressed_size==0; empty-block.zst has 1 valid frame"
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - LIMITS_AND_BOUNDARIES
-
-  - case_id: zst-valid-003
-    purpose: "RLE (Run-Length Encoded) first block — structural variant"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "RFC 8878 §3.1.4.2 — RLE block type"
-      - "facebook/zstd golden corpus"
-    sample_ref: samples/by-format/zst/valid/rle-first-block.zst
-    input_hash: "sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: decompressed_size
-        value: 1048576
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: zst-valid-004
-    purpose: "Minimal synthetic (1-byte decompressed) — project-created minimum"
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    authority_refs:
-      - "RFC 8878 §3 — valid frame"
-    sample_ref: samples/by-format/zst/valid/minimal-synthetic.zst
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: decompressed_size
-        value: 1
-      - property: frame_count
-        value: 1
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - LIMITS_AND_BOUNDARIES
-
-# ==============================================================================
-# INVALID CASES
-# ==============================================================================
+- case_id: zst-valid-003
+  purpose: RLE (Run-Length Encoded) first block — structural variant
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - RFC 8878 §3.1.4.2 — RLE block type
+  - facebook/zstd golden corpus
+  sample_ref: samples/by-format/zst/valid/rle-first-block.zst
+  input_hash: sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: decompressed_size
+    value: 1048576
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: zst-valid-004
+  purpose: Minimal synthetic (1-byte decompressed) — project-created minimum
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  authority_refs:
+  - RFC 8878 §3 — valid frame
+  sample_ref: samples/by-format/zst/valid/minimal-synthetic.zst
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: decompressed_size
+    value: 1
+  - property: frame_count
+    value: 1
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - LIMITS_AND_BOUNDARIES
+executor_config:
+  module: zst.zst_codec
+  callable: zst_decompressed_size
 invalid_cases:
-
-  - case_id: zst-invalid-001
-    purpose: "Wrong magic bytes — fails signature check"
-    defect_class: invalid-signature
-    malformed_boundary: "First 4 bytes are not 0xFD2FB528 (Zstandard magic)"
-    authority_refs:
-      - "RFC 8878 §3.1.1 — Magic_Number must be 0xFD2FB528"
-    sample_ref: samples/by-format/zst/invalid/generated/wrong-magic.zst
-    expected_failure_stage: SIGNATURE_CHECK
-    expected_error_type: "ZstdError or ValueError"
-    partial_recovery_allowed: false
-    security_relevance: true
-
-  - case_id: zst-invalid-002
-    purpose: "Truncated header (2 bytes only) — truncation at header"
-    defect_class: truncated-header
-    malformed_boundary: "File ends after 2 bytes (only first 2 bytes of magic present)"
-    authority_refs:
-      - "RFC 8878 §3.1 — Frame header must be complete"
-    sample_ref: samples/by-format/zst/invalid/generated/truncated-header-2b.zst
-    expected_failure_stage: PARSE_HEADER
-    expected_error_type: "ZstdError"
-    partial_recovery_allowed: false
-    security_relevance: false
-
-  - case_id: zst-invalid-003
-    purpose: "Invalid offset zero — decompression error from facebook golden errors corpus"
-    defect_class: invalid-offset
-    malformed_boundary: "Back-reference offset of zero, which is invalid per spec"
-    authority_refs:
-      - "RFC 8878 — Offset=0 invalid in compressed sequences"
-      - "facebook/zstd golden-decompression-errors (BSD-3-Clause)"
-    sample_ref: samples/by-format/zst/invalid/off0.bin.zst
-    input_hash: "sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c"
-    expected_failure_stage: PARSE_BODY
-    expected_error_type: ZstdError
-    partial_recovery_allowed: false
-    security_relevance: true
-
-  - case_id: zst-invalid-004
-    purpose: "Truncated Huffman state — decompression error from facebook golden errors corpus"
-    defect_class: truncated-body
-    malformed_boundary: "Huffman decode table truncated mid-stream"
-    authority_refs:
-      - "RFC 8878 §3.1.4 — Huffman decoding"
-      - "facebook/zstd golden-decompression-errors (BSD-3-Clause)"
-    sample_ref: samples/by-format/zst/invalid/truncated_huff_state.zst
-    input_hash: "sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8"
-    expected_failure_stage: PARSE_BODY
-    expected_error_type: ZstdError
-    partial_recovery_allowed: false
-    security_relevance: false
-
-# ==============================================================================
-# ROUNDTRIP CASES (Compression: compress → decompress → byte-identical)
-# ==============================================================================
+- case_id: zst-invalid-001
+  purpose: Wrong magic bytes — fails signature check
+  defect_class: invalid-signature
+  malformed_boundary: First 4 bytes are not 0xFD2FB528 (Zstandard magic)
+  authority_refs:
+  - RFC 8878 §3.1.1 — Magic_Number must be 0xFD2FB528
+  sample_ref: samples/by-format/zst/invalid/generated/wrong-magic.zst
+  expected_failure_stage: SIGNATURE_CHECK
+  expected_error_type: ZstdError or ValueError
+  partial_recovery_allowed: false
+  security_relevance: true
+- case_id: zst-invalid-002
+  purpose: Truncated header (2 bytes only) — truncation at header; library returns 0 gracefully
+  defect_class: truncated-header
+  malformed_boundary: File ends after 2 bytes (only first 2 bytes of magic present)
+  authority_refs:
+  - RFC 8878 §3.1 — Frame header must be complete
+  sample_ref: samples/by-format/zst/invalid/generated/truncated-header-2b.zst
+  expected_failure_stage: PARSE_HEADER
+  expected_error_type: ZstdError or graceful-zero
+  partial_recovery_allowed: true
+  security_relevance: false
+- case_id: zst-invalid-003
+  purpose: Invalid offset zero — decompression error from facebook golden errors corpus
+  defect_class: invalid-offset
+  malformed_boundary: Back-reference offset of zero, which is invalid per spec
+  authority_refs:
+  - RFC 8878 — Offset=0 invalid in compressed sequences
+  - facebook/zstd golden-decompression-errors (BSD-3-Clause)
+  sample_ref: samples/by-format/zst/invalid/off0.bin.zst
+  input_hash: sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c
+  expected_failure_stage: PARSE_BODY
+  expected_error_type: ZstdError
+  partial_recovery_allowed: false
+  security_relevance: true
+- case_id: zst-invalid-004
+  purpose: Truncated Huffman state — decompression error from facebook golden errors
+    corpus
+  defect_class: truncated-body
+  malformed_boundary: Huffman decode table truncated mid-stream
+  authority_refs:
+  - RFC 8878 §3.1.4 — Huffman decoding
+  - facebook/zstd golden-decompression-errors (BSD-3-Clause)
+  sample_ref: samples/by-format/zst/invalid/truncated_huff_state.zst
+  input_hash: sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8
+  expected_failure_stage: PARSE_BODY
+  expected_error_type: ZstdError
+  partial_recovery_allowed: false
+  security_relevance: false
 roundtrip_cases:
-
-  - case_id: zst-rt-001
-    purpose: "Compress string → decompress → byte-identical to original"
-    operation: "compress_string(text) → bytes → decompress_to_string(bytes)"
-    equality_mode: BYTE_IDENTICAL
-    canonicalizer: null  # no canonicalization needed for byte comparison
-    comparator: "bytes-exact-comparator"
-    fields_required_equal:
-      - decompressed_bytes
-    fields_allowed_normalized: []
-    fields_allowed_lossy: []
-    ordering_policy: "bytes in exact order"
-    tolerance_policy: null
-    expected_diagnostics: []
-    test_vectors:
-      - input: "Hello, World!"
-        expected_decompressed: "Hello, World!"
-        authority_class: PRODUCT_CONTRACT
-      - input: ""
-        expected_decompressed: ""
-        authority_class: PRODUCT_CONTRACT
-        note: "Empty string round-trip"
-
-  - case_id: zst-rt-002
-    purpose: "ZstDocument.from_file(path) reads correct metadata"
-    operation: "ZstDocument.from_file(valid_path)"
-    equality_mode: SEMANTICALLY_EQUIVALENT
-    canonicalizer: null
-    comparator: "model-property-comparator"
-    fields_required_equal:
-      - compressed_size
-      - decompressed_size
-      - frame_count
-      - is_empty
-      - spec_qname
-    tolerance_policy: null
-
-# ==============================================================================
-# SECURITY / ROBUSTNESS CASES
-# ==============================================================================
+- case_id: zst-rt-001
+  purpose: Compress string → decompress → byte-identical to original
+  operation: compress_string(text) → bytes → decompress_to_string(bytes)
+  equality_mode: BYTE_IDENTICAL
+  canonicalizer: null
+  comparator: bytes-exact-comparator
+  fields_required_equal:
+  - decompressed_bytes
+  fields_allowed_normalized: []
+  fields_allowed_lossy: []
+  ordering_policy: bytes in exact order
+  tolerance_policy: null
+  expected_diagnostics: []
+  test_vectors:
+  - input: Hello, World!
+    expected_decompressed: Hello, World!
+    authority_class: PRODUCT_CONTRACT
+  - input: ''
+    expected_decompressed: ''
+    authority_class: PRODUCT_CONTRACT
+    note: Empty string round-trip
+- case_id: zst-rt-002
+  purpose: ZstDocument.from_file(path) reads correct metadata
+  operation: ZstDocument.from_file(valid_path)
+  equality_mode: SEMANTICALLY_EQUIVALENT
+  canonicalizer: null
+  comparator: model-property-comparator
+  fields_required_equal:
+  - compressed_size
+  - decompressed_size
+  - frame_count
+  - is_empty
+  - spec_qname
+  tolerance_policy: null
 error_cases:
+- case_id: zst-security-001
+  purpose: Decompression of all invalid samples must not crash the process
+  description: 'Run decompress_to_string(data) on each invalid sample. Must raise
+    ZstdError (or equivalent). Must not crash the Python process. Must not produce
+    unbounded memory growth.
 
-  - case_id: zst-security-001
-    purpose: "Decompression of all invalid samples must not crash the process"
-    description: >
-      Run decompress_to_string(data) on each invalid sample.
-      Must raise ZstdError (or equivalent). Must not crash the Python process.
-      Must not produce unbounded memory growth.
-    samples:
-      - samples/by-format/zst/invalid/off0.bin.zst
-      - samples/by-format/zst/invalid/truncated_huff_state.zst
-      - samples/by-format/zst/invalid/zeroSeq_extraneous.zst
-      - samples/by-format/zst/invalid/generated/wrong-magic.zst
-      - samples/by-format/zst/invalid/generated/truncated-header-2b.zst
-      - samples/by-format/zst/invalid/generated/magic-only-no-fhd.zst
-      - samples/by-format/zst/invalid/generated/claimed-large-truncated.zst
-      - samples/by-format/zst/invalid/generated/corrupted-block-data.zst
-    expected_behavior: "Each file raises exception (not crash)"
-    security_relevance: true
-    authority_class: SPEC_NORMATIVE
-
-# ==============================================================================
-# LOSSLESS TRANSFORMATION CASES
-# ==============================================================================
-# (These are the primary oracle cases for ZST — decompression must be lossless)
+    '
+  samples:
+  - samples/by-format/zst/invalid/off0.bin.zst
+  - samples/by-format/zst/invalid/truncated_huff_state.zst
+  - samples/by-format/zst/invalid/zeroSeq_extraneous.zst
+  - samples/by-format/zst/invalid/generated/wrong-magic.zst
+  - samples/by-format/zst/invalid/generated/truncated-header-2b.zst
+  - samples/by-format/zst/invalid/generated/magic-only-no-fhd.zst
+  - samples/by-format/zst/invalid/generated/claimed-large-truncated.zst
+  - samples/by-format/zst/invalid/generated/corrupted-block-data.zst
+  expected_behavior: Each file raises exception (not crash)
+  security_relevance: true
+  authority_class: SPEC_NORMATIVE
 preservation_cases:
+- case_id: zst-lossless-001
+  purpose: 'facebook/zstd golden corpus: all 8 valid samples decompress to exact expected
+    output'
+  description: 'For each valid sample in the facebook/zstd golden-decompression corpus:
+    decompress and verify decompressed_size == expected (from corpus manifest). These
+    are AUTHORITATIVE_REFERENCE_VECTOR — if our decompressor disagrees with the reference,
+    it is a parser bug, not an oracle issue.
 
-  - case_id: zst-lossless-001
-    purpose: "facebook/zstd golden corpus: all 8 valid samples decompress to exact expected output"
-    description: >
-      For each valid sample in the facebook/zstd golden-decompression corpus:
-      decompress and verify decompressed_size == expected (from corpus manifest).
-      These are AUTHORITATIVE_REFERENCE_VECTOR — if our decompressor disagrees with
-      the reference, it is a parser bug, not an oracle issue.
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    samples:
-      - {sample_ref: "samples/by-format/zst/valid/block-128k.zst", expected_decompressed_size: 131068}
-      - {sample_ref: "samples/by-format/zst/valid/empty-block.zst", expected_decompressed_size: 0}
-      - {sample_ref: "samples/by-format/zst/valid/rle-first-block.zst", expected_decompressed_size: 1048576}
-      - {sample_ref: "samples/by-format/zst/valid/zeroSeq_2B.zst", expected_decompressed_size: 13}
-
-# ==============================================================================
-# CANONICALIZATION
-# ==============================================================================
+    '
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  samples:
+  - sample_ref: samples/by-format/zst/valid/block-128k.zst
+    expected_decompressed_size: 131068
+  - sample_ref: samples/by-format/zst/valid/empty-block.zst
+    expected_decompressed_size: 0
+  - sample_ref: samples/by-format/zst/valid/rle-first-block.zst
+    expected_decompressed_size: 1048576
+  - sample_ref: samples/by-format/zst/valid/zeroSeq_2B.zst
+    expected_decompressed_size: 13
 canonicalization:
   method: zst-decompressed-bytes
-  description: >
-    For ZST round-trip verification: canonical form is the raw decompressed bytes.
-    Byte-exact comparison required (LOSSLESS_TRANSFORMATION profile).
-    No normalization permitted.
-  ordering_policy: "byte order preserved"
-  whitespace_policy: "none — raw bytes"
-  encoding_policy: "raw bytes (no encoding layer)"
+  description: 'For ZST round-trip verification: canonical form is the raw decompressed
+    bytes. Byte-exact comparison required (LOSSLESS_TRANSFORMATION profile). No normalization
+    permitted.
 
-# ==============================================================================
-# TOLERANCE POLICY
-# ==============================================================================
+    '
+  ordering_policy: byte order preserved
+  whitespace_policy: none — raw bytes
+  encoding_policy: raw bytes (no encoding layer)
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none — byte order must be preserved exactly"
-  whitespace_tolerance: "none — raw bytes"
-  metadata_tolerance: >
-    Frame metadata (compressed_size, frame header fields) may vary by compression level.
-    Only decompressed_size and decompressed content are invariant.
-  policy_summary: "Decompressed bytes must be byte-identical to original input"
+  ordering_tolerance: none — byte order must be preserved exactly
+  whitespace_tolerance: none — raw bytes
+  metadata_tolerance: 'Frame metadata (compressed_size, frame header fields) may vary
+    by compression level. Only decompressed_size and decompressed content are invariant.
 
-# ==============================================================================
-# COMPARATORS AND VALIDATORS
-# ==============================================================================
+    '
+  policy_summary: Decompressed bytes must be byte-identical to original input
 comparators:
-  - bytes-exact-comparator
-  - model-property-comparator
-
+- bytes-exact-comparator
+- model-property-comparator
 validators:
-  - zst-frame-validator
-
+- zst-frame-validator
 consumers:
-  - tests/python/zst/test_zst_roundtrip.py
-  - examples/python/zst/consumer_roundtrip.py
-
-# ==============================================================================
-# NEGATIVE CONTROLS
-# ==============================================================================
+- tests/python/zst/test_zst_roundtrip.py
+- examples/python/zst/consumer_roundtrip.py
 negative_controls:
-  - control_id: zst-neg-001
-    description: "Decompress invalid frame must not return success"
-    test: "decompress_to_string(wrong_magic_bytes) must raise, not return empty string"
-    expected_outcome: FAIL_RAISES_EXCEPTION
-  - control_id: zst-neg-002
-    description: "Decompressed size mismatch must FAIL"
-    test: "Assert decompressed_size == 9999 when actual is 131068"
-    expected_outcome: FAIL
-  - control_id: zst-neg-003
-    description: "Self-approval is blocked — cannot approve format that produces the artifact"
-    test: "compress_string(x) → decompress → must be verified against AUTHORITATIVE corpus, not against product output"
-    expected_outcome: AUTHORITATIVE_VECTOR_REQUIRED
-
-# ==============================================================================
-# TRACEABILITY
-# ==============================================================================
+- control_id: zst-neg-001
+  description: Decompress invalid frame must not return success
+  test: decompress_to_string(wrong_magic_bytes) must raise, not return empty string
+  expected_outcome: FAIL_RAISES_EXCEPTION
+- control_id: zst-neg-002
+  description: Decompressed size mismatch must FAIL
+  test: Assert decompressed_size == 9999 when actual is 131068
+  expected_outcome: FAIL
+- control_id: zst-neg-003
+  description: Self-approval is blocked — cannot approve format that produces the
+    artifact
+  test: compress_string(x) → decompress → must be verified against AUTHORITATIVE corpus,
+    not against product output
+  expected_outcome: AUTHORITATIVE_VECTOR_REQUIRED
 oracle_traceability:
   oracle_id: oracle-zst-v1
-  specification_refs: [RFC-8878, ZSTD-SPEC-INTERNAL]
+  specification_refs:
+  - RFC-8878
+  - ZSTD-SPEC-INTERNAL
   fact_refs: []
   requirement_refs: []
   capability_refs: []
   test_refs:
-    - tests/python/zst/
-    - examples/python/zst/consumer_roundtrip.py
+  - tests/python/zst/
+  - examples/python/zst/consumer_roundtrip.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

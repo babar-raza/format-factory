@@ -62,10 +62,73 @@ V171: validate_lane_contract_exists — declaration lane_id must match .governan
 """
 from __future__ import annotations
 
+import json
+import yaml
 from pathlib import Path
 
+# TC-CTI-REGISTRY-001: Validator shadow registry support
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+SHADOW_REGISTRY_PATH = _REPO_ROOT / ".supervisor" / "validator-shadow-registry.yaml"
+SHADOW_LOG_PATH = _REPO_ROOT / ".local" / "supervisor" / "validator-shadow-log.jsonl"
+
+
+def _load_shadow_registry() -> dict:
+    """Return {validator_id: entry} from shadow registry. Returns {} on any error."""
+    try:
+        if not SHADOW_REGISTRY_PATH.exists():
+            return {}
+        data = yaml.safe_load(SHADOW_REGISTRY_PATH.read_text(encoding="utf-8")) or {}
+        entries = data.get("validator_shadow_entries", [])
+        return {e["validator_id"]: e for e in entries if "validator_id" in e}
+    except Exception:
+        return {}  # fail-safe: treat missing/invalid registry as empty
+
+
+def _write_shadow_log_entry(entry: dict) -> None:
+    """Append a shadow observation to the log. Non-fatal on any error."""
+    try:
+        from datetime import datetime, timezone
+        entry.setdefault("ts", datetime.now(timezone.utc).isoformat())
+        SHADOW_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with SHADOW_LOG_PATH.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry) + "\n")
+    except Exception:
+        pass
+
+
+def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[dict]:
+    """Neutralize blocks_sprint for shadow-mode validators in post-processing.
+
+    Mutates each result dict in-place (sets blocks_sprint=False for shadow FAIL).
+    Writes a log entry per suppression. Returns the list of suppression records.
+    """
+    suppressions: list[dict] = []
+    for result in results:
+        vid = result.get("validator") or result.get("validator_id", "")
+        if vid in shadow_registry and result.get("result") == "FAIL" and result.get("blocks_sprint"):
+            shadow_entry = shadow_registry[vid]
+            finding_count = len(result.get("items", result.get("violations", [])))
+            suppression = {
+                "validator_id": vid,
+                "original_result": result["result"],
+                "would_have_blocked": True,
+                "finding_count": finding_count,
+                "registry_entry": shadow_entry,
+            }
+            suppressions.append(suppression)
+            result["blocks_sprint"] = False
+            _write_shadow_log_entry({
+                "validator_id": vid,
+                "result": result["result"],
+                "would_have_blocked": True,
+                "finding_count": finding_count,
+                "mode": shadow_entry.get("mode", "shadow"),
+            })
+    return suppressions
+
+
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 188  # V176-V181 added (TC-OCRD-C6, 2026-07-12) + 6 V_VALIDATE_FI_* added (TC-FIOP-005, 2026-07-12) + V182 (TC-BOOL-004, 2026-07-12)
+_EXPECTED_VALIDATOR_COUNT = 210  # +5: V_CERT_01-V_CERT_05 (TC-007 precious-wandering-lighthouse, 2026-07-13)
 
 
 def get_expected_validator_count() -> int:
@@ -189,9 +252,15 @@ def run_all_governance_validators(
     from governance_validators_ledger import (  # noqa: PLC0415
         validate_ledger_continuation_gate as _validate_ledger_continuation_gate,
     )
-    # V73 imported from dedicated .NET qname validator file (TC-DOTNET-QNAME-001)
+    # V73 + V78_AGG + V152 imported from dedicated .NET qname/aggregate/roundtrip validator file
     from governance_validators_dotnet import (  # noqa: PLC0415
         validate_dotnet_spec_qname as _validate_dotnet_spec_qname,
+        validate_dotnet_aggregate_loc_cap as _validate_dotnet_aggregate_loc_cap,
+        validate_format_roundtrip_coverage as _validate_format_roundtrip_coverage,
+    )
+    # V153 (TC-SPW-004): Design artifact gate — sprint blocks if src/net/ touched without artifact
+    from design_artifact_validator import (  # noqa: PLC0415
+        validate_design_artifact_present as _validate_design_artifact_present,
     )
     # V80/V81 (TC-AUTH-006/007): Gate authorization validators — dedicated file (no cap pressure)
     from governance_validators_gate_auth import (  # noqa: PLC0415
@@ -212,6 +281,9 @@ def run_all_governance_validators(
         validate_certification_matrix_consistent as _validate_certification_matrix_consistent,
         validate_plans_root_policy as _validate_plans_root_policy,
     )
+    # TC-CTI-REGISTRY-001: Load shadow registry for this run.
+    shadow_registry = _load_shadow_registry()
+    shadow_suppressions: list[dict] = []
     # TC-PGI-042: Track validators that could not run due to import/execution errors.
     _skipped_validators: list[dict] = []
     results = [
@@ -355,6 +427,12 @@ def run_all_governance_validators(
         _validate_analytics_naming_enforced(declaration, repo_root),
         # V78 (PROD-GOVERNANCE-001 TC-GM-003): .cs files in src/net/ must be ≤800 LOC — BLOCK
         _validate_dotnet_loc_cap(declaration, repo_root),
+        # V78_AGG (TC-SPW-001): per-class-aggregate LOC cap for partial classes in src/net/
+        _validate_dotnet_aggregate_loc_cap(declaration, repo_root),
+        # V152 (TC-SPW-003B): Gate-1 .NET formats must have round-trip test coverage — GOV_BLOCK
+        _validate_format_roundtrip_coverage(declaration, repo_root),
+        # V153 (TC-SPW-004): Sprint touching src/net/ must have pre-execution design artifact
+        _validate_design_artifact_present(declaration, repo_root),
         # V79 (PROD-GOVERNANCE-001 TC-GM-004): WARN when known_violations show zero healing progress
         _validate_healing_stall_detector(declaration, repo_root),
         # V80 (TC-AUTH-006): Premature human-authorization request below Gate 11 — FAIL for false human blockers
@@ -857,6 +935,52 @@ def run_all_governance_validators(
                            "V_VALIDATE_FI_UNTASKCARDED_REPORT", "V_VALIDATE_FI_FIXTURE_EDIT"],
             "error": str(_exc_vfi_block)})
 
+    # V_VALIDATE_WEAK_TEST_ASSERTIONS (TC-INT-003, 2026-07-13): Detect sole-trivial-assertion
+    # test functions. WARN-only; grace-exempt via reports/drivers/backfill-gaps.yaml.
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_weak_test_assertions as _v_weak,
+        )
+        results.append(_v_weak(declaration, repo_root))
+    except Exception as _exc_v_weak:
+        _skipped_validators.append({"validators": ["V_VALIDATE_WEAK_TEST_ASSERTIONS"], "error": str(_exc_v_weak)})
+
+    # V183-V186 (TC-ACP-015, 2026-07-13): Agent parity drift-prevention validators
+    try:
+        from governance_validators_agent_parity import (  # noqa: PLC0415
+            validate_agent_opt_in_not_default as _v183,
+            validate_kilo_column_in_registry as _v184,
+            validate_canonical_contract_integrity as _v185,
+            validate_agent_bundles_current as _v186,
+        )
+        results.extend([
+            _v183(declaration, repo_root),  # V183: opt-in guard (FAIL on regression)
+            _v184(declaration, repo_root),  # V184: kilo column in registry (WARN)
+            _v185(declaration, repo_root),  # V185: contract integrity (FAIL on truncation)
+            _v186(declaration, repo_root),  # V186: bundle freshness (WARN)
+        ])
+    except Exception as _exc_v183:
+        _skipped_validators.append({"validators": ["V183", "V184", "V185", "V186"], "error": str(_exc_v183)})
+
+    # V_CERT_01-V_CERT_05 (TC-007 precious-wandering-lighthouse, 2026-07-13): certification lifecycle validators
+    try:
+        from governance_validators_certification import (  # noqa: PLC0415
+            validate_all_evidence_present_for_certified_formats as _v_cert01,
+            validate_no_certified_format_has_material_stubs as _v_cert02,
+            validate_certification_run_manifests_exist as _v_cert03,
+            validate_certification_layer_registered as _v_cert04,
+            validate_gap_reconciliation_map_exists as _v_cert05,
+        )
+        results.extend([
+            _v_cert01(declaration, repo_root),
+            _v_cert02(declaration, repo_root),
+            _v_cert03(declaration, repo_root),
+            _v_cert04(declaration, repo_root),
+            _v_cert05(declaration, repo_root),
+        ])
+    except Exception as _exc_v_cert:
+        _skipped_validators.append({"validators": ["V_CERT_01", "V_CERT_02", "V_CERT_03", "V_CERT_04", "V_CERT_05"], "error": str(_exc_v_cert)})
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -886,6 +1010,10 @@ def run_all_governance_validators(
                 pass
     except Exception:
         pass  # Registry loading is best-effort and non-blocking
+
+    # TC-CTI-REGISTRY-001: Apply shadow routing via extracted helper.
+    if shadow_registry:
+        shadow_suppressions.extend(_apply_shadow_routing(results, shadow_registry))
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")
@@ -917,6 +1045,7 @@ def run_all_governance_validators(
         "warn_count": warn_count,
         "pass_count": pass_count,
         "validators": results,
+        "shadow_suppressions": shadow_suppressions,
         "skipped_validators": _skipped_validators,
         "skipped_count": skipped_count,
         "expected_count": _EXPECTED_VALIDATOR_COUNT,

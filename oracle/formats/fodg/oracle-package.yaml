@@ -1,123 +1,133 @@
-# FODG Oracle Package — Format Factory
-# Format: Flat OpenDocument Graphics
-# Authority: ODF 1.3 Part 3, OASIS Royalty-Free Category 1
-# Oracle version: 1
-# Status: VERIFIED
-# Mission: TC-LA-003 / TC-LA-010 — oracle extension to formats with SAL facts
-# Note: FODG has 1066 SAL facts; analytics separated to fodg_analytics.py (TC-R16)
-
 oracle_id: oracle-fodg-v1
 format_id: fodg
-format_version: "ODF 1.3"
+format_version: ODF 1.3
 oracle_version: 1
 family: drawing
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: ODF-1-3-PART3
-      title: "Open Document Format for Office Applications (ODF) Version 1.3 Part 3"
-      body: OASIS
-      url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
+  - id: ODF-1-3-PART3
+    title: Open Document Format for Office Applications (ODF) Version 1.3 Part 3
+    body: OASIS
+    url: https://docs.oasis-open.org/office/OpenDocument/v1.3/
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
   authorized_fact_refs:
-    - "FACT-FODG-001"
-    - "FACT-FODG-002"
-    - "FACT-FODG-003"
-  authority_summary: >
-    FODG is the flat (single-file) variant of ODF Graphics (ODG).
-    Root element is <office:document> with office:mimetype attribute set to
-    application/vnd.oasis.opendocument.graphics-flat-xml.
+  - FACT-FODG-001
+  - FACT-FODG-002
+  - FACT-FODG-003
+  authority_summary: 'FODG is the flat (single-file) variant of ODF Graphics (ODG).
+    Root element is <office:document> with office:mimetype attribute set to application/vnd.oasis.opendocument.graphics-flat-xml.
 
+    '
 corpus_refs:
-  - corpus_id: fodg-minimal-drawing
-    sample_ref: samples/by-format/fodg/minimal-drawing.fodg
-    sha256: "sha256:3fc44bfee36f024958aed7641abf00fba4f12cd7048f551dee84b8d80573d479"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Minimal FODG flat drawing with one page"
-
+- corpus_id: fodg-minimal-drawing
+  sample_ref: samples/by-format/fodg/minimal-drawing.fodg
+  sha256: sha256:3fc44bfee36f024958aed7641abf00fba4f12cd7048f551dee84b8d80573d479
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal FODG flat drawing with one page
 valid_cases:
-  - case_id: fodg-valid-001
-    profile: PARSE_VALIDITY
-    description: "minimal-drawing.fodg loads without error and returns dict"
-    input_ref: samples/by-format/fodg/minimal-drawing.fodg
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: fodg.fodg_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-FODG-001
-    expected_model_properties:
-      - property: is_fodg
-        value: true
-        authority: FORMAT_FACTORY_IMPL
-      - property: page_count
-        value: 1
-        authority: FORMAT_FACTORY_IMPL
-
-  - case_id: fodg-valid-002
-    profile: PARSE_VALIDITY
-    description: "probe_fodg returns True for minimal-drawing.fodg"
-    input_ref: samples/by-format/fodg/minimal-drawing.fodg
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: fodg.fodg_codec
-      callable: probe_fodg
-      args: ["${input_ref}"]
-      expect_return_value: true
-      expect_no_exception: true
-    authority_ref: FACT-FODG-001
-    expected_model_properties:
-      - property: is_fodg
-        value: true
-        authority: FORMAT_FACTORY_IMPL
-
-  - case_id: fodg-valid-003
-    profile: PARSE_VALIDITY
-    description: "shapes-basic.fodg loads without error and returns dict with is_fodg=True"
-    input_ref: samples/by-format/fodg/shapes-basic.fodg
-    input_hash: "sha256:f916c13f4dbdb9b7b7a6937ae8e4ef858a9556222700dcf7e567d83dcdace2d4"
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: fodg.fodg_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-FODG-001
-    expected_model_properties:
-      - property: is_fodg
-        value: true
-        authority: FORMAT_FACTORY_IMPL
-
+- case_id: fodg-valid-001
+  profile: PARSE_VALIDITY
+  description: minimal-drawing.fodg loads without error and returns dict
+  input_ref: samples/by-format/fodg/minimal-drawing.fodg
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: fodg.fodg_codec
+    callable: load
+    args:
+    - ${input_ref}
+    expect_type: dict
+    expect_no_exception: true
+  authority_ref: FACT-FODG-001
+  expected_model_properties:
+  - property: is_fodg
+    value: true
+    authority: FORMAT_FACTORY_IMPL
+  - property: page_count
+    value: 1
+    authority: FORMAT_FACTORY_IMPL
+- case_id: fodg-valid-002
+  profile: PARSE_VALIDITY
+  description: probe_fodg returns True for minimal-drawing.fodg
+  input_ref: samples/by-format/fodg/minimal-drawing.fodg
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: fodg.fodg_codec
+    callable: probe_fodg
+    args:
+    - ${input_ref}
+    expect_return_value: true
+    expect_no_exception: true
+  authority_ref: FACT-FODG-001
+  expected_model_properties:
+  - property: is_fodg
+    value: true
+    authority: FORMAT_FACTORY_IMPL
+- case_id: fodg-valid-003
+  profile: PARSE_VALIDITY
+  description: shapes-basic.fodg loads without error and returns dict with is_fodg=True
+  input_ref: samples/by-format/fodg/shapes-basic.fodg
+  input_hash: sha256:f916c13f4dbdb9b7b7a6937ae8e4ef858a9556222700dcf7e567d83dcdace2d4
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: fodg.fodg_codec
+    callable: load
+    args:
+    - ${input_ref}
+    expect_type: dict
+    expect_no_exception: true
+  authority_ref: FACT-FODG-001
+  expected_model_properties:
+  - property: is_fodg
+    value: true
+    authority: FORMAT_FACTORY_IMPL
+- case_id: fodg-valid-d2-schema
+  purpose: ODF 1.3 RelaxNG schema validation (D2 depth) — flat XML file validated
+    directly
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - oracle/schemas/odf-1.3-relaxng/OpenDocument-v1.3-schema.rng
+  - OASIS ODF 1.3 RelaxNG grammar (Category 1 license)
+  depth_level: D2
+  sample_ref: samples/by-format/fodg/minimal-drawing.fodg
+  expected_parse_result: SCHEMA_VALID
+  profiles:
+  - STRUCTURAL_VALIDITY
+  note: 'TC-W3-001: D2 depth via ODF RelaxNG schema validation. Requires lxml. Returns
+    SKIPPED_MISSING_PROVIDER if lxml not installed.'
+executor_config:
+  module: fodg.fodg_codec
+  callable: load
 invalid_cases:
-  - case_id: fodg-invalid-001
-    profile: INVALID_INPUT_REJECTION
-    purpose: "Malformed XML (unclosed tag) must raise an exception on load"
-    defect_class: malformed-xml
-    authority_refs:
-      - "ODF 1.3 section 2.1 -- XML well-formedness is a prerequisite for any ODF format"
-    inline_input: "<office:document-graphics><unclosed>"
-    expected_failure_stage: PARSE_BODY
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: fodg.fodg_codec
-      callable: load
-      args: []
-      expect_exception: true
+- case_id: fodg-invalid-001
+  profile: INVALID_INPUT_REJECTION
+  purpose: Malformed XML (unclosed tag) must raise an exception on load
+  defect_class: malformed-xml
+  authority_refs:
+  - ODF 1.3 section 2.1 -- XML well-formedness is a prerequisite for any ODF format
+  input_inline: <office:document-graphics><unclosed>
+  expected_failure_stage: PARSE_BODY
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  oracle_verdict: PASS
+  oracle_class: DETERMINISTIC
+  assertion:
+    type: python_callable
+    module: fodg.fodg_codec
+    callable: load
+    args: []
+    expect_exception: true
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

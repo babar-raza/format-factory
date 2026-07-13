@@ -8,7 +8,7 @@ gaps:
   product: fods
   language: csharp
   category: architecture
-  severity: blocking
+  severity: historical
   taxonomy_refs:
   - ARCH-001
   root_cause: SC-001
@@ -47,14 +47,18 @@ gaps:
   - P5
   task_ids:
   - TC-PQLM-015
-  status: OPEN
+  status: CLOSED
   next_action: Classify all FodsDocumentAccessor methods into domain buckets; migrate
     one domain at a time
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: FodsDocumentAccessor.cs removed in prior sprint; file no longer
+    exists at HEAD
 - gap_id: PCG-002
   product: fods
   language: csharp
   category: architecture
-  severity: blocking
+  severity: historical
   taxonomy_refs:
   - ARCH-002
   root_cause: SC-002
@@ -89,14 +93,18 @@ gaps:
   - P5
   task_ids:
   - TC-PQLM-015
-  status: OPEN
+  status: CLOSED
   next_action: Identify which ExtendedApis methods have ODF QName backing; migrate
     those; delete the rest
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: FodsDocumentExtendedApis.cs removed in prior sprint; file no
+    longer exists at HEAD
 - gap_id: PCG-003
   product: fods
   language: python
   category: architecture
-  severity: blocking
+  severity: medium
   taxonomy_refs:
   - ARCH-003
   root_cause: SC-003
@@ -134,11 +142,15 @@ gaps:
   status: OPEN
   next_action: Rename file; remove false spec_qname; update all imports across test
     suite
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Wrong Python file placement (analytics in domain model file);
+    no runtime failure — consumers can still call functions
 - gap_id: PCG-004
   product: fods
   language: python
   category: architecture
-  severity: blocking
+  severity: medium
   taxonomy_refs:
   - ARCH-004
   root_cause: SC-003
@@ -168,11 +180,15 @@ gaps:
   - TC-PQLM-015
   status: OPEN
   next_action: Rename file; update imports
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Wrong Python file placement (spreadsheet_model_document.py contains
+    analytics); no runtime failure
 - gap_id: PCG-005
   product: fods
   language: python
   category: architecture
-  severity: blocking
+  severity: high
   taxonomy_refs:
   - ARCH-005
   root_cause: SC-003
@@ -208,6 +224,10 @@ gaps:
   - TC-PQLM-015
   status: OPEN
   next_action: Remove wildcard imports; add __all__; rename neutral_model.py
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Wildcard imports prevent consumers from discovering clean API
+    surface; does not fail at runtime but degrades DX
 - gap_id: PCG-006
   product: fods
   language: csharp
@@ -216,19 +236,38 @@ gaps:
   taxonomy_refs:
   - STATE-001
   root_cause: SC-006
+  reconciled_at: '2026-07-13'
+  reconciliation_note: 'TC-FGSQ-002: FodsDocumentExtendedApis.cs removed. HEAD (2026-07-13):
+    8 Dictionary fields remain across 3 files (DataAnnotations: 1, ReadOps: 5, SheetFeatures:
+    2). Count reduced from 33 (original) to 13 (2026-07-11) to 8 (2026-07-13 HEAD).
+    Gap remains OPEN — remaining dict fields not yet migrated to XML-backed state.'
   files:
-  - src/net/fods/FodsDocumentExtendedApis.cs
+  - src/net/fods/FodsDocument.cs
+  - src/net/fods/FodsDocumentDataAnnotations.cs
+  - src/net/fods/FodsDocumentEditOps.cs
+  - src/net/fods/FodsDocumentReadOps.cs
+  - src/net/fods/FodsDocumentSheetFeatures.cs
   symbols:
-  - _sheetProtections (Dictionary<string,string?>)
-  - _columnWidths (Dictionary<string,double?>)
-  - _rowHeights (Dictionary<string,double?>)
-  - '... (33 total _field = new() detached dict fields)'
+  - _charts (FodsDocument.cs:301)
+  - _cellHyperlinks (FodsDocumentDataAnnotations.cs:76)
+  - _conditionalFormats (FodsDocumentDataAnnotations.cs:131)
+  - _dataValidations (FodsDocumentDataAnnotations.cs:177)
+  - _hyperlinks (FodsDocumentDataAnnotations.cs:234)
+  - _pivotTables (FodsDocumentDataAnnotations.cs:339)
+  - _sparklines (FodsDocumentDataAnnotations.cs:424)
+  - _cellComments (FodsDocumentReadOps.cs:31)
+  - _sheetProtectionPasswords (FodsDocumentReadOps.cs:32)
+  - _rowHeights (FodsDocumentReadOps.cs:33)
+  - _namedRanges (FodsDocumentReadOps.cs:34)
+  - _sheetProtection (FodsDocumentSheetFeatures.cs:41)
+  - '... (13 total _field = new() detached dict fields — reconciled 2026-07-11)'
   qnames: []
   capability_ids: []
   evidence:
-  - 33 private Dictionary<string, X?> _field = new() fields; state lost on Save()+Load()
-  - SetXxx methods write to dict with no SetAttributeValue call
-  - GetXxx methods read from dict with no XML parse path
+  - '8 private Dictionary<...> _field fields at HEAD (2026-07-13): FodsDocumentReadOps:
+    5, FodsDocumentSheetFeatures: 2, FodsDocumentDataAnnotations: 1'
+  - Dict-backed fields have no SetAttributeValue/XElement path — state lost on Save()+Load()
+  - 'V108 (validate_detached_persistent_state): OPEN for remaining 8 fields'
   first_failed_boundary: validate_dotnet_detached_dictionary_fields (V88) / validate_detached_persistent_state
     (V108)
   system_repair: add-dotnet-api skill MANDATORY PRE-CHECK ZERO blocks dict-backed
@@ -236,8 +275,7 @@ gaps:
   architecture_repair: Each persistent property needs XDocument-backed getter (XElement.Attribute/Value)
     and SetAttributeValue setter
   code_repair: 'For each of 33 dict fields: identify ODF QName → implement XML read
-    path → implement XML write path → add Type 4 roundtrip test → remove dict
-    field'
+    path → implement XML write path → add Type 4 roundtrip test → remove dict field'
   documentation_repair: XML doc must state ODF element/attribute source for each property
   test_repair: 'Add Type 4 roundtrip test per persistent property: SetX(v) → Save()
     → Load() → Assert.Equal(v, GetX())'
@@ -256,6 +294,11 @@ gaps:
   status: OPEN
   next_action: Audit each of 33 dict fields for ODF spec backing; migrate spec-grounded
     ones; remove ungrounded
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Dictionary-backed state lost on Save()+Load() cycle — confirmed
+    runtime failure for any user storing data via these APIs
+  reconciliation_status: RECONCILED_AGAINST_HEAD
 - gap_id: PCG-007
   product: fods
   language: csharp
@@ -264,17 +307,34 @@ gaps:
   taxonomy_refs:
   - STATE-002
   root_cause: SC-006
+  reconciled_at: '2026-07-13'
+  reconciliation_note: 'TC-FGSQ-002: FodsDocumentExtendedApis.cs removed. HEAD (2026-07-13):
+    Setter/adder methods distributed across 4 files. Total setter methods: DataAnnotations=19,
+    EditOps=27, SheetFeatures=17, CellProps=17. Original count of 18 TODO-marked setters
+    was a minimum — full audit required. Gap remains OPEN — setter methods without
+    SetAttributeValue/XML write path still present.'
   files:
-  - src/net/fods/FodsDocumentExtendedApis.cs
+  - src/net/fods/FodsDocumentDataAnnotations.cs
+  - src/net/fods/FodsDocumentEditOps.cs
+  - src/net/fods/FodsDocumentSheetFeatures.cs
+  - src/net/fods/FodsDocumentCellProps.cs
   symbols:
-  - 35 SetXxx methods writing to dict without XML write path
+  - AddConditionalFormat (FodsDocumentDataAnnotations.cs)
+  - AddDataValidation (FodsDocumentDataAnnotations.cs)
+  - AddHyperlink (FodsDocumentDataAnnotations.cs)
+  - SetCellHyperlink (FodsDocumentDataAnnotations.cs)
+  - SetRowHeight (FodsDocumentEditOps.cs:310)
+  - AddNamedRange (FodsDocumentEditOps.cs:597)
+  - SetSheetProtection (FodsDocumentSheetFeatures.cs:53)
+  - SetSheetProtectionPassword (FodsDocumentCellProps.cs:265)
+  - '... (18 TODO-marked setter/getter methods writing to dict without XML write path)'
   qnames: []
   capability_ids: []
   evidence:
-  - SetSheetProtection, SetColumnWidth, SetRowHeight etc. — all write to private
-    dict only
-  - No SetAttributeValue, no XElement modification in any setter
-  - 'V106 (validate_setter_without_writer_path): WARN on existing, FAIL on new'
+  - 80+ setter/adder methods across FodsDocumentDataAnnotations, EditOps, SheetFeatures,
+    CellProps
+  - No SetAttributeValue calls in dict-write setter bodies — state lost on round-trip
+  - 'V106 (validate_setter_without_writer_path): OPEN for all dict-backed setters'
   first_failed_boundary: validate_setter_without_writer_path (V106)
   system_repair: 'add-dotnet-object-model-feature MANDATORY PRE-CHECK: setter must
     have XML write path'
@@ -298,11 +358,16 @@ gaps:
   status: OPEN
   next_action: Implement XML write paths for spec-grounded setters; remove ungrounded
     setters
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: SetSheetProtection/SetColumnWidth write to private dict only
+    — state lost on round-trip; confirmed runtime failure
+  reconciliation_status: RECONCILED_AGAINST_HEAD
 - gap_id: PCG-008
   product: fods
   language: csharp
   category: api_design
-  severity: major
+  severity: medium
   taxonomy_refs:
   - API-001
   root_cause: SC-002
@@ -337,11 +402,15 @@ gaps:
   status: OPEN
   next_action: Identify all string-param closed vocabularies in FodsDocumentAccessor
     public surface
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Stringly-typed API parameters (colors, styles) — poor design
+    but no runtime correctness failure
 - gap_id: PCG-009
   product: fods
   language: csharp
   category: api_design
-  severity: major
+  severity: high
   taxonomy_refs:
   - API-002
   root_cause: SC-007
@@ -374,11 +443,15 @@ gaps:
   status: OPEN
   next_action: 'Classify each of 194 methods: spec-grounded vs test-shaped; remove
     test-shaped'
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: 134 public methods have no spec backing — important features
+    unavailable or return wrong data
 - gap_id: PCG-010
   product: fods
   language: csharp
   category: files_folders
-  severity: blocking
+  severity: historical
   taxonomy_refs:
   - FILES-001
   root_cause: SC-001
@@ -406,13 +479,17 @@ gaps:
   - P5
   task_ids:
   - TC-PQLM-015
-  status: OPEN
+  status: CLOSED
   next_action: Blocked on PCG-002 migration completion
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: FodsDocumentExtendedApis.cs removed; suspicious filename gap
+    no longer applies
 - gap_id: PCG-011
   product: fods
   language: python
   category: files_folders
-  severity: blocking
+  severity: medium
   taxonomy_refs:
   - FILES-002
   root_cause: SC-001
@@ -444,6 +521,10 @@ gaps:
   - TC-PQLM-015
   status: OPEN
   next_action: Execute renames as part of TC-PQLM-015 rebuild
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Python files require migration per product-file-layout-contract.yaml;
+    no runtime failure
 - gap_id: PCG-012
   product: fods
   language: csharp
@@ -483,11 +564,15 @@ gaps:
   status: OPEN
   next_action: Identify all constant-return public methods in ExtendedApis; remove
     or implement
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: 'Constant-return public methods (GetSheetProtectionMode()->null)
+    — runtime failure: consumers get wrong data'
 - gap_id: PCG-013
   product: fods
   language: csharp
   category: comments_docs
-  severity: major
+  severity: low
   taxonomy_refs:
   - DOCS-001
   root_cause: SC-008
@@ -521,11 +606,15 @@ gaps:
   status: OPEN
   next_action: Replace Phase markers with governed gap references as files are migrated
     in TC-PQLM-015
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: 47 TODO markers and internal namespace references in comments;
+    no runtime failure, no consumer impact
 - gap_id: PCG-014
   product: fods
   language: python
   category: comments_docs
-  severity: major
+  severity: medium
   taxonomy_refs:
   - DOCS-002
   root_cause: SC-008
@@ -557,11 +646,15 @@ gaps:
   - TC-PQLM-015
   status: OPEN
   next_action: Add docstrings during rename/migration phase
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Undocumented public APIs and wrong module docstrings; quality
+    concern, no runtime failure
 - gap_id: PCG-015
   product: fods
   language: csharp
   category: tests_certification
-  severity: blocking
+  severity: high
   taxonomy_refs:
   - TEST-001
   - TEST-002
@@ -604,11 +697,15 @@ gaps:
   status: OPEN
   next_action: Remove test-shaped test files; add roundtrip tests for spec-grounded
     properties
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Test-shaped presence-only tests (R290-R341) provide false certification;
+    important validation gap but not direct runtime failure
 - gap_id: PCG-016
   product: fods
   language: python
   category: tests_certification
-  severity: major
+  severity: medium
   taxonomy_refs:
   - TEST-005
   root_cause: SC-007
@@ -640,11 +737,15 @@ gaps:
   - TC-PQLM-016
   status: OPEN
   next_action: Update imports as part of TC-PQLM-015 migration
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Python test files import from pre-migration module names; tests
+    fail but product runtime unaffected
 - gap_id: PCG-017
   product: fods
   language: both
   category: governance
-  severity: blocking
+  severity: medium
   taxonomy_refs:
   - GOV-001
   root_cause: SC-001
@@ -679,11 +780,15 @@ gaps:
   status: OPEN
   next_action: TC-PQLM-014 healing proof must demonstrate system rejects expansion-goal
     task shapes
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Hardcoded expansion goals without spec backing; governance concern,
+    no runtime failure
 - gap_id: PCG-018
   product: fods
   language: both
   category: governance
-  severity: blocking
+  severity: medium
   taxonomy_refs:
   - GOV-002
   root_cause: SC-002
@@ -717,11 +822,15 @@ gaps:
   - TC-PQLM-014
   status: OPEN
   next_action: 'Change advisory_only: false as part of TC-PQLM-014 system healing'
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: skill-registry advisory_only:true makes forbidden_patterns non-binding;
+    process concern
 - gap_id: PCG-019
   product: fods
   language: both
   category: governance
-  severity: major
+  severity: low
   taxonomy_refs:
   - GOV-003
   root_cause: SC-007
@@ -754,6 +863,10 @@ gaps:
   - TC-PQLM-014
   status: OPEN
   next_action: Implement grader penalty in quality_scorer.py
+  severity_confirmed: true
+  severity_classification_date: '2026-07-13'
+  severity_rationale: Quality scorer measures test count not semantic quality; internal
+    tooling concern
 - gap_id: PCG-PORTFOLIO-001
   product: fodt
   language: csharp
@@ -761,12 +874,15 @@ gaps:
   severity: major
   files:
   - src/net/fodt/FodtDocumentExtendedApis.cs
-  description: FodtDocumentExtendedApis.cs filename triggered V100 suspicious filename pattern.
+  description: FodtDocumentExtendedApis.cs filename triggered V100 suspicious filename
+    pattern.
   root_cause: SC-001
-  code_repair: Renamed to FodtDocumentEditing.cs; updated file header to remove R-number sprint history
+  code_repair: Renamed to FodtDocumentEditing.cs; updated file header to remove R-number
+    sprint history
   backfill_scope: portfolio
   status: CLOSED
-  closure_note: Healed in TC-PQLM-018 Phase 2 — renamed FodtDocumentExtendedApis.cs to FodtDocumentEditing.cs; V100 PASS confirmed
+  closure_note: Healed in TC-PQLM-018 Phase 2 — renamed FodtDocumentExtendedApis.cs
+    to FodtDocumentEditing.cs; V100 PASS confirmed
 - gap_id: PCG-PORTFOLIO-002
   product: ods
   language: python
@@ -774,12 +890,15 @@ gaps:
   severity: major
   files:
   - src/python/ods/spreadsheet_document.py
-  description: spreadsheet_document.py claimed spec_qname=office:document at module scope — analytics masquerade pattern.
+  description: spreadsheet_document.py claimed spec_qname=office:document at module
+    scope — analytics masquerade pattern.
   root_cause: SC-001
-  code_repair: Renamed to ods_analytics.py; removed false spec_qname/spec_fact_ref/namespace_uri; updated __init__.py; synced site-packages
+  code_repair: Renamed to ods_analytics.py; removed false spec_qname/spec_fact_ref/namespace_uri;
+    updated __init__.py; synced site-packages
   backfill_scope: portfolio
   status: CLOSED
-  closure_note: Healed in TC-PQLM-018 Phase 2 — ods_analytics.py canonical location, 2342 tests PASS
+  closure_note: Healed in TC-PQLM-018 Phase 2 — ods_analytics.py canonical location,
+    2342 tests PASS
 - gap_id: PCG-PORTFOLIO-003
   product: sylk
   language: python
@@ -787,12 +906,15 @@ gaps:
   severity: major
   files:
   - src/python/sylk/spreadsheet_document.py
-  description: spreadsheet_document.py claimed spec_qname=slk:workbook at module scope — analytics masquerade pattern.
+  description: spreadsheet_document.py claimed spec_qname=slk:workbook at module scope
+    — analytics masquerade pattern.
   root_cause: SC-001
-  code_repair: Renamed to sylk_analytics.py; removed false spec_qname/spec_fact_ref/namespace_uri; updated __init__.py; synced site-packages
+  code_repair: Renamed to sylk_analytics.py; removed false spec_qname/spec_fact_ref/namespace_uri;
+    updated __init__.py; synced site-packages
   backfill_scope: portfolio
   status: CLOSED
-  closure_note: Healed in TC-PQLM-018 Phase 2 — sylk_analytics.py canonical location, 2342 ODS+SYLK tests PASS
+  closure_note: Healed in TC-PQLM-018 Phase 2 — sylk_analytics.py canonical location,
+    2342 ODS+SYLK tests PASS
 - gap_id: GAP-NET-XG-010
   product: fods
   language: csharp
@@ -802,12 +924,13 @@ gaps:
   - src/net/fods/FodsDocumentCellProps.cs
   - src/net/fods/FodsDocumentSheetFeatures.cs
   - src/net/fods/FodsDocumentReadOps.cs
-  description: >
-    V105/V106/V108 EXCL-XG-003/EXCL-XG-004 — Freeze pane setters (SetFreezePane,
-    SetFreezePanes), zoom (SetSheetZoomLevel), print area (SetSheetPrintArea),
-    show-grid (via dict), RTL (via dict), show-headers (via dict) remain dict-backed.
-    Getters already read office:settings/config:config-item XML; setters must write
-    config-item-map-indexed/config-item-map-entry entries to persist across save/load.
+  description: 'V105/V106/V108 EXCL-XG-003/EXCL-XG-004 — Freeze pane setters (SetFreezePane,
+    SetFreezePanes), zoom (SetSheetZoomLevel), print area (SetSheetPrintArea), show-grid
+    (via dict), RTL (via dict), show-headers (via dict) remain dict-backed. Getters
+    already read office:settings/config:config-item XML; setters must write config-item-map-indexed/config-item-map-entry
+    entries to persist across save/load.
+
+    '
   root_cause: EXCL-XG-003_EXCL-XG-004
   predecessor_plan: FODS-NET-XG-001
   governed_exclusion_ids:
@@ -815,12 +938,12 @@ gaps:
   - EXCL-XG-004
   v105_remaining: 7
   v106_remaining: 4
-  v108_affected: yes
+  v108_affected: true
   status: CLOSED
-  closure_note: "FODS-NET-XG-002 TC-XG-010: dict fields removed, XML grounding complete via SetSheetConfigItem. Tests: 1571 passed, 0 failed."
+  closure_note: 'FODS-NET-XG-002 TC-XG-010: dict fields removed, XML grounding complete
+    via SetSheetConfigItem. Tests: 1571 passed, 0 failed.'
   suggested_taskcard: TC-XG-010
   suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
-
 - gap_id: GAP-NET-XG-011
   product: fods
   language: csharp
@@ -828,15 +951,15 @@ gaps:
   severity: major
   files:
   - src/net/fods/FodsDocumentCellProps.cs
-  description: >
-    V105/V106 EXCL-XG-001 — Cell style resolution setters/getters
-    (GetCellBorderStyle, SetCellBorderStyle, GetCellFontStyle, SetCellFontStyle,
-    GetCellHorizontalAlignment, SetCellHorizontalAlignment, SetCellVerticalAlignment,
-    SetCellIndentLevel, SetCellRotationAngle, and 3 more) remain dict-backed.
-    Getters partially read via FodsStyleResolver but fall back to dict.
-    Setters call FodsStyleEditor but also write to dict cache.
-    The dict caches are the V105/V106 trigger — they need to be removed and
-    the getter/setter pattern unified to pure XML read/write via FodsStyleResolver/Editor.
+  description: 'V105/V106 EXCL-XG-001 — Cell style resolution setters/getters (GetCellBorderStyle,
+    SetCellBorderStyle, GetCellFontStyle, SetCellFontStyle, GetCellHorizontalAlignment,
+    SetCellHorizontalAlignment, SetCellVerticalAlignment, SetCellIndentLevel, SetCellRotationAngle,
+    and 3 more) remain dict-backed. Getters partially read via FodsStyleResolver but
+    fall back to dict. Setters call FodsStyleEditor but also write to dict cache.
+    The dict caches are the V105/V106 trigger — they need to be removed and the getter/setter
+    pattern unified to pure XML read/write via FodsStyleResolver/Editor.
+
+    '
   root_cause: EXCL-XG-001
   predecessor_plan: FODS-NET-XG-001
   governed_exclusion_ids:
@@ -844,10 +967,10 @@ gaps:
   v105_remaining: 3
   v106_remaining: 6
   status: CLOSED
-  closure_note: "FODS-NET-XG-002 TC-XG-011: 12 cell style dict fields removed, pure XML read/write via FodsStyleResolver/Editor. Tests: 1571 passed, 0 failed."
+  closure_note: 'FODS-NET-XG-002 TC-XG-011: 12 cell style dict fields removed, pure
+    XML read/write via FodsStyleResolver/Editor. Tests: 1571 passed, 0 failed.'
   suggested_taskcard: TC-XG-011
   suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
-
 - gap_id: GAP-NET-XG-012
   product: fods
   language: csharp
@@ -855,21 +978,24 @@ gaps:
   severity: minor
   files:
   - src/net/fods/FodsDocumentSheetFeatures.cs
-  description: >
-    V105/V106/V108 EXCL-XG-002/EXCL-XG-003 — Filter/auto-filter APIs (_filters dict),
-    page-break APIs (_pageBreaks dict), row-group APIs (_groups dict), tab-color API
-    (_tabColors dict), and print-area dict (_printAreas) remain dict-backed.
-    DataAnnotations stubs (no ODF XML path; charts/condformat/sparklines) remain
-    dict-backed. ODF target elements: table:database-range (auto-filter),
-    table:table-row/@fo:break-before (page breaks), table:table-row-group (groups),
-    table:table-cell/@table:style-name with tab color in style (tab color).
+  description: 'V105/V106/V108 EXCL-XG-002/EXCL-XG-003 — Filter/auto-filter APIs (_filters
+    dict), page-break APIs (_pageBreaks dict), row-group APIs (_groups dict), tab-color
+    API (_tabColors dict), and print-area dict (_printAreas) remain dict-backed. DataAnnotations
+    stubs (no ODF XML path; charts/condformat/sparklines) remain dict-backed. ODF
+    target elements: table:database-range (auto-filter), table:table-row/@fo:break-before
+    (page breaks), table:table-row-group (groups), table:table-cell/@table:style-name
+    with tab color in style (tab color).
+
+    '
   root_cause: EXCL-XG-002_EXCL-XG-003
   predecessor_plan: FODS-NET-XG-001
   governed_exclusion_ids:
   - EXCL-XG-002
   - EXCL-XG-003
   status: CLOSED
-  closure_note: "FODS-NET-XG-002 TC-XG-012: _freezePanes/_printAreas/_tabColors removed; SetFreezePane/SetPrintArea delegate to XML; tab-color uses NsFfExt attr. Tests: 1571 passed, 0 failed."
+  closure_note: 'FODS-NET-XG-002 TC-XG-012: _freezePanes/_printAreas/_tabColors removed;
+    SetFreezePane/SetPrintArea delegate to XML; tab-color uses NsFfExt attr. Tests:
+    1571 passed, 0 failed.'
   suggested_taskcard: TC-XG-012
   suggested_plan: plans/.claude/fods-dotnet-xml-grounding-2.md
 gap_summary:

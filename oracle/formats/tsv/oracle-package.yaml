@@ -1,222 +1,185 @@
-# TSV Oracle Package — Format Factory
-# Format: Tab-Separated Values
-# Authority: IANA text/tab-separated-values, Python stdlib csv module (reference impl)
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Pilot 6 (Stdlib Reference)
-# TC-LA-003: Stdlib-reference oracle for structured-text formats
-
 oracle_id: oracle-tsv-v1
 format_id: tsv
-format_version: "IANA text/tab-separated-values"
+format_version: IANA text/tab-separated-values
 oracle_version: 1
 family: cells
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
-# ==============================================================================
-# AUTHORITY
-# ==============================================================================
 authority:
   specification_refs:
-    - id: IANA-TSV
-      title: "MIME type text/tab-separated-values (IANA registration)"
-      body: IANA
-      url: "https://www.iana.org/assignments/media-types/text/tab-separated-values"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-    - id: PYTHON-CSV-STDLIB
-      title: "Python csv module — dialect=excel-tab (stdlib reference implementation)"
-      body: PSF
-      url: "https://docs.python.org/3/library/csv.html"
-      legal_category: 1
-      authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-      note: >
-        Python stdlib csv.reader(f, dialect='excel-tab') is used as the
-        ACCEPTED_EMPIRICAL_EVIDENCE reference for TSV parsing behavior.
+  - id: IANA-TSV
+    title: MIME type text/tab-separated-values (IANA registration)
+    body: IANA
+    url: https://www.iana.org/assignments/media-types/text/tab-separated-values
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+  - id: PYTHON-CSV-STDLIB
+    title: Python csv module — dialect=excel-tab (stdlib reference implementation)
+    body: PSF
+    url: https://docs.python.org/3/library/csv.html
+    legal_category: 1
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    note: 'Python stdlib csv.reader(f, dialect=''excel-tab'') is used as the ACCEPTED_EMPIRICAL_EVIDENCE
+      reference for TSV parsing behavior.
+
+      '
   authorized_fact_refs:
-    - "FACT-TSV-001"
-    - "FACT-TSV-002"
+  - FACT-TSV-001
+  - FACT-TSV-002
   requirement_refs: []
   capability_refs:
-    - "tsv:parse"
-    - "tsv:row"
-  authority_summary: >
-    TSV is not formally specified by an IETF RFC. IANA registration defines the
-    MIME type. Python stdlib csv module with dialect='excel-tab' provides the
-    authoritative reference for field-separator and quoting behavior.
+  - tsv:parse
+  - tsv:row
+  authority_summary: 'TSV is not formally specified by an IETF RFC. IANA registration
+    defines the MIME type. Python stdlib csv module with dialect=''excel-tab'' provides
+    the authoritative reference for field-separator and quoting behavior.
 
-# ==============================================================================
-# CORPUS REFERENCES
-# ==============================================================================
+    '
 corpus_refs:
-  - corpus_id: tsv-minimal-2x2
-    sample_ref: samples/by-format/tsv/minimal-2x2.tsv
-    sha256: "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "2 rows x 2 columns, tab-delimited, header row, no quoting"
-  - corpus_id: tsv-multi-column
-    sample_ref: samples/by-format/tsv/multi-column.tsv
-    sha256: "sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Multiple columns with headers"
-  - corpus_id: tsv-invalid-binary
-    sample_ref: samples/by-format/tsv/invalid-binary-garbage.tsv
-    sha256: null
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Binary garbage — should raise error or return empty"
-
-# ==============================================================================
-# PROFILES
-# ==============================================================================
+- corpus_id: tsv-minimal-2x2
+  sample_ref: samples/by-format/tsv/minimal-2x2.tsv
+  sha256: sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 2 rows x 2 columns, tab-delimited, header row, no quoting
+- corpus_id: tsv-multi-column
+  sample_ref: samples/by-format/tsv/multi-column.tsv
+  sha256: sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Multiple columns with headers
+- corpus_id: tsv-invalid-binary
+  sample_ref: samples/by-format/tsv/invalid-binary-garbage.tsv
+  sha256: null
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Binary garbage — should raise error or return empty
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- MUTATION_BEHAVIOR
+- SAME_FORMAT_SERIALIZATION
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib csv module is the reference; no third-party tool required
+- profile: LOSSLESS_TRANSFORMATION
+  reason: TSV is a text format, not a compression format
+- profile: SECURITY_ROBUSTNESS
+  reason: TSV has no injection attack surface in parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: TSV has no extension mechanism
+- profile: EXPORT_CONFORMANCE
+  reason: TSV export to other formats not a primary operation
+- profile: NORMALIZATION
+  reason: No normalization required for TSV
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: tsv-valid-001
+  purpose: Minimal 2x2 TSV parses without error
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-CSV-STDLIB — dialect=excel-tab
+  sample_ref: samples/by-format/tsv/minimal-2x2.tsv
+  input_hash: sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: row_count
+    value_min: 1
+    authority: PYTHON-CSV-STDLIB
+  - property: column_count
+    value_min: 1
+    authority: PYTHON-CSV-STDLIB
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
   - DOMAIN_MODEL_MAPPING
-  - MUTATION_BEHAVIOR
-  - SAME_FORMAT_SERIALIZATION
+- case_id: tsv-valid-002
+  purpose: Multi-column TSV parses all columns
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-CSV-STDLIB — dialect=excel-tab
+  sample_ref: samples/by-format/tsv/multi-column.tsv
+  input_hash: sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: column_count
+    value_min: 2
+    authority: PYTHON-CSV-STDLIB
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: tsv-valid-003
+  purpose: TsvDocument.from_file() returns spec_qname=tsv:row
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - shared/qname-registry/tsv.yaml — tsv:row entry
+  sample_ref: samples/by-format/tsv/minimal-2x2.tsv
+  input_hash: sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: tsv:row
+    authority: IANA-TSV
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: tsv-valid-004
+  purpose: Write+reload TSV preserves row count (roundtrip)
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-CSV-STDLIB — dialect=excel-tab roundtrip
+  sample_ref: samples/by-format/tsv/minimal-2x2.tsv
+  input_hash: sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - row_count
+  - column_count
+  applicable_profiles:
   - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Python stdlib csv module is the reference; no third-party tool required"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "TSV is a text format, not a compression format"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "TSV has no injection attack surface in parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "TSV has no extension mechanism"
-  - profile: EXPORT_CONFORMANCE
-    reason: "TSV export to other formats not a primary operation"
-  - profile: NORMALIZATION
-    reason: "No normalization required for TSV"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-
-# ==============================================================================
-# VALID CASES
-# ==============================================================================
-valid_cases:
-
-  - case_id: tsv-valid-001
-    purpose: "Minimal 2x2 TSV parses without error"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-CSV-STDLIB — dialect=excel-tab"
-    sample_ref: samples/by-format/tsv/minimal-2x2.tsv
-    input_hash: "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: row_count
-        value_min: 1
-        authority: PYTHON-CSV-STDLIB
-      - property: column_count
-        value_min: 1
-        authority: PYTHON-CSV-STDLIB
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: tsv-valid-002
-    purpose: "Multi-column TSV parses all columns"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-CSV-STDLIB — dialect=excel-tab"
-    sample_ref: samples/by-format/tsv/multi-column.tsv
-    input_hash: "sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: column_count
-        value_min: 2
-        authority: PYTHON-CSV-STDLIB
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: tsv-valid-003
-    purpose: "TsvDocument.from_file() returns spec_qname=tsv:row"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "shared/qname-registry/tsv.yaml — tsv:row entry"
-    sample_ref: samples/by-format/tsv/minimal-2x2.tsv
-    input_hash: "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: spec_qname
-        value: "tsv:row"
-        authority: IANA-TSV
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: tsv-valid-004
-    purpose: "Write+reload TSV preserves row count (roundtrip)"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-CSV-STDLIB — dialect=excel-tab roundtrip"
-    sample_ref: samples/by-format/tsv/minimal-2x2.tsv
-    input_hash: "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772"
-    expected_parse_result: SUCCESS
-    roundtrip_fields_equal:
-      - row_count
-      - column_count
-    applicable_profiles:
-      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-      - SAME_FORMAT_SERIALIZATION
-
-# ==============================================================================
-# INVALID CASES
-# ==============================================================================
+  - SAME_FORMAT_SERIALIZATION
+executor_config:
+  module: tsv.tsv_parser
+  callable: load_tsv
 invalid_cases:
-
-  - case_id: tsv-invalid-001
-    purpose: "Binary garbage file — must not crash; gracefully errors or returns empty"
-    defect_class: binary-content
-    malformed_boundary: "File contains non-text binary bytes"
-    authority_refs:
-      - "PYTHON-CSV-STDLIB — graceful error handling"
-    sample_ref: samples/by-format/tsv/invalid-binary-garbage.tsv
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception or empty result"
-    partial_recovery_allowed: true
-    security_relevance: false
-
-# ==============================================================================
-# CANONICALIZATION
-# ==============================================================================
+- case_id: tsv-invalid-001
+  purpose: Binary garbage file — must not crash; gracefully errors or returns empty
+  defect_class: binary-content
+  malformed_boundary: File contains non-text binary bytes
+  authority_refs:
+  - PYTHON-CSV-STDLIB — graceful error handling
+  sample_ref: samples/by-format/tsv/invalid-binary-garbage.tsv
+  expected_failure_stage: PARSE
+  expected_error_type: Exception or empty result
+  partial_recovery_allowed: true
+  security_relevance: false
 canonicalization:
   method: tsv-row-list
-  description: >
-    Canonical form is a list of lists of strings, with the tab delimiter stripped.
-    Header row normalized to list of strings. Whitespace in field values preserved.
-  ordering_policy: "row order preserved"
-  whitespace_policy: "field values preserved; trailing newline ignored"
-  encoding_policy: "UTF-8 (or system default)"
+  description: 'Canonical form is a list of lists of strings, with the tab delimiter
+    stripped. Header row normalized to list of strings. Whitespace in field values
+    preserved.
 
-# ==============================================================================
-# TOLERANCE POLICY
-# ==============================================================================
+    '
+  ordering_policy: row order preserved
+  whitespace_policy: field values preserved; trailing newline ignored
+  encoding_policy: UTF-8 (or system default)
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none — row and column order must be preserved"
-  whitespace_tolerance: "trailing newline at end of file is ignored"
-  metadata_tolerance: "None"
-  policy_summary: "Row and column counts must match Python stdlib csv.reader output"
-
-# ==============================================================================
-# COMPARATORS AND VALIDATORS
-# ==============================================================================
+  ordering_tolerance: none — row and column order must be preserved
+  whitespace_tolerance: trailing newline at end of file is ignored
+  metadata_tolerance: None
+  policy_summary: Row and column counts must match Python stdlib csv.reader output
 comparators:
-  - model-property-comparator
-  - row-count-comparator
-
+- model-property-comparator
+- row-count-comparator
 validators:
-  - tsv-delimiter-validator
-
+- tsv-delimiter-validator
 consumers:
-  - tests/python/tsv/test_tsv_roundtrip.py
-  - tests/python/tsv/test_tsv_parser.py
+- tests/python/tsv/test_tsv_roundtrip.py
+- tests/python/tsv/test_tsv_parser.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

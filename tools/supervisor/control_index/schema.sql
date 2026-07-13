@@ -369,3 +369,157 @@ CREATE TABLE IF NOT EXISTS maintenance_obligations (
 CREATE INDEX IF NOT EXISTS idx_mor_status ON maintenance_obligations(status);
 CREATE INDEX IF NOT EXISTS idx_mor_scheduled ON maintenance_obligations(scheduled_date);
 CREATE INDEX IF NOT EXISTS idx_mor_owner ON maintenance_obligations(owner);
+
+-- v3: canary shadow observation tables
+-- TC-SCHEMA-001 (clever-tickling-island): Extends control-index.db with two
+-- shadow observation tables for staged promotion of governance validators and
+-- LLM grader provider switches.
+
+CREATE TABLE IF NOT EXISTS validator_shadow_observations (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id              TEXT    NOT NULL,
+    sprint_id           TEXT    NOT NULL,
+    validator_name      TEXT    NOT NULL,
+    format_scope        TEXT,           -- NULL means portfolio-wide
+    stable_result       TEXT    NOT NULL, -- PASS | WARN | FAIL
+    stable_blocks_sprint INTEGER NOT NULL DEFAULT 0,
+    candidate_result    TEXT,           -- NULL if candidate call failed
+    candidate_blocks_sprint INTEGER,
+    agreement           INTEGER,        -- 1=agree, 0=disagree, NULL=error
+    error               TEXT,           -- error message if candidate call failed
+    observed_at         TEXT    NOT NULL -- ISO-8601 timestamp
+);
+
+CREATE INDEX IF NOT EXISTS idx_vso_validator
+    ON validator_shadow_observations (validator_name);
+
+CREATE INDEX IF NOT EXISTS idx_vso_sprint
+    ON validator_shadow_observations (sprint_id);
+
+CREATE TABLE IF NOT EXISTS grader_shadow_observations (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id              TEXT    NOT NULL,
+    sprint_id           TEXT    NOT NULL,
+    work_item_id        TEXT    NOT NULL,
+    primary_provider    TEXT    NOT NULL,
+    shadow_provider     TEXT    NOT NULL,
+    primary_grade       TEXT    NOT NULL, -- ACCEPTED | REWORK | PARTIAL
+    shadow_grade        TEXT,             -- NULL if shadow call failed
+    agreement           INTEGER,          -- 1=agree, 0=disagree, NULL=error
+    error               TEXT,             -- error message if shadow call failed
+    observed_at         TEXT    NOT NULL  -- ISO-8601 timestamp
+    -- Deferrable FK to sprint table if sprint tracking added in future
+);
+
+CREATE INDEX IF NOT EXISTS idx_gso_shadow_provider
+    ON grader_shadow_observations (shadow_provider);
+
+CREATE INDEX IF NOT EXISTS idx_gso_sprint
+    ON grader_shadow_observations (sprint_id);
+
+-- T-GA: gap_attempts — one row per sprint-gap attempt (TC-OCRD-A1)
+CREATE TABLE IF NOT EXISTS gap_attempts (
+    attempt_id     TEXT PRIMARY KEY,
+    gap_id         TEXT NOT NULL,
+    sprint_id      TEXT NOT NULL,
+    item_id        TEXT,
+    outcome        TEXT,
+    rework_reason  TEXT,
+    attempted_at   TEXT NOT NULL,
+    source_file    TEXT,
+    ingested_at    TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_ga_gap ON gap_attempts(gap_id);
+CREATE INDEX IF NOT EXISTS idx_ga_sprint ON gap_attempts(sprint_id);
+CREATE INDEX IF NOT EXISTS idx_ga_outcome ON gap_attempts(outcome);
+
+-- ============================================================
+-- v4: Control Layer Discovery Tables (TC-OCRD-C3)
+-- ============================================================
+
+-- T-CL: Control layer registry (one row per identified control layer)
+CREATE TABLE IF NOT EXISTS control_layers (
+    layer_key                TEXT PRIMARY KEY,
+    name                     TEXT NOT NULL,
+    status                   TEXT NOT NULL,
+    authority_scope          TEXT,
+    primary_purpose          TEXT,
+    implementation_paths     TEXT,  -- JSON array
+    data_paths               TEXT,  -- JSON array
+    consumers                TEXT,  -- JSON array
+    observable_features_count INTEGER DEFAULT 0,
+    last_assessed            TEXT,
+    ingested_at              TEXT DEFAULT (datetime('now'))
+);
+
+-- T-CF: Control features (one row per observable feature per layer)
+CREATE TABLE IF NOT EXISTS control_features (
+    feature_id               TEXT PRIMARY KEY,
+    control_layer_key        TEXT REFERENCES control_layers(layer_key),
+    feature_name             TEXT NOT NULL,
+    category                 TEXT,
+    entry_points             TEXT,  -- JSON array
+    current_status           TEXT NOT NULL,
+    authority_effect         TEXT,
+    observable_behavior      TEXT,  -- JSON object
+    ingested_at              TEXT DEFAULT (datetime('now'))
+);
+
+-- T-CFC: Control feature consumers (many-to-many feature → consumer)
+CREATE TABLE IF NOT EXISTS control_feature_consumers (
+    id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+    feature_id               TEXT REFERENCES control_features(feature_id),
+    consumer_id              TEXT NOT NULL,
+    consumer_type            TEXT,
+    consumer_path            TEXT,
+    expected_contract        TEXT,
+    dependency_strength      TEXT,
+    migration_risk           TEXT
+);
+
+-- T-FPR: Feature parity results (one row per feature disposition)
+CREATE TABLE IF NOT EXISTS feature_parity_results (
+    feature_id               TEXT PRIMARY KEY REFERENCES control_features(feature_id),
+    reuse_strategy           TEXT,
+    parity_status            TEXT NOT NULL,
+    intentional_changes      TEXT,
+    verified_at              TEXT
+);
+
+-- T-QR: Quarantine registry (artifacts failing validation pre-ingest)
+CREATE TABLE IF NOT EXISTS quarantines (
+    quarantine_id            TEXT PRIMARY KEY,
+    artifact_path            TEXT NOT NULL,
+    detected_at              TEXT DEFAULT (datetime('now')),
+    validation_failures      TEXT,  -- JSON array
+    severity                 TEXT,
+    status                   TEXT DEFAULT 'ACTIVE'
+);
+
+-- T-TR: Trust registry (authority level per artifact path)
+CREATE TABLE IF NOT EXISTS trust_registry (
+    artifact_path            TEXT PRIMARY KEY,
+    authority_level          TEXT NOT NULL,
+    trusted                  INTEGER NOT NULL DEFAULT 0,
+    reason                   TEXT,
+    assessed_at              TEXT DEFAULT (datetime('now'))
+);
+
+-- T-PL: Plans table (scanned from plans/ directory)
+CREATE TABLE IF NOT EXISTS plans (
+    plan_id                  TEXT PRIMARY KEY,
+    plan_path                TEXT NOT NULL,
+    plan_type                TEXT,
+    title                    TEXT,
+    status                   TEXT,
+    open_taskcards           INTEGER DEFAULT 0,
+    closed_taskcards         INTEGER DEFAULT 0,
+    ingested_at              TEXT DEFAULT (datetime('now'))
+);
+
+-- Indexes for v4 tables
+CREATE INDEX IF NOT EXISTS idx_cf_layer ON control_features(control_layer_key);
+CREATE INDEX IF NOT EXISTS idx_cfc_feature ON control_feature_consumers(feature_id);
+CREATE INDEX IF NOT EXISTS idx_q_status ON quarantines(status);
+CREATE INDEX IF NOT EXISTS idx_tr_trusted ON trust_registry(trusted);
+CREATE INDEX IF NOT EXISTS idx_plans_type ON plans(plan_type);
