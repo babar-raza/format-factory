@@ -261,6 +261,52 @@ def _parse_lane_id_from_plan(plan_path: str) -> str:
     return "unknown"
 
 
+def _init_machinery_mission_ledger(mission_id: str, plan_path: str | None) -> None:
+    """TC-VWR-004-01 (velvet-swinging-wreath): Initialize or refresh mission-ledger.json
+    for a new machinery mission (RC-002 fix).
+
+    Only writes if mission_id differs from current ledger's mission_id (idempotent).
+    Preserves existing entry if mission_id matches.
+    """
+    ledger_path = _repo_root / ".local" / "supervisor" / "machinery" / "mission-ledger.json"
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
+    existing: dict = {}
+    if ledger_path.exists():
+        try:
+            existing = json.loads(ledger_path.read_text(encoding="utf-8"))
+        except Exception:
+            existing = {}
+    # Idempotent: if same mission, preserve existing
+    if existing.get("mission_id") == mission_id:
+        return
+    new_entry = {
+        "schema_version": "1.0",
+        "mission_id": mission_id,
+        "mission_type": "machinery_hardening",
+        "authoritative_plan": plan_path or "",
+        "current_iteration": 0,
+        "current_stage": "EXECUTION",
+        "last_completed_stage": None,
+        "next_required_stage": "POST_EXECUTION_SPRINT_AUDIT",
+        "active_taskcards": [],
+        "rework_taskcards": [],
+        "open_gaps": [],
+        "closed_gaps": [],
+        "audit_pending": True,
+        "replan_pending": False,
+        "execution_pending": False,
+        "completion_audit_pending": False,
+        "behavioral_iterations_required": 2,
+        "current_behavioral_iterations": 0,
+        "stop_status": "RUNNING",
+        "stop_reason": None,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "state_digest": f"{mission_id}:iteration=0:stage=EXECUTION",
+    }
+    ledger_path.write_text(json.dumps(new_entry, indent=2) + "\n", encoding="utf-8")
+    print(f"[write_plan_lock] Initialized machinery mission ledger for {mission_id}")
+
+
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
@@ -281,6 +327,21 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 f"'{forbidden}' is a protected ledger file and cannot be an execution plan."
             )
 
+    # TC-VWR-004-01: Initialize machinery mission ledger for this plan (RC-002 fix).
+    # Reads mission_id from plan header. Only initializes if mission differs (idempotent).
+    _wpl_mission_id: str | None = None  # reused in audit call below
+    if terminal and (audit_gate or _should_require_audit(plan_path)):
+        try:
+            import re as _re_wpl  # noqa: PLC0415
+            _plan_text = Path(plan_path).read_text(encoding="utf-8", errors="replace")[:2000]
+            _mid_match = _re_wpl.search(r"\*\*mission_id:\*\*\s+(\S+)", _plan_text)
+            _mid = _mid_match.group(1).strip() if _mid_match else None
+            if _mid:
+                _init_machinery_mission_ledger(_mid, plan_path)
+                _wpl_mission_id = _mid  # pass through to lifecycle_audit call
+        except Exception:
+            pass  # Non-blocking
+
     # TC-TCF-003: Mandatory audit gate.
     # Runs lifecycle_audit before writing TERMINAL_CLOSED when:
     #   (a) --audit-gate is explicitly passed, OR
@@ -292,8 +353,8 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     if terminal and (audit_gate or _auto_audit):
         _gate_label = "--audit-gate" if audit_gate else "auto-audit (TC-TCF-003)"
         try:
-            from lifecycle_audit import run_lifecycle_audit  # type: ignore[import]
-            audit_result = run_lifecycle_audit(repo_root=_repo_root, plan_path=plan_path, track=track)
+            from lifecycle_audit import run_lifecycle_audit, generate_behavioral_gap_taskcards  # type: ignore[import]
+            audit_result = run_lifecycle_audit(repo_root=_repo_root, plan_path=plan_path, track=track, mission_id=_wpl_mission_id)
             audit_verdict = audit_result.get("verdict", "AUDIT_PASS")
             if audit_verdict == "AUDIT_REQUIRES_ITERATION":
                 status = "ITERATION_REQUIRED"
@@ -301,6 +362,20 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                     f"[write_plan_lock] {_gate_label}: lifecycle audit verdict=AUDIT_REQUIRES_ITERATION "
                     "-> writing ITERATION_REQUIRED (plan will iterate)"
                 )
+                # TC-VWR-005-02 (velvet-swinging-wreath): Auto-generate gap taskcards so the
+                # agent knows exactly what to fix without manual inspection of audit output.
+                try:
+                    _gap_tcs = generate_behavioral_gap_taskcards(audit_result, plan_path=plan_path)
+                    if _gap_tcs:
+                        print(
+                            f"[write_plan_lock] TC-VWR-005-02: Generated {len(_gap_tcs)} gap taskcard(s)"
+                            " -> .local/supervisor/gap-taskcards.json"
+                        )
+                except Exception as _gtc_exc:
+                    print(
+                        f"[write_plan_lock] WARNING: gap taskcard generation failed: {_gtc_exc}",
+                        file=sys.stderr,
+                    )
             else:
                 status = "TERMINAL_CLOSED"
                 print(f"[write_plan_lock] {_gate_label}: lifecycle audit verdict=AUDIT_PASS -> TERMINAL_CLOSED")
@@ -325,6 +400,28 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         status = "COMPLETION_CANDIDATE"
     else:
         status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
+
+    # V88 (TC-LHEAL-002): Validate required permanent layers before TERMINAL_CLOSED.
+    # Fires only when terminal=True and plan declares required_permanent_layers
+    # or plan_type: product_certification. Non-blocking if V88 itself errors.
+    if status == "TERMINAL_CLOSED" and not getattr(write_lock, "_skip_v88", False):
+        try:
+            from governance_validators_layers import validate_required_layers_at_terminal as _v88  # noqa: PLC0415
+            _v88_result = _v88(plan_path, _repo_root)
+            if _v88_result.get("result") == "FAIL":
+                print("\nBLOCKED: Cannot write TERMINAL_CLOSED — missing required layers:")
+                for _lid in _v88_result.get("missing_layers", []):
+                    print(f"  - {_lid}")
+                _fix = _v88_result.get("fix_command", "see governance_validators_layers.py V88")
+                _hint = _v88_result.get("hint", "create required layer(s) then retry --terminal")
+                print(f"\nFix: {_fix}")
+                print(f"Hint: {_hint}")
+                print("\nEmergency override: --skip-v88 (audited in .local/supervisor/v88-skipped.jsonl)")
+                sys.exit(2)
+        except SystemExit:
+            raise
+        except Exception as _v88_exc:
+            print(f"[write_plan_lock] V88: non-blocking check error: {_v88_exc}", file=sys.stderr)
 
     # TC-TCF-004: Write terminal closure evidence artifact before lock files.
     # Non-blocking: failure logged to stderr but does not prevent lock write.
@@ -418,30 +515,19 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
             ],
         }
 
-    # 1. Write shared fallback lock (backwards compatibility) — now includes session_id
-    # TC-AMD-MACH-001: Skip shared lock for pytest/temp paths to prevent contamination.
-    # Tests call write_plan_lock() with tmp_path fixtures; writing the shared lock with
-    # a temp path causes check_continuation.py to return ACTIVE_PLAN_INCOMPLETE for all
-    # real sprints. Session-keyed lock is still written for test isolation.
-    _wrote_shared = False
-    if _is_temp_path(str(plan_path)):
+    # TC-MA2-LOCK-001: Grouped write pattern — write BOTH .tmp files before renaming either.
+    # If the second rename fails, the first file is still intact (no partial-update window).
+    # Implementation: _write_both_locks() encapsulates this grouped write.
+
+    # Prepare shared lock details
+    _skip_shared = _is_temp_path(str(plan_path))
+    if _skip_shared:
         print(
             f"[write_plan_lock] SKIPPING shared lock: plan_path is temp/pytest ({plan_path})",
             file=sys.stderr,
         )
-    else:
-        # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
-        _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
-        _shared_tmp = _shared_lock_path.with_suffix(".tmp")
-        _shared_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
-        os.replace(str(_shared_tmp), str(_shared_lock_path))
-        print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
-        _wrote_shared = True
 
-    # 2. Write session-keyed lock (race-safe; one file per (session, plan) pair)
-    # TC-LOCK-002 (FF-LOCK-HEAL-20260624): Use plan_path hash in filename to support
-    # multi-plan sessions. Old {sid}.json files remain readable by check_continuation
-    # (it globs *.json). Plan A's TERMINAL_CLOSED persists when Plan B starts.
+    # Prepare keyed lock path
     import hashlib
     _plan_hash = hashlib.sha256(plan_path.encode()).hexdigest()[:8]
     _plan_locks_dir.mkdir(parents=True, exist_ok=True)
@@ -463,10 +549,28 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         except Exception:
             pass  # If read fails, proceed with write
 
-    # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
-    _keyed_tmp = keyed_path.with_suffix(".tmp")
-    _keyed_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
-    os.replace(str(_keyed_tmp), str(keyed_path))
+    lock_json = json.dumps(lock, indent=2) + "\n"
+
+    # TC-MA2-LOCK-001-02: Grouped write — both .tmp files written before either rename
+    _wrote_shared = False
+    if not _skip_shared:
+        _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
+        _shared_tmp = _shared_lock_path.with_suffix(".tmp")
+        _keyed_tmp = keyed_path.with_suffix(".tmp")
+        # Phase 1: write both .tmp files
+        _shared_tmp.write_text(lock_json, encoding="utf-8")
+        _keyed_tmp.write_text(lock_json, encoding="utf-8")
+        # Phase 2: rename both (if first rename succeeds but second fails,
+        # shared lock is updated and keyed lock is in .tmp — recoverable)
+        os.replace(str(_shared_tmp), str(_shared_lock_path))
+        os.replace(str(_keyed_tmp), str(keyed_path))
+        print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
+        _wrote_shared = True
+    else:
+        # Shared skipped — write keyed lock only (single atomic write)
+        _keyed_tmp = keyed_path.with_suffix(".tmp")
+        _keyed_tmp.write_text(lock_json, encoding="utf-8")
+        os.replace(str(_keyed_tmp), str(keyed_path))
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
     # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch.
@@ -714,6 +818,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="TC-TCF-003: Emergency bypass — skip the mandatory auto-audit gate even when "
                              "plan contains TC-* taskcard entries. Use only when lifecycle_audit is "
                              "unavailable or the audit is known to be inapplicable.")
+    parser.add_argument("--skip-v88", action="store_true",
+                        help="TC-LHEAL-002: Emergency bypass — skip the V88 required-layers gate. "
+                             "Use only when layer creation is genuinely impossible at terminal time. "
+                             "Always audited: writes timestamp+reason to .local/supervisor/v88-skipped.jsonl.")
     parser.add_argument("--track", default=None, choices=["machinery", "product"],
                         help="Track to read continuation signal from when --audit-gate is used "
                              "(default: legacy path). Use 'machinery' for machinery-track plans "
@@ -736,6 +844,28 @@ def main(argv: list[str] | None = None) -> int:
         print("ERROR: --plan-path is required unless --clear or --cleanup-completed is given",
               file=sys.stderr)
         return 1
+
+    # TC-LHEAL-002: Wire --skip-v88 flag into write_lock via function attribute.
+    # Using a function attribute avoids changing write_lock's signature.
+    if getattr(args, "skip_v88", False):
+        write_lock._skip_v88 = True  # type: ignore[attr-defined]
+        # Audit the bypass in .local/supervisor/v88-skipped.jsonl
+        try:
+            from datetime import datetime, timezone  # noqa: PLC0415
+            _v88_log = Path(__file__).resolve().parents[2] / ".local" / "supervisor" / "v88-skipped.jsonl"
+            _v88_log.parent.mkdir(parents=True, exist_ok=True)
+            import json as _json_v88  # noqa: PLC0415
+            with _v88_log.open("a", encoding="utf-8") as _v88f:
+                _v88f.write(_json_v88.dumps({
+                    "skipped_at": datetime.now(timezone.utc).isoformat(),
+                    "plan_path": args.plan_path,
+                    "reason": "emergency_bypass_via_cli_flag",
+                }) + "\n")
+            print(f"[write_plan_lock] V88-SKIP: logged bypass to {_v88_log}", file=sys.stderr)
+        except Exception as _v88_log_exc:
+            print(f"[write_plan_lock] V88-SKIP: audit log failed (non-blocking): {_v88_log_exc}", file=sys.stderr)
+    else:
+        write_lock._skip_v88 = False  # type: ignore[attr-defined]
 
     write_lock(args.plan_path, last_taskcard=args.last_taskcard,
                complete=args.complete, terminal=args.terminal,

@@ -26,8 +26,10 @@ class TestCheckContinuationLane:
         # Find the Check 10 section
         check10_start = source.find("Check 10: Lane Balance Advisory")
         assert check10_start > 0, "Check 10 section not found"
-        # The section between Check 10 and "All checks passed" should NOT contain _stop(
-        check10_end = source.find("All checks passed", check10_start)
+        # The Check 10 section ends at Check 11 (or "All checks passed" if no Check 11 exists).
+        # Check 11 (gate_11_ready enforcement) is a separate hard-stop check added after Check 10.
+        check11_start = source.find("Check 11", check10_start)
+        check10_end = check11_start if check11_start > check10_start else source.find("All checks passed", check10_start)
         check10_section = source[check10_start:check10_end]
         assert "_stop(" not in check10_section, "Check 10 must be advisory only — should not call _stop()"
 

@@ -719,6 +719,167 @@ def validate_file(
     except Exception as _sg_exc:
         scope_warnings.append(f"WARN(TC-LSG-007): scope check error: {_sg_exc}")
 
+    # --- Phase 15 (TC-FGSQ-008): PERSISTENT_PROPERTY roundtrip requirement (WARN only) ---
+    # For work items declared as work_type=PERSISTENT_PROPERTY: check round_trip_test_path.
+    # For work items declared as work_type=UNSUPPORTED_CAPABILITY: check for NSE test.
+    # Grace period: warnings only until 2026-09-01, then this becomes a FAIL.
+    persistent_property_warnings: list[str] = []
+    try:
+        _work_items = doc.get("planned_work_items", []) or []
+        for _wi in _work_items:
+            _wt = _wi.get("work_type", "")
+            _wi_id = _wi.get("item_id", "<unknown>")
+            if _wt == "PERSISTENT_PROPERTY":
+                _rtp = _wi.get("round_trip_test_path", "")
+                if not _rtp:
+                    persistent_property_warnings.append(
+                        f"WARN(TC-FGSQ-008)[{_wi_id}]: work_type=PERSISTENT_PROPERTY but "
+                        "round_trip_test_path is absent. A Save/Load roundtrip test is required."
+                    )
+                else:
+                    _rtp_path = repo_root / _rtp
+                    if not _rtp_path.exists():
+                        persistent_property_warnings.append(
+                            f"WARN(TC-FGSQ-008)[{_wi_id}]: round_trip_test_path '{_rtp}' "
+                            "does not exist on disk."
+                        )
+                    else:
+                        _content = _rtp_path.read_text(encoding="utf-8", errors="replace")
+                        if "Save" not in _content or "Load" not in _content:
+                            persistent_property_warnings.append(
+                                f"WARN(TC-FGSQ-008)[{_wi_id}]: round_trip_test_path '{_rtp}' "
+                                "does not contain both 'Save' and 'Load' — may not be a true roundtrip test."
+                            )
+            elif _wt == "UNSUPPORTED_CAPABILITY":
+                _rtp = _wi.get("round_trip_test_path", "")
+                if _rtp:
+                    _rtp_path = repo_root / _rtp
+                    if _rtp_path.exists():
+                        _content = _rtp_path.read_text(encoding="utf-8", errors="replace")
+                        if "NotSupportedException" not in _content and "Assert.Throws" not in _content:
+                            persistent_property_warnings.append(
+                                f"WARN(TC-FGSQ-008)[{_wi_id}]: work_type=UNSUPPORTED_CAPABILITY test "
+                                f"'{_rtp}' does not contain NotSupportedException assertion."
+                            )
+    except Exception as _pp_exc:
+        persistent_property_warnings.append(f"WARN(TC-FGSQ-008): check skipped: {_pp_exc}")
+
+    # --- Phase 16 (TC-ACP-006): Pre-mutation guard authorization check (WARN only) ---
+    # For PRODUCT_SOURCE items, warn when pre_mutation_guard_authorization_id is absent.
+    # EP-002-GAP mitigation: guards should be invoked before mutations; this is WARN only.
+    mutation_guard_warnings: list[str] = []
+    for _wi in doc.get("planned_work_items", []) or []:
+        if not isinstance(_wi, dict):
+            continue
+        if _wi.get("item_type") != "PRODUCT_SOURCE":
+            continue
+        if _wi.get("status") in ("not_started", "blocked_external_gate"):
+            continue
+        if not _wi.get("pre_mutation_guard_authorization_id"):
+            mutation_guard_warnings.append(
+                f"WARN(TC-ACP-006): PRODUCT_SOURCE item '{_wi.get('item_id', '?')}' "
+                f"missing pre_mutation_guard_authorization_id — "
+                f"EP-002-GAP mitigation requires explicit guard invocation"
+            )
+
+    # --- Phase 14 (TC-GOV-005): Git diff cross-check (WARN only, never blocks) ---
+    # Verifies that declared changed_files match git-tracked modifications.
+    # Catches phantom declarations (declaring files not actually changed) and
+    # undeclared mutations (changed files not listed in declaration).
+    git_crosscheck_warnings: list[str] = []
+    try:
+        import subprocess as _sp
+        _git_result = _sp.run(
+            ["git", "diff", "--name-only", "HEAD"],
+            capture_output=True, text=True, cwd=str(repo_root), timeout=10
+        )
+        if _git_result.returncode == 0:
+            _git_changed = set(
+                f.strip() for f in _git_result.stdout.splitlines() if f.strip()
+            )
+            # Also include staged changes
+            _git_staged = _sp.run(
+                ["git", "diff", "--name-only", "--cached"],
+                capture_output=True, text=True, cwd=str(repo_root), timeout=10
+            )
+            if _git_staged.returncode == 0:
+                _git_changed |= set(
+                    f.strip() for f in _git_staged.stdout.splitlines() if f.strip()
+                )
+            _declared = set(
+                str(f).replace("\\", "/") for f in (doc.get("changed_files", []) or [])
+            )
+            _git_norm = set(f.replace("\\", "/") for f in _git_changed)
+            # Undeclared mutations in product source
+            _undeclared = {
+                f for f in _git_norm
+                if f.startswith("src/") and f not in _declared
+            }
+            if _undeclared:
+                for f in sorted(_undeclared)[:5]:
+                    git_crosscheck_warnings.append(
+                        f"WARN(TC-GOV-005)[git-crosscheck]: {f} modified but not declared in changed_files"
+                    )
+            # Phantom declarations (declared but not changed, only for src/ files)
+            _phantom = {
+                f for f in _declared
+                if f.startswith("src/") and f not in _git_norm
+            }
+            if _phantom:
+                for f in sorted(_phantom)[:5]:
+                    git_crosscheck_warnings.append(
+                        f"WARN(TC-GOV-005)[git-crosscheck]: {f} declared but git shows no modification"
+                    )
+    except Exception as _gc_exc:
+        git_crosscheck_warnings.append(
+            f"WARN(TC-GOV-005): git crosscheck skipped: {_gc_exc}"
+        )
+
+    # --- Phase 17 (TC-P6-001): JSON Schema enforcement (WARN only, never blocks) ---
+    # Validates the evidence declaration against the canonical JSON schema.
+    # Outputs SKIP_NO_JSONSCHEMA if jsonschema is not installed.
+    # Outputs WARN for each violation. Never returns FAIL — schema mismatches are advisory.
+    schema_warnings: list[str] = []
+    try:
+        import jsonschema as _jschema  # type: ignore[import]
+        _schema_path = repo_root / ".supervisor" / "schemas" / "evidence-declaration.schema.json"
+        if _schema_path.exists():
+            try:
+                import json as _json2
+                _schema = _json2.loads(_schema_path.read_text(encoding="utf-8"))
+                # Reload raw document for schema validation (doc may have been repaired)
+                _raw_yaml = declaration_path.read_text(encoding="utf-8", errors="replace")
+                _raw_doc = yaml.safe_load(_raw_yaml) or {}
+                _v = _jschema.Draft7Validator(_schema)
+                for _err in sorted(_v.iter_errors(_raw_doc), key=lambda e: list(e.absolute_path)):
+                    _field = ".".join(str(p) for p in _err.absolute_path) or "<root>"
+                    schema_warnings.append(
+                        f"WARN(TC-P6-001)[schema]: {_field}: {_err.message}"
+                    )
+            except Exception as _sv_exc:
+                schema_warnings.append(f"WARN(TC-P6-001): schema validation error: {_sv_exc}")
+        else:
+            schema_warnings.append(
+                "WARN(TC-P6-001): evidence-declaration.schema.json not found — schema check skipped"
+            )
+    except ImportError:
+        schema_warnings.append("SKIP_NO_JSONSCHEMA(TC-P6-001): jsonschema not installed — schema check skipped")
+
+    # --- Phase 18 (TC-PCL-004): DOM task deepening_lane attribution check (WARN only) ---
+    # Items with gap_id containing -DOM- should declare deepening_lane: dom.
+    # This is advisory (WARN not FAIL) per REQ-LANE-010.
+    dom_lane_warnings: list[str] = []
+    for _wi in doc.get("planned_work_items", []) or []:
+        if not isinstance(_wi, dict):
+            continue
+        _gap_id = str(_wi.get("gap_id", ""))
+        _deepening_lane = _wi.get("deepening_lane", "")
+        if "-DOM-" in _gap_id and not _deepening_lane:
+            dom_lane_warnings.append(
+                f"WARN(TC-PCL-004): '{_gap_id}' appears to be a DOM task "
+                "but missing deepening_lane field — add deepening_lane: dom"
+            )
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
@@ -730,7 +891,12 @@ def validate_file(
         "parent_id_warnings": parent_id_warnings,
         "contract_warnings": contract_warnings,
         "provenance_warnings": provenance_warnings,
+        "persistent_property_warnings": persistent_property_warnings,
         "scope_warnings": scope_warnings,
+        "git_crosscheck_warnings": git_crosscheck_warnings,
+        "mutation_guard_warnings": mutation_guard_warnings,
+        "schema_warnings": schema_warnings,
+        "dom_lane_warnings": dom_lane_warnings,
     }
 
 
@@ -810,10 +976,28 @@ def main(argv: list[str] | None = None) -> int:
         for w in prov_warns:
             print(f"  - {w}")
 
+    pp_warns = result.get("persistent_property_warnings", [])
+    if pp_warns:
+        print(f"\nPersistent-property roundtrip warnings ({len(pp_warns)}) [TC-FGSQ-008]:")
+        for w in pp_warns:
+            print(f"  - {w}")
+
     scope_warns = result.get("scope_warnings", [])
     if scope_warns:
         print(f"\nLane scope warnings ({len(scope_warns)}) [TC-LSG-007]:")
         for w in scope_warns:
+            print(f"  - {w}")
+
+    mg_warns = result.get("mutation_guard_warnings", [])
+    if mg_warns:
+        print(f"\nMutation guard warnings ({len(mg_warns)}) [TC-ACP-006]:")
+        for w in mg_warns:
+            print(f"  - {w}")
+
+    schema_warns = result.get("schema_warnings", [])
+    if schema_warns:
+        print(f"\nJSON Schema warnings ({len(schema_warns)}) [TC-P6-001]:")
+        for w in schema_warns:
             print(f"  - {w}")
 
     if result["passed"]:

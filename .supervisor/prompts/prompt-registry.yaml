@@ -379,6 +379,78 @@ operational_prompts:
     espanso_source_trigger: ":ffmgh:"
     espanso_gap_id: GAP-ESP-006
 
+  - id: ESP-PROMPT-9
+    name: product-deepening
+    file: .supervisor/prompts/product-deepening.md
+    description: "Two-lane product deepening — feature lane (/format-feature-expansion) and DOM lane (/select-deepening-lane)"
+    stage: product_deepening
+    mode: mutation
+    inputs:
+      - next-sprint.md or next-work-items.json
+      - .local/supervisor/continuation-signal.json
+    outputs:
+      - new/updated src/python/{format}/ files
+      - evidence declaration with per-format per-lane items
+    output_schema: null
+    successor_rules:
+      - condition: "sprint closed and check_continuation returns CONTINUE"
+        next: ESP-PROMPT-9
+    validation_rules:
+      - "MUST check EP-4 machinery readiness before product mutations"
+      - "MUST invoke a governed skill before editing src/"
+      - "MUST NOT declare stubs as completed work"
+    espanso_source_trigger: ":ff-two-lane-product-deepening"
+    espanso_gap_id: GAP-ESP-009
+
+  - id: ESP-PROMPT-10
+    name: format-readme-governance
+    file: .supervisor/prompts/format-readme-governance.md
+    description: "Per-format README forensic investigation and preservation-first enhancement"
+    stage: maintenance
+    mode: mutation
+    inputs:
+      - src/python/{format}/README.md
+      - src/python/{format}/__init__.py
+      - registry/format-registry.yaml
+    outputs:
+      - src/python/{format}/README.md (updated in-place)
+    output_schema: null
+    successor_rules:
+      - condition: "all counts verified and README updated"
+        next: null
+    validation_rules:
+      - "must read README before any mutation"
+      - "must not replace README from scratch"
+      - "must not commit without explicit user approval"
+    espanso_source_trigger: ":ff-format-readme-hardening"
+    espanso_gap_id: GAP-ESP-010
+
+  - id: ESP-PROMPT-11
+    name: analytics-migration
+    file: .supervisor/prompts/analytics-migration.md
+    description: "Governed 5-step protocol for extracting analytics functions from monolithic codec files"
+    stage: src_healing
+    mode: mutation
+    inputs:
+      - src/python/{format}/{format}_codec.py or main module
+      - docs/code-quality/production-library-standard-v2.md §8.1
+    outputs:
+      - src/python/{format}/{format}_analytics.py (new)
+      - updated __init__.py exports
+      - tests/{format}/test_{format}_analytics.py (new)
+    output_schema: null
+    successor_rules:
+      - condition: "GOV_BLOCK resolved and validators pass"
+        next: null
+    validation_rules:
+      - "MUST resolve GOV_BLOCK before marking done"
+      - "MUST run governance validators after migration"
+      - "must not increase baseline_loc_cap values"
+    espanso_source_trigger: ":ff-inventory-analytics"
+    espanso_gap_id: GAP-ESP-011
+
+# FROZEN: No new entries may be added to this section. Entries here are exempt from
+# front matter validation. Add new prompts to operational_prompts instead. (TC-P5-001-05)
 # Pre-existing prompts (for completeness)
 existing_prompts:
   - id: LEGACY-EVIDENCE-REVIEW

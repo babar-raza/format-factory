@@ -307,3 +307,96 @@ def test_gates_yes_signal_yes_continues(tmp_path):
     _setup_all(tmp_path, {"continuation_state": "YES_RESET_CLEAN"})
     result = check(tmp_path)
     assert result["verdict"] == "CONTINUE"
+
+
+# ── TC-SPW-003B: Check 2d — blocking gap gate ─────────────────────────
+
+def _write_gap_ledger(tmp_path, gaps: list) -> None:
+    """Write product-code-gap-ledger.yaml with the given gap list."""
+    import yaml
+    ledger_dir = tmp_path / "reports" / "product-quality"
+    ledger_dir.mkdir(parents=True, exist_ok=True)
+    (ledger_dir / "product-code-gap-ledger.yaml").write_text(
+        yaml.dump({"gaps": gaps}),
+        encoding="utf-8",
+    )
+
+
+def test_blocking_gap_stops_when_format_in_scope(tmp_path):
+    """Check 2d: BLOCKING+OPEN+confirmed gap for targeted format → STOP."""
+    _setup_all(tmp_path, {"format_targets": ["fods"]})
+    _write_gap_ledger(tmp_path, [{
+        "gap_id": "PCG-006",
+        "product": "fods",
+        "severity": "blocking",
+        "status": "OPEN",
+        "severity_confirmed": True,
+    }])
+    result = check(tmp_path)
+    assert result["verdict"] == "STOP"
+    assert result.get("reason") == "blocking_gap_unresolved"
+    assert "PCG-006" in result.get("blocking_gaps", [])
+
+
+def test_blocking_gap_passes_when_format_not_in_scope(tmp_path):
+    """Check 2d: BLOCKING gap for a format NOT in format_targets → CONTINUE."""
+    _setup_all(tmp_path, {"format_targets": ["fodt"]})  # fods gap, not fodt
+    _write_gap_ledger(tmp_path, [{
+        "gap_id": "PCG-006",
+        "product": "fods",
+        "severity": "blocking",
+        "status": "OPEN",
+        "severity_confirmed": True,
+    }])
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+
+def test_blocking_gap_passes_when_no_format_targets(tmp_path):
+    """Check 2d: No format_targets in signal → gap gate skips (non-blocking)."""
+    _setup_all(tmp_path)  # no format_targets
+    _write_gap_ledger(tmp_path, [{
+        "gap_id": "PCG-006",
+        "product": "fods",
+        "severity": "blocking",
+        "status": "OPEN",
+        "severity_confirmed": True,
+    }])
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+
+def test_open_but_unconfirmed_gap_does_not_stop(tmp_path):
+    """Check 2d: BLOCKING+OPEN but severity_confirmed=False → does NOT trigger stop."""
+    _setup_all(tmp_path, {"format_targets": ["fods"]})
+    _write_gap_ledger(tmp_path, [{
+        "gap_id": "PCG-NEW",
+        "product": "fods",
+        "severity": "blocking",
+        "status": "OPEN",
+        "severity_confirmed": False,  # not confirmed
+    }])
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+
+def test_closed_blocking_gap_does_not_stop(tmp_path):
+    """Check 2d: BLOCKING but CLOSED gap → does NOT trigger stop."""
+    _setup_all(tmp_path, {"format_targets": ["fods"]})
+    _write_gap_ledger(tmp_path, [{
+        "gap_id": "PCG-OLD",
+        "product": "fods",
+        "severity": "blocking",
+        "status": "CLOSED",
+        "severity_confirmed": True,
+    }])
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+
+def test_no_gap_ledger_does_not_stop(tmp_path):
+    """Check 2d: No product-code-gap-ledger.yaml → non-blocking, CONTINUE."""
+    _setup_all(tmp_path, {"format_targets": ["fods"]})
+    # Deliberately do NOT write a gap ledger
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"

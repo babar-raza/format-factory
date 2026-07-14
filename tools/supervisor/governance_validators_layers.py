@@ -1,20 +1,24 @@
-"""governance_validators_layers.py — Layer control plane governance validators V83-V86.
+"""governance_validators_layers.py — Layer control plane governance validators V83-V86, V88.
 
 Extracted as a standalone module to keep governance_validators.py within its LOC cap.
 These validators enforce the plans/layers/ permanent control plane contracts.
-All are WARN-level (never FAIL) during the bootstrap phase to avoid blocking
+V83-V86 are WARN-level (never FAIL) during the bootstrap phase to avoid blocking
 existing sprints while the control plane is being established.
+V88 is FAIL-level, called only from write_plan_lock.py --terminal.
 
 V83: validate_primary_layer_classified — PRODUCT_SOURCE items should include primary_layer_id
 V84: validate_permanent_layer_plan_exists — if primary_layer_id present, layer file must exist
 V85: validate_prework_log_present — PRODUCT_SOURCE items should have a work_log_id in evidence
 V86: validate_layer_task_registered — sprint task_id should appear in task-register.yaml
+V88: validate_required_layers_at_terminal — FAIL if required_permanent_layers absent at terminal
 
 Created: TC-LP-024 (2026-06-26)
+V88 added: TC-LHEAL-002 (glittery-splashing-manatee, 2026-07-13)
 """
 from __future__ import annotations
 from governance_validators_contract import validator  # noqa: F401
 
+import re as _re
 from pathlib import Path
 
 # Canonical repo root (two parents up from tools/supervisor/)
@@ -263,3 +267,83 @@ def validate_layer_task_registered(
         "summary": "V86: All TC-* task IDs are registered in task-register.yaml",
         "blocks_sprint": False,
     }
+
+
+def _extract_plan_header(text: str) -> "dict | None":
+    """Extract and parse the first ```yaml ... ``` metadata block from plan text.
+
+    Returns the parsed dict, or None if no parseable block is found.
+    """
+    match = _re.search(r"```ya?ml\s*\n(.*?)```", text, _re.DOTALL | _re.IGNORECASE)
+    if not match:
+        return None
+    try:
+        import yaml as _yaml  # noqa: PLC0415
+        return _yaml.safe_load(match.group(1)) or {}
+    except Exception:
+        return None
+
+
+def validate_required_layers_at_terminal(plan_path: str, repo_root: "Path | None" = None) -> dict:
+    """V88 (TC-LHEAL-002): FAIL if required_permanent_layers are absent at terminal closeout.
+
+    Called ONLY from write_plan_lock.py --terminal. NOT called during sprint validation.
+
+    Triggers on either:
+      1. Plan header has ``required_permanent_layers: [L-XX, ...]``
+      2. Plan header has ``plan_type: product_certification`` (infers [L28])
+
+    Returns:
+      {"result": "PASS"} — no declared obligations, or all layers present
+      {"result": "SKIP"} — plan file unreadable or no metadata block
+      {"result": "FAIL", "missing_layers": [...], "fix_command": ..., "hint": ...}
+    """
+    _r = repo_root or _DEFAULT_REPO_ROOT
+    try:
+        plan_text = Path(plan_path).read_text(encoding="utf-8", errors="replace")
+    except Exception as exc:
+        return {"result": "SKIP", "reason": f"plan_unreadable: {exc}"}
+
+    header = _extract_plan_header(plan_text[:4000])
+    if not header:
+        return {"result": "SKIP", "reason": "no_parseable_yaml_header"}
+
+    required = list(header.get("required_permanent_layers") or [])
+    plan_type = str(header.get("plan_type", ""))
+
+    if not required and plan_type == "product_certification":
+        required = ["L28"]
+
+    if not required:
+        return {"result": "PASS", "reason": "no_obligations_declared"}
+
+    index_path = _r / "plans" / "layers" / "index.yaml"
+    if not index_path.exists():
+        return {
+            "result": "FAIL",
+            "missing_layers": required,
+            "fix_command": "python tools/supervisor/layer_promotion.py create --help",
+            "hint": "plans/layers/index.yaml not found — run layer_promotion.py to create layers",
+        }
+
+    try:
+        import yaml as _yaml  # noqa: PLC0415
+        index_data = _yaml.safe_load(index_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return {"result": "SKIP", "reason": f"index_yaml_unreadable: {exc}"}
+
+    registered = {e.get("layer_id", "") for e in index_data.get("layers", []) if isinstance(e, dict)}
+    missing = [lid for lid in required if lid not in registered]
+
+    if missing:
+        return {
+            "result": "FAIL",
+            "missing_layers": missing,
+            "fix_command": f"python tools/supervisor/layer_promotion.py create --help",
+            "hint": (
+                f"Create the required layer(s) {missing}, then retry: "
+                f"python tools/supervisor/write_plan_lock.py --plan-path ... --terminal"
+            ),
+        }
+
+    return {"result": "PASS", "layers_verified": required}

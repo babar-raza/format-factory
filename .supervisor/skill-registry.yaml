@@ -51,6 +51,32 @@ missing_skill_workflow:
   version: '1.0'
 registry_id: r98-governed-skills-expanded
 registry_status: active_fail_closed
+skill_agent_surface_schema:
+  # TC-ACP-002 (FF-AGENTS-PARITY-001, 2026-07-12): agent surface opt-in fields.
+  # These are OPTIONAL top-level fields on any skill entry.
+  # If absent, the surface defaults to false (opt-in, not opt-out).
+  codex_supported:
+    type: boolean
+    default: false
+    description: >
+      Set to true only if this skill has been verified to work correctly when invoked
+      via a Codex-family agent (e.g., via codex CLI or OpenAI Codex API).
+      Default false — most skills are claude-code-only until explicitly verified.
+    classification_rule: >
+      TC-ACP-008-03: A skill gets codex_supported: true if ALL conditions hold:
+      (1) command file does not reference VSCode plan-mode mechanics (EnterPlanMode tool),
+      (2) command file does not require the Skill tool to invoke sub-skills,
+      (3) skill is not in blocked_capabilities from codex-bundle.yaml (i.e., RC-016/RC-017),
+      (4) skill operations can be performed via file-read + script-execution only.
+      Per-skill classification is DEFERRED_PENDING_CODEX_INSTANTIATION (2026-07-13).
+      Codex has not been instantiated; parity claims are COMPLETE_UNVERIFIED until live run.
+  kilo_supported:
+    type: boolean
+    default: false
+    description: >
+      Set to true only if this skill has been verified to work correctly when invoked
+      via Kilo (or equivalent custom agent platform).
+      Default false — Kilo has no KILO.md or skill dispatch mechanism as of 2026-07-12.
 skills:
 - command: /add-analytics-function
   command_file: .claude/commands/add-analytics-function.md
@@ -214,6 +240,11 @@ skills:
   - adding a public API whose only consumer is a test
   - using TODO implement later as sole method body
   pre_execution_checklist:
+    design_artifact_required:
+      required: true
+      description: Write .local/design-artifacts/{taskcard_id}.yaml BEFORE ANY .cs changes.
+        V153 validates this artifact. Missing artifact blocks sprint.
+      reject_if_missing: true
     spec_fact_ids:
       required: true
       description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
@@ -269,6 +300,12 @@ skills:
     taskcard_id:
       required: true
       description: TC-ARC-* or equivalent taskcard owning this change
+  forbidden_patterns:
+  - touching src/net/ without a valid design artifact at .local/design-artifacts/{taskcard_id}.yaml
+  - implementing a method that returns a constant (0, false, empty) as sole body
+  - creating a private dictionary field to back a persistent document property
+  - adding a public API whose only consumer is a test
+  - using TODO implement later as sole method body
 - command: /add-dotnet-object-model-feature
   command_file: .claude/commands/add-dotnet-object-model-feature.md
   idempotency: create_or_update
@@ -293,6 +330,11 @@ skills:
   test_paths: []
   advisory_only: true
   pre_execution_checklist:
+    design_artifact_required:
+      required: true
+      description: Write .local/design-artifacts/{taskcard_id}.yaml BEFORE ANY .cs changes.
+        V153 validates this artifact. Missing artifact blocks sprint.
+      reject_if_missing: true
     spec_fact_ids:
       required: true
       description: Non-empty list of FACT-{FORMAT}-* IDs from sal-facts-latest.json
@@ -346,6 +388,11 @@ skills:
     taskcard_id:
       required: true
       description: TC-ARC-* or equivalent taskcard owning this change
+  forbidden_patterns:
+  - touching src/net/ without a valid design artifact at .local/design-artifacts/{taskcard_id}.yaml
+  - implementing a method that returns a constant (0, false, empty) as sole body
+  - creating a private dictionary field to back a persistent document property
+  - using TODO implement later as sole method body
 - command: /add-installed-package-example
   command_file: .claude/commands/add-installed-package-example.md
   idempotency: create_or_update
@@ -1734,6 +1781,164 @@ skills:
   - all_contracts_evaluated
   required_handoff_fields:
   - skill_id
+- command: /run-lifecycle-audit
+  command_file: .claude/commands/run-lifecycle-audit.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/lifecycle_audit.py
+  mandatory_validations:
+  - results_written
+  - verdict_readable
+  product_track: governance
+  purpose: 'Run the post-completion lifecycle audit for machinery/lifecycle_hardening
+    plans. Required before writing --terminal to the plan lock (CLAUDE.md §Step 0).
+
+    '
+  required_handoff_fields:
+  - mission_id
+  - sprint_id
+  skill_id: run-lifecycle-audit
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  version: '1.0'
+  created_by: TC-SGOV-W4-002
+  created_at: '2026-07-11'
+  ad_hoc_remediation: true
+  source_script: tools/supervisor/lifecycle_audit.py
+- command: /validate-evidence-declaration
+  command_file: .claude/commands/validate-evidence-declaration.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/sprint_executor_validate.py
+  mandatory_validations:
+  - declaration_exists
+  - exit_code_0
+  product_track: governance
+  purpose: 'Validate an evidence declaration YAML before autonomous-cycle submission
+    (CLAUDE.md §Sprint Closeout step 1b). --repair auto-corrects common issues.
+
+    '
+  required_handoff_fields:
+  - declaration_path
+  skill_id: validate-evidence-declaration
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/supervisor/test_sprint_executor_validate.py
+  version: '1.0'
+  created_by: TC-SGOV-W4-002
+  created_at: '2026-07-11'
+  ad_hoc_remediation: true
+  source_script: tools/supervisor/sprint_executor_validate.py
+- command: /build-supervisor-packet
+  command_file: .claude/commands/build-supervisor-packet.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/generate_supervisor_packet.py
+  mandatory_validations:
+  - declaration_readable
+  - reports_written
+  product_track: governance
+  purpose: 'Generate supervisor review artifacts from an evidence declaration. Produces
+    reports/supervisor/ files (next-sprint.md, evidence-review.json, etc.).
+
+    '
+  required_handoff_fields:
+  - declaration_path
+  skill_id: build-supervisor-packet
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  version: '1.0'
+  created_by: TC-SGOV-W4-002
+  created_at: '2026-07-11'
+  ad_hoc_remediation: true
+  source_script: tools/supervisor/generate_supervisor_packet.py
+- command: /run-governance-validators
+  command_file: .claude/commands/run-governance-validators.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/governance_validator_runner.py
+  mandatory_validations:
+  - declaration_readable
+  - all_validators_ran
+  product_track: governance
+  purpose: 'Run all 170 registered governance validators against an evidence declaration.
+    Returns composite pass/warn/fail counts and blocks_sprint flag.
+
+    '
+  required_handoff_fields:
+  - declaration_path
+  skill_id: run-governance-validators
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/supervisor/test_governance_validators.py
+  version: '1.0'
+  created_by: TC-SGOV-W4-002
+  created_at: '2026-07-11'
+  ad_hoc_remediation: true
+  source_script: tools/supervisor/governance_validator_runner.py
+- command: /reset-track-signal
+  command_file: .claude/commands/reset-track-signal.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/reset_track_signal.py
+  mandatory_validations:
+  - track_valid
+  - signal_written
+  product_track: governance
+  purpose: 'Reset the continuation signal for a given track (product/governance/machinery)
+    for cross-session recovery (CCI-MVP, CLAUDE.md §Cross-Chat Continuation Isolation).
+
+    '
+  required_handoff_fields:
+  - track
+  skill_id: reset-track-signal
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  version: '1.0'
+  created_by: TC-SGOV-W4-002
+  created_at: '2026-07-11'
+  ad_hoc_remediation: true
+  source_script: tools/supervisor/reset_track_signal.py
+- command: /validate-missing-skill-workflow
+  command_file: .claude/commands/validate-missing-skill-workflow.md
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - capability_described
+  - candidates_evaluated
+  - rejection_reasons_documented
+  - decision_is_valid
+  - create_only_when_justified
+  product_track: governance
+  purpose: 'Execute the missing-skill discovery and resolution workflow (skill-only-policy.yaml
+    §3-§5). Evaluates all candidates in skill_resolution_order and produces a REUSE
+    | COMPOSE | REPAIR | EXTEND | CREATE decision with documented rejection reasons.
+    Required before any CREATE_MISSING_MICRO_SKILL action.
+
+    '
+  required_handoff_fields:
+  - capability_description
+  - operation_type
+  - search_results
+  - rejection_reasons
+  skill_id: validate-missing-skill-workflow
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  version: '1.0'
+  created_by: TC-SGOV-W4-001
+  created_at: '2026-07-11'
+  notes: 'Resolves the UNREGISTERED finding from validate_plan_skill_routes.py run
+    on imperative-floating-book.md (ET-W4-001 batch A). Closes the gap identified
+    by validate_plan_skill_routes.py where TC-SGOV-W4-001 referenced this skill before
+    it was registered.
+
+    '
 - command: /validate-skill-transcript
   command_file: .claude/commands/validate-skill-transcript.md
   idempotency: not_applicable
@@ -2002,6 +2207,113 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /calculate-oracle-coverage
+  command_file: .claude/commands/calculate-oracle-coverage.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/oracle/execute_oracle.py
+  - oracle/formats/
+  - oracle/registry/format-oracle-registry.yaml
+  mandatory_validations:
+  - coverage_report_exists
+  - all_registered_formats_covered
+  notes: Created TC-W1A-001 (2026-07-11). Generates per-format oracle coverage report
+    to oracle/reports/oracle-coverage-report.json showing pass/fail/skip per format.
+  product_track: oracle_execution
+  purpose: Generate per-format oracle coverage report. Reads all registered oracle
+    packages, runs verdict tallies, writes oracle/reports/oracle-coverage-report.json.
+  required_handoff_fields:
+  - coverage_report_path
+  sal_aware: false
+  skill_id: calculate-oracle-coverage
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /detect-stale-oracles
+  command_file: .claude/commands/detect-stale-oracles.md
+  idempotency: idempotent
+  implementation_paths:
+  - oracle/formats/
+  - oracle/registry/format-oracle-registry.yaml
+  mandatory_validations:
+  - stale_report_exists
+  notes: Created TC-W1A-001 (2026-07-11). Detects stale oracle packages by hashing
+    corpus files and comparing against stored input_hash values in oracle packages.
+  product_track: oracle_execution
+  purpose: Detect stale oracle packages by hashing corpus sample files vs stored input_hash
+    values. Emits oracle/reports/stale-oracle-report.json.
+  required_handoff_fields:
+  - stale_report_path
+  sal_aware: false
+  skill_id: detect-stale-oracles
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /onboard-future-format-oracle
+  command_file: .claude/commands/onboard-future-format-oracle.md
+  idempotency: create_or_update
+  implementation_paths:
+  - oracle/formats/
+  - oracle/registry/format-oracle-registry.yaml
+  - tools/oracle/execute_oracle.py
+  mandatory_validations:
+  - oracle_package_valid
+  - executor_registered
+  notes: Created TC-W1A-001 (2026-07-11). Scaffolds the minimum oracle obligation
+    for a newly registered format (oracle-package.yaml + executor stub).
+  product_track: oracle_execution
+  purpose: Scaffold minimum oracle obligation for a newly registered format. Creates
+    oracle/formats/<format_id>/oracle-package.yaml and registers an executor stub
+    in tools/oracle/execute_oracle.py.
+  required_handoff_fields:
+  - format_id
+  sal_aware: false
+  skill_id: onboard-future-format-oracle
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /generate-oracle-verdict-report
+  command_file: .claude/commands/generate-oracle-verdict-report.md
+  idempotency: idempotent
+  implementation_paths:
+  - oracle/formats/
+  - oracle/reports/
+  mandatory_validations:
+  - verdict_report_exists
+  - all_formats_present
+  notes: Created TC-W1A-001 (2026-07-11). Aggregates all oracle verdict summaries
+    into oracle/reports/portfolio-regression-report.json.
+  product_track: oracle_execution
+  purpose: Aggregate all per-format oracle verdict summaries from oracle-run-summary.json
+    files into a unified portfolio-regression-report.json for governance reporting.
+  required_handoff_fields:
+  - verdict_report_path
+  sal_aware: false
+  skill_id: generate-oracle-verdict-report
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /evaluate-roundtrip-oracle
+  command_file: .claude/commands/evaluate-roundtrip-oracle.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/oracle/execute_oracle.py
+  - oracle/formats/
+  mandatory_validations:
+  - roundtrip_cases_pass
+  - no_data_loss
+  notes: Created TC-W1A-001 (2026-07-11). Executes roundtrip oracle cases (write then
+    read, compare) for a given format and profile.
+  product_track: oracle_execution
+  purpose: Execute roundtrip oracle cases for a given format and profile. Write a
+    document, read it back, compare values. Emits PASS/FAIL verdicts with diff detail.
+  required_handoff_fields:
+  - format_id
+  sal_aware: false
+  skill_id: evaluate-roundtrip-oracle
+  spec_qname_required: false
+  status: active
+  test_paths: []
 - command: /identify-primary-layer
   command_file: .claude/commands/identify-primary-layer.md
   idempotency: idempotent
@@ -2027,13 +2339,16 @@ skills:
   command_file: .claude/commands/create-permanent-layer-plan.md
   idempotency: create_or_update
   implementation_paths:
+  - tools/supervisor/layer_promotion.py
   - plans/layers/
   mandatory_validations:
   - no_duplicate_layer_id
   - file_written
   - index_updated
-  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Bootstraps
-    a new layer file using the 39-section template.
+  notes: "Created TC-LP-023 (2026-06-26). TC-LHEAL-006 (2026-07-13): added layer_promotion.py
+    as primary implementation covering all 7 registries. Production use: python
+    tools/supervisor/layer_promotion.py create --request <file>. The .claude/commands/ prompt
+    is a manual fallback covering only 3 registries."
   product_track: layer_governance
   purpose: Bootstrap a new layer plan file in plans/layers/ using the 39-section template.
     Registers the new layer in index.yaml and change-ledger.jsonl.
@@ -2728,6 +3043,74 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+- command: /certification-ci-gate
+  command_file: .claude/commands/certification-ci-gate.md
+  created_at: '2026-07-13'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/certification/ci_certification_gate.py
+  mandatory_validations:
+  - certification_baseline_exists
+  output_paths: []
+  product_track: governance
+  purpose: Run the CI certification gate — verifies no regression against locked baseline thresholds.
+  required_handoff_fields: []
+  skill_id: certification-ci-gate
+  status: active
+  test_paths:
+  - tests/certification/test_tool_detection.py
+  version: '1.0'
+- command: /certification-cross-language-parity
+  command_file: .claude/commands/certification-cross-language-parity.md
+  created_at: '2026-07-13'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/certification/cross_language_parity_checker.py
+  mandatory_validations:
+  - parity_report_valid
+  output_paths: []
+  product_track: governance
+  purpose: Check cross-language (Python/dotnet) parity for a certified format.
+  required_handoff_fields:
+  - format_id
+  skill_id: certification-cross-language-parity
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /certification-mutation-tester
+  command_file: .claude/commands/certification-mutation-tester.md
+  created_at: '2026-07-13'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/certification/mutation_tester.py
+  mandatory_validations:
+  - mutation_report_valid
+  output_paths: []
+  product_track: governance
+  purpose: Run mutation testing for a format and produce kill-rate report.
+  required_handoff_fields:
+  - format_id
+  skill_id: certification-mutation-tester
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /certification-performance-benchmark
+  command_file: .claude/commands/certification-performance-benchmark.md
+  created_at: '2026-07-13'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/certification/performance_benchmark.py
+  mandatory_validations:
+  - benchmark_report_valid
+  output_paths: []
+  product_track: governance
+  purpose: Run performance benchmarks for a format and produce baseline report.
+  required_handoff_fields:
+  - format_id
+  skill_id: certification-performance-benchmark
+  status: active
+  test_paths: []
+  version: '1.0'
 - command: /select-deepening-lane
   command_file: .claude/commands/select-deepening-lane.md
   created_at: '2026-06-28'
@@ -2813,6 +3196,33 @@ skills:
   mandatory_validations:
   - control_index_available
   - query_results_produced
+- command: /allocate-sprint-number
+  command_file: .claude/commands/allocate-sprint-number.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/sprint_number_allocator.py
+  - .local/supervisor/sprint-ledger.json
+  - .local/supervisor/sprint-receipts/
+  mandatory_validations:
+  - ledger_written_atomically
+  - receipt_written_on_allocation
+  - no_stale_tmp_file
+  - idempotent_on_repeat_alias
+  notes: 'Registered TC-SRB-021 (splendid-roaming-beaver, 2026-07-12). Atomic sprint
+    number allocator using os.replace() — Windows-safe, no fcntl/filelock needed.
+    Module-level threading.Lock() provides intra-process thread safety. Ledger bootstrap:
+    840 historical sprints before ledger creation.'
+  product_track: infrastructure
+  purpose: Allocate a strictly monotonic, idempotent sprint number for a given semantic
+    alias. Returns SPRINT-NNNNN identifier with receipt. Safe for concurrent use within
+    one process via threading.Lock(). Crash-resistant via os.replace() atomic rename.
+  required_handoff_fields:
+  - semantic_alias
+  - mission_id
+  skill_id: allocate-sprint-number
+  status: active
+  test_paths:
+  - tests/supervisor/test_sprint_number_allocator.py
 - command: /validate-playbook
   command_file: .claude/commands/validate-playbook.md
   idempotency: idempotent
@@ -3042,6 +3452,146 @@ skills:
   - no taskcard for discovered issue
   - test deleted without behavior analysis
   idempotency: create_or_update
+- command: /discover-existing-control-layers
+  command_file: .claude/commands/discover-existing-control-layers.md
+  skill_id: discover-existing-control-layers
+  status: active
+  product_track: infrastructure
+  purpose: Scan the repository codebase to identify and document all existing control
+    layers into reports/control-layer/existing-control-layers.yaml.
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/supervisor/control_index/
+  - reports/control-layer/existing-control-layers.yaml
+  mandatory_validations:
+  - yaml_parses_correctly
+  required_handoff_fields:
+  - output_path
+- command: /inventory-existing-control-features
+  command_file: .claude/commands/inventory-existing-control-features.md
+  skill_id: inventory-existing-control-features
+  status: active
+  product_track: infrastructure
+  purpose: Build existing-control-features.yaml by surveying observable behaviors
+    of all identified control layers.
+  idempotency: create_or_update
+  implementation_paths:
+  - reports/control-layer/existing-control-features.yaml
+  mandatory_validations:
+  - yaml_parses_correctly
+  required_handoff_fields:
+  - output_path
+- command: /verify-control-feature-parity
+  command_file: .claude/commands/verify-control-feature-parity.md
+  skill_id: verify-control-feature-parity
+  status: active
+  product_track: infrastructure
+  purpose: Produce feature-parity-register.yaml assigning disposition to each control
+    feature for the enhanced control layer.
+  idempotency: create_or_update
+  implementation_paths:
+  - reports/control-layer/feature-parity-register.yaml
+  mandatory_validations:
+  - yaml_parses_correctly
+  - valid_existing_features_lost_equals_zero
+  required_handoff_fields:
+  - output_path
+- command: /build-task-context
+  command_file: .claude/commands/build-task-context.md
+  skill_id: build-task-context
+  status: active
+  product_track: infrastructure
+  purpose: Generate a machine-readable task context dict (plan, sprint evidence, gaps,
+    trust warnings) for a given TC-* task ID.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/views.py
+  mandatory_validations: []
+  required_handoff_fields:
+  - task_id
+- command: /build-resume-context
+  command_file: .claude/commands/build-resume-context.md
+  skill_id: build-resume-context
+  status: active
+  product_track: infrastructure
+  purpose: Generate resume context (latest sprint, active plan, contradictions, trust
+    warnings) for session start.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/views.py
+  mandatory_validations: []
+  required_handoff_fields: []
+- command: /build-product-context
+  command_file: .claude/commands/build-product-context.md
+  skill_id: build-product-context
+  status: active
+  product_track: infrastructure
+  purpose: Generate product context (format info, open gaps, recent sprints, trust
+    warnings) for a given format_id.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/views.py
+  mandatory_validations: []
+  required_handoff_fields:
+  - format_id
+- command: /rebuild-operational-index
+  command_file: .claude/commands/rebuild-operational-index.md
+  skill_id: rebuild-operational-index
+  status: active
+  product_track: infrastructure
+  purpose: Rebuild the control-index.db from scratch (all 18 ingestors) and report
+    sync results.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/
+  mandatory_validations:
+  - sync_errors_zero
+  required_handoff_fields: []
+- command: /validate-operational-index
+  command_file: .claude/commands/validate-operational-index.md
+  skill_id: validate-operational-index
+  status: active
+  product_track: infrastructure
+  purpose: Validate all control layer source YAMLs with upstream_validator before
+    sync. Reports quarantine candidates.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/upstream_validator.py
+  mandatory_validations:
+  - yaml_parses_correctly
+  required_handoff_fields: []
+- command: /quarantine-invalid-artifact
+  command_file: .claude/commands/quarantine-invalid-artifact.md
+  skill_id: quarantine-invalid-artifact
+  status: active
+  product_track: infrastructure
+  purpose: Mark an artifact as quarantined in control-index.db quarantines table after
+    validation failure.
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/supervisor/control_index/upstream_validator.py
+  mandatory_validations:
+  - artifact_path_exists_or_documented
+  required_handoff_fields:
+  - artifact_path
+  - severity
+  - validation_failures
+- command: /audit-enhanced-control-layer
+  command_file: .claude/commands/audit-enhanced-control-layer.md
+  skill_id: audit-enhanced-control-layer
+  status: active
+  product_track: infrastructure
+  purpose: Run a full audit of the enhanced control layer (control-index.db + parity
+    + validators) and produce an audit report.
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/control_index/
+  - tools/supervisor/governance_validators_control_layer.py
+  mandatory_validations:
+  - yaml_parses_correctly
+  required_handoff_fields: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated
+normalized_at: '2026-07-12T18:34:49.876606+00:00'
+normalized_by: SKILL-FIRST-003

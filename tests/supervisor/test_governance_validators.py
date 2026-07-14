@@ -3022,8 +3022,8 @@ class TestV92PlaybookRegistryEntries:
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
 
-    def test_warn_missing_file(self, tmp_path):
-        """WARN when an ACTIVE entry points to a missing file."""
+    def test_fail_blocks_when_file_missing(self, tmp_path):
+        """FAIL+blocks_sprint=True when an ACTIVE entry points to a missing file (TC-PBHP-005b)."""
         _write_minimal_registry(tmp_path, [
             {
                 "playbook_id": "ghost-playbook",
@@ -3033,10 +3033,13 @@ class TestV92PlaybookRegistryEntries:
         ])
         validator = self._get_validator()
         result = validator({}, repo_root=tmp_path)
-        assert result["result"] == "WARN"
-        assert result["blocks_sprint"] is False
+        assert result["result"] == "FAIL", (
+            "V92 must FAIL (not WARN) when ACTIVE registry entry references nonexistent file"
+        )
+        assert result["blocks_sprint"] is True, "V92 must block sprint on broken reference"
         assert len(result["items"]) == 1
         assert "ghost-playbook" in result["items"][0]
+        assert "GOV_BLOCK" in result["summary"]
 
     def test_warn_registry_not_found(self, tmp_path):
         """WARN (not error) when playbook-registry.yaml is absent."""
@@ -3529,3 +3532,40 @@ class TestV149ValidateSourceStubs:
         result = validate_source_stubs({}, repo_root=tmp_path)
         assert result["result"] == "PASS"
         assert "not found" in result["summary"]
+
+
+# ---------------------------------------------------------------------------
+# TC-PBHP-005c: Validator count integrity
+# ---------------------------------------------------------------------------
+
+class TestValidatorCountIntegrity:
+    """TC-PBHP-005c: _EXPECTED_VALIDATOR_COUNT must match actual validators run."""
+
+    def test_expected_count_matches_actual(self):
+        """run_all_governance_validators ran+skipped must equal _EXPECTED_VALIDATOR_COUNT.
+
+        Catches count drift when validators are added/removed without updating the constant.
+        """
+        from pathlib import Path as _Path
+        import sys as _sys
+
+        supervisor_path = str(_Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor")
+        if supervisor_path not in _sys.path:
+            _sys.path.insert(0, supervisor_path)
+
+        from governance_validator_runner import (
+            run_all_governance_validators,
+            get_expected_validator_count,
+        )
+
+        result = run_all_governance_validators({}, repo_root=_Path(__file__).resolve().parent.parent.parent)
+        ran = result.get("ran_count", 0)
+        skipped = result.get("skipped_count", 0)
+        expected = get_expected_validator_count()
+
+        total = ran + skipped
+        assert total == expected, (
+            f"Validator count mismatch: expected {expected}, got ran={ran} + skipped={skipped} = {total}. "
+            f"Update _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py "
+            f"or fix imports that are silently failing."
+        )

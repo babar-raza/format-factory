@@ -240,8 +240,9 @@ commands:
   writes_product_source: false
 - command_id: sync-installed-packages
   created: '2026-07-04'
-  description: Audit and repair Python editable-install environment; detect stale module
-    dirs, remove them, create PTH files, capture consumer proof evidence for all 20 formats
+  description: Audit and repair Python editable-install environment; detect stale
+    module dirs, remove them, create PTH files, capture consumer proof evidence for
+    all 20 formats
   enforcement_type: soft
   file: .claude/commands/sync-installed-packages.md
   gate_criteria: []
@@ -968,6 +969,98 @@ commands:
 - command_file: .claude/commands/documentation-structure-migration.md
   command_id: documentation-structure-migration
   skill_id: documentation-structure-migration
+  status: active
+- command_file: .claude/commands/run-lifecycle-audit.md
+  command_id: run-lifecycle-audit
+  skill_id: run-lifecycle-audit
+  status: active
+- command_file: .claude/commands/validate-evidence-declaration.md
+  command_id: validate-evidence-declaration
+  skill_id: validate-evidence-declaration
+  status: active
+- command_file: .claude/commands/build-supervisor-packet.md
+  command_id: build-supervisor-packet
+  skill_id: build-supervisor-packet
+  status: active
+- command_file: .claude/commands/run-governance-validators.md
+  command_id: run-governance-validators
+  skill_id: run-governance-validators
+  status: active
+- command_file: .claude/commands/reset-track-signal.md
+  command_id: reset-track-signal
+  skill_id: reset-track-signal
+  status: active
+- command_file: .claude/commands/validate-missing-skill-workflow.md
+  command_id: validate-missing-skill-workflow
+  skill_id: validate-missing-skill-workflow
+  status: active
+- command_file: .claude/commands/calculate-oracle-coverage.md
+  command_id: calculate-oracle-coverage
+  skill_id: calculate-oracle-coverage
+  status: active
+- command_file: .claude/commands/detect-stale-oracles.md
+  command_id: detect-stale-oracles
+  skill_id: detect-stale-oracles
+  status: active
+- command_file: .claude/commands/onboard-future-format-oracle.md
+  command_id: onboard-future-format-oracle
+  skill_id: onboard-future-format-oracle
+  status: active
+- command_file: .claude/commands/generate-oracle-verdict-report.md
+  command_id: generate-oracle-verdict-report
+  skill_id: generate-oracle-verdict-report
+  status: active
+- command_file: .claude/commands/evaluate-roundtrip-oracle.md
+  command_id: evaluate-roundtrip-oracle
+  skill_id: evaluate-roundtrip-oracle
+  status: active
+- command_file: .claude/commands/allocate-sprint-number.md
+  command_id: allocate-sprint-number
+  skill_id: allocate-sprint-number
+  status: active
+- command_file: .claude/commands/found-issue-ownership.md
+  command_id: found-issue-ownership
+  skill_id: found-issue-ownership
+  status: active
+- command_file: .claude/commands/discover-existing-control-layers.md
+  command_id: discover-existing-control-layers
+  skill_id: discover-existing-control-layers
+  status: active
+- command_file: .claude/commands/inventory-existing-control-features.md
+  command_id: inventory-existing-control-features
+  skill_id: inventory-existing-control-features
+  status: active
+- command_file: .claude/commands/verify-control-feature-parity.md
+  command_id: verify-control-feature-parity
+  skill_id: verify-control-feature-parity
+  status: active
+- command_file: .claude/commands/build-task-context.md
+  command_id: build-task-context
+  skill_id: build-task-context
+  status: active
+- command_file: .claude/commands/build-resume-context.md
+  command_id: build-resume-context
+  skill_id: build-resume-context
+  status: active
+- command_file: .claude/commands/build-product-context.md
+  command_id: build-product-context
+  skill_id: build-product-context
+  status: active
+- command_file: .claude/commands/rebuild-operational-index.md
+  command_id: rebuild-operational-index
+  skill_id: rebuild-operational-index
+  status: active
+- command_file: .claude/commands/validate-operational-index.md
+  command_id: validate-operational-index
+  skill_id: validate-operational-index
+  status: active
+- command_file: .claude/commands/quarantine-invalid-artifact.md
+  command_id: quarantine-invalid-artifact
+  skill_id: quarantine-invalid-artifact
+  status: active
+- command_file: .claude/commands/audit-enhanced-control-layer.md
+  command_id: audit-enhanced-control-layer
+  skill_id: audit-enhanced-control-layer
   status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004

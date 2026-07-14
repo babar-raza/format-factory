@@ -38,6 +38,43 @@ _grader_reliability_available: bool | None = None  # None = not yet checked
 # Grade cache for LLM semantic verification results
 # Key: "{item_id}:{evidence_hash}" → cached verification result
 _GRADE_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grade-cache.json"
+_GRADER_SHADOW_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grader-shadow-cache.json"
+_GRADER_SHADOW_LOG_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grader-shadow-log.jsonl"
+
+
+def _grade_item_shadow(
+    item_id: str,
+    stable_grade: str,
+    shadow_provider: str,
+    sprint_id: str = "",
+) -> None:
+    """Log a shadow grading observation. Non-blocking — never raises."""
+    try:
+        import time as _time
+        from datetime import datetime, timezone
+        t0 = _time.monotonic()
+        # Shadow grading is a stub that logs an observation record.
+        # A full implementation would call a second LLM endpoint here.
+        shadow_grade = None
+        agreement = None
+        error = None
+        latency_ms = int((_time.monotonic() - t0) * 1000)
+        record = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "item_id": item_id,
+            "sprint_id": sprint_id,
+            "shadow_provider": shadow_provider,
+            "stable_grade": stable_grade,
+            "shadow_grade": shadow_grade,
+            "agreement": agreement,
+            "shadow_latency_ms": latency_ms,
+            "error": error,
+        }
+        _GRADER_SHADOW_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with _GRADER_SHADOW_LOG_PATH.open("a", encoding="utf-8") as fh:
+            fh.write(__import__("json").dumps(record) + "\n")
+    except Exception:
+        pass  # Non-blocking: shadow failure must never affect sprint verdict
 
 
 def _evidence_hash(item: dict, item_inspection: "dict | None" = None) -> str:
@@ -65,11 +102,13 @@ def _evidence_hash(item: dict, item_inspection: "dict | None" = None) -> str:
 
 
 def _get_cached_grade(item_id: str, ev_hash: str,
-                      cache_path: "Path | None" = None) -> "dict | None":
+                      cache_path: "Path | None" = None,
+                      max_age_minutes: "int | None" = None) -> "dict | None":
     """Return cached verification result or None on miss/error/TTL expiry.
 
     cache_path: override default cache path (for track-scoped caches, REQ-TRK-008).
-    Entries older than 7 days are treated as cache misses (TC-GRADE-001).
+    max_age_minutes: when set, use a minute-level TTL instead of the 7-day default.
+    Entries older than 7 days (or max_age_minutes) are treated as cache misses (TC-GRADE-001).
     """
     _path = cache_path if cache_path is not None else _GRADE_CACHE_PATH
     _MAX_CACHE_AGE_DAYS = 7
@@ -81,9 +120,15 @@ def _get_cached_grade(item_id: str, ev_hash: str,
         cached_at = result.get("_cached_at", "")
         if cached_at:
             try:
-                age = (datetime.now(timezone.utc) - datetime.fromisoformat(cached_at)).days
-                if age > _MAX_CACHE_AGE_DAYS:
-                    return None  # TTL expired — treat as cache miss
+                ts = datetime.fromisoformat(cached_at)
+                if max_age_minutes is not None:
+                    age_seconds = (datetime.now(timezone.utc) - ts).total_seconds()
+                    if age_seconds > max_age_minutes * 60:
+                        return None  # short TTL expired
+                else:
+                    age = (datetime.now(timezone.utc) - ts).days
+                    if age > _MAX_CACHE_AGE_DAYS:
+                        return None  # TTL expired — treat as cache miss
             except Exception:
                 pass  # Malformed _cached_at — skip TTL check, return result
         return result
@@ -234,26 +279,61 @@ def _sv_llm_call(messages: list[dict], operation: str, item_id: str = "") -> str
         print(f"  [LLM] No gateway available for {operation}, skipping semantic verification")
         return None
     try:
-        print(f"  [LLM] gateway_chat attempt for {operation}...")
-        resp, _record = gw(
-            config=cfg,
-            model="recommended",
-            messages=messages,
-            role="evidence_review",
-            operation=operation,
+        from grader_reliability import (
+            RetryPolicy, GradingObserver, call_with_retry,
+            GraderRetryExhausted, GraderPermanentFailure,
         )
-        content = resp.get("content", "")
-        if content:
-            return content
-        # Gateway returned empty — may be litellm import failure; try direct SDK
-        if _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
-            print(f"  [LLM] gateway_chat failed for {operation}, trying SDK fallback...")
-            return _sv_sdk_fallback(messages, cfg, item_id=item_id)
-        print(f"  [LLM] gateway_chat returned empty for {operation}")
-        return None
-    except Exception as exc:
-        print(f"  [LLM] gateway_chat exception for {operation}: {type(exc).__name__}")
-        return None
+        _rel_ok = True
+    except ImportError:
+        try:
+            from tools.supervisor.grader_reliability import (
+                RetryPolicy, GradingObserver, call_with_retry,
+                GraderRetryExhausted, GraderPermanentFailure,
+            )
+            _rel_ok = True
+        except ImportError:
+            _rel_ok = False
+
+    def _do_gateway() -> str:
+        resp, _ = gw(config=cfg, model="recommended", messages=messages,
+                     role="evidence_review", operation=operation)
+        return resp.get("content", "")
+
+    content = ""
+    if _rel_ok:
+        _gw_policy = RetryPolicy(
+            max_attempts=2,
+            base_backoff=2.0,
+            jitter=True,
+            overall_deadline=45.0,
+            connect_timeout=10.0,
+            read_timeout=20.0,
+        )
+        _gw_observer = GradingObserver()
+        try:
+            content = call_with_retry(
+                _do_gateway,
+                policy=_gw_policy,
+                observer=_gw_observer,
+                item_id=item_id,
+                provider="gateway",
+                model="recommended",
+            )
+        except (GraderPermanentFailure, GraderRetryExhausted):
+            content = ""
+        except Exception:
+            content = ""
+    else:
+        try:
+            content = _do_gateway()
+        except Exception:
+            content = ""
+
+    if content:
+        return content
+    # Gateway failed or returned empty — fall through to SDK unconditionally
+    print(f"  [LLM] gateway_chat empty/failed for {operation}, trying SDK fallback...")
+    return _sv_sdk_fallback(messages, cfg, item_id=item_id)
 
 
 def _sv_sdk_fallback(messages: list[dict], cfg, item_id: str = "") -> str | None:
@@ -387,6 +467,13 @@ def semantic_verify_item(
     if cached is not None:
         return {**cached, "_from_cache": True}
 
+    # Failure sentinel check: if LLM failed recently, return cached failure for consistency
+    _fail_sentinel = _get_cached_grade(
+        f"fail:{item_id}", ev_hash, cache_path=cache_path, max_age_minutes=30
+    )
+    if _fail_sentinel is not None:
+        return {**_fail_sentinel, "_from_cache": True}
+
     item_title = declaration_item.get("title", declaration_item.get("item_id", ""))
     acceptance_criteria = str(declaration_item.get("acceptance_criteria", ""))[:300]
     evidence_paths = item_inspection.get("evidence_paths_found", [])
@@ -484,9 +571,18 @@ def semantic_verify_item(
                      cache_path=cache_path)
         return iv_result
     except Exception: pass  # noqa: E701
-    return {"adequate": False, "confidence": 0.0, "stub_detected": False,
-            "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
-            "source": "fallback_llm_unavailable", "note": "LLM unavailable; manual review"}
+    import random as _random
+    _FAILURE_TTL_MINUTES = 30
+    _jitter = _random.randint(0, 5)
+    _effective_ttl = _FAILURE_TTL_MINUTES + _jitter
+    _fail_result = {
+        "adequate": False, "confidence": 0.0, "stub_detected": False,
+        "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
+        "source": "fallback_llm_unavailable", "note": "LLM unavailable; manual review",
+        "_failure_cached": True, "_failure_ttl_minutes": _effective_ttl,
+    }
+    _cache_grade(f"fail:{item_id}", ev_hash, _fail_result, cache_path=cache_path)
+    return _fail_result
 
 
 EXTERNAL_GATE_KEYWORDS = {
@@ -719,7 +815,9 @@ def grade_item(item_inspection: dict, test_results: dict,
 
 
 def grade_all(inspection: dict, declaration: dict,
-              grade_cache_path: "Path | None" = None) -> dict:
+              grade_cache_path: "Path | None" = None,
+              shadow_provider: str = "",
+              sprint_id: str = "") -> dict:
     """Grade all items from inspection and declaration.
 
     grade_cache_path: optional track-scoped cache path (REQ-TRK-008).
@@ -788,6 +886,33 @@ def grade_all(inspection: dict, declaration: dict,
                     g["required_rework"] = _tl_result["reason"]
         else:
             g["test_layer_check"] = {"inadequate": False, "note": "non-product item, skip"}
+
+        # TC-SGOV-W3-003: _validate_skill_ids — WARN-only check for declared_skill_ids on
+        # PRODUCT_SOURCE items. Mirrors V-SGF-001 logic but at the grade level (not
+        # declaration level). Provides a per-item skill attribution signal in the grade.
+        if _pc_type in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            _declared = decl_item.get("declared_skill_ids")
+            if not _declared or (isinstance(_declared, list) and len(_declared) == 0):
+                g["skill_ids_check"] = {
+                    "verdict": "MISSING",
+                    "declared_skill_ids": _declared,
+                    "note": (
+                        "WARN: PRODUCT_SOURCE item has no declared_skill_ids. "
+                        "Skill attribution required per skill-only-policy.yaml §6. "
+                        "This is WARN-only until 2026-09-01 (V-SGF-001 enforcement cutoff)."
+                    ),
+                }
+            else:
+                g["skill_ids_check"] = {
+                    "verdict": "DECLARED",
+                    "declared_skill_ids": _declared if isinstance(_declared, list) else [_declared],
+                    "note": "",
+                }
+        else:
+            g["skill_ids_check"] = {
+                "verdict": "NOT_APPLICABLE",
+                "note": "skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items",
+            }
 
         grades.append(g)
 
@@ -905,6 +1030,16 @@ def grade_all(inspection: dict, declaration: dict,
     # C3 (TC-C3-001): DEFERRED_WITH_REASON items — not accepted, not rework, not rejected.
     # They require stronger evidence on resubmission. Autonomous continuation is not blocked.
     deferred = [g["item_id"] for g in grades if g["supervisor_grade"] == "DEFERRED_WITH_REASON"]
+
+    # TC-GRADER-001-02: Shadow grading observations (non-blocking, does not affect verdict)
+    if shadow_provider:
+        for g in grades:
+            _grade_item_shadow(
+                item_id=g["item_id"],
+                stable_grade=g["supervisor_grade"],
+                shadow_provider=shadow_provider,
+                sprint_id=sprint_id,
+            )
 
     critical_rework = len([g for g in grades if g["supervisor_grade"] in ("REJECTED", "OVERCLAIMED")])
     has_critical = critical_rework > 0 or test_results.get("failed", 0) > 0
@@ -1105,12 +1240,18 @@ def main() -> int:
     parser.add_argument("--inspection", type=Path, required=True, help="Path to inspection JSON")
     parser.add_argument("--declaration", type=Path, required=True, help="Path to evidence-declaration.yaml")
     parser.add_argument("--output-dir", type=Path, required=True, help="Output directory for grades")
+    parser.add_argument("--shadow-provider", type=str, default="",
+                        help="Shadow LLM endpoint ID for provider comparison grading")
+    parser.add_argument("--sprint-id", type=str, default="",
+                        help="Sprint ID for shadow log correlation")
     args = parser.parse_args()
 
     inspection = json.loads(args.inspection.read_text(encoding="utf-8"))
     declaration = yaml.safe_load(args.declaration.read_text(encoding="utf-8")) or {}
 
-    review = grade_all(inspection, declaration)
+    review = grade_all(inspection, declaration,
+                       shadow_provider=args.shadow_provider,
+                       sprint_id=args.sprint_id)
     review["declaration_path"] = str(args.declaration)
     write_outputs(review, args.output_dir)
 

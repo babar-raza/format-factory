@@ -116,41 +116,46 @@ def check_g2(format_id: str) -> dict:
     passed_cases = summary.get("results", {}).get("PASS", 0)
     depth = summary.get("format_depth_score", "D0")
 
-    # Fallback: when oracle cases are all SKIPPED (e.g. LibreOffice not available),
-    # accept a rich test suite (>= 10 test files) as equivalent evidence.
-    test_dir = REPO_ROOT / "tests" / "python" / format_id
-    test_count = len(list(test_dir.glob("test_*.py"))) if test_dir.exists() else 0
-    using_fallback = (passed_cases == 0) and (test_count >= 10)
-
+    # TC-OIS-005 / MCP-W5-001 Pillar 2: Removed test-suite fallback.
+    # G2 must be backed by real oracle verdicts. If passed_cases==0, G2 FAILS visibly.
+    # Visible failure is correct — it reveals a real gap rather than hiding it.
     results = []
-    if using_fallback:
-        results.append({
-            "check": "oracle_verdicts_exist",
-            "passed": True,
-            "detail": f"{passed_cases}/{total} oracle PASS (fallback: {test_count} test files)",
-        })
-        results.append({
-            "check": "oracle_depth_minimum_d1",
-            "passed": True,
-            "detail": f"depth={depth} (fallback: {test_count} test files in tests/python/{format_id}/ >= 10)",
-        })
-    else:
-        results.append({
-            "check": "oracle_verdicts_exist",
-            "passed": total > 0 and passed_cases > 0,
-            "detail": f"{passed_cases}/{total} PASS",
-        })
-        depth_ok = depth in ("D1", "D2", "D3")
-        results.append({
-            "check": "oracle_depth_minimum_d1",
-            "passed": depth_ok,
-            "detail": f"depth={depth}, required=D1+",
-        })
+    results.append({
+        "check": "oracle_verdicts_exist",
+        "passed": total > 0 and passed_cases > 0,
+        "detail": f"{passed_cases}/{total} PASS",
+    })
+    depth_ok = depth in ("D1", "D2", "D3")
+    results.append({
+        "check": "oracle_depth_minimum_d1",
+        "passed": depth_ok,
+        "detail": f"depth={depth}, required=D1+",
+    })
 
+    # TC-OIS-006 / MCP-W5-001 Pillar 3: Advisory staleness check (non-blocking).
+    stored_source_hash = summary.get("product_source_hash")
+    if stored_source_hash and stored_source_hash != "sha256:absent":
+        src_dir = REPO_ROOT / "src" / "python" / format_id
+        if src_dir.exists():
+            import hashlib as _hashlib
+            h = _hashlib.sha256()
+            for py_file in sorted(src_dir.glob("**/*.py")):
+                h.update(py_file.read_bytes())
+            current_hash = f"sha256:{h.hexdigest()}"
+            if current_hash != stored_source_hash:
+                results.append({
+                    "check": "oracle_evidence_fresh",
+                    "passed": False,  # Advisory only — does not affect gate.passed
+                    "detail": "Source hash changed since last oracle run — re-run oracle recommended",
+                })
+
+    # Gate passes based on required checks only; advisory checks (oracle_evidence_fresh)
+    # are included in checks for visibility but do NOT contribute to gate.passed.
+    required_checks = [r for r in results if r["check"] != "oracle_evidence_fresh"]
     return {
         "gate": "G2",
         "name": "Oracle Evidence",
-        "passed": all(r["passed"] for r in results),
+        "passed": all(r["passed"] for r in required_checks),
         "checks": results,
     }
 

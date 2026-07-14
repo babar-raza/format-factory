@@ -1,6 +1,10 @@
-"""Evidence ingestor: .local/evidences/*/evidence-declaration.yaml → sprints + sprint_work_items."""
+"""Evidence ingestor: .local/evidences/*/evidence-declaration.yaml → sprints + sprint_work_items.
+
+TC-OCRD-A1-05: Also ingests gap_attempts rows from planned_work_items with gap_ledger_ref set.
+"""
 
 import json
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
@@ -9,6 +13,7 @@ import yaml
 
 from . import BaseIngestor
 from ..sync import IngestResult, get_manifest_row, update_manifest, register_ingestor
+from ..gap_selection import classify_outcome as _classify_outcome
 
 
 @register_ingestor
@@ -98,7 +103,7 @@ class EvidenceIngestor(BaseIngestor):
             )
             result.inserted += 1
 
-            # Insert work items
+            # Insert work items; also write gap_attempts for items linked to a gap
             for item in rec.get("planned_work_items", []) or []:
                 if not isinstance(item, dict):
                     continue
@@ -118,6 +123,27 @@ class EvidenceIngestor(BaseIngestor):
                         item.get("gap_ledger_ref"),
                     ),
                 )
+                # TC-OCRD-A1-05: Record gap attempt when item references a gap
+                gap_ref = item.get("gap_ledger_ref")
+                if gap_ref:
+                    outcome = _classify_outcome(item.get("status"))
+                    attempt_id = f"{sprint_id}:{item_id}"
+                    self.conn.execute(
+                        """INSERT OR IGNORE INTO gap_attempts
+                           (attempt_id, gap_id, sprint_id, item_id, outcome,
+                            rework_reason, attempted_at, source_file)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                        (
+                            attempt_id,
+                            gap_ref,
+                            sprint_id,
+                            item_id,
+                            outcome,
+                            item.get("rework_reason"),
+                            _str(rec.get("start_time")) or now,
+                            rel_path,
+                        ),
+                    )
 
             try:
                 file_size = decl_path.stat().st_size

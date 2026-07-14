@@ -1,421 +1,365 @@
-# FODS Product Oracle Package — Format Factory
-# Format: Flat OpenDocument Spreadsheet (FODS)
-# Authority: ODF 1.3 (OASIS)
-# Oracle version: 1
-# Status: AUTHORITY_MAPPED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Pilot 2 (ODF Spreadsheet)
-#
-# NOTE: This is the PRODUCT CONFORMANCE oracle. It is separate from the
-# ACQUISITION oracle (tools/oracle/run_fods_oracle.py — LibreOffice Gate 6).
-# The acquisition oracle validates: "does our prototype agree with LibreOffice?"
-# This product oracle validates: "does our product implement the ODF 1.3 spec?"
-
 oracle_id: oracle-fods-v1
 format_id: fods
-format_version: "ODF 1.3"
+format_version: ODF 1.3
 oracle_version: 1
 family: cells
-generated_at: "2026-06-25"
+generated_at: '2026-06-25'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
-# ==============================================================================
-# RELATIONSHIP TO ACQUISITION ORACLE
-# ==============================================================================
 acquisition_oracle:
   tool: tools/oracle/run_fods_oracle.py
   gate: 6
   provider: LibreOffice
-  gate_status: PASSED  # 3/4 PASS, 1/4 WARN
+  gate_status: PASSED
   result_report: acquisition-packs/fods/gate6-oracle-comparison-report.md
-  relationship: >
-    The acquisition oracle (LibreOffice Gate 6) validated the prototype parser.
-    This product oracle validates the production product (src/python/fods/, src/net/fods/).
-    Both oracles coexist and serve different purposes. The product oracle does NOT
-    replace the acquisition oracle.
+  relationship: 'The acquisition oracle (LibreOffice Gate 6) validated the prototype
+    parser. This product oracle validates the production product (src/python/fods/,
+    src/net/fods/). Both oracles coexist and serve different purposes. The product
+    oracle does NOT replace the acquisition oracle.
 
+    '
 fuzz_oracle:
   tool: tools/fuzz/run_gate7_fuzz_test.py
   gate: 7
   fixture_dir: tests/fixtures/fods/malformed/
   fixture_count: 18
-  gate_status: PASSED  # 18/18 PASS, 0 crashes
-  relationship: >
-    The fuzz oracle (Gate 7) validates malformed FODS rejection by the prototype.
-    This product oracle's INVALID_INPUT_REJECTION cases extend this to the production product.
+  gate_status: PASSED
+  relationship: 'The fuzz oracle (Gate 7) validates malformed FODS rejection by the
+    prototype. This product oracle''s INVALID_INPUT_REJECTION cases extend this to
+    the production product.
 
-# ==============================================================================
-# AUTHORITY
-# ==============================================================================
+    '
 authority:
   specification_refs:
-    - id: ODF-1.3-PART3
-      title: "Open Document Format for Office Applications (ODF) v1.3 — Part 3: Schema"
-      body: OASIS
-      url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-      cached_at: ".local/spec-cache/fods/"
-      sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
-    - id: ODF-1.3-PART1
-      title: "ODF v1.3 Part 1: Introduction"
-      body: OASIS
-      authority_class: SPEC_NORMATIVE
+  - id: ODF-1.3-PART3
+    title: 'Open Document Format for Office Applications (ODF) v1.3 — Part 3: Schema'
+    body: OASIS
+    url: https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    cached_at: .local/spec-cache/fods/
+    sha256: sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066
+  - id: ODF-1.3-PART1
+    title: 'ODF v1.3 Part 1: Introduction'
+    body: OASIS
+    authority_class: SPEC_NORMATIVE
   authorized_fact_refs:
-    - "FACT-FODS-001"
-    - "FACT-FODS-002"
-    - "~4988 total FODS facts in SAL"
+  - FACT-FODS-001
+  - FACT-FODS-002
+  - ~4988 total FODS facts in SAL
   requirement_refs:
-    - "Generated requirements (Gate 5): 20 accepted requirements"
-    - "acquisition-packs/fods/parser-requirements.md"
+  - 'Generated requirements (Gate 5): 20 accepted requirements'
+  - acquisition-packs/fods/parser-requirements.md
   capability_refs: []
-  authority_summary: >
-    ODF 1.3 (OASIS) is normative with OASIS RF licensing (legal category 1).
-    The spec has been downloaded, cached, and hash-verified (Gate 2/Gate 5).
-    4988 structured facts extracted via SAL. 20 accepted parser requirements from Gate 5.
-    SAL fact reference: FACT-FODS-001 (flat XML structure), FACT-FODS-002 (table:table element).
+  authority_summary: 'ODF 1.3 (OASIS) is normative with OASIS RF licensing (legal
+    category 1). The spec has been downloaded, cached, and hash-verified (Gate 2/Gate
+    5). 4988 structured facts extracted via SAL. 20 accepted parser requirements from
+    Gate 5. SAL fact reference: FACT-FODS-001 (flat XML structure), FACT-FODS-002
+    (table:table element).
 
-# ==============================================================================
-# CORPUS REFERENCES
-# ==============================================================================
+    '
 corpus_refs:
-  - corpus_id: fods-minimal-01
-    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
-    sha256: "sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543"
-    license: Apache-2.0
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    provenance: "samples/_provenance.yaml: fods-minimal-01"
-    spec_basis: "ODF 1.3 §3.1.2, §3.7, §9.4"
-  - corpus_id: fods-multi-sheet-01
-    sample_ref: samples/by-format/fods/multi-sheet-basic.fods
-    sha256: "sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41"
-    license: Apache-2.0
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-  - corpus_id: fods-typed-values-01
-    sample_ref: samples/by-format/fods/typed-values-basic.fods
-    sha256: "sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977"
-    license: Apache-2.0
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    spec_basis: "ODF 1.3 §2.2.4, §9.4 — office:value-type"
-  - corpus_id: fods-formula-01
-    sample_ref: samples/by-format/fods/formula-basic.fods
-    sha256: "sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e"
-    license: Apache-2.0
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    spec_basis: "ODF 1.3 §9.4 — table:formula"
-
-# ==============================================================================
-# PROFILES
-# ==============================================================================
+- corpus_id: fods-minimal-01
+  sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+  sha256: sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  provenance: 'samples/_provenance.yaml: fods-minimal-01'
+  spec_basis: ODF 1.3 §3.1.2, §3.7, §9.4
+- corpus_id: fods-multi-sheet-01
+  sample_ref: samples/by-format/fods/multi-sheet-basic.fods
+  sha256: sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+- corpus_id: fods-typed-values-01
+  sample_ref: samples/by-format/fods/typed-values-basic.fods
+  sha256: sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  spec_basis: ODF 1.3 §2.2.4, §9.4 — office:value-type
+- corpus_id: fods-formula-01
+  sample_ref: samples/by-format/fods/formula-basic.fods
+  sha256: sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  spec_basis: ODF 1.3 §9.4 — table:formula
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- INVALID_INPUT_REJECTION
+- DOMAIN_MODEL_MAPPING
+- MUTATION_BEHAVIOR
+- SAME_FORMAT_SERIALIZATION
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- EXPORT_CONFORMANCE
+- ERROR_CONTRACT
+- PACKAGE_CONSUMER
+- INTEROPERABILITY
+- SECURITY_ROBUSTNESS
+profiles_not_applicable:
+- profile: LOSSLESS_TRANSFORMATION
+  reason: FODS is not a compression format
+valid_cases:
+- case_id: fods-valid-001
+  purpose: Minimal FODS — single sheet, single string cell
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - ODF 1.3 §3.1.2 — office:document root element
+  - ODF 1.3 §9.4 — table:table, table:table-row, table:table-cell
+  sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+  input_hash: sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: sheet_count
+    value: 1
+    data_source: parsed
+    authority: ODF 1.3 §9.1 — table:spreadsheet contains table:table elements
+  - property: cell_count
+    value: 1
+    data_source: parsed
+    authority: ODF 1.3 §9.4.2 — table:table-cell
+  - property: first_sheet_name
+    value: Sheet1
+    data_source: parsed
+    authority: ACCEPTED_EMPIRICAL — sheet naming not strictly spec-mandated
+    authority_class: ACCEPTED_EMPIRICAL
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
-  - INVALID_INPUT_REJECTION
   - DOMAIN_MODEL_MAPPING
-  - MUTATION_BEHAVIOR
-  - SAME_FORMAT_SERIALIZATION
-  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-  - EXPORT_CONFORMANCE
-  - ERROR_CONTRACT
-  - PACKAGE_CONSUMER
-  - INTEROPERABILITY
-  - SECURITY_ROBUSTNESS
-
-profiles_not_applicable:
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "FODS is not a compression format"
-
-# ==============================================================================
-# VALID CASES
-# ==============================================================================
-valid_cases:
-
-  - case_id: fods-valid-001
-    purpose: "Minimal FODS — single sheet, single string cell"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "ODF 1.3 §3.1.2 — office:document root element"
-      - "ODF 1.3 §9.4 — table:table, table:table-row, table:table-cell"
-    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
-    input_hash: "sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: sheet_count
-        value: 1
-        authority: "ODF 1.3 §9.1 — table:spreadsheet contains table:table elements"
-      - property: cell_count
-        value: 1
-        authority: "ODF 1.3 §9.4.2 — table:table-cell"
-      - property: first_sheet_name
-        value: "Sheet1"
-        authority: "ACCEPTED_EMPIRICAL — sheet naming not strictly spec-mandated"
-        authority_class: ACCEPTED_EMPIRICAL
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: fods-valid-002
-    purpose: "Multi-sheet FODS — 2 sheets, verifies table:table enumeration"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "ODF 1.3 §9.1 — office:spreadsheet contains multiple table:table elements"
-      - "ODF 1.3 §9.1.2 — table:name attribute on table:table"
-    sample_ref: samples/by-format/fods/multi-sheet-basic.fods
-    input_hash: "sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: sheet_count
-        value: 2
-        authority: "ODF 1.3 §9.1"
-    applicable_profiles:
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: fods-valid-003
-    purpose: "Typed values — float, string, boolean (office:value-type attribute)"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "ODF 1.3 §2.2.4 — office:value-type"
-      - "ODF 1.3 §9.4 — value-type values: string, float, boolean"
-    sample_ref: samples/by-format/fods/typed-values-basic.fods
-    input_hash: "sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: has_float_cell
-        value: true
-        authority: "ODF 1.3 §9.4.2 — office:value-type='float'"
-      - property: has_string_cell
-        value: true
-    applicable_profiles:
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: fods-valid-004
-    purpose: "Formula cell — table:formula attribute with cached result"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "ODF 1.3 §9.4 — table:formula attribute"
-      - "OpenFormula OASIS specification"
-    sample_ref: samples/by-format/fods/formula-basic.fods
-    input_hash: "sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: has_formula_cell
-        value: true
-        authority: "ODF 1.3 §9.4"
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: fods-valid-005
-    purpose: "spec_qname compliance — FodsDocument domain model class uses ODF canonical qname"
-    authority_class: PRODUCT_CONTRACT
-    authority_refs:
-      - "shared/qname-registry/fods.yaml — office:document qname (ODF canonical)"
-    sample_ref: null  # introspection test, no file
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: spec_qname
-        value: "office:document"
-        authority: "shared/qname-registry/fods.yaml"
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
-# ==============================================================================
-# INVALID CASES (from Gate 7 fuzz corpus — extends to product)
-# ==============================================================================
+- case_id: fods-valid-002
+  purpose: Multi-sheet FODS — 2 sheets, verifies table:table enumeration
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - ODF 1.3 §9.1 — office:spreadsheet contains multiple table:table elements
+  - ODF 1.3 §9.1.2 — table:name attribute on table:table
+  sample_ref: samples/by-format/fods/multi-sheet-basic.fods
+  input_hash: sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: sheet_count
+    value: 2
+    data_source: parsed
+    authority: ODF 1.3 §9.1
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: fods-valid-003
+  purpose: Typed values — float, string, boolean (office:value-type attribute)
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - ODF 1.3 §2.2.4 — office:value-type
+  - 'ODF 1.3 §9.4 — value-type values: string, float, boolean'
+  sample_ref: samples/by-format/fods/typed-values-basic.fods
+  input_hash: sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: has_float_cell
+    value: true
+    data_source: parsed
+    authority: ODF 1.3 §9.4.2 — office:value-type='float'
+  - property: has_string_cell
+    value: true
+    data_source: parsed
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: fods-valid-004
+  purpose: Formula cell — table:formula attribute with cached result
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - ODF 1.3 §9.4 — table:formula attribute
+  - OpenFormula OASIS specification
+  sample_ref: samples/by-format/fods/formula-basic.fods
+  input_hash: sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: has_formula_cell
+    value: true
+    data_source: parsed
+    authority: ODF 1.3 §9.4
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: fods-valid-005
+  purpose: spec_qname compliance — FodsDocument domain model class uses ODF canonical
+    qname
+  authority_class: PRODUCT_CONTRACT
+  authority_refs:
+  - shared/qname-registry/fods.yaml — office:document qname (ODF canonical)
+  sample_ref: null
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: office:document
+    data_source: computed
+    authority: shared/qname-registry/fods.yaml
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
 invalid_cases:
-
-  - case_id: fods-invalid-001
-    purpose: "Non-XML content — fails XML parse"
-    defect_class: invalid-encoding
-    malformed_boundary: "File is not XML (binary or random bytes)"
-    authority_refs:
-      - "ODF 1.3 §3.1 — FODS must be a valid XML document"
-    sample_ref: tests/fixtures/fods/malformed/  # Gate 7 fixtures
-    expected_failure_stage: PARSE_HEADER
-    expected_error_type: "FodsParseError or xml.etree.ElementTree.ParseError"
-    partial_recovery_allowed: false
-    security_relevance: true
-
-  - case_id: fods-invalid-002
-    purpose: "XXE injection attempt — must not resolve external entities"
-    defect_class: security-xml-injection
-    malformed_boundary: "DOCTYPE declaration with external entity reference"
-    authority_refs:
-      - "ODF 1.3 — XML security"
-      - "Gate 8 security: TC-2 DTD/XXE mitigated"
-    sample_ref: null  # synthetic inline case
-    input_description: "<?xml version='1.0'?><!DOCTYPE foo [<!ENTITY xxe SYSTEM 'file:///etc/passwd'>]><foo>&xxe;</foo>"
-    expected_failure_stage: PARSE_HEADER
-    expected_error_type: "ParseError (Expat rejects DOCTYPE by default)"
-    partial_recovery_allowed: false
-    security_relevance: true
-
-  - case_id: fods-invalid-003
-    purpose: "Missing office:document root — invalid ODF structure"
-    defect_class: invalid-structure
-    malformed_boundary: "Valid XML but missing required office:document root"
-    authority_refs:
-      - "ODF 1.3 §3.1.2 — office:document is required root"
-    sample_ref: null
-    input_description: "<root><child/></root>"
-    expected_failure_stage: PARSE_BODY
-    expected_error_type: "FodsParseError"
-    partial_recovery_allowed: false
-    security_relevance: false
-
-# ==============================================================================
-# ROUNDTRIP CASES
-# ==============================================================================
+- case_id: fods-invalid-001
+  purpose: Non-XML content — fails XML parse
+  defect_class: invalid-encoding
+  malformed_boundary: File is not XML (binary or random bytes)
+  authority_refs:
+  - ODF 1.3 §3.1 — FODS must be a valid XML document
+  sample_ref: tests/fixtures/fods/malformed/
+  expected_failure_stage: PARSE_HEADER
+  expected_error_type: FodsParseError or xml.etree.ElementTree.ParseError
+  partial_recovery_allowed: false
+  security_relevance: true
+- case_id: fods-invalid-002
+  purpose: XXE injection attempt — must not resolve external entities
+  defect_class: security-xml-injection
+  malformed_boundary: DOCTYPE declaration with external entity reference
+  authority_refs:
+  - ODF 1.3 — XML security
+  - 'Gate 8 security: TC-2 DTD/XXE mitigated'
+  sample_ref: null
+  input_description: <?xml version='1.0'?><!DOCTYPE foo [<!ENTITY xxe SYSTEM 'file:///etc/passwd'>]><foo>&xxe;</foo>
+  expected_failure_stage: PARSE_HEADER
+  expected_error_type: ParseError (Expat rejects DOCTYPE by default)
+  partial_recovery_allowed: false
+  security_relevance: true
+- case_id: fods-invalid-003
+  purpose: Missing office:document root — invalid ODF structure
+  defect_class: invalid-structure
+  malformed_boundary: Valid XML but missing required office:document root
+  authority_refs:
+  - ODF 1.3 §3.1.2 — office:document is required root
+  sample_ref: null
+  input_description: <root><child/></root>
+  expected_failure_stage: PARSE_BODY
+  expected_error_type: FodsParseError
+  partial_recovery_allowed: false
+  security_relevance: false
 roundtrip_cases:
-
-  - case_id: fods-rt-001
-    purpose: "Parse minimal FODS → FodsDocument → write → re-parse → semantic equivalence"
-    operation: "FodsDocument.load(path) → write_fods(doc, path2) → FodsDocument.load(path2)"
-    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "ODF 1.3 §3.1 — FODS must produce semantically equivalent output on round-trip"
-    equality_mode: SEMANTICALLY_EQUIVALENT
-    canonicalizer: "odf-workbook-canonical"
-    comparator: "spreadsheet-cell-comparator"
-    fields_required_equal:
-      - sheet_count
-      - sheet_names
-      - cell_values (all non-empty cells)
-    fields_allowed_normalized:
-      - XML whitespace
-      - namespace prefix variations
-      - style definitions (round-trip may normalize styles)
-    fields_allowed_lossy:
-      - office:meta (metadata regenerated)
-    ordering_policy: "rows in ascending order, columns in ascending order"
-    whitespace_policy: "cell value whitespace preserved"
-    tolerance_policy: "FLOAT64_RELATIVE_1E-9 for numeric cells"
-
-# ==============================================================================
-# INTEROPERABILITY CASES (D3 — LibreOffice headless)
-# ==============================================================================
+- case_id: fods-rt-001
+  purpose: Parse minimal FODS → FodsDocument → write → re-parse → semantic equivalence
+  operation: FodsDocument.load(path) → write_fods(doc, path2) → FodsDocument.load(path2)
+  sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - ODF 1.3 §3.1 — FODS must produce semantically equivalent output on round-trip
+  equality_mode: SEMANTICALLY_EQUIVALENT
+  canonicalizer: odf-workbook-canonical
+  comparator: spreadsheet-cell-comparator
+  fields_required_equal:
+  - sheet_count
+  - sheet_names
+  - cell_values (all non-empty cells)
+  fields_allowed_normalized:
+  - XML whitespace
+  - namespace prefix variations
+  - style definitions (round-trip may normalize styles)
+  fields_allowed_lossy:
+  - office:meta (metadata regenerated)
+  ordering_policy: rows in ascending order, columns in ascending order
+  whitespace_policy: cell value whitespace preserved
+  tolerance_policy: FLOAT64_RELATIVE_1E-9 for numeric cells
 interoperability_cases:
-
-  - case_id: fods-lo-001
-    purpose: "LibreOffice headless converts minimal-spreadsheet.fods to xml without error"
-    operation: "soffice --headless --convert-to xml <path>"
-    authority_class: ACCEPTED_EMPIRICAL
-    authority_refs:
-      - "ODF 1.3 §3.1.2 — FODS is a valid ODF document readable by conforming processors"
-    sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
-    expected_parse_result: SUCCESS
-    depth: D3
-    skipped_when_missing: true
-    skip_reason: "LibreOffice installation required — SKIPPED_MISSING_PROVIDER if soffice not on PATH"
-    applicable_profiles:
-      - INTEROPERABILITY
-
-# ==============================================================================
-# SECURITY CASES
-# ==============================================================================
+- case_id: fods-lo-001
+  purpose: LibreOffice headless converts minimal-spreadsheet.fods to xml without error
+  operation: soffice --headless --convert-to xml <path>
+  authority_class: ACCEPTED_EMPIRICAL
+  authority_refs:
+  - ODF 1.3 §3.1.2 — FODS is a valid ODF document readable by conforming processors
+  sample_ref: samples/by-format/fods/minimal-spreadsheet.fods
+  expected_parse_result: SUCCESS
+  depth: D3
+  skipped_when_missing: true
+  skip_reason: LibreOffice installation required — SKIPPED_MISSING_PROVIDER if soffice
+    not on PATH
+  applicable_profiles:
+  - INTEROPERABILITY
 error_cases:
-  - case_id: fods-security-001
-    purpose: "All 18 Gate 7 malformed fixtures must not crash the product parser"
-    description: >
-      Run FodsDocument.load(path) on each of the 18 malformed fixtures in
-      tests/fixtures/fods/malformed/. Each must raise an exception (not crash).
-      This extends Gate 7 (prototype level) to the production product.
-    fixture_dir: tests/fixtures/fods/malformed/
-    expected_behavior: "Each file raises FodsParseError or equivalent — no crash"
-    security_relevance: true
-    authority_class: ACCEPTED_EMPIRICAL
+- case_id: fods-security-001
+  purpose: All 18 Gate 7 malformed fixtures must not crash the product parser
+  description: 'Run FodsDocument.load(path) on each of the 18 malformed fixtures in
+    tests/fixtures/fods/malformed/. Each must raise an exception (not crash). This
+    extends Gate 7 (prototype level) to the production product.
 
-# ==============================================================================
-# CANONICALIZATION
-# ==============================================================================
+    '
+  fixture_dir: tests/fixtures/fods/malformed/
+  expected_behavior: Each file raises FodsParseError or equivalent — no crash
+  security_relevance: true
+  authority_class: ACCEPTED_EMPIRICAL
 canonicalization:
   method: odf-workbook-canonical
-  description: >
-    Canonical form for FODS comparison:
-    1. Compare sheet count and sheet names
-    2. Compare cell values (all non-empty cells) row-by-row, column-by-column
-    3. For numeric values: compare with FLOAT64_RELATIVE_1E-9 tolerance
-    4. Ignore XML whitespace, namespace prefix variations, style definitions
-    5. Ignore empty rows/columns at end of sheet
-  ordering_policy: "Sheets in definition order; rows in ascending order"
-  whitespace_policy: "Significant whitespace in cell text values preserved"
-  encoding_policy: "UTF-8 normalized; BOM stripped"
+  description: 'Canonical form for FODS comparison: 1. Compare sheet count and sheet
+    names 2. Compare cell values (all non-empty cells) row-by-row, column-by-column
+    3. For numeric values: compare with FLOAT64_RELATIVE_1E-9 tolerance 4. Ignore
+    XML whitespace, namespace prefix variations, style definitions 5. Ignore empty
+    rows/columns at end of sheet
 
-# ==============================================================================
-# TOLERANCE POLICY
-# ==============================================================================
+    '
+  ordering_policy: Sheets in definition order; rows in ascending order
+  whitespace_policy: Significant whitespace in cell text values preserved
+  encoding_policy: UTF-8 normalized; BOM stripped
 tolerance_policy:
   numeric_tolerance: FLOAT64_RELATIVE_1E-9
-  ordering_tolerance: "Sheet order and row order must be preserved"
-  whitespace_tolerance: "XML whitespace normalized; cell text whitespace preserved"
-  metadata_tolerance: >
-    office:meta (creator, creation-date, modified-date) may differ after round-trip.
-    Metadata is excluded from semantic comparison.
-  policy_summary: >
-    Numeric cells: FLOAT64 relative tolerance 1e-9.
-    String cells: exact match after whitespace normalization.
-    Metadata: excluded.
-    Styles: allowed to normalize.
+  ordering_tolerance: Sheet order and row order must be preserved
+  whitespace_tolerance: XML whitespace normalized; cell text whitespace preserved
+  metadata_tolerance: 'office:meta (creator, creation-date, modified-date) may differ
+    after round-trip. Metadata is excluded from semantic comparison.
 
-# ==============================================================================
-# INTEROPERABILITY
-# ==============================================================================
+    '
+  policy_summary: 'Numeric cells: FLOAT64 relative tolerance 1e-9. String cells: exact
+    match after whitespace normalization. Metadata: excluded. Styles: allowed to normalize.
+
+    '
 interoperability:
   reference_tool: LibreOffice
   reference_provider_id: libreoffice
   gate: 6
-  acquisition_oracle_result: "3/4 PASS, 1/4 WARN (multi-sheet CSV export — expected limitation)"
-  notes: >
-    Gate 6 LibreOffice oracle already passed for the prototype parser.
-    Product source conformance to LibreOffice should be validated similarly.
-    The acquisition-packs/fods/gate6-oracle-comparison-report.md is the committed record.
+  acquisition_oracle_result: 3/4 PASS, 1/4 WARN (multi-sheet CSV export — expected
+    limitation)
+  notes: 'Gate 6 LibreOffice oracle already passed for the prototype parser. Product
+    source conformance to LibreOffice should be validated similarly. The acquisition-packs/fods/gate6-oracle-comparison-report.md
+    is the committed record.
 
-# ==============================================================================
-# COMPARATORS AND VALIDATORS
-# ==============================================================================
+    '
 comparators:
-  - spreadsheet-cell-comparator
-  - odf-workbook-canonical
-
+- spreadsheet-cell-comparator
+- odf-workbook-canonical
 validators:
-  - fods-xml-validator
-  - odf-namespace-validator
-
+- fods-xml-validator
+- odf-namespace-validator
 consumers:
-  - tests/python/fods/
-  - tests/net/fods/
-  - examples/python/fods/consumer_roundtrip.py
-
-# ==============================================================================
-# NEGATIVE CONTROLS
-# ==============================================================================
+- tests/python/fods/
+- tests/net/fods/
+- examples/python/fods/consumer_roundtrip.py
 negative_controls:
-  - control_id: fods-neg-001
-    description: "XXE entity injection must produce ParseError, not content"
-    test: "inject DOCTYPE with external entity → load → must raise, not return entity content"
-    expected_outcome: FAIL_RAISES_EXCEPTION
-  - control_id: fods-neg-002
-    description: "Missing sheet must FAIL model check"
-    test: "Load FODS → assert sheet_count == 99 → must FAIL"
-    expected_outcome: FAIL
-  - control_id: fods-neg-003
-    description: "Self-approval blocked: load(path) then use output to approve same file"
-    test: "Product output cannot be used as its own golden reference"
-    expected_outcome: BLOCKED_IMPLEMENTATION_SELF_APPROVAL
-
-# ==============================================================================
-# TRACEABILITY
-# ==============================================================================
+- control_id: fods-neg-001
+  description: XXE entity injection must produce ParseError, not content
+  test: inject DOCTYPE with external entity → load → must raise, not return entity
+    content
+  expected_outcome: FAIL_RAISES_EXCEPTION
+- control_id: fods-neg-002
+  description: Missing sheet must FAIL model check
+  test: Load FODS → assert sheet_count == 99 → must FAIL
+  expected_outcome: FAIL
+- control_id: fods-neg-003
+  description: 'Self-approval blocked: load(path) then use output to approve same
+    file'
+  test: Product output cannot be used as its own golden reference
+  expected_outcome: BLOCKED_IMPLEMENTATION_SELF_APPROVAL
 oracle_traceability:
   oracle_id: oracle-fods-v1
-  specification_refs: [ODF-1.3-PART3, ODF-1.3-PART1]
-  fact_refs: ["FACT-FODS-001", "FACT-FODS-002", "~4988 total SAL facts"]
-  requirement_refs: ["acquisition-packs/fods/parser-requirements.md — 20 requirements"]
+  specification_refs:
+  - ODF-1.3-PART3
+  - ODF-1.3-PART1
+  fact_refs:
+  - FACT-FODS-001
+  - FACT-FODS-002
+  - ~4988 total SAL facts
+  requirement_refs:
+  - acquisition-packs/fods/parser-requirements.md — 20 requirements
   capability_refs: []
   test_refs:
-    - tests/python/fods/
-    - tests/net/fods/
-    - tests/fixtures/fods/malformed/
+  - tests/python/fods/
+  - tests/net/fods/
+  - tests/fixtures/fods/malformed/
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

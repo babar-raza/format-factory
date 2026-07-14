@@ -20,6 +20,7 @@ import os
 import random
 import ssl
 import socket
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -50,6 +51,7 @@ class GraderErrorClass(str, Enum):
     CANCELLED = "CANCELLED"
     LOCAL_STATE_FAILURE = "LOCAL_STATE_FAILURE"
     UNKNOWN_PROVIDER_FAILURE = "UNKNOWN_PROVIDER_FAILURE"
+    CIRCUIT_OPEN = "CIRCUIT_OPEN"
 
 
 _RETRYABLE: frozenset[GraderErrorClass] = frozenset({
@@ -72,6 +74,7 @@ _NON_RETRYABLE: frozenset[GraderErrorClass] = frozenset({
     GraderErrorClass.CANCELLED,
     GraderErrorClass.LOCAL_STATE_FAILURE,
     GraderErrorClass.MALFORMED_RESPONSE,
+    GraderErrorClass.CIRCUIT_OPEN,
 })
 
 
@@ -263,6 +266,68 @@ class RetryPolicy:
 
 
 # ---------------------------------------------------------------------------
+# 3b. Circuit breaker
+# ---------------------------------------------------------------------------
+
+class CircuitState(str, Enum):
+    CLOSED = "CLOSED"
+    OPEN = "OPEN"
+    HALF_OPEN = "HALF_OPEN"
+
+
+@dataclass
+class GraderCircuitBreaker:
+    """Process-level CLOSED/OPEN/HALF_OPEN circuit breaker for LLM calls."""
+    failure_threshold: int = 5
+    reset_timeout: float = 60.0
+    _state: CircuitState = field(default=CircuitState.CLOSED, init=False)
+    _consecutive_failures: int = field(default=0, init=False)
+    _opened_at: float | None = field(default=None, init=False)
+    _lock: threading.Lock = field(default_factory=threading.Lock, init=False)
+
+    def is_open(self) -> bool:
+        with self._lock:
+            if self._state == CircuitState.CLOSED:
+                return False
+            if self._state == CircuitState.OPEN:
+                if time.monotonic() - (self._opened_at or 0) >= self.reset_timeout:
+                    self._state = CircuitState.HALF_OPEN
+                    return False
+                return True
+            return False  # HALF_OPEN: allow one probe
+
+    def record_success(self) -> None:
+        with self._lock:
+            self._consecutive_failures = 0
+            self._state = CircuitState.CLOSED
+            self._opened_at = None
+
+    def record_failure(self) -> None:
+        with self._lock:
+            self._consecutive_failures += 1
+            if (self._state == CircuitState.HALF_OPEN or
+                    self._consecutive_failures >= self.failure_threshold):
+                self._state = CircuitState.OPEN
+                self._opened_at = time.monotonic()
+
+
+_default_circuit_breaker: GraderCircuitBreaker | None = None
+
+
+def get_default_circuit_breaker() -> GraderCircuitBreaker:
+    global _default_circuit_breaker
+    if _default_circuit_breaker is None:
+        _default_circuit_breaker = GraderCircuitBreaker()
+    return _default_circuit_breaker
+
+
+def reset_default_circuit_breaker() -> None:
+    """Force-close the process-level circuit breaker. Call to recover from OPEN state."""
+    global _default_circuit_breaker
+    _default_circuit_breaker = None
+
+
+# ---------------------------------------------------------------------------
 # 4. Observability
 # ---------------------------------------------------------------------------
 
@@ -280,7 +345,11 @@ class GradingEvent:
     model: str = ""
 
 
-_DEFAULT_LOG_DIR = Path(__file__).resolve().parent.parent.parent / ".local" / "llm-call-logs"
+_LOG_DIR_OVERRIDE = os.environ.get("GRADER_LOG_DIR", "")
+_DEFAULT_LOG_DIR = (
+    Path(_LOG_DIR_OVERRIDE) if _LOG_DIR_OVERRIDE
+    else Path(__file__).resolve().parent.parent.parent / ".local" / "llm-call-logs"
+)
 
 
 class GradingObserver:
@@ -355,6 +424,7 @@ def call_with_retry(
     request_id: str | None = None,
     provider: str = "",
     model: str = "",
+    circuit_breaker: GraderCircuitBreaker | None = None,
 ) -> Any:
     """Execute fn() with exponential backoff + jitter, deadline awareness, and observability.
 
@@ -388,10 +458,18 @@ def call_with_retry(
     last_cls = GraderErrorClass.UNKNOWN_PROVIDER_FAILURE
 
     for attempt in range(policy.max_attempts):
+        # Circuit breaker check BEFORE the exception handler so it raises cleanly
+        if circuit_breaker is not None and circuit_breaker.is_open():
+            raise GraderPermanentFailure(
+                GraderErrorClass.CIRCUIT_OPEN,
+                RuntimeError("circuit breaker is OPEN"),
+            )
         t0 = time.monotonic()
         try:
             result = fn()
             duration_ms = int((time.monotonic() - t0) * 1000)
+            if circuit_breaker is not None:
+                circuit_breaker.record_success()
             observer.record(GradingEvent(
                 request_id=request_id,
                 item_id=item_id,
@@ -430,6 +508,8 @@ def call_with_retry(
                     final_status="FAILED_PERMANENT", provider=provider, model=model,
                 ))
                 raise GraderPermanentFailure(cls, exc) from exc
+            if circuit_breaker is not None:
+                circuit_breaker.record_failure()
 
             is_last = (attempt == policy.max_attempts - 1)
             remaining = deadline - time.monotonic()

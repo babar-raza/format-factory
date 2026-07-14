@@ -227,16 +227,16 @@ enforcement_points:
     mechanism: yaml_schema_validation
     enforced_by: .supervisor/schemas/taskcard-execution-contract.schema.json
     tool_neutral: true
-    current_status: SCHEMA_DEFINED_NOT_ENFORCED
-    gap: EP-008-GAP  # schema exists but not validated at taskcard READY transition
+    current_status: SCHEMA_CREATED_NOT_ENFORCED  # TC-SGOV-W2-003: schema created 2026-07-11
+    gap: EP-008-GAP  # schema exists but not called at taskcard READY transition
 
   - id: EP-009
     name: plan_skill_route_validation
     mechanism: plan_validator_script
     enforced_by: tools/governance/validate_plan_skill_routes.py
     tool_neutral: true
-    current_status: NOT_IMPLEMENTED
-    gap: EP-009-GAP
+    current_status: IMPLEMENTED  # TC-SGOV-W2-004: script created 2026-07-11; exit 0/1/2
+    gap: null  # manual invocation only; no CI hook yet
 
 # ─────────────────────────────────────────────
 # 8. EXCEPTION POLICY
@@ -331,7 +331,13 @@ known_gaps:
     description: >
       pre_mutation_guard.py exists but must be called explicitly by agent.
       No automatic invocation from tool layer.
-    status: partial
+    status: MITIGATED_BY_PLAN_FF-AGENTS-PARITY-001
+    mitigation_note: >
+      Pre-commit hook (EP-007) at .hooks/pre-commit-skill-guard auto-enforces skill
+      receipt check for src/ mutations. sprint_executor_validate.py Phase 16 (TC-ACP-006)
+      adds WARN for PRODUCT_SOURCE items lacking pre_mutation_guard_authorization_id.
+      Not fully RESOLVED: hook covers Claude Code commits; Codex/Kilo commit paths
+      may still bypass guard. Full resolution requires RC-016/RC-017 on those platforms.
     blocking: false
 
   - gap_id: EP-004-GAP

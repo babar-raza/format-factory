@@ -706,10 +706,10 @@ def validate_playbook_registry_entries(
         if missing:
             return {
                 "validator": "validate_playbook_registry_entries",
-                "result": "WARN",
-                "blocks_sprint": False,
+                "result": "FAIL",
+                "blocks_sprint": True,
                 "items": missing,
-                "summary": f"V92: {len(missing)} active registry entry(ies) point to missing files",
+                "summary": f"V92: {len(missing)} ACTIVE registry entry(s) reference nonexistent files — GOV_BLOCK",
             }
         return {
             "validator": "validate_playbook_registry_entries",

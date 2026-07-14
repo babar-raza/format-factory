@@ -1,25 +1,32 @@
 {
   "oracle_id": "oracle-ods-v1",
   "format_id": "ods",
-  "executed_at": "2026-07-09T08:33:03.725297+00:00",
-  "total_cases": 3,
+  "executed_at": "2026-07-13T18:33:13.822265+00:00",
+  "total_cases": 5,
   "results": {
     "PASS": 3,
     "FAIL": 0,
     "BLOCKED_MISSING_AUTHORITY": 0,
     "BLOCKED_MISSING_SAMPLE": 0,
     "INCONCLUSIVE": 0,
-    "NOT_APPLICABLE": 0,
+    "NOT_APPLICABLE": 1,
     "STALE_ORACLE": 0,
     "INVALID_ORACLE": 0,
-    "SKIPPED_MISSING_PROVIDER": 0,
+    "SKIPPED_MISSING_PROVIDER": 1,
     "SKIPPED_MISSING_DEPENDENCY": 0
   },
-  "pass_rate": "3/3",
-  "verdict": "ALL_PASS",
+  "pass_rate": "3/5",
+  "verdict": "PARTIAL_PASS",
   "verdicts_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\oracle\\ods\\verdicts",
   "depth_histogram": {
-    "D1": 3
+    "D1": 2,
+    "D0": 3
   },
-  "format_depth_score": "D1"
+  "format_depth_score": "D1",
+  "product_source_hash": "sha256:90fedb5fd24b6f1d0699ac7eb3c2ef4157e855e5ed074f2f34ff26d7cae631ba",
+  "oracle_package_hash": "sha256:e5ad33c84205852997f61d5de879b862427a620c5303a1ee3e61eac373c9eb1e",
+  "coverage_gaps": [
+    "COVERAGE_GAP: 1 invalid_cases have no sample_ref or input_inline for ods \u2014 will return NOT_APPLICABLE",
+    "COVERAGE_GAP: 1 invalid_cases defined but no executor_config in oracle-package.yaml for ods"
+  ]
 }

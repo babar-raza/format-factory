@@ -26,6 +26,7 @@ TRANSCRIPT_DIRS = [
     REPO_ROOT / ".local" / "transcripts",
     REPO_ROOT / "reports",
 ]
+RECEIPTS_DIR = REPO_ROOT / ".local" / "skill-execution-receipts"
 EXCEPTION_DIR = REPO_ROOT / ".local" / "exceptions"
 CI_CHECK_SCRIPT = REPO_ROOT / "tools" / "governance" / "ci_skill_attribution_check.py"
 
@@ -48,31 +49,31 @@ def staged_touches_src(files: list[str]) -> bool:
 
 def find_skill_transcript_for_head() -> bool:
     """
-    Check if a skill execution transcript exists for the pending commit.
-    Uses ci_skill_attribution_check.py in dry-run mode against HEAD.
-    Falls back to scanning transcript dirs directly for any recent transcript.
-    """
-    # Use the CI check script if available
-    if CI_CHECK_SCRIPT.exists():
-        result = subprocess.run(
-            [sys.executable, str(CI_CHECK_SCRIPT),
-             "--base-ref", "HEAD", "--head-ref", "HEAD",
-             "--allow-pre-policy", "--staged-only"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT)
-        )
-        if result.returncode == 0:
-            return True
-        # returncode 2 = config error (be permissive on error)
-        if result.returncode == 2:
-            print(f"[skill-guard] WARNING: ci_skill_attribution_check.py config error — allowing commit", file=sys.stderr)
-            return True
-        # returncode 1 = ungoverned detected
-        return False
+    Check if a skill execution transcript or receipt exists for the pending commit.
 
-    # Fallback: look for any transcript file modified in last 30 minutes
+    TC-SGOV-W2-005 (Pilot 1 fix): ci_skill_attribution_check.py is designed for
+    post-commit CI use, not pre-commit. The pre-commit hook uses receipt files
+    (written by autonomous_cycle.py via skill_receipt_writer.py) and transcript
+    dirs for detection instead.
+
+    Check order:
+      1. .local/skill-execution-receipts/ — receipts written by skill_receipt_writer.py
+      2. .local/transcripts/ and reports/ — legacy transcript scan
+    """
     import time
     now = time.time()
-    cutoff = now - (30 * 60)  # 30 minutes
+    cutoff = now - (60 * 60)  # 1-hour window for pre-commit check
+
+    # 1. Check skill execution receipts (TC-SGOV-W2-005)
+    if RECEIPTS_DIR.exists():
+        for p in RECEIPTS_DIR.glob("*.yaml"):
+            try:
+                if p.stat().st_mtime >= cutoff:
+                    return True
+            except Exception:
+                continue
+
+    # 2. Fallback: scan transcript dirs for any recent transcript with skill_id
     for tdir in TRANSCRIPT_DIRS:
         if not tdir.exists():
             continue

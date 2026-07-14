@@ -2,12 +2,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-analytics-function
   command_file: .claude/commands/add-analytics-function.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python_spec_domain
   purpose: Add one spec-backed domain analytics function to a spec-owned domain module
@@ -19,12 +20,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-dogfood-export
   command_file: .claude/commands/add-dogfood-export.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: cross_product_export
   purpose: Add one bounded export path whose write backend is another Format Factory
@@ -36,12 +38,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-dotnet-api
   command_file: .claude/commands/add-dotnet-api.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: commercial_dotnet
   purpose: Add or extend one bounded commercial .NET product API with focused tests
@@ -53,12 +56,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-dotnet-object-model-feature
   command_file: .claude/commands/add-dotnet-object-model-feature.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: commercial_dotnet
   purpose: Add a feature to a .NET object model (property, method, conversion).
@@ -69,12 +73,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-installed-package-example
   command_file: .claude/commands/add-installed-package-example.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: developer_experience
   purpose: Add an example that uses an installed package (not PYTHONPATH).
@@ -85,12 +90,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-python-api
   command_file: .claude/commands/add-python-api.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Add or extend one bounded Python FOSS product API with focused tests and
@@ -102,12 +108,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-python-object-model-feature
   command_file: .claude/commands/add-python-object-model-feature.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Add a feature to a Python object model (method, conversion, property).
@@ -118,12 +125,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-roundtrip-test
   command_file: .claude/commands/add-roundtrip-test.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: testing
   purpose: Add a parse-edit-write-reparse roundtrip test.
@@ -134,12 +142,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-same-format-writer-feature
   command_file: .claude/commands/add-same-format-writer-feature.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: cross_product
   purpose: Add same-format save/write capability after editing.
@@ -149,12 +158,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: add-spec-analytics-function
   command_file: .claude/commands/add-spec-analytics-function.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Add one spec-backed domain analytics function to a format's canonical domain
@@ -167,12 +177,31 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: allocate-sprint-number
+  command_file: .claude/commands/allocate-sprint-number.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Allocate a strictly monotonic, idempotent sprint number for a given semantic
+    alias. Returns SPRINT-NNNNN identifier with receipt. Safe for concurrent use within
+    one process via threading.Lock(). Crash
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: append-layer-verification-log
   command_file: .claude/commands/append-layer-verification-log.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Append a verification log entry to section 35 (Verification Log) of a permanent
@@ -183,12 +212,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: append-layer-work-log
   command_file: .claude/commands/append-layer-work-log.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Append a new work log entry to section 34 (Work Log) of a permanent layer
@@ -199,12 +229,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: audit-enhanced-control-layer
+  command_file: .claude/commands/audit-enhanced-control-layer.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Run a full audit of the enhanced control layer (control-index.db + parity
+    + validators) and produce an audit report.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: audit-root-tools
   command_file: .claude/commands/audit-root-tools.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: machinery_governance
   purpose: Enforce mutation guard on tools/supervisor/ scripts. Every script must
@@ -215,12 +263,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: autonomous-loop
   command_file: .claude/commands/autonomous-loop.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: infrastructure
   purpose: 'Execute the autonomous sprint loop: check continuation → skill coverage
@@ -233,12 +282,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: backfill-gate4-prototype-evidence
   command_file: .claude/commands/backfill-gate4-prototype-evidence.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: acquisition
   purpose: Inventory Gate 4 status, classify evidence strategy, create evidence wrappers,
@@ -250,12 +300,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: backfill-task-skill-ownership
   command_file: .claude/commands/backfill-task-skill-ownership.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan plan files for mutating tasks lacking skill_ids; produce backfill
@@ -266,12 +317,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: build-capability-routes
   command_file: .claude/commands/build-capability-routes.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Read capability-routing-registry.yaml, verify preferred_skill_ids resolve
@@ -282,12 +334,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: build-context-pack
   command_file: .claude/commands/build-context-pack.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Build a machine-readable context pack YAML summarizing current project
@@ -299,12 +352,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: build-evidence-bundle
   command_file: .claude/commands/build-evidence-bundle.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Build and validate an evidence bundle for the current phase/sprint.
@@ -315,12 +369,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: build-obligation-register
   command_file: .claude/commands/build-obligation-register.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: all_format_deepening
   purpose: Build authoritative all-format obligation register ensuring no format is
@@ -331,12 +386,100 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: build-product-context
+  command_file: .claude/commands/build-product-context.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Generate product context (format info, open gaps, recent sprints, trust
+    warnings) for a given format_id.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: build-resume-context
+  command_file: .claude/commands/build-resume-context.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Generate resume context (latest sprint, active plan, contradictions, trust
+    warnings) for session start.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: build-supervisor-packet
+  command_file: .claude/commands/build-supervisor-packet.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: 'Generate supervisor review artifacts from an evidence declaration. Produces
+    reports/supervisor/ files (next-sprint.md, evidence-review.json, etc.).
+
+    '
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: build-task-context
+  command_file: .claude/commands/build-task-context.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Generate a machine-readable task context dict (plan, sprint evidence, gaps,
+    trust warnings) for a given TC-* task ID.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: calculate-oracle-coverage
+  command_file: .claude/commands/calculate-oracle-coverage.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: oracle_execution
+  purpose: Generate per-format oracle coverage report. Reads all registered oracle
+    packages, runs verdict tallies, writes oracle/reports/oracle-coverage-report.json.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: capability-status
   command_file: .claude/commands/capability-status.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Read compiled capability registry and parity report; print summary (read-only).
@@ -346,12 +489,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-assertion-scorer
   command_file: .claude/commands/certification-assertion-scorer.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Score the quality of assertions in Python test files and write an assertion-quality.json
@@ -362,12 +506,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-dashboard
   command_file: .claude/commands/certification-dashboard.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Run the certification dashboard to regenerate portfolio certification matrix
@@ -378,12 +523,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-dotnet-assertion-scorer
   command_file: .claude/commands/certification-dotnet-assertion-scorer.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Score the quality of assertions in .NET (C#) test files and write a dotnet-assertion-quality.json
@@ -394,12 +540,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-exception-checker
   command_file: .claude/commands/certification-exception-checker.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Check that each exception raised in source is exercised in tests and write
@@ -410,12 +557,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-fix-weak-assertions
   command_file: .claude/commands/certification-fix-weak-assertions.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Strengthen weak assertions in Python test files for a format. WARNING:
@@ -426,12 +574,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-generate-exception-tests
   command_file: .claude/commands/certification-generate-exception-tests.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Generate missing exception-coverage test stubs for a format. WARNING:
@@ -442,12 +591,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-generate-security-tests
   command_file: .claude/commands/certification-generate-security-tests.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Generate security test stubs (path traversal, malformed input, etc.) for
@@ -458,12 +608,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-inventory-extractor
   command_file: .claude/commands/certification-inventory-extractor.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Extract API contracts (exports, functions, classes) for one or more formats
@@ -474,12 +625,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: certification-stub-detector
   command_file: .claude/commands/certification-stub-detector.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Detect material stub functions (pass-only, raise NotImplementedError, etc.)
@@ -490,12 +642,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-dom-contract
   command_file: .claude/commands/check-dom-contract.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Check whether a format meets the DOM contract requirements for a specific
@@ -506,12 +659,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-gate
   command_file: .claude/commands/check-gate.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: acquisition
   purpose: Verify whether a format has met the criteria for a given gate.
@@ -522,12 +676,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-mcp-status
   command_file: .claude/commands/check-mcp-status.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Check and classify the MCP server connection status using a 5-state model.
@@ -537,12 +692,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-release-boundary
   command_file: .claude/commands/check-release-boundary.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: acquisition
   purpose: Verify no commercial artifacts are in OSS release scope (Phase 3+).
@@ -552,12 +708,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-skill-coverage
   command_file: .claude/commands/check-skill-coverage.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Pre-gate check: verify that a planned work type is covered by a registered
@@ -570,12 +727,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: check-source-loc
   command_file: .claude/commands/check-source-loc.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: source_structure
   purpose: Source structure compliance audit for Python formats.
@@ -585,12 +743,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: close-layer-task
   command_file: .claude/commands/close-layer-task.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Close a layer task — move it from section 29 (Active Taskcards) to section
@@ -601,12 +760,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: collect-skill-execution-receipts
   command_file: .claude/commands/collect-skill-execution-receipts.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan .local/transcripts/ for skill execution transcripts; aggregate into
@@ -617,12 +777,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: create-acquisition-pack
   command_file: .claude/commands/create-acquisition-pack.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: acquisition
   purpose: Initialize a format acquisition pack from the template.
@@ -632,12 +793,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: create-consumer-roundtrip
   command_file: .claude/commands/create-consumer-roundtrip.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python_consumer
   purpose: Advance 10 Python formats from PROOF_LEVEL_3 to PROOF_LEVEL_4.
@@ -647,12 +809,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: create-cross-layer-handoff
   command_file: .claude/commands/create-cross-layer-handoff.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Register a new cross-layer handoff in plans/layers/handoff-register.yaml
@@ -663,12 +826,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: create-permanent-layer-plan
   command_file: .claude/commands/create-permanent-layer-plan.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Bootstrap a new layer plan file in plans/layers/ using the 39-section template.
@@ -679,12 +843,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: create-taskcard
   command_file: .claude/commands/create-taskcard.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Create a new taskcard from the template with all required fields.
@@ -696,12 +861,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: decompose-monolithic-codec
   command_file: .claude/commands/decompose-monolithic-codec.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: src_healing
   purpose: Move arithmetic/analytical functions from a format's main codec/parser
@@ -713,12 +879,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: detect-ad-hoc-execution
   command_file: .claude/commands/detect-ad-hoc-execution.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan tools/supervisor/*.py for scripts not referenced in skill-registry.yaml;
@@ -729,12 +896,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: detect-duplicate-skills
   command_file: .claude/commands/detect-duplicate-skills.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Compare purpose strings and command_file paths across skills; flag DUPLICATE
@@ -745,12 +913,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: detect-stale-layer-state
   command_file: .claude/commands/detect-stale-layer-state.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Find permanent layer plan files whose section 9 (Current Implementation)
@@ -761,12 +930,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: detect-stale-oracles
+  command_file: .claude/commands/detect-stale-oracles.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: oracle_execution
+  purpose: Detect stale oracle packages by hashing corpus sample files vs stored input_hash
+    values. Emits oracle/reports/stale-oracle-report.json.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: detect-unlogged-work
   command_file: .claude/commands/detect-unlogged-work.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Find git changes that are NOT referenced in any permanent layer plan's
@@ -778,12 +965,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: diff-playbook-outputs
   command_file: .claude/commands/diff-playbook-outputs.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: playbook_governance
   purpose: Compare two dry-run replay reports. Read-only, no file writes unless --output
@@ -794,12 +982,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: discover-existing-control-layers
+  command_file: .claude/commands/discover-existing-control-layers.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Scan the repository codebase to identify and document all existing control
+    layers into reports/control-layer/existing-control-layers.yaml.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: documentation-structure-migration
   command_file: .claude/commands/documentation-structure-migration.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Inventory, classify, and physically migrate docs/ root files to topical
@@ -811,12 +1017,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: enforce-skill-first-execution
   command_file: .claude/commands/enforce-skill-first-execution.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Composite: run all 13 atomic skill-first governance checks in sequence;
@@ -825,14 +1032,32 @@ capabilities:
   source_skill_registry_version: r98-governed-skills-expanded
   status: active
 - agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: evaluate-roundtrip-oracle
+  command_file: .claude/commands/evaluate-roundtrip-oracle.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: oracle_execution
+  purpose: Execute roundtrip oracle cases for a given format and profile. Write a
+    document, read it back, compare values. Emits PASS/FAIL verdicts with diff detail.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: evidence-review-next-prompt
   command_file: .claude/commands/evidence-review-next-prompt.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Review evidence bundle and produce the next execution prompt.
@@ -843,12 +1068,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: execution-handoff
   command_file: .claude/commands/execution-handoff.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Convert a hardened plan into a single-go autonomous execution prompt with
@@ -861,12 +1087,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: export-plan-context
   command_file: .claude/commands/export-plan-context.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Bundle long-term plan context files into a zip for LLM sharing.
@@ -876,12 +1103,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: export-review-queue
   command_file: .claude/commands/export-review-queue.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: playbook_governance
   purpose: Export review queue YAML from dry-run replay report. Read-only. Writes
@@ -892,12 +1120,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: extract-analytics-from-monolith
   command_file: .claude/commands/extract-analytics-from-monolith.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: src_healing
   purpose: Extract pure arithmetic/analytics functions from a monolithic codec/parser
@@ -910,12 +1139,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: format-feature-expansion
   command_file: .claude/commands/format-feature-expansion.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Add a new export, transform, or accessor function to existing Python FOSS
@@ -926,13 +1156,14 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: found-issue-ownership
   command_file: .claude/commands/found-issue-ownership.md
   command_file_exists: true
-  command_registry_entry: false
-  generated_at: '2026-07-06T11:51:36+00:00'
-  parity_status: PARTIAL
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
   product_track: machinery_governance
   purpose: Governed found-issue capture, classification, root-cause, healing, and
     closure workflow
@@ -942,12 +1173,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: generate-execution-handoff
   command_file: .claude/commands/generate-execution-handoff.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Generate a structured execution handoff for a governed skill.
@@ -957,12 +1189,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: generate-oracle-verdict-report
+  command_file: .claude/commands/generate-oracle-verdict-report.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: oracle_execution
+  purpose: Aggregate all per-format oracle verdict summaries from oracle-run-summary.json
+    files into a unified portfolio-regression-report.json for governance reporting.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: generate-root-status
   command_file: .claude/commands/generate-root-status.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Detect root README drift against canonical sources and regenerate system
@@ -973,12 +1223,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: identify-primary-layer
   command_file: .claude/commands/identify-primary-layer.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Given a task or work item, identify the primary layer that owns it and
@@ -989,12 +1240,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: implement-spec-stub
   command_file: .claude/commands/implement-spec-stub.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_literal_healing
   purpose: Fill ONE architecture_only spec/ stub file with behavioral implementation,
@@ -1006,12 +1258,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: ingest-spec-sal
   command_file: .claude/commands/ingest-spec-sal.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: sal_ingestion
   purpose: Ingest a format specification into the SAL to produce FACT-{FORMAT}-NNN
@@ -1022,12 +1275,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: inventory-commands
   command_file: .claude/commands/inventory-commands.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Read command-registry.yaml and produce a flattened command inventory with
@@ -1038,12 +1292,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: inventory-existing-control-features
+  command_file: .claude/commands/inventory-existing-control-features.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Build existing-control-features.yaml by surveying observable behaviors
+    of all identified control layers.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: inventory-format-dom
   command_file: .claude/commands/inventory-format-dom.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan a format's source tree to inventory DOM node types, typed classes,
@@ -1054,12 +1326,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: inventory-permanent-layer-plans
   command_file: .claude/commands/inventory-permanent-layer-plans.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: List all layer plan files in plans/layers/ and report their status, maturity,
@@ -1070,12 +1343,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: inventory-skills
   command_file: .claude/commands/inventory-skills.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan skill-registry.yaml and .claude/commands/ to produce complete mechanism
@@ -1086,12 +1360,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: materialize-declaration-review
   command_file: .claude/commands/materialize-declaration-review.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Build a declaration review package ZIP from an evidence declaration YAML
@@ -1103,12 +1378,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: memory-sprint
   command_file: .claude/commands/memory-sprint.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Capture strategic decisions and architecture notes into durable memory
@@ -1119,12 +1395,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: migrate-temporary-agent-plan
   command_file: .claude/commands/migrate-temporary-agent-plan.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Extract durable content from a temporary .claude/plans/ agent plan and
@@ -1135,12 +1412,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: new-format-kickstart
   command_file: .claude/commands/new-format-kickstart.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Start a brand-new Python FOSS format codec from scratch. Produces minimum
@@ -1152,12 +1430,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: normalize-skill-registry
   command_file: .claude/commands/normalize-skill-registry.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Sort skill-registry.yaml entries by skill_id, fill missing optional fields,
@@ -1166,14 +1445,33 @@ capabilities:
   source_skill_registry_version: r98-governed-skills-expanded
   status: active
 - agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: onboard-future-format-oracle
+  command_file: .claude/commands/onboard-future-format-oracle.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: oracle_execution
+  purpose: Scaffold minimum oracle obligation for a newly registered format. Creates
+    oracle/formats/<format_id>/oracle-package.yaml and registers an executor stub
+    in tools/oracle/execute_oracle.py.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: package-install-proof
   command_file: .claude/commands/package-install-proof.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: packaging
   purpose: Prove that a package installs and imports correctly from wheel.
@@ -1185,12 +1483,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: plan-hardening
   command_file: .claude/commands/plan-hardening.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Review, challenge, and harden a draft plan against repo truth before execution.
@@ -1202,12 +1501,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: portfolio-reconcile
   command_file: .claude/commands/portfolio-reconcile.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: all_format_deepening
   purpose: Portfolio count reconciliation with no-exception audit.
@@ -1217,12 +1517,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: post-sprint-audit
   command_file: .claude/commands/post-sprint-audit.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Run Stage 1 post-sprint evidence audit with L1/L2/L3 issue discovery
@@ -1235,12 +1536,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: post-sprint-loop
   command_file: .claude/commands/post-sprint-loop.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: 'Run full post-sprint autonomy loop: Audit -> Harden -> Execute -> Classify
@@ -1252,12 +1554,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: preflight-skill-entry
   command_file: .claude/commands/preflight-skill-entry.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Validate a proposed skill-registry.yaml entry before insertion to prevent
@@ -1268,12 +1571,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: product-source-task
   command_file: .claude/commands/product-source-task.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: Execute single bounded product source change to existing Python FOSS codec.
@@ -1284,12 +1588,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: promote-gap-to-taskcard
   command_file: .claude/commands/promote-gap-to-taskcard.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Promote a product gap from the POC matrix to a formal taskcard.
@@ -1301,12 +1606,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: python-qname-code-reviewer
   command_file: .claude/commands/python-qname-code-reviewer.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_literal_healing
   purpose: Review a Python format package against the QName architecture standard.
@@ -1318,12 +1624,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: python-reduced-spec-parity-model
   command_file: .claude/commands/python-reduced-spec-parity-model.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: foss_python
   purpose: 'Implement a reduced-scope spec-parity model for a Python FOSS format.
@@ -1335,12 +1642,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: qname-backfill
   command_file: .claude/commands/qname-backfill.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Backfill spec_qname authority classes for format QName registry entries
@@ -1351,12 +1659,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: quarantine-invalid-artifact
+  command_file: .claude/commands/quarantine-invalid-artifact.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Mark an artifact as quarantined in control-index.db quarantines table after
+    validation failure.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: query-control-index
   command_file: .claude/commands/query-control-index.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: infrastructure
   purpose: Query the operational control index for gaps, sprints, failures, search,
@@ -1368,12 +1694,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: rebuild-operational-index
+  command_file: .claude/commands/rebuild-operational-index.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Rebuild the control-index.db from scratch (all 18 ingestors) and report
+    sync results.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: reconcile-layer-index
   command_file: .claude/commands/reconcile-layer-index.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Verify that plans/layers/index.yaml is consistent with all layer plan files.
@@ -1384,12 +1728,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: reconcile-layer-task-register
   command_file: .claude/commands/reconcile-layer-task-register.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Verify that plans/layers/task-register.yaml is consistent with the section
@@ -1400,12 +1745,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: record-lane-execution
   command_file: .claude/commands/record-lane-execution.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Record the execution of a sprint lane into the lane execution ledger for
@@ -1417,12 +1763,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: register-layer-gap
   command_file: .claude/commands/register-layer-gap.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Add a new gap entry to section 14 (Gap Register) of a permanent layer plan
@@ -1433,12 +1780,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: register-layer-task
   command_file: .claude/commands/register-layer-task.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Register a new task in section 29 (Active Taskcards) of a permanent layer
@@ -1449,12 +1797,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: replay-acquisition-playbook
   command_file: .claude/commands/replay-acquisition-playbook.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: playbook_governance
   purpose: 'Dry-run replay of YAML acquisition playbook. Modes: validate, dry-run,
@@ -1465,12 +1814,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: reproduce-master-plan
   command_file: .claude/commands/reproduce-master-plan.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Generate a current-state summary from repo artifacts (read-only).
@@ -1479,14 +1829,34 @@ capabilities:
   source_skill_registry_version: r98-governed-skills-expanded
   status: active
 - agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: reset-track-signal
+  command_file: .claude/commands/reset-track-signal.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: 'Reset the continuation signal for a given track (product/governance/machinery)
+    for cross-session recovery (CCI-MVP, CLAUDE.md §Cross-Chat Continuation Isolation).
+
+    '
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: rollback-and-recovery
   command_file: .claude/commands/rollback-and-recovery.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: machinery_repair
   purpose: Govern rollback, backup-restore, and partial-state recovery operations.
@@ -1499,12 +1869,51 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: run-governance-validators
+  command_file: .claude/commands/run-governance-validators.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: 'Run all 170 registered governance validators against an evidence declaration.
+    Returns composite pass/warn/fail counts and blocks_sprint flag.
+
+    '
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: run-lifecycle-audit
+  command_file: .claude/commands/run-lifecycle-audit.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: 'Run the post-completion lifecycle audit for machinery/lifecycle_hardening
+    plans. Required before writing --terminal to the plan lock (CLAUDE.md §Step 0).
+
+    '
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: run-oracle
   command_file: .claude/commands/run-oracle.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: oracle_execution
   purpose: Execute Format Factory product conformance oracle for one or more formats.
@@ -1516,12 +1925,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: run-skill-idempotency
   command_file: .claude/commands/run-skill-idempotency.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: For a given Python-backed tool path, run it twice against same fixture
@@ -1532,12 +1942,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sal-pipeline-heal
   command_file: .claude/commands/sal-pipeline-heal.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: sal_infrastructure
   purpose: Govern execution of one SAL pipeline healing sprint. Covers all root causes
@@ -1552,12 +1963,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: scan-residual-bypasses
   command_file: .claude/commands/scan-residual-bypasses.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Scan git log for src/ mutations lacking skill transcript; report as UNGOVERNED_MUTATION.
@@ -1567,12 +1979,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: score-format
   command_file: .claude/commands/score-format.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: acquisition
   purpose: Apply scoring model to a format candidate; produce a scoring sheet.
@@ -1583,12 +1996,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: select-deepening-lane
   command_file: .claude/commands/select-deepening-lane.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Select the next deepening lane (feature or DOM) for a format based on ledger
@@ -1599,12 +2013,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: select-next-layer-task
   command_file: .claude/commands/select-next-layer-task.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Read plans/layers/index.yaml and task-register.yaml to return the next
@@ -1615,12 +2030,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: select-poc-gap
   command_file: .claude/commands/select-poc-gap.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Select the next product gap from the POC matrix for sprint execution based
@@ -1632,12 +2048,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: spec-literal-qname-to-code-mapping
   command_file: .claude/commands/spec-literal-qname-to-code-mapping.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_parity
   purpose: Generate or validate a QName-to-code mapping for a format. Produces qname-to-code-map-<format>.yaml,
@@ -1650,12 +2067,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: spec-parity-source-regeneration-and-migration
   command_file: .claude/commands/spec-parity-source-regeneration-and-migration.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_parity
   purpose: Regenerate or migrate existing source code to match the spec-shaped blueprint.
@@ -1669,12 +2087,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: spec-parity-verification
   command_file: .claude/commands/spec-parity-verification.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_parity
   purpose: Run spec-parity validators (SpecParityQNameValidator, NamespaceTreeValidator,
@@ -1686,12 +2105,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: spec-shaped-product-architecture-blueprint
   command_file: .claude/commands/spec-shaped-product-architecture-blueprint.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: spec_parity
   purpose: Generate a spec-shaped architecture blueprint for a format. The blueprint
@@ -1704,12 +2124,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sync-capabilities
   command_file: .claude/commands/sync-capabilities.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Run full capability sync (inventory + validate + generate + update CLAUDE.md/AGENTS.md
@@ -1720,12 +2141,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sync-installed-packages
   command_file: .claude/commands/sync-installed-packages.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: packaging
   purpose: Audit and repair Python editable-install environment for all 20 FOSS packages;
@@ -1737,12 +2159,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sync-memory
   command_file: .claude/commands/sync-memory.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: maintenance
   purpose: Compare memory files against master-plan.md; detect contradictions; produce
@@ -1753,12 +2176,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sync-readmes
   command_file: .claude/commands/sync-readmes.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Synchronize generated metadata blocks in all per-format READMEs while preserving
@@ -1770,12 +2194,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: sync-skill-command-registry
   command_file: .claude/commands/sync-skill-command-registry.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Detect and repair discrepancies between skill-registry.yaml, command-registry.yaml,
@@ -1786,12 +2211,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: update-capability-matrix
   command_file: .claude/commands/update-capability-matrix.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: shared_reference_snapshot
   purpose: Reconcile proven product capability results into the POC target matrix
@@ -1803,12 +2229,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: update-layer-current-state
   command_file: .claude/commands/update-layer-current-state.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Update section 9 (Current Implementation) of a permanent layer plan file
@@ -1819,12 +2246,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: update-layer-master-index
   command_file: .claude/commands/update-layer-master-index.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Sync a layer's status, maturity, and next_task_id from its permanent plan
@@ -1835,12 +2263,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: update-layer-session-handoff
   command_file: .claude/commands/update-layer-session-handoff.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Write or update section 36 (Current Session Handoff) of a permanent layer
@@ -1851,12 +2280,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: update-obligation-entry
   command_file: .claude/commands/update-obligation-entry.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: all_format_deepening
   purpose: Governed obligation entry field update with anti-overclaim guards.
@@ -1866,12 +2296,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: validate-capability-parity
   command_file: .claude/commands/validate-capability-parity.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Validate parity between compiled capability registry and source registries
@@ -1882,12 +2313,51 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: validate-evidence-declaration
+  command_file: .claude/commands/validate-evidence-declaration.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: 'Validate an evidence declaration YAML before autonomous-cycle submission
+    (CLAUDE.md §Sprint Closeout step 1b). --repair auto-corrects common issues.
+
+    '
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: true
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: validate-missing-skill-workflow
+  command_file: .claude/commands/validate-missing-skill-workflow.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: governance
+  purpose: Execute the missing-skill discovery and resolution workflow (skill-only-policy.yaml
+    §3-§5). Evaluates all candidates in skill_resolution_order and produces a REUSE
+    | COMPOSE | REPAIR | EXTEND | CREATE
+  routing_routes:
+  - skill_governance_discovery
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: validate-mutation-guard
   command_file: .claude/commands/validate-mutation-guard.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: Prove governance validators correctly block declarations with undeclared
@@ -1898,12 +2368,30 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
+  capability_id: validate-operational-index
+  command_file: .claude/commands/validate-operational-index.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Validate all control layer source YAMLs with upstream_validator before
+    sync. Reports quarantine candidates.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
   capability_id: validate-permanent-layer-plans
   command_file: .claude/commands/validate-permanent-layer-plans.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: layer_governance
   purpose: Validate all permanent layer plan files for structural completeness. Each
@@ -1914,12 +2402,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: validate-playbook
   command_file: .claude/commands/validate-playbook.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: playbook_governance
   purpose: Validate YAML acquisition playbook or review queue against its JSON Schema.
@@ -1930,12 +2419,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: validate-product-code-ledger
   command_file: .claude/commands/validate-product-code-ledger.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Run the product-code change ledger validator and report pass/fail results
@@ -1947,12 +2437,13 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: validate-skill-contracts
   command_file: .claude/commands/validate-skill-contracts.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: governance
   purpose: For each registered active skill, verify command_file exists, required
@@ -1963,12 +2454,13 @@ capabilities:
 - agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: validate-skill-transcript
   command_file: .claude/commands/validate-skill-transcript.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: planning
   purpose: Validate a skill invocation transcript against the registry schema and
@@ -1978,14 +2470,32 @@ capabilities:
   source_skill_registry_version: r98-governed-skills-expanded
   status: active
 - agent_surfaces:
+    ci: false
+    claude_code: true
+    codex: false
+    kilo: false
+  capability_id: verify-control-feature-parity
+  command_file: .claude/commands/verify-control-feature-parity.md
+  command_file_exists: true
+  command_registry_entry: true
+  generated_at: '2026-07-13T10:57:26+00:00'
+  parity_status: FULL_PARITY
+  product_track: infrastructure
+  purpose: Produce feature-parity-register.yaml assigning disposition to each control
+    feature for the enhanced control layer.
+  routing_routes: []
+  source_skill_registry_version: r98-governed-skills-expanded
+  status: active
+- agent_surfaces:
     ci: true
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: verify-dogfood-path
   command_file: .claude/commands/verify-dogfood-path.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: cross_product_export
   purpose: Verify that an export path uses only Format Factory libraries.
@@ -1997,19 +2507,20 @@ capabilities:
 - agent_surfaces:
     ci: false
     claude_code: true
-    codex: true
+    codex: false
+    kilo: false
   capability_id: verify-obligation-entry
   command_file: .claude/commands/verify-obligation-entry.md
   command_file_exists: true
   command_registry_entry: true
-  generated_at: '2026-07-06T11:51:36+00:00'
+  generated_at: '2026-07-13T10:57:26+00:00'
   parity_status: FULL_PARITY
   product_track: all_format_deepening
   purpose: Evidence-backed obligation entry verification and update.
   routing_routes: []
   source_skill_registry_version: r98-governed-skills-expanded
   status: active
-generated_at: '2026-07-06T11:51:36+00:00'
+generated_at: '2026-07-13T10:57:26+00:00'
 generated_by: inventory_capabilities.py
 source_versions:
   command_registry: .claude\commands\command-registry.yaml

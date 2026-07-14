@@ -136,6 +136,31 @@ def cmd_plan_locks(args):
         conn.close()
 
 
+def cmd_gap_attempts(args):
+    """TC-OCRD-A1-04: Query gap attempt history."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        sql = (
+            "SELECT attempt_id, gap_id, sprint_id, item_id, outcome, rework_reason, attempted_at "
+            "FROM gap_attempts WHERE 1=1"
+        )
+        params: list = []
+        if args.gap_id:
+            sql += " AND gap_id = ?"
+            params.append(args.gap_id)
+        if args.outcome:
+            sql += " AND LOWER(outcome) = LOWER(?)"
+            params.append(args.outcome)
+        sql += f" ORDER BY attempted_at DESC LIMIT {args.limit}"
+        rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
 def cmd_obligations(args):
     """TC-MOR-C6: Query maintenance_obligations table."""
     from datetime import date
@@ -239,6 +264,117 @@ def cmd_stale(args):
         conn.close()
 
 
+def cmd_control_layers(args):
+    """TC-OCRD-C5-01: List control layers with status and feature count."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        sql = (
+            "SELECT layer_key, name, status, authority_scope, observable_features_count "
+            "FROM control_layers WHERE 1=1"
+        )
+        params: list = []
+        if args.status:
+            sql += " AND UPPER(status) = UPPER(?)"
+            params.append(args.status)
+        sql += " ORDER BY layer_key"
+        rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
+def cmd_task_context(args):
+    """TC-OCRD-C5-01: Return plan, sprint, gap context for a task ID."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        from .views import get_task_context
+        result = get_task_context(conn, args.task_id)
+        _json_out(result)
+    finally:
+        conn.close()
+
+
+def cmd_resume_context(args):
+    """TC-OCRD-C5-01: Return current sprint resume context."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        from .views import get_resume_context
+        result = get_resume_context(conn, Path(args.repo_root))
+        _json_out(result)
+    finally:
+        conn.close()
+
+
+def cmd_trust_status(args):
+    """TC-OCRD-C5-01: Look up trust_registry entry for an artifact path."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        row = conn.execute(
+            "SELECT * FROM trust_registry WHERE artifact_path = ?",
+            (args.path,),
+        ).fetchone()
+        if row:
+            _json_out(dict(row))
+        else:
+            _json_out({"artifact_path": args.path, "trusted": None, "note": "not_in_registry"})
+    finally:
+        conn.close()
+
+
+def cmd_contradictions(args):
+    """TC-OCRD-C5-01: List contradiction events."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        sql = "SELECT timestamp, event_type, detail FROM events WHERE event_type = 'contradiction_detected'"
+        params: list = []
+        sql += " ORDER BY timestamp DESC LIMIT 20"
+        rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
+def cmd_parity_status(args):
+    """TC-OCRD-C5-01: Show feature parity results summary."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        rows = [dict(r) for r in conn.execute(
+            "SELECT feature_id, reuse_strategy, parity_status FROM feature_parity_results "
+            "ORDER BY feature_id"
+        ).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
+def cmd_quarantine(args):
+    """TC-OCRD-C5-01: List quarantined artifacts."""
+    conn = get_connection(Path(args.db_path))
+    try:
+        sql = "SELECT quarantine_id, artifact_path, severity, status, detected_at FROM quarantines WHERE 1=1"
+        params: list = []
+        if args.severity:
+            sql += " AND UPPER(severity) = UPPER(?)"
+            params.append(args.severity)
+        sql += " ORDER BY detected_at DESC"
+        rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+        if args.table:
+            _table_out(rows)
+        else:
+            _json_out(rows)
+    finally:
+        conn.close()
+
+
 def cmd_sql(args):
     # Safety: reject write operations
     stmt = args.statement.strip().upper()
@@ -315,6 +451,31 @@ def main():
     p.add_argument("--owner", help="Filter by owner")
     p.add_argument("--overdue", action="store_true", help="Show only overdue obligations")
 
+    # gap attempts (TC-OCRD-A1-04)
+    p = sub.add_parser("gap-attempts", help="Query gap attempt history")
+    p.add_argument("--gap-id", help="Filter by specific gap ID")
+    p.add_argument("--outcome", help="Filter by outcome (closed/failed/partial/rework)")
+    p.add_argument("--limit", type=int, default=20)
+
+    # TC-OCRD-C5-01: New control layer subcommands
+    p = sub.add_parser("control-layers", help="List control layers with status")
+    p.add_argument("--status", help="Filter by status (ACTIVE/ACTIVE_WITH_GAPS/PARTIAL/STALE/BROKEN)")
+
+    p = sub.add_parser("task-context", help="Get plan+sprint+gap context for a task ID")
+    p.add_argument("task_id", help="TC-* task identifier")
+
+    sub.add_parser("resume-context", help="Current sprint resume context")
+
+    p = sub.add_parser("trust-status", help="Look up trust registry for an artifact path")
+    p.add_argument("path", help="Artifact path to look up")
+
+    sub.add_parser("contradictions", help="List contradiction events")
+
+    sub.add_parser("parity-status", help="Show feature parity results summary")
+
+    p = sub.add_parser("quarantine", help="List quarantined artifacts")
+    p.add_argument("--severity", help="Filter by severity (CRITICAL/HIGH/MEDIUM/LOW)")
+
     args = parser.parse_args()
     commands = {
         "search": cmd_search,
@@ -327,6 +488,14 @@ def main():
         "stale": cmd_stale,
         "sql": cmd_sql,
         "obligations": cmd_obligations,
+        "gap-attempts": cmd_gap_attempts,
+        "control-layers": cmd_control_layers,
+        "task-context": cmd_task_context,
+        "resume-context": cmd_resume_context,
+        "trust-status": cmd_trust_status,
+        "contradictions": cmd_contradictions,
+        "parity-status": cmd_parity_status,
+        "quarantine": cmd_quarantine,
     }
     commands[args.command](args)
 

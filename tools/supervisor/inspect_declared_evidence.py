@@ -510,6 +510,22 @@ def inspect_declaration(decl: dict, repo_root: Path) -> dict:
             "related_work_items": artifact.get("related_work_items", []),
         })
 
+    # TC-OCRD-A5: Spot-check declared test counts against actual AST function count
+    try:
+        from evidence_verifier import spot_check_test_count
+        test_results = decl.get("test_results", {})
+        test_count_check = spot_check_test_count(
+            repo_root=repo_root,
+            changed_files=decl.get("changed_files", []),
+            declared_passed=test_results.get("passed", 0) if isinstance(test_results, dict) else 0,
+            declared_failed=test_results.get("failed", 0) if isinstance(test_results, dict) else 0,
+        )
+        inspection["test_count_check"] = test_count_check
+        if test_count_check.get("warning"):
+            inspection.setdefault("warnings", []).append(test_count_check["warning"])
+    except Exception:
+        pass  # Non-blocking — best-effort per Supreme Directive
+
     return inspection
 
 

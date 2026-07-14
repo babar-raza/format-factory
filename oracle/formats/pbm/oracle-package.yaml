@@ -1,157 +1,141 @@
-# PBM Oracle Package — Format Factory
-# Format: Portable Bitmap (Netpbm)
-# Authority: Netpbm manual specification
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch C
-# GAP-ORC-BACKFILL-C: Imaging family oracle packages
-
 oracle_id: oracle-pbm-v1
 format_id: pbm
-format_version: "PBM P1/P4 (Netpbm)"
+format_version: PBM P1/P4 (Netpbm)
 oracle_version: 1
 family: imaging
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: NETPBM-SPEC
-      title: "Netpbm Manual — PBM format"
-      body: "Netpbm contributors"
-      url: "https://netpbm.sourceforge.net/doc/pbm.html"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-      note: "PBM is 1-bit bitmap. Magic: P1 (ASCII) or P4 (binary). Width height then pixel data."
+  - id: NETPBM-SPEC
+    title: Netpbm Manual — PBM format
+    body: Netpbm contributors
+    url: https://netpbm.sourceforge.net/doc/pbm.html
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    note: 'PBM is 1-bit bitmap. Magic: P1 (ASCII) or P4 (binary). Width height then
+      pixel data.'
   authorized_fact_refs:
-    - "FACT-PBM-001"
-    - "FACT-PBM-002"
+  - FACT-PBM-001
+  - FACT-PBM-002
   requirement_refs: []
   capability_refs:
-    - "pbm:parse"
-    - "pbm:bitmap"
-  authority_summary: >
-    PBM files have P1 (ASCII) or P4 (binary) magic. Width and height header,
-    then bitmap pixel data. pbm:bitmap is the authoritative spec qname.
+  - pbm:parse
+  - pbm:bitmap
+  authority_summary: 'PBM files have P1 (ASCII) or P4 (binary) magic. Width and height
+    header, then bitmap pixel data. pbm:bitmap is the authoritative spec qname.
 
+    '
 corpus_refs:
-  - corpus_id: pbm-1x1-black
-    sample_ref: samples/by-format/pbm/valid/1x1-black.pbm
-    sha256: "sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "1x1 black pixel PBM bitmap"
-
+- corpus_id: pbm-1x1-black
+  sample_ref: samples/by-format/pbm/valid/1x1-black.pbm
+  sha256: sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 1x1 black pixel PBM bitmap
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not applicable for this oracle version
+- profile: DOMAIN_MODEL_MAPPING
+  reason: No typed domain model class for this oracle version
+- profile: SECURITY_ROBUSTNESS
+  reason: No injection surface in binary parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: pbm-valid-001
+  purpose: 1x1 PBM bitmap parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- P1 magic header, width, height, pixels
+  sample_ref: samples/by-format/pbm/valid/1x1-black.pbm
+  input_hash: sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not applicable for this oracle version"
-  - profile: DOMAIN_MODEL_MAPPING
-    reason: "No typed domain model class for this oracle version"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No injection surface in binary parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: pbm-valid-001
-    purpose: "1x1 PBM bitmap parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- P1 magic header, width, height, pixels"
-    sample_ref: samples/by-format/pbm/valid/1x1-black.pbm
-    input_hash: "sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: pbm-valid-002
-    purpose: "2x2 checker PBM parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- multi-pixel bitmap"
-    sample_ref: samples/by-format/pbm/valid/2x2-checker.pbm
-    input_hash: "sha256:98abbc0a4a530e7183d08546b6d49fcf42608356edb53a7457aa4204a4c3bdde"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: pbm-valid-003
-    purpose: "3x2 pattern PBM parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- bitmap rows/columns"
-    sample_ref: samples/by-format/pbm/valid/3x2-pattern.pbm
-    input_hash: "sha256:bd83b46b017f32630db07dbb3ae62460968d1f4faad4479b05d199930280cdf5"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
+- case_id: pbm-valid-002
+  purpose: 2x2 checker PBM parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- multi-pixel bitmap
+  sample_ref: samples/by-format/pbm/valid/2x2-checker.pbm
+  input_hash: sha256:98abbc0a4a530e7183d08546b6d49fcf42608356edb53a7457aa4204a4c3bdde
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: pbm-valid-003
+  purpose: 3x2 pattern PBM parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- bitmap rows/columns
+  sample_ref: samples/by-format/pbm/valid/3x2-pattern.pbm
+  input_hash: sha256:bd83b46b017f32630db07dbb3ae62460968d1f4faad4479b05d199930280cdf5
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
 invalid_cases:
-  - case_id: pbm-invalid-001
-    purpose: "Non-PBM file must raise error"
-    defect_class: wrong-format
-    malformed_boundary: "File lacks P1/P4 magic"
-    authority_refs:
-      - "NETPBM-SPEC -- magic required"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    security_relevance: false
-    notes: "No invalid PBM sample in corpus yet."
-
+- case_id: pbm-invalid-001
+  purpose: Non-PBM file must raise error
+  defect_class: wrong-format
+  malformed_boundary: File lacks P1/P4 magic
+  authority_refs:
+  - NETPBM-SPEC -- magic required
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: No invalid PBM sample in corpus yet.
 canonicalization:
   method: pbm-parse-dict
-  description: "Canonical form is parse_pbm dict with ok, width, height, pixel_count."
-  ordering_policy: "pixel order preserved"
-  whitespace_policy: "binary format — not applicable"
-  encoding_policy: "binary"
-
+  description: Canonical form is parse_pbm dict with ok, width, height, pixel_count.
+  ordering_policy: pixel order preserved
+  whitespace_policy: binary format — not applicable
+  encoding_policy: binary
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "binary format — not applicable"
-  metadata_tolerance: "None"
-  policy_summary: "parse_pbm must return dict with ok=True for valid samples"
-
+  ordering_tolerance: none
+  whitespace_tolerance: binary format — not applicable
+  metadata_tolerance: None
+  policy_summary: parse_pbm must return dict with ok=True for valid samples
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - pbm-magic-validator
-
+- pbm-magic-validator
 consumers:
-  - tests/python/pbm/test_pbm_document_model.py
+- tests/python/pbm/test_pbm_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

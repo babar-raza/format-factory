@@ -68,13 +68,14 @@ jobs:
       - name: Create output directories
         run: mkdir -p .local
       - name: Check skill attribution for src/ mutations
+        # TC-SGOV-W2-002: made BLOCKING (was continue-on-error=true). Pre-commit hook
+        # confirmed INSTALLED (TC-SGOV-W2-001). --allow-pre-policy exempts pre-governance commits.
         run: |
           python tools/governance/ci_skill_attribution_check.py \
             --base-ref "HEAD~1" \
             --head-ref "HEAD" \
             --allow-pre-policy \
             --output .local/ci-skill-attribution-report.json
-        continue-on-error: true  # WARN only until SKILL-GAP-008 (pre-commit hook) is closed
       - name: Upload skill attribution report
         if: always()
         uses: actions/upload-artifact@v4
@@ -164,6 +165,9 @@ jobs:
         run: pip install -e ".[dev]" && pip install zstandard
       - name: Run full test suite with coverage
         run: pytest --cov=src/python --cov-report=xml --cov-report=term-missing
+      - name: Playbook test suite
+        # TC-PBHP-005a: Explicit CI gate for playbook integration tests (regression control for TC-PBHP-002/003/004)
+        run: pytest tests/playbook/ -q --tb=short
       - name: Coverage threshold
         run: coverage report --fail-under=85
       - name: Upload coverage
@@ -262,3 +266,49 @@ jobs:
         run: pip install pyyaml
       - name: Check README count drift
         run: python tools/readme_sync/generate_root_status.py --mode drift-only
+
+  agent-parity-drift:
+    # TC-ACP-015-03 (FF-AGENTS-PARITY-001, 2026-07-13): Detect agent parity drift.
+    # Runs V183-V186 validators on PRs that touch agent configs, skill registry,
+    # capability registry, or inventory_capabilities.py.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run agent parity validators (V183-V186)
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'tools/supervisor')
+          from pathlib import Path
+          from governance_validators_agent_parity import (
+              validate_agent_opt_in_not_default,
+              validate_kilo_column_in_registry,
+              validate_canonical_contract_integrity,
+              validate_agent_bundles_current,
+          )
+          repo = Path('.')
+          decl = {}
+          failed = []
+          warned = []
+          for fn in [validate_agent_opt_in_not_default, validate_kilo_column_in_registry,
+                     validate_canonical_contract_integrity, validate_agent_bundles_current]:
+              r = fn(decl, repo)
+              vid = r.get('validator', '?')
+              result = r.get('result', 'PASS')
+              print(f'{vid}: {result} — {r[\"summary\"][:100]}')
+              if result == 'FAIL':
+                  failed.append(vid)
+              elif result == 'WARN':
+                  warned.append(vid)
+          if failed:
+              print(f'BLOCKING: {len(failed)} validator(s) FAIL: {failed}')
+              sys.exit(1)
+          if warned:
+              print(f'Advisory: {len(warned)} validator(s) WARN (non-blocking): {warned}')
+          print('Agent parity drift check PASSED')
+          "

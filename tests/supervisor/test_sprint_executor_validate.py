@@ -295,3 +295,82 @@ class TestCleanDeclarationPasses:
 
         rc, data = _validate(test_file, repair=False)
         assert rc == 0, f"Expected PASS for full valid declaration: {data}"
+
+
+class TestPersistentPropertyRoundtrip:
+    """TC-FGSQ-008: Phase 15 persistent-property roundtrip requirement checks."""
+
+    def test_warn_persistent_property_missing_roundtrip_path(self, tmp_path):
+        """PERSISTENT_PROPERTY work item without round_trip_test_path → WARN."""
+        doc = dict(_VALID_BASE)
+        doc["planned_work_items"] = [{
+            "item_id": "TC-TEST-001",
+            "title": "Add setter",
+            "status": "completed",
+            "acceptance_criteria": "Setter works",
+            "work_type": "PERSISTENT_PROPERTY",
+        }]
+        test_file = tmp_path / "pp_no_rtp.yaml"
+        _write_yaml(test_file, doc)
+        rc, data = _validate(test_file, repair=False)
+        assert rc == 0, "Missing round_trip_test_path should not FAIL (WARN only)"
+        warns = data.get("persistent_property_warnings", [])
+        assert any("round_trip_test_path is absent" in w for w in warns), warns
+
+    def test_pass_persistent_property_with_valid_roundtrip_test(self, tmp_path):
+        """PERSISTENT_PROPERTY with a valid Save/Load roundtrip test → no warning."""
+        # Create fixture inside repo so relative path resolves correctly
+        rel_path = "tests/supervisor/_pp_roundtrip_fixture.cs"
+        rt_test = _REPO / rel_path
+        rt_test.write_text("void Test() { doc.Save(path); doc.Load(path); }", encoding="utf-8")
+        try:
+            doc = dict(_VALID_BASE)
+            doc["planned_work_items"] = [{
+                "item_id": "TC-TEST-002",
+                "title": "Add setter with roundtrip",
+                "status": "completed",
+                "acceptance_criteria": "Setter works",
+                "work_type": "PERSISTENT_PROPERTY",
+                "round_trip_test_path": rel_path,
+            }]
+            test_file = tmp_path / "pp_valid_rtp.yaml"
+            _write_yaml(test_file, doc)
+            rc, data = _validate(test_file, repair=False)
+            warns = data.get("persistent_property_warnings", [])
+            # File exists and contains Save+Load → no warning about this item
+            assert not any("TC-TEST-002" in w for w in warns), warns
+        finally:
+            rt_test.unlink(missing_ok=True)
+
+    def test_warn_persistent_property_roundtrip_file_missing(self, tmp_path):
+        """PERSISTENT_PROPERTY round_trip_test_path points to non-existent file → WARN."""
+        doc = dict(_VALID_BASE)
+        doc["planned_work_items"] = [{
+            "item_id": "TC-TEST-003",
+            "title": "Setter with missing test",
+            "status": "completed",
+            "acceptance_criteria": "Works",
+            "work_type": "PERSISTENT_PROPERTY",
+            "round_trip_test_path": "nonexistent/RoundtripTest.cs",
+        }]
+        test_file = tmp_path / "pp_missing_file.yaml"
+        _write_yaml(test_file, doc)
+        rc, data = _validate(test_file, repair=False)
+        warns = data.get("persistent_property_warnings", [])
+        assert any("does not exist on disk" in w for w in warns), warns
+
+    def test_no_warning_for_governance_change_work_type(self, tmp_path):
+        """GOVERNANCE_CHANGE work items should not trigger roundtrip warnings."""
+        doc = dict(_VALID_BASE)
+        doc["planned_work_items"] = [{
+            "item_id": "TC-GOV-001",
+            "title": "Add validator",
+            "status": "completed",
+            "acceptance_criteria": "Validator runs",
+            "work_type": "GOVERNANCE_CHANGE",
+        }]
+        test_file = tmp_path / "gov_change.yaml"
+        _write_yaml(test_file, doc)
+        rc, data = _validate(test_file, repair=False)
+        warns = data.get("persistent_property_warnings", [])
+        assert warns == [], warns

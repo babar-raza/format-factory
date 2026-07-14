@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-26"
+version: "1.1"
+last-updated: "2026-07-11"
 phase-available: "all"
 gate-required: null
 created-by: TC-LP-023
@@ -41,6 +41,12 @@ If §36 is missing or stale (no entry for this session), write it first.
 - `task_was_active`: task_id must be in §29 before closure
 - `evidence_provided`: at least one evidence_path must be supplied
 - `register_updated`: task-register.yaml must show status=CLOSED after update
+- `skill_receipt_pre_close_check` (TC-SGOV-W3-002, V-SGF-002): Before closing any
+  PRODUCT_SOURCE layer task, verify that a skill execution receipt exists in
+  `.local/skill-execution-receipts/` for each declared skill. If the receipts directory
+  is absent or no receipt exists for a declared skill, emit WARN (do NOT block closure —
+  EP-004 is still PROMPT_ONLY enforcement). Record the warning in the verification log
+  entry at §35.
 
 ## Required Inputs
 

@@ -1,20 +1,20 @@
 schema_version: '1.0'
-generated_at: '2026-07-10T17:33:54.289253'
+generated_at: '2026-07-14T00:26:20.610916'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 2c2a15b1
+  head: b6c95658
   status:
-    modified_count: 27
-    untracked_count: 2
+    modified_count: 273
+    untracked_count: 368
     staged_count: 1
-    total_changed: 30
+    total_changed: 642
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FOSS-NDJSON-MUTATION-001
+  sprint_id: unknown
   run_id: unknown
   autonomous_continue: true
-  iteration: 11
+  iteration: 6
   max_iterations: 12
   hard_stops: []
   rework_items: []
@@ -36,8 +36,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 123
-  active_skills: 120
+  total_skills: 149
+  active_skills: 146
   skill_ids:
   - add-spec-analytics-function
   - add-dogfood-export
@@ -101,6 +101,12 @@ skill_registry:
   - validate-mutation-guard
   - validate-product-code-ledger
   - validate-skill-contracts
+  - run-lifecycle-audit
+  - validate-evidence-declaration
+  - build-supervisor-packet
+  - run-governance-validators
+  - reset-track-signal
+  - validate-missing-skill-workflow
   - validate-skill-transcript
   - verify-dogfood-path
   - rollback-and-recovery
@@ -113,6 +119,11 @@ skill_registry:
   - check-source-loc
   - ingest-spec-sal
   - run-oracle
+  - calculate-oracle-coverage
+  - detect-stale-oracles
+  - onboard-future-format-oracle
+  - generate-oracle-verdict-report
+  - evaluate-roundtrip-oracle
   - identify-primary-layer
   - create-permanent-layer-plan
   - update-layer-current-state
@@ -146,10 +157,15 @@ skill_registry:
   - certification-generate-exception-tests
   - certification-fix-weak-assertions
   - certification-generate-security-tests
+  - certification-ci-gate
+  - certification-cross-language-parity
+  - certification-mutation-tester
+  - certification-performance-benchmark
   - select-deepening-lane
   - inventory-format-dom
   - check-dom-contract
   - query-control-index
+  - allocate-sprint-number
   - validate-playbook
   - replay-acquisition-playbook
   - export-review-queue
@@ -159,11 +175,21 @@ skill_registry:
   - product-source-task
   - documentation-structure-migration
   - found-issue-ownership
+  - discover-existing-control-layers
+  - inventory-existing-control-features
+  - verify-control-feature-parity
+  - build-task-context
+  - build-resume-context
+  - build-product-context
+  - rebuild-operational-index
+  - validate-operational-index
+  - quarantine-invalid-artifact
+  - audit-enhanced-control-layer
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 2450
-  governed_changes: 901
+  total_entries: 2748
+  governed_changes: 971
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

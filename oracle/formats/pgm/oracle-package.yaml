@@ -1,157 +1,142 @@
-# PGM Oracle Package — Format Factory
-# Format: Portable Graymap (Netpbm)
-# Authority: Netpbm manual specification
-# Oracle version: 1
-# Status: VERIFIED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch C
-# GAP-ORC-BACKFILL-C: Imaging family oracle packages
-
 oracle_id: oracle-pgm-v1
 format_id: pgm
-format_version: "PGM P2/P5 (Netpbm)"
+format_version: PGM P2/P5 (Netpbm)
 oracle_version: 1
 family: imaging
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: NETPBM-SPEC
-      title: "Netpbm Manual — PGM format"
-      body: "Netpbm contributors"
-      url: "https://netpbm.sourceforge.net/doc/pgm.html"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-      note: "PGM is grayscale. Magic: P2 (ASCII) or P5 (binary). Width height maxval then pixels."
+  - id: NETPBM-SPEC
+    title: Netpbm Manual — PGM format
+    body: Netpbm contributors
+    url: https://netpbm.sourceforge.net/doc/pgm.html
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    note: 'PGM is grayscale. Magic: P2 (ASCII) or P5 (binary). Width height maxval
+      then pixels.'
   authorized_fact_refs:
-    - "FACT-PGM-001"
-    - "FACT-PGM-002"
+  - FACT-PGM-001
+  - FACT-PGM-002
   requirement_refs: []
   capability_refs:
-    - "pgm:parse"
-    - "pgm:raster"
-  authority_summary: >
-    PGM files have P2 (ASCII) or P5 (binary) magic, width, height, maxval header,
-    then grayscale pixel data. pgm:raster is the authoritative spec qname.
+  - pgm:parse
+  - pgm:raster
+  authority_summary: 'PGM files have P2 (ASCII) or P5 (binary) magic, width, height,
+    maxval header, then grayscale pixel data. pgm:raster is the authoritative spec
+    qname.
 
+    '
 corpus_refs:
-  - corpus_id: pgm-1x1-white
-    sample_ref: samples/by-format/pgm/valid/1x1-white.pgm
-    sha256: "sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "1x1 white pixel PGM grayscale"
-
+- corpus_id: pgm-1x1-white
+  sample_ref: samples/by-format/pgm/valid/1x1-white.pgm
+  sha256: sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 1x1 white pixel PGM grayscale
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not applicable for this oracle version
+- profile: DOMAIN_MODEL_MAPPING
+  reason: No typed domain model class for this oracle version
+- profile: SECURITY_ROBUSTNESS
+  reason: No injection surface in binary parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: pgm-valid-001
+  purpose: 1x1 PGM grayscale parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- P2 magic header, width, height, maxval, pixels
+  sample_ref: samples/by-format/pgm/valid/1x1-white.pgm
+  input_hash: sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not applicable for this oracle version"
-  - profile: DOMAIN_MODEL_MAPPING
-    reason: "No typed domain model class for this oracle version"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No injection surface in binary parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: pgm-valid-001
-    purpose: "1x1 PGM grayscale parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- P2 magic header, width, height, maxval, pixels"
-    sample_ref: samples/by-format/pgm/valid/1x1-white.pgm
-    input_hash: "sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: pgm-valid-002
-    purpose: "2x2 gradient PGM parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- multi-pixel grayscale"
-    sample_ref: samples/by-format/pgm/valid/2x2-gradient.pgm
-    input_hash: "sha256:f49bf3c7ff65fbcb8e35501dcca8f3b98731a63df0a7b3d509512d0c191bebcb"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: pgm-valid-003
-    purpose: "3x1 ramp PGM parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "NETPBM-SPEC -- grayscale multi-column"
-    sample_ref: samples/by-format/pgm/valid/3x1-ramp.pgm
-    input_hash: "sha256:a2b234e456a6b5410f274f3e18180395f05ee06a1f4aeb48705643c73cead052"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: NETPBM-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
+- case_id: pgm-valid-002
+  purpose: 2x2 gradient PGM parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- multi-pixel grayscale
+  sample_ref: samples/by-format/pgm/valid/2x2-gradient.pgm
+  input_hash: sha256:f49bf3c7ff65fbcb8e35501dcca8f3b98731a63df0a7b3d509512d0c191bebcb
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: pgm-valid-003
+  purpose: 3x1 ramp PGM parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NETPBM-SPEC -- grayscale multi-column
+  sample_ref: samples/by-format/pgm/valid/3x1-ramp.pgm
+  input_hash: sha256:a2b234e456a6b5410f274f3e18180395f05ee06a1f4aeb48705643c73cead052
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: NETPBM-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
 invalid_cases:
-  - case_id: pgm-invalid-001
-    purpose: "Non-PGM file must raise error"
-    defect_class: wrong-format
-    malformed_boundary: "File lacks P2/P5 magic"
-    authority_refs:
-      - "NETPBM-SPEC -- magic required"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    security_relevance: false
-    notes: "No invalid PGM sample in corpus yet."
-
+- case_id: pgm-invalid-001
+  purpose: Non-PGM file must raise error
+  defect_class: wrong-format
+  malformed_boundary: File lacks P2/P5 magic
+  authority_refs:
+  - NETPBM-SPEC -- magic required
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: No invalid PGM sample in corpus yet.
 canonicalization:
   method: pgm-parse-dict
-  description: "Canonical form is parse_pgm dict with ok, width, height, maxval, pixel_count."
-  ordering_policy: "pixel order preserved"
-  whitespace_policy: "binary format — not applicable"
-  encoding_policy: "binary"
-
+  description: Canonical form is parse_pgm dict with ok, width, height, maxval, pixel_count.
+  ordering_policy: pixel order preserved
+  whitespace_policy: binary format — not applicable
+  encoding_policy: binary
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "binary format — not applicable"
-  metadata_tolerance: "None"
-  policy_summary: "parse_pgm must return dict with ok=True for valid samples"
-
+  ordering_tolerance: none
+  whitespace_tolerance: binary format — not applicable
+  metadata_tolerance: None
+  policy_summary: parse_pgm must return dict with ok=True for valid samples
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - pgm-magic-validator
-
+- pgm-magic-validator
 consumers:
-  - tests/python/pgm/test_pgm_document_model.py
+- tests/python/pgm/test_pgm_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

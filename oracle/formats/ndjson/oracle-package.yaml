@@ -1,207 +1,170 @@
-# NDJSON Oracle Package — Format Factory
-# Format: Newline Delimited JSON
-# Authority: ndjson.org informal spec, Python stdlib json module (reference impl)
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Pilot 7 (Stdlib Reference)
-# TC-LA-003: Stdlib-reference oracle for structured-text formats
-
 oracle_id: oracle-ndjson-v1
 format_id: ndjson
-format_version: "ndjson.org informal spec"
+format_version: ndjson.org informal spec
 oracle_version: 1
 family: text
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
-# ==============================================================================
-# AUTHORITY
-# ==============================================================================
 authority:
   specification_refs:
-    - id: NDJSON-SPEC
-      title: "Newline Delimited JSON (ndjson.org informal spec)"
-      body: "ndjson.org"
-      url: "https://github.com/ndjson/ndjson-spec"
-      legal_category: 1
-      authority_class: SPEC_INFORMATIVE
-      note: "Not an IETF RFC; ndjson.org is the de-facto community spec."
-    - id: PYTHON-JSON-STDLIB
-      title: "Python json module (stdlib reference implementation)"
-      body: PSF
-      url: "https://docs.python.org/3/library/json.html"
-      legal_category: 1
-      authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-      note: >
-        Each line in NDJSON is parsed by json.loads(). Python stdlib json module
-        is used as the ACCEPTED_EMPIRICAL_EVIDENCE reference for per-record parsing.
+  - id: NDJSON-SPEC
+    title: Newline Delimited JSON (ndjson.org informal spec)
+    body: ndjson.org
+    url: https://github.com/ndjson/ndjson-spec
+    legal_category: 1
+    authority_class: SPEC_INFORMATIVE
+    note: Not an IETF RFC; ndjson.org is the de-facto community spec.
+  - id: PYTHON-JSON-STDLIB
+    title: Python json module (stdlib reference implementation)
+    body: PSF
+    url: https://docs.python.org/3/library/json.html
+    legal_category: 1
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    note: 'Each line in NDJSON is parsed by json.loads(). Python stdlib json module
+      is used as the ACCEPTED_EMPIRICAL_EVIDENCE reference for per-record parsing.
+
+      '
   authorized_fact_refs:
-    - "FACT-NDJSON-001"
-    - "FACT-NDJSON-002"
+  - FACT-NDJSON-001
+  - FACT-NDJSON-002
   requirement_refs: []
   capability_refs:
-    - "ndjson:parse"
-    - "ndjson:record"
-  authority_summary: >
-    NDJSON is informally specified at ndjson.org. Each line must be a valid JSON value.
-    Python stdlib json.loads() provides authoritative reference parsing for each record.
+  - ndjson:parse
+  - ndjson:record
+  authority_summary: 'NDJSON is informally specified at ndjson.org. Each line must
+    be a valid JSON value. Python stdlib json.loads() provides authoritative reference
+    parsing for each record.
 
-# ==============================================================================
-# CORPUS REFERENCES
-# ==============================================================================
+    '
 corpus_refs:
-  - corpus_id: ndjson-minimal
-    sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
-    sha256: "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "3 JSON records, one per line"
-
-# ==============================================================================
-# PROFILES
-# ==============================================================================
+- corpus_id: ndjson-minimal
+  sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
+  sha256: sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 3 JSON records, one per line
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- MUTATION_BEHAVIOR
+- SAME_FORMAT_SERIALIZATION
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib json module is the per-record reference; no third-party tool
+    required
+- profile: LOSSLESS_TRANSFORMATION
+  reason: NDJSON is a text format, not a compression format
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection attack surface in parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: NDJSON has no extension mechanism beyond JSON
+- profile: EXPORT_CONFORMANCE
+  reason: NDJSON export to other formats not a primary operation
+- profile: NORMALIZATION
+  reason: No normalization required for NDJSON
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: ndjson-valid-001
+  purpose: Minimal NDJSON file parses without error
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json.loads() per line
+  sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
+  input_hash: sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: record_count
+    value_min: 1
+    authority: PYTHON-JSON-STDLIB
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
+- case_id: ndjson-valid-002
+  purpose: NDJSON record count matches Python stdlib line-by-line json.loads
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json.loads() per non-empty line
+  sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
+  input_hash: sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: record_count
+    value: 3
+    authority: PYTHON-JSON-STDLIB
+    derivation: len([json.loads(l) for l in open(f) if l.strip()]) == 3
+  applicable_profiles:
+  - PARSE_VALIDITY
   - DOMAIN_MODEL_MAPPING
-  - MUTATION_BEHAVIOR
-  - SAME_FORMAT_SERIALIZATION
+- case_id: ndjson-valid-003
+  purpose: NdjsonDocument.from_file() returns model with spec_qname=ndjson:record
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - shared/qname-registry/ndjson.yaml -- ndjson:record entry
+  sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
+  input_hash: sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: ndjson:record
+    authority: NDJSON-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: ndjson-valid-004
+  purpose: Write+reload NDJSON preserves record count (roundtrip)
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json roundtrip
+  sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
+  input_hash: sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - record_count
+  applicable_profiles:
   - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Python stdlib json module is the per-record reference; no third-party tool required"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "NDJSON is a text format, not a compression format"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No entity injection attack surface in parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "NDJSON has no extension mechanism beyond JSON"
-  - profile: EXPORT_CONFORMANCE
-    reason: "NDJSON export to other formats not a primary operation"
-  - profile: NORMALIZATION
-    reason: "No normalization required for NDJSON"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-
-# ==============================================================================
-# VALID CASES
-# ==============================================================================
-valid_cases:
-
-  - case_id: ndjson-valid-001
-    purpose: "Minimal NDJSON file parses without error"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-JSON-STDLIB -- json.loads() per line"
-    sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
-    input_hash: "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: record_count
-        value_min: 1
-        authority: PYTHON-JSON-STDLIB
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: ndjson-valid-002
-    purpose: "NDJSON record count matches Python stdlib line-by-line json.loads"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-JSON-STDLIB -- json.loads() per non-empty line"
-    sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
-    input_hash: "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: record_count
-        value: 3
-        authority: PYTHON-JSON-STDLIB
-        derivation: "len([json.loads(l) for l in open(f) if l.strip()]) == 3"
-    applicable_profiles:
-      - PARSE_VALIDITY
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: ndjson-valid-003
-    purpose: "NdjsonDocument.from_file() returns model with spec_qname=ndjson:record"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "shared/qname-registry/ndjson.yaml -- ndjson:record entry"
-    sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
-    input_hash: "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: spec_qname
-        value: "ndjson:record"
-        authority: NDJSON-SPEC
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
-  - case_id: ndjson-valid-004
-    purpose: "Write+reload NDJSON preserves record count (roundtrip)"
-    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
-    authority_refs:
-      - "PYTHON-JSON-STDLIB -- json roundtrip"
-    sample_ref: samples/by-format/ndjson/valid/minimal.ndjson
-    input_hash: "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790"
-    expected_parse_result: SUCCESS
-    roundtrip_fields_equal:
-      - record_count
-    applicable_profiles:
-      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
-      - SAME_FORMAT_SERIALIZATION
-
-# ==============================================================================
-# INVALID CASES
-# ==============================================================================
+  - SAME_FORMAT_SERIALIZATION
 invalid_cases:
-
-  - case_id: ndjson-invalid-001
-    purpose: "File with malformed JSON on a line must raise error or skip the line"
-    defect_class: malformed-json-record
-    malformed_boundary: "One or more lines are not valid JSON"
-    authority_refs:
-      - "PYTHON-JSON-STDLIB -- json.loads() raises JSONDecodeError"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "JSONDecodeError or ValueError"
-    partial_recovery_allowed: false
-    security_relevance: false
-    notes: "No invalid NDJSON sample in corpus yet. This case is defined for future corpus addition."
-
-# ==============================================================================
-# CANONICALIZATION
-# ==============================================================================
+- case_id: ndjson-invalid-001
+  purpose: File with malformed JSON on a line must raise error or skip the line
+  defect_class: malformed-json-record
+  malformed_boundary: One or more lines are not valid JSON
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json.loads() raises JSONDecodeError
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: JSONDecodeError or ValueError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: No invalid NDJSON sample in corpus yet. This case is defined for future corpus
+    addition.
 canonicalization:
   method: ndjson-record-list
-  description: >
-    Canonical form is a list of Python dicts (or JSON primitives), one per line.
-    Each record is independently JSON-parseable. Empty lines are ignored.
-  ordering_policy: "record order preserved"
-  whitespace_policy: "leading/trailing whitespace on each line ignored"
-  encoding_policy: "UTF-8"
+  description: 'Canonical form is a list of Python dicts (or JSON primitives), one
+    per line. Each record is independently JSON-parseable. Empty lines are ignored.
 
-# ==============================================================================
-# TOLERANCE POLICY
-# ==============================================================================
+    '
+  ordering_policy: record order preserved
+  whitespace_policy: leading/trailing whitespace on each line ignored
+  encoding_policy: UTF-8
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none -- record order must be preserved"
-  whitespace_tolerance: "trailing whitespace and blank lines are ignored"
-  metadata_tolerance: "None"
-  policy_summary: "Record count must match Python stdlib json.loads() line-by-line output"
-
-# ==============================================================================
-# COMPARATORS AND VALIDATORS
-# ==============================================================================
+  ordering_tolerance: none -- record order must be preserved
+  whitespace_tolerance: trailing whitespace and blank lines are ignored
+  metadata_tolerance: None
+  policy_summary: Record count must match Python stdlib json.loads() line-by-line
+    output
 comparators:
-  - model-property-comparator
-  - record-count-comparator
-
+- model-property-comparator
+- record-count-comparator
 validators:
-  - ndjson-line-validator
-
+- ndjson-line-validator
 consumers:
-  - tests/python/ndjson/test_ndjson_roundtrip.py
-  - tests/python/ndjson/test_ndjson_parser.py
+- tests/python/ndjson/test_ndjson_roundtrip.py
+- tests/python/ndjson/test_ndjson_parser.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

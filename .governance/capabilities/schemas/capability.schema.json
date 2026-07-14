@@ -26,7 +26,11 @@
         },
         "codex": {
           "type": "boolean",
-          "description": "True if skill is in skill-registry (all skills default to true per AGENTS.md §A2)"
+          "description": "True only if codex_supported: true is explicitly set in skill-registry.yaml (opt-in, TC-ACP-002)"
+        },
+        "kilo": {
+          "type": "boolean",
+          "description": "True only if kilo_supported: true is explicitly set in skill-registry.yaml (opt-in, TC-ACP-002)"
         },
         "ci": {
           "type": "boolean",
@@ -75,7 +79,7 @@
     },
     "codex_excluded": {
       "type": "boolean",
-      "description": "If true, this skill is explicitly excluded from Codex discovery (default false)"
+      "description": "DEPRECATED (TC-ACP-002): replaced by codex_supported opt-in in skill-registry.yaml. Field retained for backwards compat only."
     }
   },
   "additionalProperties": false

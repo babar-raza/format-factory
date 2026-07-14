@@ -567,9 +567,30 @@ routes:
       MISSING_SKILL_CAPABILITY: No registered skill invokes human-free-rectification.md.
       Use the prompt asset directly. A skill can be created from the prompt file.
 
+  - route_id: skill_governance_discovery
+    description: >
+      Execute the missing-skill discovery and resolution workflow when a governed
+      operation has no registered skill. Evaluates all candidates in
+      skill_resolution_order (skill-only-policy.yaml §4) and produces a
+      REUSE | COMPOSE | REPAIR | EXTEND | CREATE decision with documented rejections.
+    preferred_skill_ids:
+      - validate-missing-skill-workflow
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - capability_description
+      - operation_type
+      - search_results
+      - rejection_reasons
+    evidence_path_pattern: ".local/taskcards/SKILL-GAP-*.yaml"
+    note: >
+      Added TC-SGOV-W4-001 (2026-07-11): closes the UNREGISTERED finding from
+      validate_plan_skill_routes.py run on imperative-floating-book.md.
+
 gap_count:
-  total_routes: 34
-  active_routes: 33
+  total_routes: 35
+  active_routes: 34
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001

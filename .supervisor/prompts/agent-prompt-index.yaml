@@ -392,6 +392,85 @@ agent_prompt_index:
     fallback: "run /check-source-loc to identify LOC violations; run governance validators manually"
     espanso_gap_id: GAP-ESP-006
 
+  - prompt_id: ESP-PROMPT-9
+    intents:
+      - product_deepening
+      - format_feature_expansion
+      - dom_deepening
+      - two_lane_product_deepening
+    purpose: "Two-lane product deepening for autonomous format deepening sprints"
+    when_to_use: "When check_continuation returns CONTINUE and next-sprint.md targets product deepening. No per-chat plan active."
+    when_not_to_use: "When a per-chat plan is active. When GOV_BLOCK items exist in rework_items. When EP-4 machinery readiness fails."
+    prerequisites:
+      - no per-chat plan active
+      - continuation-signal autonomous_continue=true
+      - oracle VERIFIED or CASES_DEFINED for target format
+      - governance validators pass
+    capabilities: [format-feature-expansion, add-python-api, select-deepening-lane]
+    mutating: true
+    allowed_paths:
+      - src/python/{format}/**
+    forbidden_paths:
+      - src/net/
+      - CLAUDE.md
+    context_profile: full
+    command: null
+    skill: format-feature-expansion
+    prompt_asset: .supervisor/prompts/product-deepening.md
+    evidence_output: "new/updated src/python/{format}/ files with per-item evidence"
+    espanso_gap_id: GAP-ESP-009
+
+  - prompt_id: ESP-PROMPT-10
+    intents:
+      - format_readme_update
+      - per_format_documentation
+      - readme_count_repair
+    purpose: "Per-format README forensic investigation and preservation-first enhancement"
+    when_to_use: "When a format's README.md has stale counts or missing API documentation"
+    when_not_to_use: "Root README.md (use ESP-PROMPT-2). No format README exists yet."
+    prerequisites:
+      - src/python/{format}/ exists
+    capabilities: []
+    mutating: true
+    allowed_paths:
+      - src/python/{format}/README.md
+    forbidden_paths:
+      - README.md
+      - src/python/{format}/*.py
+    context_profile: full
+    command: null
+    skill: null
+    prompt_asset: .supervisor/prompts/format-readme-governance.md
+    evidence_output: "src/python/{format}/README.md updated with correct counts"
+    espanso_gap_id: GAP-ESP-010
+
+  - prompt_id: ESP-PROMPT-11
+    intents:
+      - analytics_extraction
+      - monolith_repair
+      - gov_block_resolution
+      - analytics_separation
+    purpose: "Governed 5-step analytics extraction from monolithic codec files"
+    when_to_use: "When GOV_BLOCK:monolith_detection_validator fires. When a format codec LOC > 800 due to co-located analytics."
+    when_not_to_use: "When format_analytics.py already exists. When GOV_BLOCK is not present."
+    prerequisites:
+      - GOV_BLOCK item in check_continuation rework_items
+      - docs/code-quality/production-library-standard-v2.md §8.1 readable
+    capabilities: [extract-analytics-from-monolith]
+    mutating: true
+    allowed_paths:
+      - src/python/{format}/{format}_analytics.py
+      - src/python/{format}/__init__.py
+      - tests/{format}/test_{format}_analytics.py
+    forbidden_paths:
+      - registry/source-structure-baseline.json baseline_loc_cap
+    context_profile: full
+    command: null
+    skill: extract-analytics-from-monolith
+    prompt_asset: .supervisor/prompts/analytics-migration.md
+    evidence_output: "{format}_analytics.py created; governance_validator_runner exits 0"
+    espanso_gap_id: GAP-ESP-011
+
 # === QUICK ROUTING DECISION TABLE ===
 # For fast agent routing without reading the full index:
 
@@ -419,6 +498,15 @@ routing_decision_table:
 
   - condition: "src/ code quality needs governance-enforced improvement"
     action: "use ESP-PROMPT-8 (production-standards-enforcement.md)"
+
+  - condition: "product deepening sprint authorized (check_continuation CONTINUE, no per-chat plan)"
+    action: "use ESP-PROMPT-9 (product-deepening.md)"
+
+  - condition: "a format's per-format README.md is stale or missing API counts"
+    action: "use ESP-PROMPT-10 (format-readme-governance.md)"
+
+  - condition: "GOV_BLOCK:monolith_detection_validator or GOV_BLOCK:validate_analytics_naming_enforced in rework_items"
+    action: "use ESP-PROMPT-11 (analytics-migration.md)"
 
   - condition: "post-sprint audit needed"
     action: "use PSL-PROMPT-1 (prompt1-post-sprint-audit.md)"

@@ -31,6 +31,7 @@ from pathlib import Path
 from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
 
 SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
+NEXT_WORK_ITEMS_PATH = ".local/supervisor/next-work-items.json"
 SKILL_REGISTRY_PATH = ".supervisor/skill-registry.yaml"
 PRODUCT_CODE_LEDGER_PATH = "reports/r90/product-code-change-ledger.json"
 CONTEXT_PACK_PATH = ".supervisor/context-pack.yaml"
@@ -439,7 +440,7 @@ def synthesize_stream_tasks(stream: str, review: dict, contradictions: dict, rep
     return tasks
 
 
-def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path, stream: str = "mainstream") -> list[dict]:
+def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path, stream: str = "mainstream", drift_findings_path: "Path | None" = None) -> list[dict]:
     """Generate sprint-specific tasks from gate states, open taskcards, and phase context.
     Returns list of TM-schema-compatible task dicts.
 
@@ -621,86 +622,54 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
         })
         task_seq += 1
 
-    # 4. Product-factory lanes from governed selected gaps, with legacy fixture fallback
-    selected_gaps = [
-        gap for gap in load_selected_product_gaps(repo_root)
-        if not gap.get("external_gate")
-    ]
-    for gap in selected_gaps[:5]:
-        gap_id = gap.get("gap_id", "selected-gap")
-        product = gap.get("format", "unknown")
-        capability = gap.get("capability_path", gap_id)
-        skill = gap.get("governed_skill") or "generated execution handoff"
-        lane = "C4" if "dogfood" in capability.lower() else "C3"
-        tasks.append({
-            "task_id": f"TASK-{task_seq:03d}",
-            "title": f"Product deepening: {gap_id} — {capability[:60]}",
-            "description": f"Product target: {product}. Product objective: {capability}. "
-                           f"Use {skill} from {SKILL_REGISTRY_PATH}; ledger any src edit in "
-                           f"{PRODUCT_CODE_LEDGER_PATH}.",
-            "status": "pending",
-            "ff_doc_ref": SELECTED_PRODUCT_GAPS_PATH,
-            "supervisor_task_ref": gap_id,
-            "acceptance_evidence": f"New tests pass for {gap_id}; capability implemented or documented",
-            "validation_command": "pytest tests/ -x -q",
-            "non_authoritative": True,
-            "lane": lane,
-        })
-        task_seq += 1
-
-    gap_fixtures = list((repo_root / ".supervisor" / "fixtures").glob("*-poc-gap-extraction.yaml")) if (repo_root / ".supervisor" / "fixtures").exists() else []
-    if not selected_gaps and gap_fixtures:
-        # Use the most recent fixture
-        latest_fixture = max(gap_fixtures, key=lambda p: p.stat().st_mtime)
+    # 4. Product-factory lanes from next-work-items.json (TC-MA2-PIPE-001-03)
+    # next-work-items.json is the SOLE authority for governed product work.
+    # The legacy selected-product-gaps.json + fixture fallback is removed.
+    _nwi_path = repo_root / NEXT_WORK_ITEMS_PATH
+    _nwi_items: list[dict] = []
+    if _nwi_path.exists():
         try:
-            import yaml
-            gap_data = yaml.safe_load(latest_fixture.read_text(encoding="utf-8"))
-        except (ImportError, Exception):
-            gap_data = {}
+            _nwi = json.loads(_nwi_path.read_text(encoding="utf-8"))
+            _nwi_items = _nwi.get("items", [])
+        except Exception as _nwi_err:
+            print(f"  WARNING: Could not read {NEXT_WORK_ITEMS_PATH}: {_nwi_err}")
 
-        report = gap_data.get("poc_gap_report", {})
-        # Extract R-next targets from summary
-        r_next_targets = report.get("summary", {}).get("r86_targets", [])
-        if not r_next_targets:
-            # Fall back: collect all gaps with suggested_sprint matching next sprint number
-            for gap_list_key in ("capability_gaps", "dogfood_gaps", "documentation_gaps"):
-                for gap in report.get(gap_list_key, []):
-                    gap_id = gap.get("id", "")
-                    suggested = gap.get("suggested_sprint", "").upper()
-                    # Accept any gap not on HOLD
-                    if suggested not in ("HOLD", ""):
-                        r_next_targets.append(gap_id)
-
-        all_gaps = {}
-        for gap_list_key in ("capability_gaps", "dogfood_gaps", "test_gaps", "documentation_gaps"):
-            for gap in report.get(gap_list_key, []):
-                all_gaps[gap.get("id", "")] = gap
-
-        # Validate gap IDs against canonical gap-ledger to prevent phantoms
-        valid_gap_ids = _load_gap_ledger_ids(repo_root)
-        for gap_id in r_next_targets[:5]:
-            gap = all_gaps.get(gap_id, {})
-            if not gap:
-                continue
-            if valid_gap_ids and gap_id not in valid_gap_ids:
-                continue  # Skip phantom gap IDs not in canonical ledger
-            product = gap.get("product", gap.get("format", "unknown"))
-            capability = gap.get("capability", gap.get("description", gap_id))
+    if _nwi_items:
+        for item in _nwi_items[:5]:
+            item_id = item.get("item_id", "unknown")
+            lane_raw = item.get("lane", "product")
+            lane = "C4" if "dogfood" in lane_raw.lower() else "C3"
             tasks.append({
                 "task_id": f"TASK-{task_seq:03d}",
-                "title": f"Product deepening: {gap_id} — {capability[:60]}",
-                "description": f"Product target: {product}. Product objective: {capability}. "
-                               f"{gap.get('note', '')} Select from {SELECTED_PRODUCT_GAPS_PATH}; "
-                               f"use {SKILL_REGISTRY_PATH}; ledger any src edit in {PRODUCT_CODE_LEDGER_PATH}.",
+                "title": item.get("title", item_id),
+                "description": item.get("description", ""),
                 "status": "pending",
-                "ff_doc_ref": str(latest_fixture.relative_to(repo_root)),
-                "supervisor_task_ref": gap_id,
-                "acceptance_evidence": f"New tests pass for {gap_id}; capability implemented or documented",
+                "ff_doc_ref": NEXT_WORK_ITEMS_PATH,
+                "supervisor_task_ref": item_id,
+                "acceptance_evidence": item.get("acceptance_criteria", f"Tests pass for {item_id}"),
                 "validation_command": "pytest tests/ -x -q",
-                "non_authoritative": True,
-                "lane": "C3",
+                "non_authoritative": False,
+                "lane": lane,
             })
             task_seq += 1
+    else:
+        # No governed product work available — surface explicitly (REQ-PIPE-003)
+        tasks.append({
+            "task_id": f"TASK-{task_seq:03d}",
+            "title": "NO GOVERNED PRODUCT WORK",
+            "description": (
+                f"{NEXT_WORK_ITEMS_PATH} is empty or missing. "
+                "Run autonomous_cycle to regenerate governed work items."
+            ),
+            "status": "blocked",
+            "ff_doc_ref": NEXT_WORK_ITEMS_PATH,
+            "supervisor_task_ref": "NONE",
+            "acceptance_evidence": "next-work-items.json non-empty",
+            "validation_command": "",
+            "non_authoritative": False,
+            "lane": "C3",
+        })
+        task_seq += 1
 
     # 5. Always: dogfood and package/install product-proof lanes
     tasks.append({
@@ -747,6 +716,46 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
         "non_authoritative": True,
         "lane": "C6",
     })
+
+    # TC-PBHP-004: Inject playbook drift followup tasks (advisory, non-blocking, capped at 3)
+    _drift_findings_path = drift_findings_path
+    if _drift_findings_path is None:
+        _drift_findings_path = repo_root / ".local" / "supervisor" / "playbook-drift-findings.json"
+    try:
+        if _drift_findings_path.exists():
+            _drift_data = json.loads(_drift_findings_path.read_text(encoding="utf-8"))
+            _seen_playbooks: set = set()
+            _drift_added = 0
+            for _finding in _drift_data:
+                if _finding.get("finding_type") != "PLAYBOOK_DRIFT":
+                    continue
+                _pb = _finding.get("applicable_playbook", "")
+                if _pb in _seen_playbooks or _drift_added >= 3:
+                    continue
+                _seen_playbooks.add(_pb)
+                _drift_added += 1
+                _phases = _finding.get("required_phases", [])
+                tasks.append({
+                    "task_id": f"TASK-{task_seq:03d}",
+                    "title": f"Playbook drift followup: evidence required phases for {_finding.get('work_item_type', '')}",
+                    "description": (
+                        f"Prior sprint item '{_finding.get('work_item_id', '')}' used playbook "
+                        f"'{_pb}' but evidenced none of its {len(_phases)} required phases "
+                        f"({', '.join(_phases[:3])}{'...' if len(_phases) > 3 else ''}). "
+                        "Add explicit evidence for at least one phase in the next sprint's declaration."
+                    ),
+                    "status": "pending",
+                    "ff_doc_ref": _pb,
+                    "supervisor_task_ref": "TC-PBHP-004",
+                    "acceptance_evidence": f"Drift checker reports 0 PLAYBOOK_DRIFT findings for {_finding.get('work_item_type', '')}",
+                    "validation_command": "python tools/playbook/playbook_drift_checker.py",
+                    "non_authoritative": True,
+                    "lane": "C3",
+                    "item_type": _finding.get("work_item_type", ""),
+                })
+                task_seq += 1
+    except Exception:
+        pass  # advisory — drift followup never blocks task synthesis
 
     # Fallback: if no tasks were synthesized at all, add generic advance
     if not tasks:
@@ -989,6 +998,44 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 ---
 END OF SUPERVISOR-GENERATED NEXT SPRINT PROMPT
 """
+    # TC-PBHP-002: Inject playbook guidance for applicable work item types (C1 fix).
+    # Advisory only — exceptions are caught and silently skipped.
+    try:
+        import sys as _sys_pb
+        from pathlib import Path as _PB_Path
+        _pb_repo = _PB_Path(__file__).resolve().parent.parent.parent
+        _sys_pb.path.insert(0, str(_pb_repo / "tools" / "playbook"))
+        from playbook_selector import select_playbook as _sel_pb
+        from generate_playbook_taskcards import parse_contract as _parse_pb
+        _pb_seen, _pb_sections = set(), []
+        for _task in tasks:
+            _wtype = _task.get("item_type", "")
+            if _wtype and _wtype not in _pb_seen:
+                _pb_seen.add(_wtype)
+                _pb_path = _sel_pb(_wtype)
+                if _pb_path:
+                    _contract = _parse_pb(_PB_Path(_pb_repo / _pb_path))
+                    if _contract and _contract.get("status") == "ACTIVE":
+                        _pb_sections.append({
+                            "type": _wtype,
+                            "skill": f"/{_contract['playbook_id']}",
+                            "phases": _contract.get("phases", []),
+                            "stop_conditions": _contract.get("stop_conditions", []),
+                        })
+        if _pb_sections:
+            _pb_block = "\n\n---\n\n## Playbook Guidance (advisory)\n\n"
+            _pb_block += "> Invoke the listed skill before executing each work item type.\n\n"
+            for _s in _pb_sections:
+                _pb_block += f"**{_s['type']}** -> `{_s['skill']}`"
+                if _s["phases"]:
+                    _pb_block += f"  \nPhases: {' -> '.join(_s['phases'])}"
+                if _s["stop_conditions"]:
+                    _pb_block += f"  \nStop if: {'; '.join(_s['stop_conditions'])}"
+                _pb_block += "\n\n"
+            content += _pb_block
+    except Exception:
+        pass  # advisory — never blocks sprint generation
+
     # Plan-lock header: if a per-chat plan is active, prepend a prominent notice.
     if plan_lock and plan_lock.get("status") != "COMPLETE":
         _pp = plan_lock.get("plan_path", "unknown")

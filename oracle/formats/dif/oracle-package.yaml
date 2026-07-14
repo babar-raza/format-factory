@@ -1,165 +1,167 @@
-# DIF Oracle Package — Format Factory
-# Format: Data Interchange Format
-# Authority: VisiCalc DIF specification (1981, public domain)
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch A
-# GAP-ORC-BACKFILL-A: Cells family oracle packages
-# Note: DIF promoted to continuation_allowed=true (TC-R15, 2026-06-26)
-
 oracle_id: oracle-dif-v1
 format_id: dif
-format_version: "DIF 1.0 (VisiCalc)"
+format_version: DIF 1.0 (VisiCalc)
 oracle_version: 1
 family: cells
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: DIF-SPEC
-      title: "Data Interchange Format (DIF) Specification"
-      body: "Software Arts Inc. (VisiCalc)"
-      url: "https://en.wikipedia.org/wiki/Data_Interchange_Format"
-      legal_category: 1
-      authority_class: SPEC_INFORMATIVE
-      note: "DIF is a text-based spreadsheet interchange format from VisiCalc (1981). TABLE header followed by VECTORS/TUPLES blocks, terminated by EOD."
+  - id: DIF-SPEC
+    title: Data Interchange Format (DIF) Specification
+    body: Software Arts Inc. (VisiCalc)
+    url: https://en.wikipedia.org/wiki/Data_Interchange_Format
+    legal_category: 1
+    authority_class: SPEC_INFORMATIVE
+    note: DIF is a text-based spreadsheet interchange format from VisiCalc (1981).
+      TABLE header followed by VECTORS/TUPLES blocks, terminated by EOD.
   authorized_fact_refs:
-    - "FACT-DIF-001"
-    - "FACT-DIF-002"
-    - "FACT-DIF-003"
+  - FACT-DIF-001
+  - FACT-DIF-002
+  - FACT-DIF-003
   requirement_refs: []
   capability_refs:
-    - "dif:parse"
-    - "dif:document"
-  authority_summary: >
-    DIF is a text-based spreadsheet interchange format from VisiCalc (1981).
-    Structure: TABLE header, followed by VECTORS and TUPLES blocks, terminated by EOD.
-    dif:document (DifDocument class) is the authoritative model class (TC-R13).
+  - dif:parse
+  - dif:document
+  authority_summary: 'DIF is a text-based spreadsheet interchange format from VisiCalc
+    (1981). Structure: TABLE header, followed by VECTORS and TUPLES blocks, terminated
+    by EOD. dif:document (DifDocument class) is the authoritative model class (TC-R13).
 
+    '
 corpus_refs:
-  - corpus_id: dif-minimal-2x2
-    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
-    sha256: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Minimal 2x2 DIF table"
-  - corpus_id: dif-single-cell
-    sample_ref: samples/by-format/dif/valid/single-cell.dif
-    sha256: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "DIF with single cell"
-
+- corpus_id: dif-minimal-2x2
+  sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+  sha256: sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal 2x2 DIF table
+- corpus_id: dif-single-cell
+  sample_ref: samples/by-format/dif/valid/single-cell.dif
+  sha256: sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: DIF with single cell
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not a compression format
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection surface in parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: dif-valid-001
+  purpose: Minimal 2x2 DIF file parses without error and returns correct structure
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - DIF-SPEC -- TABLE header, VECTORS, TUPLES, EOD structure
+  sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+  input_hash: sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: vectors
+    value: 2
+    data_source: parsed
+    authority: DIF-SPEC -- VECTORS header defines number of columns
+  - property: tuples
+    value: 2
+    data_source: parsed
+    authority: DIF-SPEC -- TUPLES header defines number of data rows including header
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
+- case_id: dif-valid-002
+  purpose: Single-column DIF parses correctly with vectors=1, tuples=1
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - DIF-SPEC -- minimal TABLE/VECTORS/TUPLES
+  sample_ref: samples/by-format/dif/valid/single-cell.dif
+  input_hash: sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: vectors
+    value: 1
+    data_source: parsed
+    authority: 'DIF-SPEC -- single-column: VECTORS 1'
+  - property: tuples
+    value: 1
+    data_source: parsed
+    authority: 'DIF-SPEC -- single-row: TUPLES 1'
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: dif-valid-003
+  purpose: DIF parse_dif returns correct column/row counts for 2x2 table
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - shared/qname-registry/dif.yaml -- dif:document
+  sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+  input_hash: sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: vectors
+    value: 2
+    data_source: parsed
+    authority: DIF-SPEC -- VECTORS 2 in minimal-2x2 fixture
+  - property: ok
+    value: true
+    data_source: parsed
+    authority: 'parse_dif contract: ok=True on success'
+  applicable_profiles:
   - DOMAIN_MODEL_MAPPING
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not a compression format"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No entity injection surface in parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: dif-valid-001
-    purpose: "Minimal 2x2 DIF file parses without error"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "DIF-SPEC -- TABLE header, VECTORS, TUPLES, EOD structure"
-    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
-    input_hash: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: DIF-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: dif-valid-002
-    purpose: "Single-cell DIF parses without error"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "DIF-SPEC -- minimal TABLE/VECTORS/TUPLES"
-    sample_ref: samples/by-format/dif/valid/single-cell.dif
-    input_hash: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: DIF-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: dif-valid-003
-    purpose: "DifDocument returns spec_qname=dif:document"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "shared/qname-registry/dif.yaml -- dif:document"
-    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
-    input_hash: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: DIF-SPEC
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
+executor_config:
+  module: dif.dif_parser
+  callable: parse_dif
+  note: parse_dif returns dict with ok, vectors, tuples, rows keys
 invalid_cases:
-  - case_id: dif-invalid-001
-    purpose: "Non-DIF file must raise error or return failure"
-    defect_class: wrong-format
-    malformed_boundary: "File is not valid DIF (missing TABLE header)"
-    authority_refs:
-      - "DIF-SPEC -- TABLE header required"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception or error indicator"
-    partial_recovery_allowed: true
-    security_relevance: false
-    notes: "No invalid DIF sample in corpus yet."
-
+- case_id: dif-invalid-001
+  purpose: Non-DIF file must raise error or return failure
+  defect_class: wrong-format
+  malformed_boundary: File is not valid DIF (missing TABLE header)
+  authority_refs:
+  - DIF-SPEC -- TABLE header required
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception or error indicator
+  partial_recovery_allowed: true
+  security_relevance: false
+  notes: No invalid DIF sample in corpus yet.
 canonicalization:
   method: dif-document-dict
-  description: "Canonical form is DifDocument with rows list."
-  ordering_policy: "row/column order preserved"
-  whitespace_policy: "insignificant"
-  encoding_policy: "ASCII"
-
+  description: Canonical form is DifDocument with rows list.
+  ordering_policy: row/column order preserved
+  whitespace_policy: insignificant
+  encoding_policy: ASCII
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "record whitespace insignificant"
-  metadata_tolerance: "None"
-  policy_summary: "Document must parse and produce DifDocument or parse_dif dict"
-
+  ordering_tolerance: none
+  whitespace_tolerance: record whitespace insignificant
+  metadata_tolerance: None
+  policy_summary: Document must parse and produce DifDocument or parse_dif dict
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - dif-text-validator
-
+- dif-text-validator
 consumers:
-  - tests/python/dif/test_dif_document_model.py
+- tests/python/dif/test_dif_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

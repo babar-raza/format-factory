@@ -267,7 +267,7 @@ class TestIsNotRetryable:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetrySuccess:
-    def test_success_on_first_attempt(self):
+    def test_success_on_first_attempt(self, tmp_path):
         """REL-011: fn succeeds on 1st call → result returned, 1 attempt only."""
         call_count = [0]
 
@@ -276,7 +276,7 @@ class TestCallWithRetrySuccess:
             return "grading_result"
 
         policy = RetryPolicy(max_attempts=3, overall_deadline=10.0)
-        observer = GradingObserver(log_dir=Path("/tmp/grader-test-obs"))
+        observer = GradingObserver(log_dir=tmp_path)
         result = call_with_retry(fn, policy=policy, observer=observer, item_id="ITEM-1")
 
         assert result == "grading_result"
@@ -288,7 +288,7 @@ class TestCallWithRetrySuccess:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryTransient:
-    def test_retries_and_succeeds_on_third(self):
+    def test_retries_and_succeeds_on_third(self, tmp_path):
         """REL-012: READ_TIMEOUT on first 2 → retry; success on 3rd."""
         attempts = [0]
 
@@ -303,7 +303,7 @@ class TestCallWithRetryTransient:
 
         policy = RetryPolicy(max_attempts=3, base_backoff=0.01, jitter=False, overall_deadline=10.0)
         with patch("time.sleep"):
-            result = call_with_retry(fn, policy=policy, item_id="ITEM-T")
+            result = call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path), item_id="ITEM-T")
 
         assert result == "success_after_retry"
         assert attempts[0] == 3
@@ -314,7 +314,7 @@ class TestCallWithRetryTransient:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryExhausted:
-    def test_all_retries_exhausted_raises(self):
+    def test_all_retries_exhausted_raises(self, tmp_path):
         """REL-013: all 3 attempts fail with READ_TIMEOUT → GraderRetryExhausted."""
         # Use _make_exc to create a class named exactly "ReadTimeout" so the classifier
         # maps it to READ_TIMEOUT (classifier checks exc_type == "ReadTimeout").
@@ -327,7 +327,7 @@ class TestCallWithRetryExhausted:
         policy = RetryPolicy(max_attempts=3, base_backoff=0.01, jitter=False, overall_deadline=10.0)
         with patch("grader_reliability.time.sleep"):
             try:
-                call_with_retry(fn, policy=policy)
+                call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path))
                 assert False, "Should have raised"
             except GraderRetryExhausted as exc:
                 assert exc.error_class == GraderErrorClass.READ_TIMEOUT, (
@@ -341,7 +341,7 @@ class TestCallWithRetryExhausted:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryPermanentFailure:
-    def test_auth_failure_no_retry(self):
+    def test_auth_failure_no_retry(self, tmp_path):
         """REL-014: AuthenticationError → GraderPermanentFailure, called only once."""
         calls = [0]
 
@@ -351,7 +351,7 @@ class TestCallWithRetryPermanentFailure:
 
         policy = RetryPolicy(max_attempts=3, overall_deadline=10.0)
         try:
-            call_with_retry(fn, policy=policy)
+            call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path))
             assert False, "Should have raised"
         except GraderPermanentFailure as exc:
             assert exc.error_class == GraderErrorClass.AUTHENTICATION_FAILURE
@@ -363,7 +363,7 @@ class TestCallWithRetryPermanentFailure:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryDeadline:
-    def test_deadline_aborts_retries(self):
+    def test_deadline_aborts_retries(self, tmp_path):
         """REL-015: overall_deadline elapsed before 3rd attempt → exhausted early."""
         class FakeReadTimeout(Exception):
             pass
@@ -386,7 +386,7 @@ class TestCallWithRetryDeadline:
         with patch("grader_reliability.time.monotonic", side_effect=fake_monotonic):
             with patch("grader_reliability.time.sleep"):
                 try:
-                    call_with_retry(fn, policy=policy)
+                    call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path))
                 except GraderRetryExhausted:
                     pass  # expected
 
@@ -399,7 +399,7 @@ class TestCallWithRetryDeadline:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryJitter:
-    def test_jitter_produces_variable_backoff(self):
+    def test_jitter_produces_variable_backoff(self, tmp_path):
         """REL-016: jitter=True produces sleep durations in the expected range."""
         class FakeTimeout(Exception):
             pass
@@ -412,7 +412,7 @@ class TestCallWithRetryJitter:
 
         with patch("grader_reliability.time.sleep", side_effect=lambda s: sleep_times.append(s)):
             try:
-                call_with_retry(fn, policy=policy)
+                call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path))
             except GraderRetryExhausted:
                 pass
 
@@ -427,7 +427,7 @@ class TestCallWithRetryJitter:
 # ---------------------------------------------------------------------------
 
 class TestCallWithRetryRetryAfter:
-    def test_retry_after_sets_sleep_duration(self):
+    def test_retry_after_sets_sleep_duration(self, tmp_path):
         """REL-017: 429 with Retry-After:5 → sleep ~5s (not base backoff)."""
         # Use a class named "RateLimitError" so classify_exception maps it to RATE_LIMITED
         # (which is retryable), then verify Retry-After header is used for sleep duration.
@@ -448,7 +448,7 @@ class TestCallWithRetryRetryAfter:
         policy = RetryPolicy(max_attempts=3, base_backoff=2.0, jitter=False, overall_deadline=30.0)
 
         with patch("grader_reliability.time.sleep", side_effect=lambda s: sleep_times.append(s)):
-            result = call_with_retry(fn, policy=policy)
+            result = call_with_retry(fn, policy=policy, observer=GradingObserver(log_dir=tmp_path))
 
         assert result == "ok"
         assert len(sleep_times) == 1
@@ -575,3 +575,144 @@ class TestCallWithRetryObservability:
         assert "retry" in phases
         assert "success" in phases
         assert all(e.item_id == "OBS-001" for e in events)
+
+
+# ---------------------------------------------------------------------------
+# REL-021: RemoteProtocolError → CONNECTION_RESET classification
+# ---------------------------------------------------------------------------
+
+class TestClassifyExceptionConnectionReset:
+    def test_remote_protocol_error_connection_reset(self):
+        """REL-021: RemoteProtocolError → CONNECTION_RESET."""
+        exc = _make_exc("RemoteProtocolError", "peer closed connection")
+        assert classify_exception(exc) == GraderErrorClass.CONNECTION_RESET
+
+    def test_connection_reset_is_retryable(self):
+        """REL-021b: CONNECTION_RESET is retryable."""
+        assert is_retryable(GraderErrorClass.CONNECTION_RESET) is True
+
+
+# ---------------------------------------------------------------------------
+# REL-022: PoolTimeout → POOL_TIMEOUT, retried, exhausted
+# ---------------------------------------------------------------------------
+
+class TestCallWithRetryPoolTimeout:
+    def test_pool_timeout_retried_then_exhausted(self, tmp_path):
+        """REL-022: PoolTimeout retried then GraderRetryExhausted."""
+        calls = [0]
+
+        def fn():
+            calls[0] += 1
+            raise _make_exc("PoolTimeout", "connection pool exhausted")
+
+        policy = RetryPolicy(max_attempts=3, base_backoff=0.01, jitter=False, overall_deadline=10.0)
+        observer = GradingObserver(log_dir=tmp_path)
+        with patch("grader_reliability.time.sleep"):
+            try:
+                call_with_retry(fn, policy=policy, observer=observer)
+                assert False, "Should have raised"
+            except GraderRetryExhausted as exc:
+                assert exc.error_class == GraderErrorClass.POOL_TIMEOUT
+        assert calls[0] == 3
+
+
+# ---------------------------------------------------------------------------
+# REL-023: MALFORMED_RESPONSE is non-retryable
+# ---------------------------------------------------------------------------
+
+class TestClassifyExceptionMalformed:
+    def test_malformed_response_not_retryable(self, tmp_path):
+        """REL-023: MALFORMED_RESPONSE → non-retryable → GraderPermanentFailure on 1st attempt."""
+        calls = [0]
+
+        def fn():
+            calls[0] += 1
+            raise _make_exc("MalformedResponseError", "invalid JSON from provider")
+
+        policy = RetryPolicy(max_attempts=3, overall_deadline=10.0)
+        observer = GradingObserver(log_dir=tmp_path)
+        try:
+            call_with_retry(fn, policy=policy, observer=observer)
+            assert False, "Should have raised"
+        except GraderPermanentFailure as exc:
+            assert exc.error_class == GraderErrorClass.MALFORMED_RESPONSE
+        assert calls[0] == 1, "Must NOT retry on MALFORMED_RESPONSE"
+
+
+# ---------------------------------------------------------------------------
+# REL-024: KeyboardInterrupt → CANCELLED + GraderPermanentFailure
+# ---------------------------------------------------------------------------
+
+class TestCallWithRetryCANCELLED:
+    def test_keyboard_interrupt_raises_permanent_failure(self, tmp_path):
+        """REL-024: KeyboardInterrupt → GraderPermanentFailure(CANCELLED), called once."""
+        calls = [0]
+
+        def fn():
+            calls[0] += 1
+            raise KeyboardInterrupt()
+
+        policy = RetryPolicy(max_attempts=3, overall_deadline=10.0)
+        observer = GradingObserver(log_dir=tmp_path)
+        try:
+            call_with_retry(fn, policy=policy, observer=observer)
+            assert False, "Should have raised"
+        except GraderPermanentFailure as exc:
+            assert exc.error_class == GraderErrorClass.CANCELLED
+        assert calls[0] == 1, "KeyboardInterrupt must not be retried"
+
+
+# ---------------------------------------------------------------------------
+# REL-025: GraderCircuitBreaker opens after 5 consecutive failures
+# ---------------------------------------------------------------------------
+
+from grader_reliability import GraderCircuitBreaker, CircuitState
+
+class TestGraderCircuitBreakerOpens:
+    def test_opens_after_failure_threshold(self):
+        """REL-025: 5 consecutive record_failure() → is_open() returns True."""
+        cb = GraderCircuitBreaker(failure_threshold=5, reset_timeout=60.0)
+        assert not cb.is_open()
+        for _ in range(5):
+            cb.record_failure()
+        assert cb.is_open(), "Circuit should be OPEN after 5 failures"
+
+    def test_call_with_retry_raises_circuit_open(self, tmp_path):
+        """REL-025b: OPEN circuit → call_with_retry raises GraderPermanentFailure(CIRCUIT_OPEN) immediately."""
+        cb = GraderCircuitBreaker(failure_threshold=1)
+        cb.record_failure()  # trip the breaker
+        assert cb.is_open()
+
+        calls = [0]
+        def fn():
+            calls[0] += 1
+            return "should not reach"
+
+        policy = RetryPolicy(max_attempts=3, overall_deadline=10.0)
+        observer = GradingObserver(log_dir=tmp_path)
+        try:
+            call_with_retry(fn, policy=policy, observer=observer, circuit_breaker=cb)
+            assert False, "Should have raised"
+        except GraderPermanentFailure as exc:
+            assert exc.error_class == GraderErrorClass.CIRCUIT_OPEN
+        assert calls[0] == 0, "fn() must not be called when circuit is OPEN"
+
+
+# ---------------------------------------------------------------------------
+# REL-026: Circuit HALF_OPEN → probe success → CLOSED
+# ---------------------------------------------------------------------------
+
+class TestGraderCircuitBreakerRecovery:
+    def test_half_open_probe_success_closes_circuit(self):
+        """REL-026: OPEN circuit → reset_timeout elapses → HALF_OPEN → probe success → CLOSED."""
+        cb = GraderCircuitBreaker(failure_threshold=1, reset_timeout=60.0)
+        cb.record_failure()
+        assert cb.is_open(), "Circuit should be OPEN immediately after failure"
+        # Simulate 61s passing by backdating _opened_at
+        cb._opened_at -= 61.0
+        # Now is_open() should return False (transitions to HALF_OPEN = probe allowed)
+        assert not cb.is_open(), "Should be HALF_OPEN (probe allowed) after timeout elapsed"
+        # Simulate successful probe
+        cb.record_success()
+        assert not cb.is_open(), "Circuit should be CLOSED after successful probe"
+        assert cb._state == CircuitState.CLOSED

@@ -104,8 +104,22 @@ on every push to `main` and every PR. Ungoverned `src/` mutations cause CI to fa
 
 | Gap | Description | Status |
 |-----|-------------|--------|
-| DEC-014 | Codex integration fully deferred | backlog |
-| EP-002-GAP | Mutation guard must be called explicitly | partial |
+| DEC-014 | Codex integration fully deferred | BLOCKED_PENDING_RUNTIME_VALIDATION — Codex not yet instantiated; RC-016/RC-017 blocked per FF-AGENTS-PARITY-001 TC-ACP-001 findings |
+| EP-002-GAP | Mutation guard must be called explicitly | MITIGATED_BY_PLAN_FF-AGENTS-PARITY-001 — pre-commit hook (EP-007) auto-enforces; sprint_executor_validate.py WARN added (TC-ACP-006); Codex/Kilo commit paths may still bypass |
 | SKILL-GAP-012 | Agents bypassing declaration bypass EP-003 | backlog |
 
 These gaps are tracked in `docs/governance/skill-only-policy.yaml § known_gaps`.
+
+## 9. Full Lifecycle Reference (TC-ACP-008-02, FF-AGENTS-PARITY-001)
+
+For the complete Codex lifecycle spanning all 22 Required Capability areas, see:
+
+- **Lifecycle instructions:** `docs/governance/codex-instructions.md`
+- **Agent capability bundle:** `docs/agents/bundles/codex-bundle.yaml`
+- **Canonical contract:** `docs/agents/canonical-agent-contract.yaml`
+- **RC-to-governance mapping:** `docs/agents/rc-to-claude-mapping.yaml`
+- **Agent inventory (status):** `docs/agents/agent-inventory.yaml` (codex entries)
+
+Summary of Codex RC status (as of 2026-07-13):
+- **COMPLETE_UNVERIFIED:** RC-001 through RC-015, RC-018 through RC-022 (Codex not yet instantiated)
+- **BLOCKED:** RC-004 (no CLAUDE.md awareness), RC-016 (no skill dispatch), RC-017 (no enforcement hook)

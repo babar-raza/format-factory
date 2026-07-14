@@ -40,7 +40,14 @@ from tools.supervisor.test_drivers import (
     render_roundtrip_test,
     render_append_test,
     render_probe_test,
+    is_maintained_test,
 )
+from tools.supervisor.drivers_promotion import (
+    create_promotion_task,
+    write_promotion_task,
+)
+
+_PROMOTION_TASKS_DEFAULT_DIR = _REPO_ROOT / ".local" / "supervisor" / "promotion-tasks"
 
 
 class FeatureFactoryError(Exception):
@@ -270,6 +277,107 @@ def {function_name}(source) -> dict:
     # Pattern F: Package Import Proof command
     # ------------------------------------------------------------------
 
+    def generate_and_write_scaffold(
+        self,
+        format_id: str,
+        pattern_id: str,
+        function_name: str,
+        module: str,
+        *,
+        format_cap: str = "",
+        format_lower: str = "",
+        scaffold_dir: Optional[Path] = None,
+        promotion_tasks_dir: Optional[Path] = None,
+        source_path: Optional[str] = None,
+        params: str = "model: dict",
+        return_type: str = "Any",
+        collection_key: str = "records",
+        metadata_fields: Optional[list] = None,
+    ) -> dict:
+        """Render a test scaffold, write it to disk, create and write a promotion task.
+
+        Args:
+            format_id:           Format identifier (e.g. 'ndjson', 'abw').
+            pattern_id:          One of: getter, export_csv, roundtrip, append, probe.
+            function_name:       Name of the function being tested.
+            module:              Module path for imports (e.g. 'ndjson').
+            format_cap:          Capitalized format name (e.g. 'Ndjson'). Defaults to format_id.title().
+            format_lower:        Lowercase format name. Defaults to format_id.lower().
+            scaffold_dir:        Directory for scaffold file. Defaults to
+                                 tests/python/{format_id}/_scaffolds/.
+            promotion_tasks_dir: Directory for promotion task YAML. Defaults to
+                                 .local/supervisor/promotion-tasks/.
+            source_path:         Source file path (e.g. src/python/ndjson/ndjson_codec.py).
+                                 Defaults to src/python/{format_id}/{format_id}_codec.py.
+            params:              Parameter list for getter pattern.
+            return_type:         Return type annotation for getter pattern.
+            collection_key:      Collection key for append pattern.
+            metadata_fields:     Metadata fields for probe pattern.
+
+        Returns:
+            dict with keys: scaffold_path, promotion_task_path, task_id, status,
+            incomplete_markers.
+
+        Raises:
+            ValueError: If pattern_id is not one of the allowed values.
+            FeatureFactoryError: If rendering or file write fails.
+        """
+        allowed_patterns = ("getter", "export_csv", "roundtrip", "append", "probe")
+        if pattern_id not in allowed_patterns:
+            raise ValueError(
+                f"pattern_id {pattern_id!r} not in {allowed_patterns}"
+            )
+
+        fmt_cap = format_cap or format_id.title()
+        fmt_low = format_lower or format_id.lower()
+        src_path = source_path or f"src/python/{format_id}/{format_id}_codec.py"
+
+        if pattern_id == "getter":
+            rendered = render_getter_test(src_path, function_name, params, return_type)
+        elif pattern_id == "export_csv":
+            rendered = render_export_csv_test(src_path, function_name, fmt_cap)
+        elif pattern_id == "roundtrip":
+            rendered = render_roundtrip_test(src_path, fmt_cap)
+        elif pattern_id == "append":
+            rendered = render_append_test(src_path, function_name, fmt_cap, collection_key)
+        elif pattern_id == "probe":
+            fields = metadata_fields or [
+                ("format", f'"{fmt_low}"'),
+                ("valid", "True"),
+            ]
+            rendered = render_probe_test(src_path, function_name, fmt_cap)
+        else:
+            raise ValueError(f"Unhandled pattern_id: {pattern_id!r}")
+
+        s_dir = Path(scaffold_dir) if scaffold_dir else (
+            self.repo_root / "tests" / "python" / format_id / "_scaffolds"
+        )
+        p_dir = Path(promotion_tasks_dir) if promotion_tasks_dir else _PROMOTION_TASKS_DEFAULT_DIR
+        s_dir.mkdir(parents=True, exist_ok=True)
+        p_dir.mkdir(parents=True, exist_ok=True)
+
+        scaffold_path = s_dir / f"test_{function_name}_scaffold.py"
+        scaffold_path.write_text(rendered, encoding="utf-8")
+
+        task = create_promotion_task(
+            rendered_code=rendered,
+            format_id=format_id,
+            pattern_id=pattern_id,
+            template_id=f"{pattern_id}_template",
+            renderer_id=f"render_{pattern_id}_test",
+            generated_path=str(scaffold_path),
+            target_path=str(self.repo_root / "tests" / "python" / format_id / f"test_{function_name}.py"),
+        )
+        task_path = write_promotion_task(task, p_dir)
+
+        return {
+            "scaffold_path": str(scaffold_path),
+            "promotion_task_path": str(task_path),
+            "task_id": task.task_id,
+            "status": task.status,
+            "incomplete_markers": task.incomplete_markers,
+        }
+
     def generate_package_proof_command(self, package_name: str, version_attr: str = "__version__") -> str:
         """Pattern F: Return a shell command that proves a package can be imported.
 
@@ -381,19 +489,55 @@ if __name__ == "__main__":
             "  append         — append_row/record(source, row) -> bytes",
             "  probe          — probe_<format>(source) -> dict",
             "  package_proof  — package import proof command",
+            "",
+            "Use --generate-scaffold to write scaffold+promotion-task to disk:",
+            "  python tools/supervisor/product_feature_factory.py \\",
+            "    --generate-scaffold --format-id ndjson --pattern-id probe \\",
+            "    --function-name probe_ndjson --module ndjson",
         ]),
     )
-    parser.add_argument("--pattern", required=True, choices=_PATTERNS,
-                        help="Which code-generation pattern to apply")
-    parser.add_argument("--source-path", required=True,
+    parser.add_argument("--pattern", default=None, choices=_PATTERNS,
+                        help="Which code-generation pattern to apply (source edit mode)")
+    parser.add_argument("--generate-scaffold", action="store_true",
+                        help="Write scaffold and promotion task to disk (no source edit)")
+    parser.add_argument("--pattern-id", default=None,
+                        choices=("getter", "export_csv", "roundtrip", "append", "probe"),
+                        help="Pattern for --generate-scaffold mode")
+    parser.add_argument("--source-path", default=None,
                         help="Target source file (e.g. src/python/abw/abw_codec.py)")
-    parser.add_argument("--function-name", required=True,
+    parser.add_argument("--function-name", default=None,
                         help="Name of the function to generate")
+    parser.add_argument("--module", default=None,
+                        help="Module name for --generate-scaffold (e.g. ndjson)")
     parser.add_argument("--format-id", default=None,
                         help="Format identifier (e.g. 'abw', 'ndjson'); inferred from source-path if omitted")
     args = parser.parse_args()
 
     factory = FeatureFactory()
+
+    if args.generate_scaffold:
+        if not args.pattern_id or not args.function_name:
+            parser.error("--generate-scaffold requires --pattern-id and --function-name")
+        fmt = args.format_id or (
+            Path(args.source_path).parts[-2] if args.source_path and len(Path(args.source_path).parts) >= 2 else "unknown"
+        )
+        result = factory.generate_and_write_scaffold(
+            format_id=fmt,
+            pattern_id=args.pattern_id,
+            function_name=args.function_name,
+            module=args.module or fmt,
+        )
+        print(f"SCAFFOLD_WRITTEN: {result['scaffold_path']}")
+        print(f"PROMOTION_TASK: {result['promotion_task_path']}")
+        print(f"TASK_ID: {result['task_id']}")
+        print(f"STATUS: {result['status']}")
+        raise SystemExit(0)
+
+    if not args.pattern:
+        parser.error("--pattern is required unless --generate-scaffold is used")
+    if not args.source_path or not args.function_name:
+        parser.error("--source-path and --function-name are required for --pattern mode")
+
     fmt = args.format_id or Path(args.source_path).parts[-2] if len(Path(args.source_path).parts) >= 2 else "unknown"
 
     try:

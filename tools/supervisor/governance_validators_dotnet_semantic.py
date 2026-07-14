@@ -7,11 +7,11 @@ V87: validate_dotnet_constant_return_public_api
   a constant literal (0, false, true, string.Empty, ""). These are semantic stubs
   masquerading as real APIs.
 
-V88: validate_dotnet_detached_dictionary_fields
-  Detects private readonly Dictionary fields in src/net/**/*.cs that are
-  initialized in-place (= new()) but whose variable name does not appear in
-  any XML read path (Attribute(, Element(, XDocument.Load() etc.) in any partial
-  class file in the same directory. Heuristic; WARN-only.
+V88: validate_dotnet_detached_dictionary_fields (TC-FGSQ-003 rewrite)
+  Per-method analysis: extracts public Set*/Get* method bodies via brace-depth
+  counting and flags any setter that writes only to a dict field (no XML write
+  path) or any getter that reads only from a dict field (no XML read path).
+  blocks_sprint: True.
 
 V89: validate_dotnet_missingmethods_filename
   FAIL if any src/net/**/*Missing*.cs or src/net/**/*Stub*.cs file appears in
@@ -26,10 +26,46 @@ from __future__ import annotations
 from governance_validators_contract import validator  # noqa: F401
 
 import re
+import subprocess
 import yaml
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+
+
+def _method_existed_at_git_head(
+    git_sha: str,
+    file_rel_path: str,
+    method_name: str,
+    repo_root: Path,
+) -> bool:
+    """Return True if method_name appeared in file at git_sha (sprint start).
+
+    Uses git show <sha>:<path> to fetch the file's pre-sprint content.
+    Returns True (treat as pre-existing) on any error so fallback is non-blocking.
+    TC-SPW-002-02 (field_existed_at_git_head).
+    """
+    try:
+        result = subprocess.run(
+            ["git", "show", f"{git_sha}:{file_rel_path}"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            cwd=str(repo_root),
+            timeout=10,
+        )
+        if result.returncode != 0:
+            return True  # file didn't exist before sprint → treat as pre-existing (safe)
+        old_content = result.stdout
+        # Check if a public method with this name existed in pre-sprint content
+        pattern = re.compile(
+            rf"public\s+(?:(?:static|virtual|override|sealed|async|new)\s+)*"
+            rf"(?:[A-Za-z_][\w?<>\[\],\s]*?\s+){re.escape(method_name)}\s*\("
+        )
+        return bool(pattern.search(old_content))
+    except Exception:
+        return True  # fallback: treat as pre-existing (non-blocking)
 
 # ---------------------------------------------------------------------------
 # Shared helpers
@@ -48,16 +84,54 @@ def _get_dotnet_source_files(changed_files: list[str]) -> list[str]:
     return [f for f in changed_files if re.search(r"src[/\\]net[/\\].*\.cs$", f)]
 
 
-def _load_whitelist(repo_root: Path) -> set[str]:
-    """Load registry/dotnet-semantic-stub-whitelist.yaml; return set of allowed method FQNs."""
+def _load_whitelist(repo_root: Path, section: str = "known_constant_return_ok") -> set[str]:
+    """Load registry/dotnet-semantic-stub-whitelist.yaml; return set of allowed method FQNs.
+
+    Supports schema 1.x (bare string entries) and schema 2.0 (structured dicts with
+    'method' key plus governance fields: approved_by, approved_date, review_due,
+    removal_condition).
+
+    section: one of 'known_constant_return_ok', 'known_setter_without_xml_write_ok',
+             'known_getter_without_xml_read_ok'.
+    """
     whitelist_path = repo_root / "registry" / "dotnet-semantic-stub-whitelist.yaml"
     if not whitelist_path.exists():
         return set()
     try:
         data = yaml.safe_load(whitelist_path.read_text(encoding="utf-8"))
-        return set(data.get("known_constant_return_ok", []))
+        entries = data.get(section, []) or []
+        result = set()
+        for entry in entries:
+            if isinstance(entry, str):
+                result.add(entry)
+            elif isinstance(entry, dict):
+                if "method" in entry:
+                    result.add(entry["method"])
+        return result
     except Exception:
         return set()
+
+
+def _load_whitelist_records(
+    repo_root: Path, section: str = "known_constant_return_ok"
+) -> list[dict]:
+    """Load whitelist and return full structured records (schema 2.0) or synthesized records
+    for schema 1.x bare strings. Used by validate_whitelist_expiry."""
+    whitelist_path = repo_root / "registry" / "dotnet-semantic-stub-whitelist.yaml"
+    if not whitelist_path.exists():
+        return []
+    try:
+        data = yaml.safe_load(whitelist_path.read_text(encoding="utf-8"))
+        entries = data.get(section, []) or []
+        records = []
+        for entry in entries:
+            if isinstance(entry, str):
+                records.append({"method": entry, "review_due": None, "approved_by": "unknown"})
+            elif isinstance(entry, dict):
+                records.append(entry)
+        return records
+    except Exception:
+        return []
 
 
 # ---------------------------------------------------------------------------
@@ -150,10 +224,9 @@ def validate_dotnet_constant_return_public_api(
 ) -> dict:
     """V87: Detect public Get* methods unconditionally returning constant literals.
 
-    Severity:
-      FAIL  — for RELEASE_GATE declarations
-      WARN  — for all other declarations (PRODUCT_SOURCE, etc.)
-    blocks_sprint: True for RELEASE_GATE, False otherwise.
+    Severity: FAIL for all declaration types (TC-FGSQ-004: PRODUCT_SOURCE exemption removed).
+    Whitelisted methods (registry/dotnet-semantic-stub-whitelist.yaml) are WARN-only.
+    blocks_sprint: True for any non-whitelisted violation.
 
     Whitelist: registry/dotnet-semantic-stub-whitelist.yaml
     """
@@ -171,8 +244,6 @@ def validate_dotnet_constant_return_public_api(
         }
 
     whitelist = _load_whitelist(_repo)
-    is_rg = _is_release_gate(declaration)
-    severity = "FAIL" if is_rg else "WARN"
 
     violations = []
     for rel_path in dotnet_files:
@@ -188,15 +259,26 @@ def validate_dotnet_constant_return_public_api(
         methods = _extract_constant_return_methods(source)
         for method in methods:
             fqn = fqn_prefix + method
-            # Check whitelist (by FQN or by bare method name)
+            # Whitelisted violations → WARN (grandfathered)
             if fqn in whitelist or method in whitelist:
+                violations.append({
+                    "file": rel_path,
+                    "method": method,
+                    "fqn": fqn or method,
+                    "issue": "constant_return_public_api",
+                    "severity": "WARN",
+                    "whitelisted": True,
+                    "remediation": "Grandfathered in whitelist — implement from ODF XML when possible.",
+                })
                 continue
+            # Non-whitelisted → FAIL and block
             violations.append({
                 "file": rel_path,
                 "method": method,
                 "fqn": fqn or method,
                 "issue": "constant_return_public_api",
-                "severity": severity,
+                "severity": "FAIL",
+                "whitelisted": False,
                 "remediation": (
                     "Remove the method, implement from ODF XML, or add to "
                     "registry/dotnet-semantic-stub-whitelist.yaml if architecturally intentional."
@@ -212,64 +294,124 @@ def validate_dotnet_constant_return_public_api(
             "blocks_sprint": False,
         }
 
-    blocks = is_rg and any(v["severity"] == "FAIL" for v in violations)
-    result = "FAIL" if (is_rg and violations) else "WARN"
+    blocking = [v for v in violations if v["severity"] == "FAIL"]
+    result = "FAIL" if blocking else "WARN"
+    blocks = bool(blocking)
     return {
         "validator": "validate_dotnet_constant_return_public_api",
         "result": result,
         "items": violations,
         "summary": (
             f"V87: {len(violations)} constant-return public API(s) detected in .NET source "
-            f"({'RELEASE_GATE: blocks sprint' if blocks else 'WARN: advisory'})."
+            f"({len(blocking)} blocking, {len(violations) - len(blocking)} whitelisted)."
         ),
         "blocks_sprint": blocks,
     }
 
 
 # ---------------------------------------------------------------------------
-# Detached-dictionary detection patterns
+# Per-method body extraction (V88 rewrite — TC-FGSQ-003)
 # ---------------------------------------------------------------------------
 
 # Matches: private readonly Dictionary<...> _fieldName = new();
-# Also matches the fully qualified: private readonly System.Collections.Generic.Dictionary<...>
+# Retained for backwards compatibility but no longer used by V88.
 _DICT_FIELD_RE = re.compile(
     r"private\s+readonly\s+(?:[\w.]*\.)?Dictionary\s*<[^>]+>\s+(_\w+)\s*=\s*new\(\s*\)\s*;",
 )
 
-# XML read path keywords that indicate the dictionary is wired to XML
-_XML_READ_PATTERNS = [
-    "Attribute(",
-    "Element(",
-    "Elements(",
-    "XDocument.Load(",
-    "XDocument.Parse(",
-    "XElement.Load(",
-    "XElement.Parse(",
-    ".Load(stream",
-    ".Load(filePath",
-    "XmlReader",
-    "XmlDocument",
+# Method signatures we want to extract: public Set*/Get*/Add*/etc. methods
+_METHOD_SIG_RE = re.compile(
+    r"public\s+"
+    r"(?:(?:static|virtual|override|sealed|async|new)\s+)*"
+    r"(?:[A-Za-z_][\w?<>\[\],\s]*?\s+)"  # return type (non-greedy)
+    r"((?:Set|Get|Add|Remove|Init|Has|Is|Create|Build|Export|Load|Save)\w+)"
+    r"\s*\([^)]*\)\s*\{",
+    re.DOTALL,
+)
+
+# Patterns indicating a setter writes to a dictionary (no XML path)
+_DICT_ASSIGN_RE = re.compile(r"_\w+\s*\[")
+
+# Patterns indicating XML write operations
+_XML_WRITE_PATTERNS_V88 = [
+    "SetAttributeValue(",
+    "SetElementValue(",
+    "new XElement(",
+    "XElement(",
+    "FodsStyleEditor",
+    "ReplaceWith(",
+    ".Add(",
+    ".Remove(",
+]
+
+# Helper method prefixes treated as implicit XML-write delegates
+_XML_WRITE_HELPER_RE = re.compile(r"\b_(?:Write|Set|Save|Update|Persist|Sync)\w+\s*\(")
+
+# Patterns indicating a getter reads from a dictionary (no XML path)
+_DICT_RETURN_RE = re.compile(r"_\w+\s*[\[.]")
+
+# Patterns indicating XML read operations
+_XML_READ_PATTERNS_V88 = [
+    ".Attribute(",
+    ".Element(",
+    ".Elements(",
+    ".Descendants(",
+    "FodsStyleResolver",
+    ".Value",
+    "XDocument.Load",
+    "XElement.Load",
 ]
 
 
-def _is_dict_wired_to_xml(field_name: str, source_files: list[str], repo_root: Path) -> bool:
-    """Heuristic: check if field_name appears near an XML read path in any partial class file."""
-    for rel_path in source_files:
-        full_path = repo_root / rel_path
-        if not full_path.exists():
-            continue
-        try:
-            source = full_path.read_text(encoding="utf-8", errors="replace")
-        except Exception:
-            continue
-        if field_name not in source:
-            continue
-        # Check if any XML read pattern appears in the same file
-        for pattern in _XML_READ_PATTERNS:
-            if pattern in source:
-                # Rough proximity: both appear in the file
-                return True
-    return False
+def _extract_method_bodies(cs_source: str) -> list[tuple[str, str]]:
+    """Extract (method_name, body_text) pairs using brace-depth counter.
+
+    Finds public method signatures matching _METHOD_SIG_RE, then extracts
+    the body text between the opening { and its matching closing } via brace
+    depth tracking. Handles nested braces correctly.
+
+    Returns list of (method_name, body_text) tuples; body_text excludes the
+    outer braces.
+    """
+    results = []
+    for m in _METHOD_SIG_RE.finditer(cs_source):
+        method_name = m.group(1)
+        # Opening brace is the last character matched by the pattern
+        brace_pos = m.end() - 1
+        depth = 0
+        pos = brace_pos
+        body_start = brace_pos + 1
+        while pos < len(cs_source):
+            c = cs_source[pos]
+            if c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    results.append((method_name, cs_source[body_start:pos]))
+                    break
+            pos += 1
+    return results
+
+
+def _setter_is_dict_only(body: str) -> bool:
+    """Return True if setter body writes to dict field but has no XML write path."""
+    if not _DICT_ASSIGN_RE.search(body):
+        return False
+    if any(pat in body for pat in _XML_WRITE_PATTERNS_V88):
+        return False
+    if _XML_WRITE_HELPER_RE.search(body):
+        return False
+    return True
+
+
+def _getter_is_dict_only(body: str) -> bool:
+    """Return True if getter body returns dict field but has no XML read path."""
+    if not _DICT_RETURN_RE.search(body):
+        return False
+    if any(pat in body for pat in _XML_READ_PATTERNS_V88):
+        return False
+    return True
 
 
 def _get_peer_partial_class_files(rel_path: str, repo_root: Path) -> list[str]:
@@ -291,17 +433,28 @@ def validate_dotnet_detached_dictionary_fields(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """V88 (WARN-only): Detect private readonly Dictionary fields not wired to XML parse paths.
+    """V88: Detect public Set*/Get* methods whose bodies write/read only in-memory dictionaries.
 
-    Heuristic: if the dictionary field name appears in the same file (or peer partial-class
-    files) only in setter/getter assignments but never alongside XML read patterns
-    (Attribute(, Element(, XDocument.Load( etc.), flag it as potentially detached.
+    Per-method analysis (TC-FGSQ-003 rewrite): uses brace-depth body extraction to
+    check each public method body precisely. A method is flagged when its body:
+      - Setter: contains _field[...] assignment AND no XML write pattern
+        (SetAttributeValue, new XElement, FodsStyleEditor, etc.)
+      - Getter: contains _field[...] return AND no XML read pattern
+        (.Attribute(, .Element(, FodsStyleResolver, .Value, etc.)
 
-    blocks_sprint: False (advisory only — cross-file dataflow analysis is approximate).
+    Helper method calls starting with _Write/_Set/_Save/_Update are treated as
+    implicit XML-write delegates and suppress false positives.
+
+    NEW in TC-SPW-002 (corrected TC-FGSQ-003): Distinguishes new vs pre-existing methods
+    using git_head_start.
+      - Pre-existing methods (confirmed at git_head_start) → WARN, blocks_sprint=False
+      - New methods (introduced this sprint) → FAIL, blocks_sprint=True
+      - If git_head_start not available → conservative FAIL (cannot prove pre-existing)
     """
     _repo = repo_root or REPO_ROOT
     changed_files = declaration.get("changed_files", [])
     dotnet_files = _get_dotnet_source_files(changed_files)
+    git_head_start = declaration.get("git_head_start", "")
 
     if not dotnet_files:
         return {
@@ -312,7 +465,9 @@ def validate_dotnet_detached_dictionary_fields(
             "blocks_sprint": False,
         }
 
-    warnings = []
+    new_violations: list[dict] = []
+    existing_violations: list[dict] = []
+
     for rel_path in dotnet_files:
         full_path = _repo / rel_path
         if not full_path.exists():
@@ -322,42 +477,81 @@ def validate_dotnet_detached_dictionary_fields(
         except Exception:
             continue
 
-        dict_fields = _DICT_FIELD_RE.findall(source)
-        if not dict_fields:
-            continue
+        for method_name, body in _extract_method_bodies(source):
+            issue: str | None = None
+            remediation = ""
+            if method_name.startswith("Set") and _setter_is_dict_only(body):
+                issue = "setter_without_xml_write"
+                remediation = (
+                    f"'{method_name}' writes only to an in-memory dictionary. "
+                    "Implement SetAttributeValue/new XElement to persist the value to XML, "
+                    "or delegate to a _WriteXxx helper that does so."
+                )
+            elif method_name.startswith("Get") and _getter_is_dict_only(body):
+                issue = "getter_without_xml_read"
+                remediation = (
+                    f"'{method_name}' reads from a private field with no XML access. "
+                    "Read from XDocument via .Attribute()/.Element() or FodsStyleResolver."
+                )
 
-        peer_files = _get_peer_partial_class_files(rel_path, _repo)
+            if issue is None:
+                continue
 
-        for field_name in dict_fields:
-            if not _is_dict_wired_to_xml(field_name, peer_files, _repo):
-                warnings.append({
+            # Determine if this method is new (introduced this sprint) or pre-existing.
+            # When git_head_start is absent, conservatively treat as new (FAIL) since
+            # we cannot prove the method pre-dated this sprint.
+            if git_head_start and _method_existed_at_git_head(
+                git_head_start, rel_path, method_name, _repo
+            ):
+                # Confirmed pre-existing at git_head_start → WARN (non-blocking)
+                existing_violations.append({
                     "file": rel_path,
-                    "field": field_name,
-                    "issue": "detached_dictionary_field",
+                    "method": method_name,
+                    "issue": issue,
+                    "origin": "pre_existing",
                     "severity": "WARN",
-                    "remediation": (
-                        f"Verify '{field_name}' is populated from parsed XML. "
-                        "If not, implement the getter from ODF XML instead of this dict, "
-                        "and ensure the setter writes to the XML document."
-                    ),
+                    "remediation": remediation,
+                })
+            else:
+                # Either new this sprint OR no git_head_start to distinguish → FAIL
+                new_violations.append({
+                    "file": rel_path,
+                    "method": method_name,
+                    "issue": issue,
+                    "origin": "new_this_sprint" if git_head_start else "unknown_no_git_state",
+                    "severity": "FAIL",
+                    "remediation": remediation,
                 })
 
-    if not warnings:
+    if not new_violations and not existing_violations:
         return {
             "validator": "validate_dotnet_detached_dictionary_fields",
             "result": "PASS",
             "items": [],
-            "summary": "V88: No detached dictionary fields detected (heuristic).",
+            "summary": "V88: No dict-only setter/getter methods detected.",
             "blocks_sprint": False,
+        }
+
+    if new_violations:
+        return {
+            "validator": "validate_dotnet_detached_dictionary_fields",
+            "result": "FAIL",
+            "items": new_violations + existing_violations,
+            "summary": (
+                f"V88: {len(new_violations)} NEW dict-only method(s) this sprint "
+                f"(+ {len(existing_violations)} pre-existing WARN) — "
+                "new additions must write/read via ODF XML."
+            ),
+            "blocks_sprint": True,
         }
 
     return {
         "validator": "validate_dotnet_detached_dictionary_fields",
         "result": "WARN",
-        "items": warnings,
+        "items": existing_violations,
         "summary": (
-            f"V88 (advisory): {len(warnings)} potentially detached Dictionary field(s) "
-            "in .NET source — verify each is wired to XML parse/write paths."
+            f"V88: {len(existing_violations)} pre-existing dict-only method(s) — advisory. "
+            "No new additions detected this sprint."
         ),
         "blocks_sprint": False,
     }
@@ -497,10 +691,11 @@ def validate_dotnet_setter_without_xml_write(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """V90 (WARN): Detect public Set* methods whose body does not contain XML write patterns.
+    """V90: Detect public Set* methods whose body does not contain XML write patterns.
 
-    Advisory — setter in abstract/builder context may be valid.
-    blocks_sprint: False.
+    blocks_sprint: True for non-whitelisted violations (TC-FGSQ-005).
+    Whitelisted setters (known_setter_without_xml_write_ok in dotnet-semantic-stub-whitelist.yaml)
+    are reported as WARN (non-blocking) until wired to ODF XML.
     """
     _repo = repo_root or REPO_ROOT
     changed_files = declaration.get("changed_files", [])
@@ -515,7 +710,8 @@ def validate_dotnet_setter_without_xml_write(
             "blocks_sprint": False,
         }
 
-    warnings = []
+    whitelist = _load_whitelist(_repo, "known_setter_without_xml_write_ok")
+    violations = []
     for rel_path in dotnet_files:
         full_path = _repo / rel_path
         if not full_path.exists():
@@ -525,23 +721,29 @@ def validate_dotnet_setter_without_xml_write(
         except Exception:
             continue
 
+        fqn_prefix = _extract_fqn_prefix(source)
         for m in _PUBLIC_SET_METHOD_RE.finditer(source):
             method_name = m.group(1)
             body = m.group(2)
-            if _body_is_dict_only(body):
-                warnings.append({
-                    "file": rel_path,
-                    "method": method_name,
-                    "issue": "setter_without_xml_write",
-                    "severity": "WARN",
-                    "remediation": (
-                        f"'{method_name}' writes only to an in-memory dictionary. "
-                        "Setters for persistent document properties must call "
-                        "SetAttributeValue/FodsStyleEditor to update the XDocument."
-                    ),
-                })
+            if not _body_is_dict_only(body):
+                continue
+            fqn = fqn_prefix + method_name
+            is_wl = fqn in whitelist or method_name in whitelist
+            violations.append({
+                "file": rel_path,
+                "method": method_name,
+                "fqn": fqn,
+                "issue": "setter_without_xml_write",
+                "severity": "WARN" if is_wl else "FAIL",
+                "whitelisted": is_wl,
+                "remediation": (
+                    f"'{method_name}' writes only to an in-memory dictionary. "
+                    "Implement SetAttributeValue/FodsStyleEditor to persist to XDocument, "
+                    "or grandfather in known_setter_without_xml_write_ok."
+                ),
+            })
 
-    if not warnings:
+    if not violations:
         return {
             "validator": "validate_dotnet_setter_without_xml_write",
             "result": "PASS",
@@ -550,15 +752,17 @@ def validate_dotnet_setter_without_xml_write(
             "blocks_sprint": False,
         }
 
+    blocking = [v for v in violations if v["severity"] == "FAIL"]
+    result = "FAIL" if blocking else "WARN"
     return {
         "validator": "validate_dotnet_setter_without_xml_write",
-        "result": "WARN",
-        "items": warnings,
+        "result": result,
+        "items": violations,
         "summary": (
-            f"V90 (advisory): {len(warnings)} Set* method(s) write only to in-memory "
-            "dictionaries without XML write path."
+            f"V90: {len(violations)} Set* method(s) write only to in-memory dicts "
+            f"({len(blocking)} blocking, {len(violations) - len(blocking)} whitelisted)."
         ),
-        "blocks_sprint": False,
+        "blocks_sprint": bool(blocking),
     }
 
 
@@ -599,10 +803,11 @@ def validate_dotnet_getter_without_xml_read(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """V91 (WARN): Detect public Get* methods whose body reads from a field without XML access.
+    """V91: Detect public Get* methods whose body reads from a field without XML access.
 
-    Advisory — not all getters need XML (e.g., computed properties from parsed model).
-    blocks_sprint: False.
+    blocks_sprint: True for non-whitelisted violations (TC-FGSQ-005).
+    Whitelisted getters (known_getter_without_xml_read_ok in dotnet-semantic-stub-whitelist.yaml)
+    are reported as WARN (non-blocking) until wired to ODF XML reads.
     """
     _repo = repo_root or REPO_ROOT
     changed_files = declaration.get("changed_files", [])
@@ -617,7 +822,8 @@ def validate_dotnet_getter_without_xml_read(
             "blocks_sprint": False,
         }
 
-    warnings = []
+    whitelist = _load_whitelist(_repo, "known_getter_without_xml_read_ok")
+    violations = []
     for rel_path in dotnet_files:
         full_path = _repo / rel_path
         if not full_path.exists():
@@ -627,23 +833,30 @@ def validate_dotnet_getter_without_xml_read(
         except Exception:
             continue
 
+        fqn_prefix = _extract_fqn_prefix(source)
         for m in _PUBLIC_GET_METHOD_RE.finditer(source):
             method_name = m.group(1)
             body = m.group(2)
-            if _body_is_field_backed(body):
-                warnings.append({
-                    "file": rel_path,
-                    "method": method_name,
-                    "issue": "getter_without_xml_read",
-                    "severity": "WARN",
-                    "remediation": (
-                        f"'{method_name}' reads from a private field with no XML access. "
-                        "If this is a persistent document property, the getter must "
-                        "read from the XDocument via Attribute()/FodsStyleResolver."
-                    ),
-                })
+            if not _body_is_field_backed(body):
+                continue
+            fqn = fqn_prefix + method_name
+            is_wl = fqn in whitelist or method_name in whitelist
+            violations.append({
+                "file": rel_path,
+                "method": method_name,
+                "fqn": fqn,
+                "issue": "getter_without_xml_read",
+                "severity": "WARN" if is_wl else "FAIL",
+                "whitelisted": is_wl,
+                "remediation": (
+                    f"'{method_name}' reads from a private field with no XML access. "
+                    "If this is a persistent document property, read from the XDocument "
+                    "via Attribute()/FodsStyleResolver, or grandfather in "
+                    "known_getter_without_xml_read_ok."
+                ),
+            })
 
-    if not warnings:
+    if not violations:
         return {
             "validator": "validate_dotnet_getter_without_xml_read",
             "result": "PASS",
@@ -652,15 +865,17 @@ def validate_dotnet_getter_without_xml_read(
             "blocks_sprint": False,
         }
 
+    blocking = [v for v in violations if v["severity"] == "FAIL"]
+    result = "FAIL" if blocking else "WARN"
     return {
         "validator": "validate_dotnet_getter_without_xml_read",
-        "result": "WARN",
-        "items": warnings,
+        "result": result,
+        "items": violations,
         "summary": (
-            f"V91 (advisory): {len(warnings)} Get* method(s) read from private fields "
-            "without any XML read path."
+            f"V91: {len(violations)} Get* method(s) read from private fields without XML read "
+            f"({len(blocking)} blocking, {len(violations) - len(blocking)} whitelisted)."
         ),
-        "blocks_sprint": False,
+        "blocks_sprint": bool(blocking),
     }
 
 
@@ -748,4 +963,269 @@ def validate_dotnet_fods_extended_apis_loc(
             "Split required before adding more content. Blocks sprint."
         ),
         "blocks_sprint": True,
+    }
+
+
+# ---------------------------------------------------------------------------
+# V168: validate_dotnet_collection_stub_comments
+# TC-FGSQ-009 (splendid-squishing-orbit): Detect COLLECTION_STUB and
+# TODO(GI-FODS-NET-*) comments in src/net/**/*.cs files.
+# These markers indicate dict-backed state with no XML persistence path.
+# WARN-only for existing instances; new additions tracked against baseline.
+# ---------------------------------------------------------------------------
+
+_COLLECTION_STUB_PATTERNS = [
+    re.compile(r"//\s*COLLECTION_STUB"),
+    re.compile(r"//\s*TODO\(GI-FODS-NET-"),
+]
+
+
+@validator(rule_id="V_VALIDATE_DOTNET_COLLECTION_STUB_COMMENTS", domain="dotnet")
+def validate_dotnet_collection_stub_comments(
+    declaration: dict,
+    repo_root: "Path | None" = None,
+) -> dict:
+    """V168: Detect COLLECTION_STUB / TODO(GI-FODS-NET-*) comments in src/net/.
+
+    TC-FGSQ-009 (splendid-squishing-orbit): Two-tier detection:
+
+    1. FAIL + blocks_sprint for any changed_files .NET file that contains a
+       COLLECTION_STUB / TODO(GI-FODS-NET-*) comment. Rationale: if a sprint declares
+       a .NET file as changed, it must not introduce or retain stub comment markers in
+       that file. This prevents new stub accumulation.
+
+    2. WARN-only for the whole-repo scan of src/net/ (pre-existing stubs not in
+       changed_files). These are tracked debt, not new introductions.
+    """
+    from pathlib import Path as _Path
+
+    _repo = _Path(repo_root) if repo_root else _Path(__file__).resolve().parents[2]
+    src_net = _repo / "src" / "net"
+    if not src_net.exists():
+        return {
+            "validator": "validate_dotnet_collection_stub_comments",
+            "result": "PASS",
+            "items": [],
+            "summary": "V168: src/net/ does not exist — nothing to check.",
+            "blocks_sprint": False,
+        }
+
+    changed_files = set(declaration.get("changed_files", []))
+    changed_cs = {f for f in changed_files if re.search(r"src[/\\]net[/\\].*\.cs$", f)}
+
+    stub_in_changed: list[dict] = []   # FAIL items (declared in this sprint)
+    stub_in_existing: list[dict] = []  # WARN items (pre-existing, not changed this sprint)
+
+    for cs_file in sorted(src_net.rglob("*.cs")):
+        try:
+            lines = cs_file.read_text(encoding="utf-8", errors="replace").splitlines()
+        except Exception:
+            continue
+        rel = cs_file.relative_to(_repo).as_posix()
+        rel_normalized = rel.replace("\\", "/")
+        is_changed = any(
+            rel_normalized == c.replace("\\", "/") or rel_normalized.endswith("/" + c.replace("\\", "/"))
+            for c in changed_cs
+        ) or any(c.replace("\\", "/") in rel_normalized for c in changed_cs)
+
+        for lineno, line in enumerate(lines, start=1):
+            for pat in _COLLECTION_STUB_PATTERNS:
+                if pat.search(line):
+                    entry = {
+                        "file": rel,
+                        "line": lineno,
+                        "text": line.strip()[:120],
+                        "remediation": (
+                            "Convert method to throw NotSupportedException with ODF section citation. "
+                            "Remove stub comment and dict field once all callers are updated."
+                        ),
+                    }
+                    if is_changed:
+                        stub_in_changed.append({**entry, "severity": "FAIL",
+                            "reason": "stub_comment_in_sprint_declared_file"})
+                    else:
+                        stub_in_existing.append({**entry, "severity": "WARN",
+                            "reason": "pre_existing_stub_not_in_sprint"})
+                    break  # one match per line is enough
+
+    all_items = stub_in_changed + stub_in_existing
+
+    if not all_items:
+        return {
+            "validator": "validate_dotnet_collection_stub_comments",
+            "result": "PASS",
+            "items": [],
+            "summary": "V168: No COLLECTION_STUB or TODO(GI-FODS-NET-*) comments found in src/net/.",
+            "blocks_sprint": False,
+        }
+
+    if stub_in_changed:
+        return {
+            "validator": "validate_dotnet_collection_stub_comments",
+            "result": "FAIL",
+            "items": all_items,
+            "summary": (
+                f"V168: {len(stub_in_changed)} COLLECTION_STUB/GI-FODS-NET comment(s) in "
+                f"sprint-declared .NET file(s). Blocks sprint. "
+                f"({len(stub_in_existing)} pre-existing stubs also reported as WARN.)"
+            ),
+            "blocks_sprint": True,
+        }
+
+    return {
+        "validator": "validate_dotnet_collection_stub_comments",
+        "result": "WARN",
+        "items": all_items,
+        "summary": (
+            f"V168: {len(stub_in_existing)} pre-existing COLLECTION_STUB/GI-FODS-NET comment(s) "
+            "in src/net/ (not in changed_files). Track as debt; not blocking."
+        ),
+        "blocks_sprint": False,
+    }
+
+
+# ---------------------------------------------------------------------------
+# V169: validate_whitelist_expiry
+# ---------------------------------------------------------------------------
+
+_WHITELIST_SECTIONS = [
+    "known_constant_return_ok",
+    "known_setter_without_xml_write_ok",
+    "known_getter_without_xml_read_ok",
+]
+_WHITELIST_WARN_DAYS_BEFORE = 30
+
+
+@validator(rule_id="V_VALIDATE_WHITELIST_EXPIRY", domain="dotnet")
+def validate_whitelist_expiry(
+    declaration: dict,
+    repo_root: Path | None = None,
+) -> dict:
+    """V169: Warn/fail on whitelist entries nearing or past their review_due date.
+
+    For each entry in registry/dotnet-semantic-stub-whitelist.yaml across all three
+    whitelist sections:
+    - If review_due is absent or unparseable: WARN (missing governance field)
+    - If today >= review_due: FAIL + blocks_sprint=True (expired — must review or implement)
+    - If today is within 30 days of review_due: WARN (upcoming review)
+    - Otherwise: PASS (not yet due)
+
+    Rationale: Grandfathered exceptions must not remain indefinitely. Periodic review
+    ensures that each whitelist entry is either implemented from ODF XML or has a new
+    review_due extension approved by a human reviewer.
+
+    TC-FGSQ-006: REQ-FGSQ-006 — whitelist entries have expiry dates, reviewed quarterly.
+    """
+    from datetime import date, datetime, timezone
+
+    _repo = repo_root or REPO_ROOT
+    today = date.today()
+    items = []
+    expired_count = 0
+    upcoming_count = 0
+    missing_gov_count = 0
+
+    for section in _WHITELIST_SECTIONS:
+        records = _load_whitelist_records(_repo, section)
+        for rec in records:
+            method = rec.get("method", "<unknown>")
+            review_due_raw = rec.get("review_due")
+
+            if review_due_raw is None:
+                # Schema 1.x entry without governance fields
+                items.append({
+                    "method": method,
+                    "section": section,
+                    "review_due": None,
+                    "severity": "WARN",
+                    "issue": "missing_review_due",
+                    "remediation": (
+                        "Upgrade whitelist entry to schema 2.0: add approved_by, approved_date, "
+                        "review_due, and removal_condition fields."
+                    ),
+                })
+                missing_gov_count += 1
+                continue
+
+            try:
+                due_date = date.fromisoformat(str(review_due_raw))
+            except (ValueError, TypeError):
+                items.append({
+                    "method": method,
+                    "section": section,
+                    "review_due": str(review_due_raw),
+                    "severity": "WARN",
+                    "issue": "unparseable_review_due",
+                    "remediation": "Fix review_due field: must be ISO-8601 date (YYYY-MM-DD).",
+                })
+                missing_gov_count += 1
+                continue
+
+            days_until_due = (due_date - today).days
+
+            if days_until_due < 0:
+                # Past due — blocking
+                items.append({
+                    "method": method,
+                    "section": section,
+                    "review_due": str(due_date),
+                    "days_overdue": -days_until_due,
+                    "severity": "FAIL",
+                    "issue": "whitelist_entry_expired",
+                    "remediation": (
+                        f"Review_due {due_date} has passed ({-days_until_due} days ago). "
+                        "Either implement from ODF XML, convert to NotSupportedException, "
+                        "or extend review_due with a new approved_date and approver."
+                    ),
+                })
+                expired_count += 1
+            elif days_until_due <= _WHITELIST_WARN_DAYS_BEFORE:
+                # Upcoming — warn
+                items.append({
+                    "method": method,
+                    "section": section,
+                    "review_due": str(due_date),
+                    "days_until_due": days_until_due,
+                    "severity": "WARN",
+                    "issue": "whitelist_entry_expiring_soon",
+                    "remediation": (
+                        f"Review_due {due_date} is in {days_until_due} day(s). "
+                        "Plan: implement from ODF XML, convert to NotSupportedException, "
+                        "or extend with a new approved review_due date."
+                    ),
+                })
+                upcoming_count += 1
+
+    blocks = expired_count > 0
+
+    if not items:
+        return {
+            "validator": "validate_whitelist_expiry",
+            "result": "PASS",
+            "items": [],
+            "summary": "V169: All whitelist entries have valid review_due dates; none expired.",
+            "blocks_sprint": False,
+        }
+
+    if blocks:
+        result = "FAIL"
+        summary = (
+            f"V169: {expired_count} whitelist entry/entries expired (review_due in past). "
+            f"{upcoming_count} expiring within {_WHITELIST_WARN_DAYS_BEFORE} days. "
+            f"{missing_gov_count} missing governance fields. Blocks sprint."
+        )
+    else:
+        result = "WARN"
+        summary = (
+            f"V169: {upcoming_count} whitelist entry/entries expiring within "
+            f"{_WHITELIST_WARN_DAYS_BEFORE} days. {missing_gov_count} missing governance "
+            f"fields. Not blocking — schedule review before expiry."
+        )
+
+    return {
+        "validator": "validate_whitelist_expiry",
+        "result": result,
+        "items": items,
+        "summary": summary,
+        "blocks_sprint": blocks,
     }

@@ -1,163 +1,148 @@
-# QOI Oracle Package — Format Factory
-# Format: Quite OK Image Format
-# Authority: QOI specification (qoiformat.org)
-# Oracle version: 1
-# Status: VERIFIED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch C
-# GAP-ORC-BACKFILL-C: Imaging family oracle packages
-
 oracle_id: oracle-qoi-v1
 format_id: qoi
-format_version: "QOI v1"
+format_version: QOI v1
 oracle_version: 1
 family: imaging
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: QOI-SPEC
-      title: "QOI — The Quite OK Image Format"
-      body: "Dominic Szablewski"
-      url: "https://qoiformat.org/qoi-specification.pdf"
-      legal_category: 1
-      authority_class: SPEC_NORMATIVE
-      note: "QOI uses 'qoif' magic (4 bytes). Header: width (4B), height (4B), channels (1B), colorspace (1B)."
+  - id: QOI-SPEC
+    title: QOI — The Quite OK Image Format
+    body: Dominic Szablewski
+    url: https://qoiformat.org/qoi-specification.pdf
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    note: 'QOI uses ''qoif'' magic (4 bytes). Header: width (4B), height (4B), channels
+      (1B), colorspace (1B).'
   authorized_fact_refs:
-    - "FACT-QOI-001"
-    - "FACT-QOI-002"
+  - FACT-QOI-001
+  - FACT-QOI-002
   requirement_refs: []
   capability_refs:
-    - "qoi:parse"
-    - "qoi:chunk"
-  authority_summary: >
-    QOI files have 'qoif' magic. Fixed 14-byte header with width, height, channels, colorspace.
-    qoi:chunk is the authoritative spec qname.
+  - qoi:parse
+  - qoi:chunk
+  authority_summary: 'QOI files have ''qoif'' magic. Fixed 14-byte header with width,
+    height, channels, colorspace. qoi:chunk is the authoritative spec qname.
 
+    '
 corpus_refs:
-  - corpus_id: qoi-1x1-red
-    sample_ref: samples/by-format/qoi/valid/1x1-red.qoi
-    sha256: "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "1x1 red pixel QOI image"
-  - corpus_id: qoi-2x2-black
-    sample_ref: samples/by-format/qoi/valid/2x2-black.qoi
-    sha256: "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "2x2 black pixel QOI image"
-
+- corpus_id: qoi-1x1-red
+  sample_ref: samples/by-format/qoi/valid/1x1-red.qoi
+  sha256: sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 1x1 red pixel QOI image
+- corpus_id: qoi-2x2-black
+  sample_ref: samples/by-format/qoi/valid/2x2-black.qoi
+  sha256: sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 2x2 black pixel QOI image
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not applicable for this oracle version
+- profile: DOMAIN_MODEL_MAPPING
+  reason: No typed domain model class for this oracle version
+- profile: SECURITY_ROBUSTNESS
+  reason: No injection surface in binary parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: qoi-valid-001
+  purpose: 1x1 QOI image parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - QOI-SPEC -- qoif magic, 14-byte header
+  sample_ref: samples/by-format/qoi/valid/1x1-red.qoi
+  input_hash: sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: QOI-SPEC
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not applicable for this oracle version"
-  - profile: DOMAIN_MODEL_MAPPING
-    reason: "No typed domain model class for this oracle version"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No injection surface in binary parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: qoi-valid-001
-    purpose: "1x1 QOI image parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "QOI-SPEC -- qoif magic, 14-byte header"
-    sample_ref: samples/by-format/qoi/valid/1x1-red.qoi
-    input_hash: "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: QOI-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: qoi-valid-002
-    purpose: "2x2 QOI image parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "QOI-SPEC -- width/height fields"
-    sample_ref: samples/by-format/qoi/valid/2x2-black.qoi
-    input_hash: "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: QOI-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: qoi-valid-003
-    purpose: "4x1 gradient QOI image parses without error"
-    authority_class: SPEC_NORMATIVE
-    authority_refs:
-      - "QOI-SPEC -- width/height multi-pixel"
-    sample_ref: samples/by-format/qoi/valid/4x1-gradient.qoi
-    input_hash: "sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: ok
-        value: true
-        authority: QOI-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
+- case_id: qoi-valid-002
+  purpose: 2x2 QOI image parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - QOI-SPEC -- width/height fields
+  sample_ref: samples/by-format/qoi/valid/2x2-black.qoi
+  input_hash: sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: QOI-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: qoi-valid-003
+  purpose: 4x1 gradient QOI image parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - QOI-SPEC -- width/height multi-pixel
+  sample_ref: samples/by-format/qoi/valid/4x1-gradient.qoi
+  input_hash: sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: ok
+    value: true
+    authority: QOI-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
 invalid_cases:
-  - case_id: qoi-invalid-001
-    purpose: "Non-QOI file must raise error"
-    defect_class: wrong-format
-    malformed_boundary: "File lacks qoif magic"
-    authority_refs:
-      - "QOI-SPEC -- magic required"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    security_relevance: false
-    notes: "No invalid QOI sample in corpus yet."
-
+- case_id: qoi-invalid-001
+  purpose: Non-QOI file must raise error
+  defect_class: wrong-format
+  malformed_boundary: File lacks qoif magic
+  authority_refs:
+  - QOI-SPEC -- magic required
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: No invalid QOI sample in corpus yet.
 canonicalization:
   method: qoi-parse-dict
-  description: "Canonical form is parse_qoi dict with ok, width, height, channels, colorspace."
-  ordering_policy: "pixel order preserved"
-  whitespace_policy: "binary format — not applicable"
-  encoding_policy: "binary"
-
+  description: Canonical form is parse_qoi dict with ok, width, height, channels,
+    colorspace.
+  ordering_policy: pixel order preserved
+  whitespace_policy: binary format — not applicable
+  encoding_policy: binary
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "binary format — not applicable"
-  metadata_tolerance: "None"
-  policy_summary: "parse_qoi must return dict with ok=True for valid samples"
-
+  ordering_tolerance: none
+  whitespace_tolerance: binary format — not applicable
+  metadata_tolerance: None
+  policy_summary: parse_qoi must return dict with ok=True for valid samples
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - qoi-magic-validator
-
+- qoi-magic-validator
 consumers:
-  - tests/python/qoi/test_qoi_document_model.py
+- tests/python/qoi/test_qoi_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

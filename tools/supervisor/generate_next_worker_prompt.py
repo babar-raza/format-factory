@@ -137,6 +137,99 @@ def load_gap_ledger_ids(repo_root: Path) -> set[str]:
         return set()
 
 
+def _compute_lane_decisions(repo_root: Path) -> dict:
+    """Compute per-format lane decisions from product-deepening-ledger.yaml.
+
+    Returns dict mapping format_name → selected_lane ('dom', 'feature', or list).
+    Silently returns empty dict on any error (TC-PCL-002: graceful fallback).
+    """
+    try:
+        from lane_selector import select_lane
+        ledger_path = repo_root / "registry" / "product-deepening-ledger.yaml"
+        policies_path = repo_root / ".supervisor" / "policies.yaml"
+        if not ledger_path.exists():
+            return {}
+        ledger = yaml.safe_load(ledger_path.read_text(encoding="utf-8"))
+        if not isinstance(ledger, list):
+            return {}
+        decisions: dict = {}
+        seen: set = set()
+        for entry in ledger:
+            fmt = str(entry.get("format", "")).lower()
+            runtime = str(entry.get("runtime", "python")).lower()
+            if not fmt or runtime != "python" or fmt in seen:
+                continue
+            seen.add(fmt)
+            try:
+                result = select_lane(fmt, ledger_path=ledger_path,
+                                     policies_path=policies_path)
+                lane = result.get("selected_lane", "feature")
+                decisions[fmt] = lane if isinstance(lane, str) else "feature"
+            except Exception:
+                decisions[fmt] = "feature"
+        return decisions
+    except Exception:
+        return {}
+
+
+def _build_lane_selection_section(repo_root: Path) -> str:
+    """Build ## Lane Selection advisory section from current ledger state.
+
+    Returns empty string on any error (TC-PCL-002 REQ-LANE-006: fallback).
+    """
+    try:
+        decisions = _compute_lane_decisions(repo_root)
+        if not decisions:
+            return ""
+        # Load Lane B DOM gaps from gap-ledger.json
+        dom_gaps_by_fmt: dict = {}
+        try:
+            gap_path = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+            raw = json.loads(gap_path.read_text(encoding="utf-8", errors="replace"))
+            gaps_list = raw.get("gaps", raw) if isinstance(raw, dict) else raw
+            for g in gaps_list:
+                if g.get("lane") == "B" and g.get("status") != "closed":
+                    fmt = str(g.get("format", "")).lower()
+                    dom_gaps_by_fmt.setdefault(fmt, []).append(g.get("gap_id", ""))
+        except Exception:
+            pass
+
+        lines = ["\n## Lane Selection (Derived from ledger state)\n"]
+        dom_starved = []
+        for fmt, lane in sorted(decisions.items()):
+            dom_gaps = dom_gaps_by_fmt.get(fmt, [])
+            dom_note = f" | Lane B gaps: {len(dom_gaps)}" if dom_gaps else ""
+            lines.append(f"Format {fmt.upper()}: selected_lane={lane}{dom_note}")
+            if lane == "dom":
+                dom_starved.append(fmt)
+                if dom_gaps:
+                    lines.append(f"  → Include `deepening_lane: dom` in evidence declaration.")
+                    lines.append(f"  → Select DOM advancement gap as primary task: {dom_gaps[0]}")
+        if dom_starved:
+            lines.append(
+                f"\nLane B starvation: {', '.join(f.upper() for f in dom_starved)} "
+                "require DOM advancement this sprint."
+            )
+        lines.append("")
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
+def _order_gaps_by_lane_decision(gaps: list, lane_decisions: dict) -> list:
+    """Move Lane B DOM gaps for DOM-selected formats to front of gap list.
+
+    TC-PCL-002-03: Ensures formats with DOM starvation are prioritized.
+    """
+    dom_gaps = [
+        g for g in gaps
+        if g.get("lane") == "B"
+        and lane_decisions.get(str(g.get("format", "")).lower(), "feature") == "dom"
+    ]
+    other_gaps = [g for g in gaps if g not in dom_gaps]
+    return dom_gaps + other_gaps
+
+
 def load_gap_extraction(repo_root: Path) -> dict:
     """Load the most recent gap extraction fixture."""
     fixtures_dir = repo_root / ".supervisor" / "fixtures"
@@ -732,6 +825,11 @@ def generate_prompt(review: dict, next_work: dict | None = None,
     spec_section = _build_spec_parity_section(repo_root)
     if spec_section:
         deterministic_prompt += spec_section
+
+    # TC-PCL-002: Inject lane selection advisory (REQ-LANE-004)
+    lane_section = _build_lane_selection_section(repo_root)
+    if lane_section:
+        deterministic_prompt += lane_section
 
     # LLM-enhanced prompt rewrite (optional — preserves governance sections)
     rewritten = rewrite_prompt_with_context(deterministic_prompt, review, effective_stream)

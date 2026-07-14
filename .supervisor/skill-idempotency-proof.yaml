@@ -1,5 +1,16 @@
-mission_id: SKILL-FIRST-003
-generated_at: '2026-07-12T18:35:43.200219+00:00'
-skills_tested: []
-verdict: PASS
-note: Registry normalize step 4 ran twice-idempotent (same output on re-run)
+generated_by: run_skill_idempotency.py
+idempotency_verdict: IDEMPOTENT_VERIFIED
+mission_id: SKILL-FIRST-001
+outputs_identical: true
+run1_exit_code: 0
+run1_log: 'Scanned 255 files: 28 GOVERNED, 227 AD_HOC -> C:\Users\prora\AppData\Local\Temp\pytest-of-prora\pytest-411\test_run1_and_run2_files_creat0\run1.yaml
+
+  '
+run2_exit_code: 0
+run2_log: 'Scanned 255 files: 28 GOVERNED, 227 AD_HOC -> C:\Users\prora\AppData\Local\Temp\pytest-of-prora\pytest-411\test_run1_and_run2_files_creat0\run2.yaml
+
+  '
+scope_limitation: Python-backed deterministic tools only; not for prompt-backed .md
+  skills
+skill_id: detect-ad-hoc-execution
+tool_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\detect_ad_hoc_execution.py

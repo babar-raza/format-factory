@@ -20,3 +20,22 @@ Canonical registries, baselines, and ledgers for format governance.
 - **Consumers:** all tools, supervisor, validators, agents
 - **Manual editing:** Partially - registries are authored, baselines have write-once fields
 - **Registry:** `registry/repository-root-folders.yaml`
+
+## Agent Navigation
+
+**Purpose of this folder:** Canonical registries and baselines for format governance.
+Created and maintained by developers, sync tools, and governance validators.
+
+**To register a new format:** Add an entry to `registry/format-registry.yaml` under `formats:`.
+Include `format_id`, display name, scoring data, and gate fields. Run `python tools/capability_sync/run_sync.py` afterward.
+
+**To register a new root folder:** Add an entry to `registry/repository-root-folders.yaml` under `folders:`.
+Required fields: `folder_path`, `retention` (RETAIN/DELETED/EXEMPT), `readme_required`.
+Validation command: `python tools/supervisor/governance_validators_root_struct.py`
+
+**Key write-once rule:** `source-structure-baseline.json` fields `baseline_loc_cap` and
+`baseline_functions_cap` are write-once. Run `python tools/validators/source_structure_validator.py`
+to validate compliance. Never increase existing caps.
+
+**Producer:** Developers author registries. `tools/capability_sync/run_sync.py` updates
+derived fields. `tools/supervisor/governance_validators_root_struct.py` validates the root-folder registry.

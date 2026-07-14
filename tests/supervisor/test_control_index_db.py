@@ -46,6 +46,9 @@ EXPECTED_TABLES = {
     "concurrency_transitions",
     "concurrency_checkpoints",
     "worker_claims",
+    # v3: canary shadow tables (TC-SCHEMA-001)
+    "validator_shadow_observations",
+    "grader_shadow_observations",
 }
 
 

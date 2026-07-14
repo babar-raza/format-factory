@@ -170,3 +170,48 @@ def test_no_external_gate_for_foss():
     g = _gap(blocks_readiness=True, product_type="foss")
     item = _gap_to_work_item(g, 50)
     assert item["external_gate"] is False
+
+
+# ── Classifier hardening tests (TC-VPR-004) ───────────────────────────────────
+
+from capability_feature_compiler import _classify_deepening_lane
+
+
+def test_explicit_dom_field_bypasses_classifier():
+    """Tier 1: explicit deepening_lane='dom' wins regardless of gap_type."""
+    assert _classify_deepening_lane({"deepening_lane": "dom"}) == "dom"
+
+
+def test_explicit_feature_field_bypasses_classifier():
+    """Tier 1: explicit deepening_lane='feature' wins."""
+    assert _classify_deepening_lane({"deepening_lane": "feature"}) == "feature"
+
+
+def test_dom_maturity_d2_classifies_as_dom():
+    """Tier 2: gap_type dom_maturity_d2 → dom."""
+    assert _classify_deepening_lane({"gap_type": "dom_maturity_d2"}) == "dom"
+
+
+def test_dom_maturity_d4_classifies_as_dom():
+    """Tier 2: gap_type dom_maturity_d4 → dom."""
+    assert _classify_deepening_lane({"gap_type": "dom_maturity_d4"}) == "dom"
+
+
+def test_generated_dom_gap_classifies_correctly():
+    """A record from dom_maturity_gap_generator → dom via both Tier1 and Tier2."""
+    gap = {
+        "gap_type": "dom_maturity_d2",
+        "deepening_lane": "dom",
+        "capability_name": "dom_typed_children for abw",
+    }
+    assert _classify_deepening_lane(gap) == "dom"
+
+
+def test_no_explicit_field_falls_through_to_tier2():
+    """Missing deepening_lane falls to gap_type check."""
+    assert _classify_deepening_lane({"gap_type": "spec_parity_gap"}) == "dom"
+
+
+def test_unclassified_gap_defaults_to_feature():
+    """Unknown gap_type and no keywords → feature."""
+    assert _classify_deepening_lane({"gap_type": "unknown", "capability_name": "load_file"}) == "feature"

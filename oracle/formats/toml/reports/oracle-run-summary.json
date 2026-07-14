@@ -1,26 +1,32 @@
 {
   "oracle_id": "oracle-toml-v1",
   "format_id": "toml",
-  "executed_at": "2026-07-09T08:26:05.860036+00:00",
-  "total_cases": 4,
+  "executed_at": "2026-07-13T18:33:15.832581+00:00",
+  "total_cases": 5,
   "results": {
     "PASS": 4,
     "FAIL": 0,
     "BLOCKED_MISSING_AUTHORITY": 0,
     "BLOCKED_MISSING_SAMPLE": 0,
     "INCONCLUSIVE": 0,
-    "NOT_APPLICABLE": 0,
+    "NOT_APPLICABLE": 1,
     "STALE_ORACLE": 0,
     "INVALID_ORACLE": 0,
     "SKIPPED_MISSING_PROVIDER": 0,
     "SKIPPED_MISSING_DEPENDENCY": 0
   },
-  "pass_rate": "4/4",
-  "verdict": "ALL_PASS",
+  "pass_rate": "4/5",
+  "verdict": "PARTIAL_PASS",
   "verdicts_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\oracle\\toml\\verdicts",
   "depth_histogram": {
     "D1": 3,
-    "D0": 1
+    "D0": 2
   },
-  "format_depth_score": "D1"
+  "format_depth_score": "D1",
+  "product_source_hash": "sha256:3b4bf3ab6cfacdc08eefc19d63a55c9eb5d752aa96a67870b264cedb00b39070",
+  "oracle_package_hash": "sha256:74e756e1f7363fb274475e96e6a07a4c380fa5a50cd2dc3f85f6c52f1d2af734",
+  "coverage_gaps": [
+    "COVERAGE_GAP: 1 invalid_cases have no sample_ref or input_inline for toml \u2014 will return NOT_APPLICABLE",
+    "COVERAGE_GAP: 1 invalid_cases defined but no executor_config in oracle-package.yaml for toml"
+  ]
 }

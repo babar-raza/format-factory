@@ -1,25 +1,31 @@
 {
   "oracle_id": "oracle-sylk-v1",
   "format_id": "sylk",
-  "executed_at": "2026-07-09T08:33:03.084814+00:00",
-  "total_cases": 3,
+  "executed_at": "2026-07-13T18:33:15.129845+00:00",
+  "total_cases": 4,
   "results": {
     "PASS": 3,
     "FAIL": 0,
     "BLOCKED_MISSING_AUTHORITY": 0,
     "BLOCKED_MISSING_SAMPLE": 0,
     "INCONCLUSIVE": 0,
-    "NOT_APPLICABLE": 0,
+    "NOT_APPLICABLE": 1,
     "STALE_ORACLE": 0,
     "INVALID_ORACLE": 0,
     "SKIPPED_MISSING_PROVIDER": 0,
     "SKIPPED_MISSING_DEPENDENCY": 0
   },
-  "pass_rate": "3/3",
-  "verdict": "ALL_PASS",
+  "pass_rate": "3/4",
+  "verdict": "PARTIAL_PASS",
   "verdicts_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\oracle\\sylk\\verdicts",
   "depth_histogram": {
-    "D1": 3
+    "D1": 3,
+    "D0": 1
   },
-  "format_depth_score": "D1"
+  "format_depth_score": "D1",
+  "product_source_hash": "sha256:77ca74220c09a9fc2cec6da90a5ee8de34bbc58f7281eee4ae170565a4341333",
+  "oracle_package_hash": "sha256:82744fc114b14fe0c5473f20459fe59fd6984330b2a20d46a61cee1ed4ad5d86",
+  "coverage_gaps": [
+    "COVERAGE_GAP: 1 invalid_cases have no sample_ref or input_inline for sylk \u2014 will return NOT_APPLICABLE"
+  ]
 }

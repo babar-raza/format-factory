@@ -1,25 +1,31 @@
 {
   "oracle_id": "oracle-fodt-v1",
   "format_id": "fodt",
-  "executed_at": "2026-07-09T08:33:02.741796+00:00",
-  "total_cases": 3,
+  "executed_at": "2026-07-13T18:33:13.597160+00:00",
+  "total_cases": 5,
   "results": {
     "PASS": 3,
     "FAIL": 0,
     "BLOCKED_MISSING_AUTHORITY": 0,
     "BLOCKED_MISSING_SAMPLE": 0,
     "INCONCLUSIVE": 0,
-    "NOT_APPLICABLE": 0,
+    "NOT_APPLICABLE": 1,
     "STALE_ORACLE": 0,
     "INVALID_ORACLE": 0,
-    "SKIPPED_MISSING_PROVIDER": 0,
+    "SKIPPED_MISSING_PROVIDER": 1,
     "SKIPPED_MISSING_DEPENDENCY": 0
   },
-  "pass_rate": "3/3",
-  "verdict": "ALL_PASS",
+  "pass_rate": "3/5",
+  "verdict": "PARTIAL_PASS",
   "verdicts_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\oracle\\fodt\\verdicts",
   "depth_histogram": {
-    "D1": 3
+    "D1": 3,
+    "D0": 2
   },
-  "format_depth_score": "D1"
+  "format_depth_score": "D1",
+  "product_source_hash": "sha256:f2bc42f2f35e65bdc942eca452336b660f24a8446b38f34e905ca5eb541dbbcf",
+  "oracle_package_hash": "sha256:6af45d6a0ca645c9c4166eb2db16bd783965040127c50d46739e79ef9fada71a",
+  "coverage_gaps": [
+    "COVERAGE_GAP: 1 invalid_cases have no sample_ref or input_inline for fodt \u2014 will return NOT_APPLICABLE"
+  ]
 }

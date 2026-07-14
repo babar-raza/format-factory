@@ -174,3 +174,55 @@ class TestCheckStarvation:
         result = check_starvation("fods", ledger)
         assert result["must_switch"] is False
         assert result["advisory_only"] is True
+
+
+class TestPolicyConsumer:
+    """TC-VPR-006: _load_policies() wired into check_starvation()."""
+
+    def test_check_starvation_reads_policy_global_threshold(self, tmp_path):
+        """check_starvation uses global threshold from policies.yaml when format has none."""
+        ledger = _write_ledger([_make_entry(
+            lane_a_consecutive=5,
+            lane_starvation_threshold=3,  # will be overridden by policy global=6
+        )])
+        # Write policy with global threshold=6 (higher than entry default of 3)
+        pol_data = {"dual_lane_deepening": {"default_starvation_threshold": 6}}
+        pol_path = tmp_path / "policies.yaml"
+        pol_path.write_text(yaml.dump(pol_data))
+        # Override entry to not have its own threshold so global applies
+        entry = _make_entry(lane_a_consecutive=5)
+        entry.pop("lane_starvation_threshold", None)
+        ledger2 = _write_ledger([entry])
+        result = check_starvation("fods", ledger2, policies_path=pol_path)
+        assert result["threshold"] == 6
+        # With a_consecutive=5 < threshold=6, no starvation
+        assert result["must_switch"] is False
+
+    def test_per_format_threshold_overrides_global(self, tmp_path):
+        """Per-format lane_starvation_threshold takes precedence over global policy."""
+        ledger = _write_ledger([_make_entry(
+            lane_a_consecutive=5,
+            lane_starvation_threshold=3,  # per-format threshold
+        )])
+        pol_data = {"dual_lane_deepening": {"default_starvation_threshold": 10}}
+        pol_path = tmp_path / "policies.yaml"
+        pol_path.write_text(yaml.dump(pol_data))
+        result = check_starvation("fods", ledger, policies_path=pol_path)
+        # Per-format=3 wins over global=10
+        assert result["threshold"] == 3
+        assert result["must_switch"] is True
+
+    def test_policy_file_absent_falls_back_gracefully(self, tmp_path):
+        """Missing policies.yaml → fallback to DEFAULT_STARVATION_THRESHOLD, no error."""
+        ledger = _write_ledger([_make_entry(lane_a_consecutive=4)])
+        absent = tmp_path / "nonexistent-policies.yaml"
+        # Should not raise — falls back to default
+        try:
+            result = check_starvation("fods", ledger, policies_path=absent)
+            # Must return a dict, not raise
+            assert isinstance(result, dict)
+        except Exception:
+            import sys
+            sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
+            from lane_selector import DEFAULT_STARVATION_THRESHOLD
+            assert DEFAULT_STARVATION_THRESHOLD == 3

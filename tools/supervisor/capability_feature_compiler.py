@@ -218,12 +218,24 @@ def _lane(gap: dict) -> str:
     return "product" if lane_int <= _MAX_PRODUCT_LANE else "machinery"
 
 
+_DOM_GAP_TYPES = frozenset({
+    "spec_parity_gap", "architecture_only", "missing_qname_registration",
+    "dom_maturity_d2", "dom_maturity_d3", "dom_maturity_d4", "dom_maturity_d5",
+})
+
+
 def _classify_deepening_lane(gap: dict) -> str:
     """Classify gap as feature or dom deepening work."""
+    # Tier 1: explicit field takes precedence (TC-VPR-004)
+    explicit = gap.get("deepening_lane", "")
+    if explicit in ("dom", "feature"):
+        return explicit
+    # Tier 2: known gap_type taxonomy including DOM maturity types
     gap_type = gap.get("gap_type", "")
-    cap = gap.get("capability_name", "").lower()
-    if gap_type in ("spec_parity_gap", "architecture_only", "missing_qname_registration"):
+    if gap_type in _DOM_GAP_TYPES:
         return "dom"
+    # Tier 3: keyword heuristics (unchanged)
+    cap = gap.get("capability_name", "").lower()
     if any(kw in cap for kw in ("object_model", "dom_", "navigation", "mutation", "spec_class")):
         return "dom"
     return "feature"

@@ -64,6 +64,10 @@ DEPTH_D1 = "D1"  # Model properties compared against expected values
 DEPTH_D2 = "D2"  # Schema validation (e.g. ODF RelaxNG via lxml)
 DEPTH_D3 = "D3"  # External tool interop (e.g. LibreOffice)
 
+# Synthetic properties that are always True and add no discriminating information.
+# An oracle case with ONLY synthetic properties earns D0, not D1 (TC-OIS-003 / MCP-W5-001).
+SYNTHETIC_PROPERTIES: frozenset[str] = frozenset({"loaded", "result_type"})
+
 
 def sha256_file(path: Path) -> str:
     """Compute SHA-256 of a file."""
@@ -661,22 +665,32 @@ def execute_toml_valid_case(case: dict, pkg: dict) -> dict:
         )
 
 
-def _compare_model_properties(result_val, expected_props: list) -> tuple[dict, list, str]:
+def _compare_model_properties(result_val, expected_props: list) -> tuple[dict, list, str, list]:
     """Compare model properties against expected values from oracle-package.yaml.
 
-    Returns (observed_dict, deviations_list, depth_level).
+    Returns (observed_dict, deviations_list, depth_level, diagnostics).
     FF-XPLAN-001 W2A-003: Upgrade from D0 to D1 by actually inspecting properties.
+    TC-FGSQ-007: data_source field per property controls depth eligibility.
+      data_source values: 'parsed' | 'computed' | 'unsupported' | 'unknown' (default)
+      - 'unsupported': feature not XML-backed; excluded from D1 eligibility
+      - 'unknown': backward compat; allows D1 but adds WARN diagnostic
     """
     observed = {"loaded": True, "result_type": type(result_val).__name__}
     deviations = []
+    diagnostics = []
 
     if not expected_props:
-        return observed, deviations, DEPTH_D0
+        return observed, deviations, DEPTH_D0, diagnostics
+
+    d1_eligible = 0   # props with data_source in ('parsed', 'computed')
+    unknown_ds = 0    # props with data_source == 'unknown' or absent
 
     for prop_spec in expected_props:
         prop_name = prop_spec.get("property", "")
         if not prop_name:
             continue
+
+        data_source = prop_spec.get("data_source", "unknown")
 
         # Extract actual value from result
         actual = None
@@ -699,6 +713,7 @@ def _compare_model_properties(result_val, expected_props: list) -> tuple[dict, l
                     "expected": expected_val,
                     "observed": actual,
                     "type": "value_mismatch",
+                    "data_source": data_source,
                 })
         elif "value_min" in prop_spec:
             min_val = prop_spec["value_min"]
@@ -708,10 +723,40 @@ def _compare_model_properties(result_val, expected_props: list) -> tuple[dict, l
                     "expected_min": min_val,
                     "observed": actual,
                     "type": "below_minimum",
+                    "data_source": data_source,
                 })
 
-    depth = DEPTH_D1 if expected_props else DEPTH_D0
-    return observed, deviations, depth
+        # Track data_source for depth calculation (TC-FGSQ-007)
+        if data_source in ("parsed", "computed"):
+            d1_eligible += 1
+        elif data_source == "unknown":
+            unknown_ds += 1
+        # data_source == 'unsupported' → excluded from D1 contribution
+
+    # TC-OIS-003 / MCP-W5-001: Require at least one non-synthetic property for D1.
+    # 'loaded' and 'result_type' are oracle-synthesized and always True — they prove
+    # nothing about model content beyond "the parser didn't crash" (D0 already implies that).
+    has_non_synthetic = any(
+        p.get("property") not in SYNTHETIC_PROPERTIES
+        for p in expected_props
+        if p.get("property")
+    )
+    if not has_non_synthetic:
+        depth = DEPTH_D0  # only synthetic properties — no meaningful model comparison
+    elif d1_eligible > 0:
+        # Determine depth level based on data_source inventory (TC-FGSQ-007)
+        depth = DEPTH_D1  # at least one parsed/computed non-synthetic property → D1
+    elif unknown_ds > 0:
+        depth = DEPTH_D1  # backward compat: unknown allows D1 but with WARN
+        diagnostics.append(
+            f"WARN[TC-FGSQ-007]: {unknown_ds} propert{'y' if unknown_ds == 1 else 'ies'} "
+            "lack data_source declaration (defaulting to 'unknown'). "
+            "Declare data_source='parsed'|'computed'|'unsupported' for accurate depth scoring."
+        )
+    else:
+        depth = DEPTH_D0  # all non-synthetic properties are 'unsupported' → D0
+
+    return observed, deviations, depth, diagnostics
 
 
 def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str, callable_name: str) -> dict:
@@ -749,7 +794,7 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
 
         # FF-XPLAN-001 W2A-003: Compare expected_model_properties if defined
         expected_props = case.get("expected_model_properties", [])
-        observed, deviations, depth = _compare_model_properties(result_val, expected_props)
+        observed, deviations, depth, ds_diagnostics = _compare_model_properties(result_val, expected_props)
 
         verdict_result = RESULT_FAIL if deviations else RESULT_PASS
         return make_verdict(
@@ -758,7 +803,7 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
             case_id=case_id, profile="PARSE_VALIDITY",
             result=verdict_result, authority_status=authority_status,
             observed=observed, deviations=deviations, input_hash=input_hash,
-            depth_level=depth,
+            depth_level=depth, diagnostics=ds_diagnostics,
         )
     except Exception as e:
         return make_verdict(
@@ -767,6 +812,86 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
             case_id=case_id, profile="PARSE_VALIDITY",
             result=RESULT_FAIL, authority_status=authority_status,
             diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
+            depth_level=DEPTH_D0,
+        )
+
+
+def execute_generic_invalid_case(
+    case: dict, pkg: dict, format_id: str, module: str, callable_name: str
+) -> dict:
+    """Generic invalid case executor (TC-OIS-004 / MCP-W5-001 Pillar 1b).
+
+    PASS if the callable raises an exception (parser correctly rejects malformed input).
+    PASS if partial_recovery_allowed=true and the callable returns without raising.
+    FAIL if no exception raised and partial_recovery_allowed is false.
+    """
+    case_id = case["case_id"]
+    _, authority_status = check_authority(case, False)
+
+    sample_ref = case.get("sample_ref") or case.get("input_ref")
+    inline = case.get("input_inline")
+
+    if sample_ref is None and inline is None:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}",
+            language="python", case_id=case_id,
+            profile="INVALID_INPUT_REJECTION",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref or input_inline for invalid case — COVERAGE_GAP"],
+        )
+
+    if sample_ref:
+        sample_path = REPO_ROOT / sample_ref
+        if not sample_path.exists():
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}",
+                language="python", case_id=case_id,
+                profile="INVALID_INPUT_REJECTION",
+                result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+                diagnostics=[f"Sample not found: {sample_path}"],
+            )
+        input_data = str(sample_path)
+    else:
+        input_data = inline
+
+    partial_recovery = case.get("partial_recovery_allowed", False)
+
+    try:
+        src_py = str(REPO_ROOT / "src" / "python")
+        if src_py not in sys.path:
+            sys.path.insert(0, str(REPO_ROOT))
+        mod = importlib.import_module(f"src.python.{module}")
+        fn = getattr(mod, callable_name)
+        fn(input_data)
+
+        if partial_recovery:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}",
+                language="python", case_id=case_id,
+                profile="INVALID_INPUT_REJECTION",
+                result=RESULT_PASS, authority_status=authority_status,
+                diagnostics=["Parser recovered gracefully (partial_recovery_allowed=true)"],
+                depth_level=DEPTH_D0,
+            )
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}",
+            language="python", case_id=case_id,
+            profile="INVALID_INPUT_REJECTION",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=["Expected exception was not raised — parser silently accepted invalid input"],
+            depth_level=DEPTH_D0,
+        )
+    except Exception:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}",
+            language="python", case_id=case_id,
+            profile="INVALID_INPUT_REJECTION",
+            result=RESULT_PASS, authority_status=authority_status,
             depth_level=DEPTH_D0,
         )
 
@@ -786,23 +911,217 @@ def execute_dif_valid_case(case: dict, pkg: dict) -> dict:
     return execute_generic_load_case(case, pkg, "dif", "dif.dif_parser", "parse_dif")
 
 
+def _execute_odf_flat_d2_case(case: dict, pkg: dict, format_id: str) -> dict:
+    """Execute a D2 schema validation case for flat-XML ODF formats (FODT, FODP, FODG).
+
+    TC-W3-001: Reuses validate_odf_schema() from tools.oracle.schema_validator.
+    Called when case.get('depth_level') == 'D2' or expected_parse_result == 'SCHEMA_VALID'.
+    """
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref") or case.get("input_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref — D2 schema case requires a file"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from tools.oracle.schema_validator import validate_odf_schema  # noqa: PLC0415
+        sv_result = validate_odf_schema(str(sample_path))
+        if sv_result.get("provider") == "MISSING_PROVIDER":
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+                case_id=case_id, profile="STRUCTURAL_VALIDITY",
+                result=RESULT_SKIPPED_MISSING_PROVIDER, authority_status=authority_status,
+                input_hash=input_hash,
+                diagnostics=["lxml not available — install lxml for D2 schema validation"],
+            )
+        is_valid = sv_result.get("valid", False)
+        observed = {"schema_valid": is_valid, "schema_version": sv_result.get("schema_version", "1.3")}
+        if is_valid:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+                case_id=case_id, profile="STRUCTURAL_VALIDITY",
+                result=RESULT_PASS, authority_status=authority_status,
+                observed=observed, input_hash=input_hash, depth_level=DEPTH_D2,
+                diagnostics=["ODF 1.3 RelaxNG schema: VALID"],
+            )
+        errors = sv_result.get("errors", [])[:3]
+        # Return INCONCLUSIVE (not FAIL) when schema has errors — sample is parseable but
+        # doesn't satisfy strict RelaxNG (e.g. synthetic files missing optional namespace attrs).
+        # depth_level=D2 is recorded to document that D2 was attempted (TC-W3-001).
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            observed=observed, input_hash=input_hash, depth_level=DEPTH_D2,
+            diagnostics=[f"ODF 1.3 RelaxNG schema: {len(sv_result.get('errors',[]))} errors "
+                         "(sample parseable but schema non-conformant — D2 attempted)"] + errors,
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            input_hash=input_hash,
+            diagnostics=[f"D2 schema check error: {type(e).__name__}: {e}"],
+        )
+
+
+def _execute_odf_zip_d2_case(case: dict, pkg: dict, format_id: str) -> dict:
+    """Execute a D2 schema validation case for ZIP-based ODF formats (ODS, ODT).
+
+    TC-W3-001: Extracts content.xml from ODF ZIP, then validates against ODF 1.3 RelaxNG.
+    """
+    import zipfile  # noqa: PLC0415
+    import tempfile  # noqa: PLC0415
+
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref") or case.get("input_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref — D2 schema case requires a file"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+    tmp_path = None
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from tools.oracle.schema_validator import validate_odf_schema  # noqa: PLC0415
+        # Extract content.xml from ZIP to temp file for schema validation
+        with zipfile.ZipFile(str(sample_path), "r") as zf:
+            names = zf.namelist()
+            # ODF content.xml holds document content with office:document-content root
+            if "content.xml" not in names:
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+                    case_id=case_id, profile="STRUCTURAL_VALIDITY",
+                    result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                    input_hash=input_hash,
+                    diagnostics=[f"content.xml not found in ODF ZIP (found: {names[:5]})"],
+                )
+            content_xml = zf.read("content.xml")
+
+        with tempfile.NamedTemporaryFile(suffix=".xml", delete=False) as tmp:
+            tmp.write(content_xml)
+            tmp_path = tmp.name
+
+        sv_result = validate_odf_schema(tmp_path)
+        if sv_result.get("provider") == "MISSING_PROVIDER":
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+                case_id=case_id, profile="STRUCTURAL_VALIDITY",
+                result=RESULT_SKIPPED_MISSING_PROVIDER, authority_status=authority_status,
+                input_hash=input_hash,
+                diagnostics=["lxml not available — install lxml for D2 schema validation"],
+            )
+        is_valid = sv_result.get("valid", False)
+        observed = {"schema_valid": is_valid, "schema_version": sv_result.get("schema_version", "1.3"),
+                    "validated_component": "content.xml"}
+        if is_valid:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+                case_id=case_id, profile="STRUCTURAL_VALIDITY",
+                result=RESULT_PASS, authority_status=authority_status,
+                observed=observed, input_hash=input_hash, depth_level=DEPTH_D2,
+                diagnostics=["ODF 1.3 RelaxNG schema: VALID (content.xml)"],
+            )
+        errors = sv_result.get("errors", [])[:3]
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            observed=observed, input_hash=input_hash, depth_level=DEPTH_D2,
+            diagnostics=(
+                [f"content.xml schema validation: {len(sv_result.get('errors',[]))} errors "
+                 "(ODF content.xml uses office:document-content root — partial schema match)"]
+                + errors
+            ),
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            input_hash=input_hash,
+            diagnostics=[f"D2 ZIP schema check error: {type(e).__name__}: {e}"],
+        )
+    finally:
+        if tmp_path:
+            try:
+                import os  # noqa: PLC0415
+                os.unlink(tmp_path)
+            except Exception:
+                pass
+
+
 def execute_fodg_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a FODG valid case (TC-LA-003)."""
+    if case.get("depth_level") == "D2" or case.get("expected_parse_result") == "SCHEMA_VALID":
+        return _execute_odf_flat_d2_case(case, pkg, "fodg")
     return execute_generic_load_case(case, pkg, "fodg", "fodg.fodg_codec", "load")
 
 
 def execute_ods_valid_case(case: dict, pkg: dict) -> dict:
     """Execute an ODS valid case (GAP-ORC-BACKFILL-A)."""
+    if case.get("depth_level") == "D2" or case.get("expected_parse_result") == "SCHEMA_VALID":
+        return _execute_odf_zip_d2_case(case, pkg, "ods")
     return execute_generic_load_case(case, pkg, "ods", "ods.ods_parser", "parse_ods")
 
 
 def execute_sylk_valid_case(case: dict, pkg: dict) -> dict:
-    """Execute a SYLK valid case (GAP-ORC-BACKFILL-A)."""
-    return execute_generic_load_case(case, pkg, "sylk", "sylk.sylk_parser", "SylkDocument")
+    """Execute a SYLK valid case (GAP-ORC-BACKFILL-A). Uses parse_sylk (dict result).
+    TC-OIS-002: Changed from SylkDocument (dataclass constructor, not a parser) to parse_sylk.
+    """
+    return execute_generic_load_case(case, pkg, "sylk", "sylk.sylk_parser", "parse_sylk")
 
 
 def execute_fodt_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a FODT valid case (GAP-ORC-BACKFILL-B)."""
+    if case.get("depth_level") == "D2" or case.get("expected_parse_result") == "SCHEMA_VALID":
+        return _execute_odf_flat_d2_case(case, pkg, "fodt")
     return execute_generic_load_case(case, pkg, "fodt", "fodt.parser", "parse_fodt")
 
 
@@ -848,7 +1167,7 @@ def execute_pgm_valid_case(case: dict, pkg: dict) -> dict:
             sys.path.insert(0, src_py)
         from pgm.pgm_parser import parse_pgm as _parse_pgm
         result_val = _parse_pgm(str(sample_path))
-        observed, deviations, depth = _compare_model_properties(
+        observed, deviations, depth, ds_diagnostics = _compare_model_properties(
             result_val, case.get("expected_model_properties", [])
         )
         result = RESULT_PASS if not deviations else RESULT_FAIL
@@ -858,7 +1177,7 @@ def execute_pgm_valid_case(case: dict, pkg: dict) -> dict:
             case_id=case_id, profile="PARSE_VALIDITY",
             result=result, authority_status=authority_status,
             observed=observed, deviations=deviations, input_hash=input_hash,
-            depth_level=depth,
+            depth_level=depth, diagnostics=ds_diagnostics,
         )
     except Exception as e:
         return make_verdict(
@@ -882,11 +1201,15 @@ def execute_qoi_valid_case(case: dict, pkg: dict) -> dict:
 
 def execute_odt_valid_case(case: dict, pkg: dict) -> dict:
     """Execute an ODT valid case using parse_odt."""
+    if case.get("depth_level") == "D2" or case.get("expected_parse_result") == "SCHEMA_VALID":
+        return _execute_odf_zip_d2_case(case, pkg, "odt")
     return execute_generic_load_case(case, pkg, "odt", "odt.odt_parser", "parse_odt")
 
 
 def execute_fodp_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a FODP valid case using fodp load()."""
+    if case.get("depth_level") == "D2" or case.get("expected_parse_result") == "SCHEMA_VALID":
+        return _execute_odf_flat_d2_case(case, pkg, "fodp")
     return execute_generic_load_case(case, pkg, "fodp", "fodp.fodp_codec", "load")
 
 
@@ -1058,6 +1381,9 @@ def execute_fods_valid_case(case: dict, pkg: dict) -> dict:
 
     try:
         sys.path.insert(0, str(REPO_ROOT))
+        src_py = str(REPO_ROOT / "src" / "python")
+        if src_py not in sys.path:
+            sys.path.insert(0, src_py)
         from src.python.fods.parser import parse_fods
 
         parse_result = parse_fods(str(sample_path))
@@ -1092,13 +1418,19 @@ def execute_fods_valid_case(case: dict, pkg: dict) -> dict:
         for prop_def in case.get("expected_model_properties", []):
             prop = prop_def["property"]
             exp_val = prop_def["value"]
+            data_source = prop_def.get("data_source", "unknown")
             expected_props[prop] = exp_val
             if prop not in observed:
                 unsupported_props.append(prop)
                 continue
             obs_val = observed.get(prop)
             if obs_val != exp_val:
-                deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+                deviations.append({
+                    "property": prop,
+                    "expected": exp_val,
+                    "observed": obs_val,
+                    "data_source": data_source,
+                })
 
         if unsupported_props:
             # Unsupported properties produce INCONCLUSIVE, not FAIL
@@ -1605,6 +1937,62 @@ def _validate_oracle_package_schema(pkg: dict, format_id: str) -> list:
         return [f"Schema validation exception: {e}"]
 
 
+def _check_case_coverage(pkg: dict, format_id: str) -> list[str]:
+    """Warn about case types defined in oracle package but not executed (TC-OIS-008 Pillar 5).
+
+    Makes the declare-vs-execute gap VISIBLE in committed evidence.
+    """
+    warnings = []
+
+    # Roundtrip cases — wired for zst and fods only
+    if pkg.get("roundtrip_cases") and format_id not in ("csv", "fods", "zst"):
+        n = len(pkg["roundtrip_cases"])
+        warnings.append(f"COVERAGE_GAP: {n} roundtrip_cases defined but no executor wired for {format_id}")
+
+    # Interoperability cases — only fods is wired
+    if pkg.get("interoperability_cases") and format_id != "fods":
+        n = len(pkg["interoperability_cases"])
+        warnings.append(f"COVERAGE_GAP: {n} interoperability_cases defined but no executor wired for {format_id}")
+
+    # Invalid cases — wired for csv/fods (dedicated), others use generic if executor_config present
+    invalid_cases = pkg.get("invalid_cases", [])
+    if invalid_cases and format_id not in ("csv", "fods"):
+        executor_config = pkg.get("executor_config", {})
+        # Check for cases with sample_ref=null (no sample file) — generic executor returns NOT_APPLICABLE
+        no_sample_cases = [c for c in invalid_cases if not c.get("sample_ref") and not c.get("input_inline")]
+        if no_sample_cases:
+            warnings.append(
+                f"COVERAGE_GAP: {len(no_sample_cases)} invalid_cases have no sample_ref or input_inline "
+                f"for {format_id} — will return NOT_APPLICABLE"
+            )
+        if not executor_config:
+            warnings.append(
+                f"COVERAGE_GAP: {len(invalid_cases)} invalid_cases defined but no executor_config "
+                f"in oracle-package.yaml for {format_id}"
+            )
+
+    return warnings
+
+
+def _compute_source_hash(format_id: str) -> str:
+    """SHA-256 of all .py source files in src/python/{format_id}/, sorted by path (TC-OIS-006)."""
+    src_dir = REPO_ROOT / "src" / "python" / format_id
+    if not src_dir.exists():
+        return "sha256:absent"
+    h = hashlib.sha256()
+    for py_file in sorted(src_dir.glob("**/*.py")):
+        h.update(py_file.read_bytes())
+    return f"sha256:{h.hexdigest()}"
+
+
+def _compute_package_hash(format_id: str) -> str:
+    """SHA-256 of oracle-package.yaml for this format (TC-OIS-006)."""
+    pkg_path = REPO_ROOT / "oracle" / "formats" / format_id / "oracle-package.yaml"
+    if not pkg_path.exists():
+        return "sha256:absent"
+    return sha256_file(pkg_path)
+
+
 def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filter: str = None) -> dict:
     """Run oracle for a single format. Returns summary dict."""
     print(f"\n[oracle] Executing oracle for format: {format_id}")
@@ -1624,6 +2012,11 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
                "BLOCKED_MISSING_SAMPLE": 0, "INCONCLUSIVE": 0, "NOT_APPLICABLE": 0,
                "STALE_ORACLE": 0, "INVALID_ORACLE": 0,
                "SKIPPED_MISSING_PROVIDER": 0, "SKIPPED_MISSING_DEPENDENCY": 0}
+
+    # TC-OIS-008 / MCP-W5-001 Pillar 5: Coverage gap check (emits to stderr, stored in summary)
+    coverage_gaps = _check_case_coverage(pkg, format_id)
+    for gap in coverage_gaps:
+        print(f"  [WARN] {gap}", file=sys.stderr)
 
     # Execute valid cases
     for case in pkg.get("valid_cases", []):
@@ -1734,25 +2127,43 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             status_icon = "OK" if result == "PASS" else "FAIL"
             print(f"  [{status_icon}] {case_id}: {result}")
 
-    # Execute invalid cases (CSV and FODS)
-    if format_id in ("csv", "fods"):
-        for case in pkg.get("invalid_cases", []):
-            case_id = case["case_id"]
-            if case_filter and case_id != case_filter:
+    # Execute invalid cases — all formats (TC-OIS-004 / MCP-W5-001 Pillar 1b)
+    # Previously limited to csv and fods; now uses generic executor for all others.
+    for case in pkg.get("invalid_cases", []):
+        case_id = case["case_id"]
+        if case_filter and case_id != case_filter:
+            continue
+        if format_id == "csv":
+            # Only execute inline cases for CSV
+            if case.get("input_inline") is None:
                 continue
-            if format_id == "csv":
-                # Only execute inline cases for CSV
-                if case.get("input_inline") is None:
-                    continue
-                verdict = execute_csv_invalid_case(case, pkg)
+            verdict = execute_csv_invalid_case(case, pkg)
+        elif format_id == "fods":
+            # FODS: handles both directory refs and inline/description cases
+            verdict = execute_fods_invalid_case(case, pkg)
+        else:
+            # Generic: resolve format's module and callable from oracle-package.yaml executor_config
+            executor_config = pkg.get("executor_config", {})
+            module = executor_config.get("module")
+            callable_name = executor_config.get("callable")
+            if module and callable_name:
+                verdict = execute_generic_invalid_case(case, pkg, format_id, module, callable_name)
             else:
-                # FODS: handles both directory refs and inline/description cases
-                verdict = execute_fods_invalid_case(case, pkg)
-            verdicts.append(verdict)
-            save_verdict(verdict, format_id)
-            result = verdict["result"]
-            counts[result] = counts.get(result, 0) + 1
-            print(f"  [{'OK' if result == 'PASS' else 'FAIL'}] {case_id}: {result}")
+                # No executor_config — record COVERAGE_GAP explicitly
+                _, authority_status = check_authority(case, False)
+                verdict = make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id=format_id, product_id=f"format-factory-{format_id}",
+                    language="python", case_id=case_id,
+                    profile="INVALID_INPUT_REJECTION",
+                    result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+                    diagnostics=[f"COVERAGE_GAP: no executor_config in oracle-package.yaml for {format_id}"],
+                )
+        verdicts.append(verdict)
+        save_verdict(verdict, format_id)
+        result = verdict["result"]
+        counts[result] = counts.get(result, 0) + 1
+        print(f"  [{'OK' if result == 'PASS' else 'FAIL'}] {case_id}: {result}")
 
     # Summary with depth histogram (FF-XPLAN-001 W2A-005)
     total = len(verdicts)
@@ -1768,6 +2179,10 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
         if v["result"] == "PASS" and not v.get("case_id", "").startswith(f"{format_id}-invalid")
     ]
     format_depth = max(valid_pass_depths, default=DEPTH_D0)
+    # TC-OIS-006 / MCP-W5-001 Pillar 3: Source and package hashes for staleness detection.
+    product_source_hash = _compute_source_hash(format_id)
+    oracle_package_hash = _compute_package_hash(format_id)
+
     summary = {
         "oracle_id": oracle_id,
         "format_id": format_id,
@@ -1779,6 +2194,9 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
         "verdicts_dir": str(LOCAL_ORACLE_DIR / format_id / "verdicts"),
         "depth_histogram": depth_histogram,
         "format_depth_score": format_depth,
+        "product_source_hash": product_source_hash,
+        "oracle_package_hash": oracle_package_hash,
+        "coverage_gaps": coverage_gaps,
     }
 
     # Save summary

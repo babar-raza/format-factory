@@ -104,6 +104,7 @@ class FailureMemory:
         files_modified: list[str] | None = None,
         verification_command: str = "",
         severity: str = "HIGH",
+        gap_id: str = "",
     ) -> dict[str, Any]:
         """Record a failure. If a duplicate (same category + root_cause) exists,
         increment its count instead of creating a new entry."""
@@ -139,6 +140,7 @@ class FailureMemory:
             "occurrence_count": 1,
             "escalated": False,
             "resolved": False,
+            "gap_id": gap_id,
         }
         self.entries.append(entry)
         return entry

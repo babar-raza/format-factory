@@ -19,8 +19,51 @@ import json
 import sys
 from pathlib import Path
 
+# Governance block registry (TC-CQGA2-R1) — single source of truth for structural GOV_BLOCKs
+try:
+    from tools.supervisor.governance_block_registry import filter_structural_blocks
+except ImportError:
+    # Fallback when imported without repo root on sys.path
+    def filter_structural_blocks(items):  # type: ignore[misc]
+        _FALLBACK = {
+            "GOV_BLOCK:monolith_detection_validator",
+            "GOV_BLOCK:validate_source_architecture",
+            "GOV_BLOCK:validate_multi_responsibility_file",
+            "GOV_BLOCK:validate_analytics_naming_enforced",
+            "GOV_BLOCK:validate_source_stubs",
+        }
+        return [i for i in items if any(i.startswith(v) or i == v for v in _FALLBACK)]
+
 _here = Path(__file__).resolve().parent
 _default_repo = _here.parent.parent
+
+
+def _scan_pending_promotions(repo_root: Path) -> list:
+    """Return rework items for any FORMAT_ADAPTATION_REQUIRED promotion tasks.
+
+    Scans .local/supervisor/promotion-tasks/ for YAML files whose status is
+    FORMAT_ADAPTATION_REQUIRED. Returns [] on any error (non-blocking by design).
+    (TC-INT-005, DRIVERS-PRODUCTION-INTEGRATION-001, 2026-07-13)
+    """
+    try:
+        promo_dir = repo_root / ".local" / "supervisor" / "promotion-tasks"
+        if not promo_dir.is_dir():
+            return []
+        import yaml as _yaml  # noqa: PLC0415
+
+        pending = []
+        for task_file in sorted(promo_dir.glob("*.yaml")):
+            try:
+                data = _yaml.safe_load(task_file.read_text(encoding="utf-8"))
+                if isinstance(data, dict) and data.get("status") == "FORMAT_ADAPTATION_REQUIRED":
+                    task_id = data.get("task_id", task_file.stem)
+                    fmt = data.get("format_id", "unknown")
+                    pending.append(f"PENDING_PROMOTION:{task_id}:{fmt}:FORMAT_ADAPTATION_REQUIRED")
+            except Exception:
+                continue
+        return pending
+    except Exception:
+        return []
 
 
 def check(repo_root: Path, *, session_id: str | None = None,
@@ -385,6 +428,8 @@ def check(repo_root: Path, *, session_id: str | None = None,
                     max_iterations=signal.get("max_iterations", 5),
                 )
             if _ml.get("audit_pending") is True and not _ml.get("execution_pending", True):
+                _mid = _ml.get("mission_id", "")
+                _pth = _ml.get("authoritative_plan", "")
                 return _stop(
                     "MACHINERY_AUDIT_REQUIRED",
                     (
@@ -394,7 +439,31 @@ def check(repo_root: Path, *, session_id: str | None = None,
                     ),
                     iteration=signal.get("iteration", 0),
                     max_iterations=signal.get("max_iterations", 5),
+                    # TC-VWR-004-03 (RC-005 fix): explicit routing instruction
+                    next_action=(
+                        f"python tools/supervisor/lifecycle_audit.py "
+                        f"--mission-id {_mid} --plan-path {_pth}"
+                    ),
+                    next_action_description=(
+                        "Run post-execution lifecycle audit. Do NOT treat this as a terminal stop. "
+                        "lifecycle_audit.py will produce AUDIT_PASS or AUDIT_REQUIRES_ITERATION."
+                    ),
                 )
+
+    # --- TC-MA2-SIGNAL-001-04: Read-time coherence diagnostic ---
+    # Emits a WARNING (non-blocking) when the on-disk signal has incoherent combinations.
+    # This detects signals written before the write-time coherence fix was deployed.
+    _sig_ac = signal.get("autonomous_continue")
+    _sig_stop = signal.get("stop_reason")
+    _sig_hard = signal.get("hard_stops_detected", [])
+    _sig_rework = signal.get("rework_items", [])
+    if _sig_stop and _sig_ac is True and not _sig_hard:
+        print(
+            f"  [SIGNAL-COHERENCE-DIAG] WARNING: on-disk signal has stop_reason={_sig_stop!r} "
+            "with autonomous_continue=True and no hard_stops_detected — "
+            "likely stale from pre-TC-MA2-SIGNAL-001. Signal will be processed as-is.",
+            file=sys.stderr,
+        )
 
     # --- Check 2: autonomous_continue is truthy ---
     # B4: When signal is false due to a non-TRUE_EXTERNAL_GATE reason, cross-check
@@ -515,17 +584,10 @@ def check(repo_root: Path, *, session_id: str | None = None,
     #
     # Override: if the current sprint IS an analytics separation sprint (declared via
     # "govblock_resolved_by" field in the signal), skip this check.
-    _STRUCTURAL_GOVBLOCK_VALIDATORS = {
-        "GOV_BLOCK:monolith_detection_validator",
-        "GOV_BLOCK:validate_source_architecture",
-    }
+    # _STRUCTURAL_GOVBLOCK_VALIDATORS now sourced from governance_block_registry (TC-CQGA2-R1)
     rework_items = signal.get("rework_items", [])
     if not signal.get("govblock_resolved_by"):
-        structural_blocks = [
-            item for item in rework_items
-            if any(item.startswith(vname) or item == vname
-                   for vname in _STRUCTURAL_GOVBLOCK_VALIDATORS)
-        ]
+        structural_blocks = filter_structural_blocks(rework_items)
         if structural_blocks:
             return _stop(
                 "structural_govblock_must_be_resolved_first",
@@ -610,6 +672,86 @@ def check(repo_root: Path, *, session_id: str | None = None,
     except Exception as _lane_err:
         print(f"WARNING [Check10]: lane balance check error: {_lane_err}", file=sys.stderr)
 
+    # --- Check 11 (TC-GFB-022): Per-product Gate 11 state enforcement ---
+    # Reads registry/gate-states.yaml; if any product/language has state=GATE_11_READY,
+    # emits BLOCKED_EXTERNAL stop for that product only.
+    # Non-blocking if gate-states.yaml is absent (bootstrap — not yet populated).
+    _gate_states_path = repo_root / "registry" / "gate-states.yaml"
+    if _gate_states_path.exists():
+        try:
+            import yaml as _gs_yaml
+            _gs_data = _gs_yaml.safe_load(_gate_states_path.read_text(encoding="utf-8")) or {}
+            _format_states = _gs_data.get("format_gate_states", {})
+            _gate11_ready_products = []
+            for _fmt_id, _langs in _format_states.items():
+                if not isinstance(_langs, dict):
+                    continue
+                for _lang, _criteria in _langs.items():
+                    if not isinstance(_criteria, dict):
+                        continue
+                    if _criteria.get("state") == "GATE_11_READY":
+                        _gate11_ready_products.append(f"{_fmt_id}/{_lang}")
+            if _gate11_ready_products:
+                return _stop(
+                    "gate_11_ready_pending_authorization",
+                    (
+                        f"Product(s) {_gate11_ready_products} have reached GATE_11_READY state "
+                        "(P1-P10 all met) and are awaiting Babar Raza commercial authorization (P11/C20). "
+                        "This is a TRUE_EXTERNAL_GATE — autonomous deepening for these product(s) must stop "
+                        "until Babar Raza grants authorization. Other products may continue deepening."
+                    ),
+                    iteration=iteration,
+                    max_iterations=max_iterations,
+                    gate11_ready_products=_gate11_ready_products,
+                    stop_classification="BLOCKED_EXTERNAL",
+                    next_action="Report GATE_11_READY to Babar Raza for G11-G authorization decision.",
+                )
+        except Exception as _gs_err:
+            print(f"WARNING [Check11]: gate-states.yaml read error: {_gs_err}", file=sys.stderr)
+
+    # --- Check 2d (TC-SPW-003B): BLOCKING open gap gate ---
+    # If the declaration targets a format that has severity=BLOCKING, status=OPEN,
+    # severity_confirmed=True gaps in product-code-gap-ledger.yaml, stop continuation
+    # until those gaps are resolved. Non-blocking if ledger is absent.
+    _gap_ledger_path = repo_root / "reports" / "product-quality" / "product-code-gap-ledger.yaml"
+    if _gap_ledger_path.exists():
+        try:
+            import yaml as _gap_yaml
+            _gap_data = _gap_yaml.safe_load(_gap_ledger_path.read_text(encoding="utf-8")) or {}
+            _gaps = _gap_data.get("gaps", [])
+            # Infer format targets from signal (format_targets or rework_items)
+            _sig_format_targets = set(signal.get("format_targets", []))
+            _blocking_open = []
+            for _gap in _gaps:
+                if not isinstance(_gap, dict):
+                    continue
+                _sev = str(_gap.get("severity", "")).lower()
+                _status = str(_gap.get("status", "")).upper()
+                _confirmed = bool(_gap.get("severity_confirmed", False))
+                _product = str(_gap.get("product", "")).lower()
+                if _sev == "blocking" and _status == "OPEN" and _confirmed:
+                    # Only stop when the format is explicitly in scope
+                    if _sig_format_targets and _product in _sig_format_targets:
+                        _blocking_open.append(_gap.get("gap_id", "unknown"))
+            if _blocking_open:
+                return _stop(
+                    "blocking_gap_unresolved",
+                    (
+                        f"BLOCKING open gap(s) exist for targeted format(s): {_blocking_open}. "
+                        "Resolve PCG-* gaps before advancing autonomous deepening. "
+                        "Update severity or status in product-code-gap-ledger.yaml once fixed."
+                    ),
+                    iteration=iteration,
+                    max_iterations=max_iterations,
+                    blocking_gaps=_blocking_open,
+                    next_action=(
+                        "Read reports/product-quality/product-code-gap-ledger.yaml for gap details. "
+                        "Fix root cause for each BLOCKING gap, then mark status=CLOSED with evidence."
+                    ),
+                )
+        except Exception as _gap_err:
+            print(f"WARNING [Check2d]: gap ledger read error: {_gap_err}", file=sys.stderr)
+
     # --- All checks passed ---
     # Resolve product chat_id (advisory — TC-PSC-003 Part A)
     _product_chat_id = None
@@ -619,6 +761,11 @@ def check(repo_root: Path, *, session_id: str | None = None,
             _product_chat_id = get_or_create_product_chat_id()
         except Exception:
             pass
+
+    # TC-INT-005: Scan for pending promotion tasks and include in rework_items.
+    _pending_promotions = _scan_pending_promotions(repo_root)
+    if _pending_promotions:
+        rework_items = list(rework_items) + _pending_promotions
 
     result = {
         "verdict": "CONTINUE",
@@ -632,6 +779,11 @@ def check(repo_root: Path, *, session_id: str | None = None,
         "next_sprint_path": "reports/supervisor/next-sprint.md",
         "rework_items": rework_items,
         "lane_starvation_warnings": lane_starvation_warnings,
+        "control_index_warnings": _get_control_index_warnings(repo_root),
+        "contradiction_warnings": (
+            [f"critical_contradictions_active: {signal.get('critical_contradiction_count', 0)}"]
+            if signal.get("critical_contradiction_count", 0) > 0 else []
+        ),
         "resume_command": f"python tools/supervisor/check_continuation.py{' --track ' + track if track else ''}",
         **_stale_advisory,
     }
@@ -645,6 +797,36 @@ def check(repo_root: Path, *, session_id: str | None = None,
                  signal_path=str(signal_path), track=track or "product",
                  iteration=iteration)
     return result
+
+
+def _get_control_index_warnings(repo_root: Path) -> list[str]:
+    """TC-OCRD-A3: Read last-sync-report.json and return advisory warnings. Non-blocking."""
+    warnings_out: list[str] = []
+    sync_report_path = repo_root / ".local" / "supervisor" / "last-sync-report.json"
+    if not sync_report_path.exists():
+        return warnings_out
+    try:
+        from datetime import datetime as _dt, timezone as _tz
+        report = json.loads(sync_report_path.read_text(encoding="utf-8"))
+        completed_at_str = report.get("completed_at", "2000-01-01T00:00:00")
+        completed_at = _dt.fromisoformat(
+            completed_at_str.replace("Z", "+00:00")
+        )
+        age_hours = (
+            _dt.now(_tz.utc) - completed_at
+        ).total_seconds() / 3600
+        if age_hours > 24:
+            warnings_out.append(
+                f"control_index_stale: last sync {age_hours:.0f}h ago"
+            )
+        error_entities = report.get("error_entities")
+        if error_entities:
+            warnings_out.append(
+                f"control_index_errors: {error_entities}"
+            )
+    except Exception:
+        pass  # Non-blocking per Supreme Directive
+    return warnings_out
 
 
 def _log_verdict(verdict: str, reason: str, **context) -> None:

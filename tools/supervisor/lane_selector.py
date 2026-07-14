@@ -58,17 +58,20 @@ def _find_entry(ledger: list[dict], format_name: str) -> dict | None:
     return None
 
 
-def check_starvation(format_name: str, ledger_path: Path | None = None) -> dict:
+def check_starvation(format_name: str, ledger_path: Path | None = None,
+                     policies_path: Path | None = None) -> dict:
     """Check if a lane is being starved.
 
     Returns dict with starved_lane, consecutive_count, threshold, must_switch.
     """
     ledger = _load_ledger(ledger_path)
+    policies = _load_policies(policies_path)
     entry = _find_entry(ledger, format_name)
     if entry is None:
         return {"error": f"Format '{format_name}' not found in ledger", "must_switch": False}
 
-    threshold = entry.get("lane_starvation_threshold", DEFAULT_STARVATION_THRESHOLD)
+    global_threshold = policies.get("default_starvation_threshold", DEFAULT_STARVATION_THRESHOLD)
+    threshold = entry.get("lane_starvation_threshold", global_threshold)
     a_consec = entry.get("lane_a_consecutive", 0)
     b_consec = entry.get("lane_b_consecutive", 0)
     mode = entry.get("execution_mode", "AUTO")

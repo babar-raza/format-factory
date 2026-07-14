@@ -21,12 +21,13 @@ Reports discrepancies without auto-fixing (read-only audit).
 3. Read each plan file's metadata block — compare `layer_id`, `status`, `maturity_current`
 4. Report any mismatches between index.yaml and plan file metadata
 5. Report any plan files in `plans/layers/` that are NOT in index.yaml
+6. For each layer, compare index.yaml's skill_ids array against .supervisor/skill-registry.yaml entries whose product_track plausibly maps to that layer; report additions/removals.
 
 ## Output
 
 ```yaml
 reconcile_result:
-  total_layers: 27
+  total_layers: 29
   consistent: 25
   mismatches:
     - layer_id: L03
@@ -37,6 +38,11 @@ reconcile_result:
     - plans/layers/new-layer.md
   missing_plan_files:
     - L28 (in index, no .md file)
+  skill_id_mismatches:
+    - layer_id: L13
+      skill_id: reconcile-layer-index
+      product_track: layer_governance
+      issue: present_in_registry_not_in_index
 ```
 
 ## Mandatory Validations

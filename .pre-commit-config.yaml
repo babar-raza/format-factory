@@ -64,3 +64,10 @@ repos:
             \.supervisor/policies\.yaml
           )$
         stages: [pre-commit]
+      - id: check-root-dirs
+        name: Check for unregistered root directories
+        entry: python tools/supervisor/check_new_root_dirs.py
+        language: system
+        pass_filenames: false
+        always_run: false
+        stages: [pre-commit]

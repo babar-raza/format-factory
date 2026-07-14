@@ -198,12 +198,17 @@ def update_lane_counters(declaration: dict, ledger_path: "Path | str") -> None:
         if not isinstance(data, list):
             return
 
-    # Build index by format
+    # Build index by format — Python runtime entries take priority over .NET entries
     by_format: dict[str, dict] = {}
     for entry in data:
         fmt = entry.get("format") or entry.get("format_id", "")
-        if fmt:
-            by_format[fmt.lower()] = entry
+        if not fmt:
+            continue
+        key = fmt.lower()
+        existing = by_format.get(key)
+        runtime = str(entry.get("runtime", "")).lower()
+        if existing is None or runtime == "python":
+            by_format[key] = entry
 
     # Replay protection (TC-DL2-021): skip if same sprint_id already applied
     sprint_id = declaration.get("sprint_id")
@@ -217,6 +222,10 @@ def update_lane_counters(declaration: dict, ledger_path: "Path | str") -> None:
         if status != "completed":
             continue
         lane = str(item.get("deepening_lane", "")).lower()
+        if not lane:
+            # TC-PCL-004: gap_id fallback — infer lane from gap_id when deepening_lane absent
+            gap_id = str(item.get("gap_id", ""))
+            lane = "dom" if "-DOM-" in gap_id else "feature"
         fmt = str(item.get("format", "")).lower()
         if not fmt or not lane or fmt not in by_format:
             continue
@@ -300,3 +309,102 @@ try:
         del _types, _local_names, _name, _obj, _ace_mod, _spec, _standalone_path
 except Exception:
     pass  # Non-blocking; locally-defined package functions remain available
+
+
+# ---------------------------------------------------------------------------
+# TC-FGSQ-011: Gap ledger file-system drift reconciliation
+# ---------------------------------------------------------------------------
+
+def reconcile_gap_ledger_files(
+    repo_root: "Path | str | None" = None,
+    ledger_path: "Path | str | None" = None,
+    drift_state_path: "Path | str | None" = None,
+    drift_report_path: "Path | str | None" = None,
+) -> dict:
+    """TC-FGSQ-011: Check OPEN gap ledger entries for file-system drift.
+
+    For each OPEN gap in product-code-gap-ledger.yaml, verifies that every
+    `files:` entry still exists on disk.  Writes two files:
+      - .local/supervisor/gap-drift-state.json   — persistent cycle counter per gap
+      - reports/supervisor/gap-ledger-drift.json — human-readable report
+
+    Returns a dict with keys: gaps_checked, drifted, escalated.
+    Non-blocking: returns {} on any error.
+    """
+    import json
+    import yaml
+    from pathlib import Path as _P
+
+    _root = _P(repo_root) if repo_root else _P(__file__).resolve().parents[3]
+    _ledger = _P(ledger_path) if ledger_path else (
+        _root / "reports" / "product-quality" / "product-code-gap-ledger.yaml"
+    )
+    _state_path = _P(drift_state_path) if drift_state_path else (
+        _root / ".local" / "supervisor" / "gap-drift-state.json"
+    )
+    _report_path = _P(drift_report_path) if drift_report_path else (
+        _root / "reports" / "supervisor" / "gap-ledger-drift.json"
+    )
+
+    if not _ledger.exists():
+        return {}
+
+    try:
+        with _ledger.open(encoding="utf-8") as _f:
+            ledger_data = yaml.safe_load(_f) or {}
+    except Exception:
+        return {}
+
+    gaps = ledger_data.get("gaps", [])
+    open_gaps = [g for g in gaps if str(g.get("status", "")).upper() == "OPEN"]
+
+    # Load persistent cycle-state (tracks consecutive_absent_cycles per gap)
+    drift_state: dict = {}
+    if _state_path.exists():
+        try:
+            drift_state = json.loads(_state_path.read_text(encoding="utf-8"))
+        except Exception:
+            drift_state = {}
+
+    drifted: list[dict] = []
+    for gap in open_gaps:
+        gap_id = gap.get("gap_id", "?")
+        file_list = gap.get("files", [])
+        absent: list[str] = []
+        for fpath in file_list:
+            if not (_root / fpath).exists():
+                absent.append(fpath)
+
+        prev_cycles = drift_state.get(gap_id, {}).get("consecutive_absent_cycles", 0)
+        if absent:
+            new_cycles = prev_cycles + 1
+            drift_state[gap_id] = {"consecutive_absent_cycles": new_cycles}
+            drifted.append({
+                "gap_id": gap_id,
+                "absent_files": absent,
+                "consecutive_absent_cycles": new_cycles,
+                "escalated": new_cycles >= 3,
+            })
+        else:
+            # Files present — reset counter
+            if gap_id in drift_state:
+                drift_state[gap_id] = {"consecutive_absent_cycles": 0}
+
+    escalated = [d for d in drifted if d.get("escalated")]
+
+    # Write state
+    _state_path.parent.mkdir(parents=True, exist_ok=True)
+    _state_path.write_text(json.dumps(drift_state, indent=2), encoding="utf-8")
+
+    # Write drift report
+    report = {
+        "generated_at": "2026-07-13",
+        "ledger_path": str(_ledger),
+        "gaps_checked": len(open_gaps),
+        "drifted": drifted,
+        "escalated_count": len(escalated),
+    }
+    _report_path.parent.mkdir(parents=True, exist_ok=True)
+    _report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+
+    return {"gaps_checked": len(open_gaps), "drifted": drifted, "escalated": escalated}

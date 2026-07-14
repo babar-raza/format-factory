@@ -29,8 +29,19 @@ from tools.supervisor.lifecycle_audit import (
 # ---------------------------------------------------------------------------
 
 
-def _make_repo(tmp_path: Path, signal: dict | None = None, has_rework_review: bool = False) -> Path:
-    """Create a minimal fake repo structure for testing."""
+def _make_repo(
+    tmp_path: Path,
+    signal: dict | None = None,
+    has_rework_review: bool = False,
+    plan_file: str | None = None,
+) -> Path:
+    """Create a minimal fake repo structure for testing.
+
+    Args:
+        plan_file: Optional filename for a plan with all-CLOSED taskcards.
+                   If provided, a minimal plan with TC-TEST-001 CLOSED is created
+                   and returned path can be used as plan_path argument.
+    """
     # Continuation signal
     sig_dir = tmp_path / ".local" / "supervisor"
     sig_dir.mkdir(parents=True, exist_ok=True)
@@ -51,6 +62,17 @@ def _make_repo(tmp_path: Path, signal: dict | None = None, has_rework_review: bo
         reviews_dir.mkdir(parents=True, exist_ok=True)
         (reviews_dir / "evidence-review.md").write_text("Status: ACCEPTED_WITH_REWORK\n")
 
+    # Optional plan file with all taskcards CLOSED
+    if plan_file:
+        plan_path = tmp_path / plan_file
+        plan_path.write_text(
+            "# Test Plan\n\n"
+            "## Taskcard Status Summary\n\n"
+            "| TC-ID | Status |\n"
+            "|-------|--------|\n"
+            "| TC-TEST-001 | CLOSED |\n"
+        )
+
     return tmp_path
 
 
@@ -61,8 +83,9 @@ def _make_repo(tmp_path: Path, signal: dict | None = None, has_rework_review: bo
 
 class TestLifecycleAuditPass:
     def test_audit_pass_when_signal_clean(self, tmp_path):
-        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []})
-        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST-MISSION", sprint_id="TC-TEST-001")
+        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []}, plan_file="plan.md")
+        plan_path = str(repo / "plan.md")
+        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST-MISSION", sprint_id="TC-TEST-001", plan_path=plan_path)
         assert result["verdict"] == "AUDIT_PASS"
         assert result["next_iteration_required"] is False
         assert result["mission_complete"] is True
@@ -78,8 +101,9 @@ class TestLifecycleAuditPass:
         assert "audited_at" in data
 
     def test_mission_complete_true_when_all_clean(self, tmp_path):
-        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []})
-        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST")
+        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []}, plan_file="plan.md")
+        plan_path = str(repo / "plan.md")
+        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST", plan_path=plan_path)
         assert check_mission_complete(repo_root=repo, mission_id="TEST") is True
 
 
@@ -230,8 +254,10 @@ class TestAdvisoryReworkPending:
                 "autonomous_continue": "true_with_rework",
                 "rework_items": ["LANE_ENFORCEMENT:1_violations"],
             },
+            plan_file="plan.md",
         )
-        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST")
+        plan_path = str(repo / "plan.md")
+        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST", plan_path=plan_path)
         assert result["verdict"] == "AUDIT_PASS"
         assert result["mission_complete"] is True
         assert result["next_iteration_required"] is False
@@ -251,11 +277,13 @@ class TestAdvisoryReworkPending:
 
 class TestLifecycleAuditCLI:
     def test_cli_exit_code_0_on_pass(self, tmp_path):
-        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []})
+        repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []}, plan_file="plan.md")
+        plan_path = str(repo / "plan.md")
         exit_code = main([
             "--mission-id", "TEST",
             "--sprint-id", "TC-TEST",
             "--repo-root", str(repo),
+            "--plan-path", plan_path,
             "--json",
         ])
         assert exit_code == 0
@@ -375,3 +403,89 @@ class TestTrackParameter:
         assert not any(f["type"] == "CONTINUATION_BLOCKED" for f in result["findings"]), (
             "CONTINUATION_BLOCKED must not fire when machinery track signal is clean"
         )
+
+
+# ---------------------------------------------------------------------------
+# TC-AUDIT-FAIL-CLOSED: Lifecycle audit must fail closed on plan path issues
+# ---------------------------------------------------------------------------
+
+
+class TestAuditFailClosed:
+    """TC-AUDIT-FAIL-CLOSED: AUDIT_PASS must be rejected when plan state is unknowable."""
+
+    def test_mission_id_without_plan_path_fails_closed(self, tmp_path):
+        """Calling with mission_id but no plan_path must return AUDIT_REQUIRES_ITERATION."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        result = run_lifecycle_audit(repo_root=tmp_path, mission_id="TEST-MISSION-001")
+        assert result["verdict"] == "AUDIT_REQUIRES_ITERATION", (
+            f"Expected AUDIT_REQUIRES_ITERATION when plan_path absent, got {result['verdict']!r}"
+        )
+        finding_types = [f["type"] for f in result.get("findings", [])]
+        assert "PLAN_PATH_MISSING" in finding_types, (
+            f"Expected PLAN_PATH_MISSING finding, got: {finding_types}"
+        )
+        assert result.get("mission_complete") is False
+
+    def test_unreadable_plan_path_fails_closed(self, tmp_path):
+        """A plan_path that does not exist must return AUDIT_REQUIRES_ITERATION."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        missing = tmp_path / "nonexistent-plan.md"
+        result = run_lifecycle_audit(
+            repo_root=tmp_path,
+            mission_id="TEST-MISSION-002",
+            plan_path=str(missing),
+        )
+        assert result["verdict"] == "AUDIT_REQUIRES_ITERATION", (
+            f"Expected AUDIT_REQUIRES_ITERATION for missing plan file, got {result['verdict']!r}"
+        )
+        finding_types = [f["type"] for f in result.get("findings", [])]
+        assert "PLAN_UNREADABLE" in finding_types or "ZERO_TASKCARDS_PARSED" in finding_types, (
+            f"Expected PLAN_UNREADABLE or ZERO_TASKCARDS_PARSED finding, got: {finding_types}"
+        )
+
+    def test_plan_with_no_taskcard_table_fails_closed(self, tmp_path):
+        """A readable plan with no taskcard status table must return AUDIT_REQUIRES_ITERATION."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        plan = tmp_path / "no-table-plan.md"
+        plan.write_text(
+            "# My Plan\n\nThis plan has no taskcard status summary table.\n"
+            "There are taskcards here but not in the expected format.\n"
+        )
+        result = run_lifecycle_audit(
+            repo_root=tmp_path,
+            mission_id="TEST-MISSION-003",
+            plan_path=str(plan),
+        )
+        assert result["verdict"] == "AUDIT_REQUIRES_ITERATION", (
+            f"Expected AUDIT_REQUIRES_ITERATION for plan with no taskcard table, got {result['verdict']!r}"
+        )
+        finding_types = [f["type"] for f in result.get("findings", [])]
+        assert "ZERO_TASKCARDS_PARSED" in finding_types, (
+            f"Expected ZERO_TASKCARDS_PARSED finding, got: {finding_types}"
+        )
+
+    def test_plan_with_valid_taskcard_table_passes(self, tmp_path):
+        """A readable plan with all taskcards CLOSED returns AUDIT_PASS."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        plan = tmp_path / "valid-plan.md"
+        plan.write_text(
+            "# My Plan\n\n"
+            "## Taskcard Status Summary\n\n"
+            "| TC-ID | Status |\n"
+            "|-------|--------|\n"
+            "| TC-VALID-001 | CLOSED |\n"
+            "| TC-VALID-002 | CLOSED |\n"
+        )
+        result = run_lifecycle_audit(
+            repo_root=tmp_path,
+            mission_id="TEST-MISSION-004",
+            plan_path=str(plan),
+        )
+        assert result["verdict"] == "AUDIT_PASS", (
+            f"Expected AUDIT_PASS for plan with all CLOSED taskcards, got {result['verdict']!r}"
+        )
+        assert result.get("total_taskcards_parsed") == 2

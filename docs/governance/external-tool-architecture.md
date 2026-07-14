@@ -1,7 +1,7 @@
 # External Tool Architecture
 
 **Added:** 2026-06-04
-**Authority:** plans/master-plan.md Section 43 + local-memory-sync sprint 2026-06-04
+**Authority:** plans/master-plan.md Section 100 + local-memory-sync sprint 2026-06-04
 
 ## Overview
 

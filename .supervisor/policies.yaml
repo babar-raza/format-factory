@@ -353,3 +353,11 @@ dual_lane_deepening:
     child_accessor_required: true
     to_dict_required: true
     behavioral_method_minimum: 1
+    mutation_roundtrip_required: true
+    mutation_roundtrip_test_pattern: "test_{format}_dom_d2_mutation.py"
+    mutation_roundtrip_test_dir: "tests/python/{format}/"
+
+# TC-OCRD-A1: Gap selection policies
+gap_selection:
+  max_failed_attempts: 3
+  exhausted_gaps_path: reports/control-layer/exhausted-gaps.json

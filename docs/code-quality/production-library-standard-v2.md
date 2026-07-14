@@ -335,3 +335,24 @@ Full gap matrix: `reports/governance/production-code-gap-matrix.json` (TC-GS-002
 *This document is the authoritative standard for all Format Factory source code.
 All governance validators enforce this standard mechanically.*
 *Cross-reference to CLAUDE.md §Supreme Directive GOV_BLOCK section for enforcement scope.*
+
+---
+
+## Addendum: Python Packaging Requirements (TC-GFB-010, 2026-07-11)
+
+Every Python format package MUST satisfy:
+
+1. **`py.typed` marker file** — A `py.typed` empty marker file MUST be present at the package
+   root (`src/python/{format}/{format}/py.typed`). This signals PEP 561 compliance for
+   downstream type checkers.
+2. **`pyproject.toml`** — Required fields: `[project]` with `name`, `version`, `description`,
+   `requires-python`, `[project.optional-dependencies]` for test extras, and
+   `[tool.setuptools.package-data]` including `"py.typed"`.
+3. **Distribution targets** — Both sdist and wheel must be producible via `python -m build`.
+4. **Round-trip compliance** — Parser → Writer round-trip MUST preserve all domain model fields.
+   No silently dropped fields. Evidence: `dogfood_proof` artifact or dedicated roundtrip test.
+5. **`__all__` declaration** — Every `__init__.py` must declare an explicit `__all__` list.
+
+**Missing from existing compliance table:**
+- `py.typed` presence: 0/20 formats confirmed (all likely missing marker — audit required)
+- Round-trip test: 13/20 formats confirmed via oracle evidence

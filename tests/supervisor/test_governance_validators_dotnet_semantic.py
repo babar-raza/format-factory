@@ -1,8 +1,8 @@
-"""Tests for governance_validators_dotnet_semantic.py (V87, V88, V89, V90, V91, V92).
+"""Tests for governance_validators_dotnet_semantic.py (V87, V88, V89, V90, V91, V92, V169).
 
 GI-FODS-NET-001: FODS .NET governance incident — semantic stub detection validators.
 
-Tests: 9 per validator = 54 total (27 original + 27 new for V90/V91/V92).
+Tests: 9 per validator = 59 total (54 original + 5 new for V169).
 """
 
 from __future__ import annotations
@@ -23,6 +23,7 @@ from governance_validators_dotnet_semantic import (
     validate_dotnet_setter_without_xml_write,
     validate_dotnet_getter_without_xml_read,
     validate_dotnet_fods_extended_apis_loc,
+    validate_whitelist_expiry,
 )
 
 
@@ -112,8 +113,8 @@ public sealed partial class FodsDocument
         result = validate_dotnet_constant_return_public_api(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_for_arrow_zero_return_product_source(self, tmp_path):
-        """V87 should WARN (not FAIL) for constant-zero arrow methods in PRODUCT_SOURCE."""
+    def test_fail_and_blocks_for_arrow_zero_return_product_source(self, tmp_path):
+        """V87 should FAIL (blocks) for constant-zero arrow methods — PRODUCT_SOURCE exemption removed (TC-FGSQ-004)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
@@ -125,8 +126,8 @@ public sealed partial class FodsDocument
         rel = _write_cs(tmp_path, "FodsDocument.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_constant_return_public_api(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
-        assert result["blocks_sprint"] is False
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
         assert len(result["items"]) == 2
 
     def test_fail_and_blocks_for_constant_return_release_gate(self, tmp_path):
@@ -146,7 +147,7 @@ public sealed partial class FodsDocument
         assert any(item["method"] == "GetFormulaCount" for item in result["items"])
 
     def test_detects_block_body_constant_return(self, tmp_path):
-        """V87 should detect multi-line block-body methods returning a constant."""
+        """V87 should FAIL and block for multi-line block-body methods returning a constant."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
@@ -160,11 +161,12 @@ public sealed partial class FodsDocument
         rel = _write_cs(tmp_path, "FodsDocument.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_constant_return_public_api(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
         assert len(result["items"]) >= 1
 
     def test_detects_string_empty_constant(self, tmp_path):
-        """V87 should detect => string.Empty constant returns."""
+        """V87 should FAIL and block for => string.Empty constant returns."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
@@ -175,7 +177,8 @@ public sealed partial class FodsDocument
         rel = _write_cs(tmp_path, "FodsDocument.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_constant_return_public_api(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
         assert any("GetSheetPrintArea" in item["method"] for item in result["items"])
 
     def test_pass_when_no_constant_returns_found(self, tmp_path):
@@ -198,7 +201,7 @@ public sealed partial class FodsDocument
         assert result["result"] == "PASS"
 
     def test_whitelist_suppresses_known_intentional_constant(self, tmp_path):
-        """V87 should PASS for a method listed in the whitelist."""
+        """V87 should WARN (non-blocking) for whitelisted methods (TC-FGSQ-004: grandfathered violations)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
@@ -216,11 +219,14 @@ public sealed partial class FodsDocument
         )
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_constant_return_public_api(decl, repo_root=tmp_path)
-        assert result["result"] == "PASS"
+        # Whitelisted → WARN non-blocking (not PASS — method still reported for awareness)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any(item.get("whitelisted") for item in result["items"])
 
 
 # ===========================================================================
-# V88: validate_dotnet_detached_dictionary_fields
+# V88: validate_dotnet_detached_dictionary_fields (per-method rewrite, TC-FGSQ-003)
 # ===========================================================================
 
 class TestV88DetachedDictionaryFields:
@@ -232,103 +238,124 @@ class TestV88DetachedDictionaryFields:
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
 
-    def test_warn_when_dict_field_has_no_xml_reference(self, tmp_path):
-        """V88 should WARN for a Dictionary field with no XML read path in any peer file."""
+    def test_fail_when_setter_writes_only_to_dict(self, tmp_path):
+        """V88 should FAIL for a Set* method that writes only to an in-memory dict."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
-    private readonly System.Collections.Generic.Dictionary<string, int> _sheetFreezeRows = new();
+    private readonly System.Collections.Generic.Dictionary<string, int> _rowHeights = new();
 
-    public int GetSheetFreezeRows(string name)
+    public void SetRowHeight(string sheetName, int row, int height)
     {
-        return _sheetFreezeRows.TryGetValue(name, out var v) ? v : 0;
-    }
-    public void SetSheetFreezeRows(string name, int rows)
-    {
-        _sheetFreezeRows[name] = rows;
+        _rowHeights[(sheetName, row)] = height;
     }
 }
 """
-        rel = _write_cs(tmp_path, "FodsDocument.cs", content)
+        rel = _write_cs(tmp_path, "FodsEditOps.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
-        assert result["blocks_sprint"] is False
-        assert any("_sheetFreezeRows" in item["field"] for item in result["items"])
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert any("SetRowHeight" in item["method"] for item in result["items"])
 
-    def test_pass_when_dict_field_appears_in_xml_load(self, tmp_path):
-        """V88 should PASS when the dict field name co-appears with XDocument.Load( in the file."""
+    def test_fail_when_getter_reads_only_from_dict(self, tmp_path):
+        """V88 should FAIL for a Get* method that reads only from an in-memory dict."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
-    private readonly System.Collections.Generic.Dictionary<string, int> _columnWidths = new();
-    private System.Xml.Linq.XDocument _doc;
+    private readonly System.Collections.Generic.Dictionary<string, int> _rowHeights = new();
 
-    public FodsDocument(string path)
+    public int GetRowHeight(string sheetName, int row)
     {
-        _doc = System.Xml.Linq.XDocument.Load(path);
-        // _columnWidths populated from parsed XML below
-        foreach (var col in _doc.Descendants("col"))
-        {
-            _columnWidths[col.Attribute("name")?.Value ?? ""] = int.Parse(col.Attribute("width")?.Value ?? "0");
-        }
+        return _rowHeights.TryGetValue((sheetName, row), out var v) ? v : 0;
     }
 }
 """
-        rel = _write_cs(tmp_path, "FodsDoc.cs", content)
+        rel = _write_cs(tmp_path, "FodsReadOps.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
-        assert result["result"] == "PASS"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert any("GetRowHeight" in item["method"] for item in result["items"])
 
-    def test_pass_when_dict_field_appears_in_attribute_call(self, tmp_path):
-        """V88 should PASS when the dict field co-appears with Attribute( in the same file."""
+    def test_pass_when_setter_uses_set_attribute_value(self, tmp_path):
+        """V88 should PASS when setter uses SetAttributeValue (XML-backed)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
-    private readonly System.Collections.Generic.Dictionary<string, string> _styles = new();
-    private System.Xml.Linq.XDocument _doc;
-
-    private void ParseStyles()
+    public void SetCellStyle(string sheetName, int row, int col, string style)
     {
-        foreach (var s in _doc.Descendants("style"))
-        {
-            var key = s.Attribute("name")?.Value ?? "";
-            _styles[key] = s.Attribute("family")?.Value ?? "";
-        }
+        var cell = GetCellElement(sheetName, row, col);
+        cell.SetAttributeValue(NsTable + \"style-name\", style);
     }
 }
 """
-        rel = _write_cs(tmp_path, "FodsStyles.cs", content)
+        rel = _write_cs(tmp_path, "FodsEditOps.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_is_non_blocking(self, tmp_path):
-        """V88 warnings must never block the sprint."""
+    def test_pass_when_getter_uses_attribute_read(self, tmp_path):
+        """V88 should PASS when getter uses .Attribute( to read from XDocument."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument
+{
+    public string GetCellStyle(string sheetName, int row, int col)
+    {
+        var cell = GetCellElement(sheetName, row, col);
+        return cell.Attribute(NsTable + \"style-name\")?.Value ?? \"\";
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsReadOps.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_pass_when_setter_delegates_to_write_helper(self, tmp_path):
+        """V88 should PASS when setter delegates to a _WriteXxx helper method."""
+        content = """\
+namespace FormatFactory.Fods;
+public sealed partial class FodsDocument
+{
+    public void SetProtection(string sheetName, bool isProtected)
+    {
+        _WriteProtectionXml(sheetName, isProtected);
+    }
+}
+"""
+        rel = _write_cs(tmp_path, "FodsSheetFeatures.cs", content)
+        decl = _product_decl(changed_files=[str(rel)])
+        result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_fail_is_blocking(self, tmp_path):
+        """V88 violations must block the sprint (blocks_sprint=True)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
     private readonly System.Collections.Generic.Dictionary<string, bool> _flags = new();
-    public bool GetFlag(string k) => _flags.TryGetValue(k, out var v) && v;
+    public void SetFlag(string k, bool v) { _flags[k] = v; }
 }
 """
         rel = _write_cs(tmp_path, "FodsDoc.cs", content)
-        decl = _rg_decl(changed_files=[str(rel)])  # even for RELEASE_GATE
+        decl = _rg_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
-        assert result["blocks_sprint"] is False
+        assert result["blocks_sprint"] is True
 
-    def test_pass_when_no_dict_fields_in_file(self, tmp_path):
-        """V88 should PASS when the file has no private readonly Dictionary fields."""
+    def test_pass_when_no_set_get_methods_in_file(self, tmp_path):
+        """V88 should PASS when the file has no public Set*/Get* methods."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
     private System.Xml.Linq.XDocument _doc;
-    public string GetMimeType() => _doc.Root?.Attribute("mimetype")?.Value ?? "";
+    private void LoadDocument(string path) { _doc = System.Xml.Linq.XDocument.Load(path); }
 }
 """
         rel = _write_cs(tmp_path, "FodsDoc.cs", content)
@@ -336,23 +363,26 @@ public sealed partial class FodsDocument
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_multiple_detached_dicts_all_reported(self, tmp_path):
-        """V88 should report all detached dict fields, not just the first one."""
+    def test_multiple_dict_only_methods_all_reported(self, tmp_path):
+        """V88 should report all dict-only Set*/Get* methods, not just the first one."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
     private readonly System.Collections.Generic.Dictionary<string, int> _zoomLevel = new();
     private readonly System.Collections.Generic.Dictionary<string, string> _printArea = new();
+
+    public void SetZoomLevel(string sheet, int zoom) { _zoomLevel[sheet] = zoom; }
+    public void SetPrintArea(string sheet, string area) { _printArea[sheet] = area; }
 }
 """
         rel = _write_cs(tmp_path, "FodsDoc.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
-        field_names = [item["field"] for item in result["items"]]
-        assert "_zoomLevel" in field_names
-        assert "_printArea" in field_names
+        assert result["result"] == "FAIL"
+        method_names = [item["method"] for item in result["items"]]
+        assert "SetZoomLevel" in method_names
+        assert "SetPrintArea" in method_names
 
     def test_pass_when_file_does_not_exist(self, tmp_path):
         """V88 should PASS (not crash) when a changed file doesn't exist on disk."""
@@ -361,18 +391,19 @@ public sealed partial class FodsDocument
         assert result["result"] == "PASS"
 
     def test_result_contains_remediation_text(self, tmp_path):
-        """V88 items should contain remediation guidance."""
+        """V88 FAIL items should contain remediation guidance."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument
 {
     private readonly System.Collections.Generic.Dictionary<string, int> _freezeRows = new();
+    public void SetFreezeRows(string sheet, int rows) { _freezeRows[sheet] = rows; }
 }
 """
         rel = _write_cs(tmp_path, "FodsDoc.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_detached_dictionary_fields(decl, repo_root=tmp_path)
-        if result["result"] == "WARN":
+        if result["result"] == "FAIL":
             assert all("remediation" in item for item in result["items"])
 
 
@@ -498,8 +529,8 @@ public sealed partial class FodsDocument {
         result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_dict_only_setter(self, tmp_path):
-        """V90 should warn when setter only writes to dictionary field."""
+    def test_fail_dict_only_setter_not_whitelisted(self, tmp_path):
+        """V90 should FAIL (blocks) when setter only writes to dict and is not whitelisted (TC-FGSQ-005)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -512,10 +543,11 @@ public sealed partial class FodsDocument {
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
 
-    def test_warn_does_not_block_sprint(self, tmp_path):
-        """V90 WARN must not block sprint."""
+    def test_warn_non_blocking_when_whitelisted(self, tmp_path):
+        """V90 should WARN (non-blocking) when setter is in the whitelist."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -524,8 +556,15 @@ public sealed partial class FodsDocument {
 }
 """
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        wl_dir = tmp_path / "registry"
+        wl_dir.mkdir(parents=True, exist_ok=True)
+        (wl_dir / "dotnet-semantic-stub-whitelist.yaml").write_text(
+            "schema_version: '1.1'\nknown_setter_without_xml_write_ok:\n  - SetColumnWidth\n",
+            encoding="utf-8",
+        )
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
         assert result["blocks_sprint"] is False
 
     def test_pass_missing_file(self, tmp_path):
@@ -534,8 +573,8 @@ public sealed partial class FodsDocument {
         result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_items_contain_remediation(self, tmp_path):
-        """V90 warning items must include remediation text."""
+    def test_fail_items_contain_remediation(self, tmp_path):
+        """V90 FAIL items must include remediation text."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -546,7 +585,7 @@ public sealed partial class FodsDocument {
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_setter_without_xml_write(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
         for item in result["items"]:
             assert "remediation" in item
             assert len(item["remediation"]) > 0
@@ -605,8 +644,8 @@ public sealed partial class FodsDocument {
         result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_dict_backed_getter(self, tmp_path):
-        """V91 should warn when getter reads from dictionary without XML."""
+    def test_fail_dict_backed_getter_not_whitelisted(self, tmp_path):
+        """V91 should FAIL (blocks) when getter reads from dict and is not whitelisted (TC-FGSQ-005)."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -620,10 +659,11 @@ public sealed partial class FodsDocument {
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
 
-    def test_warn_does_not_block_sprint(self, tmp_path):
-        """V91 WARN must not block sprint."""
+    def test_warn_non_blocking_when_whitelisted(self, tmp_path):
+        """V91 should WARN (non-blocking) when getter is in the whitelist."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -632,8 +672,15 @@ public sealed partial class FodsDocument {
 }
 """
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
+        wl_dir = tmp_path / "registry"
+        wl_dir.mkdir(parents=True, exist_ok=True)
+        (wl_dir / "dotnet-semantic-stub-whitelist.yaml").write_text(
+            "schema_version: '1.1'\nknown_getter_without_xml_read_ok:\n  - GetWidth\n",
+            encoding="utf-8",
+        )
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
         assert result["blocks_sprint"] is False
 
     def test_pass_missing_file(self, tmp_path):
@@ -642,8 +689,8 @@ public sealed partial class FodsDocument {
         result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
         assert result["result"] == "PASS"
 
-    def test_warn_items_contain_remediation(self, tmp_path):
-        """V91 warning items must include remediation."""
+    def test_fail_items_contain_remediation(self, tmp_path):
+        """V91 FAIL items must include remediation."""
         content = """\
 namespace FormatFactory.Fods;
 public sealed partial class FodsDocument {
@@ -654,7 +701,7 @@ public sealed partial class FodsDocument {
         rel = _write_cs(tmp_path, "FodsDocumentAccessor.cs", content)
         decl = _product_decl(changed_files=[str(rel)])
         result = validate_dotnet_getter_without_xml_read(decl, repo_root=tmp_path)
-        assert result["result"] == "WARN"
+        assert result["result"] == "FAIL"
         for item in result["items"]:
             assert "remediation" in item
 
@@ -755,3 +802,113 @@ class TestV92ExtendedApisLoc:
         decl = _decl()
         result = validate_dotnet_fods_extended_apis_loc(decl, repo_root=tmp_path)
         assert result["validator"] == "validate_dotnet_fods_extended_apis_loc"
+
+
+# ---------------------------------------------------------------------------
+# V169: validate_whitelist_expiry
+# ---------------------------------------------------------------------------
+
+import yaml as _yaml
+
+
+def _write_whitelist(tmp_path: Path, entries_by_section: dict) -> Path:
+    """Write a dotnet-semantic-stub-whitelist.yaml to tmp_path/registry/."""
+    reg = tmp_path / "registry"
+    reg.mkdir(exist_ok=True)
+    path = reg / "dotnet-semantic-stub-whitelist.yaml"
+    data = {"schema_version": "2.0"}
+    data.update(entries_by_section)
+    path.write_text(_yaml.dump(data, default_flow_style=False), encoding="utf-8")
+    return path
+
+
+def _future_date(days: int) -> str:
+    from datetime import date, timedelta
+    return (date.today() + timedelta(days=days)).isoformat()
+
+
+def _past_date(days: int) -> str:
+    from datetime import date, timedelta
+    return (date.today() - timedelta(days=days)).isoformat()
+
+
+class TestV169WhitelistExpiry:
+    def test_pass_when_all_entries_not_due(self, tmp_path):
+        """V169 PASS: all entries have review_due far in future."""
+        _write_whitelist(tmp_path, {
+            "known_constant_return_ok": [
+                {
+                    "method": "FormatFactory.Fods.FodsDocument.GetFoo",
+                    "approved_by": "test",
+                    "approved_date": "2026-07-11",
+                    "review_due": _future_date(90),
+                    "removal_condition": "implement from ODF XML",
+                }
+            ]
+        })
+        decl = _decl()
+        result = validate_whitelist_expiry(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_when_entry_expiring_soon(self, tmp_path):
+        """V169 WARN: entry with review_due within 30 days → WARN, not FAIL."""
+        _write_whitelist(tmp_path, {
+            "known_constant_return_ok": [
+                {
+                    "method": "FormatFactory.Fods.FodsDocument.GetFoo",
+                    "approved_by": "test",
+                    "approved_date": "2026-07-11",
+                    "review_due": _future_date(15),
+                    "removal_condition": "implement from ODF XML",
+                }
+            ]
+        })
+        decl = _decl()
+        result = validate_whitelist_expiry(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any(i["issue"] == "whitelist_entry_expiring_soon" for i in result["items"])
+
+    def test_fail_when_entry_expired(self, tmp_path):
+        """V169 FAIL: entry with review_due in the past → FAIL + blocks_sprint."""
+        _write_whitelist(tmp_path, {
+            "known_constant_return_ok": [
+                {
+                    "method": "FormatFactory.Fods.FodsDocument.GetFoo",
+                    "approved_by": "test",
+                    "approved_date": "2026-01-01",
+                    "review_due": _past_date(1),
+                    "removal_condition": "implement from ODF XML",
+                }
+            ]
+        })
+        decl = _decl()
+        result = validate_whitelist_expiry(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert any(i["issue"] == "whitelist_entry_expired" for i in result["items"])
+
+    def test_pass_when_no_whitelist_file(self, tmp_path):
+        """V169 PASS: no whitelist file → treat as empty (no violations)."""
+        decl = _decl()
+        result = validate_whitelist_expiry(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_warn_for_schema1x_entry_missing_review_due(self, tmp_path):
+        """V169 WARN: schema 1.x bare-string entry has no review_due → WARN for missing governance."""
+        reg = tmp_path / "registry"
+        reg.mkdir(exist_ok=True)
+        wl = reg / "dotnet-semantic-stub-whitelist.yaml"
+        wl.write_text(
+            "schema_version: '1.1'\n"
+            "known_constant_return_ok:\n"
+            "  - 'FormatFactory.Fods.FodsDocument.GetFoo'\n",
+            encoding="utf-8",
+        )
+        decl = _decl()
+        result = validate_whitelist_expiry(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any(i["issue"] == "missing_review_due" for i in result["items"])

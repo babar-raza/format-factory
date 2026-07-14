@@ -103,7 +103,7 @@
   taskcards:
   - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     action: '[IMPROVEMENT ONLY] Extract analytics functions to csv_analytics.py. tabular_document.py
-      must be ≤800 LOC.'
+      must be â‰¤800 LOC.'
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     current_loc: 960
@@ -123,8 +123,8 @@
   consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: 'DIF: all 6 qnames verified (dif:header, dif:data, dif:document,
-    dif:cell, dif:datum, dif:vector). Registry aligned: dif:data→interchange_document.py,
-    dif:document→dif_parser.py. ClassVar fixed in spec/table/*.py. 997 tests pass.
+    dif:cell, dif:datum, dif:vector). Registry aligned: dif:dataâ†’interchange_document.py,
+    dif:documentâ†’dif_parser.py. ClassVar fixed in spec/table/*.py. 997 tests pass.
     TC-R13/TC-R14/TC-R15 complete.'
   dom_applicability: PARTIAL
   e2e_proof: null
@@ -525,7 +525,7 @@
   taskcards:
   - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     action: '[IMPROVEMENT ONLY] Extract analytics functions to ndjson_analytics.py.
-      json_stream.py must be ≤800 LOC.'
+      json_stream.py must be â‰¤800 LOC.'
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     current_loc: 928
@@ -1103,7 +1103,7 @@
   taskcards:
   - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     action: '[IMPROVEMENT ONLY] Extract analytics functions to tsv_analytics.py. tsv_parser.py
-      must be ≤800 LOC.'
+      must be â‰¤800 LOC.'
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     current_loc: 818
@@ -1167,7 +1167,7 @@
   taskcards:
   - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     action: '[IMPROVEMENT ONLY] Extract analytics functions to xcf_analytics.py (already
-      exists). xcf_parser.py must be ≤800 LOC.'
+      exists). xcf_parser.py must be â‰¤800 LOC.'
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     current_loc: 1272
@@ -1231,7 +1231,7 @@
   taskcards:
   - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     action: '[IMPROVEMENT ONLY] Route analytics functions to zst_analytics.py (already
-      exists). zst_codec.py must be ≤800 LOC.'
+      exists). zst_codec.py must be â‰¤800 LOC.'
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     current_loc: 1549
@@ -1309,9 +1309,10 @@
   lane_a_consecutive: 0
   lane_a_maturity: A3
   lane_b_ceiling: D5
-  lane_b_consecutive: 0
+  lane_b_consecutive: 2
   lane_b_maturity: D4
   lane_starvation_threshold: 3
+  last_applied_sprint_id: R-DIAG-001
   last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
@@ -1595,7 +1596,7 @@
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-html-20260628
   ledger_entry_version: 2
-  next_required_action: None — export only
+  next_required_action: None â€” export only
   pilot_proof: null
   product_id: HTML-NET
   proof_level_target: 4
@@ -1642,7 +1643,7 @@
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-markdown-20260628
   ledger_entry_version: 2
-  next_required_action: None — export only
+  next_required_action: None â€” export only
   pilot_proof: null
   product_id: MARKDOWN-NET
   proof_level_target: 4
@@ -1689,7 +1690,7 @@
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-txt-20260628
   ledger_entry_version: 2
-  next_required_action: None — export only
+  next_required_action: None â€” export only
   pilot_proof: null
   product_id: TXT-NET
   proof_level_target: 4

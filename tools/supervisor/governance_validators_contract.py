@@ -62,6 +62,7 @@ VALID_DOMAINS = frozenset({
     "root_struct",
     "found_issue",
     "general",
+    "control_layer",
 })
 
 

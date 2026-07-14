@@ -1,163 +1,146 @@
-# XCF Oracle Package — Format Factory
-# Format: GIMP XCF Image
-# Authority: GIMP XCF format spec (GIMP project)
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch C
-# GAP-ORC-BACKFILL-C: Imaging family oracle packages
-
 oracle_id: oracle-xcf-v1
 format_id: xcf
-format_version: "XCF v11 (GIMP)"
+format_version: XCF v11 (GIMP)
 oracle_version: 1
 family: imaging
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: XCF-SPEC
-      title: "GIMP XCF file format"
-      body: "GNOME/GIMP Project"
-      url: "https://gitlab.gnome.org/GNOME/gimp/-/blob/master/devel-docs/xcf.txt"
-      legal_category: 1
-      authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-      note: "XCF is GIMP's native format. Binary structure with magic 'gimp xcf' prefix."
+  - id: XCF-SPEC
+    title: GIMP XCF file format
+    body: GNOME/GIMP Project
+    url: https://gitlab.gnome.org/GNOME/gimp/-/blob/master/devel-docs/xcf.txt
+    legal_category: 1
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    note: XCF is GIMP's native format. Binary structure with magic 'gimp xcf' prefix.
   authorized_fact_refs:
-    - "FACT-XCF-001"
-    - "FACT-XCF-002"
-    - "FACT-XCF-003"
+  - FACT-XCF-001
+  - FACT-XCF-002
+  - FACT-XCF-003
   requirement_refs: []
   capability_refs:
-    - "xcf:parse"
-    - "xcf:image"
-  authority_summary: >
-    XCF files start with 'gimp xcf' magic bytes. Contain layers, channels, and metadata.
-    XcfImage is the authoritative model class (spec_qname=xcf:image).
+  - xcf:parse
+  - xcf:image
+  authority_summary: 'XCF files start with ''gimp xcf'' magic bytes. Contain layers,
+    channels, and metadata. XcfImage is the authoritative model class (spec_qname=xcf:image).
 
+    '
 corpus_refs:
-  - corpus_id: xcf-1x1-red
-    sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
-    sha256: "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "1x1 red pixel XCF RGB image"
-  - corpus_id: xcf-2x2-gray
-    sample_ref: samples/by-format/xcf/valid/2x2-gray.xcf
-    sha256: "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "2x2 grayscale XCF image"
-
+- corpus_id: xcf-1x1-red
+  sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
+  sha256: sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 1x1 red pixel XCF RGB image
+- corpus_id: xcf-2x2-gray
+  sample_ref: samples/by-format/xcf/valid/2x2-gray.xcf
+  sha256: sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 2x2 grayscale XCF image
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not applicable for this oracle version
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection surface in binary parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: xcf-valid-001
+  purpose: Minimal XCF file (1x1 RGB) parses without error
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - XCF-SPEC -- gimp xcf magic header
+  sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
+  input_hash: sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: loaded
+    value: true
+    authority: XCF-SPEC
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
+- case_id: xcf-valid-002
+  purpose: 2x2 grayscale XCF parses without error
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - XCF-SPEC -- grayscale image type
+  sample_ref: samples/by-format/xcf/valid/2x2-gray.xcf
+  input_hash: sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: loaded
+    value: true
+    authority: XCF-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: xcf-valid-003
+  purpose: XcfImage returns spec_qname=xcf:image
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  authority_refs:
+  - shared/qname-registry/xcf.yaml -- xcf:image
+  sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
+  input_hash: sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: xcf:image
+    authority: XCF-SPEC
+  applicable_profiles:
   - DOMAIN_MODEL_MAPPING
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not applicable for this oracle version"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No entity injection surface in binary parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: xcf-valid-001
-    purpose: "Minimal XCF file (1x1 RGB) parses without error"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "XCF-SPEC -- gimp xcf magic header"
-    sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
-    input_hash: "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: XCF-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: xcf-valid-002
-    purpose: "2x2 grayscale XCF parses without error"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "XCF-SPEC -- grayscale image type"
-    sample_ref: samples/by-format/xcf/valid/2x2-gray.xcf
-    input_hash: "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: XCF-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: xcf-valid-003
-    purpose: "XcfImage returns spec_qname=xcf:image"
-    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
-    authority_refs:
-      - "shared/qname-registry/xcf.yaml -- xcf:image"
-    sample_ref: samples/by-format/xcf/valid/1x1-red-rgb.xcf
-    input_hash: "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: spec_qname
-        value: "xcf:image"
-        authority: XCF-SPEC
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
 invalid_cases:
-  - case_id: xcf-invalid-001
-    purpose: "Non-XCF file must raise error"
-    defect_class: wrong-format
-    malformed_boundary: "File lacks gimp xcf magic bytes"
-    authority_refs:
-      - "XCF-SPEC -- magic header validation"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception"
-    partial_recovery_allowed: false
-    security_relevance: false
-    notes: "No invalid XCF sample in corpus yet."
-
+- case_id: xcf-invalid-001
+  purpose: Non-XCF file must raise error
+  defect_class: wrong-format
+  malformed_boundary: File lacks gimp xcf magic bytes
+  authority_refs:
+  - XCF-SPEC -- magic header validation
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: No invalid XCF sample in corpus yet.
 canonicalization:
   method: xcf-image-dict
-  description: "Canonical form is XcfImage with width, height, layer_count."
-  ordering_policy: "layer order preserved"
-  whitespace_policy: "binary format — not applicable"
-  encoding_policy: "binary"
-
+  description: Canonical form is XcfImage with width, height, layer_count.
+  ordering_policy: layer order preserved
+  whitespace_policy: binary format — not applicable
+  encoding_policy: binary
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "binary format — not applicable"
-  metadata_tolerance: "None"
-  policy_summary: "XcfImage must parse and expose width/height/layer_count"
-
+  ordering_tolerance: none
+  whitespace_tolerance: binary format — not applicable
+  metadata_tolerance: None
+  policy_summary: XcfImage must parse and expose width/height/layer_count
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - xcf-magic-validator
-
+- xcf-magic-validator
 consumers:
-  - tests/python/xcf/test_xcf_document_model.py
+- tests/python/xcf/test_xcf_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

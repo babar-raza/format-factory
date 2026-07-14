@@ -1,163 +1,170 @@
-# SYLK Oracle Package — Format Factory
-# Format: Symbolic Link (SYLK) Spreadsheet
-# Authority: Microsoft SYLK format specification
-# Oracle version: 1
-# Status: CASES_DEFINED
-# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch A
-# GAP-ORC-BACKFILL-A: Cells family oracle packages
-
 oracle_id: oracle-sylk-v1
 format_id: sylk
-format_version: "SYLK 1.0"
+format_version: SYLK 1.0
 oracle_version: 1
 family: cells
-generated_at: "2026-06-26"
+generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
 status: VERIFIED
-
 authority:
   specification_refs:
-    - id: SYLK-SPEC
-      title: "Symbolic Link (SYLK) file format"
-      body: "Microsoft Corporation"
-      url: "https://en.wikipedia.org/wiki/SYmbolic_LinK_(SYLK)"
-      legal_category: 1
-      authority_class: SPEC_INFORMATIVE
-      note: "SYLK is a text-based spreadsheet interchange format using ID;P records."
+  - id: SYLK-SPEC
+    title: Symbolic Link (SYLK) file format
+    body: Microsoft Corporation
+    url: https://en.wikipedia.org/wiki/SYmbolic_LinK_(SYLK)
+    legal_category: 1
+    authority_class: SPEC_INFORMATIVE
+    note: SYLK is a text-based spreadsheet interchange format using ID;P records.
   authorized_fact_refs:
-    - "FACT-SYLK-001"
-    - "FACT-SYLK-002"
-    - "FACT-SYLK-003"
+  - FACT-SYLK-001
+  - FACT-SYLK-002
+  - FACT-SYLK-003
   requirement_refs: []
   capability_refs:
-    - "sylk:parse"
-    - "sylk:document"
-  authority_summary: >
-    SYLK files are text-based with ID;P header, F;W format records, C cell records,
-    and E terminator. sylk:document (SylkDocument class) is the authoritative model.
+  - sylk:parse
+  - sylk:document
+  authority_summary: 'SYLK files are text-based with ID;P header, F;W format records,
+    C cell records, and E terminator. sylk:document (SylkDocument class) is the authoritative
+    model.
 
+    '
 corpus_refs:
-  - corpus_id: sylk-minimal-2x2
-    sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
-    sha256: "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Minimal 2x2 SYLK table with 44 cells parsed"
-  - corpus_id: sylk-single-cell
-    sample_ref: samples/by-format/sylk/valid/single-cell.slk
-    sha256: "sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717"
-    license: project-owned-synthetic
-    authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Single-cell SYLK file"
-
+- corpus_id: sylk-minimal-2x2
+  sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
+  sha256: sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal 2x2 SYLK table with 44 cells parsed
+- corpus_id: sylk-single-cell
+  sample_ref: samples/by-format/sylk/valid/single-cell.slk
+  sha256: sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Single-cell SYLK file
 profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Out of scope for this oracle version
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Not a compression format
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection surface in parse-only mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Out of scope for this oracle version
+- profile: EXPORT_CONFORMANCE
+  reason: Not a primary operation
+- profile: NORMALIZATION
+  reason: Not applicable
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+- profile: MUTATION_BEHAVIOR
+  reason: Not applicable for this oracle version
+- profile: SAME_FORMAT_SERIALIZATION
+  reason: Not applicable for this oracle version
+- profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: sylk-valid-001
+  purpose: Minimal 2x2 SYLK file parses with correct row/col/cell counts
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - SYLK-SPEC -- ID;P header record, C cell records
+  sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
+  input_hash: sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: rows
+    value: 2
+    data_source: parsed
+    authority: SYLK-SPEC -- C record Y coordinate defines row extent
+  - property: cols
+    value: 2
+    data_source: parsed
+    authority: SYLK-SPEC -- C record X coordinate defines column extent
+  - property: cell_count
+    value: 4
+    data_source: parsed
+    authority: SYLK-SPEC -- 4 C records in 2x2 fixture
+  applicable_profiles:
   - STRUCTURAL_VALIDITY
   - PARSE_VALIDITY
+- case_id: sylk-valid-002
+  purpose: Single-cell SYLK parses with rows=1, cols=1, cell_count=1
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - SYLK-SPEC -- C cell record
+  sample_ref: samples/by-format/sylk/valid/single-cell.slk
+  input_hash: sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: rows
+    value: 1
+    data_source: parsed
+    authority: SYLK-SPEC -- single row in single-cell fixture
+  - property: cell_count
+    value: 1
+    data_source: parsed
+    authority: SYLK-SPEC -- 1 C record in single-cell fixture
+  applicable_profiles:
+  - PARSE_VALIDITY
+- case_id: sylk-valid-003
+  purpose: SYLK 2x2 parse returns correct dimensions (domain model identity)
+  authority_class: SPEC_INFORMATIVE
+  authority_refs:
+  - shared/qname-registry/sylk.yaml -- sylk:document
+  sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
+  input_hash: sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: cell_count
+    value: 4
+    data_source: parsed
+    authority: SYLK-SPEC -- 2x2 grid has 4 cells
+  - property: ok
+    value: true
+    data_source: parsed
+    authority: 'parse_sylk contract: ok=True on success'
+  applicable_profiles:
   - DOMAIN_MODEL_MAPPING
-
-profiles_not_applicable:
-  - profile: INTEROPERABILITY
-    reason: "Out of scope for this oracle version"
-  - profile: LOSSLESS_TRANSFORMATION
-    reason: "Not a compression format"
-  - profile: SECURITY_ROBUSTNESS
-    reason: "No entity injection surface in parse-only mode"
-  - profile: UNKNOWN_CONTENT_PRESERVATION
-    reason: "Out of scope for this oracle version"
-  - profile: EXPORT_CONFORMANCE
-    reason: "Not a primary operation"
-  - profile: NORMALIZATION
-    reason: "Not applicable"
-  - profile: LIMITS_AND_BOUNDARIES
-    reason: "Not applicable for this oracle version"
-  - profile: MUTATION_BEHAVIOR
-    reason: "Not applicable for this oracle version"
-  - profile: SAME_FORMAT_SERIALIZATION
-    reason: "Not applicable for this oracle version"
-  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
-    reason: "Not applicable for this oracle version"
-
-valid_cases:
-
-  - case_id: sylk-valid-001
-    purpose: "Minimal SYLK file parses without error"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "SYLK-SPEC -- ID;P header record"
-    sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
-    input_hash: "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: SYLK-SPEC
-    applicable_profiles:
-      - STRUCTURAL_VALIDITY
-      - PARSE_VALIDITY
-
-  - case_id: sylk-valid-002
-    purpose: "Single-cell SYLK parses without error"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "SYLK-SPEC -- C cell record"
-    sample_ref: samples/by-format/sylk/valid/single-cell.slk
-    input_hash: "sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: SYLK-SPEC
-    applicable_profiles:
-      - PARSE_VALIDITY
-
-  - case_id: sylk-valid-003
-    purpose: "SylkDocument returns spec_qname=sylk:document"
-    authority_class: SPEC_INFORMATIVE
-    authority_refs:
-      - "shared/qname-registry/sylk.yaml -- sylk:document"
-    sample_ref: samples/by-format/sylk/valid/minimal-2x2.slk
-    input_hash: "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583"
-    expected_parse_result: SUCCESS
-    expected_model_properties:
-      - property: loaded
-        value: true
-        authority: SYLK-SPEC
-    applicable_profiles:
-      - DOMAIN_MODEL_MAPPING
-
+executor_config:
+  module: sylk.sylk_parser
+  callable: parse_sylk
+  note: parse_sylk returns dict with ok, rows, cols, cell_count, id_line keys
 invalid_cases:
-  - case_id: sylk-invalid-001
-    purpose: "Non-SYLK file must raise error or return failure"
-    defect_class: wrong-format
-    malformed_boundary: "File is not valid SYLK (missing ID;P header)"
-    authority_refs:
-      - "SYLK-SPEC -- ID;P header required"
-    sample_ref: null
-    expected_failure_stage: PARSE
-    expected_error_type: "Exception or error indicator"
-    partial_recovery_allowed: true
-    security_relevance: false
-    notes: "No invalid SYLK sample in corpus yet."
-
+- case_id: sylk-invalid-001
+  purpose: Non-SYLK file must raise error or return failure
+  defect_class: wrong-format
+  malformed_boundary: File is not valid SYLK (missing ID;P header)
+  authority_refs:
+  - SYLK-SPEC -- ID;P header required
+  sample_ref: null
+  expected_failure_stage: PARSE
+  expected_error_type: Exception or error indicator
+  partial_recovery_allowed: true
+  security_relevance: false
+  notes: No invalid SYLK sample in corpus yet.
 canonicalization:
   method: sylk-document-dict
-  description: "Canonical form is SylkDocument with cells list."
-  ordering_policy: "cell order by row/col"
-  whitespace_policy: "insignificant"
-  encoding_policy: "ASCII/Windows-1252"
-
+  description: Canonical form is SylkDocument with cells list.
+  ordering_policy: cell order by row/col
+  whitespace_policy: insignificant
+  encoding_policy: ASCII/Windows-1252
 tolerance_policy:
   numeric_tolerance: NOT_APPLICABLE
-  ordering_tolerance: "none"
-  whitespace_tolerance: "record whitespace insignificant"
-  metadata_tolerance: "None"
-  policy_summary: "Document must parse and produce SylkDocument instance"
-
+  ordering_tolerance: none
+  whitespace_tolerance: record whitespace insignificant
+  metadata_tolerance: None
+  policy_summary: Document must parse and produce SylkDocument instance
 comparators:
-  - model-property-comparator
-
+- model-property-comparator
 validators:
-  - sylk-text-validator
-
+- sylk-text-validator
 consumers:
-  - tests/python/sylk/test_sylk_document_model.py
+- tests/python/sylk/test_sylk_document_model.py
+dependency_hashes:
+  executor_hash: sha256:520860069b14b3a873000585148f64bcc9455d3045d605c4432bc3059fd4828d
+  registry_hash: sha256:4eb694d0ab84d16801ecec1af844389d13c57a7ee0d75ec68078c81e878ce5d8
+  recorded_at: '2026-07-12T22:27:40.016853+00:00'

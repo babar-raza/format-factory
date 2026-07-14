@@ -45,6 +45,9 @@ _OUTPUT_PATH_REL = ".local/supervisor/lifecycle-audit-results.json"
 _MACHINERY_SIGNAL_PATH_REL = ".local/supervisor/machinery/continuation-signal.json"
 _PRODUCT_SIGNAL_PATH_REL = ".local/supervisor/product/continuation-signal.json"
 
+# TC-VWR-003 (velvet-swinging-wreath): machinery mission ledger path constant
+_MACHINERY_LEDGER_PATH_REL = ".local/supervisor/machinery/mission-ledger.json"
+
 _EXTERNAL_GATE_KEYWORDS = [
     "push_credentials",
     "gate_11",
@@ -71,6 +74,102 @@ def _resolve_signal_path(repo_root: Path, track: str | None = None) -> Path:
             return p
         return repo_root / _SIGNAL_PATH_REL
     return repo_root / _SIGNAL_PATH_REL
+
+
+# ---------------------------------------------------------------------------
+# TC-VWR-003/004 (velvet-swinging-wreath): Machinery mission ledger helpers
+# ---------------------------------------------------------------------------
+
+
+def _read_machinery_mission_ledger(mission_id: str, repo_root: Path | None = None) -> dict:
+    """Read mission ledger for a given mission_id.
+
+    Returns sentinel dict (0 iterations, _sentinel=True) on missing/invalid data
+    or when the ledger's mission_id differs (stale entry from different mission).
+    RC-001 fix: enables Check B1 to query behavioral iteration state.
+    """
+    _root = repo_root if repo_root is not None else _DEFAULT_REPO_ROOT
+    ledger_path = _root / _MACHINERY_LEDGER_PATH_REL
+    _default: dict = {
+        "current_behavioral_iterations": 0,
+        "behavioral_iterations_required": 2,
+        "_sentinel": True,
+    }
+    if not ledger_path.exists():
+        return _default
+    try:
+        data = json.loads(ledger_path.read_text(encoding="utf-8"))
+        if data.get("mission_id") != mission_id:
+            return _default  # Stale entry — treat as 0 iterations
+        return data
+    except Exception:
+        return _default
+
+
+def _check_behavioral_iteration_guard(
+    mission_id: str,
+    plan_type: str,
+    repo_root: Path | None = None,
+) -> dict | None:
+    """Check B1 (RC-001 fix): Behavioral iteration minimum for machinery_hardening plans.
+
+    For plans with plan_type == "machinery_hardening" only: require
+    current_behavioral_iterations >= behavioral_iterations_required before AUDIT_PASS.
+    Returns a CRITICAL guard finding if not met, or None if passed / not applicable.
+    """
+    if plan_type != "machinery_hardening":
+        return None
+    ledger = _read_machinery_mission_ledger(mission_id, repo_root)
+    current = ledger.get("current_behavioral_iterations", 0)
+    required = ledger.get("behavioral_iterations_required", 2)
+    if current < required:
+        return {
+            "guard_id": "GB1",
+            "finding_id": "FIND-GB1-001",
+            "severity": "CRITICAL",
+            "check": "behavioral_iteration_minimum",
+            "type": "BEHAVIORAL_ITERATION_INSUFFICIENT",
+            "current_behavioral_iterations": current,
+            "behavioral_iterations_required": required,
+            "mission_id": mission_id,
+            "sentinel": ledger.get("_sentinel", False),
+            "description": (
+                f"Behavioral iteration minimum not met: {current}/{required} iterations completed. "
+                "Mission-ledger may be absent or stale (treating as 0 iterations). "
+                "Returning AUDIT_REQUIRES_ITERATION to prevent premature TERMINAL_CLOSED."
+            ),
+            "recommended_action": (
+                "Complete one full audit-execute-reaudit cycle, then re-run lifecycle_audit."
+            ),
+        }
+    return None
+
+
+def _increment_behavioral_iteration(mission_id: str, repo_root: Path | None = None) -> int:
+    """Increment current_behavioral_iterations in mission-ledger.json for mission_id.
+
+    Called on AUDIT_PASS for machinery_hardening plans to record a completed cycle.
+    Returns the new iteration count; returns 0 if ledger absent or mission_id mismatch.
+    RC-002 fix: ensures each successful audit cycle is tracked.
+    """
+    _root = repo_root if repo_root is not None else _DEFAULT_REPO_ROOT
+    ledger_path = _root / _MACHINERY_LEDGER_PATH_REL
+    if not ledger_path.exists():
+        return 0
+    try:
+        data = json.loads(ledger_path.read_text(encoding="utf-8"))
+    except Exception:
+        return 0
+    if data.get("mission_id") != mission_id:
+        return 0
+    data["current_behavioral_iterations"] = data.get("current_behavioral_iterations", 0) + 1
+    data["audit_pending"] = False
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["state_digest"] = (
+        f"{mission_id}:iteration={data['current_behavioral_iterations']}:stage=POST_EXECUTION_AUDIT"
+    )
+    ledger_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return data["current_behavioral_iterations"]
 
 
 # ---------------------------------------------------------------------------
@@ -330,36 +429,59 @@ def check_iteration_limit_guard(signal: dict) -> dict | None:
     return None
 
 
-def check_sprint_audit_guard(repo_root: Path) -> dict | None:
-    """TC-TCF-003-G4: Warn when evidence-review.json appears newer than last sprint audit log.
+def check_sprint_audit_guard(
+    repo_root: Path,
+    audit_log_path: "Path | None" = None,
+    evidence_review_path: "Path | None" = None,
+) -> dict | None:
+    """TC-TCF-003-G4: Guard for sprint audit log state.
 
-    An unconsumed sprint audit indicates the agent has not reviewed the most recent
-    sprint's findings before attempting terminal closure.
-    Returns MEDIUM finding when potential mismatch is detected (non-blocking GUARD_WARN).
-    Returns None when guard cannot determine state (non-blocking).
+    Three cases:
+    - Absent audit log (sprint-audit-log.json does not exist): CRITICAL — audit never ran
+      (TC-VWR-006 fix: was previously a graceful skip/None).
+    - Stale audit log (evidence-review.json newer by >60s): MEDIUM GUARD_WARN.
+    - OK or cannot determine: None (non-blocking).
     """
     try:
-        review_path = repo_root / "reports" / "supervisor" / "evidence-review.json"
-        audit_log_path = repo_root / ".local" / "supervisor" / "sprint-audit-log.json"
-        if not review_path.exists():
+        _repo = repo_root
+        _review_path = evidence_review_path or (_repo / "reports" / "supervisor" / "evidence-review.json")
+        _audit_log = audit_log_path or (_repo / ".local" / "supervisor" / "sprint-audit-log.json")
+        if not _review_path.exists():
             return None
-        review_mtime = review_path.stat().st_mtime
-        if audit_log_path.exists():
-            audit_mtime = audit_log_path.stat().st_mtime
-            if review_mtime > audit_mtime + 60:  # >1 min gap
-                return {
-                    "finding_id": "FIND-GUARD-004",
-                    "type": "SPRINT_AUDIT_UNCONSUMED",
-                    "severity": "MEDIUM",
-                    "description": (
-                        "evidence-review.json is newer than sprint-audit-log.json by >60s. "
-                        "The most recent sprint's audit findings may not have been consumed. "
-                        "TC-TCF-003-G4 GUARD_WARN: confirm all sprint audit findings are addressed."
-                    ),
-                    "source_file": str(review_path),
-                    "recommended_action": "Review evidence-review.json findings and update sprint-audit-log.json.",
-                    "guard_id": "G4_SPRINT_AUDIT",
-                }
+        if not _audit_log.exists():
+            # TC-VWR-006-01: ESCALATE — absent audit log means audit never ran
+            return {
+                "finding_id": "FIND-GUARD-004-ABSENT",
+                "type": "SPRINT_AUDIT_NEVER_RAN",
+                "severity": "CRITICAL",
+                "description": (
+                    f"sprint-audit-log.json does not exist at {_audit_log}. "
+                    "Post-execution audit was never run. "
+                    "Cannot authorize TERMINAL_CLOSED without behavioral audit evidence."
+                ),
+                "source_file": str(_audit_log),
+                "recommended_action": (
+                    "Run: python tools/supervisor/lifecycle_audit.py "
+                    "--mission-id <MISSION_ID> --plan-path <PLAN_PATH>"
+                ),
+                "guard_id": "G4_SPRINT_AUDIT",
+            }
+        review_mtime = _review_path.stat().st_mtime
+        audit_mtime = _audit_log.stat().st_mtime
+        if review_mtime > audit_mtime + 60:  # >1 min gap — stale but present
+            return {
+                "finding_id": "FIND-GUARD-004",
+                "type": "SPRINT_AUDIT_UNCONSUMED",
+                "severity": "MEDIUM",
+                "description": (
+                    "evidence-review.json is newer than sprint-audit-log.json by >60s. "
+                    "The most recent sprint's audit findings may not have been consumed. "
+                    "TC-TCF-003-G4 GUARD_WARN: confirm all sprint audit findings are addressed."
+                ),
+                "source_file": str(_review_path),
+                "recommended_action": "Review evidence-review.json findings and update sprint-audit-log.json.",
+                "guard_id": "G4_SPRINT_AUDIT",
+            }
     except Exception:
         pass  # Non-blocking
     return None
@@ -423,6 +545,20 @@ def run_lifecycle_audit(
     autonomous_continue = signal.get("autonomous_continue", True)
 
     # ------------------------------------------------------------------
+    # 1a. TC-VWR-003: Detect plan_type from plan file header (machinery check)
+    # ------------------------------------------------------------------
+    import re as _re_lifecycle  # noqa: PLC0415
+    _plan_type = "unknown"
+    if plan_path:
+        try:
+            _header_text = Path(plan_path).read_text(encoding="utf-8", errors="replace")[:2000]
+            _pt_match = _re_lifecycle.search(r"\*\*plan_type:\*\*\s+(\S+)", _header_text)
+            if _pt_match:
+                _plan_type = _pt_match.group(1).strip().lower()
+        except Exception:
+            pass
+
+    # ------------------------------------------------------------------
     # 1b. TC-TCF-003: Premature-closure guards (run before GOV_BLOCK check)
     # ------------------------------------------------------------------
     _guard_results: list[str] = []
@@ -439,6 +575,43 @@ def run_lifecycle_audit(
                 _guard_results.append(f"{_gf['guard_id']}:{_gf['severity']}")
         except Exception:
             pass  # Non-blocking; individual guard failure does not stop audit
+
+    # Check B1 (TC-VWR-003): Behavioral iteration minimum for machinery_hardening plans
+    try:
+        _b1_finding = _check_behavioral_iteration_guard(
+            mission_id or "", _plan_type, repo_root
+        )
+        if _b1_finding:
+            _guard_results.append(f"GB1:{_b1_finding['severity']}")
+            findings.append(_b1_finding)
+    except Exception:
+        pass  # Non-blocking
+
+    # G3X (TC-VWR-006): Iteration-limit + behavioral iteration cross-check
+    # If G3 (MAX_ITERATIONS) fired AND behavioral iterations are still below minimum,
+    # escalate to CRITICAL to prevent premature AUDIT_PASS via iteration exhaustion.
+    if any("G3" in g for g in _guard_results) and _plan_type == "machinery_hardening":
+        try:
+            _g3x_ledger = _read_machinery_mission_ledger(mission_id or "", repo_root)
+            _current_b = _g3x_ledger.get("current_behavioral_iterations", 0)
+            _required_b = _g3x_ledger.get("behavioral_iterations_required", 2)
+            if _current_b < _required_b:
+                _g3x = {
+                    "guard_id": "G3X",
+                    "finding_id": "FIND-G3X-001",
+                    "severity": "CRITICAL",
+                    "type": "ITERATION_LIMIT_WITHOUT_BEHAVIORAL_PROOF",
+                    "check": "iteration_limit_without_behavioral_proof",
+                    "description": (
+                        f"Iteration limit reached but behavioral iterations ({_current_b}) < "
+                        f"required ({_required_b}). Blocking AUDIT_PASS to prevent false mission completion."
+                    ),
+                    "recommended_action": "Complete required behavioral cycles before terminal closure.",
+                }
+                _guard_results.append("G3X:CRITICAL")
+                findings.append(_g3x)
+        except Exception:
+            pass  # Non-blocking
 
     # ------------------------------------------------------------------
     # 2. Check for structural GOV_BLOCK
@@ -579,6 +752,56 @@ def run_lifecycle_audit(
             })
 
     # ------------------------------------------------------------------
+    # 5c. TC-AUDIT-FAIL-CLOSED: Reject AUDIT_PASS when plan state is unknowable
+    # ------------------------------------------------------------------
+    # Case 1: mission_id provided but no plan_path — cannot verify taskcard closure.
+    if not plan_path and mission_id:
+        findings.append({
+            "finding_id": "FIND-PP-001",
+            "type": "PLAN_PATH_MISSING",
+            "severity": "CRITICAL",
+            "description": (
+                f"lifecycle_audit called with mission_id={mission_id!r} but no --plan-path. "
+                "Cannot verify taskcard closure state. AUDIT_PASS requires a readable plan file."
+            ),
+            "source_file": "CLI",
+            "recommended_action": "Re-run with --plan-path <plan-file-path>",
+        })
+
+    # Case 2: plan_path provided but could not be read (hash empty = file unreadable).
+    if plan_path and not plan_hash_value:
+        findings.append({
+            "finding_id": "FIND-PP-002",
+            "type": "PLAN_UNREADABLE",
+            "severity": "CRITICAL",
+            "description": (
+                f"Plan file {plan_path!r} could not be read or hashed. "
+                "Cannot verify taskcard closure state."
+            ),
+            "source_file": str(plan_path),
+            "recommended_action": "Verify plan file exists and is readable.",
+        })
+
+    # Case 3: plan_path provided, file is readable (hash present), but 0 taskcards found.
+    # This catches parse failures, wrong format, or missing Taskcard Status Summary table.
+    if plan_path and plan_hash_value and total_taskcards_parsed == 0:
+        findings.append({
+            "finding_id": "FIND-PP-003",
+            "type": "ZERO_TASKCARDS_PARSED",
+            "severity": "CRITICAL",
+            "description": (
+                f"Plan file {plan_path!r} was readable (hash={plan_hash_value[:12]}...) "
+                "but 0 taskcards were parsed. This is likely a format/parsing failure. "
+                "AUDIT_PASS is rejected to prevent false completion evidence."
+            ),
+            "source_file": str(plan_path),
+            "recommended_action": (
+                "Add a '## Taskcard Status Summary' table with '| TC-ID | Status |' columns. "
+                "lifecycle_audit.py requires this exact format to parse taskcards."
+            ),
+        })
+
+    # ------------------------------------------------------------------
     # 6. Compute overall verdict
     # ------------------------------------------------------------------
     has_external_gate = any(f["type"] == "EXTERNAL_GATE_BLOCKING" for f in findings)
@@ -591,16 +814,28 @@ def run_lifecycle_audit(
         f.get("severity") == "CRITICAL" and f.get("guard_id", "").startswith("G")
         for f in findings
     )
+    # TC-AUDIT-FAIL-CLOSED: Plan path or parsing failures block AUDIT_PASS
+    has_plan_path_issue = any(
+        f["type"] in ("PLAN_PATH_MISSING", "PLAN_UNREADABLE", "ZERO_TASKCARDS_PARSED")
+        for f in findings
+    )
 
     if has_external_gate:
         verdict = "AUDIT_BLOCKED_EXTERNAL"
-    elif has_govblock or has_continuation_blocked or has_rework_pending or has_open_gaps or has_open_taskcards or has_critical_guard:
+    elif has_govblock or has_continuation_blocked or has_rework_pending or has_open_gaps or has_open_taskcards or has_critical_guard or has_plan_path_issue:
         verdict = "AUDIT_REQUIRES_ITERATION"
     else:
         verdict = "AUDIT_PASS"
 
     next_iteration_required = verdict == "AUDIT_REQUIRES_ITERATION"
     mission_complete = verdict == "AUDIT_PASS" and not open_gaps
+
+    # TC-VWR-004-02: Increment behavioral iteration counter on AUDIT_PASS for machinery plans
+    if verdict == "AUDIT_PASS" and _plan_type == "machinery_hardening" and mission_id:
+        try:
+            _increment_behavioral_iteration(mission_id, repo_root)
+        except Exception:
+            pass  # Non-blocking
 
     # TC-RJO-004: Vacuous-call guard — if called without plan_path or mission_id,
     # convert AUDIT_PASS to AUDIT_PASS_VACUOUS and force mission_complete=False.
@@ -711,7 +946,23 @@ def run_lifecycle_audit(
 
 
 def check_mission_complete(repo_root: Path | None = None, mission_id: str | None = None) -> bool:
-    """Return True only if lifecycle audit passes with no open gaps."""
+    """Return True only if lifecycle audit passes with no open gaps.
+
+    Reads from the cached lifecycle-audit-results.json if available, to avoid
+    re-running the audit without plan_path context (which would produce false negatives).
+    """
+    if repo_root is None:
+        repo_root = _DEFAULT_REPO_ROOT
+    cached = Path(repo_root) / ".local" / "supervisor" / "lifecycle-audit-results.json"
+    if cached.exists():
+        try:
+            data = json.loads(cached.read_text(encoding="utf-8"))
+            # Only trust the cached result if it matches the requested mission_id (or no filter)
+            if mission_id is None or data.get("mission_id") == mission_id:
+                return bool(data.get("mission_complete"))
+        except Exception:
+            pass
+    # Fallback: re-run (may return false negative without plan_path)
     result = run_lifecycle_audit(repo_root=repo_root, mission_id=mission_id)
     return bool(result.get("mission_complete"))
 
@@ -749,6 +1000,74 @@ def generate_audit_taskcard(finding: dict, mission_id: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# RC-004 (velvet-swinging-wreath): Auto-generate gap taskcards on ITERATION_REQUIRED
+# ---------------------------------------------------------------------------
+
+
+def generate_behavioral_gap_taskcards(
+    audit_result: dict,
+    plan_path: "Path | str | None" = None,
+) -> list[dict]:
+    """Generate taskcard dicts from ITERATION_REQUIRED findings.
+
+    When lifecycle_audit returns AUDIT_REQUIRES_ITERATION, this function
+    produces ready-to-append taskcard entries for each CRITICAL/HIGH finding,
+    breaking the manual-inspection loop.
+
+    Returns a list of taskcard dicts (does NOT write to plan file — caller uses Edit tool).
+    If plan_path is provided, also appends a machine-readable summary to
+    .local/supervisor/gap-taskcards.json for agent pickup.
+    """
+    from datetime import datetime, timezone as _tz  # noqa: PLC0415
+
+    findings = audit_result.get("findings", [])
+    mission_id = audit_result.get("mission_id") or "UNKNOWN"
+    verdict = audit_result.get("verdict", "")
+
+    if verdict not in ("AUDIT_REQUIRES_ITERATION", "AUDIT_REQUIRES_ITERATION"):
+        return []
+
+    # Only generate taskcards for findings that caused the iteration requirement
+    actionable_severities = {"CRITICAL", "HIGH"}
+    gap_taskcards = []
+    for finding in findings:
+        if finding.get("severity") not in actionable_severities:
+            continue
+        if finding.get("finding_id", "").startswith("FIND-VAC"):
+            continue  # Skip vacuous-call findings
+        tc = generate_audit_taskcard(finding, mission_id)
+        tc["generated_by"] = "generate_behavioral_gap_taskcards (RC-004)"
+        tc["generated_at"] = datetime.now(_tz.utc).isoformat()
+        gap_taskcards.append(tc)
+
+    # Persist for agent pickup
+    if plan_path is not None:
+        _plan_path = Path(plan_path) if not isinstance(plan_path, Path) else plan_path
+        repo_root = _plan_path.resolve().parent
+        # Walk up to find repo root (contains .git or .local)
+        candidate = _plan_path.resolve()
+        for _ in range(10):
+            candidate = candidate.parent
+            if (candidate / ".git").exists() or (candidate / ".local").exists():
+                repo_root = candidate
+                break
+        try:
+            out_path = repo_root / ".local" / "supervisor" / "gap-taskcards.json"
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(
+                __import__("json").dumps(
+                    {"mission_id": mission_id, "verdict": verdict, "gap_taskcards": gap_taskcards},
+                    indent=2,
+                ) + "\n",
+                encoding="utf-8",
+            )
+        except Exception:
+            pass  # Non-blocking
+
+    return gap_taskcards
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -766,6 +1085,9 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--json", dest="output_json", action="store_true", help="Print result JSON to stdout")
     p.add_argument("--track", default=None, choices=["machinery", "product"],
                    help="Track to read continuation signal from (default: legacy path)")
+    p.add_argument("--write-gap-taskcards", action="store_true",
+                   help="RC-004: On ITERATION_REQUIRED, generate gap taskcards and write to "
+                        ".local/supervisor/gap-taskcards.json for agent pickup")
     return p
 
 
@@ -786,6 +1108,12 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:
         print(f"ERROR: lifecycle_audit failed: {exc}", file=sys.stderr)
         return 3
+
+    # RC-004: Auto-generate gap taskcards when ITERATION_REQUIRED
+    if getattr(args, "write_gap_taskcards", False) and result.get("verdict") == "AUDIT_REQUIRES_ITERATION":
+        gap_tcs = generate_behavioral_gap_taskcards(result, plan_path=args.plan_path)
+        if gap_tcs:
+            print(f"[RC-004] Generated {len(gap_tcs)} gap taskcard(s) -> .local/supervisor/gap-taskcards.json")
 
     if args.output_json or not args.check_mission_complete:
         print(json.dumps(result, indent=2))

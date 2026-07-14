@@ -744,12 +744,27 @@ folders:
     producers: ["autonomous loop", "plan mode"]
     consumers: ["check_continuation", "supervisor"]
 
+  - folder_path: "vwm-pilots/"
+    display_name: "VWM Pilots"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: false
+    gitignored: false
+    tracked_files: 0
+    format_scoped: false
+    readme_required: false
+    retention: RETAIN
+    purpose: "Machinery assurance pilot evidence logs for VWM-2026-07-10 mission"
+    producers: ["machinery assurance agent", "autonomous loop"]
+    consumers: ["lifecycle_audit", "evidence review"]
+
   - folder_path: "state/"
     display_name: "State (deleted)"
     classification: STALE_ARTIFACT
-    git_tracked: true
+    git_tracked: false
     gitignored: false
-    tracked_files: 2
+    tracked_files: 0
     retention: DELETED
-    deletion_reason: "2 files (current-state.json 27 days stale, current-state.md). Redundant with .supervisor/state/current-run.json which is the active runtime authority."
+    deletion_reason: "2 files (current-state.json, current-state.md). Files moved to .supervisor/state/. Producer (tools/state/state_snapshot.py) redirected to .supervisor/state/. INV-002/INV-011 updated accordingly."
     deletion_taskcard: TC-ROOT-002
+    deleted_executed: true
+    deleted_date: "2026-07-11"

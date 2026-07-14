@@ -1581,6 +1581,35 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as qs_err:
         print(f"  WARNING: Quality scoring skipped: {qs_err}")
 
+    # Step 3b_pqa (TC-SPW-005): Product quality audit (non-blocking — advisory only)
+    print("\n=== STEP 3b_pqa: PRODUCT QUALITY AUDIT ===")
+    try:
+        from product_quality_audit import ProductQualityAudit  # noqa: PLC0415
+        _pqa = ProductQualityAudit(repo_root=repo_root)
+        _pqa_formats = decl.get("format_targets") or []
+        if not _pqa_formats:
+            import re as _re
+            _src_net_pat = _re.compile(r"src[/\\]net[/\\]([^/\\]+)[/\\]")
+            for _cf in decl.get("changed_files", []):
+                _m = _src_net_pat.search(str(_cf).replace("\\", "/"))
+                if _m:
+                    _pqa_formats.append(_m.group(1))
+            _pqa_formats = list(dict.fromkeys(_pqa_formats))
+        for _fmt in _pqa_formats:
+            _audit = _pqa.run(_fmt, language="dotnet", sprint_id=sprint_id)
+            _audit_path = (
+                repo_root / "reports" / "product-quality"
+                / f"audit-{sprint_id}-{_fmt}.yaml"
+            )
+            _audit_path.parent.mkdir(parents=True, exist_ok=True)
+            _audit_path.write_text(_audit.to_yaml(), encoding="utf-8")
+            _d = _audit.to_dict()
+            print(f"  [{_fmt}] WARN:{_d['warn_count']} FAIL:{_d['fail_count']} PASS:{_d['pass_count']} → {_audit_path.name}")
+        if not _pqa_formats:
+            print("  No format_targets or src/net/ changes — audit skipped")
+    except Exception as _pqa_err:
+        print(f"  WARNING: Product quality audit skipped: {_pqa_err}")
+
     # Step 3b: Post-grading anti-skip checks — extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
     anti_skip_impact = None
     anti_skip_result = None
@@ -1590,6 +1619,24 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             review, decl, sprint_id, review_dir, repo_root, detected_stream)
     except Exception as e:
         print(f"  WARNING: Anti-skip checks skipped: {e}")
+
+    # Step 3b2: TC-PBHP-003 — Post-grading playbook drift check (advisory, non-blocking)
+    try:
+        _pb_tools = str(repo_root / "tools" / "playbook")
+        if _pb_tools not in sys.path:
+            sys.path.insert(0, _pb_tools)
+        from playbook_drift_checker import check_playbook_drift as _drift_check
+        _drift_findings = _drift_check(decl, repo_root)
+        if _drift_findings:
+            print(f"\n  [PLAYBOOK_DRIFT] {len(_drift_findings)} finding(s):")
+            for _f in _drift_findings:
+                if _f.get("finding_type") == "PLAYBOOK_DRIFT":
+                    print(f"    {_f.get('work_item_id','?')}: {_f.get('applicable_playbook','?')} phases not evidenced")
+        _drift_path = repo_root / ".local" / "supervisor" / "playbook-drift-findings.json"
+        _drift_path.parent.mkdir(parents=True, exist_ok=True)
+        _drift_path.write_text(json.dumps(_drift_findings, indent=2), encoding="utf-8")
+    except Exception as _drift_e:
+        print(f"  [PLAYBOOK_DRIFT] drift check failed (non-blocking): {_drift_e}")
 
     # Step 3c (SUP-RECT-003): Run overclaim detector if graph store available
     print("\n=== STEP 3c: OVERCLAIM DETECTOR ===")
@@ -1720,6 +1767,17 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     work_path.write_text(
         yaml.dump(next_work, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )
+    # Step 4a-dom-gaps (TC-VPR-003): Generate/refresh DOM maturity gaps before compiler runs.
+    try:
+        from dom_maturity_gap_generator import generate_dom_gaps as _gen_dom
+        _dom_result = _gen_dom(
+            ledger_path=repo_root / "registry" / "product-deepening-ledger.yaml",
+            gap_ledger_path=repo_root / "reports" / "capability-layer" / "gap-ledger.json",
+        )
+        print(f"  DOM gaps: {_dom_result.added} added, {_dom_result.closed} closed, "
+              f"{_dom_result.unchanged} unchanged")
+    except Exception as _dom_err:
+        print(f"  WARNING: DOM gap generation failed (non-blocking): {_dom_err}")
     # Step 4a-compiler (TC-PROD-H-010): Merge gap-ledger-sourced items via capability compiler.
     try:
         from capability_feature_compiler import compile_gaps as _compile_gaps

@@ -61,8 +61,37 @@ def run_adversarial_check(
         },
     ]
     try:
+        from grader_reliability import (
+            RetryPolicy, GradingObserver, call_with_retry,
+            GraderRetryExhausted, GraderPermanentFailure,
+        )
+        _rel_ok = True
+    except ImportError:
+        try:
+            from tools.supervisor.grader_reliability import (
+                RetryPolicy, GradingObserver, call_with_retry,
+                GraderRetryExhausted, GraderPermanentFailure,
+            )
+            _rel_ok = True
+        except ImportError:
+            _rel_ok = False
+
+    def _do_adversarial() -> str:
         response, _ = gw(messages=messages)
-        content = response.get("content", "")
+        return response.get("content", "")
+
+    try:
+        if _rel_ok:
+            _adv_policy = RetryPolicy(max_attempts=2, base_backoff=2.0, jitter=True,
+                                      overall_deadline=30.0)
+            _adv_observer = GradingObserver()
+            try:
+                content = call_with_retry(_do_adversarial, policy=_adv_policy,
+                                          observer=_adv_observer, item_id="adversarial")
+            except (GraderRetryExhausted, GraderPermanentFailure) as exc:
+                return {"status": "skipped", "reason": f"retry_exhausted: {exc}"}
+        else:
+            content = _do_adversarial()
         if not content:
             return {"status": "skipped", "reason": "empty_response"}
         result = json.loads(content)

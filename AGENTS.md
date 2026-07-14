@@ -42,7 +42,7 @@ Prohibited (must never be created):
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-06T11:51:37+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-13T10:57:27+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -53,130 +53,152 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 120
+Total active capabilities: 142
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
-| `backfill-gate4-prototype-evidence` | acquisition | FULL_PARITY | Y | Y | N | — |
-| `check-gate` | acquisition | FULL_PARITY | Y | Y | Y | capability_audit |
-| `check-release-boundary` | acquisition | FULL_PARITY | Y | Y | N | — |
-| `create-acquisition-pack` | acquisition | FULL_PARITY | Y | Y | N | — |
-| `score-format` | acquisition | FULL_PARITY | Y | Y | Y | capability_extraction |
-| `build-obligation-register` | all_format_deepening | FULL_PARITY | Y | Y | N | — |
-| `portfolio-reconcile` | all_format_deepening | FULL_PARITY | Y | Y | N | — |
-| `update-obligation-entry` | all_format_deepening | FULL_PARITY | Y | Y | N | — |
-| `verify-obligation-entry` | all_format_deepening | FULL_PARITY | Y | Y | N | — |
-| `add-dotnet-api` | commercial_dotnet | FULL_PARITY | Y | Y | Y | product_backfill |
-| `add-dotnet-object-model-feature` | commercial_dotnet | FULL_PARITY | Y | Y | Y | product_deepening |
-| `add-same-format-writer-feature` | cross_product | FULL_PARITY | Y | Y | N | — |
-| `add-dogfood-export` | cross_product_export | FULL_PARITY | Y | Y | Y | consumer_verification |
-| `verify-dogfood-path` | cross_product_export | FULL_PARITY | Y | Y | Y | consumer_verification, focused_verification |
-| `add-installed-package-example` | developer_experience | FULL_PARITY | Y | Y | Y | e2e_proof |
-| `add-python-api` | foss_python | FULL_PARITY | Y | Y | Y | product_backfill |
-| `add-python-object-model-feature` | foss_python | FULL_PARITY | Y | Y | Y | product_deepening |
-| `add-spec-analytics-function` | foss_python | FULL_PARITY | Y | Y | Y | spec_grounded_analytics |
-| `format-feature-expansion` | foss_python | FULL_PARITY | Y | Y | N | — |
-| `new-format-kickstart` | foss_python | FULL_PARITY | Y | Y | N | — |
-| `product-source-task` | foss_python | FULL_PARITY | Y | Y | N | — |
-| `python-reduced-spec-parity-model` | foss_python | FULL_PARITY | Y | Y | N | — |
-| `create-consumer-roundtrip` | foss_python_consumer | FULL_PARITY | Y | Y | N | — |
-| `backfill-task-skill-ownership` | governance | FULL_PARITY | Y | Y | N | — |
-| `build-capability-routes` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-assertion-scorer` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-dashboard` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-dotnet-assertion-scorer` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-exception-checker` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-fix-weak-assertions` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-generate-exception-tests` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-generate-security-tests` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-inventory-extractor` | governance | FULL_PARITY | Y | Y | N | — |
-| `certification-stub-detector` | governance | FULL_PARITY | Y | Y | N | — |
-| `check-dom-contract` | governance | FULL_PARITY | Y | Y | N | — |
-| `check-skill-coverage` | governance | FULL_PARITY | Y | Y | Y | capability_audit |
-| `collect-skill-execution-receipts` | governance | FULL_PARITY | Y | Y | N | — |
-| `detect-ad-hoc-execution` | governance | FULL_PARITY | Y | Y | N | — |
-| `detect-duplicate-skills` | governance | FULL_PARITY | Y | Y | N | — |
-| `enforce-skill-first-execution` | governance | FULL_PARITY | Y | Y | N | — |
-| `inventory-commands` | governance | FULL_PARITY | Y | Y | N | — |
-| `inventory-format-dom` | governance | FULL_PARITY | Y | Y | N | — |
-| `inventory-skills` | governance | FULL_PARITY | Y | Y | N | — |
-| `normalize-skill-registry` | governance | FULL_PARITY | Y | Y | N | — |
-| `post-sprint-audit` | governance | FULL_PARITY | Y | Y | Y | forensic_audit, integration_verification, sprint_audit |
-| `post-sprint-loop` | governance | FULL_PARITY | Y | Y | Y | sprint_audit |
-| `preflight-skill-entry` | governance | FULL_PARITY | Y | Y | N | — |
-| `qname-backfill` | governance | FULL_PARITY | Y | Y | Y | qname_generation |
-| `run-skill-idempotency` | governance | FULL_PARITY | Y | Y | N | — |
-| `scan-residual-bypasses` | governance | FULL_PARITY | Y | Y | N | — |
-| `select-deepening-lane` | governance | FULL_PARITY | Y | Y | N | — |
-| `sync-skill-command-registry` | governance | FULL_PARITY | Y | Y | N | — |
-| `validate-mutation-guard` | governance | FULL_PARITY | Y | Y | N | — |
-| `validate-skill-contracts` | governance | FULL_PARITY | Y | Y | N | — |
-| `autonomous-loop` | infrastructure | FULL_PARITY | Y | Y | Y | bounded_execution, taskcard_execution |
-| `query-control-index` | infrastructure | FULL_PARITY | Y | Y | N | — |
-| `append-layer-verification-log` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `append-layer-work-log` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `capability-status` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `close-layer-task` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `create-cross-layer-handoff` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `create-permanent-layer-plan` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `detect-stale-layer-state` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `detect-unlogged-work` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `documentation-structure-migration` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `generate-root-status` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `identify-primary-layer` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `inventory-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `migrate-temporary-agent-plan` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `reconcile-layer-index` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `reconcile-layer-task-register` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `register-layer-gap` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `register-layer-task` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `select-next-layer-task` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `sync-capabilities` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `sync-readmes` | layer_governance | FULL_PARITY | Y | Y | Y | root_readme_governance |
-| `update-layer-current-state` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `update-layer-master-index` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `update-layer-session-handoff` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `validate-capability-parity` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `validate-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | Y | N | — |
-| `audit-root-tools` | machinery_governance | FULL_PARITY | Y | Y | N | — |
-| `found-issue-ownership` | machinery_governance | PARTIAL | Y | Y | N | — |
-| `rollback-and-recovery` | machinery_repair | FULL_PARITY | Y | Y | Y | rollback_and_recovery |
-| `sync-memory` | maintenance | FULL_PARITY | Y | Y | N | — |
-| `run-oracle` | oracle_execution | FULL_PARITY | Y | Y | N | — |
-| `package-install-proof` | packaging | FULL_PARITY | Y | Y | Y | e2e_proof, package_build |
-| `sync-installed-packages` | packaging | FULL_PARITY | Y | Y | N | — |
-| `build-context-pack` | planning | FULL_PARITY | Y | Y | Y | status_and_recon |
-| `build-evidence-bundle` | planning | FULL_PARITY | Y | Y | Y | evidence_capture |
-| `create-taskcard` | planning | FULL_PARITY | Y | Y | Y | plan_creation, taskcard_generation |
-| `evidence-review-next-prompt` | planning | FULL_PARITY | Y | Y | Y | forensic_audit |
-| `execution-handoff` | planning | FULL_PARITY | Y | Y | Y | plan_hardening, taskcard_execution |
-| `export-plan-context` | planning | FULL_PARITY | Y | Y | N | — |
-| `generate-execution-handoff` | planning | FULL_PARITY | Y | Y | N | — |
-| `materialize-declaration-review` | planning | FULL_PARITY | Y | Y | Y | evidence_capture |
-| `memory-sprint` | planning | FULL_PARITY | Y | Y | N | — |
-| `plan-hardening` | planning | FULL_PARITY | Y | Y | Y | plan_creation, plan_hardening |
-| `promote-gap-to-taskcard` | planning | FULL_PARITY | Y | Y | Y | feature_planning, taskcard_generation |
-| `record-lane-execution` | planning | FULL_PARITY | Y | Y | Y | task_closure |
-| `reproduce-master-plan` | planning | FULL_PARITY | Y | Y | Y | status_and_recon |
-| `select-poc-gap` | planning | FULL_PARITY | Y | Y | Y | feature_planning |
-| `validate-product-code-ledger` | planning | FULL_PARITY | Y | Y | Y | ledger_reconciliation |
-| `validate-skill-transcript` | planning | FULL_PARITY | Y | Y | Y | focused_verification |
-| `diff-playbook-outputs` | playbook_governance | FULL_PARITY | Y | Y | N | — |
-| `export-review-queue` | playbook_governance | FULL_PARITY | Y | Y | N | — |
-| `replay-acquisition-playbook` | playbook_governance | FULL_PARITY | Y | Y | N | — |
-| `validate-playbook` | playbook_governance | FULL_PARITY | Y | Y | N | — |
-| `sal-pipeline-heal` | sal_infrastructure | FULL_PARITY | Y | Y | Y | fact_authorization, fact_normalization, specification_ingestion |
-| `ingest-spec-sal` | sal_ingestion | FULL_PARITY | Y | Y | N | — |
-| `update-capability-matrix` | shared_reference_snapshot | FULL_PARITY | Y | Y | Y | capability_extraction |
-| `check-source-loc` | source_structure | FULL_PARITY | Y | Y | N | — |
-| `implement-spec-stub` | spec_literal_healing | FULL_PARITY | Y | Y | N | — |
-| `python-qname-code-reviewer` | spec_literal_healing | FULL_PARITY | Y | Y | N | — |
-| `spec-literal-qname-to-code-mapping` | spec_parity | FULL_PARITY | Y | Y | Y | qname_generation |
-| `spec-parity-source-regeneration-and-migration` | spec_parity | FULL_PARITY | Y | Y | Y | source_generation, source_migration |
-| `spec-parity-verification` | spec_parity | FULL_PARITY | Y | Y | N | — |
-| `spec-shaped-product-architecture-blueprint` | spec_parity | FULL_PARITY | Y | Y | Y | hierarchy_generation |
-| `extract-analytics-from-monolith` | src_healing | FULL_PARITY | Y | Y | Y | analytics_migration |
-| `add-roundtrip-test` | testing | FULL_PARITY | Y | Y | Y | test_migration |
+| `backfill-gate4-prototype-evidence` | acquisition | FULL_PARITY | Y | N | N | — |
+| `check-gate` | acquisition | FULL_PARITY | Y | N | Y | capability_audit |
+| `check-release-boundary` | acquisition | FULL_PARITY | Y | N | N | — |
+| `create-acquisition-pack` | acquisition | FULL_PARITY | Y | N | N | — |
+| `score-format` | acquisition | FULL_PARITY | Y | N | Y | capability_extraction |
+| `build-obligation-register` | all_format_deepening | FULL_PARITY | Y | N | N | — |
+| `portfolio-reconcile` | all_format_deepening | FULL_PARITY | Y | N | N | — |
+| `update-obligation-entry` | all_format_deepening | FULL_PARITY | Y | N | N | — |
+| `verify-obligation-entry` | all_format_deepening | FULL_PARITY | Y | N | N | — |
+| `add-dotnet-api` | commercial_dotnet | FULL_PARITY | Y | N | Y | product_backfill |
+| `add-dotnet-object-model-feature` | commercial_dotnet | FULL_PARITY | Y | N | Y | product_deepening |
+| `add-same-format-writer-feature` | cross_product | FULL_PARITY | Y | N | N | — |
+| `add-dogfood-export` | cross_product_export | FULL_PARITY | Y | N | Y | consumer_verification |
+| `verify-dogfood-path` | cross_product_export | FULL_PARITY | Y | N | Y | consumer_verification, focused_verification |
+| `add-installed-package-example` | developer_experience | FULL_PARITY | Y | N | Y | e2e_proof |
+| `add-python-api` | foss_python | FULL_PARITY | Y | N | Y | product_backfill |
+| `add-python-object-model-feature` | foss_python | FULL_PARITY | Y | N | Y | product_deepening |
+| `add-spec-analytics-function` | foss_python | FULL_PARITY | Y | N | Y | spec_grounded_analytics |
+| `format-feature-expansion` | foss_python | FULL_PARITY | Y | N | N | — |
+| `new-format-kickstart` | foss_python | FULL_PARITY | Y | N | N | — |
+| `product-source-task` | foss_python | FULL_PARITY | Y | N | N | — |
+| `python-reduced-spec-parity-model` | foss_python | FULL_PARITY | Y | N | N | — |
+| `create-consumer-roundtrip` | foss_python_consumer | FULL_PARITY | Y | N | N | — |
+| `backfill-task-skill-ownership` | governance | FULL_PARITY | Y | N | N | — |
+| `build-capability-routes` | governance | FULL_PARITY | Y | N | N | — |
+| `build-supervisor-packet` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-dashboard` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-dotnet-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-exception-checker` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-fix-weak-assertions` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-generate-exception-tests` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-generate-security-tests` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-inventory-extractor` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-stub-detector` | governance | FULL_PARITY | Y | N | N | — |
+| `check-dom-contract` | governance | FULL_PARITY | Y | N | N | — |
+| `check-skill-coverage` | governance | FULL_PARITY | Y | N | Y | capability_audit |
+| `collect-skill-execution-receipts` | governance | FULL_PARITY | Y | N | N | — |
+| `detect-ad-hoc-execution` | governance | FULL_PARITY | Y | N | N | — |
+| `detect-duplicate-skills` | governance | FULL_PARITY | Y | N | N | — |
+| `enforce-skill-first-execution` | governance | FULL_PARITY | Y | N | N | — |
+| `inventory-commands` | governance | FULL_PARITY | Y | N | N | — |
+| `inventory-format-dom` | governance | FULL_PARITY | Y | N | N | — |
+| `inventory-skills` | governance | FULL_PARITY | Y | N | N | — |
+| `normalize-skill-registry` | governance | FULL_PARITY | Y | N | N | — |
+| `post-sprint-audit` | governance | FULL_PARITY | Y | N | Y | forensic_audit, integration_verification, sprint_audit |
+| `post-sprint-loop` | governance | FULL_PARITY | Y | N | Y | sprint_audit |
+| `preflight-skill-entry` | governance | FULL_PARITY | Y | N | N | — |
+| `qname-backfill` | governance | FULL_PARITY | Y | N | Y | qname_generation |
+| `reset-track-signal` | governance | FULL_PARITY | Y | N | N | — |
+| `run-governance-validators` | governance | FULL_PARITY | Y | N | N | — |
+| `run-lifecycle-audit` | governance | FULL_PARITY | Y | N | N | — |
+| `run-skill-idempotency` | governance | FULL_PARITY | Y | N | N | — |
+| `scan-residual-bypasses` | governance | FULL_PARITY | Y | N | N | — |
+| `select-deepening-lane` | governance | FULL_PARITY | Y | N | N | — |
+| `sync-skill-command-registry` | governance | FULL_PARITY | Y | N | N | — |
+| `validate-evidence-declaration` | governance | FULL_PARITY | Y | N | N | — |
+| `validate-missing-skill-workflow` | governance | FULL_PARITY | Y | N | Y | skill_governance_discovery |
+| `validate-mutation-guard` | governance | FULL_PARITY | Y | N | N | — |
+| `validate-skill-contracts` | governance | FULL_PARITY | Y | N | N | — |
+| `allocate-sprint-number` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `audit-enhanced-control-layer` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `autonomous-loop` | infrastructure | FULL_PARITY | Y | N | Y | bounded_execution, taskcard_execution |
+| `build-product-context` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `build-resume-context` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `build-task-context` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `discover-existing-control-layers` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `inventory-existing-control-features` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `quarantine-invalid-artifact` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `query-control-index` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `rebuild-operational-index` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `validate-operational-index` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `verify-control-feature-parity` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `append-layer-verification-log` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `append-layer-work-log` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `capability-status` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `close-layer-task` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `create-cross-layer-handoff` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `create-permanent-layer-plan` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `detect-stale-layer-state` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `detect-unlogged-work` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `documentation-structure-migration` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `generate-root-status` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `identify-primary-layer` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `inventory-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `migrate-temporary-agent-plan` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `reconcile-layer-index` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `reconcile-layer-task-register` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `register-layer-gap` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `register-layer-task` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `select-next-layer-task` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `sync-capabilities` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `sync-readmes` | layer_governance | FULL_PARITY | Y | N | Y | root_readme_governance |
+| `update-layer-current-state` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `update-layer-master-index` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `update-layer-session-handoff` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `validate-capability-parity` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `validate-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | N | N | — |
+| `audit-root-tools` | machinery_governance | FULL_PARITY | Y | N | N | — |
+| `found-issue-ownership` | machinery_governance | FULL_PARITY | Y | N | N | — |
+| `rollback-and-recovery` | machinery_repair | FULL_PARITY | Y | N | Y | rollback_and_recovery |
+| `sync-memory` | maintenance | FULL_PARITY | Y | N | N | — |
+| `calculate-oracle-coverage` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `detect-stale-oracles` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `evaluate-roundtrip-oracle` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `generate-oracle-verdict-report` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `onboard-future-format-oracle` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `run-oracle` | oracle_execution | FULL_PARITY | Y | N | N | — |
+| `package-install-proof` | packaging | FULL_PARITY | Y | N | Y | e2e_proof, package_build |
+| `sync-installed-packages` | packaging | FULL_PARITY | Y | N | N | — |
+| `build-context-pack` | planning | FULL_PARITY | Y | N | Y | status_and_recon |
+| `build-evidence-bundle` | planning | FULL_PARITY | Y | N | Y | evidence_capture |
+| `create-taskcard` | planning | FULL_PARITY | Y | N | Y | plan_creation, taskcard_generation |
+| `evidence-review-next-prompt` | planning | FULL_PARITY | Y | N | Y | forensic_audit |
+| `execution-handoff` | planning | FULL_PARITY | Y | N | Y | plan_hardening, taskcard_execution |
+| `export-plan-context` | planning | FULL_PARITY | Y | N | N | — |
+| `generate-execution-handoff` | planning | FULL_PARITY | Y | N | N | — |
+| `materialize-declaration-review` | planning | FULL_PARITY | Y | N | Y | evidence_capture |
+| `memory-sprint` | planning | FULL_PARITY | Y | N | N | — |
+| `plan-hardening` | planning | FULL_PARITY | Y | N | Y | plan_creation, plan_hardening |
+| `promote-gap-to-taskcard` | planning | FULL_PARITY | Y | N | Y | feature_planning, taskcard_generation |
+| `record-lane-execution` | planning | FULL_PARITY | Y | N | Y | task_closure |
+| `reproduce-master-plan` | planning | FULL_PARITY | Y | N | Y | status_and_recon |
+| `select-poc-gap` | planning | FULL_PARITY | Y | N | Y | feature_planning |
+| `validate-product-code-ledger` | planning | FULL_PARITY | Y | N | Y | ledger_reconciliation |
+| `validate-skill-transcript` | planning | FULL_PARITY | Y | N | Y | focused_verification |
+| `diff-playbook-outputs` | playbook_governance | FULL_PARITY | Y | N | N | — |
+| `export-review-queue` | playbook_governance | FULL_PARITY | Y | N | N | — |
+| `replay-acquisition-playbook` | playbook_governance | FULL_PARITY | Y | N | N | — |
+| `validate-playbook` | playbook_governance | FULL_PARITY | Y | N | N | — |
+| `sal-pipeline-heal` | sal_infrastructure | FULL_PARITY | Y | N | Y | fact_authorization, fact_normalization, specification_ingestion |
+| `ingest-spec-sal` | sal_ingestion | FULL_PARITY | Y | N | N | — |
+| `update-capability-matrix` | shared_reference_snapshot | FULL_PARITY | Y | N | Y | capability_extraction |
+| `check-source-loc` | source_structure | FULL_PARITY | Y | N | N | — |
+| `implement-spec-stub` | spec_literal_healing | FULL_PARITY | Y | N | N | — |
+| `python-qname-code-reviewer` | spec_literal_healing | FULL_PARITY | Y | N | N | — |
+| `spec-literal-qname-to-code-mapping` | spec_parity | FULL_PARITY | Y | N | Y | qname_generation |
+| `spec-parity-source-regeneration-and-migration` | spec_parity | FULL_PARITY | Y | N | Y | source_generation, source_migration |
+| `spec-parity-verification` | spec_parity | FULL_PARITY | Y | N | N | — |
+| `spec-shaped-product-architecture-blueprint` | spec_parity | FULL_PARITY | Y | N | Y | hierarchy_generation |
+| `extract-analytics-from-monolith` | src_healing | FULL_PARITY | Y | N | Y | analytics_migration |
+| `add-roundtrip-test` | testing | FULL_PARITY | Y | N | Y | test_migration |
 
 <!-- END:CAPABILITY-DISCOVERY -->
 **A3.** An agent must not assume a role beyond what is assigned. Claude is an executor, not an approver. Claude never approves its own output as production-ready.
