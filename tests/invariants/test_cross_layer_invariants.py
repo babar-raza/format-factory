@@ -136,17 +136,17 @@ class TestInvariantDetection:
 
     def test_inv002_detects_empty_state_file(self, tmp_path):
         """Empty state file (0 bytes) triggers INV-002."""
-        (tmp_path / "state").mkdir()
-        (tmp_path / "state" / "current-state.md").write_text("", encoding="utf-8")
-        (tmp_path / "state" / "current-state.json").write_text("{}", encoding="utf-8")
+        (tmp_path / ".supervisor" / "state").mkdir(parents=True)
+        (tmp_path / ".supervisor" / "state" / "current-state.md").write_text("", encoding="utf-8")
+        (tmp_path / ".supervisor" / "state" / "current-state.json").write_text("{}", encoding="utf-8")
         r = check_inv002_state_files_present(tmp_path)
         assert not r["passed"]
         assert any("EMPTY" in d for d in r["details"])
 
     def test_inv002_passes_when_both_present_and_nonempty(self, tmp_path):
-        (tmp_path / "state").mkdir()
-        (tmp_path / "state" / "current-state.md").write_text("# ok\n", encoding="utf-8")
-        (tmp_path / "state" / "current-state.json").write_text("{}", encoding="utf-8")
+        (tmp_path / ".supervisor" / "state").mkdir(parents=True)
+        (tmp_path / ".supervisor" / "state" / "current-state.md").write_text("# ok\n", encoding="utf-8")
+        (tmp_path / ".supervisor" / "state" / "current-state.json").write_text("{}", encoding="utf-8")
         r = check_inv002_state_files_present(tmp_path)
         assert r["passed"]
 
