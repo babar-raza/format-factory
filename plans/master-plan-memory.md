@@ -707,3 +707,878 @@ notes: >
   (no production source mutation). Evidence in .local/ (gitignored). Production
   plan changes committed at 49ab2fc6.
 ```
+
+
+### LEDGER-023 — bright-greeting-goose
+
+```yaml
+ledger_entry_id: LEDGER-023
+mission_id: FF-PLAN-BRIGHT-GREETING-GOOS-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/bright-greeting-goose.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan bright-greeting-goose. Executed and closed in session aebd0df25866.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-07T18:08:48.801484+00:00"
+  locked_by: "aebd0df25866"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session aebd0df25866.
+```
+
+
+### LEDGER-024 — bubbly-dancing-pony
+
+```yaml
+ledger_entry_id: LEDGER-024
+mission_id: FF-PLAN-BUBBLY-DANCING-PONY-001
+repository: format-factory
+branch: main
+plan_path: plans/source-portfolios/ff-portfolio-41-prod-001/bubbly-dancing-pony.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan bubbly-dancing-pony. Executed and closed in session 9734aff6caf7.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T14:33:54.526338+00:00"
+  locked_by: "9734aff6caf7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 9734aff6caf7.
+```
+
+
+### LEDGER-025 — clever-tickling-island
+
+```yaml
+ledger_entry_id: LEDGER-025
+mission_id: FF-PLAN-CLEVER-TICKLING-ISLA-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/clever-tickling-island.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan clever-tickling-island. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T14:34:28.765476+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-026 — gleaming-napping-pebble
+
+```yaml
+ledger_entry_id: LEDGER-026
+mission_id: FF-PLAN-GLEAMING-NAPPING-PEB-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/gleaming-napping-pebble.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan gleaming-napping-pebble. Executed and closed in session 8322424df7b7.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T09:46:04.402387+00:00"
+  locked_by: "8322424df7b7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 8322424df7b7.
+```
+
+
+### LEDGER-027 — glimmering-hopping-kazoo
+
+```yaml
+ledger_entry_id: LEDGER-027
+mission_id: FF-PLAN-GLIMMERING-HOPPING-K-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/glimmering-hopping-kazoo.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan glimmering-hopping-kazoo. Executed and closed in session 93a9fa0ddc5b.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T19:49:19.712909+00:00"
+  locked_by: "93a9fa0ddc5b"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 93a9fa0ddc5b.
+```
+
+
+### LEDGER-028 — glittery-splashing-manatee
+
+```yaml
+ledger_entry_id: LEDGER-028
+mission_id: FF-PLAN-GLITTERY-SPLASHING-M-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/glittery-splashing-manatee.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan glittery-splashing-manatee. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T13:14:08.197725+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-029 — glowing-foraging-starlight
+
+```yaml
+ledger_entry_id: LEDGER-029
+mission_id: FF-PLAN-GLOWING-FORAGING-STA-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/glowing-foraging-starlight.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan glowing-foraging-starlight. Executed and closed in session 0031a2fb6fcd.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-09T16:18:40.335971+00:00"
+  locked_by: "0031a2fb6fcd"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 0031a2fb6fcd.
+```
+
+
+### LEDGER-030 — glowing-swinging-grove
+
+```yaml
+ledger_entry_id: LEDGER-030
+mission_id: FF-PLAN-GLOWING-SWINGING-GRO-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/glowing-swinging-grove.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan glowing-swinging-grove. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T14:51:09.021015+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-031 — golden-foraging-boot
+
+```yaml
+ledger_entry_id: LEDGER-031
+mission_id: FF-PLAN-GOLDEN-FORAGING-BOOT-001
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/golden-foraging-boot.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan golden-foraging-boot. Executed and closed in session fe70e60cc766.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T07:24:25.289481+00:00"
+  locked_by: "fe70e60cc766"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session fe70e60cc766.
+```
+
+
+### LEDGER-032 — golden-hugging-manatee
+
+```yaml
+ledger_entry_id: LEDGER-032
+mission_id: FF-PLAN-GOLDEN-HUGGING-MANAT-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/golden-hugging-manatee.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan golden-hugging-manatee. Executed and closed in session 496b377beedd.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-06T12:17:13.663747+00:00"
+  locked_by: "496b377beedd"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 496b377beedd.
+```
+
+
+### LEDGER-033 — goofy-orbiting-scroll
+
+```yaml
+ledger_entry_id: LEDGER-033
+mission_id: FF-PLAN-GOOFY-ORBITING-SCROL-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/goofy-orbiting-scroll.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan goofy-orbiting-scroll. Executed and closed in session 9734aff6caf7.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T15:38:55.527604+00:00"
+  locked_by: "9734aff6caf7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 9734aff6caf7.
+```
+
+
+### LEDGER-034 — gov-window-fix-001
+
+```yaml
+ledger_entry_id: LEDGER-034
+mission_id: FF-PLAN-GOV-WINDOW-FIX-001-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/gov-window-fix-001.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan gov-window-fix-001. Executed and closed in session 033f6a1ae2f3.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-10T08:09:49.079175+00:00"
+  locked_by: "033f6a1ae2f3"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 033f6a1ae2f3.
+```
+
+
+### LEDGER-035 — hazy-questing-peach
+
+```yaml
+ledger_entry_id: LEDGER-035
+mission_id: FF-PLAN-HAZY-QUESTING-PEACH-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/hazy-questing-peach.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan hazy-questing-peach. Executed and closed in session f0490ee640cf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-09T13:38:01.359021+00:00"
+  locked_by: "f0490ee640cf"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session f0490ee640cf.
+```
+
+
+### LEDGER-036 — jaunty-whistling-meteor
+
+```yaml
+ledger_entry_id: LEDGER-036
+mission_id: FF-PLAN-JAUNTY-WHISTLING-MET-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/jaunty-whistling-meteor.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan jaunty-whistling-meteor. Executed and closed in session 6aa05023e6ac.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-08T09:43:09.753649+00:00"
+  locked_by: "6aa05023e6ac"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 6aa05023e6ac.
+```
+
+
+### LEDGER-037 — kind-crunching-coral
+
+```yaml
+ledger_entry_id: LEDGER-037
+mission_id: FF-PLAN-KIND-CRUNCHING-CORAL-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/kind-crunching-coral.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan kind-crunching-coral. Executed and closed in session 93a9fa0ddc5b.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T18:28:35.529655+00:00"
+  locked_by: "93a9fa0ddc5b"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 93a9fa0ddc5b.
+```
+
+
+### LEDGER-038 — modular-noodling-galaxy
+
+```yaml
+ledger_entry_id: LEDGER-038
+mission_id: FF-PLAN-MODULAR-NOODLING-GAL-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/modular-noodling-galaxy.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan modular-noodling-galaxy. Executed and closed in session 6426627fe8ab.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T22:43:23.032569+00:00"
+  locked_by: "6426627fe8ab"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 6426627fe8ab.
+```
+
+
+### LEDGER-039 — mutable-doodling-blossom
+
+```yaml
+ledger_entry_id: LEDGER-039
+mission_id: FF-PLAN-MUTABLE-DOODLING-BLO-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/mutable-doodling-blossom.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan mutable-doodling-blossom. Executed and closed in session aebd0df25866.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-07T18:11:22.279746+00:00"
+  locked_by: "aebd0df25866"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session aebd0df25866.
+```
+
+
+### LEDGER-040 — new-plan
+
+```yaml
+ledger_entry_id: LEDGER-040
+mission_id: FF-PLAN-NEW-PLAN-001
+repository: format-factory
+branch: main
+plan_path: new-plan.md
+plan_status: COMPLETE
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan new-plan. Executed and closed in session c5d4c96a6edf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-06T14:19:13.529873+00:00"
+  locked_by: "c5d4c96a6edf"
+  lock_state: COMPLETE
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c5d4c96a6edf.
+```
+
+
+### LEDGER-041 — optimized-meandering-giraffe
+
+```yaml
+ledger_entry_id: LEDGER-041
+mission_id: FF-PLAN-OPTIMIZED-MEANDERING-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/optimized-meandering-giraffe.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan optimized-meandering-giraffe. Executed and closed in session 93a9fa0ddc5b.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T17:59:09.841933+00:00"
+  locked_by: "93a9fa0ddc5b"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 93a9fa0ddc5b.
+```
+
+
+### LEDGER-042 — parallel-foraging-fairy
+
+```yaml
+ledger_entry_id: LEDGER-042
+mission_id: FF-PLAN-PARALLEL-FORAGING-FA-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/parallel-foraging-fairy.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan parallel-foraging-fairy. Executed and closed in session f0490ee640cf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-09T11:05:04.291186+00:00"
+  locked_by: "f0490ee640cf"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session f0490ee640cf.
+```
+
+
+### LEDGER-043 — partitioned-chasing-puzzle
+
+```yaml
+ledger_entry_id: LEDGER-043
+mission_id: FF-PLAN-PARTITIONED-CHASING--001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/partitioned-chasing-puzzle.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan partitioned-chasing-puzzle. Executed and closed in session c5d4c96a6edf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-06T13:51:15.008833+00:00"
+  locked_by: "c5d4c96a6edf"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c5d4c96a6edf.
+```
+
+
+### LEDGER-044 — playful-giggling-island
+
+```yaml
+ledger_entry_id: LEDGER-044
+mission_id: FF-PLAN-PLAYFUL-GIGGLING-ISL-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/playful-giggling-island.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan playful-giggling-island. Executed and closed in session 6ccb0fc24c11.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-04T15:08:36.995225+00:00"
+  locked_by: "6ccb0fc24c11"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 6ccb0fc24c11.
+```
+
+
+### LEDGER-045 — precious-wandering-lighthouse
+
+```yaml
+ledger_entry_id: LEDGER-045
+mission_id: FF-PLAN-PRECIOUS-WANDERING-L-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/precious-wandering-lighthouse.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan precious-wandering-lighthouse. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T13:51:12.907415+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-046 — snazzy-rolling-feigenbaum
+
+```yaml
+ledger_entry_id: LEDGER-046
+mission_id: FF-PLAN-SNAZZY-ROLLING-FEIGE-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/snazzy-rolling-feigenbaum.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan snazzy-rolling-feigenbaum. Executed and closed in session c5d4c96a6edf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-06T14:58:57.507488+00:00"
+  locked_by: "c5d4c96a6edf"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c5d4c96a6edf.
+```
+
+
+### LEDGER-047 — splendid-roaming-beaver
+
+```yaml
+ledger_entry_id: LEDGER-047
+mission_id: FF-PLAN-SPLENDID-ROAMING-BEA-001
+repository: format-factory
+branch: main
+plan_path: plans/source-portfolios/ff-portfolio-41-prod-001/splendid-roaming-beaver.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan splendid-roaming-beaver. Executed and closed in session 9734aff6caf7.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T14:13:42.350323+00:00"
+  locked_by: "9734aff6caf7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 9734aff6caf7.
+```
+
+
+### LEDGER-048 — stateless-juggling-robin
+
+```yaml
+ledger_entry_id: LEDGER-048
+mission_id: FF-PLAN-STATELESS-JUGGLING-R-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/stateless-juggling-robin.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan stateless-juggling-robin. Executed and closed in session 425a70371d00.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-04T17:23:44.257029+00:00"
+  locked_by: "425a70371d00"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 425a70371d00.
+```
+
+
+### LEDGER-049 — streamed-jumping-oasis
+
+```yaml
+ledger_entry_id: LEDGER-049
+mission_id: FF-PLAN-STREAMED-JUMPING-OAS-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/streamed-jumping-oasis.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan streamed-jumping-oasis. Executed and closed in session 425a70371d00.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-04T17:27:20.498844+00:00"
+  locked_by: "425a70371d00"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 425a70371d00.
+```
+
+
+### LEDGER-050 — test-plan
+
+```yaml
+ledger_entry_id: LEDGER-050
+mission_id: FF-PLAN-TEST-PLAN-001
+repository: format-factory
+branch: main
+plan_path: test-plan.md
+plan_status: COMPLETE
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan test-plan. Executed and closed in session c5d4c96a6edf.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-06T14:19:13.255024+00:00"
+  locked_by: "c5d4c96a6edf"
+  lock_state: COMPLETE
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c5d4c96a6edf.
+```
+
+
+### LEDGER-051 — twinkly-coalescing-jellyfish
+
+```yaml
+ledger_entry_id: LEDGER-051
+mission_id: FF-PLAN-TWINKLY-COALESCING-J-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/twinkly-coalescing-jellyfish.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan twinkly-coalescing-jellyfish. Executed and closed in session aebd0df25866.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-07T17:35:00.523440+00:00"
+  locked_by: "aebd0df25866"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session aebd0df25866.
+```
+
+
+### LEDGER-052 — vast-splashing-allen
+
+```yaml
+ledger_entry_id: LEDGER-052
+mission_id: FF-PLAN-VAST-SPLASHING-ALLEN-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/vast-splashing-allen.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan vast-splashing-allen. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T12:45:03.697456+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-053 — vast-weaving-lampson
+
+```yaml
+ledger_entry_id: LEDGER-053
+mission_id: FF-PLAN-VAST-WEAVING-LAMPSON-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/vast-weaving-lampson.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan vast-weaving-lampson. Executed and closed in session 033f6a1ae2f3.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-10T09:28:16.428901+00:00"
+  locked_by: "033f6a1ae2f3"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 033f6a1ae2f3.
+```
+
+
+### LEDGER-054 — vast-wibbling-moon
+
+```yaml
+ledger_entry_id: LEDGER-054
+mission_id: FF-PLAN-VAST-WIBBLING-MOON-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/vast-wibbling-moon.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan vast-wibbling-moon. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T15:07:47.628224+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-055 — velvet-swinging-wreath
+
+```yaml
+ledger_entry_id: LEDGER-055
+mission_id: FF-PLAN-VELVET-SWINGING-WREA-001
+repository: format-factory
+branch: main
+plan_path: plans/source-portfolios/ff-portfolio-41-prod-001/velvet-swinging-wreath.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan velvet-swinging-wreath. Executed and closed in session 9734aff6caf7.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T13:45:06.474790+00:00"
+  locked_by: "9734aff6caf7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 9734aff6caf7.
+```
+
+
+### LEDGER-056 — warm-enchanting-grove
+
+```yaml
+ledger_entry_id: LEDGER-056
+mission_id: FF-PLAN-WARM-ENCHANTING-GROV-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/warm-enchanting-grove.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan warm-enchanting-grove. Executed and closed in session c0d42e113626.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-13T14:08:35.150755+00:00"
+  locked_by: "c0d42e113626"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session c0d42e113626.
+```
+
+
+### LEDGER-057 — wild-napping-cherny
+
+```yaml
+ledger_entry_id: LEDGER-057
+mission_id: FF-PLAN-WILD-NAPPING-CHERNY-001
+repository: format-factory
+branch: main
+plan_path: plans/.claude/wild-napping-cherny.md
+plan_status: TERMINAL_CLOSED
+created_at: "2026-07-14"
+created_by: autonomous-agent
+plan_description: >
+  Prior-session plan wild-napping-cherny. Executed and closed in session 93a9fa0ddc5b.
+  Ledger entry backfilled by PG-3 governance repair.
+terminal_lock:
+  locked_at: "2026-07-12T18:42:06.582928+00:00"
+  locked_by: "93a9fa0ddc5b"
+  lock_state: TERMINAL_CLOSED
+final_verdict: TERMINAL
+notes: >
+  Backfill entry added by TC-PG3-REPAIR-2026-07-14. Plan was executed and closed
+  in session 93a9fa0ddc5b.
+```
