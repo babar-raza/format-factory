@@ -753,6 +753,35 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /capability-compiler
+  command_file: .claude/commands/capability-compiler.md
+  created_at: '2026-07-14'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/capability_compiler.py
+  mission_id: TC-EXT-009
+  notes: Resolves SKILL-GAP-003. Pipeline tool, not a user-invoked slash command —
+    invoked automatically every sprint by tools/supervisor/capability_queue_consumer.py
+    (called from autonomous_cycle.py Step 2h). Registered here so it is a formal,
+    routed, tracked skill rather than an ungoverned pipeline component. Distinct
+    from tools/capability_layer/capability_compiler.py (Layer L03, different tool,
+    naming collision only — see plans/layers/decision-register.yaml).
+  output_paths:
+  - .local/capability-consumer/taskcards/
+  purpose: Compile capability gap records into feature IRs, executable taskcards,
+    and supporting obligation/graph/gate-readiness artifacts (compiler phases 0,
+    1, 2, 3, 3.5, 6, 7, 8).
+  skill_id: capability-compiler
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  product_track: infrastructure
+  mandatory_validations:
+  - no_product_source_mutation
+  required_handoff_fields:
+  - gap_record
+  - output_dir
 - command: /check-gate
   command_file: .claude/commands/check-gate.md
   idempotency: not_applicable
