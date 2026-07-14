@@ -1,16 +1,215 @@
-schema_version: "1.0"
+schema_version: "2.0"
 description: >
-  V87 whitelist: public Get* methods that unconditionally return a constant literal
-  but are architecturally intentional (not semantic stubs). V87 skips these entries.
-  Add entries as FULLY_QUALIFIED_NAMESPACE.ClassName.MethodName or bare MethodName.
+  Governance whitelist for V87 (constant-return public APIs), V90 (setter without
+  XML write), and V91 (getter without XML read). Entries are grandfathered violations
+  from before V87/V90/V91 became blocking. New violations must be implemented from
+  ODF XML or justified before being added here.
+  Schema 2.0: each entry is a structured record with governance fields:
+    method: FULLY_QUALIFIED_NAMESPACE.ClassName.MethodName
+    approved_by: who approved the exception (or "pre-existing-grandfathered")
+    approved_date: ISO-8601 date
+    review_due: ISO-8601 date (V_WHITELIST_EXPIRY fires WARN 30 days before, FAIL after)
+    removal_condition: when the entry can be removed
   All entries require a justification comment.
 
 known_constant_return_ok:
   # FodsDocument property defaults — init-only / schema-defined constants, not APIs.
   # These are properties or methods where a constant is the correct architectural answer.
   #
-  # (None at this time — the whitelist is empty intentionally to enforce strict review.
-  # Add here only when a constant return is architecturally proven and reviewed.)
+  # Grandfathered violations (TC-FGSQ-004, 2026-07-11): enumerated from HEAD before
+  # V87 was made blocking for all declaration types. Future constant-return methods
+  # must either be architecturally justified here or be implemented from ODF XML.
 
-  # Example format:
-  # - "FormatFactory.Fods.FodsDocument.SomeMethod"  # justification: ...
+  - method: "FormatFactory.Fods.FodsDocument.GetPrintAreaCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement XML path via table:print-range or replace with NotSupportedException"
+    # GetPrintAreaCount: ODF does not have a native count attribute for print areas;
+    # the current implementation returns 0 as a known architectural placeholder.
+    # GAP-NET-XG-012 tracks future implementation.
+
+known_setter_without_xml_write_ok:
+  # Grandfathered V90 violations (TC-FGSQ-005, 2026-07-11): enumerated from HEAD
+  # before V90 was made blocking. These setters write only to in-memory dicts;
+  # future sprints must wire them to ODF XML persistence.
+
+  - method: "FormatFactory.Fods.FodsDocument.SetSheetProtectionPassword"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:table-protection/@table:protection-key write path"
+    # TC-FGSQ-003/NET-003
+
+  - method: "FormatFactory.Fods.FodsDocument.SetNamedRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:named-expressions/table:named-range write path"
+    # TC-FGSQ-011 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.SetSheetProtection"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:table-protection write path"
+    # TC-FGSQ-003/NET-003
+
+known_getter_without_xml_read_ok:
+  # Grandfathered V91 violations (TC-FGSQ-005, 2026-07-11): enumerated from HEAD
+  # before V91 was made blocking. These getters read only from in-memory dicts;
+  # future sprints must wire them to ODF XML reads.
+
+  - method: "FormatFactory.Fods.FodsDocument.GetSheetProtectionPassword"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:table-protection/@table:protection-key read path"
+    # TC-FGSQ-003/NET-003
+
+  - method: "FormatFactory.Fods.FodsDocument.GetCommentCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "wire via office:annotation element count from ODF XML"
+    # wired via _cellComments
+
+  - method: "FormatFactory.Fods.FodsDocument.GetConditionalFormatCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement calcext:conditional-formats count from ODF XML (TC-FGSQ-013-02)"
+    # TC-FGSQ-013-02 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetConditionalFormatRule"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement calcext:condition rule read from ODF XML (TC-FGSQ-013-02)"
+    # TC-FGSQ-013-02 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetDataValidationCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:content-validation count read from ODF XML (TC-FGSQ-013-04)"
+    # TC-FGSQ-013-04 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetDataValidationRule"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:content-validation rule read from ODF XML (TC-FGSQ-013-04)"
+    # TC-FGSQ-013-04 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetHyperlinkCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement text:a hyperlink count read from ODF XML (TC-FGSQ-013-05)"
+    # TC-FGSQ-013-05 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetHyperlinkUrl"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement text:a/@xlink:href read from ODF XML (TC-FGSQ-013-05)"
+    # TC-FGSQ-013-05 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetPivotTableName"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:data-pilot-table/@table:name read or NotSupportedException (TC-FGSQ-013-03)"
+    # TC-FGSQ-013-03 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetPivotTableSourceRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:data-pilot-table source range read or NotSupportedException (TC-FGSQ-013-03)"
+    # TC-FGSQ-013-03 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetPivotTableCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:data-pilot-table count or NotSupportedException (TC-FGSQ-013-03)"
+    # TC-FGSQ-013-03 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetSparklineType"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement chart:chart sparkline type read or NotSupportedException (TC-FGSQ-013-03)"
+    # TC-FGSQ-013-03 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetSparklineCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement chart:chart sparkline count or NotSupportedException (TC-FGSQ-013-03)"
+    # TC-FGSQ-013-03 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetNamedRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:named-expressions/table:named-range read from ODF XML (TC-FGSQ-013-07)"
+    # TC-FGSQ-013-07 tracks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetAutoFilterRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:database-range/@table:target-range-address read from ODF XML"
+    # dict-backed auto-filter
+
+  - method: "FormatFactory.Fods.FodsDocument.GetFilterCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:database-range filter count read from ODF XML"
+    # dict-backed filter
+
+  - method: "FormatFactory.Fods.FodsDocument.GetFilterRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:database-range filter range read from ODF XML"
+    # dict-backed filter
+
+  - method: "FormatFactory.Fods.FodsDocument.GetFilterColumn"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:filter/@table:field-number read from ODF XML"
+    # dict-backed filter
+
+  - method: "FormatFactory.Fods.FodsDocument.GetPageBreakCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:table-row/@fo:break-before count read from ODF XML"
+    # dict-backed page breaks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetPageBreakRow"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:table-row/@fo:break-before row index read from ODF XML"
+    # dict-backed page breaks
+
+  - method: "FormatFactory.Fods.FodsDocument.GetGroupCount"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:row-group count read from ODF XML"
+    # dict-backed groups
+
+  - method: "FormatFactory.Fods.FodsDocument.GetGroupRange"
+    approved_by: "pre-existing-grandfathered"
+    approved_date: "2026-07-11"
+    review_due: "2027-01-11"
+    removal_condition: "implement table:row-group range read from ODF XML"
+    # dict-backed groups

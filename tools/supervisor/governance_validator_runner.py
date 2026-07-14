@@ -128,7 +128,7 @@ def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[di
 
 
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 210  # +5: V_CERT_01-V_CERT_05 (TC-007 precious-wandering-lighthouse, 2026-07-13)
+_EXPECTED_VALIDATOR_COUNT = 216  # +6: V150-V151,V154-V157 (CT-GOV-002, memoized-frolicking-donut TC-GOV-015, 2026-07-14)
 
 
 def get_expected_validator_count() -> int:
@@ -980,6 +980,28 @@ def run_all_governance_validators(
         ])
     except Exception as _exc_v_cert:
         _skipped_validators.append({"validators": ["V_CERT_01", "V_CERT_02", "V_CERT_03", "V_CERT_04", "V_CERT_05"], "error": str(_exc_v_cert)})
+
+    # V150-V151, V154-V157 (CT-GOV-002, memoized-frolicking-donut TC-GOV-015, 2026-07-14):
+    # product governance chain validators — CP/CI/RC lifecycle enforcement
+    try:
+        from governance_validators_product_gov import (  # noqa: PLC0415
+            validate_governed_artifact_pre_flight as _v150,
+            validate_change_proposal_coverage as _v151,
+            validate_impact_analysis_on_accepted_proposals as _v154,
+            validate_release_candidate_decision_chain as _v155,
+            validate_governance_counter_report_fresh as _v156,
+            validate_governance_binding_paths as _v157,
+        )
+        results.extend([
+            _v150(declaration, repo_root),
+            _v151(declaration, repo_root),
+            _v154(declaration, repo_root),
+            _v155(declaration, repo_root),
+            _v156(declaration, repo_root),
+            _v157(declaration, repo_root),
+        ])
+    except Exception as _exc_v150:
+        _skipped_validators.append({"validators": ["V150", "V151", "V154", "V155", "V156", "V157"], "error": str(_exc_v150)})
 
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each

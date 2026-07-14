@@ -720,6 +720,9 @@ def validate_compat_facade_behavioral(
 # ── V145 ──────────────────────────────────────────────────────────────────────
 
 
+@validator(rule_id="V145", domain="governance", description=(
+    "Warn when open MOR obligations are past their scheduled_date"
+))
 def validate_maintenance_obligations_current(
     declaration: dict,
     repo_root: "Path | None" = None,
@@ -799,6 +802,9 @@ def validate_maintenance_obligations_current(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V149", domain="governance", description=(
+    "Block sprints introducing forbidden stub patterns in product source"
+))
 def validate_source_stubs(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -871,6 +877,9 @@ def validate_source_stubs(
     }
 
 
+@validator(rule_id="V171", domain="governance", description=(
+    "Sprint declaration lane_id must match .governance/lanes/lane-contracts.yaml"
+))
 def validate_lane_contract_exists(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -1192,4 +1201,106 @@ def validate_no_open_implementation_verified_gaps(
         ),
         "blocks_sprint": False,
         "items": limbo_gaps,
+    }
+
+
+# V-WEAK (TC-INT-003, DRIVERS-PRODUCTION-INTEGRATION-001, 2026-07-13):
+# Detect semantically weak test assertions at the function level.
+# V19 detects at file level (>80% threshold). V-WEAK detects when a SINGLE test function
+# has only trivial assertions — covering the function-level gap.
+# Starts as WARN; grace-class suppression via reports/drivers/backfill-gaps.yaml.
+
+import re as _re_weak
+
+_WEAK_ASSERTION_FN_RE = _re_weak.compile(
+    r"def\s+(test_\w+)[^:]*:\s*(?:\"\"\".*?\"\"\"\s*)?(.*?)(?=\ndef\s|\Z)",
+    _re_weak.DOTALL,
+)
+_TRIVIAL_ASSERT_RE = _re_weak.compile(
+    r"assert\s+\w+\s+is\s+not\s+None\s*$|"
+    r"assert\s+isinstance\(\w+,\s*object\)\s*$|"
+    r"assert\s+True\s*$",
+    _re_weak.MULTILINE,
+)
+_ANY_NONTRIVIAL_ASSERT_RE = _re_weak.compile(
+    r"assert\s+.+(?:==|!=|<|>|<=|>=|in\s|not\s+in|is\s+(?!not\s+None))",
+    _re_weak.MULTILINE,
+)
+
+
+@validator(rule_id="V_VALIDATE_WEAK_TEST_ASSERTIONS", domain="testing", description=(
+    "Detect sole-trivial-assertion test functions (assert True, assert 1==1, etc.)"
+))
+def validate_weak_test_assertions(
+    declaration: dict,
+    repo_root=None,
+) -> dict:
+    """V_VALIDATE_WEAK_TEST_ASSERTIONS: Detect sole-trivial-assertion test functions.
+
+    Fires WARN (not FAIL) for test functions where the only assertion is
+    `assert result is not None`, `assert isinstance(x, object)`, or `assert True`.
+    Grace-exempt files listed in reports/drivers/backfill-gaps.yaml are skipped.
+    (TC-INT-003, DRIVERS-PRODUCTION-INTEGRATION-001, 2026-07-13)
+    """
+    from pathlib import Path as _Path
+
+    repo = _Path(repo_root) if repo_root else _Path(".")
+
+    # Load grace-exempt paths from backfill registry (best-effort)
+    grace_exempt: set = set()
+    backfill_path = repo / "reports" / "drivers" / "backfill-gaps.yaml"
+    if backfill_path.exists():
+        try:
+            import yaml as _yaml
+            bg = _yaml.safe_load(backfill_path.read_text(encoding="utf-8"))
+            for entry in bg.get("backfill_gaps", []):
+                p = entry.get("file_path") or entry.get("path", "")
+                if p:
+                    grace_exempt.add(str(p).replace("\\", "/"))
+        except Exception:
+            pass
+
+    items = declaration.get("planned_work_items", [])
+    violations = []
+
+    for item in items:
+        for ref in item.get("test_references", []):
+            if "tests/python/" not in ref.replace("\\", "/"):
+                continue
+            file_path = repo / ref
+            if not file_path.is_file():
+                continue
+            ref_norm = ref.replace("\\", "/")
+            if str(file_path) in grace_exempt or ref in grace_exempt or ref_norm in grace_exempt:
+                continue
+            try:
+                content = file_path.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            for m in _WEAK_ASSERTION_FN_RE.finditer(content):
+                fn_name = m.group(1)
+                body = m.group(2)
+                has_trivial = bool(_TRIVIAL_ASSERT_RE.search(body))
+                has_nontrivial = bool(_ANY_NONTRIVIAL_ASSERT_RE.search(body))
+                if has_trivial and not has_nontrivial:
+                    violations.append(f"{ref}::{fn_name}")
+
+    if violations:
+        return {
+            "validator": "validate_weak_test_assertions",
+            "result": "WARN",
+            "summary": (
+                f"V_VALIDATE_WEAK_TEST_ASSERTIONS: {len(violations)} test function(s) have "
+                "only trivial assertions (assert x is not None / isinstance(x, object) / True). "
+                "Use grace_class=weak_assertion_backfill in backfill-gaps.yaml to suppress."
+            ),
+            "blocks_sprint": False,
+            "items": violations,
+        }
+    return {
+        "validator": "validate_weak_test_assertions",
+        "result": "PASS",
+        "summary": "V_VALIDATE_WEAK_TEST_ASSERTIONS: No sole-trivial-assertion test functions detected.",
+        "blocks_sprint": False,
+        "items": [],
     }

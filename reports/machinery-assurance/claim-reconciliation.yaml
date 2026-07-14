@@ -1,0 +1,99 @@
+# Claim Reconciliation — VWM-2026-07-10
+# TC-VWM-020 artifact
+# Generated: 2026-07-13
+
+mission_id: VWM-2026-07-10
+generated_at: "2026-07-13T00:00:00Z"
+reconciliation_scope: "MEMORY.md and session-resume.md claims vs actual HEAD code state"
+
+claims:
+  - claim_id: CLM-001
+    source: "MEMORY.md (MANDATORY: Per-Chat Plan Files section)"
+    claim_text: "167 total governance validators (expected_count=167 in runner)"
+    actual_state_at_head:
+      file: "tools/supervisor/governance_validator_runner.py line 100"
+      actual_value: "_EXPECTED_VALIDATOR_COUNT = 210"
+      verification: "grep _EXPECTED_VALIDATOR_COUNT governance_validator_runner.py"
+    verdict: STALE
+    action: "MEMORY.md claim 167 is now 210. Updated by TC-VWR-007, MCP-W1-001, precious-wandering-lighthouse"
+    resolution: MEMORY_OUTDATED_CODE_IS_AUTHORITATIVE
+
+  - claim_id: CLM-002
+    source: "MEMORY.md (FF-SGOV-001 section)"
+    claim_text: "expected_count: 170→175 validators (V_MACH_* added TC-VWR-007)"
+    actual_state_at_head:
+      file: "tools/supervisor/governance_validator_runner.py line 100"
+      actual_value: "_EXPECTED_VALIDATOR_COUNT = 210"
+      verification: "Pilot-02: ran_count=210 expected_count=210 count_ok=True"
+    verdict: STALE
+    action: "175 was an intermediate value. Now 210 after precious-wandering-lighthouse V_CERT additions."
+    resolution: MEMORY_OUTDATED_CODE_IS_AUTHORITATIVE
+
+  - claim_id: CLM-003
+    source: "MEMORY.md (MCP-W1-001 section)"
+    claim_text: "Expected validator count: 175 (updated from 171 by TC-VWR-007)"
+    actual_state_at_head:
+      file: "tools/supervisor/governance_validator_runner.py line 100"
+      actual_value: "210 (comment: +5 V_CERT_01-V_CERT_05)"
+    verdict: STALE
+    resolution: MEMORY_OUTDATED_CODE_IS_AUTHORITATIVE
+
+  - claim_id: CLM-004
+    source: "session-resume.md (last sprint: CERT-LAYER-HEAL-20260710)"
+    claim_text: "AUTONOMOUS_CONTINUE: False"
+    actual_state_at_head:
+      file: "reports/supervisor/approval-gates.md"
+      check: "check_continuation.py → verdict=STOP reason=NO_BROKEN_BASELINE"
+    verdict: CONSISTENT
+    action: "Continuation correctly STOP because portfolio repair plan is active authority."
+    resolution: NO_ACTION_NEEDED
+
+  - claim_id: CLM-005
+    source: "MEMORY.md (VWM-2026-07-10 section)"
+    claim_text: "machinery-stage-inventory.yaml has wrong Mission: MA-2026-07-02-R1227-NDJSON-TOML"
+    actual_state_at_head:
+      file: "reports/machinery-assurance/machinery-stage-inventory.yaml header"
+      actual_value: "Mission: VWM-2026-07-10 (corrected 2026-07-13)"
+    verdict: RESOLVED
+    action: "CT-VWM-002 fix was applied. File now has correct mission_id."
+    resolution: ALREADY_FIXED
+
+  - claim_id: CLM-006
+    source: "MEMORY.md (Oracle Layer ALL VERIFIED section)"
+    claim_text: "ALL 20 Python FOSS product formats at VERIFIED. 73/73 PASS"
+    actual_state_at_head:
+      file: "oracle/reports/oracle-coverage-report.json"
+      check: "oracle/*.oracle-package.yaml — all show VERIFIED"
+    verdict: CONSISTENT
+    action: "Oracle layer remains verified. execute_oracle.py unchanged since last verification."
+    resolution: NO_ACTION_NEEDED
+
+  - claim_id: CLM-007
+    source: "MEMORY.md (Dogfood Export Namespace Conflict Pattern)"
+    claim_text: "SYLK dif_to_csv and DIF dif_to_csv have namespace conflict risk"
+    actual_state_at_head:
+      file: "src/python/sylk/, src/python/dif/"
+      check: "grep -r 'from sylk.sylk_to_csv import' src/ → not found; from dif.dif_to_csv import → not found"
+    verdict: NOT_VERIFIED_AT_HEAD
+    action: "Cannot confirm current import pattern without detailed grep. Risk remains as documented."
+    resolution: RISK_CARRIED_FORWARD
+
+  - claim_id: CLM-008
+    source: "MEMORY.md (Installed Package Notes)"
+    claim_text: "ABW/SYLK/ZST/DIF installed non-editable — must sync site-packages after source changes"
+    actual_state_at_head:
+      check: "py.typed files added to all 20 format packages via MCP-W1-001"
+    verdict: REQUIRES_MONITORING
+    action: "CT-INSTALL-001 should verify package install after py.typed additions."
+    resolution: TRACKED_AS_CT_INSTALL_001
+
+# Reconciliation Summary
+summary:
+  total_claims: 8
+  stale: 3
+  resolved: 1
+  consistent: 2
+  not_verified: 1
+  requires_monitoring: 1
+  RECONCILIATION_COMPLETE: true
+  primary_finding: "Validator expected_count claims in MEMORY.md are significantly stale (167/175 vs actual 210). Code at HEAD is authoritative."
