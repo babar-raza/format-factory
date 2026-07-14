@@ -2840,3 +2840,77 @@ formats:
 
     '
   gates: {}
+- format_id: ipynb
+  display_name: Jupyter Notebook
+  family: data
+  extensions:
+  - .ipynb
+  mime_type: application/x-ipynb+json
+  spec_body: Jupyter Project
+  spec_version: nbformat v4.5
+  spec_url: https://nbformat.readthedocs.io/en/latest/format_description.html
+  legal_category: 2
+  implementation_authorized: false
+  gates: {}
+- format_id: safetensors
+  display_name: SafeTensors
+  family: ai
+  extensions:
+  - .safetensors
+  mime_type: application/octet-stream
+  spec_body: Hugging Face
+  spec_version: v0.4
+  spec_url: https://huggingface.co/docs/safetensors/
+  legal_category: 2
+  implementation_authorized: false
+  gates: {}
+- format_id: xliff
+  display_name: XLIFF (XML Localisation Interchange File Format)
+  family: localization
+  extensions:
+  - .xliff
+  - .xlf
+  mime_type: application/xliff+xml
+  spec_body: OASIS
+  spec_version: XLIFF 2.1
+  spec_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  legal_category: 1
+  implementation_authorized: false
+  gates: {}
+- format_id: nrrd
+  display_name: Nearly Raw Raster Data
+  family: scientific
+  extensions:
+  - .nrrd
+  - .nhdr
+  mime_type: application/x-nrrd
+  spec_body: Teem Project
+  spec_version: NRRD0005
+  spec_url: https://teem.sourceforge.net/nrrd/format.html
+  legal_category: 2
+  implementation_authorized: false
+  gates: {}
+- format_id: ubl
+  display_name: OASIS Universal Business Language
+  family: business
+  extensions:
+  - .xml
+  mime_type: application/xml
+  spec_body: OASIS
+  spec_version: UBL 2.3
+  spec_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
+  legal_category: 1
+  implementation_authorized: false
+  gates: {}
+- format_id: mtlx
+  display_name: MaterialX
+  family: 3d
+  extensions:
+  - .mtlx
+  mime_type: application/xml
+  spec_body: Academy Software Foundation
+  spec_version: MaterialX v1.39
+  spec_url: https://materialx.org/Specification.html
+  legal_category: 2
+  implementation_authorized: false
+  gates: {}

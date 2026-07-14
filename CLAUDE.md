@@ -190,9 +190,13 @@ Gate 11 execution approval by Babar Raza, package publication credentials).
 ### GOV_BLOCK Exception (BINDING — overrides Supreme Directive for structural failures)
 
 `GOV_BLOCK:monolith_detection_validator`, `GOV_BLOCK:validate_source_architecture`,
-`GOV_BLOCK:validate_multi_responsibility_file`, and `GOV_BLOCK:validate_analytics_naming_enforced`
+`GOV_BLOCK:validate_multi_responsibility_file`, `GOV_BLOCK:validate_analytics_naming_enforced`,
+`GOV_BLOCK:validate_source_stubs`, and `GOV_BLOCK:validate_promoted_code_changed_without_reopening`
 are **structural failures**, not transient closeout failures. The Supreme Directive "log exit 3 and
-proceed" does NOT apply to these validators.
+proceed" does NOT apply to these validators. This list is canonically sourced from
+`tools/supervisor/governance_block_registry.py`'s `STRUCTURAL_GOV_BLOCKS` — that module is the
+single source of truth; if the two ever diverge again, `governance_block_registry.py` wins and
+this text must be reconciled to match it (do not edit `STRUCTURAL_GOV_BLOCKS` to match stale text).
 
 When `rework_items` in the continuation signal contains any item matching one of these validators:
 
@@ -203,9 +207,15 @@ When `rework_items` in the continuation signal contains any item matching one of
    product deepening resume
 4. `check_continuation.py` will return STOP with `reason: structural_govblock_must_be_resolved_first`
    as the machine-enforceable gate
+5. `tools/supervisor/sprint_executor.py`'s `_is_structural_govblock_stop()` and
+   `.claude/commands/autonomous-loop.md`'s Step 1 NON-OVERRIDABLE STOP-reason list both
+   recognize this reason as non-overridable — neither actuator may silently proceed past it
+   (TC-EXT-010)
+6. A registered skill, `/pre-sprint-governance-hook`, documents this carve-out (it wraps the
+   existing Check 8 + `governance_block_registry.py` detection — it does not reimplement it)
 
 This is NOT a TRUE_EXTERNAL_GATE — the agent CAN resolve it by running the analytics
-separation sprint. This scope is intentionally narrow (four named validators) to avoid
+separation sprint. This scope is intentionally narrow (six named validators) to avoid
 blocking on unrelated governance failures.
 
 **Production Library Standard v2:** All governance validators enforce the standard at

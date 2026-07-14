@@ -397,3 +397,175 @@ decisions:
       L28 consumes L05/L06/L07 outputs and produces portfolio-certification-matrix.json.
     evidence: ["reports/certification/portfolio-certification-matrix.json", "plans/layers/certification-audit-layer.md"]
     decider: "lively-drifting-starfish plan (CERT-INTEGRATION-HEALING-20260628)"
+
+  - decision_id: DEC-030
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Confirm tools/supervisor/capability_compiler.py as the canonical L14 skill-registered compiler"
+    candidate_slug: capability-compiler
+    decision: CONFIRM_CANONICAL
+    layer_id: L14
+    file_path: tools/supervisor/capability_compiler.py
+    rationale: >
+      521-line executable implementation of compiler phases 0, 1, 2, 3, 3.5, 6, 7, 8
+      (gap -> feature IR -> taskcard + obligation/graph/gate-readiness matrices).
+      Registered as skill_id capability-compiler (TC-EXT-009-01) and routed
+      (TC-EXT-009-02), resolving SKILL-GAP-003. No logic change made — registration
+      only, per taskcard scope.
+    evidence: ["tools/supervisor/capability_compiler.py", ".claude/commands/capability-compiler.md"]
+    decider: "TC-EXT-009 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-031
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Retire tools/supervisor/capability_to_feature_compiler.py (pure alias/shim)"
+    candidate_slug: capability-to-feature-compiler-supervisor-alias
+    decision: RETIRE
+    layer_id: L14
+    file_path: tools/supervisor/capability_to_feature_compiler.py
+    disposition: retired_pure_alias
+    rationale: >
+      5-line file: `from capability_compiler import *` plus one explicit re-export
+      of compile_gap. Its own comment states it exists only because "the expected
+      filename is capability_to_feature_compiler.py" and "the full implementation
+      lives in capability_compiler.py". No independent logic. No other module in
+      tools/ or .supervisor/ imports it (verified via grep; only reference outside
+      itself is a tracking entry in .supervisor/ad-hoc-execution-inventory.yaml).
+      Superseded by the now-registered tools/supervisor/capability_compiler.py.
+      File left on disk (no deletion performed) but marked retired — do not extend it.
+    evidence: ["tools/supervisor/capability_to_feature_compiler.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-032
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Retire tools/capability_layer/capability_to_feature_compiler.py (self-declared superseded planning stub)"
+    candidate_slug: capability-to-feature-compiler-capability-layer-stub
+    decision: RETIRE
+    layer_id: L03
+    file_path: tools/capability_layer/capability_to_feature_compiler.py
+    disposition: retired_self_declared_superseded
+    rationale: >
+      Own docstring (DEDUPLICATION NOTICE, TC-LA-007, 2026-06-26) explicitly states:
+      "This is the PLANNING tool — it generates advisory YAML stub files for human
+      review. It is NOT the pipeline integration," and names
+      tools/supervisor/capability_feature_compiler.py as the CANONICAL PIPELINE
+      implementation. Output (per-gap YAML stubs under
+      reports/capability-layer/taskcard-stubs/) is advisory-only
+      (status: "backlog", requires_human_confirmation: true). Confirmed via reading
+      the file directly — the self-declaration matches the code's actual behavior.
+    evidence: ["tools/capability_layer/capability_to_feature_compiler.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-033
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Retire tools/supervisor/gap_ledger_to_work_items.py (self-declared not wired into pipeline)"
+    candidate_slug: gap-ledger-to-work-items
+    decision: RETIRE
+    layer_id: L14
+    file_path: tools/supervisor/gap_ledger_to_work_items.py
+    disposition: retired_self_declared_standalone
+    rationale: >
+      Own docstring (TC-ORPHAN-RESOLVE-001) explicitly states: "Standalone CLI tool
+      (NOT imported by supervisor pipeline)... For supervisor integration, use
+      capability_feature_compiler.py (the active compiler, called from
+      autonomous_cycle.py:1481). This file's gap->work_item logic is duplicated
+      there." Confirmed no importer exists anywhere in tools/ or .supervisor/
+      (verified via grep). Confirmed the self-declaration matches actual behavior.
+    evidence: ["tools/supervisor/gap_ledger_to_work_items.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-034
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Mark tools/feature_compiler/gap_to_work_item.py reference-only (smaller parallel implementation, unwired)"
+    candidate_slug: feature-compiler-gap-to-work-item
+    decision: REFERENCE_ONLY
+    layer_id: L14
+    file_path: tools/feature_compiler/gap_to_work_item.py
+    disposition: reference_only_not_wired
+    rationale: >
+      Phase 1 gap-ledger-driven work item generator (TC-FEATURE-COMPILER-001).
+      Filters gaps by format maturity >= P3 and severity >= MEDIUM, emits top 10
+      items to reports/feature-pipeline/derived-work-items.yaml. Verified via grep
+      that no other module in tools/, .supervisor/, or .claude/ imports it — it has
+      no live callers and is not invoked from autonomous_cycle.py or any sprint
+      pipeline. Not identical logic to capability_compiler.py or
+      capability_feature_compiler.py (different scoring/filtering rules, different
+      output format), so not a pure duplicate — but it is orphaned. Kept on disk as
+      reference only; not retired outright because its filtering approach may be
+      useful design reference for future Lane-3 batch-compilation work (out of
+      scope for this taskcard).
+    evidence: ["tools/feature_compiler/gap_to_work_item.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-035
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Keep tools/supervisor/capability_feature_compiler.py — distinct, actively-used pipeline"
+    candidate_slug: capability-feature-compiler
+    decision: KEEP_DISTINCT
+    layer_id: L14
+    file_path: tools/supervisor/capability_feature_compiler.py
+    disposition: distinct_keep
+    rationale: >
+      Genuinely different, still-used pipeline — NOT a duplicate of
+      capability_compiler.py. Implements docs/code-quality/capability-feature-compiler-spec.md
+      (TC-CAPABILITY-REPAIR-001/002). Exposes compile_gaps(), which is imported
+      directly in tools/supervisor/autonomous_cycle.py (Step "4a-compiler",
+      TC-PROD-H-010) and merges gap-ledger-sourced items into
+      next_work["gap_sourced_items"] with work_selection_mode
+      CAPABILITY_COMPILER_MERGED/EXPANSION_GOAL_FALLBACK. This is a separate live
+      call site from capability_queue_consumer.py's Step 2h use of
+      capability_compiler.py. Both are real, both run every sprint, for different
+      purposes (next-work-items merging vs. gap-to-taskcard compilation). Verified
+      by reading autonomous_cycle.py directly (import at the "4a-compiler" step).
+      Do not retire; do not merge into capability_compiler.py without a separate,
+      explicitly-scoped taskcard.
+    evidence: ["tools/supervisor/capability_feature_compiler.py", "tools/supervisor/autonomous_cycle.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-036
+    timestamp: "2026-07-14T00:00:00Z"
+    title: "Confirm tools/capability_layer/capability_compiler.py is L03's, not L14's — naming collision only, with a flagged shadowing risk"
+    candidate_slug: capability-layer-capability-compiler
+    decision: CONFIRM_DISTINCT_L03_NOT_L14
+    layer_id: L03
+    file_path: tools/capability_layer/capability_compiler.py
+    disposition: distinct_do_not_touch
+    rationale: >
+      662-line file with a different docstring, different implementation, and a
+      different purpose: "SAL/obligation-driven capability compiler... implements
+      the CORRECT authority chain: SAL/spec facts -> obligations -> capability
+      requirements -> evidence -> state... replaces poc-targets.yaml as the PRIMARY
+      capability driver." This is Layer L03 (capability derivation), not L14
+      (feature compilation). Confirmed via `diff` against
+      tools/supervisor/capability_compiler.py: only the docstring's opening line and
+      a handful of import lines match; function bodies, CLI args, and output schema
+      are unrelated. Invoked separately from autonomous_cycle.py at step
+      "TC-CL-003-05" as a subprocess producing sal-driven-capability-map.json.
+      NOT touched or retired per taskcard instruction.
+
+      IMPORTANT FLAGGED FINDING (out of scope to fix here, recorded for follow-on):
+      tools/supervisor/capability_queue_consumer.py resolves its
+      `from capability_compiler import ...` statement to THIS L03 file at runtime,
+      not to tools/supervisor/capability_compiler.py — because it inserts
+      `tools/capability_layer` at sys.path index 0 (line 42, comment "TC-CAP-011:
+      capability_compiler is in tools/capability_layer, not tools/supervisor"),
+      ahead of tools/supervisor. Verified live: running
+      `python -c "import sys; sys.path.insert(0,'tools/supervisor');
+      sys.path.insert(0,'tools/capability_layer'); import capability_compiler as cc;
+      print(cc.__file__)"` resolves to tools/capability_layer/capability_compiler.py,
+      and a live `capability_queue_consumer.py` run compiles taskcards using L03's
+      compile_gap_to_feature_ir/compile_feature_ir_to_taskcard functions (both
+      files happen to define same-named functions with compatible signatures, which
+      is why the pipeline has been silently working despite importing the "wrong"
+      module). This means the skill just registered in TC-EXT-009-01
+      (tools/supervisor/capability_compiler.py) is NOT actually the module executed
+      by the automatic Step 2h pipeline today — tools/capability_layer/capability_compiler.py
+      is. This is a pre-existing latent bug, not introduced by this taskcard, and
+      fixing the sys.path shadowing would be a logic change to
+      capability_queue_consumer.py, which is outside this taskcard's Allowed files
+      list ("registration only, no logic change required"). Recommend a dedicated
+      follow-on taskcard to either (a) fix the import shadowing so
+      tools/supervisor/capability_compiler.py is actually invoked, or (b)
+      re-designate tools/capability_layer/capability_compiler.py's relevant
+      functions as the registered skill instead, after confirming which behavior is
+      intended.
+    evidence: ["tools/capability_layer/capability_compiler.py", "tools/supervisor/capability_queue_consumer.py"]
+    decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"

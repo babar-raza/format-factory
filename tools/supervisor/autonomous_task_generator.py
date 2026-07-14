@@ -1507,6 +1507,91 @@ def _load_gap_ledger_goals(
     return goals, spec_grounded_available
 
 
+# Default directory capability_queue_consumer.py writes compiled per-gap taskcards to.
+_COMPILED_TASKCARDS_DIR = _REPO_ROOT / ".local" / "capability-consumer" / "taskcards"
+
+
+def _load_compiled_taskcards(
+    taskcards_dir: "Optional[Path]" = None,
+) -> "List[Dict[str, Any]]":
+    """TC-EXT-009-05: Load capability_compiler-compiled taskcards as candidate goals.
+
+    Reads .local/capability-consumer/taskcards/*.json — the per-gap taskcard files
+    written by tools/supervisor/capability_queue_consumer.py (which itself invokes
+    tools/supervisor/capability_compiler.py). Converts each executable, non-advisory
+    taskcard into a goal dict shaped like _load_gap_ledger_goals()'s output so it can
+    be merged directly into the candidate-selection pipeline in
+    generate_task_candidates() — not just used for annotation (see TC-SH-003's
+    enrich_goals_with_compiled_taskcards, which only enriches goals that already
+    exist; this function adds NEW candidates that would otherwise never surface).
+
+    Returns:
+        List of goal dicts (format, function_name, source_file, test_file,
+        action_type, gap_id, gap_source="capability_compiler", ...).
+    """
+    taskcards_dir = taskcards_dir or _COMPILED_TASKCARDS_DIR
+    goals: "List[Dict[str, Any]]" = []
+    if not taskcards_dir.is_dir():
+        return goals
+
+    for tc_path in sorted(taskcards_dir.glob("*.json")):
+        if tc_path.name == "consumer-summary.json":
+            continue
+        try:
+            tc = json.loads(tc_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if not isinstance(tc, dict):
+            continue
+        # Only advisory_only=False (explicitly) READY_TO_EXECUTE taskcards are real
+        # candidates. Missing/None/True are all treated as advisory (skip) — some
+        # legacy taskcard files on disk carry advisory_only: null from an older
+        # consumer schema; those must NOT be treated as executable by accident.
+        if tc.get("advisory_only") is not False:
+            continue
+        if tc.get("status") != "READY_TO_EXECUTE":
+            continue
+
+        fmt = str(tc.get("format_id", "")).lower()
+        fn = tc.get("function_name", "")
+        source_file = tc.get("expected_module", "")
+        test_file = tc.get("expected_test_file", "")
+        if not fmt or not fn or not source_file or not test_file:
+            continue
+
+        gap_id = tc.get("source_gap_id") or tc.get("gap_ledger_ref", "")
+        priority = tc.get("gap_priority", "P2")
+        product_value = {"P0": 5, "P1": 4, "P2": 3, "P3": 2}.get(priority, 2)
+
+        goals.append({
+            "format": fmt,
+            "function_name": fn,
+            "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+            "pattern": "capability_compiled",
+            "source_file": source_file,
+            "test_file": test_file,
+            "spec_authority": (
+                f"spec_qnames={tc.get('governance_requirements', {}).get('spec_qnames', [])}"
+                if tc.get("governance_requirements") else "no_public_spec_available"
+            ),
+            "product_value": product_value,
+            "autonomy_value": 3,
+            "risk_level": "LOW",
+            "description": (
+                f"Capability-compiled taskcard {tc.get('taskcard_id', '')}: "
+                f"implement {fn} for {fmt.upper()}"
+            ),
+            "gap_id": gap_id,
+            "gap_source": "capability_compiler",
+            "gap_ledger_ref": gap_id,
+            "spec_facts": [],
+            "compiled_taskcard_id": tc.get("taskcard_id"),
+            "compiled_taskcard_path": str(tc_path),
+        })
+
+    return goals
+
+
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -1543,8 +1628,11 @@ def _goal_to_queue_item(goal: Dict[str, Any], run_number: int) -> Dict[str, Any]
 
     # TC-FALLBACK-REF-001: inject gap_ledger_ref so TC-GUARD-001 check passes.
     # Gap-ledger sourced items carry gap_id â€” use it directly.
+    # TC-EXT-009-05: capability_compiler-compiled goals also carry a real gap_id
+    # (traced back through capability_queue_consumer.py to gap-ledger.json) â€” use it
+    # directly rather than falling back to a synthetic ref.
     # Expansion fallback items get a synthetic EXPANSION-FALLBACK ref.
-    if goal.get("gap_source") == "gap_ledger" and goal.get("gap_id"):
+    if goal.get("gap_source") in ("gap_ledger", "capability_compiler") and goal.get("gap_id"):
         _gap_ledger_ref = goal["gap_id"]
     else:
         _gap_ledger_ref = f"EXPANSION-FALLBACK-{fmt.upper()}-{fn}"
@@ -1645,6 +1733,26 @@ def generate_task_candidates(
     )
     _expansion_goal_fallback = len(gap_ledger_goals) == 0
     all_goals = list(gap_ledger_goals)  # gap-ledger goals first (primary)
+    existing_fns = {g["function_name"] for g in all_goals}
+
+    # TC-EXT-009-05: Merge capability_compiler-compiled taskcards directly into the
+    # candidate pool. This is real selection wiring, not just annotation — a compiled
+    # taskcard whose (format, function_name) is not already covered by a gap-ledger
+    # goal becomes a first-class candidate that flows through scoring, sorting, and
+    # _goal_to_queue_item() like any other goal.
+    try:
+        _compiled_goals = _load_compiled_taskcards()
+    except Exception:
+        _compiled_goals = []
+    _existing_goal_keys = {(g.get("format", ""), g.get("function_name", "")) for g in all_goals}
+    _compiled_merged_count = 0
+    for _cg in _compiled_goals:
+        _key = (_cg.get("format", ""), _cg.get("function_name", ""))
+        if _key in _existing_goal_keys:
+            continue
+        all_goals.append(_cg)
+        _existing_goal_keys.add(_key)
+        _compiled_merged_count += 1
     existing_fns = {g["function_name"] for g in all_goals}
 
     # TC-SH-003: Enrich goals with compiled gap taskcard metadata (extracted to extensions)
@@ -1795,12 +1903,15 @@ def generate_task_candidates(
     # Write output
     output = {
         "generated_at": _now_iso(),
-        "generator_version": "1.3",
+        "generator_version": "1.4",
         "total_candidates": len(queue_items),
         "gap_ledger_goals_available": len(gap_ledger_goals),
         "hardcoded_fallback_goals_used": sum(1 for g in all_goals if g.get("gap_source") != "gap_ledger"),
+        # TC-EXT-009-05: count of capability_compiler-compiled taskcards merged into
+        # this run's candidate pool (distinct from hardcoded_fallback_goals_used).
+        "compiled_taskcards_merged": _compiled_merged_count,
         "advisory_only_skipped": advisory_skipped,
-        "source": "gap_ledger_primary+expansion_goals_fallback",
+        "source": "gap_ledger_primary+expansion_goals_fallback+capability_compiler",
         "expansion_goal_fallback": _expansion_goal_fallback,
         "excluded_gap_ids_count": len(_excluded_gap_ids),
         "zero_task_circuit_breaker": len(queue_items) == 0,

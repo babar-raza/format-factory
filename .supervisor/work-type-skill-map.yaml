@@ -31,17 +31,9 @@ active_mappings:
   sync_skill_command_registry: sync-skill-command-registry
   ci_transcript_verification: check-release-boundary
   supervision_audit: check-skill-coverage
+  capability_compiler: capability-compiler  # TC-EXT-009-03 (2026-07-14): resolves SKILL-GAP-003
+  pre_sprint_governance_hook: pre-sprint-governance-hook  # TC-EXT-010-01 (2026-07-14): resolves SKILL-GAP-015 (previously misfiled under SKILL-GAP-008, which collides with the unrelated TC-SGF-001 pre-commit-hook closure)
 gap_mappings:
-  capability_compiler:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: spec-to-feature plan Lane 3, ROOT-08
-    gap_register_id: SKILL-GAP-003
-  pre_sprint_governance_hook:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: CLAUDE.md GOV_BLOCK exception
-    gap_register_id: SKILL-GAP-008
   rollback_and_recovery:
     status: gap
     verdict: BLOCKED_SKILL_GAP

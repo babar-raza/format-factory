@@ -26,7 +26,15 @@ counts_at_baseline:
 known_open_gaps:
   - id: SKILL-GAP-003
     description: "capability_compiler work-type not registered as skill"
-    status: OPEN
+    status: RESOLVED
+    resolved_by: TC-EXT-009-03
+    resolved_at: "2026-07-14"
+    resolution: >
+      Registered as skill_id capability-compiler (.claude/commands/capability-compiler.md),
+      routed in capability-routing-registry.yaml (route_id: capability_compiler), and moved
+      from gap_mappings to active_mappings in work-type-skill-map.yaml. Superseded the
+      2026-07-12 DEFERRED_BY_DESIGN closure attempt (skill-gap-003-closure-proof.yaml),
+      which never actually removed the gap from these 3 registries.
   - id: SKILL-GAP-009
     description: "ci_transcript_verification missing from work-type-skill-map active_mappings"
     status: OPEN
@@ -37,6 +45,21 @@ known_open_gaps:
     description: "runtime tool-layer interception not automatic (EP-002-GAP)"
     status: STRUCTURAL_GAP
     bounded_by: "commit-time hook catches all bypasses before they enter git history"
+  - id: SKILL-GAP-015
+    description: "pre_sprint_governance_hook work-type not registered as skill"
+    status: RESOLVED
+    resolved_by: TC-EXT-010-01
+    resolved_at: "2026-07-14"
+    resolution: >
+      Registered as skill_id pre-sprint-governance-hook
+      (.claude/commands/pre-sprint-governance-hook.md) and moved from
+      gap_mappings to active_mappings in work-type-skill-map.yaml. This gap was
+      previously misfiled under SKILL-GAP-008 in work-type-skill-map.yaml and
+      skill-registry.yaml's known_open_gaps — SKILL-GAP-008 was already used and
+      CLOSED for a different, unrelated finding (TC-SGF-001, the pre-commit hook
+      for skill attribution enforcement). SKILL-GAP-015 is the fresh,
+      disambiguated identifier allocated for this gap (TC-EXT-010-05) to avoid
+      that collision going forward.
 
 ungoverned_mutations_since_prior:
   - tools/review/generate_cli_stubs.py

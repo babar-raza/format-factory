@@ -61,10 +61,17 @@ class TestSkillRegistry:
             assert field in msw, f"missing_skill_workflow missing field: {field}"
 
     def test_known_open_gaps_list(self):
+        """known_open_gaps shrinks over time as gaps are resolved and their
+        entries removed (e.g. capability_compiler removed by TC-EXT-009-03,
+        pre_sprint_governance_hook removed by TC-EXT-010-01/05 — SKILL-GAP-015
+        closed). This is a structural sanity check (field exists, is a list),
+        not a monotonically-growing count invariant — do not restore a fixed
+        lower bound here without checking whether it reflects resolved gaps.
+        """
         d = _load_yaml(".supervisor/skill-registry.yaml")
         gaps = d["missing_skill_workflow"]["known_open_gaps"]
         assert isinstance(gaps, list)
-        assert len(gaps) >= 5, "Expected at least 5 known_open_gaps"
+        assert len(gaps) >= 1, "known_open_gaps should not be emptied entirely"
 
     def test_skills_list_present_and_nonempty(self):
         d = _load_yaml(".supervisor/skill-registry.yaml")
@@ -109,13 +116,25 @@ class TestWorkTypeSkillMap:
         assert "gap_mappings" in d, "gap_mappings section absent"
 
     def test_gap_mappings_count(self):
+        """gap_mappings shrinks over time as gaps are resolved and their entries
+        moved to active_mappings (e.g. capability_compiler by TC-EXT-009-03,
+        pre_sprint_governance_hook by TC-EXT-010-01/05 — SKILL-GAP-015 closed).
+        This is a structural sanity check (field exists, is non-empty), not a
+        monotonically-growing count invariant.
+        """
         d = _load_yaml(".supervisor/work-type-skill-map.yaml")
         gaps = d["gap_mappings"]
-        assert len(gaps) >= 4, f"Expected >=4 gap_mappings, got {len(gaps)}"
+        assert len(gaps) >= 1, f"Expected >=1 gap_mappings, got {len(gaps)}"
 
-    def test_capability_compiler_in_gaps(self):
+    def test_rollback_and_recovery_in_gaps(self):
+        """rollback_and_recovery (SKILL-GAP-011) is the remaining open gap as of
+        TC-EXT-010 (2026-07-14). Replaces the prior capability_compiler-in-gaps
+        assertion — capability_compiler was resolved and moved to
+        active_mappings by TC-EXT-009-03, and pre_sprint_governance_hook was
+        resolved and moved to active_mappings by TC-EXT-010-01/05.
+        """
         d = _load_yaml(".supervisor/work-type-skill-map.yaml")
-        assert "capability_compiler" in d["gap_mappings"]
+        assert "rollback_and_recovery" in d["gap_mappings"]
 
 
 # ---------------------------------------------------------------------------

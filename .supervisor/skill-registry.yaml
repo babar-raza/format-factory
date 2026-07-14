@@ -32,9 +32,6 @@ missing_skill_workflow:
   - master_plan_clause: section 24.7 analytics separation RULE-AM-001
     status: backlog
     work_type: extract_analytics_from_monolith
-  - master_plan_clause: CLAUDE.md GOV_BLOCK exception
-    status: backlog
-    work_type: pre_sprint_governance_hook
   - master_plan_clause: skill_invocation_transcript_required global_control
     status: backlog
     work_type: ci_transcript_verification
@@ -1336,6 +1333,37 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+- command: /pre-sprint-governance-hook
+  command_file: .claude/commands/pre-sprint-governance-hook.md
+  created_at: '2026-07-14'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/check_continuation.py
+  - tools/supervisor/governance_block_registry.py
+  mission_id: TC-EXT-010
+  notes: Resolves SKILL-GAP-015 (formerly misfiled as a SKILL-GAP-008 collision
+    with the unrelated TC-SGF-001 pre-commit-hook closure). Registration wrapper
+    only — documents check_continuation.py Check 8 + governance_block_registry.py's
+    STRUCTURAL_GOV_BLOCKS/filter_structural_blocks(), does not reimplement or
+    modify either. Routes the pre_sprint_governance_hook work type so
+    work-type-skill-map.yaml no longer reports BLOCKED_SKILL_GAP for it.
+  output_paths: []
+  purpose: Documented, registered skill identity for the structural GOV_BLOCK
+    carve-out (Check 8 in check_continuation.py + governance_block_registry.py's
+    STRUCTURAL_GOV_BLOCKS) so it is a governed skill rather than undocumented
+    inline logic, per EP-3 Skill-Driven Architecture.
+  skill_id: pre-sprint-governance-hook
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/supervisor/test_sprint_executor_structural_govblock.py
+  - tests/supervisor/test_governance_block_registry.py
+  advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_detection_logic_change
+  required_handoff_fields:
+  - rework_items
 - command: /promote-gap-to-taskcard
   command_file: .claude/commands/promote-gap-to-taskcard.md
   idempotency: create_or_update

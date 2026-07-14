@@ -63,6 +63,18 @@ _TRUE_EXTERNAL_GATES = {
     "PUBLICATION_CREDENTIALS",
 }
 
+# TC-EXT-010-02: Structural GOV_BLOCK stops are NOT TRUE_EXTERNAL_GATEs (the agent
+# CAN resolve them by running the analytics-separation sprint — see CLAUDE.md's
+# "GOV_BLOCK Exception" section) — but they are still NON-OVERRIDABLE by the
+# Supreme Directive's generic "log exit 3 and continue" rule. Before this set
+# existed, _is_external_gate() returned False for this reason and the loop fell
+# through to the generic override branch below, silently proceeding past a
+# structural failure. See tools/supervisor/governance_block_registry.py and
+# check_continuation.py's "Check 8" for the detection logic this halts on.
+_NON_OVERRIDABLE_STRUCTURAL_STOPS = {
+    "STRUCTURAL_GOVBLOCK_MUST_BE_RESOLVED_FIRST",
+}
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -172,6 +184,21 @@ def _is_external_gate(stop_reason: str) -> bool:
     # Git push and package pub blockers are external gates
     external_markers = ["GIT_PUSH", "PUSH_CREDENTIALS", "PYPI", "NUGET", "GATE_11"]
     return any(m in upper for m in external_markers)
+
+
+def _is_structural_govblock_stop(stop_reason: str) -> bool:
+    """Return True if stop_reason is the non-overridable structural GOV_BLOCK stop.
+
+    TC-EXT-010-02: Unlike _is_external_gate(), this is NOT a TRUE_EXTERNAL_GATE —
+    the agent CAN resolve it autonomously by running the analytics-separation
+    sprint (CLAUDE.md's "GOV_BLOCK Exception"). But sprint_executor.py's run-loop
+    has no logic to autonomously select and execute that separation sprint, so it
+    must halt here rather than silently overriding and reading next-sprint.md as
+    if this were an ordinary advisory stop.
+    """
+    if not stop_reason:
+        return False
+    return stop_reason.strip().upper() in _NON_OVERRIDABLE_STRUCTURAL_STOPS
 
 
 # ---------------------------------------------------------------------------
@@ -459,6 +486,19 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
             if _is_external_gate(reason):
                 print(f"\nHARD STOP: TRUE_EXTERNAL_GATE — {reason}")
                 print("This requires human action. Stopping.")
+                return 1
+            elif _is_structural_govblock_stop(reason):
+                # TC-EXT-010-02: non-overridable structural GOV_BLOCK. Not a
+                # TRUE_EXTERNAL_GATE, but the generic "log exit 3 and continue"
+                # Supreme Directive override does NOT apply — see CLAUDE.md's
+                # "GOV_BLOCK Exception" section.
+                print(f"\nHARD STOP: structural GOV_BLOCK — {reason}")
+                print("This is NOT a TRUE_EXTERNAL_GATE, but it IS non-overridable per")
+                print("CLAUDE.md's 'GOV_BLOCK Exception' section. The Supreme Directive's")
+                print("generic override does not apply to structural GOV_BLOCKs.")
+                print("The NEXT sprint must be the analytics-separation refactor for the")
+                print("blocking format (docs/code-quality/production-library-standard-v2.md")
+                print("§8.1) before product deepening may resume. Stopping this loop.")
                 return 1
             else:
                 # Supreme Directive: non-external-gate stops are overridden

@@ -46,6 +46,19 @@ class TestWorkTypeSkillGate:
         violations = check_work_type_skill_gate(decl, _REPO)
         assert len(violations) == 0
 
+    def test_pre_sprint_governance_hook_no_longer_a_gap(self):
+        """TC-EXT-010-01/05: pre_sprint_governance_hook was moved from gap_mappings
+        to active_mappings (SKILL-GAP-015 closed, /pre-sprint-governance-hook
+        skill registered) — must no longer produce a BLOCKED_SKILL_GAP violation.
+        """
+        decl = _make_declaration([{
+            "item_id": "PROD-004",
+            "item_type": "PRODUCT_SOURCE",
+            "work_type": "pre_sprint_governance_hook",
+        }])
+        violations = check_work_type_skill_gate(decl, _REPO)
+        assert len(violations) == 0
+
     def test_governance_item_skipped(self):
         """GOVERNANCE_TASKCARD items are not checked against skill map."""
         decl = _make_declaration([{
@@ -73,10 +86,13 @@ class TestWorkTypeSkillGate:
         - capability_compiler: moved to active_mappings (TC-EXT-009-03, 2026-07-14, SKILL-GAP-003 closed)
         - ci_transcript_verification: moved to active_mappings (check-release-boundary skill registered)
         - supervision_audit: moved to active_mappings (check-skill-coverage skill registered)
-        Current open gaps: pre_sprint_governance_hook (SKILL-GAP-008), rollback_and_recovery (SKILL-GAP-011).
+        - pre_sprint_governance_hook: moved to active_mappings (TC-EXT-010-01, 2026-07-14,
+          SKILL-GAP-015 closed — previously misfiled under SKILL-GAP-008, which collided
+          with the unrelated TC-SGF-001 pre-commit-hook closure; see
+          .claude/commands/pre-sprint-governance-hook.md)
+        Current open gaps: rollback_and_recovery (SKILL-GAP-011).
         """
         gap_types = [
-            "pre_sprint_governance_hook",
             "rollback_and_recovery",
         ]
         for i, wt in enumerate(gap_types):
