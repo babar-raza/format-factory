@@ -24,13 +24,13 @@ except ImportError:
     HAS_YAML = False
 
 EXPECTED_PACKAGES = [
-    "aspose-format-factory-zst",
-    "aspose-format-factory-fodp",
-    "aspose-format-factory-fodg",
-    "aspose-format-factory-gnumeric",
-    "aspose-format-factory-abw",
-    "aspose-format-factory-fods",
-    "aspose-format-factory-fodt",
+    "format-factory-zst",
+    "format-factory-fodp",
+    "format-factory-fodg",
+    "format-factory-gnumeric",
+    "format-factory-abw",
+    "format-factory-fods",
+    "format-factory-fodt",
 ]
 
 EXPECTED_MODULES = ["zst", "fodp", "fodg", "gnumeric", "abw", "fods", "fodt"]
