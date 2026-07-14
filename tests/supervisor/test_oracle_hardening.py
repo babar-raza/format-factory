@@ -209,11 +209,18 @@ def test_dif_oracle_package_has_real_properties():
 
 
 def test_fodt_oracle_package_has_real_properties():
-    """FODT oracle package must have non-synthetic expected_model_properties."""
+    """FODT oracle package must have non-synthetic expected_model_properties.
+
+    SCHEMA_VALID cases (D2 depth schema-only validation) are excluded — they
+    produce a validity verdict, not model properties.
+    """
     import yaml
     pkg_path = REPO_ROOT / "oracle" / "formats" / "fodt" / "oracle-package.yaml"
     pkg = yaml.safe_load(pkg_path.read_text())
     for case in pkg.get("valid_cases", []):
+        # Skip schema-only cases that produce SCHEMA_VALID, not model properties
+        if case.get("expected_parse_result") == "SCHEMA_VALID":
+            continue
         props = case.get("expected_model_properties", [])
         non_synthetic = [p for p in props if p.get("property") not in SYNTHETIC_PROPERTIES]
         assert len(non_synthetic) >= 1, f"Case {case['case_id']} must have non-synthetic properties"
