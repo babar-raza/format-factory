@@ -49,6 +49,15 @@ EXPECTED_TABLES = {
     # v3: canary shadow tables (TC-SCHEMA-001)
     "validator_shadow_observations",
     "grader_shadow_observations",
+    # v4: control layer tables (added in pre-existing db.py update)
+    "control_features",
+    "control_feature_consumers",
+    "control_layers",
+    "feature_parity_results",
+    "quarantines",
+    "trust_registry",
+    "plans",
+    "gap_attempts",
 }
 
 
