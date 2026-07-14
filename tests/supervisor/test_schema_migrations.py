@@ -36,11 +36,11 @@ class TestSchemaVersion:
         db_path = tmp_path / "test.db"
         init_db(db_path)
         assert get_schema_version(db_path) == SCHEMA_VERSION
-        assert SCHEMA_VERSION == 3
+        assert SCHEMA_VERSION == 4  # v4: control layer discovery tables (TC-OCRD-C3)
 
-    def test_schema_version_constant_is_3(self):
-        """SCHEMA_VERSION must be 3 (TC-OCRD-A4-01-04)."""
-        assert SCHEMA_VERSION == 3
+    def test_schema_version_constant_is_4(self):
+        """SCHEMA_VERSION must be 4 (v4: control layer discovery tables, TC-OCRD-C3)."""
+        assert SCHEMA_VERSION == 4
 
 
 class TestApplyMigrations:
@@ -70,7 +70,7 @@ class TestApplyMigrations:
         finally:
             MIGRATION_FUNCS[:] = orig_funcs
 
-        assert new_version == 3
+        assert new_version == SCHEMA_VERSION  # v4: MIGRATION_FUNCS now includes (3→4) migration
 
     def test_apply_migrations_idempotent(self, tmp_path):
         """Test 5: apply_migrations called twice on the same DB is idempotent."""
