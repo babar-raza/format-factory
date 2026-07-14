@@ -588,9 +588,30 @@ routes:
       Added TC-SGOV-W4-001 (2026-07-11): closes the UNREGISTERED finding from
       validate_plan_skill_routes.py run on imperative-floating-book.md.
 
+  - route_id: capability_compiler
+    description: >
+      Compile capability gap records into feature IRs, executable taskcards, and
+      supporting obligation/graph/gate-readiness artifacts. Resolves SKILL-GAP-003.
+      Pipeline tool — invoked automatically every sprint by
+      tools/supervisor/capability_queue_consumer.py (autonomous_cycle.py Step 2h),
+      not a manually-triggered workflow.
+    preferred_skill_ids:
+      - capability-compiler
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - gap_record
+      - output_dir
+    evidence_path_pattern: ".local/capability-consumer/taskcards/"
+    note: >
+      Added TC-EXT-009-02 (2026-07-14): closes SKILL-GAP-003, previously tracked as
+      an open gap in work-type-skill-map.yaml, skill-system-baseline.yaml, and
+      skill-registry.yaml missing_skill_workflow.known_open_gaps (see TC-EXT-009-03).
+
 gap_count:
-  total_routes: 35
-  active_routes: 34
+  total_routes: 36
+  active_routes: 35
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001
