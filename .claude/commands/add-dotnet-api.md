@@ -83,6 +83,8 @@ in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in t
 5. Inspect the existing API, tests, and public surface. Keep the change limited to the named API.
 6. Add or modify only the exact authorized files under `src/net/<format_id>/` and the exact authorized
    test files under `tests/net/<format_id>/`.
+
+   Note: `/test-driven-development` is available as an optional sub-procedure for Steps 6-7 (implementation + focused tests) when test-first sequencing is desired.
 7. Add focused tests for normal behavior, one boundary case, and one invalid-input case.
    **For any setter that persists document state:** ALSO add a Type 4 roundtrip test:
    `SetX(value) → Save() → Load() → Assert.Equal(value, GetX())`.

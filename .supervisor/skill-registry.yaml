@@ -1474,6 +1474,103 @@ skills:
   spec_qname_required: false
   status: active
   advisory_only: true
+- command: /skill-scanner
+  command_file: .claude/commands/skill-scanner.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-012-02
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_registry_mutation
+  - findings_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Security-review a skill command file (own or externally-sourced) using
+    an 8-phase static-analysis checklist (Input/Discovery, Static Scan, Frontmatter
+    Validation, Prompt Injection Analysis, Behavioral Analysis, Script Analysis,
+    Supply Chain Assessment, Permission Analysis); produce SKILL-SEC-### findings
+    and an overall Risk Level. Adapted from Sentry's skill-scanner (getsentry/skills,
+    Apache-2.0, commit 5a64b36c62d042d3981b7937d9d6ca7bd1753b9a). Mandatory gate
+    before registering any externally-imported skill (TC-EXT-012 through TC-EXT-028).
+  required_handoff_fields:
+  - target_skill_command_file
+  skill_id: skill-scanner
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: getsentry/skills
+  external_skill_commit: 5a64b36c62d042d3981b7937d9d6ca7bd1753b9a
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /systematic-debugging
+  command_file: .claude/commands/systematic-debugging.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-013-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - root_cause_precedes_fix
+  - single_hypothesis_tested
+  - fix_attempt_count_tracked
+  - found_issue_id_provided
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Root-cause-first debugging methodology (4 phases -- Root Cause Investigation,
+    Pattern Analysis, Hypothesis and Testing, Implementation) enforcing the Iron
+    Law "NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST" and the >=3-failed-fix
+    architecture-question stop rule. Adapted from obra/superpowers' systematic-debugging
+    (MIT, commit d884ae04edebef577e82ff7c4e143debd0bbec99). Replaces upstream's
+    human-partner escalation with a hand-off into /found-issue-ownership Step 3
+    (Root Cause) or Step 8 disposition.
+  required_handoff_fields:
+  - observed_defect
+  - found_issue_id
+  skill_id: systematic-debugging
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: obra/superpowers
+  external_skill_commit: d884ae04edebef577e82ff7c4e143debd0bbec99
+  external_skill_license: MIT
+  risk_level: LOW
+- command: /test-driven-development
+  command_file: .claude/commands/test-driven-development.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-014-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - test_precedes_implementation
+  - red_verified
+  - green_verified
+  - no_direct_src_mutation
+  - verification_checklist_complete
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Red-Green-Refactor test-first discipline enforcing the Iron Law "NO PRODUCTION
+    CODE WITHOUT A FAILING TEST FIRST" (RED, Verify RED, GREEN, Verify GREEN, REFACTOR)
+    plus an 8-item Final Verification Checklist. Adapted from obra/superpowers' test-driven-development
+    (MIT, commit d884ae04edebef577e82ff7c4e143debd0bbec99). Writes tests/** directly;
+    any src/** change required by a GREEN step is delegated to /product-source-task,
+    /add-python-api, or /add-dotnet-api per EP-3 (no direct product-source mutation
+    pathway of its own).
+  required_handoff_fields:
+  - target_behavior_description
+  skill_id: test-driven-development
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: obra/superpowers
+  external_skill_commit: d884ae04edebef577e82ff7c4e143debd0bbec99
+  external_skill_license: MIT
+  risk_level: MEDIUM
 - command: /record-lane-execution
   command_file: .claude/commands/record-lane-execution.md
   idempotency: create_or_update
@@ -3652,6 +3749,704 @@ skills:
   - yaml_parses_correctly
   required_handoff_fields:
   - db_path
+- command: /silent-failure-hunter
+  command_file: .claude/commands/silent-failure-hunter.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-017-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_target_mutation
+  - findings_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer that hunts for silent failures in error-handling code
+    (5 principles; 5-phase process -- Identify All Error Handling Code, Scrutinize
+    Each Error Handler, Examine Error Messages, Check for Hidden Failures, Validate
+    Against Project Standards). Empty catch blocks are absolutely forbidden. Adapted
+    from anthropics/claude-code's silent-failure-hunter (Apache-2.0, commit
+    988b3e56432775c09bba903ba22522b97cd0f2fb). CRITICAL/HIGH findings route to
+    /found-issue-ownership.
+  required_handoff_fields:
+  - target_file_or_diff
+  skill_id: silent-failure-hunter
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: anthropics/claude-code
+  external_skill_commit: 988b3e56432775c09bba903ba22522b97cd0f2fb
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /type-design-analyzer
+  command_file: .claude/commands/type-design-analyzer.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-017-02
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_target_mutation
+  - findings_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer that rates a type/class's invariant design (5-part
+    Analysis Framework -- Identify Invariants, then 4 dimensions rated 1-10 --
+    Encapsulation, Invariant Expression, Invariant Usefulness, Invariant Enforcement).
+    Names anti-patterns (anemic domain models, mutable-internals exposure,
+    documentation-only invariants, over-responsibility, missing construction
+    validation, inconsistent mutator enforcement). Adapted from anthropics/claude-code's
+    type-design-analyzer (Apache-2.0, commit 988b3e56432775c09bba903ba22522b97cd0f2fb).
+    Any dimension rated <=4/10 routes to /found-issue-ownership.
+  required_handoff_fields:
+  - target_type_or_class
+  skill_id: type-design-analyzer
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: anthropics/claude-code
+  external_skill_commit: 988b3e56432775c09bba903ba22522b97cd0f2fb
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /comment-analyzer
+  command_file: .claude/commands/comment-analyzer.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-017-03
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_target_mutation
+  - findings_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer that checks comments/docstrings via 5 checks --
+    Verify Factual Accuracy, Assess Completeness, Evaluate Long-term Value,
+    Identify Misleading Elements, Suggest Improvements. Analysis and feedback
+    only -- never modifies code or comments directly. Adapted from
+    anthropics/claude-code's comment-analyzer (Apache-2.0, commit
+    988b3e56432775c09bba903ba22522b97cd0f2fb). Critical Issues route to
+    /found-issue-ownership.
+  required_handoff_fields:
+  - target_file_or_diff
+  skill_id: comment-analyzer
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: anthropics/claude-code
+  external_skill_commit: 988b3e56432775c09bba903ba22522b97cd0f2fb
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /pr-test-analyzer
+  command_file: .claude/commands/pr-test-analyzer.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-017-04
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_target_mutation
+  - findings_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer focused on behavioral test coverage (untested
+    error-handling paths, missing edge-case/boundary coverage, uncovered
+    critical business-logic branches, absent negative tests, missing
+    async/concurrent-behavior tests), not line coverage. Rates each suggested
+    test 1-10 (9-10 critical, 7-8 important, 5-6 edge cases, 3-4 nice-to-have,
+    1-2 optional). Adapted from anthropics/claude-code's pr-test-analyzer
+    (Apache-2.0, commit 988b3e56432775c09bba903ba22522b97cd0f2fb). Findings
+    rated 8-10 route to /found-issue-ownership.
+  required_handoff_fields:
+  - target_diff_or_module
+  skill_id: pr-test-analyzer
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: anthropics/claude-code
+  external_skill_commit: 988b3e56432775c09bba903ba22522b97cd0f2fb
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /sharp-edges
+  command_file: .claude/commands/sharp-edges.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-017-05
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_product_source_mutation
+  - no_target_mutation
+  - findings_recorded
+  - read_only_tools_only
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer (Read/Grep/Glob tools only) that hunts for "sharp
+    edges" -- API surfaces where the easy/default usage is also the insecure
+    one. 6 Sharp Edge Categories (Algorithm/Mode Selection Footguns, Dangerous
+    Defaults, Primitive vs Semantic APIs, Configuration Cliffs, Silent
+    Failures, Stringly-Typed Security); 4-phase workflow (Surface
+    Identification, Edge Case Probing, Threat Modeling vs 3 personas, Validate
+    Findings). Adapted from Trail of Bits' sharp-edges (trailofbits/skills,
+    CC-BY-SA-4.0, commit cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af). Critical
+    severity findings route to /found-issue-ownership.
+  required_handoff_fields:
+  - target_surface
+  skill_id: sharp-edges
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: trailofbits/skills
+  external_skill_commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  external_skill_license: CC-BY-SA-4.0
+  risk_level: LOW
+- command: /receiving-code-review
+  command_file: .claude/commands/receiving-code-review.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-016-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - feedback_read_completely_before_response
+  - unclear_items_block_all_implementation
+  - external_reviewer_checklist_applied
+  - yagni_grep_recorded
+  - gh_api_reply_gated_by_scm_policy_check_001
+  - no_direct_src_mutation_outside_governed_skill
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Technical-rigor discipline for processing code review feedback before
+    implementing it (6-step Response Pattern -- READ, UNDERSTAND, VERIFY, EVALUATE,
+    RESPOND, IMPLEMENT; Handling Unclear Feedback hard stop; 5-point External Reviewer
+    checklist; YAGNI check; Implementation Order). Consumes findings from the 5
+    Group-2 read-only reviewers (TC-EXT-017). Adapted from obra/superpowers'
+    receiving-code-review (MIT, commit d884ae04edebef577e82ff7c4e143debd0bbec99).
+    The gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies call is
+    gated by SCM-POLICY-CHECK-001 (plan section 7.2) -- a standing policy-state
+    check, not a per-instance human stop.
+  required_handoff_fields:
+  - reviewer_feedback_content
+  - reviewer_source
+  skill_id: receiving-code-review
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: obra/superpowers
+  external_skill_commit: d884ae04edebef577e82ff7c4e143debd0bbec99
+  external_skill_license: MIT
+  risk_level: HIGH
+  activation_gate: "Supervisor approval + SCM-POLICY-CHECK-001"
+- command: /property-based-testing
+  command_file: .claude/commands/property-based-testing.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-018-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - property_priority_justified
+  - generator_bounded
+  - assume_filter_not_vacuous
+  - shrunk_failure_examined
+  - no_src_mutation
+  mechanism_type: ATOMIC_SKILL
+  product_track: testing
+  purpose: Selects a property (Roundtrip, Idempotence, Invariant, Commutativity,
+    Associativity, Identity, Inverse, Oracle, Easy to Verify, No Exception) via
+    a pattern-to-property priority table and writes a real Hypothesis
+    property-based test directly into tests/**, scoped to FF's real
+    parse_*/write_* and load/write_<fmt> codec function-naming conventions
+    (not upstream's generic encode/decode examples). Adapted from Trail of
+    Bits' property-based-testing (trailofbits/skills, CC-BY-SA-4.0, commit
+    cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af). Writes tests/** directly; any
+    src/** fix a discovered defect requires is delegated to
+    /product-source-task, /add-python-api, or /add-dotnet-api per EP-3.
+  required_handoff_fields:
+  - target_function_or_pair
+  - property_selected
+  - test_path
+  skill_id: property-based-testing
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/python/csv/test_tc_ext_018_csv_roundtrip_pbt.py
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: trailofbits/skills
+  external_skill_commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  external_skill_license: CC-BY-SA-4.0
+  risk_level: MEDIUM
+- command: /gh-fix-ci
+  command_file: .claude/commands/gh-fix-ci.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-020
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - real_log_read_before_diagnosis
+  - diagnosis_map_freshness_checked
+  - no_direct_src_mutation
+  - diagnosis_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: infrastructure
+  purpose: Diagnose a failing CI job via a 14-job Diagnosis Map re-derived from
+    .github/workflows/ci.yml -- read the real log (gh run view --log-failed),
+    map to the exact local-reproduction command, run it locally. FF-original
+    skill (no upstream project verified to cite). Fixes requiring src/** changes
+    are delegated to the applicable governed mutation skill per EP-3; this skill
+    only diagnoses and runs local reproduction.
+  required_handoff_fields:
+  - run_id
+  - failing_job
+  skill_id: gh-fix-ci
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  risk_level: MEDIUM
+- command: /gh-address-comments
+  command_file: .claude/commands/gh-address-comments.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-021
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - comment_read_completely_before_classification
+  - every_comment_classified
+  - code_change_checklist_applied
+  - ci_failure_comments_diagnosed_via_gh_fix_ci
+  - governance_concern_checked_for_real_defect
+  - gh_api_reply_gated_by_scm_policy_check_001
+  - no_direct_src_mutation_outside_governed_skill
+  mechanism_type: ATOMIC_SKILL
+  product_track: infrastructure
+  purpose: Classify PR review comments (code-change / question-explanation /
+    style-nit / governance-concern) and respond before implementing or replying.
+    FF-original skill (no upstream project verified to cite), depends on
+    /gh-fix-ci (TC-EXT-020) for CI-failure-specific code-change diagnosis. The
+    gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies call is gated
+    by SCM-POLICY-CHECK-001 (plan section 7.2) -- a standing policy-state
+    check, not a per-instance human stop.
+  required_handoff_fields:
+  - pr_number
+  - comment_thread_content
+  skill_id: gh-address-comments
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  risk_level: HIGH
+  activation_gate: "Supervisor approval + SCM-POLICY-CHECK-001"
+- command: /create-ff-skill
+  command_file: .claude/commands/create-ff-skill.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-022-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - pressure_scenario_baseline_documented
+  - ff_conventions_used_not_upstream_generic
+  - synthesized_from_used_for_multi_source
+  - anti_pattern_checklist_applied
+  - registration_pipeline_completed
+  - layer_attribution_completed
+  - no_upstream_deployment_step_present
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Author and register a new governed skill via a RED-GREEN-REFACTOR cycle
+    (pressure-scenario baseline, author, close loopholes and re-test) whose GREEN
+    phase uses a 6-step authoring backbone (resolve target/shape, synthesis,
+    iteration from prior art, author, optimize trigger quality, register), with
+    Step 6 replaced end to end by this repository's own 7-step registration
+    pipeline (skill-scanner, preflight, registry insertion, sync x2, duplicate
+    check, contract validation, mandatory layer-attribution). Includes a 16-item
+    anti-pattern review checklist. Synthesized from three sources (not a
+    single-vendor import) -- obra/superpowers writing-skills (MIT, commit
+    d884ae04edebef577e82ff7c4e143debd0bbec99), getsentry/skills skill-writer
+    (Apache-2.0, commit 5a64b36c62d042d3981b7937d9d6ca7bd1753b9a), and
+    trailofbits/skills workflow-skill-design (CC-BY-SA-4.0, commit
+    cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af) -- see synthesized_from below.
+    Explicitly excludes writing-skills' upstream publish-and-review-request
+    deployment step; this repo's registry is internal, not a public marketplace.
+  required_handoff_fields:
+  - target_capability_or_skill_gap
+  skill_id: create-ff-skill
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  synthesized_from:
+  - source: obra/superpowers
+    skill: writing-skills
+    license: MIT
+    commit: d884ae04edebef577e82ff7c4e143debd0bbec99
+  - source: getsentry/skills
+    skill: skill-writer
+    license: Apache-2.0
+    commit: 5a64b36c62d042d3981b7937d9d6ca7bd1753b9a
+  - source: trailofbits/skills
+    skill: workflow-skill-design
+    license: CC-BY-SA-4.0
+    commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  risk_level: MEDIUM
+- command: /skill-improver
+  command_file: .claude/commands/skill-improver.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-023-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - single_pass_only
+  - no_daemon_mechanism_introduced
+  - no_third_party_plugin_dependency_introduced
+  - critical_findings_resolved_before_close
+  - minor_dispositions_recorded
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Run one single-pass Review-Categorize-Fix-Evaluate quality-improvement
+    cycle against an existing .claude/commands/*.md skill file, grounded in this
+    repository's own review surfaces (skill-scanner, create-ff-skill's Anti-Pattern
+    Quick Reference, preflight_skill_entry.py field contract). Adapted from
+    trailofbits/skills' skill-improver (CC-BY-SA-4.0, commit
+    cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af) -- methodology only. Upstream's
+    Stop-hook forced-continuation daemon (hooks/hooks.json + stop-hook.sh,
+    skill-improvement-complete marker re-injection) and its plugin-dev dependency
+    are excluded entirely, not imported -- FF already owns its own continuation
+    mechanism (check_continuation.py/sprint_executor.py); a second competing
+    hook-based daemon would be redundant/risky. This skill runs one pass and
+    returns; re-invocation is always an explicit new call, by a human or by FF's
+    existing sprint loop, never by a mechanism this skill installs.
+  required_handoff_fields:
+  - target_skill_command_file
+  skill_id: skill-improver
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: trailofbits/skills
+  external_skill_commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  external_skill_license: CC-BY-SA-4.0
+  risk_level: LOW
+- command: /gha-security-review
+  command_file: .claude/commands/gha-security-review.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-024-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - no_workflow_file_mutation
+  - no_external_network_call
+  - confidence_policy_high_medium_only
+  - full_file_read_before_reporting
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Security-review this repository's GitHub Actions workflows
+    (.github/workflows/*.yml) for vulnerabilities exploitable by an external
+    attacker without write access to this repository, using the real 4-step
+    methodology (Classify Triggers and Load References, Check Vulnerability
+    Classes, Validate Before Reporting, Report Findings) and 8 vulnerability
+    classes (Pwn Request, Expression Injection, Unauthorized Command Execution,
+    Credential Escalation, Config File Poisoning, Supply Chain, Permissions and
+    Secrets, Runner Infrastructure). Adapted from Sentry's gha-security-review
+    (getsentry/skills, Apache-2.0, commit
+    5a64b36c62d042d3981b7937d9d6ca7bd1753b9a). Read-only, no writes, no
+    external network calls; reports only HIGH/MEDIUM confidence findings
+    exploitable by an external, no-write-access attacker.
+  required_handoff_fields:
+  - target_workflow_file
+  skill_id: gha-security-review
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: getsentry/skills
+  external_skill_commit: 5a64b36c62d042d3981b7937d9d6ca7bd1753b9a
+  external_skill_license: Apache-2.0
+  risk_level: LOW
+- command: /agent-supply-chain
+  command_file: .claude/commands/agent-supply-chain.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-024-02
+  idempotency: state_mutating
+  implementation_paths: []
+  mandatory_validations:
+  - integrity_write_scoped_to_named_target_dir
+  - symlink_escape_blocked
+  - manifest_not_auto_generated_on_verify
+  - target_dir_argument_required
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Audit the supply-chain integrity of one explicitly-named target
+    directory (a vendored external skill/plugin directory) using 4 patterns --
+    Generate Integrity Manifest (per-file SHA-256 plus a sorted chain hash),
+    Verify Integrity (MISSING/MODIFIED/UNTRACKED classification), Dependency
+    Version Audit (flag unpinned version ranges in package.json/
+    requirements.txt/pyproject.toml), and Promotion Gate (combined
+    ready/checks verdict). Adapted from github/awesome-copilot's
+    agent-supply-chain (MIT, commit e353a8cfb8124d44905fc73214d873cea4a0ba3b).
+    The one write (INTEGRITY.json) is confined to the single named
+    target-dir; never follows a symlink resolving outside target-dir; never
+    auto-generates a manifest during Verify.
+  required_handoff_fields:
+  - target_directory
+  skill_id: agent-supply-chain
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: github/awesome-copilot
+  external_skill_commit: e353a8cfb8124d44905fc73214d873cea4a0ba3b
+  external_skill_license: MIT
+  risk_level: MEDIUM
+- command: /agent-owasp-compliance
+  command_file: .claude/commands/agent-owasp-compliance.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-025-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - read_only_tools_only
+  - no_target_mutation
+  - asi01_pattern_check_recorded
+  - critical_gaps_routed_to_found_issue_ownership
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Read-only reviewer (Read/Grep/Glob tools only) assessing a target
+    surface against the OWASP Agentic Security Initiative (ASI) Top 10 (ASI-01
+    Prompt Injection through ASI-10 Behavioral Anomaly). ASI-01 has a real
+    runnable positive/negative pattern-match check; ASI-02..10 are prose
+    checklists. Includes a 10-question rapid assessment checklist and a
+    Compliance Report template (X/10 Controls Covered). Adapted from
+    github/awesome-copilot's agent-owasp-compliance (MIT, commit
+    e353a8cfb8124d44905fc73214d873cea4a0ba3b). Scoped explicitly at
+    docs/python-foss/security-model.md's own named Known Limitations gap
+    ("No audit against formal security standards (OWASP, NIST)"), targeting
+    tools/supervisor/, tools/governance/, and .claude/commands/*.md -- distinct
+    from Gate 7/8's existing parser-level threat model.
+  required_handoff_fields:
+  - target_surface
+  skill_id: agent-owasp-compliance
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: github/awesome-copilot
+  external_skill_commit: e353a8cfb8124d44905fc73214d873cea4a0ba3b
+  external_skill_license: MIT
+  risk_level: LOW
+- command: /audit-context-building
+  command_file: .claude/commands/audit-context-building.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-025-02
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - read_only_tools_only
+  - no_vulnerability_or_fix_claims
+  - thresholds_met_per_function
+  - line_number_citations_required
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Pure context-building reviewer (Read/Grep/Glob, +Bash/Task only to
+    invoke) that explicitly does NOT identify vulnerabilities, propose fixes,
+    generate PoCs, or assign severity. 3 phases -- Initial Orientation (map
+    modules/entrypoints/actors/storage without assuming behavior), Ultra-Granular
+    Function Analysis (Purpose/Inputs & Assumptions/Outputs & Effects/
+    Block-by-Block per function, plus Cross-Function & External Flow Analysis's
+    Case A "internal, jump in" vs Case B "true external/black box, treat as
+    adversarial"; thresholds -- min 3 invariants, min 5 assumptions, min 3 risk
+    considerations per external interaction), Global System Understanding
+    (state/invariant reconstruction, trust boundary mapping). Anti-hallucination
+    rules -- cite line numbers, no naming-based inference. Adapted from
+    trailofbits/skills' audit-context-building (CC-BY-SA-4.0, commit
+    cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af). Scoped explicitly at
+    tools/supervisor/ and tools/governance/ -- the codebase Gate 8's own stated
+    Scope (docs/governance/security.md) does not cover.
+  required_handoff_fields:
+  - target_module_or_system
+  skill_id: audit-context-building
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: trailofbits/skills
+  external_skill_commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  external_skill_license: CC-BY-SA-4.0
+  risk_level: LOW
+- command: /trailmark
+  command_file: .claude/commands/trailmark.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-025-03
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - one_time_install_recorded
+  - no_target_mutation
+  - no_fix_or_severity_claims
+  - pyproject_toml_not_touched
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Builds a multi-language source-code graph (call graphs, attack-surface
+    mapping, blast radius, taint propagation, complexity hotspots, entry-point
+    enumeration) via the trailmark PyPI package's programmatic query API
+    (trailmark.query.api.QueryEngine.from_directory, .callers_of, .callees_of,
+    .paths_between, .complexity_hotspots, .attack_surface, .preanalysis).
+    One-time setup -- uv pip install trailmark (fallback -- .venv/Scripts/pip
+    install trailmark if uv unavailable). Adapted from trailofbits/skills'
+    trailmark (CC-BY-SA-4.0, commit cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af).
+    Scoped explicitly at tools/supervisor/ and tools/governance/ -- FF's only
+    existing blast-radius mechanism (/found-issue-ownership Step 4) is
+    reactive/manual/single-pattern-grep; this is proactive and codebase-wide.
+    risk_level MEDIUM reflects the one-time external package install,
+    reconciled against CLAUDE.md's Supreme Directive per this plan's section
+    7.1 item 4 (no TRUE_EXTERNAL_GATE hit).
+  required_handoff_fields:
+  - target_directory
+  - query_type
+  skill_id: trailmark
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: trailofbits/skills
+  external_skill_commit: cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af
+  external_skill_license: CC-BY-SA-4.0
+  risk_level: MEDIUM
+- command: /github-release
+  command_file: .claude/commands/github-release.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-028-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - tag_discovery_uses_git_tag_not_gh_release_list
+  - code_diff_wins_reconciliation_conflict
+  - semver_precedence_correctly_applied
+  - version_confirmed_before_step_5
+  - changelog_confirmed_before_write
+  - body_file_used_not_inline_body
+  - push_gated_by_scm_policy_check_001
+  - tag_creation_never_executed_by_this_skill
+  - publish_never_executed_by_this_skill
+  mechanism_type: ATOMIC_SKILL
+  product_track: infrastructure
+  purpose: Prepare a per-format release packet -- determine the next SemVer version
+    from a code-diff-primary/commit-log-secondary reconciled analysis (git tag
+    --sort=-version:refname for tag discovery, never gh release list), draft a Keep
+    a Changelog CHANGELOG.md entry, and open a PR (gh pr create --body-file, never
+    inline --body) carrying a release branch. Adapted from github/awesome-copilot's
+    github-release skill (MIT, commit e353a8cfb8124d44905fc73214d873cea4a0ba3b).
+    PUBLIC_PATH is a required per-format argument (src/python/<format>/ or
+    src/net/<format>/), never a repo-root default, given FF's multi-package-per-format
+    structure. Steps 5-8 (branch/changelog/commit/push/PR) are gated by
+    SCM-POLICY-CHECK-001 (plan section 7.2). Step 9 (tag creation + actual publish)
+    is never executed by this skill -- explicitly left to the user, enforced by
+    Forbidden Paths, not merely documented.
+  required_handoff_fields:
+  - public_path
+  - prev_tag
+  skill_id: github-release
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: github/awesome-copilot
+  external_skill_commit: e353a8cfb8124d44905fc73214d873cea4a0ba3b
+  external_skill_license: MIT
+  risk_level: HIGH
+  activation_gate: "Supervisor approval + SCM-POLICY-CHECK-001 (git push TRUE_EXTERNAL_GATE reconciled per plan section 7.1 item 2 -- agent prepares the release packet, human tags/publishes)"
+- command: /dependabot-config
+  command_file: .claude/commands/dependabot-config.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-027-01
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - ecosystems_confirmed_by_repo_inspection
+  - no_uv_lock_defaults_to_pip
+  - dependabot_yml_not_written_by_this_skill
+  - deprecated_pr_comment_commands_not_used
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: >-
+    Config-authoring guide for GitHub Dependabot (.github/dependabot.yml)
+    -- ecosystem-detection table, directories(plural,glob) vs directory(singular),
+    minimal per-ecosystem config block, grouping/labels/scheduling options, and
+    PR-comment commands (merge/close/reopen deprecated Jan 2026, use gh pr merge).
+    FF's confirmed ecosystems, verified this session -- pip (pyproject.toml, no
+    uv.lock found anywhere), nuget (src/net/**/*.csproj), github-actions
+    (.github/workflows/*.yml). Adapted from github/awesome-copilot's dependabot
+    skill (MIT, commit e353a8cfb8124d44905fc73214d873cea4a0ba3b). This import
+    drafts and registers the skill only -- .github/dependabot.yml is not created
+    or edited by this skill; doing so is a separate, deliberate, later action
+    gated by SCM-POLICY-CHECK-001 per this plan's section 7.1/7.2.
+  required_handoff_fields:
+  - confirmed_ecosystem_list
+  skill_id: dependabot-config
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: github/awesome-copilot
+  external_skill_commit: e353a8cfb8124d44905fc73214d873cea4a0ba3b
+  external_skill_license: MIT
+  risk_level: MEDIUM
+  activation_gate: "Supervisor approval + SCM-POLICY-CHECK-001 (gates only the future, separate write to .github/dependabot.yml -- reconciled per plan section 7.1 item 1: CI-config edits are within Supreme-Directive SCM-Agent authority, and Advisory-Database queries are read-only)"
+- command: /mcp-builder
+  command_file: .claude/commands/mcp-builder.md
+  created_at: '2026-07-14'
+  created_by: TC-EXT-026-02
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - vscode_mcp_json_not_touched
+  - handle_call_error_dict_not_exception
+  - test_mcp_bridge_extended_per_new_tool
+  - tools_list_name_prefix_preserved
+  mechanism_type: ATOMIC_SKILL
+  product_track: machinery_governance
+  purpose: >-
+    Formalizes/extends FF's own MCP server (tools/supervisor/mcp_bridge.py --
+    3 read-only tools, hand-rolled JSON-RPC 2.0 stdio, no SDK) with new tools,
+    via a 4-phase methodology (Deep Research and Planning, Implementation,
+    Review and Test, Create Evaluations) adapted from anthropics/skills'
+    mcp-builder (Apache-2.0 per skill-local LICENSE.txt, commit
+    9d2f1ae187231d8199c64b5b762e1bdf2244733d). Never touches .vscode/mcp.json
+    (FF's live MCP client registration) -- only mcp_bridge.py's own TOOLS
+    list/handle_call dispatcher. Cross-references /check-mcp-status as its
+    monitoring counterpart.
+  required_handoff_fields:
+  - new_tool_name
+  - new_tool_description
+  skill_id: mcp-builder
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/supervisor/test_mcp_bridge.py
+  advisory_only: true
+  external_skill_origin: true
+  external_skill_source: anthropics/skills
+  external_skill_commit: 9d2f1ae187231d8199c64b5b762e1bdf2244733d
+  external_skill_license: Apache-2.0
+  risk_level: MEDIUM
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

@@ -6941,8 +6941,68 @@ scanner. Stub patterns could enter product source without triggering any governa
 
 ---
 
+## §125 — lively-leaping-elephant: Governance and Machinery Healing Sprint (TERMINAL_CLOSED 2026-07-14)
+
+**Plan:** `plans/.claude/lively-leaping-elephant.md`  **Status: TERMINAL_CLOSED**
+**Taskcard file:** `plans/product-healing-taskcards.md`
+**Authority:** Governance and machinery healing sprint (type: machinery_hardening)
+**Evidence:** `.local/evidences/lle-b42c7529/evidence-declaration.yaml`
+**Closure record:** `.local/evidences/plan-closures/8316de21062d8015/terminal_closure_record.json`
+
+### Sprint Deliverables (all COMPLETED_AND_VERIFIED — 207 tests pass)
+
+| Taskcard | Deliverable | Evidence |
+|----------|-------------|----------|
+| TC-GOV-LLE-001 | `docs/code-quality/production-library-best-practices-checklist.md` (75 items) | COMMITTED |
+| TC-GOV-LLE-002 | Gap registers amended: V39→V35/V66, root_cause, detection_tested | COMMITTED |
+| TC-GOV-LLE-003 | `reports/governance/root-cause-analysis-2026-07.md` (4 structural failures) | COMMITTED |
+| TC-GOV-LLE-004 | V187-V193 validators + shadow registration + 11 tests + runner (count 216→223) | COMMITTED |
+| TC-GOV-LLE-005 | `registry/source-structure-baseline.json`: heal_policy + remediation_status (5 entries) | COMMITTED |
+| TC-GOV-LLE-006 | Phase 19 `code_quality_delta` in sprint_executor_validate.py + contract doc | COMMITTED |
+| TC-GOV-LLE-007 | `violation_pressure` field in check_continuation.py output | COMMITTED |
+| TC-GOV-LLE-008 | `plans/product-healing-taskcards.md` + §125 master plan amendment | COMMITTED |
+| TC-GOV-LLE-009 | production-library-standard-v2.md: V187/V188/V193 + remediation_deadline correction | COMMITTED |
+| TC-GOV-LLE-010 | validation-matrix-2026-07.md + validator-run-2026-07.txt + evidence declaration | COMMITTED |
+
+### Source Architecture Healing Taskcards (next sprint group — gates: V187 PASS)
+
+| Taskcard | Target | Status | Authority |
+|----------|--------|--------|-----------|
+| TC-HEAL-SRC-001 | xcf/xcf_image_metrics.py split (104 fn) | not_attempted | TC-GOV-LLE-008 |
+| TC-HEAL-SRC-002 | fods/fods_analytics.py split (1103 LOC) | not_attempted | TC-GOV-LLE-008 |
+| TC-HEAL-SRC-003 | ods/ods_analytics.py split (~1000 LOC) | not_attempted | TC-GOV-LLE-008 |
+| TC-HEAL-SRC-004 | zst/zst_codec.py separation (V66 fires) | not_attempted | TC-GOV-LLE-008 |
+| TC-HEAL-SRC-005 | abw/word_document.py extraction (101 fn) | not_attempted | TC-GOV-LLE-008 |
+
+Each requires `code_quality_delta` evidence block and `remediation_status: "complete"` update.
+See `plans/product-healing-taskcards.md` for full implementation detail.
+
+---
+
 ## Section 100 — yes-my-earlier-answer-humming-waffle: External Engineering Skill Adoption (IN_PROGRESS)
 
 **Plan:** `plans/.claude/yes-my-earlier-answer-humming-waffle.md`
 
 Amendment executing the dormant Superpowers skill-intake process (docs/governance/superpowers-skill-intake.md, docs/governance/external-tool-architecture.md Tool 2) to: (1) import ~26 external engineering-methodology skills (debugging, TDD, code review, testing, security) with full provenance/license tracking, (2) repair two real pre-existing governance bugs found during analysis — HO-007's stale closure status and an incomplete SKILL-GAP-003 closure, and a live override loophole in SKILL-GAP-008's GOV_BLOCK enforcement, (3) build a permanent layer-to-skill attribution sync mechanism. See the plan file for full taskcard detail (28 parent taskcards, hierarchical child/micro-step decomposition).
+
+---
+
+## Section 101 — fuzzy-conjuring-lobster: Generation Archaeology (CLOSED 2026-07-14)
+
+**Plan:** `plans/.claude/fuzzy-conjuring-lobster.md`
+**Type:** archaeology_audit
+**Verdict:** SYSTEM_HEALTHY_MINOR_GAPS
+
+Comprehensive generation archaeology answering: "Is Format Factory currently able to convert specifications into professional, repeatable, qname/spec-hierarchy-aligned, testable, maintainable .NET and Python format libraries?" Audited all 20 Python + 10 .NET formats across 11 lanes (A-K). All 19 taskcards CLOSED.
+
+**Key findings:**
+- All 20 Python formats have `spec/` + `Compat/` subdirectories; all are at VERIFIED oracle status
+- QName coverage: 99.4% (1 intentional gap: `fodt:office:body`)
+- Generation waves classified: Gen 1=[csv,tsv], Gen 2=[fods,fodt,ods,odt], Gen 3=[remaining 14 formats], Gen 4=[]
+- No EP-1 stub violations; 0 malformed source entry points
+- Capability pipeline producing 10 work items (dom_typed_children for ABW/DIF/FODG/FODP/GNUMERIC)
+
+**Artifacts:** `reports/archaeology-2026-07-10/preflight-state.md`, `system-gap-matrix.yaml`, `archaeology-verdict.md`
+
+**Deferred gap:** GAP-ARCH-C001 — `fodt:office:body` qname backfill → run `/qname-backfill` in next fodt-specific sprint
+**External gate:** GAP-ARCH-K002 — FODT/FODS commercial release requires Babar Raza sign-off

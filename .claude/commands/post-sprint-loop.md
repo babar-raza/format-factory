@@ -1,5 +1,5 @@
 ---
-version: "1.0"
+version: "1.1"
 last-updated: "2026-06-15"
 phase-available: "all"
 gate-required: null
@@ -39,12 +39,19 @@ Run the full Post-Sprint Autonomy Loop: Audit -> Harden -> Execute -> Classify -
    - `MAX_LOOPS_EXCEEDED` -> Stop, report remaining issues
    - `BLOCKED_EXTERNAL` / `HARD_STOP` -> Stop with evidence
 
-7. After acceptance, package evidence:
+7. **Verification gate (before evidence packaging):** Confirm the `/post-sprint-audit`
+   Pre-Closure Verification Checklist (Gate Function: Identify -> Run -> Read -> Verify ->
+   Claim) was actually executed for this run's Stage 1 output. If it was not run — no
+   `stage1-*` evidence shows a fresh proof-command execution backing the accepted
+   claims — do NOT proceed to Step 8. Route back to Step 2 (Audit) and run the
+   checklist before packaging evidence.
+
+8. After acceptance, package evidence:
    ```
    python tools/supervisor/build_declaration_review_package.py --declaration <declaration_path>
    ```
 
-8. Report the absolute evidence package path and SHA-256.
+9. Report the absolute evidence package path and SHA-256.
 
 ## Loop Decision Rules
 

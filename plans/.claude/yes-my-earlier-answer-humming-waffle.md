@@ -186,7 +186,7 @@ Micro-steps are recorded as compact tables (ID | Action | Target | Completion ch
 Parent Taskcard ID: TC-EXT-000
 Title: Fix stale plan cross-references; establish Section 100 as this plan's home
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: grep for "Section 43" in both governance docs returns 0 hits; plans/master-plan.md:6944 contains the new Section 100 heading
 Owner: planning-lane
 Supervisor: governance-lane
 Source: {Plan requirement ID: REQ-EXT-000, Plan section: Context, Root cause: "external-tool-architecture.md and superpowers-skill-intake.md both cite a 'Section 43' authority that no longer matches (Section 43 is now an unrelated closed plan); plans/master-plan.md has no entry point for this work", Selected solution: "point both docs at the new Section 100; seed Section 100 from this file"}
@@ -236,7 +236,7 @@ TC-EXT-000-03 micro-steps:
 Parent Taskcard ID: TC-EXT-001
 Title: Source/provenance/license intake for all imported external sources
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: 6 commit SHAs pinned (see §8 Verified Source Inventory), mcp-builder LICENSE.txt confirmed Apache-2.0
 Source: {Plan requirement ID: REQ-EXT-001, Plan section: "Governance Compliance"}
 Objective: [every skill imported by this plan has a pinned commit SHA, confirmed license, and documented risk level before registration]
 Outcome: [external_skill_commit and external_skill_license populated for every TC-EXT-01x/02x import — no skill registers with a blank provenance field]
@@ -339,7 +339,7 @@ TC-EXT-003-05 micro-steps:
 Parent Taskcard ID: TC-EXT-004
 Title: Fix master.md's own layer-count inconsistency (28 header / 27 prose / 29 actual)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: L28/L29 present in all 5 tables (§6/§7/maturity/§21/§26); grep confirms zero "28 layers"/"27 accepted" mentions remain; total_layers: 29 matches index.yaml's 29 layer_id entries
 Source: {Plan requirement ID: REQ-EXT-004, Plan section: "Finding 2", Root cause: "L28 and L29 were created after master.md's last full refresh and were never added to its layer table, dependency graph, maturity matrix, skill-coverage table, or completion accounting"}
 Objective: [master.md's header, prose, and index.yaml agree on exactly 29 layers, with L28/L29 present in every table that lists layers]
 Outcome: [grep for "28 layers"/"27 layers"/"27 accepted" in master.md returns only the corrected "29"]
@@ -380,7 +380,7 @@ TC-EXT-004-03 micro-steps:
 Parent Taskcard ID: TC-EXT-005
 Title: Extend /reconcile-layer-index to reconcile skill_ids against skill-registry.yaml
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: step 6 + skill_id_mismatches category added; dry run confirmed exactly 90 unattributed skills at time of run (later rose to 92 after TC-EXT-009/010 each added 1 skill — expected, not a defect)
 Source: {Plan requirement ID: REQ-EXT-005, Plan section: "Finding 2", Root cause: "reconcile-layer-index.md's own spec (Execution steps 1-5) only compares layer_id/status/maturity_current between index.yaml and each layer .md file — it never touches skill_ids or cross-references skill-registry.yaml, confirmed by direct read of the file", Selected solution: "add a 6th execution step + output category to the existing skill, not a new competing skill"}
 Objective: [/reconcile-layer-index can detect any skill_id present in skill-registry.yaml but absent from every layer's skill_ids array, and vice versa]
 Outcome: [running the extended skill against the current registry reports the known 90-skill discrepancy correctly, proving the extension works before TC-EXT-006 uses it to fix them]
@@ -424,7 +424,7 @@ TC-EXT-005-03 micro-steps:
 Parent Taskcard ID: TC-EXT-006
 Title: Backfill all 90 currently-unattributed skills into plans/layers/index.yaml
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14 (independently recomputed by the orchestrating session, not just agent self-report): 151 registry skills, 144 attributed, 7 unattributed remainder exactly matches the 7 skills explicitly documented as intentionally cross-cutting (acquisition ×3, playbook_governance ×4) in index.yaml's new `cross_cutting_unmapped_product_tracks` block — true unexplained remainder is 0
 Source: {Plan requirement ID: REQ-EXT-006, Plan section: "Finding 2"}
 Objective: [index.yaml's skill_ids arrays for L01-L27 reflect the current skill-registry.yaml, not the 2026-06-26 bootstrap snapshot]
 Outcome: [TC-EXT-005's extended reconciler reports 0 unattributed skills except any explicitly flagged as intentionally cross-cutting]
@@ -466,7 +466,7 @@ TC-EXT-006-09 micro-steps:
 Parent Taskcard ID: TC-EXT-007
 Title: Reconcile the 5 divergent skill-count numbers and fix minor tracked drift
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: README.md, PROJECT_STATUS.md, .supervisor/skill-inventory.yaml, .governance/capabilities/registry.yaml, and plans/layers/master.md (fixed directly by orchestrating session — was out of TC-EXT-007's original file scope by an authoring oversight, corrected) all now report 151, matching the raw registry; SKILL-GAP-011 (rollback_and_recovery) moved to active_mappings
 Source: {Plan requirement ID: REQ-EXT-007, Plan section: "Finding 2, Finding 8"}
 Objective: [README.md, PROJECT_STATUS.md, skill-inventory.yaml, master.md, and the raw registry all report the same skill count, generated from one pass]
 Dependencies: [TC-EXT-006]
@@ -511,7 +511,7 @@ TC-EXT-007-06 micro-steps:
 Parent Taskcard ID: TC-EXT-008
 Title: Register layer gaps for the 6 genuinely zero-coverage layers
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: CORP-GAP-001/SCH-GAP-001/REG-GAP-001/CAPI-GAP-001/SEC-GAP-001/MET-GAP-001 registered in their owning layer plans' §14, logged to change-ledger.jsonl (CL-007..CL-012, all valid JSON)
 Source: {Plan requirement ID: REQ-EXT-008, Plan section: "Finding 3"}
 Objective: [L04, L15, L17, L19, L20, L24 each have a registered, visible, prioritizable gap entry — content design deferred to whoever picks up each gap]
 Scope: {Allowed files: [via /register-layer-gap's own allowed paths only]}
@@ -539,7 +539,7 @@ Each shares one micro-step pattern:
 Parent Taskcard ID: TC-EXT-009
 Title: Resolve SKILL-GAP-003 (capability_compiler / L14) — complete the incomplete closure, wire output, consolidate duplicates
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: capability-compiler skill registered + routed; gap closed consistently in all 3 registries; autonomous_task_generator.py wired to _load_compiled_taskcards(), proof script passes, 2 real compiled taskcards confirmed surfacing; 68 pre-existing tests still pass. One latent pre-existing bug surfaced (not introduced, not fixed — out of scope): sys.path shadowing means capability_queue_consumer.py actually imports tools/capability_layer/capability_compiler.py (L03's tool) at runtime, not tools/supervisor/capability_compiler.py — recorded as DEC-036 in plans/layers/decision-register.yaml as a flagged follow-on
 Source: {Plan requirement ID: REQ-EXT-009, Plan section: "Finding 6", Root cause: "TC-SFE3-002's closure only wrote skill-gap-003-closure-proof.yaml; it never removed the gap from the 3 registries that gate skill-coverage checks, and its own justification (crediting /build-capability-routes) doesn't hold up — that skill is a route-integrity validator, not a compilation router", Selected solution: "register tools/supervisor/capability_compiler.py as the canonical skill, fix all 3 registries consistently, execute the already-specced TC-CAP-DIAG-001 wiring fix, retire the 7 duplicate files"}
 Objective: [capability_compiler is a registered, routed, consistently-tracked skill; its compiled output actually drives task selection; duplicate files are retired, not silently coexisting]
 Outcome: [work-type-skill-map.yaml, skill-system-baseline.yaml, and skill-registry.yaml all agree capability_compiler is resolved; autonomous_task_generator.py reads .local/capability-consumer/taskcards/]
@@ -607,7 +607,7 @@ TC-EXT-009-06 micro-steps:
 Parent Taskcard ID: TC-EXT-010
 Title: Resolve SKILL-GAP-008 (pre_sprint_governance_hook) — register the skill, close two live override loopholes
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: pre-sprint-governance-hook registered, both override loopholes patched, new test proves the fix (8/8 pass), CLAUDE.md validator count corrected 4→6
 Source: {Plan requirement ID: REQ-EXT-010, Plan section: "Finding 7", Root cause: "check_continuation.py Check 8 + governance_block_registry.py already detect and correctly stop on a structural GOV_BLOCK, but sprint_executor.py's _is_external_gate() and autonomous-loop.md's STOP-reason catch-all both fail to recognize structural_govblock_must_be_resolved_first as non-overridable, so both actuators currently let the 'binding' rule through", Selected solution: "register a thin skill wrapping the existing detection (do not reimplement); patch both actuators' override logic; reconcile CLAUDE.md's stale 4-vs-6 validator count; allocate a fresh gap ID"}
 Objective: [the GOV_BLOCK exception cannot be silently bypassed by either the headless or interactive execution path]
 Outcome: [a test proves sprint_executor.py halts (not proceeds) when structural_govblock_must_be_resolved_first is present; autonomous-loop.md's NON-OVERRIDABLE list explicitly names it]
@@ -741,7 +741,7 @@ With this precondition satisfied (or explicitly classified if not), every taskca
 Parent Taskcard ID: TC-EXT-012
 Title: Import skill-scanner (Sentry, Apache-2.0) as the gating security scanner
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered, self-scanned clean, cross-scanned 2 other skills, layer-attributed L13
 Risk level: LOW | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-012, Plan section: "Group 5"}
 Dependencies: [TC-EXT-001]
@@ -785,7 +785,7 @@ TC-EXT-012-05 micro-steps: (shared pattern with all other parents below — "lay
 Parent Taskcard ID: TC-EXT-013
 Title: Import systematic-debugging (obra/superpowers, MIT)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered, scanned clean, layer-attributed L13, FF-specific escalation to /found-issue-ownership wired
 Risk level: LOW | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-013, Plan section: "Group 0"}
 Dependencies: [TC-EXT-012, TC-EXT-005]
@@ -821,7 +821,7 @@ TC-EXT-013-03/04 micro-steps: standard registration pattern (see TC-EXT-012-02 f
 Parent Taskcard ID: TC-EXT-014
 Title: Import test-driven-development (obra/superpowers, MIT, RED-GREEN-REFACTOR)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered (risk MEDIUM, direct src/** write forbidden per EP-3), 3 minimal cross-reference notes added to product-source-task.md/add-python-api.md/add-dotnet-api.md (2 lines each, confirmed)
 Risk level: MEDIUM | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-014, Plan section: "Group 0"}
 Dependencies: [TC-EXT-012, TC-EXT-005]
@@ -857,7 +857,7 @@ TC-EXT-014-03/04 micro-steps: standard pattern.
 Parent Taskcard ID: TC-EXT-015
 Title: Merge verification-before-completion (obra/superpowers) + differential-review (ToB) into existing closure skills
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: post-sprint-audit.md/post-sprint-loop.md/product-source-task.md all bumped v1.0→1.1 (product-source-task reconciled to 1.1→1.3 tracking a pre-existing changelog drift found mid-edit), no new skill_id, TDD cross-reference confirmed not clobbered
 Risk level: LOW | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-015, Plan section: "Group 0, 3"}
 Dependencies: [TC-EXT-012]
@@ -883,7 +883,7 @@ Each shares one micro-step pattern:
 Parent Taskcard ID: TC-EXT-016
 Title: Import receiving-code-review (obra/superpowers, MIT)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered (first risk_level: HIGH + activation_gate entry in the registry), gh api reply call gated behind SCM-POLICY-CHECK-001, wired to consume the 5 TC-EXT-017 reviewers' output, layer-attributed L13
 Risk level: HIGH (real `gh api` external call posting a PR comment reply) | Activation gate: Supervisor approval + SCM-POLICY-CHECK-001 (§7.2) — not a per-instance human stop
 Source: {Plan requirement ID: REQ-EXT-016, Plan section: "Group 0"}
 Dependencies: [TC-EXT-012, TC-EXT-017]
@@ -912,7 +912,7 @@ TC-EXT-016-02/03/04 micro-steps: TC-EXT-016-02 wires to TC-EXT-017's reviewer ou
 Parent Taskcard ID: TC-EXT-017
 Title: Import 5 read-only reviewers (silent-failure-hunter, type-design-analyzer, comment-analyzer, pr-test-analyzer — Apache-2.0 via claude-plugins-official; sharp-edges — ToB, CC-BY-SA)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: all 5 registered, all scanned clean, all layer-attributed L13, all read-only with Forbidden Paths blocking writes
 Risk level: LOW (all 5 confirmed read-only/advisory, zero external calls) | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-017, Plan section: "Group 2"}
 Dependencies: [TC-EXT-012, TC-EXT-005, TC-EXT-001-02 (sharp-edges attribution)]
@@ -942,7 +942,7 @@ Each child shares this micro-step pattern:
 Parent Taskcard ID: TC-EXT-018
 Title: Import property-based-testing (ToB, CC-BY-SA-4.0)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered, hypothesis already available (6.155.7, pyproject.toml dev group), pilot roundtrip test written for csv (parse_csv_strict/write_csv) and PASSES, layer-attributed L13
 Risk level: MEDIUM (writes test code directly, bounded to test files, pilot-gated) | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-018, Plan section: "Group 3"}
 Dependencies: [TC-EXT-012, TC-EXT-001-02]
@@ -978,7 +978,7 @@ TC-EXT-018-04 micro-steps: standard pattern.
 Parent Taskcard ID: TC-EXT-019
 Title: Merge modern-python guidance (ToB — EXCLUDING its SessionStart hook) + impediment-prioritization (awesome-copilot) into existing skills
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: merged into python-qname-code-reviewer.md and promote-gap-to-taskcard.md, negative control confirms zero SessionStart/hooks.json/setup-shims references, create-ff-skill.md confirmed not yet existing at merge time (correctly deferred)
 Risk level: LOW (hook explicitly excluded per §7.1; both merges are read-only guidance) | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-019, Plan section: "Group 2, 7"}
 Dependencies: [TC-EXT-012]
@@ -1013,7 +1013,7 @@ TC-EXT-019-03/04 micro-steps: 1 step each — add the note; run the negative-con
 Parent Taskcard ID: TC-EXT-020
 Title: Build gh-fix-ci (FF-original — no upstream name verified in this session's research)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered against the REAL current 14-job CI list (re-derived from ci.yml, not assumed — plan's "13 jobs" label was stale by one), layer-attributed L13
 Risk level: MEDIUM (reads CI logs via `gh run view` — external read-only network call; local diagnostics only) | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-020, Plan section: "Group 9"}
 Dependencies: []
@@ -1046,7 +1046,7 @@ TC-EXT-020-03/04 micro-steps: standard pattern.
 Parent Taskcard ID: TC-EXT-021
 Title: Build gh-address-comments (FF-original)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered (risk HIGH, SCM-POLICY-CHECK-001 gating the gh api reply call), layer-attributed L13
 Risk level: HIGH (posts PR comment responses via `gh api`) | Activation gate: Supervisor approval + SCM-POLICY-CHECK-001
 Source: {Plan requirement ID: REQ-EXT-021, Plan section: "Group 9"}
 Dependencies: [TC-EXT-020]
@@ -1068,7 +1068,7 @@ Micro-steps: same pattern as TC-EXT-016 (draft classification model → draft fi
 Parent Taskcard ID: TC-EXT-022
 Title: Build create-ff-skill, absorbing writing-skills (Superpowers, MIT — EXCLUDING its push/PR deployment step), skill-writer (Sentry, Apache-2.0), workflow-skill-design (ToB, CC-BY-SA)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered with synthesized_from (3 sources+SHAs), negative control confirms zero push/fork/contribute-PR references, layer-attribution via /reconcile-layer-index made mandatory Step 7
 Risk level: MEDIUM (bounded to skill-definition/registry files — same domain FF's own create-taskcard-class skills already mutate routinely) | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-022, Plan section: "Group 6"}
 Dependencies: [TC-EXT-012, TC-EXT-005]
@@ -1113,7 +1113,7 @@ TC-EXT-022-05 micro-steps: standard pattern.
 Parent Taskcard ID: TC-EXT-023
 Title: Import skill-improver's non-hook methodology only (ToB, CC-BY-SA-4.0) — Stop-hook mechanism EXCLUDED
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered as risk LOW (re-scoped), negative control confirms zero hooks.json/stop-hook.sh files created anywhere in repo, prominent Explicit Exclusions section documents the omission, single-pass re-invocation model (no daemon) confirmed
 Risk level: LOW as re-scoped (hook excluded; adapted as a single-pass skill inside FF's existing sprint loop, not a competing continuation daemon) | Activation gate: Supervisor review
 Source: {Plan requirement ID: REQ-EXT-023, Plan section: "Group 6"}
 Dependencies: [TC-EXT-012, TC-EXT-022, TC-EXT-001-02]
@@ -1142,7 +1142,7 @@ TC-EXT-023-02/03/04 micro-steps: adapt Critical/Major/Minor categorization (1 st
 Parent Taskcard ID: TC-EXT-024
 Title: Import gha-security-review (Sentry, Apache-2.0) + agent-supply-chain (awesome-copilot, MIT)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: both registered; agent-supply-chain's own drafting caught and fixed a real symlink-escape risk in its own methodology before registration; layer-attributed L13
 Risk level: LOW (gha-security-review) / MEDIUM (agent-supply-chain writes INTEGRITY.json) | Activation gate: Supervisor review / approval respectively
 Source: {Plan requirement ID: REQ-EXT-024, Plan section: "Group 5"}
 Dependencies: [TC-EXT-012]
@@ -1177,7 +1177,7 @@ TC-EXT-024-03/04/05 micro-steps: standard pattern, twice.
 Parent Taskcard ID: TC-EXT-025
 Title: Import agent-owasp-compliance (awesome-copilot, MIT), audit-context-building (ToB, CC-BY-SA), trailmark (ToB, CC-BY-SA) — all promoted from defer with real evidence
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: all 3 registered; trailmark actually installed (0.4.0, via pip fallback since uv unavailable) — but see Finding 10/TC-EXT-002B: trailmark segfaults on real multi-file dirs in this environment, tracked as a new deferred gap, not silently hidden; layer-attributed L13
 Risk level: LOW (agent-owasp-compliance, audit-context-building) / MEDIUM (trailmark — one-time external package install) | Activation gate: Supervisor review / review / approval respectively
 Source: {Plan requirement ID: REQ-EXT-025, Plan section: "Group 5, Finding 4"}
 Dependencies: [TC-EXT-012, TC-EXT-001-02]
@@ -1221,7 +1221,7 @@ TC-EXT-025-04/05/06/07 micro-steps: standard registration pattern, 3 times, plus
 Parent Taskcard ID: TC-EXT-026
 Title: Import mcp-builder (anthropics/skills, Apache-2.0 per-skill LICENSE.txt confirmed)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered, adapted around FF's real mcp_bridge.py structure (127-LOC hand-rolled JSON-RPC server), Forbidden Paths confirmed blocking .vscode/mcp.json (byte-identical pre/post, hash-verified), layer-attributed L22 (External Tool Governance, not L13 — better fit, justified)
 Risk level: MEDIUM (scoped to authoring new, separate MCP server source — confirmed it never touches FF's own live `.vscode/mcp.json`) | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-026, Plan section: "Group 6"}
 Dependencies: [TC-EXT-012, TC-EXT-001-03]
@@ -1250,7 +1250,7 @@ TC-EXT-026-03/04 micro-steps: standard pattern with Apache-2.0 attribution comme
 Parent Taskcard ID: TC-EXT-027
 Title: Import dependabot-inspired skill (awesome-copilot content as reference — zero dependency-update automation exists today)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered as dependabot-config (named to avoid collision with .github/dependabot.yml), adapted to FF's real confirmed ecosystems (pip, nuget, github-actions — not uv, confirmed no uv.lock exists), .github/dependabot.yml confirmed never created, layer-attributed L13
 Risk level: MEDIUM (CI-config edit is within Supreme-Directive SCM-Agent authority per §7.1; Advisory-Database queries are read-only) | Activation gate: Supervisor approval
 Source: {Plan requirement ID: REQ-EXT-027, Plan section: "Group 8"}
 Dependencies: [TC-EXT-012]
@@ -1278,7 +1278,7 @@ TC-EXT-027-03/04 micro-steps: standard pattern, citing §7.1's reconciliation ex
 Parent Taskcard ID: TC-EXT-028
 Title: Import github-release (awesome-copilot content as reference)
 Type: PARENT
-Status: READY
+Status: CLOSED — verified 2026-07-14: registered (risk HIGH, activation_gate = SCM Agent policy per §7.1 item 2), Forbidden Paths+Stop Conditions independently double-block tag creation/publish, git log/tag/branch confirmed unchanged (no real release action performed), layer-attributed L13
 Risk level: HIGH (git push in Step 7 — hits the named TRUE_EXTERNAL_GATE directly) | Activation gate: SCM Agent policy authorization (CLAUDE.md's existing push doctrine) — agent prepares the release packet autonomously; the packet's own Steps 4/6 already require the confirmations upstream itself designed in, and Step 9 (tag + actual publish) is explicitly left to the user by the skill's own design, matching FF's existing publication-credentials boundary
 Source: {Plan requirement ID: REQ-EXT-028, Plan section: "Group 8"}
 Dependencies: [TC-EXT-012]
@@ -1378,19 +1378,56 @@ Also found: `acquisition` (5 skills) is a `product_track` with no corresponding 
 
 ### Finding 8 (minor): `SKILL-GAP-011` stale (already resolved, tracking file not updated); `/detect-duplicate-skills` structurally can't catch orphaned deprecations (no actual harm found); 4 active L28-Certification skills lag the capability registry.
 
+### Finding 9 (discovered during TC-EXT-009 execution, 2026-07-14): `sys.path` shadowing means the wrong `capability_compiler.py` runs at import time
+
+`capability_queue_consumer.py` was confirmed (live, via TC-EXT-009's own verification pass) to actually import `tools/capability_layer/capability_compiler.py` (Layer L03's tool) at runtime, not `tools/supervisor/capability_compiler.py` (the file this plan registered and wired in TC-EXT-009), due to Python `sys.path` insertion order. This is a **pre-existing latent bug**, not introduced by TC-EXT-009 — it predates this plan and was not previously known. It did not block TC-EXT-009's own acceptance criteria (the wiring proof and 68 pre-existing tests all pass regardless of which module wins the import, since neither TC-EXT-009 nor prior behavior depended on which one actually executes), but it means the *registered* skill (`capability-compiler`, pointing at `tools/supervisor/capability_compiler.py`) may not be the module that actually executes in production today.
+
+**Disposition: DEFERRED_WITH_REASON, tracked as TC-EXT-002 below** — recorded per EP-2 (every finding must become a governed gap/taskcard, not just a decision-register note) rather than left informal. Not required for this plan's own closure (out of original scope), but must not be silently dropped.
+
+**TC-EXT-002** (new, added during REAUDIT):
+```yaml
+Parent Taskcard ID: TC-EXT-002
+Title: Fix sys.path shadowing between tools/supervisor/capability_compiler.py and tools/capability_layer/capability_compiler.py
+Type: PARENT
+Status: DEFERRED_WITH_REASON
+Reason: Discovered during TC-EXT-009 execution, out of this plan's original scope; does not block any Wave-0 or Wave-A+ acceptance criteria. Requires its own root-cause investigation (which sys.path entry wins, whether tools/capability_layer/ or tools/supervisor/ should take precedence, and whether capability_queue_consumer.py's import statement should be made explicit/absolute rather than relying on path order) before a safe fix can be designed.
+Source: {Root cause: "two files with the identical basename capability_compiler.py exist on sys.path (tools/supervisor/ and tools/capability_layer/), and whichever directory is inserted first wins silently", Evidence: "plans/layers/decision-register.yaml DEC-036"}
+Dependencies: [TC-EXT-009 (already closed)]
+Next action: investigate sys.path construction in capability_queue_consumer.py and autonomous_cycle.py; convert the import to an explicit, unambiguous module path; add a regression test asserting the correct module is imported.
+```
+
+### Finding 10 (discovered during TC-EXT-025 execution, 2026-07-14): `trailmark` 0.4.0 segfaults on real multi-file directories in this environment
+
+Package installed successfully (`.venv/Scripts/pip install trailmark` — `trailmark-0.4.0`, `rustworkx-0.18.0`, `tree-sitter-0.26.0`, `tree-sitter-language-pack-1.12.5`, `numpy-2.5.1`, confirmed importable). However, `trailmark.query.api.QueryEngine.from_directory()` segfaults (exit 139) when pointed at real multi-file directories in this environment (`tools/supervisor`, `tools/governance`), while a minimal 2-function isolated test file works fine and `rustworkx`/`tree_sitter_language_pack` each work in isolation. Bisected to two specific files reproducing the crash individually: `tools/governance/check_methodology_links.py` and `tools/governance/pre_mutation_guard.py`. This is a native-level bug in the installed `trailmark`/tree-sitter stack on this platform, not an FF configuration issue — pre-existing in the upstream package, not introduced by this plan.
+
+**Disposition: DEFERRED_WITH_REASON, tracked as TC-EXT-002B below** — the skill (`.claude/commands/trailmark.md`) is correctly registered and documents real, working query API surface; this finding means it cannot yet be RELIED ON for real analysis of tools/supervisor or tools/governance until the crash is root-caused (likely a tree-sitter grammar/parser-version mismatch or a rustworkx/numpy ABI incompatibility on this platform). Not required for this plan's own closure (the registration/install/documentation requirements are met), but must not be silently dropped.
+
+```yaml
+Parent Taskcard ID: TC-EXT-002B
+Title: Root-cause and fix trailmark 0.4.0 segfault on tools/supervisor and tools/governance
+Type: PARENT
+Status: DEFERRED_WITH_REASON
+Reason: Discovered during TC-EXT-025 execution, out of this plan's original scope. Does not block trailmark's own registration (the skill file is correct and usable once the crash is fixed) or any other taskcard's acceptance criteria.
+Source: {Root cause: "unconfirmed — likely tree-sitter grammar/parser version mismatch or rustworkx/numpy ABI incompatibility on this platform", Evidence: "bisected to tools/governance/check_methodology_links.py and tools/governance/pre_mutation_guard.py, each individually reproducing exit 139"}
+Dependencies: [TC-EXT-025 (already closed)]
+Next action: reproduce with a debugger/core-dump to identify the exact native crash site; check trailmark's GitHub issues for known tree-sitter version conflicts; consider pinning tree-sitter-language-pack to an alternate version; add a regression test once fixed proving QueryEngine.from_directory() succeeds against tools/supervisor and tools/governance.
+```
+
 ### Verified Source Inventory
 
-| Source | Repo | License | Total skills | Confirmed relevant |
-|---|---|---|---|---|
-| Superpowers | `obra/superpowers` | MIT | 14 | 12 |
-| Trail of Bits Skills | `trailofbits/skills` | **CC-BY-SA-4.0** ⚠ | 40 | 20 verified real |
-| Sentry Skills | `getsentry/skills` | Apache-2.0 | 28 | 9 confirmed |
-| GitHub Awesome Copilot | `github/awesome-copilot` | MIT | 100s | 22/23 confirmed |
-| Anthropic Skills examples | `anthropics/skills` | ⚠ no repo LICENSE | 17 | 5 confirmed |
-| Anthropic PR Review Toolkit | `anthropics/claude-code` (mirrored in `claude-plugins-official`) | Apache-2.0 (mirror) | 6 | 6 confirmed |
-| wshobson/agents (plugin-eval) | `wshobson/agents` | MIT | 1 relevant subdir | community — reference only |
-| Vercel / Cloudflare | — | MIT / Apache-2.0 | — | 0 — confirmed irrelevant |
-| openai/plugins | — | none detected | 100+ | 0 — refuted claims |
+TC-EXT-001 CLOSED (2026-07-14): commit SHAs pinned via direct GitHub API fetch, cross-verified via curl + WebFetch. mcp-builder's per-skill LICENSE.txt (Apache-2.0) confirmed present at `anthropics/skills/skills/mcp-builder/LICENSE.txt` — TC-EXT-001-03 resolved to "license confirmed," not the fallback from-scratch path. ToB attribution requirements (TC-EXT-001-02) captured during the full-content fetch pass earlier this session (author fields from each plugin's `plugin.json`).
+
+| Source | Repo | Pinned commit SHA | Commit date | License | Total skills | Confirmed relevant |
+|---|---|---|---|---|---|---|
+| Superpowers | `obra/superpowers` | `d884ae04edebef577e82ff7c4e143debd0bbec99` | 2026-07-02 | MIT | 14 | 12 |
+| Trail of Bits Skills | `trailofbits/skills` | `cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af` | 2026-06-30 | **CC-BY-SA-4.0** ⚠ | 40 | 20 verified real |
+| Sentry Skills | `getsentry/skills` | `5a64b36c62d042d3981b7937d9d6ca7bd1753b9a` | 2026-06-30 | Apache-2.0 | 28 | 9 confirmed |
+| GitHub Awesome Copilot | `github/awesome-copilot` | `e353a8cfb8124d44905fc73214d873cea4a0ba3b` | 2026-07-14 | MIT | 100s | 22/23 confirmed |
+| Anthropic Skills examples | `anthropics/skills` | `9d2f1ae187231d8199c64b5b762e1bdf2244733d` | 2026-07-01 | ⚠ no repo LICENSE (mcp-builder has its own `LICENSE.txt`, Apache-2.0, confirmed) | 17 | 5 confirmed |
+| Anthropic PR Review Toolkit | `anthropics/claude-code` (mirrored in `claude-plugins-official`) | `988b3e56432775c09bba903ba22522b97cd0f2fb` | 2026-07-14 | Apache-2.0 (mirror), author Daisy (daisy@anthropic.com) | 6 | 6 confirmed |
+| wshobson/agents (plugin-eval) | `wshobson/agents` | not pinned (reference-only, not vendored) | — | MIT | 1 relevant subdir | community — reference only |
+| Vercel / Cloudflare | — | not pinned (excluded outright) | — | MIT / Apache-2.0 | — | 0 — confirmed irrelevant |
+| openai/plugins | — | not pinned (excluded outright) | — | none detected | 100+ | 0 — refuted claims |
 
 ### Candidate Crosswalk
 
@@ -1503,4 +1540,180 @@ Execution Readiness:
   deferred: none
   next_valid_parent_taskcard: TC-EXT-000
   first_micro_step: MS-000-01-01
+```
+
+---
+
+## 13. Execution Progress Log (updated as PLAN-BOUND AUTONOMOUS EXECUTION proceeds)
+
+artifact_role: analysis_or_evidence_only | execution_authority: false — the taskcard `Status:` fields inline in §6/§7 remain the single source of truth; this is a running summary, not a competing state store.
+
+```yaml
+execution_verdict_so_far: EXECUTION_IN_PROGRESS   # not one of the 3 terminal verdicts yet — Wave A+ (17 parents) remains
+bound_at: 2026-07-14
+plan_lock: .local/supervisor/active-plan-lock.json (session 2d175dd997d6), plan copied to plans/.claude/yes-my-earlier-answer-humming-waffle.md per CLAUDE.md Step 0
+reconcile_note: >
+  HEAD drifted twice during this execution (c8b135a1 -> 4977b6e8 -> 771af56d -> further)
+  due to a separate, user-confirmed-authorized autonomous process (sprint_executor.py
+  run-loop or another Claude Code session) committing to this same repo concurrently.
+  Investigated per the plan's own RECONCILE STATE step; confirmed zero file overlap
+  with this plan's Wave-0 targets at the point of investigation. User explicitly
+  authorized continuing ("Yes, it's mine — keep going, it's fine").
+wave_0_status: CLOSED — all 12 taskcards (000,001,002,003,004,005,006,007,008,009,010, plus
+  TC-EXT-002 added during REAUDIT) verified complete, not just agent-self-reported:
+  every diff independently re-checked by the orchestrating session (grep/YAML-parse/
+  recount), not merely trusted from subagent reports.
+new_findings_during_execution:
+  - "Finding 9 / TC-EXT-002: sys.path shadowing bug between tools/supervisor/capability_compiler.py
+     and tools/capability_layer/capability_compiler.py, discovered during TC-EXT-009.
+     Pre-existing, not introduced by this plan. Registered as DEFERRED_WITH_REASON per
+     EP-2 (finding->gap->taskcard), not silently dropped. See Finding 9 above."
+heal_cycle_1:
+  trigger: "4 test failures after Round 6 (TC-EXT-007): test_gap_mappings_count,
+    test_rollback_and_recovery_in_gaps, test_blocked_skill_gap_fires_for_rollback_and_recovery,
+    test_remaining_gaps_detected"
+  root_cause: "TC-EXT-009 and TC-EXT-010's agents each wrote tests asserting
+    rollback_and_recovery as 'the one remaining open gap' at the time they ran — a
+    true intermediate state. TC-EXT-007-05 (run later, per this plan's own dependency
+    ordering) correctly closed that same gap too, per its own explicit taskcard
+    scope, making the intermediate-state tests stale."
+  repair: "Rewrote 4 tests to assert the true final state (gap_mappings now empty,
+    a dynamic per-current-map loop instead of a hardcoded list, and a tmp_path-isolated
+    synthetic-gap test so the BLOCKED_SKILL_GAP mechanism itself stays tested even
+    after every real gap closes) rather than weakening or deleting assertions."
+  rerun_result: "68/68 passed"
+wave_0_verification_summary:
+  - "validate_skill_contracts.py: 151 skills, 0 FAIL, 1 pre-existing unrelated WARN (check-mcp-status)"
+  - "detect-duplicate-skills logic (inline): 0 DUPLICATE, 0 OVERLAPPING"
+  - "sync_skill_command_registry.py: 6 repaired on first run (real drift from 2 new skills), 0 repaired on rerun (idempotency proven)"
+  - "targeted test suite (governance_infrastructure, work_type_skill_gate, sprint_executor incl. new structural_govblock test, governance_block_registry): 68/68 passed after heal cycle 1"
+  - "independent recount of unattributed-skill backfill: 7 remaining, all 7 match documented cross-cutting exclusions exactly — 0 unexplained"
+next_phase: "Wave A+ COMPLETE — all 17 parents (TC-EXT-012..028) executed, verified, registered"
+wave_a_plus_completion_summary:
+  skills_imported: 22   # 24 new skill_ids total this session minus the 2 from Wave 0 (capability-compiler, pre-sprint-governance-hook)
+  registry_total_before_session: 149
+  registry_total_after_session: 173
+  merges_no_new_skill_id: [TC-EXT-015 (verification-before-completion+differential-review), TC-EXT-019 (modern-python+impediment-prioritization)]
+  hook_exclusions_verified: [skill-improver Stop-hook — 0 hooks.json/stop-hook.sh files anywhere in repo, confirmed via repo-wide find, TC-EXT-023; modern-python SessionStart hook — 0 references, TC-EXT-019]
+  push_pr_exclusions_verified: [writing-skills fork-push/PR-contribute step excluded from create-ff-skill.md, TC-EXT-022, negative-control confirmed]
+  real_external_actions_taken: [trailmark installed via pip (uv unavailable) — package genuinely present, v0.4.0]
+  real_external_actions_NOT_taken: [no git tag, no git push, no gh pr create, no .github/dependabot.yml created — all confirmed via git log/tag/branch --list and file-existence checks]
+  new_findings_registered_mid_execution: [Finding 9/TC-EXT-002 (sys.path shadowing, capability_compiler.py), Finding 10/TC-EXT-002B (trailmark 0.4.0 segfault on real multi-file dirs in this environment)]
+  final_reconciliation:
+    validate_skill_contracts: "173 skills, 0 FAIL, 1 pre-existing unrelated WARN (check-mcp-status)"
+    detect_duplicate_skills: "0 DUPLICATE, 0 OVERLAPPING"
+    sync_skill_command_registry: "0 repaired on 2 consecutive runs — idempotent"
+    layer_attribution: "166/173 attributed; 7 unattributed exactly match the pre-documented cross-cutting exclusions (acquisition x3, playbook_governance x4) — zero new drift introduced by the 24 new skills"
+```
+
+### Post-Plan Convergence & Governed Closure (2026-07-14)
+
+```yaml
+convergence_binding:
+  mission_id: EXT-SKILL-ADOPT-2026-07-14
+  plan_id: yes-my-earlier-answer-humming-waffle
+  plan_path: plans/.claude/yes-my-earlier-answer-humming-waffle.md
+  plan_hash: 2b817704f7889209a296ab175bcc907d7c82ad94fc5a4deaff98e5c6b1f68b53   # hash at initial bind; content has grown since, re-hash at next rerun
+  post_sprint_audit: {path: .supervisor/prompts/prompt1-post-sprint-audit.md, hash: 263dab3dadad6845f5dd2874fe22cd860403151156cadb2dffedef5258103099, role_verified: true}
+  plan_hardening: {path: .supervisor/prompts/prompt2-plan-hardening.md, hash: 4fe227b68c0e58e08381f89f5381bb8d29eebd89cba328ea3fb33c957c5d3d00, role_verified: true}
+  controlled_execution: {path: .supervisor/prompts/prompt3-controlled-execution.md, hash: 5246d218a39a8464cdc32c542d5411d2f29ad034f3e867651c0f731e1269edd9, role_verified: true}
+  close_task:
+    expected: .supervisor/prompts/prompt4-close-task.md
+    resolved: .supervisor/prompts/close-task.md   # NOT prompt4-close-task.md — that file is a 21-line generic stub verified by content to NOT match the PSL-PROMPT-4 role; prompt-registry.yaml confirms close-task.md IS PSL-PROMPT-4
+    hash: 102dfced5f4dc5feb55fbd572c7946129ae82416cafc51de08874d7bc0b03692
+    role_verified: true
+  status: BOUND
+
+post_sprint_audit_result:
+  section_a_achieved: "28/28 taskcards closed; 24 new skills registered; 2 real governance bugs fixed (SKILL-GAP-003, SKILL-GAP-008); 1 regression introduced and fixed (agent-supply-chain idempotency enum value)"
+  section_b_proof_levels: "focused_validation + integration_validation for all 28 taskcards' own acceptance criteria (individually re-verified by the orchestrating session, not just agent self-report); end_to_end_proof for the capability-compiler wiring (real compiled taskcard confirmed surfacing) and the property-based-testing pilot (real hypothesis test, PASS)"
+  section_c_effect: "materially closer to final goal; two broad regression sweeps (1848+2306 tests) found 14 total failures, 13 confirmed pre-existing/unrelated to a separate authorized concurrent effort (corroborated by that effort's own commit message), 1 genuinely caused by this session's work and fixed"
+  l1_execution_issues: []
+  l2_integration_issues: []
+  l3_system_weakness_issues:
+    - "tests/supervisor/ (7258 tests) has no fast/slow test marker split — a targeted regression sweep took 3 separate timeout-exceeding attempts before succeeding at ~20 min; not a defect this plan introduced, but a real system-weakness finding worth a future taskcard (out of this plan's scope, not registered as a blocking gap here)"
+  claim_classification: "ACCEPTED_VERIFIED for all 28 taskcards' mandatory acceptance criteria; ACCEPTED_WITH_LIMITATIONS for the broader repo-wide regression sweep (scoped down for practical reasons, documented, not silently skipped)"
+  evidence_quality_verdict: STRONG
+  final_verdict: SPRINT_ALL_GREEN_VERIFIED
+
+final_all_green_candidate:
+  mission_id: EXT-SKILL-ADOPT-2026-07-14
+  plan_id: yes-my-earlier-answer-humming-waffle
+  plan_path: plans/.claude/yes-my-earlier-answer-humming-waffle.md
+  plan_revision: "post-Wave-A+ completion, 2026-07-14"
+  material_findings: 0
+  actionable_findings: 0
+  unresolved_mandatory_requirements: 0   # all 28 REQ-EXT-* satisfied
+  open_mandatory_taskcards: 0
+  weakly_verified_mandatory_items: 0
+  unconsumed_findings: 0   # Findings 9/10 (TC-EXT-002, TC-EXT-002B) are properly registered DEFERRED_WITH_REASON, out of this plan's mandatory scope, not unconsumed
+  rework_items: 0
+  eligible_tasks: 0
+  required_proof_gaps: 0
+  e2e_failures: 0
+  pilot_failures: 0
+  regression_failures: 0   # after the agent-supply-chain fix; 13 other failures confirmed pre-existing/unrelated
+  idempotency_failures: 0
+  state_reconciled: true
+  closure_prompt_authorized: true
+
+close_task_result:
+  prompt_path: .supervisor/prompts/close-task.md
+  prompt_hash: 102dfced5f4dc5feb55fbd572c7946129ae82416cafc51de08874d7bc0b03692
+  mission_id: EXT-SKILL-ADOPT-2026-07-14
+  plan_id: yes-my-earlier-answer-humming-waffle
+  taskcards_closed: [TC-EXT-000, TC-EXT-001, TC-EXT-002 (deferred, tracked), TC-EXT-002B (deferred, tracked), TC-EXT-003..010, TC-EXT-012..028]
+  taskcards_not_closed: []
+  requirements_reconciled: true
+  queue_empty_and_valid: true
+  continuation_disabled: false   # not disabled — closure was rejected, see below
+  closure_record_path: null
+  closure_record_valid: false
+  terminal_state_written: false
+  contradictions: []
+  verdict: CLOSE_TASK_REJECTED
+  rejection_reason: >
+    Required Action #4 ("commit relevant completed changes when current-session
+    policy authorizes commit") could not complete. User explicitly authorized
+    commit via AskUserQuestion. 50 files were correctly isolated from ~250 files
+    of unrelated concurrent-process work (a separate 6-format acquisition effort
+    that had left its own work staged in the same shared git index — confirmed
+    and unstaged non-destructively before re-staging only this plan's own files).
+    The actual `git commit` invocation was then denied by the VSCode extension's
+    tool-permission layer — a known, previously-documented environmental
+    limitation distinct from user intent (memory records the identical pattern:
+    "git commits denied by VSCode extension even when user authorized"). Per
+    close-task.md's own Rejection Conditions ("commit is not authorized or
+    fails"), this is a correct CLOSE_TASK_REJECTED, not a defect in the audit or
+    the plan. All 50 files remain staged (git index), untouched, ready for the
+    user to commit manually via their own VSCode git integration, or for a future
+    session to retry once the permission gate clears.
+```
+
+### Autonomous Execution Contract (recorded 2026-07-14, continuous-execution phase)
+
+```yaml
+autonomous_execution_contract:
+  selected_mechanism: "this bound plan's own taskcard/child/micro-step graph (§6/§7 of this file), dispatched by this session as sole controller via the Agent tool"
+  mechanism_type: neither autonomous_supervision (sprint_executor.py) nor autonomous_cycle (/autonomous-loop) — deliberately not either FF-named mechanism
+  entry_point: this plan file's §11 Execution Handoff
+  invocation: session-direct Agent-tool dispatch, one taskcard (or verified-safe file-disjoint batch) at a time
+  governing_state: taskcard `Status:` fields inline in §6/§7 of this file (not .local/supervisor/active-plan-lock.json)
+  task_source: §6/§7 parent/child/micro-step tables
+  continuation_source: this session's TodoWrite list + plan-file taskcard statuses
+  continuation_consumer: this session (re-reads plan file state before selecting next taskcard)
+  stop_evaluator: this session, per §13-equivalent mission-aware stop rules below
+  resume_strategy: "re-read this plan file's taskcard Status fields; first non-CLOSED parent per the §5 Dependency DAG is the next eligible task"
+  rejected_alternative: "sprint_executor.py run-loop and /autonomous-loop were both rejected for this run — .local/supervisor/active-plan-lock.json was found mid-run already overwritten by a separate, user-confirmed-authorized concurrent process (plan_path: test.md, session fc6748eb2bc6), proving that file is actively owned by that other process's general-ledger work. Using either FF-named mechanism for THIS bound plan would create exactly the competing-supervisor/lock-contention scenario this protocol itself prohibits. This plan's own self-contained taskcard graph does not depend on that shared file and is unaffected by the other process's activity on it."
+  mechanism_locked: true
+mission_authority:
+  mission_id: EXT-SKILL-ADOPT-2026-07-14
+  mission_summary: "Execute the full external-engineering-skill-adoption plan: import ~26 vetted external skills with provenance/license/risk-classification, repair 2 real pre-existing governance bugs (SKILL-GAP-003, SKILL-GAP-008), build a permanent layer-skill attribution sync mechanism, close HO-007's stale status, reconcile skill-count drift."
+  governing_plan_path: plans/.claude/yes-my-earlier-answer-humming-waffle.md
+  current_phase: "Wave A+ execution (14/28 parents CLOSED as of this record)"
+  in_scope_outcomes: [all 28 REQ-EXT-* items in §2 Requirement Inventory]
+  out_of_scope_items: [general FF product-deepening ledger, next-sprint.md work, anything the concurrent process is separately doing]
+  mandatory_acceptance_criteria: [every taskcard's own Parent acceptance criteria field in §6/§7]
+  conflicts_found: ["active-plan-lock.json overwritten by concurrent process — resolved by not depending on it, see rejected_alternative above"]
+  mission_locked: true
 ```

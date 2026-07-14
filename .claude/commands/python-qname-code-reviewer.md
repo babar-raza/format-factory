@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-23"
+version: "1.1"
+last-updated: "2026-07-14"
 phase-available: "all"
 gate-required: null
 created-by: TC-QHARD-004
@@ -273,11 +273,59 @@ Checks failed: 0/13
 Evidence at: .local/qname-review/fods-20260623-001/verdict.json
 ```
 
+## Reference Notes: Additional Python Tooling Awareness (informational, non-blocking)
+
+> Source: `modern-python` skill (Trail of Bits, CC-BY-SA-4.0) — non-hook guidance content only.
+> This section does NOT add a 14th check, does NOT change any verdict, and does NOT introduce
+> any lifecycle-triggered PATH-manipulation shim or new blocking gate (that mechanism was
+> deliberately excluded from import — see plan `yes-my-earlier-answer-humming-waffle.md` §7.1
+> item 3). It is supplementary awareness content sitting alongside — never replacing — this
+> reviewer's own stricter, binding rules (spec_qname coverage, `.venv/Scripts/pytest`
+> execution per project convention, and the `baseline_loc_cap` LOC-cap governance in
+> `registry/source-structure-baseline.json`).
+
+### Tool-replacement table (external guidance, not FF policy)
+
+| Legacy tool | Modern replacement (per modern-python) | FF's actual current tool (verified) |
+|---|---|---|
+| pip, virtualenv, pip-tools, pipx, pyenv | `uv` | `pip` — CI installs deps with `pip install ruff` (`.github/workflows/ci.yml`); no `uv.lock` or `uv` invocation found anywhere in the repo |
+| flake8, black, isort, pyupgrade | `ruff` | `ruff` — FF already uses ruff (`[tool.ruff]` block in `pyproject.toml`; `ruff check` step in CI; `astral-sh/ruff-pre-commit` in `.pre-commit-config.yaml`). **Aligned.** |
+| mypy, pyright | `ty` | Neither `ty` nor mypy/pyright are configured in `pyproject.toml` or CI — FF currently runs no static type checker. **Gap; noted for awareness only, not a recommendation to adopt `ty` specifically.** |
+| unittest, nose | `pytest` | `pytest` — FF already uses pytest exclusively; project convention is the `.venv/Scripts/pytest` binary (not `python -m pytest`, see MEMORY.md). **Aligned.** |
+| pre-commit | `prek` | `pre-commit` — `.pre-commit-config.yaml` uses the classic `pre-commit` framework (ruff, ruff-format, and local governance hooks); `prek` is not used anywhere in the repo. **Diverges from modern-python's recommendation; no change proposed by this note.** |
+
+### Security-tooling table (external guidance, informational)
+
+| Tool | Purpose |
+|---|---|
+| shellcheck | Shell script static analysis |
+| detect-secrets | Secret/credential scanning |
+| actionlint | GitHub Actions workflow linting |
+| zizmor | GitHub Actions security auditing |
+| pip-audit | Python dependency vulnerability scanning |
+| Dependabot | Automated dependency update PRs |
+
+### Anti-patterns table (external guidance, informational)
+
+| Anti-pattern | Prefer instead |
+|---|---|
+| `uv pip install <pkg>` | `uv add <pkg>` (project dependency) or `uv sync` (install from lockfile) |
+| Poetry | `uv` |
+| mypy / pyright | `ty` |
+
+**Precedence:** where this reference content conflicts with FF's own rules elsewhere in this
+file (Checks 1-13, LOC caps, spec_qname requirements, `.venv/Scripts/pytest`), FF's own rules
+govern. This section never overrides a check result and cannot change a verdict.
+
 ## Changelog
 
 - 1.0 (2026-06-23): Initial governed command for QName architecture compliance review.
   13 checks from TC-QHARD-004 (imperative-drifting-lecun plan §Phase 0).
   4 verdicts; 9 evidence artifacts. spec_qname_required: true.
+- 1.1 (2026-07-14): Added "Reference Notes: Additional Python Tooling Awareness" section
+  (TC-EXT-019-01) — tool-replacement and anti-patterns tables merged from the `modern-python`
+  skill (non-hook guidance only; lifecycle-hook PATH-manipulation mechanism explicitly
+  excluded per plan §7.1 item 3). Informational only; does not alter checks or verdicts.
 
 ## Required Inputs
 

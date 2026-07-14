@@ -95,6 +95,8 @@ in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in t
 5. Follow KC-PYTHON-001 contract (loaded in Step 0) for module conventions, export patterns, and test structure. Keep the change limited to the named API.
 6. Add or modify only the exact authorized files under `src/python/<format_id>/` and the exact
    authorized test files under `tests/python/<format_id>/`.
+
+   Note: `/test-driven-development` is available as an optional sub-procedure for Steps 6-7 (implementation + test scaffold/promotion) when test-first sequencing is desired.
 7. **Generate test scaffold and promote to maintained test** (MANDATORY — do not skip):
 
    7a. Call `generate_and_write_scaffold()` to render the test scaffold:

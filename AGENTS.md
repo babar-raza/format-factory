@@ -42,7 +42,7 @@ Prohibited (must never be created):
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-13T10:57:27+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-14T11:48:48+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -53,7 +53,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 142
+Total active capabilities: 148
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -84,6 +84,8 @@ Total active capabilities: 142
 | `build-capability-routes` | governance | FULL_PARITY | Y | N | N | — |
 | `build-supervisor-packet` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-ci-gate` | governance | PARTIAL | Y | N | N | — |
+| `certification-cross-language-parity` | governance | PARTIAL | Y | N | N | — |
 | `certification-dashboard` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-dotnet-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-exception-checker` | governance | FULL_PARITY | Y | N | N | — |
@@ -91,6 +93,8 @@ Total active capabilities: 142
 | `certification-generate-exception-tests` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-generate-security-tests` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-inventory-extractor` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-mutation-tester` | governance | PARTIAL | Y | N | N | — |
+| `certification-performance-benchmark` | governance | PARTIAL | Y | N | N | — |
 | `certification-stub-detector` | governance | FULL_PARITY | Y | N | N | — |
 | `check-dom-contract` | governance | FULL_PARITY | Y | N | N | — |
 | `check-skill-coverage` | governance | FULL_PARITY | Y | N | Y | capability_audit |
@@ -104,6 +108,7 @@ Total active capabilities: 142
 | `normalize-skill-registry` | governance | FULL_PARITY | Y | N | N | — |
 | `post-sprint-audit` | governance | FULL_PARITY | Y | N | Y | forensic_audit, integration_verification, sprint_audit |
 | `post-sprint-loop` | governance | FULL_PARITY | Y | N | Y | sprint_audit |
+| `pre-sprint-governance-hook` | governance | PARTIAL | Y | N | N | — |
 | `preflight-skill-entry` | governance | FULL_PARITY | Y | N | N | — |
 | `qname-backfill` | governance | FULL_PARITY | Y | N | Y | qname_generation |
 | `reset-track-signal` | governance | FULL_PARITY | Y | N | N | — |
@@ -123,6 +128,7 @@ Total active capabilities: 142
 | `build-product-context` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `build-resume-context` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `build-task-context` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `capability-compiler` | infrastructure | PARTIAL | Y | N | Y | capability_compiler |
 | `discover-existing-control-layers` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `inventory-existing-control-features` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `quarantine-invalid-artifact` | infrastructure | FULL_PARITY | Y | N | N | — |

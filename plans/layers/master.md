@@ -47,7 +47,7 @@ autonomous agent, and supervisor that needs to understand the system.
 - **Python formats:** 20 packages (fods, fodt, ods, odt, fodg, fodp, xcf, zst, ndjson, toml, csv, tsv, abw, dif, gnumeric, sylk, qoi, pbm, pgm, ppm)
 - **.NET formats:** 10+ packages
 - **Governance validators:** 85 (V1-V82 + SAL validators)
-- **Registered skills:** 74 (71 active)
+- **Registered skills:** 151 (148 active, 2 deprecated, 1 deferred) — reconciled 2026-07-14 via TC-EXT-007 against `.supervisor/skill-registry.yaml`; other figures in this binding block (HEAD, validator count, test count, SAL facts) remain the original 2026-06-26 bootstrap snapshot and are out of this taskcard's scope
 - **Tests passing:** 1,609
 - **SAL facts:** 14,441 (6/20 formats covered)
 - **QName coverage:** 99.4% (65/66 active entries)

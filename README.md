@@ -43,7 +43,7 @@ The system is organized into 11 independent layers, each with defined boundaries
 | L09 | State | `.local/supervisor/`, `reports/supervisor/` | Continuation signals, plan locks, session state |
 | L11 | Supervisor | `tools/supervisor/` | Sprint orchestration, grading, next-work generation |
 | L12 | Governance | `tools/supervisor/governance_validators*.py` | 166 programmatic validators |
-| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | 123 registered skill definitions and routing |
+| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | 151 registered skill definitions and routing |
 
 Layer contracts and audit results: `reports/layer-audit-2026-06-26/`.
 
@@ -255,7 +255,7 @@ format-factory enforces quality through layered governance:
 - **166 programmatic validators** across 20 modules (`tools/supervisor/governance_validators*.py`) — deterministic checks on every sprint declaration. They enforce declaration schema, evidence existence, spec-fact references, QName compliance, architecture rules, analytics separation, lane ownership, package manifests, oracle obligations, and README freshness.
 - **Gate contracts** (`registry/gate-contract-registry.yaml`) — each of the 11 gates has formal acceptance criteria. Gates 1-10 are policy-based (agent can satisfy with evidence). Gate 11 G11-G requires human business authority (Babar Raza).
 - **Source size policy** — maximum 800 LOC / 60 functions per production file, tracked in `registry/source-structure-baseline.json` with write-once `baseline_loc_cap` ceilings.
-- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 123 skills). Ad-hoc execution is detected and flagged.
+- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 151 skills). Ad-hoc execution is detected and flagged.
 - **Contradiction detection** — the supervisor pipeline detects contradictions between declared state and repository truth (`reports/supervisor/contradictions.json`). Critical contradictions block autonomous continuation.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and [AGENTS.md](AGENTS.md) for agent operating contracts.
@@ -427,10 +427,10 @@ For a plain-English assessment of where the project stands — what works, what 
 
 ---
 
-<!-- BEGIN:PROJECT-STATUS-REF generated=2026-07-02 source=PROJECT_STATUS.md -->
-**Quick numbers (machinery):** 166 validators | 123 skills | 840 sprints
+<!-- BEGIN:PROJECT-STATUS-REF generated=2026-07-14 source=PROJECT_STATUS.md -->
+**Quick numbers (machinery):** 200 validators | 151 skills | 840 sprints
 
-**Quick numbers (product):** 20 active formats | 73/73 oracle cases | 20/20 certified
+**Quick numbers (product):** 20 active formats | 81/101 oracle cases | 20/20 certified
 
 For full auto-generated project status with per-format details and two-lane (machinery / product) breakdown, see [PROJECT_STATUS.md](PROJECT_STATUS.md#status-at-a-glance).
 <!-- END:PROJECT-STATUS-REF -->

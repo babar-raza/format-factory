@@ -69,9 +69,11 @@ layers:
   skill_ids:
   - qname-backfill
   - spec-literal-qname-to-code-mapping
+  - python-qname-code-reviewer
   command_ids:
   - qname-backfill
   - spec-literal-qname-to-code-mapping
+  - python-qname-code-reviewer
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -110,9 +112,13 @@ layers:
   skill_ids:
   - build-capability-routes
   - update-capability-matrix
+  - promote-gap-to-taskcard
+  - select-poc-gap
   command_ids:
   - build-capability-routes
   - update-capability-matrix
+  - promote-gap-to-taskcard
+  - select-poc-gap
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -183,8 +189,18 @@ layers:
   - L08
   skill_ids:
   - run-oracle
+  - calculate-oracle-coverage
+  - detect-stale-oracles
+  - onboard-future-format-oracle
+  - generate-oracle-verdict-report
+  - evaluate-roundtrip-oracle
   command_ids:
   - run-oracle
+  - calculate-oracle-coverage
+  - detect-stale-oracles
+  - onboard-future-format-oracle
+  - generate-oracle-verdict-report
+  - evaluate-roundtrip-oracle
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -232,11 +248,47 @@ layers:
   - add-dotnet-api
   - add-dotnet-object-model-feature
   - add-python-object-model-feature
+  - format-feature-expansion
+  - new-format-kickstart
+  - product-source-task
+  - python-reduced-spec-parity-model
+  - add-spec-analytics-function
+  - add-same-format-writer-feature
+  - implement-spec-stub
+  - spec-literal-qname-to-code-mapping
+  - spec-parity-source-regeneration-and-migration
+  - spec-parity-verification
+  - spec-shaped-product-architecture-blueprint
+  - check-dom-contract
+  - inventory-format-dom
+  - select-deepening-lane
+  - check-source-loc
+  - add-analytics-function
+  - decompose-monolithic-codec
+  - extract-analytics-from-monolith
   command_ids:
   - add-python-api
   - add-dotnet-api
   - add-dotnet-object-model-feature
   - add-python-object-model-feature
+  - format-feature-expansion
+  - new-format-kickstart
+  - product-source-task
+  - python-reduced-spec-parity-model
+  - add-spec-analytics-function
+  - add-same-format-writer-feature
+  - implement-spec-stub
+  - spec-literal-qname-to-code-mapping
+  - spec-parity-source-regeneration-and-migration
+  - spec-parity-verification
+  - spec-shaped-product-architecture-blueprint
+  - check-dom-contract
+  - inventory-format-dom
+  - select-deepening-lane
+  - check-source-loc
+  - add-analytics-function
+  - decompose-monolithic-codec
+  - extract-analytics-from-monolith
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -311,9 +363,19 @@ layers:
   skill_ids:
   - build-evidence-bundle
   - materialize-declaration-review
+  - build-supervisor-packet
+  - validate-evidence-declaration
+  - collect-skill-execution-receipts
+  - validate-product-code-ledger
+  - run-governance-validators
   command_ids:
   - build-evidence-bundle
   - materialize-declaration-review
+  - build-supervisor-packet
+  - validate-evidence-declaration
+  - collect-skill-execution-receipts
+  - validate-product-code-ledger
+  - run-governance-validators
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -345,8 +407,10 @@ layers:
   downstream_layers:
   - L10
   - L11
-  skill_ids: []
-  command_ids: []
+  skill_ids:
+  - reset-track-signal
+  command_ids:
+  - reset-track-signal
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -382,9 +446,69 @@ layers:
   skill_ids:
   - plan-hardening
   - build-context-pack
+  - append-layer-verification-log
+  - append-layer-work-log
+  - capability-status
+  - close-layer-task
+  - create-cross-layer-handoff
+  - create-permanent-layer-plan
+  - detect-stale-layer-state
+  - detect-unlogged-work
+  - documentation-structure-migration
+  - generate-root-status
+  - identify-primary-layer
+  - inventory-permanent-layer-plans
+  - migrate-temporary-agent-plan
+  - reconcile-layer-index
+  - reconcile-layer-task-register
+  - register-layer-gap
+  - register-layer-task
+  - select-next-layer-task
+  - sync-capabilities
+  - sync-readmes
+  - update-layer-current-state
+  - update-layer-master-index
+  - update-layer-session-handoff
+  - validate-capability-parity
+  - validate-permanent-layer-plans
+  - create-taskcard
+  - execution-handoff
+  - export-plan-context
+  - generate-execution-handoff
+  - reproduce-master-plan
   command_ids:
   - plan-hardening
   - build-context-pack
+  - append-layer-verification-log
+  - append-layer-work-log
+  - capability-status
+  - close-layer-task
+  - create-cross-layer-handoff
+  - create-permanent-layer-plan
+  - detect-stale-layer-state
+  - detect-unlogged-work
+  - documentation-structure-migration
+  - generate-root-status
+  - identify-primary-layer
+  - inventory-permanent-layer-plans
+  - migrate-temporary-agent-plan
+  - reconcile-layer-index
+  - reconcile-layer-task-register
+  - register-layer-gap
+  - register-layer-task
+  - select-next-layer-task
+  - sync-capabilities
+  - sync-readmes
+  - update-layer-current-state
+  - update-layer-master-index
+  - update-layer-session-handoff
+  - validate-capability-parity
+  - validate-permanent-layer-plans
+  - create-taskcard
+  - execution-handoff
+  - export-plan-context
+  - generate-execution-handoff
+  - reproduce-master-plan
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -427,10 +551,20 @@ layers:
   - autonomous-loop
   - post-sprint-loop
   - post-sprint-audit
+  - run-lifecycle-audit
+  - pre-sprint-governance-hook
+  - allocate-sprint-number
+  - evidence-review-next-prompt
+  - record-lane-execution
   command_ids:
   - autonomous-loop
   - post-sprint-loop
   - post-sprint-audit
+  - run-lifecycle-audit
+  - pre-sprint-governance-hook
+  - allocate-sprint-number
+  - evidence-review-next-prompt
+  - record-lane-execution
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -466,10 +600,18 @@ layers:
   - validate-mutation-guard
   - validate-product-code-ledger
   - validate-skill-contracts
+  - detect-ad-hoc-execution
+  - enforce-skill-first-execution
+  - scan-residual-bypasses
+  - validate-missing-skill-workflow
   command_ids:
   - validate-mutation-guard
   - validate-product-code-ledger
   - validate-skill-contracts
+  - detect-ad-hoc-execution
+  - enforce-skill-first-execution
+  - scan-residual-bypasses
+  - validate-missing-skill-workflow
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -503,26 +645,104 @@ layers:
   - check-skill-coverage
   - sync-skill-command-registry
   - normalize-skill-registry
+  - backfill-task-skill-ownership
+  - detect-duplicate-skills
+  - inventory-commands
+  - inventory-skills
+  - preflight-skill-entry
+  - run-skill-idempotency
+  - validate-skill-transcript
+  - skill-scanner
+  - systematic-debugging
+  - test-driven-development
+  - silent-failure-hunter
+  - type-design-analyzer
+  - comment-analyzer
+  - pr-test-analyzer
+  - sharp-edges
+  - receiving-code-review
+  - property-based-testing
+  - gh-fix-ci
+  - gh-address-comments
+  - create-ff-skill
+  - skill-improver
+  - gha-security-review
+  - agent-supply-chain
+  - agent-owasp-compliance
+  - audit-context-building
+  - trailmark
+  - github-release
+  - dependabot-config
   command_ids:
   - check-skill-coverage
   - sync-skill-command-registry
   - normalize-skill-registry
+  - backfill-task-skill-ownership
+  - detect-duplicate-skills
+  - inventory-commands
+  - inventory-skills
+  - preflight-skill-entry
+  - run-skill-idempotency
+  - validate-skill-transcript
+  - skill-scanner
+  - systematic-debugging
+  - test-driven-development
+  - silent-failure-hunter
+  - type-design-analyzer
+  - comment-analyzer
+  - pr-test-analyzer
+  - sharp-edges
+  - receiving-code-review
+  - property-based-testing
+  - gh-fix-ci
+  - gh-address-comments
+  - create-ff-skill
+  - skill-improver
+  - gha-security-review
+  - agent-supply-chain
+  - agent-owasp-compliance
+  - audit-context-building
+  - trailmark
+  - github-release
+  - dependabot-config
   last_started_at: null
-  last_progress_at: '2026-06-26'
-  last_updated_at: '2026-06-26'
+  last_progress_at: '2026-07-14'
+  last_updated_at: '2026-07-14'
   last_verified_at: '2026-06-26'
   last_verified_revision: a7744cf6
   handoff_id: null
   evidence_paths:
   - .supervisor/skill-registry.yaml
+  - .claude/commands/skill-scanner.md
+  - .claude/commands/systematic-debugging.md
+  - .claude/commands/test-driven-development.md
+  - .claude/commands/silent-failure-hunter.md
+  - .claude/commands/type-design-analyzer.md
+  - .claude/commands/comment-analyzer.md
+  - .claude/commands/pr-test-analyzer.md
+  - .claude/commands/sharp-edges.md
+  - .claude/commands/receiving-code-review.md
+  - .claude/commands/property-based-testing.md
+  - .claude/commands/gh-fix-ci.md
+  - .claude/commands/gh-address-comments.md
+  - tests/python/csv/test_tc_ext_018_csv_roundtrip_pbt.py
+  - .claude/commands/create-ff-skill.md
+  - .claude/commands/skill-improver.md
+  - .claude/commands/gha-security-review.md
+  - .claude/commands/agent-supply-chain.md
+  - .claude/commands/agent-owasp-compliance.md
+  - .claude/commands/audit-context-building.md
+  - .claude/commands/trailmark.md
+  - .claude/commands/github-release.md
+  - .claude/commands/dependabot-config.md
 - layer_id: L14
   canonical_name: Feature Compilation Layer
   permanent_plan_path: plans/layers/feature-compilation-layer.md
   plane: SYSTEM_HEALING
-  status: NOT_ASSESSED
-  health: ABSENT
-  current_stage: DISCOVERY
-  maturity_current: 0
+  status: HARDENING_REQUIRED
+  health: DEGRADED
+  current_stage: SKILL_REGISTERED_WIRING_PROVEN
+  maturity_current: 1
   maturity_target: 4
   current_owner: null
   session_id: null
@@ -531,23 +751,32 @@ layers:
   blocked_task_count: 1
   completed_task_count: 0
   next_task_id: TC-FEAT-001
-  next_action: Design 9-phase compiler per spec-to-feature plan Lane 3; create SKILL-GAP-003
-    skill
+  next_action: 'TC-EXT-009 (2026-07-14) resolved SKILL-GAP-003: capability_compiler.py
+    is registered as skill_id capability-compiler, routed, and its output is wired
+    into autonomous_task_generator.py''s actual candidate selection (proof script
+    PASS). FEAT-GAP-001 (deep Lane-3 batch/concept-graph compilation, format-family-plugin
+    generalization) remains OPEN and unattempted.'
   dependencies:
   - L03
   upstream_layers:
   - L03
   downstream_layers:
   - L06
-  skill_ids: []
-  command_ids: []
+  skill_ids:
+  - capability-compiler
+  command_ids:
+  - capability-compiler
   last_started_at: null
   last_progress_at: null
-  last_updated_at: '2026-06-26'
-  last_verified_at: null
+  last_updated_at: '2026-07-14'
+  last_verified_at: '2026-07-14'
   last_verified_revision: null
   handoff_id: null
-  evidence_paths: []
+  evidence_paths:
+  - plans/strategic/spec-to-feature-radical-correction-plan.md
+  - .claude/commands/capability-compiler.md
+  - plans/layers/decision-register.yaml
+  - tools/supervisor/proof_capability_taskcard_wiring.py
 - layer_id: L15
   canonical_name: Source Change Handoff Layer
   permanent_plan_path: plans/layers/source-change-handoff-layer.md
@@ -683,10 +912,12 @@ layers:
   - package-install-proof
   - check-release-boundary
   - check-gate
+  - sync-installed-packages
   command_ids:
   - package-install-proof
   - check-release-boundary
   - check-gate
+  - sync-installed-packages
   last_started_at: null
   last_progress_at: null
   last_updated_at: '2026-06-26'
@@ -719,8 +950,10 @@ layers:
   - L06
   - L18
   downstream_layers: []
-  skill_ids: []
-  command_ids: []
+  skill_ids:
+  - add-installed-package-example
+  command_ids:
+  - add-installed-package-example
   last_started_at: null
   last_progress_at: null
   last_updated_at: '2026-06-26'
@@ -819,8 +1052,16 @@ layers:
   downstream_layers:
   - L11
   - L13
-  skill_ids: []
-  command_ids: []
+  skill_ids:
+  - audit-root-tools
+  - found-issue-ownership
+  - check-mcp-status
+  - mcp-builder
+  command_ids:
+  - audit-root-tools
+  - found-issue-ownership
+  - check-mcp-status
+  - mcp-builder
   last_started_at: null
   last_progress_at: null
   last_updated_at: '2026-06-26'
@@ -854,9 +1095,11 @@ layers:
   skill_ids:
   - sync-memory
   - build-context-pack
+  - memory-sprint
   command_ids:
   - sync-memory
   - build-context-pack
+  - memory-sprint
   last_started_at: null
   last_progress_at: null
   last_updated_at: '2026-06-26'
@@ -998,10 +1241,12 @@ layers:
   - build-obligation-register
   - update-obligation-entry
   - verify-obligation-entry
+  - portfolio-reconcile
   command_ids:
   - build-obligation-register
   - update-obligation-entry
   - verify-obligation-entry
+  - portfolio-reconcile
   last_started_at: null
   last_progress_at: null
   last_updated_at: '2026-06-26'
@@ -1110,6 +1355,7 @@ layers:
   - validate-operational-index
   - quarantine-invalid-artifact
   - audit-enhanced-control-layer
+  - query-control-index
   command_ids:
   - discover-existing-control-layers
   - inventory-existing-control-features
@@ -1121,6 +1367,7 @@ layers:
   - validate-operational-index
   - quarantine-invalid-artifact
   - audit-enhanced-control-layer
+  - query-control-index
   last_started_at: '2026-07-12'
   last_progress_at: '2026-07-12'
   last_updated_at: '2026-07-12'
@@ -1133,3 +1380,43 @@ layers:
   - reports/control-layer/feature-parity-register.yaml
   - tools/supervisor/control_index/ingestors/control_layer_ingestor.py
   - tools/supervisor/governance_validators_control_layer.py
+cross_cutting_unmapped_product_tracks:
+  acquisition:
+    unmapped_skill_ids:
+    - score-format
+    - create-acquisition-pack
+    - backfill-gate4-prototype-evidence
+    already_dual_attributed_skill_ids:
+    - check-gate
+    - check-release-boundary
+    already_dual_attributed_layers:
+    - L18
+    - L21
+    decision: cross_cutting_unmapped
+    rationale: The acquisition product_track covers pre-portfolio format scoring,
+      acquisition-pack scaffolding, and Gate 4 evidence backfill -- work that happens
+      BEFORE a format is admitted into the 29-layer taxonomy (the taxonomy's own dependency
+      graph starts at 'External Specs -> L01 SAL', which presumes the format has already
+      been chosen). No L01-L27 layer owns the decision of whether to acquire a new
+      format at all, so 3 of the 5 acquisition-track skills (score-format, create-acquisition-pack,
+      backfill-gate4-prototype-evidence) are intentionally left unattributed to any
+      single layer rather than force-fit. The other 2 (check-gate, check-release-boundary)
+      are generic gate/boundary checkers reused beyond acquisition (Gate 8/11, release
+      boundary) and are correctly already attributed to L18 (Package Release) and
+      L21 (AI Acceleration Boundary).
+    resolved_by: TC-EXT-006-09
+  playbook_governance:
+    unmapped_skill_ids:
+    - replay-acquisition-playbook
+    - diff-playbook-outputs
+    - export-review-queue
+    - validate-playbook
+    decision: cross_cutting_unmapped
+    rationale: The playbook_governance product_track (FF-PLAYBOOK-SYSTEM-001) is read-only
+      dry-run/validate/diff/export tooling for the acquisition playbook itself --
+      it governs the SAME pre-portfolio acquisition decision process as the 'acquisition'
+      track above, not any of the L01-L27 execution layers. Grouped with the acquisition-track
+      decision as one cross-cutting, intentionally unmapped bucket rather than forced
+      into an unrelated layer.
+    resolved_by: TC-EXT-006 (computed fresh; not explicitly named in the TC-EXT-006-01..08
+      child tables, but discovered during the live registry-vs-index reconciliation)

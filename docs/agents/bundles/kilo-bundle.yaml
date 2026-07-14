@@ -119,11 +119,23 @@ bundle:
     rc_blocked: RC-016
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
+    capability_id: capability-compiler
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
     capability_id: capability-status
     rc_blocked: RC-016
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
     capability_id: certification-assertion-scorer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-ci-gate
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-cross-language-parity
     rc_blocked: RC-016
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
@@ -152,6 +164,14 @@ bundle:
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
     capability_id: certification-inventory-extractor
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-mutation-tester
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-performance-benchmark
     rc_blocked: RC-016
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
@@ -360,6 +380,10 @@ bundle:
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
     capability_id: post-sprint-loop
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: pre-sprint-governance-hook
     rc_blocked: RC-016
   - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
       TC-ACP-002)
@@ -585,9 +609,9 @@ bundle:
   capability_counts:
     available: 0
     blocked_structural: 4
-    blocked_surface: 142
+    blocked_surface: 148
   contract_file: docs\agents\canonical-agent-contract.yaml
-  generated: '2026-07-13T10:57:28+00:00'
+  generated: '2026-07-14T11:48:49+00:00'
   governance:
   - path: CLAUDE.md
     required: true

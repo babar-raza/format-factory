@@ -1,5 +1,5 @@
 ---
-version: "1.0"
+version: "1.1"
 last-updated: "2026-07-02"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization"
@@ -32,6 +32,8 @@ transform function. Detailed playbook contract at
 6. Update `__all__` in `__init__.py` if a new public symbol was added
 7. Write supervisor log entry for this task
 
+Note: `/test-driven-development` is available as an optional sub-procedure for Steps 2-3 (drafting the change and writing its focused tests) when test-first sequencing is desired.
+
 ## Allowed Paths
 
 - `src/python/<format_name>/` — codec source files (read and write)
@@ -55,6 +57,25 @@ transform function. Detailed playbook contract at
 - Stop if governance validators fail (`governance_validators_pass` must be true)
 - Stop if fewer than 9 tests pass for the changed function
 - Stop if the change touches more than one codec file (split into separate tasks)
+- Stop if the Pre-Completion Blast-Radius Check below has not been run on the diff
+
+### Pre-Completion Blast-Radius Check (additive to `/found-issue-ownership` Step 4)
+
+Before declaring this task complete, run a proactive, per-diff blast-radius pass over
+the change — adapted from `differential-review` (Trail of Bits, CC-BY-SA-4.0):
+
+1. Diff the change against its base (e.g. `git diff` on the touched codec file) and
+   enumerate every call site of the changed function or symbol across `src/python/`,
+   `tests/python/`, and `examples/python/`.
+2. For each call site, assess whether the changed behavior, signature, or return shape
+   could break it — do not assume the minimum 9 focused tests cover every caller.
+3. Record any additional affected paths found. If a caller outside this task's scope is
+   affected, do not silently expand scope to patch it here — open a separate
+   `/found-issue-ownership` entry for it instead.
+
+This check is additive to, not a replacement for, the existing reactive
+`/found-issue-ownership` Step 4 (Blast Radius) mechanism, which still applies whenever a
+regression is discovered after the fact.
 
 ## Output Format
 
@@ -92,5 +113,8 @@ test_sprint: r120
 
 ## Changelog
 
+- 1.1 (2026-07-14): Strengthened completion-verification Stop Conditions with a
+  Pre-Completion Blast-Radius Check (`differential-review`, Trail of Bits,
+  CC-BY-SA-4.0), additive to the existing reactive `/found-issue-ownership` Step 4.
 - 1.0 (2026-07-02): Initial command file. Skill registered FF-PLAYBOOK-SYSTEM-001.
   Playbook contract at playbooks/format-factory/product-source-task-template.md v1.1.
