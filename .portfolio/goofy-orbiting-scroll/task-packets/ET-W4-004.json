@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-004",
+  "workstream_id": "WS-15-HUMBLE-HATCHING",
+  "objective": "Execute humble-hatching-lark in 2 batches: TCs 1-52",
+  "source_plan_ids": [
+    "s019"
+  ],
+  "source_task_ids": [
+    "TC-HHL-001",
+    "TC-HHL-002",
+    "TC-HHL-003",
+    "TC-HHL-004",
+    "TC-HHL-005",
+    "TC-HHL-006",
+    "TC-HHL-007",
+    "TC-HHL-008",
+    "TC-HHL-009",
+    "TC-HHL-010",
+    "TC-HHL-011",
+    "TC-HHL-012",
+    "TC-HHL-013",
+    "TC-HHL-014",
+    "TC-HHL-015",
+    "TC-HHL-016",
+    "TC-HHL-017",
+    "TC-HHL-018",
+    "TC-HHL-019",
+    "TC-HHL-020",
+    "TC-HHL-021",
+    "TC-HHL-022",
+    "TC-HHL-023",
+    "TC-HHL-024",
+    "TC-HHL-025",
+    "TC-HHL-026",
+    "TC-HHL-027",
+    "TC-HHL-028",
+    "TC-HHL-029",
+    "TC-HHL-030",
+    "TC-HHL-031",
+    "TC-HHL-032",
+    "TC-HHL-033",
+    "TC-HHL-034",
+    "TC-HHL-035",
+    "TC-HHL-036",
+    "TC-HHL-037",
+    "TC-HHL-038",
+    "TC-HHL-039",
+    "TC-HHL-040",
+    "TC-HHL-041",
+    "TC-HHL-042",
+    "TC-HHL-043",
+    "TC-HHL-044",
+    "TC-HHL-045",
+    "TC-HHL-046",
+    "TC-HHL-047",
+    "TC-HHL-048",
+    "TC-HHL-049",
+    "TC-HHL-050",
+    "TC-HHL-051",
+    "TC-HHL-052"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 1-52 in s019 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read humble-hatching-lark.md (s019) completely",
+    "Execute TCs 1-52 in order",
+    "Write evidence/raw/ET-W4-004/hhl-batch-a-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "fa447d3ca92b4777fa6079ed7d243ba36d45a5bbe4c500bf1bdc6d312b1e5db0"
+}

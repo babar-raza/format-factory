@@ -1,0 +1,26 @@
+oracle_test_binding_id: oracle-fodg-test-binding-v1
+format_id: fodg
+oracle_package: oracle/formats/fodg/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: fodg.fodg_codec
+executor_callable: load
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: fodg-valid-001
+  bound: true
+  test_function: test_fodg_oracle_valid_cases
+- case_id: fodg-valid-002
+  bound: true
+  test_function: test_fodg_oracle_valid_cases
+- case_id: fodg-valid-003
+  bound: true
+  test_function: test_fodg_oracle_valid_cases
+- case_id: fodg-valid-d2-schema
+  bound: true
+  test_function: test_fodg_oracle_valid_cases
+- case_id: fodg-invalid-001
+  bound: false
+  test_function: test_fodg_oracle_invalid_cases
+binding_verdict: BOUND

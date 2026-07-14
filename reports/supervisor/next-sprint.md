@@ -1,7 +1,21 @@
+## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
+
+A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
+
+- **Plan:** `C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md`
+- **Last completed taskcard:** `None`
+- **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md" --complete`
+
+**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
+
+---
+
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FOSS-TOML-MUTATION-001
+# Source sprint: CERT-LAYER-HEAL-20260710
 # Stream: mainstream
-# Generated: 2026-07-10T17:33:54.268143
+# Generated: 2026-07-13T18:12:34.499254
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,10 +25,10 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FOSS-TOML-MUTATION-001
-- Evidence verdict: ACCEPTED
-- Tests: 15 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Sprint ID: CERT-LAYER-HEAL-20260710
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 29 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -39,12 +53,10 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
 - [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
 - [external-gate] TASK-003: Execute git commit (SCM Agent task — AGENTS.md §AG4.1)
-- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-008: Build package artifacts and run installed-workflow proof
-- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-007: Execute next taskcard in active per-chat plan
+- [pending] TASK-008: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-009: Build package artifacts and run installed-workflow proof
+- [pending] TASK-010: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -82,45 +94,6 @@ None
 
 ## Project Memory Context
 ```
-- bundle_entry_count: 67
-- bundle_validation_pass: True
-
-## Entry: bright-greeting-goose-20260706T104442Z
-- timestamp: 2026-07-06T15:49:10.375834
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bright-greeting-goose-20260706T104442Z\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 70
-- bundle_validation_pass: True
-
-## Entry: hazy-questing-peach
-- timestamp: 2026-07-09T18:37:10.368879
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hazy-questing-peach-20260709T133041Z\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 23
-- bundle_validation_pass: True
-
-## Entry: vast-weaving-lampson
-- timestamp: 2026-07-10T14:31:28.394759
-- verdict: ACCEPTED
-- test_count: 1169
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\vwl-20260710\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 38
-- bundle_validation_pass: True
-- test_delta: +1169
-- test_delta_from: 0
-
-## Entry: PQ-BUNDLE-FORENSICS-REPAIR-001
 - timestamp: 2026-07-10T16:37:12.587919
 - verdict: ACCEPTED
 - test_count: 21558
@@ -132,6 +105,45 @@ None
 - bundle_validation_pass: True
 - test_delta: +20389
 - test_delta_from: 1169
+
+## Entry: CSV-DOTNET-ROUNDTRIP-001
+- timestamp: 2026-07-10T17:41:10.582666
+- verdict: ACCEPTED
+- test_count: 8
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\7c1667a4c090\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 61
+- bundle_validation_pass: True
+- test_delta: -21550
+- test_delta_from: 21558
+
+## Entry: GNUMERIC-PYTHON-MUTATION-001
+- timestamp: 2026-07-10T17:49:09.353447
+- verdict: ACCEPTED
+- test_count: 13
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\36f347f0cbfc\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 63
+- bundle_validation_pass: True
+- test_delta: +5
+- test_delta_from: 8
+
+## Entry: SYLK-TOML-FOSS-ANALYTICS-BATCH-001
+- timestamp: 2026-07-11T20:15:46.772897
+- verdict: ACCEPTED
+- test_count: 59
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\2d70f39e\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 39
+- bundle_validation_pass: True
+- test_delta: +46
+- test_delta_from: 13
 ```
 
 ---

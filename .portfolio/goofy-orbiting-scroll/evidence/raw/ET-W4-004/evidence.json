@@ -1,0 +1,96 @@
+{
+  "task_id": "ET-W4-004",
+  "source_plan": "humble-hatching-lark.md",
+  "plan_title": "Capability Layer Production Hardening",
+  "executed_at": "2026-07-11",
+  "hhl_range": "HHL-001 through HHL-052 (TC-CL-001 through TC-CL-007)",
+
+  "tc_cl_001": {
+    "title": "Fix State Derivation Bug + Regression Guards",
+    "status": "CLOSED",
+    "bug_fixed": "example_verified false assignment in capability_map_generator.py",
+    "root_cause": "example_count (format-level) used instead of function-level check",
+    "fix": "Added _scan_example_file_refs(examples_dir, fn_name) -> list[str]; replaced example_count with len(example_fn_refs) at call site",
+    "before": "567 records with current_state=example_verified and empty example_refs",
+    "after": "0 records with current_state=example_verified and empty example_refs",
+    "files_changed": [
+      "tools/capability_layer/capability_map_generator.py (+_scan_example_file_refs, fixed 2 call sites)",
+      "tools/capability_layer/validate_capability_map.py (+VAL-011)",
+      "tests/capability_layer/test_state_derivation.py (new, 6 tests PASS)"
+    ],
+    "tests": "6/6 PASS (tests/capability_layer/test_state_derivation.py)"
+  },
+
+  "tc_cl_002": {
+    "title": "Regenerate Action Queue + Fix VAL-009",
+    "status": "CLOSED",
+    "finding": "VAL-009 already PASS at execution time — all 32 action-queue items were advisory_only=true",
+    "action": "Verified VAL-009 PASS via validate_capability_map.py",
+    "evidence": "validate_capability_map.py: Result: PASS | Errors: 0 | Checks run: 39989"
+  },
+
+  "tc_cl_003": {
+    "title": "SAL Compiler Integration + authority_class Field",
+    "status": "CLOSED",
+    "sal_compiler_output": {
+      "file": "reports/capability-layer/sal-driven-capability-map.json",
+      "records": 161,
+      "records_with_obligation_ids": 161
+    },
+    "authority_class": {
+      "field_added_to": [
+        "tools/capability_layer/capability_map_generator.py (FOSS records + commercial records + SRC extras)",
+        "reports/capability-layer/unified-capability-map.json"
+      ],
+      "SAL_GROUNDED": 1528,
+      "IMPLEMENTATION_ASSERTED": 1252,
+      "total": 2780
+    },
+    "autonomous_cycle_integration": "TC-CL-003-05 SAL compiler subprocess added after Step 4a-compiler block (non-blocking, best-effort)"
+  },
+
+  "tc_cl_004": {
+    "title": "Document Two-Track Authority Boundary",
+    "status": "CLOSED",
+    "files_updated": [
+      "reports/capability-layer/capability-authority-model.yaml (authority_tracks section added)",
+      "reports/capability-layer/capability-consumer-graph.yaml (authority_class_field_notes added)",
+      "plans/layers/capability-layer.md (maturity 3/5 → 4/5, health DEGRADED → HARDENING_IN_PROGRESS, stage GRAPH_REPAIR → AUTHORITY_DOCUMENTED)"
+    ]
+  },
+
+  "tc_cl_005": {
+    "title": "Add Gap Closure Detection",
+    "status": "CLOSED",
+    "implementation": "_check_gap_closure scanner loop added to autonomous_cycle.py after TC-CL-003-05 block",
+    "output_file": ".local/capability-layer/gap-closure-candidates.json",
+    "result": "0 candidates (all 32 active gaps are OPEN_BLOCKED with empty test_refs — correct)",
+    "gap_ledger_unchanged": true
+  },
+
+  "tc_cl_006": {
+    "title": "Work-Source Fallback Auditability",
+    "status": "CLOSED",
+    "change": "When capability compiler returns 0 items, work_selection_mode set to EXPANSION_GOAL_FALLBACK (was silent)",
+    "file": "tools/supervisor/autonomous_cycle.py"
+  },
+
+  "tc_cl_007": {
+    "title": "Final Validation and Idempotency Proof",
+    "status": "CLOSED",
+    "validator_result": "PASS | Errors: 0 | Warnings: 1639 | Checks run: 39989",
+    "val_011": "PASS (0 example_verified records with empty example_refs)",
+    "val_009": "PASS (0 advisory_only violations)",
+    "test_suite": "18/18 PASS (tests/capability_layer/test_state_derivation.py + test_validate_capability_map.py)",
+    "pre_existing_failure": "test_gap_candidates_have_valid_product_type — 12 DOM maturity supplemental gaps with product_type=foss from prior session (working tree had gap-ledger.json Modified before session start)",
+    "state_count": {
+      "implementation_verified": 1785,
+      "test_verified": 813,
+      "example_verified": 182,
+      "total": 2780
+    }
+  },
+
+  "verdict": "ALL_TC_CL_001_007_CLOSED",
+  "humble_hatching_lark_status": "COMPLETE"
+}

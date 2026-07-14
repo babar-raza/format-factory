@@ -1,0 +1,34 @@
+{
+  "task_id": "ET-W0-003",
+  "audit_date": "2026-07-11",
+  "runner": "tools/supervisor/governance_validator_runner.py",
+  "summary": {
+    "total_validators": 167,
+    "PASS": 147,
+    "WARN": 20,
+    "FAIL": 0,
+    "all_pass": true,
+    "blocks_sprint": false
+  },
+  "finding": "Validator suite at expected_count=167. Zero FAIL. 20 WARN (all non-blocking). No GOV_BLOCK. Sprint is green.",
+  "warn_categories": {
+    "validate_source_architecture": "21 RULE-AM-003-WORSENED items — known violations whose LOC grew beyond baseline_loc_cap (abw/models.py 208>180, csv/models.py 276>226, dif/dif_parser.py 699>664, fodg/models.py 185>151, fodp/__init__.py 104>100, +16 more). Non-blocking.",
+    "validate_spec_authority_class_completeness": "5 registry entries missing class with spec_qname (dif:data, draw:frame, pgm:raster, ppm:raster, sylk:format). Non-blocking.",
+    "V68_knowledge_freshness": "2 STALE hashes — src/python/csv/models.py and src/python/ndjson/models.py. Non-blocking.",
+    "validate_healing_stall_detector": "Known .NET files at LOC cap (no growth). Non-blocking.",
+    "validate_readme_freshness": "README hashes stale. Non-blocking.",
+    "validate_plans_root_policy": "Plans root policy check — non-blocking warn.",
+    "validate_capability_fact_ratio": "Capability fact ratio below threshold. Non-blocking.",
+    "root_structure_validator": "Root structure issues (pre-existing, ET-W0-016 disposition). Non-blocking.",
+    "validate_playbook_coverage_report_current": "Playbook coverage report stale. Non-blocking.",
+    "V103-V109": "Various contract/registry WARN — non-blocking.",
+    "dotnet_loc_cap_static": "Two .NET files at LOC cap. Non-blocking."
+  },
+  "action_required": "None — all WARNs are pre-existing non-blocking issues documented in existing plans. No new code changes needed for ET-W0-003 acceptance.",
+  "conflict_004_resolution": {
+    "finding": "CONFLICT-004 claimed 165 vs 167 validator count discrepancy",
+    "ground_truth": "expected_count=167 in governance_validator_runner.py:813 (updated 2026-07-09 by TC-PFF-R1 adding V149)",
+    "actual_count_at_runtime": 167,
+    "resolution": "No discrepancy — MEMORY.md was stale at 165. Runner and test assertion are correct at 167."
+  }
+}

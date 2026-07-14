@@ -49,7 +49,7 @@ public class FodtR295SetSectionStyleDedicatedTests
         if (doc.GetSectionCount() == 0)
             Assert.ThrowsAny<Exception>(() => doc.SetSectionStyle(0, "bold"));
         else
-            Assert.True(true); // document has default sections
+            Assert.True(doc.GetSectionCount() > 0); // document has default sections
     }
 
     // -------------------------------------------------------------------------

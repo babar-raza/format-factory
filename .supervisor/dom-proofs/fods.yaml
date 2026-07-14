@@ -1,0 +1,14 @@
+format: fods
+proofs:
+  D1:
+    description: "Parse file, retrieve typed cells with spec_qname"
+    test_command: ".venv/Scripts/pytest tests/python/fods/ -v --tb=short -q"
+    required_pass_count: 1
+  D2:
+    description: "Mutate cell value, write to disk, re-parse, verify mutation persisted"
+    test_command: ".venv/Scripts/pytest tests/python/fods/test_fods_dom_d2_mutation.py -v --tb=short"
+    required_pass_count: 1
+  D3:
+    description: "Traverse nested elements, mutate, verify in roundtrip"
+    test_command: ".venv/Scripts/pytest tests/python/fods/test_fods_dom_d3_nested.py -v --tb=short"
+    required_pass_count: 1

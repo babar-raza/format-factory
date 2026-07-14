@@ -1,0 +1,84 @@
+---
+# .governance/backfill/backfill-rollback-contract.yaml
+# Defines the rollback procedure for backfill migration waves.
+# Implements: TC-GFB-023-01 (FF-MR-2026-001)
+# Authority: plans/.claude/golden-foraging-boot.md (TC-GFB-023)
+# Generated: 2026-07-11
+
+schema_version: "1.0"
+contract_id: backfill-rollback-v1
+description: >
+  This contract defines the rollback procedure for backfill execution waves.
+  A rollback reverts source mutations introduced by a governed rewrite step.
+  dry_run_migration.py (TC-GFB-023) makes ZERO changes to src/ — rollback is
+  only required after a Wave 2+ execution step has committed source changes.
+
+rollback_procedure:
+
+  preconditions:
+    - item: "git status shows a clean baseline commit at Wave start"
+      command: "git log --oneline -1"
+      expected: "Commit message includes [wave-start] or backfill tag"
+    - item: "No uncommitted changes to src/ that should be preserved"
+      command: "git diff --name-only src/"
+      expected: "Only files from the current migration wave"
+    - item: "Evidence declaration written before rollback"
+      command: "ls .local/evidences/<run_id>/"
+      expected: "evidence-declaration.yaml exists"
+
+  steps:
+    - step: 1
+      action: "Stage rollback intent in evidence"
+      command: "echo '{\"rollback_triggered\": true, \"reason\": \"<reason>\"}' > .local/supervisor/rollback-state.json"
+      expected: "File written"
+
+    - step: 2
+      action: "Revert source mutations for the affected format"
+      command: "git checkout -- src/python/<format_id>/"
+      note: "Replace <format_id> with the format being rolled back."
+      expected: "git diff src/python/<format_id>/ is empty"
+
+    - step: 3
+      action: "If Compat/ shims were added, revert them"
+      command: "git checkout -- src/python/<format_id>/Compat/"
+      expected: "Compat/ restored to pre-wave state"
+
+    - step: 4
+      action: "Revert any updated tests"
+      command: "git checkout -- tests/<format_id>/"
+      expected: "tests/<format_id>/ restored to pre-wave state"
+
+    - step: 5
+      action: "Verify source is restored"
+      command: "git diff src/"
+      expected: "Empty output (all src/ changes reverted)"
+
+    - step: 6
+      action: "Run existing tests to confirm restored state"
+      command: ".venv/Scripts/pytest tests/<format_id>/ -q --tb=short"
+      expected: "Same pass count as pre-wave baseline"
+
+    - step: 7
+      action: "Update rollback-state.json with completion"
+      command: "echo '{\"rollback_triggered\": true, \"rollback_complete\": true}' > .local/supervisor/rollback-state.json"
+      expected: "File updated"
+
+  scope_limits:
+    - "Rollback covers ONLY src/python/<format_id>/ for the affected format."
+    - "tools/backfill/ is NOT rolled back — dry_run tools are read-only and safe."
+    - ".governance/backfill/ is NOT rolled back — schemas are stable governance artifacts."
+    - "registry/ entries added by migration (e.g., gate-states.yaml updates) may need manual review."
+    - "Git history is NOT rewritten — rollback uses git checkout, not git reset."
+
+  recovery_steps_if_rollback_fails:
+    - "Run: git stash (if uncommitted changes need saving)"
+    - "Run: git log --oneline --all | head -20 (identify wave-start commit)"
+    - "Run: git diff <wave-start-sha>..HEAD -- src/ (see all source changes since wave start)"
+    - "Run: git checkout <wave-start-sha> -- src/python/<format_id>/ (restore specific format)"
+    - "Escalate: Document ROLLBACK_FAILED in .local/supervisor/rollback-state.json"
+    - "Escalate: Write gap entry via /register-layer-gap for the failed rollback"
+
+  dry_run_note: >
+    TC-GFB-023 implements dry_run_migration.py which produces READ-ONLY previews.
+    No rollback is needed for dry runs because NO src/ changes are made.
+    This contract applies to Wave 2+ governed rewrite waves only.

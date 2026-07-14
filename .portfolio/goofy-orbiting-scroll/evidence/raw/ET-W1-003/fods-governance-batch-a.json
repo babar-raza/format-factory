@@ -1,0 +1,53 @@
+{
+  "task_id": "ET-W1-003",
+  "source_plan": "splendid-squishing-orbit",
+  "audit_date": "2026-07-11",
+  "taskcards_assessed": 25,
+  "taskcards_executed": {
+    "TC-FGSQ-012": {
+      "status": "CLOSED",
+      "action": "Removed 3 COLLECTION_STUB comments from FodsDocumentSheetFeatures.cs (_filters, _pageBreaks, _groups fields). Fields have real implementations; comments were deferred-feature markers.",
+      "test_proof": "4233 PASS, 0 FAIL (dotnet test tests/net/fods/)"
+    },
+    "TC-FGSQ-016": {
+      "status": "ALREADY_COMPLETE",
+      "finding": "FodsDocumentExtendedApis.cs does not exist — already removed in prior sprint"
+    }
+  },
+  "taskcards_outstanding": {
+    "TC-FGSQ-001": "NOT_STARTED — fods-missing-methods-origin.yaml not created. Requires method inventory of FodsDocumentExtendedApis scope (file now gone) from current method catalog.",
+    "TC-FGSQ-002": "NOT_STARTED — gap ledger reconciliation pending",
+    "TC-FGSQ-003": "NOT_STARTED — V88 per-method setter analysis not yet implemented",
+    "TC-FGSQ-004": "NOT_STARTED — PRODUCT_SOURCE exemption in V87 still present",
+    "TC-FGSQ-005": "NOT_STARTED — V90/V91 still WARN (need to verify current severity)",
+    "TC-FGSQ-006": "NOT_STARTED",
+    "TC-FGSQ-007": "NOT_STARTED",
+    "TC-FGSQ-008": "NOT_STARTED",
+    "TC-FGSQ-009": "NOT_STARTED — COLLECTION_STUB validator not added; comments removed directly by TC-FGSQ-012",
+    "TC-FGSQ-010": "NOT_STARTED",
+    "TC-FGSQ-011": "NOT_STARTED",
+    "TC-FGSQ-013": "NOT_STARTED — 18 TODO(GI-FODS-NET-*) stubs remain in FodsDocumentCellProps/DataAnnotations/EditOps/SheetFeatures",
+    "TC-FGSQ-014": "NOT_STARTED",
+    "TC-FGSQ-015": "NOT_STARTED",
+    "TC-FGSQ-017": "NOT_STARTED — FodsDocument.cs 907 LOC (>800), FodsDocumentReadOps.cs 892 LOC (>800)",
+    "TC-FGSQ-018": "NOT_STARTED",
+    "TC-FGSQ-019": "NOT_STARTED",
+    "TC-FGSQ-020": "NOT_STARTED",
+    "TC-FGSQ-021": "NOT_STARTED",
+    "TC-FGSQ-022": "NOT_STARTED",
+    "TC-FGSQ-023": "NOT_STARTED",
+    "TC-FGSQ-024": "NOT_STARTED",
+    "TC-FGSQ-025": "NOT_STARTED"
+  },
+  "remaining_todo_stubs": 18,
+  "remaining_loc_violations": {
+    "FodsDocument.cs": "907 LOC (target <=800)",
+    "FodsDocumentReadOps.cs": "892 LOC (target <=800)"
+  },
+  "test_results": {
+    "command": "dotnet test tests/net/fods/",
+    "passed": 4233,
+    "failed": 0
+  },
+  "verdict": "PARTIAL — TC-FGSQ-012 and TC-FGSQ-016 complete with test proof. 23 remaining TCs tracked for Wave 2 FODS batch."
+}

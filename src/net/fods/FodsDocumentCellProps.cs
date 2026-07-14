@@ -290,13 +290,19 @@ public sealed partial class FodsDocument
             sheet.Element.SetAttributeValue(NsTable + "visibility", val);
     }
 
-    /// <summary>R481: Return right-to-left flag for the named sheet (default false).</summary>
-    // STUB: writing-mode is a style attribute (style:writing-mode), not a config:config-item;
-    // no standard ODF config-item path exists for this property. Returns false.
+    /// <summary>R481: Return right-to-left flag for the named sheet.</summary>
+    /// <exception cref="NotSupportedException">Always thrown: ODF 1.3 defines writing-mode as a
+    /// style attribute (style:writing-mode), not a config:config-item. There is no standard ODF
+    /// config path for sheet-level right-to-left direction.</exception>
     public bool GetSheetRightToLeft(string sheetName)
     {
         RequireSheet(sheetName);
-        return false;
+        // TC-FGSQ-015: ODF 1.3 §15.3.5 defines style:writing-mode as a style property,
+        // not a config:config-item. No standard per-sheet RTL config path exists.
+        throw new NotSupportedException(
+            "GetSheetRightToLeft is not supported: ODF 1.3 does not define a config:config-item " +
+            "for per-sheet writing direction. style:writing-mode is a style attribute, not a " +
+            "settable sheet config. See ODF 1.3 §15.3.5.");
     }
 
     /// <summary>R482: Return show-grid flag for the named sheet (default true).</summary>

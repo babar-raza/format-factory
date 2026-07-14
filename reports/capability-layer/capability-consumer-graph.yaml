@@ -325,3 +325,34 @@ integration_chain:
 
 required_counters:
   FALSE_CAPABILITY_CONSUMER_CLAIMS: 0  # All 5 false claims documented; none hidden
+
+# ── AUTHORITY_CLASS FIELD CONSUMER NOTES (TC-CL-004 — added 2026-07-11) ──────
+
+authority_class_field_notes:
+  description: |
+    The authority_class field was added to all capability records by TC-CL-003/TC-CL-004.
+    Two values are possible: SAL_GROUNDED (ODF formats with SAL facts) and
+    IMPLEMENTATION_ASSERTED (non-ODF formats with poc-targets.yaml authority).
+  consumers:
+    - actor: "capability_map_generator.py"
+      sets_authority_class: true
+      logic: "format_id.upper() in ODF_FORMATS → SAL_GROUNDED else IMPLEMENTATION_ASSERTED"
+      also_sets: "obligation_source field (sal-facts or poc-targets.yaml)"
+    - actor: "capability_compiler.py"
+      produces_records: "SAL_GROUNDED only (161 ODF-format records with obligation_ids)"
+      output: "reports/capability-layer/sal-driven-capability-map.json"
+    - actor: "autonomous_cycle.py"
+      uses_authority_class: false
+      notes: |
+        Does not filter by authority_class. Uses work_selection_mode field to indicate
+        which track is active. TC-CL-006 makes this field explicit in the work-items output.
+    - actor: "capability_feature_compiler.py"
+      uses_authority_class: false
+      notes: "Reads gap-ledger.json directly; gaps do not carry authority_class"
+  work_selection_mode_field:
+    description: |
+      The work_selection_mode field in next-work-items.json indicates which track
+      is driving work selection. Values: CAPABILITY_COMPILER_MERGED (Track B active),
+      EXPANSION_GOAL_FALLBACK (Track B produced 0 items; Track A fallback active),
+      POC_TARGETS_ONLY (Track A only, no gap-ledger items).
+    added_by: "TC-CL-006 (autonomous_cycle.py Step 4a expansion goal fallback logging)"

@@ -1,0 +1,28 @@
+required_capability_model:
+  mission_id: FF-AGENTS-PARITY-001
+  generated_by: TC-ACP-001-02
+  date: "2026-07-12"
+  total_rc_entries: 22
+  capabilities:
+    - {rc_id: RC-001, name: read_repository_files, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-002, name: write_repository_files, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-003, name: execute_shell_commands, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-004, name: load_instruction_files, claude: true, codex: true, kilo: unknown, blocking: "No KILO.md"}
+    - {rc_id: RC-005, name: parse_skill_registry, claude: true, codex: unknown, kilo: unknown}
+    - {rc_id: RC-006, name: validate_declarations, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-007, name: run_governance_validators, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-008, name: invoke_pre_mutation_guard, claude: true, codex: true, kilo: true, blocking: "EP-002-GAP explicit call"}
+    - {rc_id: RC-009, name: parse_capability_registry, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-010, name: generate_evidence_declarations, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-011, name: read_gap_ledger, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-012, name: run_tests, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-013, name: commit_to_git, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-014, name: push_to_remote, claude: true, codex: unknown, kilo: true}
+    - {rc_id: RC-015, name: run_autonomous_cycle, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-016, name: invoke_skills_by_name, claude: true, codex: false, kilo: false, blocking: "No skill dispatch"}
+    - {rc_id: RC-017, name: enforce_skill_first_policy, claude: true, codex: false, kilo: false}
+    - {rc_id: RC-018, name: load_session_state, claude: true, codex: unknown, kilo: unknown}
+    - {rc_id: RC-019, name: read_governance_docs, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-020, name: parse_capability_routing_registry, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-021, name: generate_sprint_prompt, claude: true, codex: true, kilo: true}
+    - {rc_id: RC-022, name: multi_sprint_autonomous_loop, claude: true, codex: unknown, kilo: unknown}

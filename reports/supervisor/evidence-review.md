@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: PQ-BUNDLE-FORENSICS-REPAIR-001
-Timestamp: 2026-07-10T17:09:13.145898
+Sprint ID: SYLK-TOML-FOSS-ANALYTICS-BATCH-001
+Timestamp: 2026-07-11T20:15:29.753379
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\667b7d640797\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\2d70f39e\declaration-review-package.zip
 
 ## Facts
-- Tests: 21558 passed, 0 failed, 9 skipped
+- Tests: 59 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 97
+- Bundle entries: 39
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-None
+- No cycle-manifest found in declaration-review package

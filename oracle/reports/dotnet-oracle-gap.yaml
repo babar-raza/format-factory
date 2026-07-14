@@ -1,0 +1,50 @@
+pilot: 8
+format_family: dotnet
+status: GAP_DOCUMENTED
+gap_type: MISSING_EXECUTOR
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W6B-001
+recorded_at: "2026-07-12"
+
+description: >
+  No Python-callable .NET oracle executor exists. The Python oracle executor
+  (tools/oracle/execute_oracle.py) covers Python products only (foss_python track).
+  .NET products are tested via MSTest/xUnit in tests/net/{format}/*.cs files.
+
+existing_dotnet_source:
+  - path: src/net/csv/
+    files: [CsvDocument.cs, CsvDocumentAnalytics.cs, CsvReader.cs, CsvWriter.cs, FormatFactory.Csv.csproj]
+  - path: src/net/fods/
+    note: 15 .cs files (FormatFactory.Fods.csproj)
+  - path: src/net/fodt/
+    note: FormatFactory.Fodt.csproj
+
+existing_dotnet_tests:
+  - tests/net/csv/     # CsvDocumentTests.cs, CsvReader/Writer roundtrip tests
+  - tests/net/fods/    # FodsDocument tests, FodsR481 right-to-left tests
+  - tests/net/fodt/
+  - tests/net/tsv/
+  - tests/net/ndjson/
+  - tests/net/zst/
+  - tests/net/html/
+  - tests/net/markdown/
+  - tests/net/netpbm/
+  - tests/net/txt/
+
+gap_details:
+  - No Python-callable wrapper around dotnet test runner
+  - execute_oracle.py only imports from src.python.* (Python product source)
+  - .NET oracle would require: PowerShell runner OR dotnet-script CLI OR subprocess call
+    to 'dotnet test' with JSON output parser
+  - FormatFactory.Fods.Tests runs via MSTest (see .github/workflows/ci.yml)
+
+remediation:
+  approach: >
+    Implement a Python subprocess wrapper around 'dotnet test --json' output.
+    Parse trx/json output and map to oracle verdict format.
+  effort: HIGH
+  priority: DEFERRED
+  gate_dependency: Gate 11 approval (commercial .NET product)
+  deferred_to: TC-W6B-001 follow-up or dedicated .NET oracle taskcard
+
+known_limitation_documented_in: oracle/reports/package-consumer-report.md

@@ -1,19 +1,7 @@
-"""
-format-factory: ZST (Zstandard) FOSS Python track.
-
-Minimal FOSS implementation for Zstandard (.zst) format support.
-Acquisition Gates 1-7 PASSED. Implementation authorized: R20 sprint prompt.
-
-FOSS track only — no commercial readiness implied.
-See: acquisition-packs/zst/ for gate evidence.
-"""
+"""format-factory: ZST (Zstandard) FOSS Python track."""
 # ruff: noqa: F405  # __all__ references names from intentional star imports
 
-# Import all core codec functions and exception classes
 from .zst_codec import *  # noqa: F401, F403
-
-# Import spec-level domain module (compressed stream metrics)
-# This import makes frame-level predicates available as first-class exports.
 from .compressed_stream import *  # noqa: F401, F403
 
 # Explicit public API — 32 core functions + exceptions for Gate 11

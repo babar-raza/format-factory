@@ -1,0 +1,93 @@
+authoritative_plan: plans/.claude/splendid-prancing-wind.md
+artifact_role: analysis_or_evidence_only
+execution_authority: false
+classification_date: '2026-07-13'
+classified_by: machinery_agent
+criteria_source: TC-SPW-003A severity table
+criteria:
+  BLOCKING: Prevents correct runtime behavior for any user input
+  HIGH: Prevents an important feature from being available to consumers
+  MEDIUM: Quality concern with no user-facing defect at current usage levels
+  LOW: Style issue, naming inconsistency, or future-maintainability concern
+  HISTORICAL: Referenced file/artifact removed; gap no longer applies
+entries:
+- gap_id: PCG-001
+  assigned_severity: HISTORICAL
+  status_update: CLOSED
+  rationale: 'FodsDocumentAccessor.cs removed at HEAD (confirmed: file does not exist)'
+- gap_id: PCG-002
+  assigned_severity: HISTORICAL
+  status_update: CLOSED
+  rationale: 'FodsDocumentExtendedApis.cs removed at HEAD (confirmed: file does not
+    exist)'
+- gap_id: PCG-003
+  assigned_severity: MEDIUM
+  rationale: Wrong Python file placement (analytics in domain model file); consumers
+    can call functions; no runtime failure
+- gap_id: PCG-004
+  assigned_severity: MEDIUM
+  rationale: Wrong Python file placement (analytics in model file); no runtime failure
+- gap_id: PCG-005
+  assigned_severity: HIGH
+  rationale: Wildcard imports prevent consumers discovering clean API surface; no
+    runtime failure but degrades DX significantly
+- gap_id: PCG-006
+  assigned_severity: BLOCKING
+  rationale: Dictionary state lost on Save()+Load() — confirmed runtime failure for
+    users storing data via these 33+ APIs
+- gap_id: PCG-007
+  assigned_severity: BLOCKING
+  rationale: SetSheetProtection/SetColumnWidth write dict-only — state not persisted
+    through round-trip; runtime failure
+- gap_id: PCG-008
+  assigned_severity: MEDIUM
+  rationale: Stringly-typed color/style parameters; poor API design, no confirmed
+    runtime correctness failure
+- gap_id: PCG-009
+  assigned_severity: HIGH
+  rationale: 134 public methods without spec backing; important features unavailable
+    or return incorrect data
+- gap_id: PCG-010
+  assigned_severity: HISTORICAL
+  status_update: CLOSED
+  rationale: FodsDocumentExtendedApis.cs removed; suspicious filename gap no longer
+    applies
+- gap_id: PCG-011
+  assigned_severity: MEDIUM
+  rationale: Python files require migration per layout contract; no runtime failure
+    for consumers
+- gap_id: PCG-012
+  assigned_severity: BLOCKING
+  rationale: Constant-return public methods (return null, return false) on spec-expected
+    APIs; runtime failure for any caller
+- gap_id: PCG-013
+  assigned_severity: LOW
+  rationale: 47 TODO markers and internal namespace in comments; no consumer impact,
+    no runtime effect
+- gap_id: PCG-014
+  assigned_severity: MEDIUM
+  rationale: Undocumented public APIs; quality concern, no runtime failure
+- gap_id: PCG-015
+  assigned_severity: HIGH
+  rationale: Test-shaped presence-only tests give false certification; prevents feature
+    confidence but not direct runtime failure
+- gap_id: PCG-016
+  assigned_severity: MEDIUM
+  rationale: Tests import pre-migration module names; tests fail but product runtime
+    unaffected
+- gap_id: PCG-017
+  assigned_severity: MEDIUM
+  rationale: Hardcoded expansion goals without spec backing; governance concern, not
+    runtime failure
+- gap_id: PCG-018
+  assigned_severity: MEDIUM
+  rationale: advisory_only:true makes skill enforcement non-binding; process concern
+- gap_id: PCG-019
+  assigned_severity: LOW
+  rationale: Quality scorer measures test count not quality; internal tooling concern
+open_blocking_gaps:
+- PCG-006
+- PCG-007
+- PCG-012
+note: PCG-006/007 are the canonical dict-state-persistence failures. PCG-012 is constant-return
+  stubs. These are the 3 BLOCKING severity_confirmed=True gaps for FODS .NET.

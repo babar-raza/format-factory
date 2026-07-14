@@ -1,0 +1,64 @@
+{
+  "canonical_task": "MCP-W0-008",
+  "source_plan": "stateful-booping-mountain.md",
+  "mission_id": "FF-PLIS-001",
+  "head_verified": "8192b723ecfb436e4bdc7cfe99cacbb9ec508e0a",
+
+  "validator_rebase": {
+    "requested_id": "V144",
+    "requested_purpose": "governance validator for plan_importer idempotency",
+    "v144_live_allocation": "ALREADY TAKEN by validate_gate10_status_consistency in governance_validators_release.py",
+    "rebased_to": "V172 (next free after current expected_count=171)",
+    "action": "When TC-PIS-005 executes, allocate V172 (not V144)"
+  },
+
+  "taskcard_dispositions": {
+    "stateful-booping-mountain::TC-PIS-001": {
+      "title": "plan-identity-v2 schema",
+      "status": "NOT_IMPLEMENTED",
+      ".supervisor/schemas/plan-identity-v2*.json": "NOT FOUND",
+      "disposition": "OPEN — must execute in Wave 1",
+      "canonical_task": "MCP-W0-008"
+    },
+    "stateful-booping-mountain::TC-PIS-002": {
+      "title": "plan_importer.py (single module, all logic)",
+      "status": "ALREADY_IMPLEMENTED",
+      "evidence": "tools/supervisor/plan_importer.py EXISTS — 365 LOC, implements all 3 failure mode fixes",
+      "disposition": "ALREADY_SATISFIED_AND_VERIFIED — 14/14 tests PASS"
+    },
+    "stateful-booping-mountain::TC-PIS-003": {
+      "title": "lifecycle_audit.py patch (expected_taskcard_count check)",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "grep expected_taskcard_count in lifecycle_audit.py returned 0 matches",
+      "disposition": "OPEN — must execute in Wave 1",
+      "canonical_task": "MCP-W0-008"
+    },
+    "stateful-booping-mountain::TC-PIS-004": {
+      "title": "Pilot tests and legacy migrator",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": "tests/supervisor/test_plan_importer.py EXISTS — 14/14 PASS; legacy migrator not verified",
+      "disposition": "REBASED_AND_EXECUTED — tests exist and pass; legacy migrator deferred"
+    },
+    "stateful-booping-mountain::TC-PIS-005": {
+      "title": "V144 governance validator and CLAUDE.md update",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "V144 is already taken by validate_gate10_status_consistency; must rebase to V172",
+      "disposition": "OPEN — rebase to V172; execute in Wave 1",
+      "canonical_task": "MCP-W1-001"
+    }
+  },
+
+  "open_work_for_wave_1": [
+    "TC-PIS-001: plan-identity-v2 JSON schema (.supervisor/schemas/)",
+    "TC-PIS-003: lifecycle_audit.py expected_taskcard_count patch",
+    "TC-PIS-005: V172 governance validator for plan_importer idempotency"
+  ],
+
+  "plan_importer_py_status": {
+    "path": "tools/supervisor/plan_importer.py",
+    "loc": 365,
+    "git_status": "UNTRACKED (??) — not yet committed",
+    "tests": "tests/supervisor/test_plan_importer.py — 14/14 PASS",
+    "registry": ".local/supervisor/plan-registry.json NOT FOUND — importer not yet run in production"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change-decision.schema.json",
+  "title": "ChangeDecision",
+  "description": "The governance decision on a change proposal.",
+  "type": "object",
+  "required": ["decision_id", "proposal_id", "final_decision", "decided_at", "decided_by"],
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. CD-001)."
+    },
+    "proposal_id": {
+      "type": "string",
+      "description": "change-proposal.schema.json proposal_id being decided."
+    },
+    "impact_id": {
+      "type": ["string", "null"],
+      "description": "change-impact.schema.json impact_id used as input."
+    },
+    "final_decision": {
+      "type": "string",
+      "enum": [
+        "APPROVED",
+        "APPROVED_WITH_CONDITIONS",
+        "REJECTED",
+        "DEFERRED",
+        "WITHDRAWN"
+      ]
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Conditions that must be met if APPROVED_WITH_CONDITIONS.",
+      "items": { "type": "string" }
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": ["string", "null"]
+    },
+    "promotion_record_id": {
+      "type": ["string", "null"],
+      "description": "promotion-record.schema.json promotion_record_id if APPROVED and promoted."
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

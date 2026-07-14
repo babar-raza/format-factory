@@ -1,11 +1,11 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "FOSS-TOML-MUTATION-001",
-  "timestamp": "2026-07-10T12:33:55.392515+00:00",
-  "sprint_verdict": "ACCEPTED",
-  "autonomous_continue": true,
-  "iteration": 0,
+  "run_id": "CERT-LAYER-HEAL-20260710",
+  "timestamp": "2026-07-13T13:12:35.394036+00:00",
+  "sprint_verdict": "ACCEPTED_WITH_REWORK",
+  "autonomous_continue": false,
+  "iteration": 6,
   "test_results": {
     "total": 0,
     "passed": 0,
@@ -13,14 +13,79 @@
   },
   "work_items": [
     {
-      "id": "TOML-DOCUMENT-MUTATION-API",
-      "grade": "ACCEPTED_VERIFIED",
+      "id": "TC-LHEAL-001",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-002",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-003",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-004",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-005",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-006",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-007",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-008",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-009",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "TC-LHEAL-010",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     }
   ],
-  "rework_items": [],
+  "rework_items": [
+    "GOV_BLOCK:monolith_detection_validator"
+  ],
   "agentic_maturity_score": 4.4,
   "active_gaps": [],
   "next_action_hint": "",

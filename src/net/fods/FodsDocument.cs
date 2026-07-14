@@ -295,14 +295,6 @@ public sealed partial class FodsDocument
     }
 
     // -------------------------------------------------------------------------
-    // Charts backing store (for FodsDocumentExtendedApis)
-    // -------------------------------------------------------------------------
-
-    private readonly Dictionary<string, List<ChartInfo>> _charts = new();
-
-    internal record ChartInfo(string Title);
-
-    // -------------------------------------------------------------------------
     // Document model: Sheets
     // -------------------------------------------------------------------------
 

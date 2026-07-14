@@ -1,0 +1,32 @@
+{
+  "task_id": "ET-W1-002",
+  "source_plan": "velvet-swinging-wreath",
+  "audit_date": "2026-07-11",
+  "root_causes_confirmed": {
+    "RC-001": "lifecycle_audit.py has no Check B1 for behavioral_iterations — confirmed MISSING",
+    "RC-002": "write_plan_lock.py has no per-mission mission-ledger init — confirmed MISSING",
+    "RC-003": "G4 guard is graceful on sprint-audit-log.json absent — confirmed LOW severity only",
+    "RC-004": "No generate_behavioral_gap_taskcards — CONFIRMED and NOW FIXED",
+    "RC-005": "check_continuation MACHINERY_AUDIT_REQUIRED has no next_action field — confirmed",
+    "RC-006": "governance_validators_ext4.py has no V_MACH_* validators — confirmed MISSING"
+  },
+  "fix_implemented": {
+    "function": "generate_behavioral_gap_taskcards(audit_result, plan_path) — RC-004",
+    "location": "tools/supervisor/lifecycle_audit.py (after generate_audit_taskcard)",
+    "cli_flag": "--write-gap-taskcards added to lifecycle_audit.py CLI",
+    "behavior": "On AUDIT_REQUIRES_ITERATION: generates CRITICAL/HIGH finding taskcards, writes .local/supervisor/gap-taskcards.json for agent pickup",
+    "test_results": {
+      "filter_low_severity": "PASS",
+      "audit_pass_returns_empty": "PASS",
+      "generates_correct_count": "PASS — 2 tasks from 2 CRITICAL/HIGH findings"
+    }
+  },
+  "remaining_for_wave_4": [
+    "RC-001: Add Check B1 to lifecycle_audit.py (behavioral_iterations >= 2 check)",
+    "RC-002: Add _init_machinery_mission_ledger to write_plan_lock.py",
+    "RC-003: Escalate G4 to CRITICAL when sprint-audit-log.json is completely absent",
+    "RC-005: Add next_action field to check_continuation MACHINERY_AUDIT_REQUIRED output",
+    "RC-006: Add V_MACH_* validators to governance_validators_ext4.py"
+  ],
+  "verdict": "PARTIAL_FIX — RC-004 implemented. Loop-breaking mechanism now exists. Remaining 5 RCs tracked in Wave 4 tasks."
+}

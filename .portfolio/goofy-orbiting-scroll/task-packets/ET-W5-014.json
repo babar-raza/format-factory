@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-014",
+  "workstream_id": "WS-24-FIZZY-HINTON",
+  "objective": "Execute fizzy-imagining-hinton: all 36 TCs",
+  "source_plan_ids": [
+    "s029"
+  ],
+  "source_task_ids": [
+    "TC-FIH-001",
+    "TC-FIH-002",
+    "TC-FIH-003",
+    "TC-FIH-004",
+    "TC-FIH-005",
+    "TC-FIH-006",
+    "TC-FIH-007",
+    "TC-FIH-008",
+    "TC-FIH-009",
+    "TC-FIH-010",
+    "TC-FIH-011",
+    "TC-FIH-012",
+    "TC-FIH-013",
+    "TC-FIH-014",
+    "TC-FIH-015",
+    "TC-FIH-016",
+    "TC-FIH-017",
+    "TC-FIH-018",
+    "TC-FIH-019",
+    "TC-FIH-020",
+    "TC-FIH-021",
+    "TC-FIH-022",
+    "TC-FIH-023",
+    "TC-FIH-024",
+    "TC-FIH-025",
+    "TC-FIH-026",
+    "TC-FIH-027",
+    "TC-FIH-028",
+    "TC-FIH-029",
+    "TC-FIH-030",
+    "TC-FIH-031",
+    "TC-FIH-032",
+    "TC-FIH-033",
+    "TC-FIH-034",
+    "TC-FIH-035",
+    "TC-FIH-036"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 36 TCs in s029 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read fizzy-imagining-hinton.md (s029) and execute all 36 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "17c07441f0291f15876005e51ef5210676f9799fccaa667a6071a6c5b204ecc8"
+}

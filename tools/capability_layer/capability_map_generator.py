@@ -54,6 +54,12 @@ _EXAMPLES_PYTHON = _REPO_ROOT / "examples" / "python"
 _ACQUISITION_PACKS = _REPO_ROOT / "acquisition-packs"
 _DEFAULT_OUTPUT_DIR = _REPO_ROOT / "reports" / "capability-layer"
 
+# TC-CL-003: ODF formats with SAL-grounded authority (have SAL parsers and obligation_ids)
+ODF_FORMATS: frozenset[str] = frozenset({
+    "FODS", "FODT", "FODG", "FODP", "ODS", "ODT",
+    "ABW", "DIF", "GNUMERIC", "SYLK",  # also have SAL facts per capability_compiler.py
+})
+
 # States counted as "verified" for summary purposes
 VERIFIED_STATES = frozenset([
     "spec_verified", "requirement_verified", "capability_verified",
@@ -531,6 +537,26 @@ def _count_examples(examples_dir: Path) -> tuple[int, list[str]]:
     return len(files), files
 
 
+def _scan_example_file_refs(examples_dir: Path, fn_name: str) -> list[str]:
+    """Return names of example files that call fn_name (TC-CL-001 bug fix).
+
+    Checks for 'fn_name(' in file content to ensure function-level evidence,
+    not format-level example presence. Avoids false example_verified assignments.
+    """
+    if not examples_dir.exists():
+        return []
+    needle = fn_name + "("
+    refs: list[str] = []
+    for py_file in sorted(examples_dir.glob("*.py")):
+        try:
+            content = py_file.read_text(encoding="utf-8", errors="replace")
+            if needle in content:
+                refs.append(py_file.name)
+        except Exception:
+            continue
+    return refs
+
+
 def _get_pack_authority(format_id: str) -> str:
     """Get authority state from acquisition-packs/{format}/pack.yaml."""
     pack_yaml = _ACQUISITION_PACKS / format_id.lower() / "pack.yaml"
@@ -660,8 +686,12 @@ def _build_foss_records(
         source_fn_check = any(op_key in fn or fn in op_key for fn in fn_set)
         actually_implemented = is_implemented or source_fn_check
 
+        # TC-CL-001: function-level example check (was format-level — caused 393 false positives)
+        example_fn_refs = _scan_example_file_refs(
+            _EXAMPLES_PYTHON / format_id.lower(), op_key
+        )
         state, reason, confidence = _determine_state(
-            op_key, actually_implemented, test_files, example_count, effective_authority,
+            op_key, actually_implemented, test_files, len(example_fn_refs), effective_authority,
             test_dir=test_dir,
         )
 
@@ -690,6 +720,8 @@ def _build_foss_records(
             "current_state": state,
             "state": state,
             "authority_state": effective_authority,
+            "authority_class": "SAL_GROUNDED" if format_id.upper() in ODF_FORMATS else "IMPLEMENTATION_ASSERTED",
+            "obligation_source": "sal-facts" if format_id.upper() in ODF_FORMATS else "poc-targets.yaml",
             "spec_refs": op_spec_refs,
             "spec_fact_refs": verified_spec_facts or [],
             "requirement_refs": [],
@@ -698,7 +730,7 @@ def _build_foss_records(
                 f"src/python/{format_id.lower()}/{src_file}::{op_key}"
             ] if (actually_implemented and src_dir_exists) else [],
             "test_refs": [f"tests/python/{format_id.lower()}/{t}" for t in test_files[:3]],
-            "example_refs": [f"examples/python/{format_id.lower()}/{e}" for e in example_files[:2]],
+            "example_refs": [f"examples/python/{format_id.lower()}/{e}" for e in example_fn_refs[:2]],
             "package_refs": [],
             "dogfood_refs": [],
             "evidence_refs": [],
@@ -720,8 +752,9 @@ def _build_foss_records(
     for fn in implemented_fns:
         fn_lower = fn.lower()
         if fn_lower not in status_keys and not any(fn_lower in k for k in status_keys):
+            fn_example_refs = _scan_example_file_refs(_EXAMPLES_PYTHON / format_id.lower(), fn)
             state2, reason2, conf2 = _determine_state(
-                fn, True, test_files, example_count, authority_state, test_dir=test_dir
+                fn, True, test_files, len(fn_example_refs), authority_state, test_dir=test_dir
             )
             record2: dict[str, Any] = {
                 "capability_id": f"{format_id}-FOSS-{fn.upper()}-SRC-001",
@@ -741,13 +774,15 @@ def _build_foss_records(
                 "current_state": state2,
                 "state": state2,
                 "authority_state": authority_state,
+                "authority_class": "SAL_GROUNDED" if format_id.upper() in ODF_FORMATS else "IMPLEMENTATION_ASSERTED",
+                "obligation_source": "sal-facts" if format_id.upper() in ODF_FORMATS else "poc-targets.yaml",
                 "spec_refs": [],
                 "spec_fact_refs": verified_spec_facts or [],
                 "requirement_refs": [],
                 "source_refs": [f"src/python/{format_id.lower()}/"] if src_dir_exists else [],
                 "implementation_refs": [f"src/python/{format_id.lower()}/{src_file}::{fn}"] if src_dir_exists else [],
                 "test_refs": [f"tests/python/{format_id.lower()}/{t}" for t in test_files[:2]],
-                "example_refs": [],
+                "example_refs": [f"examples/python/{format_id.lower()}/{e}" for e in fn_example_refs[:2]],
                 "package_refs": [],
                 "dogfood_refs": [],
                 "evidence_refs": [],
@@ -845,6 +880,8 @@ def _build_commercial_records(
             "current_state": state,
             "state": state,
             "authority_state": effective_authority,
+            "authority_class": "SAL_GROUNDED" if format_id.upper() in ODF_FORMATS else "IMPLEMENTATION_ASSERTED",
+            "obligation_source": "sal-facts" if format_id.upper() in ODF_FORMATS else "poc-targets.yaml",
             "spec_refs": spec_facts or [],
             "spec_fact_refs": verified_spec_facts or [],
             "requirement_refs": [],

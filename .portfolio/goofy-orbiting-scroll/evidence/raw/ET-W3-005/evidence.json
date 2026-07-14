@@ -1,0 +1,63 @@
+{
+  "task_id": "ET-W3-005",
+  "wave": "W3",
+  "source_plan": "modular-noodling-galaxy.md (s031)",
+  "mission_id": "FF-ORC-HARDENING-002",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "taskcards_closed": [
+    "TC-W0-001",
+    "TC-W0-001-C1",
+    "TC-W0-001-C2",
+    "TC-W0-001-C3",
+    "TC-W1A-001",
+    "TC-W1A-001-C1",
+    "TC-W1A-001-C2",
+    "TC-W1A-001-C3"
+  ],
+  "taskcards_deferred": [
+    "TC-W1A-002",
+    "TC-W1A-003",
+    "TC-W1B-001",
+    "TC-W2-001",
+    "TC-W2-002",
+    "TC-W3-001",
+    "TC-W4-001",
+    "TC-W5-001",
+    "TC-W5-002",
+    "TC-W5-003",
+    "TC-W6A-001",
+    "TC-W6B-001",
+    "TC-W6C-001",
+    "TC-W7-001",
+    "TC-W7-002"
+  ],
+  "deferral_reason": "TC-W1A-002 (oracle coverage model) and subsequent waves deferred to Wave 4/5 (ET-W4-xxx tasks). Implementing oracle coverage generator requires substantial changes to execute_oracle.py and new reporting infrastructure.",
+  "deliverables": {
+    "oracle/reports/oracle-mission-baseline.yaml": "CREATED",
+    ".supervisor/skill-registry.yaml": "5 new oracle skills added (calculate-oracle-coverage, detect-stale-oracles, onboard-future-format-oracle, generate-oracle-verdict-report, evaluate-roundtrip-oracle)",
+    ".claude/commands/calculate-oracle-coverage.md": "CREATED",
+    ".claude/commands/detect-stale-oracles.md": "CREATED",
+    ".claude/commands/onboard-future-format-oracle.md": "CREATED",
+    ".claude/commands/generate-oracle-verdict-report.md": "CREATED",
+    ".claude/commands/evaluate-roundtrip-oracle.md": "CREATED"
+  },
+  "oracle_baseline": {
+    "csv": {
+      "pass_count": 5,
+      "fail_count": 0,
+      "skip_count": 0,
+      "verdict": "ALL_PASS"
+    },
+    "fods": {
+      "pass_count": 9,
+      "fail_count": 0,
+      "skip_count": 1,
+      "verdict": "PARTIAL_PASS"
+    },
+    "governance_expected_count": 169,
+    "v143_status": "PASS",
+    "obligation_validator": "24 formats checked, PASS"
+  },
+  "skill_registry_count": 128,
+  "oracle_skills_count": 6
+}

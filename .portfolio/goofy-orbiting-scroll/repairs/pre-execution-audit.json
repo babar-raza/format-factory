@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "audit_type": "PRE_EXECUTION_AUDIT",
+  "audited_at": "2026-07-11T09:40:27.514977+00:00",
+  "auditor": "claude-sonnet-4-6",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "prior_mode": "RECONCILE_ONLY",
+  "current_mode": "RECONCILE_REPAIR_AND_EXECUTE",
+  "artifacts_inspected": {
+    "portfolio_manifest": true,
+    "source_inventory_entries": 41,
+    "plan_records": 41,
+    "checklists": 41,
+    "canonical_requirements": 26,
+    "canonical_tasks": 26,
+    "provenance_source_task_mappings": 1514,
+    "source_taskcards_in_plan_records": 1514,
+    "relationship_records": 0,
+    "dependency_graph_nodes": 26,
+    "dependency_graph_edges": 13,
+    "wave_count": 6,
+    "journal_events": 15,
+    "snapshots": 2
+  },
+  "finding_count": 12,
+  "critical_findings": 4,
+  "high_findings": 5,
+  "medium_findings": 3,
+  "findings": [
+    {
+      "finding_id": "F-001",
+      "severity": "CRITICAL",
+      "category": "OVER_CONSOLIDATION",
+      "description": "1514 source taskcards compressed to 26 canonical tasks (ratio 58.2:1). RECONCILE_ONLY agent used plan-level grouping, not taskcard-level mapping.",
+      "affected_artifact": "task-registry.json",
+      "repair_action": "REBUILD_EXECUTABLE_TASKS_AT_TASKCARD_GRANULARITY"
+    },
+    {
+      "finding_id": "F-002-CT-025",
+      "severity": "CRITICAL",
+      "category": "OVERBROAD_CANONICAL_TASK",
+      "description": "CT-025 maps 11 source plans: ['s008', 's019', 's020', 's021', 's022', 's033', 's034', 's036', 's039', 's040', 's041']. A single executable task cannot cover this scope.",
+      "affected_artifact": "task-registry.json",
+      "repair_action": "SPLIT_INTO_ATOMIC_EXECUTABLE_TASKS"
+    },
+    {
+      "finding_id": "F-003",
+      "severity": "HIGH",
+      "category": "UNMAPPED_PLANS",
+      "description": "2 plans have no canonical_task_ids: ['s030', 's038']",
+      "affected_artifact": "plan-registry/",
+      "repair_action": "MAP_ALL_PLANS_TO_EXECUTABLE_TASKS"
+    },
+    {
+      "finding_id": "F-004",
+      "severity": "MEDIUM",
+      "category": "UNVERIFIED_READY_STATE",
+      "description": "Wave 0 tasks [{'task_id': 'CT-001', 'objective': 'Fix validator expected_count (165 vs 167)', 'primary_lane': 'L01', 'concurrency': 'SERIAL', 'status': 'READY'}, {'task_id': 'CT-003', 'objective': 'Build plan_importer.py', 'primary_lane': 'L01', 'concurrency': 'SERIAL', 'depends_on': ['CT-001'], 'status': 'READY'}, {'task_id': 'CT-008', 'objective': 'Fix lifecycle loop AUDIT\u2192EXECUTE iteration', 'primary_lane': 'L01', 'concurrency': 'SERIAL', 'status': 'READY'}] marked READY but repository implementation unverified. CT-001 requires actual validator count verification before claiming READY.",
+      "affected_artifact": "wave-registry.json",
+      "repair_action": "RECALCULATE_TASK_STATES_FROM_REPOSITORY_TRUTH"
+    },
+    {
+      "finding_id": "F-006",
+      "severity": "CRITICAL",
+      "category": "MISSING_CONTROLLER",
+      "description": "No portfolio controller exists. execution-handoff.json lists ready tasks but has no execution mechanism.",
+      "affected_artifact": "controller/",
+      "repair_action": "BUILD_PORTFOLIO_CONTROLLER"
+    },
+    {
+      "finding_id": "F-007",
+      "severity": "HIGH",
+      "category": "MISSING_SCHEMAS",
+      "description": "No JSON schemas exist. All state transitions are unvalidated.",
+      "affected_artifact": "schemas/",
+      "repair_action": "CREATE_JSON_SCHEMAS_FOR_ALL_ARTIFACT_TYPES"
+    },
+    {
+      "finding_id": "F-008",
+      "severity": "CRITICAL",
+      "category": "MISSING_TASK_PACKETS",
+      "description": "No task packets exist. A fresh worker cannot execute any task without loading all 41 plans.",
+      "affected_artifact": "task-packets/",
+      "repair_action": "GENERATE_ONE_TASK_PACKET_PER_EXECUTABLE_TASK"
+    },
+    {
+      "finding_id": "F-009",
+      "severity": "HIGH",
+      "category": "COARSE_DEPENDENCY_GRAPH",
+      "description": "Dependency graph has 26 nodes at canonical-task granularity. Must be rebuilt at executable-task granularity after task splitting.",
+      "affected_artifact": "dependency-graph.json",
+      "repair_action": "REBUILD_DEPENDENCY_GRAPH_AT_EXECUTABLE_TASK_GRANULARITY"
+    },
+    {
+      "finding_id": "F-010",
+      "severity": "HIGH",
+      "category": "MISLEADING_HANDOFF_STATUS",
+      "description": "execution-handoff.json claims HANDOFF_READY / verdict=ACCEPT from RECONCILE_ONLY review. That review explicitly could not validate execution readiness.",
+      "affected_artifact": "execution-handoff.json",
+      "repair_action": "RESET_TO_REPAIR_IN_PROGRESS"
+    },
+    {
+      "finding_id": "F-011",
+      "severity": "MEDIUM",
+      "category": "TERMINAL_PLAN_DISPOSITION",
+      "description": "Plans ['s036', 's039'] self-declare TERMINAL_CLOSED in source content. Their source taskcards must each have individual dispositions, not plan-level bulk closure.",
+      "affected_artifact": "provenance-map.json",
+      "repair_action": "VERIFY_INDIVIDUAL_TASKCARD_DISPOSITIONS_FOR_TERMINAL_PLANS"
+    },
+    {
+      "finding_id": "F-012",
+      "severity": "HIGH",
+      "category": "ZERO_TC_PLANS_SUPPLEMENTED_WITHOUT_VERIFICATION",
+      "description": "Plans s003, s005, s010, s012, s015, s030 had 0 taskcards extracted by regex and were supplemented with manually assumed TC IDs (e.g. TC-GOV-001..023 for s005). These assumed IDs must be verified against the actual plan files.",
+      "affected_artifact": "plan-registry/",
+      "repair_action": "VERIFY_SUPPLEMENTED_TASKCARD_IDS_AGAINST_SOURCE_PLANS"
+    },
+    {
+      "finding_id": "F-013",
+      "severity": "MEDIUM",
+      "category": "VALIDATOR_COUNT_CONFLICT_UNRESOLVED",
+      "description": "CONFLICT-004 (SHARED_REQUIREMENT REQ-VALCOUNT-001): MEMORY.md says 165 validators, governance_validator_runner.py has expected_count=167. CT-001 records this but no repository investigation was done to determine the ground truth.",
+      "affected_artifact": "task-registry.json / tools/supervisor/governance_validator_runner.py",
+      "repair_action": "INVESTIGATE_ACTUAL_VALIDATOR_COUNT_BEFORE_CREATING_FIX_TASK"
+    }
+  ],
+  "required_repairs": [
+    "SPLIT_26_CANONICAL_TASKS_INTO_ATOMIC_EXECUTABLE_TASKS",
+    "MAP_ALL_SOURCE_TASKCARDS_TO_EXECUTABLE_TASKS",
+    "VERIFY_SUPPLEMENTED_TASKCARD_IDS_AGAINST_SOURCE_PLANS",
+    "BUILD_PORTFOLIO_CONTROLLER",
+    "CREATE_JSON_SCHEMAS",
+    "GENERATE_TASK_PACKETS",
+    "REBUILD_DEPENDENCY_GRAPH_AT_EXECUTABLE_TASK_GRANULARITY",
+    "RECALCULATE_TASK_STATES_FROM_REPOSITORY_TRUTH",
+    "RESET_MISLEADING_HANDOFF_STATUS",
+    "INVESTIGATE_VALIDATOR_COUNT_GROUND_TRUTH"
+  ],
+  "verdict": "REQUIRES_FULL_REPAIR_BEFORE_EXECUTION"
+}

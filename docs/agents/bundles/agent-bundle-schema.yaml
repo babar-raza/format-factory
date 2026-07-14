@@ -1,0 +1,55 @@
+# Agent Bundle Schema — Format Factory
+# TC-ACP-005-01 (FF-AGENTS-PARITY-001, 2026-07-13)
+#
+# Design note: Bundles include PATHS to read, not inline content.
+# The agent fetches referenced files at runtime. Bundles are committed to git.
+# Bundles are regenerated on every run_sync.py run (final step).
+
+bundle_schema_version: "1.0"
+generated_by: TC-ACP-005-01
+
+# Required fields for every agent bundle:
+bundle:
+  # Identity
+  generated: string  # ISO 8601 UTC timestamp of bundle generation
+  agent: string      # codex | kilo
+  source:
+    registry: string         # path to .governance/capabilities/registry.yaml
+    contract: string         # path to docs/agents/canonical-agent-contract.yaml
+    pilot_specs: string      # path to docs/agents/pilots/pilot-specs.yaml
+
+  # Entry point — file the agent must read for instructions
+  instruction_file: string   # codex: .codex/codex.md | kilo: KILO.md (if exists)
+  contract_file: string      # docs/agents/canonical-agent-contract.yaml
+
+  # Session state files agent must read at session start
+  session_state:
+    continuation_signal: string   # .local/supervisor/continuation-signal.json
+    plan_lock: string             # .local/supervisor/active-plan-lock.json
+    session_resume: string        # reports/supervisor/session-resume.md
+
+  # Capabilities the agent CAN use (filtered from registry.yaml by agent surface flag)
+  capabilities:
+    - capability_id: string
+      status: string
+      parity_status: string
+      command_file: string
+
+  # Governance files the agent must read before any work
+  governance:
+    - path: string
+      role: string        # e.g., "session-lifecycle", "skill-execution-mechanics"
+      required: boolean
+
+  # Capabilities BLOCKED for this agent with reason
+  blocked_capabilities:
+    - capability_id: string
+      block_reason: string  # e.g., "no skill dispatch mechanism"
+      rc_blocked: string    # e.g., "RC-016"
+
+  # Model requirements for this agent
+  model_requirements:
+    minimum_tier: string    # low | medium | high
+    context_required: boolean
+    reasoning_required: boolean
+    notes: string

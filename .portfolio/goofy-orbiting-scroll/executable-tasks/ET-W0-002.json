@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W0-002",
+  "workstream_id": "WS-01-SUPERVISOR-MACHINERY",
+  "objective": "Create plan_importer.py in tools/supervisor/ — baseline skeleton with documented interface",
+  "source_plan_ids": [
+    "s009"
+  ],
+  "source_task_ids": [
+    "TC-SBM-001",
+    "TC-SBM-002",
+    "TC-SBM-003"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/plan_importer.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/plan_importer.py"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read stateful-booping-mountain.md plan file for plan_importer.py specification",
+    "Create tools/supervisor/plan_importer.py with functions: import_plan(path), validate_plan(path), register_plan(path)",
+    "Each function must have docstring, proper error handling, and type hints",
+    "import_plan: copies plan to plans/.claude/<name>.md, returns PlanImportResult",
+    "validate_plan: checks plan schema compliance, returns ValidationResult",
+    "register_plan: registers in plan registry JSON, returns RegistrationResult",
+    "Write tests/supervisor/test_plan_importer.py with at least 3 test cases"
+  ],
+  "acceptance_criteria": [
+    "tools/supervisor/plan_importer.py exists",
+    "import_plan(), validate_plan(), register_plan() functions are importable",
+    "tests/supervisor/test_plan_importer.py passes",
+    "plan_importer.py < 200 LOC (lean implementation)"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python -c \"from tools.supervisor.plan_importer import import_plan, validate_plan, register_plan; print('OK')\"",
+    "python .venv/Scripts/pytest tests/supervisor/test_plan_importer.py -v"
+  ],
+  "lane_verification": [
+    "python .venv/Scripts/pytest tests/supervisor/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 0,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W0-002-E149063D",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W0-002-1A60666C",
+  "claimed_at": "2026-07-11T09:55:33.778708+00:00",
+  "closed_at": "2026-07-11T10:01:18.824647+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

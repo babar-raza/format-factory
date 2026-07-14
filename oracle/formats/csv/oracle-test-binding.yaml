@@ -1,0 +1,38 @@
+oracle_test_binding_id: oracle-csv-test-binding-v1
+format_id: csv
+oracle_package: oracle/formats/csv/oracle-package.yaml
+binding_type: pytest_parametrize
+executor_module: csv_codec
+executor_callable: parse_csv
+test_file: tests/python/csv/test_csv_oracle_binding.py
+generated_at: "2026-07-12"
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W1B-001
+
+bound_cases:
+  - case_id: csv-valid-001
+    bound: true
+    test_function: test_csv_oracle_valid_cases
+    note: "minimal-2x2 with headers and row_count"
+  - case_id: csv-valid-002
+    bound: true
+    test_function: test_csv_oracle_valid_cases
+    note: "single-cell with row_count=1"
+  - case_id: csv-valid-003
+    bound: true
+    test_function: test_csv_oracle_valid_cases
+    note: "quoted-fields with headers"
+  - case_id: csv-valid-004
+    bound: true
+    test_function: test_csv_oracle_valid_cases
+    note: "empty file with row_count=0 — skipped if no sample"
+  - case_id: csv-invalid-001
+    bound: true
+    test_function: test_csv_oracle_invalid_cases
+    note: "binary file rejection"
+  - case_id: csv-invalid-002
+    bound: true
+    test_function: test_csv_oracle_invalid_cases
+    note: "null-byte rejection"
+
+binding_verdict: BOUND

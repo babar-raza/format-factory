@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W1-001",
+  "workstream_id": "WS-02-GOVERNANCE-HEALING",
+  "objective": "Fix highest-priority governance validator failures identified in ET-W0-003 audit",
+  "source_plan_ids": [
+    "s005"
+  ],
+  "source_task_ids": [
+    "TC-GOV-002",
+    "TC-GOV-003",
+    "TC-GOV-004"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "Top 5 governance FAIL validators now PASS",
+    "No new FAIL validators introduced",
+    "governance_validator_runner.py exit 0 or fewer FAIL than before"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-003"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Load evidence/raw/ET-W0-003/governance-audit.json repair-list.json",
+    "Fix the top 5 FAIL validators in priority order",
+    "For each fix: edit the validator, run it in isolation, verify it passes",
+    "Run full governance_validator_runner.py and record results",
+    "Update evidence/raw/ET-W1-001/validator-fixes.json"
+  ],
+  "focused_validation": [
+    "python tools/supervisor/governance_validator_runner.py 2>&1 | grep -c FAIL || echo 0"
+  ],
+  "lane_validation": [
+    "python .venv/Scripts/pytest tests/supervisor/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "bff9a3c2e581745ca8cc12287b06e8c33a590962528cbecdd0802ea83e667487"
+}

@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-ndjson-test-binding-v1
+format_id: ndjson
+oracle_package: oracle/formats/ndjson/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: ndjson.ndjson_parser
+executor_callable: parse_ndjson
+bound_test_files:
+- tests/python/ndjson/test_ndjson_oracle_binding.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: ndjson-valid-001
+  bound: true
+  test_function: test_ndjson_oracle_valid_cases
+- case_id: ndjson-valid-002
+  bound: true
+  test_function: test_ndjson_oracle_valid_cases
+- case_id: ndjson-valid-003
+  bound: true
+  test_function: test_ndjson_oracle_valid_cases
+- case_id: ndjson-valid-004
+  bound: true
+  test_function: test_ndjson_oracle_valid_cases
+- case_id: ndjson-invalid-001
+  bound: true
+  test_function: test_ndjson_oracle_invalid_cases
+binding_verdict: BOUND

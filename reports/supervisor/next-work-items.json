@@ -1,6 +1,42 @@
 {
   "items": [
     {
+      "item_id": "CERT-HEAL-001",
+      "title": "Certification: TC-009 \u2014 regenerate FODS/CSV/ZST pilot reports with run model",
+      "lane": "certification_healing",
+      "priority": 1,
+      "description": "Regenerate the 9 certification reports for FODS, CSV, and ZST using the updated tools (run_id + source_revision). Verify verdicts remain CERTIFIED under the new model.",
+      "acceptance_criteria": "All 3 pilot formats have run manifests; verdicts CERTIFIED; idempotency confirmed",
+      "verification_command": "python tools/certification/certification_dashboard.py",
+      "evidence_expected": "Run manifests for fods, csv, zst with complete reports listed",
+      "source": "precious-wandering-lighthouse-TC-009",
+      "stop_reason_adjudication": "agent-owned",
+      "human_required": false,
+      "blocked_by": null,
+      "external_gate": false,
+      "gap_id": null,
+      "depends_on": []
+    },
+    {
+      "item_id": "CERT-HEAL-002",
+      "title": "Certification: TC-010 \u2014 final validation, run governance validators (expected 210), close plan",
+      "lane": "certification_healing",
+      "priority": 1,
+      "description": "Run full certification test suite (596 tests) and governance validators (expected 210). Verify 20/20 CERTIFIED. Close precious-wandering-lighthouse.md with --terminal --audit-gate.",
+      "acceptance_criteria": "All tests pass; expected_count=210; plan TERMINAL_CLOSED",
+      "verification_command": ".venv/Scripts/pytest tests/certification/ tests/supervisor/test_governance_validators_certification.py -q",
+      "evidence_expected": "All tests pass; lifecycle_audit returns TERMINAL_CLOSED",
+      "source": "precious-wandering-lighthouse-TC-010",
+      "stop_reason_adjudication": "agent-owned",
+      "human_required": false,
+      "blocked_by": null,
+      "external_gate": false,
+      "gap_id": null,
+      "depends_on": [
+        "CERT-HEAL-001"
+      ]
+    },
+    {
       "item_id": "WI-GAP-ABW-FOSS-ABW_TOTAL_SE-001",
       "title": "Abw Total Sentence Count for ABW",
       "lane": "product",

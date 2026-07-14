@@ -11,7 +11,7 @@ layer_metadata:
   repository_revision: 16b454ca
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
-  maturity_current: 3
+  maturity_current: 4
   maturity_target: 5
   current_stage: CERTIFICATION_HARDENING
   current_owner: null
@@ -35,20 +35,46 @@ layer_metadata:
   - L07
   downstream_layers:
   - L18
-  skill_ids: []
-  command_ids: []
+  skill_ids:
+  - certification-assertion-scorer
+  - certification-ci-gate
+  - certification-cross-language-parity
+  - certification-dashboard
+  - certification-dotnet-assertion-scorer
+  - certification-exception-checker
+  - certification-fix-weak-assertions
+  - certification-generate-exception-tests
+  - certification-generate-security-tests
+  - certification-inventory-extractor
+  - certification-mutation-tester
+  - certification-performance-benchmark
+  - certification-stub-detector
+  command_ids:
+  - certification-assertion-scorer
+  - certification-ci-gate
+  - certification-cross-language-parity
+  - certification-dashboard
+  - certification-dotnet-assertion-scorer
+  - certification-exception-checker
+  - certification-fix-weak-assertions
+  - certification-generate-exception-tests
+  - certification-generate-security-tests
+  - certification-inventory-extractor
+  - certification-mutation-tester
+  - certification-performance-benchmark
+  - certification-stub-detector
   evidence_paths:
   - reports/certification/portfolio-certification-matrix.json
   - reports/certification-integration/report-integrity-audit.yaml
   - reports/certification-integration/product-verdict-review.yaml
   - reports/certification-integration/gap-reconciliation-map.yaml
   last_started_at: '2026-06-28'
-  last_progress_at: '2026-06-28'
-  last_updated_at: '2026-06-29'
-  last_verified_at: '2026-06-28'
-  last_verified_revision: 16b454ca
-  next_task_id: TC-CERT-L-003
-  next_action: Register certification tools as skills; add governance validators V87+
+  last_progress_at: '2026-07-13'
+  last_updated_at: '2026-07-13'
+  last_verified_at: '2026-07-13'
+  last_verified_revision: 3fdaf841
+  next_task_id: null
+  next_action: null
   handoff_id: HO-008
 ```
 
@@ -133,6 +159,11 @@ Target maturity is **5**. The target state is a governed, evidence-backed, disco
 - Certification exists but must consume proof graphs and evidence bundles directly.
 - Product statuses must be stage-aware and avoid overclaiming.
 - Human review gates must be represented as external blockers, not failures.
+- CERT-LAYER-GAP-001: Layer tasks invisible to supervisor (TC-SUP-002 TODO, confirmed 2026-07-13).
+  TC-CERT-L-003 was in TODO state since 2026-06-29 and was never surfaced by the autonomous loop.
+  It required manual identification and scheduling via glittery-splashing-manatee plan.
+  Root cause: `generate_next_worker_prompt.py` reads next-sprint.md, not plans/layers/task-register.yaml.
+  Fix requires adding G9 train group (TC-SUP-002 — deferred separate sprint).
 
 ## 15. Root-Cause Register
 
@@ -174,7 +205,7 @@ Required contracts:
 
 ## 20. Skills and Commands
 
-Current skill IDs: `[]`.
+Current skill IDs: `certification-assertion-scorer, certification-dashboard, certification-dotnet-assertion-scorer, certification-exception-checker, certification-fix-weak-assertions, certification-generate-exception-tests, certification-generate-security-tests, certification-inventory-extractor, certification-stub-detector` (9 skills registered via layer_promotion.py update, TC-LHEAL-004, 2026-07-13).
 
 Current command IDs: `[]`.
 
@@ -247,13 +278,13 @@ No new active taskcard should be started until ownership, evidence, and validati
 
 ## 30. Ready Taskcards
 
-Ready taskcards from metadata: `['TC-CERT-L-003']`.
+Ready taskcards from metadata: `[]`.
 
-Primary next task: `TC-CERT-L-003`.
+Primary next task: `null` (TC-CERT-L-003 CLOSED 2026-07-13 via TC-LHEAL-004).
 
 ## 31. Completed Taskcards
 
-Completed taskcards from metadata: `['TC-CERT-L-001', 'TC-CERT-L-002']`.
+Completed taskcards from metadata: `['TC-CERT-L-001', 'TC-CERT-L-002', 'TC-CERT-L-003']`.
 
 Completed work must remain linked to evidence and should not be trusted from summary text alone.
 
@@ -314,6 +345,29 @@ This layer can be marked complete only when:
 - Evidence declarations, tests/validators, and reviewer verdicts are present.
 - No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
 
-## 39. Change History
+## 39. Maturity Criteria
+
+### Maturity 4 (ACHIEVED — 2026-07-13)
+All 13 certification tools registered as skills in skill-registry.yaml and index.yaml.
+run_manager.py active — atomic run concept preventing hybrid verdicts.
+MISSING_EVIDENCE semantics enforced in certification_dashboard.py.
+Behavioral inject-and-verify tests present (test_tool_detection.py, test_dashboard_integrity.py).
+gap_reconciler.py implemented with machine-verifiable finding → gap mappings.
+
+Criteria are testable:
+- `grep -c "skill_id: certification-" .supervisor/skill-registry.yaml` must return ≥ 13
+- `python tools/certification/run_manager.py --help` exits 0
+- `python -m pytest tests/certification/ -q` passes ≥ 589 tests
+- `python tools/certification/gap_reconciler.py --findings reports/certification-integration/normalized-findings.yaml` exits 0
+
+### Maturity 5 (TARGET)
+5 governance validators active in governance_validators_certification.py.
+gap_reconciler.py integrated with supervisor routing proof (autonomous task dispatch).
+V_CERT_01–V_CERT_05 all produce correct verdicts verified by manual injection.
+Idempotency confirmed: running the full certification pipeline twice produces zero delta.
+Sustained autonomous routing: at least one recertification task dispatched and completed through the supervisor loop without human intervention.
+
+## 40. Change History
 
 - 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.
+- 2026-07-13 — TC-006 (precious-wandering-lighthouse): 4 new skills registered (certification-ci-gate, certification-cross-language-parity, certification-mutation-tester, certification-performance-benchmark). maturity_current updated 3→4. Maturity 4/5 criteria defined.

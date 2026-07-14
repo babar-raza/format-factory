@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W2-001",
+  "workstream_id": "WS-02-GOVERNANCE-HEALING",
+  "objective": "Fix remaining governance validator failures from s005 repair list (batch 2)",
+  "source_plan_ids": [
+    "s005"
+  ],
+  "source_task_ids": [
+    "TC-GOV-005",
+    "TC-GOV-006",
+    "TC-GOV-007"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W1-001"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue from ET-W1-001: fix next batch of FAIL validators",
+    "Target: all named validators in memoized-frolicking-donut pass",
+    "Run full governance_validator_runner.py and verify improvement"
+  ],
+  "acceptance_criteria": [
+    "All validators named in s005 now PASS",
+    "governance_validator_runner.py shows 0 FAIL for s005-targeted validators"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python tools/supervisor/governance_validator_runner.py 2>&1 | grep -E \"FAIL|PASS\" | head -30"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 2,
+  "status": "CLOSED",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W2-001-F8BBC71D",
+  "claimed_at": null,
+  "closed_at": "2026-07-11T10:39:46.072545+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

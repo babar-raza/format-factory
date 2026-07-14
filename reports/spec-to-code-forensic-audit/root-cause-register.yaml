@@ -1,0 +1,105 @@
+---
+# Root Cause Register
+# TC-FF-AUDIT (cheeky-crafting-manatee — MCP-W3-002)
+# Generated: 2026-07-12
+
+root_causes:
+
+  - id: RC-001
+    title: "SAL extractors missing for 14 non-ODF formats"
+    impact: "spec_to_fact_ratio = 0.0 for 14/20 Python formats"
+    severity: HIGH
+    classification: MISSING_INFRASTRUCTURE
+    affected_formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    fix_options:
+      - option: A
+        description: "Build automated RFC/ABNF/binary-spec parser → SAL facts"
+        effort: HIGH
+        score: "3/5"
+      - option: B
+        description: "Manual seeding with MANUALLY_SEEDED provenance classification"
+        effort: LOW
+        score: "4/5"
+      - option: C
+        description: "Declare SPEC_ONLY — record traceability gap without seeding"
+        effort: ZERO
+        score: "2/5"
+    chosen_fix: B
+    chosen_fix_rationale: "Manual seeding is honest and immediately executable. Automated extraction is long-term goal."
+    sprint_wave: W5_or_W6
+
+  - id: RC-002
+    title: "QName collapse: many SAL facts map to few qnames"
+    impact: "fact_to_qname ratio appears low (~0.2%) but is INTENTIONAL architecture"
+    severity: ADVISORY
+    classification: INTENTIONAL_ARCHITECTURE_DECISION
+    affected_formats: [fods, fodt, ods, odt, fodg, fodp]
+    fix_options:
+      - option: A
+        description: "Expand qname registry to 1:1 with spec elements"
+        effort: EXTREME
+        score: "1/5"
+      - option: B
+        description: "Accept coarse-grained qnames as intended design"
+        effort: ZERO
+        score: "3/5"
+      - option: C
+        description: "Add source_fact_ids[] field to each qname entry"
+        effort: LOW
+        score: "5/5"
+    chosen_fix: C
+    chosen_fix_rationale: "Document the grouping honestly. No structural change needed."
+    sprint_wave: W3_MCP_W3_003
+
+  - id: RC-003
+    title: "Non-ODF capabilities are POC-derived, not spec-fact-derived"
+    impact: "Capability chain broken for 14/20 formats (no spec authority)"
+    severity: MEDIUM
+    classification: PROVENANCE_GAP
+    affected_formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    fix_options:
+      - option: A
+        description: "Mark as POC_DERIVED_NOT_SPEC_DERIVED immediately (honest classification)"
+        effort: LOW
+        score: "5/5"
+      - option: B
+        description: "Retroactively seed SAL facts for each capability behavior"
+        effort: MEDIUM
+        score: "4/5"
+    chosen_fix: "A then B"
+    chosen_fix_rationale: "Honest classification now; spec seeding as follow-on."
+    sprint_wave: W3_W5
+
+  - id: RC-004
+    title: "Feature compiler produces near-zero output (next-work-items.json empty)"
+    impact: "Sprint loop cannot select product work automatically"
+    severity: HIGH
+    classification: PIPELINE_BUG
+    affected_components: [tools/supervisor/capability_feature_compiler.py]
+    fix_options:
+      - option: A
+        description: "Fix canonical capability_feature_compiler.py"
+        effort: MEDIUM
+        score: "5/5"
+      - option: B
+        description: "Replace with manual feature list seeding"
+        effort: LOW
+        score: "3/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Canonical compiler is the correct path; manual seeding is a workaround only."
+    sprint_wave: W5_MCP_W5_001
+
+  - id: RC-005
+    title: "Oracle results disconnected from sprint loop"
+    impact: "73/73 PASS results not feeding capability/feature proof levels"
+    severity: MEDIUM
+    classification: INTEGRATION_GAP
+    affected_components: [oracle/, tools/supervisor/capability_feature_compiler.py]
+    fix_options:
+      - option: A
+        description: "Wire oracle results into feature-proof-register.yaml"
+        effort: LOW
+        score: "5/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Direct integration is the simplest fix."
+    sprint_wave: W5_MCP_W5_002

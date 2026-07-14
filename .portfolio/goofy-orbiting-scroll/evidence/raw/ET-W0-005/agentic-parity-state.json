@@ -1,0 +1,46 @@
+{
+  "task_id": "ET-W0-005",
+  "source_plan": "glimmering-hopping-kazoo",
+  "mission_id": "FF-AGENTS-PARITY-001",
+  "audit_date": "2026-07-11",
+  "plan_status": "IN_PROGRESS (no taskcards started)",
+  "taskcard_statuses": {
+    "TC-ACP-001": "PROPOSED",
+    "TC-ACP-002": "PROPOSED",
+    "TC-ACP-003": "PROPOSED",
+    "TC-ACP-004": "PROPOSED",
+    "TC-ACP-005": "PROPOSED",
+    "TC-ACP-006": "PROPOSED",
+    "TC-ACP-007": "PROPOSED",
+    "TC-ACP-008": "PROPOSED",
+    "TC-ACP-009": "PROPOSED",
+    "TC-ACP-010": "PROPOSED",
+    "TC-ACP-011": "PROPOSED",
+    "TC-ACP-012": "PROPOSED",
+    "TC-ACP-013": "PROPOSED",
+    "TC-ACP-014": "PROPOSED",
+    "TC-ACP-015": "PROPOSED",
+    "TC-ACP-016": "PROPOSED"
+  },
+  "artifact_existence": {
+    "docs/agents/required-capability-model.yaml": false,
+    ".governance/capabilities/schemas/capability.schema.json": true,
+    "tools/agents/build_agent_bundle.py": false,
+    "docs/agents/agent-inventory.yaml": false,
+    "docs/agents/agent-parity-matrix.yaml": false,
+    "docs/agents/pilots/pilot-results.yaml": false,
+    "tests/agents/test_capability_opt_in.py": false,
+    "tools/supervisor/governance_validators_agent_parity.py": false
+  },
+  "root_causes_identified": [
+    "codex: true is opt-out default, not evidence of capability",
+    "No delivery mechanism to non-Claude agents",
+    "Governance is prompt-only — pre_mutation_guard.py documents its own gap (EP-002-GAP)",
+    "skill-registry.yaml has no codex: or kilo: fields",
+    "kilo.jsonc is 2 lines, zero functional integration"
+  ],
+  "disposition": "EXECUTE_TASK — plan has clear scope, no prerequisite blockers at Wave 0 assessment level. TC-ACP-001 is ready to execute.",
+  "blocking_factors": "None TRUE_EXTERNAL — all work is agent-owned",
+  "repository_assessment": "NOT_STARTED",
+  "assigned_wave": "Wave 1 (after Wave 0 foundation fixes)"
+}

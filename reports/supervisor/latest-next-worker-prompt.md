@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-07-10T17:33:36.256316
-# Source: Supervisor autonomous-cycle review of FOSS-TOML-MUTATION-001
+# Generated: 2026-07-13T18:11:56.170299
+# Source: Supervisor autonomous-cycle review of CERT-LAYER-HEAL-20260710
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,10 +27,10 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FOSS-TOML-MUTATION-001
-- Prior verdict: ACCEPTED
+- Prior sprint: CERT-LAYER-HEAL-20260710
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
@@ -606,8 +606,8 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 132x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 219x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 6x, last: r556-zst-skippable)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 344x, last: playful-giggling-island-phase4-20260704)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 381x, last: 667b7d640797)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 354x, last: CERT-LAYER-HEAL-20260710)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 394x, last: layer-heal-010)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 27x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 5x, last: r561-csv-tsv-ndjson-odt)
@@ -616,20 +616,22 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 14x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 9x, last: r561-csv-tsv-ndjson-odt)
-- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 51x, last: PQ-BUNDLE-FORENSICS-REPAIR-001)
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 56x, last: TC-ACP-016)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dotnet_loc_cap_failed (seen 5x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 87x, last: stateless-juggling-robin-sprint2)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dependency_direction_failed (seen 5x, last: r560-xcf-gnumeric-abw-dif)
 - ESCALATED FAILURE (OVERCLAIM_FAILURE): Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a planning markdown document; no actual execution artifacts (e.g., git commit logs, diff outputs, or build reports) are provided.', 'No concrete proof that the dirty working tree was audited, changes were committed, or that product gaps were selected and validated.', 'Missing the required product‑gap selection file (e.g., selected-product-gaps.json) or any verification that it was created/used.', 'No build or installation evidence to satisfy mandatory outcomes such as package artifacts built or dogfood export path advanced.', 'Claims are listed with dispositions but lack supporting data (e.g., test results, command output, screenshots) to verify those dispositions.'] (seen 3x, last: ff-gates-advancement-20260702)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V102_failed (seen 3x, last: sal-ungrounded-gap-closure-20260704)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V102_failed (seen 9x, last: SYLK-TOML-FOSS-ANALYTICS-BATCH-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_analytics_naming_enforced_failed (seen 4x, last: honey-heal-20260704)
-- WARNING: 32 unresolved failures in failure memory
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V121_failed (seen 3x, last: FODG-DIF-PYTHON-MUTATION-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_root_structure_validator_failed (seen 6x, last: GNUMERIC-TO-NDJSON-DOGFOOD-001)
+- WARNING: 36 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 507x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 573x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 - **TEST_FAILURE** (seen 340x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 - **TEST_FAILURE** (seen 4x): Sprint ended with 2 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
@@ -655,3 +657,30 @@ and MUST NOT invent arbitrary flat class names without spec authority.
 **Enforcement:** If a product model change is made without citing spec_fact_refs,
 governance validator V8 (spec_fact_references) will FAIL the item.
 Use SAL output at `.local/sal-output/sal-facts-latest.json` for valid FACT-* refs.
+
+## Lane Selection (Derived from ledger state)
+
+Format ABW: selected_lane=feature | Lane B gaps: 1
+Format CSV: selected_lane=feature
+Format DIF: selected_lane=feature | Lane B gaps: 1
+Format FODG: selected_lane=feature | Lane B gaps: 1
+Format FODP: selected_lane=feature | Lane B gaps: 1
+Format FODS: selected_lane=feature | Lane B gaps: 1
+Format FODT: selected_lane=feature | Lane B gaps: 1
+Format GNUMERIC: selected_lane=feature | Lane B gaps: 1
+Format NDJSON: selected_lane=feature
+Format ODS: selected_lane=feature | Lane B gaps: 1
+Format ODT: selected_lane=dom | Lane B gaps: 1
+  → Include `deepening_lane: dom` in evidence declaration.
+  → Select DOM advancement gap as primary task: GAP-ODT-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+Format PBM: selected_lane=feature
+Format PGM: selected_lane=feature
+Format PPM: selected_lane=feature
+Format QOI: selected_lane=feature
+Format SYLK: selected_lane=feature | Lane B gaps: 1
+Format TOML: selected_lane=feature | Lane B gaps: 1
+Format TSV: selected_lane=feature
+Format XCF: selected_lane=feature | Lane B gaps: 1
+Format ZST: selected_lane=feature
+
+Lane B starvation: ODT require DOM advancement this sprint.

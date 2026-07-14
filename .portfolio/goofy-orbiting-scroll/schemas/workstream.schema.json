@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workstream",
+  "title": "Workstream",
+  "description": "A broad grouping used for organization and reporting. NOT an executable unit.",
+  "type": "object",
+  "required": ["workstream_id","objective","source_plan_ids","executable_task_ids","status"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "workstream_id": {"type": "string", "pattern": "^WS-[A-Z0-9-]+$"},
+    "objective": {"type": "string", "minLength": 10},
+    "source_plan_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "source_task_ids": {"type": "array", "items": {"type": "string"}},
+    "executable_task_ids": {"type": "array", "items": {"type": "string"}},
+    "primary_lane": {"type": "string"},
+    "status": {
+      "type": "string",
+      "enum": ["PENDING","IN_PROGRESS","BLOCKED","COMPLETE"]
+    }
+  }
+}

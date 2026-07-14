@@ -1,0 +1,68 @@
+schema_version: '1.0'
+mission_id: CERT-FORENSICS-20260710
+source_findings: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\certification-integration\normalized-findings.yaml
+source_ledger: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\capability-layer\gap-ledger.json
+total_findings: 5
+link_existing: 0
+create_new: 0
+invalid: 5
+dispositions:
+- finding_id: CERT-STRUCT-001
+  format_id: ALL
+  certification_dimension: dashboard
+  stable_semantic_key: missing_evidence_defaults_to_pass
+  action: INVALID
+  canonical_gap_id: null
+  description: "certification_dashboard.py returns PASS for any dimension whose report\
+    \ file is absent (_load_json returns {} when file not found, then get() defaults\
+    \ to 0 stubs/0 exceptions \u2192 PASS). A format with no stub audit is indistinguishable\
+    \ from one that ran and found zero stubs.\n"
+- finding_id: CERT-STRUCT-002
+  format_id: ALL
+  certification_dimension: dashboard
+  stable_semantic_key: no_run_concept_hybrid_verdicts
+  action: INVALID
+  canonical_gap_id: null
+  description: 'No run_id or run manifest exists. Running 9 dimension tools at different
+    times and source revisions produces hybrid verdicts blending evidence from multiple
+    source states. The dashboard reads whatever is in the directory.
+
+    '
+- finding_id: CERT-STRUCT-003
+  format_id: ALL
+  certification_dimension: test_quality
+  stable_semantic_key: no_behavioral_tests_detection_unverified
+  action: INVALID
+  canonical_gap_id: null
+  description: 'test_tool_pipeline.py runs every tool against real, clean FOSS source
+    and asserts zero findings. No test injects a known defect and verifies it is caught.
+    If stub_detector AST walker breaks, tests still pass (0 stubs in clean code).
+
+    '
+- finding_id: CERT-STRUCT-004
+  format_id: ALL
+  certification_dimension: lifecycle
+  stable_semantic_key: certification_tools_outside_autonomous_loop
+  action: INVALID
+  canonical_gap_id: null
+  description: 'Zero calls to any certification tool exist in tools/supervisor/. autonomous_cycle.py,
+    check_continuation.py, governance_validator_runner.py do not invoke stub_detector,
+    certification_dashboard, or ci_certification_gate. Sprints can pass every governance
+    check while introducing material stubs.
+
+    '
+- finding_id: CERT-STRUCT-005
+  format_id: ALL
+  certification_dimension: gap_integration
+  stable_semantic_key: gap_reconciliation_static_narrative
+  action: INVALID
+  canonical_gap_id: null
+  description: 'reports/certification/gap-reconciliation.json is hand-written with
+    no finding_id -> gap_id mappings. No gap_reconciler.py exists. Counts in the file
+    do not match current gap-ledger.json. No automated path to link new findings to
+    canonical gaps.
+
+    '
+reconciliation_verdict: CLEAN
+note: "Supersedes hand-written gap-reconciliation-map.yaml. All findings have machine-verifiable\
+  \ finding_id \u2192 gap_id mappings."

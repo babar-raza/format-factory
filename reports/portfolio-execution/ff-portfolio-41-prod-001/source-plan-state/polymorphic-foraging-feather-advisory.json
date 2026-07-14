@@ -1,0 +1,130 @@
+{
+  "canonical_task": "MCP-W0-007",
+  "source_plan": "polymorphic-foraging-feather.md",
+  "report_type": "ADVISORY_DECISION_REPORT",
+  "competing_plan_created": false,
+  "head_at_plan_creation": "af879e550ee47f89dd7e805314f9b14923fbf100",
+  "head_at_verification": "8192b723ecfb436e4bdc7cfe99cacbb9ec508e0a",
+
+  "verified_facts_status": {
+    "VF-001": {
+      "claim": "tools/supervisor 89K LOC, tests/supervisor 89K LOC, plans/ 95K LOC largest directory",
+      "status": "LIKELY_STILL_ACCURATE — both have grown since af879e55",
+      "action": "informational only; no task required"
+    },
+    "VF-002": {
+      "claim": "active-continuation.json and active-session.json disagree on session_id",
+      "status": "UNVERIFIED_AT_HEAD — session IDs change per-chat; condition is transient",
+      "action": "addressed by REDESIGN-002 (MCP-W1-001)"
+    },
+    "VF-003": {
+      "claim": "check_continuation.py mutates continuation-signal.json during read (line ~444)",
+      "status": "CONFIRMED_PRESENT — check_continuation.py line 445 still writes signal_path.write_text",
+      "action": "REDESIGN-002 must include atomic read-then-write with validation"
+    },
+    "VF-004": {
+      "claim": "Non-atomic plan lock collection (glob not protected by filesystem lock)",
+      "status": "CONFIRMED_PRESENT — .collection.lock NOT FOUND in .local/supervisor/plan-locks/",
+      "action": "REDESIGN-003 (MCP-W1-001)"
+    },
+    "VF-005": {
+      "claim": "Hardcoded expected_count=167; test threshold >= 154 (gap of 13)",
+      "status": "PARTIALLY_STALE — expected_count is now 171 (not 167); test threshold STILL >= 154 (gap now 17)",
+      "action": "REDESIGN-001 MORE URGENT than at plan creation — gap widened; .supervisor/validator-registry.yaml NOT FOUND"
+    },
+    "VF-006": {
+      "claim": "Malformed _cached_at in grade_declared_work.py silently skips TTL check",
+      "status": "NOT_VERIFIED_AT_HEAD — not re-inspected; assume PRESENT until REDESIGN-004 executes",
+      "action": "REDESIGN-004 (MCP-W1-002)"
+    },
+    "VF-007": {
+      "claim": "6 autonomous variants have no production callers (~3958 LOC)",
+      "status": "PARTIALLY_STALE — ReworkOrchestrator HAS production callers; others need check",
+      "action": "characterize before any deletion; feed into MCP-W0-007 disposition"
+    },
+    "VF-008": {
+      "claim": "3 backends architecturally blocked by design (CogneeMemory, SkillSeekers, SessionSkill)",
+      "status": "ASSUMED_PRESENT — architectural design decision unlikely to have changed",
+      "action": "preserve — these encode boundaries, not dead code"
+    },
+    "VF-009": {
+      "claim": "Critical rules are prompt-only (plan lock at Step 0, stop after terminal, etc.)",
+      "status": "CONFIRMED_PRESENT — CLAUDE.md is still the enforcement mechanism",
+      "action": "addressed by MCP-W1-001/W1-002 (check_continuation hardening)"
+    },
+    "VF-010": {
+      "claim": "lifecycle_audit.py table parsing fragile; typo CLSOED causes silent miss",
+      "status": "CONFIRMED_PRESENT — observed directly this session: TC-TABLE-003 parsing error",
+      "action": "MCP-W1-001 must harden table parser; require table format in all machinery plans"
+    }
+  },
+
+  "redesign_status": {
+    "REDESIGN-001": {
+      "title": "Validator Dynamic Registration",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": ".supervisor/validator-registry.yaml NOT FOUND; expected_count still hardcoded at line 843",
+      "maps_to_canonical": "MCP-W1-001 (shimmering-rolling-meerkat.md)",
+      "priority": "HIGH"
+    },
+    "REDESIGN-002": {
+      "title": "State Integrity Pre-Check in check_continuation.py",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "No state_integrity_check() function found in check_continuation.py",
+      "maps_to_canonical": "MCP-W1-001 (shimmering-rolling-meerkat.md)",
+      "priority": "HIGH"
+    },
+    "REDESIGN-003": {
+      "title": "Atomic Lock Collection",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": ".collection.lock not found; session-keyed lock mechanism exists but glob is unprotected",
+      "maps_to_canonical": "MCP-W1-001",
+      "priority": "MEDIUM"
+    },
+    "REDESIGN-004": {
+      "title": "Grade Cache TTL Hardening",
+      "status": "NOT_VERIFIED",
+      "evidence": "Not re-inspected at live HEAD",
+      "maps_to_canonical": "MCP-W1-002 (velvet-swinging-wreath.md)",
+      "priority": "MEDIUM"
+    },
+    "REDESIGN-005": {
+      "title": "Oracle Evidence Gating for PRODUCT_SOURCE declarations",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "Oracle 73/73 PASS is tracked but not enforced as gate for acceptance",
+      "maps_to_canonical": "MCP-W5-001 (shiny-percolating-sky.md)",
+      "priority": "MEDIUM"
+    }
+  },
+
+  "source_taskcard_dispositions": {
+    "polymorphic-foraging-feather::TC-INV-000": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-001": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-002": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-003": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-004": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-005": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-006": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-007": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-008-REDESIGN-001": "MERGED_INTO_CANONICAL_TASK:MCP-W1-001",
+    "polymorphic-foraging-feather::TC-INV-008-REDESIGN-002": "MERGED_INTO_CANONICAL_TASK:MCP-W1-001",
+    "polymorphic-foraging-feather::TC-INV-008-REDESIGN-003": "MERGED_INTO_CANONICAL_TASK:MCP-W1-001",
+    "polymorphic-foraging-feather::TC-INV-008-REDESIGN-004": "MERGED_INTO_CANONICAL_TASK:MCP-W1-002",
+    "polymorphic-foraging-feather::TC-INV-008-REDESIGN-005": "MERGED_INTO_CANONICAL_TASK:MCP-W5-001",
+    "polymorphic-foraging-feather::TC-INV-009": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-010": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007",
+    "polymorphic-foraging-feather::TC-INV-011": "MERGED_INTO_CANONICAL_TASK:MCP-W0-007"
+  },
+
+  "advisory_recommendations": [
+    "REDESIGN-001 is the highest priority: replace hardcoded expected_count=171 with dynamic registry. Gap between runner (171) and test threshold (154) has WIDENED since plan was written.",
+    "REDESIGN-002 is second priority: state_integrity_check() at top of check_continuation.py. VF-003 write-during-read at line 445 confirmed present.",
+    "VF-010 (lifecycle_audit.py table parser) confirmed present — observed directly this session when TC-TABLE-003 was mistakenly parsed as a taskcard.",
+    "VF-007 (dead autonomous variants): ReworkOrchestrator has callers; characterize the other 5 before any deletion action in MCP-W0-008.",
+    "VF-008 (3 blocked backends): DO NOT delete — they encode architectural boundaries.",
+    "REDESIGN-005 (Oracle gating): defer to MCP-W5 wave — requires Oracle infrastructure in place first."
+  ],
+
+  "task_status": "EXECUTED",
+  "no_competing_plan_created": true
+}

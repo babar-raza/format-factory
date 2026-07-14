@@ -48,7 +48,7 @@ public class FodtR310GetTableNameDedicatedTests
         if (doc.TableCount == 0)
             Assert.ThrowsAny<Exception>(() => doc.GetTableName(0));
         else
-            Assert.True(true); // document has default tables
+            Assert.True(doc.TableCount > 0); // document has default tables
     }
 
     // -------------------------------------------------------------------------

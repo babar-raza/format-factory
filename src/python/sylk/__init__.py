@@ -13,6 +13,7 @@ from .models import SylkModelDocument, SylkDoc  # noqa: F401
 from .sylk_workflow import sylk_installed_workflow  # noqa: F401
 from .sylk_cell_iterator import sylk_iter_cells  # noqa: F401
 from .sylk_row_iterator import sylk_iter_rows  # noqa: F401
+from .sylk_writer import write_sylk, write_sylk_str  # noqa: F401
 
 import sys as _sys
 import types as _types

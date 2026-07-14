@@ -1,6 +1,6 @@
 {
   "audit_type": "gap_ledger_sal_traceability",
-  "generated_at": "2026-07-10T12:24:33.466356+00:00",
+  "generated_at": "2026-07-10T15:02:59.097516+00:00",
   "sal_facts_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\spec-cache\\sal-facts-latest.json",
   "gap_ledger_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\capability-layer\\gap-ledger.json",
   "sal_total_fact_ids": 14644,
@@ -9,13 +9,13 @@
     "status": null
   },
   "summary": {
-    "total_gaps_audited": 1495,
-    "gaps_with_spec_facts": 1313,
-    "gaps_without_spec_facts": 182,
-    "fully_resolved": 1227,
-    "partial": 86,
+    "total_gaps_audited": 1525,
+    "gaps_with_spec_facts": 1340,
+    "gaps_without_spec_facts": 185,
+    "fully_resolved": 1253,
+    "partial": 87,
     "none_resolved": 0,
-    "total_dangling_refs_sampled": 197,
+    "total_dangling_refs_sampled": 199,
     "high_severity_dangling": 0,
     "traceability_pct": 93.5
   },
@@ -177,6 +177,18 @@
       "severity": "WARN"
     },
     {
+      "gap_id": "GAP-ODS-FOSS-SAVE_TO_FILE-001",
+      "format": "ODS",
+      "dangling_ref": "FACT-ODS-001",
+      "severity": "WARN"
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-SAVE_TO_FILE-001",
+      "format": "ODS",
+      "dangling_ref": "FACT-ODS-003",
+      "severity": "WARN"
+    },
+    {
       "gap_id": "GAP-ODS-FOSS-ODS_COLUMN_C-001",
       "format": "ODS",
       "dangling_ref": "FACT-ODS-001",
@@ -304,18 +316,6 @@
     },
     {
       "gap_id": "GAP-ODS-FOSS-ODS_MAX_CELL-001",
-      "format": "ODS",
-      "dangling_ref": "FACT-ODS-003",
-      "severity": "WARN"
-    },
-    {
-      "gap_id": "GAP-ODS-FOSS-ODS_MIN_CELL-001",
-      "format": "ODS",
-      "dangling_ref": "FACT-ODS-001",
-      "severity": "WARN"
-    },
-    {
-      "gap_id": "GAP-ODS-FOSS-ODS_MIN_CELL-001",
       "format": "ODS",
       "dangling_ref": "FACT-ODS-003",
       "severity": "WARN"
@@ -692,6 +692,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-ABW-FOSS-ABW_TO_NDJSO-001",
+      "format": "ABW",
+      "status": "open",
+      "spec_facts_count": 36,
+      "resolved_count": 36,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-ABW-FOSS-MAIN-001",
       "format": "ABW",
       "status": "closed",
@@ -774,6 +783,15 @@
     },
     {
       "gap_id": "GAP-ABW-FOSS-IS_LONG_DOCU-001",
+      "format": "ABW",
+      "status": "closed",
+      "spec_facts_count": 36,
+      "resolved_count": 36,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-SAVE_TO_FILE-001",
       "format": "ABW",
       "status": "closed",
       "spec_facts_count": 36,
@@ -1655,6 +1673,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-CSV-FOSS-SAVE_TO_FILE-001",
+      "format": "CSV",
+      "status": "closed",
+      "spec_facts_count": 34,
+      "resolved_count": 34,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-CSV-FOSS-CSV_DUPLICAT-001",
       "format": "CSV",
       "status": "closed",
@@ -1944,6 +1971,15 @@
     },
     {
       "gap_id": "GAP-DIF-FOSS-GET_CELL_VAL-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-SAVE_TO_FILE-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2900,6 +2936,15 @@
       "gap_id": "GAP-FODG-FOSS-IS_UNIFORM_D-001",
       "format": "FODG",
       "status": "closed",
+      "spec_facts_count": 0,
+      "resolved_count": 0,
+      "traceability": "NO_REFS",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-SAVE_TO_FILE-001",
+      "format": "FODG",
+      "status": "SAL_UNGROUNDED",
       "spec_facts_count": 0,
       "resolved_count": 0,
       "traceability": "NO_REFS",
@@ -4121,6 +4166,24 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-FODS-FOSS-SET_CELL_VAL-001",
+      "format": "FODS",
+      "status": "closed",
+      "spec_facts_count": 4987,
+      "resolved_count": 4987,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-FODS-FOSS-SAVE_TO_FILE-001",
+      "format": "FODS",
+      "status": "closed",
+      "spec_facts_count": 4987,
+      "resolved_count": 4987,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-FODS-FOSS-MAKE_WARNING-001",
       "format": "FODS",
       "status": "closed",
@@ -4761,6 +4824,24 @@
     },
     {
       "gap_id": "GAP-FODT-FOSS-IS_PROSE_HEA-001",
+      "format": "FODT",
+      "status": "closed",
+      "spec_facts_count": 4933,
+      "resolved_count": 4933,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-FODT-FOSS-ADD_PARAGRAP-001",
+      "format": "FODT",
+      "status": "closed",
+      "spec_facts_count": 4933,
+      "resolved_count": 4933,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-FODT-FOSS-SAVE_TO_FILE-001",
       "format": "FODT",
       "status": "closed",
       "spec_facts_count": 4933,
@@ -5516,6 +5597,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-Gnumeric-FOSS-GNUMERIC_TO_-001",
+      "format": "GNUMERIC",
+      "status": "open",
+      "spec_facts_count": 61,
+      "resolved_count": 61,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-Gnumeric-FOSS-CORRELATION_-001",
       "format": "GNUMERIC",
       "status": "closed",
@@ -5598,6 +5688,15 @@
     },
     {
       "gap_id": "GAP-Gnumeric-FOSS-HAS_LARGE_SH-001",
+      "format": "GNUMERIC",
+      "status": "closed",
+      "spec_facts_count": 61,
+      "resolved_count": 61,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-Gnumeric-FOSS-SAVE_TO_FILE-001",
       "format": "GNUMERIC",
       "status": "closed",
       "spec_facts_count": 61,
@@ -6002,6 +6101,24 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-NDJSON-FOSS-TO_NDJSON-001",
+      "format": "NDJSON",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-NDJSON-FOSS-SAVE_TO_FILE-001",
+      "format": "NDJSON",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-NDJSON-FOSS-TO_TSV-001",
       "format": "NDJSON",
       "status": "closed",
@@ -6041,6 +6158,15 @@
       "gap_id": "GAP-NDJSON-FOSS-NDJSON_MAX_K-001",
       "format": "NDJSON",
       "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-NDJSON-FOSS-NDJSON_TO_TS-001",
+      "format": "NDJSON",
+      "status": "open",
       "spec_facts_count": 15,
       "resolved_count": 15,
       "traceability": "FULLY_RESOLVED",
@@ -6282,6 +6408,18 @@
     },
     {
       "gap_id": "GAP-ODS-FOSS-IS_SINGLE_SH-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 1,
+      "traceability": "PARTIAL",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-SAVE_TO_FILE-001",
       "format": "ODS",
       "status": "closed",
       "spec_facts_count": 3,
@@ -6946,6 +7084,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-ODT-FOSS-SAVE_TO_FILE-001",
+      "format": "ODT",
+      "status": "SAL_UNGROUNDED",
+      "spec_facts_count": 0,
+      "resolved_count": 0,
+      "traceability": "NO_REFS",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-ODT-FOSS-ODT_ITER_HEA-001",
       "format": "ODT",
       "status": "closed",
@@ -6958,6 +7105,15 @@
       "gap_id": "GAP-ODT-FOSS-ODT_ITER_PAR-001",
       "format": "ODT",
       "status": "closed",
+      "spec_facts_count": 0,
+      "resolved_count": 0,
+      "traceability": "NO_REFS",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-ODT-FOSS-ODT_TO_NDJSO-001",
+      "format": "ODT",
+      "status": "SAL_UNGROUNDED",
       "spec_facts_count": 0,
       "resolved_count": 0,
       "traceability": "NO_REFS",
@@ -7828,6 +7984,24 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-PBM-FOSS-SET_PIXEL-001",
+      "format": "PBM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-PBM-FOSS-SAVE_TO_FILE-001",
+      "format": "PBM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-PBM-FOSS-TO_DICT-001",
       "format": "PBM",
       "status": "closed",
@@ -8539,6 +8713,24 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-PGM-FOSS-SET_PIXEL-001",
+      "format": "PGM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-PGM-FOSS-SAVE_TO_FILE-001",
+      "format": "PGM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-PGM-FOSS-TO_DICT-001",
       "format": "PGM",
       "status": "closed",
@@ -9188,6 +9380,24 @@
     },
     {
       "gap_id": "GAP-PPM-FOSS-PIXEL_DENSIT-001",
+      "format": "PPM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-PPM-FOSS-SET_PIXEL-001",
+      "format": "PPM",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-PPM-FOSS-SAVE_TO_FILE-001",
       "format": "PPM",
       "status": "closed",
       "spec_facts_count": 2,
@@ -9862,15 +10072,6 @@
       "dangling": []
     },
     {
-      "gap_id": "GAP-QOI-FOSS-PATH-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 2,
-      "traceability": "FULLY_RESOLVED",
-      "dangling": []
-    },
-    {
       "gap_id": "GAP-QOI-FOSS-IS_LARGE_IMA-001",
       "format": "QOI",
       "status": "closed",
@@ -9907,6 +10108,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-QOI-FOSS-SAVE_TO_FILE-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-QOI-FOSS-QOI_ITER_CHU-001",
       "format": "QOI",
       "status": "closed",
@@ -9935,15 +10145,6 @@
     },
     {
       "gap_id": "GAP-SYLK-FOSS-MAIN-001",
-      "format": "SYLK",
-      "status": "closed",
-      "spec_facts_count": 20,
-      "resolved_count": 20,
-      "traceability": "FULLY_RESOLVED",
-      "dangling": []
-    },
-    {
-      "gap_id": "GAP-SYLK-FOSS-COL_COUNT-001",
       "format": "SYLK",
       "status": "closed",
       "spec_facts_count": 20,
@@ -9998,6 +10199,15 @@
     },
     {
       "gap_id": "GAP-SYLK-FOSS-IS_STRING_DO-001",
+      "format": "SYLK",
+      "status": "closed",
+      "spec_facts_count": 20,
+      "resolved_count": 20,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-SYLK-FOSS-SAVE_TO_FILE-001",
       "format": "SYLK",
       "status": "closed",
       "spec_facts_count": 20,
@@ -10456,6 +10666,24 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-TOML-FOSS-TO_TOML_STRI-001",
+      "format": "TOML",
+      "status": "closed",
+      "spec_facts_count": 67,
+      "resolved_count": 67,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-TOML-FOSS-SAVE_TO_FILE-001",
+      "format": "TOML",
+      "status": "closed",
+      "spec_facts_count": 67,
+      "resolved_count": 67,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-TOML-FOSS-TOML_NUMERIC-001",
       "format": "TOML",
       "status": "closed",
@@ -10834,6 +11062,15 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-TOML-FOSS-TOML_TO_NDJS-001",
+      "format": "TOML",
+      "status": "open",
+      "spec_facts_count": 67,
+      "resolved_count": 67,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
       "gap_id": "GAP-TSV-FOSS-INSTALLED_WO-001",
       "format": "TSV",
       "status": "closed",
@@ -10916,6 +11153,15 @@
     },
     {
       "gap_id": "GAP-TSV-FOSS-IS_DENSE_DAT-001",
+      "format": "TSV",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-TSV-FOSS-SAVE_TO_FILE-001",
       "format": "TSV",
       "status": "closed",
       "spec_facts_count": 15,
@@ -11278,6 +11524,15 @@
       "gap_id": "GAP-TSV-FOSS-TSV_ITER_REC-001",
       "format": "TSV",
       "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 15,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-TSV-FOSS-TSV_TO_NDJSO-001",
+      "format": "TSV",
+      "status": "open",
       "spec_facts_count": 15,
       "resolved_count": 15,
       "traceability": "FULLY_RESOLVED",
@@ -12362,6 +12617,24 @@
         "FACT-ZST-EX-0085",
         "FACT-ZST-EX-0086"
       ]
+    },
+    {
+      "gap_id": "GAP-SYLK-FOSS-COL_COUNT-001",
+      "format": "SYLK",
+      "status": "closed",
+      "spec_facts_count": 20,
+      "resolved_count": 20,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-PATH-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 2,
+      "traceability": "FULLY_RESOLVED",
+      "dangling": []
     },
     {
       "gap_id": "GAP-TOML-FOSS-SCALAR_KEY_C-001",

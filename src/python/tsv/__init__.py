@@ -13,6 +13,7 @@ from .models import TsvDocument  # noqa: F401
 from .tsv_workflow import tsv_installed_workflow  # noqa: F401
 from .tsv_row_iterator import tsv_iter_records  # noqa: F401
 from .tsv_field_iterator import tsv_iter_fields  # noqa: F401
+from .tsv_writer import write_tsv, write_tsv_str  # noqa: F401
 
 import sys as _sys
 import types as _types

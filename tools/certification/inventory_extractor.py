@@ -426,6 +426,7 @@ def main() -> int:
     parser.add_argument("--parity", action="store_true")
     parser.add_argument("--format", dest="only_format", help="limit extraction to one format/project")
     parser.add_argument("--output", type=Path, help="JSON output path")
+    parser.add_argument("--run-id", default=None, help="Certification run ID (from run_manager)")
     args = parser.parse_args()
 
     selected_modes = sum(bool(v) for v in (args.python, args.dotnet, args.parity))
@@ -442,6 +443,22 @@ def main() -> int:
     output = args.output or _default_output(args)
     if not output.is_absolute():
         output = REPO_ROOT / output
+    if args.run_id:
+        import subprocess as _sp
+        _rev = "UNAVAILABLE"
+        try:
+            _r = _sp.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                         cwd=REPO_ROOT, timeout=10)
+            if _r.returncode == 0:
+                _rev = _r.stdout.strip()
+        except Exception:
+            pass
+        data.setdefault("metadata", {}).update({
+            "run_id": args.run_id,
+            "source_revision": _rev,
+            "generated_at": __import__("datetime").datetime.now(
+                __import__("datetime").timezone.utc).isoformat(),
+        })
     _write_json(data, output)
     print(json.dumps({"output": _rel(output), "mode": data["metadata"]["inventory_type"]}, sort_keys=True))
     return 0

@@ -171,3 +171,38 @@ class TestAbwDocumentRepr:
         r = repr(doc)
         assert "section_count=2" in r
         assert "paragraph_count=3" in r
+
+
+class TestAbwDocumentTypedChildren:
+    """Tests for typed_children (D2 DOM maturity). GAP-ABW-DOM-MATURITY-D2-001."""
+
+    def test_typed_children_returns_list(self):
+        doc = AbwDocument(_SAMPLE_DATA)
+        children = doc.typed_children()
+        assert isinstance(children, list)
+
+    def test_typed_children_count_matches_paragraphs(self):
+        doc = AbwDocument(_SAMPLE_DATA)
+        assert len(doc.typed_children()) == doc.paragraph_count
+
+    def test_typed_children_are_abw_paragraphs(self):
+        from abw.Compat.abw_paragraph import AbwParagraph
+        doc = AbwDocument(_SAMPLE_DATA)
+        for child in doc.typed_children():
+            assert isinstance(child, AbwParagraph)
+
+    def test_typed_children_text_matches_paragraphs(self):
+        doc = AbwDocument(_SAMPLE_DATA)
+        texts = [c.text for c in doc.typed_children()]
+        assert texts == doc.paragraphs
+
+    def test_typed_children_empty_doc_returns_empty_list(self):
+        doc = AbwDocument({"is_abw": True, "section_count": 0,
+                           "paragraph_count": 0, "paragraphs": []})
+        assert doc.typed_children() == []
+
+    def test_typed_children_word_count(self):
+        doc = AbwDocument(_SAMPLE_DATA)
+        children = doc.typed_children()
+        assert children[0].word_count == 2   # "Hello world"
+        assert children[1].word_count == 2   # "Second paragraph"

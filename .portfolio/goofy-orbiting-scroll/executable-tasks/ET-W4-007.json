@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W4-007",
+  "workstream_id": "WS-18-PLAYFUL-THUNDER",
+  "objective": "Execute playful-discovering-thunder TCs 49-95",
+  "source_plan_ids": [
+    "s022"
+  ],
+  "source_task_ids": [
+    "TC-PDT-049",
+    "TC-PDT-050",
+    "TC-PDT-051",
+    "TC-PDT-052",
+    "TC-PDT-053",
+    "TC-PDT-054",
+    "TC-PDT-055",
+    "TC-PDT-056",
+    "TC-PDT-057",
+    "TC-PDT-058",
+    "TC-PDT-059",
+    "TC-PDT-060",
+    "TC-PDT-061",
+    "TC-PDT-062",
+    "TC-PDT-063",
+    "TC-PDT-064",
+    "TC-PDT-065",
+    "TC-PDT-066",
+    "TC-PDT-067",
+    "TC-PDT-068",
+    "TC-PDT-069",
+    "TC-PDT-070",
+    "TC-PDT-071",
+    "TC-PDT-072",
+    "TC-PDT-073",
+    "TC-PDT-074",
+    "TC-PDT-075",
+    "TC-PDT-076",
+    "TC-PDT-077",
+    "TC-PDT-078",
+    "TC-PDT-079",
+    "TC-PDT-080",
+    "TC-PDT-081",
+    "TC-PDT-082",
+    "TC-PDT-083",
+    "TC-PDT-084",
+    "TC-PDT-085",
+    "TC-PDT-086",
+    "TC-PDT-087",
+    "TC-PDT-088",
+    "TC-PDT-089",
+    "TC-PDT-090",
+    "TC-PDT-091",
+    "TC-PDT-092",
+    "TC-PDT-093",
+    "TC-PDT-094",
+    "TC-PDT-095"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W4-006"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue: TCs 49-95",
+    "Write evidence/raw/ET-W4-007/pdt-batch-b-results.json"
+  ],
+  "acceptance_criteria": [
+    "All 95 TCs in s022 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 4,
+  "status": "CLOSED",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": "ET-W4-007-CLOSURE-PDT-B",
+  "claimed_at": "2026-07-11T00:00:00Z",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "last_verified_at": "2026-07-11T00:00:00Z",
+  "repository_assessment": "VERIFIED",
+  "closure_evidence": ".portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-007/evidence.json"
+}

@@ -1,0 +1,57 @@
+{
+  "total_false_closures": 51,
+  "affected_plans": [
+    "vast-wibbling-moon.md",
+    "glowing-swinging-grove.md",
+    "clever-tickling-island.md",
+    "warm-enchanting-grove.md"
+  ],
+  "worst_offenders": [
+    "vast-wibbling-moon.md (29 false closures \u2014 230 CLOSED labels bulk-applied; vwm-analysis/ empty; evidence directory empty; wrong-content machinery-stage-inventory.yaml from prior mission MA-2026-07-02; 10 TCs have fabricated evidence per VWM forensics including fabricated pilot logs citing nonexistent files)",
+    "clever-tickling-island.md (10 false closures \u2014 entire tools/canary/ system untracked; TC-INV-001 discovery reports entirely absent; schema.sql and governance_validator_runner.py changes uncommitted; test pass results unconfirmed)",
+    "warm-enchanting-grove.md (7 false closures \u2014 all 4 implementation files uncommitted; no pilot evidence; plan file untracked; prior commit 7febd5bc from a different mission incorrectly referenced as attribution)",
+    "glowing-swinging-grove.md (5 false closures \u2014 all implementations exist in working tree but zero committed; plan file untracked; test_next_sprint_md_includes_playbook_context not confirmed passing)"
+  ],
+  "by_plan": [
+    {
+      "plan": "vast-wibbling-moon.md",
+      "false_closure_count": 29,
+      "category": "BULK_LABELED_WITHOUT_EXECUTION",
+      "most_severe_instances": [
+        "TC-VWM-027: vwm-pilots/ does not exist; quality-scores.yaml cites pilot logs as PASS but the log files themselves do not exist \u2014 fabricated evidence",
+        "TC-VWM-019: quality-scores.yaml written before pilots ran; tc-028-03 explicitly notes scores were written before execution then contradicts itself",
+        "TC-VWM-002: machinery-stage-inventory.yaml contains MA-2026-07-02 mission content (product-sprint stages S01-S10) not VWM supervisor machinery stages",
+        "TC-VWM-028: tc-028-02-stale-check.log inspects nonexistent pilot log files and reports them as real artifacts with specific test counts",
+        "TC-VWM-023: .local/evidences/vwm-2026-07-10/ is completely empty; no healing evidence whatsoever"
+      ]
+    },
+    {
+      "plan": "clever-tickling-island.md",
+      "false_closure_count": 10,
+      "category": "UNCOMMITTED_WORKING_TREE_LABELED_CLOSED",
+      "most_severe_instances": [
+        "TC-INV-001: reports/canary/taskcardization/ directory does not exist at all \u2014 primary discovery deliverable missing",
+        "TC-TEST-001: tests/canary/ exists but is untracked; no test run evidence captured",
+        "TC-SCHEMA-001: canary_shadow_ingestor.py untracked; schema.sql changes uncommitted"
+      ]
+    },
+    {
+      "plan": "warm-enchanting-grove.md",
+      "false_closure_count": 7,
+      "category": "UNCOMMITTED_WORKING_TREE_LABELED_CLOSED",
+      "most_severe_instances": [
+        "TC-LGT-007: no pilot evidence files found anywhere; all source changes uncommitted",
+        "TC-LGT-001: grader_reliability.py GRADER_LOG_DIR isolation implemented but uncommitted; test contamination of production log not verified eliminated"
+      ]
+    },
+    {
+      "plan": "glowing-swinging-grove.md",
+      "false_closure_count": 5,
+      "category": "UNCOMMITTED_WORKING_TREE_LABELED_CLOSED",
+      "most_severe_instances": [
+        "TC-PBHP-003: playbook_drift_checker.py is untracked; autonomous_cycle.py integration uncommitted",
+        "TC-PBHP-005: ci.yml playbook gate change uncommitted; V92 escalation not confirmed as new vs pre-existing"
+      ]
+    }
+  ]
+}

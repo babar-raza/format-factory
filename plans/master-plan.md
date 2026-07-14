@@ -1568,6 +1568,16 @@ All other gaps are agent-resolvable with no external approval required.
 | MR-2 | source_structure_validator.py exits 0 with no worsened violations; check_continuation.py returns verdict=CONTINUE; no GOV_BLOCK:* item is in rework_items |
 | MR-3 | A qname-verdict file exists under any evidence root with one of: FULLY_DEFINED_INTEGRATED_AND_ENFORCED, DEFINED_AND_PARTIALLY_INTEGRATED, or METADATA_ONLY (DEFINED_AND_PARTIALLY_INTEGRATED is acceptable — full integration is a Lane 14 target) |
 | MR-4 | chain-verification.json exists with chain_verdict in the 5-value defined set (CHAIN_INTACT, CHAIN_BROKEN_AT_SAL, CHAIN_BROKEN_AT_QNAME, CHAIN_BROKEN_AT_SOURCE, CHAIN_DISCONNECTED). CHAIN_BROKEN_* surfaces a gap but does not block product deepening. |
+| MR-5 | skill-inventory.yaml exists with ≥120 skills classified by maturity (PRODUCTION_READY / ACTIVE_BUT_INCOMPLETE / DOCUMENTATION_ONLY / BYPASSED) |
+| MR-6 | sal-system-inventory.yaml exists with spec_facts_total ≥ 14,000 and formats_processed ≥ 20 |
+| MR-7 | rcal-system-inventory.yaml exists with gap_queue_executable=true and feature_compiler_consumer identified |
+| MR-8 | system-layer-map.yaml exists with ≥12 layers inventoried (SAL, QName, RCAL, Oracle, Product Source, Tests, Evidence, State, Supervisor, Governance, Skills, Gate11) |
+| MR-9 | autonomous-verdict.md exists with verdict=OPERATIONAL_WITH_GATE11_GAP or better |
+| MR-10 | complete-gap-matrix.yaml exists with all CRITICAL gaps classified and traceable to fixing TCs |
+| MR-11 | .governance/lanes/lane-contracts.yaml exists with ≥13 lane definitions AND V168 passes for all current sprint declarations (implements TC-GFB-021, fixes GAP-LANE-CONTRACTS-MISSING) |
+| MR-12 | registry/gate-states.yaml exists with per-product gate state AND check_continuation.py Check 8 fires BLOCKED_EXTERNAL for products with P1-P10 met and P11 pending (implements TC-GFB-022, fixes GAP-GATE11-NOT-GOVERNED) |
+| MR-13 | registry/migration-map.schema.yaml exists AND tools/backfill/dry_run_migration.py runs without error on FODS fixture (implements TC-GFB-023, fixes GAP-BACKFILL-MISSING) |
+| MR-14 | tests/supervisor/test_lane_contracts.py exists AND tests/supervisor/test_gate_states.py exists, both pass with 0 failures (implements TC-GFB-024) |
 
 **Current status (2026-06-23, post squishy-chasing-marshmallow execution):**
 - MR-0: PASS — active-plan-lock.json TERMINAL_CLOSED (unified-multi-plan-execution.md)
@@ -4391,6 +4401,28 @@ The oracle layer provides an independent, spec-backed test oracle infrastructure
 - Regression: `pytest tests/supervisor/test_governance_validators.py` → 138/138 PASS
 - CI: `.gitlab-ci.yml` has oracle-obligations stage (allow_failure: false)
 
+### Phase II — FF-ORC-HARDENING-002 (CLOSED — 2026-07-12)
+
+- **Plan:** plans/.claude/modular-noodling-galaxy.md (TERMINAL_CLOSED)
+- **Mission ID:** FF-ORC-HARDENING-002
+- **Status:** CLOSED
+- **Maturity reached:** Level 4 (Production Hardened)
+- **Key additions:**
+  - V144 (stale oracle detection), V145 (future format onboarding), V146 (gate advancement) governance validators
+  - `oracle/oracle_test_adapter.py` — pytest parametrize bridge for oracle cases
+  - `tools/oracle/detect_stale_oracles.py` — corpus hash + executor hash staleness detection
+  - `tools/oracle/run_portfolio_oracle.py` — portfolio runner for all 20 formats
+  - D2 ODF RelaxNG schema validation via lxml (fodt/odt full D2; fods/ods/fodg/fodp D1 with diagnostic)
+  - Package consumer proof (Pilot 7 — isolated pip install, CSV format)
+  - 12-pilot matrix executed and documented (`oracle/reports/pilot-matrix-results.yaml`)
+  - Idempotency proven: 20/20 formats stable across repeated runs (Pilot 12)
+  - Stale detection proven: corpus hash manipulation + recovery (Pilot 11)
+  - 7 negative control tests PASS (`tests/oracle/test_oracle_negative_controls.py`)
+  - 6 oracle adapter test files (csv/fods/fodt/zst/ndjson/toml) — 21 tests PASS
+  - All 20 oracle-test-binding.yaml files created
+  - oracle-run-summary.json generated per format after each oracle run
+- **Remaining Level 5 gap:** .NET oracle executor (documented in `oracle/reports/dotnet-oracle-gap.yaml`); D3 depth for non-ODF formats; full oracle_adapter migration for 14 legacy_hardcoded formats
+
 ---
 
 ## Section 75 — SAL-VHIP-001: SAL Verification, Hardening, and Integration Sprint (CLOSED)
@@ -6838,3 +6870,79 @@ scanner. Stub patterns could enter product source without triggering any governa
 - FODS/FODT Gate 11 G-approved (2026-06-05) — publication awaiting credentials/sign-off.
 
 **Final Verdict:** MACHINERY_HARDENED | TERMINAL_CLOSED
+
+---
+
+## Section 99 — FF-MR-2026-001: Machinery Readiness Assessment (golden-foraging-boot, 2026-07-11)
+
+**Mission ID:** FF-MR-2026-001
+**Plan:** `plans/.claude/golden-foraging-boot.md`
+**Source:** Evidence at `.local/evidences/ff-machinery-readiness-20260710-af879e5/ff-machinery-readiness/`
+**Audit date:** 2026-07-11
+**HEAD at audit:** c42f5aa7
+
+### Audit Verdicts
+
+| Layer | Verdict | Evidence |
+|-------|---------|----------|
+| QName | PARTIALLY_ENFORCED | qname-verdict.md — Python enforced (V45/V49), .NET not enforced |
+| Skills | OPERATIONAL_WITH_GAPS | skill-verdict.md — 134 skills (plan claimed 123); 4 gaps including SKILL-GAP-004 (CRITICAL) |
+| SAL | OPERATIONAL_STRENGTHENED | sal-verdict.md — 14,884 facts (plan claimed 14,441) |
+| RCAL | OPERATIONAL_WITH_LINKAGE_GAP | rcal-verdict.md — 120 active capabilities; SAL linkage MISSING |
+| Lanes | PROSE_ONLY_WITH_GAPS | lane-verdict.md — 13 lanes all PROSE_ONLY; .governance/lanes/ does not exist |
+| Autonomous | OPERATIONAL_WITH_GATE11_GAP | autonomous-verdict.md — 10+ checks active; Gate 11 code path MISSING |
+
+### Stale Claims Refuted
+
+| Claim | Status | Correction |
+|-------|--------|------------|
+| FodtDocumentExtendedApis.cs (2944 LOC new violation) | REFUTED | File does NOT exist at HEAD c42f5aa7. FodtDocumentEditing.cs (664 LOC, cap=2662) is the registered violation. |
+| continuation-signal.json stale as of 2026-07-04 | REFUTED | Signal was refreshed to 2026-07-11T20:14:40 (CURRENT). |
+| 123 skills in registry | STRENGTHENED | Actual count: 134 skills. |
+| 14,441 SAL facts | STRENGTHENED | Actual count: 14,884 facts (spec_facts_total). |
+
+### Critical Gaps Confirmed
+
+| Gap | Severity | Fix |
+|-----|----------|-----|
+| GAP-LANE-CONTRACTS-MISSING | CRITICAL | TC-GFB-021 (MR-11) — creates lane-contracts.yaml + V168 validator |
+| GAP-GATE11-NOT-GOVERNED | CRITICAL | TC-GFB-022 (MR-12) — creates gate-states.yaml + Check 8 in check_continuation.py + cycle emission |
+| GAP-ARCH-MAPPER-MISSING | HIGH | Deferred — architecture mapper (Stage 7) not implemented |
+| GAP-SOURCE-GEN-MISSING | HIGH | Deferred — source generator (Stage 8) not implemented |
+| GAP-CONVERSION-UNPROVEN | HIGH | Deferred — no roundtrip proof for .NET conversion |
+| GAP-QNAME-NET-UNCONNECTED | HIGH | TC-GFB-021 validator will surface .NET qname gaps |
+| GAP-BACKFILL-MISSING | HIGH | TC-GFB-023 (MR-13) — creates migration-map.schema.yaml + dry_run_migration.py |
+
+### Gap Taskcards (FF-MR-2026-001)
+
+| TC | Title | Status | Priority |
+|----|-------|--------|----------|
+| TC-GFB-021 | Lane Contracts Implementation — lane-contracts.yaml + V168 | OPEN | P3 |
+| TC-GFB-022 | Gate 11 Code Enforcement — gate-states.yaml + Check 8 + cycle emission | OPEN | P3 |
+| TC-GFB-023 | Backfill Design — migration-map.schema.yaml + dry_run_migration.py | OPEN | P3 |
+| TC-GFB-024 | Isolation Tests — test_lane_contracts.py + test_gate_states.py | OPEN | P3 |
+
+### MR-5 Through MR-14 Status (2026-07-11)
+
+| Gate | Status |
+|------|--------|
+| MR-5 | PASS — 134 skills inventoried with maturity classification (skill-inventory.yaml) |
+| MR-6 | PASS — 14,884 SAL facts, 25 formats_processed (sal-system-inventory.yaml) |
+| MR-7 | PASS — gap_queue_executable=true, capability_feature_compiler consumer identified (rcal-system-inventory.yaml) |
+| MR-8 | PASS — 16 layers inventoried (system-layer-map.yaml) |
+| MR-9 | PASS — verdict=OPERATIONAL_WITH_GATE11_GAP (autonomous-verdict.md) |
+| MR-10 | PASS — 12 gaps classified (complete-gap-matrix.yaml); 2 refuted, 10 confirmed |
+| MR-11 | OPEN — lane-contracts.yaml does not exist; V168 not built (TC-GFB-021 pending) |
+| MR-12 | OPEN — gate-states.yaml does not exist; Check 8 not implemented (TC-GFB-022 pending) |
+| MR-13 | OPEN — migration-map.schema.yaml does not exist (TC-GFB-023 pending) |
+| MR-14 | OPEN — test files do not exist (TC-GFB-024 pending) |
+
+**Overall MR status:** MR-0 through MR-10 PASS. MR-11 through MR-14 OPEN (pending Group 3 hardening).
+
+---
+
+## Section 100 — yes-my-earlier-answer-humming-waffle: External Engineering Skill Adoption (IN_PROGRESS)
+
+**Plan:** `plans/.claude/yes-my-earlier-answer-humming-waffle.md`
+
+Amendment executing the dormant Superpowers skill-intake process (docs/governance/superpowers-skill-intake.md, docs/governance/external-tool-architecture.md Tool 2) to: (1) import ~26 external engineering-methodology skills (debugging, TDD, code review, testing, security) with full provenance/license tracking, (2) repair two real pre-existing governance bugs found during analysis — HO-007's stale closure status and an incomplete SKILL-GAP-003 closure, and a live override loophole in SKILL-GAP-008's GOV_BLOCK enforcement, (3) build a permanent layer-to-skill attribution sync mechanism. See the plan file for full taskcard detail (28 parent taskcards, hierarchical child/micro-step decomposition).

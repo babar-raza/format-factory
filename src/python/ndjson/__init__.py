@@ -21,6 +21,7 @@ from .models import NdjsonDocument  # noqa: F401
 from .ndjson_workflow import ndjson_installed_workflow  # noqa: F401
 from .ndjson_record_iterator import ndjson_iter_records  # noqa: F401
 from .ndjson_field_iterator import ndjson_iter_fields  # noqa: F401
+from .ndjson_writer import write_ndjson, write_ndjson_str  # noqa: F401
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys

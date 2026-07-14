@@ -35,24 +35,64 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_json_with_manifest_check(
+    path: Path, run_manifest_paths: "set[str] | None"
+) -> "tuple[dict[str, Any], bool]":
+    """Load JSON and report whether the file was in the run manifest.
+
+    Returns: (data_dict, in_manifest)
+    - in_manifest=False means MISSING_EVIDENCE (not in run manifest)
+    - in_manifest=True means the report was part of a coherent run
+    - when run_manifest_paths is None, behaves like _load_json (no manifest check)
+    """
+    if run_manifest_paths is not None:
+        # Convert path to relative form for comparison
+        try:
+            rel = path.relative_to(REPO_ROOT).as_posix()
+        except ValueError:
+            rel = path.as_posix()
+        if rel not in run_manifest_paths:
+            return {}, False
+    return _load_json(path), True
+
+
 def _dim_status(data: dict[str, Any], key: str = "status", default: str = "NOT_AUDITED") -> str:
     return data.get(key, data.get("alignment_status", data.get("status", default)))
 
 
-def collect_format_status(fmt: str) -> dict[str, Any]:
+def collect_format_status(fmt: str, use_run_manifest: bool = True) -> dict[str, Any]:
     fmt_dir = CERT_ROOT / fmt
     if not fmt_dir.exists():
         return {"format_id": fmt, "status": "NOT_STARTED", "dimensions": {}}
 
-    api = _load_json(fmt_dir / "api-contract.json")
-    trace = _load_json(fmt_dir / "traceability-audit.json")
-    stub = _load_json(fmt_dir / "stub-audit.json")
-    exc = _load_json(fmt_dir / "exception-audit.json")
-    oracle = _load_json(fmt_dir / "oracle-alignment.json")
-    quality = _load_json(fmt_dir / "assertion-quality.json")
-    rt = _load_json(fmt_dir / "roundtrip-audit.json")
-    pkg = _load_json(fmt_dir / "package-proof.json")
-    consumer = _load_json(fmt_dir / "consumer-proof.json")
+    # Run manifest awareness (TC-002/TC-003): determine which reports are "current"
+    run_manifest_paths: "set[str] | None" = None
+    run_manifest_meta: "dict | None" = None
+    if use_run_manifest:
+        try:
+            import sys as _sys
+            _cert_tools = str(REPO_ROOT / "tools" / "certification")
+            if _cert_tools not in _sys.path:
+                _sys.path.insert(0, _cert_tools)
+            from run_manager import get_latest_run_manifest as _glrm  # noqa: PLC0415
+            run_manifest_meta = _glrm(fmt)
+            if run_manifest_meta:
+                run_manifest_paths = set(run_manifest_meta.get("reports_written", []))
+        except Exception:
+            pass  # run_manager not available — fall back to file-exists check
+
+    def _load_dim(filename: str) -> "tuple[dict[str, Any], bool]":
+        return _load_json_with_manifest_check(fmt_dir / filename, run_manifest_paths)
+
+    api, api_ok = _load_dim("api-contract.json")
+    trace, trace_ok = _load_dim("traceability-audit.json")
+    stub, stub_ok = _load_dim("stub-audit.json")
+    exc, exc_ok = _load_dim("exception-audit.json")
+    oracle, oracle_ok = _load_dim("oracle-alignment.json")
+    quality, quality_ok = _load_dim("assertion-quality.json")
+    rt, rt_ok = _load_dim("roundtrip-audit.json")
+    pkg, pkg_ok = _load_dim("package-proof.json")
+    consumer, consumer_ok = _load_dim("consumer-proof.json")
 
     py_count = len(api.get("python", {}).get("contracts", []))
     net_count = len(api.get("dotnet", {}).get("contracts", []))
@@ -63,63 +103,121 @@ def collect_format_status(fmt: str) -> dict[str, Any]:
     avg_score = quality.get("overall_avg_score", 0)
     weak = quality.get("weak_assertion_count", 0)
 
+    def _api_status() -> str:
+        if not api_ok:
+            return "MISSING_EVIDENCE"
+        return "PASS" if py_count > 0 else "NOT_AUDITED"
+
+    def _trace_status() -> str:
+        if not trace_ok:
+            return "MISSING_EVIDENCE"
+        if qname_total > 0:
+            return "PASS" if qname_pass == qname_total else "FAIL"
+        return "NOT_AUDITED"
+
+    def _stub_status() -> str:
+        if not stub_ok:
+            return "MISSING_EVIDENCE"
+        return "PASS" if mat_stubs == 0 else "KNOWN_GAPS"
+
+    def _exc_status() -> str:
+        if not exc_ok:
+            return "MISSING_EVIDENCE"
+        return "PASS" if uncov_exc == 0 else "KNOWN_GAPS"
+
+    def _oracle_status() -> str:
+        if not oracle_ok:
+            return "MISSING_EVIDENCE"
+        return _dim_status(oracle)
+
+    def _quality_status() -> str:
+        if not quality_ok:
+            return "MISSING_EVIDENCE"
+        return "PASS" if weak == 0 and avg_score >= 3 else "KNOWN_GAPS" if avg_score > 0 else "NOT_AUDITED"
+
+    def _rt_status() -> str:
+        if not rt_ok:
+            return "MISSING_EVIDENCE"
+        return _dim_status(rt, "status", "NOT_AUDITED")
+
+    def _pkg_status() -> str:
+        if not pkg_ok:
+            return "MISSING_EVIDENCE"
+        return _dim_status(pkg, "status", "NOT_AUDITED")
+
+    def _consumer_status() -> str:
+        if not consumer_ok:
+            return "MISSING_EVIDENCE"
+        return _dim_status(consumer, "status", "NOT_AUDITED")
+
     dimensions = {
         "api_contract": {
-            "status": "PASS" if py_count > 0 else "NOT_AUDITED",
+            "status": _api_status(),
             "python_apis": py_count,
             "dotnet_apis": net_count,
         },
         "traceability": {
-            "status": "PASS" if qname_pass == qname_total and qname_total > 0 else "FAIL" if qname_total > 0 else "NOT_AUDITED",
+            "status": _trace_status(),
             "pass_count": qname_pass,
             "total": qname_total,
         },
         "stubs": {
-            "status": "PASS" if mat_stubs == 0 else "KNOWN_GAPS",
+            "status": _stub_status(),
             "material_count": mat_stubs,
         },
         "exceptions": {
-            "status": "PASS" if uncov_exc == 0 else "KNOWN_GAPS",
+            "status": _exc_status(),
             "uncovered": uncov_exc,
             "total": exc.get("exception_count", 0),
         },
         "oracle": {
-            "status": _dim_status(oracle),
+            "status": _oracle_status(),
             "pass_rate": oracle.get("pass_rate", oracle.get("oracle_summary", {}).get("pass_rate", "?")),
         },
         "test_quality": {
-            "status": "PASS" if weak == 0 and avg_score >= 3 else "KNOWN_GAPS" if avg_score > 0 else "NOT_AUDITED",
+            "status": _quality_status(),
             "avg_score": avg_score,
             "weak_count": weak,
         },
         "roundtrip": {
-            "status": _dim_status(rt, "status", "NOT_AUDITED"),
+            "status": _rt_status(),
         },
         "package": {
-            "status": _dim_status(pkg, "status", "NOT_AUDITED"),
+            "status": _pkg_status(),
         },
         "consumer": {
-            "status": _dim_status(consumer, "status", "NOT_AUDITED"),
+            "status": _consumer_status(),
         },
     }
 
-    # Compute overall verdict
+    # Compute overall verdict (TC-003: MISSING_EVIDENCE blocks CERTIFIED)
     statuses = [d["status"] for d in dimensions.values()]
+    blocking = {"MISSING_EVIDENCE", "STALE_EVIDENCE", "FAIL"}
     acceptable = {"PASS", "KNOWN_GAPS", "NOT_APPLICABLE", "GAP"}
     if all(s in {"PASS", "NOT_APPLICABLE"} for s in statuses):
         verdict = "CERTIFIED"
-    elif any(s == "FAIL" for s in statuses):
-        verdict = "NOT_CERTIFIED"
+    elif any(s in blocking for s in statuses):
+        if "FAIL" in statuses:
+            verdict = "NOT_CERTIFIED"
+        else:
+            verdict = "INCOMPLETE_EVIDENCE"
     elif all(s in acceptable for s in statuses):
         verdict = "CERTIFIED_WITH_KNOWN_GAPS"
     else:
         verdict = "IN_PROGRESS"
 
-    return {
+    result: dict[str, Any] = {
         "format_id": fmt,
         "overall_verdict": verdict,
         "dimensions": dimensions,
     }
+    if run_manifest_meta:
+        result["run_manifest"] = {
+            "run_id": run_manifest_meta.get("run_id"),
+            "source_revision": run_manifest_meta.get("source_revision"),
+            "is_synthetic": run_manifest_meta.get("is_synthetic", False),
+        }
+    return result
 
 
 def build_dashboard() -> dict[str, Any]:

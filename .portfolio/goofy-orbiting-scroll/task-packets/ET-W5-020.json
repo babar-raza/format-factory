@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-020",
+  "workstream_id": "WS-35-LIVELY-ELEPHANT",
+  "objective": "Execute lively-leaping-elephant: all 15 TCs",
+  "source_plan_ids": [
+    "s041"
+  ],
+  "source_task_ids": [
+    "TC-LLE-001",
+    "TC-LLE-002",
+    "TC-LLE-003",
+    "TC-LLE-004",
+    "TC-LLE-005",
+    "TC-LLE-006",
+    "TC-LLE-007",
+    "TC-LLE-008",
+    "TC-LLE-009",
+    "TC-LLE-010",
+    "TC-LLE-011",
+    "TC-LLE-012",
+    "TC-LLE-013",
+    "TC-LLE-014",
+    "TC-LLE-015"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 15 TCs in s041 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read lively-leaping-elephant.md (s041) and execute all 15 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "c3618586e80b84baa45eed045223632736f1377cc02d2846e9180c66dc7676ac"
+}

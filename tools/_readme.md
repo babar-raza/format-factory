@@ -87,3 +87,22 @@ All tools are `visibility: internal`. Tools are acquisition-layer artifacts — 
 - `taskcards/TC-0005-llm-endpoint-impl.md` — LLM tool implementation scope
 - `taskcards/TC-0006-release-manifest.md` — validation tool implementation scope
 - `taskcards/TC-0007-specification-cache.md` — spec-cache tool implementation scope
+
+## Agent Navigation
+
+**Purpose of this folder:** All supervisor, governance, validator, capability, and acquisition
+tools live here. Created by developers and the supervisor pipeline.
+
+**Key subdirectories:**
+- `tools/supervisor/` — Autonomous cycle, governance validators, plan lock, continuation check
+- `tools/evidence/` — Evidence bundle builder, invariant checker, contract validator
+- `tools/capability_layer/` — Capability map generator and compiler
+- `tools/state/` — State snapshot producer (writes to `.supervisor/state/`)
+- `tools/validators/` — Source architecture and structure validators
+
+**To run governance validation:** `python tools/supervisor/governance_validators_root_struct.py`
+**To run full governance suite:** `python tools/supervisor/governance_validator_runner.py`
+**To run autonomous cycle:** `python tools/supervisor/autonomous_cycle.py`
+
+**Producer:** Developers and the supervisor machinery. All new tools must be registered in
+`registry/repository-root-folders.yaml` before committing.

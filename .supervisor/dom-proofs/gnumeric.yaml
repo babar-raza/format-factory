@@ -1,0 +1,6 @@
+format: gnumeric
+proofs:
+  D1:
+    description: "Parse file, retrieve cells with gnumeric:workbook spec_qname"
+    test_command: ".venv/Scripts/pytest tests/python/gnumeric/ -v --tb=short -q"
+    required_pass_count: 1

@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-013",
+  "workstream_id": "WS-20-CERTIFICATION-LAYER",
+  "objective": "Execute glittery-splashing-manatee certification layer: all 12 TCs",
+  "source_plan_ids": [
+    "s025"
+  ],
+  "source_task_ids": [
+    "TC-GSM-001",
+    "TC-GSM-002",
+    "TC-GSM-003",
+    "TC-GSM-004",
+    "TC-GSM-005",
+    "TC-GSM-006",
+    "TC-GSM-007",
+    "TC-GSM-008",
+    "TC-GSM-009",
+    "TC-GSM-010",
+    "TC-GSM-011",
+    "TC-GSM-012"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read glittery-splashing-manatee.md (s025) and execute all 12 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 12 TCs in s025 have final disposition",
+    "Certification layer operational"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

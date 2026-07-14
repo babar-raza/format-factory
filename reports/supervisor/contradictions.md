@@ -1,7 +1,7 @@
-<!-- generated_at: 2026-07-10T17:09:13.372447 | source_sprint: PQ-BUNDLE-FORENSICS-REPAIR-001 -->
+<!-- generated_at: 2026-07-11T20:15:30.054964 | source_sprint: SYLK-TOML-FOSS-ANALYTICS-BATCH-001 -->
 # Contradiction Detection Report
-Sprint ID: PQ-BUNDLE-FORENSICS-REPAIR-001
-Timestamp: 2026-07-10T17:09:13.372447
+Sprint ID: SYLK-TOML-FOSS-ANALYTICS-BATCH-001
+Timestamp: 2026-07-11T20:15:30.054964
 Overall: CLEAN
 Autonomous continue: True
 Critical: 0 | Warning: 0

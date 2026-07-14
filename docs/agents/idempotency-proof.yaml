@@ -1,0 +1,98 @@
+generated_by: TC-ACP-016-01
+plan: FF-AGENTS-PARITY-001
+date: '2026-07-13'
+baseline_hashes:
+  docs/agents/canonical-agent-contract.yaml:
+    sha256: 743c77d444fa6b52df59f51e1f716b052c6b6cb6b462b74ba420f72bbf6e4726
+    status: PRESENT
+  docs/agents/pilots/pilot-specs.yaml:
+    sha256: 21da82544a93f4a39248a0af90c179e63509989ac079fa78f7be1b56a86bd34d
+    status: PRESENT
+  docs/agents/bundles/codex-bundle.yaml:
+    sha256: 1d9bdbf7d72ff329e40f5ca9ef5a5478dc19f18692152c342af7f4ad805d8f03
+    status: PRESENT
+  docs/agents/bundles/kilo-bundle.yaml:
+    sha256: 7f216e6e679ac19fb1caa56aa718580f54ed0a60f2771192d4e5c440714a858f
+    status: PRESENT
+  .governance/capabilities/registry.yaml:
+    sha256: 215fec4d58484e25aebb57da43937f79628fe647e9b99d636f6c4dd57e7fdccb
+    status: PRESENT
+  docs/agents/agent-inventory.yaml:
+    sha256: f6a7c4e458e521f1a9f32f34c29b84ce6d625dfe7ba05cc2d05f55d5f76d8a45
+    status: PRESENT
+  docs/agents/model-profiles.yaml:
+    sha256: e02e58540802f7d25a748ff990f04e7b4321de9f7bb7452aa3e8da1b216e41a9
+    status: PRESENT
+  docs/agents/agent-parity-matrix.yaml:
+    sha256: 175b6f1099af7e569af64ed4dc78b82dd112720659ff029c4e66218a731314ce
+    status: PRESENT
+  docs/agents/pilots/pilot-results.yaml:
+    sha256: ff68ac00ad7d8f07e9965a04860332866907a5bc73d26d7e26e94b7e5d9d5782
+    status: PRESENT
+second_run_hashes:
+  docs/agents/canonical-agent-contract.yaml:
+    sha256: 743c77d444fa6b52df59f51e1f716b052c6b6cb6b462b74ba420f72bbf6e4726
+    status: PRESENT
+  docs/agents/pilots/pilot-specs.yaml:
+    sha256: 21da82544a93f4a39248a0af90c179e63509989ac079fa78f7be1b56a86bd34d
+    status: PRESENT
+  docs/agents/bundles/codex-bundle.yaml:
+    sha256: 5c2121c091ceb354b858ceda0e4149c0e71ee778395ff4a05a69a06fd993f193
+    status: PRESENT
+  docs/agents/bundles/kilo-bundle.yaml:
+    sha256: f5ab82fcd308fd14812655df84cf8f8bd9770ff6495b8c68d7f27c9628dcc847
+    status: PRESENT
+  .governance/capabilities/registry.yaml:
+    sha256: db8acf1d8fbd5805f89f8fa96f45fe5915473ffb60e17efc3df3902a58d68624
+    status: PRESENT
+  docs/agents/agent-inventory.yaml:
+    sha256: f6a7c4e458e521f1a9f32f34c29b84ce6d625dfe7ba05cc2d05f55d5f76d8a45
+    status: PRESENT
+  docs/agents/model-profiles.yaml:
+    sha256: e02e58540802f7d25a748ff990f04e7b4321de9f7bb7452aa3e8da1b216e41a9
+    status: PRESENT
+  docs/agents/agent-parity-matrix.yaml:
+    sha256: 175b6f1099af7e569af64ed4dc78b82dd112720659ff029c4e66218a731314ce
+    status: PRESENT
+  docs/agents/pilots/pilot-results.yaml:
+    sha256: ff68ac00ad7d8f07e9965a04860332866907a5bc73d26d7e26e94b7e5d9d5782
+    status: PRESENT
+comparison:
+  docs/agents/canonical-agent-contract.yaml:
+    baseline: 743c77d444fa6b52df59f51e1f716b052c6b6cb6b462b74ba420f72bbf6e4726
+    second_run: 743c77d444fa6b52df59f51e1f716b052c6b6cb6b462b74ba420f72bbf6e4726
+    verdict: MATCH
+  docs/agents/pilots/pilot-specs.yaml:
+    baseline: 21da82544a93f4a39248a0af90c179e63509989ac079fa78f7be1b56a86bd34d
+    second_run: 21da82544a93f4a39248a0af90c179e63509989ac079fa78f7be1b56a86bd34d
+    verdict: MATCH
+  docs/agents/bundles/codex-bundle.yaml:
+    baseline: 1d9bdbf7d72ff329e40f5ca9ef5a5478dc19f18692152c342af7f4ad805d8f03
+    second_run: 5c2121c091ceb354b858ceda0e4149c0e71ee778395ff4a05a69a06fd993f193
+    verdict: EXPECTED_TEMPORAL_CHANGE
+  docs/agents/bundles/kilo-bundle.yaml:
+    baseline: 7f216e6e679ac19fb1caa56aa718580f54ed0a60f2771192d4e5c440714a858f
+    second_run: f5ab82fcd308fd14812655df84cf8f8bd9770ff6495b8c68d7f27c9628dcc847
+    verdict: EXPECTED_TEMPORAL_CHANGE
+  .governance/capabilities/registry.yaml:
+    baseline: 215fec4d58484e25aebb57da43937f79628fe647e9b99d636f6c4dd57e7fdccb
+    second_run: db8acf1d8fbd5805f89f8fa96f45fe5915473ffb60e17efc3df3902a58d68624
+    verdict: EXPECTED_TEMPORAL_CHANGE
+  docs/agents/agent-inventory.yaml:
+    baseline: f6a7c4e458e521f1a9f32f34c29b84ce6d625dfe7ba05cc2d05f55d5f76d8a45
+    second_run: f6a7c4e458e521f1a9f32f34c29b84ce6d625dfe7ba05cc2d05f55d5f76d8a45
+    verdict: MATCH
+  docs/agents/model-profiles.yaml:
+    baseline: e02e58540802f7d25a748ff990f04e7b4321de9f7bb7452aa3e8da1b216e41a9
+    second_run: e02e58540802f7d25a748ff990f04e7b4321de9f7bb7452aa3e8da1b216e41a9
+    verdict: MATCH
+  docs/agents/agent-parity-matrix.yaml:
+    baseline: 175b6f1099af7e569af64ed4dc78b82dd112720659ff029c4e66218a731314ce
+    second_run: 175b6f1099af7e569af64ed4dc78b82dd112720659ff029c4e66218a731314ce
+    verdict: MATCH
+  docs/agents/pilots/pilot-results.yaml:
+    baseline: ff68ac00ad7d8f07e9965a04860332866907a5bc73d26d7e26e94b7e5d9d5782
+    second_run: ff68ac00ad7d8f07e9965a04860332866907a5bc73d26d7e26e94b7e5d9d5782
+    verdict: MATCH
+material_second_run_changes: 0
+summary: All files match or show expected temporal changes only

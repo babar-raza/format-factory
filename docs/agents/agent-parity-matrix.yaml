@@ -1,0 +1,428 @@
+generated_by: TC-ACP-012
+source: docs/agents/agent-inventory.yaml
+date: '2026-07-13'
+schema_version: '1.0'
+total_capabilities: 22
+semantic_parity_count: 3
+gap_count: 19
+blocking_count: 4
+capability_parity_matrix:
+- capability_id: RC-001
+  name: read_repository_files
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Read tool is primary; bash cat is forbidden
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-002
+  name: write_repository_files
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Write/Edit tools; echo/cat redirects forbidden
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-003
+  name: execute_shell_commands
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Bash tool; exit code handling per Supreme Directive
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-004
+  name: load_instruction_files
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: CLAUDE.md + AGENTS.md + plan file must be read at session start
+    verified: true
+  codex:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  semantic_parity: true
+  remaining_gaps: []
+  blocking:
+  - codex BLOCKED on RC-004
+  - kilo BLOCKED on RC-004
+- capability_id: RC-005
+  name: parse_skill_registry
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Skill registry read before any skill invocation; enforce-skill-first-execution
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-006
+  name: validate_declarations
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: sprint_executor_validate.py --repair before autonomous_cycle.py
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-007
+  name: run_governance_validators
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: governance_validator_runner.py; named validators cause STOP not CONTINUE
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-008
+  name: invoke_pre_mutation_guard
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: pre_mutation_guard.py; EP-007 pre-commit hook (TC-ACP-006)
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-009
+  name: parse_capability_registry
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: sync-capabilities regenerates index after every registry update
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-010
+  name: generate_evidence_declarations
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: .local/evidences/<run_id>/evidence-declaration.yaml with all required
+      fields
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-011
+  name: read_gap_ledger
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: gap-ledger.json read during Step 3a-pre2 in autonomous_cycle.py
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-012
+  name: run_tests
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: .venv/Scripts/pytest; real counts required
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-013
+  name: commit_to_git
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: SCM Agent policy; AGENTS.md Ã‚Â§AG4; pre-commit hook must pass
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-014
+  name: push_to_remote
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Token-authenticated HTTPS; verified push commands (2026-07-03)
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-015
+  name: run_autonomous_cycle
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: autonomous_cycle.py --declaration; exit codes 0/3/1/9 handled
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-016
+  name: invoke_skills_by_name
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: Skill tool; skill_invocation_transcript_required=true enforces it
+    verified: true
+  codex:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  semantic_parity: true
+  remaining_gaps: []
+  blocking:
+  - codex BLOCKED on RC-016
+  - kilo BLOCKED on RC-016
+- capability_id: RC-017
+  name: enforce_skill_first_policy
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: pre-commit hook; enforce-skill-first-execution composite (SKILL-FIRST-003)
+    verified: true
+  codex:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  semantic_parity: true
+  remaining_gaps: []
+  blocking:
+  - codex BLOCKED on RC-017
+  - kilo BLOCKED on RC-017
+- capability_id: RC-018
+  name: load_session_state
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: session-resume.md + .local/supervisor/ state files at session start
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-019
+  name: read_governance_docs
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: All files in plans/ root + active plan + CLAUDE.md + AGENTS.md
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-020
+  name: parse_capability_routing_registry
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: build-capability-routes skill; capability-routing-registry.yaml
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-021
+  name: generate_sprint_prompt
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: next-sprint.md + next-work-items.json; per-chat plan overrides
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: UNVERIFIABLE_PLATFORM_UNKNOWN (platform model unknown)'
+  blocking: []
+- capability_id: RC-022
+  name: multi_sprint_autonomous_loop
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: check_continuation.py verdict=CONTINUE; MAX_ITERATIONS reset not stop
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: ''
+    verified: false
+  kilo:
+    status: BLOCKED
+    mechanism: ''
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  blocking:
+  - kilo BLOCKED on RC-022

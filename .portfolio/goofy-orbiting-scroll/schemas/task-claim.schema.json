@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task-claim",
+  "title": "Task Claim",
+  "type": "object",
+  "required": ["schema_version","claim_id","task_id","worker_id","claimed_at","lease_expires_at","status"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "claim_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "worker_id": {"type": "string"},
+    "lane_id": {"type": ["string","null"]},
+    "claimed_at": {"type": "string", "format": "date-time"},
+    "heartbeat_at": {"type": "string", "format": "date-time"},
+    "lease_expires_at": {"type": "string", "format": "date-time"},
+    "repository_revision": {"type": "string"},
+    "lock_ids": {"type": "array", "items": {"type": "string"}},
+    "attempt_id": {"type": ["string","null"]},
+    "status": {"type": "string", "enum": ["ACTIVE","RELEASED","EXPIRED","CANCELLED"]},
+    "released_at": {"type": ["string","null"]}
+  }
+}

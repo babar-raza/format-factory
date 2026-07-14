@@ -1,0 +1,898 @@
+{
+  "report_id": "stale-oracle-report",
+  "generated_at": "2026-07-12T22:23:20.572607+00:00",
+  "mission_id": "FF-ORC-HARDENING-002",
+  "total_formats": 20,
+  "stale_count": 0,
+  "clean_count": 20,
+  "stale_formats": [],
+  "clean_formats": [
+    "abw",
+    "csv",
+    "dif",
+    "fodg",
+    "fodp",
+    "fods",
+    "fodt",
+    "gnumeric",
+    "ndjson",
+    "ods",
+    "odt",
+    "pbm",
+    "pgm",
+    "ppm",
+    "qoi",
+    "sylk",
+    "toml",
+    "tsv",
+    "xcf",
+    "zst"
+  ],
+  "overall_verdict": "ALL_CLEAN",
+  "details": {
+    "abw": {
+      "format_id": "abw",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "abw-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/abw/two-paragraphs.abw",
+          "stored_hash": "sha256:1b8f8ec1396aeec54c71bbd3c30707db136d97a8a05ca2608cfe1cd0d67dddca",
+          "actual_hash": "sha256:1b8f8ec1396aeec54c71bbd3c30707db136d97a8a05ca2608cfe1cd0d67dddca",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "csv": {
+      "format_id": "csv",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "csv-valid-001",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/csv/minimal-2x2.csv",
+          "stored_hash": null,
+          "actual_hash": "sha256:031a746cd45e8cd2b74a5daa76a75e61cee05742897fd978700f5397bb36757e",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "csv-valid-002",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/csv/single-cell.csv",
+          "stored_hash": null,
+          "actual_hash": "sha256:e642f71729782d3a01113233973eacdad72f4ddf49d5e9b9535c28ae82fceef5",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "csv-valid-003",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/csv/quoted-fields.csv",
+          "stored_hash": null,
+          "actual_hash": "sha256:fb0d7ede9b836088e4d2fefc083b0497c8aa0263e5d276d5cf42d3907c0a095d",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "csv-invalid-001",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/csv/invalid-unterminated-quote.csv",
+          "stored_hash": null,
+          "actual_hash": "sha256:0803e63c42f930dfa065c67f4e5c00fb3b2e31ad25f02323ffa6ae34191c8bac",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 4
+    },
+    "dif": {
+      "format_id": "dif",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "dif-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/dif/valid/minimal-2x2.dif",
+          "stored_hash": "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8",
+          "actual_hash": "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "dif-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/dif/valid/single-cell.dif",
+          "stored_hash": "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49",
+          "actual_hash": "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "dif-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/dif/valid/minimal-2x2.dif",
+          "stored_hash": "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8",
+          "actual_hash": "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "fodg": {
+      "format_id": "fodg",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "fodg-valid-d2-schema",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/fodg/minimal-drawing.fodg",
+          "stored_hash": null,
+          "actual_hash": "sha256:3fc44bfee36f024958aed7641abf00fba4f12cd7048f551dee84b8d80573d479",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "fodp": {
+      "format_id": "fodp",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "fodp-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodp/minimal-presentation.fodp",
+          "stored_hash": "sha256:cd792ea9cef1ae82df582289b332e02f651bd84cb0b9e9f00c41cf79a9068221",
+          "actual_hash": "sha256:cd792ea9cef1ae82df582289b332e02f651bd84cb0b9e9f00c41cf79a9068221",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodp-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodp/two-slides-basic.fodp",
+          "stored_hash": "sha256:d77183d6069219ab03292eaca85c9911c9eea0812f4a4777a682a123b63b6bb6",
+          "actual_hash": "sha256:d77183d6069219ab03292eaca85c9911c9eea0812f4a4777a682a123b63b6bb6",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodp-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodp/title-only.fodp",
+          "stored_hash": "sha256:9576c232faa72e59ce9e2fb5d449ac22a29e85334b3a8b0c466d3200cd772be0",
+          "actual_hash": "sha256:9576c232faa72e59ce9e2fb5d449ac22a29e85334b3a8b0c466d3200cd772be0",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodp-valid-d2-schema",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/fodp/minimal-presentation.fodp",
+          "stored_hash": null,
+          "actual_hash": "sha256:cd792ea9cef1ae82df582289b332e02f651bd84cb0b9e9f00c41cf79a9068221",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "fods": {
+      "format_id": "fods",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "fods-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fods/minimal-spreadsheet.fods",
+          "stored_hash": "sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543",
+          "actual_hash": "sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fods-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fods/multi-sheet-basic.fods",
+          "stored_hash": "sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41",
+          "actual_hash": "sha256:669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fods-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fods/typed-values-basic.fods",
+          "stored_hash": "sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977",
+          "actual_hash": "sha256:c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fods-valid-004",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fods/formula-basic.fods",
+          "stored_hash": "sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e",
+          "actual_hash": "sha256:72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fods-invalid-001",
+          "status": "MISSING_SAMPLE",
+          "sample_ref": "tests/fixtures/fods/malformed/",
+          "stored_hash": null,
+          "actual_hash": null,
+          "detail": "Sample file not found or is not a regular file: tests/fixtures/fods/malformed/"
+        },
+        {
+          "case_id": "fods-rt-001",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/fods/minimal-spreadsheet.fods",
+          "stored_hash": null,
+          "actual_hash": "sha256:a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 1,
+      "hash_not_stored_count": 1
+    },
+    "fodt": {
+      "format_id": "fodt",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "fodt-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodt/minimal-document.fodt",
+          "stored_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "actual_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodt-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodt/minimal-document.fodt",
+          "stored_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "actual_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodt-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/fodt/minimal-document.fodt",
+          "stored_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "actual_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "fodt-valid-d2-schema",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/fodt/minimal-document.fodt",
+          "stored_hash": null,
+          "actual_hash": "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "gnumeric": {
+      "format_id": "gnumeric",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "gnumeric-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+          "stored_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "actual_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "gnumeric-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+          "stored_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "actual_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "gnumeric-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+          "stored_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "actual_hash": "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "ndjson": {
+      "format_id": "ndjson",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "ndjson-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ndjson/valid/minimal.ndjson",
+          "stored_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "actual_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ndjson-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ndjson/valid/minimal.ndjson",
+          "stored_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "actual_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ndjson-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ndjson/valid/minimal.ndjson",
+          "stored_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "actual_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ndjson-valid-004",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ndjson/valid/minimal.ndjson",
+          "stored_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "actual_hash": "sha256:f07f2e320c2187cb705c819872d3ad3e9f8f55f95eb8fc2c564569dd3daa2790",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "ods": {
+      "format_id": "ods",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "ods-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ods/valid/minimal-spreadsheet.ods",
+          "stored_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "actual_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ods-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ods/valid/minimal-spreadsheet.ods",
+          "stored_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "actual_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ods-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ods/valid/minimal-spreadsheet.ods",
+          "stored_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "actual_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ods-valid-d2-schema",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/ods/valid/minimal-spreadsheet.ods",
+          "stored_hash": null,
+          "actual_hash": "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "odt": {
+      "format_id": "odt",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "odt-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/odt/valid/minimal-document.odt",
+          "stored_hash": "sha256:2e6206d5797e6aef8a336fc80fd534871c6871a0b7237154a48801a61fd912b1",
+          "actual_hash": "sha256:2e6206d5797e6aef8a336fc80fd534871c6871a0b7237154a48801a61fd912b1",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "odt-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/odt/valid/two-paragraphs.odt",
+          "stored_hash": "sha256:73d972c7c90eb6c5e62f912397d5236b534228d66ae3313fd56b36a46bc02563",
+          "actual_hash": "sha256:73d972c7c90eb6c5e62f912397d5236b534228d66ae3313fd56b36a46bc02563",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "odt-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/odt/valid/unicode-text.odt",
+          "stored_hash": "sha256:3449383456b912421d9fc05165c40ef690cec5b35ad42ff96193c6d2a4087870",
+          "actual_hash": "sha256:3449383456b912421d9fc05165c40ef690cec5b35ad42ff96193c6d2a4087870",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "odt-valid-d2-schema",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/odt/valid/minimal-document.odt",
+          "stored_hash": null,
+          "actual_hash": "sha256:2e6206d5797e6aef8a336fc80fd534871c6871a0b7237154a48801a61fd912b1",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "pbm": {
+      "format_id": "pbm",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "pbm-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pbm/valid/1x1-black.pbm",
+          "stored_hash": "sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508",
+          "actual_hash": "sha256:f05287fa176f68d9d863ce250505d921f64e66bbfa778e5320a0e69c091e4508",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "pbm-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pbm/valid/2x2-checker.pbm",
+          "stored_hash": "sha256:98abbc0a4a530e7183d08546b6d49fcf42608356edb53a7457aa4204a4c3bdde",
+          "actual_hash": "sha256:98abbc0a4a530e7183d08546b6d49fcf42608356edb53a7457aa4204a4c3bdde",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "pbm-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pbm/valid/3x2-pattern.pbm",
+          "stored_hash": "sha256:bd83b46b017f32630db07dbb3ae62460968d1f4faad4479b05d199930280cdf5",
+          "actual_hash": "sha256:bd83b46b017f32630db07dbb3ae62460968d1f4faad4479b05d199930280cdf5",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "pgm": {
+      "format_id": "pgm",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "pgm-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pgm/valid/1x1-white.pgm",
+          "stored_hash": "sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6",
+          "actual_hash": "sha256:69ee60f613f7b233a6f20c9952dcd3bdeb92becda164b4c29745bc495b010df6",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "pgm-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pgm/valid/2x2-gradient.pgm",
+          "stored_hash": "sha256:f49bf3c7ff65fbcb8e35501dcca8f3b98731a63df0a7b3d509512d0c191bebcb",
+          "actual_hash": "sha256:f49bf3c7ff65fbcb8e35501dcca8f3b98731a63df0a7b3d509512d0c191bebcb",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "pgm-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/pgm/valid/3x1-ramp.pgm",
+          "stored_hash": "sha256:a2b234e456a6b5410f274f3e18180395f05ee06a1f4aeb48705643c73cead052",
+          "actual_hash": "sha256:a2b234e456a6b5410f274f3e18180395f05ee06a1f4aeb48705643c73cead052",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "ppm": {
+      "format_id": "ppm",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "ppm-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ppm/valid/1x1-red.ppm",
+          "stored_hash": "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614",
+          "actual_hash": "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ppm-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ppm/valid/2x2-rgbw.ppm",
+          "stored_hash": "sha256:bf7be37ba40db548717727afdeb0e390c3f0d6a07541fd5c23d06952f15abfa1",
+          "actual_hash": "sha256:bf7be37ba40db548717727afdeb0e390c3f0d6a07541fd5c23d06952f15abfa1",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "ppm-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/ppm/valid/3x1-gradient.ppm",
+          "stored_hash": "sha256:6d2dcea6dacd0406e868160730c709ccc90e4ce452e715222c5e08d65b07563d",
+          "actual_hash": "sha256:6d2dcea6dacd0406e868160730c709ccc90e4ce452e715222c5e08d65b07563d",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "qoi": {
+      "format_id": "qoi",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "qoi-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/qoi/valid/1x1-red.qoi",
+          "stored_hash": "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808",
+          "actual_hash": "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "qoi-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/qoi/valid/2x2-black.qoi",
+          "stored_hash": "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864",
+          "actual_hash": "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "qoi-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/qoi/valid/4x1-gradient.qoi",
+          "stored_hash": "sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469",
+          "actual_hash": "sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "sylk": {
+      "format_id": "sylk",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "sylk-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/sylk/valid/minimal-2x2.slk",
+          "stored_hash": "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583",
+          "actual_hash": "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "sylk-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/sylk/valid/single-cell.slk",
+          "stored_hash": "sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717",
+          "actual_hash": "sha256:0f207de8d84da01d3a859521d97194545513204e30719866e545212cca8f3717",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "sylk-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/sylk/valid/minimal-2x2.slk",
+          "stored_hash": "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583",
+          "actual_hash": "sha256:b54ff8c039bfa81b8875d76538745faf079d2946c98c2ab2d48f64cb0ecef583",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "toml": {
+      "format_id": "toml",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "toml-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/toml/minimal.toml",
+          "stored_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "actual_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "toml-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/toml/minimal.toml",
+          "stored_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "actual_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "toml-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/toml/minimal.toml",
+          "stored_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "actual_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "toml-valid-004",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/toml/minimal.toml",
+          "stored_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "actual_hash": "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "tsv": {
+      "format_id": "tsv",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "tsv-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/tsv/minimal-2x2.tsv",
+          "stored_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "actual_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "tsv-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/tsv/multi-column.tsv",
+          "stored_hash": "sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2",
+          "actual_hash": "sha256:913523530bf2691562038ca5359076c71ceb6c59f75848d03fb44521d2577cf2",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "tsv-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/tsv/minimal-2x2.tsv",
+          "stored_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "actual_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "tsv-valid-004",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/tsv/minimal-2x2.tsv",
+          "stored_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "actual_hash": "sha256:509d1530fc16d41316377b804afe8e6a228308148e96425d04a72634f2bc9772",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "tsv-invalid-001",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/tsv/invalid-binary-garbage.tsv",
+          "stored_hash": null,
+          "actual_hash": "sha256:40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 1
+    },
+    "xcf": {
+      "format_id": "xcf",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "xcf-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/xcf/valid/1x1-red-rgb.xcf",
+          "stored_hash": "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93",
+          "actual_hash": "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "xcf-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/xcf/valid/2x2-gray.xcf",
+          "stored_hash": "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47",
+          "actual_hash": "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "xcf-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/xcf/valid/1x1-red-rgb.xcf",
+          "stored_hash": "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93",
+          "actual_hash": "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 0
+    },
+    "zst": {
+      "format_id": "zst",
+      "status": "CLEAN",
+      "corpus_findings": [
+        {
+          "case_id": "zst-valid-001",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/zst/valid/block-128k.zst",
+          "stored_hash": "sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba",
+          "actual_hash": "sha256:6a226ab40e6abcfc4a36baa04bf48f7ee56f166b8a26fbe2adb8fe771dceccba",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "zst-valid-002",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/zst/valid/empty-block.zst",
+          "stored_hash": "sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc",
+          "actual_hash": "sha256:ab5463fa31429bf81ced9f05e99b96b2fe88b1da37235a233f6bc96242332fbc",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "zst-valid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/zst/valid/rle-first-block.zst",
+          "stored_hash": "sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4",
+          "actual_hash": "sha256:dd31b3fa6bb8601710cbde2c625660763bf38adc5255501e3d3a681cc0e4e1a4",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "zst-valid-004",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/zst/valid/minimal-synthetic.zst",
+          "stored_hash": null,
+          "actual_hash": "sha256:7a4c6310840830c5b9c7f58c5b50fbf6489f91d9dcb538a69e0682c06244defe",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "zst-invalid-001",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/zst/invalid/generated/wrong-magic.zst",
+          "stored_hash": null,
+          "actual_hash": "sha256:381ba12f52059608321e61681108a9c3b07ab57c6881c8439774dc3bad5934a8",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "zst-invalid-002",
+          "status": "HASH_NOT_STORED",
+          "sample_ref": "samples/by-format/zst/invalid/generated/truncated-header-2b.zst",
+          "stored_hash": null,
+          "actual_hash": "sha256:c8eaf292162396bf89439dc2d0e90e21c256159d01c5f6075afddd9c35b58fcf",
+          "detail": "No input_hash stored \u2014 consider adding for future stale detection"
+        },
+        {
+          "case_id": "zst-invalid-003",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/zst/invalid/off0.bin.zst",
+          "stored_hash": "sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c",
+          "actual_hash": "sha256:144e2f029389c67c361bd3879ac142671592802f01f805a6c0c2b3e564d8022c",
+          "detail": "Corpus hash matches stored input_hash"
+        },
+        {
+          "case_id": "zst-invalid-004",
+          "status": "CLEAN",
+          "sample_ref": "samples/by-format/zst/invalid/truncated_huff_state.zst",
+          "stored_hash": "sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8",
+          "actual_hash": "sha256:c91a09d8824609d0643291803cbfb04b14213c02c890d5637bc3aed18e8a24f8",
+          "detail": "Corpus hash matches stored input_hash"
+        }
+      ],
+      "executor_check": {
+        "status": "CLEAN",
+        "current_hash": "sha256:8d9d8150bcdb15ce4d3e10affc3957e3c3ac27a1734f9b8cd55ef2180d91bd8f",
+        "detail": "Executor hash matches stored dependency_hashes.executor_hash"
+      },
+      "stale_case_count": 0,
+      "missing_sample_count": 0,
+      "hash_not_stored_count": 3
+    }
+  }
+}

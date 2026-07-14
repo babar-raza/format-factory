@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "plan-closure",
+  "title": "Plan Closure Record",
+  "type": "object",
+  "required": ["schema_version","closure_id","plan_id","closed_at","repository_revision",
+               "executable_tasks_closed","all_requirements_dispositioned",
+               "all_taskcards_dispositioned","independent_review"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "closure_id": {"type": "string"},
+    "plan_id": {"type": "string"},
+    "plan_file": {"type": "string"},
+    "closed_at": {"type": "string"},
+    "closed_by": {"type": "string"},
+    "repository_revision": {"type": "string"},
+    "executable_tasks_closed": {"type": "array", "items": {"type": "string"}},
+    "all_requirements_dispositioned": {"type": "boolean"},
+    "all_taskcards_dispositioned": {"type": "boolean"},
+    "independent_review": {"type": "string", "enum": ["PASS","FAIL","WAIVED"]},
+    "notes": {"type": "string"}
+  }
+}

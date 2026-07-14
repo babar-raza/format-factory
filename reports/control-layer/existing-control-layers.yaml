@@ -1,0 +1,385 @@
+mission_id: FF-CTRL-OCRD-001
+generated_at: "2026-07-12T00:00:00+00:00"
+taskcard: TC-OCRD-C1-02
+
+existing_control_layers:
+
+  - layer_key: control_index_db
+    name: Control Index Database
+    status: ACTIVE_WITH_GAPS
+    authority_scope: read_query
+    primary_purpose: >
+      SQLite+FTS5 overlay providing cross-entity queryability across gaps, sprints,
+      qnames, failures, plan locks, and evidence. Reconstructible from canonical sources.
+    implementation_paths:
+      - tools/supervisor/control_index/
+      - tools/supervisor/control_index/ingestors/
+    data_paths:
+      - .local/supervisor/control-index.db
+      - .local/supervisor/last-sync-report.json
+    consumers:
+      - tools/supervisor/capability_queue_consumer.py
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/autonomous_cycle.py
+    claimed_features:
+      - FTS5 full-text search across 8 entity types
+      - gap_attempts exhausted-gap filtering
+      - staleness detection via check_staleness()
+      - SAVEPOINT per-ingestor transaction isolation
+      - schema migration framework (v1→v4)
+    observable_features:
+      - FTS5 full-text search: verified via query.py search subcommand
+      - gap_attempts table: verified 21 tests (test_gap_attempt_registry.py)
+      - SAVEPOINT isolation: verified 8 tests (test_ingestor_transactions.py)
+      - staleness detection: verified 6 tests (test_sync_health.py)
+      - migration framework: verified (test_schema_migration.py)
+    gaps:
+      - RC-2: Not yet integrated into decision loop for automated gap selection suppression
+      - control_layers/trust_registry tables not yet populated
+
+  - layer_key: continuation_signal
+    name: Autonomous Continuation Signal
+    status: ACTIVE
+    authority_scope: execution_gate
+    primary_purpose: >
+      JSON signal file consumed by check_continuation.py to determine whether the
+      autonomous loop should CONTINUE or STOP. Contains session_id, iteration counter,
+      autonomous_continue flag, rework_items, critical_contradiction_count.
+    implementation_paths:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/autonomous_cycle.py
+    data_paths:
+      - .local/supervisor/continuation-signal.json
+    consumers:
+      - tools/supervisor/autonomous_cycle.py (writes)
+      - CLAUDE.md session start logic (reads via check_continuation.py)
+    claimed_features:
+      - CONTINUE/STOP verdict with reason
+      - session_id cross-chat isolation (CCI-MVP)
+      - rework_items propagation
+      - control_index_warnings emission
+      - contradiction_warnings emission
+    observable_features:
+      - CONTINUE/STOP verdict: verified via check_continuation.py CLI
+      - session_id isolation: verified (test_continuation_signal.py)
+      - contradiction_warnings: verified 6 tests (test_contradiction_signal.py)
+      - control_index_warnings: verified 6 tests (test_sync_health.py)
+
+  - layer_key: plan_lock_system
+    name: Per-Chat Plan Lock System
+    status: ACTIVE
+    authority_scope: execution_gate
+    primary_purpose: >
+      JSON lock files preventing the autonomous loop from consuming sprint work while
+      a per-chat plan is active. Supports IN_PROGRESS, COMPLETE, TERMINAL_CLOSED,
+      SUPERSEDED, ITERATION_REQUIRED statuses.
+    implementation_paths:
+      - tools/supervisor/write_plan_lock.py
+      - tools/supervisor/check_continuation.py
+    data_paths:
+      - .local/supervisor/active-plan-lock.json
+      - .local/supervisor/plan-locks/
+    consumers:
+      - tools/supervisor/check_continuation.py
+      - CLAUDE.md Step 0 (session start)
+    claimed_features:
+      - Plan lock write/read with status tracking
+      - TERMINAL_CLOSED stops session after plan completion
+      - ITERATION_REQUIRED continues if audit finds gaps
+      - --audit-gate flag for machinery plan closure
+      - PLAN_COMPLETED_IN_SESSION safety net
+    observable_features:
+      - Lock file creation: verified via write_plan_lock.py CLI
+      - check_continuation STOP on TERMINAL_CLOSED: verified (test_plan_lock_gate.py)
+
+  - layer_key: gap_ledger
+    name: FOSS Gap Ledger
+    status: ACTIVE_WITH_GAPS
+    authority_scope: work_selection
+    primary_purpose: >
+      JSON registry of open capability gaps for the FOSS Python track. Used by
+      capability_queue_consumer.py to select the next gap for implementation.
+      Now augmented by gap_attempts exhausted-gap filter (TC-OCRD-B2).
+    implementation_paths:
+      - tools/supervisor/capability_queue_consumer.py
+      - tools/supervisor/control_index/gap_selection.py
+    data_paths:
+      - reports/capability-layer/foss-reduced-capability-map.json
+      - .local/supervisor/assigned-gaps.json
+    consumers:
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/capability_queue_consumer.py
+    claimed_features:
+      - Gap selection with priority ordering
+      - Assigned-gap persistence (idempotent re-selection)
+      - Exhausted-gap filter via gap_attempts (TC-OCRD-B2)
+      - write_exhausted_gaps_json() reporting
+    observable_features:
+      - Gap selection: verified via load_foss_gaps() return
+      - Exhausted-gap filter: verified 6 tests (test_gap_selection.py)
+
+  - layer_key: layer_plan_system
+    name: Layer Plan System
+    status: ACTIVE
+    authority_scope: work_selection
+    primary_purpose: >
+      Permanent layer plans in plans/layers/ directory track long-running work
+      streams. Skills /create-permanent-layer-plan, /register-layer-task,
+      /select-next-layer-task govern lifecycle.
+    implementation_paths:
+      - plans/layers/
+      - .supervisor/skill-registry.yaml (layer_governance skills)
+    data_paths:
+      - plans/layers/
+      - plans/layers/capability-layer.md
+    consumers:
+      - CLAUDE.md per-session layer task selection
+    claimed_features:
+      - Permanent layer plan creation and registration
+      - Task register reconciliation
+      - Cross-layer handoff creation
+    observable_features:
+      - Layer plans exist: verified (plans/layers/*.md)
+      - Skill registration: verified in skill-registry.yaml
+
+  - layer_key: reports_system
+    name: Supervisor Reports System
+    status: ACTIVE
+    authority_scope: advisory
+    primary_purpose: >
+      Human-readable and machine-readable supervisor output files: next-sprint.md,
+      session-resume.md, approval-gates.md, contradictions.json, evidence-review.json.
+      Advisory only — formal authority is continuation-signal.json.
+    implementation_paths:
+      - tools/supervisor/supervisor_loop.py
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/grade_declared_work.py
+    data_paths:
+      - reports/supervisor/
+      - reports/supervisor/next-sprint.md
+      - reports/supervisor/session-resume.md
+      - reports/supervisor/approval-gates.md
+      - reports/supervisor/contradictions.json
+      - reports/supervisor/evidence-review.json
+    consumers:
+      - CLAUDE.md session start (reads session-resume.md)
+      - check_continuation.py (reads contradictions.json)
+      - autonomous_cycle.py (writes all reports)
+    claimed_features:
+      - Sprint review and grade generation
+      - Next-sprint prompt generation
+      - Contradiction detection and reporting
+      - Evidence review materialization
+    observable_features:
+      - Reports generated: verified (reports/supervisor/*.md exist)
+      - Contradiction JSON read by autonomous_cycle.py: verified (TC-OCRD-B1)
+
+  - layer_key: governance_validators
+    name: Governance Validator System
+    status: ACTIVE
+    authority_scope: execution_gate
+    primary_purpose: >
+      170 named validators enforcing production library standard, analytics separation,
+      monolith detection, skill governance, oracle depth, and SAL coverage. Run via
+      governance_validator_runner.py which enforces expected_count=170.
+    implementation_paths:
+      - tools/supervisor/governance_validators.py
+      - tools/supervisor/governance_validators_ext.py
+      - tools/supervisor/governance_validators_ext2.py
+      - tools/supervisor/governance_validators_ext3.py
+      - tools/supervisor/governance_validators_ext4.py
+      - tools/supervisor/governance_validators_oracle.py
+      - tools/supervisor/governance_validators_sgov.py
+      - tools/supervisor/governance_validators_runner.py
+    data_paths:
+      - reports/supervisor/work-item-grades.json
+    consumers:
+      - tools/supervisor/autonomous_cycle.py
+      - CI (.github/workflows/ci.yml)
+    claimed_features:
+      - 170 named validators (V1-V149 + contract registry + dynamic)
+      - expected_count enforcement
+      - GOV_BLOCK escalation for structural failures
+      - Contract-registry validators (governance_validators_contract.py)
+    observable_features:
+      - Validator count: 170 (verified test_governance_validators.py)
+      - GOV_BLOCK signal: verified via check_continuation.py structural gate
+      - CI enforcement: verified (.github/workflows/ci.yml)
+
+  - layer_key: skill_registry
+    name: Skill Registry
+    status: ACTIVE
+    authority_scope: work_selection
+    primary_purpose: >
+      YAML registry of all canonical skills with contracts. Skills gate execution —
+      non-skill ad-hoc execution of governed capabilities is blocked.
+    implementation_paths:
+      - .supervisor/skill-registry.yaml
+      - tools/supervisor/governance_validators_sgov.py
+      - tools/supervisor/skill_receipt_writer.py
+    data_paths:
+      - .supervisor/skill-registry.yaml
+    consumers:
+      - CLAUDE.md (skill-first execution policy)
+      - tools/supervisor/governance_validators_sgov.py (V-SGF-002)
+    claimed_features:
+      - Skill contract validation (validate_skill_contracts)
+      - Receipt auto-write after skill execution
+      - Ad-hoc execution detection
+    observable_features:
+      - Skill blocks registered: verified (skill-registry.yaml structure)
+      - Receipt writer exists: verified (skill_receipt_writer.py)
+      - V-SGF-002 validator: verified (governance_validators_sgov.py)
+
+  - layer_key: capability_registry
+    name: Capability Registry
+    status: ACTIVE
+    authority_scope: work_selection
+    primary_purpose: >
+      YAML registry of 120 active capabilities with product_track, parity_status.
+      Governs which capabilities may be exercised and by which runner.
+    implementation_paths:
+      - .governance/capabilities/registry.yaml
+      - tools/capability_layer/capability_map_generator.py
+      - tools/capability_layer/validate_capability_map.py
+    data_paths:
+      - .governance/capabilities/registry.yaml
+      - reports/capability-layer/unified-capability-map.json
+    consumers:
+      - CLAUDE.md (capability index table)
+      - tools/supervisor/capability_queue_consumer.py
+    claimed_features:
+      - 120 active capabilities with parity tracking
+      - Capability route validation
+      - Unified capability map generation
+    observable_features:
+      - Registry exists: verified (.governance/capabilities/registry.yaml)
+      - 120 capabilities: verified (CLAUDE.md index)
+
+  - layer_key: format_registry
+    name: Format Registry
+    status: ACTIVE
+    authority_scope: advisory
+    primary_purpose: >
+      YAML registry of all supported formats with gate statuses, SAL fact counts,
+      and product state. Canonical format truth — supervisor output is advisory.
+    implementation_paths:
+      - registry/format-registry.yaml
+    data_paths:
+      - registry/format-registry.yaml
+      - registry/source-structure-baseline.json
+    consumers:
+      - tools/supervisor/gate_executor.py
+      - tools/supervisor/autonomous_cycle.py
+    claimed_features:
+      - Format gate status tracking (G1-G5)
+      - SAL fact counts per format
+      - Release gate metadata
+    observable_features:
+      - Registry exists: verified (registry/format-registry.yaml)
+      - Gate executor reads it: verified (gate_executor.py)
+
+  - layer_key: oracle_system
+    name: Oracle Execution System
+    status: ACTIVE
+    authority_scope: verification
+    primary_purpose: >
+      Structured test oracle for all 20 Python FOSS formats. All 20 at VERIFIED
+      (73/73 PASS). Provides depth scoring D0-D3, ODF RelaxNG validation for FODS.
+    implementation_paths:
+      - tools/oracle/execute_oracle.py
+      - oracle/
+    data_paths:
+      - oracle/formats/
+      - oracle/schemas/
+      - oracle/reports/
+    consumers:
+      - CI (.github/workflows/ci.yml)
+      - tools/supervisor/gate_executor.py
+    claimed_features:
+      - 20 format executors with depth scoring D0-D3
+      - ODF RelaxNG validation (D2) for FODS
+      - Oracle package YAML per format
+    observable_features:
+      - All 20 formats VERIFIED: verified (oracle/formats/*/reports/)
+      - Depth scoring: verified (execute_oracle.py make_verdict with depth_level)
+      - ODF schema: verified (oracle/schemas/odf-1.3-relaxng/)
+
+  - layer_key: evidence_system
+    name: Evidence Declaration System
+    status: ACTIVE
+    authority_scope: verification
+    primary_purpose: >
+      Sprint evidence declarations written to .local/evidences/ and validated by
+      sprint_executor_validate.py before supervisor pipeline consumption. Provides
+      provenance chain and test count spot-check (TC-OCRD-A5).
+    implementation_paths:
+      - tools/supervisor/sprint_executor_validate.py
+      - tools/supervisor/inspect_declared_evidence.py
+      - tools/supervisor/evidence_verifier.py
+      - docs/automation/supervisor-worker-contract.md
+    data_paths:
+      - .local/evidences/
+    consumers:
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/supervisor_loop.py
+    claimed_features:
+      - Evidence declaration schema validation
+      - provenance_chain field enforcement
+      - AST-based test count spot-check (evidence_verifier.py)
+      - --repair auto-correction flag
+    observable_features:
+      - Schema validation: verified (test_sprint_executor_validate.py)
+      - Test count spot-check: verified 6 tests (test_evidence_verifier.py)
+
+  - layer_key: qname_registry
+    name: QName / SAL Registry
+    status: ACTIVE
+    authority_scope: verification
+    primary_purpose: >
+      Structured Abstraction Layer facts linking spec QNames to Python class/function
+      implementations. 14,441 total SAL facts. Used for spec-parity verification.
+    implementation_paths:
+      - tools/spec/
+      - src/python/*/sal_facts.yaml
+    data_paths:
+      - .local/sal/
+    consumers:
+      - tools/supervisor/autonomous_cycle.py (qname coverage check)
+      - governance_validators (SAL coverage validators)
+    claimed_features:
+      - 14,441 SAL facts across 20 formats
+      - QName coverage 99.4% (65/66 active)
+      - SAL ingestion via /ingest-spec-sal
+    observable_features:
+      - SAL fact count: verified (MEMORY.md)
+      - QName coverage: verified (reports/qname-coverage-*.json)
+
+  - layer_key: supervisor_pipeline
+    name: Autonomous Supervisor Pipeline
+    status: ACTIVE
+    authority_scope: execution_gate
+    primary_purpose: >
+      Core orchestration pipeline: autonomous_cycle.py drives sprint closeout,
+      grading, next-sprint generation, and signal update. Integrates all control
+      layers into a single execution cycle.
+    implementation_paths:
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/supervisor_loop.py
+      - tools/supervisor/grade_declared_work.py
+      - tools/supervisor/sprint_executor.py
+    data_paths:
+      - .local/supervisor/
+      - reports/supervisor/
+    consumers:
+      - CLAUDE.md sprint closeout procedure
+    claimed_features:
+      - Evidence validation + grading
+      - Next-sprint prompt generation
+      - Continuation signal update
+      - Control index sync (--sync-index flag)
+      - Contradiction embedding (TC-OCRD-B1)
+    observable_features:
+      - Pipeline runs: verified (autonomous_cycle.py exits 0/3)
+      - Contradiction embedding: verified 6 tests (test_contradiction_signal.py)
+      - Control index sync: verified (--sync-index flag in autonomous_cycle.py)

@@ -1,66 +1,93 @@
 assurance_mission:
-  mission_id: "MA-2026-07-02-BULK-PROPERTIES-R1233-R1291"
-  repository: "format-factory"
-  branch: "main"
-  head: "1617630b"  # fix(readme-gov): re-sync fodt/ndjson/pgm/ppm/toml READMEs
-  plan_path: "plans/.claude/sorted-sprouting-flame.md (TC-PSG-* PENDING)"
-  plan_revision: "sorted-sprouting-flame IN_PROGRESS"
-
+  mission_id: VWM-2026-07-10
+  repository: format-factory
+  branch: main
+  plan_head_at_writing: af879e55
+  current_head: 3fdaf841
+  plan_path: plans/.claude/vast-wibbling-moon.md
+  plan_revision: "2.0"
+  assurance_date: "2026-07-13"
   machinery_roots:
-    - "src/python/*/models.py"           # Python FOSS domain models (primary repair target)
-    - "tools/supervisor/"                 # Supervisor pipeline
-    - "tools/docs/"                       # Status generator machinery
-    - "tools/supervisor/concurrency/"     # Concurrency hardening (COMPLETE per purrfect-weaving-squid)
-    - ".supervisor/skill-registry.yaml"   # Skill dispatch registry
-
+    - tools/supervisor/
+    - tools/review/
+    - tools/assurance/
+    - .supervisor/
+    - tools/oracle/
   official_entry_points:
-    - ".venv/Scripts/pytest tests/python/"
+    - "python tools/supervisor/autonomous_cycle.py"
     - "python tools/supervisor/check_continuation.py"
-    - "python tools/supervisor/supervisor_loop.py autonomous-cycle"
-    - "python tools/docs/generate_project_status.py"
-
+    - "python tools/supervisor/governance_validator_runner.py"
+    - "python tools/supervisor/write_plan_lock.py"
+    - "python tools/supervisor/sprint_executor.py run-loop"
   state_stores:
-    - ".local/supervisor/continuation-signal.json"
-    - ".local/supervisor/active-plan-lock.json"
-    - "reports/supervisor/next-sprint.md"
-    - "reports/supervisor/approval-gates.md"
-    - "reports/r90/product-code-change-ledger.json"
-    - "registry/source-structure-baseline.json"
-
+    - .local/supervisor/continuation-signal.json
+    - .local/supervisor/active-plan-lock.json
+    - .local/supervisor/next-work-items.json
+    - .local/supervisor/control-index.db
+    - .supervisor/state/current-run.json
   output_roots:
-    - "src/python/*/models.py"           # Python domain model source (REPAIR)
-    - "tests/python/**/test_r12*.py"     # New untracked R1233-R1291 tests (VALIDATE)
-    - "tools/docs/status_model.py"       # New status model (VALIDATE)
-    - "reports/machinery-assurance/"     # Assurance artifacts
-    - ".local/evidences/"                # Evidence declarations
+    - reports/supervisor/
+    - reports/machinery-assurance/
+    - .local/evidences/
+    - src/python/
+    - src/net/
+  authoritative_plan: plans/.claude/vast-wibbling-moon.md
+  artifact_role: analysis_or_evidence_only
+  execution_authority: false
 
-  consumer_roots:
-    - "tests/python/**/"                 # Tests consume domain models
-    - ".venv/Lib/site-packages/*/"       # Installed packages (non-editable)
+session_state:
+  continuation_signal_stop_reason: null
+  continuation_signal_autonomous_continue: true
+  continuation_signal_session_id: null
+  continuation_signal_iteration: 6
+  continuation_signal_rework_items: []
+  approval_gates_autonomous_continue: "NO"
+  approval_gates_mode: "MODE 4 (ACTIVE_MCP_ACTIVATION)"
+  last_sprint_id: CERT-LAYER-HEAL-20260710
+  active_plan_lock_status: IN_PROGRESS
+  active_plan_lock_session: c0d42e113626
+  check_continuation_verdict: STOP
+  check_continuation_reason: ACTIVE_PLAN_INCOMPLETE
 
-  governing_skills:
-    - "/add-python-object-model-feature"
-    - "/add-roundtrip-test"
-    - "/post-sprint-audit"
-    - "/plan-hardening"
+known_issues:
+  I-001:
+    description: "stop_reason: critical_rework_blocks_continuation but rework_items: [] - contradictory"
+    severity: HIGH
+    status: RESOLVED
+    resolution: "continuation-signal.json updated — stop_reason is now null (resolved in sprint MCP-W7-002)"
+  I-002:
+    description: "session_id: null in continuation signal - CCI-MVP isolation not in effect"
+    severity: MEDIUM
+    status: OPEN
+    resolution: "session_id still null — autonomous_cycle.py should stamp session_id on write"
+  I-003:
+    description: "GAP-MA-001 OPEN: site-packages sync has no automated enforcement"
+    severity: MEDIUM
+    status: OPEN
+    resolution: "Pending investigation in TC-VWM-023"
+  I-004:
+    description: "GAP-MA-006 DOCUMENTED in MEMORY.md but NOT in formal gap-ledger.yaml"
+    severity: MEDIUM
+    status: OPEN
+    resolution: "To be added in TC-VWM-021"
+  I-005:
+    description: "MEMORY.md claims 165 governance validators; runner expected_count may have drifted"
+    severity: HIGH
+    status: RESOLVED
+    resolution: "Current expected_count=210, confirmed matching actual count via test_expected_count_matches_actual (2026-07-13)"
+  I-006:
+    description: "Vast-weaving-lampson plan lock is TERMINAL_CLOSED - verify check_continuation handles new session correctly"
+    severity: MEDIUM
+    status: RESOLVED
+    resolution: "Plan lock now points to vast-wibbling-moon.md with status=IN_PROGRESS"
+  I-007:
+    description: "reports/machinery-assurance/gap-ledger.yaml needs system-wide update"
+    severity: LOW
+    status: OPEN
+    resolution: "To be rebuilt in TC-VWM-021 with current scope"
 
-  evidence_roots:
-    - ".local/evidences/"
-    - "reports/supervisor/evidence-review.json"
-    - "reports/machinery-assurance/"
-
-  explicit_non_goals:
-    - ".NET commercial track"
-    - "Gate 11 execution approval"
-    - "PyPI/NuGet publication"
-    - "Sorted-sprouting-flame TC-PSG-003 through TC-PSG-007 (deferred to next session)"
-
-  key_findings_at_mission_start:
-    - "1121+ test failures in untracked R1233-R1291 tests (missing model properties)"
-    - "XCF: ALL 876 tests PASS (complete implementation)"
-    - "NDJSON R1241, TOML R1242: PASS (properties implemented)"
-    - "CSV, TSV, ABW, ZST, ODS, ODT, DIF, GNUMERIC, SYLK, FODG, FODP, FODS, FODT, PBM, PGM, PPM, QOI: FAIL (missing properties)"
-    - "Concurrency machinery: COMPLETE (purrfect-weaving-squid, 42/42 PASS)"
-    - "status_model.py: EXISTS untracked (TC-PSG-002 deliverable)"
-    - "sorted-sprouting-flame: IN_PROGRESS, TC-PSG-001 through TC-PSG-005 PENDING"
-    - "SESSION_MISMATCH from check_continuation.py (expected — new session)"
+machinery_inventory:
+  tools_supervisor_py_files: 305
+  tests_py_files: 3493
+  governance_validators_expected_count: 210
+  governance_validators_count_status: CONFIRMED_MATCHING

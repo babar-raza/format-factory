@@ -1,0 +1,52 @@
+{
+  "task_id": "ET-W3-002",
+  "wave": "W3",
+  "source_plan": "WS-09-FODS-GOVERNANCE",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "taskcards_closed": [
+    "TC-FGSQ-006",
+    "TC-FGSQ-009"
+  ],
+  "taskcards_deferred": [
+    "TC-FGSQ-001",
+    "TC-FGSQ-002",
+    "TC-FGSQ-007",
+    "TC-FGSQ-008",
+    "TC-FGSQ-010",
+    "TC-FGSQ-011",
+    "TC-FGSQ-015"
+  ],
+  "deferral_reasons": {
+    "TC-FGSQ-001": "Method ledger analysis — FodsDocumentExtendedApis.cs was already decomposed into 7 partial classes (commit be99a03b). Method inventory requires adapting plan to new file topology. Deferred to Wave 4.",
+    "TC-FGSQ-002": "Gap ledger reconciliation — depends on TC-FGSQ-001. Deferred to Wave 4.",
+    "TC-FGSQ-007": "Oracle D1 data_source provenance declaration — requires changes to execute_oracle.py and all oracle package YAML files. Deferred to ET-W3-005 oracle hardening task.",
+    "TC-FGSQ-008": "Sprint validator roundtrip proof for PERSISTENT_PROPERTY — requires changes to sprint_executor_validate.py evidence schema. Major change, deferred to Wave 4.",
+    "TC-FGSQ-010": "Task generation spec grounding requirement — requires changes to autonomous_task_generator.py. Deferred to Wave 4.",
+    "TC-FGSQ-011": "Gap ledger drift per autonomous cycle — requires changes to autonomous_cycle.py. Deferred to Wave 4.",
+    "TC-FGSQ-015": "GetSheetRightToLeft NSE conversion — 5 currently-passing tests depend on return-value behavior (FodsR481GetSheetRightToLeftDedicatedTests.cs). Deferred to Wave 4."
+  },
+  "files_changed": [
+    "registry/dotnet-semantic-stub-whitelist.yaml",
+    "tools/supervisor/governance_validators_dotnet_semantic.py",
+    "tools/supervisor/governance_validator_runner.py",
+    "tests/supervisor/test_governance_validators_dotnet_semantic.py"
+  ],
+  "test_results": {
+    "suite": "tests/supervisor/test_governance_validators_dotnet_semantic.py",
+    "passed": 61,
+    "failed": 0
+  },
+  "governance_changes": {
+    "whitelist_schema": "Upgraded from 1.1 (bare strings) to 2.0 (structured records). All 26 entries now have: method, approved_by, approved_date, review_due (2027-01-11), removal_condition. _load_whitelist() backward-compatible with schema 1.x.",
+    "V168": "TC-FGSQ-009: Now two-tier: FAIL+blocks_sprint for COLLECTION_STUB in changed_files; WARN-only for pre-existing stubs not in changed_files. Added @validator decorator.",
+    "V169": "TC-FGSQ-006: New validate_whitelist_expiry() validator. FAIL+blocks for expired entries (review_due in past); WARN within 30 days; WARN for missing governance fields (schema 1.x). Registered in runner. expected_count: 168→169.",
+    "runner_expected_count": 169
+  },
+  "new_validator": {
+    "id": "V169",
+    "rule_id": "V_VALIDATE_WHITELIST_EXPIRY",
+    "function": "validate_whitelist_expiry",
+    "blocks_sprint_when": "expired whitelist entry (review_due in past)",
+    "warn_when": "expiring within 30 days OR missing governance fields"
+  }
+}

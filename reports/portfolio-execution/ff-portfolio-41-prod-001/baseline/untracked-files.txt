@@ -1,0 +1,460 @@
+.claude/commands/build-supervisor-packet.md
+.claude/commands/calculate-oracle-coverage.md
+.claude/commands/detect-stale-oracles.md
+.claude/commands/evaluate-roundtrip-oracle.md
+.claude/commands/generate-oracle-verdict-report.md
+.claude/commands/onboard-future-format-oracle.md
+.claude/commands/reset-track-signal.md
+.claude/commands/run-governance-validators.md
+.claude/commands/run-lifecycle-audit.md
+.claude/commands/validate-evidence-declaration.md
+.claude/commands/validate-missing-skill-workflow.md
+.governance/backfill/backfill-rollback-contract.yaml
+.governance/backfill/behavior-preservation.schema.yaml
+.governance/backfill/migration-map.schema.yaml
+.governance/lanes/lane-contracts.yaml
+.portfolio/goofy-orbiting-scroll/batches/batch-A.json
+.portfolio/goofy-orbiting-scroll/batches/batch-B.json
+.portfolio/goofy-orbiting-scroll/batches/batch-C.json
+.portfolio/goofy-orbiting-scroll/batches/batch-D.json
+.portfolio/goofy-orbiting-scroll/build_final.py
+.portfolio/goofy-orbiting-scroll/build_inventory.py
+.portfolio/goofy-orbiting-scroll/build_registries.py
+.portfolio/goofy-orbiting-scroll/checklists/atomic-chasing-meteor-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/bubbly-dancing-pony-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/cheeky-crafting-manatee-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/clever-tickling-island-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/effervescent-sprouting-marshmallow-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/elegant-napping-minsky-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/fizzy-imagining-hinton-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/fuzzy-conjuring-lobster-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/glimmering-hopping-kazoo-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/glittery-splashing-manatee-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/glowing-swinging-grove-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/golden-foraging-boot-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/humble-hatching-lark-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/imperative-coalescing-bengio-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/imperative-floating-book-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/iterative-mixing-shannon-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/kind-crunching-coral-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/lively-leaping-elephant-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/memoized-frolicking-donut-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/modular-noodling-galaxy-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/mutable-exploring-hellman-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/optimized-meandering-giraffe-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/peppy-crafting-lark-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/playful-discovering-thunder-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/polymorphic-foraging-feather-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/precious-wandering-lighthouse-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/serialized-petting-crab-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/shimmering-rolling-meerkat-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/shiny-percolating-sky-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/silly-popping-tower-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/spicy-sparking-gosling-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/splendid-prancing-wind-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/splendid-roaming-beaver-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/splendid-squishing-orbit-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/stateful-booping-mountain-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/twinkly-nibbling-platypus-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/vast-splashing-allen-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/vast-wibbling-moon-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/velvet-swinging-wreath-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/warm-enchanting-grove-checklist.json
+.portfolio/goofy-orbiting-scroll/checklists/wild-napping-cherny-checklist.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-001-CLM-ET-W0-001-3A68AA5F.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-002-CLM-ET-W0-002-E149063D.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-003-CLM-ET-W0-003-69F60006.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-004-CLM-ET-W0-004-20C41BEB.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-005-CLM-ET-W0-005-A3DFCB3F.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-006-CLM-ET-W0-006-231F092C.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-007-CLM-ET-W0-007-8B97EE17.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W0-008-CLM-ET-W0-008-91FA0A33.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W1-001-CLM-ET-W1-001-95C1A1F6.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W1-002-CLM-ET-W1-002-37AB943E.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W1-003-CLM-ET-W1-003-1175096D.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W1-004-CLM-ET-W1-004-9546507C.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W2-002-CLM-ET-W2-002-785047B6.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W2-003-CLM-ET-W2-003-95833A36.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W2-004-CLM-ET-W2-004-67CC3313.json
+.portfolio/goofy-orbiting-scroll/claims/ET-W3-001-CLM-ET-W3-001-0F098FEA.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-001.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-002.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-003.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-004.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-005.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-006.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-007.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W0-008.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W1-001.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W1-002.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W1-003.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W1-004.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W2-001.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W2-002.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W2-003.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W2-004.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W3-001.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W3-002.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W3-003.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W3-004.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W3-005.json
+.portfolio/goofy-orbiting-scroll/closures/tasks/ET-W4-001.json
+.portfolio/goofy-orbiting-scroll/controller/README.md
+.portfolio/goofy-orbiting-scroll/controller/portfolio_controller.py
+.portfolio/goofy-orbiting-scroll/dependency-graph.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-001/validator-count-ground-truth.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-002/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-003/validator-audit.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-004/oracle-state.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-005/agentic-parity-state.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-006/espanso-state.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-007/polymorphic-foraging-feather-state.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-008/pipeline-divergence-audit.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W1-001/governance-fix.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W1-002/lifecycle-loop-fix.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W1-003/fods-governance-batch-a.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W1-004/pipeline-repair.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W2-001/governance-validator-fixes.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W2-002/fods-batch-b-results.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W2-003/control-index-results.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W2-004/dual-lane-dom-gap-results.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W3-001/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W3-002/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W3-003/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W3-004/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W3-005/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-001/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-002/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-003/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-004/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-006/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-007/evidence.json
+.portfolio/goofy-orbiting-scroll/evidence/raw/ET-W4-008/gfb-batch-a-results.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-005.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-006.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-007.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W0-008.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W1-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W1-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W1-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W1-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W2-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W2-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W2-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W2-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W3-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W3-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W3-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W3-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W3-005.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-005.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-006.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-007.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-008.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W4-009.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-001.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-002.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-003.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-004.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-005.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-006.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-007.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-008.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-009.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-010.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-011.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-012.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-013.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-014.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-015.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-016.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-017.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-018.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-019.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-020.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-021.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-022.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-023.json
+.portfolio/goofy-orbiting-scroll/executable-tasks/ET-W5-024.json
+.portfolio/goofy-orbiting-scroll/execution-handoff.json
+.portfolio/goofy-orbiting-scroll/execution-handoff.md
+.portfolio/goofy-orbiting-scroll/governance-binding.json
+.portfolio/goofy-orbiting-scroll/ingest_batches.py
+.portfolio/goofy-orbiting-scroll/ingestion-verification.json
+.portfolio/goofy-orbiting-scroll/journal/execution-journal.jsonl
+.portfolio/goofy-orbiting-scroll/lane-registry.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s001.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s002.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s003.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s004.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s005.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s006.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s007.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s008.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s009.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s010.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s011.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s012.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s013.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s014.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s015.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s016.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s017.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s018.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s019.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s020.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s021.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s022.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s023.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s024.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s025.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s026.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s027.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s028.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s029.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s030.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s031.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s032.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s033.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s034.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s035.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s036.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s037.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s038.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s039.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s040.json
+.portfolio/goofy-orbiting-scroll/plan-registry/s041.json
+.portfolio/goofy-orbiting-scroll/portfolio-manifest.json
+.portfolio/goofy-orbiting-scroll/provenance-map.json
+.portfolio/goofy-orbiting-scroll/reconciliation-report.json
+.portfolio/goofy-orbiting-scroll/relationship-records.json
+.portfolio/goofy-orbiting-scroll/repairs/build_workstreams_and_tasks.py
+.portfolio/goofy-orbiting-scroll/repairs/generate_task_packets.py
+.portfolio/goofy-orbiting-scroll/repairs/pre-execution-audit.json
+.portfolio/goofy-orbiting-scroll/repairs/pre-execution-file-hashes.json
+.portfolio/goofy-orbiting-scroll/repairs/repair-plan.json
+.portfolio/goofy-orbiting-scroll/repairs/run_pre_execution_audit.py
+.portfolio/goofy-orbiting-scroll/reports/repository-state-before-execution.json
+.portfolio/goofy-orbiting-scroll/repository-baseline.json
+.portfolio/goofy-orbiting-scroll/requirement-registry.json
+.portfolio/goofy-orbiting-scroll/reviews/handoff-review.json
+.portfolio/goofy-orbiting-scroll/schemas/executable-task.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/journal-event.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/plan-closure.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/source-taskcard.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/task-attempt.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/task-claim.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/task-packet.schema.json
+.portfolio/goofy-orbiting-scroll/schemas/workstream.schema.json
+.portfolio/goofy-orbiting-scroll/snapshots/snapshot-001.json
+.portfolio/goofy-orbiting-scroll/snapshots/snapshot-final.json
+.portfolio/goofy-orbiting-scroll/source-inventory.json
+.portfolio/goofy-orbiting-scroll/source-taskcards/all-source-taskcards.json
+.portfolio/goofy-orbiting-scroll/source-taskcards/disposition-map.json
+.portfolio/goofy-orbiting-scroll/source-taskcards/extraction-summary.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-005.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-006.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-007.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W0-008.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W1-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W1-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W1-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W1-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W2-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W2-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W2-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W2-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W3-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W3-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W3-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W3-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W3-005.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-005.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-006.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-007.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-008.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W4-009.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-001.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-002.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-003.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-004.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-005.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-006.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-007.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-008.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-009.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-010.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-011.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-012.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-013.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-014.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-015.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-016.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-017.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-018.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-019.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-020.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-021.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-022.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-023.json
+.portfolio/goofy-orbiting-scroll/task-packets/ET-W5-024.json
+.portfolio/goofy-orbiting-scroll/task-registry.json
+.portfolio/goofy-orbiting-scroll/wave-registry.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-01-SUPERVISOR-MACHINERY.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-02-GOVERNANCE-HEALING.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-03-ORACLE-ASSESSMENT.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-04-AGENTIC-PARITY.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-05-PIPELINE-RECONCILIATION.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-06-CODE-QUALITY-AUDIT.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-07-MINSKY-ELEGANCE.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-08-PRODUCT-LIBRARY-HEALING.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-09-FODS-GOVERNANCE.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-10-CONTROL-INDEX.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-11-GOVERNANCE-SUITE-BATCH2.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-12-GLOWING-GROVE.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-13-VAST-SPLASHING-ALLEN.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-14-KIND-CRUNCHING-CORAL.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-15-HUMBLE-HATCHING.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-16-ATOMIC-METEOR.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-17-SPICY-GOSLING.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-18-PLAYFUL-THUNDER.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-19-DUAL-LANE-DOM.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-20-CERTIFICATION-LAYER.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-21-ESPANSO-INTEGRATION.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-22-SILLY-TOWER.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-23-PEPPY-LARK.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-24-FIZZY-HINTON.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-25-SHIMMERING-MEERKAT.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-26-ORACLE-HARDENING-2.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-27-IMPERATIVE-BOOK.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-28-OPTIMIZED-GIRAFFE.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-29-SPLENDID-BEAVER.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-30-WILD-CHERNY.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-31-CHEEKY-MANATEE.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-32-GOLDEN-BOOT.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-33-EFFERVESCENT-MARSHMALLOW.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-34-FUZZY-LOBSTER.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-35-LIVELY-ELEPHANT.json
+.portfolio/goofy-orbiting-scroll/workstreams/WS-36-POLYMORPHIC-FEATHER.json
+.runner_system_id
+.supervisor/schemas/change-decision.schema.json
+.supervisor/schemas/change-impact.schema.json
+.supervisor/schemas/change-proposal.schema.json
+.supervisor/schemas/governance-binding.schema.json
+.supervisor/schemas/governance-gap.schema.json
+.supervisor/schemas/governed-artifact.schema.json
+.supervisor/schemas/promotion-record.schema.json
+.supervisor/schemas/release-candidate.schema.json
+.supervisor/schemas/taskcard-execution-contract.schema.json
+goofy-orbiting-scroll-portfolio.zip
+oracle/reports/oracle-mission-baseline.yaml
+plans/.claude/goofy-orbiting-scroll.md
+plans/strategic/41 plans/PRODUCTION-PORTFOLIO-MASTER-PLAN.md
+plans/strategic/41 plans/README.md
+plans/strategic/41 plans/source-plans/atomic-chasing-meteor.md
+plans/strategic/41 plans/source-plans/bubbly-dancing-pony.md
+plans/strategic/41 plans/source-plans/cheeky-crafting-manatee.md
+plans/strategic/41 plans/source-plans/clever-tickling-island.md
+plans/strategic/41 plans/source-plans/effervescent-sprouting-marshmallow.md
+plans/strategic/41 plans/source-plans/elegant-napping-minsky.md
+plans/strategic/41 plans/source-plans/fizzy-imagining-hinton.md
+plans/strategic/41 plans/source-plans/fuzzy-conjuring-lobster.md
+plans/strategic/41 plans/source-plans/glimmering-hopping-kazoo.md
+plans/strategic/41 plans/source-plans/glittery-splashing-manatee.md
+plans/strategic/41 plans/source-plans/glowing-swinging-grove.md
+plans/strategic/41 plans/source-plans/golden-foraging-boot.md
+plans/strategic/41 plans/source-plans/humble-hatching-lark.md
+plans/strategic/41 plans/source-plans/imperative-coalescing-bengio.md
+plans/strategic/41 plans/source-plans/imperative-floating-book.md
+plans/strategic/41 plans/source-plans/iterative-mixing-shannon.md
+plans/strategic/41 plans/source-plans/kind-crunching-coral.md
+plans/strategic/41 plans/source-plans/lively-leaping-elephant.md
+plans/strategic/41 plans/source-plans/memoized-frolicking-donut.md
+plans/strategic/41 plans/source-plans/modular-noodling-galaxy.md
+plans/strategic/41 plans/source-plans/mutable-exploring-hellman.md
+plans/strategic/41 plans/source-plans/optimized-meandering-giraffe.md
+plans/strategic/41 plans/source-plans/peppy-crafting-lark.md
+plans/strategic/41 plans/source-plans/playful-discovering-thunder.md
+plans/strategic/41 plans/source-plans/polymorphic-foraging-feather.md
+plans/strategic/41 plans/source-plans/precious-wandering-lighthouse.md
+plans/strategic/41 plans/source-plans/serialized-petting-crab.md
+plans/strategic/41 plans/source-plans/shimmering-rolling-meerkat.md
+plans/strategic/41 plans/source-plans/shiny-percolating-sky.md
+plans/strategic/41 plans/source-plans/silly-popping-tower.md
+plans/strategic/41 plans/source-plans/spicy-sparking-gosling.md
+plans/strategic/41 plans/source-plans/splendid-prancing-wind.md
+plans/strategic/41 plans/source-plans/splendid-roaming-beaver.md
+plans/strategic/41 plans/source-plans/splendid-squishing-orbit.md
+plans/strategic/41 plans/source-plans/stateful-booping-mountain.md
+plans/strategic/41 plans/source-plans/twinkly-nibbling-platypus.md
+plans/strategic/41 plans/source-plans/vast-splashing-allen.md
+plans/strategic/41 plans/source-plans/vast-wibbling-moon.md
+plans/strategic/41 plans/source-plans/velvet-swinging-wreath.md
+plans/strategic/41 plans/source-plans/warm-enchanting-grove.md
+plans/strategic/41 plans/source-plans/wild-napping-cherny.md
+plans/strategic/41 plans/support/global-execution-sequence.json
+plans/strategic/41 plans/support/path-collision-register.csv
+plans/strategic/41 plans/support/path-collision-register.json
+plans/strategic/41 plans/support/source-plan-manifest.csv
+plans/strategic/41 plans/support/source-plan-manifest.json
+plans/strategic/41 plans/support/source-taskcard-register.csv
+plans/strategic/41 plans/support/source-taskcard-register.json
+plans/strategic/41 plans/support/taskcard-id-collisions.json
+plans/strategic/41 plans/support/validator-id-collisions.json
+registry/gate-states.yaml
+registry/governance-binding.yaml
+reports/canary/canary-architecture-decision.yaml
+reports/canary/canary-opportunity-map.yaml
+reports/canary/canary-risk-register.yaml
+reports/canary/state-system-inventory.yaml
+reports/capability-layer/gap-sal-traceability-20260711.json
+reports/capability-layer/gap-sal-traceability-20260712.json
+reports/dual-lane-verification/ground-truth-audit.yaml
+reports/portfolio-execution/ff-portfolio-41-prod-001/baseline/git-diff-cached.patch
+reports/portfolio-execution/ff-portfolio-41-prod-001/baseline/git-diff.patch
+reports/portfolio-execution/ff-portfolio-41-prod-001/baseline/git-status.txt
+reports/portfolio-execution/ff-portfolio-41-prod-001/baseline/untracked-files.txt
+reports/product-quality/fods-govheal/fods-missing-methods-origin.yaml
+reports/qname-coverage-20260711.json
+reports/qname-coverage-20260712.json
+reports/sal-qname-gap-20260711.json
+reports/sal-qname-gap-20260712.json
+reports/skills-r90/skill-transcripts/verify-dogfood-path-dif-csv-20260711.json
+tests/capability_layer/test_state_derivation.py
+tests/machinery/__init__.py
+tests/machinery/test_backfill_dry_run.py
+tests/machinery/test_gate11_stop.py
+tests/machinery/test_lane_isolation.py
+tests/machinery/test_qname_enforcement.py
+tests/machinery/test_sal_authority.py
+tests/supervisor/test_dom_maturity_gap_generator.py
+tests/supervisor/test_gate11_state_contract.py
+tests/supervisor/test_lane_contracts.py
+tests/supervisor/test_plan_importer.py
+tools/backfill/dry_run_migration.py
+tools/canary/__init__.py
+tools/governance/validate_plan_skill_routes.py
+tools/supervisor/check_new_root_dirs.py
+tools/supervisor/control_index/migrations/v3_canary_shadow_log.sql
+tools/supervisor/dom_maturity_gap_generator.py
+tools/supervisor/governance_validators_sgov.py
+tools/supervisor/plan_importer.py
+tools/supervisor/skill_receipt_writer.py
+tools/supervisor/validate_governance_binding.py
+tools/supervisor/validate_governance_schemas.py

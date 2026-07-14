@@ -49,7 +49,7 @@ public class FodtR314SetParagraphTextDedicatedTests
         if (doc.ParagraphCount == 0)
             Assert.ThrowsAny<Exception>(() => doc.SetParagraphText(0, "text"));
         else
-            Assert.True(true); // document has default paragraphs
+            Assert.True(doc.ParagraphCount > 0); // document has default paragraphs
     }
 
     // -------------------------------------------------------------------------

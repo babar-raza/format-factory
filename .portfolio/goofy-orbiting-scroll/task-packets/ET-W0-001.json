@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-001",
+  "workstream_id": "WS-01-SUPERVISOR-MACHINERY",
+  "objective": "Verify actual validator count and update MEMORY.md to reflect ground truth (167 per runner)",
+  "source_plan_ids": [
+    "s009",
+    "s012"
+  ],
+  "source_task_ids": [
+    "TC-SBM-001"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "PARTIAL",
+  "acceptance_criteria": [
+    "expected_count in governance_validator_runner.py matches actual validator count",
+    "MEMORY.md correctly states validator count as 167 (not 165)",
+    "No test regressions from MEMORY.md update"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "docs/MEMORY.md",
+    "tools/supervisor/governance_validator_runner.py"
+  ],
+  "allowed_mutation_scope": [
+    "docs/MEMORY.md",
+    "tools/supervisor/governance_validator_runner.py"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "docs/MEMORY.md",
+    "tools/supervisor/governance_validator_runner.py"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Run: python -c \"import re; f=open('tools/supervisor/governance_validator_runner.py').read(); print(re.findall(r'expected_count.*?\\d+', f))\"",
+    "Count actual validate_ functions across all governance_validators*.py files",
+    "Compare against expected_count=167 in runner",
+    "Update MEMORY.md line about validator count to reflect truth (167)",
+    "Record the discrepancy resolution in evidence/raw/ET-W0-001/"
+  ],
+  "focused_validation": [
+    "grep expected_count tools/supervisor/governance_validator_runner.py",
+    "python -c \"from pathlib import Path; import re; total=set(); [total.update(re.findall(r'def (validate_\\w+)', p.read_text(encoding='utf-8', errors='replace'))) for p in Path('tools/supervisor').glob('governance_validators*.py')]; print(len(total))\""
+  ],
+  "lane_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "8fbdd02ff64f9234fff7ee7b945b42a10d2d19fc85f64e119646e524b56bfaa0"
+}

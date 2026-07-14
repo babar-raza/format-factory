@@ -1,0 +1,59 @@
+---
+# Execution Handoff — Spec-to-Code Forensic Audit
+# TC-FF-AUDIT-092 (cheeky-crafting-manatee — MCP-W3-002)
+# Generated: 2026-07-12
+
+handoff:
+  date: "2026-07-12"
+  mission_id: FF-FORENSIC-AUDIT-001
+  status: PARTIAL_AUDIT_COMPLETE_MACHINERY_REPAIR_PENDING
+
+completed_this_session:
+  - forensic-baseline.yaml
+  - format-inventory.yaml (all 24 governed formats)
+  - format-pipeline-metrics.csv (20 Python formats)
+  - root-cause-register.yaml (5 root causes documented)
+  - execution-handoff.yaml (this file)
+
+artifacts_deferred_to_later_waves:
+  - specification-measurement-register.yaml → W5 (requires SAL seeding per RC-001)
+  - raw-spec-unit-register.yaml → W5 (requires SAL seeding)
+  - sal-authority-audit.yaml → W5 (requires SAL seeding)
+  - qname-traceability-register.yaml → W3-MCP-W3-003 (QName audit)
+  - capability-register.yaml → W3-MCP-W4 (governance burn-down)
+  - feature-register.yaml → W5 (requires feature compiler fix per RC-004)
+  - code-traceability-register.yaml → W5
+  - feature-proof-register.yaml → W5 (oracle wiring per RC-005)
+  - spec-to-code-traceability-graph.yaml → W5
+  - pipeline-anomaly-register.yaml → W5
+  - forensic-gap-register.yaml → W5
+  - fix-option-register.yaml → DEFERRED (root-cause-register.yaml covers fix options)
+  - chosen-repair-plan.md → W5
+  - taskcard-register.yaml → W5
+  - execution-batch-register.yaml → W5
+  - portfolio-pipeline-metrics.md → W5
+  - pilots/fods-pilot.yaml → W5
+  - pilots/csv-pilot.yaml → W5
+  - pilots/qoi-pilot.yaml → W5
+  - pipeline-idempotency-verdict.md → W5
+  - final-report.md → W8 (final portfolio closure)
+
+ready_tasks_for_next_wave:
+  - task: RC-004_fix_capability_feature_compiler
+    target_wave: W5_MCP_W5_001
+    description: "Fix tools/supervisor/capability_feature_compiler.py to produce non-zero work items"
+    acceptance: "next-work-items.json has ≥1 item per format with open gaps"
+
+  - task: RC-001_sal_seeding
+    target_wave: W5
+    description: "Manual SAL seeding for 14 non-ODF formats"
+    acceptance: "All 20 formats have non-zero spec_to_fact_ratio"
+
+  - task: RC-005_oracle_wiring
+    target_wave: W5_MCP_W5_002
+    description: "Wire oracle results into feature-proof-register.yaml"
+    acceptance: "oracle verdict propagates to capability proof level"
+
+constraints:
+  src_changes_blocked_until: "Lane 1-6 complete per spec-to-feature-radical-correction-plan.md"
+  product_healing_requires: "governed skills only (EP-3)"

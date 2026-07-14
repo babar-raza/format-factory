@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-024",
+  "workstream_id": "WS-21-ESPANSO-INTEGRATION",
+  "objective": "Execute Espanso integration TCs from ET-W0-006 assessment",
+  "source_plan_ids": [
+    "s026"
+  ],
+  "source_task_ids": [
+    "TC-ESP-002",
+    "TC-ESP-003",
+    "TC-ESP-004",
+    "TC-ESP-005",
+    "TC-ESP-006",
+    "TC-ESP-007",
+    "TC-ESP-008",
+    "TC-ESP-009",
+    "TC-ESP-010",
+    "TC-ESP-011",
+    "TC-ESP-012",
+    "TC-ESP-013",
+    "TC-ESP-014",
+    "TC-ESP-015",
+    "TC-ESP-016",
+    "TC-ESP-017",
+    "TC-ESP-018",
+    "TC-ESP-019",
+    "TC-ESP-020",
+    "TC-ESP-021",
+    "TC-ESP-022",
+    "TC-ESP-023",
+    "TC-ESP-024",
+    "TC-ESP-025",
+    "TC-ESP-026",
+    "TC-ESP-027",
+    "TC-ESP-028"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 28 TCs in s026 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-006"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L05",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Load ET-W0-006 assessment, execute outstanding Espanso TCs",
+    "Write evidence/raw/ET-W5-024/espanso-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "30c5712b1d42947a52b72601e7bfdac1947eddedb2c004d46e385e5c49ad2252"
+}

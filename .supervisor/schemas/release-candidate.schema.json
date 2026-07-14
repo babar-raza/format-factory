@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "release-candidate.schema.json",
+  "title": "ReleaseCandidate",
+  "description": "A release candidate for a format product or tooling component.",
+  "type": "object",
+  "required": ["rc_id", "format_id", "version", "status", "created_at", "artifacts"],
+  "additionalProperties": false,
+  "properties": {
+    "rc_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. RC-CSV-001)."
+    },
+    "format_id": {
+      "type": "string",
+      "description": "Format identifier (e.g. csv, fods)."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the release candidate (e.g. 1.2.0-rc1)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "BUILDING",
+        "READY_FOR_REVIEW",
+        "UNDER_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "PUBLISHED",
+        "WITHDRAWN"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifacts": {
+      "type": "array",
+      "description": "List of artifact_ids included in this release candidate.",
+      "items": { "type": "string" }
+    },
+    "gate_results": {
+      "type": "object",
+      "description": "Per-gate pass/fail results (G1-G5).",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "additionalProperties": true,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "NOT_IMPLEMENTED", "SKIPPED"]
+          }
+        }
+      }
+    },
+    "approved_by": {
+      "type": ["string", "null"]
+    },
+    "approved_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

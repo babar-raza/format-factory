@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "governance-binding.schema.json",
+  "title": "GovernanceBinding",
+  "description": "Records the governance files read and hashes at portfolio/plan initialization time.",
+  "type": "object",
+  "required": ["binding_id", "bound_at", "governance_files", "canonical_plan_location", "state_store"],
+  "additionalProperties": false,
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "description": "Stable SHA-256-derived identifier for this governance binding."
+    },
+    "bound_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when the binding was created."
+    },
+    "governance_files": {
+      "type": "array",
+      "description": "List of governance files read and their SHA-256 content hashes.",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "read_at"],
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "read_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "canonical_plan_location": {
+      "type": "string",
+      "description": "Repo-relative path where plans must reside (e.g. plans/.claude/)."
+    },
+    "plan_schema": {
+      "type": ["string", "null"],
+      "description": "Repo-relative path to the plan JSON schema, if it exists."
+    },
+    "state_store": {
+      "type": "string",
+      "description": "Repo-relative path to the supervisor state store (e.g. .local/supervisor/)."
+    },
+    "execution_controller": {
+      "type": ["string", "null"],
+      "description": "Repo-relative path to the autonomous execution controller script."
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

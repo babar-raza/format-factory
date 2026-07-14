@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-005",
+  "workstream_id": "WS-04-AGENTIC-PARITY",
+  "objective": "Assess agentic system parity state from glimmering-hopping-kazoo plan",
+  "source_plan_ids": [
+    "s002"
+  ],
+  "source_task_ids": [
+    "TC-AGT-001"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "Assessment document written",
+    "Every TC in s002 has a repository_assessment classification"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [],
+  "allowed_mutation_scope": [],
+  "forbidden_paths": [],
+  "required_locks": [],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read glimmering-hopping-kazoo.md (s002) plan completely",
+    "Identify which agentic parity TCs are already done vs outstanding",
+    "Map each TC to current repository state",
+    "Write evidence/raw/ET-W0-005/agentic-parity-assessment.json",
+    "Create follow-on executable tasks for any remaining work"
+  ],
+  "focused_validation": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-005/agentic-parity-assessment.json"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "fac29be97e527f9e151b47e49c35bc0c9d1d8409922d5040cc550a085f83d00e"
+}

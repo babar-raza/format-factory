@@ -1,0 +1,223 @@
+mission_id: FF-CTRL-OCRD-001
+generated_at: "2026-07-12T00:00:00+00:00"
+taskcard: TC-OCRD-C2-01
+
+# Gate: valid_existing_features_lost == 0, active_consumers_broken == 0
+gate_status:
+  valid_existing_features_lost: 0
+  active_consumers_broken: 0
+  verdict: PASS
+
+feature_parity_register:
+
+  - feature_id: cif-001
+    feature_name: FTS5 Full-Text Search
+    control_layer_key: control_index_db
+    disposition: REUSE_AS_IS
+    rationale: >
+      FTS5 search is stable and proven. No enhancement needed in Phase C.
+      Control layer component will extend the same FTS5 virtual tables.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: cif-002
+    feature_name: Gap Attempts Exhausted-Gap Filter
+    control_layer_key: control_index_db
+    disposition: REUSE_WITH_VALIDATION
+    rationale: >
+      get_exhausted_gaps() and the gap_attempts table are proven (21 tests).
+      Phase C extends the control layer with additional ingestors. The filter
+      logic needs no change but must be validated against the new control_layers
+      schema to ensure no FK conflicts.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: cif-003
+    feature_name: Staleness Detection
+    control_layer_key: control_index_db
+    disposition: REUSE_WITH_VALIDATION
+    rationale: >
+      staleness.py check_staleness() works. Phase C adds new ingestors with
+      source YAMLs — staleness detection should include those new sources.
+      extend source_paths tracking but no breaking change.
+    consumer_impact: minor_extension
+    migration_required: false
+
+  - feature_id: cif-004
+    feature_name: SAVEPOINT Per-Ingestor Transaction Isolation
+    control_layer_key: control_index_db
+    disposition: REUSE_AS_IS
+    rationale: >
+      SAVEPOINT isolation is already applied to all ingestors in sync.py.
+      New Phase C ingestors will inherit the same pattern automatically.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: cif-005
+    feature_name: Schema Migration Framework
+    control_layer_key: control_index_db
+    disposition: REUSE_WITH_VALIDATION
+    rationale: >
+      Migration framework (TC-OCRD-A4) is reused for Phase C schema extension
+      (v3→v4). The migration function _migrate_v3_add_control_tables will be
+      appended to MIGRATION_FUNCS. No existing migration is changed.
+    consumer_impact: none
+    migration_required: true
+    migration_type: ADDITIVE_SCHEMA_EXTENSION
+
+  - feature_id: cif-006
+    feature_name: Format Gap Dashboard Query
+    control_layer_key: control_index_db
+    disposition: REUSE_AS_IS
+    rationale: >
+      cmd_format() is stable. Phase C adds new query subcommands (control-layers,
+      trust-status, etc.) but does not change existing ones.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: csf-001
+    feature_name: CONTINUE/STOP Verdict
+    control_layer_key: continuation_signal
+    disposition: REUSE_AS_IS
+    rationale: >
+      Core verdict mechanism is stable and not modified by Phase C.
+      Phase C only adds new consumers reading the signal.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: csf-002
+    feature_name: Session-ID Cross-Chat Isolation
+    control_layer_key: continuation_signal
+    disposition: REUSE_AS_IS
+    rationale: >
+      CCI-MVP is complete and proven. No changes needed in Phase C.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: csf-003
+    feature_name: Contradiction Warnings Emission
+    control_layer_key: continuation_signal
+    disposition: REUSE_AS_IS
+    rationale: >
+      contradiction_warnings field now populated via TC-OCRD-B1. Phase C
+      adds contradiction_ingestor.py to persist them in the DB but does not
+      modify the existing emission logic.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: csf-004
+    feature_name: Control Index Warnings Emission
+    control_layer_key: continuation_signal
+    disposition: REUSE_AS_IS
+    rationale: >
+      control_index_warnings emission is stable (TC-OCRD-A3). Phase C extends
+      warning content with trust_registry entries but emission logic unchanged.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: plf-001
+    feature_name: Plan Lock Write / Read
+    control_layer_key: plan_lock_system
+    disposition: REUSE_AS_IS
+    rationale: >
+      Plan lock mechanism is stable and not changed in Phase C.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: plf-002
+    feature_name: TERMINAL_CLOSED Post-Plan Stop
+    control_layer_key: plan_lock_system
+    disposition: REUSE_AS_IS
+    rationale: Stable. No Phase C changes.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: plf-003
+    feature_name: Audit-Gate Closure
+    control_layer_key: plan_lock_system
+    disposition: REUSE_AS_IS
+    rationale: Stable. No Phase C changes.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: glf-001
+    feature_name: Gap Selection with Priority Ordering
+    control_layer_key: gap_ledger
+    disposition: REUSE_AS_IS
+    rationale: >
+      Gap selection is stable. Phase C does not modify selection logic.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: glf-002
+    feature_name: Exhausted Gap Suppression
+    control_layer_key: gap_ledger
+    disposition: REUSE_AS_IS
+    rationale: >
+      Exhausted gap filter (TC-OCRD-B2) is proven and deployed. No Phase C changes.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: gvf-001
+    feature_name: 170 Named Validators
+    control_layer_key: governance_validators
+    disposition: REUSE_WITH_VALIDATION
+    rationale: >
+      Phase C (TC-OCRD-C6) adds 6 new governance validators for the control layer.
+      expected_count must be updated to 176. Existing 170 validators unchanged.
+    consumer_impact: minor_extension
+    migration_required: false
+    extension_note: expected_count 170 → 176 after TC-OCRD-C6
+
+  - feature_id: gvf-002
+    feature_name: GOV_BLOCK Structural Failure Escalation
+    control_layer_key: governance_validators
+    disposition: REUSE_AS_IS
+    rationale: >
+      GOV_BLOCK escalation is stable. Phase C validators will be WARN-only,
+      not GOV_BLOCK, so no change to escalation logic.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: gvf-003
+    feature_name: Skill Receipt Presence Validator
+    control_layer_key: governance_validators
+    disposition: REUSE_AS_IS
+    rationale: Stable. Phase C adds new skills with receipts; V-SGF-002 covers them.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: osf-001
+    feature_name: Format Oracle Execution
+    control_layer_key: oracle_system
+    disposition: REUSE_AS_IS
+    rationale: >
+      Oracle system is complete (all 20 VERIFIED). Phase C does not add format executors.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: osf-002
+    feature_name: ODF RelaxNG Validation (D2)
+    control_layer_key: oracle_system
+    disposition: REUSE_AS_IS
+    rationale: Stable. No Phase C changes.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: esf-001
+    feature_name: Declaration Schema Validation + --repair
+    control_layer_key: evidence_system
+    disposition: REUSE_AS_IS
+    rationale: >
+      Sprint evidence schema validation is stable. Phase C evidence uses same schema.
+    consumer_impact: none
+    migration_required: false
+
+  - feature_id: esf-002
+    feature_name: AST Test Count Spot-Check
+    control_layer_key: evidence_system
+    disposition: REUSE_AS_IS
+    rationale: >
+      evidence_verifier.py (TC-OCRD-A5) is proven and deployed. No Phase C changes.
+    consumer_impact: none
+    migration_required: false

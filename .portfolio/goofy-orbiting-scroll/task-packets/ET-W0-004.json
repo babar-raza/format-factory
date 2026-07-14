@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-004",
+  "workstream_id": "WS-03-ORACLE-ASSESSMENT",
+  "objective": "Complete oracle assessment for shiny-percolating-sky: verify all 20 formats at VERIFIED state",
+  "source_plan_ids": [
+    "s001"
+  ],
+  "source_task_ids": [
+    "TC-ORA-001",
+    "TC-ORA-002",
+    "TC-ORA-003"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "IMPLEMENTED_UNVERIFIED",
+  "acceptance_criteria": [
+    "All 20 active Python FOSS formats at CASES_DEFINED or VERIFIED",
+    "execute_oracle.py exits 0",
+    "No format at OBLIGATION_CREATED except ora/pam/xpm/zpaq (no products)"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "primary_lane": "L07",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read shiny-percolating-sky.md (s001) plan completely",
+    "Run: python tools/supervisor/execute_oracle.py --all-formats",
+    "For any format not at VERIFIED: identify root cause",
+    "Fix oracle test cases or oracle packages as needed",
+    "Re-run until all 20 active Python formats at VERIFIED",
+    "Record pass/fail matrix in evidence/raw/ET-W0-004/oracle-results.json"
+  ],
+  "focused_validation": [
+    "python tools/supervisor/execute_oracle.py --all-formats 2>&1 | grep -E \"(PASS|FAIL|VERIFIED)\" | head -30"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "be08080a6e1d6960e5d50a0a569e76d748886a820298a2512f57ee3241c7c3b9"
+}

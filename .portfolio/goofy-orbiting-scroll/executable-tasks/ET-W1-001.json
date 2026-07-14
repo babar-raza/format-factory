@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W1-001",
+  "workstream_id": "WS-02-GOVERNANCE-HEALING",
+  "objective": "Fix highest-priority governance validator failures identified in ET-W0-003 audit",
+  "source_plan_ids": [
+    "s005"
+  ],
+  "source_task_ids": [
+    "TC-GOV-002",
+    "TC-GOV-003",
+    "TC-GOV-004"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/governance_validators*.py"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-003"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Load evidence/raw/ET-W0-003/governance-audit.json repair-list.json",
+    "Fix the top 5 FAIL validators in priority order",
+    "For each fix: edit the validator, run it in isolation, verify it passes",
+    "Run full governance_validator_runner.py and record results",
+    "Update evidence/raw/ET-W1-001/validator-fixes.json"
+  ],
+  "acceptance_criteria": [
+    "Top 5 governance FAIL validators now PASS",
+    "No new FAIL validators introduced",
+    "governance_validator_runner.py exit 0 or fewer FAIL than before"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python tools/supervisor/governance_validator_runner.py 2>&1 | grep -c FAIL || echo 0"
+  ],
+  "lane_verification": [
+    "python .venv/Scripts/pytest tests/supervisor/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 1,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W1-001-95C1A1F6",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W1-001-B188E054",
+  "claimed_at": "2026-07-11T10:15:36.345777+00:00",
+  "closed_at": "2026-07-11T10:19:16.431232+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

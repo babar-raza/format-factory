@@ -1,0 +1,256 @@
+# TC-INV-001-02: Canary Opportunity Map
+# Documents all 14+ canary candidates with disposition and justification.
+# Generated: 2026-07-11 | Mission: clever-tickling-island
+
+schema_version: "1.0"
+generated: "2026-07-11"
+mission_id: clever-tickling-island
+
+adopted_candidates: [validator_promotion, llm_grader_switch, compilation_priority]
+
+candidates:
+  - candidate_id: validator_promotion
+    discovered_from: REQ-DIAG-001
+    workflow: Adding a new governance validator or changing blocks_sprint flag
+    current_rollout_model: instant portfolio-wide application (code = policy)
+    stable_path: current validator code with existing blocks_sprint flags
+    candidate_path: new validator or blocks_sprint=True change
+    subject_unit: single validator function
+    blast_radius: ALL 20 formats — a single blocks_sprint flip affects every sprint
+    failure_modes:
+      - new blocking rule immediately halts autonomous loop for all formats
+      - false-positive blocks require manual exemption accumulation
+      - FM-0004 (164 occurrences) and FM-0005 (129 occurrences) document this pattern
+    existing_controls:
+      - sprint_executor_validate.py --repair flag (post-hoc mitigation)
+      - per-validator blocks_sprint flag (set conservatively)
+    comparison_possible: true
+    rollback_possible: true (revert code change)
+    recommendation: ADOPT
+    evidence:
+      - failure_history shows recurring validator blocks are the #1 autonomous loop disruptor
+      - 168 validators make blast radius large
+      - existing exemption accumulation creates governance debt
+
+  - candidate_id: llm_grader_switch
+    discovered_from: REQ-DIAG-002
+    workflow: Switching LLM provider for grade_declared_work.py
+    current_rollout_model: single provider switch affects all work items immediately
+    stable_path: current GPT_OSS_ENDPOINT provider
+    candidate_path: new provider (e.g., claude-sonnet-4-6 or new GPT model)
+    subject_unit: single work item grade
+    blast_radius: all currently cached grades become stale by provider (key excludes provider)
+    failure_modes:
+      - cached grades from old provider used after switch (silent)
+      - new model degrades ACCEPTED→REWORK silently; traceable only by grade drift
+    existing_controls:
+      - 7-day TTL cache
+      - openai SDK + GPT_OSS_API_KEY env var
+    comparison_possible: true (run old+new provider on same evidence fingerprint)
+    rollback_possible: true (revert env var, clear cache)
+    recommendation: ADOPT
+    evidence:
+      - grade-cache.json key excludes provider identity
+      - provider switch creates undetected grade drift
+
+  - candidate_id: compilation_priority
+    discovered_from: REQ-DIAG-003
+    workflow: Changing scoring function in capability_feature_compiler.py
+    current_rollout_model: portfolio-wide recompilation on every call
+    stable_path: current scoring function (starvation penalty, priority floor)
+    candidate_path: new scoring function
+    subject_unit: per-format next-work-items.json output
+    blast_radius: all 20 formats work-selection order changes simultaneously
+    failure_modes:
+      - wrong-format work assigned silently
+      - high-priority gap for fods pushed to low priority by algorithm bug
+    existing_controls:
+      - --format-filter flag for single-format compilation
+      - gap-ledger.json is source of truth (deterministic)
+    comparison_possible: true (diff next-work-items.json old vs new)
+    rollback_possible: true (revert scoring change)
+    recommendation: ADOPT
+    evidence:
+      - 33MB gap ledger, 1277 gaps — scoring bugs invisible until wrong work starts
+
+  - candidate_id: oracle_d0_d1
+    discovered_from: mission prompt §4 suggestion
+    workflow: Promoting an oracle case from D0 to D1 depth
+    current_rollout_model: per-format oracle-package.yaml edit
+    stable_path: current oracle-package.yaml
+    candidate_path: new expected_model_properties
+    subject_unit: single format's oracle-package.yaml
+    blast_radius: only the changed format's oracle run
+    failure_modes: wrong qname expectation causes FAIL (already happened for FODS)
+    existing_controls: execute_oracle.py --format {format}, V143 depth minimum
+    comparison_possible: true
+    rollback_possible: true
+    recommendation: EXISTING_GATE_SUFFICIENT
+    evidence:
+      - per-format isolation already provides staged scope
+      - execute_oracle.py --format fods does not touch other formats
+
+  - candidate_id: sal_ingestion
+    discovered_from: mission prompt §4 suggestion
+    workflow: Running /ingest-spec-sal for a new format
+    current_rollout_model: per-format ingestion to oracle/sal/{format_id}/
+    stable_path: current sal-facts.yaml
+    candidate_path: new facts from spec ingestion
+    subject_unit: single format's sal-facts.yaml
+    blast_radius: per-format — independent files
+    failure_modes: wrong qname mapping corrupts spec facts
+    existing_controls: merge_sal_facts.py validation; per-format files
+    comparison_possible: true
+    rollback_possible: true
+    recommendation: EXISTING_GATE_SUFFICIENT
+    evidence: per-format isolation already provides staged scope
+
+  - candidate_id: package_release
+    discovered_from: mission prompt §4 suggestion
+    workflow: Publishing a format package to PyPI/NuGet
+    current_rollout_model: G5 gate requires Babar Raza approval
+    stable_path: current build artifacts
+    candidate_path: release candidate
+    subject_unit: single format package
+    blast_radius: per-package; G1-G5 gates already stage this
+    failure_modes: broken package published to registry
+    existing_controls: gate_executor.py G1-G5; release candidate packaging
+    comparison_possible: false (external registry)
+    rollback_possible: false (registry yanks are imperfect)
+    recommendation: EXISTING_GATE_SUFFICIENT
+    evidence: G1-G5 gate system already provides staged approach
+
+  - candidate_id: qname_migrations
+    discovered_from: mission prompt §4 suggestion
+    workflow: Running a QName migration across format source files
+    current_rollout_model: validate_migration_safe.py pre-flight + qname_migration_planner.py
+    stable_path: current QName assignments
+    candidate_path: migrated QNames
+    subject_unit: single format's QName assignments
+    blast_radius: per-format files only
+    failure_modes: wrong QName mapping corrupts spec alignment
+    existing_controls: validate_migration_safe.py, qname_migration_planner.py
+    comparison_possible: true
+    rollback_possible: true
+    recommendation: EXISTING_GATE_SUFFICIENT
+    evidence: dedicated migration tooling already provides staged, safe path
+
+  - candidate_id: per_format_gate_execution
+    discovered_from: mission prompt §4 suggestion
+    workflow: Running gate_executor.py for a specific format
+    current_rollout_model: per-format gate locks at .local/supervisor/phase-locks/
+    stable_path: current gate status
+    candidate_path: advanced gate status
+    subject_unit: single format's phase-locks/{format_id}.json
+    blast_radius: per-format isolation (separate files)
+    failure_modes: false G5 approval could trigger premature publication
+    existing_controls: gate_executor.py G5 requires external Babar Raza approval
+    comparison_possible: false
+    rollback_possible: true (reset phase lock)
+    recommendation: EXISTING_GATE_SUFFICIENT
+    evidence: already per-format; external gate for publication
+
+  - candidate_id: parser_writer_changes
+    discovered_from: mission prompt §4 suggestion
+    workflow: Modifying a format parser or writer
+    current_rollout_model: direct code change + tests
+    stable_path: current parser/writer code
+    candidate_path: new parser/writer
+    subject_unit: format module
+    blast_radius: per-format; isolated by format package boundary
+    failure_modes: broken parser causes load failures
+    existing_controls: pytest format-specific tests, oracle VERIFIED status
+    comparison_possible: false (no shadow parser infrastructure)
+    rollback_possible: true (git revert)
+    recommendation: NOT_SUITABLE
+    evidence: no shadow execution infrastructure for parsers; oracle + tests are sufficient
+
+  - candidate_id: task_selection_queue
+    discovered_from: REQ-DIAG-003 related
+    workflow: Changing task selection priority in action_queue
+    current_rollout_model: recompile next-work-items.json
+    stable_path: current priority ordering
+    candidate_path: new ordering
+    subject_unit: per-format work items
+    blast_radius: same as compilation_priority
+    failure_modes: wrong format prioritized
+    existing_controls: next-sprint.md manual review
+    comparison_possible: true (via compilation_priority canary)
+    rollback_possible: true
+    recommendation: NOT_SUITABLE
+    evidence: subsumed by compilation_priority canary — not a separate opportunity
+
+  - candidate_id: portfolio_regeneration
+    discovered_from: mission prompt §4 suggestion
+    workflow: Re-running goofy-orbiting-scroll portfolio reconciliation
+    current_rollout_model: rebuild .portfolio/ from scratch
+    stable_path: current portfolio state
+    candidate_path: regenerated portfolio
+    subject_unit: portfolio-manifest.json + all registry files
+    blast_radius: portfolio state files only
+    failure_modes: incorrect plan mappings corrupt wave-registry
+    existing_controls: portfolio_controller.py verify-portfolio
+    comparison_possible: true (diff output)
+    rollback_possible: true (git revert)
+    recommendation: FEATURE_FLAG_SUFFICIENT
+    evidence: portfolio_controller.py --dry-run flag would suffice; no canary needed
+
+  - candidate_id: orchestration_changes
+    discovered_from: mission prompt §4 suggestion
+    workflow: Modifying autonomous_cycle.py or sprint_executor.py behavior
+    current_rollout_model: direct code change
+    stable_path: current orchestration
+    candidate_path: new orchestration behavior
+    subject_unit: all sprints
+    blast_radius: potentially all formats (if loop logic changes)
+    failure_modes: sprint loop breaks, continuation halted
+    existing_controls: check_continuation.py verdict, session-resume.md recovery
+    comparison_possible: false (no shadow orchestration)
+    rollback_possible: true (git revert)
+    recommendation: FEATURE_FLAG_SUFFICIENT
+    evidence: shadow orchestration is too expensive; feature-flag approach (MODE env var) is practical
+
+  - candidate_id: schema_migrations
+    discovered_from: TC-SCHEMA-001 requirement
+    workflow: Migrating control-index.db schema from v2 to v3
+    current_rollout_model: SCHEMA_VERSION bump + DDL append in schema.sql
+    stable_path: v2 schema (28 tables)
+    candidate_path: v3 schema (30 tables)
+    subject_unit: control-index.db
+    blast_radius: single SQLite database (reconstructible)
+    failure_modes: migration fails; old tables missing
+    existing_controls: ensure_db() version-checking; db is reconstructible
+    comparison_possible: false (in-place migration)
+    rollback_possible: true (rebuild from v2 schema)
+    recommendation: TRANSACTIONAL_MIGRATION_BETTER
+    evidence: SQLite ALTER TABLE and CREATE TABLE IF NOT EXISTS are already transactional; no canary needed
+
+  - candidate_id: content_localization
+    discovered_from: mission prompt general suggestion
+    workflow: Adding localized strings to format outputs
+    current_rollout_model: N/A (not currently in scope)
+    stable_path: current single-locale outputs
+    candidate_path: localized outputs
+    subject_unit: per-format output rendering
+    blast_radius: per-locale
+    failure_modes: wrong locale applied to format output
+    existing_controls: none yet
+    comparison_possible: true
+    rollback_possible: true
+    recommendation: DEFER_WITH_REASON
+    evidence: not in current roadmap; scope too speculative for canary design
+
+  - candidate_id: cross_language_parity
+    discovered_from: capability registry (PARTIAL parity items)
+    workflow: Adding parity for a Python capability to .NET or vice versa
+    current_rollout_model: manual capability registry update + code change
+    stable_path: current parity matrix
+    candidate_path: parity upgrade
+    subject_unit: per-capability parity status
+    blast_radius: per-language module
+    failure_modes: incorrect parity claim without implementation
+    existing_controls: validate-capability-parity skill, certification layer
+    comparison_possible: true (diff parity matrix)
+    rollback_possible: true (git revert)
+    recommendation: PILOT_ONLY
+    evidence: parity verification is already audited via certification layer; shadow overkill

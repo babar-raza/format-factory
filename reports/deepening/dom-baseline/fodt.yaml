@@ -1,0 +1,39 @@
+format: fodt
+runtime: python
+date: "2026-07-13"
+plan: peppy-crafting-lark (MCP-W5-006)
+taskcard: TC-PCL-012-01
+
+ledger_state:
+  lane_b_maturity: D2
+  lane_b_ceiling: D5
+  lane_a_maturity: A1
+
+proof_status:
+  D1:
+    status: PASS
+    test_command: ".venv/Scripts/pytest tests/python/fodt/ -v --tb=short -q"
+    pass_count: 1
+  D2:
+    status: PASS
+    test_command: ".venv/Scripts/pytest tests/python/fodt/test_fodt_dom_d2_mutation.py -v --tb=short"
+    pass_count: 2
+    test_file: tests/python/fodt/test_fodt_dom_d2_mutation.py
+    tests:
+      - test_paragraph_text_mutation_persists_through_roundtrip
+      - test_add_paragraph_persists_through_roundtrip
+
+fixes_applied:
+  - name: FodtDocument.to_file() alias
+    file: src/python/fodt/models.py
+    description: Added to_file() as alias for save_to_file()
+  - name: FodtParagraph.set_text()
+    file: src/python/fodt/models.py
+    description: Added set_text() to mutate paragraph text in place
+  - name: Paragraph.set_text() (spec class)
+    file: src/python/fodt/spec/text/paragraph.py
+    description: Added set_text() to canonical spec Paragraph — inherited by FodtParagraph compat class
+
+d2_proven: true
+no_regression: true
+regression_command: ".venv/Scripts/pytest tests/python/fodt/ -q"

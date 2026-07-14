@@ -1,0 +1,11 @@
+candidate_id: L-PILOT-TEST
+candidate_name: "Sample Corpus Assessment Layer (Fixture Only)"
+permanent_responsibility: "Track sample corpus completeness per format (test fixture, not production)"
+cross_cutting: true
+upstream_layers: [L01, L06]
+downstream_consumers: [L05, L07]
+skill_ids: [inventory-format-dom]
+command_ids: [inventory-format-dom]
+evidence_paths: ["samples/by-format/"]
+requested_status: PROPOSED
+fixture_mode: true

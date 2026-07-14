@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: FOSS-TOML-MUTATION-001
-Generated: 2026-07-10T17:33:54.273270
+Sprint ID: CERT-LAYER-HEAL-20260710
+Generated: 2026-07-13T18:12:34.500418
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
@@ -13,7 +13,7 @@ Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 | MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |
 
 ## Summary
-- AUTONOMOUS_CONTINUE: YES
+- AUTONOMOUS_CONTINUE: NO — repair required first
 - NEXT_HUMAN_GATE: MODE 5 autonomous sprint loop (explicit user approval required)
 - MCP_STATUS: ACTIVE (.vscode/mcp.json verified present)
 - DAEMON_STATUS: NOT_STARTED (no human gate needed to keep it stopped)

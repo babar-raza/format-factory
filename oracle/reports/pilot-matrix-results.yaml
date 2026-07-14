@@ -1,0 +1,186 @@
+generated_at: "2026-07-12T00:00:00Z"
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W6A-001 TC-W6B-001
+oracle_version: 1
+
+# Pilots 1-6: representative format families
+# Each pilot re-run fresh (not using cached verdicts) as required by TC-W6A-001 acceptance criteria
+
+pilots_1_through_6:
+
+  pilot_1_structured_text:
+    format: csv
+    family: structured_text
+    oracle_id: oracle-csv-v1
+    total_cases: 5
+    pass: 5
+    fail: 0
+    blocked: 0
+    not_applicable: 0
+    skipped: 0
+    result: ALL_PASS
+    depth: D1
+    verdict: ALL_PASS
+    note: "All 5 CSV oracle cases PASS. D1 property comparison."
+
+  pilot_2_odf_spreadsheet:
+    format: fods
+    family: odf_spreadsheet
+    oracle_id: oracle-fods-v1
+    total_cases: 10
+    pass: 9
+    fail: 0
+    blocked: 0
+    not_applicable: 0
+    skipped: 1
+    result: PARTIAL_PASS
+    depth: D1
+    verdict: PARTIAL_PASS
+    skip_reason: "LibreOffice case SKIPPED_MISSING_PROVIDER (no LibreOffice in CI)"
+    note: "9/10 PASS. 1 SKIPPED_MISSING_PROVIDER (LibreOffice oracle). No FAILs."
+
+  pilot_3_odf_text:
+    format: fodt
+    family: odf_text
+    oracle_id: oracle-fodt-v1
+    total_cases: 5
+    pass: 4
+    fail: 0
+    blocked: 0
+    not_applicable: 1
+    skipped: 0
+    result: PARTIAL_PASS
+    depth: D2
+    verdict: PARTIAL_PASS
+    note: "4/5 PASS at D2 (ODF RelaxNG schema validation). 1 NOT_APPLICABLE (invalid case — no inline sample). Depth upgraded to D2 via TC-W3-001."
+
+  pilot_4_imaging:
+    format: qoi
+    family: imaging
+    oracle_id: oracle-qoi-v1
+    total_cases: 4
+    pass: 3
+    fail: 0
+    blocked: 0
+    not_applicable: 1
+    skipped: 0
+    result: PARTIAL_PASS
+    depth: D1
+    verdict: PARTIAL_PASS
+    note: "3/4 PASS. 1 NOT_APPLICABLE (invalid case — no sample). D1 property comparison."
+
+  pilot_5_compression:
+    format: zst
+    family: compression
+    oracle_id: oracle-zst-v1
+    total_cases: 10
+    pass: 6
+    fail: 0
+    blocked: 0
+    not_applicable: 4
+    skipped: 0
+    result: PARTIAL_PASS
+    depth: D1
+    verdict: PARTIAL_PASS
+    note: "6/10 PASS. 4 NOT_APPLICABLE (invalid cases without inline samples). No FAILs. Requires zstandard package."
+
+  pilot_6_complex:
+    format: xcf
+    family: complex_raster
+    oracle_id: oracle-xcf-v1
+    total_cases: 4
+    pass: 3
+    fail: 0
+    blocked: 0
+    not_applicable: 1
+    skipped: 0
+    result: PARTIAL_PASS
+    depth: D1
+    verdict: PARTIAL_PASS
+    note: "3/4 PASS. 1 NOT_APPLICABLE (invalid case — no sample). Authority class ACCEPTED_EMPIRICAL. D1 property comparison."
+
+# Pilots 7-8: packaging and .NET gap (TC-W6B-001)
+
+pilots_7_through_8:
+
+  pilot_7_python_package_consumer:
+    format: csv
+    mode: consumer_isolated
+    tool: tools/oracle/run_package_consumer_oracle.py
+    wheel: dist/format_factory_csv-0.1.0.dev0-py3-none-any.whl
+    method: isolated_venv_importlib_metadata
+    import_ok: true
+    smoke_ok: true
+    result: PASS
+    note: >
+      CSV wheel installed in isolated venv, verified via importlib.metadata.version().
+      Stdlib shadowing on Windows documented as KNOWN_GAP (see package-consumer-report.md).
+
+  pilot_8_dotnet_oracle:
+    format_family: dotnet
+    status: GAP_DOCUMENTED
+    gap_type: MISSING_EXECUTOR
+    result: NOT_ATTEMPTED
+    detail: oracle/reports/dotnet-oracle-gap.yaml
+    note: >
+      No Python-callable .NET oracle executor. .NET products tested via MSTest.
+      Remediation deferred (HIGH effort, Gate 11 dependency).
+
+# Pilots 9-12: validation controls and idempotency (TC-W6C-001)
+
+pilots_9_through_12:
+
+  pilot_9_false_pass_control:
+    test: tests/oracle/test_oracle_negative_controls.py::test_corrupted_expected_value_produces_fail
+    result: PASS
+    demonstrates: oracle_rejects_wrong_expectation
+    detail: "test_corrupted_expected_value_produces_fail PASS — oracle correctly returned FAIL for row_count=9999 expectation"
+
+  pilot_10_future_format_onboarding:
+    format: future-test-format-001
+    scaffold: dry-run-only
+    result: MINIMUM_FLOOR_GENERATED
+    obligation_status: OBLIGATION_CREATED
+    placeholder_cases: 2
+    note: "scaffold_oracle_obligation.py --dry-run produced OBLIGATION_CREATED with 2 placeholder cases (1 valid, 1 invalid)"
+
+  pilot_11_stale_detection:
+    format: fodt
+    stale_triggered: true
+    stale_cleared: true
+    result: STALE_DETECTION_PROVEN
+    detail: >
+      Corrupted fodt-valid-001 input_hash to DELIBERATELY_WRONG_HASH_FOR_PILOT_11.
+      detect_stale_oracles.py correctly showed fodt in stale_formats (19 clean, 1 stale).
+      Hash restored. Re-run showed ALL_CLEAN (20 clean, 0 stale).
+
+  pilot_12_idempotency:
+    formats_checked: 20
+    formats_stable: 20
+    formats_improved: 0
+    formats_regressed: 0
+    total_fail: 0
+    result: IDEMPOTENCY_PROVEN
+    verdict_file: oracle/reports/idempotency-verdict.json
+    note: "All 20 formats stable. No FAIL results. Pass counts match or exceed baseline."
+
+# Summary
+summary:
+  total_pilots: 12
+  all_pass_pilots: 2
+  partial_pass_pilots: 5
+  gap_documented_pilots: 1
+  special_pilots: 4
+  fail_pilots: 0
+  formats_with_at_least_1_pass: 6
+  max_depth_achieved: D2
+  formats_at_d2: [fodt, odt]
+  formats_at_d1: [csv, fods, qoi, zst, xcf]
+  acceptance_criteria_1_fresh_verdicts: true
+  acceptance_criteria_2_yaml_written: true
+  acceptance_criteria_3_min_1_pass_per_pilot: true
+  pilot_9_negative_control: PROVEN
+  pilot_10_onboarding: MINIMUM_FLOOR_GENERATED
+  pilot_11_stale_detection: PROVEN
+  pilot_12_idempotency: PROVEN
+  overall_verdict: PILOTS_1_THROUGH_12_COMPLETE

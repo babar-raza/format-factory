@@ -1,0 +1,31 @@
+checks:
+- check: check_aggregate_loc
+  count: 0
+  detail: 1 partial class group(s) within caps
+  verdict: PASS
+- check: check_writer_surface
+  count: 56
+  detail: Writer total 56 LOC < 100 for Gate-1 format — writer may be a stub
+  verdict: FAIL
+- check: check_roundtrip_coverage
+  count: 0
+  detail: 'Round-trip test found: FodsC7C8RoundtripPreservationTests.cs'
+  verdict: PASS
+- check: check_dictionary_state
+  count: 43
+  detail: 43 Dictionary<> field occurrence(s) in src/net/fods/
+  verdict: WARN
+- check: check_api_documentation
+  count: 44
+  detail: 44 public member(s) in src/net/fods/ lack XML doc
+  verdict: WARN
+- check: check_partial_class_count
+  count: 1
+  detail: '1 class(es) have >3 partial files: FodsDocument: 9 files'
+  verdict: WARN
+fail_count: 1
+format_id: fods
+language: dotnet
+pass_count: 2
+sprint_id: TC-SPW-005-05
+warn_count: 3

@@ -228,3 +228,29 @@ execution_waves:
     consumer_layer: L18
     type: DATA_FLOW
     description: "L28 produces certification matrix consumed by release pipeline L18"
+
+  # L29 OPERATIONAL CONTROL RECORD DISCOVERY: L09, L11, L12 → L29 → L11
+  - dependency_id: DEP-025
+    producer_layer: L09
+    consumer_layer: L29
+    dependency_type: UPSTREAM_DATA
+    description: "L29 ingests continuation state and plan lock records from L09 into control index"
+    strength: ADVISORY
+    current_unmet: false
+
+  - dependency_id: DEP-026
+    producer_layer: L12
+    consumer_layer: L29
+    dependency_type: UPSTREAM_DATA
+    description: "L29 validators V176-V181 are governed by validation policy from L12"
+    strength: REQUIRED
+    current_unmet: false
+
+  - dependency_id: DEP-027
+    producer_layer: L29
+    consumer_layer: L11
+    dependency_type: UPSTREAM_DATA
+    description: "L29 provides control_index_warnings to check_continuation.py (L11 supervisor sprint)"
+    strength: ADVISORY
+    current_unmet: false
+    notes: "check_continuation.py emits control_index_warnings key when control-index.db is present"

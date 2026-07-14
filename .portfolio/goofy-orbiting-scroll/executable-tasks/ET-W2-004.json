@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W2-004",
+  "workstream_id": "WS-19-DUAL-LANE-DOM",
+  "objective": "Implement dual-lane DOM gap generator per serialized-petting-crab (TC-VPR-001..008)",
+  "source_plan_ids": [
+    "s024"
+  ],
+  "source_task_ids": [
+    "TC-VPR-001",
+    "TC-VPR-002",
+    "TC-VPR-003",
+    "TC-VPR-004",
+    "TC-VPR-005",
+    "TC-VPR-006",
+    "TC-VPR-007",
+    "TC-VPR-008"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L02",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read serialized-petting-crab.md (s024) completely",
+    "precious-wandering-lighthouse (s023) is SUPERSEDED — do not execute its TCs",
+    "Implement TC-VPR-001 through TC-VPR-008 in order",
+    "Each TC: implement, test, record evidence",
+    "Final: verify dual-lane DOM gap generator works end-to-end"
+  ],
+  "acceptance_criteria": [
+    "TC-VPR-001 through TC-VPR-008 all pass acceptance criteria",
+    "Dual-lane DOM gap generator produces correct output",
+    "precious-wandering-lighthouse (s023) TCs disposed as SUPERSEDED_WITH_PROOF"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -k \"dom\" -v 2>&1 | tail -20"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 2,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W2-004-67CC3313",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W2-004-A7031326",
+  "claimed_at": "2026-07-11T11:07:21.189439+00:00",
+  "closed_at": "2026-07-11T11:15:06.970386+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

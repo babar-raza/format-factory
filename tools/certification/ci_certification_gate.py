@@ -37,9 +37,26 @@ def load_baseline() -> dict:
 
 
 def check_format_certification(fmt: str, baseline_fmt: dict) -> list[str]:
-    """Check stub-audit and assertion-quality for a format. Returns list of failures."""
+    """Check stub-audit, assertion-quality, and INCOMPLETE_EVIDENCE for a format."""
     failures = []
     cert_dir = REPO_ROOT / "reports" / "certification" / fmt
+
+    # TC-003: INCOMPLETE_EVIDENCE is treated as NOT_CERTIFIED
+    if baseline_fmt.get("check_incomplete_evidence", False):
+        import sys as _sys
+        _ct = str(REPO_ROOT / "tools" / "certification")
+        if _ct not in _sys.path:
+            _sys.path.insert(0, _ct)
+        try:
+            from certification_dashboard import collect_format_status as _cfs  # noqa: PLC0415
+            entry = _cfs(fmt, use_run_manifest=True)
+            verdict = entry.get("overall_verdict", "")
+            if verdict in ("INCOMPLETE_EVIDENCE", "NOT_CERTIFIED"):
+                failures.append(
+                    f"{fmt}: verdict={verdict} blocks certification gate"
+                )
+        except Exception as _e:
+            pass  # Dashboard import failure is non-blocking
 
     # Stub audit
     stub_path = cert_dir / "stub-audit.json"

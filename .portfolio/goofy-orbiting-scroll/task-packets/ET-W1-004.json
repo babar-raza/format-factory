@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W1-004",
+  "workstream_id": "WS-05-PIPELINE-RECONCILIATION",
+  "objective": "Repair pipeline divergences identified in ET-W0-008: sync next-work-items.json with next-sprint.md",
+  "source_plan_ids": [
+    "s006",
+    "s013"
+  ],
+  "source_task_ids": [],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "No true-gap divergences between next-work-items.json and next-sprint.md",
+    "supervisor pipeline generates consistent outputs"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-008"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "reports/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "reports/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "reports/supervisor/"
+  ],
+  "primary_lane": "L08",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Load evidence/raw/ET-W0-008/pipeline-divergence-report.json",
+    "For each true-gap divergence: fix the source (supervisor output or next-sprint.md)",
+    "Re-run autonomous-cycle to regenerate consistent outputs",
+    "Verify next-work-items.json and next-sprint.md are consistent"
+  ],
+  "focused_validation": [
+    "python tools/supervisor/autonomous_cycle.py --dry-run 2>&1 | tail -10"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "8250d78ce18ce134ef5dc2f0f8062b8f154b8ad94045170867e32c186f540c4a"
+}

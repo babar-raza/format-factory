@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-021",
+  "workstream_id": "WS-26-ORACLE-HARDENING-2",
+  "objective": "Execute oracle hardening Phase II TCs 33-64 from modular-noodling-galaxy",
+  "source_plan_ids": [
+    "s031"
+  ],
+  "source_task_ids": [
+    "TC-MNG-033",
+    "TC-MNG-034",
+    "TC-MNG-035",
+    "TC-MNG-036",
+    "TC-MNG-037",
+    "TC-MNG-038",
+    "TC-MNG-039",
+    "TC-MNG-040",
+    "TC-MNG-041",
+    "TC-MNG-042",
+    "TC-MNG-043",
+    "TC-MNG-044",
+    "TC-MNG-045",
+    "TC-MNG-046",
+    "TC-MNG-047",
+    "TC-MNG-048",
+    "TC-MNG-049",
+    "TC-MNG-050",
+    "TC-MNG-051",
+    "TC-MNG-052",
+    "TC-MNG-053",
+    "TC-MNG-054",
+    "TC-MNG-055",
+    "TC-MNG-056",
+    "TC-MNG-057",
+    "TC-MNG-058",
+    "TC-MNG-059",
+    "TC-MNG-060",
+    "TC-MNG-061",
+    "TC-MNG-062",
+    "TC-MNG-063",
+    "TC-MNG-064"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 64 TCs in s031 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W3-005"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "primary_lane": "L07",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue oracle hardening Phase II: TCs 33-64",
+    "Write evidence/raw/ET-W5-021/oracle-h2-batch-b-results.json"
+  ],
+  "focused_validation": [
+    "python tools/supervisor/execute_oracle.py --all-formats 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "db023af2b52ffafcd87c356ca7fbb17f3cf1fdefdc76e594350f97b5a0f12e35"
+}

@@ -258,25 +258,27 @@ tasks:
     task_type: SKILL_GOVERNANCE
     severity: HIGH
     priority: P1
-    status: TODO
-    current_stage: DESIGN_IN_PROGRESS
+    status: CLOSED
+    current_stage: CLOSED
     owner: null
     session_id: null
     sprint_id: null
-    gap_ids: ["SKILL-GAP-012"]
+    superseded_by: TC-LP-023
+    gap_ids: []
+    notes: "SKILL-GAP-012 citation removed (TC-EXT-003-04): misattributed — that gap ID belongs to the EP-003 declaration-bypass issue, resolved via TC-SGF-002. No gap-register entry required for this task; see TC-LP-023 closure record in plans/master-plan.md:4853-4869."
     dependencies: [TC-LP-001]
     blocks: [TC-SUP-002]
     skill_ids: [sync-skill-command-registry]
     command_ids: [sync-skill-command-registry]
     allowed_paths: [".supervisor/skill-registry.yaml", ".claude/commands/"]
     forbidden_paths: ["src/python/", "src/net/"]
-    evidence_paths: [".supervisor/skill-registry.yaml"]
+    evidence_paths: [".supervisor/skill-registry.yaml", "plans/master-plan.md:4853-4869"]
     created_at: "2026-06-26T00:00:00Z"
     started_at: null
-    last_progress_at: null
-    verified_at: null
-    closed_at: null
-    next_action: "Write 19 skill YAML blocks to skill-registry.yaml (append only)"
+    last_progress_at: "2026-06-26T00:00:00Z"
+    verified_at: "2026-06-26T00:00:00Z"
+    closed_at: "2026-06-26T00:00:00Z"
+    next_action: null
 
   # L14-Feature tasks
   - task_id: TC-FEAT-001
@@ -406,22 +408,183 @@ tasks:
     task_type: INTEGRATION
     severity: MEDIUM
     priority: P2
+    status: CLOSED
+    current_stage: CLOSED
+    owner: null
+    session_id: c0d42e113626
+    sprint_id: CERT-LAYER-HEAL-20260710
+    gap_ids: []
+    dependencies: [TC-CERT-L-001]
+    blocks: []
+    skill_ids:
+      - certification-assertion-scorer
+      - certification-dashboard
+      - certification-dotnet-assertion-scorer
+      - certification-exception-checker
+      - certification-fix-weak-assertions
+      - certification-generate-exception-tests
+      - certification-generate-security-tests
+      - certification-inventory-extractor
+      - certification-stub-detector
+    command_ids:
+      - certification-assertion-scorer
+      - certification-dashboard
+    allowed_paths: [".supervisor/", ".claude/commands/", "plans/layers/"]
+    forbidden_paths: ["src/python/", "src/net/"]
+    evidence_paths:
+      - plans/layers/certification-audit-layer.md
+      - plans/layers/index.yaml
+      - plans/layers/task-register.yaml
+    created_at: "2026-06-28T00:00:00Z"
+    started_at: "2026-07-13T00:00:00Z"
+    last_progress_at: "2026-07-13T00:00:00Z"
+    verified_at: "2026-07-13T00:00:00Z"
+    closed_at: "2026-07-13T00:00:00Z"
+    closure_summary: "9 certification skills linked to L28 via layer_promotion.py update. index.yaml skill_ids/command_ids/maturity_current updated. certification-audit-layer.md §1/§20/§30/§31 updated. TC-LHEAL-004 from glittery-splashing-manatee."
+    next_action: null
+
+  # L29 — Operational Control Record Discovery Layer
+  - task_id: TC-OCRD-C9
+    stable_semantic_key: "l29-operational-control-record-layer-plan"
+    primary_layer_id: L29
+    permanent_layer_plan: plans/layers/operational-control-record-layer.md
+    secondary_layer_ids: [L11, L12]
+    title: "Create permanent layer plan L29 (Operational Control Record Discovery Layer)"
+    task_type: GOVERNANCE_INFRASTRUCTURE
+    severity: HIGH
+    priority: P1
+    status: CLOSED
+    current_stage: VERIFIED
+    owner: null
+    session_id: null
+    sprint_id: "ocrd-c8-pilots"
+    gap_ids: []
+    dependencies: []
+    blocks: []
+    skill_ids: [audit-enhanced-control-layer]
+    command_ids: [audit-enhanced-control-layer]
+    allowed_paths: ["plans/layers/", "reports/control-layer/"]
+    forbidden_paths: ["src/python/", "src/net/"]
+    evidence_paths:
+      - "plans/layers/operational-control-record-layer.md"
+      - "plans/layers/index.yaml"
+      - "tests/supervisor/test_pilots_group_ab.py"
+      - "tests/supervisor/test_pilots_group_cd.py"
+      - "tests/supervisor/test_pilots_group_ef.py"
+      - "tests/supervisor/test_pilots_group_gh.py"
+    created_at: "2026-07-12T00:00:00Z"
+    started_at: "2026-07-12T00:00:00Z"
+    last_progress_at: "2026-07-12T00:00:00Z"
+    verified_at: "2026-07-12T00:00:00Z"
+    closed_at: "2026-07-12T00:00:00Z"
+    next_action: null
+    closure_summary: "L29 permanent layer plan created. 22/22 pilot tests PASS. All 9 taskcards TC-OCRD-C1..C9 CLOSED."
+
+  # SMR structural fixes — registered via TC-SMR-005 (shimmering-rolling-meerkat, 2026-07-13)
+  - task_id: TC-SMR-SUP-001
+    stable_semantic_key: "rework-first-sprint-selection-protocol"
+    primary_layer_id: L11
+    permanent_layer_plan: plans/layers/supervisor-layer.md
+    secondary_layer_ids: []
+    title: "Add rework-first ordering to next-sprint generator (RC-002)"
+    task_type: GOVERNANCE_INFRASTRUCTURE
+    severity: HIGH
+    priority: P1
     status: TODO
-    current_stage: DISCOVERY
+    current_stage: PROPOSED
     owner: null
     session_id: null
     sprint_id: null
     gap_ids: []
-    dependencies: [TC-CERT-L-001]
+    dependencies: []
     blocks: []
     skill_ids: []
     command_ids: []
-    allowed_paths: [".supervisor/", ".claude/commands/"]
+    allowed_paths: ["tools/supervisor/", "tests/supervisor/"]
     forbidden_paths: ["src/python/", "src/net/"]
     evidence_paths: []
-    created_at: "2026-06-28T00:00:00Z"
-    started_at: null
-    last_progress_at: null
-    verified_at: null
-    closed_at: null
-    next_action: "Register remaining 8 certification tools as skills"
+    fix_ref: "SMR-RC-002"
+    created_at: "2026-07-13T00:00:00Z"
+    next_action: "Modify next-sprint generator to surface rework_items before new work"
+    closure_summary: null
+
+  - task_id: TC-SMR-SUP-002
+    stable_semantic_key: "supervisor-state-auto-commit"
+    primary_layer_id: L09
+    permanent_layer_plan: plans/layers/state-layer.md
+    secondary_layer_ids: [L11]
+    title: "Create commit_supervisor_state.py and wire into autonomous_cycle (RC-003)"
+    task_type: GOVERNANCE_INFRASTRUCTURE
+    severity: MEDIUM
+    priority: P2
+    status: TODO
+    current_stage: PROPOSED
+    owner: null
+    session_id: null
+    sprint_id: null
+    gap_ids: []
+    dependencies: []
+    blocks: []
+    skill_ids: []
+    command_ids: []
+    allowed_paths: ["tools/supervisor/", "tests/supervisor/"]
+    forbidden_paths: ["src/python/", "src/net/"]
+    evidence_paths: []
+    fix_ref: "SMR-RC-003"
+    created_at: "2026-07-13T00:00:00Z"
+    next_action: "Create commit_supervisor_state.py; call from autonomous_cycle.py after sprint closeout"
+    closure_summary: null
+
+  - task_id: TC-SMR-SUP-003
+    stable_semantic_key: "check-continuation-next-action-field"
+    primary_layer_id: L11
+    permanent_layer_plan: plans/layers/supervisor-layer.md
+    secondary_layer_ids: []
+    title: "Add next_action + next_action_description to MACHINERY_AUDIT_REQUIRED stop in check_continuation.py (RC-005)"
+    task_type: GOVERNANCE_INFRASTRUCTURE
+    severity: MEDIUM
+    priority: P2
+    status: TODO
+    current_stage: PROPOSED
+    owner: null
+    session_id: null
+    sprint_id: null
+    gap_ids: []
+    dependencies: []
+    blocks: []
+    skill_ids: []
+    command_ids: []
+    allowed_paths: ["tools/supervisor/check_continuation.py", "tests/supervisor/"]
+    forbidden_paths: ["src/python/", "src/net/"]
+    evidence_paths: []
+    fix_ref: "SMR-RC-005"
+    created_at: "2026-07-13T00:00:00Z"
+    next_action: "Add next_action/next_action_description to MACHINERY_AUDIT_REQUIRED JSON output"
+    closure_summary: null
+
+  - task_id: TC-SMR-SUP-004
+    stable_semantic_key: "behavioral-gap-taskcard-generation"
+    primary_layer_id: L11
+    permanent_layer_plan: plans/layers/supervisor-layer.md
+    secondary_layer_ids: [L12]
+    title: "Implement generate_behavioral_gap_taskcards() and wire into write_plan_lock.py ITERATION_REQUIRED path (RC-006)"
+    task_type: GOVERNANCE_INFRASTRUCTURE
+    severity: HIGH
+    priority: P1
+    status: TODO
+    current_stage: PROPOSED
+    owner: null
+    session_id: null
+    sprint_id: null
+    gap_ids: []
+    dependencies: []
+    blocks: []
+    skill_ids: []
+    command_ids: []
+    allowed_paths: ["tools/supervisor/write_plan_lock.py", "tools/supervisor/lifecycle_audit.py", "tests/supervisor/"]
+    forbidden_paths: ["src/python/", "src/net/"]
+    evidence_paths: []
+    fix_ref: "SMR-RC-006"
+    created_at: "2026-07-13T00:00:00Z"
+    next_action: "Implement generate_behavioral_gap_taskcards(); auto-called by write_plan_lock.py when ITERATION_REQUIRED"
+    closure_summary: null

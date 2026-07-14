@@ -62,3 +62,21 @@ Release manifests (`release-manifest-<version>.yaml`) are also stored in `report
 - `docs/gates.md` — Gate 7 (fuzz) and Gate 8 (security review) pass criteria
 - `docs/release-control.md` — visibility classification and redaction policy
 - `acquisition-packs/_template/legal-notes.md` — Gate 2 legal notes (usually sufficient for Category 1)
+
+## Agent Navigation
+
+**Purpose of this folder:** All supervisor sprint outputs, capability layer reports, oracle
+results, and certification data live here. Created by the supervisor pipeline and tools.
+
+**Key subdirectories:**
+- `reports/supervisor/` — Sprint outputs: `next-sprint.md`, `session-resume.md`, `approval-gates.md`
+- `reports/capability-layer/` — Capability maps: `unified-capability-map.json`, `gap-ledger.json`
+- `reports/repository-structure/` — Root structure recon reports
+
+**Evidence writes go to:** `.local/evidences/<run_id>/` (gitignored), NOT to `reports/`.
+**Supervisor outputs written by:** `python tools/supervisor/autonomous_cycle.py`
+**Capability map rebuilt by:** `python tools/capability_layer/capability_map_generator.py`
+**Validation command:** `python tools/capability_layer/validate_capability_map.py`
+
+**Producer:** Autonomous supervisor pipeline (`autonomous_cycle.py`). Capability tools
+write to `reports/capability-layer/`. No manual editing of supervisor outputs.

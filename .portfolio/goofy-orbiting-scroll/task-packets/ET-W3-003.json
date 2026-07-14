@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W3-003",
+  "workstream_id": "WS-09-FODS-GOVERNANCE",
+  "objective": "Execute FODS governance batch E: TCs 201-250 from splendid-squishing-orbit",
+  "source_plan_ids": [
+    "s011"
+  ],
+  "source_task_ids": [
+    "TC-SQO-201",
+    "TC-SQO-202",
+    "TC-SQO-203",
+    "TC-SQO-204",
+    "TC-SQO-205",
+    "TC-SQO-206",
+    "TC-SQO-207",
+    "TC-SQO-208",
+    "TC-SQO-209",
+    "TC-SQO-210",
+    "TC-SQO-211",
+    "TC-SQO-212",
+    "TC-SQO-213",
+    "TC-SQO-214",
+    "TC-SQO-215",
+    "TC-SQO-216",
+    "TC-SQO-217",
+    "TC-SQO-218",
+    "TC-SQO-219",
+    "TC-SQO-220",
+    "TC-SQO-221",
+    "TC-SQO-222",
+    "TC-SQO-223",
+    "TC-SQO-224",
+    "TC-SQO-225",
+    "TC-SQO-226",
+    "TC-SQO-227",
+    "TC-SQO-228",
+    "TC-SQO-229",
+    "TC-SQO-230",
+    "TC-SQO-231",
+    "TC-SQO-232",
+    "TC-SQO-233",
+    "TC-SQO-234",
+    "TC-SQO-235",
+    "TC-SQO-236",
+    "TC-SQO-237",
+    "TC-SQO-238",
+    "TC-SQO-239",
+    "TC-SQO-240",
+    "TC-SQO-241",
+    "TC-SQO-242",
+    "TC-SQO-243",
+    "TC-SQO-244",
+    "TC-SQO-245",
+    "TC-SQO-246",
+    "TC-SQO-247",
+    "TC-SQO-248",
+    "TC-SQO-249",
+    "TC-SQO-250"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 50 TCs in batch E have final disposition",
+    "All 250 FODS TCs have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W3-002"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue from ET-W3-002: process TCs 201-250",
+    "Write evidence/raw/ET-W3-003/fods-batch-e-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/fods/ -v 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "81bc0daf20762786dad8d3b7a35cd61e02f5b1ad6a368061ae4e993ab0d6cea5"
+}

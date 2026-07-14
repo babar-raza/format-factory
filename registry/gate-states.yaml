@@ -1,0 +1,128 @@
+---
+# Gate States Registry — Format Factory
+# Created: TC-GFB-022 (FF-MR-2026-001, 2026-07-11)
+# Authoritative: plans/.claude/golden-foraging-boot.md
+# Purpose: Machine-readable per-product, per-language gate state tracking.
+# Check 11 in check_continuation.py reads this file to emit BLOCKED_EXTERNAL
+# for products with P1-P10 met but P11 (Babar Raza authorization) pending.
+schema_version: "1.0"
+created_at: "2026-07-11"
+implementing_tc: TC-GFB-022
+
+gate_states:
+  - state_id: GATE_11_READY
+    description: >
+      Product meets all Gate 11 criteria (P1-P10 for Python, C1-C6 for .NET) and
+      is pending Babar Raza commercial authorization (P11/C20 = TRUE_EXTERNAL_GATE).
+    entry_criteria:
+      - "Oracle VERIFIED at D1+ depth (P1)"
+      - "All governance validators pass exit 0 (P2)"
+      - "pyproject.toml present and valid (P3)"
+      - "Package installs cleanly via pip install (P4)"
+      - "Consumer roundtrip proof exists (P5)"
+      - "spec_qname ClassVar in all domain classes (P6)"
+      - "py.typed marker present (P7)"
+      - "All dogfood exports functional (P8)"
+      - "Analytics module LOC <= 800 (P9)"
+      - "No known_violations in source-structure-baseline.json at cap (P10)"
+    exit_criteria:
+      - "Babar Raza grants Gate 11 G11-G authorization (P11)"
+    per_product: true
+    per_language: true
+    blocks_autonomous_continue: true
+    allows_other_products_to_continue: true
+    stop_reason: GATE_11_READY_PENDING_AUTHORIZATION
+    stop_classification: BLOCKED_EXTERNAL
+    implementation_note: >
+      When a product enters GATE_11_READY state, Check 11 in check_continuation.py
+      emits STOP(reason=GATE_11_READY_PENDING_AUTHORIZATION) for that product only.
+      Other products without GATE_11_READY status may continue autonomous deepening.
+
+  - state_id: NOT_READY
+    description: "Product has not yet met all Gate 11 P1-P10 criteria. Autonomous deepening continues."
+    per_product: true
+    per_language: true
+    blocks_autonomous_continue: false
+
+  - state_id: GATE_11_AUTHORIZED
+    description: "Babar Raza has granted Gate 11 G11-G authorization. Product ready for publication."
+    per_product: true
+    per_language: true
+    blocks_autonomous_continue: false
+    stop_reason: null
+
+# Per-product gate state tracking
+# Updated by: autonomous_cycle.py evaluate_gate11_readiness() after each sprint
+# Format: format_id -> language -> criteria + state
+format_gate_states:
+  fods:
+    python:
+      p1_oracle_verified: true
+      p2_validators_pass: true
+      p3_pyproject_present: true
+      p4_package_installs: true
+      p5_consumer_roundtrip: true
+      p6_spec_qname_classvar: true
+      p7_py_typed_present: false
+      p8_dogfood_exports: true
+      p9_analytics_loc_compliant: true
+      p10_no_known_violations_at_cap: true
+      p11_babar_raza_authorized: pending
+      state: NOT_READY
+      state_reason: "P7 (py.typed) missing — not yet at GATE_11_READY"
+      last_evaluated: "2026-07-11"
+    dotnet:
+      c1_builds_cleanly: true
+      c2_nuget_packs: true
+      c3_no_cs_files_over_800_not_in_baseline: true
+      c4_roundtrip_test_exists: true
+      c5_gate_executor_g1_pass: true
+      c6_fodt_editing_within_cap: true
+      c20_babar_raza_authorized: pending
+      pilot_a_evidence:
+        build_result: "BUILD SUCCEEDED (238 warnings, 0 errors)"
+        test_result: "4233/4233 PASS"
+        oracle_result: "9/10 PASS (1 SKIPPED_MISSING_PROVIDER for lo-001)"
+        nuget_pack: "FormatFactory.Fods.0.1.0-tier0.nupkg"
+        consumer_proof: "PILOT_A_CONSUMER_PASS"
+        consumer_program: ".local/evidences/ff-machinery-readiness-20260710-af879e5/ff-machinery-readiness/pilot-a-consumer-program.cs"
+        evaluated_date: "2026-07-11"
+      state: GATE_11_READY
+      state_reason: "All C1-C6 criteria met via TC-GFB-030 Pilot A. Awaiting Babar Raza C20 authorization."
+      last_evaluated: "2026-07-11"
+  fodt:
+    python:
+      p1_oracle_verified: true
+      p2_validators_pass: true
+      p3_pyproject_present: true
+      p4_package_installs: true
+      p5_consumer_roundtrip: false
+      p6_spec_qname_classvar: true
+      p7_py_typed_present: false
+      p8_dogfood_exports: false
+      p9_analytics_loc_compliant: true
+      p10_no_known_violations_at_cap: true
+      p11_babar_raza_authorized: pending
+      state: NOT_READY
+      state_reason: "P5/P7/P8 criteria not met"
+      last_evaluated: "2026-07-11"
+    dotnet:
+      c1_builds_cleanly: true
+      c2_nuget_packs: true
+      c3_no_cs_files_over_800_not_in_baseline: true
+      c4_roundtrip_test_exists: true
+      c5_gate_executor_g1_pass: true
+      c6_monolith_decomposed: true
+      c20_babar_raza_authorized: pending
+      pilot_b_evidence:
+        build_result: "BUILD SUCCEEDED (30 warnings, 0 errors)"
+        test_result: "5867/5867 PASS"
+        oracle_result: "3/3 PASS"
+        nuget_pack: "FormatFactory.Fodt.0.1.0-alpha.1.nupkg"
+        consumer_proof: "PILOT_B_CONSUMER_PASS"
+        monolith_status: "FodtDocumentExtendedApis.cs decomposed into 5 files (all under 800 LOC)"
+        consumer_program: ".local/evidences/ff-machinery-readiness-20260710-af879e5/ff-machinery-readiness/pilot-b-consumer-program.cs"
+        evaluated_date: "2026-07-11"
+      state: GATE_11_READY
+      state_reason: "All C1-C6 criteria met via TC-GFB-031 Pilot B. Awaiting Babar Raza C20 authorization."
+      last_evaluated: "2026-07-11"

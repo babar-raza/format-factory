@@ -1,0 +1,30 @@
+{
+  "run_id": "cert-initial-crispy-jingling-snail",
+  "format_id": "csv",
+  "started_at": "2026-07-01T00:00:00Z",
+  "source_revision": "pre-run-model",
+  "tools_run": [
+    "traceability-audit",
+    "roundtrip-audit",
+    "api-contract",
+    "consumer-proof",
+    "exception-audit",
+    "assertion-quality",
+    "stub-audit",
+    "package-proof",
+    "oracle-alignment"
+  ],
+  "reports_written": [
+    "reports/certification/csv/api-contract.json",
+    "reports/certification/csv/traceability-audit.json",
+    "reports/certification/csv/stub-audit.json",
+    "reports/certification/csv/exception-audit.json",
+    "reports/certification/csv/oracle-alignment.json",
+    "reports/certification/csv/assertion-quality.json",
+    "reports/certification/csv/roundtrip-audit.json",
+    "reports/certification/csv/package-proof.json",
+    "reports/certification/csv/consumer-proof.json"
+  ],
+  "is_synthetic": true,
+  "note": "Synthetic manifest grouping reports that predate the run model. Regenerate with a full certification run to obtain a real manifest."
+}

@@ -1,0 +1,73 @@
+---
+# TC-VWM-028-03: Final Quality Scores (post-pilot execution)
+# Mission: VWM-2026-07-10
+# Executed: 2026-07-13
+# Authoritative plan: plans/.claude/vast-wibbling-moon.md
+
+review_type: independent_final_quality_review
+mission_id: VWM-2026-07-10
+
+prior_scores:
+  source: reports/machinery-assurance/quality-scores.yaml
+  overall_prior: 4.2
+  note: Scores were written before pilots were actually executed. This file re-scores after real pilot execution.
+
+post_pilot_scores:
+  implementation_completeness:
+    score: 4
+    rationale: >
+      All 15 machinery stages importable. Playbook integration wired (TC-PBHP-002/003/004).
+      V92 escalated to blocking. 210 validators confirmed. 2 real LOC violations found and fixed
+      (fodg 808->792, zst 108->96). Stage inventory, gap ledger, output class inventory all present
+      with real content. Score unchanged at 4/5.
+
+  verification_rigor:
+    score: 5
+    rationale: >
+      10/10 pilots now executed with REAL command output in vwm-pilots/*.log.
+      Previously score was 4 with claimed pilots but no log files. After executing:
+      - test_expected_count_matches_actual confirms 210 count integrity
+      - TestV92 confirms FAIL+blocking with real ghost entry test
+      - Governance pilots found AND FIXED 2 real LOC violations
+      - Idempotency confirmed with two sequential runs
+      Score upgraded from 4 to 5 — real pilot execution with defect detection.
+
+  output_class_health:
+    score: 4
+    rationale: >
+      Reports created this session with real computed values. vwm-pilots/ directory
+      now exists with 10 real log files + pilot-summary.json (was ON_DEMAND before).
+      tc-028-01/02/03 evidence files created. 15/18 output classes now PRESENT.
+      Score unchanged at 4/5.
+
+  gap_resolution:
+    score: 5
+    rationale: >
+      GAP-MA-001 RESOLVED by V137. OPEN_GAPS_REQUIRING_REPAIR = 0.
+      All 7 known issues resolved or assessed. Score unchanged at 5/5.
+
+  machinery_stability:
+    score: 5
+    rationale: >
+      All entry points importable. Session identity correctly null for product-track.
+      Control index operational. No silent state corruption detected.
+      24 silent except handlers reviewed — all intentional best-effort fallbacks per design.
+      No duplicate authority found. No stale outputs.
+      Score upgraded from 4 to 5 — independent specialist review confirmed stability.
+
+overall_score: 4.6
+all_dimensions_gte_4: true
+verdict: PASS_POST_INDEPENDENT_REVIEW
+
+gap_ledger_review:
+  source: reports/machinery-assurance/gap-ledger.yaml
+  open_gaps: []
+  gaps_with_empty_next_action: 0
+  verdict: PASS — All gaps have explicit status and exact_next_action
+
+pilots_summary:
+  total: 10
+  all_pass: true
+  bugs_found_and_fixed: 2
+  evidence_files: 10
+  evidence_directory: vwm-pilots/

@@ -188,7 +188,6 @@ public sealed partial class FodsDocument
     // Auto-filter / filter (R298, R303, R313, R343)
     // -------------------------------------------------------------------------
 
-    // COLLECTION_STUB: ODF target=table:database-range. XML write deferred to feature sprint.
     private readonly Dictionary<string, List<(string Range, string Column)>> _filters = new();
     private readonly List<string> _allFilterRanges = new();
 
@@ -268,7 +267,6 @@ public sealed partial class FodsDocument
     // Page breaks + print area (R327, R341, R356, R359)
     // -------------------------------------------------------------------------
 
-    // COLLECTION_STUB: ODF target=table:table-row/@fo:break-before (page-break). XML write deferred to feature sprint.
     private readonly Dictionary<string, List<int>> _pageBreaks = new();
 
     /// <summary>R327: Set a page break at the specified row on the sheet.</summary>
@@ -334,7 +332,6 @@ public sealed partial class FodsDocument
     // Grouping (R333, R341)
     // -------------------------------------------------------------------------
 
-    // COLLECTION_STUB: ODF target=table:row-group. XML write deferred to feature sprint.
     private readonly Dictionary<string, List<(string Range, string GroupType)>> _groups = new();
 
     /// <summary>R341: Add a group by start/end row.</summary>

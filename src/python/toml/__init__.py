@@ -13,6 +13,7 @@ from .models import TomlDocument  # noqa: F401
 from .toml_workflow import toml_installed_workflow  # noqa: F401
 from .toml_key_iterator import toml_iter_keys  # noqa: F401
 from .toml_table_iterator import toml_iter_tables  # noqa: F401
+from .toml_writer import write_toml, write_toml_str  # noqa: F401
 
 import sys as _sys
 import types as _types

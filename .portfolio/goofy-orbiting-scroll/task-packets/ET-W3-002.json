@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W3-002",
+  "workstream_id": "WS-09-FODS-GOVERNANCE",
+  "objective": "Execute FODS governance batch D: TCs 151-200 from splendid-squishing-orbit",
+  "source_plan_ids": [
+    "s011"
+  ],
+  "source_task_ids": [
+    "TC-SQO-151",
+    "TC-SQO-152",
+    "TC-SQO-153",
+    "TC-SQO-154",
+    "TC-SQO-155",
+    "TC-SQO-156",
+    "TC-SQO-157",
+    "TC-SQO-158",
+    "TC-SQO-159",
+    "TC-SQO-160",
+    "TC-SQO-161",
+    "TC-SQO-162",
+    "TC-SQO-163",
+    "TC-SQO-164",
+    "TC-SQO-165",
+    "TC-SQO-166",
+    "TC-SQO-167",
+    "TC-SQO-168",
+    "TC-SQO-169",
+    "TC-SQO-170",
+    "TC-SQO-171",
+    "TC-SQO-172",
+    "TC-SQO-173",
+    "TC-SQO-174",
+    "TC-SQO-175",
+    "TC-SQO-176",
+    "TC-SQO-177",
+    "TC-SQO-178",
+    "TC-SQO-179",
+    "TC-SQO-180",
+    "TC-SQO-181",
+    "TC-SQO-182",
+    "TC-SQO-183",
+    "TC-SQO-184",
+    "TC-SQO-185",
+    "TC-SQO-186",
+    "TC-SQO-187",
+    "TC-SQO-188",
+    "TC-SQO-189",
+    "TC-SQO-190",
+    "TC-SQO-191",
+    "TC-SQO-192",
+    "TC-SQO-193",
+    "TC-SQO-194",
+    "TC-SQO-195",
+    "TC-SQO-196",
+    "TC-SQO-197",
+    "TC-SQO-198",
+    "TC-SQO-199",
+    "TC-SQO-200"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 50 TCs in batch D have final disposition",
+    "FODS tests pass"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W3-001"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/",
+    "src/python/fods/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue from ET-W3-001: process TCs 151-200",
+    "Write evidence/raw/ET-W3-002/fods-batch-d-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/fods/ -v 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "8896581cb353dfa7d8919bd9b79470109d03412a5538f1b903b9b116be8959b8"
+}

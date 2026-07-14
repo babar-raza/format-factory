@@ -19,10 +19,10 @@ layer_metadata:
   session_id: 923e237958c1
   active_sprint: lp-bootstrap
   active_taskcards: []
-  ready_taskcards:
-  - TC-SKILL-001
+  ready_taskcards: []
   blocked_taskcards: []
-  completed_taskcards: []
+  completed_taskcards:
+  - TC-SKILL-001
   dependencies: []
   upstream_layers: []
   downstream_layers:
@@ -38,6 +38,25 @@ layer_metadata:
   - preflight-skill-entry
   - detect-duplicate-skills
   - run-skill-idempotency
+  - identify-primary-layer
+  - create-permanent-layer-plan
+  - update-layer-current-state
+  - register-layer-gap
+  - register-layer-task
+  - append-layer-work-log
+  - append-layer-verification-log
+  - update-layer-session-handoff
+  - update-layer-master-index
+  - close-layer-task
+  - reconcile-layer-index
+  - inventory-permanent-layer-plans
+  - migrate-temporary-agent-plan
+  - detect-unlogged-work
+  - detect-stale-layer-state
+  - create-cross-layer-handoff
+  - select-next-layer-task
+  - validate-permanent-layer-plans
+  - reconcile-layer-task-register
   command_ids:
   - check-skill-coverage
   - sync-skill-command-registry
@@ -45,18 +64,38 @@ layer_metadata:
   - inventory-skills
   - enforce-skill-first-execution
   - validate-skill-transcript
+  - identify-primary-layer
+  - create-permanent-layer-plan
+  - update-layer-current-state
+  - register-layer-gap
+  - register-layer-task
+  - append-layer-work-log
+  - append-layer-verification-log
+  - update-layer-session-handoff
+  - update-layer-master-index
+  - close-layer-task
+  - reconcile-layer-index
+  - inventory-permanent-layer-plans
+  - migrate-temporary-agent-plan
+  - detect-unlogged-work
+  - detect-stale-layer-state
+  - create-cross-layer-handoff
+  - select-next-layer-task
+  - validate-permanent-layer-plans
+  - reconcile-layer-task-register
   evidence_paths:
   - .supervisor/skill-registry.yaml
   - .supervisor/skill-inventory.yaml
   - .supervisor/skill-quality-matrix.yaml
+  - plans/master-plan.md:4853-4869
   last_started_at: null
   last_progress_at: '2026-06-26'
-  last_updated_at: '2026-06-29'
+  last_updated_at: '2026-07-14'
   last_verified_at: '2026-06-26'
   last_verified_revision: a7744cf6
-  next_task_id: TC-SKILL-001
-  next_action: Register 19 layer-maintenance micro-skills in .supervisor/skill-registry.yaml
-  handoff_id: null
+  next_task_id: null
+  next_action: null
+  handoff_id: HO-007
 ```
 
 ## 1. Layer Metadata

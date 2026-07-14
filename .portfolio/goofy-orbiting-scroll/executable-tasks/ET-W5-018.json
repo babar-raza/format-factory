@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-018",
+  "workstream_id": "WS-17-SPICY-GOSLING",
+  "objective": "Execute spicy-sparking-gosling: all 39 TCs",
+  "source_plan_ids": [
+    "s021"
+  ],
+  "source_task_ids": [
+    "TC-SSG-001",
+    "TC-SSG-002",
+    "TC-SSG-003",
+    "TC-SSG-004",
+    "TC-SSG-005",
+    "TC-SSG-006",
+    "TC-SSG-007",
+    "TC-SSG-008",
+    "TC-SSG-009",
+    "TC-SSG-010",
+    "TC-SSG-011",
+    "TC-SSG-012",
+    "TC-SSG-013",
+    "TC-SSG-014",
+    "TC-SSG-015",
+    "TC-SSG-016",
+    "TC-SSG-017",
+    "TC-SSG-018",
+    "TC-SSG-019",
+    "TC-SSG-020",
+    "TC-SSG-021",
+    "TC-SSG-022",
+    "TC-SSG-023",
+    "TC-SSG-024",
+    "TC-SSG-025",
+    "TC-SSG-026",
+    "TC-SSG-027",
+    "TC-SSG-028",
+    "TC-SSG-029",
+    "TC-SSG-030",
+    "TC-SSG-031",
+    "TC-SSG-032",
+    "TC-SSG-033",
+    "TC-SSG-034",
+    "TC-SSG-035",
+    "TC-SSG-036",
+    "TC-SSG-037",
+    "TC-SSG-038",
+    "TC-SSG-039"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read spicy-sparking-gosling.md (s021) and execute all 39 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 39 TCs in s021 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

@@ -114,6 +114,10 @@ Target maturity is **4**. The target state is a governed, evidence-backed, disco
 - Backfill across many Python products risks API and behavior drift.
 - Compatibility must be explicit per maturity stage.
 
+| gap_id | severity | current_state | target_state | task_id | source |
+|---|---|---|---|---|---|
+| REG-GAP-001 | HIGH | `skill_ids: []` in `plans/layers/index.yaml` (L17) — zero registered skill audits regression test coverage or defines a per-format compatibility matrix. | A registered skill exists that audits golden regression tests, defines the per-format compatibility matrix, and enforces roundtrip baselines before refactor/backfill work (feeding TC-REG-001). | null | Zero skill coverage confirmed via plans/layers/index.yaml — skill_ids: [] and no matching product_track in .supervisor/skill-registry.yaml. Registered via TC-EXT-008 (external skill adoption plan, Finding 3). |
+
 ## 15. Root-Cause Register
 
 - Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
@@ -253,6 +257,7 @@ A blocker is valid only when it is a true external gate, missing authority, miss
 - Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
 - Added no-stub and proof-backed execution requirements.
 - Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+- 2026-07-14: Registered gap `REG-GAP-001` via `/register-layer-gap` (TC-EXT-008-03, plan `plans/.claude/yes-my-earlier-answer-humming-waffle.md`, Finding 3). See §14.
 
 ## 35. Verification Log
 

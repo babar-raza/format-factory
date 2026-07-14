@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-015",
+  "workstream_id": "WS-25-SHIMMERING-MEERKAT",
+  "objective": "Execute shimmering-rolling-meerkat: all 12 TCs",
+  "source_plan_ids": [
+    "s030"
+  ],
+  "source_task_ids": [
+    "TC-SRM-001",
+    "TC-SRM-002",
+    "TC-SRM-003",
+    "TC-SRM-004",
+    "TC-SRM-005",
+    "TC-SRM-006",
+    "TC-SRM-007",
+    "TC-SRM-008",
+    "TC-SRM-009",
+    "TC-SRM-010",
+    "TC-SRM-011",
+    "TC-SRM-012"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 12 TCs in s030 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read shimmering-rolling-meerkat.md (s030) and execute all 12 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "787101cdfc65394d8c45f14ab997dbff2e0c6f0b4d3e4d7416a66ec6df1e5f2c"
+}

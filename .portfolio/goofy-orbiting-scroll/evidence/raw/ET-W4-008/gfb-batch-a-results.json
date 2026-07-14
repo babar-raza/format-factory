@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W4-008",
+  "source_plan": "s038",
+  "source_plan_path": "C:/Users/prora/.claude/plans/golden-foraging-boot.md",
+  "in_repo_plan_path": "plans/.claude/golden-foraging-boot.md",
+  "mission_id": "FF-MR-2026-001",
+  "evidence_root": ".local/evidences/ff-machinery-readiness-20260710-af879e5/ff-machinery-readiness/",
+  "execution_date": "2026-07-11",
+  "executor": "claude-sonnet-4-6",
+  "batch": "A",
+  "batch_description": "Groups 1-3: Foundation Audit (TC-GFB-001 to TC-GFB-007), Design + Standards (TC-GFB-010 to TC-GFB-013), Group 3 Hardening (TC-GFB-020 to TC-GFB-022)",
+  "tcs_executed": [
+    "TC-GFB-001", "TC-GFB-002", "TC-GFB-003", "TC-GFB-004", "TC-GFB-005",
+    "TC-GFB-006", "TC-GFB-007", "TC-GFB-010", "TC-GFB-011", "TC-GFB-012",
+    "TC-GFB-013", "TC-GFB-020", "TC-GFB-021", "TC-GFB-022"
+  ],
+  "tcs_closed": 14,
+  "tcs_deferred": 0,
+  "acceptance_criteria_met": true,
+  "disposition_summary": {
+    "TC-GFB-001": "CLOSED — run setup, 7 evidence artifacts created",
+    "TC-GFB-002": "CLOSED — 16 layers inventoried, prior runs reconciled",
+    "TC-GFB-003": "CLOSED — qname verdict=PARTIALLY_ENFORCED, 8 artifacts",
+    "TC-GFB-004": "CLOSED — 20 Python + 10 .NET formats censused; FodtDocumentExtendedApis.cs REFUTED",
+    "TC-GFB-005": "CLOSED — 134 skills (not 123); SAL 14884 facts (not 14441); RCAL 120 active caps",
+    "TC-GFB-006": "CLOSED — 13 lanes all PROSE_ONLY; 9 downstream layers inventoried",
+    "TC-GFB-007": "CLOSED — 10+ checks (not 7); GAP-GATE11-NOT-GOVERNED confirmed; signal CURRENT",
+    "TC-GFB-010": "CLOSED — v2 standard addendum written; prohibited-patterns.yaml created",
+    "TC-GFB-011": "CLOSED — 12 gaps total (10 confirmed, 2 refuted); root-cause-register.yaml",
+    "TC-GFB-012": "CLOSED — 12-stage architecture; 5 profiles; gate11-state-contract.yaml",
+    "TC-GFB-013": "CLOSED — solution scorecards for 4 gaps; selected-machinery-healing-design.md",
+    "TC-GFB-020": "CLOSED — master-plan.md: MR-5 through MR-14 added; Section 99 added; lifecycle_audit PASS",
+    "TC-GFB-021": "CLOSED — lane-contracts.yaml (13 lanes); V171 validator; 9/9 tests pass",
+    "TC-GFB-022": "CLOSED — gate-states.yaml; Check 11 in check_continuation.py; evaluate_gate11_readiness; 8/8 tests pass"
+  },
+  "stale_claims_refuted": [
+    "FodtDocumentExtendedApis.cs (2944 LOC) — does NOT exist at HEAD c42f5aa7",
+    "continuation-signal.json stale — signal is CURRENT (2026-07-11T20:14:40)",
+    "123 skills — actual count is 134",
+    "14,441 SAL facts — actual count is 14,884"
+  ],
+  "gaps_closed": [
+    "GAP-LANE-CONTRACTS-MISSING (TC-GFB-021)",
+    "GAP-GATE11-NOT-GOVERNED (TC-GFB-022)"
+  ],
+  "gaps_confirmed_open": [
+    "GAP-ARCH-MAPPER-MISSING",
+    "GAP-SOURCE-GEN-MISSING",
+    "GAP-CONVERSION-UNPROVEN",
+    "GAP-QNAME-NET-UNCONNECTED",
+    "GAP-BACKFILL-MISSING"
+  ],
+  "new_artifacts_created": [
+    ".governance/lanes/lane-contracts.yaml",
+    "registry/gate-states.yaml",
+    "tools/supervisor/governance_validators_ext4.py (V171 added)",
+    "tests/supervisor/test_lane_contracts.py (9 PASS)",
+    "tests/supervisor/test_gate11_state_contract.py (8 PASS)",
+    "tools/supervisor/autonomous_cycle.py (evaluate_gate11_readiness added)"
+  ],
+  "mr_gates_addressed": {
+    "MR-5": "PASS",
+    "MR-6": "PASS",
+    "MR-7": "PASS",
+    "MR-8": "PASS",
+    "MR-9": "PASS",
+    "MR-10": "PASS",
+    "MR-11": "CLOSED (TC-GFB-021)",
+    "MR-12": "CLOSED (TC-GFB-022)"
+  },
+  "tcs_not_executed_batch_a": [
+    "TC-GFB-023", "TC-GFB-024", "TC-GFB-030", "TC-GFB-031", "TC-GFB-032",
+    "TC-GFB-033", "TC-GFB-034", "TC-GFB-035", "TC-GFB-036", "TC-GFB-037",
+    "TC-GFB-038", "TC-GFB-039", "TC-GFB-040", "TC-GFB-041"
+  ],
+  "batch_b_prerequisite": "ET-W4-009"
+}

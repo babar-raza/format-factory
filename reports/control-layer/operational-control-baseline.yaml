@@ -1,0 +1,46 @@
+mission_id: FF-CTRL-OCRD-001
+generated_at: "2026-07-12T00:00:00+00:00"
+taskcard: TC-OCRD-C1-01
+
+repository_root: "."
+branch: main
+head_commit: 8192b723ecfb436e4bdc7cfe99cacbb9ec508e0a
+
+source_roots:
+  - tools/supervisor/
+  - tools/supervisor/control_index/
+  - tools/supervisor/control_index/ingestors/
+
+schema_roots:
+  - tools/supervisor/control_index/schema.sql
+
+existing_databases:
+  - path: .local/supervisor/control-index.db
+    engine: SQLite+FTS5
+    schema_version: 3
+    description: Control-index overlay DB rebuilt from canonical sources
+
+existing_control_layer_candidates:
+  - control_index_db
+  - continuation_signal
+  - plan_lock_system
+  - gap_ledger
+  - layer_plan_system
+  - reports_system
+  - governance_validators
+  - skill_registry
+  - capability_registry
+  - format_registry
+  - oracle_system
+  - evidence_system
+  - qname_registry
+  - supervisor_pipeline
+
+state_directories:
+  - .local/supervisor/
+  - reports/supervisor/
+
+policy_files:
+  - .supervisor/policies.yaml
+  - AGENTS.md
+  - CLAUDE.md

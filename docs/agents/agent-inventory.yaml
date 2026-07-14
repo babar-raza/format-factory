@@ -1,0 +1,574 @@
+agent_inventory_version: '1.0'
+generated_by: TC-ACP-007-03
+date: '2026-07-13'
+implementations:
+- agent: claude
+  capability_id: RC-001
+  name: read_repository_files
+  implementation_path: Session Start Â§Read session-resume.md + Â§Mandatory Plan Files
+  mechanism: Read tool is primary; bash cat is forbidden
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-002
+  name: write_repository_files
+  implementation_path: Â§Sprint Closeout step 1 (evidence declaration)
+  mechanism: Write/Edit tools; echo/cat redirects forbidden
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-003
+  name: execute_shell_commands
+  implementation_path: Â§Supreme Directive + Â§Sprint Closeout steps 2-4
+  mechanism: Bash tool; exit code handling per Supreme Directive
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-004
+  name: load_instruction_files
+  implementation_path: Â§Session Start (MANDATORY) Step 0 + Â§Mandatory Plan Files
+  mechanism: CLAUDE.md + AGENTS.md + plan file must be read at session start
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-005
+  name: parse_skill_registry
+  implementation_path: CAPABILITY-INDEX in CLAUDE.md + .supervisor/skill-registry.yaml
+  mechanism: Skill registry read before any skill invocation; enforce-skill-first-execution
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-006
+  name: validate_declarations
+  implementation_path: Â§Sprint Closeout step 1b
+  mechanism: sprint_executor_validate.py --repair before autonomous_cycle.py
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-007
+  name: run_governance_validators
+  implementation_path: Â§GOV_BLOCK Exception (BINDING)
+  mechanism: governance_validator_runner.py; named validators cause STOP not CONTINUE
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-008
+  name: invoke_pre_mutation_guard
+  implementation_path: Â§Governance (always applies)
+  mechanism: pre_mutation_guard.py; EP-007 pre-commit hook (TC-ACP-006)
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-009
+  name: parse_capability_registry
+  implementation_path: CAPABILITY-INDEX in CLAUDE.md (auto-generated)
+  mechanism: sync-capabilities regenerates index after every registry update
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-010
+  name: generate_evidence_declarations
+  implementation_path: Â§Sprint Closeout step 1 (write evidence declaration)
+  mechanism: .local/evidences/<run_id>/evidence-declaration.yaml with all required
+    fields
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-011
+  name: read_gap_ledger
+  implementation_path: Â§After Reading session-resume.md + Â§autonomous-continuation
+  mechanism: gap-ledger.json read during Step 3a-pre2 in autonomous_cycle.py
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-012
+  name: run_tests
+  implementation_path: Â§Sprint Closeout step 1 (test_results fields)
+  mechanism: .venv/Scripts/pytest; real counts required
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-013
+  name: commit_to_git
+  implementation_path: Â§Hard Stops Â§Git commit
+  mechanism: SCM Agent policy; AGENTS.md Â§AG4; pre-commit hook must pass
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-014
+  name: push_to_remote
+  implementation_path: Â§Hard Stops Â§Git push
+  mechanism: Token-authenticated HTTPS; verified push commands (2026-07-03)
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-015
+  name: run_autonomous_cycle
+  implementation_path: Â§Sprint Closeout step 2
+  mechanism: autonomous_cycle.py --declaration; exit codes 0/3/1/9 handled
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-016
+  name: invoke_skills_by_name
+  implementation_path: Â§Supreme Directive Â§Per-chat plan precedence
+  mechanism: Skill tool; skill_invocation_transcript_required=true enforces it
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-017
+  name: enforce_skill_first_policy
+  implementation_path: CLAUDE.md GOV_BLOCK Exception + Â§Governance (always applies)
+  mechanism: pre-commit hook; enforce-skill-first-execution composite (SKILL-FIRST-003)
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-018
+  name: load_session_state
+  implementation_path: Â§Session Start (MANDATORY) + Â§Cross-Chat Continuation Isolation
+  mechanism: session-resume.md + .local/supervisor/ state files at session start
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-019
+  name: read_governance_docs
+  implementation_path: Â§Mandatory Plan Files
+  mechanism: All files in plans/ root + active plan + CLAUDE.md + AGENTS.md
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-020
+  name: parse_capability_routing_registry
+  implementation_path: CAPABILITY-INDEX Â§agent_surfaces.ci
+  mechanism: build-capability-routes skill; capability-routing-registry.yaml
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-021
+  name: generate_sprint_prompt
+  implementation_path: Â§Autonomous Continuation (check_continuation.py)
+  mechanism: next-sprint.md + next-work-items.json; per-chat plan overrides
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: claude
+  capability_id: RC-022
+  name: multi_sprint_autonomous_loop
+  implementation_path: 'Â§Supreme Directive: Autonomous Execution Never Stops'
+  mechanism: check_continuation.py verdict=CONTINUE; MAX_ITERATIONS reset not stop
+  current_status: COMPLETE_VERIFIED
+  runtime_verified: true
+  limitations: []
+  gaps: []
+- agent: codex
+  capability_id: RC-001
+  name: read_repository_files
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-002
+  name: write_repository_files
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-003
+  name: execute_shell_commands
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-004
+  name: load_instruction_files
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: no skill dispatch mechanism (RC-016) or KILO.md missing
+  gaps:
+  - TC-ACP-008 pending Codex instantiation
+  limitations:
+  - No native CLAUDE.md awareness; codex-adapter.md is the entry point (RC-004 BLOCKED
+    for Codex per TC-ACP-008)
+  mechanism: Read AGENTS.md at session start; codex-instructions.md is the explicit
+    entry point
+- agent: codex
+  capability_id: RC-005
+  name: parse_skill_registry
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-006
+  name: validate_declarations
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-007
+  name: run_governance_validators
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-008
+  name: invoke_pre_mutation_guard
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-009
+  name: parse_capability_registry
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-010
+  name: generate_evidence_declarations
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-011
+  name: read_gap_ledger
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-012
+  name: run_tests
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-013
+  name: commit_to_git
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-014
+  name: push_to_remote
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-015
+  name: run_autonomous_cycle
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-016
+  name: invoke_skills_by_name
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: no skill dispatch mechanism (RC-016) or KILO.md missing
+  gaps:
+  - TC-ACP-008 pending Codex instantiation
+  limitations:
+  - 'RC-016 BLOCKED for codex: see agent-inventory.yaml TC-ACP entry'
+- agent: codex
+  capability_id: RC-017
+  name: enforce_skill_first_policy
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: no skill dispatch mechanism (RC-016) or KILO.md missing
+  gaps:
+  - TC-ACP-008 pending Codex instantiation
+  limitations:
+  - 'RC-017 BLOCKED for codex: see agent-inventory.yaml TC-ACP entry'
+- agent: codex
+  capability_id: RC-018
+  name: load_session_state
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-019
+  name: read_governance_docs
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-020
+  name: parse_capability_routing_registry
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-021
+  name: generate_sprint_prompt
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: codex
+  capability_id: RC-022
+  name: multi_sprint_autonomous_loop
+  current_status: COMPLETE_UNVERIFIED
+  runtime_verified: false
+  limitations:
+  - Codex not yet instantiated; no live run evidence
+  gaps: []
+- agent: kilo
+  capability_id: RC-001
+  name: read_repository_files
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-002
+  name: write_repository_files
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-003
+  name: execute_shell_commands
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-004
+  name: load_instruction_files
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: platform capabilities unconfirmed; KILO.md does not exist
+  gaps:
+  - TC-ACP-009 pending Kilo platform investigation
+  limitations:
+  - .kilo/KILO.md created but no confirmed instruction file loading path in Kilo platform
+    (RC-004 BLOCKED for Kilo per TC-ACP-009)
+  mechanism: Unknown; .kilo/KILO.md created but loading behavior unconfirmed
+- agent: kilo
+  capability_id: RC-005
+  name: parse_skill_registry
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-006
+  name: validate_declarations
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-007
+  name: run_governance_validators
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-008
+  name: invoke_pre_mutation_guard
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-009
+  name: parse_capability_registry
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-010
+  name: generate_evidence_declarations
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-011
+  name: read_gap_ledger
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-012
+  name: run_tests
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-013
+  name: commit_to_git
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-014
+  name: push_to_remote
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-015
+  name: run_autonomous_cycle
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-016
+  name: invoke_skills_by_name
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: platform capabilities unconfirmed; KILO.md does not exist
+  gaps:
+  - TC-ACP-009 pending Kilo platform investigation
+  limitations:
+  - 'RC-016 BLOCKED for kilo: see agent-inventory.yaml TC-ACP entry'
+- agent: kilo
+  capability_id: RC-017
+  name: enforce_skill_first_policy
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: platform capabilities unconfirmed; KILO.md does not exist
+  gaps:
+  - TC-ACP-009 pending Kilo platform investigation
+  limitations:
+  - 'RC-017 BLOCKED for kilo: see agent-inventory.yaml TC-ACP entry'
+- agent: kilo
+  capability_id: RC-018
+  name: load_session_state
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-019
+  name: read_governance_docs
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-020
+  name: parse_capability_routing_registry
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-021
+  name: generate_sprint_prompt
+  current_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+  runtime_verified: false
+  limitations:
+  - Kilo platform capabilities not confirmed per TC-ACP-001
+  gaps: []
+- agent: kilo
+  capability_id: RC-022
+  name: multi_sprint_autonomous_loop
+  current_status: BLOCKED
+  runtime_verified: false
+  block_reason: platform capabilities unconfirmed; KILO.md does not exist
+  gaps:
+  - TC-ACP-009 pending Kilo platform investigation
+  limitations:
+  - 'RC-022 BLOCKED for kilo: see agent-inventory.yaml TC-ACP entry'

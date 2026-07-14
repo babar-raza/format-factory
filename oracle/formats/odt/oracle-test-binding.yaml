@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-odt-test-binding-v1
+format_id: odt
+oracle_package: oracle/formats/odt/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: odt.odt_parser
+executor_callable: parse_odt
+bound_test_files:
+- tests/python/odt/test_odt_gate6_oracle.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: odt-valid-001
+  bound: true
+  test_function: test_odt_oracle_valid_cases
+- case_id: odt-valid-002
+  bound: true
+  test_function: test_odt_oracle_valid_cases
+- case_id: odt-valid-003
+  bound: true
+  test_function: test_odt_oracle_valid_cases
+- case_id: odt-valid-d2-schema
+  bound: true
+  test_function: test_odt_oracle_valid_cases
+- case_id: odt-invalid-001
+  bound: true
+  test_function: test_odt_oracle_invalid_cases
+binding_verdict: BOUND

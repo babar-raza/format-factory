@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W3-005",
+  "workstream_id": "WS-26-ORACLE-HARDENING-2",
+  "objective": "Execute oracle hardening Phase II per modular-noodling-galaxy (first 32 TCs)",
+  "source_plan_ids": [
+    "s031"
+  ],
+  "source_task_ids": [
+    "TC-MNG-001",
+    "TC-MNG-002",
+    "TC-MNG-003",
+    "TC-MNG-004",
+    "TC-MNG-005",
+    "TC-MNG-006",
+    "TC-MNG-007",
+    "TC-MNG-008",
+    "TC-MNG-009",
+    "TC-MNG-010",
+    "TC-MNG-011",
+    "TC-MNG-012",
+    "TC-MNG-013",
+    "TC-MNG-014",
+    "TC-MNG-015",
+    "TC-MNG-016",
+    "TC-MNG-017",
+    "TC-MNG-018",
+    "TC-MNG-019",
+    "TC-MNG-020",
+    "TC-MNG-021",
+    "TC-MNG-022",
+    "TC-MNG-023",
+    "TC-MNG-024",
+    "TC-MNG-025",
+    "TC-MNG-026",
+    "TC-MNG-027",
+    "TC-MNG-028",
+    "TC-MNG-029",
+    "TC-MNG-030",
+    "TC-MNG-031",
+    "TC-MNG-032"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-004"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L07",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read modular-noodling-galaxy.md (s031) completely",
+    "Execute TCs 1-32 in order",
+    "For each TC: implement, verify oracle cases pass, record evidence",
+    "Write evidence/raw/ET-W3-005/oracle-h2-batch-a-results.json"
+  ],
+  "acceptance_criteria": [
+    "TCs 1-32 in s031 have final disposition",
+    "Oracle hardening phase II batch A complete"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python tools/supervisor/execute_oracle.py --all-formats 2>&1 | tail -10"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 3,
+  "status": "CLOSED",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W3-005-65571C9F",
+  "claimed_at": null,
+  "closed_at": "2026-07-11T12:08:28.496314+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

@@ -1,0 +1,25 @@
+oracle_test_binding_id: oracle-ppm-test-binding-v1
+format_id: ppm
+oracle_package: oracle/formats/ppm/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: ppm.ppm_parser
+executor_callable: parse_ppm
+bound_test_files:
+- tests/python/ppm/test_ppm_gate6_oracle.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: ppm-valid-001
+  bound: true
+  test_function: test_ppm_oracle_valid_cases
+- case_id: ppm-valid-002
+  bound: true
+  test_function: test_ppm_oracle_valid_cases
+- case_id: ppm-valid-003
+  bound: true
+  test_function: test_ppm_oracle_valid_cases
+- case_id: ppm-invalid-001
+  bound: true
+  test_function: test_ppm_oracle_invalid_cases
+binding_verdict: BOUND

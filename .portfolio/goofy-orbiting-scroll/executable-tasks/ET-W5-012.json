@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-012",
+  "workstream_id": "WS-11-GOVERNANCE-SUITE-BATCH2",
+  "objective": "Execute warm-enchanting-grove: all 49 TCs",
+  "source_plan_ids": [
+    "s015"
+  ],
+  "source_task_ids": [
+    "TC-WEG-001",
+    "TC-WEG-002",
+    "TC-WEG-003",
+    "TC-WEG-004",
+    "TC-WEG-005",
+    "TC-WEG-006",
+    "TC-WEG-007",
+    "TC-WEG-008",
+    "TC-WEG-009",
+    "TC-WEG-010",
+    "TC-WEG-011",
+    "TC-WEG-012",
+    "TC-WEG-013",
+    "TC-WEG-014",
+    "TC-WEG-015",
+    "TC-WEG-016",
+    "TC-WEG-017",
+    "TC-WEG-018",
+    "TC-WEG-019",
+    "TC-WEG-020",
+    "TC-WEG-021",
+    "TC-WEG-022",
+    "TC-WEG-023",
+    "TC-WEG-024",
+    "TC-WEG-025",
+    "TC-WEG-026",
+    "TC-WEG-027",
+    "TC-WEG-028",
+    "TC-WEG-029",
+    "TC-WEG-030",
+    "TC-WEG-031",
+    "TC-WEG-032",
+    "TC-WEG-033",
+    "TC-WEG-034",
+    "TC-WEG-035",
+    "TC-WEG-036",
+    "TC-WEG-037",
+    "TC-WEG-038",
+    "TC-WEG-039",
+    "TC-WEG-040",
+    "TC-WEG-041",
+    "TC-WEG-042",
+    "TC-WEG-043",
+    "TC-WEG-044",
+    "TC-WEG-045",
+    "TC-WEG-046",
+    "TC-WEG-047",
+    "TC-WEG-048",
+    "TC-WEG-049"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W1-001"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read warm-enchanting-grove.md (s015) and execute all 49 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 49 TCs in s015 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

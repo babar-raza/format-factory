@@ -1,0 +1,63 @@
+audit_date: "2026-07-13"
+plan: peppy-crafting-lark (MCP-W5-006)
+plan_id: MCP-W5-006
+
+fodt_d2_proven: true
+fods_d2_proven: true
+lane_counter_functional: true
+starvation_tested: true
+dom_gaps_in_ledger: true
+sprint_loop_lane_aware: true
+
+evidence:
+  fodt_d2_test: tests/python/fodt/test_fodt_dom_d2_mutation.py (2/2 PASS)
+  fods_d2_test: tests/python/fods/test_fods_dom_d2_mutation.py (2/2 PASS)
+  lane_counter_tests: tests/supervisor/test_lane_counter_update.py (5/5 PASS)
+  starvation_test: python tools/supervisor/lane_selector.py --format fods (lane_a=3→dom, lane_b=3→feature)
+  dom_gaps: reports/capability-layer/gap-ledger.json (12 lane B gaps)
+  lane_advisory: generate_next_worker_prompt._build_lane_selection_section (verified in TC-PCL-008-02)
+
+regression_check:
+  fods_suite: "1772 passed, 8 skipped"
+  fodt_suite: "2 passed (d2 test file)"
+  supervisor_suite: running (background)
+  governance_validators: "205 validators, 0 FAIL, 23 WARN"
+
+fixes_delivered:
+  - FodsDocument.to_file() alias (src/python/fods/models.py)
+  - FodsSheet.cell_at() bug fix for dict-row format (src/python/fods/models.py)
+  - FodtDocument.to_file() alias (src/python/fodt/models.py)
+  - FodtParagraph.set_text() mutation method (src/python/fodt/models.py)
+  - Paragraph.set_text() spec class (src/python/fodt/spec/text/paragraph.py)
+  - dom_maturity_promoter.py Windows cmd.exe pytest path normalization
+  - update_lane_counters() Python-runtime preference fix (autonomous_cycle_extensions/__init__.py)
+  - policies.yaml dom_d2_contract mutation_roundtrip fields (TC-PCL-005-04)
+
+new_tools:
+  - tools/supervisor/dom_gap_generator.py (TC-PCL-001)
+  - generate_next_worker_prompt._compute_lane_decisions (TC-PCL-002)
+  - generate_next_worker_prompt._build_lane_selection_section (TC-PCL-002)
+  - generate_next_worker_prompt._order_gaps_by_lane_decision (TC-PCL-002)
+  - dom_maturity_promoter.load_dom_proofs, run_proof, assess_dom_maturity (TC-PCL-003)
+  - dom_maturity_promoter._normalize_test_command (Windows fix)
+
+new_tests:
+  - tests/python/fods/test_fods_dom_d2_mutation.py (2 tests)
+  - tests/python/fodt/test_fodt_dom_d2_mutation.py (2 tests)
+  - tests/supervisor/test_dom_gap_generator.py (9 tests)
+  - tests/supervisor/test_sprint_generation_uses_lane_selector.py (6 tests)
+  - tests/supervisor/test_dom_maturity_promoter.py (11 tests)
+  - tests/supervisor/test_lane_counter_update.py (5 tests)
+  - tests/supervisor/test_lane_pipeline_integration.py (7 tests)
+
+new_proof_files:
+  - .supervisor/dom-proofs/fods.yaml
+  - .supervisor/dom-proofs/fodt.yaml
+  - .supervisor/dom-proofs/ods.yaml
+  - .supervisor/dom-proofs/odt.yaml
+  - .supervisor/dom-proofs/fodp.yaml
+  - .supervisor/dom-proofs/fodg.yaml
+  - .supervisor/dom-proofs/abw.yaml
+  - .supervisor/dom-proofs/gnumeric.yaml
+
+verdict: AUDIT_PASS

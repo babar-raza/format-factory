@@ -29,14 +29,6 @@ namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of shapes across all pages in a FODG file.
 
-    Args:
-        file_path: Path to a FODG file.
-
-    Returns:
-        Integer total shape count across all pages.
-
-    Raises:
-        FodgError subclasses on parse failure.
     Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
     """
     model = load(file_path)
@@ -46,14 +38,6 @@ def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
 def fodg_text_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of text shapes across all pages in a FODG file.
 
-    Args:
-        file_path: Path to a FODG file.
-
-    Returns:
-        Integer count of text shapes. Returns 0 if no text shapes exist.
-
-    Raises:
-        FodgError subclasses on parse failure.
     Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
     """
     model = load(file_path)

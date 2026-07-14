@@ -1,0 +1,213 @@
+mission_id: FF-CTRL-OCRD-001
+generated_at: "2026-07-12T00:00:00+00:00"
+taskcard: TC-OCRD-C1-04
+
+control_feature_consumers:
+
+  cif-001:
+    feature_name: FTS5 Full-Text Search
+    consumers:
+      - consumer_id: query_cli_search
+        consumer_type: cli_tool
+        consumer_path: tools/supervisor/control_index/query.py
+        invocation: "python -m tools.supervisor.control_index.query search \"<query>\""
+
+  cif-002:
+    feature_name: Gap Attempts Exhausted-Gap Filter
+    consumers:
+      - consumer_id: capability_queue_consumer
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/capability_queue_consumer.py
+        invocation: "python tools/supervisor/capability_queue_consumer.py (called by autonomous_cycle.py)"
+      - consumer_id: generate_exhausted_gaps
+        consumer_type: cli_tool
+        consumer_path: tools/supervisor/generate_exhausted_gaps.py
+        invocation: "python tools/supervisor/generate_exhausted_gaps.py"
+
+  cif-003:
+    feature_name: Staleness Detection
+    consumers:
+      - consumer_id: sync_all
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/control_index/sync.py
+        invocation: "python -m tools.supervisor.control_index sync (runs after each ingest cycle)"
+      - consumer_id: check_continuation
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/check_continuation.py
+        invocation: "python tools/supervisor/check_continuation.py (reads last-sync-report.json)"
+
+  cif-004:
+    feature_name: SAVEPOINT Per-Ingestor Transaction Isolation
+    consumers:
+      - consumer_id: sync_all_loop
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/control_index/sync.py
+        invocation: "sync_all() called internally by autonomous_cycle.py --sync-index"
+
+  cif-005:
+    feature_name: Schema Migration Framework
+    consumers:
+      - consumer_id: init_db
+        consumer_type: infrastructure
+        consumer_path: tools/supervisor/control_index/db.py
+        invocation: "init_db(db_path) — called at startup or via CLI init subcommand"
+      - consumer_id: control_index_cli
+        consumer_type: cli_tool
+        consumer_path: tools/supervisor/control_index/__main__.py
+        invocation: "python -m tools.supervisor.control_index init"
+
+  cif-006:
+    feature_name: Format Gap Dashboard Query
+    consumers:
+      - consumer_id: query_cli_format
+        consumer_type: cli_tool
+        consumer_path: tools/supervisor/control_index/query.py
+        invocation: "python -m tools.supervisor.control_index.query format <format_id>"
+
+  csf-001:
+    feature_name: CONTINUE/STOP Verdict
+    consumers:
+      - consumer_id: claude_code_session_start
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "python tools/supervisor/check_continuation.py (step in sprint closeout)"
+      - consumer_id: autonomous_cycle
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/autonomous_cycle.py
+        invocation: "check_continuation.py output consumed after sprint closeout"
+
+  csf-002:
+    feature_name: Session-ID Cross-Chat Isolation
+    consumers:
+      - consumer_id: autonomous_cycle_signal_writer
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/autonomous_cycle.py
+        invocation: "writes session_id into continuation-signal.json after each cycle"
+      - consumer_id: check_continuation_reader
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/check_continuation.py
+        invocation: "reads session_id; returns SESSION_MISMATCH if differs"
+
+  csf-003:
+    feature_name: Contradiction Warnings Emission
+    consumers:
+      - consumer_id: claude_code_continuation
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "reads contradiction_warnings from check_continuation.py JSON output"
+
+  csf-004:
+    feature_name: Control Index Warnings Emission
+    consumers:
+      - consumer_id: claude_code_continuation
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "reads control_index_warnings from check_continuation.py JSON output"
+
+  plf-001:
+    feature_name: Plan Lock Write / Read
+    consumers:
+      - consumer_id: claude_code_step0
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "python tools/supervisor/write_plan_lock.py --plan-path <path>"
+      - consumer_id: check_continuation_lock_check
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/check_continuation.py
+        invocation: "reads plan-locks/*.json to detect ACTIVE_PLAN_INCOMPLETE"
+
+  plf-002:
+    feature_name: TERMINAL_CLOSED Post-Plan Stop
+    consumers:
+      - consumer_id: claude_code_plan_completion
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "python tools/supervisor/write_plan_lock.py --plan-path <path> --terminal"
+
+  plf-003:
+    feature_name: Audit-Gate Closure
+    consumers:
+      - consumer_id: claude_code_machinery_plan_closure
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "python tools/supervisor/write_plan_lock.py --plan-path <path> --terminal --audit-gate"
+
+  glf-001:
+    feature_name: Gap Selection with Priority Ordering
+    consumers:
+      - consumer_id: autonomous_cycle_gap_select
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/autonomous_cycle.py
+        invocation: "capability_queue_consumer.py called during gap deepening phase"
+
+  glf-002:
+    feature_name: Exhausted Gap Suppression
+    consumers:
+      - consumer_id: load_foss_gaps
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/capability_queue_consumer.py
+        invocation: "get_exhausted_gaps() called inside load_foss_gaps() when DB available"
+
+  gvf-001:
+    feature_name: 170 Named Validators
+    consumers:
+      - consumer_id: autonomous_cycle_governance
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/autonomous_cycle.py
+        invocation: "governance_validator_runner.py run inside sprint closeout"
+      - consumer_id: ci_pipeline
+        consumer_type: ci
+        consumer_path: .github/workflows/ci.yml
+        invocation: "pytest tests/supervisor/test_governance_validators.py"
+
+  gvf-002:
+    feature_name: GOV_BLOCK Structural Failure Escalation
+    consumers:
+      - consumer_id: check_continuation_govblock
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/check_continuation.py
+        invocation: "check_continuation.py reads rework_items; returns STOP on GOV_BLOCK"
+
+  gvf-003:
+    feature_name: Skill Receipt Presence Validator
+    consumers:
+      - consumer_id: governance_runner
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/governance_validators_runner.py
+        invocation: "validate_skill_receipt_presence() called as V-SGF-002"
+
+  osf-001:
+    feature_name: Format Oracle Execution
+    consumers:
+      - consumer_id: gate_executor
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/gate_executor.py
+        invocation: "execute_oracle.py called for G2 gate assessment"
+      - consumer_id: ci_oracle
+        consumer_type: ci
+        consumer_path: .github/workflows/ci.yml
+        invocation: "run-oracle skill executed in CI"
+
+  osf-002:
+    feature_name: ODF RelaxNG Validation (D2)
+    consumers:
+      - consumer_id: execute_oracle_fods
+        consumer_type: pipeline_tool
+        consumer_path: tools/oracle/execute_oracle.py
+        invocation: "validate_odf_schema() called for FODS oracle D2 case"
+
+  esf-001:
+    feature_name: Declaration Schema Validation + --repair
+    consumers:
+      - consumer_id: sprint_closeout
+        consumer_type: agent_policy
+        consumer_path: CLAUDE.md
+        invocation: "python tools/supervisor/sprint_executor_validate.py <decl> --repair"
+
+  esf-002:
+    feature_name: AST Test Count Spot-Check
+    consumers:
+      - consumer_id: inspect_declared_evidence
+        consumer_type: pipeline_tool
+        consumer_path: tools/supervisor/inspect_declared_evidence.py
+        invocation: "spot_check_test_count() called inside inspect_declaration()"

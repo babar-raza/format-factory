@@ -13,7 +13,7 @@ layer_metadata:
   health: HEALTHY
   maturity_current: 4
   maturity_target: 5
-  current_stage: OPERATIONAL_HARDENING
+  current_stage: PRODUCTION_VERIFIED
   current_owner: null
   agent_type: null
   session_id: 923e237958c1
@@ -41,12 +41,13 @@ layer_metadata:
   - oracle/formats/fods/reports/oracle-run-summary.json
   last_started_at: null
   last_progress_at: '2026-06-26'
-  last_updated_at: '2026-06-29'
-  last_verified_at: '2026-06-26'
-  last_verified_revision: a7744cf6
+  last_updated_at: '2026-07-12'
+  last_verified_at: '2026-07-12'
+  last_verified_revision: 8192b723
   next_task_id: TC-ORC-004
   next_action: Add oracle cases for ora/pam/xpm/zpaq once products exist; refactor
     execute_oracle.py (at LOC cap)
+  level_5_gap: "D3 depth for non-ODF formats; .NET oracle executor missing"
   handoff_id: null
 ```
 

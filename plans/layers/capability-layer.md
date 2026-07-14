@@ -9,11 +9,11 @@ layer_metadata:
   schema_version: '1.0'
   plan_revision: '2'
   repository_revision: a7744cf6
-  status: HARDENING_REQUIRED
-  health: DEGRADED
-  maturity_current: 3
+  status: HARDENING_IN_PROGRESS
+  health: HARDENING_IN_PROGRESS
+  maturity_current: 4
   maturity_target: 5
-  current_stage: GRAPH_REPAIR
+  current_stage: AUTHORITY_DOCUMENTED
   current_owner: null
   session_id: 923e237958c1
   active_taskcards: []
@@ -282,11 +282,14 @@ Verification required after repository application:
 ```yaml
 layer_session_handoff:
   layer_id: L03
-  handoff_date: "2026-06-29"
-  status: "HARDENING_REQUIRED"
-  health: "DEGRADED"
-  next_task_id: "TC-CAP-001"
-  next_action: "Wire gap ledger to task generation and rebuild capabilities from SAL/obligation facts, not from POC target prose."
+  handoff_date: "2026-07-11"
+  status: "HARDENING_IN_PROGRESS"
+  health: "HARDENING_IN_PROGRESS"
+  next_task_id: "TC-CL-005"
+  next_action: |
+    TC-CL-001 CLOSED: example_verified bug fixed (0 false positives). TC-CL-002 CLOSED: VAL-009 PASS.
+    TC-CL-003 CLOSED: SAL compiler integrated, authority_class field added. TC-CL-004 CLOSED: two-track boundary documented.
+    TC-CL-005 remaining: gap closure detection. TC-CL-006: fallback auditability. TC-CL-007: final validation.
 ```
 
 ## 37. Exact Next Actions

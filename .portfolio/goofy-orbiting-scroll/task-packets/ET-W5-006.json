@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-006",
+  "workstream_id": "WS-33-EFFERVESCENT-MARSHMALLOW",
+  "objective": "Verify TERMINAL_CLOSED disposition for effervescent-sprouting-marshmallow TCs (self-declared done)",
+  "source_plan_ids": [
+    "s039"
+  ],
+  "source_task_ids": [
+    "TC-ESM-001",
+    "TC-ESM-002",
+    "TC-ESM-003",
+    "TC-ESM-004",
+    "TC-ESM-005",
+    "TC-ESM-006",
+    "TC-ESM-007",
+    "TC-ESM-008",
+    "TC-ESM-009",
+    "TC-ESM-010",
+    "TC-ESM-011",
+    "TC-ESM-012",
+    "TC-ESM-013",
+    "TC-ESM-014",
+    "TC-ESM-015",
+    "TC-ESM-016"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 16 TCs in s039 individually verified",
+    "Any TCs not actually done are re-opened"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [],
+  "allowed_mutation_scope": [],
+  "forbidden_paths": [],
+  "required_locks": [],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read effervescent-sprouting-marshmallow.md (s039)",
+    "Verify each of 16 TCs is genuinely complete",
+    "Write evidence/raw/ET-W5-006/esm-verification.json"
+  ],
+  "focused_validation": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W5-006/esm-verification.json"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "fc2a0c2b94cbe32e91ebdef3b6c00695b57427a4e22bc1f782326157fb2196b4"
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "governed-artifact.schema.json",
+  "title": "GovernedArtifact",
+  "description": "A file or schema artifact under governance control with lifecycle status tracking.",
+  "type": "object",
+  "required": ["artifact_id", "path", "artifact_type", "status", "registered_at"],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "description": "Stable identifier for this artifact (e.g. GA-001)."
+    },
+    "path": {
+      "type": "string",
+      "description": "Repo-relative path to the artifact."
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": ["schema", "plan", "registry", "report", "tool", "test", "config", "other"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "ACTIVE",
+        "DEPRECATED",
+        "SUPERSEDED",
+        "WITHDRAWN",
+        "ARCHIVED",
+        "BLOCKED",
+        "TERMINAL_CLOSED"
+      ]
+    },
+    "sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_validated_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "owner": {
+      "type": ["string", "null"],
+      "description": "Team or agent responsible for this artifact."
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "description": "artifact_id of the artifact that supersedes this one."
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

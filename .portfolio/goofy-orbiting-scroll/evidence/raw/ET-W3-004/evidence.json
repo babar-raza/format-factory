@@ -1,0 +1,88 @@
+{
+  "task_id": "ET-W3-004",
+  "wave": "W3",
+  "source_plan": "mutable-exploring-hellman.md (s007)",
+  "audit_type": "code_quality_governance_audit",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "source_plan_mission_id": "CQGA-002",
+  "loc_audit": {
+    "total_violations": 14,
+    "known_violations": 14,
+    "new_violations": 0,
+    "top_by_loc": [
+      {
+        "file": "src/python/fods/fods_analytics.py",
+        "loc": 1103,
+        "functions": 30,
+        "status": "KNOWN"
+      },
+      {
+        "file": "src/python/zst/zst_codec.py",
+        "loc": 1073,
+        "functions": 25,
+        "status": "KNOWN"
+      },
+      {
+        "file": "src/python/abw/word_document.py",
+        "loc": 1051,
+        "functions": 101,
+        "status": "KNOWN"
+      },
+      {
+        "file": "src/python/ods/ods_analytics.py",
+        "loc": 1000,
+        "functions": 60,
+        "status": "KNOWN"
+      },
+      {
+        "file": "src/python/dif/interchange_document.py",
+        "loc": 995,
+        "functions": 65,
+        "status": "KNOWN"
+      }
+    ]
+  },
+  "analytics_separation": {
+    "product_files_with_analytics_patterns": 27,
+    "note": "Pattern match only \u2014 most are legitimate (e.g., abw_word_stats.py is a stats file by design). Full per-file investigation deferred to Wave 4 (CQGA-002 Phase C repairs)."
+  },
+  "governance_validator_count": {
+    "ran_count": 169,
+    "expected_count": 169,
+    "result": "PASS"
+  },
+  "findings_summary": {
+    "severity": "LOW",
+    "new_violations_introduced": 0,
+    "all_loc_violations_are_known_grandfathered": true,
+    "analytics_separation_needs_deeper_review": true
+  },
+  "repair_plan_priority": [
+    {
+      "priority": 1,
+      "action": "TC-FGSQ-001: Build method ledger adapting to 7 new partial-class files (ExtendedApis.cs decomposed in be99a03b)",
+      "wave": "W4"
+    },
+    {
+      "priority": 2,
+      "action": "TC-FGSQ-015: GetSheetRightToLeft NSE conversion + test update (5 tests need updating)",
+      "wave": "W4"
+    },
+    {
+      "priority": 3,
+      "action": "TC-FGSQ-008: Sprint validator roundtrip proof requirement for PERSISTENT_PROPERTY items",
+      "wave": "W4"
+    },
+    {
+      "priority": 4,
+      "action": "TC-FGSQ-007: Oracle D1 data_source=parsed declaration requirement",
+      "wave": "W4"
+    },
+    {
+      "priority": 5,
+      "action": "CQGA-002 Phase C: Known violation files with LOC reduction via extraction",
+      "wave": "W5"
+    }
+  ],
+  "no_regressions": true
+}

@@ -1,0 +1,30 @@
+{
+  "task_id": "ET-W1-001",
+  "audit_date": "2026-07-11",
+  "fix_applied": {
+    "file": ".supervisor/knowledge/contracts/python-domain-model.yaml",
+    "change": "Updated source_hashes for KC-PYTHON-001",
+    "old_hashes": {
+      "src/python/csv/models.py": "830f30b08a092c6180b3355ef0f24fd6b0d55615e7fb257a7b41c83dfb6231f1",
+      "src/python/ndjson/models.py": "bb90ca72ae6716341c8bc0be7a6fe6813562099a2594753734a020377c31e2ee"
+    },
+    "new_hashes": {
+      "src/python/csv/models.py": "772dcb7d9a476cf011bcb1ed9a7a7ab4ea15fb3e31f83e6dc2908a3da77e3006",
+      "src/python/ndjson/models.py": "7aacc0d182b6795d386bf1fc0514bf88dd4db3887d9620faf0517305bd268345"
+    }
+  },
+  "post_fix_validation": {
+    "V68_knowledge_freshness": "PASS: 5 source hash(es) verified",
+    "total_validators": 167,
+    "PASS": 147,
+    "WARN": 20,
+    "FAIL": 0,
+    "blocks_sprint": false
+  },
+  "remaining_warns": {
+    "validate_source_architecture": "21 known LOC cap violations — write-once caps, require healing not cap raises",
+    "validate_spec_authority_class_completeness": "5 missing spec_qname classes — tracked in Wave 3 tasks",
+    "others": "Pre-existing non-blocking issues: readme freshness, plans root policy, capability fact ratio, root_structure_validator, playbook coverage, V103-V109 contract checks, dotnet LOC caps"
+  },
+  "verdict": "GOVERNANCE_WARN_REDUCED — V68 fixed. 0 FAIL. Remaining WARNs are all tracked and non-blocking."
+}

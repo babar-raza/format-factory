@@ -53,6 +53,22 @@ def run_drift() -> int:
         sys.argv = _orig
 
 
+def run_build_agent_bundles() -> int:
+    """Build agent bundles for codex and kilo (TC-ACP-005-04)."""
+    try:
+        from tools.agents import build_agent_bundle
+        for agent in ("codex", "kilo"):
+            out = _REPO / "docs" / "agents" / "bundles" / f"{agent}-bundle.yaml"
+            sys.argv = [sys.argv[0], "--agent", agent, "--output", str(out)]
+            rc = build_agent_bundle.main()
+            if rc != 0:
+                print(f"  WARNING: {agent} bundle generation failed (exit {rc})")
+        return 0
+    except Exception as exc:
+        print(f"  WARNING: agent bundle generation failed: {exc}")
+        return 0  # Best-effort — never blocks sync
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capability sync orchestrator")
     parser.add_argument(
@@ -92,6 +108,9 @@ def main() -> int:
 
         print("\n=== Step 5/5: Drift Check ===")
         codes.append(run_drift())
+
+        print("\n=== Step 6/6: Agent Bundle Generation (TC-ACP-005) ===")
+        codes.append(run_build_agent_bundles())
 
     overall = max(codes) if codes else 0
     print(f"\n=== Sync complete — exit {overall} ===")

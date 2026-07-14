@@ -1,0 +1,27 @@
+{
+  "task_id": "ET-W0-002",
+  "source_plan": "stateful-booping-mountain",
+  "finding": "tools/supervisor/plan_importer.py implemented (366 LOC) — fixes FF-PLIS-001 failure modes",
+  "failure_modes_fixed": [
+    "FF-PLIS-001-1: Session B overwrites Session A modified plan — fixed via hash-based registry idempotency",
+    "FF-PLIS-001-2: lifecycle_audit partial taskcard count — fixed via expected_taskcard_count embed",
+    "FF-PLIS-001-3: duplicate mission_ids silent conflict — fixed via active_missions index with SKIPPED_CONFLICT rejection"
+  ],
+  "test_results": {
+    "test_file": "tests/supervisor/test_plan_importer.py",
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "implementation_facts": {
+    "plan_path": "tools/supervisor/plan_importer.py",
+    "loc": 366,
+    "public_api": ["import_plan", "validate_plan", "register_plan"],
+    "cli_commands": ["--source", "--force", "--validate", "--register", "--status", "--rebuild"],
+    "registry_path": ".local/supervisor/plan-registry.json",
+    "idempotency_key": "sha256:<hash>",
+    "atomic_write": true
+  },
+  "recorded_at": "2026-07-11"
+}

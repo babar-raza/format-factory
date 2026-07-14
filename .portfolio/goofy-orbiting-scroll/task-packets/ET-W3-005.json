@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W3-005",
+  "workstream_id": "WS-26-ORACLE-HARDENING-2",
+  "objective": "Execute oracle hardening Phase II per modular-noodling-galaxy (first 32 TCs)",
+  "source_plan_ids": [
+    "s031"
+  ],
+  "source_task_ids": [
+    "TC-MNG-001",
+    "TC-MNG-002",
+    "TC-MNG-003",
+    "TC-MNG-004",
+    "TC-MNG-005",
+    "TC-MNG-006",
+    "TC-MNG-007",
+    "TC-MNG-008",
+    "TC-MNG-009",
+    "TC-MNG-010",
+    "TC-MNG-011",
+    "TC-MNG-012",
+    "TC-MNG-013",
+    "TC-MNG-014",
+    "TC-MNG-015",
+    "TC-MNG-016",
+    "TC-MNG-017",
+    "TC-MNG-018",
+    "TC-MNG-019",
+    "TC-MNG-020",
+    "TC-MNG-021",
+    "TC-MNG-022",
+    "TC-MNG-023",
+    "TC-MNG-024",
+    "TC-MNG-025",
+    "TC-MNG-026",
+    "TC-MNG-027",
+    "TC-MNG-028",
+    "TC-MNG-029",
+    "TC-MNG-030",
+    "TC-MNG-031",
+    "TC-MNG-032"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 1-32 in s031 have final disposition",
+    "Oracle hardening phase II batch A complete"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-004"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/execute_oracle.py",
+    "oracle/"
+  ],
+  "primary_lane": "L07",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read modular-noodling-galaxy.md (s031) completely",
+    "Execute TCs 1-32 in order",
+    "For each TC: implement, verify oracle cases pass, record evidence",
+    "Write evidence/raw/ET-W3-005/oracle-h2-batch-a-results.json"
+  ],
+  "focused_validation": [
+    "python tools/supervisor/execute_oracle.py --all-formats 2>&1 | tail -10"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "6078a337f72584d5f81a98b083b6a4107ec5a769cfd3a9dccb2e7dffc66026db"
+}

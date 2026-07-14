@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-019",
+  "workstream_id": "WS-16-ATOMIC-METEOR",
+  "objective": "Execute atomic-chasing-meteor: all 56 TCs",
+  "source_plan_ids": [
+    "s020"
+  ],
+  "source_task_ids": [
+    "TC-ACM-001",
+    "TC-ACM-002",
+    "TC-ACM-003",
+    "TC-ACM-004",
+    "TC-ACM-005",
+    "TC-ACM-006",
+    "TC-ACM-007",
+    "TC-ACM-008",
+    "TC-ACM-009",
+    "TC-ACM-010",
+    "TC-ACM-011",
+    "TC-ACM-012",
+    "TC-ACM-013",
+    "TC-ACM-014",
+    "TC-ACM-015",
+    "TC-ACM-016",
+    "TC-ACM-017",
+    "TC-ACM-018",
+    "TC-ACM-019",
+    "TC-ACM-020",
+    "TC-ACM-021",
+    "TC-ACM-022",
+    "TC-ACM-023",
+    "TC-ACM-024",
+    "TC-ACM-025",
+    "TC-ACM-026",
+    "TC-ACM-027",
+    "TC-ACM-028",
+    "TC-ACM-029",
+    "TC-ACM-030",
+    "TC-ACM-031",
+    "TC-ACM-032",
+    "TC-ACM-033",
+    "TC-ACM-034",
+    "TC-ACM-035",
+    "TC-ACM-036",
+    "TC-ACM-037",
+    "TC-ACM-038",
+    "TC-ACM-039",
+    "TC-ACM-040",
+    "TC-ACM-041",
+    "TC-ACM-042",
+    "TC-ACM-043",
+    "TC-ACM-044",
+    "TC-ACM-045",
+    "TC-ACM-046",
+    "TC-ACM-047",
+    "TC-ACM-048",
+    "TC-ACM-049",
+    "TC-ACM-050",
+    "TC-ACM-051",
+    "TC-ACM-052",
+    "TC-ACM-053",
+    "TC-ACM-054",
+    "TC-ACM-055",
+    "TC-ACM-056"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 56 TCs in s020 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read atomic-chasing-meteor.md (s020) and execute all 56 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "9247f83a1fa27763431d3e7cd043e7f1a2a7f8dd2779da6a0d784dfa7c3831e7"
+}

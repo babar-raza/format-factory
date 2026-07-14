@@ -101,8 +101,36 @@ MATERIAL_SECOND_RUN_CHANGES = 0
 
 ---
 
-## Final Verdict
+## Final Verdict (Phase 1)
 
 **DRIVERS_SUBSYSTEM_RECONCILED_HARDENED_AND_IDEMPOTENT**
 
 All 11 required counters = 0. All 8 pilots PASS. 79/79 tests PASS. Zero material second-run changes.
+
+---
+
+## Phase 2 — DRIVERS-PRODUCTION-INTEGRATION-001 (TC-INT-001 through TC-INT-008, 2026-07-13)
+
+### Root Causes Remediated
+
+| RC | Root Cause | Remediation |
+|---|---|---|
+| RC-1 | Skill command bypassed driver system entirely | /add-python-api v1.6: Steps 7a/7b/7c scaffold generation added (MANDATORY) |
+| RC-2 | V19 detection gap for agent-written weak assertions | V_VALIDATE_WEAK_TEST_ASSERTIONS (WARN) added; count 195→196 |
+| RC-3 | FeatureFactory returned strings; no caller wrote scaffold to disk | `generate_and_write_scaffold()` added to FeatureFactory; writes scaffold + promotion task |
+| RC-4 | Prior mission false completion: production path unverified | Terminal closeout with full evidence token chain written |
+
+### Phase 2 Pilots
+
+| Pilot | Test File | Result |
+|---|---|---|
+| A — ndjson probe | tests/python/ndjson/test_ndjson_probe_driven.py | 5/5 PASS |
+| B — zst frame | tests/python/zst/test_zst_probe_driven.py | 4/4 PASS |
+| C/D — scaffold/contract negative | tests/supervisor/test_renderer_drift_negative.py | 5/5 PASS |
+
+### Phase 2 Backfill
+
+51 weak test files registered in reports/drivers/backfill-gaps.yaml with grace_class=weak_assertion_backfill.
+3 sample taskcard stubs in reports/drivers/backfill-taskcards/.
+
+**Phase 2 Verdict: REMEDIATED**

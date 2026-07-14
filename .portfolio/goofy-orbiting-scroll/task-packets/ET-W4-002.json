@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-002",
+  "workstream_id": "WS-27-IMPERATIVE-BOOK",
+  "objective": "Execute imperative-floating-book batch B: TCs 51-100",
+  "source_plan_ids": [
+    "s032"
+  ],
+  "source_task_ids": [
+    "TC-IFB-051",
+    "TC-IFB-052",
+    "TC-IFB-053",
+    "TC-IFB-054",
+    "TC-IFB-055",
+    "TC-IFB-056",
+    "TC-IFB-057",
+    "TC-IFB-058",
+    "TC-IFB-059",
+    "TC-IFB-060",
+    "TC-IFB-061",
+    "TC-IFB-062",
+    "TC-IFB-063",
+    "TC-IFB-064",
+    "TC-IFB-065",
+    "TC-IFB-066",
+    "TC-IFB-067",
+    "TC-IFB-068",
+    "TC-IFB-069",
+    "TC-IFB-070",
+    "TC-IFB-071",
+    "TC-IFB-072",
+    "TC-IFB-073",
+    "TC-IFB-074",
+    "TC-IFB-075",
+    "TC-IFB-076",
+    "TC-IFB-077",
+    "TC-IFB-078",
+    "TC-IFB-079",
+    "TC-IFB-080",
+    "TC-IFB-081",
+    "TC-IFB-082",
+    "TC-IFB-083",
+    "TC-IFB-084",
+    "TC-IFB-085",
+    "TC-IFB-086",
+    "TC-IFB-087",
+    "TC-IFB-088",
+    "TC-IFB-089",
+    "TC-IFB-090",
+    "TC-IFB-091",
+    "TC-IFB-092",
+    "TC-IFB-093",
+    "TC-IFB-094",
+    "TC-IFB-095",
+    "TC-IFB-096",
+    "TC-IFB-097",
+    "TC-IFB-098",
+    "TC-IFB-099",
+    "TC-IFB-100"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 51-100 in s032 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W4-001"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue from ET-W4-001: process TCs 51-100",
+    "Write evidence/raw/ET-W4-002/ifb-batch-b-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "5d0a6502ec1a95d7bf3d37e260a8eb6dc769db5b14be77700a31a99f8012272b"
+}

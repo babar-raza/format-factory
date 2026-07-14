@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-002",
+  "workstream_id": "WS-01-SUPERVISOR-MACHINERY",
+  "objective": "Create plan_importer.py in tools/supervisor/ \u2014 baseline skeleton with documented interface",
+  "source_plan_ids": [
+    "s009"
+  ],
+  "source_task_ids": [
+    "TC-SBM-001",
+    "TC-SBM-002",
+    "TC-SBM-003"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "tools/supervisor/plan_importer.py exists",
+    "import_plan(), validate_plan(), register_plan() functions are importable",
+    "tests/supervisor/test_plan_importer.py passes",
+    "plan_importer.py < 200 LOC (lean implementation)"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/plan_importer.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/plan_importer.py"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/plan_importer.py"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read stateful-booping-mountain.md plan file for plan_importer.py specification",
+    "Create tools/supervisor/plan_importer.py with functions: import_plan(path), validate_plan(path), register_plan(path)",
+    "Each function must have docstring, proper error handling, and type hints",
+    "import_plan: copies plan to plans/.claude/<name>.md, returns PlanImportResult",
+    "validate_plan: checks plan schema compliance, returns ValidationResult",
+    "register_plan: registers in plan registry JSON, returns RegistrationResult",
+    "Write tests/supervisor/test_plan_importer.py with at least 3 test cases"
+  ],
+  "focused_validation": [
+    "python -c \"from tools.supervisor.plan_importer import import_plan, validate_plan, register_plan; print('OK')\"",
+    "python .venv/Scripts/pytest tests/supervisor/test_plan_importer.py -v"
+  ],
+  "lane_validation": [
+    "python .venv/Scripts/pytest tests/supervisor/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "17d5ad18675c4e716e8b5d28475d7a8ceef029ad910bdd5838cd05d8f6453b14"
+}

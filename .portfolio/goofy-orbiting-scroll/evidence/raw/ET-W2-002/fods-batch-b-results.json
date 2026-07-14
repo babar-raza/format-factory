@@ -1,0 +1,59 @@
+{
+  "task_id": "ET-W2-002",
+  "source_plan": "splendid-squishing-orbit",
+  "audit_date": "2026-07-11",
+  "taskcards_executed": {
+    "TC-FGSQ-001": {
+      "status": "CLOSED",
+      "action": "Created reports/product-quality/fods-govheal/fods-missing-methods-origin.yaml. Inventoried 13 dict fields across 5 partial-class files (FodsDocument.cs, FodsDocumentDataAnnotations.cs, FodsDocumentEditOps.cs, FodsDocumentReadOps.cs, FodsDocumentSheetFeatures.cs). All 13 classified as COLLECTION_STUB/DICT_ONLY with UNSUPPORTED_PENDING disposition. FodsDocumentExtendedApis.cs confirmed removed.",
+      "output_file": "reports/product-quality/fods-govheal/fods-missing-methods-origin.yaml"
+    },
+    "TC-FGSQ-002": {
+      "status": "CLOSED",
+      "action": "Reconciled PCG-006 and PCG-007 in reports/product-quality/product-code-gap-ledger.yaml. Updated files: lists from [FodsDocumentExtendedApis.cs] (stale) to [FodsDocument.cs, FodsDocumentDataAnnotations.cs, FodsDocumentEditOps.cs, FodsDocumentReadOps.cs, FodsDocumentSheetFeatures.cs]. Count corrected from 33 to 13 fields. Added reconciled_at timestamps.",
+      "output_file": "reports/product-quality/product-code-gap-ledger.yaml"
+    },
+    "TC-FGSQ-009": {
+      "status": "CLOSED",
+      "action": "Added V168 (validate_dotnet_collection_stub_comments) to governance_validators_dotnet_semantic.py. Registered in governance_validator_runner.py. Updated expected_count 167→168. V168 correctly detects 18 COLLECTION_STUB/GI-FODS-NET comments (WARN-only, does not block sprint).",
+      "test_proof": "V168 output: result=WARN, item_count=18, blocks_sprint=False. 17/17 test_sprint_executor_validate.py PASS."
+    }
+  },
+  "taskcards_outstanding": {
+    "TC-FGSQ-003": "DEFERRED_WAVE3 — V88 per-method rewrite requires method-body AST extractor. Complex refactor tracked for Wave 3.",
+    "TC-FGSQ-004": "DEFERRED_WAVE3 — V87 PRODUCT_SOURCE exemption removal requires broader governance policy change.",
+    "TC-FGSQ-005": "DEFERRED_WAVE3 — V90/V91 escalation (currently not registered in runner; need registration first).",
+    "TC-FGSQ-006": "DEFERRED_WAVE3",
+    "TC-FGSQ-007": "DEFERRED_WAVE3",
+    "TC-FGSQ-008": "DEFERRED_WAVE3",
+    "TC-FGSQ-010": "DEFERRED_WAVE3",
+    "TC-FGSQ-011": "DEFERRED_WAVE3",
+    "TC-FGSQ-013": "DEFERRED_WAVE3 — 18 TODO(GI-FODS-NET-*) stubs. V168 now tracks them. Convert to NotSupportedException in Wave 3.",
+    "TC-FGSQ-014": "DEFERRED_WAVE3",
+    "TC-FGSQ-015": "DEFERRED_WAVE3",
+    "TC-FGSQ-017": "DEFERRED_WAVE3 — LOC violations: FodsDocument.cs 907 LOC, FodsDocumentReadOps.cs 892 LOC. Requires domain-split refactor.",
+    "TC-FGSQ-018": "DEFERRED_WAVE3",
+    "TC-FGSQ-019": "DEFERRED_WAVE3",
+    "TC-FGSQ-020": "DEFERRED_WAVE3",
+    "TC-FGSQ-021": "DEFERRED_WAVE3",
+    "TC-FGSQ-022": "DEFERRED_WAVE3",
+    "TC-FGSQ-023": "DEFERRED_WAVE3",
+    "TC-FGSQ-024": "DEFERRED_WAVE3",
+    "TC-FGSQ-025": "DEFERRED_WAVE3"
+  },
+  "files_created": [
+    "reports/product-quality/fods-govheal/fods-missing-methods-origin.yaml"
+  ],
+  "files_modified": [
+    "reports/product-quality/product-code-gap-ledger.yaml",
+    "tools/supervisor/governance_validators_dotnet_semantic.py",
+    "tools/supervisor/governance_validator_runner.py"
+  ],
+  "validator_state": {
+    "expected_count": 168,
+    "V168_result": "WARN",
+    "V168_item_count": 18,
+    "V168_blocks_sprint": false
+  },
+  "verdict": "PARTIAL — TC-FGSQ-001, 002, 009 CLOSED with evidence. 20 TCs deferred to Wave 3 (complex validator rewrites and LOC healing)."
+}

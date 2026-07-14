@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from dif.dif_parser import dif_numeric_cell_count, dif_has_string_cells
+from dif import dif_numeric_cell_count, dif_has_string_cells
 
 DIF = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "dif" / "valid"
 

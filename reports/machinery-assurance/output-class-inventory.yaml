@@ -1,173 +1,87 @@
----
-# Output Class Inventory
-# Mission: MA-2026-07-02-R1227-NDJSON-TOML
-# Generated: 2026-07-02
+output_class_inventory:
+  mission_id: VWM-2026-07-10
+  assurance_date: "2026-07-13"
+  authoritative_plan: plans/.claude/vast-wibbling-moon.md
+  artifact_role: analysis_or_evidence_only
 
-output_classes:
+  output_classes:
+    - id: OC-001
+      name: next-sprint.md
+      status: PRESENT
+      quality: 4
+    - id: OC-002
+      name: session-resume.md
+      status: PRESENT
+      quality: 4
+    - id: OC-003
+      name: approval-gates.md
+      status: PRESENT
+      quality: 4
+    - id: OC-004
+      name: next-work-items.json
+      status: PRESENT
+      quality: 4
+    - id: OC-005
+      name: continuation-signal.json
+      status: PRESENT
+      quality: 4
+    - id: OC-006
+      name: active-plan-lock.json
+      status: PRESENT
+      quality: 5
+    - id: OC-007
+      name: evidence-declaration.yaml
+      status: PRESENT_ON_DEMAND
+      quality: 4
+    - id: OC-008
+      name: control-index.db
+      status: PRESENT
+      quality: 4
+    - id: OC-009
+      name: gap-ledger.yaml
+      status: STALE
+      quality: 2
+    - id: OC-010
+      name: assurance-mission.yaml
+      status: PRESENT
+      quality: 4
+    - id: OC-011
+      name: stage-reviews.yaml
+      status: PRESENT
+      quality: 4
+    - id: OC-012
+      name: sprint-execution-logs
+      status: ON_DEMAND_NOT_YET_CREATED
+      quality: 3
+    - id: OC-013
+      name: validator-shadow-log.jsonl
+      status: ON_DEMAND_NOT_YET_CREATED
+      quality: 3
+    - id: OC-014
+      name: grader-shadow-log.jsonl
+      status: ON_DEMAND_NOT_YET_CREATED
+      quality: 3
+    - id: OC-015
+      name: playbook-drift-findings.json
+      status: ON_DEMAND_NOT_YET_CREATED
+      quality: 4
+    - id: OC-016
+      name: format-registry.yaml
+      status: PRESENT
+      quality: 5
+    - id: OC-017
+      name: format-oracle-registry.yaml
+      status: PRESENT
+      quality: 4
+    - id: OC-018
+      name: skill-registry.yaml
+      status: PRESENT
+      quality: 4
 
-  - class_id: "OC-01"
-    name: "Python Domain Model Source (models.py)"
-    producer: "Agent via /add-python-object-model-feature skill"
-    authoritative_source: "src/python/{format}/models.py"
-    expected_structure: "Class with spec_qname ClassVar, properties returning bool/int/list"
-    expected_semantics: "Properties semantically correct per spec FACT references"
-    freshness_rules: "Updated per sprint when new properties added"
-    consumer: "pytest tests, site-packages installation"
-    mutation_policy: "Governed — requires ledger entry; LOC/function counts tracked"
-    failure_impact: "HIGH — test failures, installed package stale"
-    acceptance_criteria:
-      - "All tests pass"
-      - "Properties return correct types"
-      - "Boundary conditions handled (0, threshold-1, threshold, threshold+1)"
-      - "spec_qname present on class"
-    review_status: "REVIEWED"
-    review_findings:
-      - "R1227: is_small (<=10), is_large (>1000), min_keys — ALL CORRECT boundary semantics"
-      - "R1226: has_only_scalars, is_mixed, array_count — ALL CORRECT"
-      - "Boolean properties return Python bool (not int) ✓"
-      - "Int properties return int ✓"
-      - "Empty document cases handled (return 0/False appropriately) ✓"
-
-  - class_id: "OC-02"
-    name: "Python Test Files"
-    producer: "Agent (governed write)"
-    authoritative_source: "tests/python/{format}/test_r{N}_{format}_{feature}.py"
-    expected_structure: "pytest class-based, 3 test classes (IsSmall, IsLarge, MinKeys for R1227)"
-    expected_semantics: "Positive, negative, boundary, type-check, from_file cases"
-    freshness_rules: "Created once per feature requirement"
-    consumer: ".venv/Scripts/pytest"
-    mutation_policy: "Immutable after creation (add new files for new features)"
-    failure_impact: "HIGH — signals property defect"
-    acceptance_criteria:
-      - "21/21 tests pass for R1227"
-      - "from_file tests use real sample files"
-      - "Returns type assertions (isinstance checks)"
-      - "Boundary tests at threshold values"
-    review_status: "REVIEWED"
-    review_findings:
-      - "21 tests pass for R1227 ✓"
-      - "Tests cover: empty, 1-record, 10 (boundary), 11 (boundary+1), 100, 1000, 1001"
-      - "FINDING: from_file uses relative Path('samples/...') — requires pytest run from repo root"
-      - "FINDING: sys.path.insert bypasses installed package — sync failures invisible"
-      - "FINDING: No negative/malformed input test (non-NDJSON file input)"
-
-  - class_id: "OC-03"
-    name: "Site-Packages Installed Files"
-    producer: "Agent (manual cp sync)"
-    authoritative_source: ".venv/Lib/site-packages/{format}/models.py"
-    expected_structure: "Identical to src/python/{format}/models.py"
-    expected_semantics: "Must match source exactly"
-    freshness_rules: "Must be synced after every src/ change"
-    consumer: "Any script that imports the installed package"
-    mutation_policy: "Sync-on-change from src/"
-    failure_impact: "MEDIUM — installed package behavior diverges from source"
-    acceptance_criteria:
-      - "diff src/ vs site-packages shows no delta"
-    review_status: "REVIEWED"
-    review_findings:
-      - "VERIFIED: No diff between src/python/ndjson/models.py and site-packages"
-      - "VERIFIED: No diff between src/python/toml/models.py and site-packages"
-      - "Sync status: CURRENT ✓"
-
-  - class_id: "OC-04"
-    name: "Product Code Change Ledger Entry"
-    producer: "Agent (governed JSON edit)"
-    authoritative_source: "reports/r90/product-code-change-ledger.json"
-    expected_structure: "JSON object with entry_id, sprint_id, format, spec_fact_refs, tests_added"
-    expected_semantics: "Accurate record of what was implemented and tested"
-    freshness_rules: "One entry per sprint per feature"
-    consumer: "supervisor_loop.py grading, audit trail"
-    mutation_policy: "Append-only (no modify or delete)"
-    failure_impact: "MEDIUM — sprint loses traceability"
-    acceptance_criteria:
-      - "entry_id is unique"
-      - "spec_fact_refs contains at least one FACT reference"
-      - "tests_added matches actual test count"
-      - "status: verified"
-    review_status: "REVIEWED"
-    review_findings:
-      - "R1227 entry: R1227-GOVERNED-PYTHON-NDJSON-SIZE-PROPS-001 ✓"
-      - "21 tests recorded ✓"
-      - "FACT-NDJSON-001 spec reference ✓"
-      - "gap_ledger_ref: null — no formal gap ledger entry for this feature"
-
-  - class_id: "OC-05"
-    name: "Package README.md"
-    producer: "/sync-readmes skill"
-    authoritative_source: "src/python/{format}/README.md"
-    expected_structure: "Markdown with generated BEGIN/END blocks"
-    expected_semantics: "Accurate package metadata including test file count"
-    freshness_rules: "Updated whenever test counts change"
-    consumer: "GitHub repository viewers, docs"
-    mutation_policy: "Auto-generated blocks only (BEGIN/END)"
-    failure_impact: "LOW — documentation only"
-    acceptance_criteria:
-      - "Test file count matches actual test file count"
-      - "Timestamps current"
-    review_status: "REVIEWED"
-    review_findings:
-      - "ndjson README: 152 test files ✓ (152 .py files found in tests/python/ndjson/)"
-      - "toml README: 61 test files ✓"
-      - "Both timestamps updated to 2026-07-02 session ✓"
-
-  - class_id: "OC-06"
-    name: "Evidence Declaration YAML"
-    producer: "Agent (manual YAML write)"
-    authoritative_source: ".local/evidences/{run_id}/evidence-declaration.yaml"
-    expected_structure: "YAML with work_items[], sprint_id, test_results, changed_files"
-    expected_semantics: "Accurate description of all sprint work"
-    freshness_rules: "Written once per sprint closeout"
-    consumer: "supervisor_loop.py autonomous-cycle"
-    mutation_policy: "Written once, validated, not modified"
-    failure_impact: "HIGH — supervisor cannot grade sprint"
-    acceptance_criteria:
-      - "Validates against schema"
-      - "All work items declared"
-      - "Test counts accurate"
-      - "changed_files complete"
-    review_status: "PENDING"
-    review_findings:
-      - "PENDING: Not yet written for R1227 sprint"
-
-  - class_id: "OC-07"
-    name: "Supervisor Grade Reports"
-    producer: "tools/supervisor/autonomous_cycle.py"
-    authoritative_source: "reports/supervisor/evidence-review.json, work-item-grades.json"
-    expected_structure: "JSON grade objects per work item"
-    expected_semantics: "Accurate quality assessment of sprint evidence"
-    freshness_rules: "Regenerated after each sprint"
-    consumer: "check_continuation.py, session-resume.md"
-    mutation_policy: "Overwritten each sprint cycle"
-    failure_impact: "HIGH — continuation signal becomes stale"
-    acceptance_criteria:
-      - "All work items graded"
-      - "ACCEPTED verdict for passing sprints"
-    review_status: "PENDING"
-    review_findings:
-      - "PENDING: Not yet run for R1227 sprint"
-      - "Last run: ff-gates-advancement-20260625 (ACCEPTED, 1609 tests)"
-
-  - class_id: "OC-08"
-    name: "Source Structure Baseline (known_violations)"
-    producer: "Sprint closeout NEW-violations detector"
-    authoritative_source: "registry/source-structure-baseline.json"
-    expected_structure: "JSON with known_violations map (rel_path → LOC/fn caps)"
-    expected_semantics: "Frozen caps for known-large files"
-    freshness_rules: "loc/functions fields NEVER updated for known_violations (write-once)"
-    consumer: "governance_validators.py (monolith_detection_validator)"
-    mutation_policy: "Append-only for new violations; existing entries NEVER modified"
-    failure_impact: "MEDIUM — stale loc fields create misleading baseline"
-    acceptance_criteria:
-      - "baseline_loc_cap never increases"
-      - "No new violations above 800 LOC"
-    review_status: "REVIEWED"
-    review_findings:
-      - "FINDING: ndjson/models.py baseline loc=118 but actual=136 (stale by design)"
-      - "FINDING: toml/models.py baseline loc=124 but actual=141 (stale by design)"
-      - "NON-ISSUE: Governance validator skips files <= 800 LOC regardless of known_violations"
-      - "Both files at 136/141 LOC are far below 800 threshold — no governance block"
-
-counters:
-  UNREVIEWED_OUTPUT_CLASSES: 2
-  UNREVIEWED_CLASSES: ["OC-06 (Evidence Declaration)", "OC-07 (Supervisor Grade Reports)"]
-  NOTE: "OC-06 and OC-07 are PENDING because they require sprint execution (S07-S08)"
+  summary:
+    total_classes: 18
+    present: 12
+    on_demand_not_created: 4
+    stale: 1
+    missing_structurally: 0
+    overall_health: HEALTHY_WITH_STALE_LEDGER

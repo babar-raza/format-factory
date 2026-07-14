@@ -1,0 +1,15 @@
+{
+  "skill_id": "verify-dogfood-path",
+  "source_format": "dif",
+  "target_format": "csv",
+  "invoked_at": "2026-07-11",
+  "tc_context": "TC-GFB-034-02 (Pilot H — Autonomous Unattended Proof)",
+  "library_import": "PASS (dif imported from src/python/dif/__init__.py)",
+  "function_verified": "dif_to_csv(dif_path, dest_path, *, skip_empty_rows=True) -> int",
+  "test_file": "tests/python/dif/test_r90_dif_to_csv_dogfood.py",
+  "test_results": "7 passed, 0 failed",
+  "dogfood_status": "IMPLEMENTED",
+  "gap_note": "GAP-DIF-FOSS-DIF_TO_CSV-001 not in gap-ledger (path already implemented, gap was never registered or was pre-existing); GAP-CSV-FOSS-CSV_TO_DIF-001 is the reverse direction (CSV→DIF, not verified here)",
+  "src_changes": "none",
+  "verdict": "PASS"
+}

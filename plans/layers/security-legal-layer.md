@@ -110,6 +110,10 @@ Target maturity is **4**. The target state is a governed, evidence-backed, disco
 - Security audit process must be formal for repos and release pipelines.
 - External gates like credentials and publication remain true external gates.
 
+| gap_id | severity | current_state | target_state | task_id | source |
+|---|---|---|---|---|---|
+| SEC-GAP-001 | CRITICAL | `skill_ids: []` in `plans/layers/index.yaml` (L20) — zero registered skill audits `legal_category`/`legal_safety` in format-registry.yaml or performs secret/security scanning as a release gate. | A registered skill exists that audits legal_category/legal_safety coverage across all formats (target: 30/30) and runs secret/security scanning before release/package work (feeding TC-SEC-001). | null | Zero skill coverage confirmed via plans/layers/index.yaml — skill_ids: [] and no matching product_track in .supervisor/skill-registry.yaml. Registered via TC-EXT-008 (external skill adoption plan, Finding 3). |
+
 ## 15. Root-Cause Register
 
 - Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
@@ -249,6 +253,7 @@ A blocker is valid only when it is a true external gate, missing authority, miss
 - Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
 - Added no-stub and proof-backed execution requirements.
 - Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+- 2026-07-14: Registered gap `SEC-GAP-001` via `/register-layer-gap` (TC-EXT-008-05, plan `plans/.claude/yes-my-earlier-answer-humming-waffle.md`, Finding 3). See §14.
 
 ## 35. Verification Log
 

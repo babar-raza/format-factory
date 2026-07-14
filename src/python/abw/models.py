@@ -10,7 +10,10 @@ spec_fact_ref: see shared/qname-registry/abw.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .Compat.abw_paragraph import AbwParagraph as _AbwParagraph
 
 
 class AbwDocument:
@@ -196,6 +199,15 @@ class AbwDocument:
         dest = Path(path)
         dest.parent.mkdir(parents=True, exist_ok=True)
         write_abw(self._data, dest)
+
+    def typed_children(self) -> "list[_AbwParagraph]":
+        """Return document paragraphs as typed AbwParagraph objects (D2 DOM).
+
+        Each paragraph string from the neutral model is wrapped in an AbwParagraph,
+        providing typed access to text, word_count, char_count, and helpers.
+        """
+        from .Compat.abw_paragraph import AbwParagraph
+        return [AbwParagraph(p) for p in self.paragraphs]
 
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""

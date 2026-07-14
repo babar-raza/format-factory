@@ -1,0 +1,15 @@
+{
+  "task_id": "ET-W0-001",
+  "finding": "Validator count ground truth = 167",
+  "sources": {
+    "governance_validator_runner.py:813": "expected_count: 167  # V149 added (TC-PFF-R1, 2026-07-09)",
+    "unique_def_validate_count": 158,
+    "dynamic_append_validators": 6,
+    "total_158_plus_dynamic_6_plus_contract_3": 167
+  },
+  "prior_memory_md_value": "165 (stale)",
+  "corrected_memory_md_value": "167",
+  "fix_applied": "MEMORY.md line 86 updated: 165 -> 167",
+  "no_code_change_needed": true,
+  "runner_already_correct_at_167": true
+}

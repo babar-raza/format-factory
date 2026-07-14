@@ -1,0 +1,294 @@
+mission_id: FF-CTRL-OCRD-001
+generated_at: "2026-07-12T00:00:00+00:00"
+taskcard: TC-OCRD-C1-03
+
+existing_control_features:
+
+  # --- control_index_db ---
+
+  - feature_id: cif-001
+    control_layer_key: control_index_db
+    feature_name: FTS5 Full-Text Search
+    category: query
+    entry_points:
+      - tools/supervisor/control_index/search.py
+      - tools/supervisor/control_index/query.py::cmd_search
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index.query search \"FODS qname\""
+      result: "Returns JSON list of matching entities with snippet highlights"
+
+  - feature_id: cif-002
+    control_layer_key: control_index_db
+    feature_name: Gap Attempts Exhausted-Gap Filter
+    category: work_selection_gate
+    entry_points:
+      - tools/supervisor/control_index/gap_selection.py::get_exhausted_gaps
+      - tools/supervisor/capability_queue_consumer.py::load_foss_gaps
+    current_status: WORKING_AND_PROVEN
+    authority_effect: WORK_SELECTION
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index.query gap-attempts --outcome failed"
+      result: "Returns JSON list of gap attempt records filtered by outcome"
+
+  - feature_id: cif-003
+    control_layer_key: control_index_db
+    feature_name: Staleness Detection
+    category: health_monitoring
+    entry_points:
+      - tools/supervisor/control_index/staleness.py::check_staleness
+      - tools/supervisor/control_index/sync.py::sync_all
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index.query stale"
+      result: "Returns JSON list of stale source files"
+
+  - feature_id: cif-004
+    control_layer_key: control_index_db
+    feature_name: SAVEPOINT Per-Ingestor Transaction Isolation
+    category: reliability
+    entry_points:
+      - tools/supervisor/control_index/sync.py::sync_all
+    current_status: WORKING_AND_PROVEN
+    authority_effect: NONE
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index sync"
+      result: "Sync report shows per-ingestor results; one failure does not roll back others"
+
+  - feature_id: cif-005
+    control_layer_key: control_index_db
+    feature_name: Schema Migration Framework
+    category: reliability
+    entry_points:
+      - tools/supervisor/control_index/db.py::apply_migrations
+      - tools/supervisor/control_index/db.py::MIGRATION_FUNCS
+    current_status: WORKING_AND_PROVEN
+    authority_effect: NONE
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index init"
+      result: "DB initialized at current SCHEMA_VERSION without error"
+
+  - feature_id: cif-006
+    control_layer_key: control_index_db
+    feature_name: Format Gap Dashboard Query
+    category: query
+    entry_points:
+      - tools/supervisor/control_index/query.py::cmd_format
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python -m tools.supervisor.control_index.query format fods"
+      result: "Returns JSON with format info, gap summary, qname count"
+
+  # --- continuation_signal ---
+
+  - feature_id: csf-001
+    control_layer_key: continuation_signal
+    feature_name: CONTINUE/STOP Verdict
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/check_continuation.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/check_continuation.py"
+      result: "Exits 0 with verdict=CONTINUE or exits 1 with verdict=STOP + reason"
+
+  - feature_id: csf-002
+    control_layer_key: continuation_signal
+    feature_name: Session-ID Cross-Chat Isolation (CCI-MVP)
+    category: safety
+    entry_points:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/autonomous_cycle.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/check_continuation.py"
+      result: "STOP with reason=SESSION_MISMATCH if session_id differs"
+
+  - feature_id: csf-003
+    control_layer_key: continuation_signal
+    feature_name: Contradiction Warnings Emission
+    category: advisory
+    entry_points:
+      - tools/supervisor/check_continuation.py::_get_control_index_warnings
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python tools/supervisor/check_continuation.py"
+      result: "CONTINUE output includes contradiction_warnings list"
+
+  - feature_id: csf-004
+    control_layer_key: continuation_signal
+    feature_name: Control Index Warnings Emission
+    category: advisory
+    entry_points:
+      - tools/supervisor/check_continuation.py::_get_control_index_warnings
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python tools/supervisor/check_continuation.py"
+      result: "CONTINUE output includes control_index_warnings list"
+
+  # --- plan_lock_system ---
+
+  - feature_id: plf-001
+    control_layer_key: plan_lock_system
+    feature_name: Plan Lock Write / Read
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/write_plan_lock.py
+      - tools/supervisor/check_continuation.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/write_plan_lock.py --plan-path plans/.claude/test.md"
+      result: "Lock file written to .local/supervisor/plan-locks/; check_continuation returns STOP"
+
+  - feature_id: plf-002
+    control_layer_key: plan_lock_system
+    feature_name: TERMINAL_CLOSED Post-Plan Stop
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/write_plan_lock.py
+      - tools/supervisor/check_continuation.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/write_plan_lock.py --plan-path X --terminal"
+      result: "check_continuation returns STOP with reason=POST_PLAN_TERMINAL"
+
+  - feature_id: plf-003
+    control_layer_key: plan_lock_system
+    feature_name: Audit-Gate Closure (ITERATION_REQUIRED)
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/write_plan_lock.py
+      - tools/supervisor/lifecycle_audit.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/write_plan_lock.py --plan-path X --terminal --audit-gate"
+      result: "Runs lifecycle audit; writes TERMINAL_CLOSED or ITERATION_REQUIRED based on audit"
+
+  # --- gap_ledger ---
+
+  - feature_id: glf-001
+    control_layer_key: gap_ledger
+    feature_name: Gap Selection with Priority Ordering
+    category: work_selection
+    entry_points:
+      - tools/supervisor/capability_queue_consumer.py::load_foss_gaps
+    current_status: WORKING_AND_PROVEN
+    authority_effect: WORK_SELECTION
+    observable_behavior:
+      command: "python tools/supervisor/capability_queue_consumer.py"
+      result: "Returns ordered list of open FOSS gaps not yet assigned"
+
+  - feature_id: glf-002
+    control_layer_key: gap_ledger
+    feature_name: Exhausted Gap Suppression
+    category: work_selection_gate
+    entry_points:
+      - tools/supervisor/capability_queue_consumer.py::load_foss_gaps
+      - tools/supervisor/control_index/gap_selection.py::get_exhausted_gaps
+    current_status: WORKING_AND_PROVEN
+    authority_effect: WORK_SELECTION
+    observable_behavior:
+      command: "python tools/supervisor/capability_queue_consumer.py (with DB present)"
+      result: "Gaps with ≥3 failed attempts excluded from selection; count logged to stderr"
+
+  # --- governance_validators ---
+
+  - feature_id: gvf-001
+    control_layer_key: governance_validators
+    feature_name: 170 Named Validators
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/governance_validators_runner.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/governance_validators_runner.py"
+      result: "Runs 170 validators; reports PASS/WARN/FAIL per validator"
+
+  - feature_id: gvf-002
+    control_layer_key: governance_validators
+    feature_name: GOV_BLOCK Structural Failure Escalation
+    category: execution_gate
+    entry_points:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/governance_validators.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "check_continuation.py when rework_items contains GOV_BLOCK validator"
+      result: "STOP with reason=structural_govblock_must_be_resolved_first"
+
+  - feature_id: gvf-003
+    control_layer_key: governance_validators
+    feature_name: Skill Receipt Presence Validator (V-SGF-002)
+    category: governance
+    entry_points:
+      - tools/supervisor/governance_validators_sgov.py::validate_skill_receipt_presence
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "python tools/supervisor/governance_validators_runner.py (V-SGF-002)"
+      result: "WARN if skill-governed capability executed without receipt"
+
+  # --- oracle_system ---
+
+  - feature_id: osf-001
+    control_layer_key: oracle_system
+    feature_name: Format Oracle Execution (D0-D3 Depth)
+    category: verification
+    entry_points:
+      - tools/oracle/execute_oracle.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: VERIFICATION
+    observable_behavior:
+      command: "python tools/oracle/execute_oracle.py --format fods"
+      result: "Returns PASS/FAIL verdicts with depth_level field; 8/8 PASS for FODS"
+
+  - feature_id: osf-002
+    control_layer_key: oracle_system
+    feature_name: ODF RelaxNG Validation (D2)
+    category: verification
+    entry_points:
+      - tools/supervisor/schema_validator.py::validate_odf_schema
+    current_status: WORKING_AND_PROVEN
+    authority_effect: VERIFICATION
+    observable_behavior:
+      command: "python -c \"from schema_validator import validate_odf_schema; ...\""
+      result: "Returns valid/invalid with error list; D2 depth for spec-compliant FODS files"
+
+  # --- evidence_system ---
+
+  - feature_id: esf-001
+    control_layer_key: evidence_system
+    feature_name: Declaration Schema Validation + --repair
+    category: verification
+    entry_points:
+      - tools/supervisor/sprint_executor_validate.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: EXECUTION_GATE
+    observable_behavior:
+      command: "python tools/supervisor/sprint_executor_validate.py <decl.yaml> --repair"
+      result: "Exits 0 if valid; auto-corrects markdown fences, type mismatches"
+
+  - feature_id: esf-002
+    control_layer_key: evidence_system
+    feature_name: AST Test Count Spot-Check
+    category: verification
+    entry_points:
+      - tools/supervisor/evidence_verifier.py::spot_check_test_count
+      - tools/supervisor/inspect_declared_evidence.py
+    current_status: WORKING_AND_PROVEN
+    authority_effect: ADVISORY
+    observable_behavior:
+      command: "spot_check_test_count() called during inspect_declaration()"
+      result: "Returns ratio of declared vs observed test_ functions; warns if ratio < 0.5"

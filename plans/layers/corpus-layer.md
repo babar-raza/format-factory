@@ -119,6 +119,10 @@ Target maturity is **4**. The target state is a governed, evidence-backed, disco
 - Every active format needs minimum corpus classes: tiny, real-world, malformed, feature-rich, preservation-sensitive.
 - Fixtures must be stable, checksummed, and mapped to capabilities and obligations.
 
+| gap_id | severity | current_state | target_state | task_id | source |
+|---|---|---|---|---|---|
+| CORP-GAP-001 | HIGH | `skill_ids: []` in `plans/layers/index.yaml` (L04) — zero registered skill covers sample corpus audit, manifest backfill, or fixture governance for this layer. | A registered skill exists covering samples/by-format audit, manifest/checksum/provenance backfill, and corpus-class coverage enforcement (feeding TC-CORP-001). | null | Zero skill coverage confirmed via plans/layers/index.yaml — skill_ids: [] and no matching product_track in .supervisor/skill-registry.yaml. Registered via TC-EXT-008 (external skill adoption plan, Finding 3). |
+
 ## 15. Root-Cause Register
 
 - Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
@@ -258,6 +262,7 @@ A blocker is valid only when it is a true external gate, missing authority, miss
 - Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
 - Added no-stub and proof-backed execution requirements.
 - Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+- 2026-07-14: Registered gap `CORP-GAP-001` via `/register-layer-gap` (TC-EXT-008-01, plan `plans/.claude/yes-my-earlier-answer-humming-waffle.md`, Finding 3). See §14.
 
 ## 35. Verification Log
 

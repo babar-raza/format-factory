@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W1-004",
+  "workstream_id": "WS-05-PIPELINE-RECONCILIATION",
+  "objective": "Repair pipeline divergences identified in ET-W0-008: sync next-work-items.json with next-sprint.md",
+  "source_plan_ids": [
+    "s006",
+    "s013"
+  ],
+  "source_task_ids": [],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "reports/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "reports/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W0-008"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L08",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Load evidence/raw/ET-W0-008/pipeline-divergence-report.json",
+    "For each true-gap divergence: fix the source (supervisor output or next-sprint.md)",
+    "Re-run autonomous-cycle to regenerate consistent outputs",
+    "Verify next-work-items.json and next-sprint.md are consistent"
+  ],
+  "acceptance_criteria": [
+    "No true-gap divergences between next-work-items.json and next-sprint.md",
+    "supervisor pipeline generates consistent outputs"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python tools/supervisor/autonomous_cycle.py --dry-run 2>&1 | tail -10"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 1,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W1-004-9546507C",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W1-004-92046093",
+  "claimed_at": "2026-07-11T10:19:55.341931+00:00",
+  "closed_at": "2026-07-11T10:24:28.746554+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

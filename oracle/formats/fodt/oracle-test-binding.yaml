@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-fodt-test-binding-v1
+format_id: fodt
+oracle_package: oracle/formats/fodt/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: fodt.parser
+executor_callable: parse_fodt
+bound_test_files:
+- tests/python/fodt/test_fodt_oracle_binding.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: fodt-valid-001
+  bound: true
+  test_function: test_fodt_oracle_valid_cases
+- case_id: fodt-valid-002
+  bound: true
+  test_function: test_fodt_oracle_valid_cases
+- case_id: fodt-valid-003
+  bound: true
+  test_function: test_fodt_oracle_valid_cases
+- case_id: fodt-valid-d2-schema
+  bound: true
+  test_function: test_fodt_oracle_valid_cases
+- case_id: fodt-invalid-001
+  bound: true
+  test_function: test_fodt_oracle_invalid_cases
+binding_verdict: BOUND

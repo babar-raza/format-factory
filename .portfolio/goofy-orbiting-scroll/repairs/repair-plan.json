@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "repair_plan_id": "RP-GOS-001",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "created_at": "2026-07-11T09:30:00+00:00",
+  "triggered_by": "pre-execution-audit F-001 through F-013",
+  "prior_mode": "RECONCILE_ONLY",
+  "target_mode": "RECONCILE_REPAIR_AND_EXECUTE",
+  "repair_phases": [
+    {
+      "phase": "R-01",
+      "name": "PRESERVE_AND_AUDIT",
+      "status": "COMPLETE",
+      "actions": [
+        "Hash all 109 existing portfolio files -> repairs/pre-execution-file-hashes.json",
+        "Capture repository state -> reports/repository-state-before-execution.json",
+        "Create execution directory structure (20 dirs)",
+        "Write pre-execution-audit.json (12 findings)"
+      ]
+    },
+    {
+      "phase": "R-02",
+      "name": "RECONSTRUCT_SOURCE_TASKCARD_TRUTH",
+      "status": "IN_PROGRESS",
+      "actions": [
+        "Reread all 41 source plan files",
+        "Extract full source taskcard records with acceptance criteria, affected paths, prerequisites",
+        "Verify supplemented taskcard IDs for s003 s005 s010 s012 s015 s030 s038",
+        "Write source-taskcards/all-source-taskcards.json",
+        "Write source-taskcards/extraction-summary.json"
+      ],
+      "required_output": "SOURCE_TASKCARDS_WITHOUT_FULL_RECORD = 0"
+    },
+    {
+      "phase": "R-03",
+      "name": "INVESTIGATE_REPOSITORY_TRUTH",
+      "status": "PENDING",
+      "actions": [
+        "Check actual validator count in governance_validator_runner.py",
+        "Verify plan_importer.py existence and state",
+        "Verify lifecycle_audit iteration loop",
+        "Check oracle assessment state for shiny-percolating-sky",
+        "Check agentic parity state for glimmering-hopping-kazoo",
+        "Assess repository implementation status for each canonical workstream"
+      ]
+    },
+    {
+      "phase": "R-04",
+      "name": "SPLIT_INTO_WORKSTREAMS_AND_EXECUTABLE_TASKS",
+      "status": "PENDING",
+      "actions": [
+        "Group 1514 source taskcards into coherent workstreams (not plans)",
+        "Split each workstream into atomic executable tasks",
+        "Each executable task: single mutation scope, individual verifiable, retryable",
+        "Eliminate CT-025 (11 plans -> multiple executable tasks)",
+        "Eliminate CT-026 (broad product deepening -> multiple executable tasks)",
+        "Assign every source taskcard to exactly one executable task or proven disposition",
+        "Verify OVERBROAD_EXECUTABLE_TASKS = 0"
+      ]
+    },
+    {
+      "phase": "R-05",
+      "name": "REBUILD_PROVENANCE",
+      "status": "PENDING",
+      "actions": [
+        "Bidirectional: source plan -> source taskcard -> executable task",
+        "Bidirectional: executable task -> source taskcards -> source requirements",
+        "Allowed dispositions: EXECUTE_TASK | SPLIT_ACROSS_TASKS | SATISFIED_BY_VERIFIED_EXISTING_IMPLEMENTATION | SUPERSEDED_WITH_PROOF | DUPLICATE_WITH_PROVEN_EQUIVALENCE | OUT_OF_SCOPE_WITH_JUSTIFICATION | BLOCKED_BY_TRUE_EXTERNAL_DEPENDENCY | REQUIRES_HUMAN_DECISION",
+        "Rebuild all 41 plan checklists from repaired mappings",
+        "Verify SOURCE_TASKCARDS_WITHOUT_DISPOSITION = 0"
+      ]
+    },
+    {
+      "phase": "R-06",
+      "name": "BUILD_CONTROLLER_AND_SCHEMAS",
+      "status": "IN_PROGRESS",
+      "actions": [
+        "Build portfolio_controller.py with all required commands",
+        "Create JSON schemas for all 21 artifact types",
+        "Create portfolio_validator.py",
+        "Write controller/README.md with exact commands",
+        "Test controller validate command"
+      ]
+    },
+    {
+      "phase": "R-07",
+      "name": "GENERATE_TASK_PACKETS",
+      "status": "PENDING",
+      "actions": [
+        "One task packet per executable task",
+        "Each packet self-contained: no need to load all 41 plans",
+        "Includes: implementation_steps, acceptance_criteria, verification_requirements, evidence_requirements, rollback",
+        "Verify EXECUTABLE_TASKS_WITHOUT_PACKETS = 0"
+      ]
+    },
+    {
+      "phase": "R-08",
+      "name": "REBUILD_DEPENDENCY_GRAPH_AND_WAVES",
+      "status": "PENDING",
+      "actions": [
+        "Rebuild at executable-task granularity",
+        "Verify no cycles",
+        "Rebuild waves: only dependency-satisfied tasks may be READY",
+        "Verify READY_TASKS_WITH_UNMET_DEPENDENCIES = 0"
+      ]
+    },
+    {
+      "phase": "R-09",
+      "name": "VALIDATE_ALL_COUNTERS",
+      "status": "PENDING",
+      "actions": [
+        "Run portfolio_controller.py validate",
+        "Verify all 18 pre-execution required counters = 0",
+        "Approve execution start"
+      ]
+    },
+    {
+      "phase": "R-10",
+      "name": "EXECUTE",
+      "status": "PENDING",
+      "actions": [
+        "Execute Wave 0 tasks in order",
+        "Each task: claim -> lock -> implement -> verify -> evidence -> close",
+        "Update source taskcards and plan checklists after each task",
+        "Run integration tests when eligible",
+        "Advance waves as predecessors complete"
+      ]
+    },
+    {
+      "phase": "R-11",
+      "name": "CLOSE_PLANS_AND_PORTFOLIO",
+      "status": "PENDING",
+      "actions": [
+        "Reread each original plan before closing",
+        "Verify every original requirement and taskcard has final disposition",
+        "Write one closure record per plan",
+        "Run final reconciliation across all 41 plans",
+        "Write portfolio closure record"
+      ]
+    }
+  ],
+  "repair_complete_when": "All R-01 through R-11 phases COMPLETE and all Section 22 counters = 0"
+}

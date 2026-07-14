@@ -169,18 +169,18 @@ def check_inv001_acquisition_pack_coverage(root: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 def check_inv002_state_files_present(root: Path) -> dict:
-    """state/current-state.md and state/current-state.json must exist and be non-empty."""
+    """.supervisor/state/current-state.md and .json must exist and be non-empty."""
     inv_id, name = "INV-002", "state_snapshot_files_present"
     issues = []
     for filename in ("current-state.md", "current-state.json"):
-        path = root / "state" / filename
+        path = root / ".supervisor" / "state" / filename
         if not path.exists():
-            issues.append(f"MISSING: state/{filename}")
+            issues.append(f"MISSING: .supervisor/state/{filename}")
         elif path.stat().st_size == 0:
-            issues.append(f"EMPTY: state/{filename}")
+            issues.append(f"EMPTY: .supervisor/state/{filename}")
     if issues:
         return _result(inv_id, name, False, issues)
-    return _result(inv_id, name, True, ["state/current-state.md and .json present and non-empty"])
+    return _result(inv_id, name, True, [".supervisor/state/current-state.md and .json present and non-empty"])
 
 
 # ---------------------------------------------------------------------------
@@ -564,9 +564,9 @@ def check_inv011_state_snapshot_sprint_current(root: Path) -> dict:
     inv_id, name = "INV-011", "state_snapshot_sprint_matches_latest_contract"
 
     # Parse state snapshot
-    state_path = root / "state" / "current-state.md"
+    state_path = root / ".supervisor" / "state" / "current-state.md"
     if not state_path.exists():
-        return _result(inv_id, name, False, ["state/current-state.md not found"])
+        return _result(inv_id, name, False, [".supervisor/state/current-state.md not found"])
 
     content = state_path.read_text(encoding="utf-8")
     m = re.search(r"\*\*Latest sprint:\*\*\s*R(\d+)", content, re.IGNORECASE)

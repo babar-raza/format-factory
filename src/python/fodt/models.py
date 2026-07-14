@@ -76,6 +76,10 @@ class FodtParagraph:
         """Return the list of inline spans within this paragraph."""
         return [FodtSpan(s) for s in self._data.get("spans", [])]
 
+    def set_text(self, text: str) -> None:
+        """Mutate the paragraph text in place (TC-PCL-005)."""
+        self._data["text"] = str(text)
+
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying paragraph data dict."""
         return dict(self._data)
@@ -266,6 +270,10 @@ class FodtDocument:
         dest.parent.mkdir(parents=True, exist_ok=True)
         from .writer import write_fodt
         write_fodt(self._data, dest)
+
+    def to_file(self, path: "str | Path") -> None:
+        """Save this document to a .fodt file — alias for save_to_file() (TC-PCL-005)."""
+        self.save_to_file(path)
 
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying document dict."""

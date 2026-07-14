@@ -1,0 +1,156 @@
+stage_reviews:
+  mission_id: VWM-2026-07-10
+  assurance_date: "2026-07-13"
+  authoritative_plan: plans/.claude/vast-wibbling-moon.md
+  artifact_role: analysis_or_evidence_only
+
+  stages:
+    S01_evidence_declaration_validation:
+      module: tools/supervisor/sprint_executor_validate.py
+      status: PASS
+      imported: true
+      exported_functions: 13
+      notes: "All validation phases operational. Phase 12 (provenance_chain) advisory."
+      score: 4
+      gaps: []
+
+    S02_declaration_inspection:
+      module: tools/supervisor/autonomous_cycle.py
+      status: PASS
+      imported: true
+      notes: "autonomous_cycle.py 2781 LOC. TC-PBHP-002/003/004 wired in this session."
+      score: 4
+      gaps: []
+
+    S03_governance_validation:
+      module: tools/supervisor/governance_validator_runner.py
+      status: PASS
+      imported: true
+      expected_count: 210
+      count_status: CONFIRMED_MATCHING
+      notes: "210 validators registered and running. test_expected_count_matches_actual passes. V92 escalated to blocking this session."
+      score: 5
+      gaps: []
+
+    S04_work_item_grading:
+      module: tools/supervisor/grade_declared_work.py
+      status: PASS
+      imported: true
+      notes: "Grader operational. Shadow grader (TC-GRADER-001) wired. Grader cache active."
+      score: 4
+      gaps: []
+
+    S05_sprint_planning:
+      module: tools/supervisor/generate_supervisor_packet.py
+      status: PASS
+      imported: true
+      notes: "Playbook guidance injection (TC-PBHP-002) added. Drift followup injection (TC-PBHP-004) added. synthesize_sprint_tasks accepts drift_findings_path."
+      score: 4
+      gaps: []
+
+    S06_continuation_checking:
+      module: tools/supervisor/check_continuation.py
+      status: PASS
+      imported: true
+      continuation_signal:
+        autonomous_continue: true
+        stop_reason: null
+        session_id: null
+        rework_items: []
+      notes: "session_id=null by design (TC-HQP-004) when no per-chat plan active. I-002 resolved as BY_DESIGN."
+      score: 4
+      gaps: []
+
+    S07_plan_lock_management:
+      module: tools/supervisor/write_plan_lock.py
+      status: PASS
+      imported: true
+      active_lock: plans/.claude/vast-wibbling-moon.md
+      lock_status: IN_PROGRESS
+      notes: "Plan lock correctly IN_PROGRESS for vast-wibbling-moon. TERMINAL_CLOSED properly suppresses ledger."
+      score: 5
+      gaps: []
+
+    S08_evidence_manifest:
+      module: tools/supervisor/build_declaration_review_package.py
+      status: PASS
+      imported: true
+      notes: "Review package builder operational. ZIP export functional."
+      score: 4
+      gaps: []
+
+    S09_gap_ledger:
+      module: reports/machinery-assurance/gap-ledger.yaml
+      status: STALE
+      notes: "gap-ledger.yaml from prior mission (MA-2026-07-02). Needs system-wide update. GAP-MA-006 missing (dogfood namespace conflict pattern)."
+      score: 2
+      gaps:
+        - id: GAP-VWM-001
+          description: "gap-ledger.yaml is stale from prior mission scope; needs system-wide update"
+          severity: MEDIUM
+          resolution: "Rewrite in TC-VWM-021"
+        - id: GAP-VWM-002
+          description: "GAP-MA-006 (dogfood namespace conflict) documented in MEMORY.md but not in gap-ledger.yaml"
+          severity: MEDIUM
+          resolution: "Add entry in TC-VWM-021"
+
+    S10_anti_skip_stub:
+      module: tools/supervisor/no_stub_scan.py
+      status: PASS
+      notes: "V149 validator enforces stub-free enforcement. Anti-skip checks in autonomous_cycle.py Step 3b."
+      score: 4
+      gaps: []
+
+    S11_control_index:
+      module: tools/supervisor/control_index/
+      status: PASS
+      db_exists: true
+      tables: 41
+      notes: "SQLite control index operational. FTS5 tables present. All 20 oracle formats indexable."
+      score: 4
+      gaps: []
+
+    S12_skill_registry:
+      module: .supervisor/skill-registry.yaml
+      status: PASS
+      registered_skills: 149
+      notes: "149 skills registered. Pre-commit hook guards ungoverned src/ mutations. skill_receipt_writer wired."
+      score: 4
+      gaps: []
+
+    S13_oracle_layer:
+      module: tools/oracle/execute_oracle.py
+      status: PASS
+      imported: true
+      product_oracle_verified: 20
+      product_oracle_obligation_created: 4
+      notes: "20/24 formats VERIFIED (all Python FOSS). 4 OBLIGATION_CREATED (ora/pam/xpm/zpaq). Oracle runs with .venv/Scripts/python."
+      score: 5
+      gaps: []
+
+    S14_autonomous_loop:
+      module: tools/supervisor/sprint_executor.py
+      status: PASS
+      file_size_bytes: 25511
+      notes: "Sprint executor operational. run-loop resets iteration to 0. One-mechanism lock enforced."
+      score: 4
+      gaps: []
+
+    S15_lifecycle_audit:
+      module: tools/supervisor/lifecycle_audit.py
+      status: PASS
+      imported: true
+      notes: "Lifecycle audit requires 2 behavioral iterations for machinery plans. B1 guard enforces. 2-column table format required."
+      score: 4
+      gaps: []
+
+  summary:
+    stages_reviewed: 15
+    pass_count: 14
+    stale_count: 1
+    total_gaps_found: 2
+    overall_score: 4.2
+    verdict: PASS_WITH_GAPS
+    priority_gaps:
+      - GAP-VWM-001
+      - GAP-VWM-002

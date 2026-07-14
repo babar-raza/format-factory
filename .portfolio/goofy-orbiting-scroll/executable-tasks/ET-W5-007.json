@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-007",
+  "workstream_id": "WS-13-VAST-SPLASHING-ALLEN",
+  "objective": "Execute vast-splashing-allen: all 12 TCs",
+  "source_plan_ids": [
+    "s017"
+  ],
+  "source_task_ids": [
+    "TC-VSA-001",
+    "TC-VSA-002",
+    "TC-VSA-003",
+    "TC-VSA-004",
+    "TC-VSA-005",
+    "TC-VSA-006",
+    "TC-VSA-007",
+    "TC-VSA-008",
+    "TC-VSA-009",
+    "TC-VSA-010",
+    "TC-VSA-011",
+    "TC-VSA-012"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read vast-splashing-allen.md (s017) and execute all 12 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 12 TCs in s017 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

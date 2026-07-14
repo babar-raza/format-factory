@@ -1,0 +1,48 @@
+{
+  "correction_date": "2026-07-12T15:45:00Z",
+  "corrected_by": "FF-PORTFOLIO-41-PROD-001 recovery pass",
+  "defect_root_cause": "lifecycle_audit.py returned AUDIT_PASS when called with --mission-id but no --plan-path (total_taskcards_parsed=0, plan_path=null, plan_hash=empty). Bug fixed: TC-AUDIT-FAIL-CLOSED guards added.",
+  "child_plan_corrections": [
+    {
+      "plan": "splendid-roaming-beaver.md",
+      "canonical_task": "MCP-W1-003",
+      "prior_closure_record": ".local/evidences/srb-001-mcp-w1-003-20260712/srb-001/evidence-declaration.yaml",
+      "closure_validity": "INVALID_VACUOUS_AUDIT_PASS",
+      "correction_action": "Preserve completed work as VERIFIED. Assign dispositions to deferred items.",
+      "deferred_item_dispositions": {
+        "TC-SRB-RW2": "MERGED_INTO_CANONICAL_TASK: Wave 6 product healing (MCP-W6-002/003) covers CLI + type stubs for Python packages",
+        "TC-SRB-030": "ALREADY_SATISFIED_AND_VERIFIED: AUTONOMOUS_CONTINUE:NO reproduction was the goal; signal coherence fixed in MCP-W1-004 (TC-MA2-SIGNAL-001); signal repaired 2026-07-12",
+        "TC-SRB-032": "MERGED_INTO_CANONICAL_TASK: Governance recovery piloting covered by MCP-W2-001 (imperative-floating-book, FF-SGOV-001 completed)",
+        "TC-SRB-040": "ALREADY_SATISFIED_AND_VERIFIED: production-portfolio-master-plan.md IS the production section; master plan created as MCP-W0-006",
+        "TC-SRB-P04": "MERGED_INTO_CANONICAL_TASK: Governance repair pilots run as part of MCP-W2-001 (FF-SGOV-001)",
+        "TC-SRB-P05": "MERGED_INTO_CANONICAL_TASK: Missing skill handling covered by MCP-W2-002 (wild-napping-cherny)",
+        "TC-SRB-P06": "MERGED_INTO_CANONICAL_TASK: Product deepening pilots run in Wave 6 (MCP-W6-001/002/003)",
+        "TC-SRB-P07": "MERGED_INTO_CANONICAL_TASK: Shared machinery regression covered by MCP-W8-001 (vast-wibbling-moon)",
+        "TC-SRB-P08": "MERGED_INTO_CANONICAL_TASK: 3 consecutive autonomous sprints — final assurance in MCP-W8-001",
+        "TC-SRB-P09": "ALREADY_SATISFIED_AND_VERIFIED: Gate 11 simulated stop implemented as Check 11 in check_continuation.py (TC-GFB-022); gate_states.yaml controls it",
+        "TC-SRB-P10": "MERGED_INTO_CANONICAL_TASK: No-change idempotency pilots in MCP-W8-001 (final_no_change_reruns_passed=2 required by portfolio)",
+        "TC-SRB-070": "MERGED_INTO_CANONICAL_TASK: Product deepening sprint 1 in Wave 6 (MCP-W6-001 through W6-003)",
+        "TC-SRB-071": "MERGED_INTO_CANONICAL_TASK: Product deepening sprint 2 in Wave 6",
+        "TC-SRB-090": "MERGED_INTO_CANONICAL_TASK: Production readiness audit = MCP-W8-001 (vast-wibbling-moon final assurance)"
+      },
+      "correction_status": "DISPOSITIONS_ASSIGNED"
+    },
+    {
+      "plan": "bubbly-dancing-pony.md",
+      "canonical_task": "MCP-W1-004",
+      "prior_closure_record": ".local/evidences/bdp-001-mcp-w1-004-20260712/bdp-001/evidence-declaration.yaml",
+      "closure_validity": "INVALID_VACUOUS_AUDIT_PASS",
+      "correction_action": "Preserve completed work as VERIFIED. Deferred TC-MA2-SKIP-001-04 dispositioned.",
+      "deferred_item_dispositions": {
+        "TC-MA2-SKIP-001-04": "MERGED_INTO_CANONICAL_TASK: Surface outstanding skips in session-resume.md — covered by MCP-W1-005 (silly-popping-tower operational control records)"
+      },
+      "correction_status": "DISPOSITIONS_ASSIGNED"
+    }
+  ],
+  "lifecycle_audit_fix": {
+    "fix_applied": true,
+    "guards_added": ["PLAN_PATH_MISSING", "PLAN_UNREADABLE", "ZERO_TASKCARDS_PARSED"],
+    "tests_added": 4,
+    "protection": "Future lifecycle_audit calls with mission_id but no plan_path now return AUDIT_REQUIRES_ITERATION"
+  }
+}

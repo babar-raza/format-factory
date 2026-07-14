@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-tsv-test-binding-v1
+format_id: tsv
+oracle_package: oracle/formats/tsv/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: tsv.tsv_parser
+executor_callable: parse_tsv
+bound_test_files:
+- tests/python/tsv/test_r58_tsv_gate6_oracle.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: tsv-valid-001
+  bound: true
+  test_function: test_tsv_oracle_valid_cases
+- case_id: tsv-valid-002
+  bound: true
+  test_function: test_tsv_oracle_valid_cases
+- case_id: tsv-valid-003
+  bound: true
+  test_function: test_tsv_oracle_valid_cases
+- case_id: tsv-valid-004
+  bound: true
+  test_function: test_tsv_oracle_valid_cases
+- case_id: tsv-invalid-001
+  bound: true
+  test_function: test_tsv_oracle_invalid_cases
+binding_verdict: BOUND

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "journal-event",
+  "title": "Journal Event",
+  "type": "object",
+  "required": ["schema_version","event_id","timestamp","portfolio_id","event_type","checksum"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "event_id": {"type": "string"},
+    "timestamp": {"type": "string"},
+    "portfolio_id": {"type": "string"},
+    "event_type": {
+      "type": "string",
+      "examples": [
+        "PORTFOLIO_INITIALIZED","SOURCE_INVENTORY_COMPLETE",
+        "BATCH_A_COMMITTED","BATCH_B_COMMITTED","BATCH_C_COMMITTED","BATCH_D_COMMITTED",
+        "INGESTION_VERIFIED","REPOSITORY_RECONNOITRED","REGISTRIES_BUILT",
+        "PROVENANCE_MAPPED","LANES_AND_CONFLICTS_CLASSIFIED","DEPENDENCY_GRAPH_BUILT",
+        "CHECKLISTS_CREATED","WAVES_BUILT","HANDOFF_CREATED",
+        "TASK_CLAIMED","TASK_EXECUTION_STARTED","TASK_VERIFICATION_REQUESTED",
+        "TASK_CLOSED","PLAN_CLOSED","CLAIM_EXPIRED","COMPACTION_SNAPSHOT",
+        "TASK_BECAME_READY","PORTFOLIO_CLOSED"
+      ]
+    },
+    "task_id": {"type": ["string","null"]},
+    "plan_id": {"type": ["string","null"]},
+    "worker_id": {"type": "string"},
+    "reason": {"type": "string"},
+    "checksum": {"type": "string"}
+  }
+}

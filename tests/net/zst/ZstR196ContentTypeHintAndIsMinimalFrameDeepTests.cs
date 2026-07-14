@@ -122,8 +122,8 @@ public class ZstR196ContentTypeHintAndIsMinimalFrameDeepTests : IDisposable
         var compressed = ZstWriter.CompressBytes(SampleBytes);
         var doc = ZstParser.ParseBytes(compressed);
         // Just confirm it's a bool (no exception)
-        var _ = doc.IsMinimalFrame;
-        Assert.True(true);
+        var isMinimalFrame = doc.IsMinimalFrame;
+        Assert.IsType<bool>((object)isMinimalFrame);
     }
 
     [Fact]
@@ -140,8 +140,8 @@ public class ZstR196ContentTypeHintAndIsMinimalFrameDeepTests : IDisposable
     {
         var path = CreateSampleFile();
         var doc = ZstParser.ParseFile(path);
-        var _ = doc.IsMinimalFrame;
-        Assert.True(true); // no exception
+        var isMinimalFrame = doc.IsMinimalFrame;
+        Assert.IsType<bool>((object)isMinimalFrame);
     }
 
     [Fact]

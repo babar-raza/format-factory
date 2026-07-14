@@ -1,15 +1,15 @@
-<!-- generated_at: 2026-07-10T17:33:54.278785 | source_sprint: FOSS-TOML-MUTATION-001 -->
+<!-- generated_at: 2026-07-13T18:12:34.504370 | source_sprint: CERT-LAYER-HEAL-20260710 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-10T17:33:54.278785
+# Generated: 2026-07-13T18:12:34.504370
 
 ## Quick State
-- Last sprint: FOSS-TOML-MUTATION-001
-- Evidence verdict: ACCEPTED
-- Tests: 15 passed / 0 failed
+- Last sprint: CERT-LAYER-HEAL-20260710
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 29 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
-- Autonomous continue: True
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -24,51 +24,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/e7bdbd0e6144
+- Last evidence bundle: .local/evidences/layer-heal-010
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- bundle_entry_count: 67
-- bundle_validation_pass: True
-
-## Entry: bright-greeting-goose-20260706T104442Z
-- timestamp: 2026-07-06T15:49:10.375834
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\bright-greeting-goose-20260706T104442Z\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 70
-- bundle_validation_pass: True
-
-## Entry: hazy-questing-peach
-- timestamp: 2026-07-09T18:37:10.368879
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hazy-questing-peach-20260709T133041Z\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 23
-- bundle_validation_pass: True
-
-## Entry: vast-weaving-lampson
-- timestamp: 2026-07-10T14:31:28.394759
-- verdict: ACCEPTED
-- test_count: 1169
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\vwl-20260710\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 38
-- bundle_validation_pass: True
-- test_delta: +1169
-- test_delta_from: 0
-
-## Entry: PQ-BUNDLE-FORENSICS-REPAIR-001
 - timestamp: 2026-07-10T16:37:12.587919
 - verdict: ACCEPTED
 - test_count: 21558
@@ -80,6 +41,45 @@
 - bundle_validation_pass: True
 - test_delta: +20389
 - test_delta_from: 1169
+
+## Entry: CSV-DOTNET-ROUNDTRIP-001
+- timestamp: 2026-07-10T17:41:10.582666
+- verdict: ACCEPTED
+- test_count: 8
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\7c1667a4c090\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 61
+- bundle_validation_pass: True
+- test_delta: -21550
+- test_delta_from: 21558
+
+## Entry: GNUMERIC-PYTHON-MUTATION-001
+- timestamp: 2026-07-10T17:49:09.353447
+- verdict: ACCEPTED
+- test_count: 13
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\36f347f0cbfc\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 63
+- bundle_validation_pass: True
+- test_delta: +5
+- test_delta_from: 8
+
+## Entry: SYLK-TOML-FOSS-ANALYTICS-BATCH-001
+- timestamp: 2026-07-11T20:15:46.772897
+- verdict: ACCEPTED
+- test_count: 59
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\2d70f39e\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 39
+- bundle_validation_pass: True
+- test_delta: +46
+- test_delta_from: 13
 ```
 
 ## IMPORTANT REMINDERS

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-016",
+  "workstream_id": "WS-28-OPTIMIZED-GIRAFFE",
+  "objective": "Execute optimized-meandering-giraffe: all 12 TCs",
+  "source_plan_ids": [
+    "s033"
+  ],
+  "source_task_ids": [
+    "TC-OMG-001",
+    "TC-OMG-002",
+    "TC-OMG-003",
+    "TC-OMG-004",
+    "TC-OMG-005",
+    "TC-OMG-006",
+    "TC-OMG-007",
+    "TC-OMG-008",
+    "TC-OMG-009",
+    "TC-OMG-010",
+    "TC-OMG-011",
+    "TC-OMG-012"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read optimized-meandering-giraffe.md (s033) and execute all 12 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 12 TCs in s033 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

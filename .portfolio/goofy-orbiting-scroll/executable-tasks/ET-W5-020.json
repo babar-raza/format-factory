@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-020",
+  "workstream_id": "WS-35-LIVELY-ELEPHANT",
+  "objective": "Execute lively-leaping-elephant: all 15 TCs",
+  "source_plan_ids": [
+    "s041"
+  ],
+  "source_task_ids": [
+    "TC-LLE-001",
+    "TC-LLE-002",
+    "TC-LLE-003",
+    "TC-LLE-004",
+    "TC-LLE-005",
+    "TC-LLE-006",
+    "TC-LLE-007",
+    "TC-LLE-008",
+    "TC-LLE-009",
+    "TC-LLE-010",
+    "TC-LLE-011",
+    "TC-LLE-012",
+    "TC-LLE-013",
+    "TC-LLE-014",
+    "TC-LLE-015"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read lively-leaping-elephant.md (s041) and execute all 15 TCs"
+  ],
+  "acceptance_criteria": [
+    "All 15 TCs in s041 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

@@ -1,0 +1,25 @@
+oracle_test_binding_id: oracle-xcf-test-binding-v1
+format_id: xcf
+oracle_package: oracle/formats/xcf/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: xcf.xcf_parser
+executor_callable: XcfImage
+bound_test_files:
+- tests/python/xcf/test_xcf_gate6_oracle.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: xcf-valid-001
+  bound: true
+  test_function: test_xcf_oracle_valid_cases
+- case_id: xcf-valid-002
+  bound: true
+  test_function: test_xcf_oracle_valid_cases
+- case_id: xcf-valid-003
+  bound: true
+  test_function: test_xcf_oracle_valid_cases
+- case_id: xcf-invalid-001
+  bound: true
+  test_function: test_xcf_oracle_invalid_cases
+binding_verdict: BOUND

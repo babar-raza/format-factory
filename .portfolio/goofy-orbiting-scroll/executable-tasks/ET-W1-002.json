@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W1-002",
+  "workstream_id": "WS-01-SUPERVISOR-MACHINERY",
+  "objective": "Complete lifecycle loop iteration fix: ensure AUDIT_PASS leads to TERMINAL_CLOSED, not ITERATION_REQUIRED loop",
+  "source_plan_ids": [
+    "s037"
+  ],
+  "source_task_ids": [
+    "TC-VLH-001",
+    "TC-VLH-002"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/lifecycle_audit.py",
+    "tools/supervisor/write_plan_lock.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/lifecycle_audit.py",
+    "tools/supervisor/write_plan_lock.py"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read velvet-swinging-wreath.md (s037) plan completely",
+    "Reproduce the ITERATION_REQUIRED loop issue in a test scenario",
+    "Identify root cause in lifecycle_audit.py or write_plan_lock.py",
+    "Apply fix ensuring AUDIT_PASS → TERMINAL_CLOSED (not re-triggering ITERATION_REQUIRED)",
+    "Write tests/supervisor/test_lifecycle_iteration_fix.py"
+  ],
+  "acceptance_criteria": [
+    "lifecycle_audit.py returns AUDIT_PASS when all taskcards in table are CLOSED",
+    "write_plan_lock.py with --audit-gate and AUDIT_PASS → status=TERMINAL_CLOSED",
+    "No regression in existing plan lock tests"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/supervisor/test_plan_lock*.py -v"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 1,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W1-002-37AB943E",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W1-002-EF3DCFEA",
+  "claimed_at": "2026-07-11T10:19:55.086307+00:00",
+  "closed_at": "2026-07-11T10:24:28.603197+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "PARTIAL"
+}

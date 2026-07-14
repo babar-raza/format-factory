@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-007",
+  "workstream_id": "WS-13-VAST-SPLASHING-ALLEN",
+  "objective": "Execute vast-splashing-allen: all 12 TCs",
+  "source_plan_ids": [
+    "s017"
+  ],
+  "source_task_ids": [
+    "TC-VSA-001",
+    "TC-VSA-002",
+    "TC-VSA-003",
+    "TC-VSA-004",
+    "TC-VSA-005",
+    "TC-VSA-006",
+    "TC-VSA-007",
+    "TC-VSA-008",
+    "TC-VSA-009",
+    "TC-VSA-010",
+    "TC-VSA-011",
+    "TC-VSA-012"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 12 TCs in s017 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read vast-splashing-allen.md (s017) and execute all 12 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "2994920289742daa947a602af9e8f2e4483ad0c2e28eb267617919dad2a541e4"
+}

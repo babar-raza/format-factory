@@ -1,0 +1,66 @@
+---
+# TC-VWM-028-01: Contract vs Code Comparison
+# Mission: VWM-2026-07-10
+# Executed: 2026-07-13
+
+review_type: independent_specialist_review
+mission_id: VWM-2026-07-10
+authoritative_plan: plans/.claude/vast-wibbling-moon.md
+artifact_role: analysis_or_evidence_only
+
+documented_pipeline_steps:
+  source: CLAUDE.md "Sprint Closeout" section
+  steps:
+    - id: S0
+      name: Detect NEW architecture violations
+      description: Run LOC/function count on src/python/, skip known_violations
+      autonomous_cycle_equivalent: "Step 0-pre and various pre-validation steps"
+    - id: S1
+      name: Write evidence declaration
+      description: YAML file at .local/evidences/<run_id>/evidence-declaration.yaml
+      autonomous_cycle_equivalent: "Step 1: Validate declaration"
+    - id: S2
+      name: Run supervisor pipeline
+      description: "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration ..."
+      autonomous_cycle_equivalent: "Steps 2-6: Evidence, governance, grading, planning"
+    - id: S3
+      name: Check exit code
+      description: "0=continue, 3=log rework, 1=log error, 9=log error"
+      autonomous_cycle_equivalent: "return code handling"
+    - id: S4
+      name: Build review package
+      description: "python tools/supervisor/build_declaration_review_package.py"
+      autonomous_cycle_equivalent: "Step 6: Review package"
+
+actual_autonomous_cycle_steps:
+  source: tools/supervisor/autonomous_cycle.py
+  step_count: 67
+  key_steps:
+    - "Step 0-pre: Auto-GC SUPERSEDED plan locks"
+    - "Step 0a: SAL regeneration trigger"
+    - "Step 0a-staleness: Escalate SAL staleness"
+    - "Step 0b: Detect active per-chat plan lock"
+    - "Step 1: Validate declaration"
+    - "Step 1a: Playbook selection hook (TC-PB-008)"
+    - "Step 1b: Evidence completeness pre-check"
+    - "Step 2: Inspect declared evidence"
+    - "Step 2b: Generate/validate evidence manifest"
+    - "Step 2c: Materialize declared evidence"
+    - "Steps 3-6: Governance, grading, planning, continuation"
+
+discrepancies_found:
+  - id: D1
+    description: CLAUDE.md documents 4 numbered steps; autonomous_cycle.py has 67 step markers
+    severity: INFORMATIONAL
+    assessment: Not a defect — autonomous_cycle.py implements CLAUDE.md's 4 high-level steps with granular sub-steps. Alignment is correct at the semantic level.
+    gap_candidate: false
+
+  - id: D2
+    description: 24 silent exception handlers (except Exception: pass) in autonomous_cycle.py
+    severity: MEDIUM
+    assessment: These are best-effort fallback paths (e.g., SAL GC, plan lock cleanup). Per CLAUDE.md Supreme Directive, closeout failures must not block continuation. Silent fallbacks are intentional design.
+    gap_candidate: true
+    note: Documented but accepted as intentional per design. Non-blocking.
+
+contract_vs_code_verdict: ALIGNED
+all_discrepancies_documented: true

@@ -1,0 +1,1793 @@
+{
+  "generated_at": "2026-07-13T11:25:20.977036Z",
+  "total_files": 295,
+  "category_summary": {
+    "utility": 182,
+    "evidence_tool": 13,
+    "supervisor_core": 3,
+    "module_init": 6,
+    "state_management": 10,
+    "skill_tool": 12,
+    "control_index": 1,
+    "failure_tracking": 2,
+    "plan_management": 4,
+    "gap_ledger": 2,
+    "registry_utility": 6,
+    "work_selector": 1,
+    "governance_validator": 46,
+    "lifecycle_audit": 4,
+    "test_file": 3
+  },
+  "files": [
+    {
+      "file": "tools/supervisor/governance_validators.py",
+      "loc": 3234,
+      "function_count": 53,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle.py",
+      "loc": 3069,
+      "function_count": 6,
+      "category": "supervisor_core"
+    },
+    {
+      "file": "tools/supervisor/autonomous_task_generator.py",
+      "loc": 1920,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_next_worker_prompt.py",
+      "loc": 1651,
+      "function_count": 29,
+      "category": "work_selector"
+    },
+    {
+      "file": "tools/supervisor/generate_supervisor_packet.py",
+      "loc": 1455,
+      "function_count": 21,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_ext.py",
+      "loc": 1413,
+      "function_count": 16,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/anti_skip_checker.py",
+      "loc": 1351,
+      "function_count": 30,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_ext4.py",
+      "loc": 1294,
+      "function_count": 31,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_dotnet_semantic.py",
+      "loc": 1231,
+      "function_count": 22,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle_extensions.py",
+      "loc": 1174,
+      "function_count": 18,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/grade_declared_work.py",
+      "loc": 1154,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/lifecycle_audit.py",
+      "loc": 1136,
+      "function_count": 17,
+      "category": "lifecycle_audit"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_ext2.py",
+      "loc": 1105,
+      "function_count": 20,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/stop_reason_adjudicator.py",
+      "loc": 1025,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/sprint_executor_validate.py",
+      "loc": 1012,
+      "function_count": 16,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_continuation.py",
+      "loc": 978,
+      "function_count": 8,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/tri_lane_integration.py",
+      "loc": 973,
+      "function_count": 26,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validator_runner.py",
+      "loc": 971,
+      "function_count": 5,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_ext3.py",
+      "loc": 968,
+      "function_count": 13,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomous_loop_runner.py",
+      "loc": 922,
+      "function_count": 29,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_poc_controller.py",
+      "loc": 840,
+      "function_count": 16,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/embedding_retrieval.py",
+      "loc": 838,
+      "function_count": 39,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/write_plan_lock.py",
+      "loc": 836,
+      "function_count": 14,
+      "category": "plan_management"
+    },
+    {
+      "file": "tools/supervisor/libforge_integration_evidence_check.py",
+      "loc": 774,
+      "function_count": 24,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/autonomous_train_executor.py",
+      "loc": 698,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/rework_orchestrator.py",
+      "loc": 683,
+      "function_count": 17,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_orchestrator.py",
+      "loc": 663,
+      "function_count": 15,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_host_runner.py",
+      "loc": 651,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/sprint_executor.py",
+      "loc": 628,
+      "function_count": 15,
+      "category": "supervisor_core"
+    },
+    {
+      "file": "tools/supervisor/supervisor_loop.py",
+      "loc": 605,
+      "function_count": 22,
+      "category": "supervisor_core"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_found_issue.py",
+      "loc": 599,
+      "function_count": 16,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/product_feature_factory.py",
+      "loc": 590,
+      "function_count": 17,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_tri_lane_contract.py",
+      "loc": 583,
+      "function_count": 28,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_evidence_for_supervisor.py",
+      "loc": 578,
+      "function_count": 14,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_spec.py",
+      "loc": 577,
+      "function_count": 7,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomy_route_decider.py",
+      "loc": 564,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/inspect_declared_evidence.py",
+      "loc": 558,
+      "function_count": 13,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/capability_feature_compiler.py",
+      "loc": 554,
+      "function_count": 23,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/product_source_executor.py",
+      "loc": 550,
+      "function_count": 12,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/select_poc_gaps.py",
+      "loc": 548,
+      "function_count": 18,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/proof_backed_poc_gate.py",
+      "loc": 537,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_spec_fact_refs.py",
+      "loc": 536,
+      "function_count": 8,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_dotnet.py",
+      "loc": 527,
+      "function_count": 11,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/capability_compiler.py",
+      "loc": 521,
+      "function_count": 15,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/query.py",
+      "loc": 504,
+      "function_count": 21,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/plan_identity.py",
+      "loc": 489,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/freeze_gate_runner.py",
+      "loc": 487,
+      "function_count": 13,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_mainstream_execution_packet.py",
+      "loc": 486,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_system_healing_gate.py",
+      "loc": 478,
+      "function_count": 18,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/product_action_guard.py",
+      "loc": 473,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/authority_integration_fabric.py",
+      "loc": 462,
+      "function_count": 15,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/grader_reliability.py",
+      "loc": 459,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gate_executor.py",
+      "loc": 427,
+      "function_count": 13,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/bounded_repair_engine.py",
+      "loc": 424,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/materialize_declared_evidence.py",
+      "loc": 424,
+      "function_count": 7,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/libforge_pattern_registry.py",
+      "loc": 420,
+      "function_count": 8,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/summary_classifier.py",
+      "loc": 420,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/sprint_number_allocator.py",
+      "loc": 417,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/capability_verifier.py",
+      "loc": 416,
+      "function_count": 15,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/maintenance_obligation_register.py",
+      "loc": 416,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/proof_adequacy_contract.py",
+      "loc": 414,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_control_layer.py",
+      "loc": 411,
+      "function_count": 8,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle_extensions/__init__.py",
+      "loc": 410,
+      "function_count": 8,
+      "category": "module_init"
+    },
+    {
+      "file": "tools/supervisor/evidence_auto_packager.py",
+      "loc": 405,
+      "function_count": 13,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/validate_claude_commands.py",
+      "loc": 403,
+      "function_count": 5,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/capability_queue_consumer.py",
+      "loc": 398,
+      "function_count": 12,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/qname_ontology_generator.py",
+      "loc": 389,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/concurrency/mission_lock.py",
+      "loc": 386,
+      "function_count": 16,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/compose_verify_loop.py",
+      "loc": 384,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/simulate_autonomous_loop.py",
+      "loc": 381,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/post_sprint_loop_controller.py",
+      "loc": 374,
+      "function_count": 12,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_sprint_learning.py",
+      "loc": 373,
+      "function_count": 11,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/grade_intermediate_verify.py",
+      "loc": 372,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/libforge_isolated_job_runner.py",
+      "loc": 367,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/evidence_continuation.py",
+      "loc": 366,
+      "function_count": 10,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/plan_importer.py",
+      "loc": 365,
+      "function_count": 14,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/authority_gate_validation.py",
+      "loc": 364,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/compare_goal_to_evidence.py",
+      "loc": 362,
+      "function_count": 15,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/product_task_selector.py",
+      "loc": 357,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/authority_conveyor.py",
+      "loc": 355,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/dom_maturity_gap_generator.py",
+      "loc": 354,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_closure_artifacts.py",
+      "loc": 353,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/quality_scorer.py",
+      "loc": 349,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/ast_forbidden_scanner.py",
+      "loc": 348,
+      "function_count": 17,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/action_queue.py",
+      "loc": 340,
+      "function_count": 16,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_track_health.py",
+      "loc": 339,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/mainstream_acceleration_packet.py",
+      "loc": 336,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle_utils.py",
+      "loc": 335,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_supervisor_evidence_bundle.py",
+      "loc": 332,
+      "function_count": 9,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_closeout_gate.py",
+      "loc": 322,
+      "function_count": 12,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/reopen_plan_lock.py",
+      "loc": 321,
+      "function_count": 5,
+      "category": "plan_management"
+    },
+    {
+      "file": "tools/supervisor/update_source_baseline.py",
+      "loc": 317,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/product_velocity_scorer.py",
+      "loc": 309,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gap_closure_engine.py",
+      "loc": 306,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_gate_auth.py",
+      "loc": 304,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/check_cross_stream_consumption.py",
+      "loc": 299,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/evidence_manifest.py",
+      "loc": 298,
+      "function_count": 6,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_sal.py",
+      "loc": 296,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/backends/local_deterministic_backend.py",
+      "loc": 293,
+      "function_count": 13,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_adoption_compliance.py",
+      "loc": 293,
+      "function_count": 6,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/generate_stream_routing_packet.py",
+      "loc": 292,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_stream_gaps.py",
+      "loc": 291,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/record_lane_execution.py",
+      "loc": 290,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/espanso_staleness_checker.py",
+      "loc": 287,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/ai_product_brain.py",
+      "loc": 282,
+      "function_count": 11,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/continuation_state.py",
+      "loc": 278,
+      "function_count": 18,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/scope_guard.py",
+      "loc": 277,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/patch_registry_missing_fields.py",
+      "loc": 276,
+      "function_count": 1,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/run_regression_baseline.py",
+      "loc": 275,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_skill_registry.py",
+      "loc": 275,
+      "function_count": 3,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/concurrency/checkpoint.py",
+      "loc": 274,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/db.py",
+      "loc": 274,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/discover_latest_evidence.py",
+      "loc": 274,
+      "function_count": 8,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_root_struct.py",
+      "loc": 274,
+      "function_count": 5,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_oracle.py",
+      "loc": 272,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/lane_selector.py",
+      "loc": 272,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/package_install_proof.py",
+      "loc": 272,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/dom_contract_checker.py",
+      "loc": 269,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/test_drivers.py",
+      "loc": 269,
+      "function_count": 14,
+      "category": "test_file"
+    },
+    {
+      "file": "tools/supervisor/dom_maturity_promoter.py",
+      "loc": 267,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_layers.py",
+      "loc": 265,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/choose_skill_or_handoff.py",
+      "loc": 264,
+      "function_count": 6,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/watch_for_bundle.py",
+      "loc": 264,
+      "function_count": 11,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/product_deepening_gate.py",
+      "loc": 263,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/delegate_gap.py",
+      "loc": 262,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/focused_evidence_extractor.py",
+      "loc": 261,
+      "function_count": 6,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/continuation_identity.py",
+      "loc": 259,
+      "function_count": 11,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/concurrency/worker_claim.py",
+      "loc": 257,
+      "function_count": 11,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/promotion_manager.py",
+      "loc": 257,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_prompt_quality.py",
+      "loc": 256,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/closure_challenger.py",
+      "loc": 254,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_agent_parity.py",
+      "loc": 253,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/project_product_ledger_to_proof_graph.py",
+      "loc": 250,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gap_ledger_to_work_items.py",
+      "loc": 249,
+      "function_count": 5,
+      "category": "gap_ledger"
+    },
+    {
+      "file": "tools/supervisor/ai_sprint_manager.py",
+      "loc": 248,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/product_quality_audit.py",
+      "loc": 248,
+      "function_count": 12,
+      "category": "lifecycle_audit"
+    },
+    {
+      "file": "tools/supervisor/backends/llm_api_backend.py",
+      "loc": 247,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/sync_local_memory.py",
+      "loc": 243,
+      "function_count": 10,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/next_action_runner.py",
+      "loc": 242,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/terminal_closure_validators.py",
+      "loc": 239,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_package_identity.py",
+      "loc": 236,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/failure_memory.py",
+      "loc": 235,
+      "function_count": 14,
+      "category": "failure_tracking"
+    },
+    {
+      "file": "tools/supervisor/generate_execution_handoff.py",
+      "loc": 234,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/ai_supervisor_advisor.py",
+      "loc": 233,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_mcp_status.py",
+      "loc": 233,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/control_layer_ingestor.py",
+      "loc": 232,
+      "function_count": 10,
+      "category": "control_index"
+    },
+    {
+      "file": "tools/supervisor/design_artifact_validator.py",
+      "loc": 232,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/orchestrator_lifetime.py",
+      "loc": 229,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gap_ledger_hygiene.py",
+      "loc": 223,
+      "function_count": 7,
+      "category": "gap_ledger"
+    },
+    {
+      "file": "tools/supervisor/ai_implementation_designer.py",
+      "loc": 220,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/detect_product_progress.py",
+      "loc": 220,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/dom_gap_generator.py",
+      "loc": 220,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/next_action_generator.py",
+      "loc": 220,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/evidence_declaration.py",
+      "loc": 219,
+      "function_count": 7,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/external_tool_governance.py",
+      "loc": 219,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_no_stop_watchdog.py",
+      "loc": 219,
+      "function_count": 7,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_plan_readiness.py",
+      "loc": 219,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_output_quality.py",
+      "loc": 216,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/lane_execution_ledger.py",
+      "loc": 216,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/cci_migration.py",
+      "loc": 214,
+      "function_count": 7,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/views.py",
+      "loc": 214,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/drivers_promotion.py",
+      "loc": 214,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/neighboring_risk_reviewer.py",
+      "loc": 214,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_consumer_proof.py",
+      "loc": 212,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_skill_transcript.py",
+      "loc": 211,
+      "function_count": 5,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_execution_plan.py",
+      "loc": 210,
+      "function_count": 6,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/libforge_adapter_planner.py",
+      "loc": 203,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/machinery_audit.py",
+      "loc": 200,
+      "function_count": 4,
+      "category": "lifecycle_audit"
+    },
+    {
+      "file": "tools/supervisor/ai_learning_loop.py",
+      "loc": 198,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_prompt_registry.py",
+      "loc": 197,
+      "function_count": 8,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_product_code_ledger.py",
+      "loc": 195,
+      "function_count": 8,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/update_ledger_mwp.py",
+      "loc": 194,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/sync.py",
+      "loc": 192,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/ai_evidence_critic.py",
+      "loc": 186,
+      "function_count": 8,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/maturity_trend.py",
+      "loc": 185,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/lane_enforcement_validator.py",
+      "loc": 184,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/before_after_evidence.py",
+      "loc": 183,
+      "function_count": 2,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/prior_closure_auditor.py",
+      "loc": 183,
+      "function_count": 4,
+      "category": "lifecycle_audit"
+    },
+    {
+      "file": "tools/supervisor/stream_prompt_generator.py",
+      "loc": 183,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gen_skill_transcripts.py",
+      "loc": 179,
+      "function_count": 0,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/source_pattern_miner.py",
+      "loc": 176,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/write_track_handoff.py",
+      "loc": 176,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/test_plan_generator.py",
+      "loc": 175,
+      "function_count": 5,
+      "category": "test_file"
+    },
+    {
+      "file": "tools/supervisor/grade_to_quality_adapter.py",
+      "loc": 169,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_ledger_entry.py",
+      "loc": 168,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/learning_consumer.py",
+      "loc": 165,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/stale_queue_repair_hook.py",
+      "loc": 165,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/write_sprint_learnings.py",
+      "loc": 164,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/reset_track_signal.py",
+      "loc": 160,
+      "function_count": 2,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/sal_format_advisory.py",
+      "loc": 160,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_sgov.py",
+      "loc": 159,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/path_resolver.py",
+      "loc": 159,
+      "function_count": 4,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/capture_raw_logs.py",
+      "loc": 158,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/evidence_ingestor.py",
+      "loc": 157,
+      "function_count": 4,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/next_best_action.py",
+      "loc": 155,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/readme_lane_injector.py",
+      "loc": 155,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_sample_outputs.py",
+      "loc": 153,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validator_utils.py",
+      "loc": 152,
+      "function_count": 4,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/write_chat_plan_binding.py",
+      "loc": 152,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backend_selector.py",
+      "loc": 150,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/continuation_selector.py",
+      "loc": 150,
+      "function_count": 2,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/continuation_router.py",
+      "loc": 146,
+      "function_count": 3,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/plan_ingestor.py",
+      "loc": 143,
+      "function_count": 12,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/__main__.py",
+      "loc": 140,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/reconcile_exports_vs_capabilities.py",
+      "loc": 138,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/continuation_ledger.py",
+      "loc": 136,
+      "function_count": 5,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/check_tombstone_records.py",
+      "loc": 133,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/grading_retrieval_bridge.py",
+      "loc": 133,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/closeout_skip_ledger.py",
+      "loc": 131,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/delegation_gate.py",
+      "loc": 130,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/stream_forecaster.py",
+      "loc": 130,
+      "function_count": 6,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/generate_iter001_samples.py",
+      "loc": 128,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_ledger.py",
+      "loc": 127,
+      "function_count": 1,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/mcp_bridge.py",
+      "loc": 127,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/guard_001_checker.py",
+      "loc": 117,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/scan_residual_bypasses.py",
+      "loc": 116,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/search.py",
+      "loc": 114,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gap_verification_engine.py",
+      "loc": 114,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_host_daemon.py",
+      "loc": 113,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/contradiction_ingestor.py",
+      "loc": 109,
+      "function_count": 9,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/validate_skill_contracts.py",
+      "loc": 108,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/plan_placement.py",
+      "loc": 107,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/__init__.py",
+      "loc": 106,
+      "function_count": 5,
+      "category": "module_init"
+    },
+    {
+      "file": "tools/supervisor/dom_baseline_scanner.py",
+      "loc": 104,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_contract.py",
+      "loc": 103,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/control_index/gap_selection.py",
+      "loc": 102,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/next_action_schema.py",
+      "loc": 99,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_signal.py",
+      "loc": 98,
+      "function_count": 1,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/adversarial_check.py",
+      "loc": 97,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/maintenance_obligation_ingestor.py",
+      "loc": 97,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/execution_backend.py",
+      "loc": 97,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/adapters/json_adapter.py",
+      "loc": 95,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/staleness.py",
+      "loc": 95,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/adapters/yaml_adapter.py",
+      "loc": 93,
+      "function_count": 8,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_release.py",
+      "loc": 90,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/check_component_register.py",
+      "loc": 89,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/emit_maturity_signal.py",
+      "loc": 89,
+      "function_count": 1,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/sync_skill_command_registry.py",
+      "loc": 89,
+      "function_count": 3,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/governance_validators_path.py",
+      "loc": 87,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/init_mission_ledger.py",
+      "loc": 87,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/lane_dependency_checker.py",
+      "loc": 87,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/subprocess_calls_ingestor.py",
+      "loc": 86,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/detect_ad_hoc_execution.py",
+      "loc": 86,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/knowledge_freshness_validator.py",
+      "loc": 86,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_extension_budget.py",
+      "loc": 84,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/skill_invocations_ingestor.py",
+      "loc": 79,
+      "function_count": 3,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/evidence_verifier.py",
+      "loc": 79,
+      "function_count": 1,
+      "category": "evidence_tool"
+    },
+    {
+      "file": "tools/supervisor/run_skill_idempotency.py",
+      "loc": 78,
+      "function_count": 3,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/validate_governance_binding.py",
+      "loc": 78,
+      "function_count": 3,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/validate_governance_schemas.py",
+      "loc": 78,
+      "function_count": 2,
+      "category": "governance_validator"
+    },
+    {
+      "file": "tools/supervisor/autonomy_route_models.py",
+      "loc": 77,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/gap_ingestor.py",
+      "loc": 77,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/reviewer_adapter.py",
+      "loc": 77,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/test_layer_utils.py",
+      "loc": 76,
+      "function_count": 3,
+      "category": "test_file"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/command_invocations_ingestor.py",
+      "loc": 75,
+      "function_count": 3,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/layer_ingestor.py",
+      "loc": 75,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/skill_inventory.py",
+      "loc": 74,
+      "function_count": 3,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/governance_block_registry.py",
+      "loc": 71,
+      "function_count": 2,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/upstream_validator.py",
+      "loc": 70,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/concurrency/errors.py",
+      "loc": 69,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/session_skill_backend.py",
+      "loc": 68,
+      "function_count": 5,
+      "category": "state_management"
+    },
+    {
+      "file": "tools/supervisor/llm_backend_config.py",
+      "loc": 65,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomy_route_ledger.py",
+      "loc": 64,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/mcp_superpowers_backend.py",
+      "loc": 64,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/task_master_backend.py",
+      "loc": 64,
+      "function_count": 5,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/violation_ingestor.py",
+      "loc": 64,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/logging_config.py",
+      "loc": 64,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/check_new_root_dirs.py",
+      "loc": 63,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/materialize_and_review.py",
+      "loc": 62,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/preflight_skill_entry.py",
+      "loc": 62,
+      "function_count": 2,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/failure_ingestor.py",
+      "loc": 60,
+      "function_count": 2,
+      "category": "failure_tracking"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/qname_ingestor.py",
+      "loc": 59,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/atomic_io.py",
+      "loc": 58,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/event_ingestor.py",
+      "loc": 55,
+      "function_count": 3,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/format_ingestor.py",
+      "loc": 55,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/plan_lock_ingestor.py",
+      "loc": 55,
+      "function_count": 3,
+      "category": "plan_management"
+    },
+    {
+      "file": "tools/supervisor/risk_taxonomy.py",
+      "loc": 55,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/cognee_memory_backend.py",
+      "loc": 53,
+      "function_count": 4,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/capability_ingestor.py",
+      "loc": 53,
+      "function_count": 2,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/superpowers_skill_backend.py",
+      "loc": 52,
+      "function_count": 4,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/control_index/ingestors/skill_ingestor.py",
+      "loc": 52,
+      "function_count": 2,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/skill_receipt_writer.py",
+      "loc": 52,
+      "function_count": 1,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/control_index/adapters/__init__.py",
+      "loc": 49,
+      "function_count": 6,
+      "category": "module_init"
+    },
+    {
+      "file": "tools/supervisor/backends/skill_seekers_backend.py",
+      "loc": 48,
+      "function_count": 4,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/generate_exhausted_gaps.py",
+      "loc": 47,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle_extensions/knowledge_freshness_hook.py",
+      "loc": 45,
+      "function_count": 1,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/gen_readiness_registry.py",
+      "loc": 42,
+      "function_count": 0,
+      "category": "registry_utility"
+    },
+    {
+      "file": "tools/supervisor/plan_lock_gc.py",
+      "loc": 42,
+      "function_count": 1,
+      "category": "plan_management"
+    },
+    {
+      "file": "tools/supervisor/patch_ledger_csproj.py",
+      "loc": 40,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/control_index/__init__.py",
+      "loc": 27,
+      "function_count": 2,
+      "category": "module_init"
+    },
+    {
+      "file": "tools/supervisor/external_host_loop.py",
+      "loc": 23,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/migrate_command_sections.py",
+      "loc": 21,
+      "function_count": 0,
+      "category": "skill_tool"
+    },
+    {
+      "file": "tools/supervisor/concurrency/__init__.py",
+      "loc": 9,
+      "function_count": 0,
+      "category": "module_init"
+    },
+    {
+      "file": "tools/supervisor/capability_to_feature_compiler.py",
+      "loc": 5,
+      "function_count": 0,
+      "category": "utility"
+    },
+    {
+      "file": "tools/supervisor/backends/__init__.py",
+      "loc": 4,
+      "function_count": 0,
+      "category": "module_init"
+    }
+  ]
+}

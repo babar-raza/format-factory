@@ -1,0 +1,84 @@
+{
+  "task_id": "ET-W4-001",
+  "source_plan": "imperative-floating-book",
+  "batch": "A",
+  "execution_date": "2026-07-11",
+  "mission_id": "FF-SGOV-001",
+  "taskcards_closed": [
+    "TC-SGOV-W2-003",
+    "TC-SGOV-W2-004",
+    "TC-SGOV-W3-001",
+    "TC-SGOV-W3-002",
+    "TC-SGOV-W3-003",
+    "TC-SGOV-W4-001",
+    "TC-SGOV-W4-002",
+    "TC-SGOV-W1-005"
+  ],
+  "taskcards_deferred": [
+    "TC-SGOV-W1-001",
+    "TC-SGOV-W1-002",
+    "TC-SGOV-W1-003",
+    "TC-SGOV-W1-004",
+    "TC-SGOV-W2-001",
+    "TC-SGOV-W2-002",
+    "TC-SGOV-W2-005",
+    "TC-SGOV-W5-001",
+    "TC-SGOV-W5-002",
+    "TC-SGOV-W5-003",
+    "TC-SGOV-W5-004",
+    "TC-SGOV-W5-005",
+    "TC-SGOV-W5-006",
+    "TC-SGOV-W5-007"
+  ],
+  "deliverables": {
+    "TC-SGOV-W2-003 — taskcard-execution-contract schema": {
+      ".supervisor/schemas/taskcard-execution-contract.schema.json": "CREATED — JSON Schema draft-07 for taskcard execution contracts; EP-008 schema; required fields: task_id, task_type, skill_ids, allowed_paths, receipt_required",
+      "docs/governance/skill-only-policy.yaml": "MODIFIED — EP-008 current_status: SCHEMA_CREATED_NOT_ENFORCED (was SCHEMA_DEFINED_NOT_ENFORCED)"
+    },
+    "TC-SGOV-W2-004 — validate_plan_skill_routes.py (EP-009)": {
+      "tools/governance/validate_plan_skill_routes.py": "CREATED — EP-009 plan skill route validator; reads plan markdown for skill_ids: patterns; validates against skill-registry.yaml; exit 0=PASS, 1=INVALID, 2=CONFIG_ERROR",
+      "docs/governance/skill-only-policy.yaml": "MODIFIED — EP-009 current_status: IMPLEMENTED; gap: null"
+    },
+    "TC-SGOV-W3-001 — V-SGF-002 skill receipt presence validator": {
+      "tools/supervisor/governance_validators_sgov.py": "CREATED — V-SGF-002 validate_skill_receipt_presence; WARN-only; checks .local/skill-execution-receipts/ for declared skill receipts",
+      "tools/supervisor/governance_validator_runner.py": "MODIFIED — V-SGF-002 import block added; expected_count 169→170",
+      "tests/supervisor/test_governance_validators.py": "MODIFIED — 5 regression tests for V-SGF-002 (TestVSGF002SkillReceiptPresence); 5/5 PASS"
+    },
+    "TC-SGOV-W3-002 — close-layer-task skill receipt pre-close check": {
+      ".claude/commands/close-layer-task.md": "MODIFIED — version 1.0→1.1; added skill_receipt_pre_close_check mandatory validation (TC-SGOV-W3-002, V-SGF-002); WARN-only EP-004"
+    },
+    "TC-SGOV-W3-003 — grade_declared_work _validate_skill_ids()": {
+      "tools/supervisor/grade_declared_work.py": "MODIFIED — _validate_skill_ids() check added per item for PRODUCT_SOURCE/PRODUCT_TEST; WARN-only; returns skill_ids_check field in each grade"
+    },
+    "TC-SGOV-W4-001 — validate-missing-skill-workflow skill": {
+      ".claude/commands/validate-missing-skill-workflow.md": "CREATED — full command for missing-skill discovery workflow (skill-only-policy.yaml §3-§5)",
+      ".supervisor/skill-registry.yaml": "MODIFIED — validate-missing-skill-workflow skill registered (active)",
+      ".supervisor/capability-routing-registry.yaml": "MODIFIED — skill_governance_discovery route added (ROUTE_ACTIVE, preferred: validate-missing-skill-workflow)",
+      "validate_plan_skill_routes result": "PASS — validate-missing-skill-workflow now registered; TC-SGOV-W4-001 context passes"
+    },
+    "TC-SGOV-W4-002 — top-5 AD_HOC scripts registered as skills": {
+      ".local/governance-audit/infra-classification.yaml": "CREATED — TC-SGOV-W1-005 output; top-5 NEEDS_REGISTRATION candidates identified",
+      ".claude/commands/run-lifecycle-audit.md": "CREATED",
+      ".claude/commands/validate-evidence-declaration.md": "CREATED",
+      ".claude/commands/build-supervisor-packet.md": "CREATED",
+      ".claude/commands/run-governance-validators.md": "CREATED",
+      ".claude/commands/reset-track-signal.md": "CREATED",
+      ".supervisor/skill-registry.yaml": "MODIFIED — 5 new skills registered: run-lifecycle-audit, validate-evidence-declaration, build-supervisor-packet, run-governance-validators, reset-track-signal",
+      "total_skill_count": "134 total, 131 active (was 126 active before this batch)"
+    }
+  },
+  "test_results": {
+    "TestVSGF002SkillReceiptPresence": "5/5 PASS",
+    "TestCanonicalValidatorCount": "PASS (expected_count=170)",
+    "TestValidatorCountInvariant": "PASS",
+    "TestVSGF001SkillAttributionInDeclaration": "5/5 PASS (no regression)",
+    "validate_plan_skill_routes": "PASS (0 UNREGISTERED findings)"
+  },
+  "deferred_reasons": {
+    "TC-SGOV-W1-001_through_W1-004_audit_setup": "Wave 1 reconnaissance tasks; partially fulfilled by inline classification in W4-002; full audit deferred to next batch",
+    "TC-SGOV-W2-001_pre_commit_hook": "EP-007 hook installation requires .git/ mutation; deferred to Wave 2 batch B",
+    "TC-SGOV-W2-002_mutation_guard_wiring": "EP-002 auto-invocation requires autonomous_cycle.py changes; deferred to Wave 2 batch B",
+    "TC-SGOV-W2-005_skill_attribution_wiring": "Requires declaration schema changes; deferred",
+    "TC-SGOV-W5_pilots": "Wave 5 pilot runs require Wave 2 enforcement to be wired first"
+  }
+}

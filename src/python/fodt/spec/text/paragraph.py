@@ -38,6 +38,10 @@ class Paragraph:
     def spans(self) -> list[Span]:
         return [Span(s) for s in self._data.get("spans", [])]
 
+    def set_text(self, text: str) -> None:
+        """Mutate the paragraph text in place (TC-PCL-005)."""
+        self._data["text"] = str(text)
+
     def to_dict(self) -> dict[str, Any]:
         return dict(self._data)
 

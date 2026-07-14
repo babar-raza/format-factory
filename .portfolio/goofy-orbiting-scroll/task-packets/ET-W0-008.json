@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-008",
+  "workstream_id": "WS-05-PIPELINE-RECONCILIATION",
+  "objective": "Audit pipeline divergence: identify exact differences between next-work-items.json and next-sprint.md",
+  "source_plan_ids": [
+    "s006",
+    "s013"
+  ],
+  "source_task_ids": [
+    "TC-BWM-001"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "Pipeline divergence report written",
+    "Every divergence classified",
+    "Repair tasks created for true-gap items"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "reports/supervisor/next-sprint.md",
+    "reports/supervisor/next-work-items.json"
+  ],
+  "allowed_mutation_scope": [
+    "reports/supervisor/next-sprint.md",
+    "reports/supervisor/next-work-items.json"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "reports/supervisor/next-sprint.md",
+    "reports/supervisor/next-work-items.json"
+  ],
+  "primary_lane": "L08",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read bubbly-dancing-pony.md (s006) and vast-wibbling-moon.md (s013)",
+    "Compare content of reports/supervisor/next-sprint.md vs next-work-items JSON files",
+    "Identify discrepancies: items in one but not the other, stale items, ordering differences",
+    "Write evidence/raw/ET-W0-008/pipeline-divergence-report.json",
+    "Classify each divergence: true-gap vs transient-state vs stale"
+  ],
+  "focused_validation": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-008/pipeline-divergence-report.json"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "426bc136c1c92ab686c8a2c879194b3a723aede359696aa839c62ef2befefed4"
+}

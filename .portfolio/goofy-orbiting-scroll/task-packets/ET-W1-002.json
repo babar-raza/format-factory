@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W1-002",
+  "workstream_id": "WS-01-SUPERVISOR-MACHINERY",
+  "objective": "Complete lifecycle loop iteration fix: ensure AUDIT_PASS leads to TERMINAL_CLOSED, not ITERATION_REQUIRED loop",
+  "source_plan_ids": [
+    "s037"
+  ],
+  "source_task_ids": [
+    "TC-VLH-001",
+    "TC-VLH-002"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "PARTIAL",
+  "acceptance_criteria": [
+    "lifecycle_audit.py returns AUDIT_PASS when all taskcards in table are CLOSED",
+    "write_plan_lock.py with --audit-gate and AUDIT_PASS \u2192 status=TERMINAL_CLOSED",
+    "No regression in existing plan lock tests"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/lifecycle_audit.py",
+    "tools/supervisor/write_plan_lock.py"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/lifecycle_audit.py",
+    "tools/supervisor/write_plan_lock.py"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/lifecycle_audit.py",
+    "tools/supervisor/write_plan_lock.py"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read velvet-swinging-wreath.md (s037) plan completely",
+    "Reproduce the ITERATION_REQUIRED loop issue in a test scenario",
+    "Identify root cause in lifecycle_audit.py or write_plan_lock.py",
+    "Apply fix ensuring AUDIT_PASS \u2192 TERMINAL_CLOSED (not re-triggering ITERATION_REQUIRED)",
+    "Write tests/supervisor/test_lifecycle_iteration_fix.py"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/supervisor/test_plan_lock*.py -v"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "51ecc279461d1b886b05f82cf1fcb5e104ab2192f571ed8cb964db4e777a2ee9"
+}

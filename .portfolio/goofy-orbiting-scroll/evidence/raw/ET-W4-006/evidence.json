@@ -1,0 +1,74 @@
+{
+  "task_id": "ET-W4-006",
+  "workstream_id": "WS-18-PLAYFUL-THUNDER",
+  "plan_source": "playful-discovering-thunder.md (s022)",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "batch": "A",
+  "taskcards_executed": [
+    "TC-RR-001", "TC-RR-001-01", "TC-RR-001-02", "TC-RR-001-03", "TC-RR-001-04",
+    "TC-RR-002", "TC-RR-002-01", "TC-RR-002-02", "TC-RR-002-03",
+    "TC-RR-003", "TC-RR-003-01", "TC-RR-003-02", "TC-RR-003-03",
+    "TC-RR-004", "TC-RR-004-01", "TC-RR-004-02", "TC-RR-004-03", "TC-RR-004-04",
+    "TC-RR-005", "TC-RR-005-01", "TC-RR-005-02", "TC-RR-005-03", "TC-RR-005-04",
+    "TC-RR-006", "TC-RR-006-01", "TC-RR-006-02",
+    "TC-RR-007", "TC-RR-007-01", "TC-RR-007-02",
+    "TC-RR-008", "TC-RR-008-01", "TC-RR-008-02", "TC-RR-008-03", "TC-RR-008-04",
+    "TC-RR-009", "TC-RR-009-01", "TC-RR-009-02", "TC-RR-009-03",
+    "TC-RR-009-04", "TC-RR-009-05", "TC-RR-009-06",
+    "TC-RR-010",
+    "TC-RR-011"
+  ],
+  "decisions": {
+    "TC-RR-001": "DECISION_B: active producer found (tools/state/state_snapshot.py). Content moved to .supervisor/state/.",
+    "TC-RR-002": "DECISION_B executed: producer redirected, INV-002/011 updated, git rm -r state/, registry marked deleted_executed.",
+    "TC-RR-003": "Severity changed WARN->FAIL, has_fail=True added, test updated to test_fail_resurrected_deleted."
+  },
+  "files_changed": [
+    "tools/state/state_snapshot.py",
+    "tools/evidence/check_repo_invariants.py",
+    "tools/supervisor/governance_validators_root_struct.py",
+    "tools/supervisor/check_new_root_dirs.py",
+    ".pre-commit-config.yaml",
+    "registry/repository-root-folders.yaml",
+    "tests/supervisor/test_validate_root_structure.py",
+    "src/README.md",
+    "tests/_readme.md",
+    "tools/_readme.md",
+    "registry/README.md",
+    "plans/README.md",
+    "reports/_readme.md",
+    "reports/repository-structure/root-folder-recon-report.md"
+  ],
+  "files_deleted": [
+    "state/current-state.json",
+    "state/current-state.md"
+  ],
+  "test_results": {
+    "tests/supervisor/test_validate_root_structure.py": "14/14 PASS",
+    "v91_real_repo": {
+      "result": "WARN",
+      "blocks_sprint": false,
+      "fail_items": 0,
+      "warn_items": 54,
+      "by_check": {
+        "format_coverage_gap": 21,
+        "readme_floor_fail": 16,
+        "registry_producer_integrity": 17
+      }
+    }
+  },
+  "acceptance_criteria": {
+    "TC-RR-001": "CLOSED: DECISION_A/B recorded, all DELETED entries scanned, TC-RR-002 scope updated",
+    "TC-RR-002": "CLOSED: state/ absent from disk, V91 no longer warns, registry updated",
+    "TC-RR-003": "CLOSED: V91 FAIL for resurrection, 7 original tests pass (1 renamed)",
+    "TC-RR-004": "CLOSED: _check_source_test_parity() live, 2 new tests pass",
+    "TC-RR-005": "CLOSED: _check_readme_content_floor() live, 3 new tests pass",
+    "TC-RR-006": "CLOSED: check_new_root_dirs.py created, smoke test exit 0",
+    "TC-RR-007": "CLOSED: .pre-commit-config.yaml updated, YAML valid",
+    "TC-RR-008": "CLOSED: _check_registry_producer_integrity() live, 2 new tests pass",
+    "TC-RR-009": "CLOSED: 6 priority READMEs have Agent Navigation sections",
+    "TC-RR-010": "CLOSED: 14/14 tests pass (7 original + 7 new)",
+    "TC-RR-011": "CLOSED: reports/repository-structure/root-folder-recon-report.md written"
+  },
+  "verdict": "ACCEPTED"
+}

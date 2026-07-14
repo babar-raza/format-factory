@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W0-007",
+  "workstream_id": "WS-36-POLYMORPHIC-FEATHER",
+  "objective": "Complete polymorphic-foraging-feather spec parity objectives",
+  "source_plan_ids": [
+    "s003"
+  ],
+  "source_task_ids": [
+    "TC-PFF-001",
+    "TC-PFF-002",
+    "TC-PFF-003"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 12 source TCs in s003 have final disposition",
+    "Any implemented changes have passing tests"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "src/python/"
+  ],
+  "primary_lane": "L02",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read polymorphic-foraging-feather.md (s003) plan completely",
+    "Identify which taskcards are outstanding",
+    "For each outstanding TC: assess current repository state",
+    "Write evidence/raw/ET-W0-007/pff-assessment.json",
+    "Execute any READY sub-tasks that can be done atomically"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "9e1e03ad26c1f57e7f81b3324c3d1a11e2164415dc324a31e0151f899bb9bf26"
+}

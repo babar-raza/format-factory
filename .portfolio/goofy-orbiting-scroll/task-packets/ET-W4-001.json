@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-001",
+  "workstream_id": "WS-27-IMPERATIVE-BOOK",
+  "objective": "Execute imperative-floating-book batch A: TCs 1-50",
+  "source_plan_ids": [
+    "s032"
+  ],
+  "source_task_ids": [
+    "TC-IFB-001",
+    "TC-IFB-002",
+    "TC-IFB-003",
+    "TC-IFB-004",
+    "TC-IFB-005",
+    "TC-IFB-006",
+    "TC-IFB-007",
+    "TC-IFB-008",
+    "TC-IFB-009",
+    "TC-IFB-010",
+    "TC-IFB-011",
+    "TC-IFB-012",
+    "TC-IFB-013",
+    "TC-IFB-014",
+    "TC-IFB-015",
+    "TC-IFB-016",
+    "TC-IFB-017",
+    "TC-IFB-018",
+    "TC-IFB-019",
+    "TC-IFB-020",
+    "TC-IFB-021",
+    "TC-IFB-022",
+    "TC-IFB-023",
+    "TC-IFB-024",
+    "TC-IFB-025",
+    "TC-IFB-026",
+    "TC-IFB-027",
+    "TC-IFB-028",
+    "TC-IFB-029",
+    "TC-IFB-030",
+    "TC-IFB-031",
+    "TC-IFB-032",
+    "TC-IFB-033",
+    "TC-IFB-034",
+    "TC-IFB-035",
+    "TC-IFB-036",
+    "TC-IFB-037",
+    "TC-IFB-038",
+    "TC-IFB-039",
+    "TC-IFB-040",
+    "TC-IFB-041",
+    "TC-IFB-042",
+    "TC-IFB-043",
+    "TC-IFB-044",
+    "TC-IFB-045",
+    "TC-IFB-046",
+    "TC-IFB-047",
+    "TC-IFB-048",
+    "TC-IFB-049",
+    "TC-IFB-050"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 1-50 in s032 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read imperative-floating-book.md (s032) completely",
+    "Execute TCs 1-50 in order",
+    "Write evidence/raw/ET-W4-001/ifb-batch-a-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "1df8952c82cd926daed2210572860f72d24598d8793dda12f3e7fe88352ca8a9"
+}

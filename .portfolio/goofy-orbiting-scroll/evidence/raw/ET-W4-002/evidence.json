@@ -1,0 +1,104 @@
+{
+  "task_id": "ET-W4-002",
+  "source_plan": "imperative-floating-book",
+  "batch": "B",
+  "execution_date": "2026-07-11",
+  "mission_id": "FF-SGOV-001",
+  "ifb_range": "IFB-051 through IFB-100",
+  "taskcards_newly_closed": [
+    "TC-SGOV-W2-001",
+    "TC-SGOV-W2-002",
+    "TC-SGOV-W2-005",
+    "TC-SGOV-W5-001-pilot1",
+    "TC-SGOV-W5-002-pilot2",
+    "TC-SGOV-W5-003-pilot3",
+    "TC-SGOV-W5-004-pilot4-start"
+  ],
+  "taskcards_confirmed_done_from_batch_a": [
+    "TC-SGOV-W3-001",
+    "TC-SGOV-W3-002",
+    "TC-SGOV-W3-003",
+    "TC-SGOV-W4-001",
+    "TC-SGOV-W4-002",
+    "TC-SGOV-W1-005"
+  ],
+  "deliverables": {
+    "TC-SGOV-W2-001 — hook installation verified": {
+      "status": "VERIFIED_INSTALLED",
+      "evidence": "python tools/governance/install_hooks.py --status => status: INSTALLED",
+      "hook_dest": ".git/hooks/pre-commit (symlink -> .hooks/pre-commit-skill-guard)",
+      "note": "Previously deferred (was 'requires .git/ mutation'). Hook was already installed since 2026-06-25."
+    },
+    "TC-SGOV-W2-002 — CI skill-attribution-check made BLOCKING": {
+      ".github/workflows/ci.yml": "MODIFIED — removed continue-on-error: true from skill-attribution-check step at line 77; step is now BLOCKING per TC-SGOV-W2-002",
+      "evidence": "ci.yml diff shows continue-on-error line removed; --allow-pre-policy exempts pre-governance commits"
+    },
+    "TC-SGOV-W2-005 — receipt auto-write in autonomous_cycle.py": {
+      "tools/supervisor/skill_receipt_writer.py": "CREATED — helper module; write_skill_receipts() writes .local/skill-execution-receipts/{skill_id}-{run_id}.yaml for each declared skill",
+      "tools/supervisor/autonomous_cycle.py": "MODIFIED — TC-SGOV-W2-005 block added after write_outputs(); imports skill_receipt_writer; best-effort non-blocking",
+      "final_loc": 2781,
+      "baseline_loc_cap": 2716,
+      "note": "File was already 2768 LOC at HEAD (pre-existing over-cap). Net addition: 13 LOC."
+    },
+    "IFB-084 — hook installed gate (W5 Pilot 1 prereq)": {
+      "status": "SATISFIED",
+      "evidence": "TC-SGOV-W2-001 verified; .git/hooks/pre-commit symlink active"
+    },
+    "IFB-085 — CI blocking gate (W5 Pilot 9 prereq)": {
+      "status": "SATISFIED",
+      "evidence": "TC-SGOV-W2-002 complete; skill-attribution-check now BLOCKING"
+    },
+    "IFB-086 — grader hardened gate (W5 Pilot 12 prereq)": {
+      "status": "SATISFIED",
+      "evidence": "TC-SGOV-W3-003 complete from batch A; _validate_skill_ids() in grade_declared_work.py"
+    },
+    "IFB-087 — missing-skill workflow gate (W5 Pilots 5,13 prereq)": {
+      "status": "SATISFIED",
+      "evidence": "TC-SGOV-W4-001 complete from batch A; validate-missing-skill-workflow skill active"
+    },
+    "W5-Pilot-1 — pre-commit hook blocks ungoverned src/ mutation": {
+      "IFB_range": "IFB-088 through IFB-091",
+      "test_action": "echo '# pilot stub' > src/python/pilot_01_hook_test_stub.py && git add + git commit (no transcript)",
+      "result": "BLOCKED — exit code 1; [skill-guard] BLOCKED: ungoverned src/ mutation",
+      "fix_applied": "Removed --staged-only flag from hook invocation (was causing exit 2 CONFIG_ERROR permissive fallback); updated to use receipt dir scan + transcript fallback",
+      "files_modified": [".hooks/pre-commit-skill-guard"],
+      "cleanup": "test file removed; no commit created"
+    },
+    "W5-Pilot-2 — Codex simulation: unregistered skill blocked by mutation guard": {
+      "IFB_range": "IFB-092 through IFB-095",
+      "test_action": "python tools/governance/pre_mutation_guard.py --agent-type CODEX --task-id PILOT-02-TEST --skill-id UNREGISTERED_SKILL_XYZ --target-paths src/python/some_module.py --dry-run",
+      "result": "BLOCKED — exit 1; verdict=BLOCKED, rejection_condition=no_registered_skill_bound",
+      "codex_adapter": "docs/governance/codex-adapter.md confirms guard call is documented at §2 step 5"
+    },
+    "W5-Pilot-3 — routing registry: add-python-api found, no duplicate": {
+      "IFB_range": "IFB-096 through IFB-099",
+      "query": "Routing registry for Python API work",
+      "result": "route_id=product_backfill, preferred_skill_ids=[add-python-api, add-dotnet-api]",
+      "duplicate_check": "Counter shows 0 duplicate preferred_skills across all 35 routes",
+      "verdict": "NO_DUPLICATE — single canonical route for Python API"
+    },
+    "W5-Pilot-4-start — task decomposition: 2 skills, no duplication": {
+      "IFB_range": "IFB-100",
+      "task": "Add csv.get_row_count() Python API function and a roundtrip test",
+      "decomposition": {
+        "capability_1": "Python API function -> add-python-api (product_backfill route)",
+        "capability_2": "Roundtrip test -> add-roundtrip-test (test_migration route)"
+      },
+      "verdict": "NO_DUPLICATION — add-python-api and add-roundtrip-test are distinct registered skills"
+    }
+  },
+  "hook_bug_fixed": {
+    "symptom": "pre-commit hook passed with WARNING: ci_skill_attribution_check.py config error",
+    "root_cause": "--staged-only flag not recognized by ci_skill_attribution_check.py (exit 2 = permissive fallback)",
+    "fix": "Removed --staged-only call; replaced with RECEIPTS_DIR scan + transcript fallback in find_skill_transcript_for_head()"
+  },
+  "ifb_disposition_summary": {
+    "IFB-051-053": "CLOSED — TC-SGOV-W2-005 receipt auto-write added",
+    "IFB-054-083": "CONFIRMED_DONE — completed in batch A (W3-001/002/003, W4-001/002)",
+    "IFB-084-087": "GATE_SATISFIED — prerequisites for W5 pilots met",
+    "IFB-088-091": "CLOSED — Pilot 1 BLOCKED verdict verified",
+    "IFB-092-095": "CLOSED — Pilot 2 BLOCKED verdict verified",
+    "IFB-096-099": "CLOSED — Pilot 3 NO_DUPLICATE verdict verified",
+    "IFB-100": "CLOSED — Pilot 4 decomposition NO_DUPLICATION verified"
+  }
+}

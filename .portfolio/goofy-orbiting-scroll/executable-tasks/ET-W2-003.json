@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W2-003",
+  "workstream_id": "WS-10-CONTROL-INDEX",
+  "objective": "Validate and extend control index per clever-tickling-island plan",
+  "source_plan_ids": [
+    "s014"
+  ],
+  "source_task_ids": [],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/control_index/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/control_index/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read clever-tickling-island.md (s014) completely",
+    "Run python -m tools.supervisor.control_index status",
+    "Identify any outstanding TCs in s014",
+    "Execute outstanding TCs",
+    "Write evidence/raw/ET-W2-003/control-index-results.json"
+  ],
+  "acceptance_criteria": [
+    "All 66 TCs in s014 have final disposition",
+    "Control index operational (status command succeeds)"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python -m tools.supervisor.control_index status 2>&1 | tail -10"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 2,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W2-003-95833A36",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W2-003-76E253D5",
+  "claimed_at": "2026-07-11T10:52:35.504183+00:00",
+  "closed_at": "2026-07-11T11:07:20.868385+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

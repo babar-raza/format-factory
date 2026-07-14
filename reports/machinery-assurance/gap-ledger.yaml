@@ -1,8 +1,9 @@
 ---
 # Gap Ledger
-# Mission: MA-2026-07-02-R1227-NDJSON-TOML
-# Generated: 2026-07-02
+# Mission: VWM-2026-07-10 (updated from MA-2026-07-02 — system-wide scope)
+# Updated: 2026-07-13
 # Required: MATERIAL_FINDINGS_WITHOUT_GAPS = 0, DUPLICATE_ACTIVE_GAPS = 0
+# Authoritative plan: plans/.claude/vast-wibbling-moon.md
 
 gaps:
 
@@ -43,8 +44,11 @@ gaps:
     pilot_required: true
     dependencies: []
     taskcard_ids: ["TC-MA-001"]
-    status: "OPEN"
-    exact_next_action: "Add pre-commit sync check OR accept as process risk (current sprint OK)"
+    status: "RESOLVED"
+    resolution_sprint: "VWM-2026-07-10"
+    resolution_date: "2026-07-13"
+    resolution_evidence: "V137 (validate_no_stale_installed_packages) added in governance_validators_consumer_proof.py. V137 detects stale site-packages copies and blocks sprint when changed formats have stale copies. V137 PASS confirmed."
+    exact_next_action: "No further action required. V137 provides automated enforcement."
 
   - gap_id: "GAP-MA-002"
     semantic_key: "test_working_directory_sensitivity"
@@ -206,9 +210,55 @@ gaps:
     status: "ACCEPTED_RISK"
     exact_next_action: "No action. Constructor validation out of scope for R1227."
 
+  - gap_id: "GAP-MA-006"
+    semantic_key: "dogfood_namespace_conflict_on_import"
+    source_stage_ids: ["S09-GAP-LEDGER"]
+    affected_output_classes: ["OC-007"]
+    source_claim_ids: []
+    category: "WEAK_VERIFICATION"
+    severity: "MEDIUM"
+    symptom: |
+      When `from {pkg}.{pkg}_to_{tgt} import fn` is used in a dogfood module,
+      it overwrites the `{pkg}.{pkg}_to_{tgt}` attribute on the package object
+      with the module itself, breaking `importlib.import_module("{pkg}").{pkg}_to_{tgt}(path)`
+      tests. Confirmed in SYLK (sylk_to_csv) and DIF (dif_to_csv).
+    evidence:
+      - "MEMORY.md Dogfood Export Namespace Conflict Pattern (2026-07-11)"
+      - "sylk_to_csv and dif_to_csv confirmed affected"
+      - "Risk extends to ODS and GNUMERIC (same-named functions)"
+    first_failing_boundary: "Dogfood import test using importlib.import_module"
+    root_cause: |
+      Python module import system: importing a submodule overwrites the package
+      attribute of the same name. Fix: use repo-rooted namespace
+      `from src.python.{pkg}.{pkg}_to_{tgt} import fn` to avoid package attribute overwrite.
+    blast_radius: |
+      Any format with both a `{pkg}_to_{tgt}` function and a same-named dogfood module.
+      Confirmed: SYLK, DIF. Risk: ODS, GNUMERIC.
+    current_risk: "MEDIUM — breaks dogfood tests using importlib.import_module pattern"
+    permanent_solution: |
+      Use `from src.python.{pkg}.{pkg}_to_{tgt} import fn` (repo-rooted namespace)
+      instead of `from {pkg}.{pkg}_to_{tgt} import fn` in dogfood modules.
+    machinery_repair_required: false
+    output_backfill_required: false
+    verification:
+      - "Dogfood export tests pass for SYLK after fix ✓"
+      - "Dogfood export tests pass for DIF after fix ✓"
+    negative_controls: []
+    regression_tests: ["tests/python/sylk/test_dogfood.py", "tests/python/dif/test_dogfood.py"]
+    pilot_required: false
+    dependencies: []
+    taskcard_ids: []
+    status: "DOCUMENTED_IN_MEMORY"
+    exact_next_action: "No immediate action. Apply fix when adding new dogfood modules for affected formats."
+
 counters:
   MATERIAL_FINDINGS_WITHOUT_GAPS: 0
   DUPLICATE_ACTIVE_GAPS: 0
   GAPS_WITHOUT_ROOT_CAUSE_OR_NEXT_ACTION: 0
-  OPEN_GAPS_REQUIRING_REPAIR: 1
+  OPEN_GAPS_REQUIRING_REPAIR: 0
+  OPEN_GAPS_TOTAL: 0
+  RESOLVED_GAPS: 1
+  ACCEPTED_RISK_GAPS: 2
+  CLOSED_BY_DESIGN_GAPS: 1
+  DOCUMENTED_IN_MEMORY_GAPS: 1
   OPEN_GAPS_GAPS: ["GAP-MA-003 (evidence declaration + closeout)"]

@@ -1,0 +1,366 @@
+# TC-INV-001-01: State System Inventory
+# Inventories all 21 state systems in the format-factory autonomous execution stack.
+# canary_relevance values: not_applicable | monitor_only | shadow_enforcement_needed
+# Generated: 2026-07-11 | Mission: clever-tickling-island
+
+schema_version: "1.0"
+generated: "2026-07-11"
+mission_id: clever-tickling-island
+
+state_systems:
+  - system_id: continuation_signal
+    purpose: Controls whether autonomous loop continues or stops
+    owner: check_continuation.py
+    authority: .local/supervisor/continuation-signal.json
+    stores: [verdict, reason, iteration, session_id, autonomous_continue]
+    producers: [autonomous_cycle.py, check_continuation.py]
+    consumers: [check_continuation.py, sprint_executor.py]
+    state_model: single JSON file, overwritten each cycle
+    transitions: [CONTINUE, STOP, POST_PLAN_TERMINAL, SESSION_MISMATCH]
+    concurrency: single-writer (autonomous_cycle.py)
+    recovery: reset_track_signal.py
+    failure_history: stale session_id causes SESSION_MISMATCH across chat boundaries
+    broad_change_risk: HIGH — a single-session write blocks all future cycles
+    current_controls: session_id keying, CCI-MVP rules in CLAUDE.md
+    canary_relevance: not_applicable
+    findings: no canary opportunity — single-file, keyed, recoverable
+
+  - system_id: plan_locks
+    purpose: Enforces per-chat plan execution; prevents ledger work while plan active
+    owner: write_plan_lock.py, check_continuation.py
+    authority: .local/supervisor/plan-locks/{session_id}*.json, active-plan-lock.json
+    stores: [plan_path, status, last_taskcard, session_id, updated_at]
+    producers: [write_plan_lock.py]
+    consumers: [check_continuation.py]
+    state_model: per-session JSON files; status enum (IN_PROGRESS, TERMINAL_CLOSED, SUPERSEDED)
+    transitions: [IN_PROGRESS, TERMINAL_CLOSED, SUPERSEDED, COMPLETE]
+    concurrency: single-session (each chat writes its own lock)
+    recovery: mark stale locks SUPERSEDED manually or via patterns.md script
+    failure_history: stale TERMINAL_CLOSED blocks continuation after context compaction
+    broad_change_risk: MEDIUM — affects only current session; other sessions use own locks
+    current_controls: 168h stale-lock expiry in check_continuation.py (M7)
+    canary_relevance: not_applicable
+    findings: no canary — per-session isolation already provides staged scope
+
+  - system_id: evidence_declarations
+    purpose: Worker declares sprint work for supervisor review/grading
+    owner: sprint_executor_validate.py
+    authority: .local/evidences/{run_id}/evidence-declaration.yaml
+    stores: [run_id, sprint_id, planned_work_items, evidence_paths, changed_files]
+    producers: [execution agent]
+    consumers: [supervisor_loop.py, grade_declared_work.py, autonomous_cycle.py]
+    state_model: append-only (new file per sprint); validated by sprint_executor_validate.py
+    transitions: [DRAFT, SUBMITTED, GRADED, REWORK]
+    concurrency: single sprint at a time
+    recovery: re-write declaration and re-run autonomous-cycle
+    failure_history: missing provenance_chain, wrong type fields blocked grades
+    broad_change_risk: LOW — isolated per sprint
+    current_controls: sprint_executor_validate.py (14 phases of validation + repair)
+    canary_relevance: not_applicable
+    findings: already validated; no canary opportunity
+
+  - system_id: oracle_verdicts
+    purpose: Records ground-truth execution results for each format+case
+    owner: execute_oracle.py
+    authority: .local/oracle/{format_id}/oracle-verdicts.json
+    stores: [case_id, status, depth_level, verdict, expected vs observed properties]
+    producers: [execute_oracle.py]
+    consumers: [governance_validators_oracle.py, autonomous_cycle.py]
+    state_model: per-format JSON; rewritten on each oracle run
+    transitions: [CASES_DEFINED, VERIFIED, OBLIGATION_CREATED]
+    concurrency: per-format isolated (different files per format)
+    recovery: re-run execute_oracle.py --format {format}
+    failure_history: wrong qname expectation (fods:spreadsheet → office:document) caused 7/8 PASS
+    broad_change_risk: LOW — per-format isolation
+    current_controls: oracle-package.yaml expected_model_properties, V143 depth minimum
+    canary_relevance: not_applicable
+    findings: per-format isolation already provides staged scope; existing gate sufficient
+
+  - system_id: gap_ledger
+    purpose: Work queue of capability gaps; drives work-item selection
+    owner: capability_feature_compiler.py
+    authority: .local/supervisor/next-work-items.json (compiled); gap-ledger.json (source)
+    stores: [gap_id, format_id, priority_score, deepening_lane, capability_id]
+    producers: [capability_feature_compiler.py]
+    consumers: [autonomous_cycle.py, select_next_task()]
+    state_model: compiled from gap-ledger.json; 33MB, 1277 gaps
+    transitions: priority_score recomputed on each compilation
+    concurrency: single compiler (deterministic over same input)
+    recovery: re-run capability_feature_compiler.py --format-filter
+    failure_history: scoring function bugs caused wrong-format work selection
+    broad_change_risk: HIGH — scoring change affects all 20 formats simultaneously
+    current_controls: --format-filter flag, but no diff preview before applying
+    canary_relevance: shadow_enforcement_needed
+    findings: REQ-DIAG-003 — compilation priority recompilation has no preview mechanism
+
+  - system_id: control_index_sqlite
+    purpose: Read-only shadow index of all file-authoritative state for fast query
+    owner: tools/supervisor/control_index/
+    authority: .local/supervisor/control-index.db (SQLite, reconstructible)
+    stores: [29 tables, 11 ingestors, FTS5 on 8 entity types]
+    producers: [control_index sync.py (hash-based incremental)]
+    consumers: [query CLI, autonomous agents]
+    state_model: shadow (mirrors file state); reconstructible via rebuild
+    transitions: [synced, stale, rebuilt]
+    concurrency: single writer (sync); multiple readers (query)
+    recovery: python -m tools.supervisor.control_index rebuild
+    failure_history: none (read-only shadow by design)
+    broad_change_risk: LOW — shadow; no state owned
+    current_controls: hash-based skip, --sync-index flag in autonomous_cycle.py
+    canary_relevance: not_applicable
+    findings: already a shadow system; no additional canary needed
+
+  - system_id: governance_validators
+    purpose: Block or warn sprint acceptance based on code/declaration quality rules
+    owner: governance_validator_runner.py
+    authority: tools/supervisor/governance_validators*.py (code = policy)
+    stores: [168 validator functions; blocks_sprint flags; results per sprint]
+    producers: [execution agents editing governance_validators*.py]
+    consumers: [autonomous_cycle.py, autonomous agents]
+    state_model: code as policy; result is per-sprint JSON in evidence-review.json
+    transitions: [PASS, WARN, FAIL+blocks_sprint]
+    concurrency: called per sprint (single-sprint model)
+    recovery: fix code triggering block; re-run autonomous-cycle
+    failure_history: FM-0004 (164 occurrences), FM-0005 (129 occurrences) — validator blocking
+    broad_change_risk: CRITICAL — a single blocks_sprint=True flip affects all 20 formats
+    current_controls: --repair flag in sprint_executor_validate.py; existing exemptions
+    canary_relevance: shadow_enforcement_needed
+    findings: REQ-DIAG-001 — validator promotion has portfolio-wide blast radius with no staged path
+
+  - system_id: failure_memory
+    purpose: Records recurring failures for pattern analysis
+    owner: failure_memory.py
+    authority: .local/supervisor/failure-memory.json
+    stores: [failure_id, count, last_seen, pattern, resolution]
+    producers: [autonomous_cycle.py on FAIL]
+    consumers: [check_continuation.py, supervisor_loop.py]
+    state_model: append/update JSON; keyed by failure pattern
+    transitions: [new, recurring, resolved]
+    concurrency: single-writer (autonomous_cycle.py)
+    recovery: delete stale entries manually
+    failure_history: FM-0004/0005 show validator failures dominate
+    broad_change_risk: LOW — advisory only
+    current_controls: count-based suppression after N occurrences
+    canary_relevance: monitor_only
+    findings: useful for detecting if canary changes cause new failure patterns
+
+  - system_id: continuation_ledger
+    purpose: Tracks plan completion across sessions for ledger-based scheduling
+    owner: continuation_ledger.py
+    authority: .local/supervisor/continuation-ledger.json
+    stores: [completed_plans, pending_tasks, rotation_state]
+    producers: [autonomous_cycle.py]
+    consumers: [check_continuation.py]
+    state_model: JSON; updated per sprint
+    transitions: [task_added, task_completed, plan_closed]
+    concurrency: single-writer
+    recovery: re-run from session-resume.md
+    failure_history: ledger and next-sprint.md divergence (CONFLICT-003)
+    broad_change_risk: MEDIUM
+    current_controls: session-resume.md regeneration after each sprint
+    canary_relevance: not_applicable
+    findings: no canary — per-sprint update, not portfolio-wide risk
+
+  - system_id: format_registry
+    purpose: Canonical registry of format metadata, gates, capabilities
+    owner: registry/format-registry.yaml
+    authority: registry/format-registry.yaml
+    stores: [format_id, status, release_gates, pyrel_g1-g5 statuses]
+    producers: [agent edits]
+    consumers: [gate_executor.py, capability_feature_compiler.py]
+    state_model: YAML; version-controlled
+    transitions: [PROPOSED, ACTIVE, DEPRECATED]
+    concurrency: single-writer per format (git)
+    recovery: git revert
+    failure_history: FODS entry uses list (not dict) causing iteration bugs
+    broad_change_risk: LOW — per-format keys, git-controlled
+    current_controls: git history
+    canary_relevance: not_applicable
+    findings: no canary needed; git provides rollback
+
+  - system_id: phase_locks
+    purpose: Per-format gate progression locks (G1-G5)
+    owner: gate_executor.py
+    authority: .local/supervisor/phase-locks/{format_id}.json
+    stores: [format_id, current_phase, gate_statuses]
+    producers: [gate_executor.py]
+    consumers: [autonomous_cycle.py, check_gate.py]
+    state_model: per-format JSON
+    transitions: [G1_PENDING, G1_PASS, ..., G5_APPROVED]
+    concurrency: per-format isolated
+    recovery: reset phase lock for format
+    failure_history: G3/G4 NOT_IMPLEMENTED (build/install gates)
+    broad_change_risk: LOW — per-format isolation
+    current_controls: gate_executor.py, risk_taxonomy.py
+    canary_relevance: not_applicable
+    findings: per-format gates already provide staged scope; existing gate sufficient
+
+  - system_id: checkpoint_manager
+    purpose: Saves/restores sprint progress for cross-context recovery
+    owner: checkpoint_manager.py
+    authority: .local/supervisor/checkpoints/
+    stores: [sprint_id, completed_tasks, pending_tasks, evidence_paths]
+    producers: [sprint_executor.py]
+    consumers: [sprint_executor.py on recovery]
+    state_model: per-sprint JSON files
+    transitions: [checkpoint_created, restored, expired]
+    concurrency: single sprint
+    recovery: re-read checkpoint file
+    failure_history: none known
+    broad_change_risk: LOW
+    current_controls: checkpoint_manager.py
+    canary_relevance: not_applicable
+    findings: no canary needed
+
+  - system_id: action_queue
+    purpose: Queues planned work items for sprint execution
+    owner: autonomous_cycle.py
+    authority: .local/supervisor/action-queue.json
+    stores: [work_items, format_id, priority, deepening_lane]
+    producers: [capability_feature_compiler.py, next-sprint.md]
+    consumers: [autonomous_cycle.py]
+    state_model: JSON queue; cleared after sprint
+    transitions: [queued, dequeued, rework]
+    concurrency: single consumer
+    recovery: re-read next-sprint.md
+    failure_history: queue divergence with gap-ledger (CONFLICT-003)
+    broad_change_risk: MEDIUM
+    current_controls: next-sprint.md re-generation after each sprint
+    canary_relevance: not_applicable
+    findings: compilation diff (gap_ledger) is the real risk, not queue management
+
+  - system_id: orchestrator_state
+    purpose: Tracks high-level orchestration state across sprints
+    owner: autonomous_cycle.py
+    authority: .local/supervisor/orchestrator-state.json
+    stores: [current_sprint, phase, mode]
+    producers: [autonomous_cycle.py]
+    consumers: [check_continuation.py]
+    state_model: JSON; overwritten per sprint
+    transitions: [IDLE, RUNNING, CLOSEOUT, REWORK]
+    concurrency: single instance
+    recovery: reset to IDLE
+    failure_history: none known
+    broad_change_risk: LOW
+    current_controls: check_continuation.py verdict
+    canary_relevance: not_applicable
+    findings: no canary needed
+
+  - system_id: sal_facts
+    purpose: Spec authority layer — ground truth from ODF specifications
+    owner: merge_sal_facts.py
+    authority: oracle/sal/{format_id}/sal-facts.yaml
+    stores: [14441 facts, qnames, attributes, constraints]
+    producers: [ingest_spec_sal.py, merge_sal_facts.py]
+    consumers: [oracle validators, qname_migration_planner.py]
+    state_model: per-format YAML; append-only ingestion
+    transitions: [OBLIGATION_CREATED, INGESTED, MERGED]
+    concurrency: per-format isolation
+    recovery: re-ingest from spec files
+    failure_history: 0-fact formats (ora, pam, xpm, zpaq) need real ingestion
+    broad_change_risk: LOW — per-format
+    current_controls: merge_sal_facts.py, /ingest-spec-sal skill
+    canary_relevance: not_applicable
+    findings: per-format isolation; existing gate sufficient
+
+  - system_id: qname_registry
+    purpose: Maps spec QNames to canonical class/attribute implementations
+    owner: registry/qname-registry.yaml
+    authority: registry/qname-registry.yaml
+    stores: [qname, canonical_class, status, coverage]
+    producers: [agent edits, qname_backfill.py]
+    consumers: [governance_validators.py, capability_feature_compiler.py]
+    state_model: YAML; version-controlled
+    transitions: [PROPOSED, ACTIVE, DEPRECATED]
+    concurrency: git
+    recovery: git revert
+    failure_history: 99.4% coverage (65/66); 1 intentional gap
+    broad_change_risk: LOW — git-controlled
+    current_controls: validate_qname_structure.py
+    canary_relevance: not_applicable
+    findings: git provides rollback; no canary needed
+
+  - system_id: capability_registry
+    purpose: Registry of 120 agent capabilities with parity tracking
+    owner: .governance/capabilities/registry.yaml
+    authority: .governance/capabilities/registry.yaml
+    stores: [capability_id, status, product_track, parity_status, claude_code, codex]
+    producers: [agent edits, sync-capabilities skill]
+    consumers: [governance_validators.py, CLAUDE.md index]
+    state_model: YAML; version-controlled
+    transitions: [PROPOSED, ACTIVE, DEPRECATED]
+    concurrency: git
+    recovery: git revert
+    failure_history: 120 capabilities; FULL_PARITY for 119, PARTIAL for 1
+    broad_change_risk: LOW
+    current_controls: git history, V86 validate_layer_task_registered
+    canary_relevance: not_applicable
+    findings: no canary needed; git provides rollback
+
+  - system_id: source_baseline
+    purpose: Tracks LOC caps and violation baselines for Python source files
+    owner: registry/source-structure-baseline.json
+    authority: registry/source-structure-baseline.json
+    stores: [known_violations, baseline_loc_cap, functions, baseline_functions_cap]
+    producers: [CLAUDE.md new-violations detector]
+    consumers: [governance_validators.py (validate_source_architecture)]
+    state_model: JSON; baseline_loc_cap is write-once
+    transitions: [new_violation_detected, existing_violation]
+    concurrency: single-writer
+    recovery: git revert (only additive changes allowed)
+    failure_history: baseline_loc_cap raises blocked by CLAUDE.md
+    broad_change_risk: LOW — additive only; caps are write-once
+    current_controls: CLAUDE.md write-once rule
+    canary_relevance: not_applicable
+    findings: no canary; write-once caps prevent blast radius
+
+  - system_id: grade_cache
+    purpose: Caches LLM grader results to avoid re-grading unchanged evidence
+    owner: grade_declared_work.py
+    authority: .local/supervisor/grade-cache.json
+    stores: [evidence_fingerprint, grade, provider, timestamp, ttl_days=7]
+    producers: [grade_declared_work.py]
+    consumers: [grade_declared_work.py]
+    state_model: JSON; keyed by evidence_fingerprint (NOT including provider)
+    transitions: [cached, expired, stale_provider]
+    concurrency: single-writer per sprint
+    recovery: delete grade-cache.json to force full re-grade
+    failure_history: provider switches cause silent stale cache (key excludes provider)
+    broad_change_risk: MEDIUM — stale cache after provider switch causes grade drift
+    current_controls: 7-day TTL; none for provider changes
+    canary_relevance: shadow_enforcement_needed
+    findings: REQ-DIAG-002 — provider switch creates silent grade drift without shadow comparison
+
+  - system_id: mission_locks_sqlite
+    purpose: SQLite mirror of plan-lock state for fast query
+    owner: control_index.db (mission_locks table)
+    authority: control-index.db (reconstructible)
+    stores: [plan_path, status, session_id, last_taskcard]
+    producers: [control_index sync.py]
+    consumers: [query CLI]
+    state_model: shadow; reconstructed from plan-locks/*.json files
+    transitions: [synced, stale]
+    concurrency: single sync writer
+    recovery: rebuild control index
+    failure_history: none known
+    broad_change_risk: LOW — shadow only
+    current_controls: hash-based incremental sync
+    canary_relevance: monitor_only
+    findings: useful for detecting if plan lock changes propagate correctly
+
+  - system_id: conveyor_matrix
+    purpose: Assigns formats to cohorts (A/B/C/D) for staggered releases
+    owner: registry/conveyor-matrix.yaml
+    authority: registry/conveyor-matrix.yaml
+    stores: [cohort_id, formats, release_wave, gate_status]
+    producers: [agent edits]
+    consumers: [autonomous_cycle.py, capability_feature_compiler.py]
+    state_model: YAML; version-controlled
+    transitions: [PROPOSED, ACTIVE, RELEASED]
+    concurrency: git
+    recovery: git revert
+    failure_history: cohort scheduling diverges from gap-ledger work queue
+    broad_change_risk: LOW — git-controlled; MEDIUM if scoring changes affect cohort ordering
+    current_controls: git history
+    canary_relevance: not_applicable
+    findings: no canary; git provides rollback

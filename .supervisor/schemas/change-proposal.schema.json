@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change-proposal.schema.json",
+  "title": "ChangeProposal",
+  "description": "A proposal to modify a governed artifact or repository structure.",
+  "type": "object",
+  "required": ["proposal_id", "title", "status", "proposed_at", "proposed_by", "affected_artifacts"],
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. CP-001)."
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "PROPOSED",
+        "UNDER_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN",
+        "IMPLEMENTED"
+      ]
+    },
+    "proposed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "proposed_by": {
+      "type": "string"
+    },
+    "affected_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of artifact_ids affected by this proposal."
+    },
+    "rationale": {
+      "type": ["string", "null"]
+    },
+    "risk_level": {
+      "type": ["string", "null"],
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", null]
+    },
+    "decision_id": {
+      "type": ["string", "null"],
+      "description": "change-decision.schema.json decision_id that resolved this proposal."
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

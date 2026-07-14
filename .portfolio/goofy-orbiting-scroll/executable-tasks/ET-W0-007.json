@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W0-007",
+  "workstream_id": "WS-36-POLYMORPHIC-FEATHER",
+  "objective": "Complete polymorphic-foraging-feather spec parity objectives",
+  "source_plan_ids": [
+    "s003"
+  ],
+  "source_task_ids": [
+    "TC-PFF-001",
+    "TC-PFF-002",
+    "TC-PFF-003"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L02",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read polymorphic-foraging-feather.md (s003) plan completely",
+    "Identify which taskcards are outstanding",
+    "For each outstanding TC: assess current repository state",
+    "Write evidence/raw/ET-W0-007/pff-assessment.json",
+    "Execute any READY sub-tasks that can be done atomically"
+  ],
+  "acceptance_criteria": [
+    "All 12 source TCs in s003 have final disposition",
+    "Any implemented changes have passing tests"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 0,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W0-007-8B97EE17",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W0-007-AF804383",
+  "claimed_at": "2026-07-11T10:11:46.655941+00:00",
+  "closed_at": "2026-07-11T10:14:18.012745+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

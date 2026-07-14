@@ -1,0 +1,44 @@
+quality_scores:
+  mission_id: VWM-2026-07-10
+  assurance_date: "2026-07-13"
+  authoritative_plan: plans/.claude/vast-wibbling-moon.md
+  artifact_role: analysis_or_evidence_only
+
+  dimensions:
+    implementation_completeness:
+      score: 4
+      rationale: "All 15 machinery stages IMPORTABLE and operational. Playbook integration wired (TC-PBHP-002/003/004). V92 escalated. 210 validators confirmed."
+
+    verification_rigor:
+      score: 4
+      rationale: "10/10 pilots PASS. test_expected_count_matches_actual confirms count integrity. TestV92 updated to assert FAIL+blocking."
+
+    output_class_health:
+      score: 4
+      rationale: "14/18 output classes PRESENT. 4 are ON_DEMAND (not missing). 1 STALE (gap-ledger updated this sprint). No structurally missing outputs."
+
+    gap_resolution:
+      score: 5
+      rationale: "GAP-MA-001 (site-packages sync) RESOLVED by V137. All 7 known issues resolved or assessed. OPEN_GAPS_REQUIRING_REPAIR = 0."
+
+    machinery_stability:
+      score: 4
+      rationale: "All entry points importable. Session identity correctly null for product-track (TC-HQP-004 by design). Control index operational with 41 tables."
+
+  overall_score: 4.2
+  all_dimensions_gte_4: true
+  verdict: PASS
+  mandatory_dimensions_passing: 5
+
+  pilots:
+    PILOT-1_validator_count: PASS
+    PILOT-2_plan_lock: PASS
+    PILOT-3_check_continuation: PASS
+    PILOT-4_v137_stale_packages: PASS
+    PILOT-5_playbook_tests: PASS
+    PILOT-6_canary_tests: PASS
+    PILOT-7_v92_blocking: PASS
+    PILOT-8_drift_detection: PASS
+    PILOT-9_drift_followup_synthesis: PASS
+    PILOT-10_oracle_integrity: PASS
+    all_pass: true

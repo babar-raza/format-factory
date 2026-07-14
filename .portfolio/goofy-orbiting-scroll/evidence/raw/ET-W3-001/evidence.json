@@ -1,0 +1,44 @@
+{
+  "task_id": "ET-W3-001",
+  "wave": "W3",
+  "source_plan": "WS-09-FODS-GOVERNANCE",
+  "closed_at": "2026-07-11T00:00:00Z",
+  "taskcards_closed": [
+    "TC-FGSQ-013-01",
+    "TC-FGSQ-003",
+    "TC-FGSQ-004",
+    "TC-FGSQ-005"
+  ],
+  "taskcards_deferred": [
+    "TC-FGSQ-013-02",
+    "TC-FGSQ-013-03",
+    "TC-FGSQ-013-04",
+    "TC-FGSQ-013-05",
+    "TC-FGSQ-013-06",
+    "TC-FGSQ-013-07"
+  ],
+  "deferral_reason": "TC-FGSQ-013-02/03 (conditional formats/pivot/sparklines NSE) and TC-FGSQ-013-04 through 013-07 (ODF XML implementation) deferred to Wave 4. Converting to NotSupportedException would break 4233+ currently-passing .NET tests.",
+  "files_changed": [
+    "src/net/fods/FodsDocument.cs",
+    "src/net/fods/FodsDocumentDataAnnotations.cs",
+    "tools/supervisor/governance_validators_dotnet_semantic.py",
+    "registry/dotnet-semantic-stub-whitelist.yaml",
+    "tests/supervisor/test_governance_validators_dotnet_semantic.py"
+  ],
+  "test_results": {
+    "suite": "tests/supervisor/test_governance_validators_dotnet_semantic.py",
+    "passed": 56,
+    "failed": 0
+  },
+  "governance_changes": {
+    "V87": "Removed PRODUCT_SOURCE exemption; blocks ALL declaration types (non-whitelisted). Whitelisted: GetPrintAreaCount.",
+    "V88": "Complete rewrite to per-method brace-depth analysis; blocks_sprint=True. Replaces file-level proximity heuristic.",
+    "V90": "Changed from WARN-only to blocking for non-whitelisted violations. 3 violations grandfathered in whitelist.",
+    "V91": "Changed from WARN-only to blocking for non-whitelisted violations. 22 violations grandfathered in whitelist."
+  },
+  "product_changes": {
+    "GetChartTitle": "Converted to NotSupportedException (TC-FGSQ-013-01); _charts dict and ChartInfo record removed from FodsDocument.cs"
+  },
+  "whitelist_file": "registry/dotnet-semantic-stub-whitelist.yaml",
+  "whitelist_schema_version": "1.1"
+}

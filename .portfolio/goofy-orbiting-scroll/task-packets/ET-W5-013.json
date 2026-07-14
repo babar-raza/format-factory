@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-013",
+  "workstream_id": "WS-20-CERTIFICATION-LAYER",
+  "objective": "Execute glittery-splashing-manatee certification layer: all 12 TCs",
+  "source_plan_ids": [
+    "s025"
+  ],
+  "source_task_ids": [
+    "TC-GSM-001",
+    "TC-GSM-002",
+    "TC-GSM-003",
+    "TC-GSM-004",
+    "TC-GSM-005",
+    "TC-GSM-006",
+    "TC-GSM-007",
+    "TC-GSM-008",
+    "TC-GSM-009",
+    "TC-GSM-010",
+    "TC-GSM-011",
+    "TC-GSM-012"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 12 TCs in s025 have final disposition",
+    "Certification layer operational"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read glittery-splashing-manatee.md (s025) and execute all 12 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "a96cd255e09373f4b25ac256efc3e198d67424bb7dfd1c65bf63d58d776ed249"
+}

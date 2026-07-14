@@ -1,0 +1,61 @@
+---
+# Forensic Audit Baseline
+# REQ-FA-018 gate artifact — must exist before any analysis taskcard runs
+# TC-FF-AUDIT-001 (cheeky-crafting-manatee — MCP-W3-002)
+# Generated: 2026-07-12
+
+baseline:
+  date: "2026-07-12"
+  branch: main
+  head: "3fdaf841ed8941616dbe5e19d43af618c317d57b"
+  mission_id: FF-FORENSIC-AUDIT-001
+  plan_id: cheeky-crafting-manatee
+
+formats_in_scope:
+  python_foss: 20
+  dotnet_commercial: 10
+  obligation_created: 4  # ora, pam, xpm, zpaq
+  total_governed: 24
+
+pipeline_boundary_counts:
+  sal_facts_total: 14441
+  sal_facts_odf_family: ~14400  # majority from ODF family
+  sal_facts_non_odf: ~41        # 14 formats have ZERO or minimal facts
+  formats_with_zero_sal_facts: 14
+  formats_with_spec_derived_facts: 6  # ODF family + ABW/SYLK/DIF/CSV/TOML (partial)
+  qname_entries_total: 79
+  capabilities_total: 120
+  oracle_verified_formats: 20
+  oracle_cases_defined: 0
+  next_work_items: 0
+
+critical_root_causes:
+  - id: RC-001
+    description: "SAL extractors missing for 14 non-ODF formats"
+    impact: "spec_to_fact_ratio = 0.0 for 14/20 formats"
+    fix_chosen: "Manual seeding (Option B) + automated extractors (long-term)"
+
+  - id: RC-002
+    description: "QName collapse: 4988 FODS facts → 12 qnames"
+    impact: "fact_to_qname ratio ~0.2% — appears to be gap but is intentional architecture"
+    fix_chosen: "Document with source_fact_ids[] and derivation_method: INTENTIONAL_GROUPING"
+
+  - id: RC-003
+    description: "Non-ODF capabilities are POC-derived, not spec-fact-derived"
+    impact: "Capability chain broken for 14/20 formats"
+    fix_chosen: "Mark POC_DERIVED_NOT_SPEC_DERIVED immediately; seed facts in follow-on sprint"
+
+  - id: RC-004
+    description: "Feature compiler produces near-zero output (next-work-items.json empty)"
+    impact: "Sprint loop cannot select product work automatically"
+    fix_chosen: "Fix tools/supervisor/capability_feature_compiler.py (Option A)"
+
+  - id: RC-005
+    description: "Oracle results disconnected from sprint loop"
+    impact: "73/73 PASS oracle results not feeding into capability/feature proof levels"
+    fix_chosen: "Wire oracle results into feature-proof-register.yaml"
+
+governance_constraints:
+  lane_0_to_6_must_precede_product_regen: true
+  no_src_changes_in_batches_0_to_5: true
+  all_product_healing_via_governed_skills: true

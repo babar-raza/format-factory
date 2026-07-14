@@ -1,848 +1,1135 @@
-schema_version: "1.0"
-repository_revision: "a7744cf6"
-generated_at: "2026-06-26T00:00:00Z"
+schema_version: '1.0'
+repository_revision: a7744cf6
+generated_at: '2026-06-26T00:00:00Z'
 master_plan: plans/layers/master.md
 control_plane_root: plans/layers/
-session_id: "923e237958c1"
-bootstrap_sprint: "lp-bootstrap"
-
+session_id: 923e237958c1
+bootstrap_sprint: lp-bootstrap
 layers:
-  - layer_id: L01
-    canonical_name: Specification Authority Layer
-    permanent_plan_path: plans/layers/specification-authority-layer.md
-    plane: SYSTEM_HEALING
-    status: HARDENING_REQUIRED
-    health: DEGRADED
-    current_stage: FORENSIC_RECON
-    maturity_current: 2
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 1
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-SAL-001
-    next_action: "Activate 17 dormant SAL tools; run spec extraction for all 20 formats"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L02, L03, L14]
-    skill_ids: [ingest-spec-sal, sal-pipeline-heal]
-    command_ids: [ingest-spec-sal, sal-pipeline-heal]
-    last_started_at: "2026-05-06"
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L02
-    canonical_name: QName Hierarchy Authority
-    permanent_plan_path: plans/layers/qname-hierarchy-layer.md
-    plane: SYSTEM_HEALING
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 3
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-QN-001
-    next_action: "Close fodt:office:body intentional gap; add 4 new formats (ora/pam/xpm/zpaq)"
-    dependencies: [L01]
-    upstream_layers: [L01]
-    downstream_layers: [L03, L06]
-    skill_ids: [qname-backfill, spec-literal-qname-to-code-mapping]
-    command_ids: [qname-backfill, spec-literal-qname-to-code-mapping]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: ["reports/qname-coverage-20260626.json"]
-
-  - layer_id: L03
-    canonical_name: Capability Layer
-    permanent_plan_path: plans/layers/capability-layer.md
-    plane: SYSTEM_HEALING
-    status: HARDENING_REQUIRED
-    health: DEGRADED
-    current_stage: PLAN_HARDENING
-    maturity_current: 3
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-CAP-001
-    next_action: "Wire gap-ledger.json to autonomous task generator (replace hardcoded _EXPANSION_GOALS)"
-    dependencies: [L01, L02]
-    upstream_layers: [L01, L02]
-    downstream_layers: [L14, L06]
-    skill_ids: [build-capability-routes, update-capability-matrix]
-    command_ids: [build-capability-routes, update-capability-matrix]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: ["reports/capability-layer/gap-ledger.json"]
-
-  - layer_id: L04
-    canonical_name: Sample Corpus Layer
-    permanent_plan_path: plans/layers/corpus-layer.md
-    plane: SYSTEM_HEALING
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 2
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-CORP-001
-    next_action: "Audit samples/by-format/ — verify format coverage, add missing samples, add governance"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L05, L06, L07]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L05
-    canonical_name: Oracle Layer
-    permanent_plan_path: plans/layers/oracle-layer.md
-    plane: SYSTEM_HEALING
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-ORC-004
-    next_action: "Add oracle cases for ora/pam/xpm/zpaq once products exist; execute_oracle.py at LOC cap"
-    dependencies: [L04, L06]
-    upstream_layers: [L04, L06]
-    downstream_layers: [L07, L08]
-    skill_ids: [run-oracle]
-    command_ids: [run-oracle]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: ["oracle/registry/format-oracle-registry.yaml"]
-
-  - layer_id: L06
-    canonical_name: Product Architecture Layer
-    permanent_plan_path: plans/layers/product-architecture-layer.md
-    plane: PRODUCT
-    status: EXECUTION_IN_PROGRESS
-    health: HEALTHY
-    current_stage: IMPLEMENTATION
-    maturity_current: 4
-    maturity_target: 5
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 1
-    completed_task_count: 0
-    next_task_id: TC-PROD-001
-    next_action: "Gate 11 completion requires Babar Raza approval; continue .NET deepening S141+"
-    dependencies: [L01, L02, L03, L14]
-    upstream_layers: [L01, L02, L03, L14]
-    downstream_layers: [L05, L07, L08, L16, L19]
-    skill_ids: [add-python-api, add-dotnet-api, add-dotnet-object-model-feature, add-python-object-model-feature]
-    command_ids: [add-python-api, add-dotnet-api, add-dotnet-object-model-feature, add-python-object-model-feature]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L07
-    canonical_name: Test Infrastructure Layer
-    permanent_plan_path: plans/layers/test-infrastructure-layer.md
-    plane: PRODUCT
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 5
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-TEST-001
-    next_action: "Add roundtrip tests for formats with <3 test coverage; backfill ZST/FODS/FODT"
-    dependencies: [L06]
-    upstream_layers: [L06]
-    downstream_layers: [L08, L12]
-    skill_ids: [add-roundtrip-test, create-consumer-roundtrip]
-    command_ids: [add-roundtrip-test, create-consumer-roundtrip]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L08
-    canonical_name: Evidence and Review Layer
-    permanent_plan_path: plans/layers/evidence-review-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-EV-001
-    next_action: "Add provenance_chain to all PRODUCT_SOURCE declarations; enforce V-NEW-002"
-    dependencies: [L09, L11, L12]
-    upstream_layers: [L09, L11, L12]
-    downstream_layers: [L11]
-    skill_ids: [build-evidence-bundle, materialize-declaration-review]
-    command_ids: [build-evidence-bundle, materialize-declaration-review]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: [".supervisor/schemas/evidence-declaration.schema.json"]
-
-  - layer_id: L09
-    canonical_name: State and Continuation Layer
-    permanent_plan_path: plans/layers/state-continuation-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-STATE-001
-    next_action: "Layer control plane tracking in continuation-signal (plans/layers/ path)"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L10, L11]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: [".local/supervisor/continuation-signal.json"]
-
-  - layer_id: L10
-    canonical_name: Plan and Prompt Authority Layer
-    permanent_plan_path: plans/layers/plan-prompt-authority-layer.md
-    plane: GOVERNANCE
-    status: HARDENING_REQUIRED
-    health: DEGRADED
-    current_stage: PLAN_HARDENING
-    maturity_current: 3
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 1
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-PLAN-001
-    next_action: "Consolidate 6 hardening addenda into canonical plan files; prevent authority fragmentation"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L11, L12, L13]
-    skill_ids: [plan-hardening, build-context-pack]
-    command_ids: [plan-hardening, build-context-pack]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L11
-    canonical_name: Supervisor Sprint Layer
-    permanent_plan_path: plans/layers/supervisor-sprint-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 5
-    maturity_target: 5
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 2
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-SUP-001
-    next_action: "Code-enforce lane ownership, DAG ordering; call overclaim detector on every cycle"
-    dependencies: [L08, L09, L10, L12, L13]
-    upstream_layers: [L08, L09, L10, L12, L13]
-    downstream_layers: []
-    skill_ids: [autonomous-loop, post-sprint-loop, post-sprint-audit]
-    command_ids: [autonomous-loop, post-sprint-loop, post-sprint-audit]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: ["reports/supervisor/session-resume.md"]
-
-  - layer_id: L12
-    canonical_name: Validation Policy Layer
-    permanent_plan_path: plans/layers/validation-policy-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 5
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-VAL-001
-    next_action: "Add layer-plan validators V83-V86 (WARN-level); enforce primary_layer_id in declarations"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L08, L11]
-    skill_ids: [validate-mutation-guard, validate-product-code-ledger, validate-skill-contracts]
-    command_ids: [validate-mutation-guard, validate-product-code-ledger, validate-skill-contracts]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: ["tools/supervisor/governance_validators.py"]
-
-  - layer_id: L13
-    canonical_name: Skills Layer
-    permanent_plan_path: plans/layers/skills-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: HEALTHY
-    current_stage: GOVERNED_OPERATION
-    maturity_current: 4
-    maturity_target: 5
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-SKILL-001
-    next_action: "Register 19 layer-maintenance micro-skills; close SKILL-GAP-003/008/009/010/011"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L11]
-    skill_ids: [check-skill-coverage, sync-skill-command-registry, normalize-skill-registry]
-    command_ids: [check-skill-coverage, sync-skill-command-registry, normalize-skill-registry]
-    last_started_at: null
-    last_progress_at: "2026-06-26"
-    last_updated_at: "2026-06-26"
-    last_verified_at: "2026-06-26"
-    last_verified_revision: "a7744cf6"
-    handoff_id: null
-    evidence_paths: [".supervisor/skill-registry.yaml"]
-
-  - layer_id: L14
-    canonical_name: Feature Compilation Layer
-    permanent_plan_path: plans/layers/feature-compilation-layer.md
-    plane: SYSTEM_HEALING
-    status: NOT_ASSESSED
-    health: ABSENT
-    current_stage: DISCOVERY
-    maturity_current: 0
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 1
-    completed_task_count: 0
-    next_task_id: TC-FEAT-001
-    next_action: "Design 9-phase compiler per spec-to-feature plan Lane 3; create SKILL-GAP-003 skill"
-    dependencies: [L03]
-    upstream_layers: [L03]
-    downstream_layers: [L06]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L15
-    canonical_name: Source Change Handoff Layer
-    permanent_plan_path: plans/layers/source-change-handoff-layer.md
-    plane: PRODUCT
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-SCH-001
-    next_action: "Define source ownership map; enforce single mutation owner per file path"
-    dependencies: [L06]
-    upstream_layers: [L06]
-    downstream_layers: [L11]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L16
-    canonical_name: Product Output Dogfood Layer
-    permanent_plan_path: plans/layers/product-output-dogfood-layer.md
-    plane: PRODUCT
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-DOG-001
-    next_action: "Audit dogfood export pipeline; verify /add-dogfood-export skill coverage"
-    dependencies: [L06]
-    upstream_layers: [L06]
-    downstream_layers: [L19]
-    skill_ids: [add-dogfood-export, verify-dogfood-path]
-    command_ids: [add-dogfood-export, verify-dogfood-path]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L17
-    canonical_name: Regression Compatibility Layer
-    permanent_plan_path: plans/layers/regression-compatibility-layer.md
-    plane: PRODUCT
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-REG-001
-    next_action: "Audit regression test coverage; define compatibility matrix per format"
-    dependencies: [L06, L07]
-    upstream_layers: [L06, L07]
-    downstream_layers: [L18]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L18
-    canonical_name: Package Release Layer
-    permanent_plan_path: plans/layers/package-release-layer.md
-    plane: PRODUCT
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 1
-    completed_task_count: 0
-    next_task_id: TC-PKG-001
-    next_action: "BLOCKED: Gate 11 execution requires Babar Raza approval before PyPI/NuGet release"
-    dependencies: [L06, L17, L21]
-    upstream_layers: [L06, L17, L21]
-    downstream_layers: [L19]
-    skill_ids: [package-install-proof, check-release-boundary, check-gate]
-    command_ids: [package-install-proof, check-release-boundary, check-gate]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L19
-    canonical_name: Consumer API Layer
-    permanent_plan_path: plans/layers/consumer-api-layer.md
-    plane: PRODUCT
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-CAPI-001
-    next_action: "Define public API surface contract; audit __init__.py exports for all formats"
-    dependencies: [L06, L18]
-    upstream_layers: [L06, L18]
-    downstream_layers: []
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L20
-    canonical_name: Security and Legal Layer
-    permanent_plan_path: plans/layers/security-legal-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-SEC-001
-    next_action: "Audit legal_category in format-registry.yaml; ensure all formats have safety 30/30"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L18, L21]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: ["registry/format-registry.yaml"]
-
-  - layer_id: L21
-    canonical_name: AI Acceleration Boundary Layer
-    permanent_plan_path: plans/layers/ai-acceleration-boundary-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 2
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 1
-    completed_task_count: 0
-    next_task_id: TC-AIB-001
-    next_action: "BLOCKED_EXTERNAL: Gate 11 G11-G execution requires Babar Raza commercial sign-off"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L18]
-    skill_ids: [check-gate, check-release-boundary]
-    command_ids: [check-gate, check-release-boundary]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L22
-    canonical_name: External Tool Governance Layer
-    permanent_plan_path: plans/layers/external-tool-governance-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-EXT-001
-    next_action: "Audit .vscode/mcp.json; inventory MCP server dependencies; define governance contract"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L11, L13]
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L23
-    canonical_name: Knowledge Discoverability Layer
-    permanent_plan_path: plans/layers/knowledge-discoverability-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-KNOW-001
-    next_action: "Audit MEMORY.md size (591KB project-memory.md); define structured discoverability contracts"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L10, L11]
-    skill_ids: [sync-memory, build-context-pack]
-    command_ids: [sync-memory, build-context-pack]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: [".supervisor/project-memory.md"]
-
-  - layer_id: L24
-    canonical_name: Metrics and Product Velocity Layer
-    permanent_plan_path: plans/layers/metrics-product-velocity-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-MET-001
-    next_action: "Define velocity metrics from grading-history.jsonl; build maturity-trend automation"
-    dependencies: [L08, L11]
-    upstream_layers: [L08, L11]
-    downstream_layers: []
-    skill_ids: []
-    command_ids: []
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: ["reports/supervisor/maturity-trend.json"]
-
-  - layer_id: L25
-    canonical_name: Recovery and Rollback Layer
-    permanent_plan_path: plans/layers/recovery-rollback-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-REC-001
-    next_action: "Define rollback protocol per CLAUDE.md §GOV_BLOCK; close SKILL-GAP-011 (rollback-and-recovery)"
-    dependencies: []
-    upstream_layers: []
-    downstream_layers: [L11]
-    skill_ids: [rollback-and-recovery]
-    command_ids: [rollback-and-recovery]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L26
-    canonical_name: Provenance and Artifact Identity Layer
-    permanent_plan_path: plans/layers/provenance-artifact-identity-layer.md
-    plane: GOVERNANCE
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 2
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 1
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-PROV-001
-    next_action: "Enforce provenance_chain field in all PRODUCT_SOURCE declarations (SAL-HEAL-B001)"
-    dependencies: [L08]
-    upstream_layers: [L08]
-    downstream_layers: [L11]
-    skill_ids: [build-evidence-bundle]
-    command_ids: [build-evidence-bundle]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: [".supervisor/schemas/evidence-declaration.schema.json"]
-
-  - layer_id: L27
-    canonical_name: Format Language Obligation Layer
-    permanent_plan_path: plans/layers/format-language-obligation-layer.md
-    plane: SYSTEM_HEALING
-    status: NOT_ASSESSED
-    health: UNKNOWN
-    current_stage: DISCOVERY
-    maturity_current: 1
-    maturity_target: 3
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 0
-    next_task_id: TC-OBL-001
-    next_action: "Define per-format language obligation registry; link V82 oracle obligations to this layer"
-    dependencies: [L01, L05]
-    upstream_layers: [L01, L05]
-    downstream_layers: [L06]
-    skill_ids: [build-obligation-register, update-obligation-entry, verify-obligation-entry]
-    command_ids: [build-obligation-register, update-obligation-entry, verify-obligation-entry]
-    last_started_at: null
-    last_progress_at: null
-    last_updated_at: "2026-06-26"
-    last_verified_at: null
-    last_verified_revision: null
-    handoff_id: null
-    evidence_paths: []
-
-  - layer_id: L28
-    canonical_name: Certification Audit Layer
-    permanent_plan_path: plans/layers/certification-audit-layer.md
-    plane: GOVERNANCE
-    status: GOVERNED_OPERATIONAL
-    health: GREEN
-    current_stage: OPERATIONAL
-    maturity_current: 3
-    maturity_target: 4
-    current_owner: null
-    session_id: null
-    active_task_count: 0
-    ready_task_count: 0
-    blocked_task_count: 0
-    completed_task_count: 2
-    next_task_id: TC-CERT-L-003
-    next_action: "Register certification tools as skills"
-    dependencies: [L05, L06, L07]
-    upstream_layers: [L05, L06, L07]
-    downstream_layers: [L18]
-    skill_ids: [certification-dashboard]
-    command_ids: [certification-dashboard]
-    last_started_at: "2026-06-28"
-    last_progress_at: "2026-06-28"
-    last_updated_at: "2026-06-29"
-    last_verified_at: "2026-06-29"
-    last_verified_revision: null
-    handoff_id: HO-008
-    evidence_paths: ["reports/certification/portfolio-certification-matrix.json"]
+- layer_id: L01
+  canonical_name: Specification Authority Layer
+  permanent_plan_path: plans/layers/specification-authority-layer.md
+  plane: SYSTEM_HEALING
+  status: HARDENING_REQUIRED
+  health: DEGRADED
+  current_stage: FORENSIC_RECON
+  maturity_current: 2
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 1
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-SAL-001
+  next_action: Activate 17 dormant SAL tools; run spec extraction for all 20 formats
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L02
+  - L03
+  - L14
+  skill_ids:
+  - ingest-spec-sal
+  - sal-pipeline-heal
+  command_ids:
+  - ingest-spec-sal
+  - sal-pipeline-heal
+  last_started_at: '2026-05-06'
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L02
+  canonical_name: QName Hierarchy Authority
+  permanent_plan_path: plans/layers/qname-hierarchy-layer.md
+  plane: SYSTEM_HEALING
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 3
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-QN-001
+  next_action: Close fodt:office:body intentional gap; add 4 new formats (ora/pam/xpm/zpaq)
+  dependencies:
+  - L01
+  upstream_layers:
+  - L01
+  downstream_layers:
+  - L03
+  - L06
+  skill_ids:
+  - qname-backfill
+  - spec-literal-qname-to-code-mapping
+  command_ids:
+  - qname-backfill
+  - spec-literal-qname-to-code-mapping
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - reports/qname-coverage-20260626.json
+- layer_id: L03
+  canonical_name: Capability Layer
+  permanent_plan_path: plans/layers/capability-layer.md
+  plane: SYSTEM_HEALING
+  status: HARDENING_REQUIRED
+  health: DEGRADED
+  current_stage: PLAN_HARDENING
+  maturity_current: 3
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-CAP-001
+  next_action: Wire gap-ledger.json to autonomous task generator (replace hardcoded
+    _EXPANSION_GOALS)
+  dependencies:
+  - L01
+  - L02
+  upstream_layers:
+  - L01
+  - L02
+  downstream_layers:
+  - L14
+  - L06
+  skill_ids:
+  - build-capability-routes
+  - update-capability-matrix
+  command_ids:
+  - build-capability-routes
+  - update-capability-matrix
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths:
+  - reports/capability-layer/gap-ledger.json
+- layer_id: L04
+  canonical_name: Sample Corpus Layer
+  permanent_plan_path: plans/layers/corpus-layer.md
+  plane: SYSTEM_HEALING
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 2
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-CORP-001
+  next_action: Audit samples/by-format/ — verify format coverage, add missing samples,
+    add governance
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L05
+  - L06
+  - L07
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L05
+  canonical_name: Oracle Layer
+  permanent_plan_path: plans/layers/oracle-layer.md
+  plane: SYSTEM_HEALING
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-ORC-004
+  next_action: Add oracle cases for ora/pam/xpm/zpaq once products exist; execute_oracle.py
+    at LOC cap
+  dependencies:
+  - L04
+  - L06
+  upstream_layers:
+  - L04
+  - L06
+  downstream_layers:
+  - L07
+  - L08
+  skill_ids:
+  - run-oracle
+  command_ids:
+  - run-oracle
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - oracle/registry/format-oracle-registry.yaml
+- layer_id: L06
+  canonical_name: Product Architecture Layer
+  permanent_plan_path: plans/layers/product-architecture-layer.md
+  plane: PRODUCT
+  status: EXECUTION_IN_PROGRESS
+  health: HEALTHY
+  current_stage: IMPLEMENTATION
+  maturity_current: 4
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 1
+  completed_task_count: 0
+  next_task_id: TC-PROD-001
+  next_action: Gate 11 completion requires Babar Raza approval; continue .NET deepening
+    S141+
+  dependencies:
+  - L01
+  - L02
+  - L03
+  - L14
+  upstream_layers:
+  - L01
+  - L02
+  - L03
+  - L14
+  downstream_layers:
+  - L05
+  - L07
+  - L08
+  - L16
+  - L19
+  skill_ids:
+  - add-python-api
+  - add-dotnet-api
+  - add-dotnet-object-model-feature
+  - add-python-object-model-feature
+  command_ids:
+  - add-python-api
+  - add-dotnet-api
+  - add-dotnet-object-model-feature
+  - add-python-object-model-feature
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L07
+  canonical_name: Test Infrastructure Layer
+  permanent_plan_path: plans/layers/test-infrastructure-layer.md
+  plane: PRODUCT
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-TEST-001
+  next_action: Add roundtrip tests for formats with <3 test coverage; backfill ZST/FODS/FODT
+  dependencies:
+  - L06
+  upstream_layers:
+  - L06
+  downstream_layers:
+  - L08
+  - L12
+  skill_ids:
+  - add-roundtrip-test
+  - create-consumer-roundtrip
+  command_ids:
+  - add-roundtrip-test
+  - create-consumer-roundtrip
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L08
+  canonical_name: Evidence and Review Layer
+  permanent_plan_path: plans/layers/evidence-review-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-EV-001
+  next_action: Add provenance_chain to all PRODUCT_SOURCE declarations; enforce V-NEW-002
+  dependencies:
+  - L09
+  - L11
+  - L12
+  upstream_layers:
+  - L09
+  - L11
+  - L12
+  downstream_layers:
+  - L11
+  skill_ids:
+  - build-evidence-bundle
+  - materialize-declaration-review
+  command_ids:
+  - build-evidence-bundle
+  - materialize-declaration-review
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - .supervisor/schemas/evidence-declaration.schema.json
+- layer_id: L09
+  canonical_name: State and Continuation Layer
+  permanent_plan_path: plans/layers/state-continuation-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-STATE-001
+  next_action: Layer control plane tracking in continuation-signal (plans/layers/
+    path)
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L10
+  - L11
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - .local/supervisor/continuation-signal.json
+- layer_id: L10
+  canonical_name: Plan and Prompt Authority Layer
+  permanent_plan_path: plans/layers/plan-prompt-authority-layer.md
+  plane: GOVERNANCE
+  status: HARDENING_REQUIRED
+  health: DEGRADED
+  current_stage: PLAN_HARDENING
+  maturity_current: 3
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 1
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-PLAN-001
+  next_action: Consolidate 6 hardening addenda into canonical plan files; prevent
+    authority fragmentation
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L11
+  - L12
+  - L13
+  skill_ids:
+  - plan-hardening
+  - build-context-pack
+  command_ids:
+  - plan-hardening
+  - build-context-pack
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L11
+  canonical_name: Supervisor Sprint Layer
+  permanent_plan_path: plans/layers/supervisor-sprint-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 5
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 2
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-SUP-001
+  next_action: Code-enforce lane ownership, DAG ordering; call overclaim detector
+    on every cycle
+  dependencies:
+  - L08
+  - L09
+  - L10
+  - L12
+  - L13
+  upstream_layers:
+  - L08
+  - L09
+  - L10
+  - L12
+  - L13
+  downstream_layers: []
+  skill_ids:
+  - autonomous-loop
+  - post-sprint-loop
+  - post-sprint-audit
+  command_ids:
+  - autonomous-loop
+  - post-sprint-loop
+  - post-sprint-audit
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - reports/supervisor/session-resume.md
+- layer_id: L12
+  canonical_name: Validation Policy Layer
+  permanent_plan_path: plans/layers/validation-policy-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-VAL-001
+  next_action: Add layer-plan validators V83-V86 (WARN-level); enforce primary_layer_id
+    in declarations
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L08
+  - L11
+  skill_ids:
+  - validate-mutation-guard
+  - validate-product-code-ledger
+  - validate-skill-contracts
+  command_ids:
+  - validate-mutation-guard
+  - validate-product-code-ledger
+  - validate-skill-contracts
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - tools/supervisor/governance_validators.py
+- layer_id: L13
+  canonical_name: Skills Layer
+  permanent_plan_path: plans/layers/skills-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-SKILL-001
+  next_action: Register 19 layer-maintenance micro-skills; close SKILL-GAP-003/008/009/010/011
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L11
+  skill_ids:
+  - check-skill-coverage
+  - sync-skill-command-registry
+  - normalize-skill-registry
+  command_ids:
+  - check-skill-coverage
+  - sync-skill-command-registry
+  - normalize-skill-registry
+  last_started_at: null
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-26'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
+  handoff_id: null
+  evidence_paths:
+  - .supervisor/skill-registry.yaml
+- layer_id: L14
+  canonical_name: Feature Compilation Layer
+  permanent_plan_path: plans/layers/feature-compilation-layer.md
+  plane: SYSTEM_HEALING
+  status: NOT_ASSESSED
+  health: ABSENT
+  current_stage: DISCOVERY
+  maturity_current: 0
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 1
+  completed_task_count: 0
+  next_task_id: TC-FEAT-001
+  next_action: Design 9-phase compiler per spec-to-feature plan Lane 3; create SKILL-GAP-003
+    skill
+  dependencies:
+  - L03
+  upstream_layers:
+  - L03
+  downstream_layers:
+  - L06
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L15
+  canonical_name: Source Change Handoff Layer
+  permanent_plan_path: plans/layers/source-change-handoff-layer.md
+  plane: PRODUCT
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-SCH-001
+  next_action: Define source ownership map; enforce single mutation owner per file
+    path
+  dependencies:
+  - L06
+  upstream_layers:
+  - L06
+  downstream_layers:
+  - L11
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L16
+  canonical_name: Product Output Dogfood Layer
+  permanent_plan_path: plans/layers/product-output-dogfood-layer.md
+  plane: PRODUCT
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-DOG-001
+  next_action: Audit dogfood export pipeline; verify /add-dogfood-export skill coverage
+  dependencies:
+  - L06
+  upstream_layers:
+  - L06
+  downstream_layers:
+  - L19
+  skill_ids:
+  - add-dogfood-export
+  - verify-dogfood-path
+  command_ids:
+  - add-dogfood-export
+  - verify-dogfood-path
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L17
+  canonical_name: Regression Compatibility Layer
+  permanent_plan_path: plans/layers/regression-compatibility-layer.md
+  plane: PRODUCT
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-REG-001
+  next_action: Audit regression test coverage; define compatibility matrix per format
+  dependencies:
+  - L06
+  - L07
+  upstream_layers:
+  - L06
+  - L07
+  downstream_layers:
+  - L18
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L18
+  canonical_name: Package Release Layer
+  permanent_plan_path: plans/layers/package-release-layer.md
+  plane: PRODUCT
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 1
+  completed_task_count: 0
+  next_task_id: TC-PKG-001
+  next_action: 'BLOCKED: Gate 11 execution requires Babar Raza approval before PyPI/NuGet
+    release'
+  dependencies:
+  - L06
+  - L17
+  - L21
+  upstream_layers:
+  - L06
+  - L17
+  - L21
+  downstream_layers:
+  - L19
+  skill_ids:
+  - package-install-proof
+  - check-release-boundary
+  - check-gate
+  command_ids:
+  - package-install-proof
+  - check-release-boundary
+  - check-gate
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L19
+  canonical_name: Consumer API Layer
+  permanent_plan_path: plans/layers/consumer-api-layer.md
+  plane: PRODUCT
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-CAPI-001
+  next_action: Define public API surface contract; audit __init__.py exports for all
+    formats
+  dependencies:
+  - L06
+  - L18
+  upstream_layers:
+  - L06
+  - L18
+  downstream_layers: []
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L20
+  canonical_name: Security and Legal Layer
+  permanent_plan_path: plans/layers/security-legal-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-SEC-001
+  next_action: Audit legal_category in format-registry.yaml; ensure all formats have
+    safety 30/30
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L18
+  - L21
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths:
+  - registry/format-registry.yaml
+- layer_id: L21
+  canonical_name: AI Acceleration Boundary Layer
+  permanent_plan_path: plans/layers/ai-acceleration-boundary-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 2
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 1
+  completed_task_count: 0
+  next_task_id: TC-AIB-001
+  next_action: 'BLOCKED_EXTERNAL: Gate 11 G11-G execution requires Babar Raza commercial
+    sign-off'
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L18
+  skill_ids:
+  - check-gate
+  - check-release-boundary
+  command_ids:
+  - check-gate
+  - check-release-boundary
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L22
+  canonical_name: External Tool Governance Layer
+  permanent_plan_path: plans/layers/external-tool-governance-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-EXT-001
+  next_action: Audit .vscode/mcp.json; inventory MCP server dependencies; define governance
+    contract
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L11
+  - L13
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L23
+  canonical_name: Knowledge Discoverability Layer
+  permanent_plan_path: plans/layers/knowledge-discoverability-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-KNOW-001
+  next_action: Audit MEMORY.md size (591KB project-memory.md); define structured discoverability
+    contracts
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L10
+  - L11
+  skill_ids:
+  - sync-memory
+  - build-context-pack
+  command_ids:
+  - sync-memory
+  - build-context-pack
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths:
+  - .supervisor/project-memory.md
+- layer_id: L24
+  canonical_name: Metrics and Product Velocity Layer
+  permanent_plan_path: plans/layers/metrics-product-velocity-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-MET-001
+  next_action: Define velocity metrics from grading-history.jsonl; build maturity-trend
+    automation
+  dependencies:
+  - L08
+  - L11
+  upstream_layers:
+  - L08
+  - L11
+  downstream_layers: []
+  skill_ids: []
+  command_ids: []
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths:
+  - reports/supervisor/maturity-trend.json
+- layer_id: L25
+  canonical_name: Recovery and Rollback Layer
+  permanent_plan_path: plans/layers/recovery-rollback-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-REC-001
+  next_action: Define rollback protocol per CLAUDE.md §GOV_BLOCK; close SKILL-GAP-011
+    (rollback-and-recovery)
+  dependencies: []
+  upstream_layers: []
+  downstream_layers:
+  - L11
+  skill_ids:
+  - rollback-and-recovery
+  command_ids:
+  - rollback-and-recovery
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L26
+  canonical_name: Provenance and Artifact Identity Layer
+  permanent_plan_path: plans/layers/provenance-artifact-identity-layer.md
+  plane: GOVERNANCE
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 2
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 1
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-PROV-001
+  next_action: Enforce provenance_chain field in all PRODUCT_SOURCE declarations (SAL-HEAL-B001)
+  dependencies:
+  - L08
+  upstream_layers:
+  - L08
+  downstream_layers:
+  - L11
+  skill_ids:
+  - build-evidence-bundle
+  command_ids:
+  - build-evidence-bundle
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths:
+  - .supervisor/schemas/evidence-declaration.schema.json
+- layer_id: L27
+  canonical_name: Format Language Obligation Layer
+  permanent_plan_path: plans/layers/format-language-obligation-layer.md
+  plane: SYSTEM_HEALING
+  status: NOT_ASSESSED
+  health: UNKNOWN
+  current_stage: DISCOVERY
+  maturity_current: 1
+  maturity_target: 3
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 0
+  next_task_id: TC-OBL-001
+  next_action: Define per-format language obligation registry; link V82 oracle obligations
+    to this layer
+  dependencies:
+  - L01
+  - L05
+  upstream_layers:
+  - L01
+  - L05
+  downstream_layers:
+  - L06
+  skill_ids:
+  - build-obligation-register
+  - update-obligation-entry
+  - verify-obligation-entry
+  command_ids:
+  - build-obligation-register
+  - update-obligation-entry
+  - verify-obligation-entry
+  last_started_at: null
+  last_progress_at: null
+  last_updated_at: '2026-06-26'
+  last_verified_at: null
+  last_verified_revision: null
+  handoff_id: null
+  evidence_paths: []
+- layer_id: L28
+  canonical_name: Certification Audit Layer
+  permanent_plan_path: plans/layers/certification-audit-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: GREEN
+  current_stage: OPERATIONAL
+  maturity_current: 4
+  maturity_target: 4
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 2
+  next_task_id: TC-CERT-L-003
+  next_action: Register certification tools as skills
+  dependencies:
+  - L05
+  - L06
+  - L07
+  upstream_layers:
+  - L05
+  - L06
+  - L07
+  downstream_layers:
+  - L18
+  skill_ids:
+  - certification-assertion-scorer
+  - certification-ci-gate
+  - certification-cross-language-parity
+  - certification-dashboard
+  - certification-dotnet-assertion-scorer
+  - certification-exception-checker
+  - certification-fix-weak-assertions
+  - certification-generate-exception-tests
+  - certification-generate-security-tests
+  - certification-inventory-extractor
+  - certification-mutation-tester
+  - certification-performance-benchmark
+  - certification-stub-detector
+  command_ids:
+  - certification-assertion-scorer
+  - certification-ci-gate
+  - certification-cross-language-parity
+  - certification-dashboard
+  - certification-dotnet-assertion-scorer
+  - certification-exception-checker
+  - certification-fix-weak-assertions
+  - certification-generate-exception-tests
+  - certification-generate-security-tests
+  - certification-inventory-extractor
+  - certification-mutation-tester
+  - certification-performance-benchmark
+  - certification-stub-detector
+  last_started_at: '2026-06-28'
+  last_progress_at: '2026-07-13'
+  last_updated_at: '2026-07-13'
+  last_verified_at: '2026-06-29'
+  last_verified_revision: null
+  handoff_id: HO-008
+  evidence_paths:
+  - reports/certification/portfolio-certification-matrix.json
+- layer_id: L29
+  canonical_name: Operational Control Record Discovery Layer
+  permanent_plan_path: plans/layers/operational-control-record-layer.md
+  plane: GOVERNANCE
+  status: GOVERNED_OPERATIONAL
+  health: HEALTHY
+  current_stage: GOVERNED_OPERATION
+  maturity_current: 4
+  maturity_target: 5
+  current_owner: null
+  session_id: null
+  active_task_count: 0
+  ready_task_count: 0
+  blocked_task_count: 0
+  completed_task_count: 9
+  next_task_id: null
+  next_action: Extend trust_registry population; add quarantine lifecycle transitions
+  dependencies:
+  - L09
+  - L11
+  - L12
+  upstream_layers:
+  - L09
+  - L11
+  - L12
+  downstream_layers:
+  - L11
+  skill_ids:
+  - discover-existing-control-layers
+  - inventory-existing-control-features
+  - verify-control-feature-parity
+  - build-task-context
+  - build-resume-context
+  - build-product-context
+  - rebuild-operational-index
+  - validate-operational-index
+  - quarantine-invalid-artifact
+  - audit-enhanced-control-layer
+  command_ids:
+  - discover-existing-control-layers
+  - inventory-existing-control-features
+  - verify-control-feature-parity
+  - build-task-context
+  - build-resume-context
+  - build-product-context
+  - rebuild-operational-index
+  - validate-operational-index
+  - quarantine-invalid-artifact
+  - audit-enhanced-control-layer
+  last_started_at: '2026-07-12'
+  last_progress_at: '2026-07-12'
+  last_updated_at: '2026-07-12'
+  last_verified_at: '2026-07-12'
+  last_verified_revision: null
+  handoff_id: HO-009
+  evidence_paths:
+  - reports/control-layer/existing-control-layers.yaml
+  - reports/control-layer/existing-control-features.yaml
+  - reports/control-layer/feature-parity-register.yaml
+  - tools/supervisor/control_index/ingestors/control_layer_ingestor.py
+  - tools/supervisor/governance_validators_control_layer.py

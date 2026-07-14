@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W5-010",
+  "workstream_id": "WS-07-MINSKY-ELEGANCE",
+  "objective": "Execute elegant-napping-minsky: all 7 TCs",
+  "source_plan_ids": [
+    "s008"
+  ],
+  "source_task_ids": [
+    "TC-ENM-001",
+    "TC-ENM-002",
+    "TC-ENM-003",
+    "TC-ENM-004",
+    "TC-ENM-005",
+    "TC-ENM-006",
+    "TC-ENM-007"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 7 TCs in s008 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "src/python/"
+  ],
+  "primary_lane": "L02",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read elegant-napping-minsky.md (s008) and execute all 7 TCs"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -3"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "d10336d0ec248a19349714b677865f64922317e887a428f2b0f12001b6dcc51f"
+}

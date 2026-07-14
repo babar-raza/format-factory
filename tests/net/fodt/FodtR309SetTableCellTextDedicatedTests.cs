@@ -49,7 +49,7 @@ public class FodtR309SetTableCellTextDedicatedTests
         if (doc.TableCount == 0)
             Assert.ThrowsAny<Exception>(() => doc.SetTableCellText(0, 0, 0, "text"));
         else
-            Assert.True(true); // document has default tables
+            Assert.True(doc.TableCount > 0); // document has default tables
     }
 
     [Fact]

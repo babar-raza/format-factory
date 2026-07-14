@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "governance-gap.schema.json",
+  "title": "GovernanceGap",
+  "description": "A gap in governance coverage — a missing validator, schema, policy, or enforcement mechanism.",
+  "type": "object",
+  "required": ["gap_id", "title", "severity", "status", "discovered_at"],
+  "additionalProperties": false,
+  "properties": {
+    "gap_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. GGAP-001)."
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS",
+        "RESOLVED",
+        "WONT_FIX",
+        "DEFERRED"
+      ]
+    },
+    "discovered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "discovered_by": {
+      "type": ["string", "null"]
+    },
+    "affected_components": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "remediation_plan": {
+      "type": ["string", "null"],
+      "description": "Taskcard ID or prose description of the remediation path."
+    },
+    "resolved_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "resolution_evidence": {
+      "type": ["string", "null"],
+      "description": "Path to evidence proving the gap was resolved."
+    },
+    "linked_proposal_id": {
+      "type": ["string", "null"],
+      "description": "change-proposal.schema.json proposal_id addressing this gap."
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

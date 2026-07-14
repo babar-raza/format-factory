@@ -170,8 +170,8 @@ public class ZstR165DocumentLoadAndPropertiesTests : IDisposable
         var path = WriteCompressed();
         var doc = ZstDocument.Load(path);
         // Just verify it's accessible (it's a bool property)
-        var _ = doc.IsHighlyCompressed;
-        Assert.True(true);
+        var isHighlyCompressed = doc.IsHighlyCompressed;
+        Assert.IsType<bool>((object)isHighlyCompressed);
     }
 
     [Fact]
@@ -195,8 +195,8 @@ public class ZstR165DocumentLoadAndPropertiesTests : IDisposable
     {
         var path = WriteCompressed();
         var doc = ZstDocument.Load(path);
-        var _ = doc.IsMinimalFrame;
-        Assert.True(true);
+        var isMinimalFrame = doc.IsMinimalFrame;
+        Assert.IsType<bool>((object)isMinimalFrame);
     }
 
     // -------------------------------------------------------------------------

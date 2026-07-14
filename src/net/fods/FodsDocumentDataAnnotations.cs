@@ -14,19 +14,14 @@ public sealed partial class FodsDocument
 {
     // -------------------------------------------------------------------------
     // Chart title (R305)
-    // STUB: no ODF XML path for chart objects; _charts is an in-memory stub. Tracking GAP-NET-XG-012.
+    // NOT SUPPORTED: chart:chart objects require the ODF Draw namespace (§9.8) and are not
+    // implemented in this version. GAP-NET-XG-012 tracks future implementation.
     // -------------------------------------------------------------------------
 
-    /// <summary>R305: Return the title of the chart at the given index on the named sheet.</summary>
+    /// <summary>R305: Not supported — chart access requires ODF §9.8 chart:chart XML (not implemented).</summary>
     public string GetChartTitle(string sheetName, int index)
-    {
-        // TODO(GI-FODS-NET-006): implement ODF §9.8 chart:chart XML read for chart title
-        if (string.IsNullOrWhiteSpace(sheetName))
-            throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
-        if (!_charts.TryGetValue(sheetName, out var list) || index < 0 || index >= list.Count)
-            throw new ArgumentOutOfRangeException(nameof(index), $"No chart at index {index} on sheet '{sheetName}'.");
-        return list[index].Title;
-    }
+        => throw new NotSupportedException(
+            "Chart access is not supported. chart:chart objects require the ODF Draw namespace (§9.8) and are not implemented in this version.");
 
     // -------------------------------------------------------------------------
     // Comments (R306, R307, R338, R349, R388)

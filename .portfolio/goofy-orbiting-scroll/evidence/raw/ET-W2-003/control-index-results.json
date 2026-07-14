@@ -1,0 +1,58 @@
+{
+  "task_id": "ET-W2-003",
+  "source_plan": "clever-tickling-island",
+  "audit_date": "2026-07-11",
+  "control_index_status": {
+    "schema_version": 3,
+    "expected_version": 3,
+    "table_count": 32,
+    "status": "initialized"
+  },
+  "taskcards_executed": {
+    "TC-INV-001": {
+      "status": "CLOSED",
+      "children_closed": ["TC-INV-001-01", "TC-INV-001-02", "TC-INV-001-03"],
+      "output_files": [
+        "reports/canary/state-system-inventory.yaml (21 state systems)",
+        "reports/canary/canary-opportunity-map.yaml (15 candidates, all with recommendation)",
+        "reports/canary/canary-risk-register.yaml (4 risks, all with mitigation)",
+        "reports/canary/canary-architecture-decision.yaml"
+      ],
+      "test_proof": "yaml.safe_load passes for all 4 files. len(state_systems)==21, all 15 candidates have recommendation field, HIGH_RISKS_WITHOUT_MITIGATION=0"
+    },
+    "TC-INIT-001": {
+      "status": "CLOSED",
+      "action": "Created tools/canary/__init__.py with __version__ = '1.0.0' and __all__ = ['validator_promotion', 'grader_promotion', 'compilation_diff']",
+      "test_proof": "python -c 'import sys; sys.path.insert(0,\"tools\"); import canary; print(canary.__version__)' → 1.0.0"
+    },
+    "TC-SCHEMA-001": {
+      "status": "CLOSED",
+      "children_closed": ["TC-SCHEMA-001-01", "TC-SCHEMA-001-02"],
+      "action": "Created tools/supervisor/control_index/migrations/v3_canary_shadow_log.sql. Appended v3 DDL to schema.sql. Bumped SCHEMA_VERSION 2→3. Ran init. Both shadow tables confirmed in control-index.db.",
+      "test_proof": "python -m tools.supervisor.control_index status → schema_version=3, table_count=32. Shadow tables: [validator_shadow_observations, grader_shadow_observations]. 11/11 test_control_index_db.py PASS."
+    }
+  },
+  "taskcards_outstanding": {
+    "TC-SCHEMA-001-03": "DEFERRED_WAVE3 — canary_shadow_ingestor.py not yet created",
+    "TC-SCHEMA-001-04": "DEFERRED_WAVE3 — ingestor registration in sync.py pending",
+    "TC-REGISTRY-001": "DEFERRED_WAVE3 — validator shadow registry YAML + CLI pending",
+    "TC-GRADER-001": "DEFERRED_WAVE3 — grader shadow mode pending",
+    "TC-DIFF-001": "DEFERRED_WAVE3 — compilation diff tool pending",
+    "TC-TEST-001 through TC-TEST-004": "DEFERRED_WAVE3 — test suites pending",
+    "TC-CLOSE-001": "DEFERRED_WAVE3 — pilot and benefit assessment pending"
+  },
+  "files_created": [
+    "reports/canary/state-system-inventory.yaml",
+    "reports/canary/canary-opportunity-map.yaml",
+    "reports/canary/canary-risk-register.yaml",
+    "reports/canary/canary-architecture-decision.yaml",
+    "tools/canary/__init__.py",
+    "tools/supervisor/control_index/migrations/v3_canary_shadow_log.sql"
+  ],
+  "files_modified": [
+    "tools/supervisor/control_index/schema.sql (appended v3 DDL)",
+    "tools/supervisor/control_index/__init__.py (SCHEMA_VERSION 2→3)",
+    "tests/supervisor/test_control_index_db.py (added 2 new shadow tables to EXPECTED_TABLES)"
+  ],
+  "verdict": "PARTIAL — TC-INV-001 (4 discovery reports), TC-INIT-001 (canary package), TC-SCHEMA-001-01/02 (SQLite v3 migration) CLOSED. 5 implementation TCs deferred to Wave 3 (REGISTRY, GRADER, DIFF, TEST suites, CLOSE)."
+}

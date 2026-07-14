@@ -1,0 +1,90 @@
+schema_version: "1.0"
+mission_id: CERT-FORENSICS-20260710
+authoritative_plan: plans/.claude/precious-wandering-lighthouse.md
+generated_by: TC-005 (precious-wandering-lighthouse, 2026-07-13)
+note: >
+  Five confirmed structural findings from the certification system forensic audit.
+  Each finding has is_product_gap=false because these are tooling/infrastructure
+  defects in the certification pipeline itself, not product source gaps.
+
+findings:
+  - finding_id: CERT-STRUCT-001
+    format_id: ALL
+    certification_dimension: dashboard
+    stable_semantic_key: missing_evidence_defaults_to_pass
+    description: >
+      certification_dashboard.py returns PASS for any dimension whose report
+      file is absent (_load_json returns {} when file not found, then get()
+      defaults to 0 stubs/0 exceptions → PASS). A format with no stub audit
+      is indistinguishable from one that ran and found zero stubs.
+    severity: P0
+    is_product_gap: false
+    resolution_taskcard: TC-002
+    resolution_status: RESOLVED
+    resolution_evidence: >
+      run_manager.py + MISSING_EVIDENCE semantics added in TC-002/TC-003.
+      Behavioral test: test_missing_oracle_produces_incomplete_evidence.
+
+  - finding_id: CERT-STRUCT-002
+    format_id: ALL
+    certification_dimension: dashboard
+    stable_semantic_key: no_run_concept_hybrid_verdicts
+    description: >
+      No run_id or run manifest exists. Running 9 dimension tools at different
+      times and source revisions produces hybrid verdicts blending evidence from
+      multiple source states. The dashboard reads whatever is in the directory.
+    severity: P0
+    is_product_gap: false
+    resolution_taskcard: TC-002
+    resolution_status: RESOLVED
+    resolution_evidence: >
+      run_manager.py implemented. Manifests created. Dashboard reads run manifest
+      before aggregating. test_run_manager.py passes (9 tests).
+
+  - finding_id: CERT-STRUCT-003
+    format_id: ALL
+    certification_dimension: test_quality
+    stable_semantic_key: no_behavioral_tests_detection_unverified
+    description: >
+      test_tool_pipeline.py runs every tool against real, clean FOSS source and
+      asserts zero findings. No test injects a known defect and verifies it is caught.
+      If stub_detector AST walker breaks, tests still pass (0 stubs in clean code).
+    severity: P0
+    is_product_gap: false
+    resolution_taskcard: TC-004
+    resolution_status: RESOLVED
+    resolution_evidence: >
+      tests/fixtures/certification/ (5 fixtures) + test_tool_detection.py (9 inject-
+      and-verify tests) + test_dashboard_integrity.py (3 fixture-based tests) created.
+      All 12 new tests pass.
+
+  - finding_id: CERT-STRUCT-004
+    format_id: ALL
+    certification_dimension: lifecycle
+    stable_semantic_key: certification_tools_outside_autonomous_loop
+    description: >
+      Zero calls to any certification tool exist in tools/supervisor/.
+      autonomous_cycle.py, check_continuation.py, governance_validator_runner.py
+      do not invoke stub_detector, certification_dashboard, or ci_certification_gate.
+      Sprints can pass every governance check while introducing material stubs.
+    severity: P1
+    is_product_gap: false
+    resolution_taskcard: TC-007
+    resolution_status: OPEN
+
+  - finding_id: CERT-STRUCT-005
+    format_id: ALL
+    certification_dimension: gap_integration
+    stable_semantic_key: gap_reconciliation_static_narrative
+    description: >
+      reports/certification/gap-reconciliation.json is hand-written with no
+      finding_id -> gap_id mappings. No gap_reconciler.py exists. Counts in
+      the file do not match current gap-ledger.json. No automated path to link
+      new findings to canonical gaps.
+    severity: P1
+    is_product_gap: false
+    resolution_taskcard: TC-005
+    resolution_status: RESOLVED
+    resolution_evidence: >
+      tools/certification/gap_reconciler.py implemented. This file is the
+      normalized-findings input used by the reconciler.

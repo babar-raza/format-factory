@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W5-006",
+  "workstream_id": "WS-33-EFFERVESCENT-MARSHMALLOW",
+  "objective": "Verify TERMINAL_CLOSED disposition for effervescent-sprouting-marshmallow TCs (self-declared done)",
+  "source_plan_ids": [
+    "s039"
+  ],
+  "source_task_ids": [
+    "TC-ESM-001",
+    "TC-ESM-002",
+    "TC-ESM-003",
+    "TC-ESM-004",
+    "TC-ESM-005",
+    "TC-ESM-006",
+    "TC-ESM-007",
+    "TC-ESM-008",
+    "TC-ESM-009",
+    "TC-ESM-010",
+    "TC-ESM-011",
+    "TC-ESM-012",
+    "TC-ESM-013",
+    "TC-ESM-014",
+    "TC-ESM-015",
+    "TC-ESM-016"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [],
+  "allowed_mutation_scope": [],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read effervescent-sprouting-marshmallow.md (s039)",
+    "Verify each of 16 TCs is genuinely complete",
+    "Write evidence/raw/ET-W5-006/esm-verification.json"
+  ],
+  "acceptance_criteria": [
+    "All 16 TCs in s039 individually verified",
+    "Any TCs not actually done are re-opened"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W5-006/esm-verification.json"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 5,
+  "status": "READY",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": null,
+  "claimed_at": null,
+  "closed_at": null,
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

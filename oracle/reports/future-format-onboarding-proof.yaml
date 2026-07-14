@@ -1,0 +1,17 @@
+validator: V_VALIDATE_FUTURE_FORMAT_ORACLE_ONBOARDING
+check_date: "2026-07-12"
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W2-001
+format_registry_count: 24
+oracle_registry_count: 24
+exempt_formats:
+  - odf-shared
+unregistered_formats: []
+result: PASS
+scaffold_dry_run_valid: true
+minimum_floor_verified: true
+scaffold_tool: tools/oracle/scaffold_oracle_obligation.py
+scaffold_dry_run_command: "python tools/oracle/scaffold_oracle_obligation.py --format test-future-001 --dry-run"
+scaffold_yaml_parseable: true
+v145_result: PASS
+v145_blocks_sprint: false

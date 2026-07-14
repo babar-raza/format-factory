@@ -1,0 +1,621 @@
+bundle:
+  agent: kilo
+  blocked_capabilities:
+  - block_reason: KILO.md does not exist
+    capability_id: RC-004/load_instruction_files
+    rc_blocked: RC-004
+  - block_reason: no skill dispatch mechanism
+    capability_id: RC-016/invoke_skills_by_name
+    rc_blocked: RC-016
+  - block_reason: no enforcement hook
+    capability_id: RC-017/enforce_skill_first_policy
+    rc_blocked: RC-017
+  - block_reason: unknown if supported
+    capability_id: RC-022/multi_sprint_autonomous_loop
+    rc_blocked: RC-022
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-dogfood-export
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-dotnet-api
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-dotnet-object-model-feature
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-installed-package-example
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-python-api
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-python-object-model-feature
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-roundtrip-test
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-same-format-writer-feature
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: add-spec-analytics-function
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: allocate-sprint-number
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: append-layer-verification-log
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: append-layer-work-log
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: audit-enhanced-control-layer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: audit-root-tools
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: autonomous-loop
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: backfill-gate4-prototype-evidence
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: backfill-task-skill-ownership
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-capability-routes
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-context-pack
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-evidence-bundle
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-obligation-register
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-product-context
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-resume-context
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-supervisor-packet
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: build-task-context
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: calculate-oracle-coverage
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: capability-status
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-assertion-scorer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-dashboard
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-dotnet-assertion-scorer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-exception-checker
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-fix-weak-assertions
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-generate-exception-tests
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-generate-security-tests
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-inventory-extractor
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: certification-stub-detector
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: check-dom-contract
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: check-gate
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: check-release-boundary
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: check-skill-coverage
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: check-source-loc
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: close-layer-task
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: collect-skill-execution-receipts
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: create-acquisition-pack
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: create-consumer-roundtrip
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: create-cross-layer-handoff
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: create-permanent-layer-plan
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: create-taskcard
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: detect-ad-hoc-execution
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: detect-duplicate-skills
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: detect-stale-layer-state
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: detect-stale-oracles
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: detect-unlogged-work
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: diff-playbook-outputs
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: discover-existing-control-layers
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: documentation-structure-migration
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: enforce-skill-first-execution
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: evaluate-roundtrip-oracle
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: evidence-review-next-prompt
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: execution-handoff
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: export-plan-context
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: export-review-queue
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: extract-analytics-from-monolith
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: format-feature-expansion
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: found-issue-ownership
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: generate-execution-handoff
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: generate-oracle-verdict-report
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: generate-root-status
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: identify-primary-layer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: implement-spec-stub
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: ingest-spec-sal
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: inventory-commands
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: inventory-existing-control-features
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: inventory-format-dom
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: inventory-permanent-layer-plans
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: inventory-skills
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: materialize-declaration-review
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: memory-sprint
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: migrate-temporary-agent-plan
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: new-format-kickstart
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: normalize-skill-registry
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: onboard-future-format-oracle
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: package-install-proof
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: plan-hardening
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: portfolio-reconcile
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: post-sprint-audit
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: post-sprint-loop
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: preflight-skill-entry
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: product-source-task
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: promote-gap-to-taskcard
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: python-qname-code-reviewer
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: python-reduced-spec-parity-model
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: qname-backfill
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: quarantine-invalid-artifact
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: query-control-index
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: rebuild-operational-index
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: reconcile-layer-index
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: reconcile-layer-task-register
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: record-lane-execution
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: register-layer-gap
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: register-layer-task
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: replay-acquisition-playbook
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: reproduce-master-plan
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: reset-track-signal
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: rollback-and-recovery
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: run-governance-validators
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: run-lifecycle-audit
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: run-oracle
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: run-skill-idempotency
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sal-pipeline-heal
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: scan-residual-bypasses
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: score-format
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: select-deepening-lane
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: select-next-layer-task
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: select-poc-gap
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: spec-literal-qname-to-code-mapping
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: spec-parity-source-regeneration-and-migration
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: spec-parity-verification
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: spec-shaped-product-architecture-blueprint
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sync-capabilities
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sync-installed-packages
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sync-memory
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sync-readmes
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: sync-skill-command-registry
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: update-capability-matrix
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: update-layer-current-state
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: update-layer-master-index
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: update-layer-session-handoff
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: update-obligation-entry
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-capability-parity
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-evidence-declaration
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-missing-skill-workflow
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-mutation-guard
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-operational-index
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-permanent-layer-plans
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-playbook
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-product-code-ledger
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-skill-contracts
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: validate-skill-transcript
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: verify-control-feature-parity
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: verify-dogfood-path
+    rc_blocked: RC-016
+  - block_reason: kilo_supported not set to true in skill-registry.yaml (opt-in required,
+      TC-ACP-002)
+    capability_id: verify-obligation-entry
+    rc_blocked: RC-016
+  capabilities: []
+  capability_counts:
+    available: 0
+    blocked_structural: 4
+    blocked_surface: 142
+  contract_file: docs\agents\canonical-agent-contract.yaml
+  generated: '2026-07-13T10:57:28+00:00'
+  governance:
+  - path: CLAUDE.md
+    required: true
+    role: session-lifecycle
+  - path: AGENTS.md
+    required: true
+    role: human-free-autonomy-doctrine
+  - path: docs/governance/skill-only-policy.yaml
+    required: true
+    role: skill-execution-mechanics
+  - path: docs/agents/canonical-agent-contract.yaml
+    required: true
+    role: rc-lifecycle-semantics
+  - path: plans/master-plan.md
+    required: true
+    role: strategic-direction
+  instruction_file: KILO.md
+  instruction_file_exists: false
+  model_requirements:
+    context_required: true
+    minimum_tier: high
+    notes: Kilo platform capabilities unconfirmed; all surfaces UNVERIFIABLE_PLATFORM_UNKNOWN
+    reasoning_required: true
+  session_state:
+    continuation_signal: .local/supervisor/continuation-signal.json
+    plan_lock: .local/supervisor/active-plan-lock.json
+    session_resume: reports/supervisor/session-resume.md
+  source:
+    contract: docs\agents\canonical-agent-contract.yaml
+    pilot_specs: docs\agents\pilots\pilot-specs.yaml
+    registry: .governance\capabilities\registry.yaml

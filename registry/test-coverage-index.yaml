@@ -1,0 +1,873 @@
+generated_at: '2026-07-13T11:25:49.487670+00:00'
+total_test_files_indexed: 86
+formats_covered:
+- abw
+- conveyor
+- csv
+- csv_format
+- deepening
+- dif
+- dogfood
+- fodg
+- fodp
+- fods
+- fodt
+- gap_closure
+- gnumeric
+- ndjson
+- netpbm
+- ods
+- odt
+- pbm
+- pgm
+- ppm
+- qoi
+- security
+- supervisor
+- sylk
+- toml
+- toml_format
+- tsv
+- unknown
+- xcf
+- zst
+entries:
+- test_file: tests/python/abw/test_abw_append_truncate_pipeline.py
+  format: abw
+  feature: abw_append_truncate_pipeline
+  test_functions:
+  - test_append_paragraph_increases_count
+  - test_append_paragraph_returns_model
+  - test_truncate_paragraphs_returns_model
+  - test_truncate_reduces_count
+  - test_append_then_truncate_restores_count
+  test_count: 5
+- test_file: tests/python/abw/test_abw_char_count_export_pipeline.py
+  format: abw
+  feature: abw_char_count_export_pipeline
+  test_functions:
+  - test_get_char_count_int
+  - test_char_count_positive
+  - test_export_to_markdown_string
+  - test_export_to_markdown_has_content
+  - test_export_to_plain_text_string
+  test_count: 5
+- test_file: tests/python/abw/test_abw_codec.py
+  format: abw
+  feature: abw_codec
+  test_functions:
+  - test_load_minimal_returns_model
+  - test_load_two_paragraphs
+  - test_load_empty_section
+  - test_load_accepts_bytes
+  - test_load_all_corpus_samples
+  test_count: 17
+- test_file: tests/python/conveyor/test_checkpoint_rollover_policy.py
+  format: conveyor
+  feature: checkpoint_rollover_policy
+  test_functions:
+  - test_accepted_verdict_with_safe_lanes_continues
+  - test_accepted_with_rework_continues
+  - test_checkpoint_window_rolls_over
+  - test_max_iterations_not_terminal
+  - test_human_gate_parked_while_safe_lanes_continue
+  test_count: 11
+- test_file: tests/python/conveyor/test_package_install_proof_wave1.py
+  format: conveyor
+  feature: package_install_proof_wave1
+  test_functions:
+  - test_all_format_modules_importable
+  - test_csv_module_importable
+  - test_pyproject_toml_exists_for_all_packaged_formats
+  - test_format_count
+  test_count: 4
+- test_file: tests/python/csv/test_csv_advanced_roundtrip.py
+  format: csv
+  feature: csv_advanced_roundtrip
+  test_functions:
+  - test_write_csv_basic
+  - test_write_csv_to_file
+  - test_parse_and_rewrite
+  - test_write_csv_produces_rows
+  - test_write_csv_handles_commas
+  test_count: 5
+- test_file: tests/python/csv/test_csv_analytics_ext.py
+  format: csv
+  feature: csv_analytics_ext
+  test_functions:
+  - test_max_row_length_minimal
+  - test_max_row_length_single
+  - test_max_row_length_returns_int
+  - test_min_row_length_minimal
+  - test_min_row_length_returns_int
+  test_count: 19
+- test_file: tests/python/csv/test_csv_analytics_ext2.py
+  format: csv
+  feature: csv_analytics_ext2
+  test_functions:
+  - test_header_names_minimal
+  - test_header_names_quoted
+  - test_header_names_single
+  - test_header_names_returns_list
+  - test_first_row_values_minimal
+  test_count: 23
+- test_file: tests/python/csv_format/test_csv_analytics_comprehensive.py
+  format: csv_format
+  feature: csv_analytics_comprehensive
+  test_functions:
+  - test_row_count
+  - test_column_count
+  - test_total_cell_count
+  - test_is_rectangular_true
+  - test_is_square_true
+  test_count: 73
+- test_file: tests/python/csv_format/test_csv_delimiter.py
+  format: csv_format
+  feature: csv_delimiter
+  test_functions:
+  - test_comma_delimiter_detected
+  - test_tab_delimiter_detected
+  - test_semicolon_delimiter_detected
+  - test_pipe_delimiter_detected
+  - test_delimiter_key_present_in_result
+  test_count: 15
+- test_file: tests/python/csv_format/test_csv_document_model.py
+  format: csv_format
+  feature: csv_document_model
+  test_functions:
+  - test_spec_qname_is_class_attribute
+  - test_spec_qname_matches_qname_registry
+  - test_spec_fact_ref_present
+  - test_row_count
+  - test_headers
+  test_count: 15
+- test_file: tests/python/deepening/test_r1221_fods_spec_parity_deepening.py
+  format: deepening
+  feature: r1221_fods_spec_parity_deepening
+  test_functions:
+  - test_parse_fods_returns_dict
+  - test_parse_fods_strict_returns_dict
+  - test_workbook_to_xml_returns_bytes_or_str
+  - test_workbook_to_xml_contains_office_ns
+  - test_write_fods_roundtrip
+  test_count: 30
+- test_file: tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py
+  format: deepening
+  feature: r1222_fodt_spec_parity_deepening
+  test_functions:
+  - test_parse_fodt_returns_dict
+  - test_parse_fodt_strict_returns_dict
+  - test_document_to_xml_returns_str_or_bytes
+  - test_document_to_xml_has_office_namespace
+  - test_write_fodt_roundtrip
+  test_count: 34
+- test_file: tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py
+  format: deepening
+  feature: r260_fodp_qoi_xcf_deepening
+  test_functions:
+  - test_returns_int
+  - test_at_most_slide_count
+  - test_nonnegative
+  - test_returns_float
+  - test_nonnegative
+  test_count: 16
+- test_file: tests/python/dif/test_dif_conveyor_deepening.py
+  format: dif
+  feature: dif_conveyor_deepening
+  test_functions:
+  - test_add_row_to_doc
+  - test_delete_row_from_doc
+  - test_min_column_value
+  - test_max_column_value
+  - test_min_max_relationship
+  test_count: 10
+- test_file: tests/python/dif/test_dif_document_mutation.py
+  format: dif
+  feature: dif_document_mutation
+  test_functions:
+  - test_set_existing_cell
+  - test_set_cell_mutates_in_place
+  - test_set_cell_out_of_range_row_raises
+  - test_set_cell_out_of_range_col_raises
+  - test_set_cell_numeric_type
+  test_count: 13
+- test_file: tests/python/dif/test_dif_domain_model.py
+  format: dif
+  feature: dif_domain_model
+  test_functions:
+  - test_spec_qname_class_level_access
+  - test_spec_qname_is_classvar
+  - test_spec_qname_is_string
+  - test_spec_qname_has_namespace
+  - test_spec_fact_ref_class_level
+  test_count: 10
+- test_file: tests/python/dogfood/test_dogfood_abw_csv_pipeline.py
+  format: dogfood
+  feature: dogfood_abw_csv_pipeline
+  test_functions:
+  - test_export_to_csv_contains_paragraphs
+  - test_export_to_csv_is_string
+  - test_export_to_txt_contains_all
+  - test_export_to_csv_parseable
+  - test_export_to_txt_non_empty
+  test_count: 5
+- test_file: tests/python/dogfood/test_dogfood_abw_export_convert_analytics_ndjson_export.py
+  format: dogfood
+  feature: dogfood_abw_export_convert_analytics_ndjson_export
+  test_functions:
+  - test_export_txt_html_basics
+  - test_json_and_char_count_basics
+  - test_export_convert_analytics_to_ndjson
+  - test_ndjson_roundtrip
+  - test_json_lines_valid
+  test_count: 6
+- test_file: tests/python/dogfood/test_dogfood_abw_export_pipeline_ndjson_export.py
+  format: dogfood
+  feature: dogfood_abw_export_pipeline_ndjson_export
+  test_functions:
+  - test_char_count_and_html_export
+  - test_markdown_text_frequency_exports
+  - test_export_pipeline_to_ndjson
+  - test_ndjson_roundtrip
+  - test_json_lines_valid
+  test_count: 6
+- test_file: tests/python/fodg/test_cap_fodg_export_csv.py
+  format: fodg
+  feature: cap_fodg_export_csv
+  test_functions:
+  - test_export_to_csv_returns_string
+  - test_export_to_csv_header_row
+  - test_export_to_csv_data_rows
+  - test_export_to_csv_multiple_pages
+  - test_export_to_csv_empty_document
+  test_count: 10
+- test_file: tests/python/fodg/test_drawing_document.py
+  format: fodg
+  feature: drawing_document
+  test_functions:
+  - test_spec_qname_attribute
+  - test_spec_fact_ref_attribute
+  - test_namespace_uri_attribute
+  - test_page_count_empty
+  - test_total_shape_count_empty_returns_int
+  test_count: 24
+- test_file: tests/python/fodg/test_exception_coverage.py
+  format: fodg
+  feature: exception_coverage
+  test_functions:
+  - test_fodgwriteerror_is_raisable
+  - test_fodgwriteerror_inherits_base
+  - test_fodgwriteerror_message
+  test_count: 3
+- test_file: tests/python/fodp/test_exception_coverage.py
+  format: fodp
+  feature: exception_coverage
+  test_functions:
+  - test_fodpwriteerror_is_raisable
+  - test_fodpwriteerror_inherits_base
+  - test_fodpwriteerror_message
+  test_count: 3
+- test_file: tests/python/fodp/test_fodp_codec.py
+  format: fodp
+  feature: fodp_codec
+  test_functions:
+  - test_load_minimal_returns_model
+  - test_load_two_slides
+  - test_load_title_only
+  - test_load_accepts_bytes
+  - test_load_all_corpus_samples
+  test_count: 16
+- test_file: tests/python/fodp/test_fodp_conveyor_deepening.py
+  format: fodp
+  feature: fodp_conveyor_deepening
+  test_functions:
+  - test_load_from_bytes
+  - test_load_page_count
+  - test_get_page_count_function
+  - test_extract_text_all_slides
+  - test_get_page_metadata_slide_names
+  test_count: 13
+- test_file: tests/python/fods/test_fods_cli.py
+  format: fods
+  feature: fods_cli
+  test_functions:
+  - test_main_is_callable
+  - test_main_no_args_exits_zero
+  - test_main_valid_file
+  - test_main_missing_file_exits_nonzero
+  test_count: 4
+- test_file: tests/python/fods/test_fods_document_mutation.py
+  format: fods
+  feature: fods_document_mutation
+  test_functions:
+  - test_set_cell_value_string
+  - test_set_cell_out_of_sheet_range_raises
+  - test_set_cell_out_of_row_range_raises
+  - test_set_cell_out_of_col_range_raises
+  - test_set_cell_value_type
+  test_count: 13
+- test_file: tests/python/fods/test_fods_dom_d2_mutation.py
+  format: fods
+  feature: fods_dom_d2_mutation
+  test_functions:
+  - test_cell_value_mutation_persists_through_roundtrip
+  - test_to_file_creates_valid_fods
+  test_count: 2
+- test_file: tests/python/fodt/test_compat_bootstrap.py
+  format: fodt
+  feature: compat_bootstrap
+  test_functions:
+  - test_compat_import_succeeds
+  - test_compat_fodtdocument_import_succeeds
+  - test_compat_fodtspan_import_succeeds
+  - test_compat_all_exports
+  - test_fodtparagraph_is_from_spec
+  test_count: 20
+- test_file: tests/python/fodt/test_compat_e2e.py
+  format: fodt
+  feature: compat_e2e
+  test_functions:
+  - test_sample_fodt_file_exists
+  - test_parse_returns_dict
+  - test_fodtdocument_wraps_neutral
+  - test_block_count_nonzero
+  - test_paragraphs_method_returns_list
+  test_count: 11
+- test_file: tests/python/fodt/test_fodt_cli.py
+  format: fodt
+  feature: fodt_cli
+  test_functions:
+  - test_main_is_callable
+  - test_main_no_args_exits_zero
+  - test_main_valid_file
+  - test_main_missing_file_exits_nonzero
+  test_count: 4
+- test_file: tests/python/gap_closure/test_r240_foss_gap_closure_batch.py
+  format: gap_closure
+  feature: r240_foss_gap_closure_batch
+  test_functions:
+  - test_returns_list
+  - test_row_contents
+  - test_empty_file
+  - test_returns_bool
+  - test_col_zero
+  test_count: 18
+- test_file: tests/python/gap_closure/test_r250_foss_reduced_gap_closure.py
+  format: gap_closure
+  feature: r250_foss_reduced_gap_closure
+  test_functions:
+  - test_returns_bool
+  - test_all_nonempty
+  - test_has_empty_record
+  - test_single_nonempty
+  - test_returns_int
+  test_count: 16
+- test_file: tests/python/gnumeric/test_exception_coverage.py
+  format: gnumeric
+  feature: exception_coverage
+  test_functions:
+  - test_gnumericwriteerror_is_raisable
+  - test_gnumericwriteerror_inherits_base
+  - test_gnumericwriteerror_message
+  test_count: 3
+- test_file: tests/python/gnumeric/test_gnumeric_add_delete_sheet_pipeline.py
+  format: gnumeric
+  feature: gnumeric_add_delete_sheet_pipeline
+  test_functions:
+  - test_add_sheet_increases_count
+  - test_delete_sheet_decreases_count
+  - test_copy_sheet_increases_count
+  - test_add_sheet_name_exists
+  - test_delete_then_add
+  test_count: 5
+- test_file: tests/python/gnumeric/test_gnumeric_all_values_set_cell_pipeline.py
+  format: gnumeric
+  feature: gnumeric_all_values_set_cell_pipeline
+  test_functions:
+  - test_get_all_values_returns_list
+  - test_set_cell_value_returns_model
+  - test_set_cell_value_updates_value
+  - test_get_all_values_after_set
+  - test_set_then_get_cell_matches
+  test_count: 5
+- test_file: tests/python/ndjson/test_broad_rnext_ndjson_sort_records.py
+  format: ndjson
+  feature: broad_rnext_ndjson_sort_records
+  test_functions:
+  - test_sort_records_ascending
+  - test_sort_records_descending
+  - test_sort_records_string_key
+  - test_sort_records_missing_key_sorted_to_end
+  - test_sort_records_preserves_all_fields
+  test_count: 10
+- test_file: tests/python/ndjson/test_dogfood_ndjson_csv_pipeline.py
+  format: ndjson
+  feature: dogfood_ndjson_csv_pipeline
+  test_functions:
+  - test_ndjson_csv_has_correct_header
+  - test_ndjson_csv_row_count
+  - test_ndjson_csv_contains_values
+  - test_ndjson_csv_single_record
+  test_count: 4
+- test_file: tests/python/ndjson/test_dogfood_ndjson_tsv_pipeline.py
+  format: ndjson
+  feature: dogfood_ndjson_tsv_pipeline
+  test_functions:
+  - test_pluck_names
+  - test_group_by_dept_count
+  - test_pluck_scores_are_strings
+  test_count: 3
+- test_file: tests/python/netpbm/test_netpbm_image_pipeline.py
+  format: netpbm
+  feature: netpbm_image_pipeline
+  test_functions:
+  - test_pbm_parse_1x1_white
+  - test_pbm_parse_3x3_checkerboard
+  - test_pbm_strict_returns_dataclass
+  - test_pgm_parse_gradient
+  - test_pgm_parse_2x2
+  test_count: 10
+- test_file: tests/python/netpbm/test_r201_netpbm_advanced_ops.py
+  format: netpbm
+  feature: r201_netpbm_advanced_ops
+  test_functions:
+  - test_probe_pbm_returns_dict
+  - test_probe_pbm_exists_true
+  - test_parse_pbm_returns_dict
+  - test_pbm_capabilities_returns_dict
+  - test_pbm_dimensions_correct
+  test_count: 59
+- test_file: tests/python/netpbm/test_r210_pbm_pgm_dogfood_chain.py
+  format: netpbm
+  feature: r210_pbm_pgm_dogfood_chain
+  test_functions:
+  - test_pbm_to_pgm_conversion
+  - test_full_chain_pbm_to_pgm_rotate
+  - test_chain_with_scale
+  - test_roundtrip_pixel_preservation
+  test_count: 4
+- test_file: tests/python/ods/test_dogfood_ods_csv_pipeline.py
+  format: ods
+  feature: dogfood_ods_csv_pipeline
+  test_functions:
+  - test_ods_file_created_on_disk
+  - test_parse_ods_strict_succeeds
+  - test_ods_row_count_correct
+  - test_ods_header_row_preserved
+  - test_ods_data_row_values_preserved
+  test_count: 18
+- test_file: tests/python/ods/test_exception_coverage.py
+  format: ods
+  feature: exception_coverage
+  test_functions:
+  - test_odsparseerror_is_raisable
+  - test_odsparseerror_inherits_base
+  - test_odsparseerror_message
+  - test_odswriteerror_is_raisable
+  - test_odswriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/ods/test_mdr10_ods_exports.py
+  format: ods
+  feature: mdr10_ods_exports
+  test_functions:
+  - test_parse_ods_returns_dict
+  - test_parse_ods_ok_flag
+  - test_parse_ods_has_sheets
+  - test_probe_ods_returns_dict
+  - test_probe_ods_has_format
+  test_count: 12
+- test_file: tests/python/odt/test_exception_coverage.py
+  format: odt
+  feature: exception_coverage
+  test_functions:
+  - test_odtparseerror_is_raisable
+  - test_odtparseerror_inherits_base
+  - test_odtparseerror_message
+  - test_odtwriteerror_is_raisable
+  - test_odtwriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/odt/test_mdr10_odt_exports.py
+  format: odt
+  feature: mdr10_odt_exports
+  test_functions:
+  - test_parse_odt_returns_dict
+  - test_parse_odt_ok_flag
+  - test_parse_odt_has_paragraphs
+  - test_parse_odt_strict_returns_document
+  - test_probe_odt_returns_dict
+  test_count: 8
+- test_file: tests/python/odt/test_odt_conveyor_deepening.py
+  format: odt
+  feature: odt_conveyor_deepening
+  test_functions:
+  - test_parse_odt_minimal
+  - test_parse_odt_strict_returns_document
+  - test_parse_odt_two_paragraphs
+  - test_parse_odt_unicode
+  - test_probe_odt_valid_container
+  test_count: 10
+- test_file: tests/python/pbm/test_exception_coverage.py
+  format: pbm
+  feature: exception_coverage
+  test_functions:
+  - test_pbmparseerror_is_raisable
+  - test_pbmparseerror_inherits_base
+  - test_pbmparseerror_message
+  - test_pbmwriteerror_is_raisable
+  - test_pbmwriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/pbm/test_pbm_bitmap_analytics_ext.py
+  format: pbm
+  feature: pbm_bitmap_analytics_ext
+  test_functions:
+  - test_returns_int
+  - test_nonnegative
+  - test_checker_has_transitions
+  - test_accepts_string_path
+  - test_returns_int
+  test_count: 24
+- test_file: tests/python/pbm/test_pbm_bitmap_analytics_ext2.py
+  format: pbm
+  feature: pbm_bitmap_analytics_ext2
+  test_functions:
+  - test_width_1x1
+  - test_width_2x2
+  - test_width_3x2
+  - test_width_returns_int
+  - test_height_1x1
+  test_count: 18
+- test_file: tests/python/pgm/test_exception_coverage.py
+  format: pgm
+  feature: exception_coverage
+  test_functions:
+  - test_pgmparseerror_is_raisable
+  - test_pgmparseerror_inherits_base
+  - test_pgmparseerror_message
+  - test_pgmwriteerror_is_raisable
+  - test_pgmwriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/pgm/test_pgm_conveyor_deepening.py
+  format: pgm
+  feature: pgm_conveyor_deepening
+  test_functions:
+  - test_parse_pgm_1x1
+  - test_parse_pgm_gradient
+  - test_probe_pgm
+  - test_pixel_count
+  - test_average_gray
+  test_count: 10
+- test_file: tests/python/pgm/test_pgm_document_mutation.py
+  format: pgm
+  feature: pgm_document_mutation
+  test_functions:
+  - test_set_pixel_value
+  - test_set_pixel_out_of_range_raises
+  - test_set_pixel_negative_raises
+  - test_set_pixel_preserves_others
+  - test_set_pixel_to_zero
+  test_count: 12
+- test_file: tests/python/ppm/test_exception_coverage.py
+  format: ppm
+  feature: exception_coverage
+  test_functions:
+  - test_ppmparseerror_is_raisable
+  - test_ppmparseerror_inherits_base
+  - test_ppmparseerror_message
+  - test_ppmwriteerror_is_raisable
+  - test_ppmwriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/ppm/test_ppm_color_analytics_ext.py
+  format: ppm
+  feature: ppm_color_analytics_ext
+  test_functions:
+  - test_returns_bool
+  - test_rgbw_not_grayscale
+  - test_accepts_string_path
+  - test_returns_float
+  - test_in_unit_range
+  test_count: 16
+- test_file: tests/python/ppm/test_ppm_conveyor_deepening.py
+  format: ppm
+  feature: ppm_conveyor_deepening
+  test_functions:
+  - test_parse_ppm_1x1
+  - test_parse_ppm_rgbw
+  - test_probe_ppm
+  - test_pixel_count
+  - test_average_color
+  test_count: 10
+- test_file: tests/python/qoi/test_exception_coverage.py
+  format: qoi
+  feature: exception_coverage
+  test_functions:
+  - test_qoiparseerror_is_raisable
+  - test_qoiparseerror_inherits_base
+  - test_qoiparseerror_message
+  - test_qoiwriteerror_is_raisable
+  - test_qoiwriteerror_inherits_base
+  test_count: 6
+- test_file: tests/python/qoi/test_mdr10_qoi_exports.py
+  format: qoi
+  feature: mdr10_qoi_exports
+  test_functions:
+  - test_parse_qoi_returns_dict
+  - test_parse_qoi_ok_flag
+  - test_parse_qoi_has_width
+  - test_probe_qoi_returns_dict
+  - test_probe_qoi_exists
+  test_count: 9
+- test_file: tests/python/qoi/test_qoi_conveyor_deepening.py
+  format: qoi
+  feature: qoi_conveyor_deepening
+  test_functions:
+  - test_encode_decode_roundtrip
+  - test_encode_to_file
+  - test_probe_header
+  - test_probe_nonexistent
+  - test_3_channel_roundtrip
+  test_count: 11
+- test_file: tests/python/security/test_xml_security.py
+  format: security
+  feature: xml_security
+  test_functions:
+  - test_defusedxml_module_importable
+  - test_defusedxml_used_by_fods_parser
+  - test_xxe_injection_rejected_by_fods
+  - test_billion_laughs_blocked_by_fods
+  - test_valid_fods_parses_correctly
+  test_count: 10
+- test_file: tests/python/supervisor/test_r104_promoted_skill_commands.py
+  format: supervisor
+  feature: r104_promoted_skill_commands
+  test_functions:
+  - test_promoted_command_file_passes
+  - test_promoted_command_has_all_12_sections
+  - test_promoted_command_has_frontmatter
+  - test_registry_has_promoted_skills_as_active
+  - test_deferred_skills_remain_non_active
+  test_count: 9
+- test_file: tests/python/supervisor/test_r105_transcript_grading.py
+  format: supervisor
+  feature: r105_transcript_grading
+  test_functions:
+  - test_valid_transcript_eligible_for_accepted_verified
+  - test_missing_transcript_should_downgrade
+  - test_invalid_transcript_should_downgrade
+  - test_fail_result_transcript_should_be_rework
+  - test_anti_bypass_fail_is_accepted_when_expected
+  test_count: 13
+- test_file: tests/python/supervisor/test_r106_command_validator_hardening.py
+  format: supervisor
+  feature: r106_command_validator_hardening
+  test_functions:
+  - test_required_sections_count
+  - test_all_section_ids_present
+  - test_error_severity_sections
+  - test_warning_severity_sections
+  - test_missing_purpose_heading
+  test_count: 19
+- test_file: tests/python/sylk/test_exception_coverage.py
+  format: sylk
+  feature: exception_coverage
+  test_functions:
+  - test_sylkwriteerror_is_raisable
+  - test_sylkwriteerror_inherits_base
+  - test_sylkwriteerror_message
+  test_count: 3
+- test_file: tests/python/sylk/test_mdr7_sylk_write.py
+  format: sylk
+  feature: mdr7_sylk_write
+  test_functions:
+  - test_write_sylk_creates_file
+  - test_write_sylk_roundtrip_string
+  - test_write_sylk_roundtrip_numeric
+  - test_write_sylk_multiple_cells
+  - test_write_sylk_file_has_id_header
+  test_count: 7
+- test_file: tests/python/sylk/test_mdr_sylk_get_column_values.py
+  format: sylk
+  feature: mdr_sylk_get_column_values
+  test_functions:
+  - test_get_column_values_single_value
+  - test_get_column_values_multiple_rows
+  - test_get_column_values_numeric
+  - test_get_column_values_returns_only_target_column
+  - test_get_column_values_col2_only
+  test_count: 9
+- test_file: tests/python/toml/test_broad_rnext_toml_codec.py
+  format: toml
+  feature: broad_rnext_toml_codec
+  test_functions:
+  - test_probe_toml_from_bytes
+  - test_probe_toml_section_count
+  - test_load_toml_from_bytes
+  - test_load_toml_top_level_keys
+  - test_load_toml_key_count
+  test_count: 16
+- test_file: tests/python/toml/test_frfh_toml_get_value_merge_json.py
+  format: toml
+  feature: frfh_toml_get_value_merge_json
+  test_functions:
+  - test_get_value_top_level_key
+  - test_get_value_nested_key
+  - test_get_value_numeric_nested
+  - test_get_value_missing_raises_key_error
+  - test_get_value_missing_nested_raises
+  test_count: 14
+- test_file: tests/python/toml/test_gap_installed_workflow.py
+  format: toml
+  feature: gap_installed_workflow
+  test_functions:
+  - test_importable_from_toml_codec
+  - test_importable_from_src
+  - test_returns_dict
+  - test_format_field
+  - test_loaded_field
+  test_count: 14
+- test_file: tests/python/toml_format/test_r120_toml_gap_closure.py
+  format: toml_format
+  feature: r120_toml_gap_closure
+  test_functions:
+  - test_returns_bool
+  - test_false_for_minimal_no_arrays
+  - test_true_for_inline_with_array
+  - test_false_for_inline_no_arrays
+  - test_false_for_empty
+  test_count: 31
+- test_file: tests/python/toml_format/test_r258_toml_max_list_length_all_keys_lowercase.py
+  format: toml_format
+  feature: r258_toml_max_list_length_all_keys_lowercase
+  test_functions:
+  - test_return_type
+  - test_exact_3_for_list_of_3
+  - test_exact_2_for_two_lists
+  - test_zero_for_no_lists
+  - test_nonnegative
+  test_count: 10
+- test_file: tests/python/toml_format/test_r259_toml_sprint41_gaps.py
+  format: toml_format
+  feature: r259_toml_sprint41_gaps
+  test_functions:
+  - test_return_type
+  - test_true_for_numeric
+  - test_false_for_no_numeric
+  - test_consistent_across_calls
+  - test_return_type
+  test_count: 20
+- test_file: tests/python/tsv/test_broad_rnext_tsv_filter_rows.py
+  format: tsv
+  feature: broad_rnext_tsv_filter_rows
+  test_functions:
+  - test_filter_rows_exact_match
+  - test_filter_rows_no_match
+  - test_filter_rows_unknown_column
+  - test_filter_rows_substring_match
+  - test_filter_rows_case_insensitive
+  test_count: 10
+- test_file: tests/python/tsv/test_cap_tsv_append_row.py
+  format: tsv
+  feature: cap_tsv_append_row
+  test_functions:
+  - test_append_row_to_existing_file
+  - test_append_row_creates_file_if_missing
+  - test_append_row_multiple_calls
+  - test_append_row_escapes_tabs_and_newlines
+  - test_append_row_empty_row
+  test_count: 9
+- test_file: tests/python/tsv/test_cqga001_pilot1_get_column_values.py
+  format: tsv
+  feature: cqga001_pilot1_get_column_values
+  test_functions:
+  - test_get_column_values_normal
+  - test_get_column_values_boundary_short_row
+  - test_get_column_values_empty_document
+  - test_get_column_values_single_column
+  test_count: 4
+- test_file: tests/python/test_cross_format_api_consistency.py
+  format: unknown
+  feature: cross_format_api_consistency
+  test_functions:
+  - test_module_has_all_required_attrs
+  - test_module_version_is_string
+  - test_module_track_is_string
+  - test_module_track_is_foss
+  - test_module_commercial_ready_is_false
+  test_count: 11
+- test_file: tests/python/test_gate4_contract.py
+  format: unknown
+  feature: gate4_contract
+  test_functions:
+  - test_standalone_prototype_accepted
+  - test_standalone_prototype_missing_tests_rejected
+  - test_standalone_prototype_missing_corpus_rejected
+  - test_standalone_prototype_with_delegation_rejected
+  - test_valid_wrapper_accepted
+  test_count: 14
+- test_file: tests/python/test_gate4_governance.py
+  format: unknown
+  feature: gate4_governance
+  test_functions:
+  - test_registry_file_exists
+  - test_every_format_has_gate4_disposition
+  - test_every_gate4_block_has_evidence_type
+  - test_evidence_types_are_valid
+  - test_blocked_formats_not_passed
+  test_count: 12
+- test_file: tests/python/xcf/test_exception_coverage.py
+  format: xcf
+  feature: exception_coverage
+  test_functions:
+  - test_xcfwriteerror_is_raisable
+  - test_xcfwriteerror_inherits_base
+  - test_xcfwriteerror_message
+  test_count: 3
+- test_file: tests/python/xcf/test_mdr11_xcf_exports.py
+  format: xcf
+  feature: mdr11_xcf_exports
+  test_functions:
+  - test_parse_xcf_returns_dict
+  - test_parse_xcf_ok_flag
+  - test_parse_xcf_has_dimensions
+  - test_parse_xcf_strict_returns_xcf_image
+  - test_probe_xcf_returns_dict
+  test_count: 8
+- test_file: tests/python/xcf/test_pff_xcf_helpers.py
+  format: xcf
+  feature: pff_xcf_helpers
+  test_functions:
+  - test_layer_count_1x1_red
+  - test_layer_count_2x2_gray
+  - test_image_dimensions_1x1_red
+  - test_image_dimensions_2x2_gray
+  - test_image_dimensions_returns_dict
+  test_count: 9
+- test_file: tests/python/zst/test_exception_coverage.py
+  format: zst
+  feature: exception_coverage
+  test_functions:
+  - test_zstdecompresserror_is_raisable
+  - test_zstdecompresserror_inherits_base
+  - test_zstdecompresserror_message
+  - test_zstfilenotfounderror_is_raisable
+  - test_zstfilenotfounderror_inherits_base
+  test_count: 15
+- test_file: tests/python/zst/test_pbt_zst.py
+  format: zst
+  feature: pbt_zst
+  test_functions:
+  - test_compress_decompress_roundtrip
+  - test_compressed_smaller_or_has_framing
+  - test_double_compress_decompress
+  - test_compression_levels_all_roundtrip
+  - test_max_output_size_respected
+  test_count: 5
+- test_file: tests/python/zst/test_r100_zst_probe_workflow.py
+  format: zst
+  feature: r100_zst_probe_workflow
+  test_functions:
+  - test_validate_valid_file
+  - test_validate_nonexistent_file
+  - test_validate_corrupt_magic
+  - test_magic_bytes_constant
+  - test_compress_starts_with_magic
+  test_count: 10

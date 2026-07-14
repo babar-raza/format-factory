@@ -1,0 +1,86 @@
+generated_date: "2026-07-13"
+plan: peppy-crafting-lark (MCP-W5-006)
+source: registry/product-deepening-ledger.yaml
+
+formats:
+  - format: fods
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D3
+    lane_b_ceiling: D5
+    d2_proven: true
+    d2_proof_command: ".venv/Scripts/pytest tests/python/fods/test_fods_dom_d2_mutation.py"
+    d2_last_run_result: pass
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: fodt
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D2
+    lane_b_ceiling: D5
+    d2_proven: true
+    d2_proof_command: ".venv/Scripts/pytest tests/python/fodt/test_fodt_dom_d2_mutation.py"
+    d2_last_run_result: pass
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: ods
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D2
+    lane_b_ceiling: D5
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: odt
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D1
+    lane_b_ceiling: D5
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: fodp
+    runtime: python
+    lane_a_maturity: A0
+    lane_b_maturity: D1
+    lane_b_ceiling: D4
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: fodg
+    runtime: python
+    lane_a_maturity: A0
+    lane_b_maturity: D1
+    lane_b_ceiling: D4
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: abw
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D1
+    lane_b_ceiling: D4
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL
+
+  - format: gnumeric
+    runtime: python
+    lane_a_maturity: A1
+    lane_b_maturity: D1
+    lane_b_ceiling: D4
+    d2_proven: false
+    d2_proof_command: null
+    d3_proven: false
+    dom_applicability: FULL

@@ -49,7 +49,7 @@ public class FodtR292GetSectionNameDedicatedTests
         if (doc.GetSectionCount() == 0)
             Assert.ThrowsAny<Exception>(() => doc.GetSectionName(0));
         else
-            Assert.True(true); // document has default sections
+            Assert.True(doc.GetSectionCount() > 0); // document has default sections
     }
 
     // -------------------------------------------------------------------------

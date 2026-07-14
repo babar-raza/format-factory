@@ -203,9 +203,26 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--path", required=True, type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--run-id", default=None, help="Certification run ID (from run_manager)")
     args = parser.parse_args()
 
     result = scan_path(args.path)
+    if args.run_id:
+        import subprocess as _sp
+        _rev = "UNAVAILABLE"
+        try:
+            _r = _sp.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                         cwd=REPO_ROOT, timeout=10)
+            if _r.returncode == 0:
+                _rev = _r.stdout.strip()
+        except Exception:
+            pass
+        result["metadata"] = {
+            "run_id": args.run_id,
+            "source_revision": _rev,
+            "generated_at": __import__("datetime").datetime.now(
+                __import__("datetime").timezone.utc).isoformat(),
+        }
     if args.output:
         output = args.output if args.output.is_absolute() else REPO_ROOT / args.output
         output.parent.mkdir(parents=True, exist_ok=True)

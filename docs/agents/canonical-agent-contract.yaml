@@ -1,0 +1,115 @@
+contract_id: FF-CANONICAL-AGENT-CONTRACT-001
+version: "1.0"
+date: "2026-07-12"
+generated_by: TC-ACP-003
+scope_note: >
+  Lifecycle semantics for 22 Required Capabilities across Claude/Codex/Kilo.
+  Does NOT govern skill mechanics (skill-only-policy.yaml) or platform
+  availability (required-capability-model.yaml). Read all three together.
+authority_order:
+  - plans/master-plan.md
+  - plans/strategic/spec-to-feature-radical-correction-plan.md
+  - CLAUDE.md
+  - AGENTS.md
+  - docs/governance/skill-only-policy.yaml
+  - docs/agents/canonical-agent-contract.yaml
+not_governed:
+  - Skill execution mechanics (skill-only-policy.yaml)
+  - Gate 11 execution authority (Babar Raza only)
+capability_semantics:
+  - {capability_id: RC-001, name: read_repository_files, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-002, name: write_repository_files, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-003, name: execute_shell_commands, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-004, name: load_instruction_files, proof_level: RUNTIME, continuation_rule: STOP, model_suitability: {minimum_tier: medium}}
+  - {capability_id: RC-005, name: parse_skill_registry, proof_level: RUNTIME, continuation_rule: STOP, model_suitability: {minimum_tier: medium}}
+  - {capability_id: RC-006, name: validate_declarations, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-007, name: run_governance_validators, proof_level: VERIFIED, continuation_rule: STOP, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-008, name: invoke_pre_mutation_guard, proof_level: RUNTIME, continuation_rule: STOP, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-009, name: parse_capability_registry, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-010, name: generate_evidence_declarations, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: medium}}
+  - {capability_id: RC-011, name: read_gap_ledger, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-012, name: run_tests, proof_level: VERIFIED, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-013, name: commit_to_git, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-014, name: push_to_remote, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-015, name: run_autonomous_cycle, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - capability_id: RC-016
+    name: invoke_skills_by_name
+    proof_level: RUNTIME
+    continuation_rule: STOP
+    model_suitability: {minimum_tier: high}
+    platform_notes:
+      codex: BLOCKED - no skill dispatch mechanism
+      kilo: BLOCKED - no KILO.md, no dispatch
+  - capability_id: RC-017
+    name: enforce_skill_first_policy
+    proof_level: VERIFIED
+    continuation_rule: CONTINUE
+    model_suitability: {minimum_tier: high}
+    platform_notes:
+      codex: BLOCKED - no enforcement hook
+      kilo: BLOCKED - no enforcement hook
+  - {capability_id: RC-018, name: load_session_state, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: medium}}
+  - {capability_id: RC-019, name: read_governance_docs, proof_level: STRUCTURAL, continuation_rule: STOP, model_suitability: {minimum_tier: medium}}
+  - {capability_id: RC-020, name: parse_capability_routing_registry, proof_level: STRUCTURAL, continuation_rule: CONTINUE, model_suitability: {minimum_tier: low}}
+  - {capability_id: RC-021, name: generate_sprint_prompt, proof_level: RUNTIME, continuation_rule: CONTINUE, model_suitability: {minimum_tier: medium}}
+  - capability_id: RC-022
+    name: multi_sprint_autonomous_loop
+    proof_level: RUNTIME
+    continuation_rule: CONTINUE
+    model_suitability: {minimum_tier: high}
+    platform_notes:
+      codex: unknown
+      kilo: unknown
+delivery_mechanisms:
+  claude_code: {verification_status: VERIFIED}
+  codex:
+    verification_status: CLAIMED_UNVERIFIED
+    skill_dispatch: BLOCKED
+    blocking_gaps:
+      - RC-016 invoke_skills_by_name not achievable without dispatch mechanism
+      - RC-017 enforce_skill_first_policy not achievable without enforcement hook
+  kilo:
+    verification_status: UNVERIFIABLE_PLATFORM_UNKNOWN
+    skill_dispatch: BLOCKED
+    blocking_gaps:
+      - RC-004 load_instruction_files requires KILO.md (does not exist)
+      - RC-016 invoke_skills_by_name no dispatch mechanism
+model_routing:
+  # TC-ACP-010-03: Routing rules specifying which models/tiers are required per RC.
+  # Source of truth for allowed_capabilities per model: docs/agents/model-profiles.yaml
+  high_tier_required:
+    - RC-016  # invoke_skills_by_name — skill contract enforcement requires strong reasoning
+    - RC-017  # enforce_skill_first_policy — requires reasoning about compliance
+    - RC-022  # multi_sprint_autonomous_loop — sustained autonomy needs high reasoning
+  large_context_required:  # >= 100K context capacity
+    - RC-007  # run_governance_validators — full validator set may produce large output
+    - RC-012  # run_tests — test output may be large
+  haiku_restricted:
+    # claude-haiku-4-5 may only handle these RC capabilities
+    allowed: [RC-001, RC-002, RC-003, RC-006, RC-009, RC-011, RC-012, RC-013, RC-014, RC-019, RC-020]
+    restricted: [RC-016, RC-017, RC-021, RC-022]
+    requires_supervisor_validation: true
+    rationale: >
+      Haiku reasoning capacity is medium. Skill enforcement and autonomous loop
+      taskcards require high reasoning capacity. Supervisor must validate all
+      Haiku-produced outputs before incorporation.
+  codex_blocked:
+    - RC-004  # no native instruction file loading
+    - RC-005  # skill registry not auto-loaded
+    - RC-016  # no skill dispatch mechanism (BLOCKING)
+    - RC-017  # no enforcement hook (BLOCKING)
+    - RC-022  # multi-sprint loop CLAIMED_UNVERIFIED
+  kilo_blocked:
+    - RC-004  # no KILO.md integration path confirmed
+    - RC-005  # skill registry not loaded into Kilo context
+    - RC-016  # no skill dispatch mechanism (BLOCKING)
+    - RC-017  # no enforcement hook (BLOCKING)
+    - RC-022  # no continuation signal loader
+  routing_profile_reference: docs/agents/model-profiles.yaml
+
+conflict_resolution:
+  known_conflicts:
+    - conflict: Supreme Directive vs POST_PLAN_TERMINAL
+      resolution: POST_PLAN_TERMINAL is a named legitimate stop; Supreme Directive does not override it
+    - conflict: RC-016 skill dispatch vs codex/kilo limitation
+      resolution: codex_supported and kilo_supported default false per TC-ACP-002

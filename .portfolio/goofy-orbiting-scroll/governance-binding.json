@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "goofy-orbiting-scroll-v1",
+  "created_at": "2026-07-13T00:00:00+00:00",
+  "governance_files": {
+    "AGENTS.md": {
+      "path": "AGENTS.md",
+      "sha256": "cc4d5adf4fc8531c5e4fa77ccd49b147ccfba7567b8a1010263e5bbe2f13877b",
+      "bytes": 95287
+    },
+    "plans/master-plan.md": {
+      "path": "plans/master-plan.md",
+      "sha256": "f255a1b22cde3cfb2d122878538320aab7005c1cffc75516d9a7d9039671b84d",
+      "bytes": 448866
+    },
+    "docs/automation/supervisor-worker-contract.md": {
+      "path": "docs/automation/supervisor-worker-contract.md",
+      "sha256": "0ca5877a16883129ba1a5f5dcb5d382f68214f6d092bde560c2b42d070576d60",
+      "bytes": 19028
+    },
+    "registry/repository-layout.yaml": {
+      "path": "registry/repository-layout.yaml",
+      "sha256": "2d6a77f738d3d19e35b2aee8be04bb0033c6f05591d1c85faa91ade91a3a6a59",
+      "bytes": 1807
+    },
+    "tools/supervisor/write_plan_lock.py": {
+      "path": "tools/supervisor/write_plan_lock.py",
+      "sha256": "ccaa9d1e190d23b27a423acf7d94ed5dbbee7ca25f2acfd9bc6b04d6ef04ac01",
+      "bytes": 40212
+    },
+    "tools/supervisor/check_continuation.py": {
+      "path": "tools/supervisor/check_continuation.py",
+      "sha256": "970d3258129485f74c452abbaf688243e9e697a2265c91712346d4e22c1d8c6f",
+      "bytes": 46860
+    }
+  },
+  "canonical_plan_location": "plans/.claude/",
+  "plan_schema": null,
+  "state_store": ".local/supervisor/",
+  "execution_controller": "tools/supervisor/autonomous_cycle.py",
+  "user_authorization_mode": "RECONCILE_AND_EXECUTE",
+  "portfolio_master_authority": "plans/.claude/production-portfolio-master-plan.md"
+}

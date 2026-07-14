@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W2-004",
+  "workstream_id": "WS-19-DUAL-LANE-DOM",
+  "objective": "Implement dual-lane DOM gap generator per serialized-petting-crab (TC-VPR-001..008)",
+  "source_plan_ids": [
+    "s024"
+  ],
+  "source_task_ids": [
+    "TC-VPR-001",
+    "TC-VPR-002",
+    "TC-VPR-003",
+    "TC-VPR-004",
+    "TC-VPR-005",
+    "TC-VPR-006",
+    "TC-VPR-007",
+    "TC-VPR-008"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TC-VPR-001 through TC-VPR-008 all pass acceptance criteria",
+    "Dual-lane DOM gap generator produces correct output",
+    "precious-wandering-lighthouse (s023) TCs disposed as SUPERSEDED_WITH_PROOF"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "primary_lane": "L02",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read serialized-petting-crab.md (s024) completely",
+    "precious-wandering-lighthouse (s023) is SUPERSEDED \u2014 do not execute its TCs",
+    "Implement TC-VPR-001 through TC-VPR-008 in order",
+    "Each TC: implement, test, record evidence",
+    "Final: verify dual-lane DOM gap generator works end-to-end"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -k \"dom\" -v 2>&1 | tail -20"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "8c4afd997c6205ff5c32dfee3f7f8cf805370d779cf582653d69fc94502e5815"
+}

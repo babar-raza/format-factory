@@ -1,0 +1,11 @@
+acceptance_criteria:
+- No sole-trivial-assertion test functions in file
+- V_VALIDATE_WEAK_TEST_ASSERTIONS returns PASS for this file
+- At least one exact value assertion added per test function
+file_path: tests/python/abw/test_abw_gap_closure_batch.py
+grace_class: weak_assertion_backfill
+mission: DRIVERS-PRODUCTION-INTEGRATION-001
+objective: Replace sole assert result is not None in tests/python/abw/test_abw_gap_closure_batch.py
+  with real value assertions
+status: OPEN
+taskcard_id: TC-BACKFILL-001

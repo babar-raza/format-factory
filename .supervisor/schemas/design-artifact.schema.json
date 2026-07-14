@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Design Artifact",
+  "description": "Pre-execution design commitment required before any .cs modifications in src/net/. V153 validates this artifact before sprint execution.",
+  "type": "object",
+  "required": [
+    "taskcard_id",
+    "format_id",
+    "language",
+    "target_file",
+    "primary_class",
+    "public_api",
+    "no_dictionary_state",
+    "no_constant_returns"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "taskcard_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "TC-* taskcard ID owning this change"
+    },
+    "format_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Format ID (e.g. fods, fodt, csv)"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["dotnet"],
+      "description": "Must be 'dotnet' — Python artifacts not covered here"
+    },
+    "target_file": {
+      "type": "string",
+      "pattern": "^src/net/",
+      "description": "Target .cs file path relative to repo root. Must start with src/net/"
+    },
+    "primary_class": {
+      "type": "object",
+      "required": ["name", "is_partial_class", "spec_qname", "estimated_loc"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "C# class name (e.g. FodsDocument, FodsCellFormula)"
+        },
+        "is_partial_class": {
+          "type": "boolean",
+          "description": "Whether this class uses the 'partial' keyword. V153 FAILS if true for new domain types."
+        },
+        "spec_qname": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ODF/format QName this class represents (e.g. table:table-cell)"
+        },
+        "estimated_loc": {
+          "type": "integer",
+          "minimum": 11,
+          "maximum": 799,
+          "description": "Estimated lines of code. Must be > 10 and < 800 (V78 cap)."
+        }
+      }
+    },
+    "public_api": {
+      "type": "array",
+      "minItems": 1,
+      "description": "List of public API members this change will add",
+      "items": {
+        "type": "object",
+        "required": ["name", "spec_fact", "parser_source", "writer_path", "has_xml_doc"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "C# method or property name (e.g. GetCellFormula)"
+          },
+          "spec_fact": {
+            "type": "string",
+            "minLength": 1,
+            "description": "FACT-{FORMAT}-* ID from sal-facts-latest.json"
+          },
+          "parser_source": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Where the parser reads this value (e.g. XElement.Attribute('office:value'))"
+          },
+          "writer_path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "How mutations reach XML (e.g. SetAttributeValue('office:value', val))"
+          },
+          "has_xml_doc": {
+            "type": "boolean",
+            "description": "Whether this member has an XML documentation comment (<summary>)"
+          }
+        }
+      }
+    },
+    "no_dictionary_state": {
+      "type": "boolean",
+      "description": "Commit: this change introduces no private Dictionary fields. V153 FAILS if false."
+    },
+    "no_constant_returns": {
+      "type": "boolean",
+      "description": "Commit: no public getter returns a constant. V153 FAILS if false."
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "reconciled_at": "2026-07-12T15:45:00Z",
+  "portfolio_id": "FF-PORTFOLIO-41-PROD-001",
+  "branch": "main",
+  "head_commit": "8192b723ecfb436e4bdc7cfe99cacbb9ec508e0a",
+  "commits_ahead_of_origin": 212,
+  "active_plan_lock": "plans/.claude/production-portfolio-master-plan.md",
+  "active_plan_status": "IN_PROGRESS",
+  "master_portfolio_authority": "ACTIVE",
+  "canonical_tasks_status": {
+    "MCP-W0-001": "CLOSED",
+    "MCP-W0-002": "CLOSED",
+    "MCP-W0-003": "IN_PROGRESS",
+    "MCP-W0-004": "CLOSED",
+    "MCP-W0-005": "CLOSED",
+    "MCP-W0-006": "IN_PROGRESS",
+    "MCP-W0-007": "OPEN",
+    "MCP-W0-008": "OPEN",
+    "MCP-W1-001": "CLOSED",
+    "MCP-W1-002": "CLOSED",
+    "MCP-W1-003": "CLOSED_WITH_DEFERRED_ITEMS",
+    "MCP-W1-004": "CLOSED",
+    "MCP-W1-005": "OPEN",
+    "MCP-W1-006": "OPEN",
+    "MCP-W1-007": "OPEN"
+  },
+  "child_plan_closures": {
+    "splendid-roaming-beaver": {
+      "closure_valid": false,
+      "reason": "lifecycle_audit returned AUDIT_PASS_VACUOUS: called with mission_id but no plan_path; total_taskcards_parsed=0; plan_path=null; plan_hash=empty",
+      "deferred_items": [
+        "TC-SRB-RW2", "TC-SRB-030", "TC-SRB-032", "TC-SRB-040",
+        "TC-SRB-P04", "TC-SRB-P05", "TC-SRB-P06", "TC-SRB-P07",
+        "TC-SRB-P08", "TC-SRB-P09", "TC-SRB-P10", "TC-SRB-070",
+        "TC-SRB-071", "TC-SRB-090"
+      ],
+      "completed_items": [
+        "TC-SRB-RW1", "TC-SRB-013", "TC-SRB-020", "TC-SRB-021",
+        "TC-SRB-022", "TC-SRB-023", "TC-SRB-024", "TC-SRB-031"
+      ],
+      "core_sprint_engine_work": "VERIFIED_PRESENT",
+      "sprint_number_allocator_tests": "9/9 PASS"
+    },
+    "bubbly-dancing-pony": {
+      "closure_valid": false,
+      "reason": "Same lifecycle_audit false AUDIT_PASS defect: called with mission_id but no plan_path",
+      "completed_items": [
+        "TC-MA2-PIPE-001", "TC-MA2-SIGNAL-001", "TC-MA2-SKIP-001",
+        "TC-MA2-VAL-001", "TC-MA2-LOCK-001", "TC-MA2-SIGNAL-001-05-REPAIR"
+      ],
+      "deferred_items": ["TC-MA2-SKIP-001-04"],
+      "core_work": "VERIFIED_PRESENT",
+      "tests_at_closure": "218 passed"
+    },
+    "goofy-orbiting-scroll": {
+      "closure_valid": true,
+      "reason": "lifecycle_audit called with both mission_id and plan_path; 16 taskcards parsed; AUDIT_PASS",
+      "completed_items": "TC-GOS-001 through TC-GOS-016",
+      "portfolio_manifest_status": "HANDOFF_READY"
+    }
+  },
+  "test_regression_summary": {
+    "introduced_by_mcp_w1_003_or_004": [
+      "test_check_continuation_lane::test_advisory_never_returns_stop — FIXED: Check 11 boundary",
+      "test_r90_generated_next_sprint — FIXED: removed item_id from task dict",
+      "test_build_capability_routes — FIXED: updated count 34→35 for skill_governance_discovery route"
+    ],
+    "pre_existing_confirmed_baseline": [
+      "test_r128_fodt_csv_authority_promotion.py — 3 CSV authority failures (pre-existing)",
+      "test_r109_stream_local_authority.py — AttributeError list.get() (pre-existing, MEMORY.md)",
+      "test_authority_gate_validation.py::test_csv_is_p3_candidate_facts — same CSV root cause",
+      "test_fast_format_authority_r126.py — same CSV root cause",
+      "test_embedding_retrieval.py — credential-dependent",
+      "test_plan_governance_gates.py::test_lock_files_all_have_ledger_entries — historical lock files",
+      "test_queue_consumption_accounting.py — state-dependent",
+      "test_full_pilot_verification.py — pre-existing",
+      "test_no_stub_scan.py — pre-existing"
+    ]
+  },
+  "lifecycle_audit_defect": {
+    "status": "FIXED",
+    "fix": "Added PLAN_PATH_MISSING, PLAN_UNREADABLE, ZERO_TASKCARDS_PARSED findings in lifecycle_audit.py",
+    "tests_added": 4,
+    "tests_updated": 4
+  },
+  "next_canonical_task": "MCP-W1-005",
+  "next_source_plan": "silly-popping-tower.md"
+}

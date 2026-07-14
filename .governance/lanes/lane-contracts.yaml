@@ -1,0 +1,340 @@
+---
+# Lane Contracts Registry — Format Factory
+# Created: TC-GFB-021 (FF-MR-2026-001, 2026-07-11)
+# Authoritative: plans/.claude/golden-foraging-boot.md
+# Purpose: Machine-readable lane contract definitions for all 13 execution lanes.
+# V171 validates that sprint declarations reference a valid lane_id from this registry.
+schema_version: "1.0"
+created_at: "2026-07-11"
+implementing_tc: TC-GFB-021
+
+lanes:
+  - lane_id: coordinator
+    mission_scope: "Cross-lane orchestration, plan management, portfolio control"
+    owner_role: supervisor_architect
+    task_sources:
+      - plans/.claude/
+      - reports/supervisor/next-sprint.md
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - plans/
+      - .portfolio/
+      - reports/supervisor/
+      - .local/supervisor/
+    forbidden_paths:
+      - src/
+      - tests/
+      - tools/supervisor/governance_validators*.py
+    shared_paths:
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/active-plan-lock.json
+    collision_checks:
+      - machinery_development
+      - evidence_ledger
+    concurrency: SERIAL
+    commit_policy: "Commit after plan milestone; no product source commits"
+    stop_conditions:
+      - TRUE_EXTERNAL_GATE
+      - POST_PLAN_TERMINAL
+
+  - lane_id: specification_sal
+    mission_scope: "SAL ingestion, spec fact extraction, workbench verification"
+    owner_role: sal_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (ingest-spec-sal)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - oracle/
+      - oracle/formats/
+      - .local/evidences/
+    forbidden_paths:
+      - src/
+      - tools/supervisor/
+      - registry/gate-states.yaml
+    shared_paths:
+      - oracle/sal-facts-latest.json
+      - oracle/workbench/
+    collision_checks:
+      - qname
+      - verification_adversarial
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after SAL facts verified; no product source"
+    stop_conditions:
+      - SAL_INGESTION_ERROR
+
+  - lane_id: qname
+    mission_scope: "QName registry governance, spec_qname ClassVar enforcement, .NET alignment"
+    owner_role: qname_architect
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (qname-backfill, python-qname-code-reviewer)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - registry/qname-registry/
+      - shared/qname-registry/
+      - .local/evidences/
+    forbidden_paths:
+      - src/
+      - registry/gate-states.yaml
+    shared_paths:
+      - registry/qname-registry/
+      - python-qname-structural-facts.json
+    collision_checks:
+      - specification_sal
+      - product_python
+      - product_dotnet
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after qname idempotency verified"
+    stop_conditions:
+      - QNAME_COLLISION_DETECTED
+
+  - lane_id: capability_rcal
+    mission_scope: "RCAL capability registry governance, gap queue management, feature compilation"
+    owner_role: capability_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (build-capability-routes, sync-capabilities)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - .governance/capabilities/
+      - reports/capability-layer/
+      - tools/capability_sync/
+      - tools/supervisor/capability_feature_compiler.py
+    forbidden_paths:
+      - src/
+      - registry/gate-states.yaml
+    shared_paths:
+      - .governance/capabilities/registry.yaml
+      - reports/capability-layer/gap-ledger.json
+    collision_checks:
+      - coordinator
+      - machinery_development
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after gap queue validated"
+    stop_conditions: []
+
+  - lane_id: skill_hardening
+    mission_scope: "Skill registry governance, skill contract enforcement, receipt collection"
+    owner_role: skill_architect
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - .supervisor/skill-registry.yaml
+      - .supervisor/schemas/
+      - tests/skills/
+    forbidden_paths:
+      - src/
+      - tools/supervisor/check_continuation.py
+    shared_paths:
+      - .supervisor/skill-registry.yaml
+    collision_checks:
+      - machinery_development
+    concurrency: SERIAL
+    commit_policy: "Commit after skill contract tests pass"
+    stop_conditions: []
+
+  - lane_id: machinery_development
+    mission_scope: "Supervisor machinery, validators, autonomous cycle, check_continuation.py"
+    owner_role: machinery_architect
+    task_sources:
+      - plans/.claude/
+      - reports/supervisor/next-sprint.md
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - tools/supervisor/
+      - tools/backfill/
+      - registry/gate-states.yaml
+      - .governance/lanes/
+      - tests/supervisor/
+    forbidden_paths:
+      - src/
+      - plans/strategic/
+    shared_paths:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/governance_validators*.py
+      - registry/gate-states.yaml
+    collision_checks:
+      - coordinator
+      - skill_hardening
+      - release_gate11
+    concurrency: SERIAL
+    commit_policy: "Commit after governance_validator_runner tests pass (expected_count correct)"
+    stop_conditions:
+      - GOV_BLOCK
+
+  - lane_id: product_dotnet
+    mission_scope: ".NET commercial product source — fods, fodt, csv, tsv, ndjson, etc."
+    owner_role: dotnet_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (add-dotnet-api, add-dotnet-object-model-feature)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - src/net/
+      - tests/dotnet/
+      - registry/source-structure-baseline.json
+    forbidden_paths:
+      - src/python/
+      - tools/supervisor/
+      - registry/gate-states.yaml
+    shared_paths:
+      - registry/source-structure-baseline.json
+    collision_checks:
+      - product_python
+      - release_gate11
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after dotnet build + governance validators pass"
+    stop_conditions:
+      - GOV_BLOCK
+
+  - lane_id: product_python
+    mission_scope: "Python FOSS product source — all 20 active formats"
+    owner_role: python_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (add-python-api, add-python-object-model-feature)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - src/python/
+      - tests/python/
+      - registry/source-structure-baseline.json
+    forbidden_paths:
+      - src/net/
+      - tools/supervisor/
+      - registry/gate-states.yaml
+    shared_paths:
+      - registry/source-structure-baseline.json
+    collision_checks:
+      - product_dotnet
+      - release_gate11
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after pytest passes + governance validators pass"
+    stop_conditions:
+      - GOV_BLOCK
+
+  - lane_id: backfill_migration
+    mission_scope: "Migration map governance, dry-run migration preview, qname backfill"
+    owner_role: backfill_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (qname-backfill)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - tools/backfill/
+      - registry/migration-map.schema.yaml
+      - .local/evidences/
+    forbidden_paths:
+      - src/
+      - tools/supervisor/check_continuation.py
+    shared_paths:
+      - registry/migration-map.schema.yaml
+    collision_checks:
+      - product_python
+      - product_dotnet
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after dry_run_migration.py validates against fixture"
+    stop_conditions: []
+
+  - lane_id: verification_adversarial
+    mission_scope: "Oracle execution, isolation tests, adversarial negative controls"
+    owner_role: verification_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (run-oracle, add-roundtrip-test)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - oracle/
+      - tests/
+      - .local/evidences/
+    forbidden_paths:
+      - src/
+      - tools/supervisor/
+    shared_paths:
+      - oracle/formats/
+    collision_checks:
+      - specification_sal
+      - product_python
+      - product_dotnet
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit after oracle VERIFIED + tests pass"
+    stop_conditions:
+      - ORACLE_REGRESSION
+
+  - lane_id: evidence_ledger
+    mission_scope: "Evidence declaration, supervisor pipeline, review packages"
+    owner_role: evidence_architect
+    task_sources:
+      - plans/.claude/
+      - tools/supervisor/supervisor_loop.py
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - .local/evidences/
+      - reports/supervisor/
+    forbidden_paths:
+      - src/
+      - plans/strategic/
+    shared_paths:
+      - .local/supervisor/continuation-signal.json
+      - reports/supervisor/
+    collision_checks:
+      - coordinator
+    concurrency: SERIAL
+    commit_policy: "No direct commits; supervisor pipeline produces these artifacts"
+    stop_conditions:
+      - POST_PLAN_TERMINAL
+
+  - lane_id: package_consumer
+    mission_scope: "Package installation proof, consumer roundtrips, PyPI/NuGet prep"
+    owner_role: packaging_engineer
+    task_sources:
+      - plans/.claude/
+      - .supervisor/skill-registry.yaml (package-install-proof, create-consumer-roundtrip)
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - .venv/
+      - tests/packaging/
+      - .local/evidences/
+    forbidden_paths:
+      - src/
+      - tools/supervisor/
+    shared_paths:
+      - .venv/Lib/site-packages/
+    collision_checks:
+      - product_python
+      - product_dotnet
+    concurrency: PARALLEL_SAFE
+    commit_policy: "Commit package proofs; no source changes"
+    stop_conditions:
+      - PACKAGE_INSTALL_FAIL
+
+  - lane_id: release_gate11
+    mission_scope: "Gate 11 state tracking, per-product P1-P10 criterion evaluation, GATE_11_READY emission"
+    owner_role: gate_engineer
+    task_sources:
+      - plans/.claude/
+      - registry/gate-states.yaml
+      - tools/supervisor/autonomous_cycle.py
+    evidence_root: .local/evidences/
+    allowed_paths:
+      - registry/gate-states.yaml
+      - registry/format-registry.yaml
+      - reports/supervisor/
+    forbidden_paths:
+      - src/
+      - plans/strategic/
+    shared_paths:
+      - registry/gate-states.yaml
+      - .local/supervisor/continuation-signal.json
+    collision_checks:
+      - product_python
+      - product_dotnet
+      - coordinator
+    concurrency: SERIAL
+    commit_policy: "Commit gate-states.yaml updates after criterion verification"
+    stop_conditions:
+      - BLOCKED_EXTERNAL
+      - TRUE_EXTERNAL_GATE

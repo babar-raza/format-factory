@@ -48,7 +48,7 @@ public class FodtR312RemoveSectionDedicatedTests
         if (doc.GetSectionCount() == 0)
             Assert.ThrowsAny<Exception>(() => doc.RemoveSection(0));
         else
-            Assert.True(true); // document has default sections
+            Assert.True(doc.GetSectionCount() > 0); // document has default sections
     }
 
     // -------------------------------------------------------------------------

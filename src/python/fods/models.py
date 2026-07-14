@@ -98,9 +98,14 @@ class FodsSheet:
 
     def cell_at(self, row: int, col: int) -> FodsCell | None:
         """Get cell at (row, col) or None if out of bounds."""
-        if 0 <= row < len(self.rows) and 0 <= col < len(self.rows[row]):
-            return FodsCell(self.rows[row][col])
-        return None
+        rows = self.rows
+        if row < 0 or row >= len(rows):
+            return None
+        row_data = rows[row]
+        cells = row_data.get("cells", row_data) if isinstance(row_data, dict) else row_data
+        if col < 0 or col >= len(cells):
+            return None
+        return FodsCell(cells[col])
 
     def find_cells_by_value(self, value: Any) -> list[FodsCell]:
         """Find all cells whose value matches the given value."""
@@ -301,6 +306,10 @@ class FodsDocument:
         dest = _Path(path)
         dest.parent.mkdir(parents=True, exist_ok=True)
         write_fods(self._spec_doc._data, dest)
+
+    def to_file(self, path: "str | Path") -> None:
+        """Save this document to a .fods file — alias for save_to_file() (TC-PCL-005)."""
+        self.save_to_file(path)
 
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""

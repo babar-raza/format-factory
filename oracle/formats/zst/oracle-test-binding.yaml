@@ -1,0 +1,37 @@
+oracle_test_binding_id: oracle-zst-test-binding-v1
+format_id: zst
+oracle_package: oracle/formats/zst/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: zst.zst_codec
+executor_callable: decompress
+bound_test_files:
+- tests/python/zst/test_zst_oracle_binding.py
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: zst-valid-001
+  bound: true
+  test_function: test_zst_oracle_valid_cases
+- case_id: zst-valid-002
+  bound: true
+  test_function: test_zst_oracle_valid_cases
+- case_id: zst-valid-003
+  bound: true
+  test_function: test_zst_oracle_valid_cases
+- case_id: zst-valid-004
+  bound: true
+  test_function: test_zst_oracle_valid_cases
+- case_id: zst-invalid-001
+  bound: true
+  test_function: test_zst_oracle_invalid_cases
+- case_id: zst-invalid-002
+  bound: true
+  test_function: test_zst_oracle_invalid_cases
+- case_id: zst-invalid-003
+  bound: true
+  test_function: test_zst_oracle_invalid_cases
+- case_id: zst-invalid-004
+  bound: true
+  test_function: test_zst_oracle_invalid_cases
+binding_verdict: BOUND

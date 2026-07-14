@@ -76,10 +76,15 @@ _ALLOWLIST_PATTERNS: list[re.Pattern[str]] = [
     # TC-SC-001: ruff suppression comments that mention stub-related terms in explanation
     re.compile(r"#\s*ruff:\s*noqa\b"),
     # TC-SC-003: Read-only format write stubs — deliberate NotImplementedError by design
+    # MCP-W4-004: Narrowed to exclude the overly broad raise\s+NotImplementedError\( pattern.
+    # Acknowledged stubs are now governed via registry/source-structure-baseline.json
+    # under the stub_exceptions section. Only docstring-level descriptions remain here.
     re.compile(r"write\s+stub\b.*read-only", re.IGNORECASE),
     re.compile(r"write\s+support\s+is\s+not\s+implemented", re.IGNORECASE),
     re.compile(r"NotImplementedError:\s+Always", re.IGNORECASE),
-    re.compile(r"raise\s+NotImplementedError\("),
+    # NOTE: raise\s+NotImplementedError\( removed (MCP-W4-004 / twinkly-nibbling-platypus).
+    # Governed stubs are in registry/source-structure-baseline.json#stub_exceptions.
+    # New raise NotImplementedError(...) lines will now be flagged by V149.
     # TC-SC-004: Governed TODOs with explicit taskcard/change-tracking IDs
     re.compile(r"TODO\([A-Z]+-[A-Z]*-?\d+\)"),
 ]
@@ -108,6 +113,37 @@ def _has_authority_only(cls_node: ast.ClassDef) -> bool:
     return False
 
 
+def _load_stub_exceptions() -> set[str]:
+    """Load acknowledged stub file paths from registry/source-structure-baseline.json.
+
+    MCP-W4-004 (twinkly-nibbling-platypus): replaces the overly broad
+    raise\\s+NotImplementedError\\( allowlist pattern with governed baseline entries.
+    """
+    baseline_path = _REPO_ROOT / "registry" / "source-structure-baseline.json"
+    if not baseline_path.exists():
+        return set()
+    try:
+        import json as _json
+        data = _json.loads(baseline_path.read_text(encoding="utf-8"))
+        exceptions = data.get("stub_exceptions") or {}
+        # Normalize paths to use forward slashes for cross-platform matching
+        return {k.replace("\\", "/") for k in exceptions}
+    except Exception:
+        return set()
+
+
+_STUB_EXCEPTIONS: set[str] = _load_stub_exceptions()
+
+
+def _in_stub_exceptions(path: Path) -> bool:
+    """Return True if this file is in the governed stub exceptions list."""
+    try:
+        rel = path.relative_to(_REPO_ROOT).as_posix()
+    except ValueError:
+        rel = path.as_posix()
+    return rel in _STUB_EXCEPTIONS
+
+
 def scan_file(path: Path) -> list[dict[str, Any]]:
     """Scan a single Python file and return a list of violation dicts."""
     violations: list[dict[str, Any]] = []
@@ -116,13 +152,19 @@ def scan_file(path: Path) -> list[dict[str, Any]]:
     except OSError:
         return violations
 
+    # Files in stub_exceptions are exempt from raise NotImplementedError checks
+    # (MCP-W4-004) but not from other forbidden-term checks
+    is_stub_excepted = _in_stub_exceptions(path)
+
     # 1. Forbidden term scan (line-by-line)
     for lineno, line in enumerate(source.splitlines(), start=1):
-        # Skip lines that are only comments or strings — still flag them
         m = _FORBIDDEN_RE.search(line)
         if m:
             # Apply allowlist: suppress known false-positive patterns
             if any(ap.search(line) for ap in _ALLOWLIST_PATTERNS):
+                continue
+            # MCP-W4-004: suppress raise NotImplementedError in governed stub files
+            if is_stub_excepted and "NotImplementedError" in line and "raise" in line:
                 continue
             violations.append({
                 "file": str(path),

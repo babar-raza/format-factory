@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-008",
+  "workstream_id": "WS-32-GOLDEN-BOOT",
+  "objective": "Execute golden-foraging-boot: all 102 TCs in 2 batches (batch A: 1-51)",
+  "source_plan_ids": [
+    "s038"
+  ],
+  "source_task_ids": [
+    "TC-GFB-001",
+    "TC-GFB-002",
+    "TC-GFB-003",
+    "TC-GFB-004",
+    "TC-GFB-005",
+    "TC-GFB-006",
+    "TC-GFB-007",
+    "TC-GFB-008",
+    "TC-GFB-009",
+    "TC-GFB-010",
+    "TC-GFB-011",
+    "TC-GFB-012",
+    "TC-GFB-013",
+    "TC-GFB-014",
+    "TC-GFB-015",
+    "TC-GFB-016",
+    "TC-GFB-017",
+    "TC-GFB-018",
+    "TC-GFB-019",
+    "TC-GFB-020",
+    "TC-GFB-021",
+    "TC-GFB-022",
+    "TC-GFB-023",
+    "TC-GFB-024",
+    "TC-GFB-025",
+    "TC-GFB-026",
+    "TC-GFB-027",
+    "TC-GFB-028",
+    "TC-GFB-029",
+    "TC-GFB-030",
+    "TC-GFB-031",
+    "TC-GFB-032",
+    "TC-GFB-033",
+    "TC-GFB-034",
+    "TC-GFB-035",
+    "TC-GFB-036",
+    "TC-GFB-037",
+    "TC-GFB-038",
+    "TC-GFB-039",
+    "TC-GFB-040",
+    "TC-GFB-041",
+    "TC-GFB-042",
+    "TC-GFB-043",
+    "TC-GFB-044",
+    "TC-GFB-045",
+    "TC-GFB-046",
+    "TC-GFB-047",
+    "TC-GFB-048",
+    "TC-GFB-049",
+    "TC-GFB-050",
+    "TC-GFB-051"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 1-51 in s038 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read golden-foraging-boot.md (s038)",
+    "Execute TCs 1-51",
+    "Write evidence/raw/ET-W4-008/gfb-batch-a-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "9fddb73f29262b0a212a00c34ea891c6225d2205275d0e2ce02d1175c1c29893"
+}

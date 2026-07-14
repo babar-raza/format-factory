@@ -17,7 +17,7 @@ control_plane_binding:
   bootstrap_session: "923e237958c1"
   bootstrap_sprint: "lp-bootstrap"
   bootstrap_date: "2026-06-26"
-  total_layers: 28
+  total_layers: 29
   total_permanent_files: 35
 ```
 
@@ -79,7 +79,7 @@ NO MASTER/INDEX SYNC → NO SPRINT CLOSURE
 
 ## 4. Canonical Layer Taxonomy
 
-27 accepted independent layers across 4 architecture planes. See `plans/layers/decision-register.yaml`
+29 accepted independent layers across 4 architecture planes. See `plans/layers/decision-register.yaml`
 for full taxonomy decisions (DEC-001 through DEC-028).
 
 **Merged:** `taskcard-work-queue-layer` → merged into L10 plan-prompt-authority-layer (DEC-015)
@@ -124,6 +124,8 @@ for full taxonomy decisions (DEC-001 through DEC-028).
 | L25 Recovery | recovery-rollback-layer.md | NOT_ASSESSED | 1/5 | 3 | TC-REC-001 | None |
 | L26 Provenance | provenance-artifact-identity-layer.md | NOT_ASSESSED | 2/5 | 4 | TC-PROV-001 | None |
 | L27 Obligation | format-language-obligation-layer.md | NOT_ASSESSED | 1/5 | 3 | TC-OBL-001 | None |
+| L28 CertAudit | certification-audit-layer.md | GOVERNED_OPERATIONAL | 4/5 | 4 | TC-CERT-L-003 | None |
+| L29 OpControl | operational-control-record-layer.md | GOVERNED_OPERATIONAL | 4/5 | 5 | Extend trust_registry | None |
 
 ## 7. Layer Dependency Graph
 
@@ -147,7 +149,7 @@ External Specs
 [L19 Consumer API]
 
 Cross-cutting (governance plane, run in parallel):
-L20 Security, L21 AIBoundary, L22 ExtTools, L23 Knowledge, L24 Metrics, L25 Recovery, L26 Provenance, L27 Obligation
+L20 Security, L21 AIBoundary, L22 ExtTools, L23 Knowledge, L24 Metrics, L25 Recovery, L26 Provenance, L27 Obligation, L28 CertAudit, L29 OpControl
 ```
 
 ## 8. Cross-Layer Handoff Matrix
@@ -162,7 +164,7 @@ See `plans/layers/handoff-register.yaml` for full records.
 | HO-004 | L05 Oracle | L07 Tests | oracle-package.yaml VERIFIED | ACTIVE |
 | HO-005 | L10 Plan | L11 Supervisor | plans/layers/index.yaml | PENDING |
 | HO-006 | L12 Validation | L08 Evidence | primary_layer_id field | NOT_STARTED |
-| HO-007 | L13 Skills | L11 Supervisor | 19 new skills in registry | NOT_STARTED |
+| HO-007 | L13 Skills | L11 Supervisor | 19 new skills in registry | CLOSED |
 
 ## 9. Current Maturity Matrix
 
@@ -183,6 +185,8 @@ See `plans/layers/handoff-register.yaml` for full records.
 | L13 Skills | 4 | 5 | 19 layer-maintenance skills missing |
 | L14 Feature | 0 | 4 | Does not exist |
 | L15-L27 | 1-2 | 3-4 | NOT_ASSESSED |
+| L28 CertAudit | 4 | 4 | None — at target (execute_oracle-style cap) |
+| L29 OpControl | 4 | 5 | Extend trust_registry population; add quarantine lifecycle transitions |
 
 ## 10. Target Maturity Matrix
 
@@ -322,9 +326,11 @@ Layers that can run in parallel (no dependency conflicts):
 | L10 Plan | 3 | 3 | None |
 | L11 Supervisor | 3 | 3 | None |
 | L12 Validation | 3 | 3 | None |
-| L13 Skills | 10 | 6 | 19 layer-maintenance skills (SKILL-GAP-012) |
+| L13 Skills | 29 | 25 | None — 19 layer-maintenance skills closed via TC-LP-023 (HO-007 CLOSED, see master-plan.md:4853-4869) |
 | L14 Feature | 0 | 0 | SKILL-GAP-003 |
 | L15-L27 | 1-3 | 1-3 | Most NOT_ASSESSED |
+| L28 CertAudit | 13 | 13 | None |
+| L29 OpControl | 10 | 10 | None |
 
 ## 22. Supervisor Work-Selection Contract
 
@@ -347,8 +353,16 @@ The autonomous supervisor MUST:
 15. **Update** index.yaml layer status
 16. **Close** task in task-register.yaml
 
-**NOT YET IMPLEMENTED:** Supervisor currently reads `reports/supervisor/next-sprint.md`
-for work selection, not `plans/layers/index.yaml`. This is TC-SUP-002.
+**GAP-SUP-002 (CONFIRMED, DEFERRED — 2026-07-13):**
+- `generate_next_worker_prompt.py` reads: POC targets, gap fixtures, review grades.
+- It does NOT read `plans/layers/task-register.yaml`.
+- G1-G8 train groups are hardcoded in GROUP_DEFS (lines 104-113 of generate_next_worker_prompt.py).
+- A G9 layer-task group would require modifying `synthesize_trains()` (lines 181-440).
+- This is a separate sprint. Until TC-SUP-002 is implemented, layer tasks are INVISIBLE
+  to the autonomous supervisor. They must be manually scheduled in next-sprint.md.
+- Affected tasks: TC-CERT-L-003 (now CLOSED), TC-SAL-001, TC-QN-001, TC-SUP-001,
+  TC-FEAT-001, and all other TODO tasks in task-register.yaml.
+- See `docs/governance/layer-promotion-guide.md` for the manual scheduling workaround.
 
 ## 23. Current Session Summary
 
@@ -406,9 +420,9 @@ global_session_handoff:
 |-------|--------|-----------|-------------|------------|
 | SYSTEM_HEALING | 6 | 0 | 2 (L01, L03) | 4 |
 | PRODUCT | 7 | 0 | 1 (L06) | 6 |
-| GOVERNANCE | 13 | 1 (L11) | 4 (L08, L09, L12, L13) | 8 |
+| GOVERNANCE | 15 | 2 (L11, L28) | 5 (L08, L09, L12, L13, L29) | 8 |
 | ORACLE | 1 | 1 (L05) | 0 | 0 |
-| **TOTAL** | **27** | **2** | **7** | **18** |
+| **TOTAL** | **29** | **3** | **8** | **18** |
 
 ## 27. Master Change History
 

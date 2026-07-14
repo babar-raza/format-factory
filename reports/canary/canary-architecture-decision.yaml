@@ -1,0 +1,121 @@
+# TC-INV-001-03: Canary Architecture Decision
+# Records the architectural decisions for the canary control system.
+# Generated: 2026-07-11 | Mission: clever-tickling-island
+
+schema_version: "1.0"
+generated: "2026-07-11"
+mission_id: clever-tickling-island
+
+problem_statement: >
+  Three portfolio-wide blast-radius problems lack staged promotion paths:
+  (1) Governance validator promotion (REQ-DIAG-001)
+  (2) LLM grader provider switch (REQ-DIAG-002)
+  (3) Gap ledger compilation priority change (REQ-DIAG-003)
+  All three currently apply changes to all 20 formats simultaneously with no preview,
+  no shadow comparison, and no rollback mechanism beyond git revert.
+
+adopted_candidates:
+  - validator_promotion
+  - llm_grader_switch
+  - compilation_priority
+
+rejected_candidates:
+  - oracle_d0_d1: existing per-format gate is sufficient
+  - sal_ingestion: per-format isolation already provides staged scope
+  - package_release: G1-G5 gate system already stages this
+  - qname_migrations: dedicated migration tooling already handles this
+  - per_format_gate_execution: per-format isolation already sufficient
+  - parser_writer_changes: no shadow parser infrastructure; oracle+tests sufficient
+  - task_selection_queue: subsumed by compilation_priority candidate
+  - portfolio_regeneration: feature flag (dry-run) sufficient
+  - orchestration_changes: feature flag (MODE env var) sufficient
+  - schema_migrations: transactional SQLite migration is better
+  - content_localization: not in roadmap; deferred
+  - cross_language_parity: certification layer audit sufficient; pilot_only
+
+selected_vertical_slice: validator_promotion
+rationale: >
+  validator_promotion has the largest blast radius (ALL 20 formats), the most documented
+  failure history (FM-0004/0005), and the simplest shadow measurement (before/after counts
+  and blocks_sprint changes). It is the safest vertical slice for a first pilot.
+
+sqlite_design:
+  approach: two new tables in control-index.db (already the shadow system)
+  new_tables:
+    - validator_shadow_observations: (run_id, sprint_id, validator_name, format_scope,
+        stable_result, candidate_result, agreement, observed_at)
+    - grader_shadow_observations: (run_id, sprint_id, work_item_id, primary_provider,
+        shadow_provider, primary_grade, shadow_grade, agreement, error, observed_at)
+  schema_version: 2 → 3
+  rationale: >
+    Control-index.db is already a shadow system (not authoritative). Adding canary shadow
+    tables here is architecturally consistent. SQLite is local, reconstructible, and
+    doesn't require new dependencies.
+
+authority_boundaries:
+  - component: validator_shadow_registry
+    owns: .supervisor/validator-shadow-registry.yaml
+    authority_model: CANARY_OWNS
+  - component: governance_validator_runner
+    owns: tools/supervisor/governance_validator_runner.py
+    authority_model: RETAIN_AS_AUTHORITY
+  - component: grade_declared_work
+    owns: tools/supervisor/grade_declared_work.py
+    authority_model: RETAIN_AS_AUTHORITY
+  - component: capability_feature_compiler
+    owns: tools/supervisor/capability_feature_compiler.py
+    authority_model: RETAIN_AS_AUTHORITY
+  - component: control_index_sqlite
+    owns: .local/supervisor/control-index.db
+    authority_model: COORDINATED_BY_CANARY
+  - component: canary_shadow_logs
+    owns: .local/supervisor/validator-shadow-log.jsonl, grader-shadow-log.jsonl
+    authority_model: CANARY_OWNS
+
+metrics:
+  - metric: agreement_rate
+    formula: count(stable_result == candidate_result) / count(all_observations)
+    threshold_green: ">= 0.95"
+    threshold_yellow: ">= 0.85"
+    threshold_red: "< 0.85"
+    action_on_red: rollback candidate; do not promote
+  - metric: false_positive_rate
+    formula: count(candidate blocks when stable does not) / count(all_observations)
+    threshold_green: "0"
+    threshold_yellow: "<= 0.05"
+    threshold_red: "> 0.05"
+    action_on_red: do not promote; investigate validator logic
+
+promotion_criteria:
+  - agreement_rate >= 0.95 over >= 3 sprints
+  - false_positive_rate == 0
+  - no new risks identified from risk register
+  - explicit agent decision recorded in validator-shadow-registry.yaml
+
+rollback_criteria:
+  - agreement_rate < 0.85 in any single sprint
+  - false_positive_rate > 0.05
+  - shadow log error rate > 20%
+
+migration_order:
+  1: TC-INV-001 (discovery reports — this file and siblings)
+  2: TC-INIT-001 (tools/canary package)
+  3: TC-SCHEMA-001 (SQLite v3 migration)
+  4: TC-REGISTRY-001 (validator shadow registry + CLI)
+  5: TC-GRADER-001 (grader shadow mode)
+  6: TC-DIFF-001 (compilation diff tool)
+  7: TC-TEST-001 through TC-TEST-004 (test suites)
+  8: TC-CLOSE-001 (pilot + benefit assessment)
+
+expected_benefits:
+  - Validator blocks fail on <=1 format scope during shadow period (not all 20)
+  - Provider switch detectable before affecting all sprint grades
+  - Priority recompilation changes previewed via diff before applying
+
+expected_costs:
+  - ~2-4 second overhead per sprint for shadow observations (async mitigation available)
+  - New SQLite tables add ~5-20% to control-index sync time
+  - .supervisor/validator-shadow-registry.yaml requires maintenance as runner evolves
+
+final_verdict: CANARY_CONTROL_INTEGRATED_PILOT_PROVEN_AND_IDEMPOTENT
+final_verdict_date: "2026-07-13"

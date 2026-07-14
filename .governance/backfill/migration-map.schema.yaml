@@ -1,0 +1,121 @@
+---
+# .governance/backfill/migration-map.schema.yaml
+# Schema for backfill migration map entries.
+# Implements: TC-GFB-023-01 (FF-MR-2026-001)
+# Authority: plans/.claude/golden-foraging-boot.md (TC-GFB-023)
+# Generated: 2026-07-11
+
+schema_version: "1.0"
+schema_id: migration-map
+description: >
+  Each entry in a migration map describes one symbol, file, or namespace change
+  proposed for a format's backfill migration. The dry_run_migration.py tool reads
+  source files and produces migration_map entries in this schema — it makes NO
+  changes to src/. The entries are PROPOSALS only until an execution wave authorizes
+  the governed rewrite.
+
+required_fields:
+  - format_id
+  - source_file
+  - old_symbol
+  - new_symbol
+  - symbol_type
+  - reason
+  - behavior_preservation_class
+
+fields:
+  format_id:
+    type: string
+    description: "The format identifier (e.g., fods, csv, tsv). Must match registry/format-registry.yaml."
+    example: "fods"
+
+  source_file:
+    type: string
+    description: "Relative path from repo root to the source file containing the symbol."
+    example: "src/python/fods/fods_parser.py"
+
+  old_symbol:
+    type: string
+    description: "Current symbol name (class, function, variable, or module)."
+    example: "FodsCell"
+
+  new_symbol:
+    type: string
+    description: "Target symbol name after migration. May be identical to old_symbol for path-only moves."
+    example: "Table.TableCell"
+
+  symbol_type:
+    type: string
+    enum: [CLASS, FUNCTION, MODULE, NAMESPACE, IMPORT, CONSTANT, PROPERTY]
+    description: "The Python symbol type being migrated."
+
+  old_path:
+    type: string
+    nullable: true
+    description: "Current relative path of the file. Null if symbol stays in the same file."
+    example: "src/python/fods/Compat/FodsCell.py"
+
+  new_path:
+    type: string
+    nullable: true
+    description: "Target relative path after migration. Null if file stays in place."
+    example: "src/python/fods/spec/table/table_cell.py"
+
+  namespace_change:
+    type: boolean
+    default: false
+    description: "True if the import namespace changes (e.g., from fods.FodsCell to fods.spec.table.table_cell)."
+
+  reason:
+    type: string
+    description: "Human-readable reason for the change. Must reference an authority (spec QName, gap ID, or requirement ID)."
+    example: "Aligns with spec QName table:table-cell per REQ-BF-001"
+
+  authority_ref:
+    type: string
+    nullable: true
+    description: "GAP ID, requirement ID, or spec QName that authorizes this migration."
+    example: "GAP-FODS-QNAME-001"
+
+  behavior_preservation_class:
+    type: string
+    description: "Classification of behavior impact. Must be one of the values in behavior-preservation.schema.yaml."
+    ref: ".governance/backfill/behavior-preservation.schema.yaml"
+
+  migration_risk:
+    type: string
+    enum: [LOW, MEDIUM, HIGH, CRITICAL]
+    default: MEDIUM
+    description: >
+      LOW: symbol unused outside its own module.
+      MEDIUM: symbol used within the same format package only.
+      HIGH: symbol imported by other format packages or consumer-facing API.
+      CRITICAL: symbol is part of public PyPI API or consumer roundtrip tests.
+
+  callers:
+    type: list
+    items: string
+    nullable: true
+    description: "List of relative paths of files that import this symbol. Produced by validate_migration_safe.py."
+
+  test_coverage:
+    type: list
+    items: string
+    nullable: true
+    description: "List of test file paths that directly test this symbol."
+
+example_entry:
+  format_id: "fods"
+  source_file: "src/python/fods/fods_parser.py"
+  old_symbol: "FodsCell"
+  new_symbol: "Table.TableCell"
+  symbol_type: CLASS
+  old_path: "src/python/fods/Compat/FodsCell.py"
+  new_path: "src/python/fods/spec/table/table_cell.py"
+  namespace_change: true
+  reason: "Aligns class name with spec QName table:table-cell (REQ-BF-001)"
+  authority_ref: "REQ-BF-001"
+  behavior_preservation_class: "PRESERVED_WITH_COMPATIBILITY_LAYER"
+  migration_risk: HIGH
+  callers: ["src/python/fods/fods_parser.py", "tests/fods/test_fods_parser.py"]
+  test_coverage: ["tests/fods/test_fods_parser.py"]

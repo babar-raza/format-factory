@@ -113,6 +113,10 @@ Target maturity is **4**. The target state is a governed, evidence-backed, disco
 - Need stage-aware reporting: most complete, partial, gap-ledger status, test evidence.
 - Velocity should measure proof-backed movement, not agent activity.
 
+| gap_id | severity | current_state | target_state | task_id | source |
+|---|---|---|---|---|---|
+| MET-GAP-001 | MEDIUM | `skill_ids: []` in `plans/layers/index.yaml` (L24) — zero registered skill derives velocity metrics from grading-history.jsonl or builds maturity-trend automation. | A registered skill exists that computes stage-aware, proof-backed velocity/maturity-trend metrics from grading-history.jsonl (feeding TC-MET-001). | null | Zero skill coverage confirmed via plans/layers/index.yaml — skill_ids: [] and no matching product_track in .supervisor/skill-registry.yaml. Registered via TC-EXT-008 (external skill adoption plan, Finding 3). |
+
 ## 15. Root-Cause Register
 
 - Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
@@ -252,6 +256,7 @@ A blocker is valid only when it is a true external gate, missing authority, miss
 - Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
 - Added no-stub and proof-backed execution requirements.
 - Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+- 2026-07-14: Registered gap `MET-GAP-001` via `/register-layer-gap` (TC-EXT-008-06, plan `plans/.claude/yes-my-earlier-answer-humming-waffle.md`, Finding 3). See §14.
 
 ## 35. Verification Log
 

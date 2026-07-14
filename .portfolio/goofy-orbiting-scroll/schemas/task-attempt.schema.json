@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task-attempt",
+  "title": "Task Attempt",
+  "type": "object",
+  "required": ["schema_version","attempt_id","task_id","claim_id","repository_revision_before","status"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "attempt_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "claim_id": {"type": "string"},
+    "repository_revision_before": {"type": "string"},
+    "working_tree_before": {"type": "string"},
+    "intended_paths": {"type": "array", "items": {"type": "string"}},
+    "actual_changed_paths": {"type": "array", "items": {"type": "string"}},
+    "commands_run": {"type": "array", "items": {"type": "string"}},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "repository_revision_after": {"type": ["string","null"]},
+    "result": {"type": ["string","null"]},
+    "status": {"type": "string", "enum": ["IN_PROGRESS","COMPLETED","INTERRUPTED","ROLLED_BACK"]},
+    "started_at": {"type": "string"},
+    "completed_at": {"type": ["string","null"]}
+  }
+}

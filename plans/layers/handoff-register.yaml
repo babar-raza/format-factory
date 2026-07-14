@@ -140,7 +140,8 @@ handoffs:
       - "Corresponding .claude/commands/*.md files exist"
       - "Skills are reusable and idempotent"
     evidence_paths: [".supervisor/skill-registry.yaml"]
-    status: NOT_STARTED
+    status: CLOSED
+    evidence: "plans/master-plan.md:4853-4869 TC-LP-023 (19 layer-maintenance micro-skills, CLOSED) — reconciled TC-EXT-003"
 
   - handoff_id: HO-008
     task_id: TC-CERT-L-002
@@ -159,4 +160,28 @@ handoffs:
       - "20/20 CERTIFIED in portfolio matrix"
       - "No CERTIFIED format has material stubs or uncovered exceptions"
     evidence_paths: ["reports/certification/portfolio-certification-matrix.json"]
+    status: COMPLETE
+
+  - handoff_id: HO-009
+    task_id: TC-OCRD-C9
+    producer_layer: L29
+    producer_plan: plans/layers/operational-control-record-layer.md
+    consumer_layer: L11
+    consumer_plan: plans/layers/supervisor-sprint-layer.md
+    artifact: ".local/supervisor/control-index.db"
+    schema: "tools/supervisor/control_index/schema.sql"
+    authority: L29
+    version: "v4"
+    producer_skill: rebuild-operational-index
+    validator_skill: validate-operational-index
+    consumer_skill: autonomous-loop
+    acceptance_criteria:
+      - "control-index.db exists and has all v4 tables (control_layers, control_features, etc.)"
+      - "check_continuation.py emits control_index_warnings key"
+      - "22/22 pilot tests PASS"
+      - "Validators V176-V181 registered in governance_validator_runner.py"
+    evidence_paths:
+      - "reports/control-layer/existing-control-layers.yaml"
+      - "tools/supervisor/control_index/ingestors/control_layer_ingestor.py"
+      - "tools/supervisor/governance_validators_control_layer.py"
     status: COMPLETE

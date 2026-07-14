@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W0-003",
+  "workstream_id": "WS-02-GOVERNANCE-HEALING",
+  "objective": "Investigate and document which governance validators are missing/broken per memoized-frolicking-donut",
+  "source_plan_ids": [
+    "s005",
+    "s004"
+  ],
+  "source_task_ids": [
+    "TC-GOV-001"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read memoized-frolicking-donut.md (s005) plan completely",
+    "Run existing governance validators: python tools/supervisor/governance_validator_runner.py",
+    "Record all FAIL and WARN results",
+    "For each failing validator: document root cause, affected files, fix steps",
+    "Write evidence/raw/ET-W0-003/governance-audit.json with all findings",
+    "Produce repair-list.json: ordered list of validator fixes with effort estimate"
+  ],
+  "acceptance_criteria": [
+    "governance_validator_runner.py runs without exception",
+    "evidence/raw/ET-W0-003/governance-audit.json exists with all FAIL/WARN items",
+    "repair-list.json documents each fix needed"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python tools/supervisor/governance_validator_runner.py 2>&1 | tail -20"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 0,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W0-003-69F60006",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W0-003-ED83444B",
+  "claimed_at": "2026-07-11T10:01:26.953364+00:00",
+  "closed_at": "2026-07-11T10:06:44.411104+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

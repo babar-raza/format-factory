@@ -5,6 +5,10 @@ authoritative_plan: plans/.claude/crispy-jingling-snail.md
 plan_type: product_certification
 mission_id: CERT-EXHAUST-20260628
 status: COMPLETE
+required_permanent_layers: [L28]
+# required_permanent_layers added retroactively 2026-07-13 (TC-LHEAL-005):
+# This field was absent at plan closure (2026-06-28), which allowed TERMINAL_CLOSED
+# without L28 existing. V88 now enforces this for product_certification plans.
 ```
 
 ---

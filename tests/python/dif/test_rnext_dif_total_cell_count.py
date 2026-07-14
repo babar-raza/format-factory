@@ -7,7 +7,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from dif.dif_parser import dif_total_cell_count
+from dif import dif_total_cell_count
 
 _SAMPLES = _REPO / "samples" / "by-format" / "dif" / "valid"
 

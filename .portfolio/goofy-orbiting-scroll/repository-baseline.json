@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-07-13T00:04:00+00:00",
+  "head": "3fdaf841ed8941616dbe5e19d43af618c317d57b",
+  "branch": "main",
+  "modified_file_count": 190,
+  "untracked_file_count": 191,
+  "components": {
+    "tools/supervisor": "EXISTS",
+    "src/python": "EXISTS",
+    "src/net": "EXISTS",
+    "tests": "EXISTS",
+    "registry": "EXISTS",
+    ".governance": "EXISTS",
+    "reports": "EXISTS",
+    "plans/.claude": "EXISTS",
+    "oracle": "EXISTS"
+  },
+  "validator_count_line": "_EXPECTED_VALIDATOR_COUNT = 195  # V176-V181 (TC-OCRD-C6, 2026-07-12) + V_VALIDATE_FI_* (TC-FIOP-005) + V182 (TC-BOOL-004) + V183-V186 (TC-ACP-015) + V_STALE_ORACLE (TC-W1A-003) + V145+V146 (TC-W2-001/002, 2026-07-12)",
+  "oracle_maturity_level": 4,
+  "source_baseline": "EXISTS",
+  "full_suite_result": {
+    "passed": 43282,
+    "failed": 69,
+    "skipped": 265,
+    "xfailed": 8
+  },
+  "failure_categories": {
+    "schema_migrations": 3,
+    "spec_parity_qnames": 2,
+    "skill_registry_validation": 1,
+    "work_type_skill_gate": 1,
+    "governance_remediation_deadlines": 1,
+    "source_structure_loc_function": 2,
+    "csv_authority_promotion": 1,
+    "ai_litellm_dependency_boundary": 1,
+    "other_preexisting": 57
+  },
+  "known_failures_sample": [
+    "test_schema_migrations.py::test_schema_version_constant_is_3",
+    "test_schema_migrations.py::test_simulate_v2_db_migrations_advance_version",
+    "test_spec_parity_fods_proof.py::test_all_qnames_present",
+    "test_spec_parity_fodt_proof.py::test_all_qnames_present",
+    "test_validate_skill_registry.py::test_real_registry_passes",
+    "test_work_type_skill_gate.py::test_all_five_gaps_detected",
+    "test_governance_machinery.py::test_deadlines_present",
+    "test_source_structure.py::test_no_loc_regression",
+    "test_source_structure.py::test_no_function_count_regression",
+    "test_r128_fodt_csv_authority_promotion.py::test_csv_p3_live"
+  ],
+  "plan_type_distribution": {
+    "certification": 1,
+    "general": 35,
+    "oracle": 1,
+    "spec_parity": 1,
+    "product_deepening": 1,
+    "machinery_hardening": 2
+  }
+}

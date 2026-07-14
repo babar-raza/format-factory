@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W0-008",
+  "workstream_id": "WS-05-PIPELINE-RECONCILIATION",
+  "objective": "Audit pipeline divergence: identify exact differences between next-work-items.json and next-sprint.md",
+  "source_plan_ids": [
+    "s006",
+    "s013"
+  ],
+  "source_task_ids": [
+    "TC-BWM-001"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "reports/supervisor/next-sprint.md",
+    "reports/supervisor/next-work-items.json"
+  ],
+  "allowed_mutation_scope": [
+    "reports/supervisor/next-sprint.md",
+    "reports/supervisor/next-work-items.json"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L08",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read bubbly-dancing-pony.md (s006) and vast-wibbling-moon.md (s013)",
+    "Compare content of reports/supervisor/next-sprint.md vs next-work-items JSON files",
+    "Identify discrepancies: items in one but not the other, stale items, ordering differences",
+    "Write evidence/raw/ET-W0-008/pipeline-divergence-report.json",
+    "Classify each divergence: true-gap vs transient-state vs stale"
+  ],
+  "acceptance_criteria": [
+    "Pipeline divergence report written",
+    "Every divergence classified",
+    "Repair tasks created for true-gap items"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-008/pipeline-divergence-report.json"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 0,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W0-008-91FA0A33",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W0-008-FA3572A4",
+  "claimed_at": "2026-07-11T10:14:18.159195+00:00",
+  "closed_at": "2026-07-11T10:15:10.642351+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

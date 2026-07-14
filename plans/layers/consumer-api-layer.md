@@ -113,6 +113,10 @@ Target maturity is **4**. The target state is a governed, evidence-backed, disco
 - __init__.py files may be small but need intentional export policy.
 - APIs must expose object model operations rather than monolithic helper-only functions.
 
+| gap_id | severity | current_state | target_state | task_id | source |
+|---|---|---|---|---|---|
+| CAPI-GAP-001 | MEDIUM | `skill_ids: []` in `plans/layers/index.yaml` (L19) — zero registered skill audits `__init__.py` exports or defines the public API surface contract. | A registered skill exists that audits public exports across all formats and defines a stable, capability-linked API surface contract (feeding TC-CAPI-001). | null | Zero skill coverage confirmed via plans/layers/index.yaml — skill_ids: [] and no matching product_track in .supervisor/skill-registry.yaml. Registered via TC-EXT-008 (external skill adoption plan, Finding 3). |
+
 ## 15. Root-Cause Register
 
 - Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
@@ -252,6 +256,7 @@ A blocker is valid only when it is a true external gate, missing authority, miss
 - Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
 - Added no-stub and proof-backed execution requirements.
 - Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+- 2026-07-14: Registered gap `CAPI-GAP-001` via `/register-layer-gap` (TC-EXT-008-04, plan `plans/.claude/yes-my-earlier-answer-humming-waffle.md`, Finding 3). See §14.
 
 ## 35. Verification Log
 

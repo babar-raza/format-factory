@@ -1,0 +1,36 @@
+head_revision: "3fdaf841ed8941616dbe5e19d43af618c317d57b"
+audit_date: "2026-07-13"
+auditor: "TC-VPR-001 (MCP-W5-005)"
+
+root_causes:
+  rc1_dom_gaps_not_generated:
+    status: ALREADY_FIXED
+    note: "dom_maturity_gap_generator.py exists at HEAD; 12 supplemental DOM gaps in gap-ledger.json"
+    dom_gaps_found: 12
+
+  rc2_no_dom_gap_generator_tool:
+    status: ALREADY_FIXED
+    tool_path: "tools/supervisor/dom_maturity_gap_generator.py"
+
+  rc3_p1_findings_already_fixed_at_head:
+    status: CONFIRMED
+    ceiling_guard_line: 236
+    replay_guard_line: 228
+
+  rc4_starvation_warning_path_dead:
+    status: CONFIRMED_PATH_A_DEAD
+    note: "Path B alive; DOM items now exist so starvation scoring can operate"
+
+  rc5_policy_global_default_unconsumed:
+    status: FIXED_TC_VPR_006
+    note: "_load_policies() now called in check_starvation()"
+
+  rc6_classifier_missing_dom_types:
+    status: FIXED_TC_VPR_004
+    note: "Tier1 explicit field + dom_maturity_d2/d3/d4/d5 types added to classifier"
+
+dom_gaps_in_gap_ledger: 12
+dom_gaps_in_next_work_items: 10
+supplemental_preservation_confirmed: true
+supplemental_preservation_lines: [1473, 1501, 1511]
+dom_generator_wired: "Step 4a-dom-gaps in autonomous_cycle.py before Step 4a-compiler"

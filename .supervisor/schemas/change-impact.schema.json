@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change-impact.schema.json",
+  "title": "ChangeImpact",
+  "description": "Analysis of the impact of a change proposal on repository components.",
+  "type": "object",
+  "required": ["impact_id", "proposal_id", "analyzed_at", "impact_items"],
+  "additionalProperties": false,
+  "properties": {
+    "impact_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. CI-001)."
+    },
+    "proposal_id": {
+      "type": "string",
+      "description": "change-proposal.schema.json proposal_id being analyzed."
+    },
+    "analyzed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "analyzed_by": {
+      "type": ["string", "null"]
+    },
+    "impact_items": {
+      "type": "array",
+      "description": "Per-component impact records.",
+      "items": {
+        "type": "object",
+        "required": ["component", "impact_type", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "component": { "type": "string" },
+          "impact_type": {
+            "type": "string",
+            "enum": ["BREAKING", "ADDITIVE", "COSMETIC", "BEHAVIORAL", "NONE"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "NONE"]
+          },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "overall_severity": {
+      "type": ["string", "null"],
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "NONE", null]
+    },
+    "requires_gate_approval": {
+      "type": "boolean",
+      "default": false
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

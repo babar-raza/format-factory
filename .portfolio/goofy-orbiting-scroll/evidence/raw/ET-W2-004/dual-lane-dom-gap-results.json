@@ -1,0 +1,51 @@
+{
+  "task_id": "ET-W2-004",
+  "source_plan": "serialized-petting-crab",
+  "superseded_plan": "precious-wandering-lighthouse",
+  "audit_date": "2026-07-11",
+  "taskcards_executed": {
+    "TC-VPR-001": {
+      "status": "CLOSED",
+      "action": "Produced reports/dual-lane-verification/ground-truth-audit.yaml. Confirmed all 6 root causes at HEAD. DOM/supplemental gaps in gap-ledger: 0. DOM items in next-work-items: 0. supplemental preservation mechanism confirmed at lines 1436/1464/1474 of capability_map_generator.py.",
+      "output_file": "reports/dual-lane-verification/ground-truth-audit.yaml"
+    },
+    "TC-VPR-002": {
+      "status": "CLOSED",
+      "action": "Created tools/supervisor/dom_maturity_gap_generator.py. Generates DOM maturity boundary gaps as supplemental=True entries in gap-ledger.json. Tests: 12/12 PASS. Real run: 12 gaps added (ABW, DIF, FODG, FODP, FODS, FODT, GNUMERIC, ODS, ODT, SYLK, TOML, XCF). Idempotency verified: second run shows 0 new.",
+      "test_proof": "12/12 tests PASS (test_dom_maturity_gap_generator.py). Real run: 12 new. Second run: 0 new, 12 unchanged."
+    }
+  },
+  "taskcards_outstanding": {
+    "TC-VPR-003": "DEFERRED_WAVE3 — Wire generator into autonomous_cycle.py (callsite at line 188)",
+    "TC-VPR-004": "DEFERRED_WAVE3 — Classifier hardening: _classify_deepening_lane() needs DOM gap_types",
+    "TC-VPR-005": "DEFERRED_WAVE3 — End-to-end pipeline verification",
+    "TC-VPR-006": "DEFERRED_WAVE3 — Policy consumer activation (minor)",
+    "TC-VPR-007": "DEFERRED_WAVE3 — Full regression suite",
+    "TC-VPR-008": "DEFERRED_WAVE3 — Lifecycle audit and plan closure"
+  },
+  "precious_wandering_lighthouse_disposition": "SUPERSEDED_WITH_PROOF — TC-VPR-001 through TC-VPR-008 in serialized-petting-crab are the authoritative execution taskcards. precious-wandering-lighthouse TCs (TC-VPR-001..008) are the same IDs and were superseded by this newer plan.",
+  "dom_gaps_injected": 12,
+  "gap_ids_injected": [
+    "GAP-ABW-DOM-MATURITY-D2-001",
+    "GAP-DIF-DOM-MATURITY-D2-001",
+    "GAP-FODG-DOM-MATURITY-D2-001",
+    "GAP-FODP-DOM-MATURITY-D2-001",
+    "GAP-FODS-DOM-MATURITY-D4-001",
+    "GAP-FODT-DOM-MATURITY-D3-001",
+    "GAP-GNUMERIC-DOM-MATURITY-D2-001",
+    "GAP-ODS-DOM-MATURITY-D3-001",
+    "GAP-ODT-DOM-MATURITY-D2-001",
+    "GAP-SYLK-DOM-MATURITY-D2-001",
+    "GAP-TOML-DOM-MATURITY-D2-001",
+    "GAP-XCF-DOM-MATURITY-D2-001"
+  ],
+  "files_created": [
+    "tools/supervisor/dom_maturity_gap_generator.py",
+    "tests/supervisor/test_dom_maturity_gap_generator.py",
+    "reports/dual-lane-verification/ground-truth-audit.yaml"
+  ],
+  "files_modified": [
+    "reports/capability-layer/gap-ledger.json (12 supplemental DOM gaps injected)"
+  ],
+  "verdict": "PARTIAL — TC-VPR-001 and TC-VPR-002 CLOSED with test proof and real run evidence. 12 DOM maturity gaps injected into gap-ledger.json. TC-VPR-003 through TC-VPR-008 deferred to Wave 3 (autonomous_cycle.py wiring, classifier hardening, regression suite)."
+}

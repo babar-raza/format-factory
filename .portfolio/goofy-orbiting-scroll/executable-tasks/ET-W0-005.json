@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W0-005",
+  "workstream_id": "WS-04-AGENTIC-PARITY",
+  "objective": "Assess agentic system parity state from glimmering-hopping-kazoo plan",
+  "source_plan_ids": [
+    "s002"
+  ],
+  "source_task_ids": [
+    "TC-AGT-001"
+  ],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [],
+  "allowed_mutation_scope": [],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read glimmering-hopping-kazoo.md (s002) plan completely",
+    "Identify which agentic parity TCs are already done vs outstanding",
+    "Map each TC to current repository state",
+    "Write evidence/raw/ET-W0-005/agentic-parity-assessment.json",
+    "Create follow-on executable tasks for any remaining work"
+  ],
+  "acceptance_criteria": [
+    "Assessment document written",
+    "Every TC in s002 has a repository_assessment classification"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "cat .portfolio/goofy-orbiting-scroll/evidence/raw/ET-W0-005/agentic-parity-assessment.json"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 0,
+  "status": "CLOSED",
+  "active_claim_id": "CLM-ET-W0-005-A3DFCB3F",
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W0-005-A8751B3B",
+  "claimed_at": "2026-07-11T10:09:11.496108+00:00",
+  "closed_at": "2026-07-11T10:10:23.324633+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

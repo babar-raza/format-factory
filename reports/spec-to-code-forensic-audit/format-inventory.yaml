@@ -1,0 +1,259 @@
+---
+# Format Inventory — All 24 Governed Formats
+# TC-FF-AUDIT-002 (cheeky-crafting-manatee — MCP-W3-002)
+# Generated: 2026-07-12
+
+inventory_date: "2026-07-12"
+total_formats: 24
+python_foss: 20
+dotnet_commercial: 10
+obligation_created: 4
+
+formats:
+  # === Python FOSS Formats (20) ===
+  - format_id: abw
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 26
+    spec_qname_files: 20
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: csv
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 26
+    spec_qname_files: 16
+    analytics_files: 2
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: dif
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 24
+    spec_qname_files: 18
+    analytics_files: 0
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: fodg
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 24
+    spec_qname_files: 13
+    analytics_files: 0
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+
+  - format_id: fodp
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 25
+    spec_qname_files: 16
+    analytics_files: 1
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+    notes: "write_fodp() raises NotImplementedError — UNSUPPORTED_CAPABILITY (intentional)"
+
+  - format_id: fods
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 30
+    spec_qname_files: 186
+    analytics_files: 3
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+    notes: "ODF primary format — highest qname depth, Gate 11 approved"
+
+  - format_id: fodt
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 33
+    spec_qname_files: 62
+    analytics_files: 1
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+    notes: "CUSTOMER_READY pending Babar Raza sign-off"
+
+  - format_id: gnumeric
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 24
+    spec_qname_files: 25
+    analytics_files: 2
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: ndjson
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 26
+    spec_qname_files: 23
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: ods
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 27
+    spec_qname_files: 21
+    analytics_files: 1
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+
+  - format_id: odt
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 26
+    spec_qname_files: 20
+    analytics_files: 1
+    sal_provenance: ODF_SPEC_DERIVED
+    capability_authority: SPEC_FACT_DERIVED
+
+  - format_id: pbm
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 10
+    spec_qname_files: 18
+    analytics_files: 0
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: pgm
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 10
+    spec_qname_files: 16
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: ppm
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 11
+    spec_qname_files: 14
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: qoi
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 10
+    spec_qname_files: 20
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: sylk
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 25
+    spec_qname_files: 21
+    analytics_files: 2
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: toml
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 25
+    spec_qname_files: 30
+    analytics_files: 2
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: tsv
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 25
+    spec_qname_files: 31
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: xcf
+    has_python: true
+    has_dotnet: false
+    oracle_status: VERIFIED
+    python_files: 10
+    spec_qname_files: 20
+    analytics_files: 1
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  - format_id: zst
+    has_python: true
+    has_dotnet: true
+    oracle_status: VERIFIED
+    python_files: 10
+    spec_qname_files: 27
+    analytics_files: 0
+    sal_provenance: MANUALLY_SEEDED
+    capability_authority: POC_DERIVED_NOT_SPEC_DERIVED
+
+  # === .NET Commercial Only (no Python) ===
+  - format_id: html
+    has_python: false
+    has_dotnet: true
+    oracle_status: NOT_APPLICABLE
+    sal_provenance: NOT_APPLICABLE
+
+  - format_id: markdown
+    has_python: false
+    has_dotnet: true
+    oracle_status: NOT_APPLICABLE
+    sal_provenance: NOT_APPLICABLE
+
+  - format_id: txt
+    has_python: false
+    has_dotnet: true
+    oracle_status: NOT_APPLICABLE
+    sal_provenance: NOT_APPLICABLE
+
+  # === OBLIGATION_CREATED (no implementation) ===
+  - format_id: ora
+    has_python: false
+    has_dotnet: false
+    oracle_status: OBLIGATION_CREATED
+    reason_no_implementation: "Oracle format requires ImageMagick/native codec — deferred"
+
+  - format_id: pam
+    has_python: false
+    has_dotnet: false
+    oracle_status: OBLIGATION_CREATED
+    reason_no_implementation: "PAM (Portable Arbitrary Map) — deferred"
+
+  - format_id: xpm
+    has_python: false
+    has_dotnet: false
+    oracle_status: OBLIGATION_CREATED
+    reason_no_implementation: "XPM (X PixMap) — deferred"
+
+  - format_id: zpaq
+    has_python: false
+    has_dotnet: false
+    oracle_status: OBLIGATION_CREATED
+    reason_no_implementation: "ZPAQ compression — no open-source Python codec available"

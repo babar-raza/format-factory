@@ -1,0 +1,30 @@
+{
+  "task_id": "ET-W0-006",
+  "source_plan": "imperative-coalescing-bengio",
+  "audit_date": "2026-07-11",
+  "plan_status": "IN_PROGRESS (0 of 6 taskcards started)",
+  "taskcard_statuses": {
+    "TC-P5-001": "PROPOSED",
+    "TC-P1-001": "PROPOSED",
+    "TC-P2-001": "PROPOSED",
+    "TC-P3-001": "PROPOSED",
+    "TC-P4-001": "PROPOSED",
+    "TC-P6-001": "PROPOSED"
+  },
+  "existing_artifacts": {
+    ".supervisor/prompts/espanso-provenance-map.yaml": true,
+    ".supervisor/prompts/ (27 files)": true,
+    "tools/supervisor/espanso_staleness_detector.py": false,
+    "docs/agents/": false
+  },
+  "diagnosis": {
+    "structural_health": "HEALTHY — 1:1:1 parity between capabilities/skills/commands. 123 each. Zero broken references.",
+    "espanso_provenance_map": "EXISTS with 118 entries — stale since 2026-07-03. File grew from 126,293 to 141,698 lines (15,405 lines of untracked new content).",
+    "policy_rules_in_espanso_only": "5 policy rules (EP-1 through EP-5) exist only in Espanso, not in CLAUDE.md",
+    "staleness_detection": "No body_sha256 fields — changes to existing blocks are undetectable"
+  },
+  "disposition": "EXECUTE_TASK — Wave 1 priority. TC-P1-001 (staleness detector) is the gating prerequisite for TC-P3-001.",
+  "blocking_factors": "None TRUE_EXTERNAL",
+  "repository_assessment": "PARTIAL — framework exists, 6 targeted micro-taskcards not started",
+  "assigned_wave": "Wave 1"
+}

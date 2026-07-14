@@ -1,0 +1,250 @@
+---
+# Generation Archaeology System Gap Matrix
+# TC-ARCH-016 (fuzzy-conjuring-lobster — MCP-W3-001)
+# Generated: 2026-07-12
+# Audit date: 2026-07-12 (portfolio execution MCP-W3-001)
+
+meta:
+  plan_id: fuzzy-conjuring-lobster
+  portfolio_task: MCP-W3-001
+  audit_lanes: [A, B, C, D, E, F, G, H, I, J, K]
+  formats_audited: 20
+  generation_waves_found: 4
+  overall_system_health: GOOD
+  critical_gaps: 1
+  advisory_gaps: 6
+
+# ═══════════════════════════════════════════════════════
+# LANE A — Repository/State/Evidence
+# ═══════════════════════════════════════════════════════
+lane_a_findings:
+  status: HEALTHY
+  branch: main
+  head: 3fdaf841ed8941616dbe5e19d43af618c317d57b
+  dirty_files: 285
+  plan_files_in_repo: 77
+  gaps: []
+
+# ═══════════════════════════════════════════════════════
+# LANE B — Source Inventory
+# ═══════════════════════════════════════════════════════
+lane_b_findings:
+  python_formats: 20
+  dotnet_formats: 10
+  build_artifacts_in_src:
+    - path: src/format_factory_dev.egg-info
+      type: egg-info
+      action: GITIGNORE_CANDIDATE
+    - path: src/net/*/bin/
+      type: dotnet_bin
+      action: ALREADY_GITIGNORED
+    - path: src/net/*/obj/
+      type: dotnet_obj
+      action: ALREADY_GITIGNORED
+  analytics_files: 31
+  formats_with_separate_analytics: [abw, csv, fodg, fodp, fods, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+  formats_missing_separate_analytics: []
+  gaps:
+    - id: GAP-ARCH-B001
+      description: "src/format_factory_dev.egg-info not in .gitignore"
+      severity: LOW
+      action: ADD_TO_GITIGNORE
+
+# ═══════════════════════════════════════════════════════
+# LANE C — QName
+# ═══════════════════════════════════════════════════════
+lane_c_findings:
+  qname_coverage_pct: 99.4
+  formats_audited: 20
+  total_gaps: 1
+  critical_gaps: 0
+  gap_detail: "1 intentional gap: fodt:office:body (not yet mapped)"
+  spec_qname_presence:
+    all_20_formats_have_spec_qname: true
+    min_files_with_spec_qname: 13  # fodg
+    max_files_with_spec_qname: 186  # fods
+  gaps:
+    - id: GAP-ARCH-C001
+      description: "fodt:office:body qname not yet mapped to implementation"
+      severity: LOW
+      action: QNAME_BACKFILL_CANDIDATE
+
+# ═══════════════════════════════════════════════════════
+# LANE D — Source Quality
+# ═══════════════════════════════════════════════════════
+lane_d_findings:
+  known_violations_count: 337
+  stub_files_with_notimplementederror: 1
+  stub_analysis:
+    - file: src/python/fodp/fodp_codec.py
+      context: "write_fodp() — UNSUPPORTED_CAPABILITY (FODP is read-only)"
+      classification: INTENTIONAL_UNSUPPORTED_NOT_A_STUB
+  ep1_violations: 0
+  generation_wave_classification:
+    gen1_formats: [csv, tsv]
+    gen2_formats: [fods, fodt, ods, odt]
+    gen3_formats: [abw, dif, fodg, fodp, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, xcf, zst]
+    gen4_formats: []
+  gaps: []
+
+# ═══════════════════════════════════════════════════════
+# LANE E — SAL
+# ═══════════════════════════════════════════════════════
+lane_e_findings:
+  sal_gap_entries: 6
+  oracle_all_verified: true
+  all_20_formats_verified: true
+  sal_pipeline_tools: 28
+  gaps:
+    - id: GAP-ARCH-E001
+      description: "next-work-items.json has 0 items — capability pipeline not producing work items"
+      severity: MEDIUM
+      action: INVESTIGATE_CAPABILITY_PIPELINE
+
+# ═══════════════════════════════════════════════════════
+# LANE F — Capability
+# ═══════════════════════════════════════════════════════
+lane_f_findings:
+  capability_count: 120
+  skill_count: 120
+  command_count: 120
+  parity: "120:120:120 (FULL_PARITY)"
+  routing_registry_exists: true
+  next_work_items_count: 0
+  gaps:
+    - id: GAP-ARCH-F001
+      description: "next-work-items.json is empty — capability-to-feature pipeline may not be running or may have no eligible formats"
+      severity: MEDIUM
+      action: RUN_CAPABILITY_FEATURE_COMPILER
+
+# ═══════════════════════════════════════════════════════
+# LANE G — Downstream Generation
+# ═══════════════════════════════════════════════════════
+lane_g_findings:
+  malformed_source_entry_points: []
+  ep3_skill_violations_found: 0
+  governance_validator_exit: 0
+  gaps: []
+
+# ═══════════════════════════════════════════════════════
+# LANE H — Skills
+# ═══════════════════════════════════════════════════════
+lane_h_findings:
+  product_touching_skills: [add-python-api, add-python-object-model-feature, format-feature-expansion, product-source-task, add-spec-analytics-function, extract-analytics-from-monolith]
+  skills_with_qname_enforcement: "enforced by governance validators V119/V120/V125/V126"
+  skill_receipt_writer_exists: true
+  gaps: []
+
+# ═══════════════════════════════════════════════════════
+# LANE I — Supervisor
+# ═══════════════════════════════════════════════════════
+lane_i_findings:
+  check_continuation_govblock_enforcement: true
+  check_continuation_session_mismatch: true
+  check_continuation_max_iterations: true
+  lane_separation_enforcement: "prompt-only (no code enforcement in lane DAG)"
+  gaps:
+    - id: GAP-ARCH-I001
+      description: "Lane DAG ordering is prompt-only — no machine-enforced lane gate in check_continuation.py or governance_validator_runner.py"
+      severity: ADVISORY
+      action: DOCUMENT_AS_KNOWN_GAP
+
+# ═══════════════════════════════════════════════════════
+# LANE J — Backfill
+# ═══════════════════════════════════════════════════════
+lane_j_findings:
+  qname_backfill_skill_exists: true
+  qname_backfill_skill_id: qname-backfill
+  backfill_eligibility:
+    formats_eligible: [fodt]
+    backfill_target: "fodt:office:body"
+  gaps: []
+
+# ═══════════════════════════════════════════════════════
+# LANE K — Gate 11 / Readiness
+# ═══════════════════════════════════════════════════════
+lane_k_findings:
+  fods_gate11_criteria_met: "8/31 (Gate 11 approved for commercialization sprint)"
+  fodt_customer_readiness: "ALL 8 PASS"
+  netpbm_gate11: "Not assessed in this sprint"
+  gaps:
+    - id: GAP-ARCH-K001
+      description: "FODS Gate 11: 23/31 criteria outstanding. G11-G execution approval granted by Babar Raza."
+      severity: ADVISORY
+      action: TRACKED_IN_REGISTRY
+    - id: GAP-ARCH-K002
+      description: "FODT pending Babar Raza sign-off for CUSTOMER_READY publication"
+      severity: ADVISORY
+      action: TRUE_EXTERNAL_GATE
+
+# ═══════════════════════════════════════════════════════
+# CONSOLIDATED GAP SUMMARY
+# ═══════════════════════════════════════════════════════
+consolidated_gaps:
+  - id: GAP-ARCH-B001
+    lane: B
+    severity: LOW
+    description: "src/format_factory_dev.egg-info not gitignored"
+    action: ADD_TO_GITIGNORE
+    blocking: false
+
+  - id: GAP-ARCH-C001
+    lane: C
+    severity: LOW
+    description: "fodt:office:body qname gap (intentional, tracked)"
+    action: QNAME_BACKFILL_CANDIDATE
+    blocking: false
+
+  - id: GAP-ARCH-E001
+    lane: E
+    severity: MEDIUM
+    description: "next-work-items.json has 0 items — capability pipeline not producing work"
+    action: INVESTIGATE_CAPABILITY_PIPELINE
+    blocking: false
+
+  - id: GAP-ARCH-F001
+    lane: F
+    severity: MEDIUM
+    description: "capability-to-feature pipeline may not be producing next-work-items.json"
+    action: RUN_CAPABILITY_FEATURE_COMPILER
+    blocking: false
+
+  - id: GAP-ARCH-I001
+    lane: I
+    severity: ADVISORY
+    description: "Lane DAG is prompt-only enforcement (known gap from spec-to-feature plan)"
+    action: DOCUMENT
+    blocking: false
+
+  - id: GAP-ARCH-K001
+    lane: K
+    severity: ADVISORY
+    description: "FODS Gate 11: 23/31 criteria outstanding (tracked in registry)"
+    action: TRACKED_IN_REGISTRY
+    blocking: false
+
+  - id: GAP-ARCH-K002
+    lane: K
+    severity: ADVISORY
+    description: "FODT and FODS require Babar Raza sign-off (TRUE_EXTERNAL_GATE)"
+    action: TRUE_EXTERNAL_GATE
+    blocking: true
+
+# ═══════════════════════════════════════════════════════
+# 36-QUESTION INVESTIGATION VERDICT (TC-ARCH-018)
+# ═══════════════════════════════════════════════════════
+investigation_verdict:
+  system_health: GOOD
+  critical_blockers: 1
+  critical_blocker_detail: "Gate 11/CUSTOMER_READY sign-off requires Babar Raza (TRUE_EXTERNAL_GATE)"
+  actionable_internal_gaps: 4
+  summary: |
+    All 20 Python FOSS formats are at VERIFIED oracle status. QName coverage is 99.4%.
+    spec_qname is present in all 20 formats. No EP-1 stub violations in product code
+    (fodp NotImplementedError is an intentional UNSUPPORTED_CAPABILITY).
+    The capability pipeline (SAL → capability → feature compiler → next-work-items.json)
+    shows 0 next work items — this warrants investigation in MCP-W5 wave.
+    Lane DAG ordering is prompt-only (no machine enforcement) — known gap from Lane 14
+    of spec-to-feature-radical-correction-plan.md.
+    The system is in GOOD health with no critical production blockers other than
+    the TRUE_EXTERNAL_GATE requiring Babar Raza's commercial sign-off.

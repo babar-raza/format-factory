@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-006",
+  "workstream_id": "WS-18-PLAYFUL-THUNDER",
+  "objective": "Execute playful-discovering-thunder: all 95 TCs in 2 batches (batch A: 1-48)",
+  "source_plan_ids": [
+    "s022"
+  ],
+  "source_task_ids": [
+    "TC-PDT-001",
+    "TC-PDT-002",
+    "TC-PDT-003",
+    "TC-PDT-004",
+    "TC-PDT-005",
+    "TC-PDT-006",
+    "TC-PDT-007",
+    "TC-PDT-008",
+    "TC-PDT-009",
+    "TC-PDT-010",
+    "TC-PDT-011",
+    "TC-PDT-012",
+    "TC-PDT-013",
+    "TC-PDT-014",
+    "TC-PDT-015",
+    "TC-PDT-016",
+    "TC-PDT-017",
+    "TC-PDT-018",
+    "TC-PDT-019",
+    "TC-PDT-020",
+    "TC-PDT-021",
+    "TC-PDT-022",
+    "TC-PDT-023",
+    "TC-PDT-024",
+    "TC-PDT-025",
+    "TC-PDT-026",
+    "TC-PDT-027",
+    "TC-PDT-028",
+    "TC-PDT-029",
+    "TC-PDT-030",
+    "TC-PDT-031",
+    "TC-PDT-032",
+    "TC-PDT-033",
+    "TC-PDT-034",
+    "TC-PDT-035",
+    "TC-PDT-036",
+    "TC-PDT-037",
+    "TC-PDT-038",
+    "TC-PDT-039",
+    "TC-PDT-040",
+    "TC-PDT-041",
+    "TC-PDT-042",
+    "TC-PDT-043",
+    "TC-PDT-044",
+    "TC-PDT-045",
+    "TC-PDT-046",
+    "TC-PDT-047",
+    "TC-PDT-048"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "TCs 1-48 in s022 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/",
+    "src/python/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read playful-discovering-thunder.md (s022)",
+    "Execute TCs 1-48",
+    "Write evidence/raw/ET-W4-006/pdt-batch-a-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "1631bd24a5d621726eb2aaa4c1c80479c86a9521082b28edc20fdac1e524c552"
+}

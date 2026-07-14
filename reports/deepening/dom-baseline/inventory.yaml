@@ -1,0 +1,96 @@
+baseline_date: "2026-07-13"
+plan: peppy-crafting-lark (MCP-W5-006)
+taskcard: TC-PCL-010
+
+formats:
+  - format: ods
+    models_file: src/python/ods/models.py
+    has_write_api: true
+    has_to_file: false
+    has_save_to_file: true
+    has_cell_at: true
+    has_set_text: false
+    has_add_paragraph: false
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-ODS-DOM-D3-NESTED-TRAVERSAL-MUTATION-001
+    d2_gap_note: Ledger shows D2 but no D2 proof file exists yet
+    d2_advancement_needed:
+      - add to_file() alias
+      - add cell set_value() or verify mutation propagation
+      - create test_ods_dom_d2_mutation.py
+
+  - format: odt
+    models_file: src/python/odt/models.py
+    has_write_api: true
+    has_to_file: false
+    has_save_to_file: true
+    has_cell_at: false
+    has_set_text: false
+    has_add_paragraph: true
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-ODT-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+    d2_advancement_needed:
+      - add to_file() alias
+      - add set_text() to paragraph class
+      - create test_odt_dom_d2_mutation.py
+
+  - format: fodp
+    models_file: src/python/fodp/models.py
+    has_write_api: false
+    has_to_file: false
+    has_save_to_file: false
+    has_cell_at: false
+    has_set_text: false
+    has_add_paragraph: false
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-FODP-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+    d2_advancement_needed:
+      - investigate writer availability
+      - add save_to_file() / to_file()
+      - add slide/shape mutation API
+      - create test_fodp_dom_d2_mutation.py
+
+  - format: fodg
+    models_file: src/python/fodg/models.py
+    has_write_api: true
+    has_to_file: false
+    has_save_to_file: true
+    has_cell_at: false
+    has_set_text: false
+    has_add_paragraph: false
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-FODG-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+    d2_advancement_needed:
+      - add to_file() alias
+      - identify primary DOM element to mutate (shapes/pages)
+      - create test_fodg_dom_d2_mutation.py
+
+  - format: abw
+    models_file: src/python/abw/models.py
+    has_write_api: true
+    has_to_file: false
+    has_save_to_file: true
+    has_cell_at: false
+    has_set_text: false
+    has_add_paragraph: true
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-ABW-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+    d2_advancement_needed:
+      - add to_file() alias
+      - add set_text() to paragraph
+      - create test_abw_dom_d2_mutation.py
+
+  - format: gnumeric
+    models_file: src/python/gnumeric/models.py
+    has_write_api: true
+    has_to_file: false
+    has_save_to_file: true
+    has_cell_at: false
+    has_set_text: false
+    has_add_paragraph: false
+    current_lane_b_maturity: D1
+    d2_gap_id: GAP-GNUMERIC-DOM-D2-MUTATION-AND-ROUNDTRIP-001
+    d2_advancement_needed:
+      - add to_file() alias
+      - add cell mutation API (find cell access path)
+      - create test_gnumeric_dom_d2_mutation.py

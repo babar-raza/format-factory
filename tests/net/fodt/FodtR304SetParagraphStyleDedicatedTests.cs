@@ -49,7 +49,7 @@ public class FodtR304SetParagraphStyleDedicatedTests
         if (doc.ParagraphCount == 0)
             Assert.ThrowsAny<Exception>(() => doc.SetParagraphStyle(0, "bold"));
         else
-            Assert.True(true); // document has default paragraphs
+            Assert.True(doc.ParagraphCount > 0); // document has default paragraphs
     }
 
     // -------------------------------------------------------------------------

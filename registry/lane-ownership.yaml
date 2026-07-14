@@ -1,0 +1,34 @@
+# Lane ownership registry — maps path prefixes to governance owners
+# Used by governance validators for lane attribution
+lanes:
+  python_product:
+    paths:
+    - src/python/
+    owner: product
+    description: Python FOSS format implementations
+  dotnet_product:
+    paths:
+    - src/net/
+    owner: product
+    description: .NET commercial format implementations
+  tests_python:
+    paths:
+    - tests/python/
+    owner: testing
+    description: Python format test suites
+  tests_dotnet:
+    paths:
+    - tests/net/
+    owner: testing
+    description: .NET format test suites
+  tools:
+    paths:
+    - tools/
+    owner: machinery
+    description: Supervisor, governance, and automation tooling
+  governance:
+    paths:
+    - .governance/
+    - registry/
+    owner: governance
+    description: Capability registry, validators, and governance artifacts

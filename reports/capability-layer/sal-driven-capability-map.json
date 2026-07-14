@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-07-04T12:28:58.440481+00:00",
+  "generated_at": "2026-07-13T13:10:02.591096+00:00",
   "generator": "tools/capability_layer/capability_compiler.py",
   "generator_version": "2.0",
   "authority": "SAL_FACTS_PRIMARY",
@@ -29,8 +29,8 @@
   ],
   "total_capabilities": 161,
   "state_breakdown": {
-    "test_verified": 92,
-    "missing": 69
+    "test_verified": 93,
+    "missing": 68
   },
   "validation": {
     "capabilities_without_obligation_provenance": 0,
@@ -63,9 +63,7 @@
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
@@ -102,9 +100,7 @@
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
@@ -141,9 +137,7 @@
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "test_verified",
@@ -170,15 +164,13 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/abw/test_r270_abw_installed_workflow.py",
-        "tests/python/abw/test_r287_abw_installed_workflow.py"
+        "tests/python/abw/test_r270_abw_workflow.py",
+        "tests/python/abw/test_r287_abw_workflow.py"
       ],
       "example_refs": [
         "examples/python/abw/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/abw/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "e67d33f431a9779d",
       "current_state": "missing",
@@ -222,9 +214,7 @@
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -268,9 +258,7 @@
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -307,16 +295,14 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_gap_closure_foss.py",
-        "tests/python/csv/test_csv_gate6_oracle.py",
-        "tests/python/csv/test_pbt_csv.py"
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_foss.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -354,15 +340,13 @@
       ],
       "test_refs": [
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -399,16 +383,14 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
+        "tests/python/csv/test_csv_analytics_ext.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_gate6_oracle.py",
-        "tests/python/csv/test_csv_mainstream_writer.py"
+        "tests/python/csv/test_csv_document_mutation.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -439,14 +421,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/csv/test_csv_to_fodt.py",
+        "tests/python/csv/test_csv_to_odt.py",
         "tests/python/csv/test_r165_csv_coverage.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "missing",
@@ -483,16 +465,14 @@
         "src/python/csv/csv_parser.py"
       ],
       "test_refs": [
-        "tests/python/csv/test_csv_to_dicts.py",
-        "tests/python/csv/test_mainstream_csv_writer.py",
-        "tests/python/csv/test_mdr11_csv_stats.py"
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_to_abw.py",
+        "tests/python/csv/test_csv_to_dicts.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "test_verified",
@@ -520,14 +500,12 @@
       "test_refs": [
         "tests/python/csv/test_mdr9_csv_exports.py",
         "tests/python/csv/test_r165_csv_coverage.py",
-        "tests/python/csv/test_r271_csv_installed_workflow.py"
+        "tests/python/csv/test_r271_csv_workflow.py"
       ],
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "missing",
@@ -556,9 +534,7 @@
       "example_refs": [
         "examples/python/csv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/csv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
       "current_state": "missing",
@@ -593,9 +569,7 @@
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
@@ -628,9 +602,7 @@
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "missing",
@@ -659,15 +631,13 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_gap_closure_foss.py",
-        "tests/python/dif/test_dif_gate6_oracle.py"
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_gap_closure_foss.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
@@ -696,15 +666,13 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_gap_closure_batch.py",
-        "tests/python/dif/test_dif_gate6_oracle.py"
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
@@ -733,15 +701,13 @@
       ],
       "test_refs": [
         "tests/python/dif/test_dif_conveyor_deepening.py",
-        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
-        "tests/python/dif/test_dif_gap_closure_batch.py"
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py"
       ],
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "test_verified",
@@ -774,9 +740,7 @@
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "missing",
@@ -808,9 +772,7 @@
       "example_refs": [
         "examples/python/dif/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/dif/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "0745f5174edaaa79",
       "current_state": "missing",
@@ -854,9 +816,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -900,9 +860,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -939,16 +897,14 @@
         "src/python/fodg/fodg_codec.py"
       ],
       "test_refs": [
+        "tests/python/fodg/test_fodg_document_mutation.py",
         "tests/python/fodg/test_fodg_export_csv_pipeline.py",
-        "tests/python/fodg/test_fodg_load_gap_closure.py",
-        "tests/python/fodg/test_fodg_roundtrip_export_pipeline.py"
+        "tests/python/fodg/test_fodg_load_gap_closure.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -992,9 +948,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -1029,15 +983,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodg/test_r274_fodg_installed_workflow.py",
-        "tests/python/fodg/test_r298_fodg_iter_pages.py"
+        "tests/python/fodg/test_fodg_to_fods.py",
+        "tests/python/fodg/test_fodg_to_ods.py",
+        "tests/python/fodg/test_fodg_to_toml.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1075,9 +1028,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1113,14 +1064,13 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/fodg/test_cap_fodg_export_csv.py",
-        "tests/python/fodg/test_r167_fodg_coverage.py"
+        "tests/python/fodg/test_fodg_to_csv.py",
+        "tests/python/fodg/test_fodg_to_dif.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1154,13 +1104,14 @@
         "FACT-FODG-EX-0177"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_to_csv.py",
+        "tests/python/fodg/test_fodg_to_tsv.py"
+      ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1194,13 +1145,15 @@
         "FACT-FODG-EX-0154"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/fodg/test_fodg_to_fodt.py",
+        "tests/python/fodg/test_fodg_to_odt.py",
+        "tests/python/fodg/test_fodg_to_tsv.py"
+      ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1244,9 +1197,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -1281,14 +1232,12 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodg/test_r274_fodg_installed_workflow.py"
+        "tests/python/fodg/test_r274_fodg_workflow.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1326,9 +1275,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1372,9 +1319,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -1414,9 +1359,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "missing",
@@ -1460,9 +1403,7 @@
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodg/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "fe20e33eef8c2ebd",
       "current_state": "test_verified",
@@ -1506,9 +1447,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -1552,9 +1491,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -1594,9 +1531,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1634,9 +1569,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1671,16 +1604,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
-        "tests/python/fodp/test_r299_fodp_iter_slides.py",
-        "tests/python/fodp/test_rnext_fodp_master_page_count.py"
+        "tests/python/fodp/test_fodp_to_fods.py",
+        "tests/python/fodp/test_fodp_to_ods.py",
+        "tests/python/fodp/test_fodp_to_toml.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1718,9 +1649,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1755,14 +1684,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_fodp_export_functions.py"
+        "tests/python/fodp/test_fodp_export_functions.py",
+        "tests/python/fodp/test_fodp_to_csv.py",
+        "tests/python/fodp/test_fodp_to_dif.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1796,13 +1725,14 @@
         "FACT-FODP-EX-0177"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_to_csv.py",
+        "tests/python/fodp/test_fodp_to_tsv.py"
+      ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1837,14 +1767,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodp/test_fodp_export_functions.py"
+        "tests/python/fodp/test_fodp_export_functions.py",
+        "tests/python/fodp/test_fodp_to_fodt.py",
+        "tests/python/fodp/test_fodp_to_odt.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1888,9 +1818,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -1926,15 +1854,13 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_r281_fodp_installed_workflow.py",
+        "tests/python/fodp/test_r281_fodp_workflow.py",
         "tests/python/fodp/test_r567_fodp_presentation_analysis_properties.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -1974,9 +1900,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "missing",
@@ -2020,9 +1944,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -2065,9 +1987,7 @@
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -2105,15 +2025,13 @@
       ],
       "test_refs": [
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_r1224_fodp_shape_analysis_properties.py",
-        "tests/python/fodp/test_r1247_fodp_scale_content_properties.py"
+        "tests/python/fodp/test_fodp_slide_analytics_ext.py",
+        "tests/python/fodp/test_fodp_slide_analytics_ext2.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodp/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "21bc6f611e96915b",
       "current_state": "test_verified",
@@ -2150,16 +2068,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
+        "tests/python/fods/test_fods_file_analytics_ext.py",
         "tests/python/fods/test_fods_gap_closure_batch.py",
-        "tests/python/fods/test_fods_install_proof.py",
-        "tests/python/fods/test_fods_primary_api.py"
+        "tests/python/fods/test_fods_install_proof.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2203,9 +2119,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2234,16 +2148,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fods/test_fods_gap_closure_batch.py",
-        "tests/python/fods/test_fods_property_based.py",
-        "tests/python/fods/test_fods_pywrite_deepening.py"
+        "tests/python/fods/test_fods_document_mutation.py",
+        "tests/python/fods/test_fods_dom_d2_mutation.py",
+        "tests/python/fods/test_fods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2285,9 +2197,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2324,16 +2234,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
+        "tests/python/fods/test_fods_document_mutation.py",
         "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py",
-        "tests/python/fods/test_fods_gap_closure_batch.py"
+        "tests/python/fods/test_fods_domain_models.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2370,16 +2278,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py",
-        "tests/python/fods/test_fods_gap_closure_batch.py"
+        "tests/python/fods/test_fods_document_mutation.py",
+        "tests/python/fods/test_fods_dom_d2_mutation.py",
+        "tests/python/fods/test_fods_dom_d3_traversal.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2416,16 +2322,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
+        "tests/python/fods/test_fods_document_mutation.py",
         "tests/python/fods/test_fods_dom_d3_traversal.py",
-        "tests/python/fods/test_fods_domain_models.py",
-        "tests/python/fods/test_fods_gap_closure_batch.py"
+        "tests/python/fods/test_fods_domain_models.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2462,16 +2366,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_parser_mutation_hardening.py",
-        "tests/python/fods/test_r162_fods_column_values.py",
-        "tests/python/fods/test_r162_fods_sheet_order_numeric.py"
+        "tests/python/fods/test_fods_document_mutation.py",
+        "tests/python/fods/test_fods_to_ndjson.py",
+        "tests/python/fods/test_parser_mutation_hardening.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2505,13 +2407,14 @@
         "FACT-FODS-EX-0037"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/fods/test_fods_to_fodt.py",
+        "tests/python/fods/test_fods_to_odt.py"
+      ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2548,16 +2451,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
-        "tests/python/fods/test_fods_gap_closure_batch.py",
-        "tests/python/fods/test_fods_gap_closure_foss.py",
-        "tests/python/fods/test_fods_install_proof.py"
+        "tests/python/fods/test_fods_document_mutation.py",
+        "tests/python/fods/test_fods_file_analytics_ext2.py",
+        "tests/python/fods/test_fods_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2601,9 +2502,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2640,16 +2539,14 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
+        "tests/python/fods/test_fods_file_analytics_ext.py",
         "tests/python/fods/test_fods_gap_closure_foss.py",
-        "tests/python/fods/test_fods_pywrite_deepening.py",
-        "tests/python/fods/test_parser_basic.py"
+        "tests/python/fods/test_fods_pywrite_deepening.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "test_verified",
@@ -2689,9 +2586,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2729,9 +2624,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2772,9 +2665,7 @@
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "74836de1e4c46ffc",
       "current_state": "missing",
@@ -2818,9 +2709,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -2864,9 +2753,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -2895,16 +2782,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/fodt/test_fodt_gap_closure_batch.py",
-        "tests/python/fodt/test_fodt_pywrite_deepening.py",
-        "tests/python/fodt/test_fodt_semantic_roundtrip.py"
+        "tests/python/fodt/test_fodt_document_mutation.py",
+        "tests/python/fodt/test_fodt_dom_d2_mutation.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "missing",
@@ -2945,9 +2830,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "missing",
@@ -2991,9 +2874,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3037,9 +2918,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3076,16 +2955,14 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
-        "tests/python/fodt/test_neutral_model.py",
-        "tests/python/fodt/test_parser_basic.py",
-        "tests/python/fodt/test_r163_fodt_table_cell_span_fields.py"
+        "tests/python/fodt/test_fodt_to_csv.py",
+        "tests/python/fodt/test_fodt_to_dif.py",
+        "tests/python/fodt/test_fodt_to_fods.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3129,9 +3006,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3170,14 +3045,12 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_domain_models.py"
+        "tests/python/fodt/test_fodt_document_mutation.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3216,14 +3089,12 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_compat_e2e.py",
-        "tests/python/fodt/test_fodt_exporters.py"
+        "tests/python/fodt/test_fodt_document_mutation.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3267,9 +3138,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3309,9 +3178,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "missing",
@@ -3352,9 +3219,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "missing",
@@ -3398,9 +3263,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3444,9 +3307,7 @@
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/fodt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "acc9894685ad6ed4",
       "current_state": "test_verified",
@@ -3481,9 +3342,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3519,9 +3378,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3557,9 +3414,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3594,9 +3449,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3631,9 +3484,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3668,9 +3519,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3698,14 +3547,12 @@
       ],
       "implementation_refs": [],
       "test_refs": [
-        "tests/python/gnumeric/test_r272_gnumeric_installed_workflow.py"
+        "tests/python/gnumeric/test_r272_gnumeric_workflow.py"
       ],
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "missing",
@@ -3740,9 +3587,7 @@
       "example_refs": [
         "examples/python/gnumeric/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/gnumeric/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "61d27eeac475d20d",
       "current_state": "test_verified",
@@ -3771,9 +3616,7 @@
       "example_refs": [
         "examples/python/ndjson/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ndjson/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "7cd4921a72ce163e",
       "current_state": "missing",
@@ -3803,9 +3646,7 @@
       "example_refs": [
         "examples/python/ndjson/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ndjson/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "7cd4921a72ce163e",
       "current_state": "missing",
@@ -3849,9 +3690,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -3895,9 +3734,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -3934,14 +3771,12 @@
       "test_refs": [
         "tests/python/ods/test_dogfood_ods_csv_pipeline.py",
         "tests/python/ods/test_ods_csv_exporter.py",
-        "tests/python/ods/test_ods_gap_closure_batch.py"
+        "tests/python/ods/test_ods_document_mutation.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -3985,9 +3820,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4031,9 +3864,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4077,9 +3908,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4123,9 +3952,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4169,9 +3996,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4205,13 +4030,14 @@
         "FACT-ODS-EX-0154"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/ods/test_ods_to_fodt.py",
+        "tests/python/ods/test_ods_to_odt.py"
+      ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -4255,9 +4081,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4299,9 +4123,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -4345,9 +4167,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "test_verified",
@@ -4385,9 +4205,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -4425,9 +4243,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -4465,9 +4281,7 @@
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ods/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "bc85887d81e73767",
       "current_state": "missing",
@@ -4511,9 +4325,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4557,9 +4369,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4594,15 +4404,14 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/odt/test_odt_document_mutation.py",
         "tests/python/odt/test_odt_sample_roundtrip.py",
         "tests/python/odt/test_r1226_odt_dogfood_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -4646,9 +4455,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4686,15 +4493,13 @@
       ],
       "test_refs": [
         "tests/python/odt/test_odt_gate5_neutral_model.py",
-        "tests/python/odt/test_r232_odt_longest_para_has_tables.py",
-        "tests/python/odt/test_r275_odt_installed_workflow.py"
+        "tests/python/odt/test_odt_to_fods.py",
+        "tests/python/odt/test_odt_to_ods.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4732,9 +4537,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -4768,13 +4571,15 @@
         "FACT-ODT-EX-0177"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/odt/test_odt_to_csv.py",
+        "tests/python/odt/test_odt_to_dif.py",
+        "tests/python/odt/test_odt_to_fods.py"
+      ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -4812,9 +4617,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -4853,14 +4656,12 @@
       "test_refs": [
         "tests/python/odt/test_mdr10_odt_exports.py",
         "tests/python/odt/test_odt_conveyor_deepening.py",
-        "tests/python/odt/test_odt_domain_model.py"
+        "tests/python/odt/test_odt_doc_analytics.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4897,16 +4698,14 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
-        "tests/python/odt/test_odt_domain_model.py",
-        "tests/python/odt/test_odt_gate5_neutral_model.py",
-        "tests/python/odt/test_odt_gate6_oracle.py"
+        "tests/python/odt/test_odt_doc_analytics.py",
+        "tests/python/odt/test_odt_doc_analytics_ext.py",
+        "tests/python/odt/test_odt_doc_analytics_ext2.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "test_verified",
@@ -4943,14 +4742,12 @@
       "test_refs": [
         "tests/python/odt/test_odt_gate6_oracle.py",
         "tests/python/odt/test_odt_gate7_fuzz_guard.py",
-        "tests/python/odt/test_r275_odt_installed_workflow.py"
+        "tests/python/odt/test_r275_odt_workflow.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -4988,9 +4785,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -5028,9 +4823,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -5070,9 +4863,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -5110,9 +4901,7 @@
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/odt/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f776f952288fc7fb",
       "current_state": "missing",
@@ -5148,9 +4937,7 @@
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/pbm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ffc030f693f60b3b",
       "current_state": "test_verified",
@@ -5175,22 +4962,23 @@
         "FACT-PBM-001",
         "FACT-PBM-002"
       ],
-      "implementation_refs": [],
+      "implementation_refs": [
+        "src/python/pbm/pbm_parser.py"
+      ],
       "test_refs": [
+        "tests/python/pbm/test_pbm_bitmap_analytics_ext2.py",
         "tests/python/pbm/test_pbm_gate5_neutral_model.py",
-        "tests/python/pbm/test_r282_pbm_installed_workflow.py"
+        "tests/python/pbm/test_r282_pbm_workflow.py"
       ],
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/pbm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ffc030f693f60b3b",
-      "current_state": "missing",
+      "current_state": "test_verified",
       "confidence_level": "high",
-      "evidence_note": "MISSING: no source implementation found for this operation",
+      "evidence_note": "STRONG: test file + source implementation evidence",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -5221,9 +5009,7 @@
       "example_refs": [
         "examples/python/pgm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/pgm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "59e8d970b39fb333",
       "current_state": "test_verified",
@@ -5251,14 +5037,12 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/pgm/test_pgm_gate5_neutral_model.py",
-        "tests/python/pgm/test_r283_pgm_installed_workflow.py"
+        "tests/python/pgm/test_r283_pgm_workflow.py"
       ],
       "example_refs": [
         "examples/python/pgm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/pgm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "59e8d970b39fb333",
       "current_state": "missing",
@@ -5294,9 +5078,7 @@
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ppm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "d1ff74bebb8ea2a2",
       "current_state": "test_verified",
@@ -5330,9 +5112,7 @@
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/ppm/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "d1ff74bebb8ea2a2",
       "current_state": "missing",
@@ -5367,9 +5147,7 @@
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/qoi/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
@@ -5404,9 +5182,7 @@
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/qoi/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
@@ -5441,9 +5217,7 @@
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/qoi/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "71705f354549fb9d",
       "current_state": "test_verified",
@@ -5470,14 +5244,12 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/qoi/test_r202_qoi_advanced_ops.py",
-        "tests/python/qoi/test_r276_qoi_installed_workflow.py"
+        "tests/python/qoi/test_r276_qoi_workflow.py"
       ],
       "example_refs": [
         "examples/python/qoi/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/qoi/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "71705f354549fb9d",
       "current_state": "missing",
@@ -5512,9 +5284,7 @@
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/sylk/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
@@ -5549,9 +5319,7 @@
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/sylk/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
@@ -5586,9 +5354,7 @@
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/sylk/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
@@ -5624,9 +5390,7 @@
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/sylk/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
@@ -5661,9 +5425,7 @@
       "example_refs": [
         "examples/python/sylk/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/sylk/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "79bad99d11b0ff87",
       "current_state": "test_verified",
@@ -5705,9 +5467,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
@@ -5742,9 +5502,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
@@ -5783,9 +5541,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
@@ -5829,9 +5585,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
@@ -5869,9 +5623,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "missing",
@@ -5906,9 +5658,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "missing",
@@ -5952,9 +5702,7 @@
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "test_verified",
@@ -5984,14 +5732,12 @@
       "test_refs": [
         "tests/python/toml/test_gap_installed_workflow.py",
         "tests/python/toml/test_r155_toml_flatten_env.py",
-        "tests/python/toml/test_r266_toml_installed_workflow.py"
+        "tests/python/toml/test_r266_toml_workflow.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/toml/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "75ab4deafc7bce54",
       "current_state": "missing",
@@ -6027,9 +5773,7 @@
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/tsv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
@@ -6064,9 +5808,7 @@
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/tsv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
@@ -6100,9 +5842,7 @@
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/tsv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "missing",
@@ -6137,9 +5877,7 @@
       "example_refs": [
         "examples/python/tsv/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/tsv/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "2da3e578fdda6727",
       "current_state": "test_verified",
@@ -6174,9 +5912,7 @@
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/xcf/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "1e616d23f3f723bb",
       "current_state": "test_verified",
@@ -6211,9 +5947,7 @@
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/xcf/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "1e616d23f3f723bb",
       "current_state": "test_verified",
@@ -6240,14 +5974,12 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/xcf/test_r165_xcf_probe_layer_dims.py",
-        "tests/python/xcf/test_r278_xcf_installed_workflow.py"
+        "tests/python/xcf/test_r278_xcf_workflow.py"
       ],
       "example_refs": [
         "examples/python/xcf/consumer_roundtrip.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/xcf/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "1e616d23f3f723bb",
       "current_state": "missing",
@@ -6289,9 +6021,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6331,9 +6061,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6377,9 +6105,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",
@@ -6415,15 +6141,13 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/zst/test_r267_zst_compression_summary.py",
-        "tests/python/zst/test_r280_zst_installed_workflow.py",
+        "tests/python/zst/test_r280_zst_workflow.py",
         "tests/python/zst/test_r293_zst_inspect_frame.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6461,9 +6185,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6498,9 +6220,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6544,9 +6264,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",
@@ -6582,14 +6300,12 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/zst/test_r267_zst_compression_summary.py",
-        "tests/python/zst/test_r280_zst_installed_workflow.py"
+        "tests/python/zst/test_r280_zst_workflow.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6621,9 +6337,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6654,9 +6368,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "missing",
@@ -6700,9 +6412,7 @@
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"
       ],
-      "package_refs": [
-        ".venv/Lib/site-packages/zst/"
-      ],
+      "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "f5d93c069c475cf0",
       "current_state": "test_verified",

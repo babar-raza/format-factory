@@ -56,8 +56,8 @@ public class ZstR120DocumentValidityTests
     {
         var doc = LoadCompressed("bool check");
         // Just verify we can read the bool without exception
-        var _ = doc.MagicValid;
-        Assert.True(true); // reached without exception
+        var magicValid = doc.MagicValid;
+        Assert.IsType<bool>((object)magicValid); // accessible and returns bool
     }
 
     // ---- HasMultipleFrames ----

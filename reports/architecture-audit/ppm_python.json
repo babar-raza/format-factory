@@ -1,0 +1,18 @@
+{
+  "format_id": "ppm",
+  "language": "python",
+  "audit_timestamp": "2026-07-12T20:31:50.481832+00:00",
+  "classification": "PARSER_WRITER_REALIGNMENT",
+  "criteria": {
+    "spec_dir_present": true,
+    "spec_namespaced": true,
+    "models_spec_qname": true,
+    "init_logic_free": true,
+    "compat_delegates": true,
+    "parser_produces_typed": false
+  },
+  "violations": [
+    "parser/codec does not import from spec/ (may return raw dicts)"
+  ],
+  "files_scanned": 18
+}

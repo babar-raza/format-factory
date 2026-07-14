@@ -266,3 +266,79 @@ violations:
 
 required_counters:
   AMBIGUOUS_CAPABILITY_AUTHORITIES: 0  # All authorities explicitly assigned with roles and constraints
+
+# ── TWO-TRACK AUTHORITY BOUNDARY (TC-CL-004 — added 2026-07-11) ──────────────
+
+authority_tracks:
+  description: |
+    The capability layer operates two parallel authority tracks. Both tracks are legitimate;
+    neither supersedes the other. They serve different format populations.
+
+    Track A feeds non-ODF formats where no machine-readable spec exists (CSV has no spec).
+    Track B feeds ODF formats where the OASIS ODF 1.3 spec is fully parsed by the SAL pipeline.
+
+    This boundary must be preserved when adding new capabilities: always check whether
+    the format has SAL facts before assigning authority_class.
+
+  track_a:
+    name: "POC-Targets Track (IMPLEMENTATION_ASSERTED)"
+    authority_class: IMPLEMENTATION_ASSERTED
+    obligation_source: "poc-targets.yaml"
+    description: |
+      Work selection via: poc-targets.yaml → select_poc_gaps.py → selected-product-gaps.json
+      Used for non-ODF formats that have no machine-readable specification. Capability authority
+      comes from human-authored POC targets + source introspection.
+    covered_formats:
+      - CSV
+      - TSV
+      - NDJSON
+      - TOML
+      - XCF
+      - QOI
+      - PBM
+      - PGM
+      - PPM
+      - ZST
+    upgrade_path: |
+      Formats in Track A will gain SAL_GROUNDED authority when /ingest-spec-sal runs for
+      each format's specification. Currently blocked on Lane 14-15 work.
+
+  track_b:
+    name: "SAL-Grounded Track (SAL_GROUNDED)"
+    authority_class: SAL_GROUNDED
+    obligation_source: "sal-facts"
+    description: |
+      Work selection via: gap-ledger.json → capability_feature_compiler → next-work-items.json
+      Used for ODF formats and formats with parsed SAL facts. Capability authority comes from
+      the OASIS ODF 1.3 spec (14,441 SAL facts). capability_compiler.py produces
+      sal-driven-capability-map.json with obligation_ids for these formats.
+    covered_formats:
+      - FODS
+      - FODT
+      - FODG
+      - FODP
+      - ODS
+      - ODT
+      - ABW
+      - DIF
+      - GNUMERIC
+      - SYLK
+    sal_facts_source: ".local/spec-cache/sal-facts-latest.json"
+    sal_compiler: "tools/capability_layer/capability_compiler.py"
+    sal_map_output: "reports/capability-layer/sal-driven-capability-map.json"
+
+  boundary_rules:
+    - rule: "capability_map_generator.py sets authority_class based on ODF_FORMATS constant"
+      enforcement: "code (tools/capability_layer/capability_map_generator.py:ODF_FORMATS)"
+    - rule: "When compile_gaps() returns 0 items, work_selection_mode must be logged explicitly"
+      enforcement: "code (tools/supervisor/autonomous_cycle.py TC-CL-006)"
+    - rule: "Non-ODF formats MUST NOT receive obligation_ids from the SAL compiler"
+      enforcement: "capability_compiler.py validation gate (no_obligation check)"
+
+  known_violations_at_2026_07_11:
+    - violation: "V-AUTH-004 partially resolved: example_verified false assignments fixed (TC-CL-001)"
+      before: "393 false example_verified records (confirmed 2026-07-10)"
+      after: "0 false example_verified records (fixed 2026-07-11)"
+      status: RESOLVED
+    - violation: "V-AUTH-003 resolved: action-queue regenerated with advisory_only=true"
+      status: RESOLVED

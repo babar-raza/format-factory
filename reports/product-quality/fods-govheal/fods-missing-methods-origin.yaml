@@ -1,0 +1,256 @@
+# TC-FGSQ-001: FODS Method Origin Ledger
+# Purpose: Inventories all dict-backed getter/setter methods in the FodsDocument partial class.
+# Each method is classified by data source: DICT_ONLY, XML_BACKED, or REMOVED.
+# Updated: 2026-07-11 | Source: ET-W2-002 reconciliation
+
+mission_id: FGSQ-GOVHEAL-001
+generated: "2026-07-11"
+total_dict_fields: 13
+total_dict_backed_methods: 28
+
+dict_fields:
+  - field: _charts
+    file: src/net/fods/FodsDocument.cs
+    line: 301
+    type: "Dictionary<string, List<ChartInfo>>"
+    odf_target: "chart:chart (§9.8)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: GetChartTitle(sheetName, index)
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        line: 21
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-006"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _conditionalFormats
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 131
+    type: "Dictionary<string, List<(string Range, string Condition, string Style)>>"
+    odf_target: "table:content-validation (§11.6)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: AddConditionalFormat(sheetName, range, condition, formatStyle)
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+      - method: GetConditionalFormatCount(sheetName)
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        line: 143
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-007"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetConditionalFormatRule(sheetName, index)
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        line: 155
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-007"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _dataValidations
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 177
+    type: "Dictionary<string, List<(string Range, string Rule, string ErrorMsg)>>"
+    odf_target: "table:content-validation (§11.4)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: AddDataValidation(sheetName, range, rule, errorMessage)
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+      - method: GetDataValidationCount(sheetName)
+        line: 195
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-008"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetDataValidationRule(sheetName, index)
+        line: 206
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-008"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _hyperlinks
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 234
+    type: "Dictionary<string, List<(string Url, string Display)>>"
+    odf_target: "text:a/@xlink:href"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: AddHyperlink(sheetName, url, displayText)
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+      - method: GetHyperlinkCount(sheetName)
+        line: 246
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-009"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetHyperlinkUrl(sheetName, index)
+        line: 254
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-009"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _cellHyperlinks
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 76
+    type: "Dictionary<(string Sheet, int Row, int Col), (string Url, string Display)>"
+    odf_target: "text:a/@xlink:href (cell-level)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: GetCellHyperlink(sheetName, row, col)
+        line: 79
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-009"
+        disposition: UNSUPPORTED_PENDING
+      - method: SetCellHyperlink(sheetName, row, col, url)
+        line: 91
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-009"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _pivotTables
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 339
+    type: "List<(string Name, string SourceRange)>"
+    odf_target: "table:data-pilot-table (§9.6)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: GetPivotTableCount()
+        line: 392
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-012"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetPivotTableName(index)
+        line: 400
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-012"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetPivotTableSourceRange(index)
+        line: 411
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-012"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _sparklines
+    file: src/net/fods/FodsDocumentDataAnnotations.cs
+    line: 424
+    type: "List<(string Type, string DataRange)>"
+    odf_target: null
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods: []
+
+  - field: _rowHeights
+    file: src/net/fods/FodsDocumentReadOps.cs
+    line: 33
+    type: "Dictionary<(string sheet, int row), double>"
+    odf_target: "table:table-row/@table:default-row-height"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: SetRowHeight(sheetName, rowIndex, height)
+        file: src/net/fods/FodsDocumentEditOps.cs
+        line: 310
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-010"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _namedRanges
+    file: src/net/fods/FodsDocumentReadOps.cs
+    line: 34
+    type: "Dictionary<string, string>"
+    odf_target: "table:named-expressions/table:named-range"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: AddNamedRange(name, range)
+        file: src/net/fods/FodsDocumentEditOps.cs
+        line: 597
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-011"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetNamedRanges()
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        line: 325
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-011"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _cellComments
+    file: src/net/fods/FodsDocumentReadOps.cs
+    line: 31
+    type: "Dictionary<(string sheet, int row, int col), string>"
+    odf_target: "office:annotation (§14.1)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: AddComment(sheetName, row, col, text)
+        file: src/net/fods/FodsDocumentDataAnnotations.cs
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+      - method: GetCellCommentCount()
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+      - method: GetCommentText(sheetName, row, col)
+        source: DICT_ONLY
+        todo: null
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _sheetProtectionPasswords
+    file: src/net/fods/FodsDocumentReadOps.cs
+    line: 32
+    type: "Dictionary<string, string>"
+    odf_target: "table:table-protection/@table:password (SHA256+base64)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: GetSheetProtectionPassword(sheetName)
+        file: src/net/fods/FodsDocumentCellProps.cs
+        line: 256
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-003"
+        disposition: UNSUPPORTED_PENDING
+      - method: SetSheetProtectionPassword(sheetName, password)
+        file: src/net/fods/FodsDocumentCellProps.cs
+        line: 265
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-003"
+        disposition: UNSUPPORTED_PENDING
+
+  - field: _sheetProtection
+    file: src/net/fods/FodsDocumentSheetFeatures.cs
+    line: 41
+    type: "Dictionary<string, string?>"
+    odf_target: "table:table-protection (§9.2.6)"
+    category: COLLECTION_STUB
+    status: DICT_ONLY
+    methods:
+      - method: SetSheetProtection(sheetName, password)
+        file: src/net/fods/FodsDocumentSheetFeatures.cs
+        line: 53
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-003"
+        disposition: UNSUPPORTED_PENDING
+      - method: GetSheetProtection(sheetName)
+        file: src/net/fods/FodsDocumentSheetFeatures.cs
+        line: 95
+        source: DICT_ONLY
+        todo: "GI-FODS-NET-003"
+        disposition: UNSUPPORTED_PENDING
+
+notes:
+  - "FodsDocumentExtendedApis.cs no longer exists at HEAD (removed in prior sprint, confirmed TC-FGSQ-016)"
+  - "FodsDocument.cs (line 301) + FodsDocumentReadOps.cs (lines 31-34) hold the primary field declarations"
+  - "All 13 dict fields are COLLECTION_STUB category — no XML read/write paths exist"
+  - "FodsDocumentDataAnnotations.cs and FodsDocumentSheetFeatures.cs hold the accessor methods"
+  - "Recommended disposition for all methods: UNSUPPORTED (throw NotSupportedException per binary contract)"

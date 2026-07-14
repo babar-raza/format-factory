@@ -91,12 +91,19 @@ def compute_parity_status(skill: dict, cmd_dict: dict, md_stems: set) -> dict:
 
 
 def compute_agent_surfaces(skill: dict, md_stems: set, routing: dict) -> dict:
-    """Compute agent_surfaces for a skill entry."""
+    """Compute agent_surfaces for a skill entry.
+
+    TC-ACP-002 (FF-AGENTS-PARITY-001, 2026-07-12): Changed codex surface from opt-out
+    default (not codex_excluded) to explicit opt-in (codex_supported: true).
+    Previously `codex: true` was the default for all 142 skills (false assurance).
+    Now `codex: false` is the default unless `codex_supported: true` is explicit.
+    """
     sid = skill["skill_id"]
     cf = skill.get("command_file", "")
     return {
         "claude_code": bool(cf) and (_REPO / cf).exists(),
-        "codex": not skill.get("codex_excluded", False),
+        "codex": bool(skill.get("codex_supported", False)),  # TC-ACP-002: opt-in (was opt-out)
+        "kilo": bool(skill.get("kilo_supported", False)),    # TC-ACP-002: new kilo surface field
         "ci": sid in routing and len(routing[sid]) > 0,
     }
 

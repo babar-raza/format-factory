@@ -1,0 +1,104 @@
+---
+# .governance/backfill/behavior-preservation.schema.yaml
+# Defines valid behavior_preservation_class values for migration map entries.
+# Implements: TC-GFB-023-01 (FF-MR-2026-001)
+# Authority: plans/.claude/golden-foraging-boot.md (TC-GFB-023)
+# Generated: 2026-07-11
+
+schema_version: "1.0"
+schema_id: behavior-preservation
+description: >
+  Each migration map entry must declare a behavior_preservation_class that
+  characterizes the impact of the migration on externally observable behavior.
+  This classification is used by the governed rewrite executor (Wave 2) to
+  determine the required validation gate before allowing the migration to proceed.
+
+behavior_classes:
+
+  PRESERVED_UNCHANGED:
+    code: PU
+    description: >
+      The symbol is renamed or moved but all externally observable behavior is
+      identical. The migration is a pure refactor with no semantic change.
+    validation_gate: RENAME_ONLY
+    consumer_impact: none
+    test_requirement: "Existing tests must PASS without modification after migration."
+    example: "Renaming _internal_helper() in a parser where callers are only within the same file."
+
+  PRESERVED_WITH_COMPATIBILITY_LAYER:
+    code: PCL
+    description: >
+      The symbol is migrated to a new name/path but a compatibility shim is added
+      in Compat/ so that existing callers continue to work without changes.
+      The public API is preserved through the shim.
+    validation_gate: COMPAT_SHIM_VERIFIED
+    consumer_impact: none (shim installed)
+    test_requirement: >
+      Both old import path (via Compat/) and new import path must work.
+      Consumer roundtrip tests must PASS.
+    example: "FodsCell moved to spec/table/table_cell.py; Compat/FodsCell.py re-exports it."
+
+  INTENTIONALLY_IMPROVED:
+    code: II
+    description: >
+      The migration improves behavior in a way that is intentional and documented.
+      Callers may need to be updated. The improvement is authorized by an architecture decision.
+    validation_gate: BREAKING_CHANGE_AUTHORIZED
+    consumer_impact: may require caller updates
+    test_requirement: >
+      New tests must cover the improved behavior.
+      Existing tests that relied on old behavior must be updated.
+    example: "A parse function now returns a typed model instead of a dict."
+
+  DEPRECATED_WITH_AUTHORITY:
+    code: DA
+    description: >
+      The symbol is deprecated and scheduled for removal. A deprecation warning
+      is added. The removal is authorized by a governance decision (GAP ID or
+      requirement ID). Callers have a defined migration path.
+    validation_gate: DEPRECATION_WARNING_ADDED
+    consumer_impact: deprecation warning; planned removal
+    test_requirement: "Deprecation warning test added. Migration path documented."
+    example: "Old API function deprecated in favor of new spec-shaped equivalent."
+
+  REMOVED_WITH_AUTHORITY:
+    code: RA
+    description: >
+      The symbol is removed entirely. The removal is authorized by a governance
+      decision. No callers exist at HEAD (verified by validate_migration_safe.py).
+    validation_gate: NO_CALLERS_VERIFIED
+    consumer_impact: breaking (if any callers exist — migration blocks until callers=0)
+    test_requirement: >
+      validate_migration_safe.py must confirm zero production callers.
+      Any tests that tested the removed symbol must be deleted or updated.
+    example: "Architecture stub removed because its role was absorbed into spec/ classes."
+
+  PREVIOUSLY_BROKEN_NOW_FIXED:
+    code: PBF
+    description: >
+      The symbol's behavior was previously incorrect, incomplete, or produced wrong
+      output. The migration corrects it. The fix is authorized by a gap ID or bug report.
+    validation_gate: BUG_FIX_VERIFIED
+    consumer_impact: behavior change (intentional fix)
+    test_requirement: >
+      A new test must demonstrate the fixed behavior.
+      If an oracle case existed for the broken behavior, it must be updated.
+    example: "Parser was ignoring a required attribute; migration fixes the parsing logic."
+
+  UNVERIFIED:
+    code: UV
+    description: >
+      The behavior impact is not yet analyzed. This class is a PLACEHOLDER only.
+      Entries with UNVERIFIED must be resolved before a governed rewrite wave can proceed.
+      dry_run_migration.py assigns UNVERIFIED as the default when behavior analysis
+      has not been performed.
+    validation_gate: ANALYSIS_REQUIRED
+    consumer_impact: unknown
+    test_requirement: "Cannot proceed to execution until class is resolved to a known value."
+    example: "Symbol discovered by audit but behavior impact not yet assessed."
+
+validation_rules:
+  - "All migration_map entries must have a non-UNVERIFIED class before execution wave starts."
+  - "REMOVED_WITH_AUTHORITY entries require validate_migration_safe.py to confirm callers=0."
+  - "PRESERVED_WITH_COMPATIBILITY_LAYER entries require a Compat/ shim file to be created."
+  - "INTENTIONALLY_IMPROVED and PREVIOUSLY_BROKEN_NOW_FIXED require new test coverage."

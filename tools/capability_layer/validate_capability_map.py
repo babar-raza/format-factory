@@ -12,6 +12,7 @@ Validates:
   VAL-008: Gap ledger entries link to taskcard IDs (advisory)
   VAL-009: Action queue items are advisory_only flagged
   VAL-010: Evidence declaration artifact list includes capability outputs
+  VAL-011: Records with state=example_verified must have non-empty example_refs (TC-CL-001)
 
 Exit codes:
   0  — all checks pass
@@ -318,6 +319,29 @@ def _check_val009_action_queue_advisory(action_path: Path, result: ValidationRes
             result.ok()
 
 
+def _check_val011_example_verified_has_refs(
+    all_records: list[dict], result: ValidationResult
+) -> None:
+    """VAL-011: Records with state=example_verified must have non-empty example_refs.
+
+    An empty example_refs on an example_verified record indicates a false assignment —
+    the record was labeled verified because the FORMAT had example files, not because
+    the specific function appeared in any example. Fixed by TC-CL-001.
+    """
+    bad: list[str] = []
+    for rec in all_records:
+        if rec.get("current_state") == "example_verified" and not rec.get("example_refs"):
+            bad.append(rec.get("capability_id", "<unknown>"))
+    if bad:
+        result.error(
+            f"VAL-011: {len(bad)} records have current_state=example_verified but empty "
+            f"example_refs — indicates false assignment. First: {bad[0]!r}. "
+            "Run capability_map_generator.py to regenerate with the TC-CL-001 fix applied."
+        )
+    else:
+        result.ok()
+
+
 def _check_val010_evidence_includes_capability(result: ValidationResult) -> None:
     """VAL-010 (advisory): A capability declaration should exist within the last 24 hours.
 
@@ -443,6 +467,10 @@ def validate(
     if verbose:
         print("[VAL] Running VAL-010: evidence declaration includes capability (advisory) ...")
     _check_val010_evidence_includes_capability(result)
+
+    if verbose:
+        print("[VAL] Running VAL-011: no example_verified with empty example_refs ...")
+    _check_val011_example_verified_has_refs(all_records, result)
 
     return result
 

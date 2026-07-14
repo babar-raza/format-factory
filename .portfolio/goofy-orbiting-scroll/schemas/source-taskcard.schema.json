@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-taskcard",
+  "title": "Source Taskcard",
+  "description": "Full record of one taskcard from an original source plan.",
+  "type": "object",
+  "required": ["source_plan_id","source_task_id","title","declared_status","disposition"],
+  "properties": {
+    "source_plan_id": {"type": "string"},
+    "source_plan_file": {"type": "string"},
+    "source_plan_title": {"type": "string"},
+    "source_task_id": {"type": "string"},
+    "source_anchor": {"type": "string"},
+    "title": {"type": "string"},
+    "declared_status": {"type": "string"},
+    "objective": {"type": "string"},
+    "description": {"type": "string"},
+    "affected_components": {"type": "array", "items": {"type": "string"}},
+    "affected_paths": {"type": "array", "items": {"type": "string"}},
+    "prerequisites": {"type": "array", "items": {"type": "string"}},
+    "acceptance_criteria": {"type": "array", "items": {"type": "string"}},
+    "completion_conditions": {"type": "array", "items": {"type": "string"}},
+    "implementation_hints": {"type": "array", "items": {"type": "string"}},
+    "disposition": {
+      "type": "string",
+      "enum": [
+        "EXECUTE_TASK",
+        "SPLIT_ACROSS_TASKS",
+        "SATISFIED_BY_VERIFIED_EXISTING_IMPLEMENTATION",
+        "SUPERSEDED_WITH_PROOF",
+        "DUPLICATE_WITH_PROVEN_EQUIVALENCE",
+        "OUT_OF_SCOPE_WITH_JUSTIFICATION",
+        "BLOCKED_BY_TRUE_EXTERNAL_DEPENDENCY",
+        "REQUIRES_HUMAN_DECISION",
+        "NOT_MAPPED"
+      ]
+    },
+    "disposition_evidence": {"type": "string"},
+    "executable_task_ids": {"type": "array", "items": {"type": "string"}},
+    "repository_assessment": {
+      "type": "string",
+      "enum": ["VERIFIED_COMPLETE","IMPLEMENTED_UNVERIFIED","PARTIAL","NOT_STARTED","STALE","UNKNOWN"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["OPEN","CLOSED","SUPERSEDED","TERMINAL_CLOSED","IN_PROGRESS","PENDING"]
+    },
+    "raw_text_length": {"type": "integer"}
+  }
+}

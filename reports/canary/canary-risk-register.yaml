@@ -1,0 +1,79 @@
+# TC-INV-001-03: Canary Risk Register
+# Records 4+ risks with mitigations for the canary control system.
+# Generated: 2026-07-11 | Mission: clever-tickling-island
+
+schema_version: "1.0"
+generated: "2026-07-11"
+mission_id: clever-tickling-island
+
+risks:
+  - risk_id: R1
+    description: Shadow mode becomes permanent — canary is never promoted or rolled back
+    severity: HIGH
+    probability: MEDIUM
+    prevention:
+      - Enforce max_shadow_age_days on validator_shadow_observations and grader_shadow_observations
+      - Shadow mode requires explicit re-activation each sprint (no auto-persist)
+      - Canary architecture decision YAML must specify promotion SLA
+    detection:
+      - Monitor validator_shadow_observations count; alert if > N without decision
+      - mission_locks_sqlite canary entry status never transitions from IN_SHADOW
+    recovery:
+      - Delete shadow log files; remove canary from validator shadow registry
+      - Re-run without shadow to restore normal operation
+    owner: execution agent
+    test: TC-TEST-001 verifies shadow records expire
+    pilot: P1 (validator_promotion pilot on single format)
+
+  - risk_id: R2
+    description: Shadow logs grow unbounded and fill .local/supervisor/
+    severity: MEDIUM
+    probability: HIGH (without rotation)
+    prevention:
+      - validator-shadow-log.jsonl and grader-shadow-log.jsonl are gitignored (already is .local/)
+      - Implement rotation: keep only last N days of entries
+      - canary_shadow_ingestor.py delete_existing() prunes before re-ingest
+    detection:
+      - Check file size in control_index status output
+      - Alert if validator-shadow-log.jsonl > 50MB
+    recovery:
+      - Truncate log files; rebuild control-index.db
+    owner: execution agent
+    test: TC-TEST-001 verifies log rotation
+    pilot: P1
+
+  - risk_id: R3
+    description: Shadow provider latency causes sprint timeouts or slowdowns
+    severity: MEDIUM
+    probability: LOW (grader shadow is async)
+    prevention:
+      - Shadow grader calls are best-effort (fire-and-forget async or background)
+      - Shadow call failures write error to grader-shadow-log.jsonl (nullable error column)
+      - shadow_grade is nullable — null means shadow call failed
+    detection:
+      - Monitor grader_shadow_observations.error count
+      - Alert if error rate > 20% over last N observations
+    recovery:
+      - Disable shadow grading by removing grader shadow registry entry
+      - Sprint proceeds with primary grader only (no change in sprint output)
+    owner: execution agent
+    test: TC-TEST-002 verifies error handling for failed shadow calls
+    pilot: P2 (grader_switch pilot)
+
+  - risk_id: R4
+    description: Validator shadow registry falls out of sync with governance_validator_runner.py
+    severity: HIGH
+    probability: MEDIUM (runner updated 14× in recent months)
+    prevention:
+      - .supervisor/validator-shadow-registry.yaml must list only validators that exist in runner
+      - Validate registry on each sync: if validator_name not in runner, mark STALE
+      - TC-REGISTRY-001 includes runtime validation check on startup
+    detection:
+      - governance_validator_runner.py load logs a warning if shadow-registered validator not found
+      - Control index sync detects registry file change and re-ingests
+    recovery:
+      - Remove stale entries from validator-shadow-registry.yaml
+      - Shadow registry is additive only — removal does not affect sprint behavior
+    owner: execution agent
+    test: TC-TEST-003 verifies registry-code consistency check
+    pilot: P1

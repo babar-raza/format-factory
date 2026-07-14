@@ -1,0 +1,136 @@
+# RC-to-CLAUDE.md Mapping
+# TC-ACP-007-01 (FF-AGENTS-PARITY-001, 2026-07-13)
+# Maps each Required Capability (RC) to the CLAUDE.md section that governs it.
+
+mapping:
+  - rc_id: RC-001
+    name: read_repository_files
+    claude_section: "Session Start §Read session-resume.md + §Mandatory Plan Files"
+    coverage: covered-claude-md
+    notes: Read tool is primary; bash cat is forbidden
+
+  - rc_id: RC-002
+    name: write_repository_files
+    claude_section: "§Sprint Closeout step 1 (evidence declaration)"
+    coverage: covered-claude-md
+    notes: Write/Edit tools; echo/cat redirects forbidden
+
+  - rc_id: RC-003
+    name: execute_shell_commands
+    claude_section: "§Supreme Directive + §Sprint Closeout steps 2-4"
+    coverage: covered-claude-md
+    notes: Bash tool; exit code handling per Supreme Directive
+
+  - rc_id: RC-004
+    name: load_instruction_files
+    claude_section: "§Session Start (MANDATORY) Step 0 + §Mandatory Plan Files"
+    coverage: covered-claude-md
+    notes: CLAUDE.md + AGENTS.md + plan file must be read at session start
+
+  - rc_id: RC-005
+    name: parse_skill_registry
+    claude_section: "CAPABILITY-INDEX in CLAUDE.md + .supervisor/skill-registry.yaml"
+    coverage: covered-command-file
+    notes: Skill registry read before any skill invocation; enforce-skill-first-execution
+
+  - rc_id: RC-006
+    name: validate_declarations
+    claude_section: "§Sprint Closeout step 1b"
+    coverage: covered-claude-md
+    notes: sprint_executor_validate.py --repair before autonomous_cycle.py
+
+  - rc_id: RC-007
+    name: run_governance_validators
+    claude_section: "§GOV_BLOCK Exception (BINDING)"
+    coverage: covered-claude-md
+    notes: governance_validator_runner.py; named validators cause STOP not CONTINUE
+
+  - rc_id: RC-008
+    name: invoke_pre_mutation_guard
+    claude_section: "§Governance (always applies)"
+    coverage: covered-command-file
+    notes: pre_mutation_guard.py; EP-007 pre-commit hook (TC-ACP-006)
+
+  - rc_id: RC-009
+    name: parse_capability_registry
+    claude_section: "CAPABILITY-INDEX in CLAUDE.md (auto-generated)"
+    coverage: covered-claude-md
+    notes: sync-capabilities regenerates index after every registry update
+
+  - rc_id: RC-010
+    name: generate_evidence_declarations
+    claude_section: "§Sprint Closeout step 1 (write evidence declaration)"
+    coverage: covered-claude-md
+    notes: .local/evidences/<run_id>/evidence-declaration.yaml with all required fields
+
+  - rc_id: RC-011
+    name: read_gap_ledger
+    claude_section: "§After Reading session-resume.md + §autonomous-continuation"
+    coverage: covered-command-file
+    notes: gap-ledger.json read during Step 3a-pre2 in autonomous_cycle.py
+
+  - rc_id: RC-012
+    name: run_tests
+    claude_section: "§Sprint Closeout step 1 (test_results fields)"
+    coverage: covered-claude-md
+    notes: .venv/Scripts/pytest; real counts required
+
+  - rc_id: RC-013
+    name: commit_to_git
+    claude_section: "§Hard Stops §Git commit"
+    coverage: covered-claude-md
+    notes: SCM Agent policy; AGENTS.md §AG4; pre-commit hook must pass
+
+  - rc_id: RC-014
+    name: push_to_remote
+    claude_section: "§Hard Stops §Git push"
+    coverage: covered-claude-md
+    notes: Token-authenticated HTTPS; verified push commands (2026-07-03)
+
+  - rc_id: RC-015
+    name: run_autonomous_cycle
+    claude_section: "§Sprint Closeout step 2"
+    coverage: covered-claude-md
+    notes: autonomous_cycle.py --declaration; exit codes 0/3/1/9 handled
+
+  - rc_id: RC-016
+    name: invoke_skills_by_name
+    claude_section: "§Supreme Directive §Per-chat plan precedence"
+    coverage: covered-command-file
+    notes: Skill tool; skill_invocation_transcript_required=true enforces it
+
+  - rc_id: RC-017
+    name: enforce_skill_first_policy
+    claude_section: "CLAUDE.md GOV_BLOCK Exception + §Governance (always applies)"
+    coverage: covered-command-file
+    notes: pre-commit hook; enforce-skill-first-execution composite (SKILL-FIRST-003)
+
+  - rc_id: RC-018
+    name: load_session_state
+    claude_section: "§Session Start (MANDATORY) + §Cross-Chat Continuation Isolation"
+    coverage: covered-claude-md
+    notes: session-resume.md + .local/supervisor/ state files at session start
+
+  - rc_id: RC-019
+    name: read_governance_docs
+    claude_section: "§Mandatory Plan Files"
+    coverage: covered-claude-md
+    notes: All files in plans/ root + active plan + CLAUDE.md + AGENTS.md
+
+  - rc_id: RC-020
+    name: parse_capability_routing_registry
+    claude_section: "CAPABILITY-INDEX §agent_surfaces.ci"
+    coverage: covered-command-file
+    notes: build-capability-routes skill; capability-routing-registry.yaml
+
+  - rc_id: RC-021
+    name: generate_sprint_prompt
+    claude_section: "§Autonomous Continuation (check_continuation.py)"
+    coverage: covered-claude-md
+    notes: next-sprint.md + next-work-items.json; per-chat plan overrides
+
+  - rc_id: RC-022
+    name: multi_sprint_autonomous_loop
+    claude_section: "§Supreme Directive: Autonomous Execution Never Stops"
+    coverage: covered-claude-md
+    notes: check_continuation.py verdict=CONTINUE; MAX_ITERATIONS reset not stop

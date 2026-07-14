@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "promotion-record.schema.json",
+  "title": "PromotionRecord",
+  "description": "Records the promotion of a governed artifact from one lifecycle stage to another.",
+  "type": "object",
+  "required": ["promotion_record_id", "artifact_id", "from_status", "to_status", "promoted_at", "promoted_by"],
+  "additionalProperties": false,
+  "properties": {
+    "promotion_record_id": {
+      "type": "string",
+      "description": "Stable identifier (e.g. PR-001)."
+    },
+    "artifact_id": {
+      "type": "string",
+      "description": "governed-artifact.schema.json artifact_id being promoted."
+    },
+    "decision_id": {
+      "type": ["string", "null"],
+      "description": "change-decision.schema.json decision_id that authorized this promotion."
+    },
+    "from_status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED", "DRAFT", "IN_REVIEW", "APPROVED", "ACTIVE",
+        "DEPRECATED", "SUPERSEDED", "WITHDRAWN", "ARCHIVED", "BLOCKED", "TERMINAL_CLOSED"
+      ]
+    },
+    "to_status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED", "DRAFT", "IN_REVIEW", "APPROVED", "ACTIVE",
+        "DEPRECATED", "SUPERSEDED", "WITHDRAWN", "ARCHIVED", "BLOCKED", "TERMINAL_CLOSED"
+      ]
+    },
+    "promoted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "promoted_by": {
+      "type": "string"
+    },
+    "sha256_at_promotion": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

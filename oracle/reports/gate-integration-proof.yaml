@@ -1,0 +1,20 @@
+validator: V_VALIDATE_ORACLE_GATE_ADVANCEMENT
+check_date: "2026-07-12"
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W2-002
+formats_verified: 20
+formats_at_d1_plus: 20
+formats_at_d0: 0
+d0_formats: []
+result: PASS
+v146_result: PASS
+v146_blocks_sprint: false
+gate_readiness:
+  g2_gate_clear: true
+  g2_requires: D1+
+  formats_clearing_g2: 20
+  formats_blocked_g2: 0
+notes: >
+  All 20 VERIFIED product formats are at D1+ oracle depth as of this check.
+  4 formats (ora, pam, xpm, zpaq) have OBLIGATION_CREATED status and no oracle
+  packages yet (no product source exists). They are excluded from the D1+ check.

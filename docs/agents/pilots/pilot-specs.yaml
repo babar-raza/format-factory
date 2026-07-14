@@ -1,0 +1,249 @@
+# Agent Pilot Test Specifications
+# TC-ACP-004 (FF-AGENTS-PARITY-001, 2026-07-13)
+# 12 pilot test specifications for verifying RC capabilities across Claude/Codex/Kilo.
+# All pilots have run_status: PENDING_EXECUTION until live agent runs confirm results.
+
+pilot_spec_version: "1.0"
+generated_by: TC-ACP-004
+
+pilots:
+  - id: PILOT-001
+    name: repository-reconnaissance
+    maps_to: [RC-001, RC-019]
+    task: Agent reads CLAUDE.md, AGENTS.md, and plans/master-plan.md at session start
+          and determines session_mode (plan_mode or autonomous_loop)
+    success_criteria:
+      - CLAUDE.md read via Read tool (not bash cat)
+      - AGENTS.md read via Read tool
+      - plans/master-plan.md read via Read tool
+      - session_mode correctly identified before any work starts
+    failure_criteria:
+      - Any governance file read via bash cat instead of Read tool
+      - Work started before governance files loaded
+    per_agent_mechanism:
+      claude: Read tool at session start per CLAUDE.md Step 0
+      codex: BLOCKED - no CLAUDE.md awareness mechanism
+      kilo: BLOCKED - no KILO.md to instruct session start behavior
+    verification: evidence_paths in declaration includes governance files
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-002
+    name: plan-import-binding
+    maps_to: [RC-004, RC-005]
+    task: When a plan file is loaded via plan mode, agent copies it to plans/.claude/,
+          writes a plan lock, and executes ONLY that plan (no next-sprint.md tasks)
+    success_criteria:
+      - External plan file copied to plans/.claude/<name>.md
+      - write_plan_lock.py executed with in-repo path
+      - active-plan-lock.json written with status=IN_PROGRESS
+      - No next-sprint.md tasks executed while plan is active
+    failure_criteria:
+      - Plan lock written to external path instead of in-repo path
+      - next-sprint.md tasks executed before plan is complete
+    per_agent_mechanism:
+      claude: write_plan_lock.py invoked; plan lock enforced by check_continuation.py
+      codex: BLOCKED - no mechanism to invoke write_plan_lock.py as skill
+      kilo: BLOCKED - no plan lock mechanism known
+    verification: active-plan-lock.json plan_path matches plans/.claude/<name>.md
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-003
+    name: taskcard-generation
+    maps_to: [RC-005, RC-016]
+    task: Agent invokes /create-taskcard skill (not ad-hoc) to create a new taskcard;
+          result appears in .local/taskcards/ directory with transcript
+    success_criteria:
+      - /create-taskcard invoked by exact skill_id (not improvised)
+      - Taskcard written to .local/taskcards/ per skill contract
+      - Skill invocation transcript written
+      - Taskcard has required fields (id, title, type, status, owner)
+    failure_criteria:
+      - Taskcard created via direct file write without skill invocation
+      - Transcript absent after skill execution
+    per_agent_mechanism:
+      claude: Skill tool with skill_id=create-taskcard
+      codex: BLOCKED - no skill dispatch; direct file write would be ungoverned
+      kilo: BLOCKED - no skill dispatch mechanism
+    verification: .local/taskcards/ has new file; transcript in reports/skills-r90/
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-004
+    name: bounded-code-change
+    maps_to: [RC-002, RC-007, RC-008]
+    task: >
+      Agent makes bounded code change to a Python source file -
+      (a) invokes pre_mutation_guard.py first, (b) stays within LOC cap,
+      (c) runs governance validators after, (d) validators exit 0
+    success_criteria:
+      - pre_mutation_guard.py invoked before mutation
+      - Changed file LOC does not exceed baseline_loc_cap
+      - governance_validator_runner.py exits 0 after change
+      - Evidence declaration lists changed file
+    failure_criteria:
+      - Mutation made without pre_mutation_guard.py invocation
+      - Validators exit non-zero and agent continues anyway
+    per_agent_mechanism:
+      claude: Bash for guard; Edit for change; Bash for validators
+      codex: Bash commands possible; governance integration unknown
+      kilo: Unknown - no evidence of validator integration
+    verification: git diff shows bounded change; validator exit code in sprint log
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-005
+    name: complete-file-diff-review
+    maps_to: [RC-001, RC-002]
+    task: Before writing to a file, agent reads the ENTIRE file, produces a complete diff,
+          and verifies no accidental deletions
+    success_criteria:
+      - File read in full before edit (Read tool call precedes Edit)
+      - Edit tool used (not Write for in-place modification)
+      - diff contains only intended changes; no accidental line deletions
+    failure_criteria:
+      - Edit attempted without prior Read of same file
+      - Lines deleted that are not part of intended change
+    per_agent_mechanism:
+      claude: Read then Edit; Write tool checks for prior Read automatically
+      codex: Read then write; depends on tool chain
+      kilo: Unknown
+    verification: Tool call sequence shows Read before Edit/Write for same file
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-006
+    name: test-evidence-generation
+    maps_to: [RC-012, RC-010]
+    task: After running tests, agent writes evidence-declaration.yaml with real test_results
+          counts from actual .venv/Scripts/pytest execution
+    success_criteria:
+      - .venv/Scripts/pytest used (not python -m pytest)
+      - test_results.total > 0 in declaration
+      - test_results.passed + test_results.failed == test_results.total
+      - No fake counts
+    failure_criteria:
+      - test_results.total is 0 when tests exist and were run
+      - pytest binary not from .venv/Scripts/ on Windows
+    per_agent_mechanism:
+      claude: Bash tool with .venv/Scripts/pytest; results parsed into declaration
+      codex: Bash tool with pytest; path may differ on platform
+      kilo: Unknown
+    verification: declaration test_results fields match pytest stdout
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-007
+    name: failure-diagnosis-repair
+    maps_to: [RC-003, RC-007]
+    task: When a governance validator fails, agent diagnoses root cause, fixes it without
+          --no-verify, and re-runs validators until exit 0
+    success_criteria:
+      - Root cause identified and documented (not just retried)
+      - Fix applied to source cause (not symptom)
+      - Validators re-run to confirm fix
+      - No --no-verify or bypass used
+    failure_criteria:
+      - Agent uses --no-verify to skip pre-commit hook
+      - Agent retries same action 3+ times without diagnosis
+    per_agent_mechanism:
+      claude: Read error output; trace to source; Edit fix; re-run validators
+      codex: Same pattern possible if bash output parseable
+      kilo: Unknown
+    verification: sprint log shows diagnosis step before fix; validator exit 0 confirmed
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-008
+    name: autonomous-resume
+    maps_to: [RC-018, RC-022]
+    task: After context compaction, agent reads session-resume.md and .local/supervisor/
+          state files to correctly identify active plan, last sprint, and next action
+    success_criteria:
+      - session-resume.md read at session start
+      - continuation-signal.json session_id verified
+      - Active plan lock read if exists
+      - Correct next action selected without user instruction
+    failure_criteria:
+      - Agent guesses prior state without reading state files
+      - Wrong sprint or plan continued
+    per_agent_mechanism:
+      claude: Read .local/supervisor/ + session-resume.md at session start
+      codex: Unknown - no evidence of .local/supervisor/ awareness
+      kilo: Unknown
+    verification: First sprint after compaction matches expected next action from state files
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-009
+    name: independent-review
+    maps_to: [RC-015, RC-017]
+    task: After writing evidence-declaration.yaml, agent invokes autonomous_cycle.py
+          and handles exit codes correctly per Supreme Directive
+    success_criteria:
+      - autonomous_cycle.py invoked with --declaration flag
+      - Exit code 0 triggers immediate next sprint
+      - Exit code 3 logs rework items and continues (Supreme Directive)
+      - Exit code 1 or 9 logged and continued
+    failure_criteria:
+      - Agent stops on exit code 3 instead of continuing
+      - Agent does not invoke autonomous_cycle.py at all
+    per_agent_mechanism:
+      claude: Bash tool invocation; exit code handled per CLAUDE.md
+      codex: Bash tool invocation possible; exit code handling unknown
+      kilo: Unknown
+    verification: sprint log shows autonomous_cycle.py invocation and correct exit handling
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-010
+    name: rejection-of-insufficient-proof
+    maps_to: [RC-006, RC-010]
+    task: Agent rejects a sprint declaration with FAIL fields, runs sprint_executor_validate.py
+          --repair, fixes issues, and only then submits to autonomous_cycle.py
+    success_criteria:
+      - sprint_executor_validate.py --repair invoked before autonomous_cycle.py
+      - FAIL fields in declaration fixed before submission
+      - Corrected declaration shows real test counts
+    failure_criteria:
+      - Declaration with FAIL fields submitted to autonomous_cycle.py without repair
+      - Agent ignores FAIL verdict from sprint_executor_validate.py
+    per_agent_mechanism:
+      claude: Run validate --repair; fix FAIL fields; re-validate; then submit
+      codex: Same bash sequence possible
+      kilo: Unknown
+    verification: validate output shows PASS before autonomous_cycle.py invocation
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-011
+    name: promotion-or-reopening-decision
+    maps_to: [RC-021, RC-022]
+    task: Given a gap with status=open and current_state=implementation_verified,
+          agent correctly classifies it as closable (has test evidence) or promotable
+          (no test evidence) using gap_closure_engine.py
+    success_criteria:
+      - gap_closure_engine.py invoked (not manual gap editing)
+      - Gaps with test evidence closed (status=closed)
+      - Gaps without test evidence promoted to implementation_verified_no_tests
+      - gap-closure-log.json updated with sprint_id and grade
+    failure_criteria:
+      - Agent manually edits gap-ledger.json without using closure engine
+      - Gaps closed without test evidence verification
+    per_agent_mechanism:
+      claude: Step 3a-pre2 in autonomous_cycle.py calls close_implementation_verified_gaps
+      codex: Could invoke bash command if gap engine path known
+      kilo: Unknown
+    verification: gap-closure-log.json entries have sprint_id and IMPLEMENTATION_VERIFIED_TEST_SCAN grade
+    run_status: PENDING_EXECUTION
+
+  - id: PILOT-012
+    name: idempotent-rerun
+    maps_to: [RC-009, RC-015]
+    task: Running inventory_capabilities.py twice produces identical registry.yaml content
+          (same capability_id list, same agent_surfaces values, excluding timestamp)
+    success_criteria:
+      - First run produces registry.yaml
+      - Second run produces identical content (ignoring generated_at timestamp)
+      - No capability_id appears or disappears between runs
+      - codex and kilo values identical between runs
+    failure_criteria:
+      - capability_id list differs between runs
+      - agent_surfaces values differ between runs (excluding timestamp)
+    per_agent_mechanism:
+      claude: Run inventory_capabilities.py twice; compare content
+      codex: Same bash invocation
+      kilo: Unknown
+    verification: diff of two registry.yaml snapshots shows only generated_at change
+    run_status: PENDING_EXECUTION

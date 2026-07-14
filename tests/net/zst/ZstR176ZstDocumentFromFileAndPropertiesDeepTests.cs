@@ -180,8 +180,8 @@ public class ZstR176ZstDocumentFromFileAndPropertiesDeepTests : IDisposable
         var path = WriteFile("minimal.zst", SmallText);
         var doc = ZstDocument.FromFile(path);
         // IsMinimalFrame returns bool — just verify it doesn't throw
-        var _ = doc.IsMinimalFrame;
-        Assert.True(true);
+        var isMinimalFrame = doc.IsMinimalFrame;
+        Assert.IsType<bool>((object)isMinimalFrame);
     }
 
     // -------------------------------------------------------------------------

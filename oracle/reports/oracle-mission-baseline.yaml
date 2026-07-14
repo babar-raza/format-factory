@@ -1,0 +1,78 @@
+mission_id: FF-ORC-HARDENING-002
+plan_path: plans/.claude/production-portfolio-master-plan.md
+source_plan: plans/source-portfolios/ff-portfolio-41-prod-001/modular-noodling-galaxy.md
+repository_root: c:/Users/prora/OneDrive/Documents/GitHub/format-factory
+created_at: '2026-07-12T00:00:00+00:00'
+updated_at: '2026-07-12T12:00:00+00:00'
+head_commit: 3fdaf841
+starting_maturity_level: 3
+target_maturity_level: 5
+governance_expected_count: 192
+v143_status: WARN
+v143_detail: '3/20 formats D0-majority: abw (3/4 D0), xcf (3/4 D0), zst (6/10 D0)'
+v143_blocks_sprint: false
+csv_baseline:
+  pass_count: 5
+  fail_count: 0
+  skip_count: 0
+  verdict: ALL_PASS
+  depth: D1
+fods_baseline:
+  pass_count: 9
+  fail_count: 0
+  not_applicable_count: 1
+  verdict: PARTIAL_PASS
+  depth: D1
+  note: '1 NOT_APPLICABLE case (invalid case with no sample_ref) — not a failure'
+oracle_obligation_validator:
+  formats_checked: 24
+  all_pass: true
+  obligation_created_no_package: 0
+  verified: 20
+  no_product_yet: 4
+format_oracle_status:
+  abw: {depth: D1, pass_rate: '3/4', d0_majority: true}
+  csv: {depth: D1, pass_rate: '5/5', d0_majority: false}
+  dif: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  fodg: {depth: D1, pass_rate: '3/5', d0_majority: false}  # TC-W3-001: D2 INCONCLUSIVE (synthetic sample missing required attrs)
+  fodp: {depth: D1, pass_rate: '3/5', d0_majority: false}  # TC-W3-001: D2 INCONCLUSIVE (synthetic sample missing required attrs)
+  fods: {depth: D1, pass_rate: '9/10', d0_majority: false}
+  fodt: {depth: D2, pass_rate: '4/5', d0_majority: false}  # TC-W3-001: D2 PASS (schema VALID)
+  gnumeric: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  ndjson: {depth: D1, pass_rate: '4/5', d0_majority: false}
+  ods: {depth: D1, pass_rate: '3/5', d0_majority: false}  # TC-W3-001: D2 INCONCLUSIVE (content.xml partial schema)
+  odt: {depth: D2, pass_rate: '4/5', d0_majority: false}  # TC-W3-001: D2 PASS (content.xml schema VALID)
+  pbm: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  pgm: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  ppm: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  qoi: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  sylk: {depth: D1, pass_rate: '3/4', d0_majority: false}
+  toml: {depth: D1, pass_rate: '4/5', d0_majority: false}
+  tsv: {depth: D1, pass_rate: '4/5', d0_majority: false}
+  xcf: {depth: D1, pass_rate: '3/4', d0_majority: true}
+  zst: {depth: D1, pass_rate: '6/10', d0_majority: true}
+formats_no_oracle:
+  - {format: ora, reason: no_product_yet}
+  - {format: pam, reason: no_product_yet}
+  - {format: xpm, reason: no_product_yet}
+  - {format: zpaq, reason: no_product_yet}
+registered_skills:
+  - /run-oracle
+  - /calculate-oracle-coverage
+  - /detect-stale-oracles
+  - /onboard-future-format-oracle
+  - /generate-oracle-verdict-report
+  - /evaluate-roundtrip-oracle
+missing_deliverables:
+  - oracle/reports/oracle-gap-register.yaml
+  - oracle/reports/stale-oracle-report.json
+  - oracle/reports/product-test-migration-report.md
+  - oracle/reports/package-consumer-report.md
+  - oracle/reports/pilot-matrix-results.yaml
+  - oracle/reports/portfolio-regression-report.json
+  - oracle/reports/idempotency-verdict.json
+  - oracle/reports/final-oracle-audit.md
+  - oracle/reports/future-format-onboarding-proof.yaml
+  - oracle/reports/gate-integration-proof.yaml
+verification_failures: []
+tc_w0_001_verdict: PASS

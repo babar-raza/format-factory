@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "portfolio_id": "GOS-72E1DF137383C56F",
+  "task_id": "ET-W4-005",
+  "workstream_id": "WS-15-HUMBLE-HATCHING",
+  "objective": "Execute humble-hatching-lark TCs 53-104",
+  "source_plan_ids": [
+    "s019"
+  ],
+  "source_task_ids": [
+    "TC-HHL-053",
+    "TC-HHL-054",
+    "TC-HHL-055",
+    "TC-HHL-056",
+    "TC-HHL-057",
+    "TC-HHL-058",
+    "TC-HHL-059",
+    "TC-HHL-060",
+    "TC-HHL-061",
+    "TC-HHL-062",
+    "TC-HHL-063",
+    "TC-HHL-064",
+    "TC-HHL-065",
+    "TC-HHL-066",
+    "TC-HHL-067",
+    "TC-HHL-068",
+    "TC-HHL-069",
+    "TC-HHL-070",
+    "TC-HHL-071",
+    "TC-HHL-072",
+    "TC-HHL-073",
+    "TC-HHL-074",
+    "TC-HHL-075",
+    "TC-HHL-076",
+    "TC-HHL-077",
+    "TC-HHL-078",
+    "TC-HHL-079",
+    "TC-HHL-080",
+    "TC-HHL-081",
+    "TC-HHL-082",
+    "TC-HHL-083",
+    "TC-HHL-084",
+    "TC-HHL-085",
+    "TC-HHL-086",
+    "TC-HHL-087",
+    "TC-HHL-088",
+    "TC-HHL-089",
+    "TC-HHL-090",
+    "TC-HHL-091",
+    "TC-HHL-092",
+    "TC-HHL-093",
+    "TC-HHL-094",
+    "TC-HHL-095",
+    "TC-HHL-096",
+    "TC-HHL-097",
+    "TC-HHL-098",
+    "TC-HHL-099",
+    "TC-HHL-100",
+    "TC-HHL-101",
+    "TC-HHL-102",
+    "TC-HHL-103",
+    "TC-HHL-104"
+  ],
+  "source_anchors": [],
+  "original_source_text_references": [],
+  "repository_assessment": "NOT_STARTED",
+  "acceptance_criteria": [
+    "All 104 TCs in s019 have final disposition"
+  ],
+  "negative_acceptance_criteria": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W4-004"
+  ],
+  "affected_components": [],
+  "affected_paths": [
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "required_locks": [
+    "tools/supervisor/"
+  ],
+  "primary_lane": "L01",
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Continue: process TCs 53-104",
+    "Write evidence/raw/ET-W4-005/hhl-batch-b-results.json"
+  ],
+  "focused_validation": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_validation": [],
+  "integration_validation": [],
+  "regression_validation": [],
+  "end_to_end_validation": [],
+  "pilot_validation": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "expected_start_state": "READY",
+  "expected_terminal_state": "CLOSED",
+  "generated_at": "2026-07-11T09:51:27.810122+00:00",
+  "packet_checksum": "53b0ddad167b6b47eab2242d587e2acf330f241da8acd92fb4309e3a02be0b77"
+}

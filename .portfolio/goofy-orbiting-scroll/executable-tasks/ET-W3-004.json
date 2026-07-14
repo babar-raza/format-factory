@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "task_id": "ET-W3-004",
+  "workstream_id": "WS-06-CODE-QUALITY-AUDIT",
+  "objective": "Execute code quality audit per mutable-exploring-hellman: identify violations, produce repair plan",
+  "source_plan_ids": [
+    "s007"
+  ],
+  "source_task_ids": [],
+  "source_anchors": [],
+  "source_requirement_ids": [],
+  "affected_components": [],
+  "affected_paths": [
+    "src/python/",
+    "tools/supervisor/"
+  ],
+  "allowed_mutation_scope": [
+    "src/python/",
+    "tools/supervisor/"
+  ],
+  "forbidden_paths": [],
+  "prerequisites": [],
+  "dependencies": [
+    "ET-W1-002"
+  ],
+  "shared_resources": [],
+  "primary_lane": "L01",
+  "supporting_lanes": [],
+  "integration_owner": "claude-sonnet-4-6",
+  "implementation_steps": [
+    "Read mutable-exploring-hellman.md (s007) completely",
+    "Run LOC checks, function count checks, analytics separation checks",
+    "For each violation: document file, violation type, repair approach",
+    "Write evidence/raw/ET-W3-004/code-quality-audit.json",
+    "Produce ordered repair plan"
+  ],
+  "acceptance_criteria": [
+    "All 106 TCs in s007 have final disposition",
+    "code-quality-audit.json has complete violation inventory"
+  ],
+  "negative_acceptance_criteria": [],
+  "focused_verification": [
+    "python .venv/Scripts/pytest tests/ -q --tb=short 2>&1 | tail -5"
+  ],
+  "lane_verification": [],
+  "integration_verification": [],
+  "regression_verification": [],
+  "end_to_end_verification": [],
+  "pilot_verification": [],
+  "evidence_requirements": [
+    "Implementation file diff",
+    "Test output showing acceptance criteria met"
+  ],
+  "rollback": "git checkout -- <affected_paths>",
+  "cleanup": "",
+  "invalidation_triggers": [],
+  "reopening_conditions": [],
+  "wave": 3,
+  "status": "CLOSED",
+  "active_claim_id": null,
+  "active_attempt_id": null,
+  "closure_id": "CLO-ET-W3-004-D5001478",
+  "claimed_at": null,
+  "closed_at": "2026-07-11T11:59:17.362951+00:00",
+  "last_verified_at": null,
+  "repository_assessment": "NOT_STARTED"
+}

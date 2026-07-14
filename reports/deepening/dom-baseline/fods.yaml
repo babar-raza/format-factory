@@ -1,0 +1,41 @@
+format: fods
+runtime: python
+date: "2026-07-13"
+plan: peppy-crafting-lark (MCP-W5-006)
+taskcard: TC-PCL-012-01
+
+ledger_state:
+  lane_b_maturity: D3
+  lane_b_ceiling: D5
+  lane_a_maturity: A1
+
+proof_status:
+  D1:
+    status: PASS
+    test_command: ".venv/Scripts/pytest tests/python/fods/ -v --tb=short -q"
+    pass_count: 1772
+    skip_count: 8
+  D2:
+    status: PASS
+    test_command: ".venv/Scripts/pytest tests/python/fods/test_fods_dom_d2_mutation.py -v --tb=short"
+    pass_count: 2
+    test_file: tests/python/fods/test_fods_dom_d2_mutation.py
+    tests:
+      - test_cell_value_mutation_persists_through_roundtrip
+      - test_to_file_creates_valid_fods
+  D3:
+    status: NOT_YET_PROVEN
+    note: test_fods_dom_d3_nested.py does not exist; ledger at D3 from prior sprint
+
+fixes_applied:
+  - name: FodsDocument.to_file() alias
+    file: src/python/fods/models.py
+    description: Added to_file() as alias for save_to_file()
+  - name: FodsSheet.cell_at() bug fix
+    file: src/python/fods/models.py
+    description: Fixed to handle dict-based row format (rows with 'cells' key)
+
+d2_proven: true
+no_regression: true
+regression_command: ".venv/Scripts/pytest tests/python/fods/ -q"
+regression_result: "1772 passed, 8 skipped"

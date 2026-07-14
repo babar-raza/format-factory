@@ -1,0 +1,181 @@
+## main...origin/main [ahead 212]
+ M .claude/commands/close-layer-task.md
+ M .github/workflows/ci.yml
+ M .hooks/pre-commit-skill-guard
+ M .pre-commit-config.yaml
+ M .supervisor/ad-hoc-execution-inventory.yaml
+ M .supervisor/capability-routing-registry.yaml
+ M .supervisor/context-pack.yaml
+ M .supervisor/knowledge/contracts/python-domain-model.yaml
+ M .supervisor/project-memory.md
+ M .supervisor/skill-contract-validation-results.yaml
+ M .supervisor/skill-registry.yaml
+ M .supervisor/state/current-run.json
+ M .supervisor/state/watcher.json
+ M docs/code-quality/production-library-standard-v2.md
+ M docs/governance/skill-only-policy.yaml
+ M oracle/formats/csv/reports/oracle-run-summary.json
+ M oracle/formats/fods/oracle-package.yaml
+ M oracle/formats/fods/reports/oracle-run-summary.json
+ M oracle/formats/fodt/reports/oracle-run-summary.json
+ M oracle/formats/pgm/reports/oracle-run-summary.json
+ M plans/README.md
+ M plans/layers/capability-layer.md
+ M plans/master-plan.md
+ M registry/README.md
+ M registry/dotnet-semantic-stub-whitelist.yaml
+ M registry/repository-root-folders.yaml
+ M registry/source-structure-baseline.json
+ M reports/_readme.md
+ M reports/acceleration-product-first/ai-usage-ledger.jsonl
+ M reports/autonomous-orchestrator/next-action-generation/generation-trace.json
+ M reports/capability-layer/capability-authority-model.yaml
+ M reports/capability-layer/capability-consumer-graph.yaml
+ M reports/capability-layer/capability_summary.json
+ M reports/capability-layer/commercial-capability-map.json
+ M reports/capability-layer/foss-reduced-capability-map.json
+ M reports/capability-layer/gap-ledger.json
+ M reports/capability-layer/gap-sal-traceability-20260710.json
+ M reports/capability-layer/sal-driven-capability-map.json
+ M reports/capability-layer/unified-capability-map.json
+ M reports/certification/certification-report.md
+ M reports/concurrency/pilot-evidence/pilot-01-competing-controllers-result.json
+ M reports/concurrency/pilot-evidence/pilot-02-parallel-lanes-result.json
+ M reports/concurrency/pilot-evidence/pilot-03-overlapping-claims-result.json
+ M reports/concurrency/pilot-evidence/pilot-04-lost-lock-protection-result.json
+ M reports/concurrency/pilot-evidence/pilot-05-crash-recovery-result.json
+ M reports/concurrency/pilot-evidence/pilot-06-integration-drift-result.json
+ M reports/concurrency/pilot-evidence/pilot-07-r1227-prevention-result.json
+ M reports/concurrency/pilot-evidence/pilot-08-task-closure-survival-result.json
+ M reports/concurrency/pilot-evidence/pilot-09-sqlite-contention-result.json
+ M reports/concurrency/pilot-evidence/pilot-10-idempotency-result.json
+ M reports/governance/pilots/pilot-01-weak-type-only-proof-result.json
+ M reports/governance/pilots/pilot-02-nonempty-proof-result.json
+ M reports/governance/pilots/pilot-03-constant-defective-implementation-result.json
+ M reports/governance/pilots/pilot-04-wrong-default-result.json
+ M reports/governance/pilots/pilot-05-off-by-one-boundary-result.json
+ M reports/governance/pilots/pilot-06-missing-negative-cases-result.json
+ M reports/governance/pilots/pilot-07-additive-only-scope-result.json
+ M reports/governance/pilots/pilot-08-new-finding-during-proof-result.json
+ M reports/governance/pilots/pilot-09-queue-empty-proof-gap-result.json
+ M reports/governance/pilots/pilot-10-independent-closure-challenge-result.json
+ M reports/governance/pilots/pilot-11-pgm-histogram-replay-result.json
+ M reports/governance/pilots/pilot-12-idempotency-result.json
+ M reports/product-quality/product-code-gap-ledger.yaml
+ M reports/repository-structure/root-folder-recon-report.md
+ M reports/sal-qname-gap-20260710.json
+ M reports/superpowers-agentic-autonomy/execution-state.json
+ M reports/supervisor-streams/mainstream/authority-map.json
+ M reports/supervisor-streams/mainstream/contradictions.json
+ M reports/supervisor-streams/mainstream/evidence-review.json
+ M reports/supervisor-streams/mainstream/latest-next-worker-prompt.md
+ M reports/supervisor-streams/mainstream/latest-review.md
+ M reports/supervisor-streams/mainstream/work-item-grades.json
+ M reports/supervisor-streams/mainstream/work-item-grades.yaml
+ M reports/supervisor/approval-gates.md
+ M reports/supervisor/context-pack.md
+ M reports/supervisor/contradictions.json
+ M reports/supervisor/contradictions.md
+ M reports/supervisor/discovery-summary.md
+ M reports/supervisor/evidence-review.json
+ M reports/supervisor/evidence-review.md
+ M reports/supervisor/latest-cycle-summary.md
+ M reports/supervisor/latest-next-worker-prompt.md
+ M reports/supervisor/latest-review.md
+ M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/maturity-signal.json
+ M reports/supervisor/memory-sync-report.md
+ M reports/supervisor/next-ruflo-lanes.json
+ M reports/supervisor/next-sprint-taskmaster.json
+ M reports/supervisor/next-sprint.md
+ M reports/supervisor/session-resume.md
+ M reports/supervisor/work-item-grades.json
+ M reports/supervisor/work-item-grades.md
+ M reports/supervisor/work-item-grades.yaml
+ M src/README.md
+ M src/net/fods/FodsDocument.cs
+ M src/net/fods/FodsDocumentCellProps.cs
+ M src/net/fods/FodsDocumentDataAnnotations.cs
+ M src/net/fods/FodsDocumentSheetFeatures.cs
+ M tests/_readme.md
+ M tests/net/fods/FodsR481GetSheetRightToLeftDedicatedTests.cs
+ M tests/supervisor/test_control_index_db.py
+ M tests/supervisor/test_governance_validators.py
+ M tests/supervisor/test_governance_validators_dotnet_semantic.py
+ M tests/supervisor/test_sprint_executor_validate.py
+ M tests/supervisor/test_validate_root_structure.py
+ M tools/_readme.md
+ M tools/capability_layer/capability_map_generator.py
+ M tools/capability_layer/validate_capability_map.py
+ M tools/evidence/check_repo_invariants.py
+ M tools/oracle/execute_oracle.py
+ M tools/state/state_snapshot.py
+ M tools/supervisor/autonomous_cycle.py
+ M tools/supervisor/check_continuation.py
+ M tools/supervisor/control_index/__init__.py
+ M tools/supervisor/control_index/schema.sql
+ M tools/supervisor/governance_validator_runner.py
+ M tools/supervisor/governance_validators_dotnet_semantic.py
+ M tools/supervisor/governance_validators_ext4.py
+ M tools/supervisor/governance_validators_root_struct.py
+ M tools/supervisor/grade_declared_work.py
+ M tools/supervisor/lifecycle_audit.py
+ M tools/supervisor/sprint_executor_validate.py
+?? .claude/commands/build-supervisor-packet.md
+?? .claude/commands/calculate-oracle-coverage.md
+?? .claude/commands/detect-stale-oracles.md
+?? .claude/commands/evaluate-roundtrip-oracle.md
+?? .claude/commands/generate-oracle-verdict-report.md
+?? .claude/commands/onboard-future-format-oracle.md
+?? .claude/commands/reset-track-signal.md
+?? .claude/commands/run-governance-validators.md
+?? .claude/commands/run-lifecycle-audit.md
+?? .claude/commands/validate-evidence-declaration.md
+?? .claude/commands/validate-missing-skill-workflow.md
+?? .governance/backfill/
+?? .governance/lanes/
+?? .portfolio/
+?? .runner_system_id
+?? .supervisor/schemas/change-decision.schema.json
+?? .supervisor/schemas/change-impact.schema.json
+?? .supervisor/schemas/change-proposal.schema.json
+?? .supervisor/schemas/governance-binding.schema.json
+?? .supervisor/schemas/governance-gap.schema.json
+?? .supervisor/schemas/governed-artifact.schema.json
+?? .supervisor/schemas/promotion-record.schema.json
+?? .supervisor/schemas/release-candidate.schema.json
+?? .supervisor/schemas/taskcard-execution-contract.schema.json
+?? goofy-orbiting-scroll-portfolio.zip
+?? oracle/reports/oracle-mission-baseline.yaml
+?? plans/.claude/goofy-orbiting-scroll.md
+?? "plans/strategic/41 plans/"
+?? registry/gate-states.yaml
+?? registry/governance-binding.yaml
+?? reports/canary/
+?? reports/capability-layer/gap-sal-traceability-20260711.json
+?? reports/capability-layer/gap-sal-traceability-20260712.json
+?? reports/dual-lane-verification/ground-truth-audit.yaml
+?? reports/portfolio-execution/
+?? reports/product-quality/fods-govheal/
+?? reports/qname-coverage-20260711.json
+?? reports/qname-coverage-20260712.json
+?? reports/sal-qname-gap-20260711.json
+?? reports/sal-qname-gap-20260712.json
+?? reports/skills-r90/skill-transcripts/verify-dogfood-path-dif-csv-20260711.json
+?? tests/capability_layer/test_state_derivation.py
+?? tests/machinery/
+?? tests/supervisor/test_dom_maturity_gap_generator.py
+?? tests/supervisor/test_gate11_state_contract.py
+?? tests/supervisor/test_lane_contracts.py
+?? tests/supervisor/test_plan_importer.py
+?? tools/backfill/dry_run_migration.py
+?? tools/canary/
+?? tools/governance/validate_plan_skill_routes.py
+?? tools/supervisor/check_new_root_dirs.py
+?? tools/supervisor/control_index/migrations/
+?? tools/supervisor/dom_maturity_gap_generator.py
+?? tools/supervisor/governance_validators_sgov.py
+?? tools/supervisor/plan_importer.py
+?? tools/supervisor/skill_receipt_writer.py
+?? tools/supervisor/validate_governance_binding.py
+?? tools/supervisor/validate_governance_schemas.py

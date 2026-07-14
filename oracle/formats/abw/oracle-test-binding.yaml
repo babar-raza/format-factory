@@ -1,0 +1,23 @@
+oracle_test_binding_id: oracle-abw-test-binding-v1
+format_id: abw
+oracle_package: oracle/formats/abw/oracle-package.yaml
+binding_type: legacy_hardcoded
+executor_module: abw.abw_codec
+executor_callable: load
+generated_at: '2026-07-13'
+mission_id: FF-ORC-HARDENING-002
+taskcard: TC-W5-003
+bound_cases:
+- case_id: abw-valid-001
+  bound: true
+  test_function: test_abw_oracle_valid_cases
+- case_id: abw-valid-002
+  bound: true
+  test_function: test_abw_oracle_valid_cases
+- case_id: abw-valid-003
+  bound: true
+  test_function: test_abw_oracle_valid_cases
+- case_id: abw-invalid-001
+  bound: false
+  test_function: test_abw_oracle_invalid_cases
+binding_verdict: BOUND

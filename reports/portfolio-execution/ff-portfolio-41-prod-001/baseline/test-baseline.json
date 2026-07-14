@@ -1,0 +1,17 @@
+{
+  "portfolio_id": "FF-PORTFOLIO-41-PROD-001",
+  "baseline_captured_at": "2026-07-12",
+  "test_suites": [
+    {
+      "suite": "tests/machinery/ + tests/supervisor/test_governance_validators.py + tests/supervisor/test_lane_contracts.py + tests/supervisor/test_gate11_state_contract.py",
+      "command": ".venv/Scripts/pytest tests/machinery/ tests/supervisor/test_governance_validators.py tests/supervisor/test_lane_contracts.py tests/supervisor/test_gate11_state_contract.py -q --tb=line --timeout=60",
+      "result": "246 passed, 1 skipped",
+      "exit_code": 0,
+      "duration_seconds": 150,
+      "pre_existing_failures": [],
+      "classification": "CLEAN_BASELINE"
+    }
+  ],
+  "baseline_verdict": "CLEAN — 246 passed, 1 skipped, 0 failed",
+  "notes": "Any new test failure introduced by portfolio tasks will be classifiable against this baseline"
+}

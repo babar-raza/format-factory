@@ -1,0 +1,6 @@
+format: abw
+proofs:
+  D1:
+    description: "Parse file, retrieve paragraphs with abiword:document spec_qname"
+    test_command: ".venv/Scripts/pytest tests/python/abw/ -v --tb=short -q"
+    required_pass_count: 1

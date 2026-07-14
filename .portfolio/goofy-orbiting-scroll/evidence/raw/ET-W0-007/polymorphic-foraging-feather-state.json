@@ -1,0 +1,38 @@
+{
+  "task_id": "ET-W0-007",
+  "source_plan": "polymorphic-foraging-feather",
+  "plan_type": "machinery_hardening (supervisor machinery audit)",
+  "audit_date": "2026-07-11",
+  "plan_status": "PROPOSED (0 of 12 investigation phases started)",
+  "taskcard_statuses": {
+    "TC-INV-000": "PROPOSED — Setup and Baseline",
+    "TC-INV-001": "PROPOSED — LOC Classification",
+    "TC-INV-002": "PROPOSED — Architecture Reconstruction",
+    "TC-INV-003": "PROPOSED — Component Register",
+    "TC-INV-004": "PROPOSED — Problem Catalog",
+    "TC-INV-005": "PROPOSED — Guarantee Matrix",
+    "TC-INV-006": "PROPOSED — Risk Register",
+    "TC-INV-007": "PROPOSED — Target Architecture",
+    "TC-INV-008": "PROPOSED — Hardened Execution Plan",
+    "TC-INV-009": "PROPOSED — Adversarial Review",
+    "TC-INV-010": "PROPOSED — Executive Decision Brief",
+    "TC-INV-011": "PROPOSED — Second Pass"
+  },
+  "root_causes_identified": [
+    "RC-001: tools/supervisor/ 82,329 LOC across 235 files — no component boundaries",
+    "RC-002: tests/supervisor/ is same size as machinery — no clear ownership map",
+    "RC-003: Five concrete failure modes documented but not yet catalogued in investigation files",
+    "RC-004: No docs/investigations/ directory exists — phase TC-INV-000 not started"
+  ],
+  "existing_investigation_artifacts": {
+    "docs/investigations/": false,
+    ".local/supervisor/supervisor-loc-baseline.json": false,
+    ".local/supervisor/supervisor-component-register.json": false,
+    "tools/supervisor/diagnostic_runner.py": false
+  },
+  "tc_pff_r1_note": "TC-PFF-R1 is referenced in plan line 148 as adding V149 (validator count update 2026-07-09). This was a minor fix, not a plan phase execution.",
+  "supervisor_loc": "82,329 LOC across 235 .py files in tools/supervisor/",
+  "disposition": "EXECUTE_TASK — Wave 4 (machinery investigation is L01 serialized work). TC-INV-000 is gating.",
+  "blocking_factors": "None TRUE_EXTERNAL — all work is agent-owned investigation",
+  "repository_assessment": "NOT_STARTED"
+}

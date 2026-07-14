@@ -235,7 +235,7 @@ def snapshot_to_markdown(snapshot):
 
 def main():
     parser = argparse.ArgumentParser(description="Build computed state snapshot")
-    parser.add_argument("--output-dir", default="state", help="Output directory")
+    parser.add_argument("--output-dir", default=".supervisor/state", help="Output directory")
     args = parser.parse_args()
 
     out_dir = ROOT / args.output_dir
