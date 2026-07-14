@@ -117,24 +117,28 @@ class TestWorkTypeSkillMap:
 
     def test_gap_mappings_count(self):
         """gap_mappings shrinks over time as gaps are resolved and their entries
-        moved to active_mappings (e.g. capability_compiler by TC-EXT-009-03,
-        pre_sprint_governance_hook by TC-EXT-010-01/05 — SKILL-GAP-015 closed).
-        This is a structural sanity check (field exists, is non-empty), not a
-        monotonically-growing count invariant.
+        moved to active_mappings. As of 2026-07-14 (TC-EXT-007-05, TC-EXT-009-03,
+        TC-EXT-010-01/05) every previously-tracked gap has been resolved, so this
+        is now legitimately a >=0 structural sanity check (field exists, is a
+        dict), not a monotonically-growing or non-empty count invariant — an
+        empty gap_mappings is the correct, healthy state, not a broken one.
         """
         d = _load_yaml(".supervisor/work-type-skill-map.yaml")
         gaps = d["gap_mappings"]
-        assert len(gaps) >= 1, f"Expected >=1 gap_mappings, got {len(gaps)}"
+        assert isinstance(gaps, dict), f"Expected gap_mappings to be a dict, got {type(gaps)}"
+        assert len(gaps) >= 0
 
-    def test_rollback_and_recovery_in_gaps(self):
-        """rollback_and_recovery (SKILL-GAP-011) is the remaining open gap as of
-        TC-EXT-010 (2026-07-14). Replaces the prior capability_compiler-in-gaps
-        assertion — capability_compiler was resolved and moved to
-        active_mappings by TC-EXT-009-03, and pre_sprint_governance_hook was
-        resolved and moved to active_mappings by TC-EXT-010-01/05.
+    def test_rollback_and_recovery_no_longer_in_gaps(self):
+        """rollback_and_recovery (SKILL-GAP-011) was resolved 2026-06-25 but
+        work-type-skill-map.yaml wasn't updated until TC-EXT-007-05 (2026-07-14).
+        Replaces the prior assertion that it was "the remaining open gap" —
+        capability_compiler (TC-EXT-009-03), pre_sprint_governance_hook
+        (TC-EXT-010-01/05), and rollback_and_recovery (TC-EXT-007-05) are all now
+        correctly in active_mappings, not gap_mappings.
         """
         d = _load_yaml(".supervisor/work-type-skill-map.yaml")
-        assert "rollback_and_recovery" in d["gap_mappings"]
+        assert "rollback_and_recovery" not in d["gap_mappings"]
+        assert d["active_mappings"].get("rollback_and_recovery") == "rollback-and-recovery"
 
 
 # ---------------------------------------------------------------------------

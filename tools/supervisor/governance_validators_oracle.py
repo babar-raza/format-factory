@@ -193,6 +193,7 @@ def validate_future_format_oracle_onboarding(declaration: dict, repo_root: Path 
     format_ids = {
         (f.get("format_id") if isinstance(f, dict) else f)
         for f in formats_list
+        if not (isinstance(f, dict) and f.get("implementation_authorized") is False)
     } - _ORACLE_EXEMPT_FORMATS
 
     oracle_entries = oracle_reg.get("format_oracles", [])

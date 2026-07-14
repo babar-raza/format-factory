@@ -14,6 +14,7 @@ from unittest.mock import patch
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
+sys.path.insert(0, str(REPO_ROOT))  # needed for dotted 'tools.skills.*' imports in mock patches
 
 from swarm_prompt_generator import generate_prompt, _load_accepted_requirements
 
@@ -155,7 +156,12 @@ class TestGeneratePromptBlocked:
         import tools.skills.lane_selector as selector_mod
         ctx = self._make_mock_context("REQUIREMENTS_MISSING")
         lanes = self._make_mock_lanes("REQUIREMENTS_MISSING")
-        with patch.object(resolver_mod, "resolve_format_context", return_value=ctx), \
+        # patch.dict ensures sys.modules['lane_selector'] points to the skills version,
+        # preventing tools/supervisor/lane_selector.py (select_lane, not select_lanes)
+        # from being picked up when multiple test suites share the same process.
+        with patch.dict(sys.modules, {"lane_selector": selector_mod,
+                                      "format_context_resolver": resolver_mod}), \
+             patch.object(resolver_mod, "resolve_format_context", return_value=ctx), \
              patch.object(selector_mod, "select_lanes", return_value=lanes):
             result = generate_prompt("testfmt", "TEST-001", "m")
         assert result["generator_status"].startswith("BLOCKED")
@@ -166,7 +172,9 @@ class TestGeneratePromptBlocked:
         import tools.skills.lane_selector as selector_mod
         ctx = self._make_mock_context("REQUIREMENTS_VERIFIED_NO_IV")
         lanes = self._make_mock_lanes("REQUIREMENTS_VERIFIED_NO_IV")
-        with patch.object(resolver_mod, "resolve_format_context", return_value=ctx), \
+        with patch.dict(sys.modules, {"lane_selector": selector_mod,
+                                      "format_context_resolver": resolver_mod}), \
+             patch.object(resolver_mod, "resolve_format_context", return_value=ctx), \
              patch.object(selector_mod, "select_lanes", return_value=lanes):
             result = generate_prompt("testfmt", "TEST-001", "m")
         assert result["generator_status"].startswith("BLOCKED")

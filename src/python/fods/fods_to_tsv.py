@@ -18,7 +18,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .parser import parse_fods  # Format Factory source reader (relative — works in wheel)
+try:
+    from .parser import parse_fods  # relative — works in wheel
+except ImportError:
+    from fods.parser import parse_fods  # absolute — works when loaded directly
 
 
 def fods_to_tsv(

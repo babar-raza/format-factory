@@ -33,9 +33,5 @@ active_mappings:
   supervision_audit: check-skill-coverage
   capability_compiler: capability-compiler  # TC-EXT-009-03 (2026-07-14): resolves SKILL-GAP-003
   pre_sprint_governance_hook: pre-sprint-governance-hook  # TC-EXT-010-01 (2026-07-14): resolves SKILL-GAP-015 (previously misfiled under SKILL-GAP-008, which collides with the unrelated TC-SGF-001 pre-commit-hook closure)
-gap_mappings:
-  rollback_and_recovery:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: 'SKILL-FIRST-001 capability-routing-registry.yaml route: rollback_and_recovery'
-    gap_register_id: SKILL-GAP-011
+  rollback_and_recovery: rollback-and-recovery  # TC-EXT-007-05 (2026-07-14): resolves SKILL-GAP-011, closed 2026-06-25 (SKILL-GOVERNANCE-REPAIR-001 + rollback-and-recovery skill registered); see .supervisor/capability-routing-registry.yaml:498-507 (current_status: ACTIVE)
+gap_mappings: {}

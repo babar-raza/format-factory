@@ -159,8 +159,8 @@ class TestV43V44InRunAll:
                 line.strip().startswith("validate_") or line.strip().startswith("_validate_")
             )
         ]
-        assert len(call_lines) == 87, (
-            f"Expected 87 validator calls in runner, got {len(call_lines)}"
+        assert len(call_lines) == 90, (
+            f"Expected 90 validator calls in runner, got {len(call_lines)}"
         )
 
     def test_v43_v44_defined_in_governance_validators(self):

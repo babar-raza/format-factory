@@ -73,12 +73,14 @@ class TestFullSync:
         assert total1 > 0
 
         # Second sync — core entity types should skip (hash-based dedup)
-        # Some ingestors (source_violation, subprocess_invocation, command_invocation,
-        # maintenance_obligation) always re-insert — excluded from idempotency check.
+        # Some ingestors always re-insert — excluded from idempotency check:
+        # - source_violation, subprocess_invocation, command_invocation,
+        #   maintenance_obligation, skill_invocation: always re-insert by design
+        # - plan_file: PlanIngestor does DELETE+re-insert on every sync (always rebuild)
         report2 = sync_all(db_path, _REPO)
         _non_idempotent = {"source_violation", "subprocess_invocation",
                            "command_invocation", "maintenance_obligation",
-                           "skill_invocation"}
+                           "skill_invocation", "plan_file"}
         core_results = [r for r in report2.results if r.entity_type not in _non_idempotent]
         core_inserted = sum(r.inserted for r in core_results)
         assert core_inserted == 0, f"Core entity types re-inserted: {[(r.entity_type, r.inserted) for r in core_results if r.inserted > 0]}"
