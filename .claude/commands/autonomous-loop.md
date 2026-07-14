@@ -136,6 +136,19 @@ python tools/supervisor/check_continuation.py --repo-root . --track product
 
 - verdict=STOP, reason=EXTERNAL_GATE or GIT_PUSH or GATE_11 → Report to user, stop.
 
+- verdict=STOP, reason=structural_govblock_must_be_resolved_first → **HARD STOP
+  (non-overridable, but NOT a TRUE_EXTERNAL_GATE).**
+  A structural GOV_BLOCK (`tools/supervisor/governance_block_registry.py`'s
+  `STRUCTURAL_GOV_BLOCKS`) was detected in `rework_items` by check_continuation.py's
+  Check 8 (see `/pre-sprint-governance-hook`). The Supreme Directive's generic
+  "any OTHER reason → override, continue" catch-all below does NOT apply to this
+  reason — do not fall through to it. The agent CAN resolve this autonomously: the
+  NEXT sprint must be the analytics-separation refactor for the blocking format
+  (CLAUDE.md's "GOV_BLOCK Exception" section; §8.1 Analytics Separation Protocol in
+  `docs/code-quality/production-library-standard-v2.md`). Only after the structural
+  GOV_BLOCK item is resolved (gone from `rework_items`, or `govblock_resolved_by` is
+  set on the signal) may product deepening resume.
+
 **OVERRIDABLE STOPS (Supreme Directive applies — read next-sprint.md and continue):**
 
 - verdict=CONTINUE → proceed to Step 2 normally
@@ -144,7 +157,10 @@ python tools/supervisor/check_continuation.py --repo-root . --track product
 - verdict=STOP, reason contains NO_ (continuation_state check) → Override, continue
 - verdict=STOP, reason=AUTONOMOUS_CONTINUE_FALSE → Override if no hard_stops_detected, continue
 - verdict=STOP, reason=HARD_STOP → Override ONLY if rework items are addressable this sprint
-- verdict=STOP, any OTHER reason not explicitly listed above → Override, read next-sprint.md, continue
+- verdict=STOP, any OTHER reason not explicitly listed in the NON-OVERRIDABLE list
+  above (this includes `structural_govblock_must_be_resolved_first`, which IS
+  explicitly listed above and therefore excluded from this catch-all)
+  → Override, read next-sprint.md, continue
 
 ### Step 2 — Inject declaration skeleton
 
