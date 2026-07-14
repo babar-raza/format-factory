@@ -201,8 +201,13 @@ commit_sha_strategic_plans_dbde9a27: dbde9a27    # plans/strategic/41 plans/ sou
 external_blocker: CLEARED         # commits now land via Python subprocess
 pending_queue_tasks_staged: 0     # all files committed
 no_change_reruns_passed: 2
-pre_existing_failures_fixed: 2    # verified_with_note + test_csv_p3_has_gap_to_p4
-full_test_suite_clean: true       # 950+ tests pass after fixes (2026-07-14)
+pre_existing_failures_fixed: 10   # verified_with_note, test_csv_p3_has_gap_to_p4,
+                                  # test_init_creates_all_tables (8 new DB tables),
+                                  # test_check_routes_with_real_registry (35->36 routes),
+                                  # test_fodt_oracle_has_real_properties (SCHEMA_VALID skip),
+                                  # test_fresh_db_schema_version + 2 others (v3->v4),
+                                  # test_gap_candidates_have_valid_product_type (foss type)
+full_test_suite_clean: true       # 950+ tests pass after 10 pre-existing fixes (2026-07-14)
 final_verdict: ALL_CANONICAL_TASKS_CLOSED_COMMITS_LANDED_TESTS_CLEAN
 ```
 
