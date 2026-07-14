@@ -16,15 +16,9 @@ Ledger entry: R90-FODS-TO-TSV-DOGFOOD-001
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "fods"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "tsv"))
-
-from fods.parser import parse_fods  # Format Factory source reader
-from tsv.tsv_parser import write_tsv  # Format Factory target writer
+from .parser import parse_fods  # Format Factory source reader (relative — works in wheel)
 
 
 def fods_to_tsv(
@@ -54,6 +48,8 @@ def fods_to_tsv(
         (row_count_written, headers) — rows written (excluding header row)
         and the header list (empty if first_row_as_headers=False).
     """
+    from tsv.tsv_parser import write_tsv  # lazy import — tsv may not be installed in isolated envs
+
     fods_path = Path(fods_path)
     dest_path = Path(dest_path)
 

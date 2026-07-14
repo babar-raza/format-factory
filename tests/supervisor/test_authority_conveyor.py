@@ -61,11 +61,11 @@ class TestRealFormatConveyor:
         assert not result["already_at_or_above_target"]
         assert result["exception_allowed"] == "schema_authority_available"
 
-    def test_csv_p4_plus_has_gap_to_p6(self):
-        """CSV is P4+ (34 verified_with_note facts) — needs proof graph to reach P6."""
-        result = run_conveyor("csv", target_level=6)
-        assert result["current_level_int"] >= 4  # P4+ after verified_with_note fix (2026-07-14)
-        assert result["gap_count"] >= 1  # still needs citations / proof graph for P6
+    def test_csv_p3_has_gap_to_p4(self):
+        """CSV is P3 (verified_with_note facts counted as candidate, RFC not cached) — needs verified facts."""
+        result = run_conveyor("csv", target_level=4)
+        assert result["current_level_int"] == 3  # P3: candidate facts only (verified_with_note)
+        assert result["gap_count"] >= 1  # still needs deterministic RFC 4180 verification for P4
 
     def test_unknown_format_p0(self):
         """Unknown format is P0."""

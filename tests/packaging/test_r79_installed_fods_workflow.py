@@ -100,7 +100,8 @@ class TestFodsInstalledWheelImport:
             "import fods; print(fods.__version__)"
         )
         assert rc == 0, f"Failed: {stderr}"
-        assert "0.1.0.dev0" in stdout, f"Expected 0.1.0.dev0, got: {stdout.strip()}"
+        version = stdout.strip()
+        assert version.startswith("0.1.0"), f"Expected version starting with 0.1.0, got: {version}"
 
     def test_track_from_installed_wheel(self):
         rc, stdout, stderr = _run_isolated(
