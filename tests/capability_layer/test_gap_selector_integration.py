@@ -41,7 +41,7 @@ def test_gap_candidates_have_valid_product_type():
     gaps = data.get("gaps", [])
     if not gaps:
         pytest.skip("All gaps closed — no gaps to validate type for")
-    valid_types = {"foss_reduced", "commercial", "commercial_dotnet", "governance",
+    valid_types = {"foss", "foss_reduced", "commercial", "commercial_dotnet", "governance",
                    "governance_machinery", "both", None}
     for g in gaps:
         assert g.get("product_type") in valid_types, (
