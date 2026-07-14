@@ -29,9 +29,6 @@ missing_skill_workflow:
   added: '2026-06-22'
   enforcement_point: autonomous-loop.md Step 2a -> /check-skill-coverage
   known_open_gaps:
-  - master_plan_clause: spec-to-feature plan Lane 3, ROOT-08
-    status: backlog
-    work_type: capability_compiler
   - master_plan_clause: section 24.7 analytics separation RULE-AM-001
     status: backlog
     work_type: extract_analytics_from_monolith
@@ -3083,7 +3080,8 @@ skills:
   output_paths: []
   product_track: governance
   purpose: Run the CI certification gate — verifies no regression against locked baseline thresholds.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
   skill_id: certification-ci-gate
   status: active
   test_paths:
@@ -3535,7 +3533,8 @@ skills:
   idempotency: idempotent
   implementation_paths:
   - tools/supervisor/control_index/views.py
-  mandatory_validations: []
+  mandatory_validations:
+  - context_file_written
   required_handoff_fields:
   - task_id
 - command: /build-resume-context
@@ -3548,8 +3547,10 @@ skills:
   idempotency: idempotent
   implementation_paths:
   - tools/supervisor/control_index/views.py
-  mandatory_validations: []
-  required_handoff_fields: []
+  mandatory_validations:
+  - context_file_written
+  required_handoff_fields:
+  - sprint_id
 - command: /build-product-context
   command_file: .claude/commands/build-product-context.md
   skill_id: build-product-context
@@ -3560,7 +3561,8 @@ skills:
   idempotency: idempotent
   implementation_paths:
   - tools/supervisor/control_index/views.py
-  mandatory_validations: []
+  mandatory_validations:
+  - context_file_written
   required_handoff_fields:
   - format_id
 - command: /rebuild-operational-index
@@ -3575,7 +3577,8 @@ skills:
   - tools/supervisor/control_index/
   mandatory_validations:
   - sync_errors_zero
-  required_handoff_fields: []
+  required_handoff_fields:
+  - output_db_path
 - command: /validate-operational-index
   command_file: .claude/commands/validate-operational-index.md
   skill_id: validate-operational-index
@@ -3588,7 +3591,8 @@ skills:
   - tools/supervisor/control_index/upstream_validator.py
   mandatory_validations:
   - yaml_parses_correctly
-  required_handoff_fields: []
+  required_handoff_fields:
+  - source_dir
 - command: /quarantine-invalid-artifact
   command_file: .claude/commands/quarantine-invalid-artifact.md
   skill_id: quarantine-invalid-artifact
@@ -3618,7 +3622,8 @@ skills:
   - tools/supervisor/governance_validators_control_layer.py
   mandatory_validations:
   - yaml_parses_correctly
-  required_handoff_fields: []
+  required_handoff_fields:
+  - db_path
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

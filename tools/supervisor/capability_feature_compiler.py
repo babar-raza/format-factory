@@ -167,7 +167,7 @@ _MAX_PRODUCT_LANE = 13
 _SKIP_STATUSES = {
     "closed", "CLOSED",
     "DEFERRED_BY_DESIGN", "DEFERRED",
-    "test_verified", "implementation_verified_no_tests",
+    "test_verified", "implementation_verified", "implementation_verified_no_tests",
     "SAL_UNGROUNDED",  # RC-4 fix: no SAL fact authority; excluded until spec facts exist
 }
 

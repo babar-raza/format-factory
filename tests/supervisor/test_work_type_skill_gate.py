@@ -19,12 +19,17 @@ def _make_declaration(items):
 class TestWorkTypeSkillGate:
     """Fix 2: Verify work-type-skill-map.yaml is read at runtime."""
 
-    def test_blocked_skill_gap_fires_for_capability_compiler(self):
-        """work_type=capability_compiler is a known gap — must produce violation."""
+    def test_blocked_skill_gap_fires_for_rollback_and_recovery(self):
+        """work_type=rollback_and_recovery is a known gap — must produce violation.
+
+        Note: capability_compiler was moved to active_mappings in TC-EXT-009-03
+        (2026-07-14) when the capability-compiler skill was registered. Replaced
+        this test to use rollback_and_recovery (SKILL-GAP-011) which is still open.
+        """
         decl = _make_declaration([{
             "item_id": "PROD-001",
             "item_type": "PRODUCT_SOURCE",
-            "work_type": "capability_compiler",
+            "work_type": "rollback_and_recovery",
         }])
         violations = check_work_type_skill_gate(decl, _REPO)
         assert len(violations) == 1
@@ -60,18 +65,19 @@ class TestWorkTypeSkillGate:
         violations = check_work_type_skill_gate(decl, _REPO)
         assert len(violations) == 0
 
-    def test_all_five_gaps_detected(self):
-        """All 5 BLOCKED_SKILL_GAP entries in map are detectable.
+    def test_remaining_gaps_detected(self):
+        """All remaining BLOCKED_SKILL_GAP entries in map are detectable.
 
-        Note: extract_analytics_from_monolith was moved to active_mappings when
-        SKILL-GAP-005 was closed; replaced with rollback_and_recovery (SKILL-GAP-011).
+        History of gap_mappings changes:
+        - extract_analytics_from_monolith: moved to active_mappings (SKILL-GAP-005 closed)
+        - capability_compiler: moved to active_mappings (TC-EXT-009-03, 2026-07-14, SKILL-GAP-003 closed)
+        - ci_transcript_verification: moved to active_mappings (check-release-boundary skill registered)
+        - supervision_audit: moved to active_mappings (check-skill-coverage skill registered)
+        Current open gaps: pre_sprint_governance_hook (SKILL-GAP-008), rollback_and_recovery (SKILL-GAP-011).
         """
         gap_types = [
-            "capability_compiler",
-            "rollback_and_recovery",
             "pre_sprint_governance_hook",
-            "ci_transcript_verification",
-            "supervision_audit",
+            "rollback_and_recovery",
         ]
         for i, wt in enumerate(gap_types):
             decl = _make_declaration([{
