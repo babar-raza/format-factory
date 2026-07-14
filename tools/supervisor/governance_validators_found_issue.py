@@ -295,9 +295,12 @@ def validate_found_issue_register_present(
     WARN (not FAIL) during GA period — blocks_sprint=False.
     Skips check if no sprint_id / run_id in declaration (can't correlate issues).
     """
-    tests_run = declaration.get("tests_run", {}) or {}
+    # tests_run may be int (total count) or dict — use test_results for pass/fail breakdown
+    test_results = declaration.get("test_results", {}) or {}
+    if not isinstance(test_results, dict):
+        test_results = {}
     failing_tests = declaration.get("failing_tests", []) or []
-    failed_count = tests_run.get("failed", 0) or 0
+    failed_count = test_results.get("failed", 0) or 0
 
     has_failures = failed_count > 0 or bool(failing_tests)
     if not has_failures:

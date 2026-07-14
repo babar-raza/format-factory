@@ -779,6 +779,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
         "next_sprint_path": "reports/supervisor/next-sprint.md",
         "rework_items": rework_items,
         "lane_starvation_warnings": lane_starvation_warnings,
+        "violation_pressure": _compute_violation_pressure(repo_root),
         "control_index_warnings": _get_control_index_warnings(repo_root),
         "contradiction_warnings": (
             [f"critical_contradictions_active: {signal.get('critical_contradiction_count', 0)}"]
@@ -797,6 +798,64 @@ def check(repo_root: Path, *, session_id: str | None = None,
                  signal_path=str(signal_path), track=track or "product",
                  iteration=iteration)
     return result
+
+
+def _compute_violation_pressure(repo_root: Path) -> dict:
+    """TC-GOV-LLE-007: Compute violation pressure from source-structure-baseline.json.
+
+    Returns a dict with total violation count, past-deadline count, high-severity count,
+    and a level label (CRITICAL/HIGH/MEDIUM/LOW). Non-blocking: returns safe defaults on error.
+    """
+    try:
+        import json as _json
+        from datetime import datetime as _dt
+        baseline_path = repo_root / "registry" / "source-structure-baseline.json"
+        if not baseline_path.exists():
+            return {"total": 0, "past_deadline": 0, "high_severity": 0, "level": "UNKNOWN"}
+        data = _json.loads(baseline_path.read_text(encoding="utf-8"))
+        kv = data.get("known_violations", {})
+        total = 0
+        past_deadline = 0
+        high_severity = 0
+        today = _dt.now()
+        for path, entry in kv.items():
+            # Only count src/ files (not tests/)
+            if not isinstance(entry, dict):
+                continue
+            if path.startswith("tests/") or path.startswith("tools/"):
+                continue
+            if not path.startswith("src/"):
+                continue
+            total += 1
+            loc = entry.get("loc", 0)
+            fn = entry.get("functions", 0)
+            if loc > 900 or fn > 80:
+                high_severity += 1
+            deadline_str = entry.get("remediation_deadline", "")
+            status = entry.get("remediation_status", "")
+            if deadline_str and status not in ("complete",):
+                try:
+                    deadline = _dt.fromisoformat(deadline_str[:10])
+                    if deadline < today:
+                        past_deadline += 1
+                except Exception:
+                    pass
+        if past_deadline > 0:
+            level = "CRITICAL"
+        elif total > 100 or high_severity > 10:
+            level = "HIGH"
+        elif total > 50:
+            level = "MEDIUM"
+        else:
+            level = "LOW"
+        return {
+            "total": total,
+            "past_deadline": past_deadline,
+            "high_severity": high_severity,
+            "level": level,
+        }
+    except Exception:
+        return {"total": 0, "past_deadline": 0, "high_severity": 0, "level": "UNKNOWN"}
 
 
 def _get_control_index_warnings(repo_root: Path) -> list[str]:

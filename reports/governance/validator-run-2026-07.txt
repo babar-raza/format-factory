@@ -1,0 +1,58 @@
+# Validator Run Capture — 2026-07-14
+# authority: pilot-fix-lle-2026-07-14 (TC-PILOT-FIX-003)
+# captured after: TC-PILOT-FIX-002 (V139 tests_run fix applied)
+# declaration: empty (canonical baseline run)
+expected_count: 223
+ran_count: 223
+skipped_count: 0
+fail_count: 1
+warn_count: 31
+pass_count: 191
+blocks_sprint: True
+blocking_validator: V102
+
+--- V187-V193 results ---
+validate_function_count_per_file (V187): PASS  blocks_sprint=False
+validate_io_in_domain_model (V188): PASS  blocks_sprint=False
+validate_analytics_statelessness (V189): PASS  blocks_sprint=False
+validate_test_tier_presence (V190): PASS  blocks_sprint=False
+validate_explicit_all_defined (V191): PASS  blocks_sprint=False
+validate_changed_files_exist (V192): PASS  blocks_sprint=False
+validate_remediation_deadline_expired (V193): PASS  blocks_sprint=False
+# V193 PASS because all remediation_deadline values are 2026-09-01 or 2027-01-01 (future).
+# V193 will begin firing on 2026-09-01 when the first deadline class expires.
+
+--- All WARN/FAIL results ---
+[FAIL] V102: 68 new public Python function(s) missing docstrings (+ 0 grandfathered). blocks_sprint=True
+[WARN] capability_map_staleness: Capability map is stale — source src/python/zst/zst_codec.py modified
+[WARN] validate_source_architecture: 1 WARN
+[WARN] validate_spec_authority_class_completeness: V53 — 5 registry entry(ies) missing spec authority class
+[WARN] V68_knowledge_freshness: 1 stale/missing source(s)
+[WARN] validate_dotnet_aggregate_loc_cap: V78_AGG — 2 known aggregate violation(s) stable/untouched (advisory)
+[WARN] validate_healing_stall_detector: V79 — 286 known_violation(s) show zero healing progress (loc == cap)
+[WARN] validate_oracle_obligations: V82 — 6/30 formats missing oracle obligation (ipynb, mtlx, nrrd, ...)
+[WARN] validate_readme_freshness: V87 — 27 stale README(s) detected (non-blocking)
+[WARN] validate_plans_root_policy: V90 — 2 file(s) at plans/ root outside allowed set
+[WARN] validate_capability_fact_ratio: V-NEW-001 — 7 format(s) have capabilities/facts ratio > 10 (advisory)
+[WARN] validate_sal_facts_schema: V-SAL-SCHEMA-001 — 1 issue(s); 2 formats have zero spec_facts
+[WARN] root_structure_validator: Root structure 0 FAIL, 60 WARN, 53 registered folders
+[WARN] validate_playbook_coverage_report_current: V99 — 1 template(s) newer than coverage report
+[WARN] validate_dotnet_collection_stub_comments: V168 — 17 pre-existing COLLECTION_STUB/GI-FODS-NET comments in src/net/
+[WARN] V103: 17 ungoverned TODO/FIXME/HACK markers found (missing GAP-*/TC-* reference)
+[WARN] V104: 12 grandfathered semantic stub function(s) found
+[WARN] V105: 55 grandfathered .cs getter(s) with detached dict reads
+[WARN] V106: 34 grandfathered setter(s) with no XML write path
+[WARN] V107: Timed out during cross-ref scan (>5s) — skipped
+[WARN] V108: 33 grandfathered detached Dictionary field(s)
+[WARN] V109: 1 file(s) flagged for migration/removal per layout contract
+[WARN] validate_oracle_depth_minimum: (summary truncated)
+[WARN] validate_gate10_status_consistency: V144 — 6 issue(s)
+[WARN] validate_governed_artifact_pre_flight: V150 — registry/change-proposals/ absent
+[WARN] validate_change_proposal_coverage: V151 — registry/change-proposals/ or promoted-stable-registry.yaml absent
+[WARN] validate_impact_analysis_on_accepted_proposals: V154 — registry/change-proposals/ or registry/impact-analyses/ absent
+[WARN] validate_release_candidate_decision_chain: V155 — registry/release-candidates/ absent
+[WARN] validate_work_items_sal_backing: V-CAP-SAL-GATE-001 — 2/22 work items have no SAL fact backing
+[WARN] validate_no_open_implementation_verified_gaps: V182 — 27 gap(s) have status=open AND current_state=implementation_verified
+
+# Note: capability_map_staleness and root_structure_validator appear twice in the run output
+# (duplicated by the runner's module-level and validator-registry execution paths) — counted once above.
