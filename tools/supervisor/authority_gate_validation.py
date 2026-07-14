@@ -105,7 +105,8 @@ def _load_format_spec_state(format_id: str, repo_root: Path) -> dict:
         data = _load_yaml_safe(ff)
         facts_data.extend(data.get("facts", []))
 
-    verified_facts = [f for f in facts_data if f.get("provenance", {}).get("verification_status") == "verified"]
+    _VERIFIED_STATUSES = {"verified", "verified_with_note"}
+    verified_facts = [f for f in facts_data if f.get("provenance", {}).get("verification_status") in _VERIFIED_STATUSES]
     candidate_facts = [f for f in facts_data if f.get("provenance", {}).get("verification_status") == "needs_review"]
 
     return {
