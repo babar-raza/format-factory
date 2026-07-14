@@ -13,6 +13,9 @@ meta:
   overall_system_health: GOOD
   critical_gaps: 1
   advisory_gaps: 6
+  re_evaluated_at: "2026-07-14"
+  re_evaluated_at_head: "2e132629"
+  re_evaluation_note: "GAP-ARCH-B001 and GAP-ARCH-E001/F001 resolved as of 2026-07-14; see consolidated_gaps for updated statuses"
 
 # ═══════════════════════════════════════════════════════
 # LANE A — Repository/State/Evidence
@@ -100,6 +103,9 @@ lane_e_findings:
       description: "next-work-items.json has 0 items — capability pipeline not producing work items"
       severity: MEDIUM
       action: INVESTIGATE_CAPABILITY_PIPELINE
+      status: RESOLVED
+      resolution_date: "2026-07-14"
+      resolution_evidence: "next-work-items.json has 10 items as of 2e132629 (dom_typed_children for ABW/DIF/FODG/FODP/GNUMERIC)"
 
 # ═══════════════════════════════════════════════════════
 # LANE F — Capability
@@ -116,6 +122,9 @@ lane_f_findings:
       description: "next-work-items.json is empty — capability-to-feature pipeline may not be running or may have no eligible formats"
       severity: MEDIUM
       action: RUN_CAPABILITY_FEATURE_COMPILER
+      status: RESOLVED
+      resolution_date: "2026-07-14"
+      resolution_evidence: "10 dom_typed_children work items now present; pipeline is active"
 
 # ═══════════════════════════════════════════════════════
 # LANE G — Downstream Generation
@@ -148,6 +157,8 @@ lane_i_findings:
       description: "Lane DAG ordering is prompt-only — no machine-enforced lane gate in check_continuation.py or governance_validator_runner.py"
       severity: ADVISORY
       action: DOCUMENT_AS_KNOWN_GAP
+      status: TRACKED_IN_LANE14
+      tracking_reference: "plans/strategic/spec-to-feature-radical-correction-plan.md Lane 14"
 
 # ═══════════════════════════════════════════════════════
 # LANE J — Backfill
@@ -187,6 +198,9 @@ consolidated_gaps:
     description: "src/format_factory_dev.egg-info not gitignored"
     action: ADD_TO_GITIGNORE
     blocking: false
+    status: RESOLVED
+    resolution_date: "2026-07-14"
+    resolution_evidence: "*.egg-info already in .gitignore; git ls-files returns 0 tracked egg-info files — dirs are untracked, not committed"
 
   - id: GAP-ARCH-C001
     lane: C
@@ -194,6 +208,11 @@ consolidated_gaps:
     description: "fodt:office:body qname gap (intentional, tracked)"
     action: QNAME_BACKFILL_CANDIDATE
     blocking: false
+    status: OPEN_DEFERRED
+    deferred_to: "next fodt-specific sprint"
+    skill: "qname-backfill"
+    target_qname: "office:body"
+    format: fodt
 
   - id: GAP-ARCH-E001
     lane: E
@@ -201,6 +220,9 @@ consolidated_gaps:
     description: "next-work-items.json has 0 items — capability pipeline not producing work"
     action: INVESTIGATE_CAPABILITY_PIPELINE
     blocking: false
+    status: RESOLVED
+    resolution_date: "2026-07-14"
+    resolution_evidence: "10 work items present in next-work-items.json (dom_typed_children for ABW/DIF/FODG/FODP/GNUMERIC)"
 
   - id: GAP-ARCH-F001
     lane: F
@@ -208,6 +230,9 @@ consolidated_gaps:
     description: "capability-to-feature pipeline may not be producing next-work-items.json"
     action: RUN_CAPABILITY_FEATURE_COMPILER
     blocking: false
+    status: RESOLVED
+    resolution_date: "2026-07-14"
+    resolution_evidence: "Pipeline active — 10 dom_typed_children items generated"
 
   - id: GAP-ARCH-I001
     lane: I
@@ -215,6 +240,8 @@ consolidated_gaps:
     description: "Lane DAG is prompt-only enforcement (known gap from spec-to-feature plan)"
     action: DOCUMENT
     blocking: false
+    status: TRACKED_IN_LANE14
+    tracking_reference: "plans/strategic/spec-to-feature-radical-correction-plan.md Lane 14"
 
   - id: GAP-ARCH-K001
     lane: K

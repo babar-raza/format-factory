@@ -1,9 +1,36 @@
 # Format Factory Generation Archaeology — Enhanced Execution Plan
 # Plan ID: fuzzy-conjuring-lobster
 # Type: archaeology_audit | plan_authority: AUTHORITATIVE_SINGLE
-# Status: IN_PROGRESS
+# Status: REASSESSED_2026-07-14 — see Part XIX for revised scope
 # Authority: SINGLE_PLAN — no competing execution plan exists
 # Last enhanced: 2026-07-10 (micro-taskcardization pass)
+# Re-evaluated: 2026-07-14 (re-evaluation pass against HEAD 2e132629)
+
+## Taskcard Status Summary
+
+| TC-ID | Status |
+|---|---|
+| TC-ARCH-001 | CLOSED |
+| TC-ARCH-002 | CLOSED |
+| TC-ARCH-003 | CLOSED |
+| TC-ARCH-004 | CLOSED |
+| TC-ARCH-005 | CLOSED |
+| TC-ARCH-006 | CLOSED |
+| TC-ARCH-007 | CLOSED |
+| TC-ARCH-008 | CLOSED |
+| TC-ARCH-009 | CLOSED |
+| TC-ARCH-010 | CLOSED |
+| TC-ARCH-011 | CLOSED |
+| TC-ARCH-012 | CLOSED |
+| TC-ARCH-013 | CLOSED |
+| TC-ARCH-014 | CLOSED |
+| TC-ARCH-015 | CLOSED |
+| TC-ARCH-016 | CLOSED |
+| TC-ARCH-017-REVISED | CLOSED |
+| TC-ARCH-018 | CLOSED |
+| TC-ARCH-LOCK | CLOSED |
+| TC-CONV-001 | CLOSED |
+| TC-CONV-002 | CLOSED |
 
 ---
 
@@ -3585,3 +3612,12 @@ Any 'no' answer = additional gap entry created and factored into verdict.
 - Q19: Did I produce a gap matrix? → TC-ARCH-016 + system-gap-matrix.yaml
 - Q20: Did I give a clear go/no-go verdict? → TC-ARCH-018-01 + final-verdict.md
 - Q21: Did I provide the next execution prompt? → TC-ARCH-018-04 + next-agent-execution-prompt.md
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-14T15:40:19.759264+00:00"
+  locked_by: "f001e6ed7786"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
