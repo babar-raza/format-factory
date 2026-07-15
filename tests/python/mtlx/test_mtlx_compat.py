@@ -296,6 +296,73 @@ class TestMtlxNodeGraphFacade:
         assert facade.to_dict() is not original
 
 
+class TestSpecStubsFromRealSamples:
+    """L1 unit: Material/NodeGraph spec stubs built directly from load_mtlx() on real fixture files."""
+
+    def test_material_from_simple_material_sample(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+        from mtlx.spec.element.material import Material
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "simple-material.mtlx")
+        m = Material(model["materials"][0])
+        assert m.name == "simple_mat"
+
+    def test_material_from_multi_material_sample_count(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+        from mtlx.spec.element.material import Material
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "multi-material.mtlx")
+        materials = [Material(entry) for entry in model["materials"]]
+        assert len(materials) == 3
+        assert all(isinstance(m.name, str) and m.name for m in materials)
+
+    def test_nodegraph_from_node_graph_sample(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+        from mtlx.spec.element.nodegraph import NodeGraph
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "node-graph.mtlx")
+        ng = NodeGraph(model["node_graphs"][0])
+        assert ng.name == "my_graph"
+        assert ng.is_empty is False
+
+    def test_load_mtlx_returns_expected_top_level_keys(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "simple-material.mtlx")
+        assert set(model.keys()) >= {"version", "materials", "node_graphs", "nodes"}
+        assert model["version"] == "1.39"
+
+    def test_load_mtlx_multi_material_has_no_node_graphs(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "multi-material.mtlx")
+        assert model["node_graphs"] == []
+
+    def test_load_mtlx_node_graph_sample_has_no_materials(self):
+        from pathlib import Path
+
+        from mtlx.mtlx_codec import load_mtlx
+
+        samples = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "mtlx" / "valid"
+        model = load_mtlx(samples / "node-graph.mtlx")
+        assert model["materials"] == []
+
+
 class TestFacadeEdgeCases:
     """L3 edge cases: malformed/boundary inputs for spec stubs and facades."""
 

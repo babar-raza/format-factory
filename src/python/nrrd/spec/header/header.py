@@ -16,7 +16,9 @@ class Header:
 
     Wraps the parsed header dict (type, dimension, sizes, encoding, endian)
     produced by ``nrrd.nrrd_codec.load_nrrd``. architecture_only marker class:
-    no I/O, no parsing logic — a read-only view over an already-parsed dict.
+    no I/O — a read-only view over an already-parsed dict. The ``sizes``
+    property does minimal in-memory string-to-list coercion (splitting the
+    already-parsed header value), not file/byte parsing.
     """
 
     spec_qname = "nrrd:header"

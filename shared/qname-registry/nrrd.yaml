@@ -3,18 +3,20 @@
   local_name: header
   canonical_class: Nrrd.Header
   spec_fact_ref: FACT-NRRD-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - NrrdHeader
+  python_file: src/python/nrrd/spec/header/header.py
   dotnet_file: null
 - qname: nrrd:data
   namespace_uri: urn:format:nrrd:5.0
   local_name: data
   canonical_class: Nrrd.Data
   spec_fact_ref: FACT-NRRD-003
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - NrrdData
+  python_file: src/python/nrrd/spec/header/data.py
   dotnet_file: null

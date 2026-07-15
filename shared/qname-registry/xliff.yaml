@@ -3,28 +3,31 @@
   local_name: file
   canonical_class: Xliff.File
   spec_fact_ref: FACT-XLIFF-001
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - XliffFile
+  python_file: src/python/xliff/spec/file/file.py
   dotnet_file: null
 - qname: xliff:unit
   namespace_uri: "urn:oasis:names:tc:xliff:document:2.0"
   local_name: unit
   canonical_class: Xliff.Unit
   spec_fact_ref: FACT-XLIFF-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - XliffUnit
+  python_file: src/python/xliff/spec/file/unit.py
   dotnet_file: null
 - qname: xliff:segment
   namespace_uri: "urn:oasis:names:tc:xliff:document:2.0"
   local_name: segment
   canonical_class: Xliff.Segment
   spec_fact_ref: FACT-XLIFF-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - XliffSegment
+  python_file: src/python/xliff/spec/file/segment.py
   dotnet_file: null

@@ -3,28 +3,31 @@
   local_name: Invoice
   canonical_class: Ubl.Invoice
   spec_fact_ref: FACT-UBL-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - UblInvoice
+  python_file: src/python/ubl/spec/document/invoice.py
   dotnet_file: null
 - qname: ubl:order
   namespace_uri: "urn:oasis:names:specification:ubl:schema:xsd:Order-2"
   local_name: Order
   canonical_class: Ubl.Order
   spec_fact_ref: FACT-UBL-001
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - UblOrder
+  python_file: src/python/ubl/spec/document/order.py
   dotnet_file: null
 - qname: ubl:line-item
   namespace_uri: "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
   local_name: InvoiceLine
   canonical_class: Ubl.LineItem
   spec_fact_ref: FACT-UBL-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - UblLineItem
+  python_file: src/python/ubl/spec/document/line_item.py
   dotnet_file: null

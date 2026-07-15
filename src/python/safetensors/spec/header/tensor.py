@@ -49,7 +49,12 @@ class Tensor:
 
     @property
     def data_offsets(self) -> list[int]:
-        """Return the [begin, end] byte offsets into the data section (FACT-SAFETENSORS-003)."""
+        """Return the [begin, end] byte offsets into the data section.
+
+        The descriptor itself is grounded in FACT-SAFETENSORS-002 (this class's
+        spec_fact_ref); the offsets specifically also draw on FACT-SAFETENSORS-003
+        (tensor data follows the header at these byte offsets).
+        """
         return list(self._data.get("data_offsets", [0, 0]))
 
     @property

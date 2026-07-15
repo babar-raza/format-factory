@@ -3,18 +3,20 @@
   local_name: surfacematerial
   canonical_class: Materialx.Material
   spec_fact_ref: FACT-MTLX-003
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - MtlxMaterial
+  python_file: src/python/mtlx/spec/element/material.py
   dotnet_file: null
 - qname: materialx:nodegraph
   namespace_uri: urn:format:materialx:1.39
   local_name: nodegraph
   canonical_class: Materialx.NodeGraph
   spec_fact_ref: FACT-MTLX-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - MtlxNodeGraph
+  python_file: src/python/mtlx/spec/element/nodegraph.py
   dotnet_file: null
