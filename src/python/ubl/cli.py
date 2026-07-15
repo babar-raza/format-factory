@@ -10,6 +10,7 @@ from ubl.ubl_codec import load_ubl, probe_ubl
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the UBL codec."""
     parser = argparse.ArgumentParser(prog="ff-ubl", description="Format Factory UBL tool")
     sub = parser.add_subparsers(dest="command")
 

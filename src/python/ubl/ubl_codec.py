@@ -224,6 +224,34 @@ def write_ubl(
             cbc_curr = ET.SubElement(root, f"{{{NS_CBC}}}DocumentCurrencyCode")
             cbc_curr.text = html.escape(model["currency"])
 
+        for line in model.get("lines", []):
+            line_elem = ET.SubElement(root, f"{{{NS_CAC}}}InvoiceLine")
+            line_id = ET.SubElement(line_elem, f"{{{NS_CBC}}}ID")
+            line_id.text = html.escape(str(line.get("id", "")))
+            if line.get("quantity"):
+                qty = ET.SubElement(line_elem, f"{{{NS_CBC}}}InvoicedQuantity")
+                qty.text = html.escape(str(line["quantity"]))
+            if line.get("amount"):
+                amt = ET.SubElement(line_elem, f"{{{NS_CBC}}}LineExtensionAmount")
+                amt.text = html.escape(str(line["amount"]))
+            if line.get("item_name"):
+                item_elem = ET.SubElement(line_elem, f"{{{NS_CAC}}}Item")
+                item_name_elem = ET.SubElement(item_elem, f"{{{NS_CBC}}}Name")
+                item_name_elem.text = html.escape(str(line["item_name"]))
+    elif doc_type == "Order":
+        for line in model.get("lines", []):
+            order_line = ET.SubElement(root, f"{{{NS_CAC}}}OrderLine")
+            line_item = ET.SubElement(order_line, f"{{{NS_CAC}}}LineItem")
+            line_id = ET.SubElement(line_item, f"{{{NS_CBC}}}ID")
+            line_id.text = html.escape(str(line.get("id", "")))
+            if line.get("quantity"):
+                qty = ET.SubElement(line_item, f"{{{NS_CBC}}}Quantity")
+                qty.text = html.escape(str(line["quantity"]))
+            if line.get("item_name"):
+                item_elem = ET.SubElement(line_item, f"{{{NS_CAC}}}Item")
+                item_name_elem = ET.SubElement(item_elem, f"{{{NS_CBC}}}Name")
+                item_name_elem.text = html.escape(str(line["item_name"]))
+
     tree = ET.ElementTree(root)
     ET.indent(tree, space="  ")
     result = ET.tostring(root, encoding="unicode", xml_declaration=True)
