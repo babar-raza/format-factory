@@ -31,7 +31,13 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(0 if result else 1)
     elif args.command == "load":
         model = load_safetensors(args.file)
-        print(json.dumps(model, indent=2))
+        # The raw tensor data buffer (bytes) is not JSON-serializable and is
+        # not useful on a terminal — show its length instead of the header
+        # fields that are meant for display.
+        display = {k: v for k, v in model.items() if k != "data"}
+        if "data" in model:
+            display["data_length"] = len(model["data"])
+        print(json.dumps(display, indent=2))
     else:
         parser.print_help()
         sys.exit(1)

@@ -14,6 +14,12 @@ from pathlib import Path
 from typing import Any, Union
 
 from safetensors.exceptions import SafetensorsParseError, SafetensorsWriteError
+from safetensors.safetensors_validation import (
+    detect_duplicate_tensor_keys,
+    slice_tensor_bytes,
+    validate_tensor_offsets,
+)
+from safetensors.spec.header.tensor import Tensor
 
 MAX_FILE_SIZE = 256 * 1024 * 1024  # 256 MiB guard
 MAX_HEADER_SIZE = 100 * 1024 * 1024  # 100 MiB header guard
@@ -28,13 +34,15 @@ SUPPORTED_FEATURES = [
     "multiple_tensors",
     "metadata_block",
     "size_guard",
+    "tensor_data_decode",
+    "offset_integrity_validation",
+    "duplicate_key_rejection",
+    "fp8_dtypes",
 ]
 
 UNSUPPORTED_FEATURES = [
-    "tensor_data_decode",
     "memory_mapped_access",
     "streaming_parse",
-    "quantized_dtypes",
 ]
 
 SourceType = Union[str, Path, bytes]
@@ -114,7 +122,12 @@ def load_safetensors(source: SourceType) -> dict[str, Any]:
     header_bytes = data[HEADER_LEN_SIZE : HEADER_LEN_SIZE + header_len]
 
     try:
-        header = json.loads(header_bytes.decode("utf-8"))
+        # object_pairs_hook sees every JSON object's raw (key, value) pairs
+        # before json normally collapses duplicate keys, so it can reject a
+        # header with a literal duplicate tensor key (FACT-SAFETENSORS-105).
+        header = json.loads(
+            header_bytes.decode("utf-8"), object_pairs_hook=detect_duplicate_tensor_keys
+        )
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         raise SafetensorsParseError(f"Invalid header JSON: {exc}") from exc
 
@@ -137,10 +150,18 @@ def load_safetensors(source: SourceType) -> dict[str, Any]:
                 "data_offsets": val.get("data_offsets", [0, 0]),
             }
 
+    data_section = data[HEADER_LEN_SIZE + header_len :]
+    # FACT-SAFETENSORS-104: reject overlapping/out-of-bounds/gapped offsets
+    # before the model is ever handed back to a caller.
+    validate_tensor_offsets(tensors, len(data_section))
+
     return {
         "header_size": header_len,
         "tensors": tensors,
         "metadata": metadata,
+        # Real tensor data buffer (FACT-SAFETENSORS-101) — sliced on demand by
+        # get_tensor_bytes()/get_tensor() using each tensor's data_offsets.
+        "data": data_section,
     }
 
 
@@ -150,11 +171,24 @@ def write_safetensors(
 ) -> bytes:
     """Serialize a safetensors model dict to binary format.
 
-    Creates a valid safetensors file with header and zero-filled tensor data.
+    Creates a valid safetensors file with a header and real tensor data
+    (FACT-SAFETENSORS-103). For each tensor, the payload bytes are resolved
+    in this priority order:
+
+    1. `info["data"]` — caller-supplied real bytes for that tensor. Its
+       length must exactly match `num_elements * dtype_byte_size`.
+    2. `model["data"]` — a raw data buffer from a prior `load_safetensors()`
+       call (e.g. via `roundtrip()`); the tensor's own `data_offsets` are used
+       to slice its original bytes out of that buffer, so a load->write cycle
+       preserves real byte content rather than zero-filling it.
+    3. Zero-fill — only when neither of the above is available (fully
+       backward compatible with callers that only supply dtype/shape).
+
     Returns the bytes. If dest is provided, also writes to that path.
     """
     tensors = model.get("tensors", {})
     metadata = model.get("metadata", {})
+    source_data = model.get("data")
 
     header: dict[str, Any] = {}
 
@@ -162,30 +196,53 @@ def write_safetensors(
         header["__metadata__"] = {str(k): str(v) for k, v in metadata.items()}
 
     offset = 0
-    tensor_sizes: list[int] = []
+    payloads: list[bytes] = []
     for name, info in tensors.items():
         dtype = info.get("dtype", "F32")
         shape = info.get("shape", [])
 
-        dtype_sizes = {
-            "F16": 2, "BF16": 2, "F32": 4, "F64": 8,
-            "I8": 1, "I16": 2, "I32": 4, "I64": 8,
-            "U8": 1, "U16": 2, "U32": 4, "U64": 8,
-            "BOOL": 1,
-        }
-        element_size = dtype_sizes.get(dtype, 4)
+        element_size = Tensor.DTYPE_BYTE_SIZES.get(dtype, 4)
         num_elements = 1
         for dim in shape:
             num_elements *= dim
+        expected_size = num_elements * element_size
 
-        data_size = num_elements * element_size
+        payload = info.get("data")
+        if payload is not None:
+            if not isinstance(payload, (bytes, bytearray)):
+                raise SafetensorsWriteError(
+                    f"Tensor {name!r} data must be bytes, got {type(payload).__name__}"
+                )
+            payload = bytes(payload)
+            if len(payload) != expected_size:
+                raise SafetensorsWriteError(
+                    f"Tensor {name!r} data is {len(payload)} byte(s), expected "
+                    f"{expected_size} byte(s) for dtype {dtype} shape {shape}"
+                )
+        elif source_data is not None:
+            orig_offsets = info.get("data_offsets", [0, 0])
+            payload = None
+            if (
+                isinstance(orig_offsets, (list, tuple))
+                and len(orig_offsets) == 2
+                and isinstance(orig_offsets[0], int)
+                and isinstance(orig_offsets[1], int)
+                and 0 <= orig_offsets[0] <= orig_offsets[1] <= len(source_data)
+                and orig_offsets[1] - orig_offsets[0] == expected_size
+            ):
+                payload = source_data[orig_offsets[0] : orig_offsets[1]]
+            if payload is None:
+                payload = b"\x00" * expected_size
+        else:
+            payload = b"\x00" * expected_size
+
         header[name] = {
             "dtype": dtype,
             "shape": shape,
-            "data_offsets": [offset, offset + data_size],
+            "data_offsets": [offset, offset + expected_size],
         }
-        tensor_sizes.append(data_size)
-        offset += data_size
+        payloads.append(payload)
+        offset += expected_size
 
     try:
         header_json = json.dumps(header, separators=(",", ":")).encode("utf-8")
@@ -193,7 +250,7 @@ def write_safetensors(
         raise SafetensorsWriteError(f"Cannot serialize header: {exc}") from exc
 
     header_len = struct.pack("<Q", len(header_json))
-    tensor_data = b"\x00" * offset
+    tensor_data = b"".join(payloads)
 
     result = header_len + header_json + tensor_data
 
@@ -205,6 +262,38 @@ def write_safetensors(
             raise SafetensorsWriteError(f"Cannot write to {path}: {exc}") from exc
 
     return result
+
+
+def get_tensor_bytes(model: dict[str, Any], name: str) -> bytes:
+    """Return the real byte payload for tensor `name` (FACT-SAFETENSORS-101).
+
+    Slices `model["data"]` (the raw data buffer captured by `load_safetensors`)
+    using the tensor's stored `data_offsets` — this is the actual tensor
+    content, not just header metadata.
+    """
+    tensors = model.get("tensors", {})
+    if name not in tensors:
+        raise SafetensorsParseError(f"Tensor {name!r} not found in model")
+    data = model.get("data")
+    if data is None:
+        raise SafetensorsParseError(
+            "Model has no data buffer; load it with load_safetensors() first"
+        )
+    return slice_tensor_bytes(data, tensors[name].get("data_offsets", [0, 0]), name)
+
+
+def get_tensor(model: dict[str, Any], name: str) -> Any:
+    """Decode tensor `name` into a numpy.ndarray (FACT-SAFETENSORS-102).
+
+    Uses the tensor's dtype/shape to interpret the raw bytes returned by
+    `get_tensor_bytes`. BF16 and the fp8 dtypes are decoded via a real
+    bit-level reinterpretation (see `safetensors.dtype_codec`).
+    """
+    from safetensors.dtype_codec import decode_tensor_array
+
+    raw = get_tensor_bytes(model, name)
+    info = model["tensors"][name]
+    return decode_tensor_array(raw, info.get("dtype", "F32"), info.get("shape", []))
 
 
 def get_tensor_count(model: dict[str, Any]) -> int:

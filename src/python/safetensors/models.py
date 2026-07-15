@@ -59,5 +59,17 @@ class SafetensorsDocument:
         """Return a shallow copy of the underlying data as a dict."""
         return dict(self._data)
 
+    def get_tensor_bytes(self, name: str) -> bytes:
+        """Return the real byte payload for tensor `name` (FACT-SAFETENSORS-101)."""
+        from safetensors.safetensors_codec import get_tensor_bytes as _get_tensor_bytes
+
+        return _get_tensor_bytes(self._data, name)
+
+    def get_tensor(self, name: str) -> Any:
+        """Decode tensor `name` into a numpy.ndarray (FACT-SAFETENSORS-102)."""
+        from safetensors.safetensors_codec import get_tensor as _get_tensor
+
+        return _get_tensor(self._data, name)
+
     def __repr__(self) -> str:
         return f"SafetensorsDocument(tensors={self.tensor_count})"

@@ -102,6 +102,24 @@ class TestSpecStubClassMetadata:
         for dtype in ("F32", "F16", "I8", "U8", "BOOL"):
             assert dtype in Tensor.VALID_DTYPES
 
+    def test_tensor_valid_dtypes_contains_fp8_types(self):
+        """FACT-SAFETENSORS-106: fp8 dtypes used by modern (2025-2026) model releases."""
+        assert "F8_E4M3" in Tensor.VALID_DTYPES
+        assert "F8_E5M2" in Tensor.VALID_DTYPES
+
+    def test_fp8_dtype_byte_size_is_one(self):
+        """FACT-SAFETENSORS-106: fp8 dtypes are 1 byte per element."""
+        assert Tensor.DTYPE_BYTE_SIZES["F8_E4M3"] == 1
+        assert Tensor.DTYPE_BYTE_SIZES["F8_E5M2"] == 1
+
+    def test_fp8_tensor_byte_length_calc(self):
+        t = Tensor("w", {"dtype": "F8_E4M3", "shape": [1], "data_offsets": [10, 11]})
+        assert t.byte_length == 1
+
+    def test_all_valid_dtypes_have_byte_sizes(self):
+        for dtype in Tensor.VALID_DTYPES:
+            assert dtype in Tensor.DTYPE_BYTE_SIZES
+
 
 class TestCompatSafetensorsHeader:
     """L2 behavior: SafetensorsHeader facade binding and inheritance."""

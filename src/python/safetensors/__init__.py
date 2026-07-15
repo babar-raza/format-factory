@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from safetensors.safetensors_codec import (
+    get_tensor,
+    get_tensor_bytes,
     get_tensor_count,
     get_tensor_names,
     load_safetensors,
@@ -24,6 +26,8 @@ from safetensors.safetensors_analytics import (
 )
 
 __all__ = [
+    "get_tensor",
+    "get_tensor_bytes",
     "get_tensor_count",
     "get_tensor_names",
     "load_safetensors",

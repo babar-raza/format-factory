@@ -25,7 +25,19 @@ class Tensor:
         "I8", "I16", "I32", "I64",
         "U8", "U16", "U32", "U64",
         "BOOL",
+        "F8_E4M3", "F8_E5M2",
     )
+
+    # Byte size per element, keyed by dtype string (FACT-SAFETENSORS-106 adds the
+    # two fp8 entries). This is the single source of truth for dtype byte sizes —
+    # safetensors_codec.py imports it rather than keeping its own copy.
+    DTYPE_BYTE_SIZES: dict[str, int] = {
+        "F16": 2, "BF16": 2, "F32": 4, "F64": 8,
+        "I8": 1, "I16": 2, "I32": 4, "I64": 8,
+        "U8": 1, "U16": 2, "U32": 4, "U64": 8,
+        "BOOL": 1,
+        "F8_E4M3": 1, "F8_E5M2": 1,
+    }
 
     def __init__(self, name: str, data: dict[str, Any]) -> None:
         """Wrap one tensor descriptor entry (dtype/shape/data_offsets) by name."""
