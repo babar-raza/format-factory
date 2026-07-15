@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "fodp",
+  "package_name": "format-factory-fodp",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_fodp-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "59a9255d8396dfdb7890458592a90694e6aebed828f22a69a981794682d3eb16",
+  "source_digest": "567d696eeba0fa49c3183fe6535b440928d6c2a7aaf94934dc09955d2a8bf0b9",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import fodp",
+  "smoke_result": "PASS",
+  "smoke_test": "fodp.fodp_codec.load on samples/by-format/fodp/minimal-presentation.fodp",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

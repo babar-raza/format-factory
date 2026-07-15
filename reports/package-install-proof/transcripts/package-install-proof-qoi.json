@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "qoi",
+  "package_name": "format-factory-qoi",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_qoi-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "a88ea059cdca57ac1dc1eecdff6f7288865c71ecee2654b167be937f6bf34b80",
+  "source_digest": "7731450dadb3cc368ac0364189cc789567de5ca392579cd9fbb76578d61c9e7c",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import qoi",
+  "smoke_result": "PASS",
+  "smoke_test": "qoi.qoi_parser.parse_qoi_strict on samples/by-format/qoi/valid/1x1-red.qoi",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

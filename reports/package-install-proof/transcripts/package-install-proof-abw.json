@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "abw",
+  "package_name": "format-factory-abw",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_abw-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "0cc93a1d9cdedd737a675e12e723921780db37a2cddd028227f1984e605a79f0",
+  "source_digest": "42a3dc6b0609d743f49706caa4261caee219fbb05ccc2e4f8ab7b368ec208deb",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import abw",
+  "smoke_result": "PASS",
+  "smoke_test": "abw.abw_codec.load on samples/by-format/abw/minimal-document.abw",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

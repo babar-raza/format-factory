@@ -1,16 +1,29 @@
 ---
 # Root Cause Register
-# TC-FF-AUDIT (cheeky-crafting-manatee — MCP-W3-002)
-# Generated: 2026-07-12
+# Mission: FF-FORENSIC-AUDIT-001
+# TC: TC-FF-AUDIT-051
+# Updated: 2026-07-15 (added RC-006, RC-007; added required fields rc_id, type, remediation_tc)
+
+register_date: "2026-07-15"
+mission_id: FF-FORENSIC-AUDIT-001
+plan_tc: TC-FF-AUDIT-051
 
 root_causes:
 
-  - id: RC-001
+  - rc_id: RC-001
+    id: RC-001
     title: "SAL extractors missing for 14 non-ODF formats"
-    impact: "spec_to_fact_ratio = 0.0 for 14/20 Python formats"
+    type: CONFIGURATION_GAP
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "Manual seeding via spec-cache workbench (TC-FF-AUDIT-060 CLOSED)"
+    resolution_evidence: "All 14 non-ODF formats now have non-zero SAL facts in sal-facts-latest.json (14,644 total). format-pipeline-metrics.csv updated with corrected spec_to_fact_ratios."
+    impact: "spec_to_fact_ratio = 0.0 to 0.47 for 14/20 Python formats; no spec-backed authority chain"
     severity: HIGH
     classification: MISSING_INFRASTRUCTURE
     affected_formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    affected_format_count: 14
+    anomaly_refs: [ANOM-B12-002, ANOM-B12-003, ANOM-B12-005, ANOM-CROSS-001, ANOM-CROSS-004]
     fix_options:
       - option: A
         description: "Build automated RFC/ABNF/binary-spec parser → SAL facts"
@@ -26,14 +39,19 @@ root_causes:
         score: "2/5"
     chosen_fix: B
     chosen_fix_rationale: "Manual seeding is honest and immediately executable. Automated extraction is long-term goal."
-    sprint_wave: W5_or_W6
+    remediation_tc: TC-FF-AUDIT-060
+    sprint_wave: Batch_6
 
-  - id: RC-002
-    title: "QName collapse: many SAL facts map to few qnames"
-    impact: "fact_to_qname ratio appears low (~0.2%) but is INTENTIONAL architecture"
+  - rc_id: RC-002
+    id: RC-002
+    title: "QName collapse: many SAL facts map to few qnames (ODF intentional design)"
+    type: INTENTIONAL_ARCHITECTURE_DECISION
+    impact: "fact_to_qname ratio appears low (~0.2-0.5%) but is intentional semantic grouping"
     severity: ADVISORY
     classification: INTENTIONAL_ARCHITECTURE_DECISION
     affected_formats: [fods, fodt, ods, odt, fodg, fodp]
+    affected_format_count: 6
+    anomaly_refs: []
     fix_options:
       - option: A
         description: "Expand qname registry to 1:1 with spec elements"
@@ -44,22 +62,27 @@ root_causes:
         effort: ZERO
         score: "3/5"
       - option: C
-        description: "Add source_fact_ids[] field to each qname entry"
+        description: "Add source_fact_ids[] field to each qname entry documenting the grouping"
         effort: LOW
         score: "5/5"
     chosen_fix: C
-    chosen_fix_rationale: "Document the grouping honestly. No structural change needed."
-    sprint_wave: W3_MCP_W3_003
+    chosen_fix_rationale: "Document the grouping honestly in qname-traceability-register. No structural change needed."
+    remediation_tc: TC-FF-AUDIT-062
+    sprint_wave: Batch_6
 
-  - id: RC-003
+  - rc_id: RC-003
+    id: RC-003
     title: "Non-ODF capabilities are POC-derived, not spec-fact-derived"
-    impact: "Capability chain broken for 14/20 formats (no spec authority)"
+    type: PROVENANCE_GAP
+    impact: "Capability authority chain broken for 14/20 formats; capabilities lack spec backing"
     severity: MEDIUM
     classification: PROVENANCE_GAP
     affected_formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    affected_format_count: 14
+    anomaly_refs: [ANOM-B24-001, ANOM-CROSS-005]
     fix_options:
       - option: A
-        description: "Mark as POC_DERIVED_NOT_SPEC_DERIVED immediately (honest classification)"
+        description: "Mark all as POC_DERIVED_NOT_SPEC_DERIVED immediately (honest classification)"
         effort: LOW
         score: "5/5"
       - option: B
@@ -67,18 +90,27 @@ root_causes:
         effort: MEDIUM
         score: "4/5"
     chosen_fix: "A then B"
-    chosen_fix_rationale: "Honest classification now; spec seeding as follow-on."
-    sprint_wave: W3_W5
+    chosen_fix_rationale: "Honest classification now (done in capability-register.yaml); spec seeding as follow-on in TC-FF-AUDIT-060."
+    remediation_tc: TC-FF-AUDIT-062
+    sprint_wave: Batch_6
 
-  - id: RC-004
-    title: "Feature compiler produces near-zero output (next-work-items.json empty)"
-    impact: "Sprint loop cannot select product work automatically"
+  - rc_id: RC-004
+    id: RC-004
+    title: "Feature compiler produces near-zero output (cap_to_feature < 0.014 for all formats)"
+    type: TOOL_BUG
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "capability_feature_compiler.py fixed in prior sprint (TC-FF-AUDIT-061 CLOSED)"
+    resolution_evidence: "Compiler now produces 20 executable work items from 51 open gaps (1,933 inputs). All items are DOM-lane gaps. feature-register.yaml documents remaining limitation (other lane types not yet surfaced)."
+    impact: "3,076 capabilities have no corresponding planned feature; sprint loop cannot select product work automatically"
     severity: HIGH
     classification: PIPELINE_BUG
     affected_components: [tools/supervisor/capability_feature_compiler.py]
+    affected_format_count: 20
+    anomaly_refs: [ANOM-B45-001]
     fix_options:
       - option: A
-        description: "Fix canonical capability_feature_compiler.py"
+        description: "Fix canonical capability_feature_compiler.py to enumerate capabilities as features"
         effort: MEDIUM
         score: "5/5"
       - option: B
@@ -87,19 +119,220 @@ root_causes:
         score: "3/5"
     chosen_fix: A
     chosen_fix_rationale: "Canonical compiler is the correct path; manual seeding is a workaround only."
-    sprint_wave: W5_MCP_W5_001
+    remediation_tc: TC-FF-AUDIT-061
+    sprint_wave: Batch_6
 
-  - id: RC-005
+  - rc_id: RC-005
+    id: RC-005
     title: "Oracle results disconnected from sprint loop"
-    impact: "73/73 PASS results not feeding capability/feature proof levels"
+    type: INTEGRATION_GAP
+    impact: "73/73 PASS oracle results not feeding capability/feature proof levels; oracle is audit-only, not a gate"
     severity: MEDIUM
     classification: INTEGRATION_GAP
-    affected_components: [oracle/, tools/supervisor/capability_feature_compiler.py]
+    affected_components: [oracle/, tools/supervisor/capability_feature_compiler.py, tools/supervisor/check_continuation.py]
+    affected_format_count: 20
+    anomaly_refs: [ANOM-CROSS-003]
     fix_options:
       - option: A
-        description: "Wire oracle results into feature-proof-register.yaml"
+        description: "Wire oracle results into feature-proof-register.yaml and check_continuation.py"
         effort: LOW
         score: "5/5"
     chosen_fix: A
-    chosen_fix_rationale: "Direct integration is the simplest fix."
-    sprint_wave: W5_MCP_W5_002
+    chosen_fix_rationale: "Direct integration is the simplest fix. Oracle already produces 73/73 PASS — just needs to be consumed."
+    remediation_tc: TC-FF-AUDIT-061
+    sprint_wave: Batch_6
+    status: PARTIALLY_RESOLVED
+    partial_resolution_note: >
+      2026-07-15 (GAP-FORENSIC-001 heal): the proof-register leg of fix A is done —
+      feature-proof-register.yaml is now machine-written by
+      tools/run_package_install_proof.py and CONSUMED by blocking validator V226.
+      The oracle→check_continuation.py wiring remains open (named residual).
+
+  - rc_id: RC-006
+    id: RC-006
+    title: "Manual qname seeding disconnected from SAL facts (qname→fact linkage missing)"
+    type: AUTOMATION_GAP
+    impact: "31 qnames in traceability register have empty source_fact_ids[]; qname → spec traceability broken"
+    severity: HIGH
+    classification: LINKAGE_MISSING
+    affected_formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    affected_format_count: 14
+    anomaly_refs: [ANOM-B23-001, ANOM-CROSS-002]
+    fix_options:
+      - option: A
+        description: "Backfill source_fact_ids[] for all 31 qnames using TC-FF-AUDIT-062"
+        effort: MEDIUM
+        score: "5/5"
+      - option: B
+        description: "Accept empty source_fact_ids for MANUALLY_SEEDED qnames (documentation-only)"
+        effort: ZERO
+        score: "2/5"
+      - option: C
+        description: "Generate qnames programmatically from SAL facts (bottom-up)"
+        effort: HIGH
+        score: "4/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Backfilling source_fact_ids is bounded work achievable in one sprint."
+    remediation_tc: TC-FF-AUDIT-062
+    sprint_wave: Batch_6
+
+  - rc_id: RC-007
+    id: RC-007
+    title: "4 formats OBLIGATION_CREATED with no implementation path"
+    type: SCOPE_DEFERRED
+    impact: "ora/pam/xpm/zpaq have spec_to_fact = 0.0; no Python source; no capabilities; no tests"
+    severity: HIGH
+    classification: SCOPE_DEFERRED
+    affected_formats: [ora, pam, xpm, zpaq]
+    affected_format_count: 4
+    anomaly_refs: [ANOM-B12-004]
+    fix_options:
+      - option: A
+        description: "Defer — keep as OBLIGATION_CREATED, track in gap-ledger"
+        effort: ZERO
+        score: "3/5"
+      - option: B
+        description: "Implement one OBLIGATION_CREATED format as pilot (lowest-complexity first)"
+        effort: HIGH
+        score: "4/5"
+      - option: C
+        description: "Remove from scope permanently (descope)"
+        effort: LOW
+        score: "2/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Gate 1 is the correct trigger for OBLIGATION_CREATED formats. Not in current sprint scope."
+    remediation_tc: "Gate 1 approval required (not agent-owned)"
+    sprint_wave: "FUTURE — Gate 1 trigger"
+
+  # RC-008..RC-011: structural root causes of GAP-FORENSIC-001, identified and
+  # RESOLVED by the package-install-proof system heal (2026-07-15,
+  # plans/.claude/parallel-nibbling-dongarra.md).
+
+  - rc_id: RC-008
+    id: RC-008
+    title: "Write-only registers: proof artifacts defined but consumed by nothing"
+    type: INTEGRATION_GAP
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "Blocking validator V226 consumes proof-manifest.json + package-matrix.yaml; WARN-only enforcement (V138 precedent) deliberately rejected"
+    resolution_evidence: "tools/supervisor/governance_validators_package_proof.py; pre-fix replay test proves the old state now FAILs"
+    impact: "proof_level 4, pyrel_g4 gate, and skill transcripts all existed as data with zero enforcement consumers — GAP-FORENSIC-001 persisted invisibly"
+    severity: HIGH
+    classification: MISSING_ENFORCEMENT
+    affected_components: [feature-proof-register.yaml, registry/format-registry.yaml release_gates, governance_validator_runner.py]
+    anomaly_refs: []
+    fix_options:
+      - option: A
+        description: "Blocking governance validator reading the proof manifest (drift/missing/stale)"
+        effort: MEDIUM
+        score: "5/5"
+    chosen_fix: A
+    chosen_fix_rationale: "WARN-only artifacts age silently; only a blocking consumer makes a register real."
+    remediation_tc: "GAP-FORENSIC-001 heal (V226)"
+    sprint_wave: "2026-07-15"
+
+  - rc_id: RC-009
+    id: RC-009
+    title: "No proof-to-source binding: proofs never expire when source changes"
+    type: INTEGRATION_GAP
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "Every proof records source_digest (content hash of src/python/<fmt>/) + wheel sha256; V226 recomputes and FAILs on mismatch (STALE)"
+    resolution_evidence: "package_proof_common.source_digest (single shared impl); live staleness drill flagged exactly the touched format"
+    impact: "prior proof reports (r132/r133 fods) carried no source hash — proof looked equally valid forever; consistency across reruns was undefined"
+    severity: HIGH
+    classification: MISSING_ENFORCEMENT
+    affected_components: [reports/package-install-proof/, tools/run_package_install_proof.py]
+    anomaly_refs: []
+    fix_options:
+      - option: A
+        description: "Content-digest binding with blocking staleness check, scoped re-proof"
+        effort: LOW
+        score: "5/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Proof of old source is not proof of current source; FAIL-on-stale chosen explicitly by Babar Raza."
+    remediation_tc: "GAP-FORENSIC-001 heal (V226 STALE check)"
+    sprint_wave: "2026-07-15"
+
+  - rc_id: RC-010
+    id: RC-010
+    title: "Hardcoded fleet lists drifted everywhere — 6 formats fell outside the packaging system"
+    type: CONFIGURATION_GAP
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "package-matrix.yaml is the single fleet authority (26 entries incl. install_proof specs); build script dedup'd (descriptions/deps from matrix); V226 DRIFT check blocks unmatrixed src packages"
+    resolution_evidence: "ipynb/mtlx/nrrd/safetensors/ubl/xliff onboarded + proven; drift unit test; build-local-packages.py PACKAGE_DESCRIPTIONS/PACKAGE_DEPS dicts removed"
+    impact: "wave1 test hardcoded 20, proof helper 14, verify script 4, build script dup'd deps; src/python had 26 — the 'next product' gap had already occurred 6 times"
+    severity: HIGH
+    classification: SINGLE_SOURCE_OF_TRUTH_VIOLATION
+    affected_formats: [ipynb, mtlx, nrrd, safetensors, ubl, xliff]
+    affected_format_count: 6
+    anomaly_refs: []
+    fix_options:
+      - option: A
+        description: "Matrix-derived fleet everywhere + blocking drift detection"
+        effort: MEDIUM
+        score: "5/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Onboarding must be one matrix entry; forgetting it must be a blocking failure, not a silent gap."
+    remediation_tc: "GAP-FORENSIC-001 heal (matrix SSoT + V226 DRIFT)"
+    sprint_wave: "2026-07-15"
+
+  - rc_id: RC-011
+    id: RC-011
+    title: "Install proof was a manual O(N) multi-step process — predictably never ran fleet-wide"
+    type: AUTOMATION_GAP
+    status: RESOLVED
+    resolved_date: "2026-07-15"
+    resolution_method: "/package-install-proof v2.0 wraps tools/run_package_install_proof.py: one command for fleet or scoped re-proof; deterministic (pinned proof-requirements.txt, ephemeral venv, verified identical across consecutive runs)"
+    resolution_evidence: "Two consecutive full runs produced identical verdicts/digests/wheel-hashes; wave1 test docstring corrected (it was claiming install proof while testing sys.path imports)"
+    impact: "per-format manual skill invocation made fleet-wide proof economically infeasible; a misleadingly-named test masked the absence"
+    severity: MEDIUM
+    classification: AUTOMATION_GAP
+    affected_components: [.claude/commands/package-install-proof.md, tests/python/conveyor/test_package_install_proof_wave1.py]
+    anomaly_refs: []
+    fix_options:
+      - option: A
+        description: "Skill-wrapped orchestrator with fleet + scoped modes"
+        effort: MEDIUM
+        score: "5/5"
+    chosen_fix: A
+    chosen_fix_rationale: "Repeatability for the next product requires one governed command, not a runbook."
+    remediation_tc: "GAP-FORENSIC-001 heal (orchestrator + skill v2.0)"
+    sprint_wave: "2026-07-15"
+
+# Summary
+summary:
+  total_root_causes: 11
+  rc_type_breakdown:
+    CONFIGURATION_GAP: 2      # RC-001, RC-010
+    INTENTIONAL_ARCHITECTURE_DECISION: 1  # RC-002
+    PROVENANCE_GAP: 1         # RC-003
+    TOOL_BUG: 1               # RC-004
+    INTEGRATION_GAP: 3        # RC-005, RC-008, RC-009
+    AUTOMATION_GAP: 2         # RC-006, RC-011
+    SCOPE_DEFERRED: 1         # RC-007
+
+  severity_breakdown:
+    HIGH: 7       # RC-001, RC-004, RC-006, RC-007, RC-008, RC-009, RC-010
+    MEDIUM: 3     # RC-003, RC-005, RC-011
+    ADVISORY: 1   # RC-002
+
+  agent_owned_remediations: 6   # RC-001 through RC-006
+  human_gate_required: 1        # RC-007 (Gate 1)
+
+  remediation_tc_mapping:
+    TC-FF-AUDIT-060: [RC-001, RC-003]
+    TC-FF-AUDIT-061: [RC-004, RC-005]
+    TC-FF-AUDIT-062: [RC-002, RC-006]
+
+negative_controls:
+  - check: "Minimum 5 RCs documented (plan requirement)"
+    result: PASS
+    actual: 7
+  - check: "Each RC has type, impact, affected_formats/components, remediation_tc"
+    result: PASS
+  - check: "RC-001 through RC-007 all present"
+    result: PASS
+
+tc_status: VERIFIED

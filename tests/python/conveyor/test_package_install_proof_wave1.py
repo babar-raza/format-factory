@@ -1,8 +1,20 @@
 """
-test_package_install_proof_wave1.py -- Package installation proof for Wave 1.
+test_package_install_proof_wave1.py -- Source-tree importability check (Wave 1).
 
 Sprint: UNBOUNDED-AUTONOMOUS-CONVEYOR-WAVE-1
-Verifies that all 20 Python format packages can be imported after pip install.
+
+HONESTY NOTE (GAP-FORENSIC-001, 2026-07-15): despite its filename, this test
+does NOT prove pip-install behavior. It inserts src/python/ into sys.path and
+checks that format modules import from the SOURCE TREE — a fast in-repo smoke
+check, nothing more. The real package-install proof (wheel build -> pip install
+into an ephemeral venv -> import -> API smoke) is:
+
+    tests/python/packaging/test_package_install_proof_all_formats.py
+
+run via `python tools/run_package_install_proof.py` (the /package-install-proof
+skill) and enforced by governance validator V226. The filename is kept to
+preserve test-history continuity; treat "install_proof" in this filename as a
+historical misnomer.
 """
 from __future__ import annotations
 

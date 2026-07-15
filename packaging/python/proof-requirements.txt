@@ -1,0 +1,9 @@
+# Pinned tooling for the ephemeral package-install-proof venv.
+# Consumed by tools/run_package_install_proof.py (GAP-FORENSIC-001 heal).
+# Pinned exactly so proof reruns are deterministic; versions mirror the
+# project .venv known-good set. Runtime deps of individual format wheels
+# (zstandard for zst, numpy for safetensors) are installed from here because
+# wheels are installed with --no-deps.
+pytest==8.4.2
+zstandard==0.25.0
+numpy==2.5.1

@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "csv",
+  "package_name": "format-factory-csv",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_csv-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "da12f0459b90db98c5590b2ac3cd979b068d4e554dc32d000d01b662a279f766",
+  "source_digest": "a85fedad71cfa4ada6b78ab41faecada965996d85dca08f22a2eed6890e34afc",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "FAIL: AssertionError: csv resolved to C:\\Python313\\Lib\\csv.py, not to site-packages C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-install-proof-venv\\Lib\\site-packages \u2014 this is not ",
+  "import_statement": "import csv",
+  "smoke_result": "FAIL: ModuleNotFoundError: No module named 'csv.csv_parser'; 'csv' is not a package",
+  "smoke_test": "csv.csv_parser.parse_csv_strict on samples/by-format/csv/minimal-2x2.csv",
+  "verdict": "FAIL",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

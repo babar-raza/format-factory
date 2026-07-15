@@ -312,12 +312,23 @@ formats:
         depth_derivation: max_depth_from_valid_pass_cases
       pyrel_g3:
         name: Package Build
-        status: not_implemented
-        notes: Requires clean build execution environment
+        status: passed
+        evidence_source: reports/package-install-proof/proof-manifest.json
+        notes: >-
+          2026-07-15 GAP-FORENSIC-001 heal: wheel built from current source via
+          packaging/python/build-local-packages.py (matrix-driven); sha256 recorded
+          in proof manifest. Freshness enforced by validator V226 (source-digest
+          binding). Evidence-backed status update, not a gate approval.
       pyrel_g4:
         name: Install Verification
-        status: not_implemented
-        notes: Requires clean venv execution environment
+        status: passed
+        evidence_source: reports/package-install-proof/proof-manifest.json
+        notes: >-
+          2026-07-15 GAP-FORENSIC-001 heal: pip install --no-deps into ephemeral
+          venv (.local/package-install-proof-venv, never the editable project venv),
+          wheel-origin import check + parse_fods_strict API smoke on oracle sample
+          corpus — PASS. Re-provable via /package-install-proof fods. Evidence-backed
+          status update, not a gate approval.
       pyrel_g5:
         name: Publication Authorization
         status: pending_external_gate

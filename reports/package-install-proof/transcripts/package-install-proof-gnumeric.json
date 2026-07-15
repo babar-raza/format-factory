@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "gnumeric",
+  "package_name": "format-factory-gnumeric",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_gnumeric-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "2aa085c17aa9ba9b14f5ce0054d0bce6bc1c4e4043ae92ed39fcc56b0d1e244d",
+  "source_digest": "cf7ee0a930eb5e26120ac22b26d844430e37716a2e995bee012439927df6908d",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import gnumeric",
+  "smoke_result": "PASS",
+  "smoke_test": "gnumeric.gnumeric_codec.load on samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

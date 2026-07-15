@@ -128,7 +128,7 @@ def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[di
 
 
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 221  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001), 2026-07-15
+_EXPECTED_VALIDATOR_COUNT = 226  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001) +1 V225 (GAP-FORENSIC-008) +3 V194-V196 (TC-COORD-013, AGENT-COORD-2026-07-15) +1 V226 package-install-proof coverage (GAP-FORENSIC-001), 2026-07-15
 
 
 def get_expected_validator_count() -> int:
@@ -1012,6 +1012,46 @@ def run_all_governance_validators(
         results.append(_v224(declaration, repo_root))
     except Exception as _exc_v224:
         _skipped_validators.append({"validators": ["V224"], "error": str(_exc_v224)})
+
+    # V225 (GAP-FORENSIC-008, 2026-07-15): SAL store reconciliation — committed
+    # fact stores vs aliases, combined DB, architecture counts, qname refs,
+    # B2 completeness gate, and fact->code constant bindings
+    try:
+        from governance_validators_ext7 import (  # noqa: PLC0415
+            validate_sal_store_reconciliation as _v225,
+        )
+        results.append(_v225(declaration, repo_root))
+    except Exception as _exc_v225:
+        _skipped_validators.append({"validators": ["V225"], "error": str(_exc_v225)})
+
+    # V226 (GAP-FORENSIC-001, 2026-07-15): package-install-proof coverage —
+    # every src/python package must be in package-matrix.yaml with an
+    # install_proof spec (drift), have a PASS entry in the proof manifest
+    # (missing), and its source digest must match the proof (stale). Blocking.
+    try:
+        from governance_validators_package_proof import (  # noqa: PLC0415
+            validate_package_install_proof_coverage as _v226,
+        )
+        results.append(_v226(declaration, repo_root))
+    except Exception as _exc_v226:
+        _skipped_validators.append({"validators": ["V226"], "error": str(_exc_v226)})
+
+    # V194-V196 (TC-COORD-013, mission AGENT-COORD-2026-07-15, 2026-07-15):
+    # multi-agent coordination — provider parity, audit-trail discipline,
+    # generator output-manifest integrity
+    try:
+        from governance_validators_coordination import (  # noqa: PLC0415
+            validate_coordination_parity as _v194,
+            validate_coordination_audit_trail as _v195,
+            validate_generator_output_manifests as _v196,
+        )
+        results.extend([
+            _v194(declaration, repo_root),  # V194: parity drift (FAIL blocks)
+            _v195(declaration, repo_root),  # V195: audit trail (FAIL on stale open conflicts)
+            _v196(declaration, repo_root),  # V196: generator manifests (FAIL blocks)
+        ])
+    except Exception as _exc_v194:
+        _skipped_validators.append({"validators": ["V194", "V195", "V196"], "error": str(_exc_v194)})
 
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each

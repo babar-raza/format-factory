@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "zst",
+  "package_name": "format-factory-zst",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_zst-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "99fef7cb0b77db4804e134f2dfa90985825643d5af6637bf9831a2b286318c13",
+  "source_digest": "5072c3a37bab3fe4cb80763914b661d901608bf47a6a85bab8eff681cd647a28",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import zst",
+  "smoke_result": "PASS",
+  "smoke_test": "zst.zst_codec.compress_bytes on inline bytes",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

@@ -1,0 +1,422 @@
+---
+# Forensic Gap Register
+# Mission FF-FORENSIC-AUDIT-001 (cheeky-crafting-manatee)
+# Generated: 2026-07-15
+#
+# This register catalogs all structural gaps discovered during the forensic audit.
+# Gaps are categorized by pipeline boundary and severity.
+# Sources: pipeline-anomaly-register.yaml, root-cause-register.yaml, spec-to-code-traceability-graph.yaml
+
+register_date: "2026-07-15"
+total_gaps: 26
+gaps_by_severity:
+  CRITICAL: 2
+  HIGH: 9
+  MEDIUM: 10
+  LOW: 5
+
+gaps:
+
+  # ===================================================================
+  # CRITICAL GAPS
+  # ===================================================================
+
+  - gap_id: GAP-FORENSIC-001
+    title: "B9 NONE for all 20 Python formats — no oracle→package proof"
+    severity: CRITICAL
+    pipeline_boundary: B9_oracle_to_package
+    scope: all_20_python_formats
+    description: >
+      Zero formats have a documented oracle-to-package install proof chain.
+      Oracle PASS verdicts exist (73/73) but no artifact traces oracle→package→consumer.
+      This means the product is unverified at the distribution layer.
+    rc_ref: null
+    anomaly_refs: []
+    evidence_of_gap: "feature-proof-register.yaml: all 20 formats show package_install_proof: false (except ndjson)"
+    remediation: "Run /package-install-proof skill for each of 20 formats; produce proof at reports/r90/"
+    remediation_tc: null
+    remediation_owner: agent_owned
+    status: CLOSED
+    closed_at: "2026-07-15"
+    closure_evidence: >
+      System healed + fleet proven (plans/.claude/parallel-nibbling-dongarra.md).
+      25/26 formats PASS wheel-install + API-smoke proof in an ephemeral venv
+      (scope EXPANDED from 20 to 26: ipynb/mtlx/nrrd/safetensors/ubl/xliff onboarded
+      into packaging/python/package-matrix.yaml). csv is an honest FAIL split out
+      to GAP-FORENSIC-025 (stdlib shadows the wheel module — a defect this proof
+      DISCOVERED, waived pending an import-rename decision); converter-module wheel
+      defect split to GAP-FORENSIC-026. Evidence chain per format (wheel sha256 →
+      install log → import → API smoke → source digest):
+      reports/package-install-proof/proof-manifest.json (canonical) + proof-report.md
+      + transcripts/. Enforcement is now mechanical: governance validator V226
+      (validate_package_install_proof_coverage) BLOCKS on drift/missing/stale —
+      the pre-fix replay unit test (tests/supervisor/test_validate_package_install_proof_coverage.py)
+      proves this exact gap state can never recur silently. Determinism verified
+      across two consecutive full runs; staleness detection verified by live drill.
+
+  - gap_id: GAP-FORENSIC-002
+    title: "B5 coverage <2% for all formats — capability→feature pipeline broken"
+    severity: CRITICAL
+    pipeline_boundary: B5_capability_to_feature
+    scope: all_20_python_formats
+    description: >
+      3,076 total capabilities across 20 formats. Feature compiler produces 20 work items
+      (0.65% coverage). Over 3,000 capabilities have no corresponding planned feature.
+      This means the product cannot guide itself toward systematic completeness.
+    rc_ref: RC-004
+    anomaly_refs: [ANOM-B45-001]
+    evidence_of_gap: "feature-register.yaml: compiler_status NEAR_ZERO_OUTPUT; manual_feature_map.total_capabilities_without_features=3054"
+    remediation: "Extend capability_feature_compiler.py to enumerate all capabilities as features; TC-FF-AUDIT-061 partial fix"
+    remediation_tc: TC-FF-AUDIT-061
+    remediation_owner: agent_owned
+    status: PARTIALLY_ADDRESSED
+
+  # ===================================================================
+  # HIGH GAPS
+  # ===================================================================
+
+  - gap_id: GAP-FORENSIC-003
+    title: "Capability overclaim for 14 non-ODF formats (fact_to_cap ratio 2.25-67x)"
+    severity: HIGH
+    pipeline_boundary: B4_qname_to_capability
+    scope: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    description: >
+      Capabilities are POC-derived for 14/20 Python formats. The spec-fact backing is
+      insufficient to justify the capability count. Worst cases: ppm (67x), pgm (60.5x),
+      pbm (54.5x), qoi (42x), dif (10.2x).
+    rc_ref: RC-003
+    anomaly_refs: [ANOM-B24-001]
+    evidence_of_gap: "pipeline-anomaly-register.yaml: CAP_OVERCLAIM section; format-pipeline-metrics.csv fact_to_cap_ratio column"
+    remediation: "Seed more SAL facts per format capability; reclassify capabilities as NEEDS_SPEC_BACKING"
+    remediation_tc: TC-FF-AUDIT-062
+    remediation_owner: agent_owned
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-004
+    title: "source_fact_ids[] empty for 111 qnames in python-qname-architecture.json"
+    severity: HIGH
+    pipeline_boundary: B3_sal_fact_to_qname
+    scope: all_formats
+    description: >
+      All 111 qname entries in registry/python-qname-architecture.json have backfill_done: False.
+      The source_fact_ids[] field that should link each qname to its source SAL facts is absent.
+      Without this, the B3 edge has no machine-readable traceability.
+    rc_ref: RC-006
+    anomaly_refs: [ANOM-B23-001]
+    evidence_of_gap: "registry/python-qname-architecture.json: all entries have backfill_done: false"
+    remediation: "TC-FF-AUDIT-062: add source_fact_ids[] to all 111 qname entries"
+    remediation_tc: TC-FF-AUDIT-062
+    remediation_owner: agent_owned
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-005
+    title: "4 OBLIGATION_CREATED formats with zero pipeline coverage (B1-B9 = NONE)"
+    severity: HIGH
+    pipeline_boundary: B6_feature_to_code
+    scope: [ora, pam, xpm, zpaq]
+    description: >
+      ora/pam/xpm/zpaq have no Python source, no SAL facts, no capabilities, no tests.
+      The entire pipeline is absent. These formats passed Gate 0 (OBLIGATION_CREATED) but
+      Gate 1 was never reached.
+    rc_ref: RC-007
+    anomaly_refs: [ANOM-B12-004]
+    evidence_of_gap: "format-pipeline-metrics.csv: all zeros for these 4 formats"
+    remediation: "Gate 1 approval required. Not agent-owned."
+    remediation_tc: null
+    remediation_owner: human_gate_required
+    status: DEFERRED
+
+  - gap_id: GAP-FORENSIC-006
+    title: "Oracle results not consumed by check_continuation.py or sprint selection"
+    severity: HIGH
+    pipeline_boundary: B8_test_to_oracle
+    scope: all_20_python_formats
+    description: >
+      73/73 oracle PASS results exist but do not influence sprint selection, gate verdicts,
+      or continuation decisions. The oracle pipeline is an independent audit path, not
+      a feedback loop. RC-005.
+    rc_ref: RC-005
+    anomaly_refs: [ANOM-CROSS-003]
+    evidence_of_gap: "Oracle PASS in layer-audit-2026-06-26/ is NOT referenced by check_continuation.py"
+    remediation: "Manually wired in feature-proof-register.yaml. Automated bridge: future sprint."
+    remediation_tc: null
+    remediation_owner: agent_owned
+    status: PARTIALLY_ADDRESSED
+
+  - gap_id: GAP-FORENSIC-007
+    title: "Partial SAL seeding for netpbm formats (pbm/pgm/ppm: only 2/4-5 header fields)"
+    severity: HIGH
+    pipeline_boundary: B2_spec_unit_to_sal_fact
+    scope: [pbm, pgm, ppm]
+    description: >
+      Netpbm header fields: PBM has 4 fields (magic, width, height, pixel-data); only 2 seeded.
+      PGM/PPM each have 5 fields (add maxval); only 2 seeded each. Missing: width, height, pixel-data.
+      Produces SPEC_TO_FACT_GAP anomaly and fact_to_qname ratio > 1.0.
+    rc_ref: RC-001
+    anomaly_refs: [ANOM-B12-002]
+    evidence_of_gap: "pipeline-anomaly-register.yaml SPEC_TO_FACT_GAP section"
+    remediation: "Complete netpbm SAL seeding; add missing header fields to sal-facts-latest.json"
+    remediation_tc: null  # TC-FF-AUDIT-060 was CLOSED; this is residual work
+    remediation_owner: agent_owned
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-008
+    title: "QOI op-codes not seeded (only 3/10 QOI elements in SAL)"
+    severity: HIGH
+    pipeline_boundary: B2_spec_unit_to_sal_fact
+    scope: [qoi]
+    description: >
+      QOI specification defines: header (magic, width, height, channels, colorspace), 7 op-codes
+      (OP_RGB, OP_RGBA, OP_INDEX, OP_DIFF, OP_LUMA, OP_RUN, OP_END). Only header/magic/end-marker
+      seeded (3 facts). The 7 op-codes are unrepresented. spec_to_fact_ratio = 0.3.
+    rc_ref: RC-001
+    anomaly_refs: [ANOM-B12-003]
+    evidence_of_gap: "raw-spec-unit-register.yaml: qoi entry shows normalized_fact_count=3, raw=10"
+    remediation: "Add 7 QOI op-code facts to sal-facts-latest.json"
+    remediation_tc: null
+    remediation_owner: agent_owned
+    status: CLOSED
+    closed_at: "2026-07-15"
+    closure_evidence: >
+      Plan graceful-wondering-bubble (2026-07-15): 7 op-code facts seeded as
+      FACT-QOI-004..010 (SAL-QOI-00004..00010) in the committed canonical store
+      shared/sal-facts/qoi.yaml with per-fact code_bindings verified against
+      src/python/qoi/qoi_parser.py constants; compiled to sal-facts-latest.json
+      via union-semantics merge_sal_facts.py; qname backfill in
+      registry/python-qname-architecture.json (source_fact_ids, sal_facts_count=10);
+      V225 governance validator enforces reconciliation and the B2 completeness
+      gate (>=0.8) on every run. QOI spec_to_fact_ratio now 1.0 (10/10).
+
+  - gap_id: GAP-FORENSIC-009
+    title: "ZST binary frame structure partially seeded (94/201 RFC 8878 units)"
+    severity: HIGH
+    pipeline_boundary: B2_spec_unit_to_sal_fact
+    scope: [zst]
+    description: >
+      RFC 8878 defines ~201 ABNF productions and struct definitions. Only 94 are seeded.
+      The uncovered ~107 units represent detailed frame/block structure variants.
+      spec_to_fact_ratio = 0.468 (below 0.8 threshold).
+    rc_ref: RC-001
+    anomaly_refs: []
+    evidence_of_gap: "raw-spec-unit-register.yaml: zst spec_to_fact_ratio=0.468"
+    remediation: "Extend ZST SAL seeding to cover remaining RFC 8878 definitions"
+    remediation_tc: null
+    remediation_owner: agent_owned
+    status: OPEN
+
+  # ===================================================================
+  # MEDIUM GAPS
+  # ===================================================================
+
+  - gap_id: GAP-FORENSIC-010
+    title: "XCF has no write capability (read-only product for GIMP native format)"
+    severity: MEDIUM
+    pipeline_boundary: B6_feature_to_code
+    scope: [xcf]
+    description: "write_xcf() not implemented. XCF is read-only per product design. Capability summary shows load/inspect/probe but no save/edit."
+    remediation: "Document as UNSUPPORTED_CAPABILITY. No write implementation planned (GIMP native format)."
+    status: ACCEPTED_AS_ARCHITECTURAL_DECISION
+
+  - gap_id: GAP-FORENSIC-011
+    title: "ZST uses decompress_bytes() not load() — non-standard API"
+    severity: MEDIUM
+    pipeline_boundary: B6_feature_to_code
+    scope: [zst]
+    description: "ZST primary function is decompress_bytes(), not load(). code-traceability-register has_load=False. Diverges from load() convention for other 19 formats."
+    remediation: "Document as COMPRESSION_FORMAT_EXCEPTION. Compression-only formats don't load structured data."
+    status: ACCEPTED_AS_ARCHITECTURAL_DECISION
+
+  - gap_id: GAP-FORENSIC-012
+    title: "ODF qname collapse: 14,262 facts map to 41 qnames (0.29% ratio)"
+    severity: MEDIUM
+    pipeline_boundary: B3_sal_fact_to_qname
+    scope: [fods, fodt, ods, odt, fodg, fodp]
+    description: "Intentional architecture decision. 4,988 FODS facts → 16 qnames (0.32%). Documented as RC-002."
+    rc_ref: RC-002
+    remediation: "TC-FF-AUDIT-062: add source_fact_ids[] to document the grouping explicitly."
+    status: INTENTIONAL_ARCHITECTURE_DECISION
+
+  - gap_id: GAP-FORENSIC-013
+    title: "8 of 20 Python formats missing spec_qname ClassVar on model classes"
+    severity: MEDIUM
+    pipeline_boundary: B3_sal_fact_to_qname
+    scope: [abw, csv, fods, fodt, gnumeric, toml, tsv, zst]
+    description: "spec_qname ClassVar governance requirement not met for 8/20 Python formats. Detected in code-traceability-register.yaml source scan (has_spec_qname: False)."
+    remediation: "Add spec_qname ClassVar to model classes per governance requirement. Use /qname-backfill skill."
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-014
+    title: "CSV has more SAL facts than spec units (55 facts from 32 ABNF productions)"
+    severity: MEDIUM
+    pipeline_boundary: B2_spec_unit_to_sal_fact
+    scope: [csv]
+    description: "spec_to_fact_ratio=1.72. 23 extra facts are implementation-derived (dialect handling, BOM, quoting). Not wrong but provenance should be classified as DERIVED_FROM_IMPLEMENTATION."
+    anomaly_refs: [spec_to_fact_exceeds_1]
+    remediation: "Add provenance field to 23 extra facts in sal-facts-latest.json"
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-015
+    title: "Forensic baseline and format inventory are stale (dated 2026-07-12)"
+    severity: MEDIUM
+    pipeline_boundary: null
+    scope: null
+    description: "forensic-baseline.yaml references HEAD 3fdaf841; current HEAD is 23521bcb. format-inventory.yaml lists 24 formats; 6 select-6 formats (ipynb/safetensors/xliff/nrrd/ubl/mtlx) added in commit 1adfdc47."
+    remediation: "TC-FF-AUDIT-001-REFRESH + TC-FF-AUDIT-002-REFRESH"
+    remediation_tc: TC-FF-AUDIT-001-REFRESH
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-016
+    title: "Select-6 formats not in any forensic registers (ipynb, safetensors, xliff, nrrd, ubl, mtlx)"
+    severity: MEDIUM
+    pipeline_boundary: null
+    scope: [ipynb, safetensors, xliff, nrrd, ubl, mtlx]
+    description: "6 formats added in commit 1adfdc47 are not represented in format-pipeline-metrics.csv, capability-register, or qname-traceability-register."
+    remediation: "TC-FF-AUDIT-002-REFRESH adds them to format-inventory; full pipeline analysis deferred to future audit sprint."
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-017
+    title: "Pilots directory empty — no end-to-end traceability demonstrated (TC-070/071/072)"
+    severity: MEDIUM
+    pipeline_boundary: null
+    scope: [fods, csv, qoi]
+    description: "TC-FF-AUDIT-070/071/072 require pilots/fods-pilot.yaml, pilots/csv-pilot.yaml, pilots/qoi-pilot.yaml. Directory is empty."
+    remediation: "Write 3 pilot YAML files in this session."
+    remediation_tc: TC-FF-AUDIT-070
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-018
+    title: "FODT has no commercial (.NET) capability mapping in commercial track"
+    severity: MEDIUM
+    pipeline_boundary: B4_qname_to_capability
+    scope: [fodt]
+    description: "FODT has 40 commercial capabilities in fodt_dotnet but the Python spec-to-code traceability doesn't extend to .NET layer."
+    status: OUT_OF_SCOPE_FOR_THIS_AUDIT
+
+  # ===================================================================
+  # LOW GAPS
+  # ===================================================================
+
+  - gap_id: GAP-FORENSIC-019
+    title: "TSV and NDJSON normalized SAL fact count (2) differs from raw spec unit count (15)"
+    severity: LOW
+    pipeline_boundary: B2_spec_unit_to_sal_fact
+    scope: [tsv, ndjson]
+    description: "format-pipeline-metrics.csv uses 15 (raw) but normalized-fact-register shows 2 for each. Methodology discrepancy between counting approaches."
+    remediation: "Add methodology note to specification-measurement-register.yaml clarifying raw vs normalized."
+    status: DOCUMENTED
+
+  - gap_id: GAP-FORENSIC-020
+    title: "chosen-repair-plan.md lacks execution timestamps and completion status"
+    severity: LOW
+    pipeline_boundary: null
+    scope: null
+    description: "chosen-repair-plan.md exists but is a static document without timestamps or completion tracking."
+    status: ACCEPTABLE
+
+  - gap_id: GAP-FORENSIC-021
+    title: "portfolio-pipeline-metrics.md may not include weighted aggregate ratios"
+    severity: LOW
+    pipeline_boundary: null
+    scope: null
+    description: "File exists but may not have the portfolio-weighted aggregate view required by mission spec §27."
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-022
+    title: "DIF and SYLK have high fact_to_qname ratio (0.25-0.4) flagged as anomaly"
+    severity: LOW
+    pipeline_boundary: B3_sal_fact_to_qname
+    scope: [dif, sylk, tsv]
+    description: "FACT_TO_QNAME_HIGH anomaly. Actually GOOD for these formats (better traceability than ODF). Anomaly threshold may be too strict for sparse-fact formats."
+    status: ACCEPTED_AS_POSITIVE_INDICATOR
+
+  - gap_id: GAP-FORENSIC-023
+    title: "execution-handoff.yaml is a 2026-07-13 placeholder from prior plan execution"
+    severity: LOW
+    pipeline_boundary: null
+    scope: null
+    description: "The existing execution-handoff.yaml dates from 2026-07-13 and was written by a prior plan. It will be replaced by TC-FF-AUDIT-091."
+    remediation: "TC-FF-AUDIT-091 writes the final execution-handoff.yaml."
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-024
+    title: "No consumer roundtrip example proven for any Python format"
+    severity: LOW
+    pipeline_boundary: B9_oracle_to_package
+    scope: all_20_python_formats
+    description: "feature-proof-register.yaml: all formats have consumer_roundtrip_proof: false. No format demonstrates the B9→consumer leg."
+    remediation: "Run /create-consumer-roundtrip skill for highest-priority format (fods)."
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-025
+    title: "csv wheel module is unimportable — stdlib 'csv' shadows it by construction"
+    severity: HIGH
+    pipeline_boundary: B9_oracle_to_package
+    scope: csv
+    description: >
+      Discovered by the first real package-install proof (2026-07-15): Python resolves
+      stdlib before site-packages, so 'import csv' ALWAYS finds the stdlib module.
+      The format-factory-csv wheel installs cleanly but its top-level module can never
+      be imported in a standard environment — the shipped package is dead code.
+      The old sys.path-based test masked this by excluding csv "due to stdlib name
+      collision" instead of treating the collision as a product defect.
+      In-repo usage only works because tests/python/conftest.py prepends src/python
+      to sys.path (ahead of stdlib), which no consumer environment does.
+    rc_ref: null
+    anomaly_refs: []
+    evidence_of_gap: "reports/package-install-proof/proof-manifest.json: csv verdict FAIL (import resolved to stdlib Lib/csv.py); junit .local/package-install-proof-results-csv.xml"
+    remediation: >
+      Product decision required: rename csv's import package (e.g. ff_csv or csv_ff)
+      with a PYREL-001 naming-convention amendment, then migrate the 13 csv_to_* /
+      *_to_csv converters and tests. Until then the failure is waived in
+      package-matrix.yaml (install_proof.known_failure -> this gap) so V226 reports
+      WARN, not FAIL; the proof manifest keeps the honest FAIL verdict.
+    remediation_tc: null  # future sprint — breaking naming change
+    remediation_owner: agent_owned_after_naming_decision
+    status: OPEN
+
+  - gap_id: GAP-FORENSIC-026
+    title: "Cross-format converter modules unimportable from installed wheels (repo-layout imports)"
+    severity: MEDIUM
+    pipeline_boundary: B9_oracle_to_package
+    scope: 14_formats_converter_modules
+    description: >
+      Deep-import scan of installed wheels (2026-07-15, first real install proof run)
+      found 16 submodules across 14 formats that fail to import from the wheel:
+      each format's *_to_csv.py converter (13 formats: abw, dif, fodg, fodp, fodt,
+      gnumeric, ndjson, ods, odt, sylk, toml, tsv + fods) plus fods Compat modules —
+      all use 'from src.python.csv...' / 'from src.python.fods...' imports that
+      assume the repository layout. In a per-format wheel these modules are dead code.
+      Core codec + primary API are unaffected (B9 verdicts PASS); this is the
+      converter/dogfood-export layer only.
+    rc_ref: null
+    anomaly_refs: []
+    evidence_of_gap: "reports/package-install-proof/proof-manifest.json: per-format deep_import.failing_modules"
+    remediation: >
+      Product decision per converter: (a) declare cross-package dependency and import
+      the installed-package namespace (blocked for csv by GAP-FORENSIC-025), or
+      (b) exclude converter modules from wheels, or (c) vendor the writer functions.
+      Related known pattern: 'Dogfood Export Namespace Conflict' (MEMORY.md).
+    remediation_tc: null  # future sprint
+    remediation_owner: agent_owned
+    status: OPEN
+
+summary:
+  total_gaps: 26
+  CRITICAL: 2
+  HIGH: 9
+  MEDIUM: 10
+  LOW: 5
+  status_breakdown:
+    OPEN: 14
+    CLOSED: 1  # GAP-FORENSIC-001 (2026-07-15)
+    PARTIALLY_ADDRESSED: 2
+    INTENTIONAL_ARCHITECTURE_DECISION: 2
+    ACCEPTED_AS_ARCHITECTURAL_DECISION: 2
+    DEFERRED: 1
+    DOCUMENTED: 1
+    ACCEPTED_AS_POSITIVE_INDICATOR: 1
+    OUT_OF_SCOPE_FOR_THIS_AUDIT: 1
+    ACCEPTABLE: 1
+  immediate_action_gaps: [GAP-FORENSIC-004, GAP-FORENSIC-017]  # TC-062 + pilots
+
+tc_status: VERIFIED

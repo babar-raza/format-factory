@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "ods",
+  "package_name": "format-factory-ods",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_ods-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "023b92ee1dcf8c1d61cfbcddca8caaf5bec2196d4aeb9754f4d517f487955a84",
+  "source_digest": "f5f8fc646831604bf846d30883ce9e4b0f0e42635439e2c33f52a9e457663e8c",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import ods",
+  "smoke_result": "PASS",
+  "smoke_test": "ods.ods_parser.parse_ods_strict on samples/by-format/ods/valid/minimal-spreadsheet.ods",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

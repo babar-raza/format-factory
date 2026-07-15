@@ -2,6 +2,13 @@
 #   PyPI name:   format-factory-{format_id}  (e.g. format-factory-fods)
 #   Import name: {format_id}                  (e.g. import fods)
 #   Tag format:  {format_id}-v{semver}         (e.g. fods-v0.1.0)
+#
+# install_proof blocks (GAP-FORENSIC-001 heal, 2026-07-15):
+#   Consumed by tools/run_package_install_proof.py, the matrix-driven proof test
+#   (tests/python/packaging/test_package_install_proof_all_formats.py), and the
+#   package-install-proof coverage governance validator. Every entry MUST have one;
+#   the validator blocks on omission. smoke_sample paths are repo-relative.
+#   expected: dict | list | bytes | object (object = any non-None instance).
 packages:
 - acquisition_gates_passed:
   - 1
@@ -15,10 +22,15 @@ packages:
   commercial_ready: false
   dependencies:
   - zstandard>=0.21.0
+  description: Minimal FOSS Zstandard (.zst) codec
   examples_path: examples/python/zst/
   format_id: zst
-  gate_5_note: Gate 5 waived (waived_not_applicable) — ZST is a compression codec,
-    no neutral model needed
+  gate_5_note: Gate 5 waived (waived_not_applicable) — ZST is a compression codec, no neutral model needed
+  install_proof:
+    expected: bytes
+    smoke_callable: compress_bytes
+    smoke_inline_bytes: hello
+    smoke_module: zst.zst_codec
   license: Apache-2.0
   module_import: zst
   module_path: src/python/zst/
@@ -39,8 +51,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Flat OpenDocument Presentation (.fodp) parser
   examples_path: examples/python/fodp/
   format_id: fodp
+  install_proof:
+    expected: dict
+    smoke_callable: load
+    smoke_module: fodp.fodp_codec
+    smoke_sample: samples/by-format/fodp/minimal-presentation.fodp
   license: Apache-2.0
   module_import: fodp
   module_path: src/python/fodp/
@@ -61,8 +79,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Flat OpenDocument Graphics (.fodg) parser
   examples_path: examples/python/fodg/
   format_id: fodg
+  install_proof:
+    expected: dict
+    smoke_callable: load
+    smoke_module: fodg.fodg_codec
+    smoke_sample: samples/by-format/fodg/minimal-drawing.fodg
   license: Apache-2.0
   module_import: fodg
   module_path: src/python/fodg/
@@ -83,8 +107,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Gnumeric spreadsheet (.gnumeric) parser
   examples_path: examples/python/gnumeric/
   format_id: gnumeric
+  install_proof:
+    expected: dict
+    smoke_callable: load
+    smoke_module: gnumeric.gnumeric_codec
+    smoke_sample: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
   license: Apache-2.0
   module_import: gnumeric
   module_path: src/python/gnumeric/
@@ -105,8 +135,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS AbiWord document (.abw) parser
   examples_path: examples/python/abw/
   format_id: abw
+  install_proof:
+    expected: dict
+    smoke_callable: load
+    smoke_module: abw.abw_codec
+    smoke_sample: samples/by-format/abw/minimal-document.abw
   license: Apache-2.0
   module_import: abw
   module_path: src/python/abw/
@@ -130,8 +166,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Flat OpenDocument Spreadsheet (.fods) parser
   examples_path: examples/python/fods/
   format_id: fods
+  install_proof:
+    expected: dict
+    smoke_callable: parse_fods_strict
+    smoke_module: fods.parser
+    smoke_sample: samples/by-format/fods/minimal-spreadsheet.fods
   license: Apache-2.0
   module_import: fods
   module_path: src/python/fods/
@@ -155,8 +197,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Flat OpenDocument Text (.fodt) parser
   examples_path: examples/python/fodt/
   format_id: fodt
+  install_proof:
+    expected: dict
+    smoke_callable: parse_fodt_strict
+    smoke_module: fodt.parser
+    smoke_sample: samples/by-format/fodt/minimal-document.fodt
   license: Apache-2.0
   module_import: fodt
   module_path: src/python/fodt/
@@ -180,8 +228,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Portable Graymap (.pgm) parser
   examples_path: examples/python/pgm/
   format_id: pgm
+  install_proof:
+    expected: object
+    smoke_callable: parse_pgm_strict
+    smoke_module: pgm.pgm_parser
+    smoke_sample: samples/by-format/pgm/valid/2x2-gradient.pgm
   license: Apache-2.0
   module_import: pgm
   module_path: src/python/pgm/
@@ -205,8 +259,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Portable Bitmap (.pbm) parser
   examples_path: examples/python/pbm/
   format_id: pbm
+  install_proof:
+    expected: object
+    smoke_callable: parse_pbm_strict
+    smoke_module: pbm.pbm_parser
+    smoke_sample: samples/by-format/pbm/valid/2x2-checker.pbm
   license: Apache-2.0
   module_import: pbm
   module_path: src/python/pbm/
@@ -230,8 +290,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Portable Pixmap (.ppm) parser
   examples_path: examples/python/ppm/
   format_id: ppm
+  install_proof:
+    expected: object
+    smoke_callable: parse_ppm_strict
+    smoke_module: ppm.ppm_parser
+    smoke_sample: samples/by-format/ppm/valid/2x2-rgbw.ppm
   license: Apache-2.0
   module_import: ppm
   module_path: src/python/ppm/
@@ -255,8 +321,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Symbolic Link (.sylk) parser
   examples_path: examples/python/sylk/
   format_id: sylk
+  install_proof:
+    expected: dict
+    smoke_callable: parse_sylk
+    smoke_module: sylk.sylk_parser
+    smoke_sample: samples/by-format/sylk/valid/minimal-2x2.slk
   license: Apache-2.0
   module_import: sylk
   module_path: src/python/sylk/
@@ -274,8 +346,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Newline-Delimited JSON (.ndjson/.jsonl) codec
   examples_path: examples/python/ndjson/
   format_id: ndjson
+  install_proof:
+    expected: list
+    smoke_callable: load_ndjson
+    smoke_module: ndjson.ndjson_codec
+    smoke_sample: samples/by-format/ndjson/valid/minimal.ndjson
   license: Apache-2.0
   module_import: ndjson
   module_path: src/python/ndjson/
@@ -293,8 +371,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Tab-Separated Values (.tsv) parser
   examples_path: examples/python/tsv/
   format_id: tsv
+  install_proof:
+    expected: dict
+    smoke_callable: parse_tsv_strict
+    smoke_module: tsv.tsv_parser
+    smoke_sample: samples/by-format/tsv/minimal-2x2.tsv
   license: Apache-2.0
   module_import: tsv
   module_path: src/python/tsv/
@@ -312,12 +396,17 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Data Interchange Format (.dif) parser
   dogfood_exports:
   - dif_to_csv: csv_writer.write_csv
-  dogfood_note: 'TC-DIF-002 (2026-06-22): import path fixed for installed-package
-    context'
+  dogfood_note: 'TC-DIF-002 (2026-06-22): import path fixed for installed-package context'
   examples_path: examples/python/dif/
   format_id: dif
+  install_proof:
+    expected: dict
+    smoke_callable: parse_dif
+    smoke_module: dif.dif_parser
+    smoke_sample: samples/by-format/dif/valid/minimal-2x2.dif
   license: Apache-2.0
   module_import: dif
   module_path: src/python/dif/
@@ -335,8 +424,21 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Comma-Separated Values (.csv) parser
   examples_path: examples/python/csv/
   format_id: csv
+  install_proof:
+    expected: dict
+    known_failure:
+      gap_id: GAP-FORENSIC-025
+      reason: >-
+        Python resolves stdlib before site-packages, so 'import csv' always finds
+        the stdlib module — the wheel installs but its module is unreachable by
+        construction. Requires an import-rename product decision (PYREL-001
+        amendment); tracked in forensic-gap-register GAP-FORENSIC-025.
+    smoke_callable: parse_csv_strict
+    smoke_module: csv.csv_parser
+    smoke_sample: samples/by-format/csv/minimal-2x2.csv
   license: Apache-2.0
   module_import: csv
   module_path: src/python/csv/
@@ -358,8 +460,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS OpenDocument Text (.odt) parser and writer
   examples_path: examples/python/odt/
   format_id: odt
+  install_proof:
+    expected: object
+    smoke_callable: parse_odt_strict
+    smoke_module: odt.odt_parser
+    smoke_sample: samples/by-format/odt/valid/minimal-document.odt
   license: Apache-2.0
   module_import: odt
   module_path: src/python/odt/
@@ -378,7 +486,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS OpenDocument Spreadsheet (.ods) parser
+  examples_path: examples/python/ods/
   format_id: ods
+  install_proof:
+    expected: object
+    smoke_callable: parse_ods_strict
+    smoke_module: ods.ods_parser
+    smoke_sample: samples/by-format/ods/valid/minimal-spreadsheet.ods
   license: Apache-2.0
   module_import: ods
   module_path: src/python/ods/
@@ -388,7 +503,6 @@ packages:
   python_version: '>=3.9'
   source_path: src/python/ods/
   tests_path: tests/python/ods/
-  examples_path: examples/python/ods/
 - acquisition_gates_passed:
   - 1
   - 2
@@ -397,7 +511,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS Quite OK Image Format (.qoi) parser
+  examples_path: examples/python/qoi/
   format_id: qoi
+  install_proof:
+    expected: object
+    smoke_callable: parse_qoi_strict
+    smoke_module: qoi.qoi_parser
+    smoke_sample: samples/by-format/qoi/valid/1x1-red.qoi
   license: Apache-2.0
   module_import: qoi
   module_path: src/python/qoi/
@@ -407,7 +528,6 @@ packages:
   python_version: '>=3.9'
   source_path: src/python/qoi/
   tests_path: tests/python/qoi/
-  examples_path: examples/python/qoi/
 - acquisition_gates_passed:
   - 1
   - 2
@@ -416,7 +536,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS TOML (.toml) configuration parser
+  examples_path: examples/python/toml/
   format_id: toml
+  install_proof:
+    expected: dict
+    smoke_callable: load_toml
+    smoke_module: toml.toml_codec
+    smoke_sample: samples/by-format/toml/minimal.toml
   license: Apache-2.0
   module_import: toml
   module_path: src/python/toml/
@@ -426,7 +553,6 @@ packages:
   python_version: '>=3.9'
   source_path: src/python/toml/
   tests_path: tests/python/toml/
-  examples_path: examples/python/toml/
 - acquisition_gates_passed:
   - 1
   - 2
@@ -435,7 +561,14 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   dependencies: []
+  description: Minimal FOSS GIMP XCF image (.xcf) parser
+  examples_path: examples/python/xcf/
   format_id: xcf
+  install_proof:
+    expected: object
+    smoke_callable: parse_xcf_strict
+    smoke_module: xcf.xcf_parser
+    smoke_sample: samples/by-format/xcf/valid/1x1-red-rgb.xcf
   license: Apache-2.0
   module_import: xcf
   module_path: src/python/xcf/
@@ -445,4 +578,142 @@ packages:
   python_version: '>=3.9'
   source_path: src/python/xcf/
   tests_path: tests/python/xcf/
-  examples_path: examples/python/xcf/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  description: Minimal FOSS Jupyter Notebook (.ipynb) codec
+  examples_path: null
+  format_id: ipynb
+  install_proof:
+    expected: dict
+    smoke_callable: load_ipynb
+    smoke_module: ipynb.ipynb_codec
+    smoke_sample: samples/by-format/ipynb/valid/minimal.ipynb
+  license: Apache-2.0
+  module_import: ipynb
+  module_path: src/python/ipynb/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-ipynb
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/ipynb/
+  tests_path: tests/python/ipynb/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  description: Minimal FOSS MaterialX (.mtlx) codec
+  examples_path: null
+  format_id: mtlx
+  install_proof:
+    expected: dict
+    smoke_callable: load_mtlx
+    smoke_module: mtlx.mtlx_codec
+    smoke_sample: samples/by-format/mtlx/valid/simple-material.mtlx
+  license: Apache-2.0
+  module_import: mtlx
+  module_path: src/python/mtlx/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-mtlx
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/mtlx/
+  tests_path: tests/python/mtlx/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  description: Minimal FOSS Nearly Raw Raster Data (.nrrd) codec
+  examples_path: null
+  format_id: nrrd
+  install_proof:
+    expected: dict
+    smoke_callable: load_nrrd
+    smoke_module: nrrd.nrrd_codec
+    smoke_sample: samples/by-format/nrrd/valid/1d-int8.nrrd
+  license: Apache-2.0
+  module_import: nrrd
+  module_path: src/python/nrrd/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-nrrd
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/nrrd/
+  tests_path: tests/python/nrrd/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies:
+  - numpy>=1.24
+  description: Minimal FOSS Safetensors (.safetensors) codec
+  examples_path: null
+  format_id: safetensors
+  install_proof:
+    expected: dict
+    smoke_callable: load_safetensors
+    smoke_module: safetensors.safetensors_codec
+    smoke_sample: samples/by-format/safetensors/valid/single-tensor.safetensors
+  license: Apache-2.0
+  module_import: safetensors
+  module_path: src/python/safetensors/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-safetensors
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/safetensors/
+  tests_path: tests/python/safetensors/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  description: Minimal FOSS Universal Business Language (UBL XML) codec
+  examples_path: null
+  format_id: ubl
+  install_proof:
+    expected: dict
+    smoke_callable: load_ubl
+    smoke_module: ubl.ubl_codec
+    smoke_sample: samples/by-format/ubl/valid/minimal-order.xml
+  license: Apache-2.0
+  module_import: ubl
+  module_path: src/python/ubl/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-ubl
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/ubl/
+  tests_path: tests/python/ubl/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  description: Minimal FOSS XLIFF (.xliff) codec
+  examples_path: null
+  format_id: xliff
+  install_proof:
+    expected: dict
+    smoke_callable: load_xliff
+    smoke_module: xliff.xliff_codec
+    smoke_sample: samples/by-format/xliff/valid/minimal.xliff
+  license: Apache-2.0
+  module_import: xliff
+  module_path: src/python/xliff/
+  onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
+  package_name: format-factory-xliff
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/xliff/
+  tests_path: tests/python/xliff/

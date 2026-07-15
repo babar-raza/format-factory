@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "pgm",
+  "package_name": "format-factory-pgm",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_pgm-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "3ed87972283d2d11d9205369f913231dce334c27ebb31450e9073f799c693ac6",
+  "source_digest": "539c36b72801103254b2ff12363c09090ef02900b192c15de8ef3448767b63f6",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import pgm",
+  "smoke_result": "PASS",
+  "smoke_test": "pgm.pgm_parser.parse_pgm_strict on samples/by-format/pgm/valid/2x2-gradient.pgm",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

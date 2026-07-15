@@ -28,51 +28,8 @@ TEMPLATE = REPO_ROOT / "packaging" / "python" / "pyproject.template.toml"
 BUILD_DIR = REPO_ROOT / ".local" / "package-builds" / "python-foss"
 SRC_PYTHON = REPO_ROOT / "src" / "python"
 
-PACKAGE_DESCRIPTIONS = {
-    "zst": "Minimal FOSS Zstandard (.zst) codec",
-    "fodp": "Minimal FOSS Flat OpenDocument Presentation (.fodp) parser",
-    "fodg": "Minimal FOSS Flat OpenDocument Graphics (.fodg) parser",
-    "gnumeric": "Minimal FOSS Gnumeric spreadsheet (.gnumeric) parser",
-    "abw": "Minimal FOSS AbiWord document (.abw) parser",
-    "fods": "Minimal FOSS Flat OpenDocument Spreadsheet (.fods) parser",
-    "fodt": "Minimal FOSS Flat OpenDocument Text (.fodt) parser",
-    "pgm": "Minimal FOSS Portable Graymap (.pgm) parser",
-    "pbm": "Minimal FOSS Portable Bitmap (.pbm) parser",
-    "ppm": "Minimal FOSS Portable Pixmap (.ppm) parser",
-    "sylk": "Minimal FOSS Symbolic Link (.sylk) parser",
-    "ndjson": "Minimal FOSS Newline-Delimited JSON (.ndjson/.jsonl) codec",
-    "tsv": "Minimal FOSS Tab-Separated Values (.tsv) parser",
-    "odt": "Minimal FOSS OpenDocument Text (.odt) parser and writer",
-    "csv": "Minimal FOSS Comma-Separated Values (.csv) parser",
-    "dif": "Minimal FOSS Data Interchange Format (.dif) parser",
-    "ods": "Minimal FOSS OpenDocument Spreadsheet (.ods) parser",
-    "qoi": "Minimal FOSS Quite OK Image Format (.qoi) parser",
-    "toml": "Minimal FOSS TOML (.toml) configuration parser",
-    "xcf": "Minimal FOSS GIMP XCF image (.xcf) parser",
-}
-
-PACKAGE_DEPS = {
-    "zst": '["zstandard>=0.21.0"]',
-    "fodp": "[]",
-    "fodg": "[]",
-    "gnumeric": "[]",
-    "abw": "[]",
-    "fods": "[]",
-    "fodt": "[]",
-    "pgm": "[]",
-    "pbm": "[]",
-    "ppm": "[]",
-    "sylk": "[]",
-    "ndjson": "[]",
-    "tsv": "[]",
-    "odt": "[]",
-    "csv": "[]",
-    "dif": "[]",
-    "ods": "[]",
-    "qoi": "[]",
-    "toml": "[]",
-    "xcf": "[]",
-}
+# Package descriptions and dependencies live in package-matrix.yaml (single source
+# of truth since the GAP-FORENSIC-001 heal). Do not add per-package dicts here.
 
 
 def sha256_file(path: Path) -> str:
@@ -83,8 +40,14 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def build_package(module: str, package_name: str, version: str = "0.1.0.dev0") -> dict:
-    """Instantiate template and attempt local wheel/sdist build."""
+def build_package(pkg: dict, version: str = "0.1.0.dev0") -> dict:
+    """Instantiate template and attempt local wheel/sdist build.
+
+    `pkg` is the full package-matrix.yaml entry; description and dependencies
+    come from the matrix, not from local dicts.
+    """
+    module = pkg["module_import"]
+    package_name = pkg["package_name"]
     pkg_dir = BUILD_DIR / package_name
     pkg_dir.mkdir(parents=True, exist_ok=True)
 
@@ -106,15 +69,15 @@ def build_package(module: str, package_name: str, version: str = "0.1.0.dev0") -
         encoding="utf-8",
     )
 
-    # Instantiate pyproject.toml
+    # Instantiate pyproject.toml (description/dependencies from the matrix entry)
     template = TEMPLATE.read_text(encoding="utf-8")
     pyproject = (
         template
         .replace("{{PACKAGE_NAME}}", package_name)
         .replace("{{MODULE_NAME}}", module)
         .replace("{{VERSION}}", version)
-        .replace("{{DESCRIPTION}}", PACKAGE_DESCRIPTIONS.get(module, f"Minimal FOSS {module} codec"))
-        .replace("{{DEPENDENCIES}}", PACKAGE_DEPS.get(module, "[]"))
+        .replace("{{DESCRIPTION}}", pkg.get("description") or f"Minimal FOSS {module} codec")
+        .replace("{{DEPENDENCIES}}", json.dumps(pkg.get("dependencies") or []))
     )
     (pkg_dir / "pyproject.toml").write_text(pyproject, encoding="utf-8")
 
@@ -179,15 +142,14 @@ def main():
 
     try:
         import yaml
-        with open(PACKAGE_MATRIX, encoding="utf-8") as f:
-            matrix = yaml.safe_load(f)
-        packages = matrix["packages"]
     except ImportError:
-        print("PyYAML not available — using hardcoded package list")
-        packages = [
-            {"module_import": m, "package_name": f"format-factory-{m}"}
-            for m in ["zst", "fodp", "fodg", "gnumeric", "abw", "fods", "fodt", "pgm", "pbm", "ppm", "sylk"]
-        ]
+        # No silent partial-fleet fallback: building a hardcoded subset while
+        # claiming a fleet build is exactly the drift GAP-FORENSIC-001 came from.
+        print("ERROR: PyYAML required to read package-matrix.yaml (pip install pyyaml)")
+        return 1
+    with open(PACKAGE_MATRIX, encoding="utf-8") as f:
+        matrix = yaml.safe_load(f)
+    packages = matrix["packages"]
 
     if args.format:
         packages = [p for p in packages if p["module_import"] == args.format]
@@ -203,7 +165,7 @@ def main():
         name = pkg["package_name"]
         version = args.version or "0.1.0.dev0"
         print(f"Building {name} (module: {module}, version: {version}) ...")
-        r = build_package(module, name, version)
+        r = build_package(pkg, version)
         results.append(r)
         status = r["status"]
         print(f"  -> {status}", end="")

@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "xcf",
+  "package_name": "format-factory-xcf",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_xcf-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "c244f86550e7f10def90d6b8db1de262e27faea00d2a90d355aca0c0e00bef1e",
+  "source_digest": "dc48bd74a83f6e952712c390d66b4f9f3435607a6ad4079f95615e386aa20f97",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import xcf",
+  "smoke_result": "PASS",
+  "smoke_test": "xcf.xcf_parser.parse_xcf_strict on samples/by-format/xcf/valid/1x1-red-rgb.xcf",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

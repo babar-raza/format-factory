@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "dif",
+  "package_name": "format-factory-dif",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_dif-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "40e379e14159f7504980db5374c862db569058ad027bf6a208075c02fadfd7b8",
+  "source_digest": "330f15ddcaabee8165299cd228ce84fde92bb99bd443590a2ae8267a70ece16f",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import dif",
+  "smoke_result": "PASS",
+  "smoke_test": "dif.dif_parser.parse_dif on samples/by-format/dif/valid/minimal-2x2.dif",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

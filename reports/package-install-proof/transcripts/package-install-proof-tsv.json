@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "tsv",
+  "package_name": "format-factory-tsv",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_tsv-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "173125aaa23b9cffd97c717a3b1bbb617c6ca9553f3cb2d39e824aa525c88486",
+  "source_digest": "9fe08111aea41c4775f47cada57c08918e9adcdcb28a8db223c1d9cb29b03170",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import tsv",
+  "smoke_result": "PASS",
+  "smoke_test": "tsv.tsv_parser.parse_tsv_strict on samples/by-format/tsv/minimal-2x2.tsv",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

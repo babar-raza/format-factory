@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "fodt",
+  "package_name": "format-factory-fodt",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_fodt-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "affec8977426de954a02a3b0179696cda5adf3acf457c5901e3bb8250b2ee730",
+  "source_digest": "a978d434820381a6e33c82ca66f508a0655e1d7073f3ca1b7d20fbc1a6603560",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import fodt",
+  "smoke_result": "PASS",
+  "smoke_test": "fodt.parser.parse_fodt_strict on samples/by-format/fodt/minimal-document.fodt",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}

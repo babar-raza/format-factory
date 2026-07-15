@@ -1,0 +1,21 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "2.0",
+  "format_id": "sylk",
+  "package_name": "format-factory-sylk",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_sylk-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "a73df43180c34c94e2775090bbd1aa9163915dc4d977977a477218249fc5a131",
+  "source_digest": "8ebef45ce74fe8325b71a66fd83ef1709de44c34fbd0b679ea9e6b0502426bae",
+  "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
+  "install_result": "PASS",
+  "import_result": "PASS",
+  "import_statement": "import sylk",
+  "smoke_result": "PASS",
+  "smoke_test": "sylk.sylk_parser.parse_sylk on samples/by-format/sylk/valid/minimal-2x2.slk",
+  "verdict": "PASS",
+  "proof_report": "reports/package-install-proof/proof-report.md",
+  "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
+  "generated_at": "2026-07-15T17:36:29+00:00",
+  "worker_agent": "claude"
+}
