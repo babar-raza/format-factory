@@ -13,6 +13,12 @@ from mtlx.mtlx_codec import (
 )
 from mtlx.exceptions import MtlxError, MtlxParseError, MtlxWriteError
 from mtlx.models import MtlxDocument
+from mtlx.mtlx_analytics import (
+    mtlx_materials_with_shader_count,
+    mtlx_node_graph_size,
+    mtlx_node_type_histogram,
+)
+from mtlx.Compat import MtlxMaterial, MtlxNodeGraph
 
 __all__ = [
     "get_material_count",
@@ -26,6 +32,11 @@ __all__ = [
     "MtlxError",
     "MtlxParseError",
     "MtlxWriteError",
+    "mtlx_materials_with_shader_count",
+    "mtlx_node_graph_size",
+    "mtlx_node_type_histogram",
+    "MtlxMaterial",
+    "MtlxNodeGraph",
 ]
 
 __version__ = "0.1.0.dev0"

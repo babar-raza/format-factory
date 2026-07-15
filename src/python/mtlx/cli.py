@@ -10,6 +10,7 @@ from mtlx.mtlx_codec import load_mtlx, probe_mtlx
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the MaterialX codec."""
     parser = argparse.ArgumentParser(prog="ff-mtlx", description="Format Factory MaterialX tool")
     sub = parser.add_subparsers(dest="command")
 
