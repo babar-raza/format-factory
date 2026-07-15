@@ -31,3 +31,37 @@ def _cap_grader_timeout(monkeypatch):
         monkeypatch.setenv("GRADER_LLM_TIMEOUT", "8")
     if not os.environ.get("LLM_REWRITE_DISABLED"):
         monkeypatch.setenv("LLM_REWRITE_DISABLED", "1")
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _guard_production_db(tmp_path_factory):
+    """Prevent tests from connecting to the production control-index.db.
+
+    Redirects DEFAULT_DB_PATH to a session-scoped temp path so any test
+    that forgets to use tmp_path will hit an isolated database instead of
+    the real .local/supervisor/control-index.db (212 MB, OneDrive-synced).
+    """
+    import control_index
+    sentinel = tmp_path_factory.mktemp("guard") / "guard-control-index.db"
+    original = control_index.DEFAULT_DB_PATH
+    control_index.DEFAULT_DB_PATH = sentinel
+    yield
+    control_index.DEFAULT_DB_PATH = original
+
+
+@pytest.fixture(autouse=True)
+def _subprocess_timeout_guard(monkeypatch):
+    """Enforce a 60s default timeout on all subprocess.run calls.
+
+    Prevents any subprocess from hanging indefinitely. Tests that need
+    longer can pass an explicit timeout= kwarg (which is not overridden).
+    """
+    import subprocess as _sp
+    _original_run = _sp.run
+
+    def _guarded_run(*args, **kwargs):
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = 60
+        return _original_run(*args, **kwargs)
+
+    monkeypatch.setattr(_sp, "run", _guarded_run)

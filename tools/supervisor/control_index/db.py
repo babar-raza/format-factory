@@ -10,7 +10,14 @@ from pathlib import Path
 
 from . import SCHEMA_VERSION
 
-_SCHEMA_SQL = (Path(__file__).parent / "schema.sql").read_text(encoding="utf-8")
+_SCHEMA_SQL: str | None = None
+
+
+def _get_schema_sql() -> str:
+    global _SCHEMA_SQL
+    if _SCHEMA_SQL is None:
+        _SCHEMA_SQL = (Path(__file__).parent / "schema.sql").read_text(encoding="utf-8")
+    return _SCHEMA_SQL
 
 
 # ---------------------------------------------------------------------------
@@ -215,7 +222,7 @@ def init_db(db_path: Path) -> None:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_connection(db_path)
     try:
-        conn.executescript(_SCHEMA_SQL)
+        conn.executescript(_get_schema_sql())
         now = datetime.now(timezone.utc).isoformat()
         conn.execute(
             "INSERT OR REPLACE INTO schema_meta (key, value) VALUES (?, ?)",

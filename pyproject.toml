@@ -25,6 +25,7 @@ dev = [
 addopts = "--import-mode=importlib"
 testpaths = ["tests"]
 timeout = 120
+timeout_method = "thread"
 markers = [
     "layer0: Structural - health check, import smoke",
     "layer1: Focused - single-format unit tests",
@@ -41,6 +42,7 @@ markers = [
     "oracle: Test executes oracle-package cases to verify spec-literal correctness",
     "property_based: Test uses Hypothesis or similar property-based strategy",
     "security: Test validates malformed input, injection, or boundary security behavior",
+    "real_src: Test invokes validators against real source files in src/ (may fail when file is healed)",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

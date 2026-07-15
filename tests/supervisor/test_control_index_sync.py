@@ -24,6 +24,19 @@ def db_path(tmp_path):
     return tmp_path / "test-sync.db"
 
 
+@pytest.fixture(scope="module")
+def synced_db(tmp_path_factory):
+    """Single rebuild() shared across read-only query tests (FTS5, Queries, Parity).
+
+    Reduces 13 redundant full-repo scans to 1.  Only safe because the
+    consumers do SELECT-only queries — never INSERT/UPDATE/DELETE.
+    """
+    db = tmp_path_factory.mktemp("shared_sync") / "shared.db"
+    rebuild(db, _REPO)
+    return db
+
+
+@pytest.mark.slow
 class TestFullSync:
     """Tests requiring sync against real repo data."""
 
@@ -119,18 +132,16 @@ class TestFullSync:
 class TestFTS5Search:
     """Tests for FTS5 full-text search."""
 
-    def test_fts5_populated_after_sync(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_fts5_populated_after_sync(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             count = conn.execute("SELECT COUNT(*) as c FROM fts_operational").fetchone()["c"]
             assert count > 0, "FTS5 should be populated"
         finally:
             conn.close()
 
-    def test_search_returns_results(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_search_returns_results(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             from control_index.search import search
             results = search(conn, "FODS")
@@ -141,9 +152,8 @@ class TestFTS5Search:
         finally:
             conn.close()
 
-    def test_search_filter_by_type(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_search_filter_by_type(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             from control_index.search import search
             results = search(conn, "FODS", entity_types=["gap"])
@@ -155,9 +165,8 @@ class TestFTS5Search:
 class TestQueries:
     """Tests for specific query patterns."""
 
-    def test_gaps_by_format(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_gaps_by_format(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             rows = conn.execute(
                 "SELECT * FROM gaps WHERE UPPER(format) = 'FODS'"
@@ -167,9 +176,8 @@ class TestQueries:
         finally:
             conn.close()
 
-    def test_failures_unresolved(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_failures_unresolved(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             rows = conn.execute(
                 "SELECT * FROM failures WHERE resolved = 0"
@@ -180,9 +188,8 @@ class TestQueries:
         finally:
             conn.close()
 
-    def test_format_dashboard_join(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_format_dashboard_join(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             fmt = conn.execute(
                 "SELECT * FROM formats WHERE format_id = 'fods'"
@@ -197,9 +204,8 @@ class TestQueries:
         finally:
             conn.close()
 
-    def test_query_under_200ms(self, db_path):
-        rebuild(db_path, _REPO)
-        conn = get_connection(db_path)
+    def test_query_under_200ms(self, synced_db):
+        conn = get_connection(synced_db)
         try:
             start = time.time()
             conn.execute(
@@ -214,51 +220,47 @@ class TestQueries:
 class TestParity:
     """Parity tests: index results match direct file reads."""
 
-    def test_gap_count_parity(self, db_path):
-        rebuild(db_path, _REPO)
+    def test_gap_count_parity(self, synced_db):
         # Direct read
         ledger = json.loads((_REPO / "reports/capability-layer/gap-ledger.json").read_text(encoding="utf-8"))
         direct_count = len(ledger["gaps"])
         # Index count
-        conn = get_connection(db_path)
+        conn = get_connection(synced_db)
         try:
             idx_count = conn.execute("SELECT COUNT(*) as c FROM gaps").fetchone()["c"]
             assert idx_count == direct_count
         finally:
             conn.close()
 
-    def test_format_count_parity(self, db_path):
+    def test_format_count_parity(self, synced_db):
         import yaml
-        rebuild(db_path, _REPO)
         data = yaml.safe_load((_REPO / "registry/format-registry.yaml").read_text())
         direct_count = len(data["formats"])
-        conn = get_connection(db_path)
+        conn = get_connection(synced_db)
         try:
             idx_count = conn.execute("SELECT COUNT(*) as c FROM formats").fetchone()["c"]
             assert idx_count == direct_count
         finally:
             conn.close()
 
-    def test_skill_count_parity(self, db_path):
+    def test_skill_count_parity(self, synced_db):
         import yaml
-        rebuild(db_path, _REPO)
         data = yaml.safe_load((_REPO / ".supervisor/skill-registry.yaml").read_text())
         direct_count = len([s for s in data["skills"] if s.get("command")])
-        conn = get_connection(db_path)
+        conn = get_connection(synced_db)
         try:
             idx_count = conn.execute("SELECT COUNT(*) as c FROM skills").fetchone()["c"]
             assert idx_count == direct_count
         finally:
             conn.close()
 
-    def test_failure_count_parity(self, db_path):
+    def test_failure_count_parity(self, synced_db):
         failure_path = _REPO / ".local/supervisor/failure-memory.json"
         if not failure_path.exists():
             pytest.skip(".local/supervisor/failure-memory.json not present (gitignored, CI skip)")
-        rebuild(db_path, _REPO)
         data = json.loads(failure_path.read_text())
         direct_count = len([f for f in data["failures"] if f.get("id")])
-        conn = get_connection(db_path)
+        conn = get_connection(synced_db)
         try:
             idx_count = conn.execute("SELECT COUNT(*) as c FROM failures").fetchone()["c"]
             assert idx_count == direct_count

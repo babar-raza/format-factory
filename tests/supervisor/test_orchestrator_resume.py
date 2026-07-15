@@ -23,12 +23,15 @@ from tools.supervisor.continuation_state import (
 
 
 @pytest.fixture(autouse=True)
-def clean_lock():
-    if LOCK_PATH.exists():
-        LOCK_PATH.unlink()
-    yield
-    if LOCK_PATH.exists():
-        LOCK_PATH.unlink()
+def _isolate_lock(tmp_path, monkeypatch):
+    """Redirect the orchestrator lock file to tmp_path.
+
+    The real LOCK_PATH at .local/supervisor/orchestrator.lock can conflict
+    with concurrent processes. State files (orchestrator-state.json etc.)
+    are left on the real path — they're gitignored and designed for this.
+    """
+    import tools.supervisor.autonomous_orchestrator as orch_mod
+    monkeypatch.setattr(orch_mod, "LOCK_PATH", tmp_path / "orchestrator.lock")
 
 
 class TestResumeFromStop:
