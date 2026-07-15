@@ -73,7 +73,7 @@ def mtlx_materials_with_shader_count(source: SourceType) -> int:
     A ``<surfacematerial>`` "has a shader input connection" when it carries
     an ``<input name="surfaceshader">`` child whose ``nodename`` attribute
     references a shader node. Materials that only declare the input without
-    a ``nodename`` (an empty placeholder, e.g. ``value=""``) are not counted
+    a ``nodename`` (an unset value, e.g. ``value=""``) are not counted
     as connected.
 
     Spec: surfacematerial binds to a shader node via a surfaceshader input

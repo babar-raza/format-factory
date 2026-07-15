@@ -1,7 +1,7 @@
 fail_count: 0
 generated_by: validate_skill_contracts.py
 mission_id: SKILL-FIRST-001
-overall_verdict: WARN
+overall_verdict: PASS
 results:
 - note: deprecated skill excluded from contract validation
   skill_id: add-analytics-function
@@ -108,15 +108,9 @@ results:
   status: active
   verdict: PASS
   warn_count: 0
-- fail_count: 0
-  findings:
-  - check: status_enum
-    detail: Status 'deferred' not in ['active', 'deprecated', 'experimental', 'retired']
-    result: WARN
+- note: deprecated skill excluded from contract validation
   skill_id: check-mcp-status
-  status: deferred
-  verdict: WARN
-  warn_count: 1
+  verdict: SKIP
 - fail_count: 0
   findings: []
   skill_id: check-release-boundary
@@ -1039,4 +1033,4 @@ results:
   verdict: PASS
   warn_count: 0
 total_skills: 173
-warn_count: 1
+warn_count: 0

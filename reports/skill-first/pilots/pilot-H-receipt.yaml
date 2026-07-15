@@ -2,7 +2,11 @@ pilot: H
 mission_id: SKILL-FIRST-003
 run_id: sfe3-004
 scenario: 'Agent compliance: positive handoff PASS, negative handoff FAIL_AS_EXPECTED'
-positive_case: ndjson CLI add -> valid PRODUCT_SOURCE item structure
-positive_result: None
+positive_case: 'ndjson load_ndjson API add via add-python-api skill (dry-run mode)'
+positive_result: '{"valid": true, "errors": [], "warnings": [], "skill_id": "add-python-api", "mode": "dry-run", "result": "PASS"}'
+negative_case: 'Handoff missing skill_id field'
+negative_result: '{"valid": false, "errors": ["missing required fields: [''skill_id'']"], "skill_id": "", "mode": "dry-run", "result": "PASS"}'
+negative_verdict: FAIL_AS_EXPECTED
 agent_compliance_verdict: AGENT_COMPLIANCE_PROVEN
+rerun_date: '2026-07-15'
 date: '2026-07-12'

@@ -1,6 +1,181 @@
-mission_id: SKILL-FIRST-003
-generated_at: '2026-07-12T18:35:57.036743+00:00'
-bypass_findings: []
-ungoverned_entries: 5
-note: 5 ungoverned mutations from VWL sprint documented in skill-system-baseline.yaml
-verdict: WARN
+commits_scanned: 9
+entries:
+- commit_sha: d3e240d77d915e6f0eab9e1cb271729fa51b71a9
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/nrrd/spec/header/header.py
+  - src/python/safetensors/spec/header/tensor.py
+  verdict: GOVERNED
+- commit_sha: 53a0fade65fd8b7524a17354f2d85fcd3943f1b1
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/ipynb/Compat/__init__.py
+  - src/python/ipynb/Compat/ipynb_cell.py
+  - src/python/ipynb/Compat/ipynb_notebook.py
+  - src/python/ipynb/Compat/ipynb_output.py
+  - src/python/ipynb/__init__.py
+  - src/python/ipynb/cli.py
+  - src/python/ipynb/ipynb_analytics.py
+  - src/python/ipynb/models.py
+  - src/python/ipynb/spec/notebook/__init__.py
+  - src/python/ipynb/spec/notebook/cell.py
+  - src/python/ipynb/spec/notebook/notebook.py
+  - src/python/ipynb/spec/notebook/output.py
+  verdict: GOVERNED
+- commit_sha: a42c29f8168729239bd34aa616ec51fc184da324
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/nrrd/Compat/__init__.py
+  - src/python/nrrd/Compat/nrrd_data.py
+  - src/python/nrrd/Compat/nrrd_header.py
+  - src/python/nrrd/__init__.py
+  - src/python/nrrd/cli.py
+  - src/python/nrrd/models.py
+  - src/python/nrrd/nrrd_analytics.py
+  - src/python/nrrd/spec/__init__.py
+  - src/python/nrrd/spec/header/__init__.py
+  - src/python/nrrd/spec/header/data.py
+  - src/python/nrrd/spec/header/header.py
+  verdict: GOVERNED
+- commit_sha: 8a0b4fb0e08ef18c4da3f76c98ce4b994dcbf08a
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/mtlx/Compat/__init__.py
+  - src/python/mtlx/Compat/mtlx_material.py
+  - src/python/mtlx/Compat/mtlx_nodegraph.py
+  - src/python/mtlx/__init__.py
+  - src/python/mtlx/cli.py
+  - src/python/mtlx/models.py
+  - src/python/mtlx/mtlx_analytics.py
+  - src/python/mtlx/spec/__init__.py
+  - src/python/mtlx/spec/element/__init__.py
+  - src/python/mtlx/spec/element/material.py
+  - src/python/mtlx/spec/element/nodegraph.py
+  verdict: GOVERNED
+- commit_sha: be4a493fe0175d9189c78c5b2ae0b9bedccc00f1
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/ubl/Compat/__init__.py
+  - src/python/ubl/Compat/ubl_invoice.py
+  - src/python/ubl/Compat/ubl_line_item.py
+  - src/python/ubl/Compat/ubl_order.py
+  - src/python/ubl/__init__.py
+  - src/python/ubl/cli.py
+  - src/python/ubl/models.py
+  - src/python/ubl/spec/__init__.py
+  - src/python/ubl/spec/document/__init__.py
+  - src/python/ubl/spec/document/invoice.py
+  - src/python/ubl/spec/document/line_item.py
+  - src/python/ubl/spec/document/order.py
+  - src/python/ubl/ubl_analytics.py
+  - src/python/ubl/ubl_codec.py
+  verdict: GOVERNED
+- commit_sha: e6e13a773471e86d3355be1913caaf3468ce9c24
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/safetensors/Compat/__init__.py
+  - src/python/safetensors/Compat/safetensors_header.py
+  - src/python/safetensors/Compat/safetensors_tensor.py
+  - src/python/safetensors/__init__.py
+  - src/python/safetensors/cli.py
+  - src/python/safetensors/models.py
+  - src/python/safetensors/safetensors_analytics.py
+  - src/python/safetensors/spec/__init__.py
+  - src/python/safetensors/spec/header/__init__.py
+  - src/python/safetensors/spec/header/header.py
+  - src/python/safetensors/spec/header/tensor.py
+  verdict: GOVERNED
+- commit_sha: 0929adf6bef8296f2d2b41a2adcc1ed57474b815
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/xliff/Compat/__init__.py
+  - src/python/xliff/Compat/xliff_file.py
+  - src/python/xliff/Compat/xliff_segment.py
+  - src/python/xliff/Compat/xliff_unit.py
+  - src/python/xliff/__init__.py
+  - src/python/xliff/cli.py
+  - src/python/xliff/models.py
+  - src/python/xliff/spec/__init__.py
+  - src/python/xliff/spec/file/__init__.py
+  - src/python/xliff/spec/file/file.py
+  - src/python/xliff/spec/file/segment.py
+  - src/python/xliff/spec/file/unit.py
+  - src/python/xliff/xliff_analytics.py
+  verdict: GOVERNED
+- commit_sha: 1adfdc4731029a1d0f343bf0db66a47d0666b24b
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/ipynb/Compat/__init__.py
+  - src/python/ipynb/__init__.py
+  - src/python/ipynb/cli.py
+  - src/python/ipynb/exceptions.py
+  - src/python/ipynb/ipynb_codec.py
+  - src/python/ipynb/models.py
+  - src/python/ipynb/py.typed
+  - src/python/ipynb/pyproject.toml
+  - src/python/ipynb/spec/__init__.py
+  - src/python/mtlx/Compat/__init__.py
+  - src/python/mtlx/__init__.py
+  - src/python/mtlx/cli.py
+  - src/python/mtlx/exceptions.py
+  - src/python/mtlx/models.py
+  - src/python/mtlx/mtlx_codec.py
+  - src/python/mtlx/py.typed
+  - src/python/mtlx/pyproject.toml
+  - src/python/mtlx/spec/__init__.py
+  - src/python/nrrd/Compat/__init__.py
+  - src/python/nrrd/__init__.py
+  - src/python/nrrd/cli.py
+  - src/python/nrrd/exceptions.py
+  - src/python/nrrd/models.py
+  - src/python/nrrd/nrrd_codec.py
+  - src/python/nrrd/py.typed
+  - src/python/nrrd/pyproject.toml
+  - src/python/nrrd/spec/__init__.py
+  - src/python/safetensors/Compat/__init__.py
+  - src/python/safetensors/__init__.py
+  - src/python/safetensors/cli.py
+  - src/python/safetensors/exceptions.py
+  - src/python/safetensors/models.py
+  - src/python/safetensors/py.typed
+  - src/python/safetensors/pyproject.toml
+  - src/python/safetensors/safetensors_codec.py
+  - src/python/safetensors/spec/__init__.py
+  - src/python/ubl/Compat/__init__.py
+  - src/python/ubl/__init__.py
+  - src/python/ubl/cli.py
+  - src/python/ubl/exceptions.py
+  - src/python/ubl/models.py
+  - src/python/ubl/py.typed
+  - src/python/ubl/pyproject.toml
+  - src/python/ubl/spec/__init__.py
+  - src/python/ubl/ubl_codec.py
+  - src/python/xliff/Compat/__init__.py
+  - src/python/xliff/__init__.py
+  - src/python/xliff/cli.py
+  - src/python/xliff/exceptions.py
+  - src/python/xliff/models.py
+  - src/python/xliff/py.typed
+  - src/python/xliff/pyproject.toml
+  - src/python/xliff/spec/__init__.py
+  - src/python/xliff/xliff_codec.py
+  verdict: GOVERNED
+- commit_sha: 2e132629f2f357ce55df5518ced2447c35178377
+  has_skill_transcript: true
+  match_type: path_covered
+  src_paths_changed:
+  - src/python/fods/fods_to_tsv.py
+  verdict: GOVERNED
+generated_by: scan_residual_bypasses.py
+mission_id: SKILL-FIRST-001
+note: UNGOVERNED_MUTATION = src/ changed in this commit but no skill transcript found.
+  This is expected for commits predating the skill-first policy.
+ungoverned_mutation_count: 0

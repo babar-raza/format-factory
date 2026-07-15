@@ -106,3 +106,16 @@ gap record and asserts the feature IR and taskcard outputs are byte-identical
   `test-obligation-matrix.json`, `evidence-obligation-matrix.json`,
   `gate-readiness-projection.json` per compiled gap
 - Exit 0 on success; exit 1 if `--verify-idempotency` detects non-determinism
+
+## Parity Status: DEFERRED_PIPELINE_ONLY
+
+This skill is a pipeline tool invoked automatically by `capability_queue_consumer.py`.
+It has no user-interactive workflow. The following quality dimensions are intentionally
+not applicable:
+- `input_validation` (validated by queue consumer, not skill)
+- `recovery_rollback` (pipeline restart is the recovery path)
+- `focused_tests` / `integration_tests` (covered by queue consumer test suite)
+
+Formal deferral registered: TC-SFE3-FU-002 (2026-07-15).
+Full 20-dimension grading deferred to SKILL-QUALITY-004 with N/A classification
+for pipeline-only dimensions.

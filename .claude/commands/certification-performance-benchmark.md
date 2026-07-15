@@ -30,3 +30,35 @@ python tools/certification/performance_benchmark.py \
 ## Required Handoff Fields
 
 - `format_id`: The format to benchmark (e.g. `fods`, `csv`)
+
+## Output Contract
+
+Writes `reports/certification/<format_id>/performance-baseline.json`:
+```json
+{
+  "format_id": "fods",
+  "parse_p50_ms": 12.4,
+  "parse_p95_ms": 31.2,
+  "parse_p99_ms": 58.0,
+  "write_p50_ms": 8.1,
+  "memory_peak_mb": 24.5,
+  "verdict": "PASS | REGRESSION | NO_PRIOR_BASELINE"
+}
+```
+
+## Idempotency Contract
+
+Same sample files + same format → reproducible benchmark within ±10% tolerance.
+Output file is overwritten with each run.
+
+## Error Handling
+
+- Missing samples directory: exit 1 with `SAMPLES_NOT_FOUND`.
+- No prior baseline: records `"verdict": "NO_PRIOR_BASELINE"`, exit 0.
+- Sample file unreadable: skip with warning, continue remaining samples.
+
+## Parity Note
+
+PARTIAL parity: command file expanded with output contract and idempotency.
+Full 20-dimension grading deferred to SKILL-QUALITY-004.
+Repair: TC-SFE3-FU-002 (2026-07-15).

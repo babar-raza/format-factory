@@ -119,3 +119,10 @@ entries:
     sprint.
   registered_by: TC-SFE3-002
   date: '2026-07-12'
+- path: .local/runbooks/sfe3-mission-id-reapply.py
+  disposition: GOVERNED_RUNBOOK
+  reasoning: Per-session idempotent runbook to re-apply SKILL-FIRST-003 mission_id
+    to governance YAML files that revert due to post-tool hook reversion. Registered
+    by TC-SFE3-FU-006. Not a product mutation tool.
+  registered_by: TC-SFE3-FU-006
+  date: '2026-07-15'

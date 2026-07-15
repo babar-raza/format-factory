@@ -124,3 +124,17 @@ print(filter_structural_blocks(['GOV_BLOCK:monolith_detection_validator', 'other
 `check_continuation.py` prints its normal JSON verdict object
 (`{"verdict": "STOP", "reason": "structural_govblock_must_be_resolved_first", ...}`)
 to stdout; this command file adds no new output of its own.
+
+## Parity Status: DEFERRED_DOCUMENTATION_ONLY
+
+This skill is documentation-only by design: it records an existing automated carve-out
+in `check_continuation.py` rather than implementing new logic. The following quality
+dimensions are intentionally not applicable:
+- `idempotency` (the underlying check_continuation.py is idempotent; this file adds no new execution)
+- `recovery_rollback` (no state written by this skill)
+- `focused_tests` / `integration_tests` (behavior tested via check_continuation.py test suite)
+- `input_validation` (no inputs — purely declarative)
+
+Formal deferral registered: TC-SFE3-FU-002 (2026-07-15).
+Full 20-dimension grading deferred to SKILL-QUALITY-004 with N/A classification
+for documentation-only dimensions.

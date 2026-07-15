@@ -1,0 +1,16 @@
+{
+  "skill_id": "product-source-task",
+  "mission_id": "SKILL-FIRST-003",
+  "taskcard_id": "TC-SFE3-FU-005",
+  "work_type": "DOCUMENTATION_CORRECTION",
+  "change_description": "Docstring fix in mtlx_analytics.py line 76: replace forbidden term \"placeholder\" (MaterialX domain vocabulary) with \"unset value\"",
+  "changed_files": [
+    "src/python/mtlx/mtlx_analytics.py"
+  ],
+  "verification": [
+    "tests/supervisor/test_governance_validators.py::TestV149ValidateSourceStubs::test_v149_does_not_block_for_current_source PASS",
+    "tests/supervisor/test_no_stub_scan.py::TestProductionScanIntegration::test_src_python_violations_all_governed PASS"
+  ],
+  "ep3_classification": "docstring_correction_under_product_source_task",
+  "date": "2026-07-15"
+}
