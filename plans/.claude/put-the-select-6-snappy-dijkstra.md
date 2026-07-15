@@ -439,11 +439,60 @@ weakly_verified_mandatory_items: 0
 unconsumed_findings: 0
 
 <!--plan_terminal_lock:
-  status: TERMINAL_CLOSED
+  status: SUPERSEDED_BY_REOPEN
   locked_at: "2026-07-14T15:29:28.152283+00:00"
   locked_by: "f001e6ed7786"
   convergence_audit_at: "2026-07-14T15:50:00+00:00"
   convergence_verdict: ALL_GREEN
-  successor_required_for_future_changes: true
-  mutation_policy: "no further plan/hardening/execution writes"
+-->
+
+---
+
+## Phase 2 Summary (completed, 2026-07-15 — see git history for full record)
+
+Reopened to build all 6 formats into professional-library tier per `docs/code-quality/production-library-standard-v2.md`: Compat facade classes per QName entry, `spec/` stub classes, spec-grounded `{fmt}_analytics.py` modules, and genuine semantic roundtrip tests (edit-save-reload, not identity-only). Test count: 144 → 593, zero regressions.
+
+**Commits:** `53a0fade` (ipynb), `e6e13a77` (safetensors), `0929adf6` (xliff), `a42c29f8` (nrrd), `be4a493f` (ubl), `8a0b4fb0` (mtlx), `d3e240d7` (V&H Gate P2 heal: qname-registry backfill, docstring fixes, L1 test-tier gaps for safetensors/mtlx).
+
+Independent V&H Gate P2 verification: `VERIFIED_WITH_HEALS` → all 5 findings healed and re-verified (593/593 tests passing).
+
+**Known limitation surfaced during a follow-up audit (led to Phase 3 below):** professional-library-tier code quality (facades/analytics/tests) is not the same as feature-completeness. A gate-model audit found `implementation_authorized: false` for all 6 in `registry/format-registry.yaml` despite `src/python/<fmt>/` already existing — a real Gate 9 sequencing violation, root-caused to `gate-required` frontmatter in skill command files (e.g. `new-format-kickstart.md`) being pure documentation with zero runtime enforcement anywhere in the toolchain. This machinery finding is superseded by the deeper Phase 3 finding below (feature completeness, not gate paperwork, is the primary gap) but remains a valid, separate observation for future governance work.
+
+---
+
+## Phase 3: Real Feature Completeness + Generic Spec-Coverage Gate (2026-07-15, plan-mode approved)
+
+### Context
+
+The user's directive: professional libraries must have zero stubs/placeholders/TODOs, and the primary concern is genuine feature completeness — what features does each format's real specification require, what do these 6 libraries actually implement, and what systemic hole in the acquisition process let features get decided incompletely in the first place (fix that hole generically, not just for these 6).
+
+Seven parallel research agents (one per format, reading the real external specifications via WebFetch, plus one auditing the repo's feature-decision machinery) found: **every one of the 6 libraries implements structural/header parsing but is missing the content layer that makes it usable for its actual purpose.**
+
+| Format | Critical defect found |
+|---|---|
+| **ipynb** | Cell `id` (required nbformat 4.5 field) silently dropped on every load→write. No attachments support. `Output` model class in `spec/notebook/output.py` exists but is dead code — never wired into the codec. |
+| **safetensors** | `load_safetensors` returns only header metadata — **never returns actual tensor bytes**. `write_safetensors` always zero-fills data regardless of input. Self-documented: `UNSUPPORTED_FEATURES = ["tensor_data_decode", "memory_mapped_access", "streaming_parse", "quantized_dtypes"]`. No offset-overlap/bounds validation (the format's core safety guarantee). |
+| **xliff** | Inline markup (`pc`/`sc`/`ec`/`ph`/`mrk`) flattened to plain text on load, unreconstructable on write — destroys placeholder boundaries on any load→edit→save. `segment/state` read but never written back. |
+| **nrrd** | No code path decodes raw/gzip payload into typed, shaped values — `load_nrrd` returns only a byte count. `endian` parsed but unused (no byte-swap). `line skip`/`byte skip` ignored — an actual data-offset misalignment bug. No `kinds`/`space`/`space directions` (no physical-coordinate mapping). |
+| **ubl** | Only Invoice+Order of UBL's 91 document types (self-documented MVP). `cac:TaxTotal`/`cac:LegalMonetaryTotal` entirely absent — legally mandatory, blocks any real e-invoice. Party data is name-only. `write_ubl` drops all party data `load_ubl` parsed — a correctness bug independent of scope. |
+| **mtlx** | `write_mtlx` only serializes `materials`/`node_graphs` — everything else (`nodedef`/`typedef`/`look`/`propertyset`/plain nodes) is **destroyed** on write. `nodename` connections are inert strings, no graph resolution. Validated only against 3 self-generated synthetic samples that avoid every real-world construct. |
+
+**Root cause (confirmed via `sal_master_runner.py`, `ingest-spec-sal`, qname registry, obligation register, Gates 4/5/6/9 in `docs/gates.md`):** a **missing mechanism across the entire 26-format portfolio**, not a process these 6 skipped. SAL fact extraction is template-based/hardcoded per-format (`_FORMAT_SPECIFIC_FACTS` covers only 8 of 26 formats); most formats — including mature ones like qoi/ndjson — sit at the same 2-3 "bootstrap_only" fact level as the 6 new ones. The one exception (ODF family, ~5,000 facts from a one-off manual review) was never converted into an implementation checklist (only 12 of fods's 4,988 facts trace to a QName entry). No gate anywhere checks "% of spec features actually implemented."
+
+### Part A — Generic Fix: Spec-Coverage Gate (build first)
+
+1. **`tools/specification-authority-layer/enumerate_spec_features.py`** — produces a complete, structured feature manifest per format from the real specification (extends `FACT-<FMT>-NNN` convention), not the current 2-3-fact bootstrap.
+2. **`tools/specification-authority-layer/compute_feature_coverage.py`** — cross-references the manifest against actual `src/python/<fmt>/` implementation, produces `reports/spec-coverage/<fmt>-coverage-report.json` (IMPLEMENTED/PARTIAL/MISSING + evidence per item).
+3. **Gate 9 hardening** — `implementation_authorized` may only be `true` when a coverage report exists AND every non-IMPLEMENTED item has an explicit `deferred_reason`.
+4. **Portfolio retrofit proof** — run against qoi/ndjson too, proving the tool is generic, not 6-format-specific.
+
+### Part B — Per-Format Remediation (real, complete implementations)
+
+Each format's build list (ipynb: cell-id preservation + attachments + Output model wiring + mutation API + schema validation; safetensors: real tensor data access + offset-integrity validation + fp8 dtypes; xliff: structural inline-markup preservation + state write-back + notes/group preservation; nrrd: real payload decode + endian byte-swap + line/byte-skip fix + kinds/space support; ubl: tax/monetary totals + full party depth + write-side party fix + CreditNote; mtlx: write-path data-loss fix + real graph connection resolution + category/type-confusion fix + volumematerial support) — see full detail in the plan-mode source file / conversation record.
+
+**Explicitly deferred (recorded with `deferred_reason`, not silent):** UBL's remaining ~85 document types + Peppol BIS 3.0 validation; XLIFF's optional OASIS modules + 1.2 write support; NRRD's ascii/hex/bzip2 encodings + block type; MaterialX's full stdlib validation/looks/collections/variants/includes; ipynb's v1-3 upgrade; safetensors's true lazy/mmap streaming.
+
+### Verification
+
+Every fix has a test exercising real behavior (decoded array values, retrieved tensor bytes, round-tripped inline markup, preserved cell ids, correct tax totals, preserved nodedefs) — not just structural presence. Full test suite passing (593 floor, not ceiling). Coverage reports for all 6 show no un-reasoned MISSING items. qoi/ndjson coverage reports prove genericity. Governance clean.
 -->
