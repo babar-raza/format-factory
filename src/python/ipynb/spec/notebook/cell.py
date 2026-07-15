@@ -7,10 +7,11 @@ QName: ipynb:cell
 Canonical class: Cell
 Facade: IpynbCell
 
-architecture_only: this class is a spec-shaped scaffold. It wraps a single
-cell dict and exposes read-only properties for cell_type, source,
-metadata, outputs, and execution_count. No parsing or write behavior
-lives here — that is owned by ``ipynb_codec``.
+Real, wired-in read model: wraps a single cell dict and exposes read-only
+properties for cell_type, id, source, metadata, outputs, execution_count,
+and attachments. Parsing/write behavior (including cell id generation and
+uniqueness enforcement) lives in ``ipynb_codec`` and ``IpynbDocument`` —
+this class is the accessor surface those layers populate.
 """
 from __future__ import annotations
 
@@ -33,6 +34,19 @@ class Cell:
     def cell_type(self) -> str:
         """Return the cell type: one of 'code', 'markdown', or 'raw'."""
         return self._data.get("cell_type", "raw")
+
+    @property
+    def id(self) -> str | None:
+        """Return the cell's unique id (nbformat >=4.5 required field)."""
+        return self._data.get("id")
+
+    @property
+    def attachments(self) -> dict[str, Any]:
+        """Return the cell's attachments dict (markdown/raw cells only).
+
+        Returns an empty dict if the cell carries no attachments.
+        """
+        return self._data.get("attachments", {})
 
     @property
     def source(self) -> Any:

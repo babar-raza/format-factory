@@ -16,3 +16,10 @@ class IpynbParseError(IpynbError):
 
 class IpynbWriteError(IpynbError):
     """Raised when an ipynb file cannot be written."""
+
+
+class IpynbValidationError(IpynbError):
+    """Raised when a notebook fails structural/schema validation.
+
+    See ``ipynb.ipynb_codec.validate_notebook`` / ``validate_notebook_schema``.
+    """
