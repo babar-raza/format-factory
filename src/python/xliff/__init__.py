@@ -13,6 +13,11 @@ from xliff.xliff_codec import (
 )
 from xliff.exceptions import XliffError, XliffParseError, XliffWriteError
 from xliff.models import XliffDocument
+from xliff.xliff_analytics import (
+    xliff_average_source_length,
+    xliff_translated_segment_count,
+    xliff_untranslated_segment_count,
+)
 
 __all__ = [
     "get_file_count",
@@ -26,6 +31,9 @@ __all__ = [
     "XliffError",
     "XliffParseError",
     "XliffWriteError",
+    "xliff_average_source_length",
+    "xliff_translated_segment_count",
+    "xliff_untranslated_segment_count",
 ]
 
 __version__ = "0.1.0.dev0"

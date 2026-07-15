@@ -10,6 +10,7 @@ from xliff.xliff_codec import load_xliff, probe_xliff
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the XLIFF codec."""
     parser = argparse.ArgumentParser(prog="ff-xliff", description="Format Factory XLIFF tool")
     sub = parser.add_subparsers(dest="command")
 
