@@ -111,3 +111,12 @@ Source: `.supervisor/state/convergence-loop-GAP-FORENSIC-013/stage1-issue-model.
 | L3-002 (no per-session working-tree isolation) | `rejected_with_reason` — repo-wide infrastructure gap, out of scope for this plan; mitigated here via manual hunk-level diff verification before staging |
 
 Plan revision after hardening: `v2-hardened-with-commit-taskcard`.
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-15T14:45:38.795081+00:00"
+  locked_by: "7600e39c6acc"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
