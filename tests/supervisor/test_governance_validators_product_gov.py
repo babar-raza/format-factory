@@ -406,11 +406,11 @@ class TestV157GovernanceBindingPaths:
 
 class TestRunnerIntegration:
 
-    def test_expected_validator_count_is_216(self):
-        """_EXPECTED_VALIDATOR_COUNT must be 216 after CT-GOV-002."""
+    def test_expected_validator_count_is_221(self):
+        """_EXPECTED_VALIDATOR_COUNT must be 221 (216 base + V172-V175 TC-VWR-007 + V224 TC-GOV-V224-001, 2026-07-15)."""
         from governance_validator_runner import _EXPECTED_VALIDATOR_COUNT
-        assert _EXPECTED_VALIDATOR_COUNT == 216, (
-            f"Expected 216, got {_EXPECTED_VALIDATOR_COUNT}. "
+        assert _EXPECTED_VALIDATOR_COUNT == 221, (
+            f"Expected 221, got {_EXPECTED_VALIDATOR_COUNT}. "
             "Update governance_validator_runner.py after adding/removing validators."
         )
 

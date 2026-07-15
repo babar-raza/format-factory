@@ -128,7 +128,7 @@ def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[di
 
 
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 216  # +6: V150-V151,V154-V157 (CT-GOV-002, memoized-frolicking-donut TC-GOV-015, 2026-07-14)
+_EXPECTED_VALIDATOR_COUNT = 221  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001), 2026-07-15
 
 
 def get_expected_validator_count() -> int:
@@ -1002,6 +1002,16 @@ def run_all_governance_validators(
         ])
     except Exception as _exc_v150:
         _skipped_validators.append({"validators": ["V150", "V151", "V154", "V155", "V156", "V157"], "error": str(_exc_v150)})
+
+    # V224 (TC-GOV-V224-001, 2026-07-15): Backfill completeness — WARN when migration map
+    # exists without backfill plan
+    try:
+        from governance_validators_ext6 import (  # noqa: PLC0415
+            validate_backfill_completeness as _v224,
+        )
+        results.append(_v224(declaration, repo_root))
+    except Exception as _exc_v224:
+        _skipped_validators.append({"validators": ["V224"], "error": str(_exc_v224)})
 
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each

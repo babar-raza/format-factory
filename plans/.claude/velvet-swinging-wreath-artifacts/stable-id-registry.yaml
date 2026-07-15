@@ -1,0 +1,17 @@
+authoritative_plan: plans/.claude/velvet-swinging-wreath.md
+artifact_role: analysis_or_evidence_only
+execution_authority: false
+mission_id: VELVET-SWINGING-WREATH-001
+closed_taskcards_verified_at_head:
+  TC-VWR-001: "forensics confirmed 2026-07-15"
+  TC-VWR-002: "producer-consumer boundaries verified 2026-07-15"
+  TC-VWR-003: "Check B1 implemented lifecycle_audit.py:84-148"
+  TC-VWR-004: "mission ledger init write_plan_lock.py:264"
+  TC-VWR-005: "generate_behavioral_gap_taskcards lifecycle_audit.py:1007"
+  TC-VWR-006: "G4 CRITICAL escalation lifecycle_audit.py:451-468"
+  TC-VWR-007: "@validator added to V172-V175; expected_count updated 223->227; confirmed 2026-07-15"
+  TC-VWR-008: "Pilot A passed 2026-07-15 — AUDIT_REQUIRES_ITERATION@iter=0, AUDIT_PASS@iter=1"
+  TC-VWR-009: "Pilot H passed 2026-07-15 — 3 cycles proven, idempotency confirmed"
+rerun_note: >
+  On rerun: check Taskcard Status Table first. CLOSED taskcards need no re-execution.
+  Run: python tools/supervisor/lifecycle_stable_id.py plans/.claude/velvet-swinging-wreath.md

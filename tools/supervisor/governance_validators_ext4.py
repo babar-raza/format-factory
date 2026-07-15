@@ -951,6 +951,7 @@ def validate_lane_contract_exists(
 # ---------------------------------------------------------------------------
 
 
+@validator(rule_id="V172", domain="machinery")
 def validate_mach_audit_after_exec(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -992,6 +993,7 @@ def validate_mach_audit_after_exec(
     }
 
 
+@validator(rule_id="V173", domain="machinery")
 def validate_mach_iteration_proof(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -1050,6 +1052,7 @@ def validate_mach_iteration_proof(
     }
 
 
+@validator(rule_id="V174", domain="machinery")
 def validate_mach_continuation_consumed(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
@@ -1106,6 +1109,7 @@ def validate_mach_continuation_consumed(
     }
 
 
+@validator(rule_id="V175", domain="machinery")
 def validate_mach_task_vs_mission(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
