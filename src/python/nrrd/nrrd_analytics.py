@@ -15,7 +15,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Union
 
-from nrrd.nrrd_codec import load_nrrd
+from nrrd.nrrd_codec import get_array, load_nrrd
 
 spec_qname = "nrrd:header"
 spec_fact_ref = "FACT-NRRD-002"
@@ -100,3 +100,51 @@ def nrrd_element_count(source: SourceType) -> int:
     for size in sizes:
         count *= size
     return count
+
+
+def nrrd_kinds(source: SourceType) -> list[str]:
+    """Return the header's ``kinds`` field parsed into a per-axis list.
+
+    The NRRD ``kinds`` field distinguishes domain (spatial/temporal) axes
+    from range axes (vector/tensor/color-channel components) — e.g.
+    ``kinds: domain domain RGB-color`` marks the third axis as color
+    channels rather than a spatial dimension.
+
+    Spec: NRRD ``kinds`` header field (FACT-NRRD-104).
+
+    Args:
+        source: Path, Path-like string, or raw bytes of an NRRD file.
+
+    Returns:
+        List of per-axis kind strings in header order. Empty list if
+        ``kinds`` is missing or blank.
+
+    Raises:
+        NrrdParseError: if the source cannot be parsed as NRRD.
+    """
+    model = load_nrrd(source)
+    return list(model.get("kinds", []))
+
+
+def nrrd_to_array(source: SourceType):
+    """Decode an NRRD source's data payload into a real, shaped array.
+
+    Decodes the raw/gzip-decompressed payload via ``struct.unpack`` into
+    typed numeric values, reshaped into nested lists following the
+    header's ``sizes`` field (axis 0 varies fastest). Returns None if the
+    declared ``type``/``encoding`` combination is not supported for decode
+    (e.g. ascii/hex/bzip2/zlib encodings, out of scope for this pass).
+
+    Spec: NRRD data payload decode (FACT-NRRD-101).
+
+    Args:
+        source: Path, Path-like string, or raw bytes of an NRRD file.
+
+    Returns:
+        Nested list of typed values, or None if not decodable.
+
+    Raises:
+        NrrdParseError: if the source cannot be parsed as NRRD.
+    """
+    model = load_nrrd(source)
+    return get_array(model)

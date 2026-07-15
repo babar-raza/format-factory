@@ -1,0 +1,8 @@
+{
+  "encoding_ascii": "NRRD 'ascii' text-encoded data payload is not decoded by decode_nrrd_data in this pass. Out of scope per the audit remediation plan; only raw and gzip encodings were required to reach a real typed/shaped array decode. No sample fixtures or tests exist for ascii-encoded payloads.",
+  "encoding_hex": "NRRD 'hex' text-encoded data payload is not decoded by decode_nrrd_data in this pass. Out of scope per the audit remediation plan; deferred alongside ascii for a future pass once a dedicated text-encoding decode path is added.",
+  "encoding_bzip2": "NRRD 'bzip2' compressed payload is not decompressed in this pass (only gzip is). Out of scope per the audit remediation plan; would require adding the stdlib bz2 module to the decode path and constructing bzip2 sample fixtures.",
+  "encoding_zlib": "NRRD 'zlib' compressed payload is not decompressed in this pass (only gzip is). Out of scope per the audit remediation plan; would require adding the stdlib zlib module to the decode path and constructing zlib sample fixtures.",
+  "detached_header": "Detached (.nhdr + separate data file) headers are not supported in this pass. load_nrrd only reads a single attached file; the 'data file' header field that points to a separate payload file is parsed as an ordinary header field but never followed. Out of scope per the audit remediation plan.",
+  "streaming_parse": "NRRD files are read fully into memory (bounded by MAX_FILE_SIZE) rather than streamed. Out of scope for this pass; not required by the audit remediation plan, which focused on correctness of decode/endian/skip/kinds/space/key-value parsing rather than memory-streaming behavior."
+}

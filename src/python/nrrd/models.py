@@ -68,6 +68,64 @@ class NrrdDocument:
         """Return True if the document contains no data."""
         return self.data_size == 0
 
+    @property
+    def key_value_pairs(self) -> dict[str, str]:
+        """Return the NRRD0002+ arbitrary key:=value pairs (distinct from fixed header fields)."""
+        return self._data.get("key_value_pairs", {})
+
+    @property
+    def kinds(self) -> list[str]:
+        """Return the per-axis ``kinds`` values (e.g. ``['domain', 'domain', 'RGB-color']``)."""
+        return list(self._data.get("kinds", []))
+
+    @property
+    def domain_axes(self) -> list[int]:
+        """Return the indices of axes whose ``kinds`` value is a domain kind (domain/space/time)."""
+        from nrrd.nrrd_codec import DOMAIN_KINDS
+
+        return [i for i, k in enumerate(self.kinds) if k.lower() in DOMAIN_KINDS]
+
+    @property
+    def range_axes(self) -> list[int]:
+        """Return the indices of axes whose ``kinds`` value is a range kind (vector/color/tensor/...)."""
+        from nrrd.nrrd_codec import DOMAIN_KINDS
+
+        return [i for i, k in enumerate(self.kinds) if k.lower() not in DOMAIN_KINDS]
+
+    @property
+    def space(self) -> str:
+        """Return the ``space`` field (e.g. ``'left-posterior-superior'``), empty if absent."""
+        return str(self._data.get("space", ""))
+
+    @property
+    def space_directions(self) -> list[tuple[float, ...] | None]:
+        """Return the per-axis ``space directions`` vectors (None entries mark non-spatial axes)."""
+        return list(self._data.get("space_directions", []))
+
+    @property
+    def space_origin(self) -> tuple[float, ...] | None:
+        """Return the ``space origin`` point vector, or None if absent."""
+        return self._data.get("space_origin")
+
+    @property
+    def array(self) -> list[Any] | None:
+        """Return the flat decoded data values, or None if decode was not possible."""
+        return self._data.get("array")
+
+    @property
+    def array_shape(self) -> list[int] | None:
+        """Return the per-axis shape of the decoded array, or None if unavailable."""
+        return self._data.get("array_shape")
+
+    def to_array(self) -> Any:
+        """Return the decoded data reshaped into nested lists per axis sizes.
+
+        Returns None if the declared type/encoding was not decodable.
+        """
+        from nrrd.nrrd_codec import get_array
+
+        return get_array(self._data)
+
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying data as a dict."""
         return dict(self._data)

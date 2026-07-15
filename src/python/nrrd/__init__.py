@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from nrrd.nrrd_codec import (
+    decode_nrrd_data,
+    get_array,
     get_dimension,
     get_encoding,
     load_nrrd,
     nrrd_installed_workflow,
     probe_nrrd,
+    reshape_nrrd_array,
     roundtrip,
     write_nrrd,
 )
@@ -17,14 +20,19 @@ from nrrd.nrrd_analytics import (
     nrrd_axis_sizes,
     nrrd_element_count,
     nrrd_is_compressed,
+    nrrd_kinds,
+    nrrd_to_array,
 )
 
 __all__ = [
+    "decode_nrrd_data",
+    "get_array",
     "get_dimension",
     "get_encoding",
     "load_nrrd",
     "nrrd_installed_workflow",
     "probe_nrrd",
+    "reshape_nrrd_array",
     "roundtrip",
     "write_nrrd",
     "NrrdDocument",
@@ -34,6 +42,8 @@ __all__ = [
     "nrrd_axis_sizes",
     "nrrd_element_count",
     "nrrd_is_compressed",
+    "nrrd_kinds",
+    "nrrd_to_array",
 ]
 
 __version__ = "0.1.0.dev0"
