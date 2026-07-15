@@ -17,6 +17,11 @@ from safetensors.exceptions import (
     SafetensorsWriteError,
 )
 from safetensors.models import SafetensorsDocument
+from safetensors.safetensors_analytics import (
+    safetensors_dtype_histogram,
+    safetensors_largest_tensor_name,
+    safetensors_total_tensor_bytes,
+)
 
 __all__ = [
     "get_tensor_count",
@@ -30,6 +35,9 @@ __all__ = [
     "SafetensorsError",
     "SafetensorsParseError",
     "SafetensorsWriteError",
+    "safetensors_dtype_histogram",
+    "safetensors_largest_tensor_name",
+    "safetensors_total_tensor_bytes",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -1,0 +1,57 @@
+{
+  "invocation_id": "SKILLS-R1084-INV-002",
+  "skill_id": "add-roundtrip-test",
+  "command_path": ".claude/commands/add-roundtrip-test.md",
+  "mode": "live",
+  "sprint_id": "TC-PROLIB-SAFETENSORS-001",
+  "plan_path": "plans/.claude/put-the-select-6-snappy-dijkstra.md",
+  "stream": "skills",
+  "timestamp": "2026-07-15T00:00:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "language": "python",
+    "edit_operation": "add_tensor_descriptor",
+    "exact_test_paths": [
+      "tests/python/safetensors/test_safetensors_document_mutation.py"
+    ],
+    "focused_test_command": ".venv/Scripts/pytest tests/python/safetensors/test_safetensors_document_mutation.py -v"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_safetensors_document_mutation.py"
+  ],
+  "forbidden_files": [
+    "src/**"
+  ],
+  "actual_files_read": [
+    "src/python/safetensors/models.py",
+    "src/python/safetensors/safetensors_codec.py",
+    "tests/python/safetensors/test_safetensors_codec.py"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_safetensors_document_mutation.py"
+  ],
+  "validation_commands": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_safetensors_document_mutation.py -v"
+  ],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_roundtrip",
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_preserves_existing_tensors",
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_correct_dtype_after_reload",
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_correct_shape_after_reload",
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_increases_tensor_count",
+    "tests/python/safetensors/test_safetensors_document_mutation.py::TestMutationRoundtrip::test_add_tensor_returns_bytes_without_dest"
+  ],
+  "tests_run": [
+    "tests/python/safetensors/test_safetensors_document_mutation.py (6 passed)"
+  ],
+  "ledger_entry_id": null,
+  "evidence_paths": [
+    "tests/python/safetensors/test_safetensors_document_mutation.py"
+  ],
+  "result": "PASS",
+  "edit_operation_verified_in_reloaded_model": true,
+  "description": "Loads a valid sample (SafetensorsDocument.from_file), adds a new synthetic F32 [2,2] tensor descriptor to the model dict with data_offsets computed to start after the existing data section (FACT-SAFETENSORS-003), writes to a temp file via write_safetensors, reloads via SafetensorsDocument.from_file, and asserts the new tensor is present by name with correct dtype/shape and that existing tensors and their count are preserved. Distinct from the Phase 1 identity roundtrip test (TestRoundtrip.test_roundtrip_single_tensor in test_safetensors_codec.py), which only re-writes the unmodified model.",
+  "limitations": [],
+  "rollback_plan": "Remove tests/python/safetensors/test_safetensors_document_mutation.py. Re-run tests/python/safetensors/ to confirm no regressions (80 -> 74 tests, all still passing)."
+}

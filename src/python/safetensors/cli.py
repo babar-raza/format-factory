@@ -10,6 +10,7 @@ from safetensors.safetensors_codec import load_safetensors, probe_safetensors
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the SafeTensors codec."""
     parser = argparse.ArgumentParser(
         prog="ff-safetensors",
         description="Format Factory SafeTensors tool",

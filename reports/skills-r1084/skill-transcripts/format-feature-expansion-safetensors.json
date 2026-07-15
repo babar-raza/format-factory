@@ -1,0 +1,88 @@
+{
+  "invocation_id": "SKILLS-R1084-INV-001",
+  "skill_id": "format-feature-expansion",
+  "command_path": ".claude/commands/format-feature-expansion.md",
+  "mode": "live",
+  "sprint_id": "TC-PROLIB-SAFETENSORS-001",
+  "plan_path": "plans/.claude/put-the-select-6-snappy-dijkstra.md",
+  "stream": "skills",
+  "timestamp": "2026-07-15T00:00:00Z",
+  "inputs": {
+    "format_name": "safetensors",
+    "codec_file": "src/python/safetensors/safetensors_codec.py",
+    "init_file": "src/python/safetensors/__init__.py",
+    "test_dir": "tests/python/safetensors/",
+    "functions": [
+      {
+        "function_name": "safetensors_dtype_histogram",
+        "function_signature": "def safetensors_dtype_histogram(source: SourceType) -> dict[str, int]",
+        "capability_label": "Count tensors grouped by dtype (FACT-SAFETENSORS-002)"
+      },
+      {
+        "function_name": "safetensors_total_tensor_bytes",
+        "function_signature": "def safetensors_total_tensor_bytes(source: SourceType) -> int",
+        "capability_label": "Sum tensor data byte spans from data_offsets (FACT-SAFETENSORS-003)"
+      },
+      {
+        "function_name": "safetensors_largest_tensor_name",
+        "function_signature": "def safetensors_largest_tensor_name(source: SourceType) -> str | None",
+        "capability_label": "Name of the tensor with the largest byte span (FACT-SAFETENSORS-002)"
+      }
+    ]
+  },
+  "note_on_precedent": "First real invocation of this skill's documented contract for a new analytics module (no prior format-feature-expansion transcript existed under reports/skills-r*/skill-transcripts/ at start of this sprint per plan Phase 2 note). Executed by following .claude/commands/format-feature-expansion.md steps directly: created new src/python/safetensors/safetensors_analytics.py (new file, not an edit to an existing analytics file) since none existed yet for this format, then updated __init__.py and test_dir per the contract.",
+  "allowed_files": [
+    "src/python/safetensors/safetensors_analytics.py",
+    "src/python/safetensors/__init__.py",
+    "tests/python/safetensors/test_safetensors_analytics.py"
+  ],
+  "forbidden_files": [
+    "src/net/**",
+    "poc-targets.yaml",
+    "registry/format-registry.yaml",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GOVERNANCE.md",
+    ".supervisor/skill-registry.yaml",
+    "plans/strategic/**"
+  ],
+  "actual_files_read": [
+    "src/python/safetensors/safetensors_codec.py",
+    "src/python/safetensors/__init__.py",
+    ".local/spec-cache/sal-facts-safetensors.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/safetensors_analytics.py",
+    "src/python/safetensors/__init__.py",
+    "tests/python/safetensors/test_safetensors_analytics.py"
+  ],
+  "validation_commands": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_safetensors_analytics.py -v",
+    "python -c \"from tools.supervisor.governance_validator_runner import run_all_governance_validators\""
+  ],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/python/safetensors/test_safetensors_analytics.py::TestDtypeHistogram (7 tests)",
+    "tests/python/safetensors/test_safetensors_analytics.py::TestTotalTensorBytes (7 tests)",
+    "tests/python/safetensors/test_safetensors_analytics.py::TestLargestTensorName (7 tests)",
+    "tests/python/safetensors/test_safetensors_analytics.py::TestAnalyticsMalformedInputs (4 tests)"
+  ],
+  "tests_run": [
+    "tests/python/safetensors/test_safetensors_analytics.py (25 passed)"
+  ],
+  "ledger_entry_id": null,
+  "evidence_paths": [
+    "src/python/safetensors/safetensors_analytics.py",
+    "src/python/safetensors/__init__.py",
+    "tests/python/safetensors/test_safetensors_analytics.py"
+  ],
+  "result": "PASS",
+  "governance_validators_pass": true,
+  "min_7_tests_per_function": true,
+  "no_new_external_imports": true,
+  "init_all_export_updated": true,
+  "limitations": [
+    "Each function re-parses the source via load_safetensors() rather than accepting a pre-built domain model, per Dimension 7 (Analytics Separation) of production-library-standard-v2.md."
+  ],
+  "rollback_plan": "Revert src/python/safetensors/safetensors_analytics.py (delete), revert __all__ additions in src/python/safetensors/__init__.py, remove tests/python/safetensors/test_safetensors_analytics.py. Confirm `from safetensors import probe, load` still imports cleanly after revert."
+}
