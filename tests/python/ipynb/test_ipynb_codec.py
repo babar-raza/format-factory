@@ -194,3 +194,59 @@ class TestImport:
         assert result["format"] == "ipynb"
         assert result["loaded"] is True
         assert result["cell_count"] == 0
+
+
+class TestAdditionalCodecCoverage:
+    """Phase 2 supplementary probe/load coverage (added alongside professional-tier build-out)."""
+
+    def test_probe_with_path_object(self):
+        assert probe_ipynb(Path(VALID_DIR / "minimal.ipynb")) is True
+
+    def test_probe_with_string_path(self):
+        assert probe_ipynb(str(VALID_DIR / "with-outputs.ipynb")) is True
+
+    def test_get_cell_count_real_file(self):
+        model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
+        assert get_cell_count(model) == 2
+
+    def test_get_code_cells_real_file(self):
+        model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
+        assert len(get_code_cells(model)) == 1
+
+    def test_get_markdown_cells_real_file(self):
+        model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
+        assert len(get_markdown_cells(model)) == 1
+
+    def test_load_nbformat_minor_present(self):
+        model = load_ipynb(VALID_DIR / "minimal.ipynb")
+        assert model["nbformat_minor"] == 5
+
+    def test_write_returns_string_without_writing_file(self):
+        model = {"nbformat": 4, "nbformat_minor": 5, "metadata": {}, "cells": []}
+        result = write_ipynb(model, dest=None)
+        assert isinstance(result, str)
+        assert json.loads(result)["nbformat"] == 4
+
+    def test_probe_all_valid_samples(self):
+        for name in ("minimal.ipynb", "code-and-markdown.ipynb", "with-outputs.ipynb"):
+            assert probe_ipynb(VALID_DIR / name) is True
+
+    def test_load_with_outputs_execution_count(self):
+        model = load_ipynb(VALID_DIR / "with-outputs.ipynb")
+        code_cells = get_code_cells(model)
+        assert code_cells[0]["execution_count"] == 1
+
+    def test_write_then_probe_roundtrip(self):
+        model = {
+            "nbformat": 4,
+            "nbformat_minor": 5,
+            "metadata": {},
+            "cells": [{"cell_type": "code", "source": "x = 1", "metadata": {}, "outputs": []}],
+        }
+        with tempfile.NamedTemporaryFile(suffix=".ipynb", delete=False) as f:
+            dest = f.name
+        try:
+            write_ipynb(model, dest)
+            assert probe_ipynb(dest) is True
+        finally:
+            Path(dest).unlink(missing_ok=True)

@@ -10,6 +10,7 @@ from ipynb.ipynb_codec import load_ipynb, probe_ipynb
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the Jupyter Notebook codec."""
     parser = argparse.ArgumentParser(
         prog="ff-ipynb",
         description="Format Factory Jupyter Notebook (.ipynb) tool",

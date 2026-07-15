@@ -14,6 +14,12 @@ from ipynb.ipynb_codec import (
 )
 from ipynb.exceptions import IpynbError, IpynbParseError, IpynbWriteError
 from ipynb.models import IpynbDocument
+from ipynb.ipynb_analytics import (
+    ipynb_average_source_length,
+    ipynb_cell_type_histogram,
+    ipynb_has_execution_errors,
+    ipynb_output_type_histogram,
+)
 
 __all__ = [
     "get_cell_count",
@@ -28,6 +34,10 @@ __all__ = [
     "IpynbError",
     "IpynbParseError",
     "IpynbWriteError",
+    "ipynb_average_source_length",
+    "ipynb_cell_type_histogram",
+    "ipynb_has_execution_errors",
+    "ipynb_output_type_histogram",
 ]
 
 __version__ = "0.1.0.dev0"
