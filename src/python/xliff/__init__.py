@@ -5,6 +5,7 @@ from __future__ import annotations
 from xliff.xliff_codec import (
     get_file_count,
     get_unit_count,
+    iter_file_units,
     load_xliff,
     probe_xliff,
     roundtrip,
@@ -13,6 +14,11 @@ from xliff.xliff_codec import (
 )
 from xliff.exceptions import XliffError, XliffParseError, XliffWriteError
 from xliff.models import XliffDocument
+from xliff.xliff_inline import (
+    InlineElement,
+    parse_inline_content,
+    serialize_inline_content,
+)
 from xliff.xliff_analytics import (
     xliff_average_source_length,
     xliff_translated_segment_count,
@@ -22,6 +28,7 @@ from xliff.xliff_analytics import (
 __all__ = [
     "get_file_count",
     "get_unit_count",
+    "iter_file_units",
     "load_xliff",
     "probe_xliff",
     "roundtrip",
@@ -31,6 +38,9 @@ __all__ = [
     "XliffError",
     "XliffParseError",
     "XliffWriteError",
+    "InlineElement",
+    "parse_inline_content",
+    "serialize_inline_content",
     "xliff_average_source_length",
     "xliff_translated_segment_count",
     "xliff_untranslated_segment_count",

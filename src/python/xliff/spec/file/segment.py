@@ -43,6 +43,20 @@ class Segment:
         """Return True if the segment has non-whitespace target text."""
         return bool(self.target.strip())
 
+    @property
+    def source_content(self) -> list[Any]:
+        """Return the structured inline-content list for source text
+        (FACT-XLIFF-101) — preserves pc/sc/ec/ph/mrk boundaries that
+        `.source` (plain flattened text) discards."""
+        return self._data.get("source_content", [])
+
+    @property
+    def target_content(self) -> list[Any]:
+        """Return the structured inline-content list for target text
+        (FACT-XLIFF-101) — preserves pc/sc/ec/ph/mrk boundaries that
+        `.target` (plain flattened text) discards."""
+        return self._data.get("target_content", [])
+
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying data as a dict."""
         return dict(self._data)

@@ -52,10 +52,17 @@ class XliffDocument:
 
     @property
     def units(self) -> list[dict[str, Any]]:
-        """Return all translation units across all files."""
+        """Return all translation units across all files.
+
+        Includes units nested inside <group> wrappers, at any depth
+        (FACT-XLIFF-104) — not just units that are direct children of
+        <file>.
+        """
+        from xliff.xliff_codec import iter_file_units
+
         result: list[dict[str, Any]] = []
         for f in self.files:
-            result.extend(f.get("units", []))
+            result.extend(iter_file_units(f))
         return result
 
     @property

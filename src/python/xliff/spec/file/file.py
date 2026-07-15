@@ -30,13 +30,30 @@ class File:
 
     @property
     def units(self) -> list[dict[str, Any]]:
-        """Return the list of translation-unit dicts contained in this file."""
-        return self._data.get("units", [])
+        """Return all translation-unit dicts contained in this file.
+
+        Includes units nested inside <group> wrappers, at any depth
+        (FACT-XLIFF-104) — not just units that are direct children of
+        <file>.
+        """
+        from xliff.xliff_codec import iter_file_units
+
+        return list(iter_file_units(self._data))
 
     @property
     def unit_count(self) -> int:
-        """Return the number of translation units contained in this file."""
+        """Return the total number of translation units contained in this file."""
         return len(self.units)
+
+    @property
+    def notes(self) -> list[dict[str, Any]]:
+        """Return notes attached directly to this file (FACT-XLIFF-103)."""
+        return self._data.get("notes", [])
+
+    @property
+    def groups(self) -> list[dict[str, Any]]:
+        """Return the list of group dicts directly nested in this file (FACT-XLIFF-104)."""
+        return self._data.get("groups", [])
 
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying data as a dict."""

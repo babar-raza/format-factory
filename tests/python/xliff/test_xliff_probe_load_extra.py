@@ -27,7 +27,16 @@ class TestProbeLoadExtra:
     def test_load_with_inline_codes_structure(self):
         model = load_xliff(VALID_DIR / "with-inline-codes.xliff")
         seg = model["files"][0]["units"][0]["segments"][0]
+        # Convenience flattened text is still available...
         assert "here" in seg["source"]
+        # ...but the pc element is NOT lost to flattening: it is captured
+        # as structured data with its id preserved (FACT-XLIFF-101).
+        assert "source_content" in seg
+        pc_nodes = [n for n in seg["source_content"] if isinstance(n, dict)]
+        assert len(pc_nodes) == 1
+        assert pc_nodes[0]["tag"] == "pc"
+        assert pc_nodes[0]["attributes"]["id"] == "pc1"
+        assert pc_nodes[0]["content"] == ["here"]
 
     def test_load_source_language_field(self):
         model = load_xliff(VALID_DIR / "minimal.xliff")

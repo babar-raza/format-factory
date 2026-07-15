@@ -38,6 +38,11 @@ class Unit:
         """Return the number of segments contained in this unit."""
         return len(self.segments)
 
+    @property
+    def notes(self) -> list[dict[str, Any]]:
+        """Return notes attached to this unit (FACT-XLIFF-103)."""
+        return self._data.get("notes", [])
+
     def to_dict(self) -> dict[str, Any]:
         """Return a shallow copy of the underlying data as a dict."""
         return dict(self._data)

@@ -14,7 +14,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Iterator, Union
 
-from xliff.xliff_codec import load_xliff
+from xliff.xliff_codec import iter_file_units, load_xliff
 
 spec_qname = "xliff:segment"
 spec_fact_ref = "FACT-XLIFF-002"
@@ -29,10 +29,14 @@ __all__ = [
 
 
 def _iter_segments(source: SourceType) -> Iterator[dict[str, Any]]:
-    """Yield every segment dict across all files/units in the parsed document."""
+    """Yield every segment dict across all files/units in the parsed document.
+
+    Includes units nested inside <group> wrappers (FACT-XLIFF-104), not just
+    units that are direct children of <file>.
+    """
     model = load_xliff(source)
     for file_data in model.get("files", []):
-        for unit_data in file_data.get("units", []):
+        for unit_data in iter_file_units(file_data):
             for segment in unit_data.get("segments", []):
                 yield segment
 
