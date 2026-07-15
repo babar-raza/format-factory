@@ -1,0 +1,88 @@
+# Acquisition Pack — mtlx (MaterialX)
+
+---
+artifact_id: mtlx-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/mtlx/pack.yaml
+format_id: mtlx
+product_family: 3d
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude
+generated_at: 2026-07-14T00:00:00Z
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: null
+
+# --- Format identity ---
+format_id: mtlx
+display_name: MaterialX
+family: 3d
+extensions:
+  - .mtlx
+mime_type: application/xml
+spec_body: Academy Software Foundation
+spec_version: MaterialX v1.39
+spec_url: https://materialx.org/Specification.html
+spec_accessed_date: 2026-07-14
+source_hash: null
+
+# --- Legal classification ---
+legal_category: 2
+legal_category_name: Permissive OSS
+fast_path_eligible: true
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: 83
+  band: accept
+  gate_1_approved_by: agent
+  gate_1_approved_date: 2026-07-14
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: in_progress
+    artifact: acquisition-packs/mtlx/spec-evidence.md
+    gate: 2
+  legal_notes:
+    status: in_progress
+    artifact: acquisition-packs/mtlx/legal-notes.md
+    gate: 2
+  sample_sources:
+    status: not_started
+    artifact: acquisition-packs/mtlx/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: not_started
+    artifact: acquisition-packs/mtlx/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+  tier_map:
+    status: not_started
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- R12 Acquisition Governance Fields ---
+acquisition_risk_classification: LOW
+oracle_classification: NOT_ASSESSED
+spec_normalization_status: NOT_STARTED
+
+# --- Notes ---
+notes: null

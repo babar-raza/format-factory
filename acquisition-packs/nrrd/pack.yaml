@@ -1,0 +1,89 @@
+# Acquisition Pack — nrrd (Nearly Raw Raster Data)
+
+---
+artifact_id: nrrd-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/nrrd/pack.yaml
+format_id: nrrd
+product_family: scientific
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude
+generated_at: 2026-07-14T00:00:00Z
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: null
+
+# --- Format identity ---
+format_id: nrrd
+display_name: Nearly Raw Raster Data
+family: scientific
+extensions:
+  - .nrrd
+  - .nhdr
+mime_type: application/x-nrrd
+spec_body: Teem Project
+spec_version: NRRD0005
+spec_url: https://teem.sourceforge.net/nrrd/format.html
+spec_accessed_date: 2026-07-14
+source_hash: null
+
+# --- Legal classification ---
+legal_category: 2
+legal_category_name: Permissive OSS
+fast_path_eligible: true
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: 79
+  band: accept
+  gate_1_approved_by: agent
+  gate_1_approved_date: 2026-07-14
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: in_progress
+    artifact: acquisition-packs/nrrd/spec-evidence.md
+    gate: 2
+  legal_notes:
+    status: in_progress
+    artifact: acquisition-packs/nrrd/legal-notes.md
+    gate: 2
+  sample_sources:
+    status: not_started
+    artifact: acquisition-packs/nrrd/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: not_started
+    artifact: acquisition-packs/nrrd/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+  tier_map:
+    status: not_started
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- R12 Acquisition Governance Fields ---
+acquisition_risk_classification: LOW
+oracle_classification: NOT_ASSESSED
+spec_normalization_status: NOT_STARTED
+
+# --- Notes ---
+notes: null

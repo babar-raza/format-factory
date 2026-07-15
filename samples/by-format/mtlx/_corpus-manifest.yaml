@@ -1,0 +1,59 @@
+format_id: mtlx
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_xml
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/simple-material.mtlx
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Minimal MaterialX document with a single surfacematerial node and a standard_surface shader. Tests baseline MaterialX structure parsing."
+    structural_test: PASS
+
+  - filename: valid/node-graph.mtlx
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: node-graph
+    description: "MaterialX document with a nodegraph containing connected nodes (image, multiply, standard_surface). Tests graph traversal and connection parsing."
+    structural_test: PASS
+
+  - filename: valid/multi-material.mtlx
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: multi-material
+    description: "MaterialX document with multiple material definitions and shared nodegraph. Tests multi-material enumeration and cross-references."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/wrong-root.mtlx
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-wrong-root
+    description: "XML file with root element other than 'materialx'. Tests root element validation in parser."
+    expected_error: true
+    error_type: InvalidRootElement
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - node-graph
+    - multi-material
+    - invalid-wrong-root
+  gate_3_categories_met: true
+  awaiting_human_iv: true

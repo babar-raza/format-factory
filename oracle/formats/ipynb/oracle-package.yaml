@@ -1,0 +1,178 @@
+oracle_id: oracle-ipynb-v1
+format_id: ipynb
+format_version: nbformat v4.5
+oracle_version: 1
+family: data
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: IPYNB-SPEC
+    title: Jupyter Notebook Format (nbformat v4.5)
+    body: Jupyter Project
+    url: https://nbformat.readthedocs.io/en/latest/format_description.html
+    legal_category: 2
+    authority_class: SPEC_NORMATIVE
+    note: Official Jupyter notebook format specification defining the JSON schema for .ipynb files.
+  - id: PYTHON-JSON-STDLIB
+    title: Python json module (stdlib reference implementation)
+    body: PSF
+    url: https://docs.python.org/3/library/json.html
+    legal_category: 1
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    note: Notebooks are JSON files parsed by json.loads(). Python stdlib json module provides reference parsing.
+  authorized_fact_refs:
+  - FACT-IPYNB-001
+  - FACT-IPYNB-002
+  - FACT-IPYNB-003
+  requirement_refs: []
+  capability_refs:
+  - ipynb:notebook
+  - ipynb:cell
+  authority_summary: >
+    Jupyter Notebook (.ipynb) is specified by the Jupyter Project as nbformat v4.5.
+    Files are JSON documents with nbformat, nbformat_minor, metadata, and cells keys.
+    Python stdlib json module provides authoritative reference parsing.
+corpus_refs:
+- corpus_id: ipynb-minimal
+  sample_ref: samples/by-format/ipynb/valid/minimal.ipynb
+  sha256: sha256:60b1be44941df5d0394431f5c4a900937c6106d65888bd39ea9da9c76ca29b2b
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal notebook with one empty code cell
+- corpus_id: ipynb-code-and-markdown
+  sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+  sha256: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Notebook with code and markdown cells
+- corpus_id: ipynb-with-outputs
+  sample_ref: samples/by-format/ipynb/valid/with-outputs.ipynb
+  sha256: sha256:3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Notebook with code cells that have execution outputs
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib json module is the reference parser; no third-party tool required
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Notebook is a JSON document; no lossy compression involved
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection attack surface in parse-only JSON mode
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: nbformat schema defines all valid keys; unknown keys are metadata extensions
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: JSON normalization handled by json.dumps with sort_keys
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: ipynb-valid-001
+  purpose: Minimal notebook parses without error
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json.loads() parses entire file
+  - IPYNB-SPEC -- nbformat key present
+  sample_ref: samples/by-format/ipynb/valid/minimal.ipynb
+  input_hash: sha256:60b1be44941df5d0394431f5c4a900937c6106d65888bd39ea9da9c76ca29b2b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: cell_count
+    value_min: 1
+    authority: IPYNB-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: ipynb-valid-002
+  purpose: Cell count matches number of cells array entries
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - IPYNB-SPEC -- cells array defines notebook content
+  sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+  input_hash: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: cell_count
+    value_min: 2
+    authority: IPYNB-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: ipynb-valid-003
+  purpose: IpynbDocument.spec_qname matches registered qname ipynb:notebook
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/ipynb.yaml -- ipynb:notebook entry
+  sample_ref: samples/by-format/ipynb/valid/minimal.ipynb
+  input_hash: sha256:60b1be44941df5d0394431f5c4a900937c6106d65888bd39ea9da9c76ca29b2b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: ipynb:notebook
+    authority: IPYNB-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: ipynb-valid-004
+  purpose: Write+reload notebook preserves cell count (roundtrip)
+  authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+  authority_refs:
+  - PYTHON-JSON-STDLIB -- json roundtrip
+  sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+  input_hash: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - cell_count
+  - nbformat
+  applicable_profiles:
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  - SAME_FORMAT_SERIALIZATION
+invalid_cases:
+- case_id: ipynb-invalid-001
+  purpose: JSON object missing nbformat key must raise IpynbParseError
+  defect_class: missing-required-key
+  malformed_boundary: Root JSON object lacks mandatory nbformat key
+  authority_refs:
+  - IPYNB-SPEC -- nbformat is required
+  sample_ref: samples/by-format/ipynb/invalid/missing-nbformat.ipynb
+  input_hash: sha256:4d0aac7aef4b22ff1fbdfce7c7f892745a919ccd265d3f54d87c95a85e664b3c
+  expected_failure_stage: PARSE
+  expected_error_type: IpynbParseError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is valid JSON but not a valid Jupyter notebook.
+canonicalization:
+  method: ipynb-json-model
+  description: >
+    Canonical form is a Python dict with nbformat, nbformat_minor, metadata, and cells keys.
+    Each cell is a dict with cell_type, source, metadata, and optional outputs.
+  ordering_policy: cell order preserved
+  whitespace_policy: JSON whitespace normalized by json.dumps
+  encoding_policy: UTF-8
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: none -- cell order must be preserved
+  whitespace_tolerance: JSON whitespace normalization via json.dumps
+  metadata_tolerance: metadata keys are preserved but not compared for equality
+  policy_summary: Cell count and cell types must match; metadata is informational
+comparators:
+- model-property-comparator
+- cell-count-comparator
+validators:
+- ipynb-structure-validator
+consumers:
+- tests/python/ipynb/test_ipynb_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: ipynb.ipynb_codec
+  callable: load_ipynb

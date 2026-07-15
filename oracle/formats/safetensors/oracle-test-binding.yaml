@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-safetensors-test-binding-v1
+format_id: safetensors
+oracle_package: oracle/formats/safetensors/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: safetensors.safetensors_codec
+executor_callable: load_safetensors
+bound_test_files:
+- tests/python/safetensors/test_safetensors_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-SAFETENSORS
+bound_cases:
+- case_id: safetensors-valid-001
+  bound: true
+  test_function: test_load_single_tensor
+- case_id: safetensors-valid-002
+  bound: true
+  test_function: test_load_multi_tensor
+- case_id: safetensors-valid-003
+  bound: true
+  test_function: test_safetensors_document
+- case_id: safetensors-valid-004
+  bound: true
+  test_function: test_roundtrip_multi_tensor
+- case_id: safetensors-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

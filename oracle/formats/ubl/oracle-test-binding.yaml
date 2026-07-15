@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-ubl-test-binding-v1
+format_id: ubl
+oracle_package: oracle/formats/ubl/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: ubl.ubl_codec
+executor_callable: load_ubl
+bound_test_files:
+- tests/python/ubl/test_ubl_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-UBL
+bound_cases:
+- case_id: ubl-valid-001
+  bound: true
+  test_function: test_load_minimal_invoice
+- case_id: ubl-valid-002
+  bound: true
+  test_function: test_load_multi_line_invoice
+- case_id: ubl-valid-003
+  bound: true
+  test_function: test_ubl_document
+- case_id: ubl-valid-004
+  bound: true
+  test_function: test_load_order
+- case_id: ubl-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

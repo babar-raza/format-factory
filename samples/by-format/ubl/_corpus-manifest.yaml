@@ -1,0 +1,59 @@
+format_id: ubl
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_xml
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal-invoice.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Minimal UBL 2.1 Invoice with required fields (ID, IssueDate, AccountingSupplierParty, AccountingCustomerParty, LegalMonetaryTotal). Tests baseline UBL invoice parsing."
+    structural_test: PASS
+
+  - filename: valid/multi-line-invoice.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: multi-line
+    description: "UBL Invoice with multiple InvoiceLine elements containing item descriptions and pricing. Tests line item iteration and amount extraction."
+    structural_test: PASS
+
+  - filename: valid/minimal-order.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: alternate-document-type
+    description: "Minimal UBL 2.1 Order document with required fields. Tests document type discrimination between Invoice and Order root elements."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/missing-mandatory.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-missing-mandatory-element
+    description: "UBL Invoice missing mandatory AccountingSupplierParty element. Tests required element validation."
+    expected_error: true
+    error_type: MissingMandatoryElement
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-line
+    - alternate-document-type
+    - invalid-missing-mandatory-element
+  gate_3_categories_met: true
+  awaiting_human_iv: true

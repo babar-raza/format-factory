@@ -1,0 +1,37 @@
+"""CLI entry point for the ubl codec."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+
+from ubl.ubl_codec import load_ubl, probe_ubl
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(prog="ff-ubl", description="Format Factory UBL tool")
+    sub = parser.add_subparsers(dest="command")
+
+    probe_p = sub.add_parser("probe", help="Check if a file is valid UBL")
+    probe_p.add_argument("file")
+
+    load_p = sub.add_parser("load", help="Parse and display UBL structure")
+    load_p.add_argument("file")
+
+    args = parser.parse_args(argv)
+
+    if args.command == "probe":
+        result = probe_ubl(args.file)
+        print(json.dumps({"probe": result, "file": args.file}))
+        sys.exit(0 if result else 1)
+    elif args.command == "load":
+        model = load_ubl(args.file)
+        print(json.dumps(model, indent=2))
+    else:
+        parser.print_help()
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

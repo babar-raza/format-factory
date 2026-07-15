@@ -1,0 +1,54 @@
+format_id: safetensors
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All safetensors corpus samples are project-owned synthetic, generated via Python
+# standard library (struct + json + bytes) with no third-party dependencies.
+# Safetensors format is specified at https://huggingface.co/docs/safetensors/.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: 8-byte LE header length + JSON header + raw tensor data bytes.
+# All files are fully deterministic.
+
+samples:
+  - sample_id: valid/single-tensor.safetensors
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, json, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: single float32 tensor with shape [2,3], named 'weight'"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/multi-tensor.safetensors
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, json, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: three named tensors (weight, bias, scale) with varying shapes and dtypes"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/with-metadata.safetensors
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, json, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: single tensor with __metadata__ containing format and description key-value pairs"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/bad-header-length.safetensors
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: 8-byte LE header length set to 999999, followed by truncated data"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

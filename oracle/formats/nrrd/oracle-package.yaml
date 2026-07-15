@@ -1,0 +1,172 @@
+oracle_id: oracle-nrrd-v1
+format_id: nrrd
+format_version: NRRD0005
+oracle_version: 1
+family: scientific
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: NRRD-SPEC
+    title: Nearly Raw Raster Data (NRRD) Format Specification
+    body: Teem Project
+    url: https://teem.sourceforge.net/nrrd/format.html
+    legal_category: 2
+    authority_class: SPEC_NORMATIVE
+    note: Official NRRD format specification from the Teem project defining header and data layout.
+  authorized_fact_refs:
+  - FACT-NRRD-001
+  - FACT-NRRD-002
+  - FACT-NRRD-003
+  requirement_refs: []
+  capability_refs:
+  - nrrd:header
+  - nrrd:data
+  authority_summary: >
+    NRRD is specified by the Teem project. Files start with magic line NRRD000N (version),
+    followed by key:value header pairs terminated by a blank line, followed by data payload
+    in raw, gzip, or other encodings.
+corpus_refs:
+- corpus_id: nrrd-1d-int8
+  sample_ref: samples/by-format/nrrd/valid/1d-int8.nrrd
+  sha256: sha256:584a2d207555a23bd5a7ce301ae9ad0bd7ae4a3f4883315e33a8403b8cd62c8b
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 1-dimensional int8 array with raw encoding
+- corpus_id: nrrd-2d-float32
+  sample_ref: samples/by-format/nrrd/valid/2d-float32.nrrd
+  sha256: sha256:c5215930336c999d4facb855b8a72d3ada36b37161b51ed72611a11c2b24227e
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: 2-dimensional float32 array with raw encoding
+- corpus_id: nrrd-gzip
+  sample_ref: samples/by-format/nrrd/valid/gzip-encoded.nrrd
+  sha256: sha256:2fddb67de61ab33ad6923ec8db32644be04119c8522d0e8d0a9548cf8ffc0fe2
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Gzip-compressed NRRD data payload
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib struct+gzip modules provide reference parsing
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Gzip encoding is lossless; raw encoding has no transformation
+- profile: SECURITY_ROBUSTNESS
+  reason: No entity injection surface; binary data is not interpreted as code
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: NRRD header fields are well-defined; custom fields are preserved as-is
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: Header normalization is key:value text format
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: nrrd-valid-001
+  purpose: 1D int8 NRRD file parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NRRD-SPEC -- NRRD0005 magic + header + raw data
+  sample_ref: samples/by-format/nrrd/valid/1d-int8.nrrd
+  input_hash: sha256:584a2d207555a23bd5a7ce301ae9ad0bd7ae4a3f4883315e33a8403b8cd62c8b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: dimension
+    value: 1
+    authority: NRRD-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: nrrd-valid-002
+  purpose: 2D float32 NRRD has correct dimension and type
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NRRD-SPEC -- dimension and type header fields
+  sample_ref: samples/by-format/nrrd/valid/2d-float32.nrrd
+  input_hash: sha256:c5215930336c999d4facb855b8a72d3ada36b37161b51ed72611a11c2b24227e
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: dimension
+    value: 2
+    authority: NRRD-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: nrrd-valid-003
+  purpose: NrrdDocument.spec_qname matches registered qname nrrd:header
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/nrrd.yaml -- nrrd:header entry
+  sample_ref: samples/by-format/nrrd/valid/1d-int8.nrrd
+  input_hash: sha256:584a2d207555a23bd5a7ce301ae9ad0bd7ae4a3f4883315e33a8403b8cd62c8b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: nrrd:header
+    authority: NRRD-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: nrrd-valid-004
+  purpose: Write+reload NRRD preserves header fields (roundtrip)
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - NRRD-SPEC -- header roundtrip
+  sample_ref: samples/by-format/nrrd/valid/1d-int8.nrrd
+  input_hash: sha256:584a2d207555a23bd5a7ce301ae9ad0bd7ae4a3f4883315e33a8403b8cd62c8b
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - dimension
+  - nrrd_type
+  - encoding
+  applicable_profiles:
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  - SAME_FORMAT_SERIALIZATION
+invalid_cases:
+- case_id: nrrd-invalid-001
+  purpose: File without NRRD magic must raise NrrdParseError
+  defect_class: bad-magic
+  malformed_boundary: First line does not start with NRRD0
+  authority_refs:
+  - NRRD-SPEC -- NRRD magic is mandatory
+  sample_ref: samples/by-format/nrrd/invalid/bad-magic.nrrd
+  input_hash: sha256:62c4a71cb80e4d6395f5bb86caf13c318af5d40192deae65330da00ab898be5c
+  expected_failure_stage: PARSE
+  expected_error_type: NrrdParseError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File content does not match NRRD format signature.
+canonicalization:
+  method: nrrd-header-model
+  description: >
+    Canonical form is a Python dict with version, header (key:value pairs), data_size,
+    element_count, and data_offset. Data payload is not loaded into the canonical model
+    for the header-extraction profile.
+  ordering_policy: header field order preserved
+  whitespace_policy: header values trimmed; blank line terminates header
+  encoding_policy: header is ASCII/UTF-8; data encoding per header field
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE for header extraction
+  ordering_tolerance: header field order is informational, not semantic
+  whitespace_tolerance: leading/trailing whitespace on header values trimmed
+  metadata_tolerance: unknown header fields preserved as-is
+  policy_summary: Header dimension, type, sizes, and encoding must match spec
+comparators:
+- model-property-comparator
+- header-field-comparator
+validators:
+- nrrd-magic-validator
+consumers:
+- tests/python/nrrd/test_nrrd_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: nrrd.nrrd_codec
+  callable: load_nrrd

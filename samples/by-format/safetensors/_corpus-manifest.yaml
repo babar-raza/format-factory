@@ -1,0 +1,59 @@
+format_id: safetensors
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_struct
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/single-tensor.safetensors
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Single tensor with header metadata and raw tensor data. Tests baseline safetensors structure parsing."
+    structural_test: PASS
+
+  - filename: valid/multi-tensor.safetensors
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: multi-tensor
+    description: "Multiple named tensors in a single file. Tests multi-entry header parsing and data offset calculation."
+    structural_test: PASS
+
+  - filename: valid/with-metadata.safetensors
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: metadata
+    description: "Safetensors file with __metadata__ key containing arbitrary string key-value pairs. Tests metadata extraction."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/bad-header-length.safetensors
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-header-length
+    description: "File with header length field exceeding actual file size. Tests header length validation."
+    expected_error: true
+    error_type: InvalidHeaderLength
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-tensor
+    - metadata
+    - invalid-header-length
+  gate_3_categories_met: true
+  awaiting_human_iv: true

@@ -1,0 +1,25 @@
+oracle_test_binding_id: oracle-xliff-test-binding-v1
+format_id: xliff
+oracle_package: oracle/formats/xliff/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: xliff.xliff_codec
+executor_callable: load_xliff
+bound_test_files:
+- tests/python/xliff/test_xliff_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-XLIFF
+bound_cases:
+- case_id: xliff-valid-001
+  bound: true
+  test_function: test_load_minimal
+- case_id: xliff-valid-002
+  bound: true
+  test_function: test_load_multi_unit
+- case_id: xliff-valid-003
+  bound: true
+  test_function: test_xliff_document
+- case_id: xliff-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

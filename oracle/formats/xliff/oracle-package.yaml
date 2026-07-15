@@ -1,0 +1,156 @@
+oracle_id: oracle-xliff-v1
+format_id: xliff
+format_version: XLIFF 2.1
+oracle_version: 1
+family: localization
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: XLIFF-SPEC
+    title: XLIFF Version 2.1 (OASIS Standard)
+    body: OASIS
+    url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    note: Official OASIS standard for XML Localisation Interchange File Format version 2.1.
+  authorized_fact_refs:
+  - FACT-XLIFF-001
+  - FACT-XLIFF-002
+  - FACT-XLIFF-003
+  requirement_refs: []
+  capability_refs:
+  - xliff:file
+  - xliff:unit
+  authority_summary: >
+    XLIFF is an OASIS standard for exchanging localization data. Documents use namespace
+    urn:oasis:names:tc:xliff:document:2.0 with file, unit, and segment elements containing
+    source and target translation pairs.
+corpus_refs:
+- corpus_id: xliff-minimal
+  sample_ref: samples/by-format/xliff/valid/minimal.xliff
+  sha256: sha256:04da8a74ce16130ea8a83e59eba813087ce1798c1097679861baac816310f977
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal XLIFF 2.0 file with one translation unit
+- corpus_id: xliff-multi-unit
+  sample_ref: samples/by-format/xliff/valid/multi-unit.xliff
+  sha256: sha256:bd62b62032189209f5c630f395e874ef5921baa97ba4530f91ea6553d2f97347
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: XLIFF with multiple translation units
+- corpus_id: xliff-inline-codes
+  sample_ref: samples/by-format/xliff/valid/with-inline-codes.xliff
+  sha256: sha256:ab12ef9506771bc15eaa919830ac8b2c905677f045fce029688cf1fef2af0802
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: XLIFF with inline formatting codes (pc, ph elements)
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib xml.etree is the reference parser
+- profile: LOSSLESS_TRANSFORMATION
+  reason: XML text format; no lossy compression
+- profile: SECURITY_ROBUSTNESS
+  reason: XML entity handling delegated to xml.etree with default protections
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: XLIFF schema defines valid elements; extensions via modules
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: XML normalization handled by ElementTree serialization
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: xliff-valid-001
+  purpose: Minimal XLIFF file parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC -- root xliff element with OASIS namespace
+  sample_ref: samples/by-format/xliff/valid/minimal.xliff
+  input_hash: sha256:04da8a74ce16130ea8a83e59eba813087ce1798c1097679861baac816310f977
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: unit_count
+    value_min: 1
+    authority: XLIFF-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: xliff-valid-002
+  purpose: Multi-unit XLIFF has correct unit count
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC -- unit elements within file
+  sample_ref: samples/by-format/xliff/valid/multi-unit.xliff
+  input_hash: sha256:bd62b62032189209f5c630f395e874ef5921baa97ba4530f91ea6553d2f97347
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: unit_count
+    value_min: 2
+    authority: XLIFF-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: xliff-valid-003
+  purpose: XliffDocument.spec_qname matches registered qname xliff:file
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/xliff.yaml -- xliff:file entry
+  sample_ref: samples/by-format/xliff/valid/minimal.xliff
+  input_hash: sha256:04da8a74ce16130ea8a83e59eba813087ce1798c1097679861baac816310f977
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: xliff:file
+    authority: XLIFF-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+invalid_cases:
+- case_id: xliff-invalid-001
+  purpose: XML without XLIFF namespace must raise XliffParseError
+  defect_class: missing-namespace
+  malformed_boundary: Root element lacks XLIFF namespace URI
+  authority_refs:
+  - XLIFF-SPEC -- namespace is mandatory for XLIFF identification
+  sample_ref: samples/by-format/xliff/invalid/missing-namespace.xliff
+  input_hash: sha256:4fcb1c38a83632cfac5b6a8d8ae94039c752e763433dbd7560f429cef74ace5c
+  expected_failure_stage: PARSE
+  expected_error_type: XliffParseError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is valid XML but not a valid XLIFF document.
+canonicalization:
+  method: xliff-unit-model
+  description: >
+    Canonical form is a Python dict with version, source_language, target_language,
+    and files containing units with segments (source/target pairs).
+  ordering_policy: unit order preserved within each file
+  whitespace_policy: XML whitespace normalized by ElementTree serialization
+  encoding_policy: UTF-8
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: none -- unit order within file must be preserved
+  whitespace_tolerance: XML whitespace normalization
+  metadata_tolerance: XLIFF attributes beyond source/target are preserved but not compared
+  policy_summary: Unit count and source/target text must match
+comparators:
+- model-property-comparator
+- unit-count-comparator
+validators:
+- xliff-namespace-validator
+consumers:
+- tests/python/xliff/test_xliff_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: xliff.xliff_codec
+  callable: load_xliff

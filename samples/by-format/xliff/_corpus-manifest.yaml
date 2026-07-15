@@ -1,0 +1,59 @@
+format_id: xliff
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_xml
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal.xliff
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Minimal valid XLIFF 1.2 file with a single file element containing one trans-unit. Tests baseline XLIFF structure parsing."
+    structural_test: PASS
+
+  - filename: valid/multi-unit.xliff
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: multi-unit
+    description: "XLIFF file with multiple trans-unit elements across body. Tests multi-unit iteration and source/target extraction."
+    structural_test: PASS
+
+  - filename: valid/with-inline-codes.xliff
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: inline-codes
+    description: "XLIFF file with inline elements (bpt/ept, ph, x) inside trans-unit source/target. Tests inline code preservation."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/missing-namespace.xliff
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-missing-namespace
+    description: "XML file with xliff root element but missing the required XLIFF namespace declaration. Tests namespace validation."
+    expected_error: true
+    error_type: MissingNamespace
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-unit
+    - inline-codes
+    - invalid-missing-namespace
+  gate_3_categories_met: true
+  awaiting_human_iv: true

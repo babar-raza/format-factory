@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-ipynb-test-binding-v1
+format_id: ipynb
+oracle_package: oracle/formats/ipynb/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: ipynb.ipynb_codec
+executor_callable: load_ipynb
+bound_test_files:
+- tests/python/ipynb/test_ipynb_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-IPYNB
+bound_cases:
+- case_id: ipynb-valid-001
+  bound: true
+  test_function: test_load_minimal
+- case_id: ipynb-valid-002
+  bound: true
+  test_function: test_load_code_and_markdown
+- case_id: ipynb-valid-003
+  bound: true
+  test_function: test_ipynb_document
+- case_id: ipynb-valid-004
+  bound: true
+  test_function: test_roundtrip_code_and_markdown
+- case_id: ipynb-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

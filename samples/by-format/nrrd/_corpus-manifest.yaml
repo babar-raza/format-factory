@@ -1,0 +1,59 @@
+format_id: nrrd
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_struct
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/1d-int8.nrrd
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Minimal 1D array of int8 values with raw encoding. Tests baseline NRRD header parsing and 1D data extraction."
+    structural_test: PASS
+
+  - filename: valid/2d-float32.nrrd
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: multi-dimensional
+    description: "2D float32 array with sizes and spacings. Tests multi-dimensional field parsing and float data interpretation."
+    structural_test: PASS
+
+  - filename: valid/gzip-encoded.nrrd
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: compressed-encoding
+    description: "NRRD file with gzip-compressed data payload. Tests encoding field detection and gzip decompression path."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/bad-magic.nrrd
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-magic
+    description: "File missing the required 'NRRD' magic line at start. Tests magic line validation in parser."
+    expected_error: true
+    error_type: InvalidMagic
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-dimensional
+    - compressed-encoding
+    - invalid-magic
+  gate_3_categories_met: true
+  awaiting_human_iv: true

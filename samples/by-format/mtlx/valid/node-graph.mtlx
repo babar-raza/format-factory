@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<materialx version="1.39"><nodegraph name="my_graph"><node name="noise" type="float" node="fractal3d"><input name="amplitude" type="float" value="1.0" /></node><node name="color_mix" type="color3" node="mix"><input name="mix" type="float" nodename="noise" /></node><output name="out" type="color3" nodename="color_mix" /></nodegraph></materialx>

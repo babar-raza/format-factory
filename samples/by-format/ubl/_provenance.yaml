@@ -1,0 +1,54 @@
+format_id: ubl
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All UBL corpus samples are project-owned synthetic, generated via Python
+# standard library (xml.etree.ElementTree) with no third-party dependencies.
+# UBL 2.1 is specified at https://docs.oasis-open.org/ubl/os-UBL-2.1/.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: UTF-8 XML with urn:oasis:names:specification:ubl:schema:xsd namespace.
+# All files are fully deterministic.
+
+samples:
+  - sample_id: valid/minimal-invoice.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: UBL 2.1 Invoice with ID, IssueDate, supplier/customer parties, and LegalMonetaryTotal"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/multi-line-invoice.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: UBL Invoice with three InvoiceLine elements, each with Item and Price sub-elements"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/minimal-order.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: UBL 2.1 Order with ID, IssueDate, BuyerCustomerParty, SellerSupplierParty, and OrderLine"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/missing-mandatory.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: UBL Invoice with ID and IssueDate but missing AccountingSupplierParty"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

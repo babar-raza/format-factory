@@ -1,0 +1,175 @@
+oracle_id: oracle-ubl-v1
+format_id: ubl
+format_version: UBL 2.3
+oracle_version: 1
+family: business
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: UBL-SPEC
+    title: Universal Business Language Version 2.3 (OASIS Standard)
+    body: OASIS
+    url: https://docs.oasis-open.org/ubl/UBL-2.3.html
+    legal_category: 1
+    authority_class: SPEC_NORMATIVE
+    note: Official OASIS standard for Universal Business Language defining Invoice, Order, and other business document types.
+  authorized_fact_refs:
+  - FACT-UBL-001
+  - FACT-UBL-002
+  - FACT-UBL-003
+  requirement_refs: []
+  capability_refs:
+  - ubl:invoice
+  - ubl:order
+  authority_summary: >
+    UBL is an OASIS standard for business documents. Document types (Invoice, Order, CreditNote)
+    are identified by root namespace URI. Mandatory elements include cbc:ID, cbc:IssueDate,
+    party information, and line items. CBC and CAC use separate OASIS namespaces.
+corpus_refs:
+- corpus_id: ubl-minimal-invoice
+  sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
+  sha256: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal UBL Invoice with one line item
+- corpus_id: ubl-multi-line
+  sample_ref: samples/by-format/ubl/valid/multi-line-invoice.xml
+  sha256: sha256:661ce10da7edafca4176b85a6310d94aa13e359a4d456a388fa44857fb4bc0fa
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: UBL Invoice with multiple InvoiceLine items
+- corpus_id: ubl-order
+  sample_ref: samples/by-format/ubl/valid/minimal-order.xml
+  sha256: sha256:f653ae39dbf4894605ddbd6f8e9b583f668a591352dccaed31832053c3229a1c
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal UBL Order document
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib xml.etree is the reference parser
+- profile: LOSSLESS_TRANSFORMATION
+  reason: XML text format; no lossy compression
+- profile: SECURITY_ROBUSTNESS
+  reason: XML entity handling delegated to xml.etree; html.escape used for output
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: UBL schema defines valid elements; extensions via Extension element
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: XML normalization handled by ElementTree serialization
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: ubl-valid-001
+  purpose: Minimal UBL Invoice parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - UBL-SPEC -- Invoice namespace and mandatory fields
+  sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
+  input_hash: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: document_type
+    value: Invoice
+    authority: UBL-SPEC
+  - property: line_count
+    value_min: 1
+    authority: UBL-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: ubl-valid-002
+  purpose: Multi-line Invoice has correct line count
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - UBL-SPEC -- InvoiceLine elements
+  sample_ref: samples/by-format/ubl/valid/multi-line-invoice.xml
+  input_hash: sha256:661ce10da7edafca4176b85a6310d94aa13e359a4d456a388fa44857fb4bc0fa
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: line_count
+    value_min: 2
+    authority: UBL-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: ubl-valid-003
+  purpose: UblDocument.spec_qname matches registered qname ubl:invoice
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/ubl.yaml -- ubl:invoice entry
+  sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
+  input_hash: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: ubl:invoice
+    authority: UBL-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: ubl-valid-004
+  purpose: UBL Order document parses with correct document type
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - UBL-SPEC -- Order namespace
+  sample_ref: samples/by-format/ubl/valid/minimal-order.xml
+  input_hash: sha256:f653ae39dbf4894605ddbd6f8e9b583f668a591352dccaed31832053c3229a1c
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: document_type
+    value: Order
+    authority: UBL-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+invalid_cases:
+- case_id: ubl-invalid-001
+  purpose: XML without UBL namespace must raise UblParseError
+  defect_class: missing-namespace
+  malformed_boundary: Root element lacks UBL namespace URI
+  authority_refs:
+  - UBL-SPEC -- UBL namespace is mandatory for document identification
+  sample_ref: samples/by-format/ubl/invalid/missing-mandatory.xml
+  input_hash: sha256:5e7af27b318238d0dffc332cd619556df0f09bac615c9e9cb077a307d623d6bb
+  expected_failure_stage: PARSE
+  expected_error_type: UblParseError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is valid XML with UBL namespace but missing mandatory business fields.
+canonicalization:
+  method: ubl-document-model
+  description: >
+    Canonical form is a Python dict with document_type, ubl_version, doc_id, issue_date,
+    and lines (list of line items). Party information and currency are extracted from
+    their respective UBL namespace elements.
+  ordering_policy: line item order preserved
+  whitespace_policy: XML whitespace normalized by ElementTree; text values trimmed
+  encoding_policy: UTF-8
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE for document structure
+  ordering_tolerance: none -- line item order must be preserved
+  whitespace_tolerance: XML whitespace normalization
+  metadata_tolerance: UBL extension elements are preserved but not compared
+  policy_summary: Document type, ID, line count, and party names must match
+comparators:
+- model-property-comparator
+- line-count-comparator
+validators:
+- ubl-namespace-validator
+consumers:
+- tests/python/ubl/test_ubl_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: ubl.ubl_codec
+  callable: load_ubl

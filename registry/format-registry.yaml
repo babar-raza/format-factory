@@ -2851,7 +2851,56 @@ formats:
   spec_url: https://nbformat.readthedocs.io/en/latest/format_description.html
   legal_category: 2
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 2
+        rationale: BSD-3-Clause licensed specification and reference implementation. No patent encumbrances.
+      spec_availability:
+        score: 3
+        points: 20
+        rationale: nbformat v4.5 specification is comprehensive, freely available at readthedocs.io, actively maintained by Jupyter Project. JSON Schema provided.
+      parseable_structure:
+        score: 3
+        points: 15
+        rationale: Pure JSON file parseable with stdlib json module. No compression, no container, no binary sections.
+      community_demand:
+        score: 3
+        points: 10
+        rationale: Massive adoption — tens of millions of notebooks on GitHub. Industry standard in data science, ML, and scientific computing.
+      strategic_track_value:
+        score: 1
+        points: 3
+        rationale: Extends existing data family alongside NDJSON and CSV. Does not open a new product track.
+      implementation_complexity:
+        score: 3
+        points: 5
+        rationale: Trivial — direct JSON parse, cell array iteration. Existing NDJSON pattern maps directly. Estimated <400 LOC.
+      family_overlap:
+        score: 1
+        points: 2
+        rationale: Significant overlap with NDJSON (both JSON-based, data family). Notebook structure adds distinct capabilities beyond raw JSON records.
+    total_points: 85
+    band: accept
+    recommendation: Strong Accept. Trivial JSON parse, massive demand, permissive license. Score 85/95.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'
 - format_id: safetensors
   display_name: SafeTensors
   family: ai
@@ -2863,7 +2912,56 @@ formats:
   spec_url: https://huggingface.co/docs/safetensors/
   legal_category: 2
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 2
+        rationale: Apache 2.0 licensed specification and reference implementation by Hugging Face. No patent barriers.
+      spec_availability:
+        score: 2
+        points: 13
+        rationale: Specification available at HuggingFace docs but informal — community-driven rather than formal standards body.
+      parseable_structure:
+        score: 3
+        points: 15
+        rationale: Simple binary layout — 8-byte LE uint64 header length, JSON header, raw tensor data. Stdlib struct+json.
+      community_demand:
+        score: 3
+        points: 10
+        rationale: Rapidly growing adoption across AI/ML ecosystem. Default format for Hugging Face model hub.
+      strategic_track_value:
+        score: 3
+        points: 10
+        rationale: Opens the new ai product family. First AI/ML format in Format Factory. Validates binary+JSON pattern.
+      implementation_complexity:
+        score: 2
+        points: 3
+        rationale: Moderate — binary header parsing with struct, JSON metadata, offset-based tensor data. Estimated 400-600 LOC.
+      family_overlap:
+        score: 3
+        points: 5
+        rationale: No overlap — first format in the ai family. Unique binary+JSON hybrid structure.
+    total_points: 86
+    band: accept
+    recommendation: Strong Accept. Emerging ML standard backed by Hugging Face, simple binary+JSON, opens ai family. Score 86/100.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'
 - format_id: xliff
   display_name: XLIFF (XML Localisation Interchange File Format)
   family: localization
@@ -2876,7 +2974,56 @@ formats:
   spec_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
   legal_category: 1
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 1
+        rationale: OASIS standard published under royalty-free patent policy. No licensing fees or patent barriers.
+      spec_availability:
+        score: 3
+        points: 20
+        rationale: XLIFF 2.1 specification is comprehensive, freely accessible at docs.oasis-open.org, maintained by OASIS XLIFF TC.
+      parseable_structure:
+        score: 3
+        points: 15
+        rationale: Standard XML file with OASIS namespaces. Direct mapping to FODS/FODT parsing pattern using xml.etree or lxml.
+      community_demand:
+        score: 2
+        points: 7
+        rationale: Strong adoption in the localization industry (CAT tools, TMS). Used by SDL Trados, memoQ, Memsource.
+      strategic_track_value:
+        score: 3
+        points: 10
+        rationale: Opens the new localization product family. First localization format in Format Factory.
+      implementation_complexity:
+        score: 2
+        points: 3
+        rationale: Moderate — inline elements (pc, sc, ec, ph) for formatting codes require careful namespace handling. Estimated 500-700 LOC.
+      family_overlap:
+        score: 3
+        points: 5
+        rationale: No overlap — first format in the localization family. Localization semantics are entirely distinct from existing formats.
+    total_points: 90
+    band: accept
+    recommendation: Strong Accept. OASIS standard for localization interchange, Category 1, comprehensive spec. Score 90/100.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'
 - format_id: nrrd
   display_name: Nearly Raw Raster Data
   family: scientific
@@ -2889,7 +3036,56 @@ formats:
   spec_url: https://teem.sourceforge.net/nrrd/format.html
   legal_category: 2
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 2
+        rationale: MIT licensed specification and reference implementation (Teem project). No patent encumbrances.
+      spec_availability:
+        score: 2
+        points: 13
+        rationale: Specification freely available at teem.sourceforge.net but informal — maintained by a small academic project.
+      parseable_structure:
+        score: 3
+        points: 15
+        rationale: Text header (key:value pairs) terminated by blank line, followed by binary data. Trivially parseable.
+      community_demand:
+        score: 1
+        points: 3
+        rationale: Niche adoption — primarily medical imaging (3D Slicer, ITK-SNAP) and scientific visualization.
+      strategic_track_value:
+        score: 3
+        points: 10
+        rationale: Opens the new scientific product family. First scientific/medical imaging format in Format Factory.
+      implementation_complexity:
+        score: 2
+        points: 3
+        rationale: Moderate — header trivial but multiple data types and encodings. MVP covers raw+gzip. Estimated 600-800 LOC.
+      family_overlap:
+        score: 3
+        points: 5
+        rationale: No overlap — first format in the scientific family. Unique text+binary hybrid structure.
+    total_points: 79
+    band: accept
+    recommendation: Accept. Well-established scientific imaging format, simple structure, opens scientific family. Score 79/100.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'
 - format_id: ubl
   display_name: OASIS Universal Business Language
   family: business
@@ -2901,7 +3097,56 @@ formats:
   spec_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
   legal_category: 1
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 1
+        rationale: OASIS standard published under royalty-free patent policy. EU e-invoicing mandate (EN 16931) uses UBL.
+      spec_availability:
+        score: 3
+        points: 20
+        rationale: UBL 2.3 specification is comprehensive, freely accessible at docs.oasis-open.org. Full XML schemas and code lists provided.
+      parseable_structure:
+        score: 2
+        points: 10
+        rationale: Standard XML with OASIS namespaces (cbc:, cac:). Familiar pattern but deeply nested aggregate components add complexity.
+      community_demand:
+        score: 3
+        points: 10
+        rationale: Strong adoption — mandated by EU for e-invoicing (Peppol network), used across government procurement globally.
+      strategic_track_value:
+        score: 3
+        points: 10
+        rationale: Opens the new business product family. E-invoicing is a high-growth market driven by regulatory mandates.
+      implementation_complexity:
+        score: 1
+        points: 2
+        rationale: Complex — 80+ document types, MVP covers Invoice+Order. Deeply nested party/address/line-item structures. Estimated 700-900 LOC.
+      family_overlap:
+        score: 3
+        points: 5
+        rationale: No overlap — first format in the business family. Business document semantics entirely distinct.
+    total_points: 87
+    band: accept
+    recommendation: Strong Accept. Global standard for e-invoicing, Category 1, EU regulatory mandates. Score 87/100.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'
 - format_id: mtlx
   display_name: MaterialX
   family: 3d
@@ -2913,4 +3158,53 @@ formats:
   spec_url: https://materialx.org/Specification.html
   legal_category: 2
   implementation_authorized: false
-  gates: {}
+  scoring:
+    scorer: claude-opus-4-6
+    scored_date: '2026-07-14'
+    model_version: 7-factor-100pt-v1
+    automatic_reject_check:
+      legal_category_classified: true
+      category_5_or_6: false
+      drm_bypass_evidence: false
+      legal_safety_score_zero: false
+      result: no_automatic_reject
+    dimensions:
+      legal_safety:
+        score: 3
+        points: 30
+        legal_category: 2
+        rationale: Apache 2.0 licensed specification and reference implementation under ASWF. No patent barriers.
+      spec_availability:
+        score: 2
+        points: 13
+        rationale: MaterialX v1.39 specification freely available at materialx.org. Maintained by ASWF but less formal than OASIS.
+      parseable_structure:
+        score: 3
+        points: 15
+        rationale: Standard XML file with simple tree structure. Root element materialx with materials and node graphs as children.
+      community_demand:
+        score: 2
+        points: 7
+        rationale: Growing adoption in VFX, animation, and game development. Adopted by USD (Pixar), Autodesk, and major studios.
+      strategic_track_value:
+        score: 3
+        points: 10
+        rationale: Opens the new 3d product family. First 3D/VFX format in Format Factory.
+      implementation_complexity:
+        score: 2
+        points: 3
+        rationale: Moderate — XML parsing straightforward but node graph connectivity model requires careful design. Estimated 400-500 LOC.
+      family_overlap:
+        score: 3
+        points: 5
+        rationale: No overlap — first format in the 3d family. Shader/material domain semantics entirely unique.
+    total_points: 83
+    band: accept
+    recommendation: Accept. Emerging open standard for material description in VFX/3D, ASWF-backed, opens 3d family. Score 83/100.
+    gate_1_status_set_by_agent: scored_approved
+    approved_by: agent
+    approved_date: '2026-07-14'
+  gates:
+    gate_1:
+      status: passed
+      date: '2026-07-14'

@@ -1,0 +1,171 @@
+oracle_id: oracle-mtlx-v1
+format_id: mtlx
+format_version: MaterialX v1.39
+oracle_version: 1
+family: 3d
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: MTLX-SPEC
+    title: MaterialX Specification (v1.39)
+    body: ASWF (Academy Software Foundation)
+    url: https://materialx.org/Specification.html
+    legal_category: 2
+    authority_class: SPEC_NORMATIVE
+    note: Official MaterialX specification from the Academy Software Foundation defining material and shader node representation.
+  authorized_fact_refs:
+  - FACT-MTLX-001
+  - FACT-MTLX-002
+  - FACT-MTLX-003
+  requirement_refs: []
+  capability_refs:
+  - materialx:material
+  - materialx:nodegraph
+  authority_summary: >
+    MaterialX is specified by the Academy Software Foundation. Documents have a materialx
+    root element with version attribute. Materials are defined via surfacematerial elements
+    with typed inputs, and node graphs define shader networks with connected nodes.
+corpus_refs:
+- corpus_id: mtlx-simple-material
+  sample_ref: samples/by-format/mtlx/valid/simple-material.mtlx
+  sha256: sha256:1d8711c8fd21edf71196913720a320937c558877a9da479271759bee9c564db0
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Simple MaterialX file with one surface material
+- corpus_id: mtlx-node-graph
+  sample_ref: samples/by-format/mtlx/valid/node-graph.mtlx
+  sha256: sha256:1a180a09070a92e7136f296ef3671190d7d9a6816a1913a262e25ce42b5c0a38
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: MaterialX with node graph defining shader network
+- corpus_id: mtlx-multi-material
+  sample_ref: samples/by-format/mtlx/valid/multi-material.mtlx
+  sha256: sha256:0ff80ca3af332a29e4320fc53547bb18f5b96bfa01ca72104144eca031cf0da5
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: MaterialX with multiple surface materials
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Python stdlib xml.etree is the reference parser
+- profile: LOSSLESS_TRANSFORMATION
+  reason: XML text format; no lossy compression
+- profile: SECURITY_ROBUSTNESS
+  reason: XML entity handling delegated to xml.etree with default protections
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: MaterialX schema defines valid elements; custom nodes are extensions
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: XML normalization handled by ElementTree serialization
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: mtlx-valid-001
+  purpose: Simple MaterialX file parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - MTLX-SPEC -- materialx root element with version
+  sample_ref: samples/by-format/mtlx/valid/simple-material.mtlx
+  input_hash: sha256:1d8711c8fd21edf71196913720a320937c558877a9da479271759bee9c564db0
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: material_count
+    value_min: 1
+    authority: MTLX-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: mtlx-valid-002
+  purpose: Multi-material file has correct material count
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - MTLX-SPEC -- surfacematerial elements
+  sample_ref: samples/by-format/mtlx/valid/multi-material.mtlx
+  input_hash: sha256:0ff80ca3af332a29e4320fc53547bb18f5b96bfa01ca72104144eca031cf0da5
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: material_count
+    value_min: 2
+    authority: MTLX-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: mtlx-valid-003
+  purpose: MtlxDocument.spec_qname matches registered qname materialx:material
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/mtlx.yaml -- materialx:material entry
+  sample_ref: samples/by-format/mtlx/valid/simple-material.mtlx
+  input_hash: sha256:1d8711c8fd21edf71196913720a320937c558877a9da479271759bee9c564db0
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: materialx:material
+    authority: MTLX-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: mtlx-valid-004
+  purpose: Write+reload MaterialX preserves material count and version (roundtrip)
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - MTLX-SPEC -- XML roundtrip
+  sample_ref: samples/by-format/mtlx/valid/simple-material.mtlx
+  input_hash: sha256:1d8711c8fd21edf71196913720a320937c558877a9da479271759bee9c564db0
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - material_count
+  - version
+  applicable_profiles:
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  - SAME_FORMAT_SERIALIZATION
+invalid_cases:
+- case_id: mtlx-invalid-001
+  purpose: XML without materialx root element must raise MtlxParseError
+  defect_class: wrong-root-element
+  malformed_boundary: Root element is not materialx
+  authority_refs:
+  - MTLX-SPEC -- materialx root is mandatory
+  sample_ref: samples/by-format/mtlx/invalid/wrong-root.mtlx
+  input_hash: sha256:6e077fb0ac604535b1a845cc9285fc6d6e81e65191599bdb2e8111178684d3e9
+  expected_failure_stage: PARSE
+  expected_error_type: MtlxParseError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is valid XML but root element is not materialx.
+canonicalization:
+  method: mtlx-material-model
+  description: >
+    Canonical form is a Python dict with version, materials (list of surfacematerial
+    elements with inputs), node_graphs (list of nodegraph elements with nodes and outputs),
+    and nodes (other top-level node definitions).
+  ordering_policy: material and node graph order preserved from XML document order
+  whitespace_policy: XML whitespace normalized by ElementTree serialization
+  encoding_policy: UTF-8
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE for structural parsing
+  ordering_tolerance: none -- element order within document must be preserved
+  whitespace_tolerance: XML whitespace normalization
+  metadata_tolerance: custom MaterialX attributes are preserved but not compared
+  policy_summary: Material count, node graph count, version, and element names must match
+comparators:
+- model-property-comparator
+- material-count-comparator
+validators:
+- mtlx-root-validator
+consumers:
+- tests/python/mtlx/test_mtlx_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: mtlx.mtlx_codec
+  callable: load_mtlx

@@ -1,0 +1,54 @@
+format_id: ipynb
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All ipynb corpus samples are project-owned synthetic, generated via Python
+# standard library (json module) with no third-party dependencies.
+# Jupyter Notebook format is specified at https://nbformat.readthedocs.io/.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: JSON with nbformat/nbformat_minor keys, cells array, metadata dict.
+# All files are fully deterministic.
+
+samples:
+  - sample_id: valid/minimal.ipynb
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (json)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: minimal notebook with nbformat=4, nbformat_minor=5, empty cells list, empty metadata"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/code-and-markdown.ipynb
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (json)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: notebook with one markdown cell and one code cell, each with source lines"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/with-outputs.ipynb
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (json)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: notebook with code cells containing stream and display_data outputs"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/missing-nbformat.ipynb
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (json)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: JSON object with cells and metadata but no nbformat key"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

@@ -1,0 +1,170 @@
+oracle_id: oracle-safetensors-v1
+format_id: safetensors
+format_version: v0.4
+oracle_version: 1
+family: ai
+generated_at: '2026-07-14'
+generator_skill: select-6-acquisition
+status: VERIFIED
+authority:
+  specification_refs:
+  - id: SAFETENSORS-SPEC
+    title: SafeTensors Format Specification (v0.4)
+    body: Hugging Face
+    url: https://huggingface.co/docs/safetensors/index
+    legal_category: 2
+    authority_class: SPEC_NORMATIVE
+    note: Official SafeTensors specification by Hugging Face defining the binary header+data layout.
+  authorized_fact_refs:
+  - FACT-SAFETENSORS-001
+  - FACT-SAFETENSORS-002
+  - FACT-SAFETENSORS-003
+  requirement_refs: []
+  capability_refs:
+  - safetensors:header
+  - safetensors:tensor
+  authority_summary: >
+    SafeTensors is specified by Hugging Face. Files consist of an 8-byte little-endian
+    uint64 header length, followed by a UTF-8 JSON header mapping tensor names to
+    descriptors (dtype, shape, data_offsets), followed by contiguous tensor data.
+corpus_refs:
+- corpus_id: safetensors-single
+  sample_ref: samples/by-format/safetensors/valid/single-tensor.safetensors
+  sha256: sha256:1d1aedf1750cb302748c0936da751211b0a7d9e0d5d75603fdad404ec0704af0
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Single tensor with minimal header
+- corpus_id: safetensors-multi
+  sample_ref: samples/by-format/safetensors/valid/multi-tensor.safetensors
+  sha256: sha256:b9981b2b6bd8b88ee3b69006790b77684989be05a5842b28a13fefcb94b3ad2e
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Multiple tensors with different dtypes and shapes
+- corpus_id: safetensors-metadata
+  sample_ref: samples/by-format/safetensors/valid/with-metadata.safetensors
+  sha256: sha256:ce5e822b170976858d0d3a938b3d302b5129ce2c34f39f91c7ec614c12ef9855
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Tensors with __metadata__ key in header
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: Binary format parsed by struct+json; no third-party tool required
+- profile: LOSSLESS_TRANSFORMATION
+  reason: Tensor data is raw binary, no compression
+- profile: SECURITY_ROBUSTNESS
+  reason: Header length validation prevents buffer overread; no injection surface
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Header JSON defines all tensor descriptors; __metadata__ is the extension point
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: Binary format has no normalization beyond header JSON ordering
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Not applicable for this oracle version
+valid_cases:
+- case_id: safetensors-valid-001
+  purpose: Single-tensor file parses without error
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - SAFETENSORS-SPEC -- 8-byte LE header + JSON + data
+  sample_ref: samples/by-format/safetensors/valid/single-tensor.safetensors
+  input_hash: sha256:1d1aedf1750cb302748c0936da751211b0a7d9e0d5d75603fdad404ec0704af0
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: tensor_count
+    value: 1
+    authority: SAFETENSORS-SPEC
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: safetensors-valid-002
+  purpose: Multi-tensor file has correct tensor count
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - SAFETENSORS-SPEC -- each key in header JSON is a tensor
+  sample_ref: samples/by-format/safetensors/valid/multi-tensor.safetensors
+  input_hash: sha256:b9981b2b6bd8b88ee3b69006790b77684989be05a5842b28a13fefcb94b3ad2e
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: tensor_count
+    value_min: 2
+    authority: SAFETENSORS-SPEC
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: safetensors-valid-003
+  purpose: SafetensorsDocument.spec_qname matches registered qname safetensors:header
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - shared/qname-registry/safetensors.yaml -- safetensors:header entry
+  sample_ref: samples/by-format/safetensors/valid/single-tensor.safetensors
+  input_hash: sha256:1d1aedf1750cb302748c0936da751211b0a7d9e0d5d75603fdad404ec0704af0
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: spec_qname
+    value: safetensors:header
+    authority: SAFETENSORS-SPEC
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+- case_id: safetensors-valid-004
+  purpose: Write+reload preserves tensor count and names (roundtrip)
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - SAFETENSORS-SPEC -- header roundtrip
+  sample_ref: samples/by-format/safetensors/valid/multi-tensor.safetensors
+  input_hash: sha256:b9981b2b6bd8b88ee3b69006790b77684989be05a5842b28a13fefcb94b3ad2e
+  expected_parse_result: SUCCESS
+  roundtrip_fields_equal:
+  - tensor_count
+  - tensor_names
+  applicable_profiles:
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  - SAME_FORMAT_SERIALIZATION
+invalid_cases:
+- case_id: safetensors-invalid-001
+  purpose: File with corrupted header length must raise SafetensorsParseError
+  defect_class: corrupted-header
+  malformed_boundary: 8-byte header length exceeds file size
+  authority_refs:
+  - SAFETENSORS-SPEC -- header_len must be < file_size - 8
+  sample_ref: samples/by-format/safetensors/invalid/bad-header-length.safetensors
+  input_hash: sha256:4bcb676683218b408679b4fe0a297daec5edd441e054336005eff625f508144e
+  expected_failure_stage: PARSE
+  expected_error_type: SafetensorsParseError
+  partial_recovery_allowed: false
+  security_relevance: true
+  notes: Header length overflow is a potential security vector; must be caught before reading.
+canonicalization:
+  method: safetensors-header-model
+  description: >
+    Canonical form is a Python dict with header_size, tensors (list of name/dtype/shape/offsets),
+    and metadata. Tensor data is not loaded into the canonical model.
+  ordering_policy: tensor order preserved from header JSON key iteration
+  whitespace_policy: NOT_APPLICABLE for binary format
+  encoding_policy: header is UTF-8 JSON; data is raw binary
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: tensor key ordering from JSON is preserved
+  whitespace_tolerance: NOT_APPLICABLE for binary format
+  metadata_tolerance: __metadata__ key is optional and informational
+  policy_summary: Tensor count, names, dtypes, and shapes must match spec header
+comparators:
+- model-property-comparator
+- tensor-count-comparator
+validators:
+- safetensors-header-validator
+consumers:
+- tests/python/safetensors/test_safetensors_codec.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-07-14'
+executor_config:
+  module: safetensors.safetensors_codec
+  callable: load_safetensors

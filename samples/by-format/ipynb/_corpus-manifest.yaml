@@ -1,0 +1,59 @@
+format_id: ipynb
+corpus_version: "1.0"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+acquisition_date: "2026-07-14"
+generation_method: deterministic_synthetic_python_json
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal.ipynb
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: minimal-valid
+    description: "Minimal valid Jupyter notebook with nbformat 4, empty cells list. Tests baseline notebook structure parsing."
+    structural_test: PASS
+
+  - filename: valid/code-and-markdown.ipynb
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: mixed-cell-types
+    description: "Notebook with both code and markdown cells. Tests cell type discrimination and source extraction."
+    structural_test: PASS
+
+  - filename: valid/with-outputs.ipynb
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: cell-outputs
+    description: "Notebook with code cells containing execution outputs. Tests output parsing including stream and display_data types."
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/missing-nbformat.ipynb
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: invalid-missing-required-field
+    description: "JSON object missing the required 'nbformat' key. Tests mandatory field validation in parser."
+    expected_error: true
+    error_type: MissingRequiredField
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - mixed-cell-types
+    - cell-outputs
+    - invalid-missing-required-field
+  gate_3_categories_met: true
+  awaiting_human_iv: true

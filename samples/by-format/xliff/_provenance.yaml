@@ -1,0 +1,54 @@
+format_id: xliff
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All XLIFF corpus samples are project-owned synthetic, generated via Python
+# standard library (xml.etree.ElementTree) with no third-party dependencies.
+# XLIFF 1.2 is specified at https://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: UTF-8 XML with urn:oasis:names:tc:xliff:document:1.2 namespace.
+# All files are fully deterministic.
+
+samples:
+  - sample_id: valid/minimal.xliff
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: single file element with one trans-unit containing source and target strings"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/multi-unit.xliff
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: file element with three trans-units, each with distinct source/target text"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/with-inline-codes.xliff
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: trans-unit with bpt/ept paired tags and ph placeholder elements in source"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/missing-namespace.xliff
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: xliff root element without xmlns namespace attribute"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

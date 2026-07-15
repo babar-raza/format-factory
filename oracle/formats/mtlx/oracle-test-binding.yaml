@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-mtlx-test-binding-v1
+format_id: mtlx
+oracle_package: oracle/formats/mtlx/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: mtlx.mtlx_codec
+executor_callable: load_mtlx
+bound_test_files:
+- tests/python/mtlx/test_mtlx_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-MTLX
+bound_cases:
+- case_id: mtlx-valid-001
+  bound: true
+  test_function: test_load_simple_material
+- case_id: mtlx-valid-002
+  bound: true
+  test_function: test_load_multi_material
+- case_id: mtlx-valid-003
+  bound: true
+  test_function: test_mtlx_document
+- case_id: mtlx-valid-004
+  bound: true
+  test_function: test_roundtrip_simple_material
+- case_id: mtlx-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

@@ -1,0 +1,88 @@
+# Acquisition Pack — safetensors (SafeTensors)
+
+---
+artifact_id: safetensors-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/safetensors/pack.yaml
+format_id: safetensors
+product_family: ai
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude
+generated_at: 2026-07-14T00:00:00Z
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: null
+
+# --- Format identity ---
+format_id: safetensors
+display_name: SafeTensors
+family: ai
+extensions:
+  - .safetensors
+mime_type: application/octet-stream
+spec_body: Hugging Face
+spec_version: v0.4
+spec_url: https://huggingface.co/docs/safetensors/
+spec_accessed_date: 2026-07-14
+source_hash: null
+
+# --- Legal classification ---
+legal_category: 2
+legal_category_name: Permissive OSS
+fast_path_eligible: true
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: 86
+  band: accept
+  gate_1_approved_by: agent
+  gate_1_approved_date: 2026-07-14
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: in_progress
+    artifact: acquisition-packs/safetensors/spec-evidence.md
+    gate: 2
+  legal_notes:
+    status: in_progress
+    artifact: acquisition-packs/safetensors/legal-notes.md
+    gate: 2
+  sample_sources:
+    status: not_started
+    artifact: acquisition-packs/safetensors/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: not_started
+    artifact: acquisition-packs/safetensors/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+  tier_map:
+    status: not_started
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- R12 Acquisition Governance Fields ---
+acquisition_risk_classification: LOW
+oracle_classification: NOT_ASSESSED
+spec_normalization_status: NOT_STARTED
+
+# --- Notes ---
+notes: null

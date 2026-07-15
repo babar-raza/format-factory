@@ -1,0 +1,54 @@
+format_id: mtlx
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All MaterialX corpus samples are project-owned synthetic, generated via Python
+# standard library (xml.etree.ElementTree) with no third-party dependencies.
+# MaterialX format is specified at https://materialx.org/Specification.html.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: UTF-8 XML with materialx root element and version attribute.
+# All files are fully deterministic.
+
+samples:
+  - sample_id: valid/simple-material.mtlx
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: materialx root with one surfacematerial node referencing a standard_surface shader"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/node-graph.mtlx
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: materialx root with nodegraph containing image, multiply, and standard_surface nodes with connections"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/multi-material.mtlx
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: materialx root with three surfacematerial definitions sharing a common nodegraph"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/wrong-root.mtlx
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: XML with 'notmaterialx' root element instead of 'materialx'"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

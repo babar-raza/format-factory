@@ -1,0 +1,54 @@
+format_id: nrrd
+provenance_version: "1.0"
+provenance_date: "2026-07-14"
+acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+commercial_product_ready: false
+
+# All NRRD corpus samples are project-owned synthetic, generated via Python
+# standard library (struct + gzip + bytes) with no third-party dependencies.
+# NRRD format is specified at http://teem.sourceforge.net/nrrd/format.html.
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: ASCII header lines terminated by blank line, followed by raw or
+# gzip-compressed binary data. All files are fully deterministic.
+
+samples:
+  - sample_id: valid/1d-int8.nrrd
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: 1D array of 8 int8 values [0..7], raw encoding, little-endian"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/2d-float32.nrrd
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: 2D float32 array with sizes 3x4, spacings 1.0x1.0, raw encoding"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/gzip-encoded.nrrd
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (struct, gzip, bytes)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: 1D int16 array with gzip encoding, data compressed via gzip module"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: invalid/bad-magic.nrrd
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (open/write)"
+    generation_script: ".local/gen_samples.py"
+    generation_date: "2026-07-14"
+    input_content: "Programmatic: file starting with 'INVALID' instead of 'NRRD0004' magic line"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true

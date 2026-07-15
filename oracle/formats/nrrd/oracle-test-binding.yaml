@@ -1,0 +1,28 @@
+oracle_test_binding_id: oracle-nrrd-test-binding-v1
+format_id: nrrd
+oracle_package: oracle/formats/nrrd/oracle-package.yaml
+binding_type: oracle_adapter
+executor_module: nrrd.nrrd_codec
+executor_callable: load_nrrd
+bound_test_files:
+- tests/python/nrrd/test_nrrd_codec.py
+generated_at: '2026-07-14'
+mission_id: select-6-acquisition
+taskcard: TC-ORACLE-NRRD
+bound_cases:
+- case_id: nrrd-valid-001
+  bound: true
+  test_function: test_load_1d_int8
+- case_id: nrrd-valid-002
+  bound: true
+  test_function: test_load_2d_float32
+- case_id: nrrd-valid-003
+  bound: true
+  test_function: test_nrrd_document
+- case_id: nrrd-valid-004
+  bound: true
+  test_function: test_roundtrip_1d_int8
+- case_id: nrrd-invalid-001
+  bound: true
+  test_function: test_load_invalid_raises
+binding_verdict: BOUND

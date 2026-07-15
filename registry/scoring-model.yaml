@@ -1,0 +1,139 @@
+# Format Factory Scoring Model
+# Version: 7-factor-100pt-v1
+# Extracted from: FODS registry entry (first scored format, 2026-05-04)
+# Authority: Gate 1 scoring — determines Accept/Conditional/Reject band
+#
+# This file was missing from the repository and has been healed as part of
+# the Select-6 onboarding plan (put-the-select-6-snappy-dijkstra).
+
+model_version: 7-factor-100pt-v1
+
+bands:
+  accept:
+    min_points: 70
+    description: Strong candidate for Gate 1 approval
+  conditional:
+    min_points: 50
+    max_points: 69
+    description: Requires additional review or risk mitigation
+  reject:
+    min_points: 0
+    max_points: 49
+    description: Not recommended for acquisition
+
+automatic_reject_checks:
+  - field: legal_category_classified
+    type: boolean
+    reject_if: false
+    description: Format must have a classified legal category
+  - field: category_5_or_6
+    type: boolean
+    reject_if: true
+    description: Categories 5 (patent-encumbered) and 6 (restricted) are automatic rejects
+  - field: drm_bypass_evidence
+    type: boolean
+    reject_if: true
+    description: Evidence of DRM bypass requirement is an automatic reject
+  - field: legal_safety_score_zero
+    type: boolean
+    reject_if: true
+    description: Zero legal safety score is an automatic reject
+
+dimensions:
+  legal_safety:
+    max_points: 30
+    weight_pct: 31.6
+    scoring_scale:
+      3: "Legal Category 1 (open standard, royalty-free) or Category 2 (permissive OSS)"
+      2: "Legal Category 3 (copyleft) or Category 4 (proprietary but documented)"
+      1: "Legal Category 4 with restrictions or ambiguous licensing"
+      0: "Categories 5-6 or unclassified — automatic reject"
+    description: >
+      Assesses legal risk based on the format's specification licensing,
+      patent status, and implementation freedom. Higher scores for formats
+      with royalty-free patents and permissive licensing.
+    points_formula: "score * 10"
+
+  spec_availability:
+    max_points: 20
+    weight_pct: 21.1
+    scoring_scale:
+      3: "Comprehensive, freely accessible, actively maintained specification"
+      2: "Available spec but incomplete, outdated, or behind paywall"
+      1: "Informal spec, community documentation only, or reverse-engineered"
+      0: "No specification available"
+    description: >
+      Evaluates the quality, accessibility, and maintenance status of the
+      format's specification document. Higher scores for well-documented,
+      freely available, actively maintained standards.
+    points_formula: "score * (20/3)"
+
+  parseable_structure:
+    max_points: 15
+    weight_pct: 15.8
+    scoring_scale:
+      3: "Simple structure parseable with stdlib (JSON, flat XML, CSV-like, fixed binary header)"
+      2: "Moderate complexity (nested XML, ZIP containers, compression layers)"
+      1: "Complex structure requiring specialized parsing (custom binary, multi-pass)"
+      0: "Extremely complex or undocumented binary format"
+    description: >
+      Rates how straightforward the format is to parse using Python stdlib
+      or already-installed packages. Higher scores for formats that map
+      directly to existing Format Factory parsing patterns.
+    points_formula: "score * 5"
+
+  community_demand:
+    max_points: 10
+    weight_pct: 10.5
+    scoring_scale:
+      3: "Massive adoption — millions of users, industry standard"
+      2: "Moderate adoption — established in its domain, active community"
+      1: "Niche adoption — small community, specialized use case"
+      0: "Negligible adoption or obsolete format"
+    description: >
+      Measures the format's adoption, community activity, and market demand.
+      Higher scores for widely-used formats with active ecosystems.
+    points_formula: "score * (10/3)"
+
+  strategic_track_value:
+    max_points: 10
+    weight_pct: 10.5
+    scoring_scale:
+      3: "Opens new product track or validates key architecture pattern"
+      2: "Extends existing product track or fills capability gap"
+      1: "Incremental value — no new track, limited strategic benefit"
+      0: "No strategic value or conflicts with existing direction"
+    description: >
+      Evaluates the format's contribution to Format Factory's product strategy.
+      Higher scores for formats that open new markets, validate architecture,
+      or create family expansion opportunities.
+    points_formula: "score * (10/3)"
+
+  implementation_complexity:
+    max_points: 5
+    weight_pct: 5.3
+    scoring_scale:
+      3: "Trivial — direct stdlib mapping, <200 LOC parser"
+      2: "Moderate — requires careful design but no new patterns, 200-600 LOC"
+      1: "Complex — requires new patterns or external dependencies, 600+ LOC"
+      0: "Very complex — requires significant new infrastructure"
+    description: >
+      Rates the effort required to implement a working codec. This is an
+      inverse complexity score — higher scores for simpler implementations.
+    points_formula: "score * (5/3)"
+
+  family_overlap:
+    max_points: 5
+    weight_pct: 5.2
+    scoring_scale:
+      3: "No overlap — first format in a new family or unique format"
+      2: "Partial overlap — shares family but adds distinct capabilities"
+      1: "Significant overlap — similar to existing format, limited new value"
+      0: "Full overlap — duplicate of existing format"
+    description: >
+      Measures how much the format overlaps with already-acquired formats.
+      Higher scores for formats that bring unique capabilities without
+      duplicating existing coverage.
+    points_formula: "score * (5/3)"
+
+total_max_points: 95
