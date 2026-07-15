@@ -10,7 +10,7 @@ spec_fact_ref: see shared/qname-registry/csv.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 class CsvDocument:
@@ -21,11 +21,11 @@ class CsvDocument:
     row_count (int), has_header (bool), delimiter (str).
     """
 
-    spec_qname = "csv:record"
-    spec_fact_ref = "FACT-CSV-001"
-    namespace_uri = "https://www.iana.org/assignments/media-types/text/csv"
-    local_name = "record"
-    facade_names = []
+    spec_qname: ClassVar[str] = "csv:record"
+    spec_fact_ref: ClassVar[str] = "FACT-CSV-001"
+    namespace_uri: ClassVar[str] = "https://www.iana.org/assignments/media-types/text/csv"
+    local_name: ClassVar[str] = "record"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

@@ -5,6 +5,7 @@ Fact ref: FACT-GNUMERIC-001
 Canonical spec class: src/python/gnumeric/spec/workbook/workbook.py::Workbook
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.workbook.workbook import Workbook as _SpecWorkbook
 from ..spec.workbook.sheet import Sheet as _Sheet
@@ -13,9 +14,9 @@ from ..spec.workbook.sheet import Sheet as _Sheet
 class GnumericWorkbook(_SpecWorkbook):
     """Production facade for gnm:Workbook (Gnumeric spreadsheet root element)."""
 
-    spec_qname = "gnumeric:workbook"
-    spec_fact_ref = "FACT-GNUMERIC-001"
-    namespace_uri = "http://www.gnumeric.org/v10.dtd"
+    spec_qname: ClassVar[str] = "gnumeric:workbook"
+    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-001"
+    namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
 
     @classmethod
     def from_file(cls, path: str) -> "GnumericWorkbook":

@@ -44,17 +44,17 @@ Canonical class: {Element}
 Facade: {FormatElement}
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class {Element}:
     """Canonical spec-shaped class for {format}:{element}."""
 
-    spec_qname = "{format}:{element}"
-    spec_fact_ref = "{FACT-FORMAT-NNN}"
-    namespace_uri = "{urn:format:{format}:1.0}"
-    local_name = "{element}"
-    facade_names = ["{FormatElement}"]
+    spec_qname: ClassVar[str] = "{format}:{element}"
+    spec_fact_ref: ClassVar[str] = "{FACT-FORMAT-NNN}"
+    namespace_uri: ClassVar[str] = "{urn:format:{format}:1.0}"
+    local_name: ClassVar[str] = "{element}"
+    facade_names: ClassVar[list] = ["{FormatElement}"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data
@@ -73,14 +73,15 @@ Create `src/python/{format}/Compat/{format}_{element}.py`:
 ```python
 """FormatElement — production facade for {format}:{element}."""
 from __future__ import annotations
+from typing import ClassVar
 from ..spec.{domain}.{element} import {Element} as _Spec{Element}
 
 
 class {FormatElement}(_Spec{Element}):
     """Production facade for {format}:{element}."""
-    spec_qname = "{format}:{element}"
-    spec_fact_ref = "{FACT-FORMAT-NNN}"
-    namespace_uri = "{urn:format:{format}:1.0}"
+    spec_qname: ClassVar[str] = "{format}:{element}"
+    spec_fact_ref: ClassVar[str] = "{FACT-FORMAT-NNN}"
+    namespace_uri: ClassVar[str] = "{urn:format:{format}:1.0}"
 ```
 
 ### Step 4: Update registry

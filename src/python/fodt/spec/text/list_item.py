@@ -1,12 +1,12 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class ListItem:
     """Canonical spec-shaped class for text:list-item in FODT context (ODF §5.3.1)."""
 
-    spec_qname = "text:list-item"
-    spec_fact_ref = "FACT-FODT-005"
+    spec_qname: ClassVar[str] = "text:list-item"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-005"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

@@ -8,17 +8,17 @@ Canonical class: Key
 Facade: TomlKey
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Key:
     """Canonical spec-shaped class for toml:key."""
 
-    spec_qname = "toml:key"
-    spec_fact_ref = "FACT-TOML-002"
-    namespace_uri = "urn:format:toml:1.0"
-    local_name = "key"
-    facade_names = ["TomlKey"]
+    spec_qname: ClassVar[str] = "toml:key"
+    spec_fact_ref: ClassVar[str] = "FACT-TOML-002"
+    namespace_uri: ClassVar[str] = "urn:format:toml:1.0"
+    local_name: ClassVar[str] = "key"
+    facade_names: ClassVar[list] = ["TomlKey"]
 
     def __init__(self, name: str, value: Any) -> None:
         self._name = name

@@ -4,7 +4,7 @@ spec_qname: text:p
 spec_fact_ref: FACT-FODT-003
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 from .span import Span
 
@@ -12,8 +12,8 @@ from .span import Span
 class Paragraph:
     """Canonical implementation of ODF text:p element."""
 
-    spec_qname = "text:p"
-    spec_fact_ref = "FACT-FODT-003"
+    spec_qname: ClassVar[str] = "text:p"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-003"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

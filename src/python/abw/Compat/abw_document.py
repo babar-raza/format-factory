@@ -6,6 +6,7 @@ Fact ref: FACT-ABW-001
 Canonical spec class: src/python/abw/spec/document/document.py::Document
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 from ..spec.document.document import Document as _SpecDocument
@@ -19,9 +20,9 @@ class AbwDocument(_SpecDocument):
     metadata and core properties from the spec authority class.
     """
 
-    spec_qname = "abiword:document"
-    spec_fact_ref = "FACT-ABW-001"
-    namespace_uri = "http://www.abisource.com/awml/"
+    spec_qname: ClassVar[str] = "abiword:document"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
 
     @classmethod
     def from_file(cls, path: str) -> "AbwDocument":

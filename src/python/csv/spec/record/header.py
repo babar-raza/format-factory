@@ -8,17 +8,17 @@ Canonical class: Header
 Facade: CsvHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for csv:header."""
 
-    spec_qname = "csv:header"
-    spec_fact_ref = "FACT-CSV-001"
-    namespace_uri = "urn:ietf:rfc:4180:csv"
-    local_name = "header"
-    facade_names = ["CsvHeader"]
+    spec_qname: ClassVar[str] = "csv:header"
+    spec_fact_ref: ClassVar[str] = "FACT-CSV-001"
+    namespace_uri: ClassVar[str] = "urn:ietf:rfc:4180:csv"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["CsvHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

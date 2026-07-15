@@ -8,16 +8,17 @@ Canonical class: Field
 Facade: CsvField
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class Field:
     """Canonical spec-shaped class for csv:field (RFC 4180 field value)."""
 
-    spec_qname = "csv:field"
-    spec_fact_ref = "FACT-CSV-002"
-    namespace_uri = "urn:ietf:rfc:4180:csv"
-    local_name = "field"
-    facade_names = ["CsvField"]
+    spec_qname: ClassVar[str] = "csv:field"
+    spec_fact_ref: ClassVar[str] = "FACT-CSV-002"
+    namespace_uri: ClassVar[str] = "urn:ietf:rfc:4180:csv"
+    local_name: ClassVar[str] = "field"
+    facade_names: ClassVar[list] = ["CsvField"]
 
     def __init__(self, value: str) -> None:
         self._value = str(value)

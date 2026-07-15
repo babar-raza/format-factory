@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Spreadsheet
 """
 
+from typing import ClassVar
+
 
 class Spreadsheet:
     """Canonical spec-shaped class for office:spreadsheet in FODS context.
@@ -16,8 +18,8 @@ class Spreadsheet:
     Contains one or more table:table elements (sheets).
     """
 
-    spec_qname = "office:spreadsheet"
-    spec_fact_ref = "FACT-FODS-003"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "spreadsheet"
-    facade_names = []
+    spec_qname: ClassVar[str] = "office:spreadsheet"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "spreadsheet"
+    facade_names: ClassVar[list] = []

@@ -6,6 +6,7 @@ Fact ref: FACT-FODT-004
 Canonical spec class: src/python/fodt/spec/text/heading.py::Heading
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.text.heading import Heading as _SpecHeading
 
@@ -16,6 +17,6 @@ class FodtHeading(_SpecHeading):
     Inherits all behavioral properties from the canonical spec class.
     """
 
-    spec_qname = "text:h"
-    spec_fact_ref = "FACT-FODT-004"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    spec_qname: ClassVar[str] = "text:h"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-004"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

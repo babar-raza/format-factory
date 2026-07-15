@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.Table
 """
 
+from typing import ClassVar
+
 
 class Table:
     """Canonical spec-shaped class for table:table in FODS context.
@@ -19,8 +21,8 @@ class Table:
     Facade: FodsSheet delegates to this via spec_qname.
     """
 
-    spec_qname = "table:table"
-    spec_fact_ref = "FACT-FODS-004"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-    local_name = "table"
-    facade_names = ["FodsSheet"]
+    spec_qname: ClassVar[str] = "table:table"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-004"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    local_name: ClassVar[str] = "table"
+    facade_names: ClassVar[list] = ["FodsSheet"]

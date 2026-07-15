@@ -57,10 +57,12 @@ class TestStubFilesExist:
 class TestStubContent:
     @pytest.mark.parametrize("rel_path,expected_qname", EXPECTED_STUBS)
     def test_stub_has_correct_spec_qname(self, rel_path, expected_qname):
-        """Each spec stub must have spec_qname = '<correct qname>'."""
+        """Each spec stub must have spec_qname assigned to the correct qname."""
         stub_path = _SPEC_ROOT / rel_path
         content = stub_path.read_text(encoding="utf-8")
-        assert f'spec_qname = "{expected_qname}"' in content, (
+        bare = f'spec_qname = "{expected_qname}"'
+        annotated = f'spec_qname: ClassVar[str] = "{expected_qname}"'
+        assert bare in content or annotated in content, (
             f"{rel_path}: expected spec_qname = \"{expected_qname}\", not found in file"
         )
 

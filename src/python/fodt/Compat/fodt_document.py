@@ -6,6 +6,7 @@ Fact ref: FACT-FODT-001
 Canonical spec class: src/python/fodt/spec/office/document.py::Document
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 from ..spec.office.document import Document as _SpecDocument
@@ -20,9 +21,9 @@ class FodtDocument(_SpecDocument):
     Inherits structural metadata from the spec authority class.
     """
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODT-001"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     @classmethod
     def from_file(cls, path: str) -> "FodtDocument":

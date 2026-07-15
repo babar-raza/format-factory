@@ -10,7 +10,7 @@ spec_fact_ref: see shared/qname-registry/gnumeric.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 class GnumericDocument:
@@ -21,11 +21,11 @@ class GnumericDocument:
     sheets (list[dict]), cell_count (int).
     """
 
-    spec_qname = "gnumeric:workbook"
-    spec_fact_ref = "FACT-GNUMERIC-001"
-    namespace_uri = "http://www.gnumeric.org/v10.dtd"
-    local_name = "workbook"
-    facade_names = []
+    spec_qname: ClassVar[str] = "gnumeric:workbook"
+    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-001"
+    namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
+    local_name: ClassVar[str] = "workbook"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

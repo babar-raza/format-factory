@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0
 Canonical class: Number.DateStyle
 """
 
+from typing import ClassVar
+
 
 class DateStyle:
     """Canonical spec-shaped class for number:date-style in FODS context.
@@ -16,8 +18,8 @@ class DateStyle:
     Has style:name attribute and contains number:* child elements.
     """
 
-    spec_qname = "number:date-style"
-    spec_fact_ref = "FACT-FODS-010"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
-    local_name = "date-style"
-    facade_names = []
+    spec_qname: ClassVar[str] = "number:date-style"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-010"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+    local_name: ClassVar[str] = "date-style"
+    facade_names: ClassVar[list] = []

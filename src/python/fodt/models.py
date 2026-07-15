@@ -10,7 +10,7 @@ These preserve the existing function API while providing a class-based interface
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from .Compat.fodt_paragraph import FodtParagraph as _CompatParagraph
 
@@ -18,8 +18,8 @@ from .Compat.fodt_paragraph import FodtParagraph as _CompatParagraph
 class FodtSpan:
     """Wraps an inline text span from a paragraph."""
 
-    spec_qname = "text:span"
-    spec_fact_ref = "FACT-FODT-006"
+    spec_qname: ClassVar[str] = "text:span"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-006"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -45,8 +45,8 @@ class FodtSpan:
 class FodtParagraph:
     """Wraps a block dict (paragraph or heading) from the FODT neutral model."""
 
-    spec_qname = "text:p"
-    spec_fact_ref = "FACT-FODT-003"
+    spec_qname: ClassVar[str] = "text:p"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-003"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -91,8 +91,8 @@ class FodtParagraph:
 class FodtDocument:
     """Wraps a document dict from parse_fodt() with a class-based interface."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODT-001"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

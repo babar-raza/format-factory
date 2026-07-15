@@ -5,7 +5,7 @@ TC-W1-FODS-PY-002: Aspose-style deep navigation (FodsWorksheetCollection → Fod
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from .fods_cell_collection import FodsCellCollection
 
@@ -20,8 +20,8 @@ class FodsWorksheet:
       - is_visible  → bool
     """
 
-    spec_qname = "table:table"
-    spec_fact_ref = "FACT-FODS-004"
+    spec_qname: ClassVar[str] = "table:table"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-004"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

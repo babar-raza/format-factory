@@ -10,7 +10,7 @@ spec_fact_ref: see shared/qname-registry/abw.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from .Compat.abw_paragraph import AbwParagraph as _AbwParagraph
@@ -24,11 +24,11 @@ class AbwDocument:
     paragraph_count (int), paragraphs (list[str]).
     """
 
-    spec_qname = "abiword:document"
-    spec_fact_ref = "FACT-ABW-001"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "document"
-    facade_names = []
+    spec_qname: ClassVar[str] = "abiword:document"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

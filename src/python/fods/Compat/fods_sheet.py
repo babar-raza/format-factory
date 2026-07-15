@@ -7,6 +7,7 @@ Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsSheet])
 TC-MACH-ARCH-004 (2026-06-21): facade created to satisfy Gate 11 P-ARCH-001.
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from src.python.fods.spec.table.table import Table as _SpecTable
 
@@ -20,6 +21,6 @@ class FodsSheet(_SpecTable):
     TC-ZS-004 disposition: PATH B (document-only architecture marker, 2026-06-22).
     """
 
-    spec_qname = "table:table"
-    spec_fact_ref = "FACT-FODS-004"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    spec_qname: ClassVar[str] = "table:table"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-004"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

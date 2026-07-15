@@ -7,7 +7,7 @@ Facade: AbwDocument (Compat/abw_document.py)
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from .paragraph import Paragraph
 
@@ -20,11 +20,11 @@ class Document:
         is_abw (bool), section_count (int), paragraph_count (int), paragraphs (list[str])
     """
 
-    spec_qname = "abiword:document"
-    spec_fact_ref = "FACT-ABW-001"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "abiword"
-    facade_names = ["AbwDocument"]
+    spec_qname: ClassVar[str] = "abiword:document"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "abiword"
+    facade_names: ClassVar[list] = ["AbwDocument"]
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

@@ -7,6 +7,7 @@ Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsBody])
 TC-SP-002 (2026-06-25): facade created to satisfy Gate 11 P-ARCH-001 spec parity.
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from src.python.fods.spec.office.body import Body as _SpecBody
 
@@ -20,6 +21,6 @@ class FodsBody(_SpecBody):
     TC-SP-002 disposition: PATH B (architecture marker, 2026-06-25).
     """
 
-    spec_qname = "office:body"
-    spec_fact_ref = "FACT-FODS-002"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:body"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-002"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"

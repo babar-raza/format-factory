@@ -1,12 +1,12 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class TableCell:
     """Canonical spec-shaped class for table:table-cell in FODT context (ODF §9.5)."""
 
-    spec_qname = "table:table-cell"
-    spec_fact_ref = "FACT-FODT-007"
+    spec_qname: ClassVar[str] = "table:table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-007"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

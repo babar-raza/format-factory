@@ -5,6 +5,7 @@ spec_fact_ref: FACT-ABW-004
 Spec ref: AbiWord AWML 1.0 — character run inline element
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class CharRun:
@@ -16,11 +17,11 @@ class CharRun:
     so this class operates on the raw attribute dict when available.
     """
 
-    spec_qname = "abw:c"
-    spec_fact_ref = "FACT-ABW-004"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "c"
-    facade_names = []
+    spec_qname: ClassVar[str] = "abw:c"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-004"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "c"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, text: str, props: dict | None = None):
         self._text = str(text) if text is not None else ""

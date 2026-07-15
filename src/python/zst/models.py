@@ -10,7 +10,7 @@ spec_fact_ref: see shared/qname-registry/zst.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 class ZstDocument:
@@ -21,11 +21,11 @@ class ZstDocument:
     frame-level statistics without decompressing the full content.
     """
 
-    spec_qname = "zst:frame"
-    spec_fact_ref = "FACT-ZST-001"
-    namespace_uri = "urn:ietf:rfc:8878:zstandard"
-    local_name = "frame"
-    facade_names = []
+    spec_qname: ClassVar[str] = "zst:frame"
+    spec_fact_ref: ClassVar[str] = "FACT-ZST-001"
+    namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstandard"
+    local_name: ClassVar[str] = "frame"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, path: str | Path, data: dict[str, Any] | None = None) -> None:
         self._path = Path(path)

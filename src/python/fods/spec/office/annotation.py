@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Annotation
 """
 
+from typing import ClassVar
+
 
 class Annotation:
     """Canonical spec-shaped class for office:annotation in FODS context.
@@ -20,9 +22,9 @@ class Annotation:
     This is NOT the production model. Facade: use Compat/ layer for production access.
     """
 
-    spec_qname = "office:annotation"
-    spec_fact_ref = "FACT-FODS-022"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "annotation"
-    spec_source = "ODF 1.3 Part 3"
-    facade_names: list = []
+    spec_qname: ClassVar[str] = "office:annotation"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-022"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "annotation"
+    spec_source: ClassVar[str] = "ODF 1.3 Part 3"
+    facade_names: ClassVar[list] = []

@@ -6,6 +6,7 @@ Fact ref: FACT-FODT-007
 Canonical spec class: src/python/fodt/spec/table/table_cell.py::TableCell
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.table.table_cell import TableCell as _SpecTableCell
 
@@ -16,6 +17,6 @@ class FodtTableCell(_SpecTableCell):
     Inherits all behavioral properties from the canonical spec class.
     """
 
-    spec_qname = "table:table-cell"
-    spec_fact_ref = "FACT-FODT-007"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    spec_qname: ClassVar[str] = "table:table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-007"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

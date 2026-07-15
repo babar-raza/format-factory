@@ -9,7 +9,7 @@ TC-W1-FODS-PY-002: worksheets property added for Aspose-style navigation.
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from src.python.fods.spec.office.document import Document as _SpecDocument
 from .fods_worksheet_collection import FodsWorksheetCollection
@@ -25,9 +25,9 @@ class FodsDocument(_SpecDocument):
     TC-W1-FODS-PY-002: full Worksheets navigation wired.
     """
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODS-001"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-001"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     def __init__(self, data: dict[str, Any] | None = None):
         super().__init__(data)

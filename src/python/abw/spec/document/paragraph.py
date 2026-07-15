@@ -6,6 +6,7 @@ Spec ref: AbiWord AWML 1.0 — paragraph block element
 Facade: AbwParagraph (Compat/abw_paragraph.py)
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class Paragraph:
@@ -15,11 +16,11 @@ class Paragraph:
     merged into the text string by the neutral model parser).
     """
 
-    spec_qname = "abiword:p"
-    spec_fact_ref = "FACT-ABW-003"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "p"
-    facade_names = ["AbwParagraph"]
+    spec_qname: ClassVar[str] = "abiword:p"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-003"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "p"
+    facade_names: ClassVar[list] = ["AbwParagraph"]
 
     def __init__(self, text: str):
         self._text = str(text) if text is not None else ""

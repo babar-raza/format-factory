@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:style:1.0
 Canonical class: Style.Style
 """
 
+from typing import ClassVar
+
 
 class Style:
     """Canonical spec-shaped class for style:style in FODS context.
@@ -16,8 +18,8 @@ class Style:
     Has style:name, style:family, and style:parent-style-name attributes.
     """
 
-    spec_qname = "style:style"
-    spec_fact_ref = "FACT-FODS-009"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
-    local_name = "style"
-    facade_names = []
+    spec_qname: ClassVar[str] = "style:style"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-009"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    local_name: ClassVar[str] = "style"
+    facade_names: ClassVar[list] = []

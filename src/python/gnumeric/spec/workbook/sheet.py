@@ -9,17 +9,17 @@ Canonical class: Sheet
 Facade: GnumericSheet
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Sheet:
     """Canonical spec-shaped class for gnm:Sheet."""
 
-    spec_qname = "gnumeric:sheet"
-    spec_fact_ref = "FACT-GNUMERIC-002"
-    namespace_uri = "http://www.gnumeric.org/v10.dtd"
-    local_name = "Sheet"
-    facade_names = ["GnumericSheet"]
+    spec_qname: ClassVar[str] = "gnumeric:sheet"
+    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-002"
+    namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
+    local_name: ClassVar[str] = "Sheet"
+    facade_names: ClassVar[list] = ["GnumericSheet"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

@@ -8,16 +8,17 @@ Canonical class: Field
 Facade: TsvField
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class Field:
     """Canonical spec-shaped class for tsv:field."""
 
-    spec_qname = "tsv:field"
-    spec_fact_ref = "FACT-TSV-002"
-    namespace_uri = "urn:iana:media-type:text:tab-separated-values"
-    local_name = "field"
-    facade_names = ["TsvField"]
+    spec_qname: ClassVar[str] = "tsv:field"
+    spec_fact_ref: ClassVar[str] = "FACT-TSV-002"
+    namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"
+    local_name: ClassVar[str] = "field"
+    facade_names: ClassVar[list] = ["TsvField"]
 
     def __init__(self, value: str) -> None:
         self._value = str(value)

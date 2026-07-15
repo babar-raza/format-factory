@@ -8,16 +8,17 @@ Canonical class: Record
 Facade: TsvRecord
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class Record:
     """Canonical spec-shaped class for tsv:record (TSV row)."""
 
-    spec_qname = "tsv:record"
-    spec_fact_ref = "FACT-TSV-001"
-    namespace_uri = "urn:iana:media-type:text:tab-separated-values"
-    local_name = "record"
-    facade_names = ["TsvRecord"]
+    spec_qname: ClassVar[str] = "tsv:record"
+    spec_fact_ref: ClassVar[str] = "FACT-TSV-001"
+    namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"
+    local_name: ClassVar[str] = "record"
+    facade_names: ClassVar[list] = ["TsvRecord"]
 
     def __init__(self, fields: list[str]) -> None:
         self._fields = list(fields)

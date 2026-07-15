@@ -7,6 +7,7 @@ Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsSpan])
 TC-SP-002 (2026-06-25): facade created to satisfy Gate 11 P-ARCH-001 spec parity.
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from src.python.fods.spec.text.span import Span as _SpecSpan
 
@@ -21,6 +22,6 @@ class FodsSpan(_SpecSpan):
     TC-SP-002 disposition: PATH B (architecture marker, 2026-06-25).
     """
 
-    spec_qname = "text:span"
-    spec_fact_ref = "FACT-FODS-007"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    spec_qname: ClassVar[str] = "text:span"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-007"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

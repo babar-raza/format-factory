@@ -5,6 +5,7 @@ spec_fact_ref: FACT-ABW-005
 Spec ref: AbiWord AWML 1.0 — field inline element
 """
 from __future__ import annotations
+from typing import ClassVar
 
 
 class Field:
@@ -14,11 +15,11 @@ class Field:
     (e.g. page numbers, date, author name).
     """
 
-    spec_qname = "abw:field"
-    spec_fact_ref = "FACT-ABW-005"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "field"
-    facade_names = []
+    spec_qname: ClassVar[str] = "abw:field"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-005"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "field"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, field_type: str, value: str = ""):
         self._field_type = str(field_type) if field_type else ""

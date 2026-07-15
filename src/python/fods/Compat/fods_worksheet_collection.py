@@ -12,7 +12,7 @@ API:
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from .fods_worksheet import FodsWorksheet
 
@@ -23,8 +23,8 @@ class FodsWorksheetCollection:
     Backed by the list of sheet dicts inside the parsed workbook data.
     """
 
-    spec_qname = "office:spreadsheet"
-    spec_fact_ref = "FACT-FODS-003"
+    spec_qname: ClassVar[str] = "office:spreadsheet"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
 
     def __init__(self, sheets: list[dict[str, Any]]):
         self._sheets = sheets

@@ -8,17 +8,17 @@ Canonical class: Block
 Facade: ZstBlock
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Block:
     """Canonical spec-shaped class for zst:block (Zstandard data block)."""
 
-    spec_qname = "zst:block"
-    spec_fact_ref = "FACT-ZST-002"
-    namespace_uri = "urn:ietf:rfc:8878:zstd"
-    local_name = "block"
-    facade_names = ["ZstBlock"]
+    spec_qname: ClassVar[str] = "zst:block"
+    spec_fact_ref: ClassVar[str] = "FACT-ZST-002"
+    namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstd"
+    local_name: ClassVar[str] = "block"
+    facade_names: ClassVar[list] = ["ZstBlock"]
 
     BLOCK_TYPES = ("Raw_Block", "RLE_Block", "Compressed_Block", "Reserved")
 

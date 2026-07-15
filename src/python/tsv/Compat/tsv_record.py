@@ -5,6 +5,7 @@ Fact ref: FACT-TSV-001
 Canonical spec class: src/python/tsv/spec/record/record.py::Record
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.record.record import Record as _SpecRecord
 
@@ -12,6 +13,6 @@ from ..spec.record.record import Record as _SpecRecord
 class TsvRecord(_SpecRecord):
     """Production facade for tsv:record."""
 
-    spec_qname = "tsv:record"
-    spec_fact_ref = "FACT-TSV-001"
-    namespace_uri = "urn:iana:media-type:text:tab-separated-values"
+    spec_qname: ClassVar[str] = "tsv:record"
+    spec_fact_ref: ClassVar[str] = "FACT-TSV-001"
+    namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"

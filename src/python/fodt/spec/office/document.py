@@ -7,7 +7,7 @@ Facade: FodtDocument (Compat/fodt_document.py)
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Document:
@@ -17,11 +17,11 @@ class Document:
     text:* content (paragraphs, headings, tables, lists).
     """
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODT-001"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "document"
-    facade_names = ["FodtDocument"]
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = ["FodtDocument"]
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

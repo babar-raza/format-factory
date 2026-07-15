@@ -7,6 +7,7 @@ Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsCoveredCell]
 TC-SP-002 (2026-06-25): facade created to satisfy Gate 11 P-ARCH-001 spec parity.
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from src.python.fods.spec.table.covered_table_cell import CoveredTableCell as _SpecCoveredTableCell
 
@@ -21,6 +22,6 @@ class FodsCoveredCell(_SpecCoveredTableCell):
     TC-SP-002 disposition: PATH B (architecture marker, 2026-06-25).
     """
 
-    spec_qname = "table:covered-table-cell"
-    spec_fact_ref = "FACT-FODS-023"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    spec_qname: ClassVar[str] = "table:covered-table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-023"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

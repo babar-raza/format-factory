@@ -8,7 +8,7 @@ Facade: AbwSection is not a separate Compat class; sections are accessed
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from .paragraph import Paragraph
 
@@ -20,11 +20,11 @@ class Section:
     list, so Section wraps a named slice of that list.
     """
 
-    spec_qname = "abiword:section"
-    spec_fact_ref = "FACT-ABW-002"
-    namespace_uri = "http://www.abisource.com/awml/"
-    local_name = "section"
-    facade_names = []
+    spec_qname: ClassVar[str] = "abiword:section"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-002"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
+    local_name: ClassVar[str] = "section"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, paragraphs: list[str], index: int = 0):
         self._paragraphs = list(paragraphs)

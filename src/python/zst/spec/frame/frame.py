@@ -8,17 +8,17 @@ Canonical class: Frame
 Facade: ZstFrame
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Frame:
     """Canonical spec-shaped class for zst:frame (Zstandard frame)."""
 
-    spec_qname = "zst:frame"
-    spec_fact_ref = "FACT-ZST-001"
-    namespace_uri = "urn:ietf:rfc:8878:zstd"
-    local_name = "frame"
-    facade_names = ["ZstFrame"]
+    spec_qname: ClassVar[str] = "zst:frame"
+    spec_fact_ref: ClassVar[str] = "FACT-ZST-001"
+    namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstd"
+    local_name: ClassVar[str] = "frame"
+    facade_names: ClassVar[list] = ["ZstFrame"]
 
     MAGIC = 0xFD2FB528
 

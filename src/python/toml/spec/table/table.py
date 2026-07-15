@@ -8,17 +8,17 @@ Canonical class: Table
 Facade: TomlTable
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Table:
     """Canonical spec-shaped class for toml:table."""
 
-    spec_qname = "toml:table"
-    spec_fact_ref = "FACT-TOML-001"
-    namespace_uri = "urn:format:toml:1.0"
-    local_name = "table"
-    facade_names = ["TomlTable"]
+    spec_qname: ClassVar[str] = "toml:table"
+    spec_fact_ref: ClassVar[str] = "FACT-TOML-001"
+    namespace_uri: ClassVar[str] = "urn:format:toml:1.0"
+    local_name: ClassVar[str] = "table"
+    facade_names: ClassVar[list] = ["TomlTable"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = dict(data)

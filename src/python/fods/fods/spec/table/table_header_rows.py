@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.TableHeaderRows
 """
 
+from typing import ClassVar
+
 
 class TableHeaderRows:
     """Canonical spec-shaped class for table:table-header-rows in FODS context.
@@ -19,9 +21,9 @@ class TableHeaderRows:
     This is NOT the production model. Facade: use Compat/ layer for production access.
     """
 
-    spec_qname = "table:table-header-rows"
-    spec_fact_ref = "FACT-FODS-021"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-    local_name = "table-header-rows"
-    spec_source = "ODF 1.3 Part 3"
-    facade_names: list = []
+    spec_qname: ClassVar[str] = "table:table-header-rows"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-021"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    local_name: ClassVar[str] = "table-header-rows"
+    spec_source: ClassVar[str] = "ODF 1.3 Part 3"
+    facade_names: ClassVar[list] = []

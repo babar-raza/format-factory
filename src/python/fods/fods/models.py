@@ -11,7 +11,7 @@ Properties delegate to the spec object; the raw dict is NOT stored directly as d
 
 from __future__ import annotations
 
-from typing import Any, Iterator
+from typing import Any, Iterator, ClassVar
 
 from .spec.office.document import Document as _SpecDocument
 from .spec.table.table_cell import TableCell as _SpecTableCell
@@ -23,7 +23,7 @@ class FodsCell:
     TC-W1-FODS-PY-001: backs the cell with the canonical spec type.
     """
 
-    spec_qname = "table:table-cell"
+    spec_qname: ClassVar[str] = "table:table-cell"
 
     def __init__(self, data: dict[str, Any]):
         self._spec_cell = _SpecTableCell(data)
@@ -69,7 +69,7 @@ class FodsCell:
 class FodsSheet:
     """Wraps a sheet dict from the FODS neutral model."""
 
-    spec_qname = "table:table"
+    spec_qname: ClassVar[str] = "table:table"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -127,7 +127,7 @@ class FodsDocument:
     The raw dict is stored inside the spec object, NOT directly as self._data.
     """
 
-    spec_qname = "office:document"
+    spec_qname: ClassVar[str] = "office:document"
 
     def __init__(self, data: dict[str, Any]):
         # TC-W1-FODS-PY-001: delegate to canonical spec type (not raw dict)

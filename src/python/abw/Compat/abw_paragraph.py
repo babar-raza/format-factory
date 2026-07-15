@@ -6,6 +6,7 @@ Fact ref: FACT-ABW-003
 Canonical spec class: src/python/abw/spec/document/paragraph.py::Paragraph
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.document.paragraph import Paragraph as _SpecParagraph
 
@@ -17,9 +18,9 @@ class AbwParagraph(_SpecParagraph):
     Primary public API entry point for paragraph-level access.
     """
 
-    spec_qname = "abiword:p"
-    spec_fact_ref = "FACT-ABW-003"
-    namespace_uri = "http://www.abisource.com/awml/"
+    spec_qname: ClassVar[str] = "abiword:p"
+    spec_fact_ref: ClassVar[str] = "FACT-ABW-003"
+    namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
 
     def upper(self) -> str:
         """Return paragraph text in uppercase."""

@@ -8,6 +8,8 @@ Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.CoveredTableCell
 """
 
+from typing import ClassVar
+
 
 class CoveredTableCell:
     """Canonical spec-shaped class for table:covered-table-cell in FODS context.
@@ -19,9 +21,9 @@ class CoveredTableCell:
     This is NOT the production model. Facade: use Compat/ layer for production access.
     """
 
-    spec_qname = "table:covered-table-cell"
-    spec_fact_ref = "FACT-FODS-023"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-    local_name = "covered-table-cell"
-    spec_source = "ODF 1.3 Part 3"
-    facade_names: list = []
+    spec_qname: ClassVar[str] = "table:covered-table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-023"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    local_name: ClassVar[str] = "covered-table-cell"
+    spec_source: ClassVar[str] = "ODF 1.3 Part 3"
+    facade_names: ClassVar[list] = []

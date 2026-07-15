@@ -9,7 +9,7 @@ Canonical class: Table.TableCell
 """
 
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class TableCell:
@@ -22,11 +22,11 @@ class TableCell:
     Facade: FodsCell delegates to this via spec_qname.
     """
 
-    spec_qname = "table:table-cell"
-    spec_fact_ref = "FACT-FODS-006"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-    local_name = "table-cell"
-    facade_names = ["FodsCell"]
+    spec_qname: ClassVar[str] = "table:table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-FODS-006"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    local_name: ClassVar[str] = "table-cell"
+    facade_names: ClassVar[list] = ["FodsCell"]
 
     def __init__(self, data: dict[str, Any] | None = None):
         self._data: dict[str, Any] = data or {}
