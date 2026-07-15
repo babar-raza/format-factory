@@ -1,0 +1,457 @@
+{
+  "schema": "playbook-task-binding/1.0",
+  "binding_id": "BIND-9E836FDC",
+  "playbook_id": "format-feature-expansion",
+  "playbook_version": "1.2",
+  "plan_id": "TC-PROLIB-NRRD-001",
+  "gap_ids": [],
+  "parameters": {
+    "format_name": "nrrd",
+    "codec_file": "src/python/nrrd/nrrd_analytics.py",
+    "init_file": "src/python/nrrd/__init__.py",
+    "test_dir": "tests/python/nrrd/",
+    "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+    "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+    "capability_label": "nrrd_analytics_batch"
+  },
+  "generated_at": "2026-07-15T07:26:49.535676+00:00",
+  "generator": "tools/playbook/generate_playbook_taskcards.py",
+  "taskcards_generated": 6,
+  "taskcard_ids": [
+    "TC-FORMAT-FEATURE-EXPANSION-001-A64C85",
+    "TC-FORMAT-FEATURE-EXPANSION-002-B7FD14",
+    "TC-FORMAT-FEATURE-EXPANSION-003-7B7D10",
+    "TC-FORMAT-FEATURE-EXPANSION-004-EBD91E",
+    "TC-FORMAT-FEATURE-EXPANSION-005-38835A",
+    "TC-FORMAT-FEATURE-EXPANSION-006-33A1CF"
+  ],
+  "authority_statement": "Taskcards generated from Sprint Task Template. Does NOT approve gates, does NOT mark work complete, does NOT replace evidence contracts or plan authority.",
+  "taskcards": [
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535618+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-001-A64C85",
+      "phase": "read_codec",
+      "phase_index": 1,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    },
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535640+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-002-B7FD14",
+      "phase": "draft_function",
+      "phase_index": 2,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    },
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535650+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-003-7B7D10",
+      "phase": "write_tests",
+      "phase_index": 3,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    },
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535657+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-004-EBD91E",
+      "phase": "verify_import",
+      "phase_index": 4,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    },
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535663+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-005-38835A",
+      "phase": "verify_tests_pass",
+      "phase_index": 5,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    },
+    {
+      "playbook_id": "format-feature-expansion",
+      "playbook_version": "1.2",
+      "plan_id": "TC-PROLIB-NRRD-001",
+      "gap_ids": [],
+      "generated_at": "2026-07-15T07:26:49.535668+00:00",
+      "generator": "tools/playbook/generate_playbook_taskcards.py",
+      "taskcard_id": "TC-FORMAT-FEATURE-EXPANSION-006-33A1CF",
+      "phase": "update_exports",
+      "phase_index": 6,
+      "total_phases": 6,
+      "parameters": {
+        "format_name": "nrrd",
+        "codec_file": "src/python/nrrd/nrrd_analytics.py",
+        "init_file": "src/python/nrrd/__init__.py",
+        "test_dir": "tests/python/nrrd/",
+        "function_name": "nrrd_axis_sizes+nrrd_is_compressed+nrrd_element_count",
+        "function_signature": "see_taskcard_TC-PROLIB-NRRD-001",
+        "capability_label": "nrrd_analytics_batch"
+      },
+      "allowed_paths": [
+        "src/python/<format>/",
+        "tests/python/<format>/",
+        "examples/python/<format>/",
+        "reports/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "poc-targets.yaml",
+        "registry/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "required_skills": [
+        "add-python-api",
+        "add-roundtrip-test"
+      ],
+      "required_commands": [],
+      "task_types": [
+        "TASK"
+      ],
+      "validation": [
+        "min_tests_per_function",
+        "governance_validators_pass"
+      ],
+      "evidence_requirements": [
+        "test_results",
+        "changed_files",
+        "import_proof"
+      ],
+      "evidence_root": ".local/evidences/format-feature-expansion-20260715072649",
+      "rollback": "Revert source change; remove test; update __all__ and __init__.py",
+      "stop_conditions": [
+        "no_stdlib_only",
+        "external_dep_required",
+        "installed_format_breaks"
+      ],
+      "authority_constraints": {
+        "no_gate_approval": true,
+        "no_mark_work_complete_without_evidence": true,
+        "no_plan_override": true,
+        "no_evidence_contract_replacement": true,
+        "limitations": [
+          "No gate approval authority",
+          "No evidence contract replacement",
+          "Sprint task templates only"
+        ]
+      },
+      "status": "OPEN",
+      "owner_layer": "product_source"
+    }
+  ]
+}

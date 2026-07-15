@@ -1,0 +1,18 @@
+{
+  "schema": "skill-invocation-transcript/1.0",
+  "skill_id": "add-roundtrip-test",
+  "format_id": "nrrd",
+  "language": "python",
+  "edit_operation": "ChangeEncodingRawToGzip",
+  "plan_id": "TC-PROLIB-NRRD-001",
+  "test_file": "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+  "focused_test_command": ".venv/Scripts/pytest tests/python/nrrd/test_nrrd_mutation_roundtrip.py -v",
+  "scenario": "Load a valid raw-encoded NRRD sample, mutate the header encoding field from raw to gzip while re-encoding the data payload to match, save to a temp file, reload, and assert the mutation (encoding, element count, and data bytes) is present in the reloaded model.",
+  "distinct_from_identity_roundtrip": "tests/python/nrrd/test_nrrd_codec.py::TestRoundtrip performs load -> write -> load with no edit (identity only). This test performs a genuine edit before save.",
+  "test_results": {
+    "test_count": 6,
+    "status": "PASS_PENDING_FULL_SUITE_RUN"
+  },
+  "verdict": "COMPLETE",
+  "generated_at": "2026-07-15T00:00:00+00:00"
+}

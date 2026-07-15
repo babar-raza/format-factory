@@ -13,6 +13,11 @@ from nrrd.nrrd_codec import (
 )
 from nrrd.exceptions import NrrdError, NrrdParseError, NrrdWriteError
 from nrrd.models import NrrdDocument
+from nrrd.nrrd_analytics import (
+    nrrd_axis_sizes,
+    nrrd_element_count,
+    nrrd_is_compressed,
+)
 
 __all__ = [
     "get_dimension",
@@ -26,6 +31,9 @@ __all__ = [
     "NrrdError",
     "NrrdParseError",
     "NrrdWriteError",
+    "nrrd_axis_sizes",
+    "nrrd_element_count",
+    "nrrd_is_compressed",
 ]
 
 __version__ = "0.1.0.dev0"

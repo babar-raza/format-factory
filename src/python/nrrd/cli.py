@@ -10,6 +10,7 @@ from nrrd.nrrd_codec import load_nrrd, probe_nrrd
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Run the command-line interface for the NRRD codec."""
     parser = argparse.ArgumentParser(prog="ff-nrrd", description="Format Factory NRRD tool")
     sub = parser.add_subparsers(dest="command")
 
