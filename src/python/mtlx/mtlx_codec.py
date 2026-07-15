@@ -23,17 +23,29 @@ SUPPORTED_FEATURES = [
     "materials",
     "node_graphs",
     "surface_materials",
+    "volume_materials",
+    "legacy_shaderref_bindinput",
     "shader_nodes",
+    "node_category",
     "inputs_outputs",
+    "generic_element_preservation",
     "size_guard",
 ]
 
+# Structural round-trip preservation of these elements is supported (see
+# mtlx.mtlx_codec._serialize_nodes / _parse_generic_element -- FACT-MTLX-101):
+# a nodedef, typedef, look, or propertyset survives load -> write unchanged.
+# What remains unsupported is *semantic* interpretation of that structure --
+# resolving a look's material assignments, validating a nodedef against the
+# standard node library, or evaluating variant/collection membership.
 UNSUPPORTED_FEATURES = [
     "color_management",
     "geometry_bindings",
-    "looks",
-    "collections",
-    "property_sets",
+    "look_semantic_resolution",
+    "collection_semantic_resolution",
+    "variant_semantic_resolution",
+    "nodedef_library_validation",
+    "xinclude_multi_file_resolution",
     "streaming_parse",
 ]
 
@@ -81,6 +93,7 @@ def _parse_inputs(elem: ET.Element) -> list[dict[str, str]]:
                 "type": child.get("type", ""),
                 "value": child.get("value", ""),
                 "nodename": child.get("nodename", ""),
+                "interfacename": child.get("interfacename", ""),
                 "output": child.get("output", ""),
             })
     return inputs
@@ -98,6 +111,69 @@ def _parse_outputs(elem: ET.Element) -> list[dict[str, str]]:
                 "nodename": child.get("nodename", ""),
             })
     return outputs
+
+
+# Material element tags recognized by MaterialX v1.39 (FACT-MTLX-104).
+# ``volumematerial`` sits alongside ``surfacematerial`` as a first-class
+# material type -- both bind a shader to geometry, differing only in the
+# shading model (surface vs. volume) they connect to.
+_MATERIAL_TAGS = ("surfacematerial", "volumematerial")
+
+# Structural child tags that already receive dedicated, semantically-typed
+# parsing (``_parse_inputs``/``_parse_outputs``). Anything else nested inside
+# a generic top-level element is captured verbatim by ``_parse_generic_element``
+# so it survives a write-back unchanged (FACT-MTLX-101).
+_STRUCTURAL_CHILD_TAGS = ("input", "output")
+
+
+def _parse_shaderrefs(elem: ET.Element) -> list[dict[str, Any]]:
+    """Extract legacy ``<shaderref>``/``<bindinput>`` shader bindings (FACT-MTLX-104).
+
+    Pre-1.38 MaterialX documents bind a material to its shader via a nested
+    ``<shaderref>`` element (whose ``node`` attribute names the shader
+    category) containing ``<bindinput>`` parameter bindings, instead of the
+    newer ``<input name="surfaceshader" nodename="...">`` connection form.
+    Both forms may appear on the same material; this only parses the legacy
+    form so callers can detect and use whichever is present.
+    """
+    shaderrefs: list[dict[str, Any]] = []
+    for child in elem:
+        if _strip_ns(child.tag) != "shaderref":
+            continue
+        bindinputs: list[dict[str, str]] = []
+        for bi in child:
+            if _strip_ns(bi.tag) != "bindinput":
+                continue
+            bindinputs.append({
+                "name": bi.get("name", ""),
+                "type": bi.get("type", ""),
+                "value": bi.get("value", ""),
+                "output": bi.get("output", ""),
+                "nodegraph": bi.get("nodegraph", ""),
+            })
+        shaderrefs.append({
+            "name": child.get("name", ""),
+            "node": child.get("node", ""),
+            "bindinputs": bindinputs,
+        })
+    return shaderrefs
+
+
+def _parse_generic_element(elem: ET.Element) -> dict[str, Any]:
+    """Recursively capture an arbitrary XML element: tag, attributes, text, children.
+
+    Used to preserve element kinds this codec does not model in dedicated
+    structure (e.g. ``<materialassign>`` inside a ``<look>``, ``<property>``
+    inside a ``<propertyset>``, ``<member>`` inside a ``<typedef>``) so that
+    a load -> write round trip never silently drops them.
+    """
+    text = (elem.text or "").strip()
+    return {
+        "tag": _strip_ns(elem.tag),
+        "attributes": dict(elem.attrib),
+        "text": text,
+        "children": [_parse_generic_element(child) for child in elem],
+    }
 
 
 def load_mtlx(source: SourceType) -> dict[str, Any]:
@@ -122,11 +198,12 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
     for child in root:
         local = _strip_ns(child.tag)
 
-        if local == "surfacematerial":
+        if local in _MATERIAL_TAGS:
             materials.append({
                 "name": child.get("name", ""),
                 "type": local,
                 "inputs": _parse_inputs(child),
+                "shaderrefs": _parse_shaderrefs(child),
             })
 
         elif local == "nodegraph":
@@ -146,6 +223,7 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
                         "name": ng_child.get("name", ""),
                         "type": ng_local,
                         "node_type": ng_child.get("type", ""),
+                        "node_category": ng_child.get("node", ""),
                         "inputs": _parse_inputs(ng_child),
                     })
 
@@ -159,8 +237,17 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
             node_data: dict[str, Any] = {
                 "name": child.get("name", ""),
                 "type": local,
+                "node_category": child.get("node", ""),
+                "attributes": {
+                    k: v for k, v in child.attrib.items() if k != "name"
+                },
                 "inputs": _parse_inputs(child),
                 "outputs": _parse_outputs(child),
+                "children": [
+                    _parse_generic_element(gc)
+                    for gc in child
+                    if _strip_ns(gc.tag) not in _STRUCTURAL_CHILD_TAGS
+                ],
             }
             nodes.append(node_data)
 
@@ -170,6 +257,50 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
         "node_graphs": node_graphs,
         "nodes": nodes,
     }
+
+
+def _serialize_generic_element(parent: ET.Element, data: dict[str, Any]) -> None:
+    """Recursively write back an element captured by ``_parse_generic_element``."""
+    elem = ET.SubElement(parent, data.get("tag", "unknown"))
+    for k, v in data.get("attributes", {}).items():
+        if v:
+            elem.set(k, v)
+    if data.get("text"):
+        elem.text = data["text"]
+    for child_data in data.get("children", []):
+        _serialize_generic_element(elem, child_data)
+
+
+def _serialize_nodes(root: ET.Element, nodes: list[dict[str, Any]]) -> None:
+    """Serialize the generic top-level nodes bucket onto ``root`` (FACT-MTLX-101).
+
+    Before this fix, ``write_mtlx`` only serialized ``model["materials"]``
+    and ``model["node_graphs"]`` -- every other top-level construct
+    (``nodedef``, ``typedef``, ``look``, ``propertyset``, plain node
+    instances outside any node graph, all of which ``load_mtlx`` buckets
+    into ``model["nodes"]``) was silently dropped on write. This restores
+    them using the same attribute/input/output/children structure
+    ``load_mtlx`` captured, so a load -> write -> load cycle is lossless.
+    """
+    for node in nodes:
+        tag = node.get("type") or "node"
+        node_elem = ET.SubElement(root, tag)
+        node_elem.set("name", node.get("name", ""))
+        for k, v in node.get("attributes", {}).items():
+            if v and k != "name":
+                node_elem.set(k, v)
+        for inp in node.get("inputs", []):
+            inp_elem = ET.SubElement(node_elem, "input")
+            for k, v in inp.items():
+                if v:
+                    inp_elem.set(k, v)
+        for out in node.get("outputs", []):
+            out_elem = ET.SubElement(node_elem, "output")
+            for k, v in out.items():
+                if v:
+                    out_elem.set(k, v)
+        for child_data in node.get("children", []):
+            _serialize_generic_element(node_elem, child_data)
 
 
 def write_mtlx(
@@ -183,13 +314,23 @@ def write_mtlx(
     root.set("version", version)
 
     for mat in model.get("materials", []):
-        mat_elem = ET.SubElement(root, "surfacematerial")
+        mat_elem = ET.SubElement(root, mat.get("type") or "surfacematerial")
         mat_elem.set("name", mat.get("name", ""))
         for inp in mat.get("inputs", []):
             inp_elem = ET.SubElement(mat_elem, "input")
             for k, v in inp.items():
                 if v:
                     inp_elem.set(k, v)
+        for sr in mat.get("shaderrefs", []):
+            sr_elem = ET.SubElement(mat_elem, "shaderref")
+            sr_elem.set("name", sr.get("name", ""))
+            if sr.get("node"):
+                sr_elem.set("node", sr["node"])
+            for bi in sr.get("bindinputs", []):
+                bi_elem = ET.SubElement(sr_elem, "bindinput")
+                for k, v in bi.items():
+                    if v:
+                        bi_elem.set(k, v)
 
     for ng in model.get("node_graphs", []):
         ng_elem = ET.SubElement(root, "nodegraph")
@@ -199,6 +340,8 @@ def write_mtlx(
             node_elem.set("name", node.get("name", ""))
             if node.get("node_type"):
                 node_elem.set("type", node["node_type"])
+            if node.get("node_category"):
+                node_elem.set("node", node["node_category"])
             for inp in node.get("inputs", []):
                 inp_elem = ET.SubElement(node_elem, "input")
                 for k, v in inp.items():
@@ -209,6 +352,8 @@ def write_mtlx(
             for k, v in out.items():
                 if v:
                     out_elem.set(k, v)
+
+    _serialize_nodes(root, model.get("nodes", []))
 
     tree = ET.ElementTree(root)
     ET.indent(tree, space="  ")

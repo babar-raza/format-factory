@@ -1,57 +1,57 @@
 {
   "format_id": "mtlx",
-  "generated_at": "2026-07-15T16:27:17.853649+00:00",
+  "generated_at": "2026-07-15T16:58:33.923957+00:00",
   "generator": "compute_feature_coverage.py v1",
   "manifest_ref": "reports/spec-coverage/manifests/mtlx-feature-manifest.json",
   "manifest_hash": "sha256:a930d9b1f064a609e41389fdbf509030c6b522ca9291fa3b7bb330dca60d0be7",
   "coverage_summary": {
     "total": 5,
-    "implemented": 0,
-    "partial": 1,
-    "missing": 4,
-    "missing_unreasoned": 5
+    "implemented": 5,
+    "partial": 0,
+    "missing": 0,
+    "missing_unreasoned": 0
   },
   "items": [
     {
       "feature_id": "FACT-MTLX-101",
       "name": "Write-path preserves all element kinds",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/mtlx/mtlx_codec.py:_serialize_nodes",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-MTLX-102",
       "name": "Real graph connection resolution",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/mtlx/mtlx_graph.py:resolve_connections",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-MTLX-103",
       "name": "Node category (not just data-type) tracking",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'node_category')",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-MTLX-104",
       "name": "volumematerial and legacy shaderref/bindinput",
       "requirement_level": "recommended",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'volumematerial')",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-MTLX-110",
       "name": "materialx root, materials, nodegraphs",
       "requirement_level": "mandatory",
-      "status": "PARTIAL",
+      "status": "IMPLEMENTED",
       "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'surfacematerial')",
       "deferred_reason": null
     }
   ],
-  "gate_9_eligible": false
+  "gate_9_eligible": true
 }

@@ -11,13 +11,19 @@ from mtlx.mtlx_codec import (
     roundtrip,
     write_mtlx,
 )
-from mtlx.exceptions import MtlxError, MtlxParseError, MtlxWriteError
+from mtlx.exceptions import (
+    MtlxConnectionError,
+    MtlxError,
+    MtlxParseError,
+    MtlxWriteError,
+)
 from mtlx.models import MtlxDocument
 from mtlx.mtlx_analytics import (
     mtlx_materials_with_shader_count,
     mtlx_node_graph_size,
     mtlx_node_type_histogram,
 )
+from mtlx.mtlx_graph import get_connected_node, resolve_connections
 from mtlx.Compat import MtlxMaterial, MtlxNodeGraph
 
 __all__ = [
@@ -32,9 +38,12 @@ __all__ = [
     "MtlxError",
     "MtlxParseError",
     "MtlxWriteError",
+    "MtlxConnectionError",
     "mtlx_materials_with_shader_count",
     "mtlx_node_graph_size",
     "mtlx_node_type_histogram",
+    "get_connected_node",
+    "resolve_connections",
     "MtlxMaterial",
     "MtlxNodeGraph",
 ]

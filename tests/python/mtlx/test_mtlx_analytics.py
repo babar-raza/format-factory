@@ -1,7 +1,8 @@
 """Tests for mtlx_analytics.py — node type histogram, shader connection count,
 node graph size map.
 
-Spec references: FACT-MTLX-002 (node graphs), FACT-MTLX-003 (materials).
+Spec references: FACT-MTLX-002 (node graphs), FACT-MTLX-003 (materials),
+FACT-MTLX-103 (node category vs. data-type histogram grouping).
 """
 
 from __future__ import annotations
@@ -74,15 +75,52 @@ _TOP_LEVEL_NODE = (
     b"</materialx>"
 )
 
+# FACT-MTLX-103: two nodes of the *same* category (image) but *different*
+# data types (color3 vs float) -- must be merged under the category, proving
+# the histogram groups by category rather than data type.
+_SAME_CATEGORY_DIFFERENT_DATA_TYPE = (
+    b'<?xml version="1.0"?><materialx version="1.39">'
+    b'<nodegraph name="graph_cat">'
+    b'<node name="tex1" type="color3" node="image"/>'
+    b'<node name="tex2" type="float" node="image"/>'
+    b'<node name="m1" type="color3" node="mix"/>'
+    b"</nodegraph></materialx>"
+)
+
+# FACT-MTLX-103: two nodes that *share* a data type (color3) but differ in
+# category (image vs mix) -- must NOT be merged, proving data type alone
+# cannot stand in for category.
+_SAME_DATA_TYPE_DIFFERENT_CATEGORY = (
+    b'<?xml version="1.0"?><materialx version="1.39">'
+    b'<nodegraph name="graph_dt">'
+    b'<node name="tex1" type="color3" node="image"/>'
+    b'<node name="m1" type="color3" node="mix"/>'
+    b"</nodegraph></materialx>"
+)
+
 
 class TestNodeTypeHistogram:
     def test_returns_dict(self):
         result = mtlx_node_type_histogram(VALID_DIR / "node-graph.mtlx")
         assert isinstance(result, dict)
 
-    def test_counts_by_node_type_attribute(self):
+    def test_counts_by_node_category_not_data_type(self):
+        # FACT-MTLX-103 regression guard: _ONE_NODEGRAPH's nodes carry both a
+        # data-type attribute (type="float"/"color3") and a category
+        # attribute (node="fractal3d"/"mix"). The histogram must group by
+        # category -- the previous (buggy) behavior grouped by data type and
+        # produced {"float": 1, "color3": 1} instead.
         result = mtlx_node_type_histogram(_ONE_NODEGRAPH)
-        assert result == {"float": 1, "color3": 1}
+        assert result == {"fractal3d": 1, "mix": 1}
+
+    def test_same_category_different_data_type_merged(self):
+        result = mtlx_node_type_histogram(_SAME_CATEGORY_DIFFERENT_DATA_TYPE)
+        assert result == {"image": 2, "mix": 1}
+
+    def test_same_data_type_different_category_not_merged(self):
+        result = mtlx_node_type_histogram(_SAME_DATA_TYPE_DIFFERENT_CATEGORY)
+        assert result == {"image": 1, "mix": 1}
+        assert "color3" not in result
 
     def test_counts_across_multiple_node_graphs(self):
         result = mtlx_node_type_histogram(_TWO_NODEGRAPHS)
