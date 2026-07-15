@@ -7031,6 +7031,40 @@ pytest hanging indefinitely with zero output when targeting `tests/supervisor/` 
 
 ---
 
+## Section 104 — effervescent-sprouting-marshmallow: FF-HEAL-QNAME Idempotent Healing Audit Run #8 (CLOSED 2026-07-15)
+
+**Plan:** `plans/.claude/effervescent-sprouting-marshmallow.md`
+**Type:** audit_sprint (delta sprint — Run #8 of FF-HEAL-QNAME series)
+**Run ID:** FF-HEAL-QNAME-20260714-213545
+**Evidence:** `.local/evidences/FF-HEAL-QNAME-20260714-213545/`
+**Verdict:** DELTA_SPRINT_COMPLETE → CONVERGENCE_COMPLETE_ALL_GREEN
+
+Delta sprint targeting 5 open deferred taskcards from Run #7 (ACCEPTED_WITH_REMAINING_TASKCARDS, 24/24 self-check) plus V187-V193 delta assessment and pilot-fix verification.
+
+**Completed (9 taskcards, all CLOSED):**
+- TC-FHQA-002 / TC-SAL-REFRESH-001: SAL refresh attempted — DEFERRED_NO_SOURCE (14,644 facts unchanged; no new ODS/ODT spec input)
+- TC-FHQA-003 / TC-SAL-ODS-ODT-001: Eliminated 6 cross-format spec_fact_ref errors (FODS refs in ods.yaml, FODT refs in odt.yaml → all null with comments)
+- TC-FHQA-004: V187-V193 all PASS (190 PASS / 32 WARN / 1 FAIL pre-existing V102)
+- TC-FHQA-005 / TC-FODT-IRR-001: Documented 96 FODT .NET irrecoverable failures as permanent baseline (4 categories: DOM meta:* namespace loss, R422-R432 count stubs, page-info stubs, revision-tracking stubs)
+- TC-FHQA-006: Built `tools/backfill/qname_backfill_planner.py` (execution planner); V54 confirmed as cross-lane contamination validator (slot taken); backfill_completeness deferred to V224
+- TC-FHQA-007: Verified all 5 pilot-fix-lle-2026-07-14 fixes at HEAD with file:line evidence
+
+**Changes committed (this commit):**
+- `shared/qname-registry/ods.yaml` — 3 FACT-FODS-* refs → null
+- `shared/qname-registry/odt.yaml` — 3 FACT-FODT-* refs → null
+- `tools/backfill/qname_backfill_planner.py` — new execution planning tool (279 lines)
+- `plans/.claude/effervescent-sprouting-marshmallow.md` — all 9 TCs → CLOSED + TC-CLOSE-001 convergence closure
+
+**Deferred (carry forward to Run #9):**
+- TC-SAL-ID-SCHEME-001 (CRITICAL): Assign stable fact_ids to 14,644 SAL facts — dedicated machinery sprint
+- ODS/ODT SAL ingestion: Need spec body input for `/ingest-spec-sal`
+- TC-QNAME-VALIDATORS-003 / V224: validate_backfill_completeness — pending stable output dir
+
+**Test results:** 207 passed, 1 skipped (governance validator suite); pilot-fix 5/5 VERIFIED
+**QName traceability:** 73/80 = 91.25% (unchanged — ODS/ODT null refs correct; improvement requires SAL ingestion)
+
+---
+
 ## Section 103 — swift-stirring-clock: Grading Pipeline Nondeterminism Fix (CLOSED 2026-07-15)
 
 **Plan:** `plans/.claude/swift-stirring-clock.md`
