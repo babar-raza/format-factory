@@ -549,10 +549,6 @@ def semantic_verify_item(
             parsed = json.loads(raw.strip().removeprefix("```json").removesuffix("```").strip())
             if "adequate" in parsed:
                 result = {**parsed, "llm_used": True}
-                # Confidence floor: low-confidence inadequacy → benefit of the doubt
-                if not result.get("adequate") and result.get("confidence", 0) < 0.80:
-                    result["adequate"] = True
-                    result["low_confidence_override"] = True
                 # Cache successful LLM result (REQ-GRC-001)
                 _cache_grade(item_id, ev_hash, result, cache_path=cache_path)
                 return result
@@ -571,15 +567,12 @@ def semantic_verify_item(
                      cache_path=cache_path)
         return iv_result
     except Exception: pass  # noqa: E701
-    import random as _random
     _FAILURE_TTL_MINUTES = 30
-    _jitter = _random.randint(0, 5)
-    _effective_ttl = _FAILURE_TTL_MINUTES + _jitter
     _fail_result = {
         "adequate": False, "confidence": 0.0, "stub_detected": False,
         "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
         "source": "fallback_llm_unavailable", "note": "LLM unavailable; manual review",
-        "_failure_cached": True, "_failure_ttl_minutes": _effective_ttl,
+        "_failure_cached": True, "_failure_ttl_minutes": _FAILURE_TTL_MINUTES,
     }
     _cache_grade(f"fail:{item_id}", ev_hash, _fail_result, cache_path=cache_path)
     return _fail_result
@@ -959,7 +952,7 @@ def grade_all(inspection: dict, declaration: dict,
             # TC-CQGA-015 (SOL-001 Option D): cap grade at ACCEPTED_WITH_LIMITATIONS
             # when LLM is unavailable. Only LLM semantic verification may grant
             # ACCEPTED_VERIFIED. This prevents false-green grades from intermediate check.
-            _cap = sv.get("fallback_grade_cap", "ACCEPTED_WITH_LIMITATIONS")
+            _cap = sv.get("fallback_grade_cap", "UNVERIFIED")
             if g.get("supervisor_grade") == "ACCEPTED_VERIFIED":
                 g["supervisor_grade"] = _cap
                 g["acceptance_criteria_failed"] = g.get("acceptance_criteria_failed", []) + [
@@ -972,7 +965,7 @@ def grade_all(inspection: dict, declaration: dict,
             g["required_rework"] = f"Stub evidence detected (was {old_grade}): {sv.get('deficiencies', [])}"
             g["can_autonomously_repair"] = True
             g["next_prompt_instruction"] = f"REWORK: Evidence contains stub code. Provide real tests/evidence for {g['item_id']}."
-        elif not sv.get("adequate") and sv.get("confidence", 0) > 0.85:
+        elif not sv.get("adequate") and sv.get("confidence", 0) >= 0.80:
             old_grade = g["supervisor_grade"]
             new_grade = _downgrade_map.get(old_grade, old_grade)
             if new_grade != old_grade:
@@ -1021,7 +1014,7 @@ def grade_all(inspection: dict, declaration: dict,
     except Exception:
         pass  # Non-blocking
 
-    accepted_grades = ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")
+    accepted_grades = ("ACCEPTED", "ACCEPTED_VERIFIED", "UNVERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")
     accepted = [g["item_id"] for g in grades if g["supervisor_grade"] in accepted_grades]
     rework = [g["item_id"] for g in grades if g["supervisor_grade"] in ("REWORK_REQUIRED", "OVERCLAIMED")]
     rejected = [g["item_id"] for g in grades if g["supervisor_grade"] == "REJECTED"]
@@ -1049,12 +1042,15 @@ def grade_all(inspection: dict, declaration: dict,
     if has_critical:
         stop_reason = f"Critical rework: {critical_rework} items overclaimed/rejected, {test_results.get('failed', 0)} test failures"
 
-    overall_verdict = "ACCEPTED"
-    if rejected:
+    if not grades:
+        overall_verdict = "NO_ITEMS_DECLARED"
+    elif rejected:
         overall_verdict = "REJECTED"
     elif overclaimed or any(g["supervisor_grade"] == "REWORK_REQUIRED" for g in grades):
         overall_verdict = "ACCEPTED_WITH_REWORK"
-    elif all(g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS", "NOT_IN_SCOPE", "BLOCKED_EXTERNAL_GATE") for g in grades):
+    elif all(g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "UNVERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS", "NOT_IN_SCOPE", "BLOCKED_EXTERNAL_GATE") for g in grades):
+        overall_verdict = "ACCEPTED"
+    else:
         overall_verdict = "ACCEPTED"
 
     # R106: Evidence quality score — ratio of ACCEPTED_VERIFIED to total accepted
@@ -1168,7 +1164,7 @@ def write_outputs(review: dict, output_dir: Path) -> None:
     )
 
     # Accepted items
-    accepted = [g for g in review["item_grades"] if g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")]
+    accepted = [g for g in review["item_grades"] if g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "UNVERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")]
     (output_dir / "accepted-items.yaml").write_text(
         yaml.dump(accepted, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )

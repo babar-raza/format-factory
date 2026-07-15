@@ -18,6 +18,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from atomic_io import atomic_write_json
+
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent
 
@@ -248,7 +250,7 @@ def repair_global_continuation_signal(
     signal["global_repair_sprint"] = sprint_id
     signal["global_repair_at"] = _now_iso()
 
-    CONTINUATION_SIGNAL_PATH.write_text(json.dumps(signal, indent=2), encoding="utf-8")
+    atomic_write_json(CONTINUATION_SIGNAL_PATH, signal)
 
     return {
         "status": "REPAIRED",

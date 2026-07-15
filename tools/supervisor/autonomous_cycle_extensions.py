@@ -186,6 +186,45 @@ def append_maturity_trend(repo_root: Path) -> None:
         print(f"  WARNING: Maturity trend failed (non-blocking): {err}")
 
 
+def append_grading_history(repo_root: Path, sprint_id: str, run_id: str,
+                           timestamp: str, review: dict, manifest: dict) -> None:
+    """TC-HIST-DEDUP-001: Append grading entry with sprint_id dedup."""
+    history_path = repo_root / "reports" / "supervisor" / "grading-history.jsonl"
+    history_path.parent.mkdir(parents=True, exist_ok=True)
+    existing_ids: set[str] = set()
+    if history_path.exists():
+        for line in history_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                existing_ids.add(json.loads(line).get("sprint_id", ""))
+            except Exception:
+                pass
+    if sprint_id in existing_ids:
+        print(f"  grading-history: sprint_id={sprint_id} already exists — skipping")
+        return
+    grades = review.get("grades", [])
+    accepted = [g for g in grades if g.get("supervisor_grade", "").startswith("ACCEPTED")]
+    rework = [g for g in grades if g.get("supervisor_grade") == "REWORK_REQUIRED"]
+    overclaimed = [g for g in grades if g.get("supervisor_grade") == "OVERCLAIMED"]
+    entry = {
+        "sprint_id": sprint_id,
+        "run_id": run_id,
+        "timestamp": timestamp,
+        "verdict": review.get("overall_verdict", "ACCEPTED"),
+        "accepted_count": len(accepted),
+        "rework_count": len(rework),
+        "overclaimed_count": len(overclaimed),
+        "rework_items": [g.get("item_id", "") for g in rework],
+        "continuation_state": manifest.get("autonomous_continue", False),
+        "exit_code": manifest.get("exit_code", 0),
+    }
+    with open(history_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(entry) + "\n")
+    print(f"  grading-history: appended sprint_id={sprint_id}")
+
+
 def load_selected_gap_ids(repo_root: Path) -> set:
     """TC-MACH-CAP-002: Load selected product gap IDs for priority boosting.
 

@@ -30,7 +30,7 @@ def _make_review(
 ) -> dict:
     """Build a minimal review dict for testing write_outputs()."""
     accepted = [g["item_id"] for g in item_grades if g["supervisor_grade"] in
-                ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS")]
+                ("ACCEPTED", "ACCEPTED_VERIFIED", "UNVERIFIED", "ACCEPTED_WITH_LIMITATIONS")]
     rework = [g["item_id"] for g in item_grades if g["supervisor_grade"] in
               ("REWORK_REQUIRED", "OVERCLAIMED")]
     return {

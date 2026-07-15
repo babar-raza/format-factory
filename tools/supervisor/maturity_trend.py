@@ -27,12 +27,14 @@ def _verdict_score(verdict: str) -> float:
     mapping = {
         "ACCEPTED_VERIFIED": 1.0,
         "ACCEPTED": 0.85,
+        "UNVERIFIED": 0.70,
         "ACCEPTED_WITH_REWORK": 0.65,
         "ACCEPTED_WITH_WARNINGS": 0.70,
         "CONDITIONAL_PASS": 0.60,
         "REWORK_REQUIRED": 0.30,
         "REJECTED": 0.10,
         "EVIDENCE_QUALITY_ZERO": 0.05,
+        "NO_ITEMS_DECLARED": 0.0,
     }
     return mapping.get(verdict.upper().replace(" ", "_"), 0.50)
 

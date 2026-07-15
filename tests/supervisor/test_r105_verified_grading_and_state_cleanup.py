@@ -273,7 +273,7 @@ def test_continuation_signal_true_when_all_accepted():
     assert result["autonomous_continue"] is True
     assert result["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK")
     assert result["item_grades"][0]["supervisor_grade"] in (
-        "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS"
+        "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "UNVERIFIED"
     )
 
 

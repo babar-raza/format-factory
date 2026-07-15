@@ -193,7 +193,7 @@ class TestSemanticVerificationDowngradeOnly:
         }
         declaration = {"planned_work_items": []}
         result = grade_all(inspection, declaration)
-        assert result["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK")
+        assert result["overall_verdict"] == "NO_ITEMS_DECLARED"
         assert result["evidence_quality_score"] == 0.0
 
     def test_grade_all_preserves_deterministic_grades_without_llm(self):
@@ -238,7 +238,7 @@ class TestSemanticVerificationDowngradeOnly:
         with patch("grade_declared_work.semantic_verify_item", return_value=mock_sv):
             result = grade_all(inspection, declaration)
         w1 = next(g for g in result["item_grades"] if g["item_id"] == "W1")
-        assert w1["supervisor_grade"] in ("ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS")
+        assert w1["supervisor_grade"] in ("ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "UNVERIFIED")
         sv = w1.get("semantic_verification", {})
         assert sv.get("llm_used") is False
 
@@ -581,8 +581,8 @@ class TestDowngradeContract:
         w4 = next(g for g in result["item_grades"] if g["item_id"] == "W4")
         assert w4["supervisor_grade"] == "ACCEPTED_VERIFIED"
 
-    def test_mock_llm_borderline_confidence_no_downgrade(self):
-        """Confidence 0.82 is below 0.85 threshold — no downgrade."""
+    def test_mock_llm_borderline_confidence_causes_downgrade(self):
+        """Confidence 0.82 is at/above 0.80 threshold — downgrade applies."""
         from grade_declared_work import grade_all
 
         inspection = {
@@ -627,7 +627,7 @@ class TestDowngradeContract:
             result = grade_all(inspection, declaration)
 
         w5 = next(g for g in result["item_grades"] if g["item_id"] == "W5")
-        assert w5["supervisor_grade"] == "ACCEPTED_VERIFIED"
+        assert w5["supervisor_grade"] == "ACCEPTED_WITH_LIMITATIONS"
 
 
 # ── 7. Semantic Quality Score ─────────────────────────────────────────────
@@ -1139,8 +1139,8 @@ class TestTestsSupportingPopulation:
 class TestConfidenceFloor:
     """Tests for low-confidence override in semantic_verify_item."""
 
-    def test_low_confidence_inadequate_overridden(self):
-        """adequate=false with confidence < 0.80 → adequate=true with override flag."""
+    def test_low_confidence_inadequate_preserved(self):
+        """adequate=false with confidence < 0.80 → stays inadequate (no override)."""
         from grade_declared_work import semantic_verify_item
 
         mock_response = json.dumps({
@@ -1150,7 +1150,6 @@ class TestConfidenceFloor:
             "deficiencies": ["Missing edge case test"],
         })
 
-        # Create minimal test fixture
         import tempfile
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp = Path(tmpdir)
@@ -1168,8 +1167,8 @@ class TestConfidenceFloor:
             with patch("grade_declared_work._sv_llm_call", return_value=mock_response):
                 result = semantic_verify_item(inspection, decl_item, tmp)
 
-        assert result["adequate"] is True
-        assert result["low_confidence_override"] is True
+        assert result["adequate"] is False
+        assert result.get("low_confidence_override") is not True
         assert result["llm_used"] is True
 
     def test_high_confidence_inadequate_not_overridden(self):

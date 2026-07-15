@@ -19,11 +19,18 @@ import json
 import sys
 from pathlib import Path
 
+from atomic_io import atomic_write_json
+
 # Governance block registry (TC-CQGA2-R1) — single source of truth for structural GOV_BLOCKs
 try:
-    from tools.supervisor.governance_block_registry import filter_structural_blocks
+    from tools.supervisor.governance_block_registry import (
+        STRUCTURAL_GOVBLOCK_STOP_REASON,
+        filter_structural_blocks,
+    )
 except ImportError:
     # Fallback when imported without repo root on sys.path
+    STRUCTURAL_GOVBLOCK_STOP_REASON = "structural_govblock_must_be_resolved_first"
+
     def filter_structural_blocks(items):  # type: ignore[misc]
         _FALLBACK = {
             "GOV_BLOCK:monolith_detection_validator",
@@ -31,6 +38,7 @@ except ImportError:
             "GOV_BLOCK:validate_multi_responsibility_file",
             "GOV_BLOCK:validate_analytics_naming_enforced",
             "GOV_BLOCK:validate_source_stubs",
+            "GOV_BLOCK:validate_promoted_code_changed_without_reopening",
         }
         return [i for i in items if any(i.startswith(v) or i == v for v in _FALLBACK)]
 
@@ -511,7 +519,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
     if iteration >= max_iterations:
         _old_iter = iteration
         signal["iteration"] = 0
-        signal_path.write_text(json.dumps(signal, indent=2) + "\n", encoding="utf-8")
+        atomic_write_json(signal_path, signal)
         iteration = 0
         print(f"GOVERNED_ROLLOVER: iteration reset from {_old_iter} to 0", file=sys.stderr)
 
@@ -590,7 +598,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
         structural_blocks = filter_structural_blocks(rework_items)
         if structural_blocks:
             return _stop(
-                "structural_govblock_must_be_resolved_first",
+                STRUCTURAL_GOVBLOCK_STOP_REASON,
                 (
                     f"Structural GOV_BLOCK detected — product deepening is blocked until "
                     f"analytics separation resolves: {structural_blocks[:3]}. "

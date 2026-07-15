@@ -1897,32 +1897,33 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _sc_err:
             print(f"  WARNING: Sprint contract write failed: {_sc_err}")
 
-    # SUP-RECT-005: Circuit breaker for zero-task loops (inline + delegated to extensions)
+    # SUP-RECT-005: Rolling-window circuit breaker for zero-task loops
     _zero_task_counter_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
+    _WINDOW_SIZE = 10
+    _THRESHOLD = 7
     _all_items = next_work.get("items", next_work.get("work_items", []))
-    if not _all_items:
-        try:
-            _ztc: dict = {}
-            if _zero_task_counter_path.exists():
-                _ztc = json.loads(_zero_task_counter_path.read_text(encoding="utf-8"))
-            _ztc["count"] = _ztc.get("count", 0) + 1
-            _ztc.setdefault("sprints", []).append(sprint_id)
-            _zero_task_counter_path.parent.mkdir(parents=True, exist_ok=True)
-            _zero_task_counter_path.write_text(json.dumps(_ztc, indent=2), encoding="utf-8")
-            if _ztc["count"] >= 3:
-                print(f"  CIRCUIT BREAKER: {_ztc['count']} consecutive zero-task cycles detected!")
-                review.setdefault("continuation_warnings", []).append(
-                    f"CIRCUIT_BREAKER: {_ztc['count']} zero-task cycles ({_ztc['sprints'][-3:]})"
-                )
-        except Exception as _ztc_err:
-            print(f"  WARNING: zero-task-counter update failed: {_ztc_err}")
-    else:
-        # Reset counter when tasks are present
-        try:
-            if _zero_task_counter_path.exists():
-                _zero_task_counter_path.write_text(json.dumps({"count": 0, "sprints": []}, indent=2), encoding="utf-8")
-        except Exception:
-            pass
+    _is_zero = not _all_items
+    try:
+        _ztc: dict = {}
+        if _zero_task_counter_path.exists():
+            _ztc = json.loads(_zero_task_counter_path.read_text(encoding="utf-8"))
+        _window = _ztc.get("window", [])
+        _window.append({"sprint_id": sprint_id, "zero": _is_zero})
+        _window = _window[-_WINDOW_SIZE:]
+        _zero_count = sum(1 for w in _window if w.get("zero"))
+        _ztc["window"] = _window
+        _ztc["count"] = _zero_count
+        _ztc["window_size"] = _WINDOW_SIZE
+        _zero_task_counter_path.parent.mkdir(parents=True, exist_ok=True)
+        _zero_task_counter_path.write_text(json.dumps(_ztc, indent=2), encoding="utf-8")
+        if _zero_count >= _THRESHOLD:
+            print(f"  CIRCUIT BREAKER: {_zero_count}/{_WINDOW_SIZE} of last sprints produced zero items!")
+            review.setdefault("continuation_warnings", []).append(
+                f"CIRCUIT_BREAKER: {_zero_count}/{_WINDOW_SIZE} recent sprints produced zero items"
+            )
+            review.setdefault("hard_stops", []).append("zero_task_circuit_breaker")
+    except Exception as _ztc_err:
+        print(f"  WARNING: zero-task-counter update failed: {_ztc_err}")
 
     # Steps 4b+4c: Prompt quality, zero-task circuit breaker, completeness
     # Delegated to autonomous_cycle_extensions.py (TC-SGOV-008)
