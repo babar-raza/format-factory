@@ -26,13 +26,19 @@ class TestCompatImport:
         from ubl import Compat
 
         assert hasattr(Compat, "UblInvoice")
+        assert hasattr(Compat, "UblCreditNote")
         assert hasattr(Compat, "UblOrder")
         assert hasattr(Compat, "UblLineItem")
 
     def test_compat_all_matches_exports(self):
         from ubl import Compat
 
-        assert set(Compat.__all__) == {"UblInvoice", "UblOrder", "UblLineItem"}
+        assert set(Compat.__all__) == {
+            "UblInvoice",
+            "UblCreditNote",
+            "UblOrder",
+            "UblLineItem",
+        }
 
 
 class TestSpecImport:

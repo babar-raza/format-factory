@@ -9,6 +9,17 @@
   - UblInvoice
   python_file: src/python/ubl/spec/document/invoice.py
   dotnet_file: null
+- qname: ubl:credit-note
+  namespace_uri: "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
+  local_name: CreditNote
+  canonical_class: Ubl.CreditNote
+  spec_fact_ref: FACT-UBL-105
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - UblCreditNote
+  python_file: src/python/ubl/spec/document/credit_note.py
+  dotnet_file: null
 - qname: ubl:order
   namespace_uri: "urn:oasis:names:specification:ubl:schema:xsd:Order-2"
   local_name: Order

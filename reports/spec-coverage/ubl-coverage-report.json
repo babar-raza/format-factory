@@ -1,65 +1,65 @@
 {
   "format_id": "ubl",
-  "generated_at": "2026-07-15T16:27:17.514792+00:00",
+  "generated_at": "2026-07-15T16:55:38.094026+00:00",
   "generator": "compute_feature_coverage.py v1",
   "manifest_ref": "reports/spec-coverage/manifests/ubl-feature-manifest.json",
   "manifest_hash": "sha256:da0720ede2fbc8e96a78cf7644f2816ce3eb65d29a3425bae6986956ecdd9bcd",
   "coverage_summary": {
     "total": 6,
-    "implemented": 0,
-    "partial": 3,
-    "missing": 3,
-    "missing_unreasoned": 6
+    "implemented": 6,
+    "partial": 0,
+    "missing": 0,
+    "missing_unreasoned": 0
   },
   "items": [
     {
       "feature_id": "FACT-UBL-101",
       "name": "Tax totals (cac:TaxTotal / TaxSubtotal)",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/ubl/spec/document/credit_note.py:tax_total",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-UBL-102",
       "name": "Legal monetary total (cac:LegalMonetaryTotal)",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/ubl/spec/document/credit_note.py:monetary_total",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-UBL-103",
       "name": "Full party depth (address/VAT/legal entity/endpoint)",
       "requirement_level": "mandatory",
-      "status": "MISSING",
-      "evidence": "not found",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/ubl/ubl_codec.py:_write_postal_address",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-UBL-104",
       "name": "Write-side party round-trip fix",
       "requirement_level": "mandatory",
-      "status": "PARTIAL",
-      "evidence": "src/python/ubl/spec/document/invoice.py: (text match for 'AccountingSupplierParty')",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/ubl/spec/document/credit_note.py: (text match for 'AccountingSupplierParty')",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-UBL-105",
       "name": "CreditNote document type",
       "requirement_level": "mandatory",
-      "status": "PARTIAL",
-      "evidence": "src/python/ubl/ubl_codec.py: (text match for 'credit_note')",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/ubl/Compat/ubl_credit_note.py:UblCreditNote",
       "deferred_reason": null
     },
     {
       "feature_id": "FACT-UBL-110",
       "name": "Invoice and Order document types",
       "requirement_level": "mandatory",
-      "status": "PARTIAL",
+      "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/Compat/ubl_invoice.py:UblInvoice",
       "deferred_reason": null
     }
   ],
-  "gate_9_eligible": false
+  "gate_9_eligible": true
 }

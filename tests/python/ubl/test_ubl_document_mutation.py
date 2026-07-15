@@ -90,6 +90,22 @@ class TestMutationRoundtrip:
             reloaded_ids = [line["id"] for line in reloaded["lines"]]
             assert "O-NEW" in reloaded_ids
 
+    def test_add_creditnote_line_survives_reload(self):
+        """Same mutation-roundtrip contract holds for CreditNote documents."""
+        model = load_ubl(VALID_DIR / "minimal-creditnote.xml")
+        original_count = len(model["lines"])
+        model["lines"].append(
+            {"id": "CN-NEW", "quantity": "1", "amount": "5.00", "item_name": "Extra Widget"}
+        )
+        with tempfile.TemporaryDirectory() as td:
+            dest = Path(td) / "mutated_creditnote.xml"
+            write_ubl(model, dest)
+            reloaded = load_ubl(dest)
+            assert len(reloaded["lines"]) == original_count + 1
+            reloaded_ids = [line["id"] for line in reloaded["lines"]]
+            assert "CN-NEW" in reloaded_ids
+            assert reloaded["document_type"] == "CreditNote"
+
     def test_document_id_unchanged_by_line_mutation(self):
         """Mutating lines must not disturb unrelated header fields."""
         model = load_ubl(VALID_DIR / "minimal-invoice.xml")

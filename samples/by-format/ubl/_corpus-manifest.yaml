@@ -33,6 +33,33 @@ valid_samples:
     description: "Minimal UBL 2.1 Order document with required fields. Tests document type discrimination between Invoice and Order root elements."
     structural_test: PASS
 
+  - filename: valid/invoice-full-depth.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: full-party-and-totals-depth
+    description: "UBL Invoice with full party depth (postal address, VAT/tax scheme, legal entity, contact, Peppol endpoint id) on both parties, plus cac:TaxTotal/TaxSubtotal and cac:LegalMonetaryTotal. Tests FACT-UBL-101/102/103 parse+write round-trip."
+    structural_test: PASS
+
+  - filename: valid/minimal-creditnote.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: alternate-document-type
+    description: "Minimal UBL 2.3 CreditNote document. Tests document type discrimination for the CreditNote-2 namespace (FACT-UBL-105)."
+    structural_test: PASS
+
+  - filename: valid/creditnote-with-totals.xml
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    category: alternate-document-type-with-totals
+    description: "UBL 2.3 CreditNote with cac:TaxTotal/TaxSubtotal and cac:LegalMonetaryTotal. Tests tax/monetary total depth on the CreditNote document type."
+    structural_test: PASS
+
 invalid_samples:
   - filename: invalid/missing-mandatory.xml
     source: project-owned-synthetic
@@ -45,15 +72,17 @@ invalid_samples:
     error_type: MissingMandatoryElement
 
 summary:
-  valid_count: 3
+  valid_count: 6
   invalid_count: 1
-  total_count: 4
-  structural_pass_rate: "3/3"
+  total_count: 7
+  structural_pass_rate: "6/6"
   error_detection_rate: "1/1"
   categories_covered:
     - minimal-valid
     - multi-line
     - alternate-document-type
+    - full-party-and-totals-depth
+    - alternate-document-type-with-totals
     - invalid-missing-mandatory-element
   gate_3_categories_met: true
   awaiting_human_iv: true

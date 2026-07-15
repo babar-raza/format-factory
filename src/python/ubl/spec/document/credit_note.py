@@ -1,36 +1,40 @@
 """
-UBL structural element: ubl:invoice
+UBL structural element: ubl:credit-note
 
 Spec ref: OASIS UBL 2.3 Specification
-Fact ref: FACT-UBL-002
-QName: ubl:invoice
-Canonical class: Ubl.Invoice
-Facade: UblInvoice
+Fact ref: FACT-UBL-105
+QName: ubl:credit-note
+Canonical class: Ubl.CreditNote
+Facade: UblCreditNote
 """
 from __future__ import annotations
 from typing import Any
 
 
-class Invoice:
-    """Canonical spec-shaped class for ubl:invoice (architecture_only marker)."""
+class CreditNote:
+    """Canonical spec-shaped class for ubl:credit-note (architecture_only marker).
 
-    spec_qname = "ubl:invoice"
-    spec_fact_ref = "FACT-UBL-002"
-    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
-    local_name = "Invoice"
-    facade_names = ["UblInvoice"]
+    Structurally near-identical to ubl:invoice (same cbc:/cac: component set);
+    mandatory Peppol pairing for corrections/refunds against a prior Invoice.
+    """
+
+    spec_qname = "ubl:credit-note"
+    spec_fact_ref = "FACT-UBL-105"
+    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
+    local_name = "CreditNote"
+    facade_names = ["UblCreditNote"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data
 
     @property
     def doc_id(self) -> str:
-        """Return the invoice document ID (cbc:ID)."""
+        """Return the credit note document ID (cbc:ID)."""
         return str(self._data.get("id", ""))
 
     @property
     def issue_date(self) -> str:
-        """Return the invoice issue date string (cbc:IssueDate)."""
+        """Return the credit note issue date string (cbc:IssueDate)."""
         return str(self._data.get("issue_date", ""))
 
     @property
@@ -60,7 +64,7 @@ class Invoice:
 
     @property
     def lines(self) -> list[dict[str, Any]]:
-        """Return the list of invoice line items (cac:InvoiceLine)."""
+        """Return the list of credit note line items (cac:CreditNoteLine)."""
         return list(self._data.get("lines", []))
 
     def to_dict(self) -> dict[str, Any]:
@@ -68,4 +72,4 @@ class Invoice:
         return dict(self._data)
 
     def __repr__(self) -> str:
-        return f"Invoice(id={self.doc_id!r})"
+        return f"CreditNote(id={self.doc_id!r})"

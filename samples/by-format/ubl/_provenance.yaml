@@ -42,6 +42,36 @@ samples:
     copyright: "format-factory project"
     provenance_status: confirmed
 
+  - sample_id: valid/invoice-full-depth.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree) via ubl.ubl_codec.write_ubl"
+    generation_script: "ad-hoc (write_ubl round-trip generation, ubl feature-completeness sprint)"
+    generation_date: "2026-07-15"
+    input_content: "Programmatic: UBL 2.1 Invoice with full party depth (PostalAddress, PartyTaxScheme, PartyLegalEntity, Contact, EndpointID) on both supplier and customer, cac:TaxTotal/TaxSubtotal, and cac:LegalMonetaryTotal"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/minimal-creditnote.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree) via ubl.ubl_codec.write_ubl"
+    generation_script: "ad-hoc (write_ubl round-trip generation, ubl feature-completeness sprint)"
+    generation_date: "2026-07-15"
+    input_content: "Programmatic: minimal UBL 2.3 CreditNote with ID, IssueDate, supplier/customer party names, and one CreditNoteLine"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/creditnote-with-totals.xml
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree) via ubl.ubl_codec.write_ubl"
+    generation_script: "ad-hoc (write_ubl round-trip generation, ubl feature-completeness sprint)"
+    generation_date: "2026-07-15"
+    input_content: "Programmatic: UBL 2.3 CreditNote with cac:TaxTotal/TaxSubtotal and cac:LegalMonetaryTotal"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
   - sample_id: invalid/missing-mandatory.xml
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib (xml.etree.ElementTree)"
