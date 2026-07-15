@@ -1,0 +1,60 @@
+{
+  "format_id": "qoi",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit-portfolio-proof",
+  "spec_source": {
+    "url": "https://qoiformat.org/qoi-specification.pdf",
+    "title": "Quite OK Image Format Specification",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-QOI-101",
+      "category": "data_access",
+      "name": "Real pixel data decode",
+      "requirement_level": "mandatory",
+      "spec_citation": "QOI_OP chunk decode loop",
+      "description": "Decode the QOI chunk stream into actual pixel values, not just header metadata.",
+      "evidence_keywords": [
+        "_decode_pixels",
+        "decode_pixels"
+      ]
+    },
+    {
+      "feature_id": "FACT-QOI-102",
+      "category": "field",
+      "name": "Colorspace field",
+      "requirement_level": "mandatory",
+      "spec_citation": "Header colorspace byte",
+      "description": "Parse and expose the colorspace byte.",
+      "evidence_keywords": [
+        "colorspace"
+      ]
+    },
+    {
+      "feature_id": "FACT-QOI-103",
+      "category": "data_access",
+      "name": "Pixel encode (write path)",
+      "requirement_level": "mandatory",
+      "spec_citation": "QOI_OP chunk encode",
+      "description": "Encode real pixel data back into the QOI chunk stream.",
+      "evidence_keywords": [
+        "encode_qoi"
+      ]
+    },
+    {
+      "feature_id": "FACT-QOI-104",
+      "category": "api_capability",
+      "name": "Streaming/lazy decode for large images",
+      "requirement_level": "optional",
+      "spec_citation": "N/A - library API surface",
+      "description": "Decode without loading the full pixel buffer into memory at once.",
+      "evidence_keywords": [
+        "stream_decode",
+        "lazy_decode",
+        "iter_pixels"
+      ]
+    }
+  ]
+}

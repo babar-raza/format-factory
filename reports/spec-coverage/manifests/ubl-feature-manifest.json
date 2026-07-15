@@ -1,0 +1,86 @@
+{
+  "format_id": "ubl",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "https://docs.oasis-open.org/ubl/UBL-2.3.html",
+    "title": "OASIS Universal Business Language 2.3",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-UBL-101",
+      "category": "field",
+      "name": "Tax totals (cac:TaxTotal / TaxSubtotal)",
+      "requirement_level": "mandatory",
+      "spec_citation": "TaxTotal/TaxSubtotal common aggregate components",
+      "description": "Legally mandatory VAT breakdown for any real e-invoice.",
+      "evidence_keywords": [
+        "tax_total",
+        "TaxTotal"
+      ]
+    },
+    {
+      "feature_id": "FACT-UBL-102",
+      "category": "field",
+      "name": "Legal monetary total (cac:LegalMonetaryTotal)",
+      "requirement_level": "mandatory",
+      "spec_citation": "LegalMonetaryTotal",
+      "description": "Line/tax-exclusive/tax-inclusive/payable amounts - mandatory on any real invoice.",
+      "evidence_keywords": [
+        "monetary_total",
+        "LegalMonetaryTotal"
+      ]
+    },
+    {
+      "feature_id": "FACT-UBL-103",
+      "category": "field",
+      "name": "Full party depth (address/VAT/legal entity/endpoint)",
+      "requirement_level": "mandatory",
+      "spec_citation": "PostalAddress, PartyTaxScheme, PartyLegalEntity, Contact, EndpointID",
+      "description": "Party info beyond name-only - required for tax identification and Peppol routing.",
+      "evidence_keywords": [
+        "postal_address",
+        "party_tax_scheme",
+        "endpoint_id"
+      ]
+    },
+    {
+      "feature_id": "FACT-UBL-104",
+      "category": "data_access",
+      "name": "Write-side party round-trip fix",
+      "requirement_level": "mandatory",
+      "spec_citation": "N/A - correctness bug",
+      "description": "write_ubl must re-emit party data that load_ubl parsed (currently silently dropped).",
+      "evidence_keywords": [
+        "AccountingSupplierParty",
+        "write_party"
+      ]
+    },
+    {
+      "feature_id": "FACT-UBL-105",
+      "category": "document_type",
+      "name": "CreditNote document type",
+      "requirement_level": "mandatory",
+      "spec_citation": "CreditNote document type",
+      "description": "Structurally near-identical to Invoice; mandatory Peppol pairing for corrections/refunds.",
+      "evidence_keywords": [
+        "CreditNote",
+        "credit_note"
+      ]
+    },
+    {
+      "feature_id": "FACT-UBL-110",
+      "category": "document_type",
+      "name": "Invoice and Order document types",
+      "requirement_level": "mandatory",
+      "spec_citation": "Invoice-2, Order-2 namespaces",
+      "description": "Already implemented (minimal field depth) in Phase 1/2.",
+      "evidence_keywords": [
+        "Invoice",
+        "Order"
+      ]
+    }
+  ]
+}

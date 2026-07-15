@@ -1,0 +1,96 @@
+{
+  "format_id": "nrrd",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "http://teem.sourceforge.net/nrrd/format.html",
+    "title": "NRRD Format Specification (Teem project)",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-NRRD-101",
+      "category": "data_access",
+      "name": "Payload decode into typed, shaped array",
+      "requirement_level": "mandatory",
+      "spec_citation": "Data section per type/sizes/encoding",
+      "description": "Decode raw/gzip payload into real typed numeric values reshaped per sizes, not just a byte count.",
+      "evidence_keywords": [
+        "decode_nrrd_data",
+        "to_array",
+        "get_array"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-102",
+      "category": "safety_validation",
+      "name": "Endianness byte-swapping",
+      "requirement_level": "mandatory",
+      "spec_citation": "endian field",
+      "description": "Byte-swap multi-byte typed data when host order differs from the declared endian field.",
+      "evidence_keywords": [
+        "byteswap",
+        "swap_bytes"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-103",
+      "category": "field",
+      "name": "line skip / byte skip offset handling",
+      "requirement_level": "mandatory",
+      "spec_citation": "line skip, byte skip fields",
+      "description": "Honor line skip/byte skip when computing the data offset (currently a correctness bug when ignored).",
+      "evidence_keywords": [
+        "line_skip",
+        "byte_skip"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-104",
+      "category": "field",
+      "name": "kinds (domain vs range axis semantics)",
+      "requirement_level": "mandatory",
+      "spec_citation": "kinds field",
+      "description": "Distinguish spatial/domain axes from vector/tensor/color-channel range axes.",
+      "evidence_keywords": [
+        "kinds"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-105",
+      "category": "field",
+      "name": "space / space directions / space origin",
+      "requirement_level": "mandatory",
+      "spec_citation": "Orientation fields",
+      "description": "Map array indices to physical coordinates - essential for real scientific/medical use.",
+      "evidence_keywords": [
+        "space_directions",
+        "space_origin"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-106",
+      "category": "field",
+      "name": "Key/value pair parsing (key:=value)",
+      "requirement_level": "recommended",
+      "spec_citation": "NRRD0002+ key/value pairs",
+      "description": "Correctly parse := lines instead of mis-splitting on the generic ':' partition.",
+      "evidence_keywords": [
+        "key_value_pairs",
+        "parse_key_value"
+      ]
+    },
+    {
+      "feature_id": "FACT-NRRD-110",
+      "category": "encoding",
+      "name": "raw and gzip encodings",
+      "requirement_level": "mandatory",
+      "spec_citation": "encoding field",
+      "description": "Already implemented (byte-count only) in Phase 1/2; FACT-NRRD-101 makes this a real decode.",
+      "evidence_keywords": [
+        "encoding"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "format_id": "xliff",
+  "generated_at": "2026-07-15T16:27:16.882239+00:00",
+  "generator": "compute_feature_coverage.py v1",
+  "manifest_ref": "reports/spec-coverage/manifests/xliff-feature-manifest.json",
+  "manifest_hash": "sha256:6049ce7b94e179878c244f075fb2cc20d9a4a8fed85ca98bc40748215a4d1f86",
+  "coverage_summary": {
+    "total": 5,
+    "implemented": 0,
+    "partial": 2,
+    "missing": 3,
+    "missing_unreasoned": 5
+  },
+  "items": [
+    {
+      "feature_id": "FACT-XLIFF-101",
+      "name": "Structural inline markup preservation",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-XLIFF-102",
+      "name": "Segment state write-back",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/xliff/spec/file/segment.py: (text match for '\"state\"')",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-XLIFF-103",
+      "name": "Notes preservation",
+      "requirement_level": "recommended",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-XLIFF-104",
+      "name": "Group hierarchy preservation",
+      "requirement_level": "recommended",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-XLIFF-110",
+      "name": "file/unit/segment core structure",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/xliff/models.py:source_language",
+      "deferred_reason": null
+    }
+  ],
+  "gate_9_eligible": false
+}

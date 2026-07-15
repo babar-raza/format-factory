@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:format-factory:spec-coverage:coverage-report:v1",
+  "title": "Spec Feature Coverage Report Schema",
+  "description": "Output of compute_feature_coverage.py — cross-references a feature-manifest against the actual src/python/<fmt>/ implementation via static AST analysis. This is the artifact Gate 9 requires: implementation_authorized may only be true when gate_9_eligible is true here.",
+  "type": "object",
+  "required": ["format_id", "generated_at", "generator", "manifest_ref", "manifest_hash", "coverage_summary", "items", "gate_9_eligible"],
+  "additionalProperties": false,
+  "properties": {
+    "format_id": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "generator": {"type": "string"},
+    "manifest_ref": {"type": "string", "description": "Path to the feature-manifest.json this report was computed against."},
+    "manifest_hash": {"type": "string", "description": "SHA-256 of the manifest file at computation time, so a stale report can be detected if the manifest changes later."},
+    "coverage_summary": {
+      "type": "object",
+      "required": ["total", "implemented", "partial", "missing", "missing_unreasoned"],
+      "additionalProperties": false,
+      "properties": {
+        "total": {"type": "integer"},
+        "implemented": {"type": "integer"},
+        "partial": {"type": "integer"},
+        "missing": {"type": "integer"},
+        "missing_unreasoned": {"type": "integer", "description": "MISSING or PARTIAL items with no deferred_reason set. Must be 0 for gate_9_eligible."}
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["feature_id", "name", "requirement_level", "status", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "feature_id": {"type": "string"},
+          "name": {"type": "string"},
+          "requirement_level": {"type": "string", "enum": ["mandatory", "recommended", "optional"]},
+          "status": {"type": "string", "enum": ["IMPLEMENTED", "PARTIAL", "MISSING"]},
+          "evidence": {"type": "string", "description": "file:function/class evidence found by the static scanner, or 'not found' for MISSING."},
+          "deferred_reason": {"type": ["string", "null"], "description": "Required (non-null) when status is PARTIAL or MISSING and the gap is a conscious scope decision rather than an open defect."}
+        }
+      }
+    },
+    "gate_9_eligible": {
+      "type": "boolean",
+      "description": "true only when coverage_summary.missing_unreasoned == 0."
+    }
+  }
+}

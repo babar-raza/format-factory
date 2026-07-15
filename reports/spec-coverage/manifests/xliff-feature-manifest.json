@@ -1,0 +1,74 @@
+{
+  "format_id": "xliff",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html",
+    "title": "XLIFF Version 2.1 (OASIS Standard)",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-XLIFF-101",
+      "category": "data_access",
+      "name": "Structural inline markup preservation",
+      "requirement_level": "mandatory",
+      "spec_citation": "Inline elements pc/sc/ec/ph/mrk",
+      "description": "Preserve pc/sc/ec/ph/mrk with id/dataRef as structured objects, not flattened plain text; round-trip must reproduce the original inline structure exactly.",
+      "evidence_keywords": [
+        "InlineElement",
+        "parse_inline_content",
+        "serialize_inline_content"
+      ]
+    },
+    {
+      "feature_id": "FACT-XLIFF-102",
+      "category": "field",
+      "name": "Segment state write-back",
+      "requirement_level": "mandatory",
+      "spec_citation": "unit/segment @state attribute",
+      "description": "write_xliff must emit the state attribute that load_xliff reads.",
+      "evidence_keywords": [
+        "segment_state",
+        "\"state\""
+      ]
+    },
+    {
+      "feature_id": "FACT-XLIFF-103",
+      "category": "element",
+      "name": "Notes preservation",
+      "requirement_level": "recommended",
+      "spec_citation": "notes/note elements",
+      "description": "Preserve notes attached to file/group/unit.",
+      "evidence_keywords": [
+        "notes",
+        "note"
+      ]
+    },
+    {
+      "feature_id": "FACT-XLIFF-104",
+      "category": "element",
+      "name": "Group hierarchy preservation",
+      "requirement_level": "recommended",
+      "spec_citation": "group element nesting",
+      "description": "Preserve group wrapper (id, notes) instead of flattening group/unit nesting.",
+      "evidence_keywords": [
+        "group_id",
+        "\"group\""
+      ]
+    },
+    {
+      "feature_id": "FACT-XLIFF-110",
+      "category": "element",
+      "name": "file/unit/segment core structure",
+      "requirement_level": "mandatory",
+      "spec_citation": "Core structural elements",
+      "description": "Already implemented in Phase 1/2.",
+      "evidence_keywords": [
+        "source_language",
+        "target_language"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "format_id": "ipynb",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "https://nbformat.readthedocs.io/en/latest/format_description.html",
+    "title": "Jupyter Notebook Format (nbformat v4.5)",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-IPYNB-101",
+      "category": "data_access",
+      "name": "Cell id preservation (nbformat 4.5 required field)",
+      "requirement_level": "mandatory",
+      "spec_citation": "Cell types / nbformat 4.5 id requirement",
+      "description": "Every cell must have a unique id; it must survive load->write unchanged and be auto-generated for cells created without one.",
+      "evidence_keywords": [
+        "ensure_cell_id",
+        "cell_id"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-102",
+      "category": "element",
+      "name": "Markdown/raw cell attachments",
+      "requirement_level": "mandatory",
+      "spec_citation": "Cell attachments",
+      "description": "Embedded base64 attachments referenced by markdown must be read and written.",
+      "evidence_keywords": [
+        "attachments"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-103",
+      "category": "api_capability",
+      "name": "First-class output MIME-bundle API",
+      "requirement_level": "mandatory",
+      "spec_citation": "Output types / MIME data bundles",
+      "description": "Programmatic add/get/remove of a specific MIME representation within a multi-representation output.",
+      "evidence_keywords": [
+        "add_output_representation",
+        "get_output_representation",
+        "remove_output_mime_type"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-104",
+      "category": "mutation_capability",
+      "name": "Structural mutation API",
+      "requirement_level": "mandatory",
+      "spec_citation": "N/A - library API surface",
+      "description": "add_cell/remove_cell/clear_outputs with automatic id generation for new cells.",
+      "evidence_keywords": [
+        "add_cell",
+        "remove_cell",
+        "clear_outputs"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-105",
+      "category": "safety_validation",
+      "name": "Notebook schema/structural validation",
+      "requirement_level": "recommended",
+      "spec_citation": "nbformat validator equivalent",
+      "description": "Cell id uniqueness/format, output_type enum, required-field-per-output-type checks.",
+      "evidence_keywords": [
+        "validate_notebook_schema",
+        "validate_notebook"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-106",
+      "category": "api_capability",
+      "name": "nbformat version upgrade/downgrade",
+      "requirement_level": "optional",
+      "spec_citation": "nbformat version history v1-v4.5",
+      "description": "Convert older nbformat v1-3 notebooks to v4, and v4.0<->4.5 field renames.",
+      "evidence_keywords": [
+        "upgrade_notebook",
+        "downgrade_notebook"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-110",
+      "category": "element",
+      "name": "Cell types (code/markdown/raw)",
+      "requirement_level": "mandatory",
+      "spec_citation": "Cell types",
+      "description": "Already implemented in Phase 1/2.",
+      "evidence_keywords": [
+        "cell_type"
+      ]
+    },
+    {
+      "feature_id": "FACT-IPYNB-111",
+      "category": "element",
+      "name": "Output types (stream/display_data/execute_result/error)",
+      "requirement_level": "mandatory",
+      "spec_citation": "Output types",
+      "description": "Already implemented (opaque passthrough) in Phase 1/2.",
+      "evidence_keywords": [
+        "output_type"
+      ]
+    }
+  ]
+}

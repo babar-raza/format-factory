@@ -1,0 +1,49 @@
+{
+  "format_id": "qoi",
+  "generated_at": "2026-07-15T16:28:46.567654+00:00",
+  "generator": "compute_feature_coverage.py v1",
+  "manifest_ref": "reports/spec-coverage/manifests/qoi-feature-manifest.json",
+  "manifest_hash": "sha256:514f158851438488b9b04911305548a6a0fd0b4592b8544e6927fea3b1cda9be",
+  "coverage_summary": {
+    "total": 4,
+    "implemented": 3,
+    "partial": 0,
+    "missing": 1,
+    "missing_unreasoned": 0
+  },
+  "items": [
+    {
+      "feature_id": "FACT-QOI-101",
+      "name": "Real pixel data decode",
+      "requirement_level": "mandatory",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/qoi/qoi_parser.py:_decode_pixels",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-QOI-102",
+      "name": "Colorspace field",
+      "requirement_level": "mandatory",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/qoi/models.py:colorspace",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-QOI-103",
+      "name": "Pixel encode (write path)",
+      "requirement_level": "mandatory",
+      "status": "IMPLEMENTED",
+      "evidence": "src/python/qoi/qoi_encoder.py:encode_qoi_to_file",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-QOI-104",
+      "name": "Streaming/lazy decode for large images",
+      "requirement_level": "optional",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": "Optional-tier: qoi files are small (typically <10MB); streaming/lazy decode has low real-world value for this format and is deferred pending actual demand."
+    }
+  ],
+  "gate_9_eligible": true
+}

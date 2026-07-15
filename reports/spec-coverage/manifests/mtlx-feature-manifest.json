@@ -1,0 +1,72 @@
+{
+  "format_id": "mtlx",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "https://materialx.org/docs/",
+    "title": "MaterialX Specification v1.39",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-MTLX-101",
+      "category": "data_access",
+      "name": "Write-path preserves all element kinds",
+      "requirement_level": "mandatory",
+      "spec_citation": "Document structure - nodedef/typedef/look/propertyset/node",
+      "description": "write_mtlx must serialize the generic nodes bucket (nodedef/typedef/look/propertyset/plain node instances), not just materials/node_graphs, so nothing is destroyed on write.",
+      "evidence_keywords": [
+        "_serialize_nodes",
+        "serialize_generic_nodes"
+      ]
+    },
+    {
+      "feature_id": "FACT-MTLX-102",
+      "category": "api_capability",
+      "name": "Real graph connection resolution",
+      "requirement_level": "mandatory",
+      "spec_citation": "nodename/interfacename references",
+      "description": "Turn nodename/interfacename string references into actual traversable edges (name->node index), not inert strings.",
+      "evidence_keywords": [
+        "resolve_connections",
+        "get_connected_node"
+      ]
+    },
+    {
+      "feature_id": "FACT-MTLX-103",
+      "category": "field",
+      "name": "Node category (not just data-type) tracking",
+      "requirement_level": "mandatory",
+      "spec_citation": "node @node (category) attribute",
+      "description": "Fix node-type histogram to report the node's function/category, not its data type.",
+      "evidence_keywords": [
+        "node_category"
+      ]
+    },
+    {
+      "feature_id": "FACT-MTLX-104",
+      "category": "element",
+      "name": "volumematerial and legacy shaderref/bindinput",
+      "requirement_level": "recommended",
+      "spec_citation": "volumematerial, legacy material forms",
+      "description": "Recognize volumematerial and older shaderref/bindinput material forms, not just surfacematerial.",
+      "evidence_keywords": [
+        "volumematerial",
+        "shaderref"
+      ]
+    },
+    {
+      "feature_id": "FACT-MTLX-110",
+      "category": "element",
+      "name": "materialx root, materials, nodegraphs",
+      "requirement_level": "mandatory",
+      "spec_citation": "Document structure core",
+      "description": "Already implemented in Phase 1/2.",
+      "evidence_keywords": [
+        "surfacematerial",
+        "nodegraph"
+      ]
+    }
+  ]
+}

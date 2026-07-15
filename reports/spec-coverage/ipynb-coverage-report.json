@@ -1,0 +1,81 @@
+{
+  "format_id": "ipynb",
+  "generated_at": "2026-07-15T16:27:16.264517+00:00",
+  "generator": "compute_feature_coverage.py v1",
+  "manifest_ref": "reports/spec-coverage/manifests/ipynb-feature-manifest.json",
+  "manifest_hash": "sha256:9e5068709f30c88aa4f039b2b2123b1572e669efd9c3ac7f6141f441995dcdba",
+  "coverage_summary": {
+    "total": 8,
+    "implemented": 0,
+    "partial": 3,
+    "missing": 5,
+    "missing_unreasoned": 8
+  },
+  "items": [
+    {
+      "feature_id": "FACT-IPYNB-101",
+      "name": "Cell id preservation (nbformat 4.5 required field)",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-102",
+      "name": "Markdown/raw cell attachments",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/ipynb/ipynb_codec.py: (text match for 'attachments')",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-103",
+      "name": "First-class output MIME-bundle API",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-104",
+      "name": "Structural mutation API",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-105",
+      "name": "Notebook schema/structural validation",
+      "requirement_level": "recommended",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-106",
+      "name": "nbformat version upgrade/downgrade",
+      "requirement_level": "optional",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-110",
+      "name": "Cell types (code/markdown/raw)",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/ipynb/ipynb_analytics.py:ipynb_cell_type_histogram",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-IPYNB-111",
+      "name": "Output types (stream/display_data/execute_result/error)",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/ipynb/ipynb_analytics.py:ipynb_output_type_histogram",
+      "deferred_reason": null
+    }
+  ],
+  "gate_9_eligible": false
+}

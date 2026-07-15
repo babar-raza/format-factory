@@ -1,0 +1,107 @@
+{
+  "format_id": "safetensors",
+  "generated_at": "2026-07-15T00:00:00+00:00",
+  "generator": "enumerate_spec_features.py v1",
+  "authored_by": "select-6-feature-audit",
+  "spec_source": {
+    "url": "https://github.com/huggingface/safetensors",
+    "title": "SafeTensors Format Specification",
+    "accessed_date": "2026-07-15"
+  },
+  "features": [
+    {
+      "feature_id": "FACT-SAFETENSORS-101",
+      "category": "data_access",
+      "name": "Actual tensor byte retrieval",
+      "requirement_level": "mandatory",
+      "spec_citation": "Data buffer layout",
+      "description": "Return the real byte slice for a named tensor from the data buffer, not just its header metadata.",
+      "evidence_keywords": [
+        "get_tensor_bytes"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-102",
+      "category": "data_access",
+      "name": "Array decode (numpy)",
+      "requirement_level": "mandatory",
+      "spec_citation": "Framework interop convention",
+      "description": "Decode a tensor's bytes+dtype+shape into a real numpy.ndarray.",
+      "evidence_keywords": [
+        "get_tensor",
+        "numpy"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-103",
+      "category": "data_access",
+      "name": "Real tensor data on write",
+      "requirement_level": "mandatory",
+      "spec_citation": "Data buffer layout",
+      "description": "write_safetensors must place caller-supplied real byte payloads, not zero-fill.",
+      "evidence_keywords": [
+        "tensor_data",
+        "write_safetensors"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-104",
+      "category": "safety_validation",
+      "name": "Offset overlap/bounds/coverage validation",
+      "requirement_level": "mandatory",
+      "spec_citation": "Safety design intent - no holes, no overlap",
+      "description": "Reject overlapping ranges, out-of-bounds ranges, or gaps in data_offsets coverage.",
+      "evidence_keywords": [
+        "validate_tensor_offsets",
+        "validate_offsets"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-105",
+      "category": "safety_validation",
+      "name": "Duplicate tensor key rejection",
+      "requirement_level": "recommended",
+      "spec_citation": "Header JSON key uniqueness",
+      "description": "Reject a header whose JSON object has duplicate tensor-name keys.",
+      "evidence_keywords": [
+        "duplicate_tensor",
+        "duplicate_key"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-106",
+      "category": "dtype",
+      "name": "fp8 dtypes (F8_E4M3, F8_E5M2)",
+      "requirement_level": "recommended",
+      "spec_citation": "Dtype enumeration (HF issue #389)",
+      "description": "Recognize fp8 dtypes used by modern (2025-2026) model releases.",
+      "evidence_keywords": [
+        "F8_E4M3",
+        "F8_E5M2"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-110",
+      "category": "field",
+      "name": "Header dtype/shape/data_offsets metadata",
+      "requirement_level": "mandatory",
+      "spec_citation": "Per-tensor descriptor",
+      "description": "Already implemented in Phase 1/2.",
+      "evidence_keywords": [
+        "data_offsets"
+      ]
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-111",
+      "category": "field",
+      "name": "__metadata__ string map",
+      "requirement_level": "mandatory",
+      "spec_citation": "Header __metadata__ key",
+      "description": "Already implemented in Phase 1/2.",
+      "evidence_keywords": [
+        "__metadata__",
+        "metadata"
+      ]
+    }
+  ]
+}

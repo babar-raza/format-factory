@@ -184,17 +184,21 @@ If the format is on the Pre-Approved Fast-Path List in `docs/governance/legal-an
 **Stage:** Product Mapping
 
 **Pass criteria:**
-1. All features of the format have been assigned to tiers 0-6 using the model in `docs/product-factory/product-tracks.md`.
+1. All features of the format have been assigned to tiers 0-6 using the model in `docs/product-factory/product-tracks.md`. **The feature list used for this assignment MUST originate from a `reports/spec-coverage/manifests/<format-id>-feature-manifest.json` produced by `tools/specification-authority-layer/enumerate_spec_features.py` (schema: `schemas/spec-coverage/feature-manifest-schema.json`) — a structured enumeration derived from the real specification, not an ad hoc list a human or agent writes down from memory.** This closes a confirmed portfolio-wide gap (2026-07-15 audit): prior to this manifest requirement, no artifact anywhere in the repo represented "the complete feature set a spec defines, with implementation status per item" — Gate 9 was satisfiable by any feature list a human happened to write, regardless of how much of the real specification it actually covered.
 2. A delivery plan exists in the acquisition pack specifying which features ship in the first OSS release and which are deferred.
 3. Tier assignments are recorded in `registry/format-registry.yaml`.
 4. Any features assigned to Tier 5-6 (commercial) are explicitly noted with a deferral condition (Gate 10 + DD3 + explicit commercial implementation prompt).
 5. Implementation taskcards for the Phase 4 OSS implementation work have been created based on the delivery plan.
 6. Evidence-backed agent review and approval recorded.
+7. **A `reports/spec-coverage/<format-id>-coverage-report.json` exists (produced by `tools/specification-authority-layer/compute_feature_coverage.py`, schema: `schemas/spec-coverage/coverage-report-schema.json`) with `gate_9_eligible: true`.** This requires every manifest feature to be either IMPLEMENTED or have an explicit, reviewed `deferred_reason` — silent gaps (a feature the spec requires that nobody noticed was missing) are structurally impossible to satisfy this criterion, only consciously-scoped-out ones are.
 
 **Required artifacts:**
 - Updated `registry/format-registry.yaml` with tier map
 - Delivery plan in acquisition pack
 - Phase 4 OSS implementation taskcards
+- `reports/spec-coverage/manifests/<format-id>-feature-manifest.json` and `reports/spec-coverage/<format-id>-coverage-report.json` with `gate_9_eligible: true`
+
+**`implementation_authorized` in `registry/format-registry.yaml` may only be set `true` once criterion 7's coverage report exists and shows `gate_9_eligible: true`.** This is the mechanical enforcement point: Gate 9 approval without a passing coverage report is not a valid gate passage, regardless of other evidence.
 
 **Note on implementation authorization:** Gate 9 approval, combined with an explicit Phase 4 implementation execution prompt issued by a human, authorizes creation of `src/python/{format}/` and `src/net/{format}/`. Gate 9 alone does not create product source — it creates the delivery plan and implementation taskcards that enable Phase 4 execution. No product source may be written before both conditions are met. **Obsolete paths:** `src/python/open-source/` and `src/dotnet/open-source/` are not the target layout and must not be created.
 

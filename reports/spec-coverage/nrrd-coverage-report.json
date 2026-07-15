@@ -1,0 +1,73 @@
+{
+  "format_id": "nrrd",
+  "generated_at": "2026-07-15T16:27:17.159984+00:00",
+  "generator": "compute_feature_coverage.py v1",
+  "manifest_ref": "reports/spec-coverage/manifests/nrrd-feature-manifest.json",
+  "manifest_hash": "sha256:ddd2625eec073ce0e207d53a84011f322b6bddfc905481b5f58b56d2e412938f",
+  "coverage_summary": {
+    "total": 7,
+    "implemented": 0,
+    "partial": 2,
+    "missing": 5,
+    "missing_unreasoned": 7
+  },
+  "items": [
+    {
+      "feature_id": "FACT-NRRD-101",
+      "name": "Payload decode into typed, shaped array",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-102",
+      "name": "Endianness byte-swapping",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-103",
+      "name": "line skip / byte skip offset handling",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-104",
+      "name": "kinds (domain vs range axis semantics)",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-105",
+      "name": "space / space directions / space origin",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-106",
+      "name": "Key/value pair parsing (key:=value)",
+      "requirement_level": "recommended",
+      "status": "PARTIAL",
+      "evidence": "src/python/nrrd/nrrd_codec.py: (text match for 'key_value_pairs')",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-NRRD-110",
+      "name": "raw and gzip encodings",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/nrrd/models.py:encoding",
+      "deferred_reason": null
+    }
+  ],
+  "gate_9_eligible": false
+}

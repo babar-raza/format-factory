@@ -1,0 +1,81 @@
+{
+  "format_id": "safetensors",
+  "generated_at": "2026-07-15T16:27:16.572065+00:00",
+  "generator": "compute_feature_coverage.py v1",
+  "manifest_ref": "reports/spec-coverage/manifests/safetensors-feature-manifest.json",
+  "manifest_hash": "sha256:a9e267ff7aa4a545341b7fa609eedc7e20cdd04d5ea1cb3b4311e15265e9c852",
+  "coverage_summary": {
+    "total": 8,
+    "implemented": 0,
+    "partial": 4,
+    "missing": 4,
+    "missing_unreasoned": 8
+  },
+  "items": [
+    {
+      "feature_id": "FACT-SAFETENSORS-101",
+      "name": "Actual tensor byte retrieval",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-102",
+      "name": "Array decode (numpy)",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/safetensors/safetensors_codec.py:get_tensor_names",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-103",
+      "name": "Real tensor data on write",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/safetensors/safetensors_codec.py: (text match for 'tensor_data')",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-104",
+      "name": "Offset overlap/bounds/coverage validation",
+      "requirement_level": "mandatory",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-105",
+      "name": "Duplicate tensor key rejection",
+      "requirement_level": "recommended",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-106",
+      "name": "fp8 dtypes (F8_E4M3, F8_E5M2)",
+      "requirement_level": "recommended",
+      "status": "MISSING",
+      "evidence": "not found",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-110",
+      "name": "Header dtype/shape/data_offsets metadata",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/safetensors/spec/header/tensor.py:data_offsets",
+      "deferred_reason": null
+    },
+    {
+      "feature_id": "FACT-SAFETENSORS-111",
+      "name": "__metadata__ string map",
+      "requirement_level": "mandatory",
+      "status": "PARTIAL",
+      "evidence": "src/python/safetensors/safetensors_codec.py: (text match for '__metadata__')",
+      "deferred_reason": null
+    }
+  ],
+  "gate_9_eligible": false
+}
