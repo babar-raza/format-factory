@@ -9,14 +9,14 @@
 | TC-GF013-003 | CLOSED |
 | TC-GF013-004 | CLOSED |
 | TC-GF013-005 | CLOSED |
-| TC-GF013-COMMIT-001 | OPEN |
+| TC-GF013-COMMIT-001 | CLOSED |
 
 - **TC-GF013-001** — Create AST-aware transformation script (`tools/backfill/classvar_annotation_backfill.py`). CLOSED: script created, validated idempotent against DIF reference (0 changes on dry-run).
 - **TC-GF013-002** — Apply backfill to gnumeric, toml, tsv, zst; restore-and-reapply to isolate from pre-existing unrelated uncommitted drift; verify tests. CLOSED: 24 files annotated, 6006 tests passed.
 - **TC-GF013-003** — Apply backfill to csv, abw; verify tests. CLOSED: 15 files annotated, 3247 tests passed.
 - **TC-GF013-004** — Apply backfill to fodt, fods (including nested `fods/fods/`); fix fodt literal-string test assertion; verify tests. CLOSED: 79 files annotated, 1 test file fixed, 4129 tests passed (3 pre-existing unrelated failures excluded and independently confirmed via git HEAD comparison).
 - **TC-GF013-005** — Cross-format verification (zero bare `spec_qname=` remain via AST scan) and update `/qname-backfill` skill templates to emit ClassVar by default. CLOSED: verified 0/118 bare assignments remain; skill template updated.
-- **TC-GF013-COMMIT-001** — *(added during Stage 1 audit, resolves L1-002 and L2-001)* Commit this sprint's work with a **file-list-precise** `git add` (never directory-wildcard or `git add -A`), since ~72 unrelated pre-existing uncommitted files are interleaved in the same 8 package directories. Required implementation: stage exactly the 118 verified ClassVar-only source files + `tools/backfill/classvar_annotation_backfill.py` + `tests/python/fodt/test_spec_qname_stubs.py` + `.claude/commands/qname-backfill.md` + this plan file + supervisor convergence-loop state files; exclude all unrelated pre-existing dirty files. Required verification: post-commit `git status` shows none of the 118 target files as unstaged/modified, and none of the ~72 unrelated files were swept in. Status: OPEN until Stage 3 execution.
+- **TC-GF013-COMMIT-001** — *(added during Stage 1 audit, resolves L1-002 and L2-001)* Commit this sprint's work with a **file-list-precise** `git add` (never directory-wildcard or `git add -A`), since ~72 unrelated pre-existing uncommitted files are interleaved in the same 8 package directories. CLOSED: staged exactly 122 files (118 ClassVar source files + tool + test fix + skill template + this plan file) via `git add --pathspec-from-file`, verified staged-set == intended-set exactly (122/122, 0 discrepancy), committed as `f81f1a8b22335d821d53a2ab88251991955ccc6d`. Post-commit re-verification: 12,746 tests passed across all 8 formats (3 pre-existing unrelated failures correctly excluded); 0 of the 122 intended files remain dirty; 365 unrelated pre-existing files remain untouched in the working tree, as intended.
 
 ## Context
 

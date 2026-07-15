@@ -7088,3 +7088,100 @@ Deep first-principles production assessment of the autonomous sprint grading pip
 
 **Files changed (12):** grade_declared_work.py, maturity_trend.py, evidence_continuation.py, check_continuation.py, autonomous_cycle.py, autonomous_cycle_extensions.py, 5 test files, plan file
 **Verification:** 88 targeted tests pass, 0 failures. All 7 taskcards (TC-SSC-001 through TC-SSC-007) CLOSED with completed_verified classification.
+
+---
+
+## Section 105 — splendid-roaming-beaver: Atomic Sprint Number Allocator & Continuation Signal Enhancement (CLOSED 2026-07-15)
+
+**Plan:** `plans/.claude/splendid-roaming-beaver.md`
+**Type:** machinery_hardening
+**Mission ID:** SRB-SPRINT-ENGINE-PRODUCTIONIZATION-001
+**Verdict:** CORE_DELIVERABLES_COMPLETE — reassessed 2026-07-15; 14/29 taskcards solved, remainder descoped
+
+### Problem
+
+Format Factory's 840 historical sprints used only semantic names (e.g., `vast-weaving-lampson`). No numeric allocator existed. The continuation signal (`continuation-signal.json`) had no structured field for machine-readable stop/rework reasons — only a scalar `stop_reason` string. Rework items PQ-029-ADDRECORD and PQ-019-020-CLI-STUBS were open.
+
+### Sprint Number Allocator
+
+**Implementation:** `tools/supervisor/sprint_number_allocator.py` (418 lines)
+
+- **Format:** `SPRINT-NNNNN` (strictly monotonic, starting at 841)
+- **Atomicity:** `os.replace()` on `.tmp` file (Windows-safe, no `fcntl`/`filelock` dependency)
+- **Thread safety:** Module-level `threading.Lock()` for intra-process concurrent allocations
+- **Idempotency:** `semantic_alias` lookup — same alias returns `ALREADY_ALLOCATED` (exit code 2)
+- **Recovery:** `recover` subcommand detects orphaned `.tmp` files from interrupted writes
+- **CLI subcommands:** `allocate`, `status`, `list`, `recover`
+- **Ledger:** `.local/supervisor/sprint-ledger.json` (bootstrapped at `highest_allocated_number: 840`)
+- **Receipts:** `.local/supervisor/sprint-receipts/SPRINT-NNNNN.json` per allocation
+
+**Skill:** `/allocate-sprint-number` registered in `.supervisor/skill-registry.yaml` (2026-07-12)
+
+**Tests:** `tests/supervisor/test_sprint_number_allocator.py` (278 lines, 9 tests)
+- TC-SRB-022-01: same alias returns ALREADY_ALLOCATED (idempotency)
+- TC-SRB-022-02: different alias gets next sequential number (monotonicity)
+- TC-SRB-022-03: ledger entry count increments correctly
+- TC-SRB-022-04: no stale .tmp file after allocation
+- TC-SRB-022: receipt file written on allocation
+- TC-SRB-023: 8-thread concurrent allocations produce unique monotonic numbers
+- TC-SRB-024: recovery from orphaned .tmp file
+- TC-SRB-024b: clean recovery when no .tmp exists
+- TC-SRB-024c: recovery ignores .tmp for different sprint
+
+### Continuation Reason Codes
+
+**Implementation:** `tools/supervisor/autonomous_cycle.py` lines 2445-2464
+
+Added `continuation_reason_codes` (list of strings) alongside the existing `stop_reason` scalar. Non-breaking addition. Codes are typed:
+- `HARD_STOP:<stop_name>` — hard stop reasons
+- `REWORK:<item_name>` — rework items requiring attention
+- `MAX_ITERATIONS` — iteration ceiling reached
+- `OVERCLAIMED` — overclaim detected
+
+### Rework Resolution
+
+- **PQ-029-ADDRECORD:** AddRecord() implemented in `src/net/ndjson/NdjsonDocument.cs` with two overloads (string at line 165, JsonElement at line 184)
+- **PQ-019-020-CLI-STUBS:** All 20 Python packages now have `cli.py` entry points and `__init__.pyi` type stubs
+
+### Reassessment (2026-07-15)
+
+The plan was created 2026-07-10 but never formally executed as a per-chat plan. Between 2026-07-10 and 2026-07-15, other autonomous sessions independently built all core deliverables. Reassessment verified 14 taskcards solved, 4 obsolete (baseline captures superseded by system evolution), 7 low-value items descoped (forensic inventory artifacts, remaining pilots, product deepening under SRB umbrella). 10 orphan plan locks superseded during cleanup.
+
+**Files created:**
+- `tools/supervisor/sprint_number_allocator.py` (418 lines)
+- `.local/supervisor/sprint-ledger.json`
+- `.claude/commands/allocate-sprint-number.md`
+- `tests/supervisor/test_sprint_number_allocator.py` (278 lines)
+- `.local/supervisor/sprint-receipts/` directory
+
+## Section 106 — gap-forensic-013-spec-qname-classvar-snappy-waffle: spec_qname ClassVar Backfill (CLOSED 2026-07-15)
+
+**Plan:** `plans/.claude/gap-forensic-013-spec-qname-classvar-snappy-waffle.md`
+**Type:** forensic_gap_remediation
+**Mission ID:** GAP-FORENSIC-013
+**Verdict:** SPRINT_ALL_GREEN_VERIFIED — closed via governed convergence loop (audit → harden → execute → verify → close-task)
+
+### Problem
+
+12 of 20 Python format packages already declared `spec_qname: ClassVar[str]` on their model classes (a typed, machine-readable link from a class to the spec element it implements). The other 8 — abw, csv, fods, fodt, gnumeric, toml, tsv, zst — used bare `spec_qname = "..."` assignments with no type annotation, across models.py, spec/, and Compat/ layers (118 files, ~469 attributes total, including the nested `fods/fods/` duplicate package).
+
+### What Was Done
+
+- Built a reusable, idempotent AST-aware transformation tool: `tools/backfill/classvar_annotation_backfill.py`. Validated against the already-correct DIF format (0 changes on dry-run) before touching any target format.
+- Applied the backfill to all 8 formats, format-by-format (gnumeric, toml, tsv, zst → csv, abw → fodt, fods), restoring-and-reapplying against clean committed baselines where pre-existing unrelated uncommitted drift was discovered mid-run (isolating this sprint's diff from unrelated in-flight work).
+- Widened a literal-string test assertion in `tests/python/fodt/test_spec_qname_stubs.py` that was coupled to the pre-change bare-assignment form.
+- Updated the `/qname-backfill` skill's code-generation templates (`.claude/commands/qname-backfill.md`) to emit ClassVar by default, preventing future format onboarding from reintroducing the gap.
+- Verified via AST scan: 0/118 bare class-level `spec_qname` assignments remain across the 8 formats. Verified via hunk-level diff normalization: all 118 files contain ClassVar-annotation-only changes — no spec_qname/spec_fact_ref/namespace_uri/local_name/facade_names VALUES were altered.
+- Full pytest suites: 12,746 passed across all 8 formats post-commit (15 skipped, 3 pre-existing unrelated failures in fods/zst — independently confirmed via `git show HEAD:<file>` comparison to predate this session, caused by an unrelated prior session's FACT-\*→SAL-\* identifier renames — explicitly out of scope).
+
+### Governed Convergence Closure
+
+Executed as a full audit→harden→execute→verify loop bound to `.supervisor/prompts/prompt1-post-sprint-audit.md` through `prompt4-close-task.md` (all 4 prompt hashes verified against a prior known-good run). Stage 1 audit found the implementation complete but flagged the work as uncommitted, compounded by ~72 unrelated pre-existing uncommitted files interleaved in the same 8 package directories (real commit-scoping risk). Stage 2 hardened the plan with a taskcard table (`TC-GF013-001` through `TC-GF013-005` for the implementation, `TC-GF013-COMMIT-001` for closure). Stage 3 executed the closure taskcard: staged exactly the intended 122-file list via `git add --pathspec-from-file` (automated cross-reference confirmed staged-set == intended-set exactly, 0 discrepancy), committed, and re-verified full regression post-commit. Iteration-2 re-audit confirmed 0 open findings. Full evidence trail: `.supervisor/state/convergence-loop-GAP-FORENSIC-013/` (gitignored, local-only per repo convention).
+
+**Commit:** `f81f1a8b22335d821d53a2ab88251991955ccc6d` — 122 files changed (118 ClassVar source files + `tools/backfill/classvar_annotation_backfill.py` + `tests/python/fodt/test_spec_qname_stubs.py` + `.claude/commands/qname-backfill.md` + the plan file).
+
+### Follow-ups (non-blocking)
+
+- **GAP-FORENSIC-013b:** Compat/spec sub-element files in 12 OTHER formats that already have ClassVar on their top-level `models.py` (e.g. DIF, SYLK, NDJSON) still use bare assignment on sub-element classes — same pattern, different scope, deliberately excluded here.
+- V51 governance validator (`tools/supervisor/governance_validators_spec.py`) still tolerates both bare and ClassVar-annotated forms equally — a deliberate, documented exclusion for this plan; a future governance sprint may choose to tighten it.
+- 3 pre-existing test failures in fods/zst (FACT citation gaps from an unrelated, still-uncommitted prior session) remain open, owned by that other session, not this plan.
