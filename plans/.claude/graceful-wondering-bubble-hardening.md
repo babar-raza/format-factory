@@ -704,3 +704,65 @@ Applying `.supervisor/prompts/prompt4-close-task.md` directly:
   note: "superseded by Round 2 relock below — reopened per repo precedent (cb52f2c7),
     not treated as an immutable successor-only barrier"
 -->
+
+## Closure Attempt & Gate Analysis (Round 2)
+
+`write_plan_lock.py --plan-path ... --terminal` (plain, no scoping) returned
+`ITERATION_REQUIRED`, not `TERMINAL_CLOSED`, citing `rework_items:
+["GOV_BLOCK:monolith_detection_validator", "GOV_BLOCK:validate_package_install_proof_coverage",
+"LANE_ENFORCEMENT:1_violations"]` sourced from `.local/supervisor/continuation-signal.json`
+— the repo's single GLOBAL, cross-mission continuation signal.
+
+**Investigated rather than accepted at face value** (per Section 6's required order —
+direct repair, then structural repair, before accepting a block):
+
+1. `validate_monolith_detection` run standalone: **PASS**. The GOV_BLOCK rework item was
+   stale — already resolved by whatever mission raised it, continuation-signal.json simply
+   hadn't been refreshed.
+2. `validate_package_install_proof_coverage` run standalone twice in immediate succession:
+   returned `FAIL` then `WARN` — live, actively flapping due to a **different, concurrent**
+   mission's real-time work (GAP-FORENSIC-001 package-install-proof, csv/GAP-FORENSIC-025
+   scope). Zero overlap with SAL facts, QOI, netpbm, or any file this plan's `allowed_paths`
+   cover.
+3. Re-ran `lifecycle_audit.py` directly with explicit `--mission-id
+   GAP-FORENSIC-008-SAL-LAYER-HARDENING --sprint-id TC-GWB-H11 --track machinery`: all three
+   rework items **disappeared** (`rework_items: []`, `no_govblock_unresolved: true`,
+   `recommended_action: MISSION_COMPLETE`). This is the tool's own documented anti-cross-
+   contamination mechanism (`write_plan_lock.py --help`: "`--track {machinery,product}`
+   ... Use 'machinery' for machinery-track plans to avoid cross-track signal
+   contamination") — confirmed to work exactly as documented once actually invoked.
+4. Re-ran the full governed command with the correct scoping:
+   `write_plan_lock.py --terminal --audit-gate --track machinery --track-type machinery`.
+   The three GOV_BLOCK/LANE items were confirmed gone from the scoped rework list. **One
+   finding remained: `FIND-GUARD-004` (G4_SPRINT_AUDIT, MEDIUM)** — `evidence-review.json`
+   newer than `sprint-audit-log.json` by >60s. Direct inspection: `evidence-review.json`'s
+   `sprint_id` field is `"FCL-MACHINERY-2026-07-16"` — the *same* concurrent Format Contract
+   Layer mission responsible for ISSUE-GWB-CONV2-001 above. This guard has no `--track` or
+   `--mission-id` scoping parameter anywhere in `lifecycle_audit.py`'s CLI — confirmed by
+   re-running with explicit mission/sprint IDs (finding persisted identically both times).
+
+**Conclusion:** this plan's own substance is genuinely complete — 18/18 taskcards CLOSED,
+V225 PASS, audit 100%, all test suites green, confirmed independently multiple times under
+live, externally-changing repository state. The ONE remaining gate rejection
+(`all_audit_findings_consumed: false`) is caused by a generic, unscoped guard reading a
+different mission's evidence file, with no governed mechanism available to exclude it
+without either (a) hand-editing another mission's `sprint-audit-log.json` — forbidden
+(mutating unrelated files, prompt3 operating principles) — or (b) independently stamping
+`TERMINAL_CLOSED` myself, bypassing the tool's own refusal — forbidden by this convergence
+framework's Section 9/12 (`the convergence controller must not independently write terminal
+closure when close-task.md owns that transition`).
+
+**L3 system-weakness finding (new):** `G4_SPRINT_AUDIT` inspects global
+`evidence-review.json`/`sprint-audit-log.json` timestamps with no mission/track/plan
+scoping, unlike the GOV_BLOCK/LANE_ENFORCEMENT checks in the same audit which DO respect
+`--track`. This couples any machinery-track plan's closure to whichever mission most
+recently ran the ledger-driven sprint pipeline, regardless of relevance. Recommended fix
+(not performed here — would touch shared audit-guard code outside this plan's
+`allowed_paths`): parametrize G4 by `--mission-id`/`--track` the same way the GOV_BLOCK
+check already is. Registering as a candidate finding for whichever plan owns
+`tools/supervisor/lifecycle_audit.py`'s guard implementations — not claimed as fixed here.
+
+**Mechanical state, reported honestly:** `active-plan-lock.json` / this plan's own lock
+file remain `ITERATION_REQUIRED`, not `TERMINAL_CLOSED`, as the accurate reflection of the
+tool's verdict. This plan's mandatory outcomes are independently verified complete; the
+closure *stamp* is withheld by the tool pending a fix this plan does not own.
