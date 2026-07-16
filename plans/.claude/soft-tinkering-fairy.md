@@ -797,6 +797,139 @@ Next stage: PROMPT_3 (controlled execution) — execute TC-FCL-100 only (the sol
 immediately-actionable item); TC-FCL-110/120 remain DEFERRED_WITH_REASON by mission-text
 authority and do not block final-green validation for this iteration.
 
+## Part 15 — Convergence-Loop Hardening (Iteration 2, post-closure reopening)
+
+**Trigger:** POST-PLAN AUTONOMOUS CONVERGENCE AND GOVERNED CLOSURE directive, second
+invocation. Iteration 1 (Part 14) reached `CLOSE_TASK_ACCEPTED` at commit `5ecce55c`
+(2026-07-16T17:41:01+05:00). This iteration exists because that closure was found
+**invalid against current repository state**: 5 files within this mission's own
+ownership scope carried uncommitted post-closure changes (145 insertions / 35 deletions),
+made in a later session under a differently-named per-chat plan
+(`plans/.claude/delegated-mixing-pixel.md`) that investigated this mission's own
+machinery without reconciling into or reopening this plan first. Full determination:
+`.local/evidences/fcl-l30-001/closeout/convergence-binding-iter2.yaml`. Bound prompts
+unchanged from Iteration 1 (`prompt1`/`prompt2`/`prompt3`/`close-task.md` — canonical
+PSL-PROMPT-4, independently re-verified this iteration against
+`prompt-registry.yaml`).
+
+All 10 original taskcards (TC-FCL-000..090) and Iteration 1's TC-FCL-100/110/120 remain
+CLOSED/DEFERRED_WITH_REASON and are NOT reopened — this iteration's findings are newly
+actionable residual work reconciling already-implemented fixes into this plan's own
+record, not a reversal of prior closures.
+
+### TC-FCL-130 — Reconciler category-pattern precision fix (ISS-DELEGATED-P1)
+- **Type:** new_plan_item_required (reconciled from sibling plan). **Status:** CLOSED.
+- **Why it matters:** `_CATEGORY_SYMBOL_PATTERNS` in `contract_reconciler.py` fell through
+  to `r"."` (matches every symbol) for categories absent from the dict (e.g.
+  `calculate`), causing over-attribution: UBL-CALC-001 (business-total calculation)
+  showed unrelated parsing functions (`_parse_contact`, `_parse_party`) as evidence, and
+  the depth-ceiling heuristic could mask real gaps for shallow-depth categories.
+- **Fix:** Extended `_CATEGORY_SYMBOL_PATTERNS` from 8 to 14 categories (added
+  `calculate`, `resolve`; broadened `preserve`, `security`). Added `_scope_tests()`:
+  narrows test-file attribution to files whose CONTENT references the capability's own
+  symbols, not just any test file matching the format name.
+- **Allowed paths:** `tools/format_contract/contract_reconciler.py`.
+- **Evidence:** Fresh reconciliation rerun this iteration across 9 formats
+  (ubl/xliff/ipynb/mtlx/nrrd/csv/toml/ndjson/tsv) — all complete without error, gap
+  counts now non-trivial for all 9 (previously some had 0-gap false-clean reports).
+  UBL-CALC-001 spot-check: `product_symbols` now 14 calculation/tax-relevant functions
+  (was 20+ unrelated parsing functions). Downstream consumption reverified:
+  `gap_compiler.py --format-id ubl` → 6 gaps written to canonical ledger (2050 total),
+  confirming the reconciler→gap-ledger chain still functions with corrected data.
+  Full test suite: `.venv/Scripts/pytest tests/format_contract/ -q` → 63/63 PASS.
+- **Acceptance:** met — precision improved, consumption chain intact, no regressions.
+
+### TC-FCL-140 — Staleness auto-refresh + V238 freshness/drift upgrade (ISS-DELEGATED-P2)
+- **Type:** new_plan_item_required (reconciled from sibling plan). **Status:** CLOSED.
+- **Why it matters:** `staleness_checker.py` only flagged STALE contracts; nothing
+  auto-recompiled them, leaving an unbounded window between a SAL fact change and
+  contract recompilation. Separately, V238 (freshness validator) was WARN-always on any
+  staleness regardless of whether recompilation would actually change the contract.
+- **Fix (part 1 — auto-refresh):** `staleness_checker.check_all()` gained a
+  `refresh: bool` parameter; when true, STALE contracts are recompiled and rewritten in
+  place. CLI gained `--refresh`. `autonomous_cycle_extensions.run_contract_healing_prepass`
+  now invokes the checker with `--refresh`.
+- **Fix (part 2 — V238 drift detection):** For each stale contract, V238 now attempts
+  recompilation and compares committed vs recompiled canonical output. DRIFT (differs)
+  → FAIL/blocking; stale-but-unchanged → WARN/non-blocking; fresh → PASS.
+- **Self-caught defect and repair (same taskcard, same session):** The first V238
+  implementation compared full canonical bodies including `contract_metadata.input_digests`
+  — since digests are recorded IN the contract body by design, ANY staleness (by
+  definition a digest mismatch) made the two bodies differ, collapsing the WARN branch
+  into permanently dead code and making V238 FAIL on every trivial staleness. Fixed by
+  adding `_drift_comparable()`, which strips `input_digests` before comparison so drift
+  reflects substantive capability content, not the digest field that staleness itself
+  already reports. Proven with 4 new fixture tests
+  (`tests/format_contract/test_governance_validators_format_contract.py`) exercising all
+  three branches (PASS / WARN-stale-unchanged / FAIL-drifted) via a monkeypatched
+  recompile step, using one real compiled `csv` contract as the fresh baseline.
+- **Second self-caught defect and repair (same taskcard):** The new test file's
+  `sys.path.insert(0, tools/supervisor)` shadowed `tools/format_contract/quality_scorer.py`
+  with the differently-shaped `tools/supervisor/quality_scorer.py` (both modules share
+  the filename `quality_scorer.py`) for every test collected after it in the same pytest
+  session, breaking `test_quality_oracle.py::test_scorer_is_deterministic` and
+  `::test_scorer_penalizes_missing_security` with `AttributeError: module 'quality_scorer'
+  has no attribute 'score_contract'`. Fixed by changing to `sys.path.append(...)` so
+  conftest.py's earlier `tools/format_contract` entry keeps priority for colliding names.
+- **Allowed paths:** `tools/format_contract/staleness_checker.py`,
+  `tools/supervisor/autonomous_cycle_extensions.py`,
+  `tools/supervisor/governance_validators_format_contract.py`,
+  `tests/format_contract/test_governance_validators_format_contract.py`.
+- **Evidence:** Fresh direct invocation of `autonomous_cycle_extensions.run_contract_healing_prepass`
+  → 21 repair tasks (11 BLOCKED_NEEDS_AUTHORITY, 10 SHALLOW, **0 STALE**). Fresh direct
+  invocation of `validate_contract_freshness` → PASS, "all contracts fresh". Fresh full
+  V232-V241 sweep (10 validators, direct invocation) → 10/10 PASS after the drift-comparable
+  fix, confirmed AGAIN after the sys.path fix. Full test suite → 63/63 PASS (was 61/63
+  immediately after the sys.path bug, before its own fix — regression caught and repaired
+  within this same taskcard, not carried forward). Full 15-contract `--check`-equivalent
+  drift sweep → 0 drift.
+- **Acceptance:** met — both original findings (ISS-DELEGATED-P2) and both self-caught
+  defects from verifying the fix are resolved with test evidence, not just implementation.
+
+### TC-FCL-150 — Layer plan body-text staleness fix (ISS-DELEGATED-P3, doc-only)
+- **Type:** new_plan_item_required (reconciled from sibling plan). **Status:** CLOSED.
+- **Why it matters:** `plans/layers/format-contract-layer.md` Sections 9/10/11/14/29-32
+  described the layer as "nothing implemented yet, 0/5 maturity" — stale from layer
+  creation, contradicting the same file's own YAML metadata block
+  (`GOVERNED_OPERATIONAL`, maturity 3, 9 completed taskcards).
+- **Fix:** Corrected all six sections to reflect verified current state (12 tools/
+  modules, 17 contract-store files, V232-V241 registered, 59+ tests) and to match the
+  taskcard/gap-register reality (TC-FCL-000..080 CLOSED, TC-FCL-090 was the sole active
+  card pre-Iteration-1-closure).
+- **Allowed paths:** `plans/layers/format-contract-layer.md` (documentation only).
+- **Evidence:** Every factual claim cross-checked against real files this iteration
+  (module count, contract-store count, validator registration, test count).
+- **Acceptance:** met — documentation-only, no executable behavior affected.
+
+### Governed exclusions / system observations (no taskcard required)
+
+- **ISS-FCL-L3-002** (mission closure did not survive later in-scope work executed under
+  a sibling plan): governed_exclusion for THIS iteration — the direct fix is TC-FCL-130/
+  140/150 above (reconciling the sibling plan's FCL-scoped work into this authoritative
+  plan and re-running the full stage1-4 cycle). The underlying structural gap (no
+  cross-plan check for "does this new per-chat plan's target file belong to an
+  already-closed mission?") is recorded here as an L3 system-weakness observation for a
+  future governance-hardening plan — not reopened as rework in this plan, consistent with
+  how Iteration 1 handled ISS-FCL-L3-001.
+- **Out-of-scope carryover:** `delegated-mixing-pixel.md` also modified
+  `registry/format-completion-matrix.yaml` (5 select-6 format entries, unrelated to
+  Format Contract Layer scope). Left outside this plan's commit — not this mission's
+  file ownership, per Part 6 file-ownership table (unchanged, no FCL taskcard owns
+  `registry/format-completion-matrix.yaml`).
+- **Carried forward unchanged from Iteration 1:** ISS-FCL-L3-001 (pre-existing GOV_BLOCKs:
+  `monolith_detection_validator`, `validate_package_install_proof_coverage`,
+  `LANE_ENFORCEMENT:1_violations`) — still out-of-plan-scope, still owned by other lanes,
+  re-adjudication not required (no new evidence changes the Iteration-1 adjudication in
+  `.local/evidences/fcl-l30-001/closeout/audit-adjudication.yaml`).
+
+### Iteration 2 plan verdict: `PLAN_HARDENED_FROM_AUDIT_READY_FOR_EXECUTION`
+
+All Iteration 2 taskcards (TC-FCL-130/140/150) executed and verified within this same
+hardening pass — implementation predates the hardening record, verification (test
+suite, validator sweep, drift sweep, two self-caught-and-repaired regressions) happened
+immediately before this section was written. Next stage: final all-green validation,
+then `close-task.md` (PSL-PROMPT-4) re-invocation.
+
 <!--plan_terminal_lock:
   status: ITERATION_REQUIRED
   locked_at: "2026-07-16T11:01:24.000311+00:00"
@@ -812,5 +945,13 @@ authority and do not block final-green validation for this iteration.
     (Part 14 above) rather than treated as immutable. mutation_policy above applied to the
     TERMINAL_CLOSED path, not the ITERATION_REQUIRED demotion path. A fresh terminal-lock
     entry is written after Stage 3 execution and final-green validation complete.
+  superseded_by_hardening_2: true
+  hardening_iteration_2: 2
+  hardening_iteration_2_timestamp: "2026-07-16T20:52:00+05:00"
+  hardening_iteration_2_note: >-
+    Reopened after the Iteration 1 CLOSE_TASK_ACCEPTED closure (commit 5ecce55c) was
+    found invalid against current repository state (Part 15 above). A fresh
+    terminal-lock entry is written after final-green validation and close-task.md
+    re-invocation complete.
 -->
 

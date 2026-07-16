@@ -101,15 +101,63 @@ def validate_contract_test_gate(declaration: dict, repo_root: Path) -> dict:
     return _run_check(repo_root, "validate_contract_test_gate", "test_gate")
 
 
+def _drift_comparable(doc: dict) -> dict:
+    """Strip fields that legitimately differ on every staleness (input_digests are
+    recorded in the body by design) so drift comparison reflects substantive content,
+    not the digest mismatch that staleness itself already reports."""
+    import copy
+
+    stripped = copy.deepcopy(doc)
+    stripped.get("contract_metadata", {}).pop("input_digests", None)
+    return stripped
+
+
 @validator(rule_id="V238", domain="format_contract",
-           description="Contract input_digests match current committed stores (freshness; WARN)",
+           description="Contract input_digests match current committed stores (freshness + drift)",
            skill_ids=["refresh-format-contract"])
 def validate_contract_freshness(declaration: dict, repo_root: Path) -> dict:
-    res = _run_check(repo_root, "validate_contract_freshness", "freshness", blocks=False)
-    if res["result"] == "FAIL":
+    import contract_validator as cv
+    from canonical_io import canonical_dump, load_yaml
+
+    items = []
+    stale_only: list[str] = []
+    drifted: list[str] = []
+    for path in _contracts(repo_root):
+        fmt = path.stem
+        doc = load_yaml(path)
+        if not doc:
+            continue
+        if cv.check_freshness(doc)["result"] == "PASS":
+            continue
+        try:
+            import contract_compiler as cc
+            _, recompiled = cc.compile_contract(fmt)
+        except Exception:  # noqa: BLE001
+            stale_only.append(fmt)
+            items.append({"contract": path.name, "issue": "stale (recompile failed)"})
+            continue
+        if not recompiled:
+            stale_only.append(fmt)
+            items.append({"contract": path.name, "issue": "stale (readiness-blocked)"})
+            continue
+        if canonical_dump(_drift_comparable(doc)) != canonical_dump(_drift_comparable(recompiled)):
+            drifted.append(fmt)
+            items.append({"contract": path.name, "issue": "DRIFTED — recompilation differs from committed"})
+        else:
+            stale_only.append(fmt)
+            items.append({"contract": path.name, "issue": "stale digests but content unchanged"})
+
+    if drifted:
+        return _result("validate_contract_freshness", "FAIL", items,
+                        f"{len(drifted)} contracts drifted (recompilation differs): "
+                        f"{', '.join(drifted)}; {len(stale_only)} stale-only", True)
+    if stale_only:
+        res = _result("validate_contract_freshness", "WARN", items,
+                       f"{len(stale_only)} contracts stale but content unchanged", False)
         res["result"] = "WARN"
-        res["summary"] += " (stale contracts require /refresh-format-contract, non-blocking until release gates)"
-    return res
+        return res
+    return _result("validate_contract_freshness", "PASS", [],
+                    "all contracts fresh", False)
 
 
 @validator(rule_id="V239", domain="format_contract",

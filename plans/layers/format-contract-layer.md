@@ -175,18 +175,27 @@ contract bodies (digests cannot be reproduced from committed inputs).
 
 ## 9. Verified Current Implementation
 
-As of 2026-07-16 (revision a6479e8c): nothing implemented yet. Layer created with governance
-registration (TC-FCL-000). Verified free identifiers at creation: L30, V232-V241, DEC-038,
-HO-010/HO-011, `shared/format-contracts/` absent.
+As of 2026-07-16: fully operational. 12 Python modules in `tools/format_contract/` (~2,500 LOC),
+17 compiled contracts in `shared/format-contracts/`, 10 family packs in
+`shared/format-contracts/policy/packs/`, JSON Schema at
+`schemas/format-contracts/format-contract.schema.json`, governance validators V232-V241 in
+`tools/supervisor/governance_validators_format_contract.py`, 59 tests in `tests/format_contract/`,
+reconciliation reports in `reports/format-contract-layer/`, contract registry at
+`registry/format-contract-registry.yaml`, staleness checker wired into the autonomous cycle
+(`autonomous_cycle_extensions.py`), and consumption chain proven by `test_consumption_chain.py`.
+11 formats remain BLOCKED_NEEDS_AUTHORITY (correct behavior: readiness gate refuses thin inputs).
 
 ## 10. Current Execution Stage
 
-GOVERNANCE_REGISTRATION — TC-FCL-000 in progress; TC-FCL-010 (determinism foundation) next.
+GOVERNED_OPERATIONAL — TC-FCL-000 through TC-FCL-080 completed. TC-FCL-090 (evidence bundle +
+final report + machinery-plan closeout) is the active taskcard. Post-mission work: seed the 11
+BLOCKED_NEEDS_AUTHORITY formats via the research plane.
 
 ## 11. Current Maturity Assessment
 
-0/5 — no schema, no compiler, no contracts, no validators. Design and execution plan complete
-and taskcardized.
+3/5 — schema, compiler, 17 contracts, validators, reconciler, gap compiler, staleness checker,
+consumption chain, and autonomous cycle integration all operational. Target 4/5 requires full
+portfolio coverage (all 26 formats) and release-gate integration.
 
 ## 12. Target Maturity
 
@@ -202,12 +211,15 @@ pilots proven against the registered reference oracle.
 
 ## 14. Gap Register
 
-- FCL-GAP-001: SAL fact coverage for reference pilots is 2-3 facts each (ubl 3, xliff 2,
-  ipynb 3, mtlx 3, nrrd 2) — far below any contract-grade category threshold. Owned by
-  TC-FCL-050 MS-01/02 (research seeding through governed skills).
-- FCL-GAP-002: No governed store exists for product-requirement knowledge (non-normative).
-  Owned by TC-FCL-030.
-- FCL-GAP-003: L14 does not consume contracts. Owned by TC-FCL-020-06.
+- FCL-GAP-001: RESOLVED — SAL fact coverage expanded; 15/26 formats pass readiness gate and
+  have compiled contracts. 11 formats remain BLOCKED_NEEDS_AUTHORITY (correct behavior).
+- FCL-GAP-002: RESOLVED — Research findings store at `shared/format-contracts/research/`
+  with schema and intake pipeline (TC-FCL-030).
+- FCL-GAP-003: RESOLVED — L14 consumes contracts via `load_format_contract()` in the
+  capability compiler. Consumption chain proven by `test_consumption_chain.py`.
+- FCL-GAP-004: OPEN — Reconciler category patterns need ongoing maintenance as new capability
+  categories are added to family packs. Mitigated by extended `_CATEGORY_SYMBOL_PATTERNS`
+  and `_scope_tests()` (2026-07-16).
 
 ## 15. Root-Cause Register
 
@@ -308,21 +320,27 @@ Multi-sprint program. DAG: 000→010→020→{030,040,070 parallel}→050 (needs
 
 ## 29. Active Taskcards
 
-- TC-FCL-010 — Determinism foundation (IN_PROGRESS)
+- TC-FCL-090 — Evidence bundle + final report + machinery-plan closeout
 
 ## 30. Ready Taskcards
 
-- TC-FCL-020 — CSV vertical slice (READY after TC-FCL-010 closes)
+None — TC-FCL-090 is the final taskcard.
 
 ## 31. Completed Taskcards
 
-- TC-FCL-000 — Governance registration (CLOSED 2026-07-16; evidence
-  `.local/evidences/fcl-l30-001/taskcards/TC-FCL-000/closure.yaml`; reconcile-layer-index
-  L30 verdict PASS; pre-existing L01-L27/L29 index drift recorded as out-of-scope findings)
+- TC-FCL-000 — Governance registration (CLOSED)
+- TC-FCL-010 — Determinism foundation (CLOSED)
+- TC-FCL-020 — CSV vertical slice (CLOSED)
+- TC-FCL-030 — Research findings store (CLOSED)
+- TC-FCL-040 — Family packs and policy stores (CLOSED)
+- TC-FCL-050 — SAL readiness and research seeding (CLOSED)
+- TC-FCL-060 — Quality scoring and reference comparator (CLOSED)
+- TC-FCL-070 — Staleness checker and healing conditions (CLOSED)
+- TC-FCL-080 — Portfolio backfill (CLOSED)
 
 ## 32. Blocked and Waiting Work
 
-- TC-FCL-020..090 — pending per DAG.
+None — all execution taskcards completed. TC-FCL-090 (closeout) is active.
 
 ## 33. Decision Log
 

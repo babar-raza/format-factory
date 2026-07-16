@@ -70,7 +70,7 @@ def run_contract_healing_prepass(repo_root: Path) -> int:
     if not checker.is_file():
         return 0
     result = subprocess.run(
-        [sys.executable, str(checker)], cwd=str(repo_root),
+        [sys.executable, str(checker), "--refresh"], cwd=str(repo_root),
         capture_output=True, text=True, timeout=300,
     )
     if result.returncode != 0:

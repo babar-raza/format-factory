@@ -30,7 +30,10 @@ from canonical_io import load_yaml
 REPORTS_DIR = stores.REPO_ROOT / "reports" / "format-contract-layer"
 ORACLE_REGISTRY = stores.REPO_ROOT / "oracle" / "registry" / "format-oracle-registry.yaml"
 
-# capability category -> function-name evidence patterns (probe, not proof)
+# capability category -> function-name evidence patterns (probe, not proof).
+# Every category used in compiled contracts MUST have an entry here — missing
+# categories fall through to r"." which matches every function, inflating
+# observed_status and hiding real gaps from the gap compiler.
 _CATEGORY_SYMBOL_PATTERNS = {
     "parse": r"^(load|parse|read|from_|probe|detect|decode)",
     "model": r".",  # any class counts as model surface; refined below
@@ -41,13 +44,35 @@ _CATEGORY_SYMBOL_PATTERNS = {
     "transform": r"^(convert|transform|detect_dialect|sniff)",
     "query": r"^(find|query|get_|select)",
     "lifecycle": r"^(load|save|parse|write)",
-    "preserve": r"^(roundtrip|preserve)",
-    "security": r"(limit|max_|guard|safe)",
-    "performance": r"(stream|lazy|chunk|iter)",
+    "preserve": r"(roundtrip|preserve|lossless|unknown|extension|retain)",
+    "security": r"(limit|max_|guard|safe|sanitize|restrict|traversal)",
+    "performance": r"(stream|lazy|chunk|iter|mmap|buffer)",
+    "calculate": r"(calc|total|sum|reconcil|amount|round|tax)",
+    "resolve": r"(resolv|lookup|derefer|include|search_path|xinclude)",
     "advanced": r".",
 }
 
 _ORACLE_PROVABLE = {"parse", "write", "validate", "lifecycle"}
+
+
+def _scope_tests(tests: list[str], symbols: list[str], repo_root: Path) -> list[str]:
+    """Narrow test files to those whose content references capability symbols.
+
+    Falls back to the full test list if no symbols match (avoids false-negative
+    penalty for capabilities whose symbols are only exercised indirectly).
+    """
+    if not symbols:
+        return tests
+    needle = re.compile("|".join(re.escape(s) for s in symbols[:30]))
+    scoped: list[str] = []
+    for rel in tests:
+        try:
+            text = (repo_root / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if needle.search(text):
+            scoped.append(rel)
+    return scoped if scoped else tests
 
 
 def _scan_product(format_id: str) -> tuple[set[str], set[str]]:
@@ -100,7 +125,8 @@ def _oracle_status(format_id: str) -> str | None:
 
 
 def _observe(cap: dict, functions: set[str], classes: set[str],
-             tests: list[str], oracle: str | None) -> dict:
+             tests: list[str], oracle: str | None,
+             repo_root: Path | None = None) -> dict:
     category = cap.get("category", "advanced")
     pattern = _CATEGORY_SYMBOL_PATTERNS.get(category, r".")
     if category == "model":
@@ -109,9 +135,13 @@ def _observe(cap: dict, functions: set[str], classes: set[str],
         rx = re.compile(pattern)
         symbols = sorted(f for f in functions if rx.search(f))
 
+    scoped_tests = tests
+    if repo_root and symbols:
+        scoped_tests = _scope_tests(tests, symbols, repo_root)
+
     if not symbols:
         status, observed_depth = "NOT_STARTED", 0
-    elif not tests:
+    elif not scoped_tests:
         status = "IMPLEMENTED_UNPROVEN"
         observed_depth = min(_impl_depth(category), cap.get("depth_required", 8))
     else:
@@ -129,7 +159,7 @@ def _observe(cap: dict, functions: set[str], classes: set[str],
         "observed_depth": observed_depth,
         "gap_depth": max(0, int(cap.get("depth_required", 0)) - observed_depth),
         "product_symbols": symbols[:20],
-        "test_files": tests[:10],
+        "test_files": scoped_tests[:10],
         "oracle_status": oracle,
         "false_claim_rules_applied": [
             "symbol presence is capability surface, not proof",
@@ -144,6 +174,7 @@ def _impl_depth(category: str) -> int:
         "parse": 2, "model": 3, "edit": 4, "write": 4, "validate": 4,
         "export": 4, "transform": 3, "query": 3, "lifecycle": 3,
         "preserve": 2, "security": 2, "performance": 3, "advanced": 3,
+        "calculate": 4, "resolve": 3,
     }.get(category, 2)
 
 
@@ -155,7 +186,7 @@ def reconcile(format_id: str) -> dict:
     tests = _scan_tests(format_id)
     oracle = _oracle_status(format_id)
     observations = [
-        _observe(cap, functions, classes, tests, oracle)
+        _observe(cap, functions, classes, tests, oracle, stores.REPO_ROOT)
         for cap in doc.get("capabilities", [])
     ]
     gaps = [o for o in observations if o["gap_depth"] > 0 or o["observed_status"] == "NOT_STARTED"]

@@ -46,9 +46,10 @@ def _task(kind: str, fmt: str, skill: str, detail: str) -> dict:
     }
 
 
-def check_all() -> dict:
+def check_all(*, refresh: bool = False) -> dict:
     family_map = stores.load_family_map()
     tasks: list[dict] = []
+    refreshed: list[str] = []
     for fmt in sorted(family_map):
         has_source = (stores.REPO_ROOT / "src" / "python" / fmt).is_dir()
         contract = load_yaml(stores.contract_path(fmt))
@@ -67,6 +68,20 @@ def check_all() -> dict:
             continue
 
         if cv.check_freshness(contract)["result"] != "PASS":
+            if refresh:
+                try:
+                    import contract_compiler as cc
+                    status, doc = cc.compile_contract(fmt)
+                    if doc:
+                        from canonical_io import canonical_write
+                        canonical_write(stores.contract_path(fmt), doc)
+                        refreshed.append(fmt)
+                        continue
+                except Exception as exc:
+                    tasks.append(_task(
+                        "STALE", fmt, "refresh-format-contract",
+                        f"auto-refresh failed ({exc}); manual refresh required"))
+                    continue
             contract_registry.update_entry(fmt, state="STALE")
             tasks.append(_task(
                 "STALE", fmt, "refresh-format-contract",
@@ -90,17 +105,26 @@ def check_all() -> dict:
         "task_count": len(tasks),
         "tasks": tasks,
     }
+    if refreshed:
+        report["refreshed"] = refreshed
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report
 
 
 def main(argv: list[str] | None = None) -> int:
-    argparse.ArgumentParser(description=__doc__).parse_args(argv)
-    report = check_all()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--refresh", action="store_true",
+        help="Auto-recompile stale contracts instead of emitting STALE tasks")
+    args = parser.parse_args(argv)
+    report = check_all(refresh=args.refresh)
     by_kind: dict[str, int] = {}
     for task in report["tasks"]:
         by_kind[task["condition"]] = by_kind.get(task["condition"], 0) + 1
+    refreshed = report.get("refreshed", [])
+    if refreshed:
+        print(f"[fcl-heal] auto-refreshed {len(refreshed)} contracts: {', '.join(refreshed)}")
     print(f"[fcl-heal] {report['task_count']} repair tasks -> {OUT_PATH} ({by_kind})")
     return 0
 
