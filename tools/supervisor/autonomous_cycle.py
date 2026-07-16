@@ -194,6 +194,77 @@ def evaluate_gate11_readiness(format_id: str, declaration: dict, repo_root: "Pat
     }
 
 
+def evaluate_sfc_closeout_gate(declaration_path: Path, repo_root: Path) -> dict:
+    """SFC-GAP-E (2026-07-17): standalone, independently-testable evaluation of
+    the Skills-First Control closeout gate for one sprint.
+
+    sprint_executor.py's cmd_run_sprint writes two sidecar files next to the
+    evidence declaration BEFORE this cycle runs, when it managed to resolve a
+    skill/scope for the sprint:
+      - sfc-manifest-id.txt: the execution_id of the manifest bound to this run
+      - sfc-changed-files.json: an INDEPENDENTLY computed (not self-declared)
+        changed-files list, scoped to the manifest's own allowed_paths (a
+        content-hash diff, not a git-diff -- see sprint_executor.py's
+        _hash_snapshot/_diff_snapshots for why a git-diff over a 30-minute
+        window in a shared, non-isolated working tree is unsound here).
+
+    If present, evaluates tools.governance.skills_first.closeout.evaluate()
+    against that independently-computed list and reads the Gap C per-check
+    mode (`sprint_closeout_governance`, default 'advisory') to decide whether
+    a CLOSE_BLOCKED verdict actually blocks (enforcing) or is only logged
+    (advisory) -- the same staged-rollout discipline every other Gap C check
+    follows; promotion to enforcing is a separate, evidence-gated decision.
+
+    Absent sidecar files (manifest creation failed, or an older run predating
+    this change) -> returns an inert, all-None/False result -- this can only
+    ADD a gate on top of today's behavior, never remove or weaken it. Any
+    unexpected exception is caught and reported the same way (non-blocking).
+    """
+    result = {"gate_result": None, "check_mode": "advisory",
+              "exec_id": None, "governance_blocked": False, "error": None}
+    try:
+        manifest_id_path = declaration_path.parent / "sfc-manifest-id.txt"
+        changed_path = declaration_path.parent / "sfc-changed-files.json"
+        if not manifest_id_path.exists():
+            return result
+
+        if str(repo_root) not in sys.path:
+            sys.path.insert(0, str(repo_root))
+        from tools.governance.skills_first import closeout as sfc_closeout
+        from tools.governance.skills_first import manifest as sfc_manifest
+        from tools.supervisor.coordination.db import connect as cdb_connect
+        from tools.supervisor.coordination.db import get_check_mode as cdb_get_check_mode
+        from tools.supervisor.coordination.root import (
+            resolve_coordination_root as cdb_resolve_root)
+
+        exec_id = manifest_id_path.read_text(encoding="utf-8").strip()
+        changed = (json.loads(changed_path.read_text(encoding="utf-8"))
+                  if changed_path.exists() else [])
+        m = sfc_manifest.load_manifest(exec_id)
+        gate_result = sfc_closeout.evaluate(
+            m, changed, evidence_paths=[str(declaration_path)])
+        result["gate_result"] = gate_result
+        result["exec_id"] = exec_id
+
+        try:
+            coord_root = cdb_resolve_root(str(repo_root))
+            conn = cdb_connect(coord_root)
+            try:
+                result["check_mode"] = cdb_get_check_mode(
+                    conn, "sprint_closeout_governance")
+            finally:
+                conn.close()
+        except Exception:
+            pass  # coordination plane unavailable -> stay observe-only
+
+        result["governance_blocked"] = bool(
+            gate_result["verdict"] == "CLOSE_BLOCKED"
+            and result["check_mode"] == "enforcing")
+    except Exception as exc:
+        result["error"] = f"{type(exc).__name__}: {exc}"
+    return result
+
+
 def _extract_declared_paths(declaration_path: Path) -> list[str]:
     """Extract repo-relative file paths from an evidence-declaration.yaml.
 
@@ -1951,8 +2022,30 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _pv_err:
         print(f"  WARNING: Steps 4b+4c (prompt validation) failed: {_pv_err}")
 
+    # SFC-GAP-E (2026-07-17): closeout gate, computed BEFORE the cycle
+    # manifest is built/written so a blocked verdict is reflected in the
+    # PERSISTED evidence, not just an in-memory mutation after the fact. See
+    # evaluate_sfc_closeout_gate() docstring for the full mechanism.
+    _sfc = evaluate_sfc_closeout_gate(declaration_path, repo_root)
+    if _sfc["error"]:
+        print(f"  WARNING: SFC closeout gate check failed (non-blocking): {_sfc['error']}")
+    if _sfc["gate_result"] is not None:
+        print(f"  SFC closeout gate: verdict={_sfc['gate_result']['verdict']} "
+              f"mode={_sfc['check_mode']}")
+        if _sfc["gate_result"]["verdict"] == "CLOSE_BLOCKED":
+            for _r in _sfc["gate_result"]["reasons"]:
+                print(f"    - {_r}")
+            if _sfc["governance_blocked"]:
+                review.setdefault("rework_items", []).append(
+                    "SFC_GOVERNANCE_BLOCKED:" + "; ".join(_sfc["gate_result"]["reasons"]))
+
     # Step 5: Write cycle manifest
     print("\n=== STEP 5: WRITE CYCLE MANIFEST ===")
+    _base_exit_code = _compute_exit_code(review, decl, governance_validation_result)
+    _sfc_gate_result = _sfc["gate_result"]
+    _sfc_check_mode = _sfc["check_mode"]
+    _sfc_exec_id = _sfc["exec_id"]
+    _sfc_governance_blocked = _sfc["governance_blocked"]
     manifest = {
         "cycle_id": f"cycle-{run_id}-{datetime.now().strftime('%Y%m%d%H%M%S')}",
         "run_id": run_id,
@@ -1966,19 +2059,28 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         "memory_synced": False,
         "autonomous_continue": review["autonomous_continue"],
         "stop_reason": review.get("stop_reason", ""),
-        "exit_code": _compute_exit_code(review, decl, governance_validation_result),
+        "exit_code": 3 if _sfc_governance_blocked else _base_exit_code,
         "accepted_count": len(review["accepted_items"]),
         "rework_count": len(review["rework_items"]),
         "rejected_count": len(review["rejected_items"]),
         "overclaimed_count": len(review["overclaimed_items"]),
         "blocked_count": len([g for g in review["item_grades"] if g["supervisor_grade"] == "BLOCKED_EXTERNAL_GATE"]),
         "git_head_at_review": review.get("git_head_at_review", "unknown"),  # TC-HARD-013
+        "sfc_gate_verdict": _sfc_gate_result["verdict"] if _sfc_gate_result else None,
+        "sfc_governance_check_mode": _sfc_check_mode if _sfc_gate_result else None,
     }
     manifest_path = review_dir / "supervisor-cycle-manifest.yaml"
     manifest_path.write_text(
         yaml.dump(manifest, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )
     print(f"  Manifest: {manifest_path}")
+
+    if _sfc_gate_result and _sfc_gate_result["verdict"] == "CLOSE_OK" and _sfc_exec_id:
+        try:
+            from tools.governance.skills_first.manifest import set_status as _sfc_set_status
+            _sfc_set_status(_sfc_exec_id, "CLOSED", final_outcome="autonomous_cycle_accepted")
+        except Exception:
+            pass
 
     # TC-DL-011: Update dual-lane counters in product-deepening ledger after accepted sprint
     if manifest.get("exit_code", 1) == 0:

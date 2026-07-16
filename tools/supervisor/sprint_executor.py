@@ -353,6 +353,112 @@ def cmd_status(repo_root: Path) -> int:
 # run-sprint (headless)
 # ---------------------------------------------------------------------------
 
+# SFC-GAP-E (2026-07-17): conservative, BOUNDED fallback path scope when no
+# specific skill resolves for a sprint's free-text prompt. Deliberately NOT
+# unbounded ("**") -- still excludes runtime/build/vcs internals implicitly
+# (they are not repo-tracked source lanes) -- but honest about being a
+# fallback, not a precisely-scoped grant. Tightening this via
+# next-work-items.json's own lane/path structure is a named follow-up
+# (tracked in skill-only-policy.yaml known_gaps), not a silently accepted gap.
+_FALLBACK_LANE_PATHS = [
+    "src/", "tools/", "tests/", "docs/", "registry/", "reports/",
+    ".supervisor/", "plans/",
+]
+
+
+def _resolve_sprint_scope(prompt_text: str, repo_root: Path):
+    """Best-effort skill resolution for a run-loop sprint's prompt text.
+
+    Returns (selected_skill_ids, allowed_paths, resolution_decision, rationale).
+
+    Honest limitation: next-sprint.md is free-form prose, not a structured
+    operation description, so the derived operation string (first non-blank
+    line, truncated) is a heuristic -- it can under- or over-resolve relative
+    to a hand-authored operation description. When no specific skill resolves
+    (or the resolved skill declares no paths of its own), this binds the
+    manifest to `autonomous-loop` -- the skill that legitimately governs "an
+    autonomous sprint is being executed," not a loosely-related pick -- with
+    the conservative fallback scope above, explicitly tagged as a fallback so
+    it is never mistaken for a precise grant.
+    """
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+    from tools.governance.skills_first import resolve as sfc_resolve
+    from tools.governance.skills_first.registries import load_skills
+
+    first_line = next(
+        (ln.strip() for ln in prompt_text.splitlines() if ln.strip()), "")
+    operation = first_line[:200]
+
+    try:
+        res = sfc_resolve.resolve(operation)
+    except Exception:
+        res = {"verdict": "MISSING_SKILL_CAPABILITY"}
+
+    if res.get("verdict") == "RESOLVED" and res.get("selected_skill_id"):
+        skills = {s.skill_id: s for s in load_skills()}
+        sid = res["selected_skill_id"]
+        s = skills.get(sid)
+        paths = (list(s.allowed_paths) + list(s.implementation_paths)) if s else []
+        if paths:
+            return ([sid], paths, res.get("resolution_decision", "REUSE_EXACT_MATCH"),
+                    f"resolved from sprint prompt heading: {res.get('rationale', '')}")
+
+    return (
+        ["autonomous-loop"], list(_FALLBACK_LANE_PATHS), "REUSE_EXACT_MATCH",
+        "FALLBACK: no specific skill resolved for this sprint's free-text "
+        "prompt (or the resolved skill declared no paths); bound to "
+        "autonomous-loop (the skill that legitimately governs autonomous "
+        "sprint execution) with a conservative, bounded lane-wide scope. "
+        "Tightening this via next-work-items.json's own lane structure is a "
+        "tracked follow-up (skill-only-policy.yaml known_gaps), not a "
+        "silent gap.",
+    )
+
+
+def _expand_scope_paths(repo_root: Path, patterns: list) -> list:
+    """Expand allowed_paths patterns (literal dirs/files or globs) to a list
+    of actual on-disk file Paths, scoped ONLY to these patterns -- never the
+    whole repo. This narrow scoping is what makes a before/after hash diff
+    sound under concurrency (unlike a git-diff over a 30-minute window across
+    a tree 44+ other agents are simultaneously mutating): the compared
+    surface is exactly the small set of paths this sprint was authorized to
+    touch, not everything anyone touched anywhere in the interval."""
+    files = []
+    for pat in patterns:
+        norm = pat.rstrip("/")
+        if any(c in pat for c in "*?["):
+            files.extend(p for p in repo_root.glob(pat) if p.is_file())
+            continue
+        p = repo_root / norm
+        if p.is_file():
+            files.append(p)
+        elif p.is_dir():
+            files.extend(q for q in p.rglob("*") if q.is_file())
+    return files
+
+
+def _hash_snapshot(repo_root: Path, patterns: list) -> dict:
+    """sha256 of every file currently within `patterns` (see
+    _expand_scope_paths). Unlike a git-commit-range diff, this sees
+    uncommitted working-tree changes directly -- the sprint's own edits don't
+    need to be committed to be detected."""
+    out = {}
+    for f in _expand_scope_paths(repo_root, patterns):
+        try:
+            out[f.relative_to(repo_root).as_posix()] = hashlib.sha256(
+                f.read_bytes()).hexdigest()
+        except OSError:
+            continue
+    return out
+
+
+def _diff_snapshots(before: dict, after: dict) -> list:
+    changed = set(before) ^ set(after)  # added or removed
+    changed |= {k for k in before if k in after and before[k] != after[k]}
+    return sorted(changed)
+
+
 def cmd_run_sprint(sprint_id: str, repo_root: Path, *, dry_run: bool = False) -> dict:
     """
     Invoke `claude --print --dangerously-skip-permissions` with next-sprint.md as the prompt.
@@ -392,6 +498,37 @@ def cmd_run_sprint(sprint_id: str, repo_root: Path, *, dry_run: bool = False) ->
         print(f"Output would be written to: {output_path.resolve()}")
         return {"exit_code": 0, "declaration_path": str(abs_decl), "dry_run": True}
 
+    # SFC-GAP-E (2026-07-17): bind an execution manifest to this sprint
+    # BEFORE spawning the skip-permissions child. The orchestrator (this
+    # trusted process) resolves scope on the untrusted child's behalf -- the
+    # child is never trusted to self-govern. A manifest-creation failure is
+    # logged and non-blocking (the sprint still runs; it simply proceeds
+    # without SFC governance for this run, exactly as it did before this
+    # change -- never worse than today, only sometimes not-yet-better).
+    manifest_execution_id = None
+    allowed_paths: list = []
+    pre_snapshot: dict = {}
+    try:
+        from tools.governance.skills_first.manifest import create_manifest
+        skill_ids, allowed_paths, decision, rationale = _resolve_sprint_scope(
+            prompt_text, repo_root)
+        sfc_manifest = create_manifest(
+            task_id=sprint_id, agent_type="LOCAL_AUTOMATION",
+            requested_operation=f"autonomous sprint: {sprint_id}",
+            selected_skill_ids=skill_ids, allowed_paths=allowed_paths,
+            resolution_decision=decision, resolution_rationale=rationale,
+            mission_id="AUTONOMOUS_LOOP", sprint_id=sprint_id, write=True)
+        manifest_execution_id = sfc_manifest["execution_id"]
+        (declaration_path.parent / "sfc-manifest-id.txt").write_text(
+            manifest_execution_id, encoding="utf-8")
+        pre_snapshot = _hash_snapshot(repo_root, allowed_paths)
+        print(f"  SFC manifest: {manifest_execution_id} "
+              f"(skills={skill_ids}, scope={len(allowed_paths)} path(s))")
+    except Exception as exc:
+        print(f"WARNING: SFC manifest creation failed (non-blocking; sprint "
+              f"proceeds without governance for this run): {exc}",
+              file=sys.stderr)
+
     # 4. Invoke claude
     print(f"Invoking claude CLI for sprint: {sprint_id}")
     print(f"Output: {output_path.resolve()}")
@@ -420,10 +557,28 @@ def cmd_run_sprint(sprint_id: str, repo_root: Path, *, dry_run: bool = False) ->
     print(f"Claude exit code: {result.returncode}")
     print(f"Output saved to: {output_path.resolve()}")
 
+    # SFC-GAP-E: independently-computed changed-files list, scoped ONLY to
+    # this manifest's own allowed_paths -- never the whole repo -- so
+    # concurrent unrelated agents' writes elsewhere in the shared tree cannot
+    # pollute this sprint's own change set (the flaw a git-diff-over-30-
+    # minutes approach would have had). Sees uncommitted edits directly.
+    if manifest_execution_id is not None:
+        try:
+            post_snapshot = _hash_snapshot(repo_root, allowed_paths)
+            changed_files = _diff_snapshots(pre_snapshot, post_snapshot)
+            (declaration_path.parent / "sfc-changed-files.json").write_text(
+                json.dumps(changed_files), encoding="utf-8")
+            print(f"  SFC changed-files (scoped, independent): "
+                  f"{len(changed_files)} file(s)")
+        except Exception as exc:
+            print(f"WARNING: SFC post-run snapshot failed (non-blocking): "
+                  f"{exc}", file=sys.stderr)
+
     return {
         "exit_code": result.returncode,
         "declaration_path": str(abs_decl),
         "output_path": str(output_path.resolve()),
+        "sfc_manifest_execution_id": manifest_execution_id,
     }
 
 
