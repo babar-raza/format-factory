@@ -156,9 +156,18 @@ gaps:
     anomaly_refs: [ANOM-B12-002]
     evidence_of_gap: "pipeline-anomaly-register.yaml SPEC_TO_FACT_GAP section"
     remediation: "Complete netpbm SAL seeding; add missing header fields to sal-facts-latest.json"
-    remediation_tc: null  # TC-FF-AUDIT-060 was CLOSED; this is residual work
+    remediation_tc: TC-GWB-H01
     remediation_owner: agent_owned
-    status: OPEN
+    status: CLOSED
+    closed_at: "2026-07-16"
+    closure_evidence: >
+      TC-GWB-H01 (plan graceful-wondering-bubble-hardening, commit c886e282): all
+      missing units seeded in committed stores — pbm 5 facts (width/height/raster
+      added), pgm 6 and ppm 6 (width/height/maxval/raster added). Magic facts carry
+      code_bindings verified by V225 against {PBM,PGM,PPM}_MAGIC_{ASCII,BINARY}
+      parser constants. Ratios: pbm 1.25 (5/4), pgm 1.2 (6/5), ppm 1.2 (6/5) — all
+      above the 0.8 B2 gate. Compiled via union merge; V225 netpbm warns cleared;
+      3187 netpbm tests pass.
 
   - gap_id: GAP-FORENSIC-008
     title: "QOI op-codes not seeded (only 3/10 QOI elements in SAL)"

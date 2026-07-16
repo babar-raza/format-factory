@@ -173,13 +173,22 @@ per_format:
   - format_id: zst
     spec_source: SPEC-ZST-RFC8878
     spec_unit_type: ABNF_and_struct_definitions
-    raw_spec_units: 201
+    raw_spec_units: 96
     normalized_fact_count: 94
-    spec_to_fact_ratio: 0.468
+    spec_to_fact_ratio: 0.979
     pipeline_status: MANUALLY_SEEDED
     traceability: STRUCTURAL_DERIVATION
     gap_reason: null
-    notes: "Workbench-verified structural facts from RFC 8878. Partial coverage — binary frame structure"
+    notes: >
+      DENOMINATOR CORRECTED 2026-07-16 (TC-GWB-H02): prior value 201 had no surviving
+      artifact backing it. The register's own counting_method (WORKBENCH_VERIFIED_FACTS,
+      per specification-measurement-register.yaml) is evidenced by
+      .local/sal-output/fact-verification-report.json: zst total_facts=96,
+      pre/post_verified=94, not_found=2. Archived sal-output runs (20260612/13) hold
+      3/0 zst facts — no 201-fact artifact exists. Ratio recomputed 94/96=0.979.
+      Residual: 2 workbench facts whose source text was not_found during verification.
+      A true section-level RFC 8878 unit inventory (independent of the workbench) would
+      be a separate measurement mission.
 
   - format_id: gnumeric
     spec_source: SPEC-GNUMERIC-XML

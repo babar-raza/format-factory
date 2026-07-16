@@ -190,15 +190,19 @@ If the format is on the Pre-Approved Fast-Path List in `docs/governance/legal-an
 4. Any features assigned to Tier 5-6 (commercial) are explicitly noted with a deferral condition (Gate 10 + DD3 + explicit commercial implementation prompt).
 5. Implementation taskcards for the Phase 4 OSS implementation work have been created based on the delivery plan.
 6. Evidence-backed agent review and approval recorded.
-7. **A `reports/spec-coverage/<format-id>-coverage-report.json` exists (produced by `tools/specification-authority-layer/compute_feature_coverage.py`, schema: `schemas/spec-coverage/coverage-report-schema.json`) with `gate_9_eligible: true`.** This requires every manifest feature to be either IMPLEMENTED or have an explicit, reviewed `deferred_reason` — silent gaps (a feature the spec requires that nobody noticed was missing) are structurally impossible to satisfy this criterion, only consciously-scoped-out ones are.
+7. **A `reports/spec-coverage/<format-id>-coverage-report.json` exists (produced by `tools/specification-authority-layer/compute_feature_coverage.py`, schema: `schemas/spec-coverage/coverage-report-schema.json`) with `gate_9_eligible: true`.** This requires every manifest feature to be either IMPLEMENTED or have an explicit, reviewed `deferred_reason` — silent gaps (a feature the spec requires that nobody noticed was missing) are structurally impossible to satisfy this criterion, only consciously-scoped-out ones are. **IMPLEMENTED status itself requires a named, currently-passing test** (`--confirmed` entries of the form `{"feature_id": {"test_ids": [...]}}`, executed by the tool at report-generation time) — a bare self-asserted feature_id (the pre-2026-07-15 format) is rejected and downgrades to PARTIAL. This closes a confirmed gap (select-6 Phase 4 audit, SF2): a keyword match plus an unverified claim previously was sufficient for IMPLEMENTED, which is exactly how two real defects (mtlx's residual write-path data loss, ubl's overstated tax-computation claim) shipped as IMPLEMENTED in a `gate_9_eligible: true` report.
+8. **A `src/python/<format-id>/README.md` exists** covering install, usage (`probe`/`load`/`write`), and known limitations.
+9. **A dogfood cross-product export exists**: `src/python/<format-id>/<format-id>_to_<target>.py` with a corresponding test in `tests/python/<format-id>/`.
 
 **Required artifacts:**
 - Updated `registry/format-registry.yaml` with tier map
 - Delivery plan in acquisition pack
 - Phase 4 OSS implementation taskcards
 - `reports/spec-coverage/manifests/<format-id>-feature-manifest.json` and `reports/spec-coverage/<format-id>-coverage-report.json` with `gate_9_eligible: true`
+- `src/python/<format-id>/README.md`
+- `src/python/<format-id>/<format-id>_to_<target>.py` dogfood export + test
 
-**`implementation_authorized` in `registry/format-registry.yaml` may only be set `true` once criterion 7's coverage report exists and shows `gate_9_eligible: true`.** This is the mechanical enforcement point: Gate 9 approval without a passing coverage report is not a valid gate passage, regardless of other evidence.
+**`implementation_authorized` in `registry/format-registry.yaml` may only be set `true` once criterion 7's coverage report exists and shows `gate_9_eligible: true`.** This is the mechanical enforcement point: Gate 9 approval without a passing coverage report is not a valid gate passage, regardless of other evidence. **Enforced by governance validators, not prose alone** (select-6 Phase 4, 2026-07-15, closing SF1/SF3 — the same "documented but never checked" pattern already found once before for the `gate-required` skill frontmatter): V227 checks the coverage-report/`gate_9_eligible` linkage; V228 checks the README both exists **and passes real `readme_sync` content validation** (marker integrity, generated package/version claims, link validity — hardened 2026-07-16 after a second independent re-audit found the original only checked existence); V229 checks a dogfood export exists **and its cited test actually passes when executed via pytest**, not merely that a test file is present (same 2026-07-16 hardening pass); V230 detects drift between a coverage report and the registry's recorded `coverage_source_digest` for it (source changed after the report was generated); V231 pins a sha256 digest over the grandfather baseline's format-id set so a future edit cannot silently widen `registry/gate9-coverage-baseline.yaml` to dodge V227/V228/V229 without a matching, reviewable source change. All of V227-V229 are grandfathered for formats authorized before 2026-07-15 via `registry/gate9-coverage-baseline.yaml` (the requirement did not exist when those formats were authorized) — any format authorized from 2026-07-15 onward has no grandfather path and must satisfy all three.
 
 **Note on implementation authorization:** Gate 9 approval, combined with an explicit Phase 4 implementation execution prompt issued by a human, authorizes creation of `src/python/{format}/` and `src/net/{format}/`. Gate 9 alone does not create product source — it creates the delivery plan and implementation taskcards that enable Phase 4 execution. No product source may be written before both conditions are met. **Obsolete paths:** `src/python/open-source/` and `src/dotnet/open-source/` are not the target layout and must not be created.
 
@@ -271,6 +275,37 @@ gates:
 ```
 
 An agent must update `gate_N.status` to `passed` only after human approval has been confirmed and `approved_by` + `approved_date` have been recorded. An agent must never set `status: passed` without human confirmation.
+
+---
+
+## V225 SAL Store Reconciliation — Promotion Contract (TC-GWB-H07)
+
+V225 (`validate_sal_store_reconciliation`, `tools/supervisor/governance_validators_ext7.py`)
+guards the committed SAL fact stores (`shared/sal-facts/*.yaml`): alias completeness,
+combined-DB drift, architecture-count reconciliation, qname `spec_fact_ref` resolution,
+the B2 completeness gate (live numerator / `raw-spec-unit-register.yaml` denominator,
+threshold 0.8), and AST-verified fact→code constant bindings.
+
+**Current mode:** advisory (`blocks_sprint: False`), deliberate rollout choice
+(2026-07-15). Severity contract: untracked completeness shortfall = FAIL; shortfall
+tracked by an OPEN B2 gap = WARN; binding mismatch / count drift / unresolved ref = FAIL.
+
+**Promotion to enforcing (`blocks_sprint: True` for FAIL-class violations) requires ALL of:**
+1. ≥5 consecutive real-repo governance runs with zero V225 false positives
+   (a false positive = a FAIL whose root cause is validator logic, not repo state).
+2. TC-GWB-H01 (netpbm seeding) and TC-GWB-H03 (6-format stores) CLOSED — done 2026-07-16 —
+   so only true regressions can produce FAILs.
+3. A planted-defect drill: a deliberate binding mismatch must FAIL and block; reverting
+   it must return the run to green.
+4. Any false positive during burn-in resets the counter and requires a root-cause fix first.
+
+V225 must NOT be added to `STRUCTURAL_GOV_BLOCKS` (`governance_block_registry.py`)
+without an explicit plan note visible to Babar Raza — the structural-block list is
+intentionally narrow.
+
+Burn-in run log (append per run):
+- Run 1 (2026-07-16, baseline): PASS — 20 stores, 14 code bindings, 0 violations
+  (zst warn cleared by the TC-GWB-H02 denominator correction to 94/96 = 0.979).
 
 ---
 

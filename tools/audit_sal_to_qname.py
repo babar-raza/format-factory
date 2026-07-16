@@ -30,6 +30,20 @@ _REGISTRY_DIR = _REPO / "shared/qname-registry"
 _OVERRIDES_PATH = _REPO / "shared/sal-fact-overrides.yaml"
 
 
+_ALIASES_PATH = _REPO / "shared/sal-fact-id-aliases.json"
+
+
+def _load_aliases() -> dict[str, str]:
+    """Load the FACT-* → SAL-* alias map (TC-SAL-ID-006)."""
+    if not _ALIASES_PATH.exists():
+        return {}
+    try:
+        data = json.loads(_ALIASES_PATH.read_text(encoding="utf-8"))
+        return data.get("aliases", {})
+    except Exception:
+        return {}
+
+
 def load_sal_fact_id_overrides() -> dict[str, set[str]]:
     """Load committed SAL fact overrides from shared/sal-fact-overrides.yaml.
 
@@ -37,7 +51,7 @@ def load_sal_fact_id_overrides() -> dict[str, set[str]]:
     ensuring 100% coverage survives a fresh checkout (TC-HRD-001).
 
     Returns:
-        dict mapping format_id (lowercase) → set of FACT-* qname IDs
+        dict mapping format_id (lowercase) → set of fact IDs (both FACT-* and SAL-*)
     """
     if not _HAS_YAML or not _OVERRIDES_PATH.exists():
         return {}
@@ -50,16 +64,49 @@ def load_sal_fact_id_overrides() -> dict[str, set[str]]:
     for entry in data.get("overrides", []):
         fmt = entry.get("format_id", "").lower()
         qname = entry.get("qname", "")
+        fact_id = entry.get("fact_id", "")
         if qname.startswith("FACT-"):
             overrides.setdefault(fmt, set()).add(qname)
+        if fact_id.startswith("SAL-"):
+            overrides.setdefault(fmt, set()).add(fact_id)
     return overrides
 
 
+_STORES_DIR = _REPO / "shared/sal-facts"
+
+
+def load_committed_store_fact_ids() -> dict[str, set[str]]:
+    """Load fact IDs from the committed canonical stores (shared/sal-facts/*.yaml).
+
+    TC-GWB-H04: the committed stores are the source of truth for manually-seeded
+    formats; consulting them directly makes this audit independent of the derived
+    (gitignored) sal-facts-latest.json on a fresh checkout.
+    """
+    fact_ids: dict[str, set[str]] = {}
+    if not _HAS_YAML or not _STORES_DIR.is_dir():
+        return fact_ids
+    for store_path in sorted(_STORES_DIR.glob("*.yaml")):
+        try:
+            store = _yaml.safe_load(store_path.read_text(encoding="utf-8")) or {}
+        except Exception:
+            continue
+        fmt = str(store.get("format_id", store_path.stem)).lower()
+        ids: set[str] = set()
+        for fact in store.get("facts", []):
+            for key in ("qname", "fact_id"):
+                value = fact.get(key, "")
+                if value.startswith(("FACT-", "SAL-")):
+                    ids.add(value)
+        if ids:
+            fact_ids.setdefault(fmt, set()).update(ids)
+    return fact_ids
+
+
 def load_sal_fact_ids() -> dict[str, set[str]]:
-    """Load SAL facts from sal-facts-latest.json plus committed overrides.
+    """Load SAL facts: committed stores + sal-facts-latest.json + overrides.
 
     Returns:
-        dict mapping format_id (lowercase) → set of FACT-* qname IDs
+        dict mapping format_id (lowercase) → set of fact IDs (FACT-* and SAL-*)
     """
     fact_ids: dict[str, set[str]] = {}
 
@@ -77,11 +124,27 @@ def load_sal_fact_ids() -> dict[str, set[str]]:
                 qname = fact.get("qname", "")
                 if qname.startswith("FACT-"):
                     ids.add(qname)
+                fact_id = fact.get("fact_id", "")
+                if fact_id.startswith("SAL-"):
+                    ids.add(fact_id)
             fact_ids[fmt] = ids
 
-    # Merge committed overrides (survive fresh checkout without .local/)
+    # Merge committed canonical stores (primary committed source, TC-GWB-H04)
+    for fmt, ids in load_committed_store_fact_ids().items():
+        fact_ids.setdefault(fmt, set()).update(ids)
+
+    # Merge committed overrides (legacy overlay for formats without stores)
     for fmt, ids in load_sal_fact_id_overrides().items():
         fact_ids.setdefault(fmt, set()).update(ids)
+
+    # Merge aliases so legacy FACT-* refs resolve to SAL-* IDs
+    aliases = _load_aliases()
+    for fmt_ids in fact_ids.values():
+        extra: set[str] = set()
+        for fid in fmt_ids:
+            if fid in aliases:
+                extra.add(aliases[fid])
+        fmt_ids.update(extra)
 
     return fact_ids
 
@@ -139,7 +202,7 @@ def audit_format_sal_coverage(
             continue
         total += 1
         ref = entry.get("spec_fact_ref")
-        if not ref or not str(ref).startswith("FACT-"):
+        if not ref or (not str(ref).startswith("FACT-") and not str(ref).startswith("SAL-")):
             continue
         with_ref += 1
         fact_id = str(ref)

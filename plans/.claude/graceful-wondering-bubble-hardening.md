@@ -352,6 +352,30 @@ Plan-hardening successor closes TERMINAL only when ALL of:
 | `git push` DENY-listed (verified this session's settings) | `EXTERNAL_BLOCKER: git_push_credentials_unavailable` | commits cannot be pushed; does NOT block any H-taskcard execution |
 | none other | — | Gate 11 not implicated by any H-taskcard |
 
+## Deferred Work Register
+
+Explicit deferrals with owners — nothing here is silently dropped:
+
+1. **GAP-FORENSIC-009 status flip (CLOSED + evidence)** — the substantive work is DONE
+   (denominator corrected to 94/96=0.979 in raw-spec-unit-register.yaml with artifact
+   evidence; V225 zst warn cleared), but the `forensic-gap-register.yaml` status edit is
+   blocked by ACTIVE coordination lease `lease-cb6e4f71e9`
+   (agent-claude-code-20260715T170053-68efc4). Ready-to-apply closure text: close via
+   TC-GWB-H02 citing `.local/sal-output/fact-verification-report.json` (zst
+   total_facts=96, verified=94, not_found=2; no 201-fact artifact exists) — apply when
+   the lease releases. GAP-FORENSIC-007 closure DID land (lease released momentarily).
+2. **Spec-unit denominators for the 6 new formats** (ipynb/mtlx/nrrd/safetensors/ubl/
+   xliff) — stores are seeded and audit-complete, but `raw-spec-unit-register.yaml`
+   rows require real section-level unit counts from each primary spec. Measurement
+   mission; until then V225's completeness gate correctly skips them (no register row).
+3. **V225 burn-in runs 2–5 + planted-defect drill + promotion decision** — contract
+   recorded in `docs/gates.md` (TC-GWB-H07). Run 1 baseline: PASS, 0 violations.
+4. **Independent RFC 8878 section-level unit inventory** — would replace the
+   workbench-derived zst denominator with a spec-derived one (honest residual of H02).
+5. **governance_validator_runner.py commit** — my V225 wiring hunk is co-mingled with
+   concurrent agents' uncommitted V226–V231 wiring; it rides with whichever session
+   commits the runner (committing it alone would break their imports at HEAD).
+
 ## Taskcard Status Summary
 
 | TC-ID | Status |
@@ -363,13 +387,43 @@ Plan-hardening successor closes TERMINAL only when ALL of:
 | TC-GWB-005 | CLOSED |
 | TC-GWB-006 | CLOSED |
 | TC-GWB-007 | CLOSED |
-| TC-GWB-H01 | READY |
-| TC-GWB-H02 | READY |
-| TC-GWB-H03 | READY |
-| TC-GWB-H04 | READY |
-| TC-GWB-H05 | READY (partially_done) |
-| TC-GWB-H06 | READY |
-| TC-GWB-H07 | BLOCKED_ON: H01,H03 |
-| TC-GWB-H08 | READY |
-| TC-GWB-H09 | READY |
-| TC-GWB-H10 | READY |
+| TC-GWB-H01 | CLOSED |
+| TC-GWB-H02 | CLOSED |
+| TC-GWB-H03 | CLOSED |
+| TC-GWB-H04 | CLOSED |
+| TC-GWB-H05 | CLOSED |
+| TC-GWB-H06 | CLOSED |
+| TC-GWB-H07 | CLOSED |
+| TC-GWB-H08 | CLOSED |
+| TC-GWB-H09 | CLOSED |
+| TC-GWB-H10 | CLOSED |
+
+**H-taskcard closure evidence (2026-07-16, this session):**
+- **H01 CLOSED:** netpbm stores pbm 5 / pgm 6 / ppm 6 facts incl. width/height/maxval/raster;
+  6 magic-constant code_bindings verified; register rows 1.25/1.2/1.2; V225 warns cleared;
+  3187 netpbm tests pass; GAP-FORENSIC-007 CLOSED in register.
+- **H02 CLOSED (via stop condition):** denominator 201 proven unbacked; corrected to 96
+  with artifact evidence; ratio 0.979 ≥ 0.8; gap-status flip deferred (item 1 above).
+- **H03 CLOSED:** 6 committed stores (15 facts incl. MTLX-101/UBL-105 aggregates, 1 NRRD
+  binding); portfolio audit 100 entries / 0 missing / 100% (was 84.2%).
+- **H04 CLOSED:** `audit_sal_to_qname.py` reads committed stores directly
+  (`load_committed_store_fact_ids`); fresh-checkout sim: store-covered formats 0 gaps
+  without the combined DB (only ODF-family refs need it, by design).
+- **H05 CLOSED:** tsv/ndjson rows corrected to 15/1.0 with recompute notes.
+- **H06 CLOSED:** `_default_formats()` unions store-dir stems + legacy candidates;
+  2 regression tests; proven live (6 new stores auto-discovered by a default run).
+- **H07 CLOSED (as decision task):** promotion contract + burn-in log recorded in
+  `docs/gates.md`; run 1 baseline PASS. Actual promotion = deferred item 3 (requires
+  runs 2–5 across future sessions by design — a single session cannot burn in).
+- **H08 CLOSED:** 4 ODF-family count drifts reconciled with provenance notes
+  (fodg/fodp 1066→1069, fods 4987→4988, ods 1069→1067).
+- **H09 CLOSED:** commit `c886e282` (48 files, 23,889 insertions) HEAD-verified;
+  runner + gap-ledger-active deliberately excluded (co-mingled concurrent work);
+  batch-2 commit at session end covers H-taskcard artifacts.
+- **H10 CLOSED:** capability maps regenerated via `capability_map_generator.py`
+  (no hand edits); per-format `sal_facts_hash` values refreshed (20 distinct);
+  no artifact carries stale explicit fact counts.
+
+**Final verification state (2026-07-16):** V225 **PASS** — 20 stores, 14 code bindings,
+0 violations, entire covered portfolio reconciled. SAL-to-qname audit: 100% coverage,
+0 missing refs, 0 high-severity gaps.
