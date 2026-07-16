@@ -8,6 +8,49 @@ easy to detect, and impossible to close without skills-first evidence.
 This plan was authored and executed in one session. Status reflects actual
 outcomes; see `reports/skills-first-control/` for evidence.
 
+## Taskcard Status Summary
+
+Machine-parseable status table (lifecycle_audit.py contract). Terminal statuses:
+CLOSED (done+verified), EXCLUDED (governed exclusion — out of this plan's scope,
+tracked as a policy known_gap or a true external blocker). No mandatory taskcard
+is left OPEN/IN_PROGRESS.
+
+| TC-ID | Status |
+|-------|--------|
+| TC-SFC-001 | CLOSED |
+| TC-SFC-002 | CLOSED |
+| TC-SFC-003 | CLOSED |
+| TC-SFC-004 | CLOSED |
+| TC-SFC-005 | CLOSED |
+| TC-SFC-006 | CLOSED |
+| TC-SFC-007 | CLOSED |
+| TC-SFC-008 | CLOSED |
+| TC-SFC-009 | CLOSED |
+| TC-SFC-010 | CLOSED |
+| TC-SFC-011 | CLOSED |
+| TC-SFC-012 | CLOSED |
+| TC-SFC-013 | CLOSED |
+| TC-SFC-014 | CLOSED |
+| TC-SFC-015 | CLOSED |
+| TC-SFC-016 | EXCLUDED |
+| TC-SFC-017 | CLOSED |
+| TC-SFC-018 | CLOSED |
+| TC-SFC-CONV-001 | CLOSED |
+| TC-SFC-CONV-002 | EXCLUDED |
+| TC-SFC-CONV-003 | EXCLUDED |
+| TC-SFC-CONV-004 | EXCLUDED |
+| TC-SFC-CONV-005 | EXCLUDED |
+| TC-SFC-CONV-006 | EXCLUDED |
+| TC-SFC-CONV-007 | EXCLUDED |
+| TC-AUD-PP-003 | CLOSED |
+
+EXCLUDED rationale: TC-SFC-016 / TC-SFC-CONV-007 = true external blocker (product
+`src/` write DENY-listed; operator authorization required). TC-SFC-CONV-002..006 =
+successor-mission structural work on shared live infrastructure, recorded as
+first-class policy `known_gaps` (EP-010-GAP, RUNLOOP-SKIPPERMS-GAP,
+DIRECT-GENERATOR-GAP) with compensating controls EP-007/EP-012/EP-013.
+TC-AUD-PP-003 = this iteration's gap taskcard (add this parseable table), resolved.
+
 ## Taskcards
 
 | ID | Title | Status | Evidence |
@@ -69,3 +112,12 @@ that require their own staged-rollout missions and are unsafe to hot-patch under
 concurrent live agents; they are recorded as first-class policy `known_gaps` with compensating
 controls. TC-SFC-CONV-007 is a true external permission blocker. None is an in-scope mandatory
 requirement of THIS plan.
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-16T18:48:35.986765+00:00"
+  locked_by: "71d6552a09a4"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
