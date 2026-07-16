@@ -118,6 +118,7 @@ def validate_package_install_proof_coverage(
         return _result("FAIL", "V226 MISSING: " + "; ".join(problems) + f" — {_REPROOF_HINT}", True)
 
     # STALE: recorded digest must match current source content
+    # Always use working-tree digests here — proof runner builds from working tree
     stale = sorted(
         fmt for fmt in matrix_ids
         if proven[fmt].get("source_digest") != source_digest(repo, fmt)

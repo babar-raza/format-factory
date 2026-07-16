@@ -93,7 +93,7 @@ def _write_shadow_log_entry(entry: dict) -> None:
         with SHADOW_LOG_PATH.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(entry) + "\n")
     except Exception:
-        pass
+        pass  # Shadow log write is fire-and-forget — no tracking needed
 
 
 def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[dict]:
@@ -127,15 +127,34 @@ def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[di
     return suppressions
 
 
-# RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 241  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001) +1 V225 (GAP-FORENSIC-008) +3 V194-V196 (TC-COORD-013, AGENT-COORD-2026-07-15) +1 V226 package-install-proof coverage (GAP-FORENSIC-001) +1 V227 gate9 linkage +2 V228-V229 readme/dogfood +1 V230 coverage/registry drift (TC-S6P4-SYS-001/003/005, select-6 Phase 4), 2026-07-15 +1 V231 gate9 baseline integrity digest (TC-S6P4-FINAL-001b, select-6 Phase 4 final re-audit), 2026-07-16 +10 V232-V241 Format Contract Layer L30 (mission FCL-MACHINERY-2026-07-16), 2026-07-16
+# RC-004 + TC-SWB-005: derive expected count from validator-manifest.yaml
+_MANIFEST_PATH = Path(__file__).parent / "validator-manifest.yaml"
+
+
+def _load_expected_count() -> int:
+    """Derive expected validator count from the manifest (TC-SWB-005).
+
+    Falls back to a hardcoded constant if the manifest is unreadable.
+    """
+    try:
+        import yaml
+        manifest = yaml.safe_load(_MANIFEST_PATH.read_text(encoding="utf-8"))
+        return sum(
+            entry.get("count", 0)
+            for entry in manifest.get("modules", {}).values()
+        )
+    except Exception:
+        return 245
+
+
+_EXPECTED_VALIDATOR_COUNT = _load_expected_count()
 
 
 def get_expected_validator_count() -> int:
     """Return the expected total governance validator count.
 
-    This is the single source of truth (RC-004 from shimmering-rolling-meerkat).
-    All tests and callers must import this instead of hardcoding the constant.
+    Derived from validator-manifest.yaml (TC-SWB-005). Falls back to 245.
+    All tests and callers must import this instead of hardcoding.
     """
     return _EXPECTED_VALIDATOR_COUNT
 
@@ -143,6 +162,8 @@ def get_expected_validator_count() -> int:
 def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
+    *,
+    committed: bool = False,
 ) -> dict:
     """Run all governance validators (V1-V127) against a declaration.
 
@@ -157,6 +178,9 @@ def run_all_governance_validators(
         "summary": str,
       }
     """
+    if committed:
+        declaration = {**declaration, "_committed": True}
+
     # Lazy imports — kept inside function to prevent circular import when this
     # module is imported directly in a fresh subprocess (governance_validators
     # re-exports run_all_governance_validators, causing a partial-init cycle at
@@ -454,22 +478,22 @@ def run_all_governance_validators(
     try:
         from governance_validators_ext import validate_capability_fact_ratio as _vcfr  # noqa: PLC0415
         results.append(_vcfr(declaration, repo_root))
-    except Exception:
-        pass
+    except Exception as _exc_vcfr:
+        _skipped_validators.append({"validators": ["V-NEW-001"], "error": str(_exc_vcfr)})
 
     # V-SAL-SCHEMA-001 (TC-LA-008): SAL facts schema validation (WARN only)
     try:
         from governance_validators_sal import validate_sal_facts_schema as _vss  # noqa: PLC0415
         results.append(_vss(declaration, repo_root))
-    except Exception:
-        pass
+    except Exception as _exc_vss:
+        _skipped_validators.append({"validators": ["V-SAL-SCHEMA-001"], "error": str(_exc_vss)})
 
     # V-NEW-002 (SAL-HEAL-B001): spec_fact_provenance advisory check (WARN only, never blocks)
     try:
         from governance_validators_sal import validate_spec_fact_provenance_advisory as _vp  # noqa: PLC0415
         results.append(_vp(declaration, repo_root))
-    except Exception:
-        pass
+    except Exception as _exc_vp:
+        _skipped_validators.append({"validators": ["V-NEW-002"], "error": str(_exc_vp)})
 
     # V83-V86 (TC-LP-024): Layer control plane governance validators (WARN-only)
     try:
@@ -698,8 +722,8 @@ def run_all_governance_validators(
                 _org_raw = _yaml_org.safe_load(_org_plan_path.read_text(encoding="utf-8"))
                 if isinstance(_org_raw, dict):
                     _org_entries = _org_raw.get("entries", _org_raw.get("formats", []))
-        except Exception:
-            pass
+        except Exception as _exc_org:
+            _skipped_validators.append({"validators": ["V125_org_load"], "error": str(_exc_org)})
         if _org_entries:
             try:
                 results.append(_norm_ext4_file(
@@ -715,6 +739,7 @@ def run_all_governance_validators(
                             "violations": [], "summary": "V125: skipped — qname-code-organization-plan.yaml not found"})
 
         # File-level validators (run against each changed product source file)
+        _file_validator_skips = 0
         changed_files = declaration.get("changed_files", [])
         _repo = repo_root or Path(".")
         for cf in changed_files:
@@ -738,20 +763,22 @@ def run_all_governance_validators(
                     r = fn(text, file_str)
                     results.append(_norm_ext4_file(r))
                 except Exception:
-                    pass
+                    _file_validator_skips += 1
             # V117 and V118 take (source_text, file_path) too
             for fn in (_v117, _v118):
                 try:
                     r = fn(text, file_str)
                     results.append(_norm_ext4_file(r))
                 except Exception:
-                    pass
+                    _file_validator_skips += 1
             # V126: file outside approved QName layout (per-file)
             if _org_entries:
                 try:
                     results.append(_norm_ext4_file(_v126(file_str, _org_entries)))
                 except Exception:
-                    pass
+                    _file_validator_skips += 1
+        if _file_validator_skips:
+            _skipped_validators.append({"validators": ["per_file_validators"], "error": f"{_file_validator_skips} file-level validator invocations failed"})
     except Exception as _exc_v111:
         _skipped_validators.append({"validators": ["V111", "V112", "V113", "V117", "V118", "V119", "V120", "V121", "V123", "V124", "V125", "V126", "V127"], "error": str(_exc_v111)})
 
@@ -770,8 +797,8 @@ def run_all_governance_validators(
                     "summary": f"SAL advisory: {len(warnings)} format coverage warning(s)",
                     "blocks_sprint": False,
                 })
-    except Exception:
-        pass  # Advisory is non-blocking; silently skip on failure
+    except Exception as _exc_sal_advisory:
+        _skipped_validators.append({"validators": ["sal_format_advisory"], "error": str(_exc_sal_advisory)})
 
     # V130-V133 (PQLM-GOV-001, TC-VAL-002): Found-issue lifecycle + proactive LOC scan
     try:
@@ -1137,6 +1164,36 @@ def run_all_governance_validators(
             "error": str(_exc_v232),
         })
 
+    # V242-V244 (exception-hierarchy-remediation mission, plan
+    # plans/.claude/quizzical-munching-gadget.md, 2026-07-16): package
+    # structural integrity — single-source exception classes, exception
+    # hierarchy correctness (FormatFactoryError-rooted), and analytics module
+    # wiring. Unconditional full-repo scans, modeled on V230's pattern rather
+    # than V76's declaration-scoped shallow check. Landed in the same change
+    # as the Phase 2 product fixes across all 18 affected formats (TOML was
+    # briefly deferred at claim-time due to an active peer coordination lease
+    # on toml_codec.py, then fixed and re-verified in the same session once
+    # the lease freed -- see FI-023) so this gate never observes a
+    # partially-fixed repo state.
+    try:
+        from governance_validators_package_integrity import (  # noqa: PLC0415
+            validate_exception_class_single_source as _v242,
+            validate_exception_hierarchy_correctness as _v243,
+            validate_analytics_module_wiring as _v244,
+            validate_oracle_registry_reconciliation as _v245,
+        )
+        results.extend([
+            _v242(declaration, repo_root),
+            _v243(declaration, repo_root),
+            _v244(declaration, repo_root),
+            _v245(declaration, repo_root),
+        ])
+    except Exception as _exc_v242:
+        _skipped_validators.append({
+            "validators": ["V242", "V243", "V244", "V245"],
+            "error": str(_exc_v242),
+        })
+
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each
     # governance_validators_*.py module is imported above, so the registry is populated by
@@ -1162,10 +1219,10 @@ def run_all_governance_validators(
                 if isinstance(_extra_result, dict) and "result" in _extra_result:
                     results.append(_extra_result)
                     _registry_new += 1
-            except Exception:
-                pass
-    except Exception:
-        pass  # Registry loading is best-effort and non-blocking
+            except Exception as _exc_reg_fn:
+                _skipped_validators.append({"validators": [_fn_name or "registry_fn"], "error": str(_exc_reg_fn)})
+    except Exception as _exc_registry:
+        _skipped_validators.append({"validators": ["validator_registry_loader"], "error": str(_exc_registry)})
 
     # TC-CTI-REGISTRY-001: Apply shadow routing via extracted helper.
     if shadow_registry:
@@ -1178,21 +1235,64 @@ def run_all_governance_validators(
     skipped_count = sum(len(s.get("validators", [1])) for s in _skipped_validators)
     ran_count = len(results)
 
-    # TC-MA2-VAL-001-02: Enforce validator count at runtime (REQ-VAL-001).
-    # Import failures in _skipped_validators reduce ran_count silently.
-    # Emit a WARNING when ran_count + skipped_count deviates from expected_count.
+    # TC-SWB-006: Enforce validator count using ran_count ONLY (not ran + skipped).
+    # The old formula (ran + skipped == expected) was structurally broken: when a
+    # module fails to import, its validators move from ran to skipped, so the sum
+    # is unchanged and the check never fires. Using ran_count alone means skipped
+    # validators cause a deficit that produces a FAIL.
     _count_ok = True
-    _count_delta = (ran_count + skipped_count) - _EXPECTED_VALIDATOR_COUNT
-    if _count_delta != 0:
+    _count_delta = ran_count - _EXPECTED_VALIDATOR_COUNT
+    if _count_delta < 0:
+        _count_ok = False
+        results.append({
+            "validator": "validator_count_check",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "summary": (
+                f"Expected {_EXPECTED_VALIDATOR_COUNT} validators, only {ran_count} ran "
+                f"({skipped_count} skipped). Import failure or missing module. "
+                f"Skipped: {_skipped_validators}"
+            ),
+        })
+    elif _count_delta > 0:
         _count_ok = False
         import sys as _sys_val
         print(
             f"  [VALIDATOR-COUNT] WARNING: expected {_EXPECTED_VALIDATOR_COUNT} validators, "
-            f"ran {ran_count} + skipped {skipped_count} = {ran_count + skipped_count} "
-            f"(delta {_count_delta:+d}). "
-            "Update _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py or fix imports.",
+            f"ran {ran_count} (delta {_count_delta:+d}). "
+            "Update validator-manifest.yaml or _EXPECTED_VALIDATOR_COUNT.",
             file=_sys_val.stderr,
         )
+
+    # TC-SWB-007: Critical-validator presence enforcement.
+    # These validators must appear in results. If any is absent (import failure,
+    # bare except:pass, or removal), hard-FAIL. Subsumes TC-GAP-CONV-004.
+    _CRITICAL_VALIDATORS = {
+        "validate_package_install_proof_coverage",  # V226
+        "monolith_detection_validator",             # STRUCTURAL_GOV_BLOCK (result name)
+        "validate_source_architecture",             # STRUCTURAL_GOV_BLOCK (result name, no leading _)
+        "validate_multi_responsibility_file",       # STRUCTURAL_GOV_BLOCK
+        "validate_analytics_naming_enforced",       # STRUCTURAL_GOV_BLOCK
+        "V119",                                     # STRUCTURAL_GOV_BLOCK (promoted_code, result uses short code)
+    }
+    _present_validators = {r.get("validator", "") for r in results}
+    _missing_critical = _CRITICAL_VALIDATORS - _present_validators
+    if _missing_critical:
+        results.append({
+            "validator": "critical_validator_presence",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "summary": (
+                f"Critical validators missing from results: {sorted(_missing_critical)}. "
+                f"Check imports and bare except blocks."
+            ),
+        })
+
+    # Recompute counts after adding count-check and critical-presence results
+    fail_count = sum(1 for r in results if r["result"] == "FAIL")
+    warn_count = sum(1 for r in results if r["result"] == "WARN")
+    pass_count = sum(1 for r in results if r["result"] == "PASS")
+    blocks_sprint = any(r.get("blocks_sprint") for r in results if r["result"] == "FAIL")
 
     return {
         "all_pass": fail_count == 0,

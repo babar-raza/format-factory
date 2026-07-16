@@ -61,6 +61,15 @@ from autonomous_cycle_utils import (  # TC-SAL-DEBT-001: extracted to reduce LOC
     bridge_to_legacy_format,
 )
 
+# Coordination plane integration (TC-SWB-004)
+try:
+    from coordination.coordinated_io import coordinated_write as _coordinated_write
+except ImportError:
+    from contextlib import contextmanager as _cm_fallback
+    @_cm_fallback
+    def _coordinated_write(path, **kw):
+        yield
+
 
 def _validate_and_correct_signal_coherence(signal: dict, sprint_id: str) -> dict:
     """TC-MA2-SIGNAL-001-02: Validate and correct signal field coherence at write time.
@@ -945,7 +954,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         if str(REPO_ROOT) not in sys.path:
             sys.path.insert(0, str(REPO_ROOT))
         from governance_validators import run_all_governance_validators
-        governance_validation_result = run_all_governance_validators(decl, repo_root)
+        governance_validation_result = run_all_governance_validators(decl, repo_root, committed=True)
         (review_dir / "governance-validation-result.json").write_text(
             json.dumps(governance_validation_result, indent=2), encoding="utf-8"
         )
@@ -2530,10 +2539,12 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         # Corrects incoherent combinations that can reach the disk (REQ-SIGNAL-001).
         signal = _validate_and_correct_signal_coherence(signal, sprint_id)
 
-        atomic_write_json(signal_path, signal)
+        with _coordinated_write(signal_path, op="continuation_signal", source="autonomous_cycle"):
+            atomic_write_json(signal_path, signal)
         # Also update legacy path for Track P (backward compat) — NOT for Track M (strict isolation)
         if _legacy_signal_path is not None:
-            atomic_write_json(_legacy_signal_path, signal)
+            with _coordinated_write(_legacy_signal_path, op="continuation_signal", source="autonomous_cycle"):
+                atomic_write_json(_legacy_signal_path, signal)
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
               f"iter={existing_iteration}/{max_iterations}, track={track!r})")
 
@@ -2550,7 +2561,8 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         stream_signal_dir.mkdir(parents=True, exist_ok=True)
         stream_signal = {**signal, "stream": detected_stream}
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
-        atomic_write_json(stream_signal_path, stream_signal)
+        with _coordinated_write(stream_signal_path, op="stream_signal", source="autonomous_cycle"):
+            atomic_write_json(stream_signal_path, stream_signal)
         print(f"  Stream signal: {stream_signal_path}")
 
         # TC-AMD-SIGNAL-001: Emit maturity signal for external consumption
@@ -2630,7 +2642,8 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 # Non-silent: record failure in signal so check_continuation surfaces it
                 signal["evidence_continuation_failed"] = True
                 signal["evidence_continuation_error"] = str(ec_err)
-                atomic_write_json(signal_path, signal)
+                with _coordinated_write(signal_path, op="continuation_signal_error", source="autonomous_cycle"):
+                    atomic_write_json(signal_path, signal)
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
 

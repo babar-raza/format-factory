@@ -42,6 +42,17 @@ import yaml
 _HERE = Path(__file__).resolve().parent
 _REPO = _HERE.parent.parent
 
+# Coordination plane integration (TC-SWB-004)
+try:
+    import sys as _sys_cw
+    _sys_cw.path.insert(0, str(_HERE))
+    from coordination.coordinated_io import coordinated_write as _coordinated_write
+except ImportError:
+    from contextlib import contextmanager as _cm_fallback
+    @_cm_fallback
+    def _coordinated_write(path, **kw):
+        yield
+
 # Required fields from evidence-declaration.schema.json
 _REQUIRED_FIELDS = [
     "run_id", "sprint_id", "evidence_root",
@@ -267,7 +278,8 @@ def cmd_inject_declaration(sprint_id: str, repo_root: Path) -> Path:
     }
 
     declaration_path = evidence_dir / "evidence-declaration.yaml"
-    _atomic_write(declaration_path, yaml.dump(skeleton, default_flow_style=False, sort_keys=False))
+    with _coordinated_write(declaration_path, op="inject_declaration", source="sprint_executor"):
+        _atomic_write(declaration_path, yaml.dump(skeleton, default_flow_style=False, sort_keys=False))
 
     abs_path = declaration_path.resolve()
     print(f"Skeleton declaration created: {abs_path}")
@@ -460,9 +472,26 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
                 file=_sys.stderr,
             )
             return 1
-        # Non-lock errors (import fail, etc.) — log and continue (best-effort)
-        print(f"[MissionLock] Warning: lock not acquired ({_lock_err}). Proceeding without lock.")
-        _lock_cm = None
+        # TC-COORD-008: non-conflict lock errors are FATAL by default. The
+        # prior fail-open here is how two controllers ended up sharing one
+        # working tree (R1227). FF_COORDINATION_SOFT=1 restores the old
+        # behaviour for degraded environments -- the softening is explicit
+        # and visible, never silent.
+        import os as _os
+        if _os.environ.get("FF_COORDINATION_SOFT") == "1":
+            print(f"[MissionLock] Warning: lock not acquired ({_lock_err})."
+                  f" Proceeding without lock (FF_COORDINATION_SOFT=1).")
+            _lock_cm = None
+        else:
+            import sys as _sys
+            print(
+                f"\nBLOCKED: mission lock could not be acquired ({_lock_err}).\n"
+                f"Refusing to run unlocked (two controllers on one tree lost"
+                f" work before -- GAP-MA-006).\n"
+                f"Set FF_COORDINATION_SOFT=1 to override explicitly.",
+                file=_sys.stderr,
+            )
+            return 1
     # ──────────────────────────────────────────────────────────────────────
 
     cycle = 0
@@ -520,7 +549,8 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
                 try:
                     sig = json.loads(sig_path.read_text(encoding="utf-8"))
                     sig["iteration"] = 0
-                    _atomic_write(sig_path, json.dumps(sig, indent=2))
+                    with _coordinated_write(sig_path, op="signal_reset", source="sprint_executor"):
+                        _atomic_write(sig_path, json.dumps(sig, indent=2))
                     print("Iteration counter reset to 0.")
                 except Exception as e:
                     print(f"Could not reset iteration: {e}")

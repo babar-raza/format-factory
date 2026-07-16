@@ -43,6 +43,21 @@ from pathlib import Path
 
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent
+
+# Coordination plane integration (TC-SWB-004)
+try:
+    from coordination.coordinated_io import coordinated_write as _coordinated_write
+except ImportError:
+    try:
+        import sys as _sys_cw
+        _sys_cw.path.insert(0, str(_here))
+        from coordination.coordinated_io import coordinated_write as _coordinated_write
+    except ImportError:
+        from contextlib import contextmanager as _cm_fallback
+        @_cm_fallback
+        def _coordinated_write(path, **kw):
+            yield
+
 _shared_lock_path = _repo_root / ".local" / "supervisor" / "active-plan-lock.json"
 _plan_locks_dir = _repo_root / ".local" / "supervisor" / "plan-locks"
 
@@ -626,15 +641,18 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         _keyed_tmp.write_text(lock_json, encoding="utf-8")
         # Phase 2: rename both (if first rename succeeds but second fails,
         # shared lock is updated and keyed lock is in .tmp — recoverable)
-        os.replace(str(_shared_tmp), str(_shared_lock_path))
-        os.replace(str(_keyed_tmp), str(keyed_path))
+        with _coordinated_write(_shared_lock_path, op="plan_lock", source="write_plan_lock"):
+            os.replace(str(_shared_tmp), str(_shared_lock_path))
+        with _coordinated_write(keyed_path, op="plan_lock", source="write_plan_lock"):
+            os.replace(str(_keyed_tmp), str(keyed_path))
         print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
         _wrote_shared = True
     else:
         # Shared skipped — write keyed lock only (single atomic write)
         _keyed_tmp = keyed_path.with_suffix(".tmp")
         _keyed_tmp.write_text(lock_json, encoding="utf-8")
-        os.replace(str(_keyed_tmp), str(keyed_path))
+        with _coordinated_write(keyed_path, op="plan_lock", source="write_plan_lock"):
+            os.replace(str(_keyed_tmp), str(keyed_path))
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
     # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch.

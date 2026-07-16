@@ -1,0 +1,759 @@
+# Validator Manifest — Single Source of Truth for Expected Governance Validators
+# ============================================================================
+#
+# Purpose: Declares every governance validator grouped by the module it is
+#          imported from in governance_validator_runner.py.
+#
+# Count contract:
+#   expected_count = sum of each module's `count` field = 245
+#   This MUST equal _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py.
+#
+# Count mechanics:
+#   The runner achieves 245 results via two mechanisms:
+#   1. Explicit calls — validators directly called in run_all_governance_validators()
+#   2. _VALIDATOR_REGISTRY auto-discovery — the registry loop adds validators
+#      from imported modules not already in results (dedup by fn.__name__).
+#      Due to a known dedup asymmetry (the explicit result's "validator" field
+#      often differs from fn.__name__), 32 validators are counted twice.
+#      These are tracked per-module under `registry_dedup_additions`.
+#
+# How to add a validator:
+#   1. Add the validator ID to the appropriate module's `validators` list below.
+#   2. Increment that module's `count` by 1.
+#   3. The runner's _EXPECTED_VALIDATOR_COUNT must be updated to match
+#      the new total (sum of all `count` fields).
+#
+# Per-file validators (V111-V113, V117-V118, V121, V123-V124, V126-V127):
+#   These run per changed source file and add variable result counts.
+#   They are NOT included in the expected_count baseline (245 is the minimum
+#   achieved with changed_files=[]). The count check treats >245 as a WARNING,
+#   not a failure. Per-file validators are listed under ext4_per_file for
+#   documentation but do NOT contribute to expected_count.
+#
+# Generated: 2026-07-16
+# Runner: governance_validator_runner.py (line 131)
+# Authoritative: governance_validators_contract._VALIDATOR_REGISTRY +
+#                explicit calls in run_all_governance_validators()
+
+expected_count: 245
+
+modules:
+
+  # -------------------------------------------------------------------------
+  # governance_validators — Core validators (V1-V49, V64-V66)
+  # -------------------------------------------------------------------------
+  # 52 functions imported from governance_validators.py.
+  # None have @validator decorators (registered externally).
+  # 17 of these are rediscovered by the registry (dedup failure) because the
+  # explicit result's "validator" field uses *_validator suffix naming that
+  # does not match fn.__name__.
+  core:
+    module: governance_validators
+    count: 69
+    explicit: 52
+    registry_dedup_additions: 17
+    validators:
+      # V1-V13 (initial results list — declaration-level checks)
+      - V1    # validate_execution_method_required
+      - V2    # validate_source_diff_required
+      - V3    # validate_idempotency_key_required
+      - V4    # validate_replay_recipe_required
+      - V5    # validate_claim_classification
+      - V6    # validate_legacy_backfill
+      - V7    # validate_manual_ungoverned_rejection
+      - V8    # validate_governed_direct_execution
+      - V9    # validate_source_marker_or_sidecar
+      - V10   # validate_taskcard_state_transitions
+      - V11   # validate_route_decision_required
+      - V12   # validate_ci_artifacts
+      - V13   # validate_spec_fact_refs_wired
+      # V14-V22 (spec-fact, lane ownership, capability staleness)
+      - V14   # validate_spec_fact_count
+      - V15   # validate_qname_coverage
+      - V16   # validate_parity_matrix_present
+      - V17   # validate_no_placeholder_metadata
+      - V18   # validate_gate11_criteria
+      - V19   # validate_min_spec_facts_per_format
+      - V20   # validate_lane_ownership
+      - V21   # validate_dag_ordering
+      - V22   # validate_capability_map_staleness
+      # V23-V33 (spec qname, depth, namespace)
+      - V23   # validate_spec_qname_refs
+      - V24   # validate_skeleton_progress
+      - V25   # validate_spec_parity_gate
+      - V26   # validate_implementation_depth_fields
+      - V27   # validate_depth_score
+      - V28   # validate_changed_without_tests
+      - V29   # validate_helpers_only_overclaim
+      - V30   # validate_namespace_tree
+      - V31   # validate_attribute_property_map
+      - V32   # validate_containment_graph
+      - V33   # validate_alias_compatibility
+      # V34-V42 (class count, monolith, stubs, authority chain, evidence)
+      - V34   # validate_class_count_minimum
+      - V35   # validate_monolith_detection (STRUCTURAL_GOV_BLOCK)
+      - V36   # validate_no_stub_tests
+      - V37   # validate_spec_fact_authority_chain
+      - V38   # validate_evidence_minimum
+      - V39   # validate_governance_only_no_source_delta
+      - V40   # _validate_source_architecture (STRUCTURAL_GOV_BLOCK, no @validator)
+      - V41   # validate_analytics_skill_required
+      - V42   # validate_deepening_suspension
+      # V43-V49 (canonical registry, facade, qname, skill transcript)
+      - V43   # validate_canonical_registry_entry_exists
+      - V44   # validate_facade_delegates_to_spec
+      - V45   # validate_qname_class_names
+      - V46   # validate_skill_transcript_present
+      - V47   # validate_spec_fact_refs_in_sal_output
+      - V48   # validate_architecture_only_stub_gate
+      - V49   # validate_qname_structure
+      # V64-V66 (py.typed, exports, multi-responsibility)
+      - V64   # validate_py_typed_marker
+      - V65   # validate_all_exports_declared
+      - V66   # validate_multi_responsibility_file (STRUCTURAL_GOV_BLOCK)
+    # Validators whose explicit results use a different "validator" field name
+    # than fn.__name__, so the _VALIDATOR_REGISTRY dedup fails and they appear
+    # twice in results. These 16 IDs inflate the count by 16.
+    # (V40 has no @validator decorator so it does not produce a registry dup.)
+    dedup_affected:
+      - V6    # legacy_backfill_validator != validate_legacy_backfill
+      - V8    # governed_direct_execution_validator != validate_governed_direct_execution
+      - V9    # source_marker_or_sidecar_attribution_validator
+      - V12   # ci_artifact_presence_validator
+      - V13   # spec_fact_refs_validator
+      - V20   # lane_ownership_validator
+      - V21   # dag_ordering_validator
+      - V22   # capability_map_staleness (field name matches but included)
+      - V34   # class_count_minimum_validator
+      - V35   # monolith_detection_validator
+      - V36   # no_stub_tests_validator
+      - V37   # spec_fact_authority_chain_validator
+      - V38   # evidence_minimum_validator
+      - V39   # governance_only_no_source_delta (also included)
+      - V41   # analytics_skill_required
+      - V43   # canonical_registry_entry_exists
+      - V44   # facade_delegates_to_spec
+
+  # -------------------------------------------------------------------------
+  # governance_validators_signal — V67 maturity signal schema
+  # -------------------------------------------------------------------------
+  signal:
+    module: governance_validators_signal
+    count: 1
+    validators:
+      - V67   # validate_maturity_signal_schema
+
+  # -------------------------------------------------------------------------
+  # knowledge_freshness_validator — V68 knowledge freshness
+  # -------------------------------------------------------------------------
+  knowledge_freshness:
+    module: knowledge_freshness_validator
+    count: 1
+    validators:
+      - V68   # validate_knowledge_freshness (no @validator)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext — V48/V50/V54-V63, V69-V72, V-SGF-001
+  # -------------------------------------------------------------------------
+  ext:
+    module: governance_validators_ext
+    count: 15
+    validators:
+      - V50   # validate_forbidden_module_names
+      - V54   # validate_cross_lane_product_touching_machinery
+      - V55   # validate_cross_lane_machinery_touching_product
+      - V56   # validate_hardening_target_identity
+      - V57   # validate_changed_files_in_ledger
+      - V58   # validate_expansion_fallback_refs
+      - V60   # validate_terminal_closure_completeness
+      - V61   # validate_error_fallback_safety
+      - V63   # validate_public_api_surface_ratio
+      - V69   # validate_skill_idempotency_declared
+      - V70   # validate_sal_authority_chain
+      - V71   # validate_lane_dag_ordering
+      - V72   # validate_artifact_identity
+      - V-SGF-001  # validate_skill_attribution_in_declaration
+      - V-NEW-001  # validate_capability_fact_ratio (from ext via separate try/except)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_spec — V51-V53, V59, V62
+  # -------------------------------------------------------------------------
+  spec:
+    module: governance_validators_spec
+    count: 5
+    validators:
+      - V51   # validate_spec_qname_coverage
+      - V52   # validate_compat_import_integrity
+      - V53   # validate_spec_authority_class_completeness
+      - V59   # validate_cross_language_parity
+      - V62   # validate_spec_fact_refs_density
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ledger — V74
+  # -------------------------------------------------------------------------
+  ledger:
+    module: governance_validators_ledger
+    count: 1
+    validators:
+      - V74   # validate_ledger_continuation_gate
+
+  # -------------------------------------------------------------------------
+  # governance_validators_dotnet — V73, V78_AGG, V152
+  # -------------------------------------------------------------------------
+  dotnet:
+    module: governance_validators_dotnet
+    count: 3
+    validators:
+      - V73     # validate_dotnet_spec_qname
+      - V78_AGG # validate_dotnet_aggregate_loc_cap
+      - V152    # validate_format_roundtrip_coverage
+
+  # -------------------------------------------------------------------------
+  # design_artifact_validator — V153
+  # -------------------------------------------------------------------------
+  design_artifact:
+    module: design_artifact_validator
+    count: 1
+    validators:
+      - V153  # validate_design_artifact_present
+
+  # -------------------------------------------------------------------------
+  # governance_validators_gate_auth — V80, V81
+  # -------------------------------------------------------------------------
+  gate_auth:
+    module: governance_validators_gate_auth
+    count: 2
+    validators:
+      - V80   # validate_premature_human_authorization_request
+      - V81   # validate_gate_transition_state_machine
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext2 — V75-V79, V82, V87-V90, V92-V99, plus 1 registry
+  # -------------------------------------------------------------------------
+  ext2:
+    module: governance_validators_ext2
+    count: 19
+    explicit: 18
+    registry_additions: 1
+    validators:
+      # Main import block
+      - V75   # validate_dependency_direction
+      - V76   # validate_error_handling_hierarchy
+      - V77   # validate_analytics_naming_enforced (STRUCTURAL_GOV_BLOCK)
+      - V78   # validate_dotnet_loc_cap
+      - V79   # validate_healing_stall_detector
+      - V82   # validate_oracle_obligations
+      - V87   # validate_readme_freshness
+      - V88   # validate_certification_reports_exist
+      - V89   # validate_certification_matrix_consistent
+      - V90   # validate_plans_root_policy
+      # Playbook governance block (V92-V99)
+      - V92   # validate_playbook_registry_entries
+      - V93   # validate_playbook_has_version
+      - V94   # validate_playbook_has_owner
+      - V95   # validate_playbook_has_evidence_contract
+      - V96   # validate_playbook_has_rollback
+      - V97   # validate_playbook_not_overriding_gate
+      - V98   # validate_playbook_has_no_deprecated_paths
+      - V99   # validate_playbook_coverage_report_current
+      # Discovered via _VALIDATOR_REGISTRY (not explicitly called)
+      - V_PROJECT_STATUS_FRESHNESS  # validate_project_status_freshness
+
+  # -------------------------------------------------------------------------
+  # governance_validators_sgov — V-SGF-002
+  # -------------------------------------------------------------------------
+  sgov:
+    module: governance_validators_sgov
+    count: 1
+    validators:
+      - V-SGF-002  # validate_skill_receipt_presence (no @validator)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_sal — V-SAL-SCHEMA-001, V-NEW-002, plus 1 registry
+  # -------------------------------------------------------------------------
+  sal:
+    module: governance_validators_sal
+    count: 3
+    explicit: 2
+    registry_additions: 1
+    validators:
+      - V-SAL-SCHEMA-001  # validate_sal_facts_schema
+      - V-NEW-002         # validate_spec_fact_provenance_advisory
+      # Discovered via _VALIDATOR_REGISTRY (not explicitly called)
+      - V_WORK_ITEMS_SAL_BACKING  # validate_work_items_sal_backing
+    note: >
+      V-NEW-001 (validate_capability_fact_ratio) is imported from
+      governance_validators_ext in the runner (line 460), so it is listed under
+      the ext module, not here. This module contributes 2 explicit + 1 registry = 3.
+
+  # -------------------------------------------------------------------------
+  # governance_validators_layers — V83-V86
+  # -------------------------------------------------------------------------
+  layers:
+    module: governance_validators_layers
+    count: 4
+    validators:
+      - V83   # validate_primary_layer_classified
+      - V84   # validate_permanent_layer_plan_exists
+      - V85   # validate_prework_log_present
+      - V86   # validate_layer_task_registered
+
+  # -------------------------------------------------------------------------
+  # terminal_closure_validators — V-TCF-001/002/003
+  # -------------------------------------------------------------------------
+  terminal_closure:
+    module: terminal_closure_validators
+    count: 3
+    validators:
+      - V-TCF-001  # validate_no_open_taskcards_at_terminal (no @validator)
+      - V-TCF-002  # validate_terminal_closure_has_contract (no @validator)
+      - V-TCF-003  # validate_no_premature_closure_triggers (no @validator)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_root_struct — V91
+  # -------------------------------------------------------------------------
+  root_struct:
+    module: governance_validators_root_struct
+    count: 2
+    explicit: 1
+    registry_dedup_additions: 1
+    validators:
+      - V91   # validate_root_structure
+    dedup_affected:
+      - V91   # root_structure_validator (result field) != validate_root_structure (fn name)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_dotnet_semantic — V87_D/V88_D/V89_D, V168, V169, +3 registry
+  # -------------------------------------------------------------------------
+  dotnet_semantic:
+    module: governance_validators_dotnet_semantic
+    count: 8
+    explicit: 5
+    registry_additions: 3
+    validators:
+      # Explicitly called
+      - V_DOTNET_CONSTANT_RETURN  # validate_dotnet_constant_return_public_api
+      - V_DOTNET_DETACHED_DICT    # validate_dotnet_detached_dictionary_fields
+      - V_DOTNET_MISSINGMETHODS   # validate_dotnet_missingmethods_filename
+      - V168  # validate_dotnet_collection_stub_comments
+      - V169  # validate_whitelist_expiry
+      # Discovered via _VALIDATOR_REGISTRY (not explicitly called)
+      - V_DOTNET_SETTER_NO_XML    # validate_dotnet_setter_without_xml_write
+      - V_DOTNET_GETTER_NO_XML    # validate_dotnet_getter_without_xml_read
+      - V_DOTNET_FODS_APIS_LOC    # validate_dotnet_fods_extended_apis_loc
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext3 — V100-V109
+  # -------------------------------------------------------------------------
+  ext3:
+    module: governance_validators_ext3
+    count: 10
+    validators:
+      - V100  # validate_suspicious_filenames
+      - V101  # validate_history_identifiers_in_source
+      - V102  # validate_undocumented_public_python_apis
+      - V103  # validate_ungoverned_todo_markers
+      - V104  # validate_constant_return_public_methods
+      - V105  # validate_getter_without_parser_source
+      - V106  # validate_setter_without_writer_path
+      - V107  # validate_test_only_public_apis
+      - V108  # validate_detached_persistent_state
+      - V109  # validate_files_outside_approved_layout
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext4 — context-level: V119, V120, V125, V145, V149,
+  #   V171, V_WEAK_TEST; registry: V172-V175, V182
+  # -------------------------------------------------------------------------
+  ext4:
+    module: governance_validators_ext4
+    count: 12
+    explicit: 7
+    registry_additions: 5
+    validators:
+      # Context-level (always run)
+      - V119  # validate_promoted_code_changed_without_reopening (STRUCTURAL_GOV_BLOCK)
+      - V120  # validate_certification_without_architecture_proof
+      - V125  # validate_new_product_bypassing_architecture_gate
+      - V145  # validate_maintenance_obligations_current
+      - V149  # validate_source_stubs (STRUCTURAL_GOV_BLOCK)
+      - V171  # validate_lane_contract_exists
+      - V_WEAK_TEST  # validate_weak_test_assertions
+      # Discovered via _VALIDATOR_REGISTRY (not explicitly called)
+      - V172  # validate_mach_audit_after_exec
+      - V173  # validate_mach_iteration_proof
+      - V174  # validate_mach_continuation_consumed
+      - V175  # validate_mach_task_vs_mission
+      - V182  # validate_no_open_implementation_verified_gaps
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext4 — per-file validators (CONDITIONAL — not in count)
+  # These run per changed source file. They are NOT counted in expected_count.
+  # -------------------------------------------------------------------------
+  ext4_per_file:
+    module: governance_validators_ext4
+    count: 0
+    note: >
+      Per-file validators produce results proportional to changed_files count.
+      They push ran_count above expected_count (reported as WARNING, not FAIL).
+      Listed here for documentation; not included in expected_count.
+    validators:
+      - V111  # validate_public_symbol_without_qname_authority
+      - V112  # validate_model_type_without_spec_authority
+      - V113  # validate_nested_concept_on_root_document
+      - V117  # validate_dumping_ground_or_catchall_file
+      - V118  # validate_sprint_history_identifier_in_source
+      - V121  # validate_missing_public_documentation
+      - V123  # validate_ungoverned_code_marker
+      - V124  # validate_semantic_stub_constant_return
+      - V126  # validate_file_outside_approved_qname_layout
+      - V127  # validate_type_outside_approved_qname_hierarchy
+
+  # -------------------------------------------------------------------------
+  # governance_validators_path — V110
+  # -------------------------------------------------------------------------
+  path:
+    module: governance_validators_path
+    count: 1
+    validators:
+      - V110  # validate_dotnet_path_canonical
+
+  # -------------------------------------------------------------------------
+  # governance_validators_found_issue — V130-V133, V139-V142, V_FI_* (6)
+  # -------------------------------------------------------------------------
+  found_issue:
+    module: governance_validators_found_issue
+    count: 24
+    explicit: 14
+    registry_dedup_additions: 10
+    validators:
+      # First block (V130-V133)
+      - V130  # validate_dotnet_loc_cap_static
+      - V131  # validate_found_issue_disposition
+      - V132  # validate_found_issue_escalation
+      - V133  # validate_found_issue_invalid_disposition
+      # Second block (V139-V142)
+      - V139  # validate_found_issue_register_present
+      - V140  # validate_issue_accounting_reconciles
+      - V141  # validate_no_prose_only_findings
+      - V142  # validate_invalid_ownership_disposition
+      # Third block (V_FI_* section-21 validators)
+      - V_FI_TASK_CLOSURE  # validate_found_issue_task_closure_unaccounted
+      - V_FI_NO_DELETED_TEST  # validate_found_issue_no_deleted_test_without_analysis
+      - V_FI_DOWNSTREAM_PATCH  # validate_found_issue_downstream_patch_while_upstream_defective
+      - V_FI_CLOSURE_NO_VERIFY  # validate_found_issue_closure_without_verification
+      - V_FI_UNTASKCARDED_REPORT  # validate_found_issue_untaskcarded_in_final_report
+      - V_FI_FIXTURE_EDIT  # validate_found_issue_no_fixture_edit_without_authority
+    dedup_affected:
+      # These 10 validators produce explicit results with "validator" fields
+      # that differ from fn.__name__, causing the registry to add them again.
+      - V130   # dotnet_loc_cap_static != validate_dotnet_loc_cap_static
+      - V139   # found_issue_register_present != validate_found_issue_register_present
+      - V140   # issue_accounting_reconciles != validate_issue_accounting_reconciles
+      - V142   # invalid_ownership_disposition != validate_invalid_ownership_disposition
+      - V_FI_TASK_CLOSURE
+      - V_FI_NO_DELETED_TEST
+      - V_FI_DOWNSTREAM_PATCH
+      - V_FI_CLOSURE_NO_VERIFY
+      - V_FI_UNTASKCARDED_REPORT
+      - V_FI_FIXTURE_EDIT
+
+  # -------------------------------------------------------------------------
+  # governance_validators_output_quality — V134-V136
+  # -------------------------------------------------------------------------
+  output_quality:
+    module: governance_validators_output_quality
+    count: 3
+    validators:
+      - V134  # validate_no_manual_json_escaping_in_dotnet
+      - V135  # validate_html_escaping_in_dotnet
+      - V136  # validate_html_escaping_in_python
+
+  # -------------------------------------------------------------------------
+  # governance_validators_consumer_proof — V137-V138
+  # -------------------------------------------------------------------------
+  consumer_proof:
+    module: governance_validators_consumer_proof
+    count: 2
+    validators:
+      - V137  # validate_no_stale_installed_packages
+      - V138  # validate_consumer_proof_evidence_exists
+
+  # -------------------------------------------------------------------------
+  # governance_validators_oracle — V143 + 3 registry-discovered
+  # -------------------------------------------------------------------------
+  oracle:
+    module: governance_validators_oracle
+    count: 4
+    explicit: 1
+    registry_additions: 3
+    validators:
+      - V143  # validate_oracle_depth_minimum
+      # Discovered via _VALIDATOR_REGISTRY (not explicitly called)
+      - V_STALE_ORACLE  # validate_stale_oracle_detection
+      - V_FUTURE_ORACLE  # validate_future_format_oracle_onboarding
+      - V_ORACLE_GATE_ADV  # validate_oracle_gate_advancement
+
+  # -------------------------------------------------------------------------
+  # governance_validators_release — V144
+  # -------------------------------------------------------------------------
+  release:
+    module: governance_validators_release
+    count: 1
+    validators:
+      - V144  # validate_gate10_status_consistency
+
+  # -------------------------------------------------------------------------
+  # governance_validators_agent_parity — V183-V186
+  # -------------------------------------------------------------------------
+  agent_parity:
+    module: governance_validators_agent_parity
+    count: 8
+    explicit: 4
+    registry_dedup_additions: 4
+    validators:
+      - V183  # validate_agent_opt_in_not_default
+      - V184  # validate_kilo_column_in_registry
+      - V185  # validate_canonical_contract_integrity
+      - V186  # validate_agent_bundles_current
+    dedup_affected:
+      # V183-V186 use short "V183" etc. as result validator field,
+      # but fn.__name__ is e.g. "validate_agent_opt_in_not_default".
+      - V183
+      - V184
+      - V185
+      - V186
+
+  # -------------------------------------------------------------------------
+  # governance_validators_certification — V_CERT_01 through V_CERT_05
+  # -------------------------------------------------------------------------
+  certification:
+    module: governance_validators_certification
+    count: 5
+    validators:
+      - V_CERT_01  # validate_all_evidence_present_for_certified_formats
+      - V_CERT_02  # validate_no_certified_format_has_material_stubs
+      - V_CERT_03  # validate_certification_run_manifests_exist
+      - V_CERT_04  # validate_certification_layer_registered
+      - V_CERT_05  # validate_gap_reconciliation_map_exists
+
+  # -------------------------------------------------------------------------
+  # governance_validators_product_gov — V150-V151, V154-V157
+  # -------------------------------------------------------------------------
+  product_gov:
+    module: governance_validators_product_gov
+    count: 6
+    validators:
+      - V150  # validate_governed_artifact_pre_flight
+      - V151  # validate_change_proposal_coverage
+      - V154  # validate_impact_analysis_on_accepted_proposals
+      - V155  # validate_release_candidate_decision_chain
+      - V156  # validate_governance_counter_report_fresh
+      - V157  # validate_governance_binding_paths
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext6 — V224
+  # -------------------------------------------------------------------------
+  ext6:
+    module: governance_validators_ext6
+    count: 1
+    validators:
+      - V224  # validate_backfill_completeness
+
+  # -------------------------------------------------------------------------
+  # governance_validators_ext7 — V225
+  # -------------------------------------------------------------------------
+  ext7:
+    module: governance_validators_ext7
+    count: 1
+    validators:
+      - V225  # validate_sal_store_reconciliation
+
+  # -------------------------------------------------------------------------
+  # governance_validators_package_proof — V226
+  # -------------------------------------------------------------------------
+  package_proof:
+    module: governance_validators_package_proof
+    count: 1
+    validators:
+      - V226  # validate_package_install_proof_coverage
+
+  # -------------------------------------------------------------------------
+  # governance_validators_coordination — V194-V196
+  # -------------------------------------------------------------------------
+  coordination:
+    module: governance_validators_coordination
+    count: 3
+    validators:
+      - V194  # validate_coordination_parity
+      - V195  # validate_coordination_audit_trail
+      - V196  # validate_generator_output_manifests
+
+  # -------------------------------------------------------------------------
+  # governance_validators_gate9 — V227
+  # -------------------------------------------------------------------------
+  gate9:
+    module: governance_validators_gate9
+    count: 1
+    validators:
+      - V227  # validate_gate9_implementation_authorization_linkage
+
+  # -------------------------------------------------------------------------
+  # governance_validators_gate9_docs_dogfood — V228-V229
+  # -------------------------------------------------------------------------
+  gate9_docs_dogfood:
+    module: governance_validators_gate9_docs_dogfood
+    count: 2
+    validators:
+      - V228  # validate_format_readme_exists
+      - V229  # validate_dogfood_export_exists
+
+  # -------------------------------------------------------------------------
+  # governance_validators_gate9_drift — V230
+  # -------------------------------------------------------------------------
+  gate9_drift:
+    module: governance_validators_gate9_drift
+    count: 1
+    validators:
+      - V230  # validate_coverage_registry_drift
+
+  # -------------------------------------------------------------------------
+  # governance_validators_gate9_baseline_integrity — V231
+  # -------------------------------------------------------------------------
+  gate9_baseline_integrity:
+    module: governance_validators_gate9_baseline_integrity
+    count: 1
+    validators:
+      - V231  # validate_gate9_baseline_integrity
+
+  # -------------------------------------------------------------------------
+  # governance_validators_format_contract — V232-V241
+  # -------------------------------------------------------------------------
+  format_contract:
+    module: governance_validators_format_contract
+    count: 10
+    validators:
+      - V232  # validate_contract_schema
+      - V233  # validate_contract_provenance
+      - V234  # validate_contract_depth
+      - V235  # validate_contract_shallow_language
+      - V236  # validate_contract_capability_ids
+      - V237  # validate_contract_test_gate
+      - V238  # validate_contract_freshness
+      - V239  # validate_contract_determinism
+      - V240  # validate_contract_hand_edit_guard
+      - V241  # validate_contract_consumption
+
+  # -------------------------------------------------------------------------
+  # governance_validators_package_integrity — V242-V245
+  # -------------------------------------------------------------------------
+  package_integrity:
+    module: governance_validators_package_integrity
+    count: 4
+    validators:
+      - V242  # validate_exception_class_single_source
+      - V243  # validate_exception_hierarchy_correctness
+      - V244  # validate_analytics_module_wiring
+      - V245  # validate_oracle_registry_reconciliation
+
+  # -------------------------------------------------------------------------
+  # governance_validators_control_layer — V176-V181
+  # -------------------------------------------------------------------------
+  control_layer:
+    module: governance_validators_control_layer
+    count: 6
+    validators:
+      - V176  # validate_evidence_paths_resolve (no @validator)
+      - V177  # validate_receipt_claimed_before_closure (no @validator)
+      - V178  # validate_no_quarantined_plan_source (no @validator)
+      - V179  # validate_contradiction_signal_checked (no @validator)
+      - V180  # validate_gap_not_exhausted (no @validator)
+      - V181  # validate_sync_report_fresh (no @validator)
+
+
+# ===========================================================================
+# NOT IMPORTED by the runner — these validators exist but do NOT contribute
+# to expected_count. Listed for completeness.
+# ===========================================================================
+not_imported:
+  ext5:
+    module: governance_validators_ext5
+    reason: "Module exists but is never imported by governance_validator_runner.py"
+    validators:
+      - V187  # (not active)
+      - V188  # (not active)
+      - V189  # (not active)
+      - V190  # (not active)
+      - V191  # (not active)
+      - V192  # (not active)
+      - V193  # (not active)
+
+
+# ===========================================================================
+# Conditional validators — produce results only under specific runtime
+# conditions. NOT included in expected_count (they may add 0 or 1).
+# ===========================================================================
+conditional:
+  sal_format_advisory:
+    module: sal_format_advisory
+    reason: "Only produces a result when SAL warnings exist"
+    validators:
+      - sal_format_advisory  # build_advisory (non-blocking WARN)
+
+
+# ===========================================================================
+# Count verification
+# ===========================================================================
+# Sum of all module `count` fields must equal expected_count.
+#
+# Module counts:
+#   core (governance_validators):          69  (52 explicit + 17 dedup)
+#   signal:                                 1
+#   knowledge_freshness:                    1
+#   ext:                                   15
+#   spec:                                   5
+#   ledger:                                 1
+#   dotnet:                                 3
+#   design_artifact:                        1
+#   gate_auth:                              2
+#   ext2:                                  19  (18 explicit + 1 registry)
+#   sgov:                                   1
+#   sal:                                    3  (2 explicit + 1 registry)
+#   layers:                                 4
+#   terminal_closure:                       3
+#   root_struct:                            2  (1 explicit + 1 dedup)
+#   dotnet_semantic:                        8  (5 explicit + 3 registry)
+#   ext3:                                  10
+#   ext4:                                  12  (7 explicit + 5 registry)
+#   ext4_per_file:                          0  (conditional, not counted)
+#   path:                                   1
+#   found_issue:                           24  (14 explicit + 10 dedup)
+#   output_quality:                         3
+#   consumer_proof:                         2
+#   oracle:                                 4  (1 explicit + 3 registry)
+#   release:                                1
+#   agent_parity:                           8  (4 explicit + 4 dedup)
+#   certification:                          5
+#   product_gov:                            6
+#   ext6:                                   1
+#   ext7:                                   1
+#   package_proof:                          1
+#   coordination:                           3
+#   gate9:                                  1
+#   gate9_docs_dogfood:                     2
+#   gate9_drift:                            1
+#   gate9_baseline_integrity:               1
+#   format_contract:                       10
+#   package_integrity:                      4
+#   control_layer:                          6
+#   ----------------------------------------
+#   TOTAL:                                245
+#
+# Breakdown:
+#   Unique validators (explicit + registry-discovered):  213
+#   Registry dedup additions (counted twice):             32
+#     - governance_validators:    17
+#     - found_issue:              10
+#     - root_struct:               1
+#     - agent_parity:              4
+#     - subtotal:                  32
+#   Grand total:                                         245

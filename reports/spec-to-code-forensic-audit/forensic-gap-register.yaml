@@ -197,21 +197,26 @@ gaps:
       gate (>=0.8) on every run. QOI spec_to_fact_ratio now 1.0 (10/10).
 
   - gap_id: GAP-FORENSIC-009
-    title: "ZST binary frame structure partially seeded (94/201 RFC 8878 units)"
+    title: "ZST binary frame structure — denominator corrected, 94/96 = 0.979"
     severity: HIGH
     pipeline_boundary: B2_spec_unit_to_sal_fact
     scope: [zst]
     description: >
-      RFC 8878 defines ~201 ABNF productions and struct definitions. Only 94 are seeded.
-      The uncovered ~107 units represent detailed frame/block structure variants.
-      spec_to_fact_ratio = 0.468 (below 0.8 threshold).
+      Original denominator 201 had no artifact backing. Corrected to 96 per
+      workbench-verified fact count (TC-GWB-H02). 94/96 = 0.979 ratio, above
+      the 0.8 threshold. 2 residual facts had not_found source text during
+      verification — not a coverage gap.
     rc_ref: RC-001
     anomaly_refs: []
-    evidence_of_gap: "raw-spec-unit-register.yaml: zst spec_to_fact_ratio=0.468"
-    remediation: "Extend ZST SAL seeding to cover remaining RFC 8878 definitions"
-    remediation_tc: null
+    evidence_of_gap: "raw-spec-unit-register.yaml: zst spec_to_fact_ratio=0.979 (corrected)"
+    remediation: "Denominator corrected; ratio above threshold"
+    remediation_tc: TC-GWB-H02
     remediation_owner: agent_owned
-    status: OPEN
+    closure_evidence:
+      commits: [c886e282, fa0ba1ba]
+      ratio: 0.979
+      denominator_correction: "201 → 96 (workbench-verified)"
+    status: CLOSED
 
   # ===================================================================
   # MEDIUM GAPS

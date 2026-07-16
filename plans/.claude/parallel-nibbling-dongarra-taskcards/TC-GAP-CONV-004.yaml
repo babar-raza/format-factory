@@ -9,7 +9,7 @@ why_it_matters: >
   GAP-FORENSIC-001's original failure mode (proof existed, nothing enforced it)
   one layer up, in the enforcement mechanism itself.
 risk_addressed: silent disappearance of the fleet's only install-proof enforcement gate
-status: follow_up
+status: CLOSED
 lane_owner: agent_owned
 supervisor_role: governance_hardening
 required_implementation: >
@@ -24,5 +24,11 @@ acceptance_criteria:
   - Existing _skipped_validators behavior for non-critical validators is unaffected
 dependencies: []
 closeout_rules: Close when the hard-fail test passes and does not regress other validators
-machine_state: pending
+machine_state: closed
+closure_note: >
+  Subsumed by TC-SWB-007 (critical-validator presence enforcement) in plan
+  stateful-wibbling-babbage.md. V226 is now in the _CRITICAL_VALIDATORS set —
+  if absent from results, the suite produces a hard FAIL with blocks_sprint=True.
+  TC-SWB-006 also fixes the count-check formula from ran+skipped to ran-only,
+  so import failures are no longer masked by skipped count compensation.
 validation_commands: []

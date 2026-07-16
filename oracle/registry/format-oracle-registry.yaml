@@ -725,31 +725,30 @@ format_oracles:
   # ==================== SELECT-6 (TC-S6P4-FINAL-001f) ====================
   # TC-S6P4-FINAL-001f (select-6 Phase 4 final re-audit, 2026-07-16): these
   # 6 formats already have working Python products (927 tests passing,
-  # gate_9_eligible coverage reports) but never had an oracle obligation
-  # registered, so V145 (validate_future_format_oracle_onboarding) started
-  # blocking once implementation_authorized flipped true (TC-S6P4-PROD-004).
-  # This matches M7 from the original audit: Gate 5 oracle artifacts absent
-  # for all 6, same as the repo-wide norm at intake for other simple formats
-  # (qoi/ndjson/toml/csv). Registering the obligation here (not fabricating
-  # a VERIFIED oracle) is the honest fix -- full oracle build-out (corpus +
-  # oracle-package.yaml + real execution) is legitimate future work, out of
-  # this remediation's scope, and disclosed as such via the blockers below.
+  # gate_9_eligible coverage reports). Oracle obligations were originally
+  # registered with OBLIGATION_CREATED status. Oracle packages and run
+  # summaries now exist for all 6 (created 2026-07-14/15). All show
+  # PARTIAL_PASS verdict (1 PASS + N NOT_APPLICABLE per format, 0 FAIL).
+  # Status promoted to CASES_DEFINED; full VERIFIED requires deepening the
+  # corpus and resolving NOT_APPLICABLE cases.
 
   - format_id: ipynb
     family: data
     language: [python]
     oracle_id: oracle-ipynb-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/ipynb/oracle-package.yaml
     authority:
       specification_refs:
         - "nbformat v4.5 (Jupyter Project)"
       spec_body: Jupyter Project
       spec_url: "https://nbformat.readthedocs.io/en/latest/format_description.html"
       legal_category: 2
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-14 PARTIAL_PASS: 1/5 PASS, 4 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-14"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -757,28 +756,30 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/ipynb/, 167+ tests) but predates the oracle-obligation requirement"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+      - "Oracle PARTIAL_PASS (4/5 NOT_APPLICABLE) — corpus and case coverage need deepening"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-14; 1/5 PASS, 4 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
   - format_id: safetensors
     family: ai
     language: [python]
     oracle_id: oracle-safetensors-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/safetensors/oracle-package.yaml
     authority:
       specification_refs:
         - "SafeTensors v0.4 (Hugging Face)"
       spec_body: Hugging Face
       spec_url: "https://huggingface.co/docs/safetensors/"
       legal_category: 2
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-15 PARTIAL_PASS: 1/5 PASS, 4 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-15"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -786,28 +787,30 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/safetensors/, 131+ tests) but predates the oracle-obligation requirement"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+      - "Oracle PARTIAL_PASS (4/5 NOT_APPLICABLE) — corpus and case coverage need deepening"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-15; 1/5 PASS, 4 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
   - format_id: xliff
     family: localization
     language: [python]
     oracle_id: oracle-xliff-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/xliff/oracle-package.yaml
     authority:
       specification_refs:
         - "XLIFF 2.1 (OASIS)"
       spec_body: OASIS
       spec_url: "https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html"
       legal_category: 1
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-14 PARTIAL_PASS: 1/4 PASS, 3 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-14"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -815,28 +818,30 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/xliff/, 122+ tests) but predates the oracle-obligation requirement"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+      - "Oracle PARTIAL_PASS (3/4 NOT_APPLICABLE) — corpus and case coverage need deepening"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-14; 1/4 PASS, 3 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
   - format_id: nrrd
     family: scientific
     language: [python]
     oracle_id: oracle-nrrd-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/nrrd/oracle-package.yaml
     authority:
       specification_refs:
         - "NRRD0005 (Teem Project)"
       spec_body: Teem Project
       spec_url: "https://teem.sourceforge.net/nrrd/format.html"
       legal_category: 2
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-14 PARTIAL_PASS: 1/5 PASS, 4 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-14"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -844,28 +849,30 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/nrrd/, 169+ tests) but predates the oracle-obligation requirement"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+      - "Oracle PARTIAL_PASS (4/5 NOT_APPLICABLE) — corpus and case coverage need deepening"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-14; 1/5 PASS, 4 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
   - format_id: ubl
     family: business
     language: [python]
     oracle_id: oracle-ubl-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/ubl/oracle-package.yaml
     authority:
       specification_refs:
         - "UBL 2.3 (OASIS)"
       spec_body: OASIS
       spec_url: "https://docs.oasis-open.org/ubl/UBL-2.3.html"
       legal_category: 1
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-14 PARTIAL_PASS: 1/5 PASS, 4 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-14"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -873,29 +880,31 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/ubl/, 149+ tests) but predates the oracle-obligation requirement"
+      - "Oracle PARTIAL_PASS (4/5 NOT_APPLICABLE) — corpus and case coverage need deepening"
       - "Tax/monetary handling is transcription, not validated computation (D3, see reports/spec-coverage/ubl-deferred.json) -- any future oracle must not assert arithmetic correctness as a passing profile"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-14; 1/5 PASS, 4 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
   - format_id: mtlx
     family: 3d
     language: [python]
     oracle_id: oracle-mtlx-v1
-    oracle_package: null  # not yet created
+    oracle_package: oracle/formats/mtlx/oracle-package.yaml
     authority:
       specification_refs:
         - "MaterialX v1.39 (Academy Software Foundation)"
       spec_body: Academy Software Foundation
       spec_url: "https://materialx.org/Specification.html"
       legal_category: 2
-    corpus_status: NONE
+    corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: CASES_DEFINED  # 2026-07-14 PARTIAL_PASS: 1/5 PASS, 4 NOT_APPLICABLE, 0 FAIL
+    depth_achieved: D0
+    depth_achieved_at: "2026-07-14"
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -903,12 +912,12 @@ format_oracles:
       - DOMAIN_MODEL_MAPPING
       - LOSSLESS_TRANSFORMATION
       - ERROR_CONTRACT
-    current_proof_level: 0
+    current_proof_level: 1
     target_proof_level: 4
     blockers:
-      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/mtlx/, 173+ tests) but predates the oracle-obligation requirement"
-    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+      - "Oracle PARTIAL_PASS (4/5 NOT_APPLICABLE) — corpus and case coverage need deepening"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle package created and executed 2026-07-14; 1/5 PASS, 4 NOT_APPLICABLE. Product-level verification also exists via pytest + spec-coverage gate."
     terminal_state: null  # active obligation
 
-# Total obligations: 30 formats (20 with Python FOSS products + 4 pipeline/future + 6 select-6)
+# Total obligations: 30 formats (20 with Python FOSS products + 4 pipeline/future + 6 select-6 CASES_DEFINED)
 # .NET products: fods, fodt, ndjson, netpbm (pbm/pgm/ppm combined), csv, tsv, zst

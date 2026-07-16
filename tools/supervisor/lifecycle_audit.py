@@ -32,6 +32,17 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Coordination plane integration (TC-SWB-004)
+try:
+    import sys as _sys_cw
+    _sys_cw.path.insert(0, str(Path(__file__).resolve().parent))
+    from coordination.coordinated_io import coordinated_write as _coordinated_write
+except ImportError:
+    from contextlib import contextmanager as _cm_fallback
+    @_cm_fallback
+    def _coordinated_write(path, **kw):
+        yield
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -921,7 +932,8 @@ def run_lifecycle_audit(
     # ------------------------------------------------------------------
     output_path = repo_root / _OUTPUT_PATH_REL
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    with _coordinated_write(output_path, op="lifecycle_audit", source="lifecycle_audit"):
+        output_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 
     # TC-TCF-003: Persist closure_contract.json alongside output when authorized.
     # Allows V-TCF-002 to verify the contract exists before accepting terminal closure claims.
