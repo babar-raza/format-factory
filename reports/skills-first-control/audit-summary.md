@@ -1,5 +1,5 @@
 # Skills-First Control — Audit Summary
-_Generated: 2026-07-16T18:41:43.513914+00:00 · SFC v1.0.0_
+_Generated: 2026-07-16T20:59:02.876624+00:00 · SFC v1.0.0_
 
 ## Counts
 - Skills total / active: 188 / 185

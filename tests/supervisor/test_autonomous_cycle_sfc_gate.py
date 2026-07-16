@@ -20,6 +20,22 @@ sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 import autonomous_cycle  # noqa: E402
 
 
+@pytest.fixture(autouse=True)
+def _isolated_manifest_dir(tmp_path, monkeypatch):
+    """Tests in this file call create_manifest(..., write=True) so
+    evaluate_sfc_closeout_gate's load_manifest() can read it back from disk.
+    Without isolation, those manifests persist in the REAL
+    .local/skills-first/manifests/ directory and pollute other tests (e.g.
+    test_skill_gate_rollout.py's "no live manifest exists yet" assumptions) --
+    a real test-isolation bug found via the full regression suite. Redirect
+    MANIFEST_DIR everywhere it's imported (manifest.py owns it; closeout.py's
+    module-level import of skills_first submodules resolves calls through
+    manifest.py itself, so patching the one canonical location is sufficient
+    since manifest_path()/load_manifest() always read the live attribute)."""
+    import tools.governance.skills_first.manifest as sfc_manifest
+    monkeypatch.setattr(sfc_manifest, "MANIFEST_DIR", tmp_path / "manifests")
+
+
 def _an_active_skill():
     sys.path.insert(0, str(_REPO))
     from tools.governance.skills_first.registries import load_skills

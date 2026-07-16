@@ -11,10 +11,21 @@
 #   4. .supervisor/skill-first-policy.md (derived summary — subordinate to this file)
 
 policy_id: SKILL-ONLY-POLICY-001
-version: "2.1"
+version: "2.2"
 created: "2026-06-25"
-last_reconciled: "2026-07-16"   # SFC sprint: EP status reconciliation + SFC primitives
+last_reconciled: "2026-07-17"   # SFC production hardening: Gaps A/B/C/D/E shipped
 owner: format-factory-governance
+# 2.2 (2026-07-17, SFC production hardening plan): shipped the 5-gap production
+# design (plans/.claude/vivid-noodling-pancake.md) — closure-oracle mission-scoping
+# (Gap D), hot-governance-file generator-guard adoption (Gap B), staged tool-layer
+# skill-resolution rollout with per-check mode + observe-only analyzer (Gap C,
+# EP-010/011/012/013), run-loop manifest/closeout wiring via scoped hash-diff
+# (Gap E), and a static src/-permission regression guard (Gap A). Discovered and
+# recorded (not fixed — out of this plan's approved scope) a third instance of the
+# same unscoped-global-state weakness in EP-007's exception bypass check
+# (EP-007-EXCEPTION-SCAN-UNSCOPED-GAP). Promotion of Gap C/E's advisory-mode
+# checks to enforcing remains a deliberate, evidence-gated, NOT-YET-TAKEN step.
+#
 # 2.1 (2026-07-16, Skills-First Control sprint): reconciled stale enforcement-point
 # statuses against ground truth (EP-007 was falsely NOT_IMPLEMENTED); registered the
 # concrete Skills-First Control (SFC) primitives — execution manifest, closeout gate,
@@ -308,22 +319,30 @@ enforcement_points:
   - id: EP-010
     name: tool_layer_skill_gate
     mechanism: pretooluse_hook_skill_resolution
-    enforced_by: NONE  # the live PreToolUse hook (gate.py) is coordination-only / skill-blind
+    enforced_by: tools/supervisor/coordination/hooks/skill_gate.py
     tool_neutral: false
-    current_status: OPEN  # DOCUMENTED KNOWN GAP — see known_gaps EP-010-GAP
-    gap: EP-010-GAP
+    current_status: IMPLEMENTED_ADVISORY_MODE  # RECONCILED 2026-07-17 (SFC production hardening)
+    gap: EP-010-GAP  # promotion to enforcing is the remaining, deliberately deferred step
     compensating_controls:
       - EP-007  # pre-commit skill guard (src/)
       - EP-012  # closeout gate (all governed paths, file-bound evidence)
       - EP-013  # control validator
     note: >
-      Edit/Write/Bash are intercepted by tools/supervisor/coordination/hooks/gate.py
-      for COORDINATION (leases), not skill resolution, and it fails OPEN. This is the
-      primary residual ungoverned-mutation surface at the live tool layer. It is
-      ACKNOWLEDGED here (not hidden) with compensating controls; wiring a skill-
-      resolution check into the PreToolUse hook is deferred because gate.py is shared
-      infrastructure used by many concurrent live agents and must not be hot-patched
-      into a blocking mode without a staged rollout.
+      RECONCILED 2026-07-17: Edit/Write/Bash are intercepted by
+      tools/supervisor/coordination/hooks/gate.py for COORDINATION (leases) AND,
+      as of this reconciliation, for skill resolution via skill_gate.py's 3-tier
+      check (MANIFEST_COVERING / NO_SKILL_RESOLVED_FOR_PATH /
+      SKILL_EXISTS_BUT_NO_MANIFEST). This check runs under its OWN per-check mode
+      dial (tools/supervisor/coordination/db.py get_check_mode/set_check_mode,
+      key check_mode:skill_resolution), independent of and never overriding the
+      global coordination `mode` — a decoupling proven by test
+      (tests/supervisor/test_skill_gate_rollout.py). Default is advisory (logs to
+      advisory-log.jsonl, never blocks); an observe-only analyzer
+      (tools/supervisor/coordination/advisory_analyzer.py, `advisory-report` CLI
+      verb) exists so promotion to enforcing is evidence-gated rather than a
+      guess. Promotion itself (`check-mode set --to enforcing`) has NOT happened
+      — this remains the honest residual: the check is live and logging, not yet
+      blocking. See EP-010-GAP for the remaining step.
 
 # ─────────────────────────────────────────────
 # 8. EXCEPTION POLICY
@@ -454,32 +473,57 @@ known_gaps:
     status: open
     blocking: false
 
-  # ── Ungoverned-mutation gaps documented by the SFC sprint (2026-07-16) ──
+  # ── Ungoverned-mutation gaps documented 2026-07-16, hardened to production
+  #    (SFC production hardening plan, plans/.claude/vivid-noodling-pancake.md,
+  #    2026-07-17) ──
   - gap_id: EP-010-GAP
     description: >
-      The live tool-layer PreToolUse hook (tools/supervisor/coordination/hooks/gate.py)
-      enforces coordination leases only and is skill-blind + fail-open. Edit/Write/Bash
-      never require a resolved skill at the tool layer. Largest residual live surface.
-    status: open
+      RECONCILED 2026-07-17: infrastructure shipped (skill_gate.py 3-tier check,
+      per-check mode dial decoupled from the global coordination mode, observe-only
+      advisory_analyzer.py + `advisory-report`/`check-mode` CLI verbs — 9 decoupling
+      tests + 6 analyzer-correctness tests pass). The check is LIVE and logging in
+      its default advisory mode. What remains open: promotion to `enforcing` is a
+      deliberate, evidence-gated, NOT-YET-TAKEN step — there is no real traffic
+      data yet to calibrate a promotion decision against, and automatic rollback
+      was explicitly rejected for day one (real oscillation/governance-defeat risk
+      with zero incident-rate baseline). This gap stays open until a human/governed-
+      skill reviews `advisory-report --check skill_resolution` evidence and
+      deliberately promotes.
+    status: infrastructure_shipped_pending_promotion
     blocking: false
     compensating_controls: [EP-007, EP-012, EP-013]
     remediation: >
-      Add a skill-resolution check to the PreToolUse hook behind a staged advisory->
-      enforcing rollout (gate.py is shared across many live agents; must not hot-patch
-      to blocking). Until then EP-012 (closeout) + EP-007 (pre-commit) compensate.
+      Accumulate advisory-mode evidence (advisory_analyzer.py) over a defined
+      burn-in window (minimum sample size AND minimum elapsed time), then promote
+      check_mode:skill_resolution to enforcing per path-scope, smallest blast
+      radius first (tools/governance/** before src/**). Automatic rollback is a
+      separate, later follow-up once real enforcing-mode incident-rate data exists.
 
   - gap_id: RUNLOOP-SKIPPERMS-GAP
     description: >
-      tools/supervisor/sprint_executor.py run-loop spawns the sub-agent with
-      `claude --print --dangerously-skip-permissions` and binds no skill itself;
-      skill-first exists only as prose in .claude/commands/autonomous-loop.md Step 2a.
-      A headless sub-agent can Edit/Write src/ with no skill resolution.
-    status: open
+      RECONCILED 2026-07-17: sprint_executor.py's cmd_run_sprint now creates an
+      execution manifest (resolve.py scope, falling back to the autonomous-loop
+      skill with a bounded lane-wide scope when nothing specific resolves) BEFORE
+      spawning the `--dangerously-skip-permissions` subprocess, and computes an
+      independently-derived changed_files list via a content-hash diff scoped ONLY
+      to the manifest's own allowed_paths (never the whole repo — this is what
+      makes it sound under 44+-agent concurrency, unlike a git-diff over the
+      30-minute execution window, which the design rejected as provably unsound:
+      it would either over-attribute concurrent unrelated agents' commits or
+      under-attribute the sprint's own uncommitted edits). autonomous_cycle.py's
+      evaluate_sfc_closeout_gate() runs the SFC closeout gate against that list
+      before the ledger-update acceptance gate. 13 tests pass (concurrent-write
+      non-attribution, call-order proof, manifest-failure non-blocking, close-ok/
+      close-blocked/enforcing paths).
+    status: infrastructure_shipped_pending_promotion
     blocking: false
     remediation: >
-      The run-loop must create an execution manifest (EP-011) per sprint and run the
-      closeout gate (EP-012) before accepting the sprint, so a skipped-permissions
-      sub-agent still cannot CLOSE ungoverned work.
+      Gated by check_mode:sprint_closeout_governance (default advisory: logs the
+      verdict, does not yet block the ledger update). Promotion to enforcing is a
+      separate, evidence-gated decision, same discipline as EP-010-GAP. Separately,
+      the fallback scope (bounded lane paths when no skill resolves from the
+      sprint's free-text prompt) should be tightened via next-work-items.json's own
+      lane/path structure — tracked, not yet done.
 
   - gap_id: DIRECT-GENERATOR-GAP
     description: >
@@ -492,6 +536,32 @@ known_gaps:
       Each such script must be either (a) wrapped by a governed skill+command, or
       (b) marked read-only/deprecated. The closeout gate flags their outputs as
       out-of-scope when no manifest authorizes the touched paths.
+
+  - gap_id: EP-007-EXCEPTION-SCAN-UNSCOPED-GAP
+    description: >
+      DISCOVERED 2026-07-17 (during SFC production hardening commit work): the
+      pre-commit skill guard's exception bypass check
+      (.hooks/pre-commit-skill-guard check_exception_record()) scans the ENTIRE
+      .local/exceptions/ directory for ANY file containing the substring
+      "no_verify_exception" or "pre_commit_bypass" — with no scoping to the
+      specific commit, mission, or files being committed. A live example: a
+      stale exception file from an unrelated, long-closed mission
+      (fiop-full-001-src-healing.yaml, dated 2026-07-12) silently causes
+      "[skill-guard] Exception record found — bypassing guards" on EVERY commit
+      touching src/, regardless of relevance — the exact same "unscoped global
+      state" structural weakness this hardening pass fixed in Gap D
+      (lifecycle_audit.py) and Gap B (hot-file writes), now found in a THIRD
+      enforcement point (EP-007) not covered by this plan's approved scope.
+    status: open
+    blocking: false
+    remediation: >
+      Scope check_exception_record() to exceptions whose recorded scope/paths
+      actually cover the staged files (and are unexpired), mirroring the
+      mission-scoping pattern already applied to lifecycle_audit.py's G4 guard
+      and the exceptions.py governed-exception validator built for
+      tools/governance/skills_first/exceptions.py. Out of scope for this
+      hardening pass (a new, not-yet-approved change); tracked here so it is
+      not silently lost.
 
 # ─────────────────────────────────────────────
 # 12. COMPLIANCE TARGET

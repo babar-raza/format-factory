@@ -9,9 +9,7 @@
     "skills_total": 188
   },
   "enforcement_report": {
-    "acknowledged_gaps": [
-      "tool-layer PreToolUse hook is skill-blind \u2014 ACKNOWLEDGED as EP-010 gap with compensating controls (EP-007/EP-012/EP-013)"
-    ],
+    "acknowledged_gaps": [],
     "declared_points": [
       {
         "declared_status": "PROMPT_ONLY",
@@ -74,7 +72,7 @@
         "name": "skills_first_control_validator"
       },
       {
-        "declared_status": "OPEN",
+        "declared_status": "IMPLEMENTED_ADVISORY_MODE",
         "id": "EP-010",
         "name": "tool_layer_skill_gate"
       }
@@ -83,7 +81,7 @@
       "precommit_hook_file_exists": true,
       "precommit_hook_installed": true,
       "tool_layer_hook_exists": true,
-      "tool_layer_hook_skill_aware": false
+      "tool_layer_hook_skill_aware": true
     },
     "inconsistencies": []
   },
@@ -142,7 +140,7 @@
       "severity": "INFO"
     }
   ],
-  "generated_at": "2026-07-16T18:41:43.513914+00:00",
+  "generated_at": "2026-07-16T20:59:02.876624+00:00",
   "hash_drift": {
     "no_baseline": [],
     "stale": []
@@ -486,7 +484,7 @@
     ]
   },
   "ungoverned_generator_signal": {
-    "count": 124,
+    "count": 125,
     "sample": [
       "tools/assurance/verify_package_install.py",
       "tools/audit_deepening_tests.py",
