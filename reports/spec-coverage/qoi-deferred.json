@@ -1,0 +1,3 @@
+{
+  "FACT-QOI-104": "Streaming/lazy decode for large images is out of scope for this pass -- current decode loads the full pixel buffer into memory, which is correct for QOI's typical use case (small-to-medium images) and matches the reference implementation's default behavior. No real-file consumer need for streaming decode has surfaced; revisit if a use case requires processing images too large to hold in memory."
+}

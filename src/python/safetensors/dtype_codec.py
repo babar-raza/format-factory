@@ -41,7 +41,7 @@ def _decode_minifloat_value(byte_val: int, exp_bits: int, mantissa_bits: int, bi
     """Decode one IEEE-754-style minifloat byte into a Python float.
 
     Real bit-level reinterpretation (sign / exponent / mantissa), including
-    zero, subnormal, normal, infinity, and NaN handling — not a placeholder.
+    zero, subnormal, normal, infinity, and NaN handling.
     """
     sign_shift = exp_bits + mantissa_bits
     sign = -1.0 if (byte_val >> sign_shift) & 0x1 else 1.0
@@ -107,8 +107,7 @@ def decode_tensor_array(raw: bytes, dtype: str, shape: list[int]) -> np.ndarray:
 
     FACT-SAFETENSORS-102: standard dtypes decode via numpy directly. BF16 and
     the fp8 dtypes have no native numpy dtype, so they go through a real
-    bit-level reinterpretation (see `_decode_bf16` / `_decode_fp8`) instead of
-    a stubbed-out placeholder.
+    bit-level reinterpretation (see `_decode_bf16` / `_decode_fp8`).
     """
     if dtype == BF16_DTYPE:
         arr = _decode_bf16(raw)

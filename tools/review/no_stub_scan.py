@@ -87,6 +87,14 @@ _ALLOWLIST_PATTERNS: list[re.Pattern[str]] = [
     # New raise NotImplementedError(...) lines will now be flagged by V149.
     # TC-SC-004: Governed TODOs with explicit taskcard/change-tracking IDs
     re.compile(r"TODO\([A-Z]+-[A-Z]*-?\d+\)"),
+    # The bare `return NotImplemented` sentinel is the correct Python idiom for
+    # rich-comparison dunder methods (__eq__, __lt__, etc.) signaling "delegate
+    # to the other operand's reflected method" — a language-level correctness
+    # pattern unrelated to code completeness. Distinct from `NotImplementedError`
+    # (an exception, still fully scanned) which does indicate an incomplete
+    # method. Found via the Select-6 feature-completeness audit (2026-07-15):
+    # any file correctly implementing __eq__ trips this scanner without it.
+    re.compile(r"return\s+NotImplemented\b(?!Error)"),
 ]
 
 
