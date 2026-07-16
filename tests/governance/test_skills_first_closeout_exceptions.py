@@ -6,7 +6,7 @@ the narrow exception mechanism (policy section 8 / prompt section 25).
 from __future__ import annotations
 
 import sys
-from datetime import date, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -89,6 +89,24 @@ def test_closeout_blocks_invalid_manifest():
     assert r["checks"]["manifest_valid"] is False
 
 
+def test_closeout_blocks_expired_manifest_even_with_scope_and_evidence():
+    """SFC-GAP-C: an abandoned/expired manifest must not authorize a close,
+    even when the change is otherwise in-scope and evidence resolves."""
+    m = M.create_manifest(
+        task_id="TC-CO-TTL", agent_type="CLAUDE_CODE",
+        requested_operation="closeout ttl test",
+        selected_skill_ids=[_an_active_skill()],
+        allowed_paths=["tools/governance/skills_first/**"],
+        ttl_hours=1, write=False)
+    # Simulate time passing well beyond the manifest's TTL.
+    m["expires_at"] = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
+    r = C.evaluate(m, ["tools/governance/skills_first/audit.py"],
+                   evidence_paths=["tools/governance/skills_first/audit.py"])
+    assert r["verdict"] == "CLOSE_BLOCKED"
+    assert r["checks"]["manifest_expired"] is True
+    assert any("expired" in reason for reason in r["reasons"])
+
+
 # ── exception governance ───────────────────────────────────────────────────
 
 def _valid_exc(**over):
@@ -100,7 +118,11 @@ def _valid_exc(**over):
         "reason": "awaiting registry normalization window",
         "remediation_task": "TC-HEAL-001",
         "created": "2026-07-16",
-        "expires": (date.today() + timedelta(days=14)).isoformat(),
+        # UTC, matching exceptions._today() (production compares in UTC, not
+        # local time -- a local date.today() here can silently diverge from
+        # "today" by a day near midnight when local tz != UTC).
+        "expires": (datetime.now(timezone.utc).date()
+                   + timedelta(days=14)).isoformat(),
         "compensating_control": "closeout gate blocks the underlying command",
     }
     base.update(over)
@@ -113,7 +135,8 @@ def test_valid_exception_passes():
 
 def test_expired_exception_rejected():
     errs = X.validate_exception(_valid_exc(
-        expires=(date.today() - timedelta(days=1)).isoformat()))
+        expires=(datetime.now(timezone.utc).date()
+                - timedelta(days=1)).isoformat()))
     assert any("expired" in e for e in errs)
 
 

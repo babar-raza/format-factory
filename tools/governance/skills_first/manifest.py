@@ -25,7 +25,7 @@ import argparse
 import hashlib
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -35,9 +35,20 @@ MANIFEST_DIR = REPO_ROOT / ".local" / "skills-first" / "manifests"
 SCHEMA_FILE = REPO_ROOT / ".supervisor" / "schemas" / "execution-manifest.schema.json"
 SCHEMA_CONST = "skills-first-control/execution-manifest@1"
 
+# SFC-GAP-C (2026-07-17): manifest TTL. Without an expiry, a manifest created
+# by a crashed/abandoned task stays "live" forever, which would make a
+# tool-layer check for "a live manifest covers this path" (Gap C's skill_gate)
+# a hollow security property. Default window is hours, not days — a manifest
+# is meant to authorize ONE bounded unit of work, not stand in indefinitely
+# for a skill binding. Additive: old manifests written before this field
+# existed have no `expires_at` and are treated as ALREADY EXPIRED (fail
+# closed, forcing explicit re-creation) rather than perpetually live.
+DEFAULT_TTL_HOURS = 4
+
 _REQUIRED = [
     "schema", "execution_id", "task_id", "agent_type", "requested_operation",
     "selected_skill_ids", "skill_hashes", "allowed_paths", "status", "created_at",
+    "expires_at",
 ]
 _STATUSES = {"CREATED", "IN_PROGRESS", "CLOSED", "ABORTED"}
 _AGENTS = {"CLAUDE_CODE", "CODEX", "SUPERVISOR", "CI", "LOCAL_AUTOMATION"}
@@ -79,6 +90,7 @@ def create_manifest(
     sprint_id: str = "UNKNOWN",
     agent_instance: str = "",
     composition_order: list[str] | None = None,
+    ttl_hours: float = DEFAULT_TTL_HOURS,
     write: bool = False,
 ) -> dict[str, Any]:
     """Build (and optionally persist) an execution manifest. Fail-closed on
@@ -96,6 +108,8 @@ def create_manifest(
         raise ManifestError("allowed_paths must be non-empty (no unbounded mutation)")
     if resolution_decision not in _DECISIONS:
         raise ManifestError(f"invalid resolution_decision: {resolution_decision}")
+    if ttl_hours <= 0:
+        raise ManifestError(f"ttl_hours must be positive, got {ttl_hours}")
 
     skills = {s.skill_id: s for s in load_skills()}
     skill_hashes: dict[str, str] = {}
@@ -118,6 +132,8 @@ def create_manifest(
             command_hash = h
 
     now = _now()
+    now_dt = datetime.now(timezone.utc)
+    expires_at = (now_dt + timedelta(hours=ttl_hours)).isoformat()
     manifest = {
         "schema": SCHEMA_CONST,
         "execution_id": _execution_id(task_id, selected_skill_ids, now),
@@ -147,6 +163,7 @@ def create_manifest(
         "final_outcome": "",
         "created_at": now,
         "updated_at": now,
+        "expires_at": expires_at,
     }
     # Self-validate before returning (never emit an invalid manifest).
     errs = validate_manifest(manifest)
@@ -203,6 +220,25 @@ def validate_manifest(m: dict[str, Any]) -> list[str]:
     if not isinstance(m.get("allowed_paths"), list) or not m.get("allowed_paths"):
         errs.append("allowed_paths must be a non-empty list")
     return errs
+
+
+def is_expired(m: dict[str, Any], now: datetime | None = None) -> bool:
+    """True if the manifest's TTL has elapsed (or it has no expires_at at all —
+    fail closed: a manifest written before this field existed, or with a
+    malformed timestamp, is treated as already expired, never as perpetually
+    live). Used by closeout.py and the Gap C tool-layer check to decide
+    whether a manifest still authorizes its allowed_paths."""
+    now = now or datetime.now(timezone.utc)
+    raw = m.get("expires_at")
+    if not raw:
+        return True
+    try:
+        exp = datetime.fromisoformat(raw)
+    except (TypeError, ValueError):
+        return True
+    if exp.tzinfo is None:
+        exp = exp.replace(tzinfo=timezone.utc)
+    return now >= exp
 
 
 def set_status(execution_id: str, status: str, final_outcome: str = "") -> dict[str, Any]:

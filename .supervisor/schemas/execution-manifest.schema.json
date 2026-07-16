@@ -6,7 +6,8 @@
   "type": "object",
   "required": [
     "schema", "execution_id", "task_id", "agent_type", "requested_operation",
-    "selected_skill_ids", "skill_hashes", "allowed_paths", "status", "created_at"
+    "selected_skill_ids", "skill_hashes", "allowed_paths", "status", "created_at",
+    "expires_at"
   ],
   "additionalProperties": true,
   "properties": {
@@ -57,6 +58,10 @@
     "final_outcome": {"type": "string"},
     "created_at": {"type": "string"},
     "updated_at": {"type": "string"},
-    "closed_at": {"type": "string"}
+    "closed_at": {"type": "string"},
+    "expires_at": {
+      "type": "string",
+      "description": "SFC-GAP-C: manifest TTL (default 4h from created_at). A manifest lacking or past this timestamp is treated as expired -- fail closed, never perpetually live."
+    }
   }
 }

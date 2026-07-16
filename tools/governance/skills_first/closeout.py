@@ -3,7 +3,9 @@
 A task must NOT close merely because files changed or tests passed. This gate
 verifies, against an execution manifest, that:
 
-  1. the manifest is schema-valid and IN a closeable state;
+  1. the manifest is schema-valid, IN a closeable state, and NOT EXPIRED
+     (SFC-GAP-C: an abandoned manifest that outlived its TTL no longer
+     authorizes anything — expiry is checked before any other evaluation);
   2. every selected skill is still registered + active;
   3. each selected skill's command file still hashes to the value captured at
      resolution time (no silent command drift between resolve and close);
@@ -25,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 from .registries import REPO_ROOT, RegistryError, load_skills
-from .manifest import ManifestError, load_manifest, validate_manifest
+from .manifest import ManifestError, is_expired, load_manifest, validate_manifest
 
 RECEIPTS_DIR = REPO_ROOT / ".local" / "skill-execution-receipts"
 
@@ -102,8 +104,15 @@ def evaluate(manifest: dict[str, Any], changed_files: list[str],
     if manifest.get("status") == "ABORTED":
         reasons.append("manifest status is ABORTED")
 
+    expired = is_expired(manifest)
+    if expired:
+        reasons.append(
+            f"manifest expired at {manifest.get('expires_at')!r} — an "
+            "abandoned/stale manifest no longer authorizes its allowed_paths"
+        )
+
     skills = {s.skill_id: s for s in load_skills()}
-    checks: dict[str, Any] = {"manifest_valid": True}
+    checks: dict[str, Any] = {"manifest_valid": True, "manifest_expired": expired}
 
     # 2 + 3. skills active + command hash stable
     hash_ok = True

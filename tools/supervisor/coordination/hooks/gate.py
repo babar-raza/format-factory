@@ -260,7 +260,7 @@ def _on_pre_file(root: Path, cwd: str, wt_path: str, session_id: str,
     res = preflight(file_path, "edit", root=root, start=cwd,
                     agent_id=aid, token=tok)
     if res.allowed:
-        return 0
+        return _on_pre_file_skill_gate(root, wt_path, tool, file_path, aid)
     if mode == "enforcing":
         _db_event(root, "HOOK_BLOCK",
                   {"file": file_path, "reason": res.reason,
@@ -271,6 +271,54 @@ def _on_pre_file(root: Path, cwd: str, wt_path: str, session_id: str,
                      "reason": res.reason,
                      "classification": res.classification,
                      "agent": aid})
+    return 0
+
+
+def _on_pre_file_skill_gate(root: Path, wt_path: str, tool: str,
+                            file_path: str, agent_id: str) -> int:
+    """SFC-GAP-C: independent per-check skill-resolution gate, decoupled from
+    the coordination `mode` gate above via get_check_mode(CHECK_ID) (own
+    settings row, defaults to 'advisory'). LOAD-BEARING: this function only
+    ever runs once the coordination gate has ALREADY allowed the write -- it
+    can add an additional, independently-toggled restriction on top of an
+    allowed write, but can never override a coordination denial, and a bug
+    here (any exception) fails OPEN with an incident record, never silently
+    escalates to block."""
+    try:
+        from ..db import connect, get_check_mode
+        from . import skill_gate
+    except ImportError:
+        return 0  # SFC package not present in this checkout; fail open
+
+    p = os.path.normcase(os.path.realpath(file_path)).replace("\\", "/")
+    wt = os.path.normcase(os.path.realpath(wt_path)).replace("\\", "/")
+    rel = p[len(wt) + 1:] if p != wt and p.startswith(wt + "/") else p
+
+    try:
+        verdict = skill_gate.evaluate_path(rel)
+    except Exception as exc:
+        _incident(root, "FAIL_OPEN", {"stage": "skill_gate",
+                                      "error": f"{type(exc).__name__}: {exc}"})
+        return 0  # a bug in a NEW check must never block existing work
+
+    if not verdict.block_eligible:
+        return 0  # MANIFEST_COVERING / NO_SKILL_RESOLVED_FOR_PATH: always allow
+
+    conn = connect(root)
+    try:
+        check_mode = get_check_mode(conn, skill_gate.CHECK_ID)
+    finally:
+        conn.close()
+
+    payload = {"tool": tool, "file": rel, "check": skill_gate.CHECK_ID,
+              "tier": verdict.tier, "detail": verdict.detail,
+              "agent": agent_id}
+    if check_mode == "enforcing":
+        payload["would_block"] = False
+        _db_event(root, "HOOK_BLOCK", payload, actor=agent_id)
+        return _block(f"[skill-gate] BLOCKED: {verdict.detail}")
+    payload["would_block"] = True
+    _advisory(root, payload)
     return 0
 
 
