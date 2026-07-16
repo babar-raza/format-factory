@@ -251,11 +251,60 @@ def compute_plan_hash(plan_path: str | Path) -> str:
         return ""
 
 
+def _scope_rework_items(
+    rework_items: list,
+    mission_id: "str | None",
+    plan_path: "str | Path | None" = None,
+) -> list:
+    """Filter rework_items to those plausibly belonging to `mission_id`.
+
+    SFC-GAP-D (2026-07-17): ``continuation-signal.json``'s ``rework_items`` is a
+    flat, global, unscoped list shared by every mission on a track. Feeding it
+    unfiltered into :func:`build_closure_contract` makes one mission's closure
+    block on a completely unrelated mission's rework — the exact non-determinism
+    hit live (a plan with 0 rework of its own was blocked by
+    ``LANE_ENFORCEMENT:1_violations`` belonging to a different mission).
+
+    This is an interim, additive heuristic — no structured
+    ``rework_items_by_mission`` producer exists yet (that would require editing
+    ~21 call sites across the codebase, explicitly rejected as too large a blast
+    radius for this change). An item is kept if it mentions the mission_id
+    itself or one of the mission's own taskcard IDs (parsed from its plan file).
+    GOV_BLOCK items are exempt from scoping — a structural governance block is
+    never mission-private and must never be silently filtered out.
+
+    When ``mission_id`` is falsy, returns the input unchanged (explicit opt-in
+    to global/unscoped semantics, matching :func:`check_sprint_audit_guard`).
+    """
+    if not mission_id:
+        return list(rework_items)
+    own_ids: set[str] = {mission_id}
+    if plan_path:
+        for tc in parse_plan_taskcards(plan_path):
+            own_ids.add(tc["tc_id"])
+    scoped = []
+    for item in rework_items:
+        if not isinstance(item, str):
+            continue
+        if "GOV_BLOCK" in item or "monolith_detection_validator" in item:
+            scoped.append(item)  # structural blocks are never mission-private
+            continue
+        if any(oid in item for oid in own_ids):
+            scoped.append(item)
+    return scoped
+
+
 def build_closure_contract(
     audit_result: dict,
     plan_path: str | Path | None = None,
+    ledger_lane_scope: str = "global",
 ) -> dict:
-    """Build a machine-readable closure contract from audit results."""
+    """Build a machine-readable closure contract from audit results.
+
+    ``ledger_lane_scope`` ("mission" | "global") records, visibly and
+    auditably, whether the caller passed a mission-scoped ``rework_items`` list
+    (SFC-GAP-D) or the raw global list — never a silent fallthrough.
+    """
     import hashlib
     findings = audit_result.get("findings", [])
     rework = audit_result.get("rework_items", [])
@@ -304,6 +353,7 @@ def build_closure_contract(
         "plan_path": pp,
         "plan_hash": plan_hash,
         "closure_authorized": authorized,
+        "ledger_lane_scope": ledger_lane_scope,
     }
 
 
@@ -440,17 +490,59 @@ def check_iteration_limit_guard(signal: dict) -> dict | None:
     return None
 
 
+def _read_json_mission_id(path: Path) -> "str | None":
+    """Best-effort read of a JSON file's top-level mission_id field.
+
+    Returns None on any read/parse failure or when the field is absent —
+    callers must treat None as "no assertion possible", never as a match.
+    """
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if not isinstance(data, dict):
+        return None
+    mid = data.get("mission_id")
+    return mid if isinstance(mid, str) and mid else None
+
+
 def check_sprint_audit_guard(
     repo_root: Path,
     audit_log_path: "Path | None" = None,
     evidence_review_path: "Path | None" = None,
+    mission_id: "str | None" = None,
 ) -> dict | None:
     """TC-TCF-003-G4: Guard for sprint audit log state.
 
-    Three cases:
-    - Absent audit log (sprint-audit-log.json does not exist): CRITICAL — audit never ran
-      (TC-VWR-006 fix: was previously a graceful skip/None).
-    - Stale audit log (evidence-review.json newer by >60s): MEDIUM GUARD_WARN.
+    Mission-scoping (SFC-GAP-D, 2026-07-17): ``sprint-audit-log.json`` and
+    ``evidence-review.json`` are GLOBAL singletons, not mission-scoped stores —
+    a fresh write by ANY concurrent mission's sprint updates the same file every
+    other mission's closure reads from. Comparing raw mtimes with no mission
+    filter (the pre-fix behavior) makes closure verdicts non-deterministic under
+    concurrency: re-running this guard against the SAME mission minutes apart can
+    flip purely because an unrelated mission's sprint touched these files.
+
+    When ``mission_id`` is None (default): preserve the exact pre-fix global-mtime
+    behavior unchanged — this is the explicit opt-in path for a plan whose own
+    scope legitimately IS general-ledger/cross-mission audit hygiene.
+
+    When ``mission_id`` is provided: absence of the audit log entirely is still
+    unambiguous (CRITICAL — no audit ran for anyone). But if the audit log EXISTS
+    and its own recorded ``mission_id`` field does not match (or the field is
+    absent — the current real-world case, since no code in this repo writes that
+    field yet; only the `/post-sprint-audit` skill does, out of this fix's scope),
+    this guard has NO reliable data about *this* mission's audit freshness — it
+    returns an INFO-severity (non-blocking) note rather than asserting CRITICAL or
+    MEDIUM on data that may belong to an entirely different mission. Only when the
+    file's mission_id actually MATCHES does the original stale-comparison logic
+    apply, at full strength, for the mission under audit.
+
+    Four cases:
+    - Absent audit log: CRITICAL — audit never ran (TC-VWR-006 fix, unchanged).
+    - mission_id given, audit log's own mission_id present but does NOT match:
+      INFO GUARD_INFO — no signal for this mission; never blocks closure.
+    - mission_id given (or None) and audit log's mission matches (or scoping is
+      not requested): stale comparison — MEDIUM GUARD_WARN if stale, else None.
     - OK or cannot determine: None (non-blocking).
     """
     try:
@@ -461,6 +553,7 @@ def check_sprint_audit_guard(
             return None
         if not _audit_log.exists():
             # TC-VWR-006-01: ESCALATE — absent audit log means audit never ran
+            # (unambiguous regardless of mission scope: no audit ran for anyone).
             return {
                 "finding_id": "FIND-GUARD-004-ABSENT",
                 "type": "SPRINT_AUDIT_NEVER_RAN",
@@ -477,6 +570,33 @@ def check_sprint_audit_guard(
                 ),
                 "guard_id": "G4_SPRINT_AUDIT",
             }
+
+        if mission_id:
+            _log_mission = _read_json_mission_id(_audit_log)
+            if _log_mission != mission_id:
+                return {
+                    "finding_id": "FIND-GUARD-004-SCOPE",
+                    "type": "SPRINT_AUDIT_NO_SIGNAL_FOR_MISSION",
+                    "severity": "INFO",
+                    "description": (
+                        f"sprint-audit-log.json's recorded mission "
+                        f"({_log_mission!r}) does not match the mission under "
+                        f"audit ({mission_id!r}) — this global singleton file was "
+                        "last written by a different mission's sprint. No audit-"
+                        "freshness signal is available for this mission from this "
+                        "file; this does not assert staleness or absence for this "
+                        "mission and never blocks closure."
+                    ),
+                    "source_file": str(_audit_log),
+                    "recommended_action": (
+                        "If this mission requires its own post-sprint audit "
+                        "evidence, ensure /post-sprint-audit was run for it "
+                        "specifically (its mission_id write-through is tracked "
+                        "as a follow-up; this guard cannot verify it yet)."
+                    ),
+                    "guard_id": "G4_SPRINT_AUDIT",
+                }
+
         review_mtime = _review_path.stat().st_mtime
         audit_mtime = _audit_log.stat().st_mtime
         if review_mtime > audit_mtime + 60:  # >1 min gap — stale but present
@@ -573,14 +693,16 @@ def run_lifecycle_audit(
     # 1b. TC-TCF-003: Premature-closure guards (run before GOV_BLOCK check)
     # ------------------------------------------------------------------
     _guard_results: list[str] = []
-    for _guard_fn, _guard_args in [
-        (check_queue_exhaustion_guard, (repo_root, signal)),
-        (check_closeout_task_guard, (repo_root,)),
-        (check_iteration_limit_guard, (signal,)),
-        (check_sprint_audit_guard, (repo_root,)),
+    for _guard_fn, _guard_args, _guard_kwargs in [
+        (check_queue_exhaustion_guard, (repo_root, signal), {}),
+        (check_closeout_task_guard, (repo_root,), {}),
+        (check_iteration_limit_guard, (signal,), {}),
+        # SFC-GAP-D fix: mission_id was previously never forwarded here, so G4
+        # always ran in unscoped (global) mode regardless of caller intent.
+        (check_sprint_audit_guard, (repo_root,), {"mission_id": mission_id}),
     ]:
         try:
-            _gf = _guard_fn(*_guard_args)  # type: ignore[operator]
+            _gf = _guard_fn(*_guard_args, **_guard_kwargs)  # type: ignore[operator]
             if _gf:
                 findings.append(_gf)
                 _guard_results.append(f"{_gf['guard_id']}:{_gf['severity']}")
@@ -882,18 +1004,24 @@ def run_lifecycle_audit(
         recommended_action = "NEXT_ITERATION"
 
     # Build closure contract if plan_path provided
+    # SFC-GAP-D: rework_items fed into the closure contract is mission-scoped
+    # when mission_id is given (the raw global list is still reported in
+    # result["rework_items"] below for transparency — nothing is hidden, only
+    # the closure-blocking computation is scoped).
     closure_contract = {}
     if plan_path:
+        _scoped_rework = _scope_rework_items(rework_items, mission_id, plan_path)
         closure_contract = build_closure_contract(
             {
                 "findings": findings,
-                "rework_items": rework_items,
+                "rework_items": _scoped_rework,
                 "open_taskcards": open_taskcards,
                 "all_taskcards_closed": all_taskcards_closed,
                 "open_gaps": open_gaps,
                 "mission_complete": mission_complete,
             },
             plan_path=plan_path,
+            ledger_lane_scope="mission" if mission_id else "global",
         )
         # Override verdict if contract says not authorized
         if not closure_contract.get("closure_authorized") and verdict == "AUDIT_PASS":

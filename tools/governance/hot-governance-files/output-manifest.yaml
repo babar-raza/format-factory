@@ -1,0 +1,36 @@
+# Generator output manifest (SFC-GAP-B, 2026-07-17).
+# guarded_generation() claims these paths before the first write; a run whose
+# declared outputs overlap another agent's live lease fails BEFORE writing.
+#
+# These are the highest-fan-in canonical governance files in the repo — read
+# by essentially every skill/command/agent as authority, and historically
+# written both through the coordination-aware Edit/Write path AND through
+# plain Path.write_text() in ad hoc scripts invoked via Bash (which the
+# PreToolUse hook does not attribute or lease-check). This manifest routes
+# script-based writers through the existing, already-tested generator_guard
+# mechanism (TC-COORD-009) instead of a bespoke locking primitive:
+#
+#   python -m tools.supervisor.coordination guard-run \
+#     --generator-id hot-governance-files \
+#     --manifest-file tools/governance/hot-governance-files/output-manifest.yaml \
+#     -- <command>
+#
+# Interactive Edit/Write on these paths already goes through preflight()/lease
+# checks today (unaffected by this manifest) — this manifest specifically
+# closes the gap for script-based (Bash-invoked) writers.
+generator_id: hot-governance-files
+mode: exclusive
+outputs:
+  - docs/governance/skill-only-policy.yaml
+  - .supervisor/skill-registry.yaml
+  - .claude/commands/command-registry.yaml
+  - .supervisor/capability-routing-registry.yaml
+  - registry/found-issue-register.yaml
+  - registry/governance/validator-id-authority.yaml
+  - oracle/registry/format-oracle-registry.yaml
+  - .supervisor/skill-first-policy.md
+notes: >
+  A live instance of the exact problem this manifest exists to solve:
+  docs/governance/skill-only-policy.yaml has been dirty with an interleaved
+  mixed-authorship edit (mission AGENT-COORD-2026-07-15) since 2026-07-16 —
+  reconciled via this mechanism as the first proof-of-use (SFC-GAP-B taskcard).
