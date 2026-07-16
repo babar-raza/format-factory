@@ -218,3 +218,184 @@ plus the pre-existing governed csv waiver.
 
 Convergence verdict: **CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED** (see
 `.local/evidences/gap-forensic-001-convergence/` for the full stage1/2/3 evidence bundle).
+
+---
+
+## PLAN FILE HARDENING (2026-07-16)
+
+This section makes the plan file itself the governance artifact — no unresolved item below
+is prose-only; every one has a taskcard with full fields, an owner, and a closeout rule.
+Everything above this line (COMPLETION RECORD, terminal-lock marker, Convergence Addendum)
+is preserved unchanged as history.
+
+### 1. Plan File Hardening Change Log
+
+| Date | Event | Trigger / Source |
+|---|---|---|
+| 2026-07-15 | Plan executed and closed (COMPLETION RECORD) | User plan approval; Phases 0-7 executed |
+| 2026-07-16 (AM) | Convergence Addendum: post-closure audit found 4 issues, 2 executed, 2 taskcarded-deferred | User directive "POST-PLAN AUTONOMOUS CONVERGENCE AND GOVERNED CLOSURE" |
+| 2026-07-16 (PM) | This Plan File Hardening block: restructured audit/taskcard content into 13 named sections directly in the plan file | User directive "PLAN FILE HARDENING MODE" |
+
+### 2. Audit Findings Incorporated
+
+Source: `.local/evidences/gap-forensic-001-convergence/stage1-issue-model.json`.
+
+| ID | Severity | Blocker | Finding | Resolution |
+|---|---|---|---|---|
+| GAP-CONV-001 | MEDIUM | yes | GAP-FORENSIC-025/026 registered with `remediation_tc: null` — no taskcard, violating EP-2 | RESOLVED — taskcards TC-GAP-FORENSIC-025/026 created and linked |
+| GAP-CONV-002 | LOW | no | `root-cause-register.yaml` summary rollup stale (omitted RC-008..RC-011) | RESOLVED — see TC-GAP-CONV-002 |
+| GAP-CONV-003 | HIGH | yes | Live V226 FAIL: 6 of 26 formats (ipynb, mtlx, nrrd, safetensors, ubl, xliff) STALE from concurrent source edits post-proof | RESOLVED — see TC-GAP-CONV-003 |
+| GAP-CONV-004 | LOW | no | V226 import failure silently swallowed into `_skipped_validators` instead of hard-failing | OPEN — see TC-GAP-CONV-004 |
+| GAP-FORENSIC-025 | HIGH | n/a (out of scope) | csv wheel unimportable — stdlib `csv` always shadows it | OPEN — see TC-GAP-FORENSIC-025 |
+| GAP-FORENSIC-026 | MEDIUM | n/a (out of scope) | 16 submodules / 14 formats use repo-relative imports, break in real wheel installs | OPEN — see TC-GAP-FORENSIC-026 |
+
+### 3. Resolved / Preserved Work
+
+**Preserved untouched:** the original Phase 0-7 COMPLETION RECORD above remains the authoritative
+record of GAP-FORENSIC-001's core closure (25/26 formats proven, V226 enforcement wired, RC-008..011
+resolved). This hardening pass does not reopen or restate that closure.
+
+**Resolved by this hardening pass:**
+- `TC-GAP-CONV-002` — `root-cause-register.yaml` summary rollup fixed (`agent_owned_remediations: 6` -> `10`, RC-008..011 added to `remediation_tc_mapping` and `negative_controls`). Evidence: direct file diff, re-read confirmed consistent.
+- `TC-GAP-CONV-003` — 6 stale formats re-proved via `python tools/run_package_install_proof.py --format ipynb --format mtlx --format nrrd --format safetensors --format ubl --format xliff` -> 6/6 PASS at `2026-07-16T06:12:37Z`. Evidence: `reports/package-install-proof/proof-manifest.json`, live V226 re-invocation flipped FAIL->WARN.
+
+### 4. Unresolved Work Register
+
+| Taskcard | Status | Priority | Lane Owner | Why still open |
+|---|---|---|---|---|
+| `TC-GAP-FORENSIC-025` | `blocker` | HIGH | `agent_owned_after_naming_decision` | Requires a deliberate, breaking product-naming decision — not mechanical, not a TRUE_EXTERNAL_GATE, but deliberately out of this convergence's scope |
+| `TC-GAP-FORENSIC-026` | `follow_up` | MEDIUM | `agent_owned` | 14-format import-path fix — real work, genuinely out of GAP-FORENSIC-001's scope (proof-machinery closure, not every defect the proof found) |
+| `TC-GAP-CONV-004` | `follow_up` | LOW | `agent_owned` | Forward-looking hardening; V226 currently runs correctly, so this is preventive, not corrective |
+
+### 5. Taskcard Register
+
+**TC-GAP-CONV-002** — Fix stale summary rollup in `root-cause-register.yaml`
+- Source audit finding: GAP-CONV-002 / `stage1-issue-model.json#issues[1]`
+- Why it matters: a rollup that drifts from its own detail entries is misleading to future readers/auditors
+- Status: `completed_verified` | Priority: LOW | Lane owner: `agent_owned` (convergence_controller)
+- Required work: update `agent_owned_remediations` count and `remediation_tc_mapping` to include RC-008..RC-011
+- Required verification: direct re-read confirms rollup text matches detail entries
+- Required evidence: before/after diff of the summary block (applied, see commit `cb52f2c7`)
+- Acceptance criteria: summary references RC-008..RC-011 by ID+status; `total_root_causes` matches actual RC-* entry count
+- Stop conditions: none triggered
+- Allowed paths: `reports/spec-to-code-forensic-audit/root-cause-register.yaml` | Forbidden paths: `src/**`
+- Dependencies: none
+- Closeout rules: close when diff applied and re-read confirms consistency — **CLOSED**
+- Validation command run: `grep -c 'rc_id:' reports/spec-to-code-forensic-audit/root-cause-register.yaml` -> 11, matches `total_root_causes: 11`
+
+**TC-GAP-CONV-003** — Re-prove the 6 formats whose install-proof went STALE
+- Source audit finding: GAP-CONV-003 / `stage1-issue-model.json#issues[2]`
+- Why it matters: fleet cannot be honestly called green while 6/26 formats' proof is time-decayed
+- Status: `completed_verified` | Priority: HIGH | Lane owner: `agent_owned` (convergence_controller)
+- Required work: `python tools/run_package_install_proof.py --format <fmt>` for each of the 6 formats
+- Required verification: live re-invocation of `validate_package_install_proof_coverage()` shows no STALE for these 6
+- Required evidence: `reports/package-install-proof/proof-manifest.json` entries dated `2026-07-16T06:12:37Z`, verdict PASS; live V226 result FAIL->WARN
+- Acceptance criteria: all 6 formats PASS with fresh `source_digest`; live V226 no longer lists them under STALE
+- Stop conditions: if any format still fails for a non-staleness reason, reroute to `product_source_task` lane (not triggered — all 6 passed cleanly)
+- Dependencies: none
+- Closeout rules: close when live V226 re-check is clean for these 6 formats — **CLOSED**
+- Validation command run: `python tools/run_package_install_proof.py --format ipynb --format mtlx --format nrrd --format safetensors --format ubl --format xliff` -> `RESULT: 6/6 PASS`
+
+**TC-GAP-FORENSIC-025** — Resolve csv wheel/stdlib module-name collision
+- Source audit finding: `reports/package-install-proof/proof-manifest.json` csv verdict FAIL
+- Why it matters: `format-factory-csv` installs as top-level `csv`, which stdlib `csv` always shadows — the wheel is dead code in any real environment
+- Status: `blocker` | Priority: HIGH | Lane owner: `agent_owned_after_naming_decision` (product_source_task)
+- Required work: breaking naming change (e.g. rename the installed package/import path) decided via the governed `product-source-task` skill — not mechanical
+- Required verification: re-run `tools/run_package_install_proof.py --format csv` after the rename; verdict must flip to PASS
+- Required evidence: updated `proof-manifest.json` csv entry with verdict PASS
+- Acceptance criteria: naming decision recorded via a governed skill invocation; csv package importable in an ephemeral venv without stdlib collision
+- Stop conditions: do not silently rename without recording the decision and its rationale
+- Allowed actions: invoke `/product-source-task` to scope and execute the rename | Forbidden actions: ad hoc rename outside the governed skill; waiving the gap without a recorded decision
+- Dependencies: none
+- Closeout rules: close only after the naming decision ships and re-proof confirms PASS — **OPEN**
+- Full taskcard: `plans/.claude/parallel-nibbling-dongarra-taskcards/TC-GAP-FORENSIC-025.yaml`
+
+**TC-GAP-FORENSIC-026** — Fix repo-relative imports in `*_to_csv` converter submodules across 14 formats
+- Source audit finding: `reports/package-install-proof/proof-manifest.json` `deep_import.failing_modules`
+- Why it matters: 16 submodules across 14 formats use `from src.python...` imports that break under a real wheel install — dead code for any real consumer
+- Status: `follow_up` | Priority: MEDIUM | Lane owner: `agent_owned` (product_source_task)
+- Required work: convert each affected module's imports to package-relative or installed-package-absolute imports
+- Required verification: `tools/run_package_install_proof.py` deep-import scan shows zero `failing_modules` for all 14 formats
+- Required evidence: updated `proof-manifest.json` with empty `deep_import.failing_modules` per format
+- Acceptance criteria: all 16 submodules importable from a wheel install; no regression in existing in-repo test suites
+- Stop conditions: none defined yet — first violation becomes a stop condition at execution time
+- Allowed actions: import-path edits inside the 14 formats' converter submodules | Forbidden actions: excluding modules from wheels as a silent workaround without a recorded decision
+- Dependencies: `TC-GAP-FORENSIC-025` (shares the csv-import-namespace root cause for csv-adjacent converters — not a hard blocker, but should be sequenced after)
+- Closeout rules: close when the deep-import scan is clean fleet-wide — **OPEN**
+- Full taskcard: `plans/.claude/parallel-nibbling-dongarra-taskcards/TC-GAP-FORENSIC-026.yaml`
+
+**TC-GAP-CONV-004** — Make V226 import failure a hard suite-level FAIL instead of a silent skip
+- Source audit finding: GAP-CONV-004 / `stage1-issue-model.json#issues[3]`
+- Why it matters: a broken V226 import would silently disappear the fleet's only install-proof gate, recreating GAP-FORENSIC-001's original failure mode one layer up
+- Status: `follow_up` | Priority: LOW | Lane owner: `agent_owned` (governance_hardening)
+- Required work: add an explicit assertion/meta-check that V226 (and other must-not-silently-skip validators) appears in the executed results set, failing the suite loudly if not
+- Required verification: simulated broken-import test proves the suite now hard-fails instead of silently skipping
+- Required evidence: new unit test + suite run showing the hard-fail behavior
+- Acceptance criteria: broken V226 import produces a visible suite-level FAIL, not a silent skip; existing `_skipped_validators` behavior for non-critical validators unaffected
+- Stop conditions: do not change skip behavior for validators not explicitly designated must-not-skip
+- Dependencies: none
+- Closeout rules: close when the hard-fail test passes and does not regress other validators — **OPEN**
+- Full taskcard: `plans/.claude/parallel-nibbling-dongarra-taskcards/TC-GAP-CONV-004.yaml`
+
+### 6. Lane Ownership
+
+| Lane | Owner Role | Taskcards | Status |
+|---|---|---|---|
+| `convergence_controller` | agent_owned | TC-GAP-CONV-002, TC-GAP-CONV-003 | CLOSED |
+| `product_source_task` | agent_owned / agent_owned_after_naming_decision | TC-GAP-FORENSIC-025, TC-GAP-FORENSIC-026 | OPEN |
+| `governance_hardening` | agent_owned | TC-GAP-CONV-004 | OPEN |
+
+### 7. Gate Contract
+
+- **V226** (`tools/supervisor/governance_validators_package_proof.py`, registered in `governance_validator_runner.py`): blocking governance validator. FAILs (blocks_sprint=true) on DRIFT (src package missing from `package-matrix.yaml`), MISSING (no manifest entry), or STALE (source changed since proof). WARNs (blocks_sprint=false) only for a registered, taskcarded, gap-tracked known-failure waiver (currently: csv only, via GAP-FORENSIC-025).
+- **`pyrel_g3`/`pyrel_g4`** (`registry/format-registry.yaml`, fods): evidence-backed `passed`, evidence source `reports/package-install-proof/proof-manifest.json`. This is a machinery-status update, not a Gate 11 commercial-release approval (Gate 11 remains Babar Raza's sole authority, untouched by this plan).
+- **Freshness gate (rule, not a bug to route around):** any change to `src/python/<fmt>/` invalidates that format's proof. V226 will FAIL for that format until a scoped re-proof (`tools/run_package_install_proof.py --format <fmt>`) is run. There is no override mechanism, and none should be added — this is RC-009's fix operating as designed.
+
+### 8. Evidence Contract
+
+- **Canonical proof:** `reports/package-install-proof/proof-manifest.json` (machine-readable, one entry per format: `wheel_sha256`, `source_digest`, `proved_at`, `verdict`) + `proof-report.md` (human) + `transcripts/package-install-proof-<fmt>.json` (per-format skill-transcript schema).
+- **Convergence evidence:** `.local/evidences/gap-forensic-001-convergence/` — `stage1-issue-model.json`, `stage2-taskcard-contract.json`, `stage3-quality-scoring-rubric.json`, `final-all-green-candidate.json`, `close-task-result.json` (not committed, per repo `.local/` convention — regenerable, not authoritative history; the plan file and register commits are the durable record).
+- **Closure rule:** no taskcard may be marked `completed_verified` without at least one `validation_commands` entry that was actually executed, with its literal output cited (not paraphrased) in the taskcard's evidence field. This plan file cites literal outputs (e.g. `RESULT: 6/6 PASS`, `grep -c` -> `11`) rather than describing them.
+
+### 9. Verification Matrix
+
+| Check | Command | Last Result | Timestamp |
+|---|---|---|---|
+| 6-format scoped re-proof | `python tools/run_package_install_proof.py --format ipynb --format mtlx --format nrrd --format safetensors --format ubl --format xliff` | `RESULT: 6/6 PASS` | 2026-07-16T06:12:37Z |
+| V226 live invocation | `validate_package_install_proof_coverage({}, repo_root='.')` | `WARN, blocks_sprint=false` (was `FAIL, blocks_sprint=true` before re-proof) | 2026-07-16T06:14Z (post-fix) |
+| Coverage unit tests | `.venv/Scripts/python -m pytest tests/supervisor/test_validate_package_install_proof_coverage.py -v` | 6/6 PASS | 2026-07-16 |
+| Wave1 regression | `.venv/Scripts/python -m pytest tests/python/conveyor/test_package_install_proof_wave1.py -v` | 4/4 PASS | 2026-07-16 |
+| Register consistency | `grep -c 'rc_id:' reports/spec-to-code-forensic-audit/root-cause-register.yaml` | 11, matches `total_root_causes: 11` | 2026-07-16 |
+| V226 registration intact under concurrent edits | `grep -n "V226" tools/supervisor/governance_validator_runner.py` | import/registration block present and unaffected by concurrent V227-V231 additions | 2026-07-16 |
+
+### 10. Repair Loop
+
+1. V226 (or the Verification Matrix above) reports STALE or FAIL for format `X`.
+2. Run `python tools/run_package_install_proof.py --format X`.
+3. Re-invoke `validate_package_install_proof_coverage()` live.
+4. If `X` now PASSes: done, no further action.
+5. If `X` still fails for a reason **other than staleness** (a real defect, e.g. an import error): do not waive it silently. Open (or reuse) a `GAP-FORENSIC-*` register entry, create a taskcard, reroute to the `product_source_task` lane.
+6. A waiver (V226 WARN instead of FAIL) is only valid when it is backed by exactly this chain: gap-register entry -> taskcard -> `known_failure` waiver in `package-matrix.yaml`. No format may be waived by editing the matrix alone.
+
+### 11. Anti-Overclaim Rules
+
+- Do not claim "26/26 formats pass install proof." The true, current, cite-able state is 25/26 PASS + 1 governed waiver (csv, GAP-FORENSIC-025), until `TC-GAP-FORENSIC-025` closes.
+- Do not claim the fleet's proof is durably green. Freshness is a live, time-bound property (RC-009) — a claim of "green" is only valid as of the timestamp it was last verified, not as a permanent fact.
+- Do not count a taskcarded item as fixed. `TC-GAP-CONV-004`, `TC-GAP-FORENSIC-025`, `TC-GAP-FORENSIC-026` are governed and owned, not resolved — governance coverage is not remediation.
+- Do not treat `GAP-FORENSIC-025`/`GAP-FORENSIC-026` as blocking GAP-FORENSIC-001's own closure. They are real defects the proof system was built to discover, correctly split into their own scoped, owned follow-up work — that is the system working as intended, not an incomplete closure.
+- Do not re-invoke `close-task.md` or write a new `TERMINAL_CLOSED` marker for GAP-FORENSIC-001's core scope from this hardening pass — that closure already exists and is not reopened by this section.
+
+### 12. Closeout Criteria
+
+- **This hardening pass** closes when: all 5 taskcards carry status + owner + evidence path (true as of this section) and every audit finding (GAP-CONV-001..004) maps to a taskcard, no prose-only recommendation remains (true as of this section). **This hardening pass is CLOSED.**
+- **GAP-FORENSIC-001's core closure** (Phases 0-7, COMPLETION RECORD) is explicitly **not reopened** by this pass — it governs only the residual follow-up work surfaced by the convergence audit.
+- **The 3 open taskcards** (`TC-GAP-FORENSIC-025`, `TC-GAP-FORENSIC-026`, `TC-GAP-CONV-004`) each close independently, in a future session, strictly via their own `closeout_rules` above — not by being re-described here as done.
+
+### 13. Remaining True Blockers
+
+**None.** No TRUE_EXTERNAL_GATE — per this repo's Supreme Directive definition (git push credentials, Gate 11 execution approval by Babar Raza, package-publication credentials) — blocks any open taskcard in this plan.
+
+- `TC-GAP-FORENSIC-025`'s naming decision is agent-executable via the governed `/product-source-task` skill. It is deliberately scoped out of this session, not blocked by external authority.
+- `TC-GAP-FORENSIC-026` and `TC-GAP-CONV-004` are ordinary agent-owned follow-up work with no external dependency.
+
+If a future session picks up any of the 3 open taskcards, this Taskcard Register (section 5) is the complete, self-contained starting context — no other document needs to be consulted to know what to do, why, and how to verify it.
