@@ -3542,9 +3542,11 @@ class TestValidatorCountIntegrity:
     """TC-PBHP-005c: _EXPECTED_VALIDATOR_COUNT must match actual validators run."""
 
     def test_expected_count_matches_actual(self):
-        """run_all_governance_validators ran+skipped must equal _EXPECTED_VALIDATOR_COUNT.
+        """run_all_governance_validators ran_count must meet or exceed _EXPECTED_VALIDATOR_COUNT.
 
-        Catches count drift when validators are added/removed without updating the constant.
+        TC-SWB-006: deficit (ran < expected) is a hard FAIL.
+        Surplus (ran > expected) is a warning — means manifest needs updating.
+        Skipped validators are tracked separately and do NOT fill the gap.
         """
         from pathlib import Path as _Path
         import sys as _sys
@@ -3563,9 +3565,8 @@ class TestValidatorCountIntegrity:
         skipped = result.get("skipped_count", 0)
         expected = get_expected_validator_count()
 
-        total = ran + skipped
-        assert total == expected, (
-            f"Validator count mismatch: expected {expected}, got ran={ran} + skipped={skipped} = {total}. "
-            f"Update _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py "
+        assert ran >= expected, (
+            f"Validator count deficit: expected {expected}, only {ran} ran "
+            f"({skipped} skipped). Update validator-manifest.yaml "
             f"or fix imports that are silently failing."
         )

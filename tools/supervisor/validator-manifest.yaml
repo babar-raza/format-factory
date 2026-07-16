@@ -35,7 +35,7 @@
 # Authoritative: governance_validators_contract._VALIDATOR_REGISTRY +
 #                explicit calls in run_all_governance_validators()
 
-expected_count: 245
+expected_count: 246
 
 modules:
 
@@ -644,16 +644,17 @@ modules:
       - V241  # validate_contract_consumption
 
   # -------------------------------------------------------------------------
-  # governance_validators_package_integrity — V242-V245
+  # governance_validators_package_integrity — V242-V246
   # -------------------------------------------------------------------------
   package_integrity:
     module: governance_validators_package_integrity
-    count: 4
+    count: 5
     validators:
       - V242  # validate_exception_class_single_source
       - V243  # validate_exception_hierarchy_correctness
       - V244  # validate_analytics_module_wiring
       - V245  # validate_oracle_registry_reconciliation
+      - V246  # validate_no_nested_duplicate_packages
 
   # -------------------------------------------------------------------------
   # governance_validators_control_layer — V176-V181
