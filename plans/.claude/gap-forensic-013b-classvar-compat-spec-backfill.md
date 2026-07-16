@@ -249,3 +249,12 @@ If any batch taskcard's test suite fails on a genuinely new (not pre-existing) f
 None within this plan's scope. Two items are explicitly out of scope and not blockers for this plan's closure:
 - V51 governance validator still tolerates bare and ClassVar-annotated `spec_qname` equally (a deliberate exclusion carried forward from GAP-FORENSIC-013).
 - 3 pre-existing fods/zst test failures from an unrelated session's FACT→SAL rename remain open, owned by that other session — fods and zst are not in this plan's 18-format scope regardless.
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-16T12:42:50.036085+00:00"
+  locked_by: "2df87f0641b8"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
