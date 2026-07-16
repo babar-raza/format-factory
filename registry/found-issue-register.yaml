@@ -285,3 +285,312 @@ issues:
   closed_at: "2026-07-12T00:00:00Z"
   evidence:
     - "tests/supervisor/test_governance_validators.py"
+
+- issue_id: FI-017
+  stable_semantic_key: "capability_compiler:implicit_syspath_resolution:capability_queue_consumer.py:fragile_not_wrong"
+  status: verified
+  discovered_at: "2026-07-14T00:00:00Z"
+  discovering_task_id: "TC-EXT-002 (yes-my-earlier-answer-humming-waffle plan); root cause REVISED under TC-EXT-002-REMEDIATION-001 (plans/.claude/tc-ext-002-remediation-addendum.md) 2026-07-15"
+  issue_type: import_error
+  affected_component: capability_compiler
+  affected_paths:
+    - tools/supervisor/capability_queue_consumer.py
+    - tools/supervisor/capability_compiler.py
+    - tools/capability_layer/capability_compiler.py
+  observed_behavior: >
+    CORRECTED 2026-07-15 (see plans/.claude/tc-ext-002-remediation-addendum.md Finding B):
+    the ORIGINAL observed_behavior/expected_behavior recorded here (and DEC-036's flagged
+    finding) claimed capability_queue_consumer.py's sys.path insertion order caused it to
+    load the WRONG module (tools/capability_layer/capability_compiler.py, L03) instead of
+    the intended tools/supervisor/capability_compiler.py (L14). Direct re-investigation
+    proved this claim FALSE: tools/capability_layer/capability_compiler.py:561-566 contains
+    an explicit "Backward-compatible API (TC-CAP-011/TC-C8)" section built specifically for
+    this consumer, and tests/capability_layer/test_end_to_end_pipeline.py:14-16 deliberately
+    replicates the same sys.path order to get the same resolution — proving the current
+    (L03) target is the CORRECT, intended, tested one. The only real defect was that this
+    correct resolution depended on implicit sys.path insertion order across two files
+    sharing a basename, with no test pinning which module actually loaded — a future
+    unrelated reordering could have silently rerouted to L14's incompatible shape with no
+    import error.
+  expected_behavior: >
+    capability_queue_consumer.py should load tools/capability_layer/capability_compiler.py
+    (the CONFIRMED correct target) via an explicit importlib.util.spec_from_file_location
+    load under a disambiguating module name, instead of relying on sys.path insertion order
+    to win a same-basename collision. Implemented 2026-07-15.
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-005
+  healing_taskcard_id: "TC-TCEXT002-01 (plans/.claude/tc-ext-002-remediation-addendum.md)"
+  verification_verdict: >
+    tools/supervisor/capability_queue_consumer.py:41-67 now loads
+    tools/capability_layer/capability_compiler.py via importlib.util.spec_from_file_location
+    under the synthetic name "capability_layer_compiler", pinning the target regardless of
+    sys.path state. Verified via: (1) direct execution confirming
+    compile_gap_to_feature_ir.__module__ == "capability_layer_compiler" and __file__ resolves
+    to tools/capability_layer/capability_compiler.py; (2) 2 new regression tests in
+    tests/supervisor/test_capability_queue_consumer.py pinning the resolved module identity
+    and output shape; (3) full regression — 89/89 tests pass across
+    tests/capability_layer/test_end_to_end_pipeline.py,
+    tests/capability_layer/test_supervisor_invokes_compiler.py,
+    tests/supervisor/test_capability_queue_consumer.py,
+    tests/supervisor/test_capability_wire_tc_wire_001.py,
+    tests/supervisor/test_deterministic_gap_selection.py, tests/supervisor/test_gap_selection.py,
+    tests/supervisor/test_taskcard_execution_proof.py,
+    tests/supervisor/test_tc_c3_003_action_queue_activation.py,
+    tests/supervisor/test_tc_deferred_filter_001.py — zero behavior change, confirmed
+    2026-07-15.
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - "plans/.claude/tc-ext-002-remediation-addendum.md"
+    - "tools/supervisor/capability_queue_consumer.py"
+    - "tests/supervisor/test_capability_queue_consumer.py"
+    - "plans/layers/decision-register.yaml (DEC-036, corrected)"
+
+- issue_id: FI-018
+  stable_semantic_key: "loc_violation:governance_validators_found_issue.py:602_over_cap_599:TC-FIOP-005"
+  status: verified
+  discovered_at: "2026-07-15T00:00:00Z"
+  discovering_task_id: TC-FIOP-LOC
+  issue_type: regression
+  affected_component: governance_validators_found_issue
+  affected_paths:
+    - tools/supervisor/governance_validators_found_issue.py
+  observed_behavior: >
+    File reached 602 LOC after TC-FIOP-005 added 6 new validators. known_violations cap is
+    frozen at 599. test_source_structure.py::test_no_loc_regression FAILED.
+  expected_behavior: File LOC <= baseline_loc_cap (599).
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-006
+  healing_taskcard_id: TC-FIOP-LOC
+  verification_verdict: >
+    Removed 3 blank separator lines (one before each V130/V131/V132 section comment).
+    File is now 599 LOC. tests/test_source_structure.py 11 PASSED (2026-07-15).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - tests/test_source_structure.py
+
+- issue_id: FI-019
+  stable_semantic_key: "loc_violation:autonomous_cycle.py:3088_over_cap_3087:incremental"
+  status: verified
+  discovered_at: "2026-07-15T00:00:00Z"
+  discovering_task_id: TC-FIOP-LOC
+  issue_type: regression
+  affected_component: autonomous_cycle
+  affected_paths:
+    - tools/supervisor/autonomous_cycle.py
+  observed_behavior: >
+    File reached 3088 LOC (1 over cap 3087). test_source_structure.py FAILED.
+  expected_behavior: File LOC <= 3087.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-006
+  healing_taskcard_id: TC-FIOP-LOC
+  verification_verdict: >
+    Removed 1 blank line before if __name__ == '__main__': block (was 2 blanks, now 1).
+    File is now 3087 LOC. tests/test_source_structure.py 11 PASSED (2026-07-15).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - tests/test_source_structure.py
+
+- issue_id: FI-020
+  stable_semantic_key: "loc_fn_violation:autonomous_cycle_extensions.py:1213_over_1174:fn_19_over_18"
+  status: verified
+  discovered_at: "2026-07-15T00:00:00Z"
+  discovering_task_id: TC-FIOP-LOC
+  issue_type: regression
+  affected_component: autonomous_cycle_extensions
+  affected_paths:
+    - tools/supervisor/autonomous_cycle_extensions.py
+  observed_behavior: >
+    File reached 1213 LOC (cap 1174, +39) and 19 functions (cap 18, +1).
+    test_source_structure.py FAILED for both loc and function count.
+  expected_behavior: LOC <= 1174 AND functions <= 18.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-006
+  healing_taskcard_id: TC-FIOP-LOC
+  verification_verdict: >
+    Extracted run_output_invariant_and_parity_checks (170 lines, 1 function) to new module
+    autonomous_cycle_oic.py. autonomous_cycle_extensions.py now 1041 LOC, 18 functions.
+    Updated autonomous_cycle.py import to use autonomous_cycle_oic. tests/test_source_structure.py
+    11 PASSED (2026-07-15).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - tools/supervisor/autonomous_cycle_oic.py
+    - tools/supervisor/autonomous_cycle_extensions.py
+    - tests/test_source_structure.py
+
+- issue_id: FI-021
+  stable_semantic_key: "loc_violation:test_governance_validators.py:3713_over_cap_3571:lively_leaping_elephant"
+  status: verified
+  discovered_at: "2026-07-15T00:00:00Z"
+  discovering_task_id: TC-FIOP-LOC
+  issue_type: regression
+  affected_component: test_governance_validators
+  affected_paths:
+    - tests/supervisor/test_governance_validators.py
+  observed_behavior: >
+    File reached 3713 LOC (cap 3571, +142) after lively-leaping-elephant TC-GOV-LLE-004C
+    added TestValidatorDetectionRealFiles class (V187-V193 real-file tests).
+    test_source_structure.py FAILED.
+  expected_behavior: LOC <= 3571.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-006
+  healing_taskcard_id: TC-FIOP-LOC
+  verification_verdict: >
+    Extracted TestValidatorDetectionRealFiles class (142 lines) to new module
+    tests/supervisor/test_governance_validators_real.py. Original file now 3571 LOC (at cap).
+    tests/test_source_structure.py 11 PASSED (2026-07-15).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - tests/supervisor/test_governance_validators_real.py
+    - tests/test_source_structure.py
+- issue_id: FI-022
+  stable_semantic_key: "governance_validators_found_issue:validator_contract:V139:tests_run_vs_test_results"
+  status: verified
+  discovered_at: "2026-07-15T00:00:00Z"
+  discovering_task_id: TC-FIOP-011
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/governance_validators_found_issue.py
+  affected_paths:
+    - tools/supervisor/governance_validators_found_issue.py
+    - tests/supervisor/test_found_issue_ownership.py
+  observed_behavior: "V139 validator reads declaration[test_results] but tests pass declaration[tests_run]; validator always returns PASS when tests_run is used (2 test failures: test_v139_warn_tests_failed_register_empty, test_v139_warn_tests_failed_register_missing)"
+  expected_behavior: "V139 should detect failures via both tests_run and test_results field names"
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-004
+  healing_taskcard_id: TC-FIOP-011
+  verification_verdict: "Changed declaration.get('test_results') to also read tests_run as fallback; 34/34 test_found_issue_ownership.py PASS (2026-07-15). LOC stays at 599."
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-15T00:00:00Z"
+  evidence:
+    - "tools/supervisor/governance_validators_found_issue.py"
+    - "tests/supervisor/test_found_issue_ownership.py"
+
+- issue_id: FI-023
+  stable_semantic_key: "python:import_shadow:error_class:18_formats"
+  status: verified
+  discovered_at: "2026-07-16T00:00:00Z"
+  discovering_task_id: quizzical-munching-gadget-plan
+  issue_type: incorrect_implementation
+  affected_component: src/python/*/exceptions.py + parser/codec/writer
+  affected_paths:
+    - src/python/pbm/exceptions.py
+    - src/python/pbm/pbm_parser.py
+    - src/python/pgm/exceptions.py
+    - src/python/pgm/pgm_parser.py
+    - src/python/ppm/exceptions.py
+    - src/python/ppm/ppm_parser.py
+    - src/python/qoi/exceptions.py
+    - src/python/qoi/qoi_parser.py
+    - src/python/csv/exceptions.py
+    - src/python/csv/csv_parser.py
+    - src/python/odt/exceptions.py
+    - src/python/odt/odt_parser.py
+    - src/python/abw/exceptions.py
+    - src/python/abw/abw_codec.py
+    - src/python/gnumeric/exceptions.py
+    - src/python/gnumeric/gnumeric_codec.py
+    - src/python/toml/exceptions.py
+    - src/python/toml/toml_codec.py
+    - src/python/tsv/exceptions.py
+    - src/python/tsv/tsv_parser.py
+    - src/python/tsv/tsv_writer.py
+    - src/python/sylk/exceptions.py
+    - src/python/sylk/sylk_parser.py
+    - src/python/sylk/sylk_writer.py
+    - src/python/dif/exceptions.py
+    - src/python/dif/dif_parser.py
+    - src/python/ods/exceptions.py
+    - src/python/ods/ods_parser.py
+    - src/python/ndjson/exceptions.py
+    - src/python/ndjson/ndjson_codec.py
+    - src/python/fodg/exceptions.py
+    - src/python/fodg/fodg_codec.py
+    - src/python/fodp/exceptions.py
+    - src/python/fodp/fodp_codec.py
+    - src/python/xcf/exceptions.py
+    - src/python/xcf/xcf_parser.py
+    - src/python/zst/exceptions.py
+    - src/python/zst/zst_codec.py
+    - src/python/fodt/exceptions.py
+    - src/python/fods/exceptions.py
+  observed_behavior: "Each format package's parser/codec/writer file locally redefined {Fmt}Error(Exception), duplicating the FormatFactoryError-rooted class of the same name in exceptions.py. Both get star-imported into __init__.py, so one silently shadows the other depending on import order: pytest.raises(pkg.FmtError) failed to catch parser-raised errors in 9 formats (facade wins), except FormatFactoryError failed to catch format-specific errors in 4 formats (parser wins), and exceptions.py was dead code in 5 formats. FODT/FODS additionally rooted FodtError/FodsError at ValueError instead of FormatFactoryError. Root cause: playbooks/format-factory/new-format-kickstart-template.md instructed defining error classes inside the codec file rather than in exceptions.py, and no validator checked for duplicate class definitions or hierarchy correctness beyond mere exceptions.py existence (V76)."
+  expected_behavior: "exceptions.py is the single source of truth for a format's error hierarchy (FormatFactoryError -> {Fmt}Error -> {Fmt}ParseError/{Fmt}WriteError -> specific subclasses); parser/codec/writer files import from it, never redefine it."
+  severity: P1
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-007
+  healing_taskcard_id: TC-EHR-001,TC-EHR-002,TC-EHR-006,TC-EHR-007,TC-EHR-008,TC-EHR-009
+  verification_verdict: "Deterministic AST codemod tools/backfill/exception_hierarchy_backfill.py moved all shadow classes into exceptions.py under {Fmt}ParseError/{Fmt}WriteError and replaced local definitions with imports across all 18 affected formats, including TOML (initially deferred at claim-time per an active peer coordination lease on toml_codec.py; the lease freed and TOML was fixed and re-verified in the same engagement -- TC-EHR-014); FODT/FODS exceptions.py rebased ValueError->FormatFactoryError. New full-repo-scan validators V242 (single-source) and V243 (hierarchy correctness) both PASS repo-wide with zero remaining items. Full test suite: 31719 passed (+1486 TOML), 0 regressions (13 characterization tests that proved the old bug inverted to positive assertions of the healed invariant). Generator template playbooks/format-factory/new-format-kickstart-template.md corrected so new formats are born correct."
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-16T00:00:00Z"
+  evidence:
+    - "tools/backfill/exception_hierarchy_backfill.py"
+    - "tests/tools/test_exception_hierarchy_backfill.py"
+    - "tools/supervisor/governance_validators_package_integrity.py"
+    - "tests/supervisor/test_package_integrity_validators.py"
+    - "plans/.claude/quizzical-munching-gadget.md"
+
+- issue_id: FI-024
+  stable_semantic_key: "python:unwired_analytics_module:5_formats"
+  status: verified
+  discovered_at: "2026-07-16T00:00:00Z"
+  discovering_task_id: quizzical-munching-gadget-plan
+  issue_type: incorrect_implementation
+  affected_component: src/python/{pgm,odt,ndjson,fods,dif}/__init__.py
+  affected_paths:
+    - src/python/pgm/__init__.py
+    - src/python/pgm/pgm_image_analytics.py
+    - src/python/odt/__init__.py
+    - src/python/odt/odt_doc_analytics.py
+    - src/python/ndjson/__init__.py
+    - src/python/ndjson/ndjson_field_analytics.py
+    - src/python/fods/__init__.py
+    - src/python/fods/fods_file_analytics.py
+    - src/python/dif/__init__.py
+    - src/python/dif/dif_interchange_analytics.py
+  observed_behavior: "Analytics modules existed on disk with public functions but were never imported into their package's __init__.py, so the functions never reached pkg.__all__ and were invisible to consumers (import pgm; pgm.pgm_width -- AttributeError). No validator checked that analytics files present on disk are wired into __init__.py."
+  expected_behavior: "Every *_analytics*.py file's public functions are reachable from the package's top-level namespace."
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-008
+  healing_taskcard_id: TC-EHR-003,TC-EHR-010
+  verification_verdict: "Deterministic codemod tools/backfill/analytics_wiring_backfill.py wired all 5 modules into their __init__.py (dynamic-__all__ Pattern A star-imports, positioned after the last existing star-import). New validator V244 (analytics_module_wiring) PASS for all 5. Two real regressions discovered and healed during verification: (1) ndjson_field_analytics.py has 10 function names colliding with already-wired, incompatible-signature functions in json_stream.py/ndjson_record_stats.py -- an initial manual fix caught 9 of the 10 (missed ndjson_total_field_count) and was corrected to all 10 after an independent review caught the gap; the 10 colliding duplicate definitions remain permanently-shadowed dead code, tracked separately as FI-025. (2) The codemod itself had no collision detection, meaning the manual ndjson fix would not have generalized to any other package -- detect_already_bound_names() was added (dynamically imports the target package in an isolated subprocess and diffs against the analytics module's public names) so any future --format invocation automatically excludes colliding names instead of silently shadowing them; covered by a new regression test (test_collision_excludes_colliding_name_but_wires_the_rest)."
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-16T00:00:00Z"
+  evidence:
+    - "tools/backfill/analytics_wiring_backfill.py"
+    - "tests/tools/test_analytics_wiring_backfill.py"
+    - "src/python/ndjson/__init__.py"
+    - "plans/.claude/quizzical-munching-gadget.md"
+
+- issue_id: FI-025
+  stable_semantic_key: "python:duplicate_function_definitions:ndjson_field_analytics"
+  status: discovered
+  discovered_at: "2026-07-16T00:00:00Z"
+  discovering_task_id: TC-EHR-010
+  issue_type: incorrect_implementation
+  affected_component: src/python/ndjson/ndjson_field_analytics.py
+  affected_paths:
+    - src/python/ndjson/ndjson_field_analytics.py
+    - src/python/ndjson/json_stream.py
+    - src/python/ndjson/ndjson_record_stats.py
+  observed_behavior: "ndjson_field_analytics.py independently defines 10 functions (ndjson_bool_value_count, ndjson_null_field_count, ndjson_numeric_field_count, ndjson_string_field_count, ndjson_max_field_count, ndjson_record_count, ndjson_min_field_count, ndjson_dict_record_count, ndjson_unique_key_count, ndjson_total_field_count) whose names are identical to already-wired, already-tested functions in json_stream.py (re-exported via ndjson_codec.py) and/or ndjson_record_stats.py, but with an incompatible signature: json_stream/record_stats versions accept an already-parsed record list, ndjson_field_analytics versions accept a raw source (str/bytes/Path) and internally call load_ndjson(). These 10 functions in ndjson_field_analytics.py were dead code (module was never imported) until FI-024's fix; they remain permanently unreachable dead code after FI-024's fix (explicitly excluded from the __init__.py import to avoid regressing the canonical, tested implementations)."
+  expected_behavior: "Each function name should have exactly one definition across the package; the 10 duplicate, incompatible-signature functions in ndjson_field_analytics.py should be removed (or the module's design reconsidered) rather than left as permanently-dead, confusing duplicate code."
+  severity: P3
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-008
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: OPEN_OUT_OF_SCOPE
+  evidence:
+    - "src/python/ndjson/__init__.py"
+    - "src/python/ndjson/ndjson_field_analytics.py"

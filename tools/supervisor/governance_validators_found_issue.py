@@ -55,7 +55,6 @@ def _result(vid: str, name: str, passed: bool, items: list, blocks: bool) -> dic
         "summary": f"{vid}: {'OK' if passed else str(len(items)) + ' issue(s)'}",
     }
 
-
 # ── V130 ──────────────────────────────────────────────────────────────────────
 
 
@@ -121,7 +120,6 @@ def validate_dotnet_loc_cap_static(
 
     return _result("V130", "dotnet_loc_cap_static", not items, items, False)
 
-
 # ── V131 ───────────���──────────────────────────────────────────────────────────
 
 
@@ -144,7 +142,6 @@ def validate_found_issue_disposition(declaration: dict) -> dict:
             missing.append(f"[V131] {fi_id} missing 'disposition' field")
 
     return _result("V131", "found_issue_disposition", not missing, missing, False)
-
 
 # ── V132 ──────────────────────────────────────────────────────────────────────
 
@@ -295,8 +292,8 @@ def validate_found_issue_register_present(
     WARN (not FAIL) during GA period — blocks_sprint=False.
     Skips check if no sprint_id / run_id in declaration (can't correlate issues).
     """
-    # tests_run may be int (total count) or dict — use test_results for pass/fail breakdown
-    test_results = declaration.get("test_results", {}) or {}
+    # tests_run may be int (total count) or dict; test_results is the breakdown form — accept both
+    test_results = declaration.get("test_results") or declaration.get("tests_run") or {}
     if not isinstance(test_results, dict):
         test_results = {}
     failing_tests = declaration.get("failing_tests", []) or []
