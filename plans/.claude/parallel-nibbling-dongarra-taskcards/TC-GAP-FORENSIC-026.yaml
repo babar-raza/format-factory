@@ -1,0 +1,25 @@
+taskcard_id: TC-GAP-FORENSIC-026
+title: Fix repo-relative imports in *_to_csv converter submodules across 14 formats
+source_issue_ids: [GAP-FORENSIC-026]
+source_issue_level: L1_EXECUTION
+source_audit_finding: reports/package-install-proof/proof-manifest.json (deep_import.failing_modules)
+why_it_matters: >
+  16 submodules across 14 formats use "from src.python..." imports that assume the
+  repo layout and break when installed as a real wheel (ModuleNotFoundError: No
+  module named 'src'). These modules are unusable by any real consumer of the package.
+risk_addressed: silently shipping unusable converter functionality inside otherwise-passing wheels
+status: follow_up
+lane_owner: agent_owned
+supervisor_role: product_source_task
+required_implementation: Convert each affected module's imports to package-relative or installed-package-absolute imports
+required_verification: tools/run_package_install_proof.py deep-import scan shows zero failing_modules for all 14 formats
+required_evidence: Updated proof-manifest.json with empty deep_import.failing_modules per format
+quality_dimensions: [implementation_correctness, integration_completeness, test_coverage]
+acceptance_criteria:
+  - All 16 submodules importable from an ephemeral-venv wheel install
+  - No regression in the formats' existing in-repo test suites
+dependencies: []
+closeout_rules: Close when the deep-import scan is clean fleet-wide
+machine_state: pending
+validation_commands:
+  - "python tools/run_package_install_proof.py --all"

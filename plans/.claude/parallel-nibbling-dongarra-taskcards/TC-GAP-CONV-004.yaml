@@ -1,0 +1,28 @@
+taskcard_id: TC-GAP-CONV-004
+title: Make V226 import failure a hard suite-level FAIL instead of a silent skip
+source_issue_ids: [GAP-CONV-004]
+source_issue_level: L3_SYSTEM_WEAKNESS
+source_audit_finding: stage1-issue-model.json#issues[3]
+why_it_matters: >
+  If governance_validators_package_proof.py ever fails to import, V226 silently
+  disappears into _skipped_validators with no visible red signal — recreating
+  GAP-FORENSIC-001's original failure mode (proof existed, nothing enforced it)
+  one layer up, in the enforcement mechanism itself.
+risk_addressed: silent disappearance of the fleet's only install-proof enforcement gate
+status: follow_up
+lane_owner: agent_owned
+supervisor_role: governance_hardening
+required_implementation: >
+  Add an explicit assertion/meta-check that V226 (and other designated
+  must-not-silently-skip validators) appears in the executed results set,
+  failing the suite loudly if it does not.
+required_verification: Simulated broken-import test proves the suite now hard-fails instead of silently skipping
+required_evidence: New unit test + suite run showing the hard-fail behavior
+quality_dimensions: [governance_compliance, test_coverage, production_readiness]
+acceptance_criteria:
+  - A broken V226 import produces a visible suite-level FAIL, not a silent skip
+  - Existing _skipped_validators behavior for non-critical validators is unaffected
+dependencies: []
+closeout_rules: Close when the hard-fail test passes and does not regress other validators
+machine_state: pending
+validation_commands: []

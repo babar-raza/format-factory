@@ -1,0 +1,29 @@
+taskcard_id: TC-GAP-FORENSIC-025
+title: Resolve csv wheel/stdlib module-name collision (product naming decision required)
+source_issue_ids: [GAP-FORENSIC-025]
+source_issue_level: L2_INTEGRATION
+source_audit_finding: reports/package-install-proof/proof-manifest.json (csv verdict FAIL)
+why_it_matters: >
+  format-factory-csv installs as a top-level "csv" package, which Python's stdlib csv
+  module always shadows in any real environment — the wheel is dead code as packaged.
+risk_addressed: shipping a package that can never actually be imported by a consumer
+status: deferred_with_reason
+lane_owner: agent_owned_after_naming_decision
+supervisor_role: product_source_task
+required_implementation: >
+  Requires a breaking naming change (e.g. rename the installed package/import path)
+  decided via the governed product-source-task skill, not a mechanical fix — this is
+  intentionally out of scope for the GAP-FORENSIC-001 proof-machinery closure.
+required_verification: Re-run tools/run_package_install_proof.py --format csv after the rename; verdict must flip to PASS
+required_evidence: Updated proof-manifest.json csv entry with verdict PASS
+quality_dimensions: [requirement_correctness, governance_compliance]
+acceptance_criteria:
+  - Naming decision recorded via a governed skill invocation
+  - csv format-factory package importable in an ephemeral venv without stdlib collision
+stop_conditions:
+  - Do not silently rename without recording the decision and its rationale
+dependencies: []
+closeout_rules: Close only after the naming decision ships and re-proof confirms PASS
+machine_state: pending
+validation_commands:
+  - "python tools/run_package_install_proof.py --format csv"

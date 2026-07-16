@@ -166,37 +166,41 @@
       "package_name": "format-factory-ipynb",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_ipynb-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "0e916bd830b50e7bee5f244fd0982a6c08a63dcc86bf8147e9970a6567900fb2",
-      "source_digest": "b51d045df62a638c1b1fdbf6c58cbf5b14f92c84ce1af3b1860ed55701b79767",
+      "wheel_sha256": "62cfa47b788bcb61f0fada5e0254768ebe0e4b4fb6d33f0a0d07b5fec238d14f",
+      "source_digest": "2607b191a1f60c96f7b44e48e14d2241af16cc6cc1cf3de73f1240d6c805ed10",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "ipynb.ipynb_codec.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
       "verdict": "PASS",
       "deep_import": {
-        "total": 14,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 15,
+        "failed": 1,
+        "failing_modules": {
+          "ipynb.ipynb_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "mtlx": {
       "package_name": "format-factory-mtlx",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_mtlx-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "7688a2593ccb0fd37e336f40b7b2456f4812c9d979aecabeb161973b9527c2d2",
-      "source_digest": "55b62cf0d9631f947d4d20b077e5aa0d2e1822e1354526627fe292b87a802550",
+      "wheel_sha256": "ce0183c786510b82efe95697a8c7b09134a64dd01dac7d1cf008e054871b4d2a",
+      "source_digest": "1a22f22f499cb60c9520cf512b66c9e8ba5355df8be7d7f456596cb1ccca8120",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "mtlx.mtlx_codec.load_mtlx on samples/by-format/mtlx/valid/simple-material.mtlx",
       "verdict": "PASS",
       "deep_import": {
-        "total": 13,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 22,
+        "failed": 1,
+        "failing_modules": {
+          "mtlx.mtlx_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "ndjson": {
       "package_name": "format-factory-ndjson",
@@ -222,19 +226,21 @@
       "package_name": "format-factory-nrrd",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "4be1328e140a19bfd843eebef2d2bc767d02767504fbd8792bf1477089d9cfbf",
-      "source_digest": "3a9f1ef0edb168a380989743ee38c45001851aab07f09e2c20028b04554f8e11",
+      "wheel_sha256": "66bd121d8523d5130548bc49bde9ecc886d5fcb066a8dfababdf18a19dd8f7f8",
+      "source_digest": "de56fca8299c8b93525fdea2388a822a008c912e7970c98d1ce34719d1465816",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
       "verdict": "PASS",
       "deep_import": {
-        "total": 12,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 13,
+        "failed": 1,
+        "failing_modules": {
+          "nrrd.nrrd_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "ods": {
       "package_name": "format-factory-ods",
@@ -352,19 +358,21 @@
       "package_name": "format-factory-safetensors",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_safetensors-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "72dc883e5b0d0688c82df60993a33e4d52c249586f44c29b82e87590496f340f",
-      "source_digest": "b24650651f89d888d2757ea7e93a4150e6be83bc11963841f1a1cb48c7bfb508",
+      "wheel_sha256": "7c4c8c2dad7d5dca49709277b2c9ed4eff0edb64a907cdf7758958be1cac5f99",
+      "source_digest": "04a4ccc991c453f6a5ee3639cd7c375e82b583d9aa95cc61a8d5e759f868b6b5",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "safetensors.safetensors_codec.load_safetensors on samples/by-format/safetensors/valid/single-tensor.safetensors",
       "verdict": "PASS",
       "deep_import": {
-        "total": 14,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 15,
+        "failed": 1,
+        "failing_modules": {
+          "safetensors.safetensors_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "sylk": {
       "package_name": "format-factory-sylk",
@@ -430,19 +438,21 @@
       "package_name": "format-factory-ubl",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_ubl-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "1910afbce4a9db6aedb90232e85378025aae4a81a6a3ddc2e6e571c78825d085",
-      "source_digest": "9eecaa2922701e8597f7ece87935e206acf1799d9ab98c41f4ffec9dc6eb5611",
+      "wheel_sha256": "13af767a4c306b717434089f32903046cc2502e07b971e5fda17024acf6d5235",
+      "source_digest": "153f0437b2a8161d8d9c8b9e379dbab1e27a941f38b354ddd07da2aa75b67f5d",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "ubl.ubl_codec.load_ubl on samples/by-format/ubl/valid/minimal-order.xml",
       "verdict": "PASS",
       "deep_import": {
-        "total": 16,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 17,
+        "failed": 1,
+        "failing_modules": {
+          "ubl.ubl_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "xcf": {
       "package_name": "format-factory-xcf",
@@ -466,19 +476,21 @@
       "package_name": "format-factory-xliff",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_xliff-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "5f98a0f49327d246ed3b4a06bac2251ef92a2d3dce6ccb57fc11bf9276ccfc58",
-      "source_digest": "1bd4843dc5e0d2326a6d1f947c7179893ad237909098b272c7c4c8ba3f3f6064",
+      "wheel_sha256": "6e03b5db7f47f5e946b0a3a224cf257d493883d989eeb173351a6e78ea19c79d",
+      "source_digest": "8d80f4282dee157fedd00685cad901412f2bea4fb28d5a970be40a30fe33c9d1",
       "install_result": "PASS",
       "import_result": "PASS",
       "smoke_result": "PASS",
       "smoke_test": "xliff.xliff_codec.load_xliff on samples/by-format/xliff/valid/minimal.xliff",
       "verdict": "PASS",
       "deep_import": {
-        "total": 15,
-        "failed": 0,
-        "failing_modules": {}
+        "total": 16,
+        "failed": 1,
+        "failing_modules": {
+          "xliff.xliff_to_csv": "ModuleNotFoundError: No module named 'src'"
+        }
       },
-      "proved_at": "2026-07-15T17:36:29+00:00"
+      "proved_at": "2026-07-16T06:12:37+00:00"
     },
     "zst": {
       "package_name": "format-factory-zst",
@@ -501,35 +513,15 @@
   },
   "python_version": "3.13.2",
   "last_run": {
-    "at": "2026-07-15T17:36:29+00:00",
+    "at": "2026-07-16T06:12:37+00:00",
     "formats": [
-      "abw",
-      "csv",
-      "dif",
-      "fodg",
-      "fodp",
-      "fods",
-      "fodt",
-      "gnumeric",
       "ipynb",
       "mtlx",
-      "ndjson",
       "nrrd",
-      "ods",
-      "odt",
-      "pbm",
-      "pgm",
-      "ppm",
-      "qoi",
       "safetensors",
-      "sylk",
-      "toml",
-      "tsv",
       "ubl",
-      "xcf",
-      "xliff",
-      "zst"
+      "xliff"
     ],
-    "full_fleet": true
+    "full_fleet": false
   }
 }

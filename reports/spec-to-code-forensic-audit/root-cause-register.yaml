@@ -318,21 +318,24 @@ summary:
     MEDIUM: 3     # RC-003, RC-005, RC-011
     ADVISORY: 1   # RC-002
 
-  agent_owned_remediations: 6   # RC-001 through RC-006
+  agent_owned_remediations: 10   # RC-001 through RC-006, RC-008 through RC-011
   human_gate_required: 1        # RC-007 (Gate 1)
 
   remediation_tc_mapping:
     TC-FF-AUDIT-060: [RC-001, RC-003]
     TC-FF-AUDIT-061: [RC-004, RC-005]
     TC-FF-AUDIT-062: [RC-002, RC-006]
+    plans/.claude/parallel-nibbling-dongarra.md: [RC-008, RC-009, RC-010, RC-011]  # GAP-FORENSIC-001 closure sprint, 2026-07-15
 
 negative_controls:
   - check: "Minimum 5 RCs documented (plan requirement)"
     result: PASS
-    actual: 7
+    actual: 11
   - check: "Each RC has type, impact, affected_formats/components, remediation_tc"
     result: PASS
   - check: "RC-001 through RC-007 all present"
+    result: PASS
+  - check: "RC-008 through RC-011 all present (GAP-FORENSIC-001 closure additions)"
     result: PASS
 
 tc_status: VERIFIED

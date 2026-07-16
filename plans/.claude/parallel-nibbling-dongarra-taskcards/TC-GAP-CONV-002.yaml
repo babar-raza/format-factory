@@ -1,0 +1,29 @@
+taskcard_id: TC-GAP-CONV-002
+title: Fix stale summary rollup in root-cause-register.yaml
+source_issue_ids: [GAP-CONV-002]
+source_issue_level: L1_EXECUTION
+source_audit_finding: stage1-issue-model.json#issues[1]
+why_it_matters: >
+  Register summary text said "RC-001 through RC-006" agent-owned, silently omitting
+  RC-008..RC-011 added by the GAP-FORENSIC-001 closure sprint. A rollup that drifts
+  from its own detail entries is misleading to future readers/auditors.
+risk_addressed: documentation-drift masking the true count/state of resolved root causes
+status: completed_verified
+lane_owner: agent_owned
+supervisor_role: convergence_controller
+required_implementation: Update the summary block's agent_owned_remediations text/count to include RC-008..RC-011
+required_verification: Direct re-read of the file confirming rollup text matches detail entries
+required_evidence: Before/after diff of the summary block
+quality_dimensions: [evidence_completeness, documentation_skill_agent_sync_quality]
+acceptance_criteria:
+  - Summary block references RC-008 through RC-011 by ID and status
+  - total_root_causes count matches the actual number of RC-* entries in the file
+allowed_paths:
+  - reports/spec-to-code-forensic-audit/root-cause-register.yaml
+forbidden_paths:
+  - src/**
+dependencies: []
+closeout_rules: Close when the diff is applied and re-read confirms consistency
+machine_state: pending
+validation_commands:
+  - "grep -c 'rc_id:' reports/spec-to-code-forensic-audit/root-cause-register.yaml"

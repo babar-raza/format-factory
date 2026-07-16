@@ -370,7 +370,7 @@ gaps:
       *_to_csv converters and tests. Until then the failure is waived in
       package-matrix.yaml (install_proof.known_failure -> this gap) so V226 reports
       WARN, not FAIL; the proof manifest keeps the honest FAIL verdict.
-    remediation_tc: null  # future sprint — breaking naming change
+    remediation_tc: plans/.claude/parallel-nibbling-dongarra-taskcards/TC-GAP-FORENSIC-025.yaml
     remediation_owner: agent_owned_after_naming_decision
     status: OPEN
 
@@ -396,7 +396,7 @@ gaps:
       the installed-package namespace (blocked for csv by GAP-FORENSIC-025), or
       (b) exclude converter modules from wheels, or (c) vendor the writer functions.
       Related known pattern: 'Dogfood Export Namespace Conflict' (MEMORY.md).
-    remediation_tc: null  # future sprint
+    remediation_tc: plans/.claude/parallel-nibbling-dongarra-taskcards/TC-GAP-FORENSIC-026.yaml  # follow-up, agent_owned
     remediation_owner: agent_owned
     status: OPEN
 

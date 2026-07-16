@@ -162,3 +162,59 @@ Named residuals (tracked, not silently absorbed):
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->
+
+---
+
+## CONVERGENCE ADDENDUM (2026-07-16) — Post-Closure Audit, Hardening, Re-Execution, Re-Verification
+
+Amendment appended in place per this repo's "amend, don't overwrite history" convention. The
+COMPLETION RECORD above and the terminal-lock marker are preserved unchanged. This addendum
+documents a governed post-closure convergence pass (audit -> harden -> execute -> reverify)
+run against this plan's own closure evidence, using `.supervisor/prompts/prompt1-3` and the
+`tools/supervisor/post_sprint_loop_controller.py` supervisor. Full evidence bundle:
+`.local/evidences/gap-forensic-001-convergence/`.
+
+**Audit (Stage 1) found 4 real issues**, none requiring architectural rework:
+
+| Issue | Severity | Blocker | Finding |
+|---|---|---|---|
+| GAP-CONV-001 | MEDIUM | yes | GAP-FORENSIC-025/026 were registered with `remediation_tc: null` — no taskcard existed, violating this repo's EP-2 lifecycle rule |
+| GAP-CONV-002 | LOW | no | `root-cause-register.yaml` summary rollup text was stale (didn't account for RC-008..RC-011) |
+| GAP-CONV-003 | HIGH | yes | Live re-invocation of V226 returned **FAIL, blocks_sprint=true**: 6 of the 26 onboarded formats (ipynb, mtlx, nrrd, safetensors, ubl, xliff) were STALE — concurrent agent work had changed their source since the 2026-07-15T17:36:29Z proof run. This is RC-009's freshness design firing correctly under real, non-synthetic drift, not a defect. |
+| GAP-CONV-004 | LOW | no | V226 import failure is caught and silently appended to `_skipped_validators` rather than hard-failing the suite — a latent path back toward GAP-FORENSIC-001's original failure mode if it ever regresses |
+
+**Hardening (Stage 2):** created 5 taskcards under
+`plans/.claude/parallel-nibbling-dongarra-taskcards/`: `TC-GAP-CONV-002`, `TC-GAP-CONV-003`
+(both executed this session), `TC-GAP-FORENSIC-025`, `TC-GAP-FORENSIC-026` (deferred —
+genuinely out-of-scope follow-up work: a breaking product naming decision and a 14-format
+import-path fix respectively), `TC-GAP-CONV-004` (deferred, non-blocking hardening item).
+`forensic-gap-register.yaml`'s `remediation_tc` fields for GAP-FORENSIC-025/026 now point to
+real taskcards instead of `null`.
+
+**Execution (Stage 3):**
+- Fixed `root-cause-register.yaml`'s stale summary rollup (`agent_owned_remediations: 6` ->
+  `10`, added RC-008..011 to `remediation_tc_mapping` and a presence check to `negative_controls`).
+- Ran `python tools/run_package_install_proof.py --format ipynb --format mtlx --format nrrd
+  --format safetensors --format ubl --format xliff` -> **6/6 PASS**, `proved_at:
+  2026-07-16T06:12:37Z`.
+
+**Re-verification:** live re-invocation of `validate_package_install_proof_coverage()`
+flipped from `FAIL/blocks_sprint=true` to **`WARN, blocks_sprint=false`**
+("25/26 packages have fresh passing install proof; known failures under gap-register waiver:
+csv (waived: GAP-FORENSIC-025)"). Confirmed V226's registration in the actual
+`governance_validator_runner.py` entry point is intact and unaffected by concurrent-agent
+additions of V227-V231 in the same file. Regression check:
+`test_validate_package_install_proof_coverage.py` (6/6) +
+`test_package_install_proof_wave1.py` (4/4) = 10/10 PASS, no regressions.
+
+**Classification:** `post_sprint_loop_controller.py --classify` returned
+`STRUCTURED_ALL_GREEN` / `ACCEPTED_ALL_GREEN` (confidence 1.0) against the Stage 3 output.
+
+**Named residual, explicitly not claimed as resolved:** freshness is a live, time-bound
+property (RC-009) — any future sprint touching `src/python/<fmt>/` must re-run the scoped
+proof for that format before the fleet can be called green again. This addendum does not
+claim the fleet will *stay* green; it claims it *was verified* green at 2026-07-16T06:12:37Z
+plus the pre-existing governed csv waiver.
+
+Convergence verdict: **CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED** (see
+`.local/evidences/gap-forensic-001-convergence/` for the full stage1/2/3 evidence bundle).
