@@ -1,9 +1,10 @@
 {
   "format_id": "mtlx",
-  "generated_at": "2026-07-15T17:09:28.230431+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-15T20:24:27.285277+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/mtlx-feature-manifest.json",
   "manifest_hash": "sha256:a930d9b1f064a609e41389fdbf509030c6b522ca9291fa3b7bb330dca60d0be7",
+  "source_digest": "844e325d76e89065486cb27054ef05320b9cb9e0cadb9b6ece6a0d293a968f2e",
   "coverage_summary": {
     "total": 5,
     "implemented": 5,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/mtlx/mtlx_codec.py:_serialize_nodes",
+      "verification": "verified by passing test(s): tests/python/mtlx/test_mtlx_write_completeness.py::TestWriteRoundtripPreservesGenericBucket::test_nodedef_survives_with_category_and_type, tests/python/mtlx/test_mtlx_write_completeness.py::TestNodegraphResidualDataLoss::test_roundtrip_preserves_nodegraph_attributes_and_generic_children",
       "deferred_reason": null
     },
     {
@@ -26,6 +28,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/mtlx/mtlx_graph.py:resolve_connections",
+      "verification": "verified by passing test(s): tests/python/mtlx/test_mtlx_graph.py::TestResolveConnections::test_resolved_input_points_to_actual_node",
       "deferred_reason": null
     },
     {
@@ -33,7 +36,8 @@
       "name": "Node category (not just data-type) tracking",
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
-      "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'node_category')",
+      "evidence": "src/python/mtlx/spec/element/nodedef.py:node_category",
+      "verification": "verified by passing test(s): tests/python/mtlx/test_mtlx_analytics.py::TestNodeTypeHistogram::test_counts_by_node_category_not_data_type",
       "deferred_reason": null
     },
     {
@@ -42,6 +46,7 @@
       "requirement_level": "recommended",
       "status": "IMPLEMENTED",
       "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'volumematerial')",
+      "verification": "verified by passing test(s): tests/python/mtlx/test_mtlx_material_forms.py::TestVolumeMaterial::test_full_roundtrip_still_a_volumematerial",
       "deferred_reason": null
     },
     {
@@ -50,6 +55,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/mtlx/mtlx_analytics.py: (text match for 'surfacematerial')",
+      "verification": "verified by passing test(s): tests/python/mtlx/test_mtlx_codec.py::TestLoad::test_load_node_graph",
       "deferred_reason": null
     }
   ],

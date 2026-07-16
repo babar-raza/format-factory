@@ -1,9 +1,10 @@
 {
   "format_id": "ipynb",
-  "generated_at": "2026-07-15T17:09:26.931454+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-15T20:24:16.709017+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/ipynb-feature-manifest.json",
   "manifest_hash": "sha256:9e5068709f30c88aa4f039b2b2123b1572e669efd9c3ac7f6141f441995dcdba",
+  "source_digest": "2607b191a1f60c96f7b44e48e14d2241af16cc6cc1cf3de73f1240d6c805ed10",
   "coverage_summary": {
     "total": 8,
     "implemented": 7,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/ipynb_codec.py:ensure_cell_id",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_cell_id.py::TestEnsureCellId::test_generates_id_when_missing",
       "deferred_reason": null
     },
     {
@@ -26,6 +28,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/spec/notebook/cell.py:attachments",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_attachments.py::TestAttachmentsRoundTrip::test_attachment_survives_load_write_reload",
       "deferred_reason": null
     },
     {
@@ -34,6 +37,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/ipynb_codec.py:add_output_representation",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_output_mime_api.py::TestOutputClassDirect::test_add_representation_adds_new_mime_type",
       "deferred_reason": null
     },
     {
@@ -42,6 +46,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/models.py:add_cell",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_mutation_api.py::TestAddCell::test_add_cell_appends_by_default",
       "deferred_reason": null
     },
     {
@@ -50,6 +55,7 @@
       "requirement_level": "recommended",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/ipynb_codec.py:validate_notebook_schema",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_validation.py::TestValidNotebooks::test_well_formed_notebook_passes",
       "deferred_reason": null
     },
     {
@@ -58,6 +64,7 @@
       "requirement_level": "optional",
       "status": "MISSING",
       "evidence": "not found",
+      "verification": null,
       "deferred_reason": "nbformat v1-3 upgrade/downgrade conversion is explicitly optional-tier and out of scope for this pass, which targeted the 5 mandatory/recommended defects (cell id preservation, attachments, output MIME API, structural mutation API, schema validation) found in the real-spec audit. nbformat v1-3 notebooks are rare in modern Jupyter usage (the ecosystem has been on v4.x since ~2016); no real notebook sample or consumer need has surfaced yet. Deferred pending real demand -- revisit if a v1-3 sample or dependent consumer appears."
     },
     {
@@ -66,6 +73,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/ipynb_analytics.py:ipynb_cell_type_histogram",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_codec.py::TestLoad::test_load_code_and_markdown",
       "deferred_reason": null
     },
     {
@@ -74,6 +82,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ipynb/ipynb_analytics.py:ipynb_output_type_histogram",
+      "verification": "verified by passing test(s): tests/python/ipynb/test_ipynb_codec.py::TestWrite::test_write_preserves_code_cell_outputs",
       "deferred_reason": null
     }
   ],

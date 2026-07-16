@@ -19,8 +19,8 @@ from pathlib import Path
 
 import pytest
 
-from ubl.exceptions import UblWriteError
-from ubl.ubl_codec import load_ubl, probe_ubl, write_ubl
+from ubl.exceptions import UblTaxInconsistencyWarning, UblWriteError
+from ubl.ubl_codec import check_tax_consistency, load_ubl, probe_ubl, write_ubl
 
 SAMPLES = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "ubl"
 VALID_DIR = SAMPLES / "valid"
@@ -274,3 +274,78 @@ class TestCreditNoteDocumentType:
         model = {"document_type": "DespatchAdvice", "id": "X"}
         with pytest.raises(UblWriteError):
             write_ubl(model)
+
+
+class TestTaxConsistencyCheck:
+    """TC-S6P4-PROD-003 (select-6 Phase 4, closes D3): ubl_codec transcribes
+    tax/monetary values, it does not compute or validate them. These tests
+    prove that scope honestly: check_tax_consistency() is a sanity check the
+    codec offers, not a guarantee it enforces silently, and write_ubl()
+    surfaces the same check as a non-fatal warning rather than hiding it.
+    """
+
+    def _consistent_model(self):
+        return {
+            "document_type": "Invoice",
+            "id": "INV-1", "issue_date": "2026-07-16", "currency": "EUR",
+            "supplier": {"name": "S"}, "customer": {"name": "C"},
+            "tax_total": {
+                "tax_amount": "20.00",
+                "tax_subtotals": [
+                    {"taxable_amount": "100.00", "tax_percent": "20",
+                     "tax_amount": "20.00", "tax_category_id": "S"},
+                ],
+            },
+            "monetary_total": {
+                "line_extension_amount": "100.00",
+                "tax_exclusive_amount": "100.00",
+                "tax_inclusive_amount": "120.00",
+                "payable_amount": "120.00",
+            },
+            "lines": [{"id": "1", "quantity": "1", "amount": "100.00", "item_name": "X"}],
+        }
+
+    def test_consistent_document_has_no_issues(self):
+        assert check_tax_consistency(self._consistent_model()) == []
+
+    def test_subtotal_percent_mismatch_detected(self):
+        model = self._consistent_model()
+        # 100.00 * 20% should be 20.00, not 5.00 -- a real arithmetic error.
+        model["tax_total"]["tax_subtotals"][0]["tax_amount"] = "5.00"
+        issues = check_tax_consistency(model)
+        assert any("does not match TaxableAmount" in i for i in issues)
+
+    def test_subtotal_sum_vs_total_mismatch_detected(self):
+        model = self._consistent_model()
+        model["tax_total"]["tax_amount"] = "999.00"
+        issues = check_tax_consistency(model)
+        assert any("does not match the sum of TaxSubtotal" in i for i in issues)
+
+    def test_payable_vs_inclusive_difference_is_info_not_error(self):
+        model = self._consistent_model()
+        model["monetary_total"]["payable_amount"] = "110.00"  # e.g. a prepaid amount
+        issues = check_tax_consistency(model)
+        assert any(i.startswith("INFO:") for i in issues)
+        # An INFO-only result must not be treated as a real inconsistency by write_ubl.
+        real = [i for i in issues if not i.startswith("INFO:")]
+        assert real == []
+
+    def test_missing_fields_produce_no_false_positive(self):
+        model = {"document_type": "Invoice", "id": "X", "issue_date": "2026-07-16"}
+        assert check_tax_consistency(model) == []
+
+    def test_write_ubl_warns_on_inconsistent_document_but_still_writes(self):
+        model = self._consistent_model()
+        model["tax_total"]["tax_subtotals"][0]["tax_amount"] = "5.00"
+        with pytest.warns(UblTaxInconsistencyWarning, match="TaxableAmount"):
+            result = write_ubl(model)
+        # Non-fatal: the document is still written (transcription, not
+        # enforcement), and the (inconsistent) source value is preserved.
+        assert "5.00" in result
+
+    def test_write_ubl_consistent_document_warns_nothing(self):
+        import warnings as _warnings
+
+        with _warnings.catch_warnings():
+            _warnings.simplefilter("error", UblTaxInconsistencyWarning)
+            write_ubl(self._consistent_model())  # must not raise

@@ -2861,7 +2861,7 @@ formats:
   spec_version: nbformat v4.5
   spec_url: https://nbformat.readthedocs.io/en/latest/format_description.html
   legal_category: 2
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -2912,6 +2912,19 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/ipynb/ codec passing 167 tests (select-6 Phase 2/3).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment per docs/product-factory/product-tracks.md not yet performed for this format -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible is earned independently via the coverage report below (Gate 9 criterion 7), which does not require a tier map to be non-null (matches the accepted R21-track precedent for zst/fodp/fodg/gnumeric/abw).'
+      coverage_report: reports/spec-coverage/ipynb-coverage-report.json
+      coverage_source_digest: 2607b191a1f60c96f7b44e48e14d2241af16cc6cc1cf3de73f1240d6c805ed10
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage report regenerated via the hardened compute_feature_coverage.py v2 (executed-test verification, closes SF2) -- 7/8 IMPLEMENTED (each backed by a named passing test), 1 honestly deferred (nbformat v1-3 upgrade), gate_9_eligible: true. implementation_authorized flipped per the mechanical rule in Gate 9 criterion 7 / V227. Resynced TC-S6P4-FINAL-001e (2026-07-16, final re-audit): README.md and ipynb_to_csv.py were added after the original PROD-004 report, making the recorded digest stale (V230-detectable); coverage recomputed against current source, digest updated.'
 - format_id: safetensors
   display_name: SafeTensors
   family: ai
@@ -2922,7 +2935,7 @@ formats:
   spec_version: v0.4
   spec_url: https://huggingface.co/docs/safetensors/
   legal_category: 2
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -2973,6 +2986,19 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/safetensors/ codec passing 131 tests (select-6 Phase 2/3).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment not yet performed -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible earned independently via the coverage report (matches accepted R21-track precedent).'
+      coverage_report: reports/spec-coverage/safetensors-coverage-report.json
+      coverage_source_digest: 04a4ccc991c453f6a5ee3639cd7c375e82b583d9aa95cc61a8d5e759f868b6b5
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage regenerated via hardened compute_feature_coverage.py v2 (executed-test verification) -- 8/8 IMPLEMENTED, each backed by a named passing test, gate_9_eligible: true. Resynced TC-S6P4-FINAL-001e (2026-07-16, final re-audit): README.md and safetensors_to_csv.py were added after the original PROD-004 report, making the recorded digest stale (V230-detectable); coverage recomputed against current source, digest updated.'
 - format_id: xliff
   display_name: XLIFF (XML Localisation Interchange File Format)
   family: localization
@@ -2984,7 +3010,7 @@ formats:
   spec_version: XLIFF 2.1
   spec_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
   legal_category: 1
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -3035,6 +3061,19 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/xliff/ codec passing 122 tests (select-6 Phase 2/3); git-index race disclosed in put-the-select-6-snappy-dijkstra.md Phase 3, fully recovered and independently re-verified (TC-S6P4 audit).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment not yet performed -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible earned independently via the coverage report (matches accepted R21-track precedent).'
+      coverage_report: reports/spec-coverage/xliff-coverage-report.json
+      coverage_source_digest: 8d80f4282dee157fedd00685cad901412f2bea4fb28d5a970be40a30fe33c9d1
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage regenerated via hardened compute_feature_coverage.py v2 (executed-test verification) -- 5/5 IMPLEMENTED, each backed by a named passing test, gate_9_eligible: true. Resynced TC-S6P4-FINAL-001e (2026-07-16, final re-audit): README.md and xliff_to_csv.py were added after the original PROD-004 report, making the recorded digest stale (V230-detectable); coverage recomputed against current source, digest updated.'
 - format_id: nrrd
   display_name: Nearly Raw Raster Data
   family: scientific
@@ -3046,7 +3085,7 @@ formats:
   spec_version: NRRD0005
   spec_url: https://teem.sourceforge.net/nrrd/format.html
   legal_category: 2
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -3097,6 +3136,19 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/nrrd/ codec passing 165 tests (select-6 Phase 2/3/4; +4 tests from TC-S6P4-PROD-001 D1 fix).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment not yet performed -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible earned independently via the coverage report (matches accepted R21-track precedent).'
+      coverage_report: reports/spec-coverage/nrrd-coverage-report.json
+      coverage_source_digest: de56fca8299c8b93525fdea2388a822a008c912e7970c98d1ce34719d1465816
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage regenerated via hardened compute_feature_coverage.py v2 (executed-test verification) after TC-S6P4-PROD-001 fixed the D1 roundtrip() zero-fill defect -- 7/7 IMPLEMENTED, each backed by a named passing test, gate_9_eligible: true. Resynced TC-S6P4-FINAL-001e (2026-07-16, final re-audit): a prior audit agent had already resynced this format once during the FINAL-001 re-audit itself; this pass recomputes again against current source (including README.md/nrrd_to_csv.py) to guarantee digest currency.'
 - format_id: ubl
   display_name: OASIS Universal Business Language
   family: business
@@ -3107,7 +3159,7 @@ formats:
   spec_version: UBL 2.3
   spec_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
   legal_category: 1
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -3158,6 +3210,19 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/ubl/ codec passing 144 tests (select-6 Phase 2/3/4; +7 tests from TC-S6P4-PROD-003 D3 fix).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment not yet performed -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible earned independently via the coverage report (matches accepted R21-track precedent).'
+      coverage_report: reports/spec-coverage/ubl-coverage-report.json
+      coverage_source_digest: 153f0437b2a8161d8d9c8b9e379dbab1e27a941f38b354ddd07da2aa75b67f5d
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage regenerated via hardened compute_feature_coverage.py v2 (executed-test verification) after TC-S6P4-PROD-003 corrected the D3 tax-computation-vs-transcription framing and added check_tax_consistency() -- 6/6 IMPLEMENTED, each backed by a named passing test, gate_9_eligible: true. IMPORTANT: tax/monetary handling remains transcription, not validated computation, and no XSD/Peppol schema validation is performed -- see reports/spec-coverage/ubl-deferred.json. Not a claim of Peppol e-invoicing conformance. Resynced twice during TC-S6P4-FINAL-001e/f (2026-07-16, final re-audit): first after README.md/ubl_to_csv.py were added post-PROD-004; second after FINAL-001f moved check_tax_consistency()/_to_float() out of ubl_codec.py into ubl_analytics.py to close a validate_source_architecture GOV_BLOCK (ubl_codec.py had grown to 830 LOC, over the 800 cap) -- re-exported from ubl_codec for API compatibility, digest resynced to match.'
 - format_id: mtlx
   display_name: MaterialX
   family: 3d
@@ -3168,7 +3233,7 @@ formats:
   spec_version: MaterialX v1.39
   spec_url: https://materialx.org/Specification.html
   legal_category: 2
-  implementation_authorized: false
+  implementation_authorized: true
   scoring:
     scorer: claude-opus-4-6
     scored_date: '2026-07-14'
@@ -3219,3 +3284,16 @@ formats:
     gate_1:
       status: passed
       date: '2026-07-14'
+    gate_4:
+      status: passed
+      date: '2026-07-16'
+      notes: 'src/python/mtlx/ codec passing 160 tests (select-6 Phase 2/3/4; +4 tests from TC-S6P4-PROD-002 D2 fix).'
+    gate_9:
+      status: passed_oss_readiness
+      approved_by: TC-S6P4-PROD-004
+      approved_date: '2026-07-16'
+      tier_map: null
+      tier_map_note: 'Deferred: full 0-6 product-tier assignment not yet performed -- registered as select-6 Phase 4 follow-up rather than fabricated. gate_9_eligible earned independently via the coverage report (matches accepted R21-track precedent).'
+      coverage_report: reports/spec-coverage/mtlx-coverage-report.json
+      coverage_source_digest: 844e325d76e89065486cb27054ef05320b9cb9e0cadb9b6ece6a0d293a968f2e
+      notes: 'select-6 Phase 4 (TC-S6P4-PROD-004): coverage regenerated via hardened compute_feature_coverage.py v2 (executed-test verification) after TC-S6P4-PROD-002 fixed the D2 nodegraph write-path data-loss defect -- 5/5 IMPLEMENTED, each backed by a named passing test, gate_9_eligible: true. Resynced TC-S6P4-FINAL-001e (2026-07-16, final re-audit): a prior audit agent had already resynced this format once; this pass recomputes again after TC-S6P4-FINAL-001a fixed the nodegraph output-element residual gap (the D2 defect''s sibling) and after README.md/mtlx_to_csv.py were added, to guarantee digest currency.'

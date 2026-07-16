@@ -1,9 +1,9 @@
-[
-  "FACT-NRRD-101",
-  "FACT-NRRD-102",
-  "FACT-NRRD-103",
-  "FACT-NRRD-104",
-  "FACT-NRRD-105",
-  "FACT-NRRD-106",
-  "FACT-NRRD-110"
-]
+{
+  "FACT-NRRD-101": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestPayloadDecode::test_1d_int8_sample_decodes_to_known_values"]},
+  "FACT-NRRD-102": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestEndianByteSwap::test_load_nrrd_applies_byteswap_end_to_end"]},
+  "FACT-NRRD-103": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_bug_regression_without_skip_reads_garbage"]},
+  "FACT-NRRD-104": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestKinds::test_load_parses_kinds_list"]},
+  "FACT-NRRD-105": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestSpaceOrientation::test_load_parses_space_fields"]},
+  "FACT-NRRD-106": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestKeyValuePairs::test_single_key_value_pair_parses_correctly"]},
+  "FACT-NRRD-110": {"test_ids": ["tests/python/nrrd/test_nrrd_feature_completeness.py::TestPayloadDecode::test_gzip_encoded_sample_decodes_to_known_values"]}
+}

@@ -128,7 +128,7 @@ def _apply_shadow_routing(results: list[dict], shadow_registry: dict) -> list[di
 
 
 # RC-004: single source of truth for expected validator count
-_EXPECTED_VALIDATOR_COUNT = 226  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001) +1 V225 (GAP-FORENSIC-008) +3 V194-V196 (TC-COORD-013, AGENT-COORD-2026-07-15) +1 V226 package-install-proof coverage (GAP-FORENSIC-001), 2026-07-15
+_EXPECTED_VALIDATOR_COUNT = 241  # 216 base +4 V172-V175 (TC-VWR-007) +1 V224 (TC-GOV-V224-001) +1 V225 (GAP-FORENSIC-008) +3 V194-V196 (TC-COORD-013, AGENT-COORD-2026-07-15) +1 V226 package-install-proof coverage (GAP-FORENSIC-001) +1 V227 gate9 linkage +2 V228-V229 readme/dogfood +1 V230 coverage/registry drift (TC-S6P4-SYS-001/003/005, select-6 Phase 4), 2026-07-15 +1 V231 gate9 baseline integrity digest (TC-S6P4-FINAL-001b, select-6 Phase 4 final re-audit), 2026-07-16 +10 V232-V241 Format Contract Layer L30 (mission FCL-MACHINERY-2026-07-16), 2026-07-16
 
 
 def get_expected_validator_count() -> int:
@@ -1052,6 +1052,90 @@ def run_all_governance_validators(
         ])
     except Exception as _exc_v194:
         _skipped_validators.append({"validators": ["V194", "V195", "V196"], "error": str(_exc_v194)})
+
+    # V227 (TC-S6P4-SYS-001, select-6 Phase 4, 2026-07-15): Gate 9 mechanical
+    # enforcement — implementation_authorized=true requires a matching,
+    # gate_9_eligible coverage report. Closes SF1 (prose-only gate rule).
+    try:
+        from governance_validators_gate9 import (  # noqa: PLC0415
+            validate_gate9_implementation_authorization_linkage as _v227,
+        )
+        results.append(_v227(declaration, repo_root))
+    except Exception as _exc_v227:
+        _skipped_validators.append({"validators": ["V227"], "error": str(_exc_v227)})
+
+    # V228-V229 (TC-S6P4-SYS-003, select-6 Phase 4, 2026-07-15): README and
+    # dogfood export existence, gated the same way as V227. Closes SF3.
+    try:
+        from governance_validators_gate9_docs_dogfood import (  # noqa: PLC0415
+            validate_format_readme_exists as _v228,
+            validate_dogfood_export_exists as _v229,
+        )
+        results.extend([
+            _v228(declaration, repo_root),
+            _v229(declaration, repo_root),
+        ])
+    except Exception as _exc_v228:
+        _skipped_validators.append({"validators": ["V228", "V229"], "error": str(_exc_v228)})
+
+    # V230 (TC-S6P4-SYS-005, select-6 Phase 4, 2026-07-15): coverage-report vs
+    # registry gate_9 drift detection. Closes SF5.
+    try:
+        from governance_validators_gate9_drift import (  # noqa: PLC0415
+            validate_coverage_registry_drift as _v230,
+        )
+        results.append(_v230(declaration, repo_root))
+    except Exception as _exc_v230:
+        _skipped_validators.append({"validators": ["V230"], "error": str(_exc_v230)})
+
+    # V231 (TC-S6P4-FINAL-001b, select-6 Phase 4 final re-audit, 2026-07-16):
+    # pinned-digest integrity check on the Gate 9 grandfather baseline, so a
+    # silent addition to registry/gate9-coverage-baseline.yaml no longer
+    # bypasses V227/V228/V229 unnoticed. Closes the residual half of SF1.
+    try:
+        from governance_validators_gate9_baseline_integrity import (  # noqa: PLC0415
+            validate_gate9_baseline_integrity as _v231,
+        )
+        results.append(_v231(declaration, repo_root))
+    except Exception as _exc_v231:
+        _skipped_validators.append({"validators": ["V231"], "error": str(_exc_v231)})
+
+    # V232-V241 (mission FCL-MACHINERY-2026-07-16, 2026-07-16): Format Contract
+    # Layer (L30) — schema, provenance closure, depth, shallow-language, ID
+    # uniqueness, MUST test/gate completeness, freshness (WARN), compiler
+    # determinism, hand-edit guard, and reconciliation-consumption (WARN) over
+    # shared/format-contracts/*.yaml. See plans/layers/format-contract-layer.md §21.
+    try:
+        from governance_validators_format_contract import (  # noqa: PLC0415
+            validate_contract_schema as _v232,
+            validate_contract_provenance as _v233,
+            validate_contract_depth as _v234,
+            validate_contract_shallow_language as _v235,
+            validate_contract_capability_ids as _v236,
+            validate_contract_test_gate as _v237,
+            validate_contract_freshness as _v238,
+            validate_contract_determinism as _v239,
+            validate_contract_hand_edit_guard as _v240,
+            validate_contract_consumption as _v241,
+        )
+        results.extend([
+            _v232(declaration, repo_root),
+            _v233(declaration, repo_root),
+            _v234(declaration, repo_root),
+            _v235(declaration, repo_root),
+            _v236(declaration, repo_root),
+            _v237(declaration, repo_root),
+            _v238(declaration, repo_root),
+            _v239(declaration, repo_root),
+            _v240(declaration, repo_root),
+            _v241(declaration, repo_root),
+        ])
+    except Exception as _exc_v232:
+        _skipped_validators.append({
+            "validators": ["V232", "V233", "V234", "V235", "V236",
+                           "V237", "V238", "V239", "V240", "V241"],
+            "error": str(_exc_v232),
+        })
 
     # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
     # covered by explicit imports above).  The @validator decorator fires when each

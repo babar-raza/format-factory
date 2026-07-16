@@ -722,5 +722,193 @@ format_oracles:
       - "Legal category 2 — patent review required before Gate 4"
     terminal_state: WAITING_VALID_EXTERNAL_AUTHORITY
 
-# Total obligations: 24 formats (20 with Python FOSS products + 4 pipeline/future)
+  # ==================== SELECT-6 (TC-S6P4-FINAL-001f) ====================
+  # TC-S6P4-FINAL-001f (select-6 Phase 4 final re-audit, 2026-07-16): these
+  # 6 formats already have working Python products (927 tests passing,
+  # gate_9_eligible coverage reports) but never had an oracle obligation
+  # registered, so V145 (validate_future_format_oracle_onboarding) started
+  # blocking once implementation_authorized flipped true (TC-S6P4-PROD-004).
+  # This matches M7 from the original audit: Gate 5 oracle artifacts absent
+  # for all 6, same as the repo-wide norm at intake for other simple formats
+  # (qoi/ndjson/toml/csv). Registering the obligation here (not fabricating
+  # a VERIFIED oracle) is the honest fix -- full oracle build-out (corpus +
+  # oracle-package.yaml + real execution) is legitimate future work, out of
+  # this remediation's scope, and disclosed as such via the blockers below.
+
+  - format_id: ipynb
+    family: data
+    language: [python]
+    oracle_id: oracle-ipynb-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "nbformat v4.5 (Jupyter Project)"
+      spec_body: Jupyter Project
+      spec_url: "https://nbformat.readthedocs.io/en/latest/format_description.html"
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/ipynb/, 167+ tests) but predates the oracle-obligation requirement"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+  - format_id: safetensors
+    family: ai
+    language: [python]
+    oracle_id: oracle-safetensors-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "SafeTensors v0.4 (Hugging Face)"
+      spec_body: Hugging Face
+      spec_url: "https://huggingface.co/docs/safetensors/"
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/safetensors/, 131+ tests) but predates the oracle-obligation requirement"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+  - format_id: xliff
+    family: localization
+    language: [python]
+    oracle_id: oracle-xliff-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "XLIFF 2.1 (OASIS)"
+      spec_body: OASIS
+      spec_url: "https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html"
+      legal_category: 1
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/xliff/, 122+ tests) but predates the oracle-obligation requirement"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+  - format_id: nrrd
+    family: scientific
+    language: [python]
+    oracle_id: oracle-nrrd-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "NRRD0005 (Teem Project)"
+      spec_body: Teem Project
+      spec_url: "https://teem.sourceforge.net/nrrd/format.html"
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/nrrd/, 169+ tests) but predates the oracle-obligation requirement"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+  - format_id: ubl
+    family: business
+    language: [python]
+    oracle_id: oracle-ubl-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "UBL 2.3 (OASIS)"
+      spec_body: OASIS
+      spec_url: "https://docs.oasis-open.org/ubl/UBL-2.3.html"
+      legal_category: 1
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/ubl/, 149+ tests) but predates the oracle-obligation requirement"
+      - "Tax/monetary handling is transcription, not validated computation (D3, see reports/spec-coverage/ubl-deferred.json) -- any future oracle must not assert arithmetic correctness as a passing profile"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+  - format_id: mtlx
+    family: 3d
+    language: [python]
+    oracle_id: oracle-mtlx-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "MaterialX v1.39 (Academy Software Foundation)"
+      spec_body: Academy Software Foundation
+      spec_url: "https://materialx.org/Specification.html"
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No oracle-package.yaml or sample corpus created yet -- product exists (src/python/mtlx/, 173+ tests) but predates the oracle-obligation requirement"
+    notes: "select-6 Phase 4 (TC-S6P4-FINAL-001f). Oracle obligation created retroactively; product-level verification exists via pytest + spec-coverage gate, not via the oracle layer."
+    terminal_state: null  # active obligation
+
+# Total obligations: 30 formats (20 with Python FOSS products + 4 pipeline/future + 6 select-6)
 # .NET products: fods, fodt, ndjson, netpbm (pbm/pgm/ppm combined), csv, tsv, zst

@@ -116,8 +116,65 @@ class TestRoundtrip:
             original = load_nrrd(VALID_DIR / "1d-int8.nrrd")
             reloaded = roundtrip(VALID_DIR / "1d-int8.nrrd", dest)
             assert original["header"]["type"] == reloaded["header"]["type"]
+            # TC-S6P4-PROD-001 (select-6 Phase 4, closes D1): the whole point
+            # of roundtrip() is proving data survives, not just header
+            # fields -- a prior bug zero-filled the payload here while this
+            # exact assertion was absent, so it shipped undetected.
+            assert reloaded["array"] == original["array"] == [1, 2, 3, 4]
         finally:
             Path(dest).unlink(missing_ok=True)
+
+    def test_roundtrip_never_zero_fills_when_array_present(self):
+        """D1 regression: write_nrrd(model, dest) -- the exact call roundtrip()
+        makes -- must re-encode the model's decoded array, not silently
+        zero-fill it. Reproduces the precise before/after from the audit:
+        orig['array'] == [1,2,3,4] used to reload as [0,0,0,0]."""
+        with tempfile.NamedTemporaryFile(suffix=".nrrd", delete=False) as f:
+            dest = f.name
+        try:
+            model = load_nrrd(VALID_DIR / "1d-int8.nrrd")
+            assert model["array"] == [1, 2, 3, 4]
+            write_nrrd(model, dest)  # no explicit data= -- this is the bug's exact trigger
+            reloaded = load_nrrd(dest)
+            assert reloaded["array"] == [1, 2, 3, 4]
+            assert reloaded["array"] != [0, 0, 0, 0]
+        finally:
+            Path(dest).unlink(missing_ok=True)
+
+    def test_roundtrip_2d_float32_preserves_values(self):
+        with tempfile.NamedTemporaryFile(suffix=".nrrd", delete=False) as f:
+            dest = f.name
+        try:
+            original = load_nrrd(VALID_DIR / "2d-float32.nrrd")
+            reloaded = roundtrip(VALID_DIR / "2d-float32.nrrd", dest)
+            assert reloaded["array"] == pytest.approx(original["array"])
+            assert any(v != 0 for v in original["array"]), (
+                "fixture must contain non-zero values or this test can't "
+                "distinguish a real fix from the zero-fill bug")
+        finally:
+            Path(dest).unlink(missing_ok=True)
+
+    def test_roundtrip_gzip_encoded_preserves_values(self):
+        with tempfile.NamedTemporaryFile(suffix=".nrrd", delete=False) as f:
+            dest = f.name
+        try:
+            original = load_nrrd(VALID_DIR / "gzip-encoded.nrrd")
+            reloaded = roundtrip(VALID_DIR / "gzip-encoded.nrrd", dest)
+            assert reloaded["array"] == original["array"]
+            assert any(v != 0 for v in original["array"])
+        finally:
+            Path(dest).unlink(missing_ok=True)
+
+    def test_write_nrrd_falls_back_to_zero_fill_without_array(self):
+        """No decoded array available (hand-built model) -- zero-fill
+        fallback is still correct and intentional, not a regression."""
+        model = {
+            "version": 4,
+            "header": {"type": "uint8", "dimension": "1", "sizes": "3", "encoding": "raw"},
+        }
+        result = write_nrrd(model)
+        payload = result.split(b"\n\n", 1)[1]
+        assert payload == b"\x00\x00\x00"
 
 
 class TestHelpers:

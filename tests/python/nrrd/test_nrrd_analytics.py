@@ -93,7 +93,9 @@ class TestIsCompressed:
         assert nrrd_is_compressed(SYNTHETIC_1D) is False
 
     def test_accepts_bytes_source_gzip(self):
-        data = b"NRRD0004\ntype: uint8\ndimension: 1\nsizes: 4\nencoding: gzip\n\n\x00\x01\x02\x03"
+        import gzip
+        payload = gzip.compress(bytes([0, 1, 2, 3]))
+        data = b"NRRD0004\ntype: uint8\ndimension: 1\nsizes: 4\nencoding: gzip\n\n" + payload
         assert nrrd_is_compressed(data) is True
 
 

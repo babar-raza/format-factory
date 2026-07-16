@@ -7,20 +7,36 @@ Invoice and CreditNote documents also carry the legally-mandatory VAT
 breakdown (cac:TaxTotal/cac:TaxSubtotal, FACT-UBL-101), the legal monetary
 total (cac:LegalMonetaryTotal, FACT-UBL-102), and full party depth
 (cac:PostalAddress, cac:PartyTaxScheme, cac:PartyLegalEntity, cac:Contact,
-cbc:EndpointID — FACT-UBL-103) required to produce a document that could
-pass validation at a real e-invoicing / Peppol portal.
+cbc:EndpointID — FACT-UBL-103).
+
+IMPORTANT SCOPE NOTE (TC-S6P4-PROD-003, select-6 Phase 4, closes D3): tax
+and monetary total handling is TRANSCRIPTION, not computation or
+validation. load_ubl() reads whatever TaxAmount/TaxableAmount/Percent/
+PayableAmount values the source document already contains and write_ubl()
+re-emits them unchanged; nothing here derives a tax amount from a rate, or
+checks that a document's own numbers are internally consistent, or
+validates against the UBL XSD/Schematron rules or Peppol BIS 3.0 (that
+remains explicitly out of scope — see
+reports/spec-coverage/ubl-deferred.json). A prior version of this docstring
+claimed this module produces documents "that could pass validation at a
+real e-invoicing / Peppol portal" -- an independent audit found that
+overstated: this codec makes no such guarantee, and never has. Use
+check_tax_consistency() to opt in to a non-authoritative arithmetic sanity
+check; write_ubl() surfaces the same check as a non-fatal
+UblTaxInconsistencyWarning so writing an internally-inconsistent document
+is never silent.
 
 Spec reference: FACT-UBL-001, FACT-UBL-002, FACT-UBL-101..105
 """
 
 from __future__ import annotations
 
-import html
+import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any, Union
 
-from ubl.exceptions import UblParseError, UblWriteError
+from ubl.exceptions import UblParseError, UblTaxInconsistencyWarning, UblWriteError
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB guard
 
@@ -452,17 +468,17 @@ def _write_postal_address(party_elem: ET.Element, postal_address: dict[str, Any]
     addr_elem = ET.SubElement(party_elem, f"{{{NS_CAC}}}PostalAddress")
     if postal_address.get("street_name"):
         e = ET.SubElement(addr_elem, f"{{{NS_CBC}}}StreetName")
-        e.text = html.escape(str(postal_address["street_name"]))
+        e.text = str(postal_address["street_name"])
     if postal_address.get("city_name"):
         e = ET.SubElement(addr_elem, f"{{{NS_CBC}}}CityName")
-        e.text = html.escape(str(postal_address["city_name"]))
+        e.text = str(postal_address["city_name"])
     if postal_address.get("postal_zone"):
         e = ET.SubElement(addr_elem, f"{{{NS_CBC}}}PostalZone")
-        e.text = html.escape(str(postal_address["postal_zone"]))
+        e.text = str(postal_address["postal_zone"])
     if postal_address.get("country_code"):
         country_elem = ET.SubElement(addr_elem, f"{{{NS_CAC}}}Country")
         code_elem = ET.SubElement(country_elem, f"{{{NS_CBC}}}IdentificationCode")
-        code_elem.text = html.escape(str(postal_address["country_code"]))
+        code_elem.text = str(postal_address["country_code"])
 
 
 def _write_party_tax_scheme(party_elem: ET.Element, party_tax_scheme: dict[str, Any]) -> None:
@@ -472,11 +488,11 @@ def _write_party_tax_scheme(party_elem: ET.Element, party_tax_scheme: dict[str, 
     scheme_wrapper = ET.SubElement(party_elem, f"{{{NS_CAC}}}PartyTaxScheme")
     if party_tax_scheme.get("company_id"):
         e = ET.SubElement(scheme_wrapper, f"{{{NS_CBC}}}CompanyID")
-        e.text = html.escape(str(party_tax_scheme["company_id"]))
+        e.text = str(party_tax_scheme["company_id"])
     if party_tax_scheme.get("tax_scheme_id"):
         tax_scheme_elem = ET.SubElement(scheme_wrapper, f"{{{NS_CAC}}}TaxScheme")
         e = ET.SubElement(tax_scheme_elem, f"{{{NS_CBC}}}ID")
-        e.text = html.escape(str(party_tax_scheme["tax_scheme_id"]))
+        e.text = str(party_tax_scheme["tax_scheme_id"])
 
 
 def _write_party_legal_entity(party_elem: ET.Element, party_legal_entity: dict[str, Any]) -> None:
@@ -486,10 +502,10 @@ def _write_party_legal_entity(party_elem: ET.Element, party_legal_entity: dict[s
     legal_elem = ET.SubElement(party_elem, f"{{{NS_CAC}}}PartyLegalEntity")
     if party_legal_entity.get("registration_name"):
         e = ET.SubElement(legal_elem, f"{{{NS_CBC}}}RegistrationName")
-        e.text = html.escape(str(party_legal_entity["registration_name"]))
+        e.text = str(party_legal_entity["registration_name"])
     if party_legal_entity.get("company_id"):
         e = ET.SubElement(legal_elem, f"{{{NS_CBC}}}CompanyID")
-        e.text = html.escape(str(party_legal_entity["company_id"]))
+        e.text = str(party_legal_entity["company_id"])
 
 
 def _write_contact(party_elem: ET.Element, contact: dict[str, Any]) -> None:
@@ -499,13 +515,13 @@ def _write_contact(party_elem: ET.Element, contact: dict[str, Any]) -> None:
     contact_elem = ET.SubElement(party_elem, f"{{{NS_CAC}}}Contact")
     if contact.get("name"):
         e = ET.SubElement(contact_elem, f"{{{NS_CBC}}}Name")
-        e.text = html.escape(str(contact["name"]))
+        e.text = str(contact["name"])
     if contact.get("telephone"):
         e = ET.SubElement(contact_elem, f"{{{NS_CBC}}}Telephone")
-        e.text = html.escape(str(contact["telephone"]))
+        e.text = str(contact["telephone"])
     if contact.get("email"):
         e = ET.SubElement(contact_elem, f"{{{NS_CBC}}}ElectronicMail")
-        e.text = html.escape(str(contact["email"]))
+        e.text = str(contact["email"])
 
 
 def _write_party(parent: ET.Element, tag: str, party: dict[str, Any]) -> None:
@@ -523,14 +539,14 @@ def _write_party(parent: ET.Element, tag: str, party: dict[str, Any]) -> None:
 
     if party.get("endpoint_id"):
         endpoint_elem = ET.SubElement(party_elem, f"{{{NS_CBC}}}EndpointID")
-        endpoint_elem.text = html.escape(str(party["endpoint_id"]))
+        endpoint_elem.text = str(party["endpoint_id"])
         if party.get("endpoint_scheme_id"):
             endpoint_elem.set("schemeID", str(party["endpoint_scheme_id"]))
 
     if party.get("name"):
         party_name_elem = ET.SubElement(party_elem, f"{{{NS_CAC}}}PartyName")
         name_elem = ET.SubElement(party_name_elem, f"{{{NS_CBC}}}Name")
-        name_elem.text = html.escape(str(party["name"]))
+        name_elem.text = str(party["name"])
 
     _write_postal_address(party_elem, party.get("postal_address", {}))
     _write_party_tax_scheme(party_elem, party.get("party_tax_scheme", {}))
@@ -545,15 +561,15 @@ def _write_tax_total(root: ET.Element, tax_total: dict[str, Any]) -> None:
     tax_total_elem = ET.SubElement(root, f"{{{NS_CAC}}}TaxTotal")
     if tax_total.get("tax_amount"):
         e = ET.SubElement(tax_total_elem, f"{{{NS_CBC}}}TaxAmount")
-        e.text = html.escape(str(tax_total["tax_amount"]))
+        e.text = str(tax_total["tax_amount"])
     for subtotal in tax_total.get("tax_subtotals", []):
         sub_elem = ET.SubElement(tax_total_elem, f"{{{NS_CAC}}}TaxSubtotal")
         if subtotal.get("taxable_amount"):
             e = ET.SubElement(sub_elem, f"{{{NS_CBC}}}TaxableAmount")
-            e.text = html.escape(str(subtotal["taxable_amount"]))
+            e.text = str(subtotal["taxable_amount"])
         if subtotal.get("tax_amount"):
             e = ET.SubElement(sub_elem, f"{{{NS_CBC}}}TaxAmount")
-            e.text = html.escape(str(subtotal["tax_amount"]))
+            e.text = str(subtotal["tax_amount"])
         has_category = (
             subtotal.get("tax_category_id")
             or subtotal.get("tax_percent")
@@ -563,14 +579,14 @@ def _write_tax_total(root: ET.Element, tax_total: dict[str, Any]) -> None:
             cat_elem = ET.SubElement(sub_elem, f"{{{NS_CAC}}}TaxCategory")
             if subtotal.get("tax_category_id"):
                 e = ET.SubElement(cat_elem, f"{{{NS_CBC}}}ID")
-                e.text = html.escape(str(subtotal["tax_category_id"]))
+                e.text = str(subtotal["tax_category_id"])
             if subtotal.get("tax_percent"):
                 e = ET.SubElement(cat_elem, f"{{{NS_CBC}}}Percent")
-                e.text = html.escape(str(subtotal["tax_percent"]))
+                e.text = str(subtotal["tax_percent"])
             if subtotal.get("tax_scheme_id"):
                 scheme_elem = ET.SubElement(cat_elem, f"{{{NS_CAC}}}TaxScheme")
                 e = ET.SubElement(scheme_elem, f"{{{NS_CBC}}}ID")
-                e.text = html.escape(str(subtotal["tax_scheme_id"]))
+                e.text = str(subtotal["tax_scheme_id"])
 
 
 def _write_monetary_total(root: ET.Element, monetary_total: dict[str, Any]) -> None:
@@ -586,7 +602,7 @@ def _write_monetary_total(root: ET.Element, monetary_total: dict[str, Any]) -> N
     ):
         if monetary_total.get(field):
             e = ET.SubElement(elem, f"{{{NS_CBC}}}{tag}")
-            e.text = html.escape(str(monetary_total[field]))
+            e.text = str(monetary_total[field])
 
 
 def _write_invoice_like(
@@ -600,7 +616,7 @@ def _write_invoice_like(
     """
     if model.get("currency"):
         cbc_curr = ET.SubElement(root, f"{{{NS_CBC}}}DocumentCurrencyCode")
-        cbc_curr.text = html.escape(model["currency"])
+        cbc_curr.text = str(model["currency"])
 
     _write_party(root, "AccountingSupplierParty", model.get("supplier") or {})
     _write_party(root, "AccountingCustomerParty", model.get("customer") or {})
@@ -611,17 +627,17 @@ def _write_invoice_like(
     for line in model.get("lines", []):
         line_elem = ET.SubElement(root, f"{{{NS_CAC}}}{line_tag}")
         line_id = ET.SubElement(line_elem, f"{{{NS_CBC}}}ID")
-        line_id.text = html.escape(str(line.get("id", "")))
+        line_id.text = str(line.get("id", ""))
         if line.get("quantity"):
             qty = ET.SubElement(line_elem, f"{{{NS_CBC}}}{quantity_tag}")
-            qty.text = html.escape(str(line["quantity"]))
+            qty.text = str(line["quantity"])
         if line.get("amount"):
             amt = ET.SubElement(line_elem, f"{{{NS_CBC}}}LineExtensionAmount")
-            amt.text = html.escape(str(line["amount"]))
+            amt.text = str(line["amount"])
         if line.get("item_name"):
             item_elem = ET.SubElement(line_elem, f"{{{NS_CAC}}}Item")
             item_name_elem = ET.SubElement(item_elem, f"{{{NS_CBC}}}Name")
-            item_name_elem.text = html.escape(str(line["item_name"]))
+            item_name_elem.text = str(line["item_name"])
 
 
 def write_ubl(
@@ -633,7 +649,24 @@ def write_ubl(
     Re-emits every field load_ubl() parses: party data (including postal
     address, VAT/tax scheme, legal entity, contact, and endpoint id), tax
     totals, and the legal monetary total (FACT-UBL-101..104).
+
+    TC-S6P4-PROD-003 (closes D3): before writing, runs
+    check_tax_consistency() and emits a non-fatal UblTaxInconsistencyWarning
+    if the model's own tax/monetary figures don't add up -- transcribing an
+    inconsistent source document is no longer silent. This does not block
+    the write (round-trip fidelity is the contract; correctness of the
+    source document is the caller's responsibility).
     """
+    issues = check_tax_consistency(model)
+    real_issues = [i for i in issues if not i.startswith("INFO:")]
+    if real_issues:
+        warnings.warn(
+            "UBL document has inconsistent tax/monetary figures: "
+            + "; ".join(real_issues),
+            UblTaxInconsistencyWarning,
+            stacklevel=2,
+        )
+
     doc_type = model.get("document_type", "Invoice")
 
     if doc_type == "Invoice":
@@ -652,10 +685,10 @@ def write_ubl(
     root = ET.Element(f"{{{ns}}}{doc_type}")
 
     cbc_id = ET.SubElement(root, f"{{{NS_CBC}}}ID")
-    cbc_id.text = html.escape(model.get("id", ""))
+    cbc_id.text = model.get("id", "")
 
     cbc_date = ET.SubElement(root, f"{{{NS_CBC}}}IssueDate")
-    cbc_date.text = html.escape(model.get("issue_date", ""))
+    cbc_date.text = model.get("issue_date", "")
 
     if doc_type in ("Invoice", "CreditNote"):
         line_tag = "InvoiceLine" if doc_type == "Invoice" else "CreditNoteLine"
@@ -668,14 +701,14 @@ def write_ubl(
             order_line = ET.SubElement(root, f"{{{NS_CAC}}}OrderLine")
             line_item = ET.SubElement(order_line, f"{{{NS_CAC}}}LineItem")
             line_id = ET.SubElement(line_item, f"{{{NS_CBC}}}ID")
-            line_id.text = html.escape(str(line.get("id", "")))
+            line_id.text = str(line.get("id", ""))
             if line.get("quantity"):
                 qty = ET.SubElement(line_item, f"{{{NS_CBC}}}Quantity")
-                qty.text = html.escape(str(line["quantity"]))
+                qty.text = str(line["quantity"])
             if line.get("item_name"):
                 item_elem = ET.SubElement(line_item, f"{{{NS_CAC}}}Item")
                 item_name_elem = ET.SubElement(item_elem, f"{{{NS_CBC}}}Name")
-                item_name_elem.text = html.escape(str(line["item_name"]))
+                item_name_elem.text = str(line["item_name"])
 
     tree = ET.ElementTree(root)
     ET.indent(tree, space="  ")
@@ -713,3 +746,17 @@ def ubl_installed_workflow(source: SourceType) -> dict[str, Any]:
         "id": model.get("id", ""),
         "line_count": get_line_count(model),
     }
+
+
+# ---------------------------------------------------------------------------
+# check_tax_consistency() moved to ubl_analytics.py (TC-S6P4-FINAL-001f,
+# select-6 Phase 4 final re-audit, 2026-07-16: validate_source_architecture
+# GOV_BLOCK, RULE-AM-003, ubl_codec.py exceeded the 800 LOC cap). Re-exported
+# here so `from ubl.ubl_codec import check_tax_consistency` (README.md,
+# tests/python/ubl/test_ubl_feature_completeness.py, exceptions.py) keeps
+# working unchanged.
+# ---------------------------------------------------------------------------
+try:
+    from .ubl_analytics import check_tax_consistency  # noqa: F401
+except ImportError:
+    pass

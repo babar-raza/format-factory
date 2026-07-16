@@ -1,9 +1,10 @@
 {
   "format_id": "qoi",
-  "generated_at": "2026-07-15T16:28:46.567654+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-15T18:45:15.450882+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/qoi-feature-manifest.json",
   "manifest_hash": "sha256:514f158851438488b9b04911305548a6a0fd0b4592b8544e6927fea3b1cda9be",
+  "source_digest": "7731450dadb3cc368ac0364189cc789567de5ca392579cd9fbb76578d61c9e7c",
   "coverage_summary": {
     "total": 4,
     "implemented": 3,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/qoi/qoi_parser.py:_decode_pixels",
+      "verification": "verified by passing test(s): tests/python/qoi/test_qoi_parser.py::TestQoiParserBasic::test_1x1_red",
       "deferred_reason": null
     },
     {
@@ -26,6 +28,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/qoi/models.py:colorspace",
+      "verification": "verified by passing test(s): tests/python/qoi/test_r565_qoi_channel_properties.py::TestIsSrgb::test_colorspace_0_is_srgb",
       "deferred_reason": null
     },
     {
@@ -33,7 +36,8 @@
       "name": "Pixel encode (write path)",
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
-      "evidence": "src/python/qoi/qoi_encoder.py:encode_qoi_to_file",
+      "evidence": "src/python/qoi/qoi_encoder.py:encode_qoi",
+      "verification": "verified by passing test(s): tests/python/qoi/test_r202_qoi_advanced_ops.py::TestQoiEncoding::test_encode_qoi_to_file_creates_file",
       "deferred_reason": null
     },
     {
@@ -42,7 +46,8 @@
       "requirement_level": "optional",
       "status": "MISSING",
       "evidence": "not found",
-      "deferred_reason": "Optional-tier: qoi files are small (typically <10MB); streaming/lazy decode has low real-world value for this format and is deferred pending actual demand."
+      "verification": null,
+      "deferred_reason": "Streaming/lazy decode for large images is out of scope for this pass -- current decode loads the full pixel buffer into memory, which is correct for QOI's typical use case (small-to-medium images) and matches the reference implementation's default behavior. No real-file consumer need for streaming decode has surfaced; revisit if a use case requires processing images too large to hold in memory."
     }
   ],
   "gate_9_eligible": true

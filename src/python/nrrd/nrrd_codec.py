@@ -17,6 +17,7 @@ import gzip
 import re
 import struct
 import sys
+import zlib
 from pathlib import Path
 from typing import Any, Union
 
@@ -124,7 +125,7 @@ def _parse_header(data: bytes) -> tuple[dict[str, str], dict[str, str], int, int
 
     try:
         text = text_portion.decode("ascii", errors="replace")
-    except Exception as exc:
+    except (ValueError, UnicodeDecodeError) as exc:
         raise NrrdParseError(f"Cannot decode header: {exc}") from exc
 
     lines = text.split("\n")
@@ -322,6 +323,33 @@ def decode_nrrd_data(
     return values
 
 
+def encode_nrrd_data(
+    type_str: str,
+    values: list[Any],
+    endian: str | None = None,
+) -> bytes:
+    """Encode a flat list of typed values into raw payload bytes.
+
+    Inverse of :func:`decode_nrrd_data`: re-packs ``values`` via
+    ``struct.pack`` per the NRRD ``type`` string, byte-swapping first when
+    ``endian`` differs from the host's native byte order so the on-disk
+    bytes match the declared endianness (mirrors :func:`decode_nrrd_data`'s
+    decode-then-swap order in reverse: swap-then-encode).
+
+    Raises:
+        NrrdParseError: if ``type_str`` is not a supported NRRD type.
+    """
+    if type_str not in DTYPE_MAP:
+        raise NrrdParseError(f"Unsupported or unknown NRRD data type for encode: {type_str!r}")
+    fmt_char, item_size = DTYPE_MAP[type_str]
+    if not values:
+        return b""
+    to_pack = values
+    if item_size > 1 and _needs_byteswap(endian or ""):
+        to_pack = byteswap_values(values, fmt_char)
+    return struct.pack(f"={len(to_pack)}{fmt_char}", *to_pack)
+
+
 def reshape_nrrd_array(flat: list[Any], sizes: list[int]) -> Any:
     """Reshape a flat decoded value list into nested lists per NRRD axis order.
 
@@ -406,8 +434,8 @@ def load_nrrd(source: SourceType) -> dict[str, Any]:
         try:
             decoded_payload = gzip.decompress(raw_data)
             data_size = len(decoded_payload)
-        except Exception:
-            decoded_payload = b""
+        except (OSError, zlib.error) as exc:
+            raise NrrdParseError(f"gzip decompression failed: {exc}") from exc
 
     type_str = header.get("type", "")
     sizes_str = header.get("sizes", "")
@@ -460,7 +488,14 @@ def write_nrrd(
 ) -> bytes:
     """Serialize an NRRD model dict to NRRD binary format.
 
-    If data is None, writes zero-filled data of the expected size.
+    If ``data`` is None, the model's own decoded ``array`` field (as
+    produced by :func:`load_nrrd`) is re-encoded via :func:`encode_nrrd_data`
+    and used as the payload -- this is what makes ``write_nrrd(model, dest)``
+    (and therefore :func:`roundtrip`) preserve real data by default instead
+    of silently zero-filling. Zero-filled data of the expected size is only
+    written as a last-resort fallback when the model has no decoded array
+    (e.g. an unsupported type/encoding, or a hand-built model dict with no
+    ``array`` key at all).
     """
     header = model.get("header", {})
     key_value_pairs = model.get("key_value_pairs", {})
@@ -491,8 +526,12 @@ def write_nrrd(
         element_count = 1
         for s in sizes_str.split():
             element_count *= int(s)
-        dtype_info = DTYPE_MAP.get(type_str, ("B", 1))
-        data = b"\x00" * (element_count * dtype_info[1])
+        array = model.get("array")
+        if array is not None and type_str in DTYPE_MAP:
+            data = encode_nrrd_data(type_str, array, endian=header.get("endian"))
+        else:
+            dtype_info = DTYPE_MAP.get(type_str, ("B", 1))
+            data = b"\x00" * (element_count * dtype_info[1])
 
     if encoding in ("gzip", "gz"):
         payload = gzip.compress(data)

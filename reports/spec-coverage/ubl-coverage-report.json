@@ -1,9 +1,10 @@
 {
   "format_id": "ubl",
-  "generated_at": "2026-07-15T17:09:27.960646+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-16T06:09:34.210926+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/ubl-feature-manifest.json",
   "manifest_hash": "sha256:da0720ede2fbc8e96a78cf7644f2816ce3eb65d29a3425bae6986956ecdd9bcd",
+  "source_digest": "153f0437b2a8161d8d9c8b9e379dbab1e27a941f38b354ddd07da2aa75b67f5d",
   "coverage_summary": {
     "total": 6,
     "implemented": 6,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/spec/document/credit_note.py:tax_total",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_feature_completeness.py::TestTaxTotalParsing::test_tax_total_parsed_from_invoice_full_depth, tests/python/ubl/test_ubl_feature_completeness.py::TestTaxConsistencyCheck::test_consistent_document_has_no_issues",
       "deferred_reason": null
     },
     {
@@ -26,6 +28,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/spec/document/credit_note.py:monetary_total",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_feature_completeness.py::TestLegalMonetaryTotalParsing::test_monetary_total_parsed_from_invoice_full_depth",
       "deferred_reason": null
     },
     {
@@ -33,7 +36,8 @@
       "name": "Full party depth (address/VAT/legal entity/endpoint)",
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
-      "evidence": "src/python/ubl/ubl_codec.py:_write_postal_address",
+      "evidence": "src/python/ubl/ubl_codec.py:_parse_postal_address",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_feature_completeness.py::TestFullPartyDepth::test_supplier_postal_address",
       "deferred_reason": null
     },
     {
@@ -42,6 +46,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/spec/document/credit_note.py: (text match for 'AccountingSupplierParty')",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_feature_completeness.py::TestWriteSidePartyRoundtripFix::test_minimal_invoice_party_names_survive_roundtrip",
       "deferred_reason": null
     },
     {
@@ -50,6 +55,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/Compat/ubl_credit_note.py:UblCreditNote",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_feature_completeness.py::TestCreditNoteDocumentType::test_load_minimal_creditnote_document_type",
       "deferred_reason": null
     },
     {
@@ -58,6 +64,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/ubl/Compat/ubl_invoice.py:UblInvoice",
+      "verification": "verified by passing test(s): tests/python/ubl/test_ubl_codec.py::TestLoad::test_load_minimal_order",
       "deferred_reason": null
     }
   ],

@@ -35,6 +35,17 @@ SUPPORTED_FEATURES = [
 # Structural round-trip preservation of these elements is supported (see
 # mtlx.mtlx_codec._serialize_nodes / _parse_generic_element -- FACT-MTLX-101):
 # a nodedef, typedef, look, or propertyset survives load -> write unchanged.
+# This also covers <nodegraph>-level attributes (nodedef/fileprefix/...) and
+# non-input/output children of graph-internal nodes (e.g. <xpos>/<ypos>
+# layout hints) as of TC-S6P4-PROD-002 (select-6 Phase 4, 2026-07-16) -- a
+# prior gap here (D2) was found by an independent audit constructing a
+# <nodegraph nodedef="..." fileprefix="..."> with an internal node carrying
+# a non-input/output child, neither of which the original fix's own test
+# suite happened to cover. A graph-internal <output> element's own extra
+# attributes and non-structural children are likewise preserved as of
+# TC-S6P4-FINAL-001a (2026-07-16) -- a second independent re-audit found
+# PROD-002's fix had not extended to the <output> branch (the node branch's
+# sibling), which still silently dropped anything beyond name/type/nodename.
 # What remains unsupported is *semantic* interpretation of that structure --
 # resolving a look's material assignments, validating a nodedef against the
 # standard node library, or evaluating variant/collection membership.
@@ -217,6 +228,25 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
                         "name": ng_child.get("name", ""),
                         "type": ng_child.get("type", ""),
                         "nodename": ng_child.get("nodename", ""),
+                        # TC-S6P4-FINAL-001a (select-6 Phase 4 final re-audit,
+                        # 2026-07-16): an independent adversarial re-check of
+                        # TC-S6P4-PROD-002 (D2) found a graph-internal
+                        # <output> element -- the sibling of the node branch
+                        # this same taskcard already fixed -- still dropped
+                        # any attribute beyond name/type/nodename and any
+                        # non-structural child, the exact defect class one
+                        # tag over. Captured generically here the same way
+                        # the node branch already is, instead of adding a
+                        # third hardcoded attribute name to the allowlist.
+                        "attributes": {
+                            k: v for k, v in ng_child.attrib.items()
+                            if k not in ("name", "type", "nodename")
+                        },
+                        "children": [
+                            _parse_generic_element(gc)
+                            for gc in ng_child
+                            if _strip_ns(gc.tag) not in _STRUCTURAL_CHILD_TAGS
+                        ],
                     })
                 else:
                     ng_nodes.append({
@@ -225,10 +255,26 @@ def load_mtlx(source: SourceType) -> dict[str, Any]:
                         "node_type": ng_child.get("type", ""),
                         "node_category": ng_child.get("node", ""),
                         "inputs": _parse_inputs(ng_child),
+                        # TC-S6P4-PROD-002 (select-6 Phase 4, closes D2): a
+                        # graph-internal node's non-input/output children
+                        # (e.g. <xpos>/<ypos> UI-layout hints) used to be
+                        # silently dropped -- capture them the same way a
+                        # top-level node's children already are.
+                        "children": [
+                            _parse_generic_element(gc)
+                            for gc in ng_child
+                            if _strip_ns(gc.tag) not in _STRUCTURAL_CHILD_TAGS
+                        ],
                     })
 
             node_graphs.append({
                 "name": child.get("name", ""),
+                # TC-S6P4-PROD-002 (closes D2): the <nodegraph> element's own
+                # attributes beyond `name` (e.g. nodedef, fileprefix) used to
+                # be silently dropped on write -- capture them here.
+                "attributes": {
+                    k: v for k, v in child.attrib.items() if k != "name"
+                },
                 "nodes": ng_nodes,
                 "outputs": ng_outputs,
             })
@@ -335,6 +381,11 @@ def write_mtlx(
     for ng in model.get("node_graphs", []):
         ng_elem = ET.SubElement(root, "nodegraph")
         ng_elem.set("name", ng.get("name", ""))
+        # TC-S6P4-PROD-002 (closes D2): write back the graph's own extra
+        # attributes (nodedef, fileprefix, ...) captured by load_mtlx.
+        for k, v in ng.get("attributes", {}).items():
+            if v and k != "name":
+                ng_elem.set(k, v)
         for node in ng.get("nodes", []):
             node_elem = ET.SubElement(ng_elem, node.get("type", "node"))
             node_elem.set("name", node.get("name", ""))
@@ -347,11 +398,24 @@ def write_mtlx(
                 for k, v in inp.items():
                     if v:
                         inp_elem.set(k, v)
+            # TC-S6P4-PROD-002 (closes D2): write back non-input/output
+            # children of graph-internal nodes.
+            for child_data in node.get("children", []):
+                _serialize_generic_element(node_elem, child_data)
         for out in ng.get("outputs", []):
             out_elem = ET.SubElement(ng_elem, "output")
-            for k, v in out.items():
+            for k in ("name", "type", "nodename"):
+                if out.get(k):
+                    out_elem.set(k, out[k])
+            # TC-S6P4-FINAL-001a (closes the residual D2 gap found by the
+            # final independent re-audit): write back a graph-internal
+            # <output>'s extra attributes and non-structural children, the
+            # same as the sibling node branch above.
+            for k, v in out.get("attributes", {}).items():
                 if v:
                     out_elem.set(k, v)
+            for child_data in out.get("children", []):
+                _serialize_generic_element(out_elem, child_data)
 
     _serialize_nodes(root, model.get("nodes", []))
 

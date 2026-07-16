@@ -307,6 +307,46 @@ def _init_machinery_mission_ledger(mission_id: str, plan_path: str | None) -> No
     print(f"[write_plan_lock] Initialized machinery mission ledger for {mission_id}")
 
 
+def _check_master_plan_rollup(plan_path: str, repo_root: Path) -> list[str]:
+    """TC-S6P4-SYS-004: format_ids the closing plan mentions but that never
+    appear in plans/master-plan.md. Best-effort text heuristic -- returns []
+    on any I/O problem rather than raising (this check must never be the
+    reason a plan fails to close)."""
+    import re as _re
+
+    import yaml as _yaml
+
+    registry_path = repo_root / "registry" / "format-registry.yaml"
+    master_plan_path = repo_root / "plans" / "master-plan.md"
+    full_plan_path = repo_root / plan_path if not Path(plan_path).is_absolute() else Path(plan_path)
+    if not (registry_path.exists() and master_plan_path.exists() and full_plan_path.exists()):
+        return []
+
+    try:
+        registry_data = _yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+        formats = registry_data.get("formats", registry_data)
+        format_ids = ([e.get("format_id") for e in formats] if isinstance(formats, list)
+                     else list(formats.keys()))
+        format_ids = [f for f in format_ids if f]
+    except Exception:
+        return []
+
+    try:
+        plan_text = full_plan_path.read_text(encoding="utf-8", errors="replace")
+        master_text = master_plan_path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return []
+
+    warnings: list[str] = []
+    for fmt in format_ids:
+        # Word-boundary match to avoid e.g. "csv" matching inside "csvkit".
+        pattern = r"\b" + _re.escape(fmt) + r"\b"
+        if _re.search(pattern, plan_text, _re.IGNORECASE) and not _re.search(
+                pattern, master_text, _re.IGNORECASE):
+            warnings.append(f"'{fmt}' mentioned in this plan, absent from master-plan.md")
+    return warnings
+
+
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
@@ -422,6 +462,30 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
             raise
         except Exception as _v88_exc:
             print(f"[write_plan_lock] V88: non-blocking check error: {_v88_exc}", file=sys.stderr)
+
+    # TC-S6P4-SYS-004 (select-6 Phase 4, 2026-07-15): master-plan rollup check.
+    # Closes SF4 -- a plan could reach TERMINAL_CLOSED with zero verification
+    # that plans/master-plan.md (the authoritative document CLAUDE.md tells
+    # every session to read first) reflects what was built. This is exactly
+    # how 3 completed phases and 6 formats went unmentioned there. WARN only
+    # (not blocking): the check is a text-mention heuristic across every
+    # format_id in the registry, and a false positive must never stop an
+    # unrelated machinery plan from closing. Non-blocking on its own errors.
+    if status == "TERMINAL_CLOSED":
+        try:
+            _mp_warnings = _check_master_plan_rollup(plan_path, _repo_root)
+            if _mp_warnings:
+                print("\n[write_plan_lock] WARNING (SF4 check, non-blocking): "
+                      "this plan mentions format(s) not found anywhere in "
+                      "plans/master-plan.md -- the authoritative document may "
+                      "be out of date:")
+                for _w in _mp_warnings:
+                    print(f"  - {_w}")
+                print("  Consider adding a master-plan.md section before "
+                      "considering this work portfolio-visible.")
+        except Exception as _mp_exc:
+            print(f"[write_plan_lock] SF4 rollup check: non-blocking error: {_mp_exc}",
+                  file=sys.stderr)
 
     # TC-TCF-004: Write terminal closure evidence artifact before lock files.
     # Non-blocking: failure logged to stderr but does not prevent lock write.

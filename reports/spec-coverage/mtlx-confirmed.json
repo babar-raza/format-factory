@@ -1,7 +1,10 @@
-[
-  "FACT-MTLX-101",
-  "FACT-MTLX-102",
-  "FACT-MTLX-103",
-  "FACT-MTLX-104",
-  "FACT-MTLX-110"
-]
+{
+  "FACT-MTLX-101": {"test_ids": [
+    "tests/python/mtlx/test_mtlx_write_completeness.py::TestWriteRoundtripPreservesGenericBucket::test_nodedef_survives_with_category_and_type",
+    "tests/python/mtlx/test_mtlx_write_completeness.py::TestNodegraphResidualDataLoss::test_roundtrip_preserves_nodegraph_attributes_and_generic_children"
+  ]},
+  "FACT-MTLX-102": {"test_ids": ["tests/python/mtlx/test_mtlx_graph.py::TestResolveConnections::test_resolved_input_points_to_actual_node"]},
+  "FACT-MTLX-103": {"test_ids": ["tests/python/mtlx/test_mtlx_analytics.py::TestNodeTypeHistogram::test_counts_by_node_category_not_data_type"]},
+  "FACT-MTLX-104": {"test_ids": ["tests/python/mtlx/test_mtlx_material_forms.py::TestVolumeMaterial::test_full_roundtrip_still_a_volumematerial"]},
+  "FACT-MTLX-110": {"test_ids": ["tests/python/mtlx/test_mtlx_codec.py::TestLoad::test_load_node_graph"]}
+}

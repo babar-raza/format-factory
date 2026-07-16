@@ -1,9 +1,10 @@
 {
   "format_id": "nrrd",
-  "generated_at": "2026-07-15T17:09:27.663503+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-15T20:24:23.126943+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/nrrd-feature-manifest.json",
   "manifest_hash": "sha256:ddd2625eec073ce0e207d53a84011f322b6bddfc905481b5f58b56d2e412938f",
+  "source_digest": "de56fca8299c8b93525fdea2388a822a008c912e7970c98d1ce34719d1465816",
   "coverage_summary": {
     "total": 7,
     "implemented": 7,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/nrrd_codec.py:decode_nrrd_data",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestPayloadDecode::test_1d_int8_sample_decodes_to_known_values",
       "deferred_reason": null
     },
     {
@@ -25,7 +27,8 @@
       "name": "Endianness byte-swapping",
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
-      "evidence": "src/python/nrrd/nrrd_codec.py:byteswap_values",
+      "evidence": "src/python/nrrd/nrrd_codec.py:_needs_byteswap",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestEndianByteSwap::test_load_nrrd_applies_byteswap_end_to_end",
       "deferred_reason": null
     },
     {
@@ -34,6 +37,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/nrrd_codec.py: (text match for 'line_skip')",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_bug_regression_without_skip_reads_garbage",
       "deferred_reason": null
     },
     {
@@ -42,6 +46,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/models.py:kinds",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestKinds::test_load_parses_kinds_list",
       "deferred_reason": null
     },
     {
@@ -50,6 +55,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/models.py:space_directions",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestSpaceOrientation::test_load_parses_space_fields",
       "deferred_reason": null
     },
     {
@@ -58,6 +64,7 @@
       "requirement_level": "recommended",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/models.py:key_value_pairs",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestKeyValuePairs::test_single_key_value_pair_parses_correctly",
       "deferred_reason": null
     },
     {
@@ -66,6 +73,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/nrrd/models.py:encoding",
+      "verification": "verified by passing test(s): tests/python/nrrd/test_nrrd_feature_completeness.py::TestPayloadDecode::test_gzip_encoded_sample_decodes_to_known_values",
       "deferred_reason": null
     }
   ],

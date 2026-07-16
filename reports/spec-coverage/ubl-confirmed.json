@@ -1,8 +1,11 @@
-[
-  "FACT-UBL-101",
-  "FACT-UBL-102",
-  "FACT-UBL-103",
-  "FACT-UBL-104",
-  "FACT-UBL-105",
-  "FACT-UBL-110"
-]
+{
+  "FACT-UBL-101": {"test_ids": [
+    "tests/python/ubl/test_ubl_feature_completeness.py::TestTaxTotalParsing::test_tax_total_parsed_from_invoice_full_depth",
+    "tests/python/ubl/test_ubl_feature_completeness.py::TestTaxConsistencyCheck::test_consistent_document_has_no_issues"
+  ]},
+  "FACT-UBL-102": {"test_ids": ["tests/python/ubl/test_ubl_feature_completeness.py::TestLegalMonetaryTotalParsing::test_monetary_total_parsed_from_invoice_full_depth"]},
+  "FACT-UBL-103": {"test_ids": ["tests/python/ubl/test_ubl_feature_completeness.py::TestFullPartyDepth::test_supplier_postal_address"]},
+  "FACT-UBL-104": {"test_ids": ["tests/python/ubl/test_ubl_feature_completeness.py::TestWriteSidePartyRoundtripFix::test_minimal_invoice_party_names_survive_roundtrip"]},
+  "FACT-UBL-105": {"test_ids": ["tests/python/ubl/test_ubl_feature_completeness.py::TestCreditNoteDocumentType::test_load_minimal_creditnote_document_type"]},
+  "FACT-UBL-110": {"test_ids": ["tests/python/ubl/test_ubl_codec.py::TestLoad::test_load_minimal_order"]}
+}

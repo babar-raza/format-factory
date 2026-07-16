@@ -159,3 +159,129 @@ class TestWriteRoundtripPreservesGenericBucket:
         assert "<node" not in result_xml
         reloaded_model = load_mtlx(result_xml.encode("utf-8"))
         assert reloaded_model["nodes"] == []
+
+
+class TestNodegraphResidualDataLoss:
+    """TC-S6P4-PROD-002 (select-6 Phase 4, closes D2): the write-path fix
+    above covers top-level nodedef/typedef/look/propertyset, but an
+    independent audit found a second, undisclosed residual gap specifically
+    inside <nodegraph>: the graph element's own extra attributes and
+    non-input/output children of graph-internal nodes were still silently
+    dropped on write. This directly contradicted the coverage report's
+    unqualified FACT-MTLX-101 "IMPLEMENTED" claim. Reproduces the exact
+    adversarial construction the audit used.
+    """
+
+    _ADVERSARIAL_DOC = (
+        b'<?xml version="1.0"?><materialx version="1.39">'
+        b'<nodegraph name="NG1" nodedef="ND_test" fileprefix="tex/">'
+        b'<image name="img1" type="color3">'
+        b'<input name="file" type="filename" value="tex.png"/>'
+        b"<xpos>1.5</xpos>"
+        b"</image>"
+        b'<output name="out" type="color3" nodename="img1"/>'
+        b"</nodegraph>"
+        b"</materialx>"
+    )
+
+    def test_load_captures_nodegraph_level_attributes(self):
+        model = load_mtlx(self._ADVERSARIAL_DOC)
+        ng = model["node_graphs"][0]
+        assert ng["attributes"].get("nodedef") == "ND_test"
+        assert ng["attributes"].get("fileprefix") == "tex/"
+
+    def test_load_captures_internal_node_generic_children(self):
+        model = load_mtlx(self._ADVERSARIAL_DOC)
+        node = model["node_graphs"][0]["nodes"][0]
+        assert node["name"] == "img1"
+        child_tags = [c["tag"] for c in node["children"]]
+        assert "xpos" in child_tags
+
+    def test_roundtrip_preserves_nodegraph_attributes_and_generic_children(self):
+        """The exact before/after this audit demonstrated: before the fix,
+        writing this document dropped `nodedef`/`fileprefix` from
+        <nodegraph> and the <xpos> child from the internal <image> node."""
+        reloaded = _reload_via_roundtrip(self._ADVERSARIAL_DOC)
+        ng = reloaded["node_graphs"][0]
+        assert ng["attributes"].get("nodedef") == "ND_test"
+        assert ng["attributes"].get("fileprefix") == "tex/"
+        node = ng["nodes"][0]
+        child_tags = [c["tag"] for c in node["children"]]
+        assert "xpos" in child_tags
+        xpos = next(c for c in node["children"] if c["tag"] == "xpos")
+        assert xpos["text"] == "1.5"
+
+    def test_nodegraph_without_extra_attributes_unaffected(self):
+        """Regression guard: a plain <nodegraph name="..."> with no extra
+        attributes and only input/output children must not gain spurious
+        attributes or children after the fix."""
+        doc = (
+            b'<?xml version="1.0"?><materialx version="1.39">'
+            b'<nodegraph name="ng_plain">'
+            b'<constant name="c1" type="float"><input name="value" type="float" value="1.0"/></constant>'
+            b'<output name="out" type="float" nodename="c1"/>'
+            b"</nodegraph></materialx>"
+        )
+        reloaded = _reload_via_roundtrip(doc)
+        ng = reloaded["node_graphs"][0]
+        assert ng["attributes"] == {}
+        assert reloaded["node_graphs"][0]["nodes"][0]["children"] == []
+
+
+class TestNodegraphOutputResidualDataLoss:
+    """TC-S6P4-FINAL-001a (select-6 Phase 4, final independent re-audit,
+    2026-07-16): an adversarial re-check of TC-S6P4-PROD-002 (D2) found the
+    fix was incomplete -- a graph-internal <output> element (the sibling of
+    the node branch PROD-002 already fixed) still silently dropped any
+    attribute beyond name/type/nodename and any non-structural child.
+    Reproduces the exact adversarial construction the re-audit used.
+    """
+
+    _ADVERSARIAL_DOC = (
+        b'<?xml version="1.0"?><materialx version="1.39">'
+        b'<nodegraph name="ng1">'
+        b'<constant name="const1" type="color3">'
+        b'<input name="value" type="color3" value="1,0,0"/>'
+        b"</constant>"
+        b'<output name="out1" type="color3" nodename="const1" '
+        b'extra_out_attr="should_this_survive" colorspace="srgb_texture">'
+        b'<output_child foo="bar"/>'
+        b"</output>"
+        b"</nodegraph></materialx>"
+    )
+
+    def test_load_captures_output_attributes_and_children(self):
+        model = load_mtlx(self._ADVERSARIAL_DOC)
+        out = model["node_graphs"][0]["outputs"][0]
+        assert out["attributes"].get("extra_out_attr") == "should_this_survive"
+        assert out["attributes"].get("colorspace") == "srgb_texture"
+        assert any(c["tag"] == "output_child" for c in out["children"])
+
+    def test_roundtrip_preserves_output_attributes_and_children(self):
+        reloaded = _reload_via_roundtrip(self._ADVERSARIAL_DOC)
+        out = reloaded["node_graphs"][0]["outputs"][0]
+        assert out["attributes"].get("extra_out_attr") == "should_this_survive"
+        assert out["attributes"].get("colorspace") == "srgb_texture"
+        child_tags = [c["tag"] for c in out["children"]]
+        assert "output_child" in child_tags
+        oc = next(c for c in out["children"] if c["tag"] == "output_child")
+        assert oc["attributes"].get("foo") == "bar"
+        # Core fields (verified in TestNodegraphResidualDataLoss) unaffected.
+        assert out["name"] == "out1"
+        assert out["type"] == "color3"
+        assert out["nodename"] == "const1"
+
+    def test_plain_output_without_extras_unaffected(self):
+        """Regression guard: an <output> with only name/type/nodename must
+        not gain spurious attributes or children after the fix."""
+        doc = (
+            b'<?xml version="1.0"?><materialx version="1.39">'
+            b'<nodegraph name="ng_plain">'
+            b'<constant name="c1" type="float"><input name="value" type="float" value="1.0"/></constant>'
+            b'<output name="out" type="float" nodename="c1"/>'
+            b"</nodegraph></materialx>"
+        )
+        reloaded = _reload_via_roundtrip(doc)
+        out = reloaded["node_graphs"][0]["outputs"][0]
+        assert out["attributes"] == {}
+        assert out["children"] == []

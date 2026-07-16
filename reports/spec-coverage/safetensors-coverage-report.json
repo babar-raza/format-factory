@@ -1,9 +1,10 @@
 {
   "format_id": "safetensors",
-  "generated_at": "2026-07-15T17:09:27.160989+00:00",
-  "generator": "compute_feature_coverage.py v1",
+  "generated_at": "2026-07-15T20:24:18.818195+00:00",
+  "generator": "compute_feature_coverage.py v2 (executed-test verification)",
   "manifest_ref": "reports/spec-coverage/manifests/safetensors-feature-manifest.json",
   "manifest_hash": "sha256:a9e267ff7aa4a545341b7fa609eedc7e20cdd04d5ea1cb3b4311e15265e9c852",
+  "source_digest": "04a4ccc991c453f6a5ee3639cd7c375e82b583d9aa95cc61a8d5e759f868b6b5",
   "coverage_summary": {
     "total": 8,
     "implemented": 8,
@@ -18,6 +19,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/models.py:get_tensor_bytes",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_tensor_data.py::TestGetTensorBytes::test_get_tensor_bytes_matches_written_content",
       "deferred_reason": null
     },
     {
@@ -26,6 +28,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/models.py:get_tensor_bytes",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_tensor_data.py::TestGetTensorArrayDecode::test_get_tensor_f32_values_and_shape",
       "deferred_reason": null
     },
     {
@@ -34,6 +37,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/safetensors_codec.py: (text match for 'tensor_data')",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_tensor_data.py::TestWriteRealTensorData::test_write_places_real_bytes_not_zero_fill",
       "deferred_reason": null
     },
     {
@@ -42,6 +46,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/safetensors_validation.py:validate_tensor_offsets",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_validation.py::TestOffsetOverlapRejection::test_validate_tensor_offsets_rejects_overlap_directly",
       "deferred_reason": null
     },
     {
@@ -50,6 +55,7 @@
       "requirement_level": "recommended",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/safetensors_validation.py:detect_duplicate_tensor_keys",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_validation.py::TestDuplicateTensorKeyRejection::test_detect_duplicate_tensor_keys_hook_directly",
       "deferred_reason": null
     },
     {
@@ -58,6 +64,7 @@
       "requirement_level": "recommended",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/dtype_codec.py: (text match for 'F8_E4M3')",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_tensor_data.py::TestGetTensorArrayDecode::test_get_tensor_fp8_e4m3_zero_and_one",
       "deferred_reason": null
     },
     {
@@ -66,6 +73,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/spec/header/tensor.py:data_offsets",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_codec.py::TestLoad::test_load_tensor_has_required_keys",
       "deferred_reason": null
     },
     {
@@ -74,6 +82,7 @@
       "requirement_level": "mandatory",
       "status": "IMPLEMENTED",
       "evidence": "src/python/safetensors/safetensors_codec.py: (text match for '__metadata__')",
+      "verification": "verified by passing test(s): tests/python/safetensors/test_safetensors_codec.py::TestLoad::test_load_with_metadata",
       "deferred_reason": null
     }
   ],
