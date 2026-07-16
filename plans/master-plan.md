@@ -7185,3 +7185,102 @@ Executed as a full audit→harden→execute→verify loop bound to `.supervisor/
 - **GAP-FORENSIC-013b:** Compat/spec sub-element files in 12 OTHER formats that already have ClassVar on their top-level `models.py` (e.g. DIF, SYLK, NDJSON) still use bare assignment on sub-element classes — same pattern, different scope, deliberately excluded here.
 - V51 governance validator (`tools/supervisor/governance_validators_spec.py`) still tolerates both bare and ClassVar-annotated forms equally — a deliberate, documented exclusion for this plan; a future governance sprint may choose to tighten it.
 - 3 pre-existing test failures in fods/zst (FACT citation gaps from an unrelated, still-uncommitted prior session) remain open, owned by that other session, not this plan.
+
+---
+
+## Section 107 — select-6-phase-4-true-audit: Select-6 Formats (ipynb, safetensors, xliff, nrrd, ubl, mtlx) — True Independent Audit + System Healing + Publication Remediation (CLOSED 2026-07-16)
+
+**Plan:** `plans/.claude/put-the-select-6-snappy-dijkstra.md` (Phase 4 section)
+**Type:** product (audit + remediation), with a system-healing sub-track
+**Mission ID:** select-6-phase-4-true-audit
+**Formats:** ipynb (Jupyter Notebook), safetensors, xliff (OASIS XLIFF), nrrd (Nearly Raw Raster Data), ubl (OASIS UBL), mtlx (MaterialX) — the "select-6" onboarded together in `plans/.claude/put-the-select-6-snappy-dijkstra.md` Phases 1-3.
+
+### Why this section exists (VR-003 discipline)
+
+Phases 1-3 of the select-6 plan (acquisition, professional-library-tier polish, real-feature-completeness) were previously self-reported COMPLETE with 874/874 tests and `gate_9_eligible: true` for all 6 formats, but **this authoritative master plan had zero mentions of any of the 6 formats** — the entire body of work existed only in a per-chat plan file, never rolled into the document every session is instructed to read first. This section is that rollup, combined with the true independent audit the user requested (are these 6 products actually ready for publication) and the resulting remediation.
+
+### The audit (summary — full detail in the Phase 4 section of the select-6 plan)
+
+Three parallel independent agents (no shared context) audited the 6 formats directly against real tests and real source, not self-reports. Findings:
+- **3 real functional defects independently discovered** (invisible to the prior self-reports): nrrd's `roundtrip()` silently zero-filled the data payload (D1); mtlx's write-path had an undisclosed residual data-loss gap for `<nodegraph>`-level attributes and internal-node generic children (D2); ubl's tax/monetary handling was overstated as validated computation when it is transcription (D3).
+- **5 systemic root causes (SF1-SF5)**, elevated to first-class findings per explicit user directive: Gate 9's "coverage report required" rule was prose with zero code enforcement (SF1); the spec-coverage tool granted IMPLEMENTED status from a bare self-asserted list with no independent verification (SF2, the direct cause of D2/D3 going undetected); no validator tied README/dogfood-export existence to Gate 9/10 (SF3); plan closure had no check that `master-plan.md` reflects what was built (SF4 — this very gap); registry gate-block bookkeeping was fully decoupled from coverage-report generation (SF5).
+- **What held up under scrutiny:** all 874 claimed tests genuinely passed, zero stubs/placeholders anywhere, packaging/install-proof genuinely passed for all 6, roundtrip tests were overwhelmingly genuine, a disclosed git-index race (commit `b17bf04b` mixing xliff/ubl content) was fully recovered with zero data loss, and safetensors' previously-known "never returns tensor bytes" defect was confirmed fixed.
+
+### System healing (Track A — closes SF1-SF5, benefits the whole 31-format portfolio, not just these 6)
+
+- **V227** (`governance_validators_gate9.py`): mechanically enforces that `implementation_authorized: true` requires an existing, `gate_9_eligible: true` coverage report. Grandfathers the 7 pre-Phase-3 formats (`registry/gate9-coverage-baseline.yaml`) so the rule applies going forward without retroactively blocking the existing portfolio.
+- **`compute_feature_coverage.py` hardened to v2**: IMPLEMENTED status now requires a named, currently-passing test cited in `--confirmed` (executed at report-generation time via `--junitxml`), not a bare self-asserted feature_id. Proven via a replay-fixture test showing the hardened tool correctly downgrades the pre-fix mtlx/ubl claims, and a genericity re-proof against `qoi` with real test bindings.
+- **V228 / V229** (`governance_validators_gate9_docs_dogfood.py`): require README existence and a tested dogfood cross-product export for any `implementation_authorized: true` format; same grandfather baseline.
+- **`write_plan_lock.py` master-plan rollup check**: `--terminal` now warns (non-blocking) when a closing plan mentions a registry format_id absent from `plans/master-plan.md` — proven to reproduce this exact section's own root cause before this rollup existed.
+- **V230** (`governance_validators_gate9_drift.py`): detects drift between a coverage report's `source_digest` and the registry's recorded `coverage_source_digest`.
+- Governance validator count: 226 → 230 (V227-V230); `registry/governance/validator-id-authority.yaml` reconciled (was stale, also missing V224-V226 despite them using `@validator` — the exact SF1 drift pattern, fixed generically).
+
+### Product remediation (Track B)
+
+- **D1 fixed:** `encode_nrrd_data()` added as the inverse of `decode_nrrd_data()`; `write_nrrd()` re-encodes the model's decoded array by default instead of zero-filling. nrrd: 161→165 tests.
+- **D2 fixed:** `load_mtlx()`'s nodegraph branch now captures graph-level attributes and internal-node generic children; `write_mtlx()` writes both back. Regression test reproduces the exact adversarial construction the audit used. mtlx: 156→160 tests.
+- **D3 fixed:** module docstring corrected (no longer claims Peppol-portal-passing output); `check_tax_consistency()` added as an opt-in arithmetic sanity check; `write_ubl()` surfaces a non-fatal `UblTaxInconsistencyWarning`. ubl: 137→144 tests.
+- **Coverage reports regenerated for all 6** via the hardened tool with real, currently-passing test bindings (`reports/spec-coverage/*-confirmed.json`, v2 schema) — all 6 genuinely re-earn `gate_9_eligible: true`.
+- **`registry/format-registry.yaml`** updated with real `gate_4`/`gate_9` blocks (coverage report reference, source digest, honest `tier_map: null` with a documented reason rather than a fabricated tier assignment) for all 6; `implementation_authorized` flipped to `true` only after V227 independently accepted the state.
+- **Phase 4 OSS implementation taskcards** created: `.supervisor/taskcards/select-6/TC-S6P4-{IPYNB,SAFETENSORS,XLIFF,NRRD,UBL,MTLX}-001.yaml`.
+- **READMEs generated** for all 6 (`src/python/<fmt>/README.md`, via `readme_sync --mode single`) — previously absent entirely.
+- **Dogfood cross-product exports added** for all 6 (`<fmt>_to_csv.py` + tests) — previously none existed for any of the 6: ipynb cell inventory, safetensors tensor manifest, xliff translation-unit table, nrrd header/metadata export, ubl line-item export, mtlx material inventory (bill-of-materials). 30 new tests.
+- **ipynb qname-registry staleness fixed:** was `status: seeded` / `facade_names: []` despite working `Compat/` facades already existing; now accurately `status: implemented` (3/3).
+- **mtlx qname registry expanded** from 2 to 6 entries: added `materialx:nodedef` / `typedef` / `look` / `propertyset` with new spec classes + Compat facades wrapping the existing generic-element data (matching D2's fix). 6 new tests.
+
+### TC-S6P4-FINAL-001 — the second independent re-audit pass (this is the part that mattered)
+
+Per the plan's own gate, a "professional library"/"publication ready" claim required a *second*, fresh-context, independent re-audit finding zero new BLOCKING defects — not a rubber stamp of the first pass's own work. Two independent re-audit agents were dispatched and **both found real residual gaps**, which is the entire reason this two-pass structure exists:
+
+- **A real functional gap, D2's twin (BLOCKING).** PROD-002's mtlx fix covered a `<nodegraph>`'s internal *node* branch but not its internal `<output>` branch — a graph-internal `<output>` element's own extra attributes and non-structural children were still silently dropped on write. Reproduced with the exact adversarial construction (`extra_out_attr`, `colorspace`, a nested `<output_child>`) the audit agent used; fixed in both `load_mtlx()` and `write_mtlx()` (the write-side loop needed care: the old blind `out_elem.set(k, v)` pattern would have broken once dict/list-valued `attributes`/`children` keys were added). 3 new regression tests; 173/173 mtlx tests pass.
+- **The SF1 grandfather baseline had no integrity check.** `registry/gate9-coverage-baseline.yaml`'s "write-once, don't add a format to dodge V227" rule was a comment, not code. Closed with **V231** (`validate_gate9_baseline_integrity`): a pinned sha256 digest over the frozen 7-format set, so a future silent addition fails loudly unless the pinned constant is updated in the same reviewable commit.
+- **V228/V229 overclaimed what they checked.** Both only verified file *existence* — V228's docstring claimed readme_sync validation it never ran; V229 claimed a "tested" export without ever executing the test. Hardened: V228 now calls the real `readme_sync.validator.validate_readme()`; V229 now actually runs the cited dogfood test via pytest and requires a genuine pass.
+- **Two "replay proof" self-tests were asserting against live, mutable repo state** that this very remediation legitimately changed (mtlx-confirmed.json's v2 migration, this Section 107 itself) — so they failed for the right reason read as the wrong signal. Rewritten to pin frozen pre-fix snapshots, with new companion tests proving the current live state is correct.
+- **Coverage-report digests were stale.** README.md and `<fmt>_to_csv.py` were added to all 6 formats' source trees *after* their coverage reports were generated. Regenerated all 6 reports against current source and resynced the registry digests (V230-detectable in principle, not V230-caught at the time since it only diffs registry-vs-report, both written together in the same batch).
+- **The closing full-validator sweep itself (not either audit agent) found 3 more real gaps**: `ubl_codec.py` had grown to 830 LOC (over the 800 cap) from the D3 tax-consistency work — fixed via the repo's own Monolith Healing Protocol (§8.1), moving `check_tax_consistency()`/`_to_float()` to `ubl_analytics.py` with a re-export (the toml/gnumeric precedent for this exact bidirectional-import pattern was verified safe before reuse); the 4 new mtlx spec/element facades (PROD-009) had undocumented public methods (V102); and V145 (`validate_future_format_oracle_onboarding`) newly blocked once `implementation_authorized` flipped true for all 6 — closed with honest `OBLIGATION_CREATED` oracle-registry entries (matching the `ora`/`pam`/`xpm`/`zpaq` precedent), explicitly not a fabricated VERIFIED oracle.
+
+### Verification
+
+Full regression across all 6 formats: **927/927 format tests passing**, plus 55 touched supervisor tests (982 total in one consolidated run), zero regressions. Governance validator count: 226 → 231 (V227-V231; `registry/governance/validator-id-authority.yaml` reconciled). V227/V228/V229/V231 PASS cleanly against live repo state, re-verified repeatedly across the session. V230 shows only a pre-existing, unrelated `qoi` WARN (not select-6, not blocking). `validate_source_architecture` and V102 clean. V145 (oracle onboarding) clean for all 6.
+
+**Known, disclosed, non-blocking condition — not a defect in this remediation:** during the final full-portfolio validator sweep, V226 (package-install-proof staleness) and once V225 (SAL store reconciliation, unrelated to select-6) intermittently FAILed for a *different* format/store each time re-checked. Cross-checked against `coordination status`: multiple other Claude Code agent sessions were independently ACTIVE in this same shared workspace with very recent heartbeats, holding live leases on select-6 source files at the exact times of the flapping. This is genuine concurrent editing by other live agents, not an artifact of this work — a permanently-clean full-portfolio snapshot is not achievable while other agents are concurrently active, and chasing it further is out of this plan's scope (select-6 Gate 9 machinery + D1/D2/D3). Each occurrence caught during this session was re-proven when found.
+
+### Governance
+
+Executed under the existing `select-6` per-chat plan authority (no competing plan/portfolio/ledger created). Multi-agent coordination plane (Mission AGENT-COORD-2026-07-15, closed earlier the same day) used throughout both the original pass and this session's FINAL-001 remediation: several other concurrent agent sessions were detected mid-execution holding leases (some genuinely stale, some — discovered later in this session — still actively renewing) on overlapping files (`format-registry.yaml`, `docs/gates.md`, `mtlx_codec.py`, several of the 6 formats' source and test files, `plans/master-plan.md` itself) — every conflict was resolved via governed takeover or explicit release-under-owning-identity (audited, reason-logged) rather than blind overwrite, per the coordination system's own design. One recurring mechanical wrinkle observed and worked around repeatedly: the Edit tool authenticates file writes as an ambient session identity distinct from any identity explicitly `register`ed via the CLI in a Bash subprocess (Bash-exported env vars do not propagate to the Edit tool's own hook invocation) — resolved each time by releasing the CLI-registered claim so the ambient identity could auto-claim before editing.
+
+### Follow-ups (non-blocking, explicitly deferred)
+
+- UBL's remaining ~85 document types + Peppol BIS 3.0 Schematron validation; XLIFF's optional OASIS modules + 1.2 write support; NRRD's ascii/hex/bzip2 encodings + detached-header loading; MaterialX's full stdlib validation/looks/collections/variants/includes; ipynb's nbformat v1-3 upgrade; safetensors' true lazy/mmap streaming — all recorded in the respective `reports/spec-coverage/*-deferred.json`, not silent.
+- Formal Gate 5 (neutral model)/Gate 7 (fuzz)/Gate 8 (security sign-off) artifacts remain a systemic, repo-wide gap (not 6-specific — matches precedent for comparable formats qoi/ndjson/toml/csv) — registered as separate future follow-up.
+- A `sed`-triggered false-positive was found in the coordination system's Bash generator tripwire (matches a generator's file path appearing anywhere in a command string, even a read-only `sed`/`cat`, not just an actual invocation) — noted for a future coordination-system refinement, not blocking.
+- Full 0-6 product-tier assignment (`docs/product-factory/product-tracks.md`) was not performed for any of the 6 formats (`tier_map: null`, honestly documented) — registered as select-6 Phase 5 follow-up.
+- **Oracle layer (V145, closed TC-S6P4-FINAL-001f):** all 6 formats now have an `OBLIGATION_CREATED` entry in `oracle/registry/format-oracle-registry.yaml`, satisfying the mechanical Gate check, but none has a real `oracle-package.yaml`, sample corpus, or executed oracle run yet — matches M7's original framing (Gate 5 artifacts absent, repo-wide norm at intake for comparable simple formats). Full oracle build-out is legitimate future work, registered here rather than silently left unregistered.
+- **V226/V225 flapping under concurrent agents (see Verification above):** not a defect, but worth a future coordination-system note — a package-install-proof (or SAL-store) staleness check that re-hashes live source content will always be racing other active agents in a genuinely concurrent workspace; a possible future refinement is a "proof debounce" window or an explicit `--ignore-concurrent-drift` mode for exactly this scenario, rather than expecting a single session to chase a moving target to zero.
+
+## Section 108 — Phase 3 Gap Coverage: 26-Format Portfolio Test Recovery (CLOSED 2026-07-16)
+
+**Plan:** `plans/.claude/put-the-select-6-snappy-dijkstra.md` (convergence closure)
+**Mission ID:** select-6-acquisition (convergence loop: convergence-loop-select-6-gap-coverage)
+**Commit:** `564e42b3`
+
+### What was completed
+- Created comprehensive gap-closure test suites for all 26 Python FOSS formats
+- 7,807 new tests across 26 test files (7,807 passed, 3 skipped, 0 failed)
+- Formats covered: ABW, CSV, DIF, FODG, FODP, FODS, FODT, Gnumeric, IPYNB, MTLX, NDJSON, NRRD, ODS, ODT, PBM, PGM, PPM, QOI, SafeTensors, SYLK, TOML, TSV, UBL, XCF, XLIFF, ZST
+
+### Verification performed
+- Independent pytest run: `7807 passed, 3 skipped in 52.89s`
+- Evidence declaration validated (`sprint_executor_validate.py --repair` PASS)
+- Supervisor autonomous cycle: `ACCEPTED_ALL_GREEN`
+- Review package built: SHA-256 `6c8fdf04f7a43da3bf4f8ae86b976acf4b01ed339c319ca4e0c783983ca29664`
+- Convergence audit verdict: `SPRINT_ALL_GREEN_VERIFIED` (5/5 achievements verified, 0 overclaims)
+
+### What changed
+- 26 new test files under `tests/python/*/test_*_gap_coverage.py` and `tests/python/*/test_*_analytics_coverage.py`
+- 26,927 lines of test code added
+
+### Remaining follow-ups (non-blocking)
+- 3 pre-existing test failures out of scope (DIF/ODS/NDJSON/XCF/SYLK spec_fact_ref naming drift, ZST stale __all__ snapshot)
+- Exception class identity mismatch pattern across 15+ formats (architectural tech debt)
+- Full regression across existing test suites (not run — user-cancelled; the 26 new files are isolated)
