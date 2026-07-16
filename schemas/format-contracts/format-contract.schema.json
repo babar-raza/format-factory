@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:format-factory:format-contract:v1",
+  "title": "FormatContract",
+  "description": "Canonical developer-product contract for one format (L30 Format Contract Layer). Generated deterministically by tools/format_contract/contract_compiler.py from committed hash-bound stores. Bodies carry NO timestamps; volatile state lives in registry/format-contract-registry.yaml.",
+  "type": "object",
+  "required": [
+    "contract_metadata",
+    "format_identity",
+    "authoritative_sources",
+    "scope_policy",
+    "capabilities",
+    "validation_contract",
+    "security_contract",
+    "preservation_contract",
+    "test_contract",
+    "release_gates"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_metadata": {
+      "type": "object",
+      "required": ["schema_version", "contract_id", "format_id", "family", "target_spec_version", "generator_version", "input_digests"],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "contract_id": {"type": "string", "pattern": "^FC-[A-Z0-9]+-V[0-9]+$"},
+        "format_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "format_canonical_name": {"type": "string", "minLength": 1},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "extensions": {"type": "array", "items": {"type": "string"}},
+        "mime_types": {"type": "array", "items": {"type": "string"}},
+        "family": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "target_spec_version": {"type": "string", "minLength": 1},
+        "compatible_versions": {"type": "array", "items": {"type": "string"}},
+        "source_authority_status": {"enum": ["AUTHORITATIVE", "MIXED", "NEEDS_AUTHORITY"]},
+        "generator_version": {"type": "string", "pattern": "^fcl-compiler/[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "lifecycle_status": {"enum": ["DRAFT", "VALIDATED", "REVIEWED", "PRODUCTION"]},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "unresolved_questions": {"type": "array", "items": {"type": "string"}},
+        "supersedes": {"type": ["string", "null"]},
+        "input_digests": {
+          "type": "object",
+          "required": ["sal_facts_sha256", "research_sha256", "family_pack_sha256", "shared_contract_sha256", "fact_categories_sha256"],
+          "additionalProperties": false,
+          "properties": {
+            "sal_facts_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "research_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "family_pack_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "shared_contract_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "fact_categories_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "qname_registry_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}
+          }
+        }
+      }
+    },
+    "format_identity": {
+      "type": "object",
+      "required": ["description", "data_model_type", "primary_use_cases", "active_content_model"],
+      "additionalProperties": false,
+      "properties": {
+        "description": {"type": "string", "minLength": 20},
+        "data_model_type": {"enum": ["text", "xml", "json", "binary", "archive", "graph", "raster", "tabular", "database", "executable_document", "media", "scientific_array", "hybrid"]},
+        "primary_use_cases": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "typical_workflows": {"type": "array", "items": {"type": "string"}},
+        "core_vs_profiles": {"type": "string"},
+        "active_content_model": {
+          "type": "object",
+          "required": ["has_active_content", "policy"],
+          "properties": {
+            "has_active_content": {"type": "boolean"},
+            "policy": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "authoritative_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "title", "authority_class"],
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^SRC-[A-Z0-9]+-[0-9]{3}$"},
+          "title": {"type": "string", "minLength": 1},
+          "organization": {"type": ["string", "null"]},
+          "version": {"type": ["string", "null"]},
+          "publication_date": {"type": ["string", "null"]},
+          "local_path": {"type": ["string", "null"]},
+          "canonical_url": {"type": ["string", "null"]},
+          "content_hash": {"type": ["string", "null"]},
+          "authority_class": {"enum": ["AUTHORITATIVE", "VERIFIED_DERIVATION", "ACCEPTED_EMPIRICAL_EVIDENCE", "PRODUCT_REQUIREMENT", "AI_DRAFT", "UNVERIFIED"]},
+          "relevant_sections": {"type": "array", "items": {"type": "string"}},
+          "licensing": {"type": ["string", "null"]},
+          "acquisition_status": {"enum": ["ACQUIRED", "URL_ONLY", "NEEDS_AUTHORITY", null]}
+        }
+      }
+    },
+    "scope_policy": {
+      "type": "object",
+      "required": ["production_complete_target", "minimum_viable_support"],
+      "additionalProperties": false,
+      "properties": {
+        "production_complete_target": {"type": "string", "minLength": 10},
+        "minimum_viable_support": {"type": "string", "minLength": 10},
+        "first_wave": {"type": "array", "items": {"type": "string"}},
+        "deferred": {"type": "array", "items": {"type": "string"}},
+        "excluded": {"type": "array", "items": {"type": "string"}},
+        "version_matrix": {"type": "array", "items": {"type": "object"}},
+        "upgrade_policy": {"type": ["string", "null"]}
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["capability_id", "level", "category", "title", "production_meaning", "developer_use_case", "provenance", "required_behavior", "depth_required", "depth_rationale", "required_tests", "release_gates"],
+        "additionalProperties": false,
+        "properties": {
+          "capability_id": {"type": "string", "pattern": "^[A-Z0-9]+-[A-Z]+-[0-9]{3}$"},
+          "level": {"enum": ["MUST", "SHOULD", "MAY"]},
+          "category": {"enum": ["parse", "model", "edit", "write", "validate", "preserve", "query", "transform", "export", "resolve", "calculate", "security", "performance", "lifecycle", "advanced"]},
+          "title": {"type": "string", "minLength": 5},
+          "production_meaning": {"type": "string", "minLength": 20},
+          "developer_use_case": {"type": "string", "minLength": 20},
+          "provenance": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(SAL-[A-Z0-9]+-[0-9]{5}|RF-[A-Z0-9]+-[0-9]{5}|POL-[A-Z0-9-]+)$"}},
+          "required_behavior": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 15}},
+          "normative_rules": {"type": "array", "items": {"type": "string", "minLength": 10}},
+          "required_model_objects": {"type": "array", "items": {"type": "string"}},
+          "required_operations": {"type": "array", "items": {"type": "string"}},
+          "required_invariants": {"type": "array", "items": {"type": "string"}},
+          "preservation_rules": {"type": "array", "items": {"type": "string"}},
+          "validation_rules": {"type": "array", "items": {"type": "string"}},
+          "security_requirements": {"type": "array", "items": {"type": "string"}},
+          "performance_requirements": {"type": "array", "items": {"type": "string"}},
+          "error_behavior": {"type": "array", "items": {"type": "string"}},
+          "compatibility_expectations": {"type": "array", "items": {"type": "string"}},
+          "depth_required": {"type": "integer", "minimum": 0, "maximum": 8},
+          "depth_rationale": {"type": "string", "minLength": 10},
+          "required_tests": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+          "required_oracle_evidence": {"type": "array", "items": {"type": "string"}},
+          "release_gates": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}}
+        }
+      }
+    },
+    "public_api_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "root_types": {"type": "array", "items": {"type": "string"}},
+        "domain_types": {"type": "array", "items": {"type": "string"}},
+        "value_types": {"type": "array", "items": {"type": "string"}},
+        "read_operations": {"type": "array", "items": {"type": "string"}},
+        "mutation_operations": {"type": "array", "items": {"type": "string"}},
+        "validation_operations": {"type": "array", "items": {"type": "string"}},
+        "transformation_operations": {"type": "array", "items": {"type": "string"}},
+        "serialization_operations": {"type": "array", "items": {"type": "string"}},
+        "diagnostic_types": {"type": "array", "items": {"type": "string"}},
+        "api_rules": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "preservation_contract": {
+      "type": "object",
+      "required": ["unknown_construct_policy", "loss_reporting_policy"],
+      "additionalProperties": false,
+      "properties": {
+        "semantic_roundtrip": {"type": "array", "items": {"type": "string"}},
+        "structural_roundtrip": {"type": "array", "items": {"type": "string"}},
+        "lexical_roundtrip": {"type": "array", "items": {"type": "string"}},
+        "unknown_construct_policy": {"type": "string", "minLength": 10},
+        "loss_reporting_policy": {"type": "string", "minLength": 10}
+      }
+    },
+    "validation_contract": {
+      "type": "object",
+      "required": ["layers", "diagnostic_schema"],
+      "additionalProperties": false,
+      "properties": {
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["layer", "description"],
+            "properties": {
+              "layer": {"enum": ["lexical", "syntax", "schema", "grammar", "structural", "type", "referential", "semantic", "profile", "codelist", "security", "payload", "external_resource", "business_rule"]},
+              "description": {"type": "string", "minLength": 10}
+            }
+          }
+        },
+        "diagnostic_schema": {
+          "type": "object",
+          "required": ["fields"],
+          "properties": {
+            "fields": {"type": "array", "minItems": 5, "items": {"type": "string"}}
+          }
+        }
+      }
+    },
+    "security_contract": {
+      "type": "object",
+      "required": ["attack_surfaces", "safe_defaults"],
+      "additionalProperties": false,
+      "properties": {
+        "attack_surfaces": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+        "safe_defaults": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+        "limits": {"type": "array", "items": {"type": "string"}},
+        "resolver_policies": {"type": "array", "items": {"type": "string"}},
+        "opt_in_behaviors": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "performance_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "streaming": {"type": ["string", "null"]},
+        "lazy_loading": {"type": ["string", "null"]},
+        "bounded_memory": {"type": ["string", "null"]},
+        "large_file_behavior": {"type": ["string", "null"]},
+        "limits_policy": {"type": ["string", "null"]},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "test_contract": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"type": "string", "minLength": 15}
+    },
+    "release_gates": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"type": "string", "minLength": 15}
+    },
+    "coverage_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["capability_id", "provenance"],
+        "properties": {
+          "capability_id": {"type": "string"},
+          "provenance": {"type": "array", "items": {"type": "string"}},
+          "product_symbols": {"type": "array", "items": {"type": "string"}},
+          "tests": {"type": "array", "items": {"type": "string"}},
+          "oracle": {"type": ["string", "null"]},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

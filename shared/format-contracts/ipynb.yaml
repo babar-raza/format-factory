@@ -1,0 +1,1018 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-IPYNB-V1
+  format_id: ipynb
+  format_canonical_name: Jupyter Notebook
+  extensions:
+  - .ipynb
+  family: executable_document
+  target_spec_version: nbformat v4.5
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
+    qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
+    research_sha256: 2cbbf729a97687e4639914bcdbaaccd0d5f4a19b0b481d830d81e2bceb216507
+    sal_facts_sha256: b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: true
+    policy: Documents contain executable code and active outputs (HTML/JS/SVG). Parsing, validating, diffing,
+      and saving NEVER execute or render content; execution lives in a separate opt-in adapter behind
+      an isolation boundary; sanitization is explicit and mode-controlled.
+  data_model_type: executable_document
+  description: 'Jupyter Notebook: JSON executable-document format (Jupyter Project nbformat v4.5). Ordered
+    cells with sources, rich MIME outputs, attachments, and metadata; documents can carry executable code
+    and active content that must never run implicitly.'
+  primary_use_cases:
+  - Programmatic creation, editing, and cleaning of notebooks in CI and publishing pipelines
+  - Structure-aware diff/merge for version control of computational documents
+  - Trust, sanitization, and validation of untrusted notebooks before rendering or execution
+authoritative_sources:
+- title: Jupyter Project nbformat v4.5
+  source_id: SRC-IPYNB-001
+  organization: Jupyter Project
+  version: nbformat v4.5
+  canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Jupyter nbformat specification and JSON schema (format 4)
+  source_id: SRC-NB-002
+  organization: Jupyter Project
+  version: nbformat 4.x
+  canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
+  source_id: SRC-NB-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Lossless parse/write of conformant documents, typed cell/output model, schema
+    validation with positions, and output/metadata cleanup operations.
+  production_complete_target: Read, create, edit, validate, clean, trust-manage, sanitize, diff, and write
+    every construct of the target schema version losslessly, with execution exclusively in an opt-in isolated
+    adapter.
+capabilities:
+- release_gates:
+  - Attachment integrity part of the validation layer.
+  capability_id: IPYNB-ATTACH-001
+  level: MUST
+  category: model
+  title: Cell attachments
+  production_meaning: Attachments read/add/remove/rename with reference validation; orphaned attachments
+    and missing targets are detectable.
+  developer_use_case: A developer embeds an image attachment and validation confirms its reference resolves.
+  provenance:
+  - POL-EXD-ATTACH-01
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00009
+  required_behavior:
+  - Manage attachments with MIME-bundle validation and reference checks; detect orphans and missing targets.
+  normative_rules:
+  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
+    that must resolve to entries in the cell attachments object
+  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
+    to MIME bundles referenced from cell content
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Orphan and missing-target fixtures produce diagnostics.
+- release_gates:
+  - Cleanup is deterministic and idempotent (second run no-op).
+  capability_id: IPYNB-CLEAN-001
+  level: MUST
+  category: transform
+  title: Output and execution-state cleanup
+  production_meaning: Clearing outputs/execution counts and stripping transient metadata are configurable,
+    dry-runnable operations - the CI staple - never implicit.
+  developer_use_case: A pre-commit hook clears outputs with a dry-run report before mutating.
+  provenance:
+  - POL-EXD-CLEAN-01
+  - SAL-IPYNB-00017
+  - RF-NB-00002
+  required_behavior:
+  - Clear outputs (all/by type/by cell), reset execution counts consistently, and strip transient metadata
+    via configurable rules with dry-run reporting.
+  - Output clearing, execution-count reset, and transient-metadata stripping run as configurable, dry-runnable,
+    idempotent operations - the pre-commit staple for notebook version control.
+  normative_rules:
+  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
+    and conforming tools must preserve them rather than strip them
+  depth_required: 6
+  depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Dry-run report matches actual mutation; selective clearing fixtures.
+- release_gates:
+  - Diff stability under cell moves proven.
+  capability_id: IPYNB-DIFF-001
+  level: MUST
+  category: query
+  title: Structure-aware diff
+  production_meaning: Diffs compare cells by identity with move detection, distinguishing source/metadata/outputs/counts,
+    with ignore policies - the version-control staple.
+  developer_use_case: A review tool shows a moved, edited cell as move+edit instead of delete+add noise.
+  provenance:
+  - POL-EXD-DIFF-01
+  - RF-NB-00003
+  required_behavior:
+  - Diff by stable cell identity with move detection; distinguish source, metadata, attachments, execution
+    counts, and outputs; support ignore policies and machine-applicable patches with preconditions.
+  - Diff notebooks by stable cell identity with move detection and ignore policies for outputs, execution
+    counts, and transient metadata, producing machine-applicable patches with preconditions.
+  depth_required: 6
+  depth_rationale: 'MUST query capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
+- release_gates:
+  - Editing preserves schema validity (validated post-edit).
+  capability_id: IPYNB-EDIT-001
+  level: MUST
+  category: edit
+  title: Cell collection editing
+  production_meaning: Insert, move, copy, remove, and replace cells with search by ID/type/tag/content;
+    bulk operations report their changes.
+  developer_use_case: A publishing pipeline removes setup cells by tag and appends a colophon cell with
+    a change report.
+  provenance:
+  - POL-EXD-EDIT-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00016
+  required_behavior:
+  - Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return
+    change reports.
+  normative_rules:
+  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
+    metadata (object), and source (string or list of strings); code cells additionally require execution_count
+    and outputs
+  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
+    with higher minor versions than the reader supports must still be readable with unknown additions
+    preserved
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each mutation class save-reload-verifies with IDs stable.
+- release_gates:
+  - Execution is physically and logically separated from parsing (dependency audit).
+  capability_id: IPYNB-EXEC-001
+  level: SHOULD
+  category: advanced
+  title: Optional isolated execution adapter
+  production_meaning: Execution lives in a separate opt-in package/service with kernel selection, timeouts,
+    and isolation; core operations are physically incapable of executing content.
+  developer_use_case: A CI job executes notebooks in a container with per-cell timeouts and consumes a
+    structured execution report.
+  provenance:
+  - POL-EXD-EXEC-01
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00018
+  required_behavior:
+  - Keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary;
+    return a structured execution report; never execute during load/validate/diff/save.
+  normative_rules:
+  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
+    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
+    name+text, error carries ename/evalue/traceback
+  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+    the execution kernel and language
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
+    error each with its own required fields
+  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
+    types to content and metadata objects with per-MIME rendering hints
+  depth_required: 6
+  depth_rationale: 'SHOULD advanced capability: family depth floor 6, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path
+    no-execution proof.
+- release_gates:
+  - At least one exporter adapter proven or the domain explicitly deferred by scope.
+  capability_id: IPYNB-EXPORT-001
+  level: SHOULD
+  category: export
+  title: Exporter integration
+  production_meaning: Adapter interfaces export documents to publishing targets with exporter-specific
+    resources kept outside the core parser, returning main output plus ancillary resources.
+  developer_use_case: A publishing pipeline exports notebooks to a target representation and collects
+    ancillary assets programmatically.
+  provenance:
+  - POL-EXD-EXPORT-01
+  required_behavior:
+  - Provide exporter adapter interfaces returning main output plus ancillary resources; keep exporter-specific
+    preprocessors and resources outside the core parser.
+  depth_required: 2
+  depth_rationale: 'SHOULD export capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Exporter adapter contract test with ancillary-resource collection.
+- release_gates:
+  - ID behavior matches the target schema minor exactly.
+  capability_id: IPYNB-ID-001
+  level: MUST
+  category: model
+  title: Cell identity management
+  production_meaning: Cell IDs validate for uniqueness and syntax where the schema version requires them;
+    ID generation for older documents is an explicit upgrade operation with a rewrite map.
+  developer_use_case: A developer upgrades an old notebook and receives stable new IDs plus the mapping.
+  provenance:
+  - POL-EXD-ID-01
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+  required_behavior:
+  - Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with
+    a rewrite map for references.
+  normative_rules:
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
+    and nbformat_minor version pair
+  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
+    within the notebook conforming to the permitted character set and length rules
+  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
+    with higher minor versions than the reader supports must still be readable with unknown additions
+    preserved
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: IPYNB-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Merge conflicts always surfaced explicitly (negative-tested).
+  capability_id: IPYNB-MERGE-001
+  level: SHOULD
+  category: transform
+  title: Structure-aware three-way merge
+  production_meaning: Three-way merges operate on stable cell identity and structure, detecting move/edit,
+    delete/edit, output, and metadata conflicts, with conflicts reported explicitly - never hidden inside
+    executable source.
+  developer_use_case: A version-control driver merges divergent notebook branches and receives an explicit
+    conflict report.
+  provenance:
+  - POL-EXD-MERGE-01
+  required_behavior:
+  - Merge by stable cell identity and structure; detect move/edit, delete/edit, output, and metadata conflicts;
+    produce an explicit conflict report and never hide conflicts inside executable source.
+  depth_required: 4
+  depth_rationale: 'SHOULD transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).
+- release_gates:
+  - Zero unknown-metadata loss proven.
+  capability_id: IPYNB-META-001
+  level: MUST
+  category: preserve
+  title: Metadata preservation with typed adapters
+  production_meaning: Arbitrary notebook/cell/output metadata is preserved; common namespaces (kernelspec,
+    language info, tags, slideshow, execution) get typed adapters; normalization never deletes unknown
+    metadata.
+  developer_use_case: A developer reads the kernel spec through a typed adapter while a vendor's custom
+    metadata rides along untouched.
+  provenance:
+  - POL-EXD-META-01
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00018
+  required_behavior:
+  - Preserve arbitrary metadata at all levels; provide typed adapters for common namespaces; never delete
+    unknown metadata during normalization.
+  normative_rules:
+  - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
+    top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
+    metadata (object), and source (string or list of strings); code cells additionally require execution_count
+    and outputs
+  - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
+    nbformat and nbformat_minor integers plus metadata and a cells array
+  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
+    tool-namespaced keys that must be preserved
+  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+    the execution kernel and language
+  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
+    types to content and metadata objects with per-MIME rendering hints
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Unknown-metadata round trip; typed adapter reads on real fixtures.
+- release_gates:
+  - Model covers every schema cell construct.
+  capability_id: IPYNB-MODEL-001
+  level: MUST
+  category: model
+  title: Typed cell and document model
+  production_meaning: Markdown, code, and raw cells are typed with source, metadata, attachments, execution
+    count, and outputs; future cell types are preserved even when not editable.
+  developer_use_case: A developer filters code cells by tag and inspects outputs without dictionary spelunking.
+  provenance:
+  - POL-EXD-MODEL-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00007
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00015
+  - RF-NB-00001
+  required_behavior:
+  - Model every specified cell type with typed accessors; preserve future/unknown cell types as preservation-only
+    nodes.
+  - Expose typed Notebook/MarkdownCell/CodeCell/RawCell/NotebookOutput/MimeBundle objects with search
+    by ID, type, tag, and source text, so pipelines manipulate notebooks without raw dictionary access.
+  normative_rules:
+  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
+    metadata (object), and source (string or list of strings); code cells additionally require execution_count
+    and outputs
+  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
+    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
+    name+text, error carries ename/evalue/traceback
+  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
+    that must resolve to entries in the cell attachments object
+  - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
+    that concatenate to the logical source text
+  - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
+    outputs array of output objects
+  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
+    to MIME bundles referenced from cell content
+  - (nbformat - cell types) The cells array holds cell objects in document order and each cell declares
+    a cell_type of markdown code or raw
+  depth_required: 4
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Typed access per cell type; unknown-cell-type preservation fixture.
+- release_gates:
+  - No output construct is dropped or reordered on round trip.
+  capability_id: IPYNB-OUTPUT-001
+  level: MUST
+  category: model
+  title: Complete rich-output support
+  production_meaning: All output types and arbitrary MIME bundles (text, HTML, images, JSON, vendor types)
+    are preserved with metadata and counts; active content is data, never rendered.
+  developer_use_case: A developer extracts image outputs and strips vendor bundles without corrupting
+    remaining outputs.
+  provenance:
+  - POL-EXD-OUTPUT-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00018
+  - SAL-IPYNB-00019
+  - RF-NB-00005
+  required_behavior:
+  - Support every specified output type and arbitrary MIME bundles, preserving execution counts, tracebacks,
+    metadata, and unknown bundle entries.
+  - Test the full MIME-bundle matrix including vendor MIME types, binary payloads, large base64 attachments,
+    and malformed bundles, proving no output entry is lost or reordered.
+  normative_rules:
+  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
+    metadata (object), and source (string or list of strings); code cells additionally require execution_count
+    and outputs
+  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
+    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
+    name+text, error carries ename/evalue/traceback
+  - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
+    outputs array of output objects
+  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
+    to MIME bundles referenced from cell content
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
+    error each with its own required fields
+  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
+    types to content and metadata objects with per-MIME rendering hints
+  - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - MIME-bundle matrix round-trips including vendor types and binary payloads.
+  - MIME matrix fixtures per output type with byte-exact payload verification.
+- release_gates:
+  - Parse is proven side-effect-free (no execution/render hooks reachable).
+  capability_id: IPYNB-PARSE-001
+  level: MUST
+  category: parse
+  title: Lossless JSON document parsing
+  production_meaning: Version fields, multiline-string forms, unknown fields, and numeric/Unicode values
+    parse losslessly; nothing executes or renders during parsing.
+  developer_use_case: A developer loads notebooks from any conformant producer and gets identical structure
+    back on save.
+  provenance:
+  - POL-EXD-PARSE-01
+  - POL-EXD-PARSE-02
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00007
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00015
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
+  - SAL-IPYNB-00018
+  - SAL-IPYNB-00019
+  required_behavior:
+  - Parse version fields and both multiline text representations, normalizing in the object API while
+    preserving round-trip fidelity.
+  - Preserve unknown fields and metadata namespaces; never coerce numeric or Unicode JSON values lossily.
+  normative_rules:
+  - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
+    top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
+    metadata (object), and source (string or list of strings); code cells additionally require execution_count
+    and outputs
+  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
+    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
+    name+text, error carries ename/evalue/traceback
+  - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
+    nbformat and nbformat_minor integers plus metadata and a cells array
+  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
+    that must resolve to entries in the cell attachments object
+  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
+    tool-namespaced keys that must be preserved
+  - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
+    that concatenate to the logical source text
+  - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
+    outputs array of output objects
+  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
+    to MIME bundles referenced from cell content
+  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+    the execution kernel and language
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
+    and nbformat_minor version pair
+  - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
+    error each with its own required fields
+  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
+    within the notebook conforming to the permitted character set and length rules
+  - (nbformat - cell types) The cells array holds cell objects in document order and each cell declares
+    a cell_type of markdown code or raw
+  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
+    with higher minor versions than the reader supports must still be readable with unknown additions
+    preserved
+  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
+    and conforming tools must preserve them rather than strip them
+  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
+    types to content and metadata objects with per-MIME rendering hints
+  - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: IPYNB-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Sanitization catalog documented with per-mode tests.
+  capability_id: IPYNB-SANITIZE-001
+  level: MUST
+  category: security
+  title: Active-content sanitization
+  production_meaning: HTML/SVG/JavaScript/external-link sanitizers are configurable with remove/quarantine/mark-untrusted
+    modes; lossless mode never sanitizes silently.
+  developer_use_case: A viewer quarantines active outputs of an untrusted notebook and renders the rest.
+  provenance:
+  - POL-EXD-SANITIZE-01
+  - SAL-IPYNB-00011
+  required_behavior:
+  - Provide configurable sanitizers for active content with remove, quarantine, and preserve-but-mark
+    modes; never sanitize silently in lossless mode.
+  normative_rules:
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  depth_required: 2
+  depth_rationale: 'MUST security capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: IPYNB-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Trust behavior proven against modification scenarios.
+  capability_id: IPYNB-TRUST-001
+  level: MUST
+  category: security
+  title: Trust and signature integration
+  production_meaning: Trust signatures compute/store/verify through a pluggable notary; modified documents
+    are never auto-trusted; cryptographic trust stays separate from schema validity.
+  developer_use_case: A platform verifies notebook trust before enabling rich rendering and re-signs only
+    after review.
+  provenance:
+  - POL-EXD-TRUST-01
+  - SAL-IPYNB-00011
+  - RF-NB-00004
+  required_behavior:
+  - Integrate a pluggable trust notary (compute/store/verify/revoke); never mark modified content trusted
+    automatically; keep trust separate from validity.
+  - Integrate a pluggable notebook-notary trust backend where modified notebooks are never auto-trusted
+    and cryptographic trust stays separate from schema validity.
+  normative_rules:
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  depth_required: 5
+  depth_rationale: 'MUST security capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Edit-invalidates-trust fixture; notary plug-in contract test.
+- release_gates:
+  - No silent version relabeling; conversion ledger complete (tested).
+  capability_id: IPYNB-UPGRADE-001
+  level: MUST
+  category: transform
+  title: Version conversion framework
+  production_meaning: Older document versions upgrade through explicit conversion paths with a conversion
+    ledger; downgrades report unsupported constructs and expected loss first; higher-minor documents keep
+    unknown additions.
+  developer_use_case: A developer batch-upgrades legacy documents and audits every synthesized or dropped
+    construct from the ledger.
+  provenance:
+  - POL-EXD-UPGRADE-01
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+  required_behavior:
+  - Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade
+    only after reporting unsupported constructs and expected loss; preserve unknown future additions when
+    reading higher minors.
+  normative_rules:
+  - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
+    top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
+    nbformat and nbformat_minor integers plus metadata and a cells array
+  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
+    and nbformat_minor version pair
+  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
+    within the notebook conforming to the permitted character set and length rules
+  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
+    with higher minor versions than the reader supports must still be readable with unknown additions
+    preserved
+  depth_required: 4
+  depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
+    fixture.
+- release_gates:
+  - Target-minor schema compliance proven on the official corpus.
+  capability_id: IPYNB-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Schema and semantic validation
+  production_meaning: Declared-version and current-minor validation modes check structure, IDs, MIME shapes,
+    attachments, and counts, reporting forward-compatible unknowns separately from errors.
+  developer_use_case: A gatekeeper validates untrusted notebooks and distinguishes hard errors from forward-compatible
+    fields.
+  provenance:
+  - POL-EXD-VALIDATE-01
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
+  required_behavior:
+  - Validate against the schema matching declared version and optionally current minor; report unknown
+    forward-compatible fields separately from errors.
+  normative_rules:
+  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
+    that must resolve to entries in the cell attachments object
+  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
+    tool-namespaced keys that must be preserved
+  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
+    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
+    and nbformat_minor version pair
+  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
+    within the notebook conforming to the permitted character set and length rules
+  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
+    with higher minor versions than the reader supports must still be readable with unknown additions
+    preserved
+  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
+    and conforming tools must preserve them rather than strip them
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
+- release_gates:
+  - Writer round-trips the official corpus with zero semantic loss.
+  capability_id: IPYNB-WRITE-001
+  level: MUST
+  category: write
+  title: Deterministic JSON serialization
+  production_meaning: UTF-8 output with configurable indentation, canonical key ordering without changing
+    cell order, unknown fields retained, and binary payloads intact.
+  developer_use_case: A pipeline writes notebooks whose diffs contain only real changes.
+  provenance:
+  - POL-EXD-WRITE-01
+  required_behavior:
+  - Write valid UTF-8 JSON with configurable formatting and canonical key ordering that never reorders
+    cells or outputs; retain unknown fields and binary MIME payloads exactly.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Determinism byte-compare; binary-payload integrity fixtures.
+public_api_contract:
+  mutation_operations:
+  - notebook.clear_outputs(filter=...)
+  - notebook.sanitize(policy)
+  read_operations:
+  - Notebook.load(...)
+  - notebook.cells.find(...)
+  root_types:
+  - Notebook
+  - Cell
+  - NotebookOutput
+  - MimeBundle
+  validation_operations:
+  - notebook.validate(mode='declared|current')
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: JSON validity and encoding rules.
+    layer: syntax
+  - description: Version-matched schema validation (declared and current-minor modes).
+    layer: schema
+  - description: Cell/output shape, ID uniqueness, attachment references, MIME-bundle shape.
+    layer: structural
+  - description: Execution-count consistency, orphaned attachments, forward-compatible unknown fields
+      reported separately.
+    layer: semantic
+  - description: Active-content inventory, size limits, payload decoding limits.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Active HTML/JavaScript/SVG in outputs executing in viewers.
+  - Executable source cells run by careless tooling during processing.
+  - Oversized base64 attachments/outputs exhausting memory.
+  - Trust-signature confusion marking modified content trusted.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - No execution, rendering, or sanitization side effects during load/validate/diff/save.
+  - Configurable size limits for cells, outputs, and attachments with streaming-safe decoding.
+  - Modified documents never auto-marked trusted; trust state is explicit and pluggable.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Orphan and missing-target fixtures produce diagnostics.
+- Dry-run report matches actual mutation; selective clearing fixtures.
+- Move-detection fixtures; ignore-policy matrix; patch precondition failures.
+- Each mutation class save-reload-verifies with IDs stable.
+- Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path
+  no-execution proof.
+- Exporter adapter contract test with ancillary-resource collection.
+- Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).
+- Unknown-metadata round trip; typed adapter reads on real fixtures.
+- Typed access per cell type; unknown-cell-type preservation fixture.
+- MIME-bundle matrix round-trips including vendor types and binary payloads.
+- MIME matrix fixtures per output type with byte-exact payload verification.
+- Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Edit-invalidates-trust fixture; notary plug-in contract test.
+- Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
+- Both validation modes on fixtures per schema construct; unknown-field separation asserted.
+- Determinism byte-compare; binary-payload integrity fixtures.
+release_gates:
+- Attachment integrity part of the validation layer.
+- Cleanup is deterministic and idempotent (second run no-op).
+- Diff stability under cell moves proven.
+- Editing preserves schema validity (validated post-edit).
+- Execution is physically and logically separated from parsing (dependency audit).
+- At least one exporter adapter proven or the domain explicitly deferred by scope.
+- ID behavior matches the target schema minor exactly.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Merge conflicts always surfaced explicitly (negative-tested).
+- Zero unknown-metadata loss proven.
+- Model covers every schema cell construct.
+- No output construct is dropped or reordered on round trip.
+- Parse is proven side-effect-free (no execution/render hooks reachable).
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Sanitization catalog documented with per-mode tests.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Trust behavior proven against modification scenarios.
+- No silent version relabeling; conversion ledger complete (tested).
+- Target-minor schema compliance proven on the official corpus.
+- Writer round-trips the official corpus with zero semantic loss.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: IPYNB-ATTACH-001
+  provenance:
+  - POL-EXD-ATTACH-01
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00009
+- capability_id: IPYNB-CLEAN-001
+  provenance:
+  - POL-EXD-CLEAN-01
+  - SAL-IPYNB-00017
+  - RF-NB-00002
+- capability_id: IPYNB-DIFF-001
+  provenance:
+  - POL-EXD-DIFF-01
+  - RF-NB-00003
+- capability_id: IPYNB-EDIT-001
+  provenance:
+  - POL-EXD-EDIT-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00016
+- capability_id: IPYNB-EXEC-001
+  provenance:
+  - POL-EXD-EXEC-01
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00018
+- capability_id: IPYNB-EXPORT-001
+  provenance:
+  - POL-EXD-EXPORT-01
+- capability_id: IPYNB-ID-001
+  provenance:
+  - POL-EXD-ID-01
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+- capability_id: IPYNB-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: IPYNB-MERGE-001
+  provenance:
+  - POL-EXD-MERGE-01
+- capability_id: IPYNB-META-001
+  provenance:
+  - POL-EXD-META-01
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00018
+- capability_id: IPYNB-MODEL-001
+  provenance:
+  - POL-EXD-MODEL-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00007
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00015
+  - RF-NB-00001
+- capability_id: IPYNB-OUTPUT-001
+  provenance:
+  - POL-EXD-OUTPUT-01
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00018
+  - SAL-IPYNB-00019
+  - RF-NB-00005
+- capability_id: IPYNB-PARSE-001
+  provenance:
+  - POL-EXD-PARSE-01
+  - POL-EXD-PARSE-02
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00002
+  - SAL-IPYNB-00003
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00007
+  - SAL-IPYNB-00008
+  - SAL-IPYNB-00009
+  - SAL-IPYNB-00010
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00013
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00015
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
+  - SAL-IPYNB-00018
+  - SAL-IPYNB-00019
+- capability_id: IPYNB-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: IPYNB-SANITIZE-001
+  provenance:
+  - POL-EXD-SANITIZE-01
+  - SAL-IPYNB-00011
+- capability_id: IPYNB-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: IPYNB-TRUST-001
+  provenance:
+  - POL-EXD-TRUST-01
+  - SAL-IPYNB-00011
+  - RF-NB-00004
+- capability_id: IPYNB-UPGRADE-001
+  provenance:
+  - POL-EXD-UPGRADE-01
+  - SAL-IPYNB-00001
+  - SAL-IPYNB-00004
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+- capability_id: IPYNB-VALIDATE-001
+  provenance:
+  - POL-EXD-VALIDATE-01
+  - SAL-IPYNB-00005
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00011
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00014
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
+- capability_id: IPYNB-WRITE-001
+  provenance:
+  - POL-EXD-WRITE-01

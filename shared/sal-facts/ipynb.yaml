@@ -2,14 +2,14 @@ format_id: ipynb
 display_name: Jupyter Notebook (nbformat)
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-IPYNB-00001
   qname: FACT-IPYNB-001
   element_qname: ipynb:notebook
-  claim: A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int),
-    nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  claim: A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int), nbformat_minor
+    (int), metadata (object), and cells (list of cell objects)
   section: nbformat 4.5 — top-level structure
   authority: Jupyter nbformat v4.5 Specification
   source: structural_fact_manual
@@ -23,8 +23,8 @@ facts:
 - fact_id: SAL-IPYNB-00002
   qname: FACT-IPYNB-002
   element_qname: ipynb:cell
-  claim: Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and
-    source (string or list of strings); code cells additionally require execution_count and outputs
+  claim: Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and source (string
+    or list of strings); code cells additionally require execution_count and outputs
   section: nbformat 4.5 — cell types
   authority: Jupyter nbformat v4.5 Specification
   source: structural_fact_manual
@@ -38,9 +38,8 @@ facts:
 - fact_id: SAL-IPYNB-00003
   qname: FACT-IPYNB-003
   element_qname: ipynb:output
-  claim: Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream,
-    error}; execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries
-    ename/evalue/traceback
+  claim: Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream, error};
+    execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries ename/evalue/traceback
   section: nbformat 4.5 — cell outputs
   authority: Jupyter nbformat v4.5 Specification
   source: structural_fact_manual
@@ -50,4 +49,241 @@ facts:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00004
+  qname: FACT-IPYNB-4
+  element_qname: nb:notebook
+  claim: A notebook document is a single JSON object whose top level carries nbformat and nbformat_minor integers
+    plus metadata and a cells array
+  section: nbformat - top-level structure
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00005
+  qname: FACT-IPYNB-5
+  element_qname: nb:attachment-ref
+  claim: Attachment references from markdown content use attachment URIs that must resolve to entries in the cell
+    attachments object
+  section: nbformat - attachment references
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00006
+  qname: FACT-IPYNB-6
+  element_qname: nb:cell-metadata
+  claim: Cell metadata may carry tags as a list of distinct strings plus arbitrary tool-namespaced keys that must
+    be preserved
+  section: nbformat - cell metadata
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00007
+  qname: FACT-IPYNB-7
+  element_qname: nb:source
+  claim: Cell source content is either a single string or a list of strings that concatenate to the logical source
+    text
+  section: nbformat - multiline strings
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00008
+  qname: FACT-IPYNB-8
+  element_qname: nb:execution-count
+  claim: Code cells carry an execution_count field that is an integer or null and an outputs array of output objects
+  section: nbformat - code cell
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00009
+  qname: FACT-IPYNB-9
+  element_qname: nb:attachments
+  claim: Markdown and raw cells may carry an attachments object mapping filenames to MIME bundles referenced from
+    cell content
+  section: nbformat - attachments
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00010
+  qname: FACT-IPYNB-10
+  element_qname: nb:kernelspec
+  claim: Notebook metadata carries kernelspec and language_info objects describing the execution kernel and language
+  section: nbformat - notebook metadata
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00011
+  qname: FACT-IPYNB-11
+  element_qname: nb:active-content
+  claim: Notebook outputs may embed active HTML SVG and JavaScript content that renderers execute and processors
+    must treat as untrusted data
+  section: nbformat - output security considerations
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00012
+  qname: FACT-IPYNB-12
+  element_qname: nb:schema-validity
+  claim: Notebooks must validate against the JSON schema matching their declared nbformat and nbformat_minor version
+    pair
+  section: nbformat - validation
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00013
+  qname: FACT-IPYNB-13
+  element_qname: nb:output
+  claim: Output objects declare output_type stream display_data execute_result or error each with its own required
+    fields
+  section: nbformat - output types
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00014
+  qname: FACT-IPYNB-14
+  element_qname: nb:cell-id
+  claim: Since schema minor version 4.5 every cell must carry an id field unique within the notebook conforming
+    to the permitted character set and length rules
+  section: nbformat 4.5 - cell ids
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00015
+  qname: FACT-IPYNB-15
+  element_qname: nb:cell
+  claim: The cells array holds cell objects in document order and each cell declares a cell_type of markdown code
+    or raw
+  section: nbformat - cell types
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00016
+  qname: FACT-IPYNB-16
+  element_qname: nb:version
+  claim: The nbformat version pair identifies the schema version and documents with higher minor versions than the
+    reader supports must still be readable with unknown additions preserved
+  section: nbformat - versioning rules
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00017
+  qname: FACT-IPYNB-17
+  element_qname: nb:unknown-fields
+  claim: Unknown fields beyond the schema are permitted for forward compatibility and conforming tools must preserve
+    them rather than strip them
+  section: nbformat - forward compatibility
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00018
+  qname: FACT-IPYNB-18
+  element_qname: nb:mime-bundle
+  claim: display_data and execute_result outputs carry data objects mapping MIME types to content and metadata objects
+    with per-MIME rendering hints
+  section: nbformat - MIME bundles
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00019
+  qname: FACT-IPYNB-19
+  element_qname: nb:error-output
+  claim: error outputs carry ename evalue and a traceback list of strings
+  section: nbformat - error output
+  authority: Jupyter nbformat specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
     added_at: '2026-07-16'

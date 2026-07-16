@@ -1,0 +1,66 @@
+schema_version: '1.0'
+format_id: csv
+canonical: true
+findings:
+- required_tests:
+  - Streaming iterator produces identical rows to whole-file load on the same fixture.
+  authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    read_operations:
+    - iter_rows(path_or_stream) -> iterator of row objects
+    - load(path_or_stream) -> table model
+  capability_domain: PARSE
+  depth_hint: 3
+  finding_id: RF-CSV-00001
+  kind: api_expectation
+  rationale: Bulk-data pipelines are a primary CSV use case; whole-file loads fail on large exports.
+  requirement: Expose a streaming row iterator that yields row objects without materializing the full
+    table, so multi-gigabyte CSV files can be processed in bounded memory alongside the whole-file load
+    path.
+  review:
+    notes: Matches existing csv package streaming behavior expectations; no normative claim.
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 session review (TC-FCL-030-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-CSV-003
+- security_requirements:
+  - Formula-hazard scan is opt-in, never mutates data, and reports cell coordinates.
+  required_tests:
+  - Hazard scan fixture with leading '=', '+', '-', '@' cells returns exact coordinates; clean fixture
+    returns none.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALIDATE
+  finding_id: RF-CSV-00002
+  kind: security_expectation
+  rationale: CSV cells are executed as formulas by spreadsheet applications; flagging is a product duty
+    even though RFC 4180 is silent on it.
+  requirement: Provide an opt-in formula-hazard scan that flags cells beginning with '=', '+', '-', or
+    '@' before export toward spreadsheet consumers, returning affected row/column coordinates so callers
+    can neutralize spreadsheet formula injection.
+  review:
+    notes: Product-requirement knowledge (ecosystem hazard), correctly outside SAL.
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 session review (TC-FCL-030-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-CSV-003
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: IETF RFC 4180 - Common Format and MIME Type for CSV Files
+  source_id: SRC-CSV-002
+  organization: IETF
+  version: RFC 4180
+  canonical_url: https://www.rfc-editor.org/rfc/rfc4180
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Format Factory CSV developer-workflow observations (installed-package examples and dogfood export
+    paths)
+  source_id: SRC-CSV-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

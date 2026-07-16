@@ -1,0 +1,269 @@
+# Family pack: xml_business (UBL) - L30 policy store
+# Family review dimensions (mission): QName model, schemas, document roots,
+# components, extensions, code lists, business validation, signatures,
+# profiles, references, calculations.
+# STYLE RULE: quoted block-style scalars only (flow mappings truncate at commas).
+schema_version: '1.0'
+family: xml_business
+identity_defaults:
+  data_model_type: xml
+  description_template: "{display_name}: schema-defined XML business-document standard ({spec_body} {spec_version}). Namespaced document types built from shared typed components, exchanged in procurement, invoicing, logistics, and related business workflows."
+  primary_use_cases:
+  - Create, read, edit, validate, and exchange structured business documents between trading partners
+  - Programmatic document assembly from business data with schema-valid output
+  - Compliance validation against schemas, code lists, and profile rules before transmission
+  active_content_model:
+    has_active_content: false
+    policy: "Documents are passive data; signature verification and external reference resolution are opt-in operations, never side effects of parsing."
+scope_defaults:
+  production_complete_target: "Support every document root of the target specification version with its full shared component library: typed read, create, edit, schema-order serialization, layered validation including code lists, extension preservation, signature-safe round trips, and referential integrity."
+  minimum_viable_support: "Recognize document roots by QName, parse into a typed component model, edit core business components, serialize schema-valid output, and run schema plus referential validation with complete diagnostics."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, query: 3, calculate: 6, advanced: 6}
+simplicity_budget:
+  max_capabilities: 40
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: syntax
+  description: "XML well-formedness and namespace conformance."
+- layer: schema
+  description: "Schema validation against the specification's document and component schemas."
+- layer: referential
+  description: "ID uniqueness, cross-references between lines/documents/parties resolve."
+- layer: codelist
+  description: "Coded values validated against official code lists with list/agency/version identifiers."
+- layer: business_rule
+  description: "Profile/customization rulesets plugged in explicitly; never claimed implicitly."
+- layer: security
+  description: "Entity/DTD hardening, size and nesting limits, external-reference policy."
+security_defaults:
+  attack_surfaces:
+  - "XML external entities and DTD expansion enabling file disclosure or denial of service."
+  - "Signature wrapping and namespace spoofing changing semantic identity of signed content."
+  - "Oversized or deeply nested documents exhausting memory or stack."
+  - "External attachment URIs triggering unintended network retrieval."
+  safe_defaults:
+  - "External entities and DTD processing disabled by default; no network fetch during parse or validate."
+  - "Attachment and external-reference retrieval gated by explicit allowlists, byte limits, and timeouts."
+  - "Bounded document size, element count, and nesting depth with configurable limits."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Namespace-aware QName-based document parsing
+  production_meaning: "Document roots and components are recognized by namespace-qualified name, never by local name alone, so semantically different documents are never conflated and namespace tricks are rejected."
+  developer_use_case: "A developer loads any conformant document and the library identifies its exact document type and version regardless of prefix choices."
+  baseline_behavior:
+  - id: POL-XBZ-PARSE-01
+    text: "Resolve every element and attribute by QName; default and prefixed namespace forms with identical expanded names behave identically."
+  - id: POL-XBZ-PARSE-02
+    text: "Reject namespace spoofing and ambiguous QName resolution with diagnostics rather than best-effort guessing."
+  fact_keywords: [namespace, qname, root, xml, element, prefix]
+  required_tests:
+  - "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
+  release_gates:
+  - "All specification document roots recognized by QName with namespace-variation tests."
+- domain: DOCTYPES
+  category: model
+  level: MUST
+  title: Document-type registry and factory
+  production_meaning: "Each specification document type has a distinct root class plus factory operations (create-empty, detect-type, supported-types) so structurally impossible documents cannot be constructed."
+  developer_use_case: "A developer creates a new empty document of a chosen type and enumerates the types the library supports with their coverage state."
+  baseline_behavior:
+  - id: POL-XBZ-DOC-01
+    text: "Expose a distinct typed root per supported document type plus create_empty, detect_document_type, and supported_document_types operations."
+  - id: POL-XBZ-DOC-02
+    text: "Document-type coverage is declared per type (supported/preservation-only/unsupported) - never claimed globally."
+  fact_keywords: [document, invoice, order, credit, root]
+  required_tests:
+  - "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+  release_gates:
+  - "Per-type coverage declaration matches tests; no type claimed without a factory + parse + write proof."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Typed shared-component model
+  production_meaning: "Common components (parties, addresses, amounts, quantities, lines, references, periods) are typed composites reflecting schema hierarchy, order, and cardinality - not generic XML nodes."
+  developer_use_case: "A developer reads a line item's quantity and monetary amount as typed values with their supplementary attributes intact."
+  baseline_behavior:
+  - id: POL-XBZ-MODEL-01
+    text: "Represent shared aggregate components as typed composites and basic components as typed values retaining lexical form where round-trip fidelity requires it."
+  - id: POL-XBZ-MODEL-02
+    text: "Reflect schema element order, cardinality, and optionality in the model so invalid structures are diagnosable at edit time."
+  fact_keywords: [component, aggregate, basic, cac, cbc, type, line, party, amount]
+  required_tests:
+  - "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
+  release_gates:
+  - "Component model covers every element used by first-wave document types."
+- domain: VALUES
+  category: model
+  level: MUST
+  title: Business value types with supplementary attributes
+  production_meaning: "Amounts, quantities, identifiers, dates, and codes use decimal-safe arithmetic and retain currency/unit/scheme/list attributes; binary floating point never silently corrupts money."
+  developer_use_case: "A developer sums line amounts with explicit rounding policy and keeps every currencyID and unitCode intact."
+  baseline_behavior:
+  - id: POL-XBZ-VALUES-01
+    text: "Use decimal arithmetic for amounts and quantities; preserve currencyID, unitCode, listID, schemeID, and related supplementary attributes."
+  - id: POL-XBZ-VALUES-02
+    text: "Preserve timezone and lexical precision of date/time values; expose explicit rounding policies for calculations."
+  fact_keywords: [amount, currency, quantity, unit, identifier, date, code]
+  required_tests:
+  - "Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type."
+  release_gates:
+  - "No monetary path uses binary floating point (audited)."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Business component editing
+  production_meaning: "Parties, lines, references, totals, and attachments can be created, updated, moved, and removed with schema order and references kept consistent, including line renumbering with reference rewrite."
+  developer_use_case: "A developer inserts a line, renumbers, and every cross-reference still resolves after save."
+  baseline_behavior:
+  - id: POL-XBZ-EDIT-01
+    text: "CRUD for core business components with schema-order preservation; edits cannot produce elements the schema forbids at that position."
+  - id: POL-XBZ-EDIT-02
+    text: "Line insertion, removal, movement, and renumbering maintain referential integrity via an explicit reference-rewrite map."
+  fact_keywords: [insert, add, remove, update, edit]
+  required_tests:
+  - "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+  release_gates:
+  - "Every documented mutation proven by round-trip tests."
+- domain: EXT
+  category: preserve
+  level: MUST
+  title: Extension preservation and authoring
+  production_meaning: "Specification extension points round-trip unknown payloads losslessly and allow registered typed extension adapters; unknown extension content is never interpreted as core data."
+  developer_use_case: "A developer round-trips documents carrying national extensions untouched and reads a registered extension through a typed adapter."
+  baseline_behavior:
+  - id: POL-XBZ-EXT-01
+    text: "Read and write extension containers with arbitrary namespaces and payloads without loss; expose registered typed adapters as opt-in."
+  fact_keywords: [extension, ubl_extensions]
+  required_tests:
+  - "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
+  release_gates:
+  - "Extension round-trip proven with large and hostile payload fixtures."
+- domain: CODELIST
+  category: validate
+  level: MUST
+  title: Code-list infrastructure
+  production_meaning: "Official code lists load from their distribution format, map to coded properties, and validate values with list/agency/version identity - deterministic and offline."
+  developer_use_case: "A developer validates coded fields against the official lists and plugs in profile-supplied lists without code changes."
+  baseline_behavior:
+  - id: POL-XBZ-CODELIST-01
+    text: "Load official code-list resources, map them to coded properties, validate identifiers/agencies/versions/values, and support user-supplied lists."
+  fact_keywords: [code, list, genericode]
+  required_tests:
+  - "Known-good and known-bad coded values per first-wave list; offline determinism verified."
+  release_gates:
+  - "Code-list validation produces machine-readable results separated from schema results."
+- domain: REF
+  category: validate
+  level: MUST
+  title: Reference and identifier integrity
+  production_meaning: "IDs and cross-references are indexed; duplicates, broken references, and inconsistent line references are detected; safe ID regeneration rewrites referents."
+  developer_use_case: "A developer merges documents and immediately sees every broken or duplicated reference with paths."
+  baseline_behavior:
+  - id: POL-XBZ-REF-01
+    text: "Index identifiers and references; detect duplicate IDs, broken references, and inconsistent line references with locations."
+  fact_keywords: [reference, id, identifier]
+  required_tests:
+  - "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+  release_gates:
+  - "Referential validation layer has dedicated negative fixtures."
+- domain: PROFILE
+  category: validate
+  level: MUST
+  title: Customization and profile handling
+  production_meaning: "Version/customization/profile identifiers are exposed; profile rulesets are pluggable; conformance to any profile is claimed only when its ruleset is installed and passes."
+  developer_use_case: "A developer runs a profile's validation pack explicitly and gets a profile-scoped verdict, never an implicit claim."
+  baseline_behavior:
+  - id: POL-XBZ-PROFILE-01
+    text: "Expose version, customization, and profile identifiers; allow profile-specific validators to be registered; never claim profile conformance without the installed ruleset passing."
+  fact_keywords: [profile, customization, version]
+  required_tests:
+  - "Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed."
+  release_gates:
+  - "No implicit profile-conformance claims (audited in capability manifest)."
+- domain: SIGN
+  category: preserve
+  level: MUST
+  title: Signature-safe preservation
+  production_meaning: "Enveloped and detached signature structures survive round trips untouched in lossless mode; edits that would invalidate a signature are reported before save."
+  developer_use_case: "A developer edits an unsigned section of a signed document and is warned exactly which signature the edit affects."
+  baseline_behavior:
+  - id: POL-XBZ-SIGN-01
+    text: "Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that invalidate existing signatures before saving."
+  fact_keywords: [signature, sign, digest, certificate]
+  required_tests:
+  - "Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture."
+  release_gates:
+  - "Signature preservation proven; verification/creation explicitly declared separate opt-in scope."
+- domain: CALC
+  category: calculate
+  level: SHOULD
+  title: Business-total calculation and reconciliation
+  production_meaning: "Line extensions, allowances/charges, taxes, and payable totals calculate under explicit policies and reconcile against declared totals with configurable tolerances - never silently mutating declared values."
+  developer_use_case: "A developer validates that declared totals match calculated totals under the profile's rounding rules and receives per-total deltas."
+  baseline_behavior:
+  - id: POL-XBZ-CALC-01
+    text: "Calculate document totals under explicit rounding/tolerance policies and compare to declared totals without mutating them unless repair mode is explicitly requested."
+  fact_keywords: [total, tax, sum, calculation, extension_amount]
+  required_tests:
+  - "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
+  release_gates:
+  - "Calculation policies documented; reconciliation never mutates by default (tested)."
+- domain: QUERY
+  category: query
+  level: MUST
+  title: Domain and QName query
+  production_meaning: "Components are findable by QName, type, ID, business role, and line/party/item identifiers with path-aware results usable on large documents."
+  developer_use_case: "A developer finds every line referencing an item identifier and gets paths plus typed nodes back."
+  baseline_behavior:
+  - id: POL-XBZ-QUERY-01
+    text: "Find components by QName, type, ID, and business identifiers with path-aware results; offer read-only indexed views for large documents."
+  fact_keywords: [find, query, lookup]
+  required_tests:
+  - "Query result paths verified against fixtures; indexed and linear scans agree."
+  release_gates:
+  - "Query API covers the identifier kinds used by first-wave document types."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered validation orchestration
+  production_meaning: "Well-formedness, schema, referential, code-list, and business-rule layers run as separately reportable validation stages returning all diagnostics, so pipelines gate on machine-readable per-layer results."
+  developer_use_case: "A developer validates a document once and receives per-layer verdicts (schema vs code list vs profile) with complete diagnostics instead of a single opaque failure."
+  baseline_behavior:
+  - id: POL-XBZ-VALIDATE-01
+    text: "Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable layers, returning all diagnostics with paths rather than stopping at the first error."
+  fact_keywords: [valid, schema, conform, must]
+  required_tests:
+  - "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+  release_gates:
+  - "Layered validation has separate machine-readable results per layer."
+- domain: UPGRADE
+  category: transform
+  level: SHOULD
+  title: Version inspection and migration framework
+  production_meaning: "Older specification versions are detected where practical and migrate through explicit transforms with a migration report of mapped, dropped, synthesized, and unresolved constructs - never silently relabeled as the target version."
+  developer_use_case: "A developer feeds an older-version document and receives either a migrated, validated document plus report, or an explicit unsupported-version verdict."
+  baseline_behavior:
+  - id: POL-XBZ-UPGRADE-01
+    text: "Detect older specification versions where practical; migrate via explicit transforms producing a migration report; never label a document as the target version without structural migration and validation."
+  fact_keywords: [version, upgrade, migration]
+  required_tests:
+  - "Older-version fixtures: migrate-with-report and unsupported-refusal paths."
+  release_gates:
+  - "No silent version relabeling (negative-tested)."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Schema-order-aware serialization
+  production_meaning: "Serialization emits schema-valid element order regardless of property-set order, with canonical namespace-prefix and formatting policies plus lossless mode."
+  developer_use_case: "A developer sets properties in any order and the output always validates against the schema."
+  baseline_behavior:
+  - id: POL-XBZ-WRITE-01
+    text: "Write elements in schema-valid order independent of mutation order; offer canonical prefix/formatting policies and lossless mode preserving significant lexical values."
+  fact_keywords: [write, serialize, emit, output]
+  required_tests:
+  - "Out-of-order property assignment still yields schema-valid output; determinism byte-compare."
+  release_gates:
+  - "Writer output schema-validates for every first-wave type; determinism proven."

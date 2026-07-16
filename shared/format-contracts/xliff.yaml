@@ -1,0 +1,859 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-XLIFF-V1
+  format_id: xliff
+  format_canonical_name: XLIFF (XML Localisation Interchange File Format)
+  extensions:
+  - .xliff
+  - .xlf
+  family: xml_localization
+  target_spec_version: XLIFF 2.1
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
+    qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
+    research_sha256: 5efc3d82a30045dac295461a67a481abb8c28b6e2b9cbcfcaf4434a81657f58c
+    sal_facts_sha256: 566738660e95f95e4d70a1027635090936c1cb147f753cbf75b7f1a5af9d211d
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Localization data is passive; external resource-data resolution is opt-in through a secure
+      resolver.
+  data_model_type: xml
+  description: 'XLIFF (XML Localisation Interchange File Format): XML localization-interchange standard
+    (OASIS XLIFF 2.1). Source/target text units with inline codes, segmentation, annotations, and optional
+    modules, exchanged across translation tools and workflows.'
+  primary_use_cases:
+  - Extract translatable content, translate, and merge back without corrupting the original format
+  - Segment, annotate, and track translation state across tool chains
+  - Preserve inline formatting codes and tool-specific extensions through round trips
+authoritative_sources:
+- title: OASIS XLIFF 2.1
+  source_id: SRC-XLIFF-001
+  organization: OASIS
+  version: XLIFF 2.1
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: OASIS XLIFF Version 2.x specification (core and modules)
+  source_id: SRC-XLF-002
+  organization: OASIS
+  version: XLIFF 2.x
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
+  source_id: SRC-XLF-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Parse core structure (files, groups, units, segments) with the inline-code model
+    intact, edit target content safely, and write schema-valid output that downstream mergers accept.
+  production_complete_target: Read, create, edit, segment, annotate, validate, and write the full core
+    model plus every optional module of the target version, preserving inline-code relationships, extensions,
+    and mergeability guarantees end to end.
+capabilities:
+- release_gates:
+  - Inline-code integrity proven not to corrupt mergeability.
+  capability_id: XLIFF-INLINE-001
+  level: MUST
+  category: model
+  title: Inline-code model
+  production_meaning: Inline codes (paired and standalone), their identity, nesting, and original-data
+    references are a token model - never flattened to plain text - and illegal pairings are unrepresentable
+    or diagnosed.
+  developer_use_case: A developer reorders translated text around inline codes and cannot silently orphan
+    or cross paired codes.
+  provenance:
+  - POL-XLC-INLINE-01
+  - POL-XLC-INLINE-02
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00016
+  - RF-XLF-00002
+  required_behavior:
+  - Expose inline content as a token tree/sequence preserving paired-code relationships, identity, nesting,
+    and original-data references.
+  - Prevent or diagnose edits that orphan, duplicate, cross, or illegally reorder paired codes before
+    save.
+  - Represent inline content as a token sequence preserving paired-code identity and nesting, and refuse
+    edits that orphan, cross, duplicate, or illegally reorder paired codes - the mergeability guarantee
+    translation tools depend on.
+  normative_rules:
+  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
+    and paired codes must nest without crossing for the document to be valid
+  - (XLIFF core - inline elements) Inline placeholder codes are represented by ph elements and paired
+    codes by pc elements or sc/ec start-end pairs with id attributes binding the pair
+  - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
+    unique within their specification-defined scope and references must resolve
+  - (XLIFF core - annotations) mrk elements annotate inline spans and sm/em elements mark span boundaries
+    where spans overlap element structure
+  - (XLIFF core - original data) originalData elements carry native code data referenced from inline codes
+    via dataRef attributes
+  depth_required: 5
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+    original data.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: XLIFF-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Merge reversibility proven per shipped adapter.
+  capability_id: XLIFF-MERGE-001
+  level: SHOULD
+  category: transform
+  title: Extraction and merge framework
+  production_meaning: Adapter interfaces support extracting source formats and merging targets back with
+    skeleton/original-data mappings; source drift and stale skeletons are detected before merge.
+  developer_use_case: A developer merges translations back and drifted sources are refused with a drift
+    report instead of corrupting output.
+  provenance:
+  - POL-XLC-MERGE-01
+  - SAL-XLIFF-00017
+  required_behavior:
+  - Provide extraction/merge adapter interfaces with reversible skeleton mappings; detect source drift
+    and stale skeletons before merge; never claim generic extraction without format-specific adapters.
+  normative_rules:
+  - (XLIFF core - skeleton) skeleton elements carry or reference the non-translatable document skeleton
+    needed to reconstruct the original file on merge
+  depth_required: 4
+  depth_rationale: 'SHOULD transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Merge with intact and drifted sources; drift refused with report.
+- release_gates:
+  - Every core structural element covered by model tests.
+  capability_id: XLIFF-MODEL-001
+  level: MUST
+  category: model
+  title: Complete core structural model
+  production_meaning: Files, groups, units, segments, ignorables, skeleton, and notes are typed with tree
+    order, IDs, inheritance, and scope preserved - the mergeability substrate.
+  developer_use_case: A developer walks files-groups-units-segments with inherited attributes resolved
+    and originals preserved.
+  provenance:
+  - POL-XLC-MODEL-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00019
+  - RF-XLF-00001
+  required_behavior:
+  - Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through
+    edits.
+  - Expose the document hierarchy as typed XliffDocument/XliffFile/XliffGroup/XliffUnit/ XliffSegment
+    objects with tree order and inherited attributes resolved, so tools navigate structure without XML
+    spelunking.
+  normative_rules:
+  - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
+    urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
+    or more <file> elements each holding translation units
+  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
+    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
+    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (XLIFF core - file element) The xliff root element contains one or more file elements each carrying
+    an id attribute unique within the document
+  - (XLIFF core - structural elements) file elements contain unit elements optionally nested in group
+    elements forming the structural tree of translatable content
+  - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
+    unique within their specification-defined scope and references must resolve
+  - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
+    attached to files groups or units
+  - (XLIFF core - skeleton) skeleton elements carry or reference the non-translatable document skeleton
+    needed to reconstruct the original file on merge
+  - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
+    children carry translatable text and whose target children carry translations
+  depth_required: 4
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+- release_gates:
+  - All target-version modules covered or explicitly declared preservation-only; production-complete requires
+    all modeled.
+  capability_id: XLIFF-MODULE-001
+  level: MUST
+  category: preserve
+  title: Optional-module support with explicit coverage
+  production_meaning: Every optional module of the target version is either fully modeled or explicitly
+    preservation-only in the capability manifest - silent module downgrade is forbidden.
+  developer_use_case: A developer inspects module coverage programmatically before relying on module data.
+  provenance:
+  - POL-XLC-MODULE-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00015
+  - RF-XLF-00003
+  required_behavior:
+  - Declare per-module coverage (modeled/preservation-only/unsupported); preserve unknown module content
+    losslessly; never drop module data silently.
+  - Declare per-module coverage programmatically (modeled, preservation-only, or unsupported) for every
+    optional module of the target version, and preserve unknown module content losslessly - production-complete
+    status requires all modules modeled.
+  normative_rules:
+  - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
+    urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
+    or more <file> elements each holding translation units
+  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
+    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
+    extension points
+  - (XLIFF modules - resource data with external references) The Resource Data module references external
+    resource payloads that processors resolve only under explicit policy
+  - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
+    module content valid against its module schema
+  - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
+    attached to files groups or units
+  depth_required: 4
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Per-module round-trip fixtures; coverage manifest matches behavior.
+- release_gates:
+  - Annotation model covered including overlap cases.
+  capability_id: XLIFF-NOTE-001
+  level: MUST
+  category: model
+  title: Notes and annotations
+  production_meaning: Note groups, priorities, categories, and annotation spans (including overlapping
+    start/end markers) are represented and survive edits.
+  developer_use_case: A reviewer attaches an annotation over a span crossing segment content and it round-trips.
+  provenance:
+  - POL-XLC-NOTE-01
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+  required_behavior:
+  - Support notes with priorities/categories and annotation spans with valid marker relationships, including
+    overlapping structures the standard permits.
+  normative_rules:
+  - (XLIFF core - annotations) mrk elements annotate inline spans and sm/em elements mark span boundaries
+    where spans overlap element structure
+  - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
+    attached to files groups or units
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Overlapping-annotation fixtures round-trip; marker pairing validated.
+- release_gates:
+  - Version matrix documented and covered by parse tests.
+  capability_id: XLIFF-PARSE-001
+  level: MUST
+  category: parse
+  title: Version-aware namespace parsing
+  production_meaning: Declared versions and namespaces are validated for consistency; different major/minor
+    versions are recognized distinctly; legacy versions are separate adapters, never silently treated
+    as current.
+  developer_use_case: A developer loads files from mixed tool chains and the library reports exact version
+    and module namespaces in use.
+  provenance:
+  - POL-XLC-PARSE-01
+  - POL-XLC-PARSE-02
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00003
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00016
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+  required_behavior:
+  - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom
+    extension namespaces and attributes.
+  - Never interpret an unsupported or legacy version as the target version; route it to an explicit compatibility
+    adapter or refuse with diagnostics.
+  normative_rules:
+  - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
+    urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
+    or more <file> elements each holding translation units
+  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
+    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
+    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (XLIFF core - document root) An XLIFF 2.x document is rooted at an xliff element in the urn:oasis:names:tc:xliff:document
+    namespace with a required version attribute and srcLang attribute
+  - (XLIFF core - extensibility and agent obligations) Custom extension elements and attributes from foreign
+    namespaces are permitted at defined extension points and must be preserved by conforming agents
+  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
+    and paired codes must nest without crossing for the document to be valid
+  - (XLIFF core - inline elements) Inline placeholder codes are represented by ph elements and paired
+    codes by pc elements or sc/ec start-end pairs with id attributes binding the pair
+  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
+    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
+    extension points
+  - (XLIFF modules - resource data with external references) The Resource Data module references external
+    resource payloads that processors resolve only under explicit policy
+  - (XLIFF core - version attribute) The version attribute on the xliff root identifies the specification
+    version and namespace-version consistency is required for validity
+  - (XLIFF core - file element) The xliff root element contains one or more file elements each carrying
+    an id attribute unique within the document
+  - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
+    module content valid against its module schema
+  - (XLIFF core - structural elements) file elements contain unit elements optionally nested in group
+    elements forming the structural tree of translatable content
+  - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
+    unique within their specification-defined scope and references must resolve
+  - (XLIFF core - annotations) mrk elements annotate inline spans and sm/em elements mark span boundaries
+    where spans overlap element structure
+  - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
+    attached to files groups or units
+  - (XLIFF core - original data) originalData elements carry native code data referenced from inline codes
+    via dataRef attributes
+  - (XLIFF core - skeleton) skeleton elements carry or reference the non-translatable document skeleton
+    needed to reconstruct the original file on merge
+  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
+    the specification-defined translation states
+  - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
+    children carry translatable text and whose target children carry translations
+  - (XLIFF core - whitespace and language) xml:space and xml:lang attributes govern whitespace handling
+    and language identification and must be honored on round trip
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: XLIFF-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - QA severity taxonomy documented and machine-readable.
+  capability_id: XLIFF-QA-001
+  level: SHOULD
+  category: validate
+  title: Localization quality checks
+  production_meaning: Missing/unchanged targets, code mismatches, whitespace/punctuation drift, length
+    violations, and inconsistent translations are pluggable QA checks kept separate from conformance errors.
+  developer_use_case: A reviewer runs a QA profile and triages warnings without conflating them with format
+    errors.
+  provenance:
+  - POL-XLC-QA-01
+  required_behavior:
+  - Provide pluggable QA checks (missing/unchanged targets, placeholder mismatches, drift, length, consistency)
+    reported separately from conformance diagnostics.
+  depth_required: 5
+  depth_rationale: 'SHOULD validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - QA fixtures per check; separation from conformance results asserted.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: XLIFF-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Segmentation proven mergeability-safe.
+  capability_id: XLIFF-SEG-001
+  level: MUST
+  category: transform
+  title: Segmentation operations
+  production_meaning: Split/join/reorder-where-legal maintain IDs, state, inline-code validity, and references,
+    with a machine-readable segment mapping report after structural change.
+  developer_use_case: A developer re-segments a unit and hands the mapping report downstream so references
+    stay valid.
+  provenance:
+  - POL-XLC-SEG-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00019
+  - RF-XLF-00004
+  required_behavior:
+  - Split and join segments maintaining IDs, state, inline-code validity, annotations, and references;
+    produce a segment mapping report after structural edits.
+  - Produce a machine-readable segment mapping report after every split/join so downstream merge tooling
+    can rebind references across re-segmentation.
+  normative_rules:
+  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
+    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
+    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
+    children carry translatable text and whose target children carry translations
+  depth_required: 5
+  depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Split/join fixtures verify code validity and mapping-report accuracy.
+- release_gates:
+  - State handling matches the specification's state model exactly.
+  capability_id: XLIFF-STATE-001
+  level: MUST
+  category: model
+  title: Translation-state workflow
+  production_meaning: Target state/substate are exposed with configurable transition validation; proprietary
+    meanings are never invented for standard states.
+  developer_use_case: A workflow engine advances unit states and invalid transitions are diagnosed per
+    configured policy.
+  provenance:
+  - POL-XLC-STATE-01
+  - SAL-XLIFF-00018
+  required_behavior:
+  - Expose target state and substate without inventing proprietary semantics; allow configurable workflow
+    transition validation.
+  normative_rules:
+  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
+    the specification-defined translation states
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Transition-policy fixtures (legal and illegal transitions).
+- release_gates:
+  - Text editing proven safe against code corruption.
+  capability_id: XLIFF-TEXT-001
+  level: MUST
+  category: edit
+  title: Source/target text editing
+  production_meaning: Source and target content edit with inline-code positions preserved; plain-text
+    and token-aware projections stay consistent; whitespace and language attributes survive.
+  developer_use_case: A translator tool sets target text from a token projection and the codes land in
+    legal positions.
+  provenance:
+  - POL-XLC-TEXT-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  required_behavior:
+  - Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections;
+    support target creation from source with explicit code-copy policy.
+  normative_rules:
+  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
+    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
+    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
+    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
+    extension points
+  - (XLIFF modules - resource data with external references) The Resource Data module references external
+    resource payloads that processors resolve only under explicit policy
+  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
+    the specification-defined translation states
+  - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
+    children carry translatable text and whose target children carry translations
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+- release_gates:
+  - Every documented constraint class has negative-test coverage.
+  capability_id: XLIFF-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Core and module validation
+  production_meaning: Well-formedness, schema, structural, referential, and semantic constraints (including
+    source/target consistency and inline pairing) validate at document/file/unit/segment scopes with complete
+    diagnostics.
+  developer_use_case: A pipeline gates hand-off on unit-scope validation and receives every violation
+    with paths.
+  provenance:
+  - POL-XLC-VALIDATE-01
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00020
+  - RF-XLF-00005
+  required_behavior:
+  - Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target
+    consistency, module constraints) at multiple scopes.
+  - Build validation matrices covering every core structural and inline element plus each optional module,
+    including deeply nested and overlapping markers, paired-code errors, bidi content, and supplementary
+    Unicode code points.
+  normative_rules:
+  - (XLIFF core - extensibility and agent obligations) Custom extension elements and attributes from foreign
+    namespaces are permitted at defined extension points and must be preserved by conforming agents
+  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
+    and paired codes must nest without crossing for the document to be valid
+  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
+    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
+    extension points
+  - (XLIFF core - version attribute) The version attribute on the xliff root identifies the specification
+    version and namespace-version consistency is required for validity
+  - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
+    module content valid against its module schema
+  - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
+    unique within their specification-defined scope and references must resolve
+  - (XLIFF core - whitespace and language) xml:space and xml:lang attributes govern whitespace handling
+    and language identification and must be honored on round trip
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+  - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+- release_gates:
+  - Custom extensions survive load-save unchanged in lossless mode (tested).
+  capability_id: XLIFF-WRITE-001
+  level: MUST
+  category: write
+  title: Lossless and normalized serialization
+  production_meaning: Output preserves extensions and module content, writes schema-valid order and namespaces,
+    offers deterministic prefixing/formatting, and reports any version-downgrade loss before writing.
+  developer_use_case: A developer saves in lossless mode and the downstream merger receives byte-compatible
+    skeleton references.
+  provenance:
+  - POL-XLC-WRITE-01
+  - RF-XLF-00006
+  required_behavior:
+  - Preserve custom extensions and modules on write; deterministic prefixing/formatting; report version-downgrade
+    loss before writing.
+  - Round-trip custom extensions byte-semantically in lossless mode and report any version-downgrade loss
+    before writing, so no tool in the chain silently loses vendor data.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Lossless round-trip of extension-rich fixtures; determinism byte-compare.
+public_api_contract:
+  mutation_operations:
+  - segment.set_target_tokens(tokens)
+  - unit.split_segment(...)
+  - unit.join_segments(...)
+  read_operations:
+  - document.files()
+  - unit.segments()
+  - segment.get_source_tokens()
+  root_types:
+  - XliffDocument
+  - XliffFile
+  - XliffUnit
+  - XliffSegment
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: XML well-formedness and version/namespace consistency.
+    layer: syntax
+  - description: Official schema validation for core and used modules.
+    layer: schema
+  - description: Tree constraints - IDs, nesting, order, scope inheritance.
+    layer: structural
+  - description: Inline-code pairing, marker pairing, and cross-references resolve.
+    layer: referential
+  - description: Constraints schemas cannot express - source/target consistency, state transitions.
+    layer: semantic
+  - description: Size/nesting limits; resource-data resolution policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - XML external entities and DTD expansion during parsing.
+  - External resource-data references triggering unintended retrieval.
+  - Deeply nested groups/units exhausting stack or memory.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - External entities disabled; resource-data resolution opt-in with allowlists and limits.
+  - Bounded nesting depth and document size with configurable limits.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+  original data.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Merge with intact and drifted sources; drift refused with report.
+- Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+- Per-module round-trip fixtures; coverage manifest matches behavior.
+- Overlapping-annotation fixtures round-trip; marker pairing validated.
+- Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- QA fixtures per check; separation from conformance results asserted.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Split/join fixtures verify code validity and mapping-report accuracy.
+- Transition-policy fixtures (legal and illegal transitions).
+- Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+- Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+- Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+- Lossless round-trip of extension-rich fixtures; determinism byte-compare.
+release_gates:
+- Inline-code integrity proven not to corrupt mergeability.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Merge reversibility proven per shipped adapter.
+- Every core structural element covered by model tests.
+- All target-version modules covered or explicitly declared preservation-only; production-complete requires
+  all modeled.
+- Annotation model covered including overlap cases.
+- Version matrix documented and covered by parse tests.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- QA severity taxonomy documented and machine-readable.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Segmentation proven mergeability-safe.
+- State handling matches the specification's state model exactly.
+- Text editing proven safe against code corruption.
+- Every documented constraint class has negative-test coverage.
+- Custom extensions survive load-save unchanged in lossless mode (tested).
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: XLIFF-INLINE-001
+  provenance:
+  - POL-XLC-INLINE-01
+  - POL-XLC-INLINE-02
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00016
+  - RF-XLF-00002
+- capability_id: XLIFF-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: XLIFF-MERGE-001
+  provenance:
+  - POL-XLC-MERGE-01
+  - SAL-XLIFF-00017
+- capability_id: XLIFF-MODEL-001
+  provenance:
+  - POL-XLC-MODEL-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00019
+  - RF-XLF-00001
+- capability_id: XLIFF-MODULE-001
+  provenance:
+  - POL-XLC-MODULE-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00015
+  - RF-XLF-00003
+- capability_id: XLIFF-NOTE-001
+  provenance:
+  - POL-XLC-NOTE-01
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+- capability_id: XLIFF-PARSE-001
+  provenance:
+  - POL-XLC-PARSE-01
+  - POL-XLC-PARSE-02
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00003
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00016
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+- capability_id: XLIFF-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: XLIFF-QA-001
+  provenance:
+  - POL-XLC-QA-01
+- capability_id: XLIFF-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: XLIFF-SEG-001
+  provenance:
+  - POL-XLC-SEG-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00019
+  - RF-XLF-00004
+- capability_id: XLIFF-STATE-001
+  provenance:
+  - POL-XLC-STATE-01
+  - SAL-XLIFF-00018
+- capability_id: XLIFF-TEXT-001
+  provenance:
+  - POL-XLC-TEXT-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+- capability_id: XLIFF-VALIDATE-001
+  provenance:
+  - POL-XLC-VALIDATE-01
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00020
+  - RF-XLF-00005
+- capability_id: XLIFF-WRITE-001
+  provenance:
+  - POL-XLC-WRITE-01
+  - RF-XLF-00006

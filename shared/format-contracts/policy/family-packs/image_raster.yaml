@@ -1,0 +1,121 @@
+# Family pack: image_raster (QOI, XCF, PBM, PGM, PPM) - L30 policy store
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: image_raster
+identity_defaults:
+  data_model_type: raster
+  description_template: "{display_name}: raster image format ({spec_body} {spec_version}). Header-described pixel data (and layers/channels where defined) used in imaging pipelines and tooling."
+  primary_use_cases:
+  - Decode and encode images with exact pixel fidelity
+  - Inspect image structure (dimensions, channels, layers) without full decode
+  - Convert between raster representations safely
+  active_content_model:
+    has_active_content: false
+    policy: "Images are passive data; no embedded content is executed or rendered by the library."
+scope_defaults:
+  production_complete_target: "Complete header and pixel-data model for the target specification including all channel/depth/variant forms and (where defined) layers, properties, and compression, with validation and deterministic writing."
+  minimum_viable_support: "Decode and encode conformant images with exact pixel round-trip, dimension/depth validation, and bounded-memory behavior on large images."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, transform: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 20
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: structural
+  description: "Magic/header rules, dimension/depth fields, section structure."
+- layer: payload
+  description: "Pixel-data size vs declared dimensions; compression integrity."
+- layer: security
+  description: "Dimension bombs, allocation limits, malformed-compression guards."
+security_defaults:
+  attack_surfaces:
+  - "Huge declared dimensions causing over-allocation before payload checks."
+  - "Malformed or hostile compressed pixel data causing runaway decode."
+  safe_defaults:
+  - "Checked dimension arithmetic and configurable pixel-count limits before allocation."
+  - "Bounded decode with corruption positions reported."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Header and pixel decoding
+  production_meaning: "Magic/header variants and every specified pixel encoding decode exactly, with dimensions validated before allocation."
+  developer_use_case: "A developer decodes any conformant image and gets exact pixels with structure metadata."
+  baseline_behavior:
+  - id: POL-IMG-PARSE-01
+    text: "Decode every specified header variant and pixel encoding with dimension/depth validation before payload allocation."
+  fact_keywords: [magic, header, width, height, pixel, channel, depth]
+  required_tests:
+  - "Variant matrix decodes; dimension-bomb and truncation negatives."
+  release_gates:
+  - "All specified variants decode with pixel-exact fixtures."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Typed image model
+  production_meaning: "Dimensions, channels, depth, and (where defined) layers/properties are typed and inspectable without full pixel decode."
+  developer_use_case: "A developer inspects layer structure of a large file instantly."
+  baseline_behavior:
+  - id: POL-IMG-MODEL-01
+    text: "Expose typed image structure (dimensions, channels, depth, layers/properties where defined) with header-only inspection."
+  fact_keywords: [layer, channel, property, image]
+  required_tests:
+  - "Header-only inspection fixtures match full-decode truth."
+  release_gates:
+  - "Model covers every structural construct of the specification."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Image mutation
+  production_meaning: "Pixels and structural elements (layers/properties where defined) can be modified with invariants (dimension consistency, depth rules) enforced."
+  developer_use_case: "A developer edits pixel regions or renames a layer and saves a valid file."
+  baseline_behavior:
+  - id: POL-IMG-EDIT-01
+    text: "Support pixel-region and structural edits maintaining dimension/depth invariants."
+  fact_keywords: [set, modify, edit]
+  required_tests:
+  - "Edit round trips with pixel-exact verification outside edited regions."
+  release_gates:
+  - "Every mutation class round-trip proven."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Structure and payload validation
+  production_meaning: "Header rules, payload sizes, and compression integrity validate with positions before processing."
+  developer_use_case: "A pipeline rejects malformed images with exact reasons."
+  baseline_behavior:
+  - id: POL-IMG-VALIDATE-01
+    text: "Validate header rules, declared-vs-actual payload sizes, and compression integrity with position diagnostics."
+  fact_keywords: [valid, must, size]
+  required_tests:
+  - "Negative matrix per rule with positions asserted."
+  release_gates:
+  - "Every documented rule has negative coverage."
+- domain: CONVERT
+  category: transform
+  level: SHOULD
+  title: Representation conversion
+  production_meaning: "Depth/channel/variant conversions run under explicit policies with reports; exports to sibling formats preserve pixels exactly where representable."
+  developer_use_case: "A developer converts between family variants with a loss report when depth narrows."
+  baseline_behavior:
+  - id: POL-IMG-CONVERT-01
+    text: "Convert depth/channels/variants under explicit policies with conversion reports; pixel-exact where representable."
+  fact_keywords: [convert, export]
+  required_tests:
+  - "Conversion matrix with pixel-exact and lossy-report cases."
+  release_gates:
+  - "Conversions policy-governed and reported."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Deterministic encoding
+  production_meaning: "Writers emit conformant files deterministically; decode-encode-decode is pixel-exact."
+  developer_use_case: "A developer re-encodes an image and pixel data survives bit-exact."
+  baseline_behavior:
+  - id: POL-IMG-WRITE-01
+    text: "Encode every supported variant conformantly and deterministically; decode-encode-decode is pixel-exact."
+  fact_keywords: [write, encode, save]
+  required_tests:
+  - "Determinism byte-compare; pixel-exact re-encode matrix."
+  release_gates:
+  - "Writer proven pixel-exact across the variant matrix."

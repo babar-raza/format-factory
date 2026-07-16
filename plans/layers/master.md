@@ -17,8 +17,8 @@ control_plane_binding:
   bootstrap_session: "923e237958c1"
   bootstrap_sprint: "lp-bootstrap"
   bootstrap_date: "2026-06-26"
-  total_layers: 29
-  total_permanent_files: 35
+  total_layers: 30
+  total_permanent_files: 36
 ```
 
 ---
@@ -79,8 +79,9 @@ NO MASTER/INDEX SYNC → NO SPRINT CLOSURE
 
 ## 4. Canonical Layer Taxonomy
 
-29 accepted independent layers across 4 architecture planes. See `plans/layers/decision-register.yaml`
-for full taxonomy decisions (DEC-001 through DEC-028).
+30 accepted independent layers across 4 architecture planes. See `plans/layers/decision-register.yaml`
+for full taxonomy decisions (DEC-001 through DEC-028; L30 Format Contract Layer added by DEC-038,
+mission FCL-MACHINERY-2026-07-16).
 
 **Merged:** `taskcard-work-queue-layer` → merged into L10 plan-prompt-authority-layer (DEC-015)
 
@@ -88,7 +89,7 @@ for full taxonomy decisions (DEC-001 through DEC-028).
 
 | Plane | Layer IDs | Purpose |
 |-------|-----------|---------|
-| SYSTEM_HEALING | L01, L02, L03, L04, L14, L27 | Spec pipeline: SAL → QName → Capability → Feature |
+| SYSTEM_HEALING | L01, L02, L03, L04, L14, L27, L30 | Spec pipeline: SAL → QName → Contract → Capability → Feature |
 | PRODUCT | L06, L07, L15, L16, L17, L18, L19 | Product source, tests, release |
 | GOVERNANCE | L08, L09, L10, L11, L12, L13, L20, L21, L22, L23, L24, L25, L26 | Execution control, policy, evidence |
 | ORACLE | L05 | Conformance verification |
@@ -126,13 +127,15 @@ for full taxonomy decisions (DEC-001 through DEC-028).
 | L27 Obligation | format-language-obligation-layer.md | NOT_ASSESSED | 1/5 | 3 | TC-OBL-001 | None |
 | L28 CertAudit | certification-audit-layer.md | GOVERNED_OPERATIONAL | 4/5 | 4 | TC-CERT-L-003 | None |
 | L29 OpControl | operational-control-record-layer.md | GOVERNED_OPERATIONAL | 4/5 | 5 | Extend trust_registry | None |
+| L30 FormatContract | format-contract-layer.md | GOVERNED_OPERATIONAL | 3/5 | 4 | TC-FCL-090 | None |
 
 ## 7. Layer Dependency Graph
 
 ```
 External Specs
     ↓
-[L01 SAL] ──────────────────────→ [L02 QName] → [L03 Capability] → [L14 Feature Compiler]
+[L01 SAL] ──────────────────────→ [L02 QName] → [L30 Format Contract] → [L03 Capability] → [L14 Feature Compiler]
+                                       (L27 Obligation → L30 when mature)
     ↓                                                                        ↓
     └────────────────────────────��─────────────────────────��───→ [L06 Product Architecture]
                                                                              ↓

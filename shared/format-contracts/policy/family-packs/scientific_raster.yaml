@@ -1,0 +1,220 @@
+# Family pack: scientific_raster (NRRD, SAFETENSORS) - L30 policy store
+# Family review dimensions (mission): dimensions, types, encodings, endian,
+# attached/detached payloads, axis order, orientation, lazy access, streaming,
+# large-data security.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: scientific_raster
+identity_defaults:
+  data_model_type: scientific_array
+  description_template: "{display_name}: N-dimensional array/raster data format ({spec_body} {spec_version}). Header metadata describing typed, dimensioned payloads used for scientific, medical, and machine-learning data."
+  primary_use_cases:
+  - Read and write typed N-dimensional arrays with correct shape, type, and byte order
+  - Header-only and lazy access to very large datasets in bounded memory
+  - Validate untrusted data files safely before allocation or processing
+  active_content_model:
+    has_active_content: false
+    policy: "Payloads are passive data; detached-file resolution follows a secure path policy and never leaves configured roots."
+scope_defaults:
+  production_complete_target: "Complete header parsing for all specified fields and versions, every defined encoding and scalar type, endian correctness, attached and detached payload forms, axis/orientation metadata, lazy and streaming access, layered validation, and lossless canonical writing."
+  minimum_viable_support: "Parse headers with required-field validation, read/write the core encodings and types with correct shape and endian handling, and validate payload size against declared shape before allocation."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, transform: 4, performance: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 40
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: lexical
+  description: "Header line/token rules, magic/version recognition, encodings of the header itself."
+- layer: structural
+  description: "Required and conditional fields, per-axis arity, field ordering/uniqueness."
+- layer: type
+  description: "Scalar type validity, block-size rules, encoding/type compatibility."
+- layer: payload
+  description: "Declared shape/byte count vs actual payload after decoding; trailing-data policy."
+- layer: security
+  description: "Overflow-checked size math, decompression limits, detached-path policy."
+security_defaults:
+  attack_surfaces:
+  - "Multiplicative overflow in sample/byte-count calculations from hostile dimensions."
+  - "Decompression bombs in compressed payload encodings."
+  - "Path traversal through detached data-file references."
+  - "Allocation of the full declared payload before validating encoded size."
+  safe_defaults:
+  - "Checked arithmetic for all size calculations; reject overflow explicitly."
+  - "Decompressed-byte and compression-ratio limits with configurable policy."
+  - "Detached references resolve only inside configured roots; absolute paths gated."
+  - "Header-first validation; no full-payload allocation before size verification."
+domains:
+- domain: HEADER
+  category: parse
+  level: MUST
+  title: Complete header parsing
+  production_meaning: "All magic/version forms, field identifiers, comments, and key/value metadata parse with uniqueness/ordering constraints enforced and unknown metadata preserved."
+  developer_use_case: "A developer inspects any conformant file's full metadata without touching the payload."
+  baseline_behavior:
+  - id: POL-SCR-HEADER-01
+    text: "Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field uniqueness/ordering; preserve unknown metadata and optional-field absence."
+  - id: POL-SCR-HEADER-02
+    text: "Accept the specification's permitted line endings and lexical variants while preserving original lexical form in lossless mode."
+  fact_keywords: [header, magic, field, version, key, comment]
+  required_tests:
+  - "Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip."
+  release_gates:
+  - "All specified header fields implemented with tests."
+- domain: PAYLOAD
+  category: parse
+  level: MUST
+  title: Attached and detached payload handling
+  production_meaning: "Attached and every detached payload form (single file, sequences, lists) read/write with counts validated against dimensions and a secure resolver policy for paths."
+  developer_use_case: "A developer loads a detached-header dataset and file-count or path violations surface before any read."
+  baseline_behavior:
+  - id: POL-SCR-PAYLOAD-01
+    text: "Support attached and all specified detached payload forms with file counts validated against declared dimensions and resolution relative to the header location under a secure path policy."
+  fact_keywords: [data, file, detached, attached, payload]
+  required_tests:
+  - "Each payload form incl. count-mismatch and traversal negatives."
+  release_gates:
+  - "Attached and detached forms pass the full fixture matrix."
+- domain: ENC
+  category: parse
+  level: MUST
+  title: All defined encodings
+  production_meaning: "Every specified payload encoding (raw, text, hex, compressed forms) reads and writes with codec availability exposed and explicit failures when optional codecs are absent."
+  developer_use_case: "A developer queries supported encodings at runtime and receives explicit errors rather than silent fallbacks."
+  baseline_behavior:
+  - id: POL-SCR-ENC-01
+    text: "Read and write every specified encoding using the correct container framing; expose codec availability; fail explicitly when an optional codec is unavailable."
+  fact_keywords: [encoding, raw, gzip, ascii, hex, compress]
+  required_tests:
+  - "Encoding matrix round trips; missing-codec explicit-failure fixture."
+  release_gates:
+  - "All defined encodings round-trip."
+- domain: TYPES
+  category: model
+  level: MUST
+  title: Complete scalar and block types
+  production_meaning: "All specified integer/float widths with aliases plus opaque block types are represented independently of host-language names with validity rules enforced."
+  developer_use_case: "A developer reads a dataset's exact declared type and receives documented host-type mappings."
+  baseline_behavior:
+  - id: POL-SCR-TYPES-01
+    text: "Support every specified scalar type and alias plus block types with their validity rules; represent declared types independently from host-language type names."
+  fact_keywords: [type, int, float, unsigned, block, double]
+  required_tests:
+  - "Type/alias matrix round trips; invalid type/encoding combination negatives."
+  release_gates:
+  - "All specified types and aliases round-trip."
+- domain: SHAPE
+  category: model
+  level: MUST
+  title: Dimensions, axis order, and endian correctness
+  production_meaning: "Dimension counts, per-axis sizes/arity, explicit axis-order semantics, and endian declarations are enforced with checked arithmetic; axis conversion to host order is explicit, never silent."
+  developer_use_case: "A developer converts between format axis order and host array order through an explicit documented operation."
+  baseline_behavior:
+  - id: POL-SCR-SHAPE-01
+    text: "Validate dimension/sizes/per-axis arity with checked multiplication for sample and byte counts; represent the format's axis order explicitly and convert to host order only via explicit operations."
+  - id: POL-SCR-SHAPE-02
+    text: "Enforce endian declaration rules where element size exceeds one byte; byte-swap transparently on read/write; never endian-transform opaque blocks."
+  fact_keywords: [dimension, sizes, axis, endian, order, shape]
+  required_tests:
+  - "Axis-order semantics fixtures; endian matrix; overflow-shape negatives."
+  release_gates:
+  - "Axis semantics proven against ground-truth fixtures."
+- domain: SPACE
+  category: model
+  level: MUST
+  title: Orientation and space metadata
+  production_meaning: "Space names, origins, direction vectors, and measurement frames validate for consistency and expose index-to-world transforms; axis order is never assumed from a space name."
+  developer_use_case: "A medical-imaging developer obtains the index-to-world transform and non-spatial axes are handled correctly."
+  baseline_behavior:
+  - id: POL-SCR-SPACE-01
+    text: "Support space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world transforms; never infer axis order from a named space."
+  fact_keywords: [space, orientation, origin, direction, frame]
+  required_tests:
+  - "Orientation matrices, non-spatial axes, and mismatch negatives."
+  release_gates:
+  - "Transforms verified against reference calculations."
+- domain: ARRAY
+  category: model
+  level: MUST
+  title: Typed N-dimensional array access
+  production_meaning: "Shape/strides/dtype-aware access with slicing, permutation, flip, and crop that update orientation and per-axis metadata correctly; zero-copy views where safe."
+  developer_use_case: "A developer crops a volume and every axis-aligned metadata field follows the crop."
+  baseline_behavior:
+  - id: POL-SCR-ARRAY-01
+    text: "Expose shape, strides, dtype, and axis metadata with element access, slicing, permutation, flip, and crop that update orientation and per-axis metadata; zero-copy views where safe, explicit copies otherwise."
+  fact_keywords: [array, slice, index, element]
+  required_tests:
+  - "Metadata-follows-operation fixtures for each axis operation."
+  release_gates:
+  - "Array operations preserve metadata consistency (tested per op)."
+- domain: LAZY
+  category: performance
+  level: MUST
+  title: Large-data and lazy I/O
+  production_meaning: "Header-only loading, lazy payloads, memory mapping for eligible raw data, and streaming decode for compressed/text payloads keep memory bounded; full-decompression requirements are reported."
+  developer_use_case: "A developer streams a slice from a huge compressed dataset and is told when a request forces full decode."
+  baseline_behavior:
+  - id: POL-SCR-LAZY-01
+    text: "Provide header-only and lazy payload loading, memory mapping for eligible uncompressed data, streaming decode, and region reads where layout permits, reporting when full decompression is required."
+  fact_keywords: [lazy, stream, memory, large, map]
+  required_tests:
+  - "Bounded-memory large-file tests; slice-requires-full-decode reporting fixture."
+  release_gates:
+  - "Header-only, lazy, and bounded-memory paths pass large-data tests."
+- domain: META
+  category: preserve
+  level: MUST
+  title: Metadata fidelity
+  production_meaning: "Optional metadata (content, ranges, units, labels) preserves absence-vs-explicit distinctions and quoting/escaping rules; legacy fields ride along in lossless mode."
+  developer_use_case: "A developer round-trips files with unusual labels/units and nothing is normalized away."
+  baseline_behavior:
+  - id: POL-SCR-META-01
+    text: "Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping rules; carry legacy fields in lossless mode."
+  fact_keywords: [label, unit, min, max, content]
+  required_tests:
+  - "Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions."
+  release_gates:
+  - "Metadata fidelity proven by round trip."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Header and payload validation
+  production_meaning: "Required/conditional fields, per-axis arity, version-feature compatibility, and expected payload size after decoding validate before allocation with complete diagnostics."
+  developer_use_case: "A service validates uploads cheaply (header-first) and rejects shape/payload mismatches with exact reasons."
+  baseline_behavior:
+  - id: POL-SCR-VALIDATE-01
+    text: "Check required and conditional fields, arity, version-feature compatibility, and expected sample/byte counts after decoding; treat trailing payload per policy with reporting."
+  fact_keywords: [valid, required, must, check]
+  required_tests:
+  - "Truncated/oversized payloads, conditional-field negatives, version-feature mismatches."
+  release_gates:
+  - "Validation layer complete against specification rule inventory."
+- domain: CONVERT
+  category: transform
+  level: SHOULD
+  title: Data conversion
+  production_meaning: "Dtype/encoding/endian/layout conversions run with explicit overflow/clipping/rounding policies and produce a conversion report; semantics never change silently."
+  developer_use_case: "A developer converts float data to a narrower type under an explicit clipping policy with a report of affected values."
+  baseline_behavior:
+  - id: POL-SCR-CONVERT-01
+    text: "Convert dtype, encoding, attached/detached form, and endian with explicit overflow/clipping/scaling/rounding policies and a conversion report."
+  fact_keywords: [convert, cast]
+  required_tests:
+  - "Policy matrix fixtures with boundary values."
+  release_gates:
+  - "Conversions policy-governed and reported (no silent semantic change)."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Canonical and lossless writing
+  production_meaning: "Writers select the correct version/magic for used features (or honor explicit targets after validation), preserve optional absence in lossless mode, and order fields deterministically."
+  developer_use_case: "A developer writes a dataset and any conformant reader loads it; rewriting an unchanged file is byte-stable."
+  baseline_behavior:
+  - id: POL-SCR-WRITE-01
+    text: "Write required/conditional fields correctly with version selection honoring used features; preserve optional absence in lossless mode; deterministic field ordering and detached-partition policies."
+  fact_keywords: [write, save, emit]
+  required_tests:
+  - "Version-selection fixtures; determinism byte-compare; detached-partition round trips."
+  release_gates:
+  - "Writer output validated by independent reload across the fixture matrix."

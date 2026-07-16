@@ -1,0 +1,465 @@
+{
+  "format_id": "nrrd",
+  "contract_id": "FC-NRRD-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c",
+    "qname_registry_sha256": "3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92",
+    "research_sha256": "e61259ab0cdbf554a3af3d4155c09cf4cf1b66b84a599db04287df028ebd744c",
+    "sal_facts_sha256": "2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 59,
+  "class_count": 8,
+  "test_file_count": 7,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "NRRD-ARRAY-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 6,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 2,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdWriteError"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-CONVERT-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-ENC-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "decode_nrrd_data",
+        "from_file",
+        "load_nrrd",
+        "probe_nrrd"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "decode_nrrd_data",
+        "from_file",
+        "load_nrrd",
+        "probe_nrrd"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-LAZY-001",
+      "category": "performance",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_nrrd",
+        "write_nrrd"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-PAYLOAD-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "decode_nrrd_data",
+        "from_file",
+        "load_nrrd",
+        "probe_nrrd"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdWriteError"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-SPACE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 1,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdWriteError"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-TYPES-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdWriteError"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "encode_nrrd_data",
+        "write_nrrd"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py",
+        "tests/python/nrrd/test_nrrd_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "with_gap": 7,
+    "by_status": {
+      "NOT_STARTED": 4,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 11,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

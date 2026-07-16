@@ -1,0 +1,46 @@
+# Quality policy - shallow-language blocklist + scoring thresholds (L30 policy store)
+# Versioned; threshold changes require a policy revision entry in the changelog below.
+schema_version: '1.0'
+store_id: quality-policy
+policy_revision: 1
+shallow_phrases:
+  # A requirement line consisting only of (or dominated by) these phrases is BLOCKED
+  # unless expanded with explicit, testable behavior (V235 / contract_validator).
+  - support the format
+  - supports the format
+  - parse all elements
+  - handle metadata
+  - handles metadata
+  - provide crud
+  - validate files
+  - support conversion
+  - process documents
+  - preserve information
+  - add comprehensive tests
+  - full support
+  - complete implementation
+  - handle all cases
+  - works correctly
+  - robust parsing
+min_requirement_line_length: 15
+score_thresholds:
+  blocking: 60
+  review: 80
+score_dimensions:
+  - source_coverage
+  - format_specificity
+  - depth_coverage
+  - api_concreteness
+  - validation_layer_coverage
+  - security_coverage
+  - test_specificity
+  - provenance_strength
+simplicity_budgets:
+  # Anti-overfit control: a simple format's contract must not exceed these bounds.
+  # Applied per family pack via its simplicity_budget key; these are defaults.
+  default:
+    max_capabilities: 40
+    max_requirement_lines_per_capability: 25
+changelog:
+  - revision: 1
+    change: Initial policy (mission FCL-MACHINERY-2026-07-16)

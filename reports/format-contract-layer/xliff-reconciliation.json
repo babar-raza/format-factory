@@ -1,0 +1,514 @@
+{
+  "format_id": "xliff",
+  "contract_id": "FC-XLIFF-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86",
+    "qname_registry_sha256": "b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba",
+    "research_sha256": "5efc3d82a30045dac295461a67a481abb8c28b6e2b9cbcfcaf4434a81657f58c",
+    "sal_facts_sha256": "566738660e95f95e4d70a1027635090936c1cb147f753cbf75b7f1a5af9d211d",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 64,
+  "class_count": 11,
+  "test_file_count": 10,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "XLIFF-INLINE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 1,
+      "product_symbols": [
+        "File",
+        "InlineElement",
+        "Segment",
+        "Unit",
+        "XliffDocument",
+        "XliffError",
+        "XliffFile",
+        "XliffParseError",
+        "XliffSegment",
+        "XliffUnit",
+        "XliffWriteError"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_xliff",
+        "parse_inline_content",
+        "write_xliff"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-MERGE-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "File",
+        "InlineElement",
+        "Segment",
+        "Unit",
+        "XliffDocument",
+        "XliffError",
+        "XliffFile",
+        "XliffParseError",
+        "XliffSegment",
+        "XliffUnit",
+        "XliffWriteError"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-MODULE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-NOTE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "File",
+        "InlineElement",
+        "Segment",
+        "Unit",
+        "XliffDocument",
+        "XliffError",
+        "XliffFile",
+        "XliffParseError",
+        "XliffSegment",
+        "XliffUnit",
+        "XliffWriteError"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_dict",
+        "from_file",
+        "load_xliff",
+        "parse_inline_content",
+        "probe_xliff"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-QA-001",
+      "category": "validate",
+      "level": "SHOULD",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-SEG-001",
+      "category": "transform",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-STATE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "File",
+        "InlineElement",
+        "Segment",
+        "Unit",
+        "XliffDocument",
+        "XliffError",
+        "XliffFile",
+        "XliffParseError",
+        "XliffSegment",
+        "XliffUnit",
+        "XliffWriteError"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-TEXT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XLIFF-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "serialize_inline_content",
+        "write_xliff"
+      ],
+      "test_files": [
+        "tests/python/xliff/test_xliff_analytics.py",
+        "tests/python/xliff/test_xliff_codec.py",
+        "tests/python/xliff/test_xliff_compat.py",
+        "tests/python/xliff/test_xliff_gap_coverage.py",
+        "tests/python/xliff/test_xliff_mutation.py",
+        "tests/python/xliff/test_xliff_probe_load_extra.py",
+        "tests/python/xliff/test_xliff_roundtrip.py",
+        "tests/python/xliff/test_xliff_smoke.py",
+        "tests/python/xliff/test_xliff_structural_fidelity.py",
+        "tests/python/xliff/test_xliff_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "with_gap": 9,
+    "by_status": {
+      "NOT_STARTED": 6,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 9,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

@@ -1,0 +1,86 @@
+# Fact-Category Requirements — SAL readiness gate policy (L30 policy store)
+# Readiness = weighted coverage of required fact categories, NOT raw fact count.
+# A category is covered when >= min_facts facts match any of its match_keywords
+# (case-insensitive substring match against fact claim + element_qname + section).
+# Below family threshold -> compiler REFUSES (BLOCKED_NEEDS_AUTHORITY), never fabricates.
+schema_version: '1.0'
+store_id: fact-category-requirements
+default_threshold: 0.70
+categories:
+  structure_roots:
+    description: Document/stream root structure, top-level records or containers
+    match_keywords: [root, document, header, top-level, file structure, record, magic, stream, table, section]
+    min_facts: 2
+  data_model:
+    description: Core content model - elements, fields, cells, values, types
+    match_keywords: [element, field, cell, value, type, attribute, key, entry, column, row, component, node]
+    min_facts: 3
+  syntax_encoding:
+    description: Lexical syntax, encodings, escaping, delimiters, character rules
+    match_keywords: [encoding, escape, delimiter, quote, character, utf-8, whitespace, line ending, crlf, separator, syntax]
+    min_facts: 2
+  constraints_validation:
+    description: Normative constraints, required/optional rules, validity conditions
+    match_keywords: [must, shall, required, constraint, valid, invalid, reject, conform, error, forbidden]
+    min_facts: 2
+  versioning_profiles:
+    description: Version identification, profiles, modules, extensions
+    match_keywords: [version, profile, module, extension, namespace, compatibility, deprecated]
+    min_facts: 1
+  security_behavior:
+    description: Security-relevant behavior - external references, execution, payload risks
+    match_keywords: [security, external, reference, execution, script, entity, overflow, bomb, traversal, untrusted, limit]
+    min_facts: 1
+    optional: true
+families:
+  tabular_text:
+    threshold: 0.70
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
+    weights: {structure_roots: 0.25, data_model: 0.35, syntax_encoding: 0.25, constraints_validation: 0.15}
+  config_data:
+    threshold: 0.70
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
+    weights: {structure_roots: 0.20, data_model: 0.40, syntax_encoding: 0.25, constraints_validation: 0.15}
+  # Complex families carry min_facts_overrides scaled to their real surface area.
+  # Rationale (readiness-gate hardening, found during TC-FCL-010 smoke test):
+  # substring keyword matching over a 2-3 fact store gamed the default minimums
+  # ("rooted"->root, "referenced"->reference), scoring UBL exactly at threshold.
+  # A contract-grade store for a business-document XML standard needs dozens of
+  # facts; these floors make thin stores honestly BLOCKED_NEEDS_AUTHORITY.
+  xml_business:
+    threshold: 0.75
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation, versioning_profiles, security_behavior]
+    weights: {structure_roots: 0.20, data_model: 0.30, syntax_encoding: 0.10, constraints_validation: 0.15, versioning_profiles: 0.15, security_behavior: 0.10}
+    min_facts_overrides: {structure_roots: 4, data_model: 10, syntax_encoding: 3, constraints_validation: 4, versioning_profiles: 2, security_behavior: 2}
+  xml_localization:
+    threshold: 0.75
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation, versioning_profiles]
+    weights: {structure_roots: 0.20, data_model: 0.35, syntax_encoding: 0.10, constraints_validation: 0.15, versioning_profiles: 0.20}
+    min_facts_overrides: {structure_roots: 3, data_model: 8, syntax_encoding: 2, constraints_validation: 3, versioning_profiles: 2}
+  executable_document:
+    threshold: 0.75
+    required_categories: [structure_roots, data_model, constraints_validation, versioning_profiles, security_behavior]
+    weights: {structure_roots: 0.20, data_model: 0.30, constraints_validation: 0.15, versioning_profiles: 0.15, security_behavior: 0.20}
+    min_facts_overrides: {structure_roots: 3, data_model: 8, constraints_validation: 3, versioning_profiles: 2, security_behavior: 2}
+  typed_graph:
+    threshold: 0.75
+    required_categories: [structure_roots, data_model, constraints_validation, versioning_profiles]
+    weights: {structure_roots: 0.20, data_model: 0.40, constraints_validation: 0.20, versioning_profiles: 0.20}
+    min_facts_overrides: {structure_roots: 3, data_model: 8, constraints_validation: 3, versioning_profiles: 2}
+  scientific_raster:
+    threshold: 0.75
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
+    weights: {structure_roots: 0.30, data_model: 0.30, syntax_encoding: 0.20, constraints_validation: 0.20}
+    min_facts_overrides: {structure_roots: 3, data_model: 6, syntax_encoding: 3, constraints_validation: 3}
+  archive_container:
+    threshold: 0.70
+    required_categories: [structure_roots, data_model, constraints_validation]
+    weights: {structure_roots: 0.40, data_model: 0.35, constraints_validation: 0.25}
+  image_raster:
+    threshold: 0.70
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
+    weights: {structure_roots: 0.30, data_model: 0.30, syntax_encoding: 0.20, constraints_validation: 0.20}
+  xml_document:
+    threshold: 0.70
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
+    weights: {structure_roots: 0.25, data_model: 0.35, syntax_encoding: 0.20, constraints_validation: 0.20}

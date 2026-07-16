@@ -1,0 +1,774 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-TOML-V1
+  format_id: toml
+  format_canonical_name: Tom's Obvious, Minimal Language
+  extensions:
+  - .toml
+  family: config_data
+  target_spec_version: v1.0.0
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116
+    qname_registry_sha256: 39e301cf61075bccb2bb1b6c4b8613cb6801b344c21cae40624e3b254047e6a7
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: 77d596fad6611997e8d4211e5ca35b0dfd7decb8a0cc9e63bd34afd523ff77cd
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Format carries passive data only; no execution, rendering, or external resolution is ever
+      required to process it.
+  data_model_type: text
+  description: 'Tom''s Obvious, Minimal Language: structured text data format (TOML Project v1.0.0). Typed
+    keyed values and nested structures used for configuration and record streams across programming ecosystems.'
+  primary_use_cases:
+  - Application and tool configuration authored by humans and written back by tools
+  - Typed data interchange between services and build systems
+  - Streaming or record-oriented structured data processing
+authoritative_sources:
+- title: TOML Project v1.0.0
+  source_id: SRC-TOML-001
+  organization: TOML Project
+  version: v1.0.0
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+scope_policy:
+  minimum_viable_support: Load and save conformant documents with correct typing of all value kinds; expose
+    a typed model; report syntax and type errors with positions.
+  production_complete_target: Read, create, edit, validate, and write every value type, structure, and
+    syntax rule of the target specification with lossless round-trip of comments, formatting, and key
+    order where the format defines or conventionally preserves them.
+capabilities:
+- release_gates:
+  - Every mutation operation proven by round-trip and locality tests.
+  capability_id: TOML-EDIT-001
+  level: MUST
+  category: edit
+  title: Structure-safe mutation
+  production_meaning: Values, keys, and nested structures can be created, updated, and removed with grammar
+    invariants (key uniqueness, structure shape) enforced or diagnosed at edit time.
+  developer_use_case: A developer updates a config value and adds a nested section programmatically, then
+    saves without breaking the document's validity or unrelated formatting.
+  provenance:
+  - POL-CFG-EDIT-01
+  - POL-CFG-EDIT-02
+  - SAL-TOML-00005
+  - SAL-TOML-00030
+  - SAL-TOML-00031
+  - SAL-TOML-00034
+  - SAL-TOML-00045
+  - SAL-TOML-00046
+  - SAL-TOML-00054
+  required_behavior:
+  - Create, update, and remove keys, values, and nested structures with duplicate-key and shape rules
+    enforced.
+  - Edits do not disturb unrelated content, comments, or formatting in lossless mode.
+  normative_rules:
+  - (spec) TOML key-value pairs are defined as key = value on a single line
+  - (spec) TOML standard tables are defined by a header in square brackets on its own line
+  - (spec) TOML table headers define the namespace for all key-value pairs that follow until the next
+    table or array-of-tables header
+  - (spec) TOML arrays of tables are defined by double square bracket headers and create an array of table
+    objects
+  - (spec) TOML inline table keys follow the same uniqueness rules as regular table keys
+  - (spec) TOML inline tables are immutable; once defined they cannot be extended with additional keys
+  - (spec) TOML dotted keys may not reopen a table or inline table previously defined
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each mutation class has save-reload-verify plus untouched-region byte comparison in lossless mode.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: TOML-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Model APIs cover every construct the parser produces.
+  capability_id: TOML-MODEL-001
+  level: MUST
+  category: model
+  title: Typed document object model
+  production_meaning: Keys, values, nested structures, and ordering are exposed as a typed navigable model
+    with path-based access, not raw dictionaries only.
+  developer_use_case: A developer navigates nested structures by path, enumerates keys in document order,
+    and inspects value types without manual casting.
+  provenance:
+  - POL-CFG-MODEL-01
+  - POL-CFG-MODEL-02
+  - SAL-TOML-00001
+  - SAL-TOML-00002
+  - SAL-TOML-00003
+  - SAL-TOML-00005
+  - SAL-TOML-00006
+  - SAL-TOML-00007
+  - SAL-TOML-00008
+  - SAL-TOML-00009
+  - SAL-TOML-00010
+  - SAL-TOML-00020
+  - SAL-TOML-00025
+  - SAL-TOML-00026
+  - SAL-TOML-00028
+  - SAL-TOML-00029
+  - SAL-TOML-00030
+  - SAL-TOML-00031
+  - SAL-TOML-00032
+  - SAL-TOML-00033
+  - SAL-TOML-00034
+  - SAL-TOML-00035
+  - SAL-TOML-00040
+  - SAL-TOML-00041
+  - SAL-TOML-00045
+  - SAL-TOML-00046
+  - SAL-TOML-00054
+  - SAL-TOML-00055
+  - SAL-TOML-00056
+  - SAL-TOML-00059
+  - SAL-TOML-00060
+  - SAL-TOML-00063
+  - SAL-TOML-00064
+  required_behavior:
+  - Expose typed accessors and path-based navigation over nested structures.
+  - Preserve document key order where the format defines or conventionally preserves it.
+  normative_rules:
+  - (spec) TOML (Tom's Obvious Minimal Language) version 1.0.0 is the current stable specification
+  - (spec) A TOML file must be a valid UTF-8 encoded document
+  - (spec) TOML is case-sensitive; key names and value types distinguish uppercase and lowercase
+  - (spec) TOML key-value pairs are defined as key = value on a single line
+  - (spec) Whitespace around the key-value pair equals sign is ignored in TOML
+  - (spec) TOML bare keys may only contain ASCII letters, ASCII digits, dashes, and underscores
+  - (spec) TOML bare keys may be composed entirely of ASCII digits but are still interpreted as strings
+  - (spec) TOML quoted keys use basic string or literal string syntax and allow any Unicode characters
+    as key names
+  - (spec) TOML dotted keys use dot notation to create nested structures without explicit table headers
+  - (spec) TOML booleans are the lowercase keywords true and false
+  - (spec) TOML arrays are ordered sequences of values enclosed in square brackets and separated by commas
+  - (spec) TOML arrays may contain mixed value types including nested arrays
+  - (spec) TOML inline tables are single-line key-value collections enclosed in curly braces
+  - (spec) TOML inline tables must appear on a single line and do not allow trailing commas
+  - (spec) TOML standard tables are defined by a header in square brackets on its own line
+  - (spec) TOML table headers define the namespace for all key-value pairs that follow until the next
+    table or array-of-tables header
+  - (spec) TOML table names follow the same key definition rules as regular keys including dotted key
+    support
+  - (spec) Defining a table with the same name twice in a TOML document is an error
+  - (spec) TOML arrays of tables are defined by double square bracket headers and create an array of table
+    objects
+  - (spec) TOML array-of-tables entries may contain key-value pairs and sub-tables like regular tables
+  - (spec) TOML keys must be non-empty; an empty bare key is an error
+  - (spec) TOML does not permit defining a key twice in the same table; it is an error
+  - (spec) TOML inline table keys follow the same uniqueness rules as regular table keys
+  - (spec) TOML inline tables are immutable; once defined they cannot be extended with additional keys
+  - (spec) TOML dotted keys may not reopen a table or inline table previously defined
+  - (spec) TOML table array entries create homogeneous array elements; you cannot mix array-of-tables
+    and regular table with the same name
+  - (spec) TOML top-level document is itself an implicit table containing all key-value pairs and subtables
+  - (spec) TOML keys at any level may use whitespace around the dot separator in dotted keys
+  - '(spec) TOML values may be one of six types: string, integer, float, boolean, datetime, array, or
+    inline table'
+  - (spec) TOML table header names are trimmed of surrounding whitespace before comparison
+  - (spec) TOML does not permit bare newlines inside inline tables
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Path navigation and order preservation verified on nested fixtures.
+- release_gates:
+  - Grammar coverage demonstrated against the specification's own examples and invalid cases.
+  capability_id: TOML-PARSE-001
+  level: MUST
+  category: parse
+  title: Grammar-conformant parsing
+  production_meaning: The library accepts exactly the documents the specification grammar accepts and
+    rejects what it rejects, with position-accurate diagnostics, so conformance disagreements with other
+    implementations do not corrupt data.
+  developer_use_case: A developer loads documents produced by any conformant tool and receives the same
+    typed structure that tool intended.
+  provenance:
+  - POL-CFG-PARSE-01
+  - POL-CFG-PARSE-02
+  - POL-CFG-PARSE-03
+  - SAL-TOML-00004
+  - SAL-TOML-00006
+  - SAL-TOML-00009
+  - SAL-TOML-00013
+  - SAL-TOML-00036
+  - SAL-TOML-00037
+  - SAL-TOML-00047
+  - SAL-TOML-00048
+  - SAL-TOML-00059
+  - SAL-TOML-00063
+  - SAL-TOML-00064
+  required_behavior:
+  - Implement the specification grammar completely - every production, terminator, and whitespace/comment
+    rule.
+  - Report syntax violations with line/column positions and the violated grammar rule in strict mode.
+  - Parse from path, stream, and bytes with identical results.
+  normative_rules:
+  - (spec) TOML comments begin with a hash symbol (#) and extend to the end of the line
+  - (spec) Whitespace around the key-value pair equals sign is ignored in TOML
+  - (spec) TOML quoted keys use basic string or literal string syntax and allow any Unicode characters
+    as key names
+  - (spec) TOML multi-line basic strings are enclosed in three double quotation marks and preserve newlines
+  - (spec) TOML newlines are LF (U+000A) or CRLF (U+000D U+000A); bare CR is not permitted outside strings
+  - (spec) TOML tab (U+0009) is the only non-space whitespace permitted outside of strings and comments
+  - (spec) TOML integer range must fit in a 64-bit signed integer; parsers may accept larger values
+  - (spec) TOML multi-line basic strings allow a line-ending backslash to trim whitespace and the following
+    newline
+  - (spec) TOML keys at any level may use whitespace around the dot separator in dotted keys
+  - (spec) TOML table header names are trimmed of surrounding whitespace before comparison
+  - (spec) TOML does not permit bare newlines inside inline tables
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Specification example corpus parses; grammar negative fixtures rejected with correct positions.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: TOML-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: TOML-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - All specified value kinds round-trip with type and precision fidelity.
+  capability_id: TOML-TYPES-001
+  level: MUST
+  category: model
+  title: Complete value-type system
+  production_meaning: Every value kind the specification defines is represented with correct typing, precision,
+    and lexical fidelity - no silent coercion between types or precision loss.
+  developer_use_case: A developer reads and writes every specified value kind and gets the same typed
+    value back after a round trip.
+  provenance:
+  - POL-CFG-TYPES-01
+  - POL-CFG-TYPES-02
+  - SAL-TOML-00003
+  - SAL-TOML-00005
+  - SAL-TOML-00006
+  - SAL-TOML-00008
+  - SAL-TOML-00009
+  - SAL-TOML-00011
+  - SAL-TOML-00012
+  - SAL-TOML-00013
+  - SAL-TOML-00014
+  - SAL-TOML-00015
+  - SAL-TOML-00016
+  - SAL-TOML-00017
+  - SAL-TOML-00018
+  - SAL-TOML-00019
+  - SAL-TOML-00020
+  - SAL-TOML-00021
+  - SAL-TOML-00022
+  - SAL-TOML-00023
+  - SAL-TOML-00024
+  - SAL-TOML-00025
+  - SAL-TOML-00026
+  - SAL-TOML-00027
+  - SAL-TOML-00028
+  - SAL-TOML-00031
+  - SAL-TOML-00034
+  - SAL-TOML-00035
+  - SAL-TOML-00036
+  - SAL-TOML-00037
+  - SAL-TOML-00038
+  - SAL-TOML-00039
+  - SAL-TOML-00042
+  - SAL-TOML-00043
+  - SAL-TOML-00044
+  - SAL-TOML-00047
+  - SAL-TOML-00048
+  - SAL-TOML-00049
+  - SAL-TOML-00050
+  - SAL-TOML-00051
+  - SAL-TOML-00052
+  - SAL-TOML-00053
+  - SAL-TOML-00055
+  - SAL-TOML-00056
+  - SAL-TOML-00058
+  - SAL-TOML-00060
+  - SAL-TOML-00061
+  - SAL-TOML-00062
+  - SAL-TOML-00065
+  required_behavior:
+  - Represent every specified value kind distinctly with documented host-language mappings.
+  - Preserve numeric precision and value-form distinctions the specification treats as significant; report
+    out-of-range values.
+  normative_rules:
+  - (spec) TOML is case-sensitive; key names and value types distinguish uppercase and lowercase
+  - (spec) TOML key-value pairs are defined as key = value on a single line
+  - (spec) Whitespace around the key-value pair equals sign is ignored in TOML
+  - (spec) TOML bare keys may be composed entirely of ASCII digits but are still interpreted as strings
+  - (spec) TOML quoted keys use basic string or literal string syntax and allow any Unicode characters
+    as key names
+  - (spec) TOML basic strings are enclosed in double quotation marks and support escape sequences
+  - (spec) TOML escape sequences in basic strings include \b \t \n \f \r \" \\ and Unicode escapes \uXXXX
+    and \UXXXXXXXX
+  - (spec) TOML multi-line basic strings are enclosed in three double quotation marks and preserve newlines
+  - (spec) TOML literal strings are enclosed in single quotation marks and have no escape sequences
+  - (spec) TOML multi-line literal strings are enclosed in three single quotation marks and allow any
+    content except three single quotes
+  - (spec) TOML integers are whole numbers with no fractional component and may use underscores as visual
+    separators
+  - (spec) TOML integers support decimal (default), hexadecimal (0x prefix), octal (0o prefix), and binary
+    (0b prefix) representations
+  - (spec) TOML floats are IEEE 754 64-bit double-precision values and use a decimal point or exponent
+    notation
+  - (spec) TOML floats support special values inf (infinity) and nan (not a number) with optional sign
+    prefix
+  - (spec) TOML booleans are the lowercase keywords true and false
+  - (spec) TOML offset date-time values conform to RFC 3339 format and include timezone offset
+  - (spec) TOML local date-time values are RFC 3339 datetime without timezone offset
+  - (spec) TOML local date values are RFC 3339 date-only values without time or timezone information
+  - (spec) TOML local time values are time-only values in HH:MM:SS format with optional sub-second precision
+  - (spec) TOML arrays are ordered sequences of values enclosed in square brackets and separated by commas
+  - (spec) TOML arrays may contain mixed value types including nested arrays
+  - (spec) TOML arrays may span multiple lines and may have a trailing comma after the last element
+  - (spec) TOML inline tables are single-line key-value collections enclosed in curly braces
+  - (spec) TOML table headers define the namespace for all key-value pairs that follow until the next
+    table or array-of-tables header
+  - (spec) TOML arrays of tables are defined by double square bracket headers and create an array of table
+    objects
+  - (spec) TOML array-of-tables entries may contain key-value pairs and sub-tables like regular tables
+  - (spec) TOML newlines are LF (U+000A) or CRLF (U+000D U+000A); bare CR is not permitted outside strings
+  - (spec) TOML tab (U+0009) is the only non-space whitespace permitted outside of strings and comments
+  - (spec) TOML file extension is .toml and MIME type is application/toml
+  - (spec) TOML control characters other than tab (U+0009) must be escaped in basic strings
+  - (spec) TOML integer literals must not have leading zeros except for the 0 value itself
+  - (spec) TOML float values must have at least one digit on both sides of the decimal point
+  - (spec) TOML float underscores must be surrounded by at least one digit on each side
+  - (spec) TOML integer range must fit in a 64-bit signed integer; parsers may accept larger values
+  - (spec) TOML multi-line basic strings allow a line-ending backslash to trim whitespace and the following
+    newline
+  - (spec) TOML strings support Unicode escape via \uXXXX (4 hex digits) and \UXXXXXXXX (8 hex digits)
+  - (spec) TOML literal strings may not contain a single-quote character
+  - (spec) TOML multi-line literal strings may contain up to two single-quote characters in a row without
+    ending the string
+  - (spec) TOML datetime offset Z means UTC (equivalent to +00:00 offset)
+  - (spec) TOML datetime millisecond and sub-second precision is supported with fractional seconds
+  - (spec) TOML table array entries create homogeneous array elements; you cannot mix array-of-tables
+    and regular table with the same name
+  - (spec) TOML top-level document is itself an implicit table containing all key-value pairs and subtables
+  - (spec) TOML integer underscore separators may be placed between digits only, not at the start or end
+  - '(spec) TOML values may be one of six types: string, integer, float, boolean, datetime, array, or
+    inline table'
+  - (spec) TOML hex integer literals use lowercase a-f and uppercase A-F hex digits after 0x prefix
+  - (spec) TOML multi-line basic string opening triple-quote may be immediately followed by one or two
+    double-quotes as part of content
+  - (spec) TOML float exponent notation uses e or E followed by optional sign and digits
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - 'Type matrix fixtures: every value kind in minimal and edge forms, round-tripped.'
+- release_gates:
+  - Every documented validation rule maps to at least one negative test.
+  capability_id: TOML-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered validation with typed diagnostics
+  production_meaning: Lexical, syntax, type, and structural rules are validated as separate layers returning
+    all diagnostics, so pipelines can gate on machine-readable results.
+  developer_use_case: A developer validates untrusted input and receives every violation with positions
+    and stable codes before deciding to process it.
+  provenance:
+  - POL-CFG-VALIDATE-01
+  - SAL-TOML-00002
+  - SAL-TOML-00021
+  - SAL-TOML-00029
+  - SAL-TOML-00033
+  - SAL-TOML-00039
+  - SAL-TOML-00040
+  - SAL-TOML-00041
+  - SAL-TOML-00042
+  - SAL-TOML-00043
+  - SAL-TOML-00044
+  - SAL-TOML-00047
+  required_behavior:
+  - Validate lexical, syntax, type, and structural layers independently, returning all diagnostics with
+    positions and stable codes.
+  normative_rules:
+  - (spec) A TOML file must be a valid UTF-8 encoded document
+  - (spec) TOML offset date-time values conform to RFC 3339 format and include timezone offset
+  - (spec) TOML inline tables must appear on a single line and do not allow trailing commas
+  - (spec) Defining a table with the same name twice in a TOML document is an error
+  - (spec) TOML control characters other than tab (U+0009) must be escaped in basic strings
+  - (spec) TOML keys must be non-empty; an empty bare key is an error
+  - (spec) TOML does not permit defining a key twice in the same table; it is an error
+  - (spec) TOML integer literals must not have leading zeros except for the 0 value itself
+  - (spec) TOML float values must have at least one digit on both sides of the decimal point
+  - (spec) TOML float underscores must be surrounded by at least one digit on each side
+  - (spec) TOML integer range must fit in a 64-bit signed integer; parsers may accept larger values
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Positive and negative fixtures per layer; diagnostics carry stable codes and positions.
+- release_gates:
+  - Writer proven by parser round-trip and determinism byte-compare.
+  capability_id: TOML-WRITE-001
+  level: MUST
+  category: write
+  title: Conformant and deterministic serialization
+  production_meaning: Output always re-parses to the same typed content, respects the specification's
+    encoding rules, and is deterministic; lossless mode preserves comments and formatting where recorded.
+  developer_use_case: A developer saves an edited document and diff against the original shows only the
+    intended change.
+  provenance:
+  - POL-CFG-WRITE-01
+  - POL-CFG-WRITE-02
+  - SAL-TOML-00011
+  - SAL-TOML-00012
+  - SAL-TOML-00014
+  - SAL-TOML-00039
+  - SAL-TOML-00049
+  required_behavior:
+  - Serialize every value kind in specification-conformant form that re-parses identically.
+  - Offer lossless mode (comments, formatting, ordering preserved) and normalized mode (canonical style)
+    as an explicit caller choice.
+  normative_rules:
+  - (spec) TOML basic strings are enclosed in double quotation marks and support escape sequences
+  - (spec) TOML escape sequences in basic strings include \b \t \n \f \r \" \\ and Unicode escapes \uXXXX
+    and \UXXXXXXXX
+  - (spec) TOML literal strings are enclosed in single quotation marks and have no escape sequences
+  - (spec) TOML control characters other than tab (U+0009) must be escaped in basic strings
+  - (spec) TOML strings support Unicode escape via \uXXXX (4 hex digits) and \UXXXXXXXX (8 hex digits)
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Deterministic double-serialization; lossless-mode minimal-diff fixtures; escape-required content round-trips.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Character and encoding validity plus token-level rules.
+    layer: lexical
+  - description: 'Grammar conformance: structure, terminators, nesting.'
+    layer: syntax
+  - description: 'Value-type rules: permitted forms, ranges, uniqueness.'
+    layer: type
+  - description: 'Document-level rules: duplicate keys, table/record shape.'
+    layer: structural
+  - description: Input size, nesting depth, and payload limits.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Deeply nested structures causing stack exhaustion during parsing.
+  - Oversized documents or values causing unbounded memory allocation.
+  - Numeric edge forms (huge integers, special floats) causing overflow or precision corruption in consumers.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Bounded nesting depth, document size, and value size with configurable limits.
+  - Checked numeric parsing that reports range violations instead of silently wrapping.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Each mutation class has save-reload-verify plus untouched-region byte comparison in lossless mode.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Path navigation and order preservation verified on nested fixtures.
+- Specification example corpus parses; grammar negative fixtures rejected with correct positions.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- 'Type matrix fixtures: every value kind in minimal and edge forms, round-tripped.'
+- Positive and negative fixtures per layer; diagnostics carry stable codes and positions.
+- Deterministic double-serialization; lossless-mode minimal-diff fixtures; escape-required content round-trips.
+release_gates:
+- Every mutation operation proven by round-trip and locality tests.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Model APIs cover every construct the parser produces.
+- Grammar coverage demonstrated against the specification's own examples and invalid cases.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All specified value kinds round-trip with type and precision fidelity.
+- Every documented validation rule maps to at least one negative test.
+- Writer proven by parser round-trip and determinism byte-compare.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: TOML-EDIT-001
+  provenance:
+  - POL-CFG-EDIT-01
+  - POL-CFG-EDIT-02
+  - SAL-TOML-00005
+  - SAL-TOML-00030
+  - SAL-TOML-00031
+  - SAL-TOML-00034
+  - SAL-TOML-00045
+  - SAL-TOML-00046
+  - SAL-TOML-00054
+- capability_id: TOML-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: TOML-MODEL-001
+  provenance:
+  - POL-CFG-MODEL-01
+  - POL-CFG-MODEL-02
+  - SAL-TOML-00001
+  - SAL-TOML-00002
+  - SAL-TOML-00003
+  - SAL-TOML-00005
+  - SAL-TOML-00006
+  - SAL-TOML-00007
+  - SAL-TOML-00008
+  - SAL-TOML-00009
+  - SAL-TOML-00010
+  - SAL-TOML-00020
+  - SAL-TOML-00025
+  - SAL-TOML-00026
+  - SAL-TOML-00028
+  - SAL-TOML-00029
+  - SAL-TOML-00030
+  - SAL-TOML-00031
+  - SAL-TOML-00032
+  - SAL-TOML-00033
+  - SAL-TOML-00034
+  - SAL-TOML-00035
+  - SAL-TOML-00040
+  - SAL-TOML-00041
+  - SAL-TOML-00045
+  - SAL-TOML-00046
+  - SAL-TOML-00054
+  - SAL-TOML-00055
+  - SAL-TOML-00056
+  - SAL-TOML-00059
+  - SAL-TOML-00060
+  - SAL-TOML-00063
+  - SAL-TOML-00064
+- capability_id: TOML-PARSE-001
+  provenance:
+  - POL-CFG-PARSE-01
+  - POL-CFG-PARSE-02
+  - POL-CFG-PARSE-03
+  - SAL-TOML-00004
+  - SAL-TOML-00006
+  - SAL-TOML-00009
+  - SAL-TOML-00013
+  - SAL-TOML-00036
+  - SAL-TOML-00037
+  - SAL-TOML-00047
+  - SAL-TOML-00048
+  - SAL-TOML-00059
+  - SAL-TOML-00063
+  - SAL-TOML-00064
+- capability_id: TOML-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: TOML-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: TOML-TYPES-001
+  provenance:
+  - POL-CFG-TYPES-01
+  - POL-CFG-TYPES-02
+  - SAL-TOML-00003
+  - SAL-TOML-00005
+  - SAL-TOML-00006
+  - SAL-TOML-00008
+  - SAL-TOML-00009
+  - SAL-TOML-00011
+  - SAL-TOML-00012
+  - SAL-TOML-00013
+  - SAL-TOML-00014
+  - SAL-TOML-00015
+  - SAL-TOML-00016
+  - SAL-TOML-00017
+  - SAL-TOML-00018
+  - SAL-TOML-00019
+  - SAL-TOML-00020
+  - SAL-TOML-00021
+  - SAL-TOML-00022
+  - SAL-TOML-00023
+  - SAL-TOML-00024
+  - SAL-TOML-00025
+  - SAL-TOML-00026
+  - SAL-TOML-00027
+  - SAL-TOML-00028
+  - SAL-TOML-00031
+  - SAL-TOML-00034
+  - SAL-TOML-00035
+  - SAL-TOML-00036
+  - SAL-TOML-00037
+  - SAL-TOML-00038
+  - SAL-TOML-00039
+  - SAL-TOML-00042
+  - SAL-TOML-00043
+  - SAL-TOML-00044
+  - SAL-TOML-00047
+  - SAL-TOML-00048
+  - SAL-TOML-00049
+  - SAL-TOML-00050
+  - SAL-TOML-00051
+  - SAL-TOML-00052
+  - SAL-TOML-00053
+  - SAL-TOML-00055
+  - SAL-TOML-00056
+  - SAL-TOML-00058
+  - SAL-TOML-00060
+  - SAL-TOML-00061
+  - SAL-TOML-00062
+  - SAL-TOML-00065
+- capability_id: TOML-VALIDATE-001
+  provenance:
+  - POL-CFG-VALIDATE-01
+  - SAL-TOML-00002
+  - SAL-TOML-00021
+  - SAL-TOML-00029
+  - SAL-TOML-00033
+  - SAL-TOML-00039
+  - SAL-TOML-00040
+  - SAL-TOML-00041
+  - SAL-TOML-00042
+  - SAL-TOML-00043
+  - SAL-TOML-00044
+  - SAL-TOML-00047
+- capability_id: TOML-WRITE-001
+  provenance:
+  - POL-CFG-WRITE-01
+  - POL-CFG-WRITE-02
+  - SAL-TOML-00011
+  - SAL-TOML-00012
+  - SAL-TOML-00014
+  - SAL-TOML-00039
+  - SAL-TOML-00049

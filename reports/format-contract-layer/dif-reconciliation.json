@@ -1,0 +1,400 @@
+{
+  "format_id": "dif",
+  "contract_id": "FC-DIF-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
+    "qname_registry_sha256": "965fe6002595f631e9b19eff3edb9d152980736b9b6c81a6851f093927f1f32d",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "c717d581af6f17b4fcf93be39bc0ad373888301650e2b9cb3a80b03a25f996f3",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 169,
+  "class_count": 14,
+  "test_file_count": 171,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "DIF-DIALECT-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_row",
+        "delete_row",
+        "set_cell_value"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-ENCODING-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_dif",
+        "parse_dif_strict",
+        "probe_dif"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "dif_to_abw",
+        "dif_to_csv",
+        "dif_to_fodg",
+        "dif_to_fods",
+        "dif_to_fodt",
+        "dif_to_gnumeric",
+        "dif_to_ndjson",
+        "dif_to_ods",
+        "dif_to_odt",
+        "dif_to_pbm",
+        "dif_to_pgm",
+        "dif_to_ppm",
+        "dif_to_sylk",
+        "dif_to_toml",
+        "dif_to_tsv",
+        "export_to_html",
+        "save_to_file"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "parse_dif",
+        "parse_dif_strict",
+        "save_to_file",
+        "write_dif"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Datum",
+        "DifCell",
+        "DifDatum",
+        "DifDocument",
+        "DifError",
+        "DifHeader",
+        "DifInvalidFormatError",
+        "DifModelDocument",
+        "DifParseError",
+        "DifSizeError",
+        "DifVector",
+        "DifWriteError",
+        "Header",
+        "Vector"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_dif",
+        "parse_dif_strict",
+        "probe_dif"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "dif_max_cell_length",
+        "dif_max_numeric_length",
+        "dif_max_numeric_value",
+        "dif_max_row_length",
+        "dif_max_row_width",
+        "dif_max_string_length",
+        "max_column_value"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "DIF-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_dif"
+      ],
+      "test_files": [
+        "tests/canary/test_compilation_diff.py",
+        "tests/playbook/test_diff_golden.py",
+        "tests/playbook/test_diff_playbook_outputs.py",
+        "tests/python/abw/test_abw_to_dif.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 4,
+    "by_status": {
+      "NOT_STARTED": 3,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 8,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

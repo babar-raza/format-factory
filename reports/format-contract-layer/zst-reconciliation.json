@@ -1,0 +1,338 @@
+{
+  "format_id": "zst",
+  "contract_id": "FC-ZST-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416",
+    "qname_registry_sha256": "c0394b68f007a8929aded6ea968bba1ae05c305494e5af9ed71467689aa3ec23",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "80bdb095617244d654516f3b5164b2037334127483f3fd4be7628b178893e4bf",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 136,
+  "class_count": 15,
+  "test_file_count": 131,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "ZST-CODEC-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "probe_frame"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-CONTAINER-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "probe_frame"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Block",
+        "Frame",
+        "MagicNumber",
+        "ZstBlock",
+        "ZstDecompressError",
+        "ZstDecompressionError",
+        "ZstDocument",
+        "ZstError",
+        "ZstFileNotFoundError",
+        "ZstFrame",
+        "ZstInvalidFrameError",
+        "ZstOutputLimitExceeded",
+        "ZstParseError",
+        "ZstReadError",
+        "ZstWriteError"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "zst_max_byte_value",
+        "zst_max_frame_size"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-STREAM-001",
+      "category": "performance",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "checksum_flag",
+        "validate_file",
+        "validate_roundtrip"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ZST-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_zst.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/dogfood/test_dogfood_csv_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_multiformat_zst_archive_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_zst_compression_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "with_gap": 6,
+    "by_status": {
+      "NOT_STARTED": 5,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 5,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

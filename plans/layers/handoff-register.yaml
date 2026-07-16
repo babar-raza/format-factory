@@ -185,3 +185,43 @@ handoffs:
       - "tools/supervisor/control_index/ingestors/control_layer_ingestor.py"
       - "tools/supervisor/governance_validators_control_layer.py"
     status: COMPLETE
+  - handoff_id: HO-010
+    task_id: TC-FCL-020
+    producer_layer: L30
+    producer_plan: plans/layers/format-contract-layer.md
+    consumer_layer: L03
+    consumer_plan: plans/layers/capability-layer.md
+    artifact: "shared/format-contracts/{format}.yaml + contract gap records"
+    schema: "schemas/format-contracts/format-contract.schema.json"
+    authority: L30
+    version: "v1"
+    producer_skill: compile-format-contract
+    validator_skill: validate-format-contract
+    consumer_skill: reconcile-contract-capabilities
+    acceptance_criteria:
+      - "Contract validates against schema (V232) with provenance closure (V233)"
+      - "Gap records carry contract_capability_id back-references"
+      - "Reconciliation report exists for every format with product source and a contract"
+    evidence_paths:
+      - ".local/evidences/fcl-l30-001/"
+    status: NOT_STARTED
+  - handoff_id: HO-011
+    task_id: TC-FCL-020
+    producer_layer: L30
+    producer_plan: plans/layers/format-contract-layer.md
+    consumer_layer: L14
+    consumer_plan: plans/layers/feature-compilation-layer.md
+    artifact: "contract-enriched work items via load_format_contract()"
+    schema: "schemas/format-contracts/format-contract.schema.json"
+    authority: L30
+    version: "v1"
+    producer_skill: compile-contract-gaps
+    validator_skill: validate-format-contract
+    consumer_skill: capability-compiler
+    acceptance_criteria:
+      - "capability_compiler.py load_format_contract() returns contract capabilities for a format"
+      - "A contract-originated work item is selectable by the autonomous task generation path"
+      - "Consumption proof captured (TC-FCL-020-06)"
+    evidence_paths:
+      - ".local/evidences/fcl-l30-001/"
+    status: NOT_STARTED

@@ -1,0 +1,16 @@
+# Reference quality oracle registration (L30 policy store, DEC-038)
+# The reference contract file is a COMPARISON ORACLE ONLY. It is DENYLISTED as a
+# generation input (stores.INPUT_DENYLIST_PARTS) and its content must never be
+# copied into contracts, packs, findings, or SAL stores. reference_comparator.py
+# verifies this hash before every comparison and refuses on mismatch.
+schema_version: '1.0'
+store_id: reference-oracle
+reference_path: plans/from_chat/format_library_feature_contracts_ubl_xliff_ipynb_mtlx_nrrd.yaml
+sha256_lf_normalized: e150d800cb3300bd0443ea8723e47f64dac1c2f3ffe80ca7e0f5746c1c639a13
+role: comparison_oracle_only
+covers_formats: [ubl, xliff, ipynb, mtlx, nrrd]
+registered_by: TC-FCL-040 (mission FCL-MACHINERY-2026-07-16)
+comparator_thresholds:
+  domain_coverage_min: 0.70        # generated contract must address >= 70% of reference capability domains
+  specificity_ratio_min: 0.60      # mean requirement lines per capability vs reference
+  section_parity_required: [security, preservation, validation, tests, release_gates]

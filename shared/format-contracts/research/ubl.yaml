@@ -1,0 +1,155 @@
+schema_version: '1.0'
+format_id: ubl
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    mutation_operations:
+    - UblDocument.create(document_type)
+    read_operations:
+    - UblDocument.load(path_or_stream_or_bytes)
+    - document.detect_document_type()
+    root_types:
+    - UblDocument
+    - UblDocumentType
+  capability_domain: DOCTYPES
+  depth_hint: 4
+  finding_id: RF-UBL-00001
+  kind: api_expectation
+  requirement: Expose a distinct typed root document class per supported maindoc type together with create_empty(document_type),
+    detect_document_type(), and supported_document_types() so integrations enumerate coverage programmatically.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- required_tests:
+  - Extreme decimal fixtures (large precision, trailing zeros) round-trip with attributes intact.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALUES
+  depth_hint: 4
+  finding_id: RF-UBL-00002
+  kind: product_requirement
+  requirement: Represent monetary amounts and quantities with decimal arithmetic and retain currencyID,
+    unitCode, and scheme attributes through edits, with explicit rounding policies for any calculation
+    - binary floating point is never acceptable for money.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: CODELIST
+  depth_hint: 5
+  finding_id: RF-UBL-00003
+  kind: product_requirement
+  requirement: Load official code lists from their distribution artifacts, cache them immutably, and validate
+    coded values deterministically offline, with user- or profile-supplied lists pluggable at runtime.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-002
+  - SRC-UBL-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: SIGN
+  depth_hint: 4
+  finding_id: RF-UBL-00004
+  kind: product_requirement
+  requirement: Report before saving whenever an edit invalidates an existing enveloped or detached signature,
+    and never rewrite signed subtrees in lossless mode; verification and signing remain a separate pluggable
+    opt-in.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    validation_operations:
+    - document.calculate_totals(policy)
+    - document.reconcile_totals(policy)
+  capability_domain: CALC
+  depth_hint: 6
+  finding_id: RF-UBL-00005
+  kind: product_requirement
+  requirement: Calculate line extensions, allowance/charge totals, tax totals, and payable amounts under
+    explicit rounding/tolerance policies and reconcile them against declared totals with per-total deltas,
+    never mutating declared values outside explicit repair mode.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    diagnostic_types:
+    - UblDiagnostic
+    read_operations:
+    - document.find_by_id(id)
+    - document.query(qname_or_selector)
+  capability_domain: QUERY
+  finding_id: RF-UBL-00006
+  kind: api_expectation
+  requirement: Find components by QName, business identifier (party, item, line, document reference),
+    and typed role with path-aware results, including read-only indexed views for large documents.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- security_requirements:
+  - Extension payload decoding never executes or resolves content implicitly.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: EXT
+  finding_id: RF-UBL-00007
+  kind: security_expectation
+  requirement: Treat extension payloads and embedded binary attachments as untrusted data; expose their
+    media types and checksums without decoding side effects, and gate any external attachment retrieval
+    behind allowlists, byte limits, and timeouts.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-003
+- required_tests:
+  - Official-sample round trips per supported document type with canonical XML comparison.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: WRITE
+  finding_id: RF-UBL-00008
+  kind: test_obligation
+  requirement: Round-trip every official sample of each supported maindoc type comparing canonicalized
+    XML plus typed semantics, and prove schema-valid element order for documents assembled property-by-property
+    in arbitrary order.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-UBL-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: OASIS Universal Business Language specification (maindoc and common component schemas)
+  source_id: SRC-UBL-002
+  organization: OASIS
+  version: UBL 2.x
+  canonical_url: https://docs.oasis-open.org/ubl/
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Business-document library developer-workflow requirements (invoicing/procurement integration
+    practice)
+  source_id: SRC-UBL-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

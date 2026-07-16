@@ -1,0 +1,1289 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-UBL-V1
+  format_id: ubl
+  format_canonical_name: OASIS Universal Business Language
+  extensions:
+  - .xml
+  family: xml_business
+  target_spec_version: UBL 2.3
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
+    qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
+    research_sha256: d6eb27174fb2b1c67fce6de254baf41e471c4ff9abd0e52b8df9f05da1fe5fcb
+    sal_facts_sha256: 8814fd9b67c33e142063077aa6e1e71493046c89033cad2788d190e8804a3a77
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Documents are passive data; signature verification and external reference resolution are opt-in
+      operations, never side effects of parsing.
+  data_model_type: xml
+  description: 'OASIS Universal Business Language: schema-defined XML business-document standard (OASIS
+    UBL 2.3). Namespaced document types built from shared typed components, exchanged in procurement,
+    invoicing, logistics, and related business workflows.'
+  primary_use_cases:
+  - Create, read, edit, validate, and exchange structured business documents between trading partners
+  - Programmatic document assembly from business data with schema-valid output
+  - Compliance validation against schemas, code lists, and profile rules before transmission
+authoritative_sources:
+- title: OASIS UBL 2.3
+  source_id: SRC-UBL-001
+  organization: OASIS
+  version: UBL 2.3
+  canonical_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: OASIS Universal Business Language specification (maindoc and common component schemas)
+  source_id: SRC-UBL-002
+  organization: OASIS
+  version: UBL 2.x
+  canonical_url: https://docs.oasis-open.org/ubl/
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Business-document library developer-workflow requirements (invoicing/procurement integration
+    practice)
+  source_id: SRC-UBL-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Recognize document roots by QName, parse into a typed component model, edit
+    core business components, serialize schema-valid output, and run schema plus referential validation
+    with complete diagnostics.
+  production_complete_target: 'Support every document root of the target specification version with its
+    full shared component library: typed read, create, edit, schema-order serialization, layered validation
+    including code lists, extension preservation, signature-safe round trips, and referential integrity.'
+capabilities:
+- release_gates:
+  - Calculation policies documented; reconciliation never mutates by default (tested).
+  capability_id: UBL-CALC-001
+  level: SHOULD
+  category: calculate
+  title: Business-total calculation and reconciliation
+  production_meaning: Line extensions, allowances/charges, taxes, and payable totals calculate under explicit
+    policies and reconcile against declared totals with configurable tolerances - never silently mutating
+    declared values.
+  developer_use_case: A developer validates that declared totals match calculated totals under the profile's
+    rounding rules and receives per-total deltas.
+  provenance:
+  - POL-XBZ-CALC-01
+  - SAL-UBL-00110
+  - SAL-UBL-00119
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00127
+  - SAL-UBL-00129
+  - RF-UBL-00005
+  required_behavior:
+  - Calculate document totals under explicit rounding/tolerance policies and compare to declared totals
+    without mutating them unless repair mode is explicitly requested.
+  - Calculate line extensions, allowance/charge totals, tax totals, and payable amounts under explicit
+    rounding/tolerance policies and reconcile them against declared totals with per-total deltas, never
+    mutating declared values outside explicit repair mode.
+  normative_rules:
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
+    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
+    line extension, tax-inclusive, allowance, charge, and payable amount elements
+  - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
+    names, postal addresses, tax schemes, and contacts as child elements
+  - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
+    and nested cac:TaxSubtotal elements per tax category
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  depth_required: 6
+  depth_rationale: 'SHOULD calculate capability: family depth floor 6, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
+- release_gates:
+  - Code-list validation produces machine-readable results separated from schema results.
+  capability_id: UBL-CODELIST-001
+  level: MUST
+  category: validate
+  title: Code-list infrastructure
+  production_meaning: Official code lists load from their distribution format, map to coded properties,
+    and validate values with list/agency/version identity - deterministic and offline.
+  developer_use_case: A developer validates coded fields against the official lists and plugs in profile-supplied
+    lists without code changes.
+  provenance:
+  - POL-XBZ-CODELIST-01
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00121
+  - SAL-UBL-00124
+  - SAL-UBL-00129
+  - RF-UBL-00003
+  required_behavior:
+  - Load official code-list resources, map them to coded properties, validate identifiers/agencies/versions/values,
+    and support user-supplied lists.
+  - Load official code lists from their distribution artifacts, cache them immutably, and validate coded
+    values deterministically offline, with user- or profile-supplied lists pluggable at runtime.
+  normative_rules:
+  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
+    to the list identified by listID and related attributes where applied
+  - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
+    attribute identifying the unit of measure
+  - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
+    indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
+    identification schemes, and classification code elements
+  - (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying payment
+    means codes, due dates, and payee financial account elements
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Known-good and known-bad coded values per first-wave list; offline determinism verified.
+- release_gates:
+  - Per-type coverage declaration matches tests; no type claimed without a factory + parse + write proof.
+  capability_id: UBL-DOCTYPES-001
+  level: MUST
+  category: model
+  title: Document-type registry and factory
+  production_meaning: Each specification document type has a distinct root class plus factory operations
+    (create-empty, detect-type, supported-types) so structurally impossible documents cannot be constructed.
+  developer_use_case: A developer creates a new empty document of a chosen type and enumerates the types
+    the library supports with their coverage state.
+  provenance:
+  - POL-XBZ-DOC-01
+  - POL-XBZ-DOC-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00131
+  - SAL-UBL-00132
+  - RF-UBL-00001
+  required_behavior:
+  - Expose a distinct typed root per supported document type plus create_empty, detect_document_type,
+    and supported_document_types operations.
+  - Document-type coverage is declared per type (supported/preservation-only/unsupported) - never claimed
+    globally.
+  - Expose a distinct typed root document class per supported maindoc type together with create_empty(document_type),
+    detect_document_type(), and supported_document_types() so integrations enumerate coverage programmatically.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (OASIS UBL 2.1 — CreditNote document schema) A UBL CreditNote document is rooted at a <CreditNote>
+    element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for its lines
+  - (UBL maindoc schemas - ApplicationResponse) A UBL ApplicationResponse document is rooted at an ApplicationResponse
+    document root element carrying cac:DocumentResponse aggregates for business-level acknowledgement
+  - (UBL maindoc schemas - DespatchAdvice) A UBL DespatchAdvice document is rooted at a DespatchAdvice
+    document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
+  - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
+    its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
+    of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
+    documents must be valid against the maindoc schema of their declared type
+  - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
+    indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
+    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
+    the customization profile and business process profile a document instance follows
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
+    version a document instance declares
+  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
+    and may carry arbitrary namespaced payloads including enveloped signatures
+  depth_required: 4
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official
+    sample.
+- release_gates:
+  - Every documented mutation proven by round-trip tests.
+  capability_id: UBL-EDIT-001
+  level: MUST
+  category: edit
+  title: Business component editing
+  production_meaning: Parties, lines, references, totals, and attachments can be created, updated, moved,
+    and removed with schema order and references kept consistent, including line renumbering with reference
+    rewrite.
+  developer_use_case: A developer inserts a line, renumbers, and every cross-reference still resolves
+    after save.
+  provenance:
+  - POL-XBZ-EDIT-01
+  - POL-XBZ-EDIT-02
+  - SAL-UBL-00105
+  - SAL-UBL-00123
+  - SAL-UBL-00125
+  required_behavior:
+  - CRUD for core business components with schema-order preservation; edits cannot produce elements the
+    schema forbids at that position.
+  - Line insertion, removal, movement, and renumbering maintain referential integrity via an explicit
+    reference-rewrite map.
+  normative_rules:
+  - (OASIS UBL 2.1 — CreditNote document schema) A UBL CreditNote document is rooted at a <CreditNote>
+    element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for its lines
+  - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
+    names, postal addresses, tax schemes, and contacts as child elements
+  - (UBL common library - Address) cac:PostalAddress is an aggregate component type composed of street,
+    city, postal zone, and country sub-elements
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
+- release_gates:
+  - Extension round-trip proven with large and hostile payload fixtures.
+  capability_id: UBL-EXT-001
+  level: MUST
+  category: preserve
+  title: Extension preservation and authoring
+  production_meaning: Specification extension points round-trip unknown payloads losslessly and allow
+    registered typed extension adapters; unknown extension content is never interpreted as core data.
+  developer_use_case: A developer round-trips documents carrying national extensions untouched and reads
+    a registered extension through a typed adapter.
+  provenance:
+  - POL-XBZ-EXT-01
+  - SAL-UBL-00002
+  - SAL-UBL-00110
+  - SAL-UBL-00120
+  - SAL-UBL-00122
+  - SAL-UBL-00132
+  - RF-UBL-00007
+  required_behavior:
+  - Read and write extension containers with arbitrary namespaces and payloads without loss; expose registered
+    typed adapters as opt-in.
+  - Treat extension payloads and embedded binary attachments as untrusted data; expose their media types
+    and checksums without decoding side effects, and gate any external attachment retrieval behind allowlists,
+    byte limits, and timeouts.
+  normative_rules:
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
+    line extension, tax-inclusive, allowance, charge, and payable amount elements
+  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
+    and may carry arbitrary namespaced payloads including enveloped signatures
+  security_requirements:
+  - Extension payload decoding never executes or resolves content implicitly.
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: UBL-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Component model covers every element used by first-wave document types.
+  capability_id: UBL-MODEL-001
+  level: MUST
+  category: model
+  title: Typed shared-component model
+  production_meaning: Common components (parties, addresses, amounts, quantities, lines, references, periods)
+    are typed composites reflecting schema hierarchy, order, and cardinality - not generic XML nodes.
+  developer_use_case: A developer reads a line item's quantity and monetary amount as typed values with
+    their supplementary attributes intact.
+  provenance:
+  - POL-XBZ-MODEL-01
+  - POL-XBZ-MODEL-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+  required_behavior:
+  - Represent shared aggregate components as typed composites and basic components as typed values retaining
+    lexical form where round-trip fidelity requires it.
+  - Reflect schema element order, cardinality, and optionality in the model so invalid structures are
+    diagnosable at edit time.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (OASIS UBL 2.1 — CreditNote document schema) A UBL CreditNote document is rooted at a <CreditNote>
+    element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for its lines
+  - (UBL maindoc schemas - ApplicationResponse) A UBL ApplicationResponse document is rooted at an ApplicationResponse
+    document root element carrying cac:DocumentResponse aggregates for business-level acknowledgement
+  - (UBL maindoc schemas - DespatchAdvice) A UBL DespatchAdvice document is rooted at a DespatchAdvice
+    document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
+  - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
+    its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
+  - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
+    identifying the ISO 4217 currency of the value
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
+    to the list identified by listID and related attributes where applied
+  - (UBL common library - CAC namespace) Common aggregate components live in the CommonAggregateComponents-2
+    namespace conventionally prefixed cac and represent typed composite structures
+  - (UBL common library - CBC namespace) Common basic components live in the CommonBasicComponents-2 namespace
+    conventionally prefixed cbc and represent typed leaf values
+  - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
+    of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
+    attribute identifying the unit of measure
+  - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
+    documents must be valid against the maindoc schema of their declared type
+  - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
+    indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
+    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
+    identification schemes, and classification code elements
+  - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
+    line extension, tax-inclusive, allowance, charge, and payable amount elements
+  - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
+    names, postal addresses, tax schemes, and contacts as child elements
+  - (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying payment
+    means codes, due dates, and payee financial account elements
+  - (UBL common library - Address) cac:PostalAddress is an aggregate component type composed of street,
+    city, postal zone, and country sub-elements
+  - (UBL common library - Price) cac:Price is an aggregate component type carrying cbc:PriceAmount and
+    quantity-basis elements for unit pricing
+  - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
+    and nested cac:TaxSubtotal elements per tax category
+  - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
+    the customization profile and business process profile a document instance follows
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
+    optional schemeID and schemeAgencyID attributes
+  - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
+    version a document instance declares
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
+- release_gates:
+  - All specification document roots recognized by QName with namespace-variation tests.
+  capability_id: UBL-PARSE-001
+  level: MUST
+  category: parse
+  title: Namespace-aware QName-based document parsing
+  production_meaning: Document roots and components are recognized by namespace-qualified name, never
+    by local name alone, so semantically different documents are never conflated and namespace tricks
+    are rejected.
+  developer_use_case: A developer loads any conformant document and the library identifies its exact document
+    type and version regardless of prefix choices.
+  provenance:
+  - POL-XBZ-PARSE-01
+  - POL-XBZ-PARSE-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00111
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00130
+  - SAL-UBL-00132
+  required_behavior:
+  - Resolve every element and attribute by QName; default and prefixed namespace forms with identical
+    expanded names behave identically.
+  - Reject namespace spoofing and ambiguous QName resolution with diagnostics rather than best-effort
+    guessing.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (OASIS UBL 2.1 — CreditNote document schema) A UBL CreditNote document is rooted at a <CreditNote>
+    element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for its lines
+  - (UBL maindoc schemas - ApplicationResponse) A UBL ApplicationResponse document is rooted at an ApplicationResponse
+    document root element carrying cac:DocumentResponse aggregates for business-level acknowledgement
+  - (UBL maindoc schemas - DespatchAdvice) A UBL DespatchAdvice document is rooted at a DespatchAdvice
+    document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
+  - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
+    its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL common library - CAC namespace) Common aggregate components live in the CommonAggregateComponents-2
+    namespace conventionally prefixed cac and represent typed composite structures
+  - (UBL common library - CBC namespace) Common basic components live in the CommonBasicComponents-2 namespace
+    conventionally prefixed cbc and represent typed leaf values
+  - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
+    of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
+    documents must be valid against the maindoc schema of their declared type
+  - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
+    indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
+    identification schemes, and classification code elements
+  - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
+    line extension, tax-inclusive, allowance, charge, and payable amount elements
+  - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
+    names, postal addresses, tax schemes, and contacts as child elements
+  - (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying payment
+    means codes, due dates, and payee financial account elements
+  - (UBL common library - Address) cac:PostalAddress is an aggregate component type composed of street,
+    city, postal zone, and country sub-elements
+  - (UBL common library - Price) cac:Price is an aggregate component type carrying cbc:PriceAmount and
+    quantity-basis elements for unit pricing
+  - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
+    and nested cac:TaxSubtotal elements per tax category
+  - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
+    optional schemeID and schemeAgencyID attributes
+  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
+    and may carry arbitrary namespaced payloads including enveloped signatures
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
+    spoofed-namespace fixtures rejected.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: UBL-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - No implicit profile-conformance claims (audited in capability manifest).
+  capability_id: UBL-PROFILE-001
+  level: MUST
+  category: validate
+  title: Customization and profile handling
+  production_meaning: Version/customization/profile identifiers are exposed; profile rulesets are pluggable;
+    conformance to any profile is claimed only when its ruleset is installed and passes.
+  developer_use_case: A developer runs a profile's validation pack explicitly and gets a profile-scoped
+    verdict, never an implicit claim.
+  provenance:
+  - POL-XBZ-PROFILE-01
+  - SAL-UBL-00128
+  - SAL-UBL-00131
+  required_behavior:
+  - Expose version, customization, and profile identifiers; allow profile-specific validators to be registered;
+    never claim profile conformance without the installed ruleset passing.
+  normative_rules:
+  - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
+    the customization profile and business process profile a document instance follows
+  - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
+    version a document instance declares
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'
+- release_gates:
+  - Query API covers the identifier kinds used by first-wave document types.
+  capability_id: UBL-QUERY-001
+  level: MUST
+  category: query
+  title: Domain and QName query
+  production_meaning: Components are findable by QName, type, ID, business role, and line/party/item identifiers
+    with path-aware results usable on large documents.
+  developer_use_case: A developer finds every line referencing an item identifier and gets paths plus
+    typed nodes back.
+  provenance:
+  - POL-XBZ-QUERY-01
+  - RF-UBL-00006
+  required_behavior:
+  - Find components by QName, type, ID, and business identifiers with path-aware results; offer read-only
+    indexed views for large documents.
+  - Find components by QName, business identifier (party, item, line, document reference), and typed role
+    with path-aware results, including read-only indexed views for large documents.
+  depth_required: 3
+  depth_rationale: 'MUST query capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Query result paths verified against fixtures; indexed and linear scans agree.
+- release_gates:
+  - Referential validation layer has dedicated negative fixtures.
+  capability_id: UBL-REF-001
+  level: MUST
+  category: validate
+  title: Reference and identifier integrity
+  production_meaning: IDs and cross-references are indexed; duplicates, broken references, and inconsistent
+    line references are detected; safe ID regeneration rewrites referents.
+  developer_use_case: A developer merges documents and immediately sees every broken or duplicated reference
+    with paths.
+  provenance:
+  - POL-XBZ-REF-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00123
+  - SAL-UBL-00128
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+  required_behavior:
+  - Index identifiers and references; detect duplicate IDs, broken references, and inconsistent line references
+    with locations.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
+    identifying the ISO 4217 currency of the value
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
+    to the list identified by listID and related attributes where applied
+  - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
+    attribute identifying the unit of measure
+  - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
+    documents must be valid against the maindoc schema of their declared type
+  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
+    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
+    identification schemes, and classification code elements
+  - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
+    names, postal addresses, tax schemes, and contacts as child elements
+  - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
+    the customization profile and business process profile a document instance follows
+  - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
+    optional schemeID and schemeAgencyID attributes
+  - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
+    version a document instance declares
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: UBL-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Signature preservation proven; verification/creation explicitly declared separate opt-in scope.
+  capability_id: UBL-SIGN-001
+  level: MUST
+  category: preserve
+  title: Signature-safe preservation
+  production_meaning: Enveloped and detached signature structures survive round trips untouched in lossless
+    mode; edits that would invalidate a signature are reported before save.
+  developer_use_case: A developer edits an unsigned section of a signed document and is warned exactly
+    which signature the edit affects.
+  provenance:
+  - POL-XBZ-SIGN-01
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00132
+  - RF-UBL-00004
+  required_behavior:
+  - Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that
+    invalidate existing signatures before saving.
+  - Report before saving whenever an edit invalidates an existing enveloped or detached signature, and
+    never rewrite signed subtrees in lossless mode; verification and signing remain a separate pluggable
+    opt-in.
+  normative_rules:
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
+    of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
+    and may carry arbitrary namespaced payloads including enveloped signatures
+  depth_required: 4
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
+- release_gates:
+  - No silent version relabeling (negative-tested).
+  capability_id: UBL-UPGRADE-001
+  level: SHOULD
+  category: transform
+  title: Version inspection and migration framework
+  production_meaning: Older specification versions are detected where practical and migrate through explicit
+    transforms with a migration report of mapped, dropped, synthesized, and unresolved constructs - never
+    silently relabeled as the target version.
+  developer_use_case: A developer feeds an older-version document and receives either a migrated, validated
+    document plus report, or an explicit unsupported-version verdict.
+  provenance:
+  - POL-XBZ-UPGRADE-01
+  - SAL-UBL-00131
+  required_behavior:
+  - Detect older specification versions where practical; migrate via explicit transforms producing a migration
+    report; never label a document as the target version without structural migration and validation.
+  normative_rules:
+  - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
+    version a document instance declares
+  depth_required: 2
+  depth_rationale: 'SHOULD transform capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - 'Older-version fixtures: migrate-with-report and unsupported-refusal paths.'
+- release_gates:
+  - Layered validation has separate machine-readable results per layer.
+  capability_id: UBL-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered validation orchestration
+  production_meaning: Well-formedness, schema, referential, code-list, and business-rule layers run as
+    separately reportable validation stages returning all diagnostics, so pipelines gate on machine-readable
+    per-layer results.
+  developer_use_case: A developer validates a document once and receives per-layer verdicts (schema vs
+    code list vs profile) with complete diagnostics instead of a single opaque failure.
+  provenance:
+  - POL-XBZ-VALIDATE-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00129
+  required_behavior:
+  - Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable
+    layers, returning all diagnostics with paths rather than stopping at the first error.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (OASIS UBL 2.1 — CreditNote document schema) A UBL CreditNote document is rooted at a <CreditNote>
+    element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for its lines
+  - (UBL maindoc schemas - ApplicationResponse) A UBL ApplicationResponse document is rooted at an ApplicationResponse
+    document root element carrying cac:DocumentResponse aggregates for business-level acknowledgement
+  - (UBL maindoc schemas - DespatchAdvice) A UBL DespatchAdvice document is rooted at a DespatchAdvice
+    document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
+  - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
+    its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
+    appear in the order declared by the schema sequence model for the document to be valid
+  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
+    to the list identified by listID and related attributes where applied
+  - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
+    of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
+    documents must be valid against the maindoc schema of their declared type
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
+- release_gates:
+  - No monetary path uses binary floating point (audited).
+  capability_id: UBL-VALUES-001
+  level: MUST
+  category: model
+  title: Business value types with supplementary attributes
+  production_meaning: Amounts, quantities, identifiers, dates, and codes use decimal-safe arithmetic and
+    retain currency/unit/scheme/list attributes; binary floating point never silently corrupts money.
+  developer_use_case: A developer sums line amounts with explicit rounding policy and keeps every currencyID
+    and unitCode intact.
+  provenance:
+  - POL-XBZ-VALUES-01
+  - POL-XBZ-VALUES-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00124
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - RF-UBL-00002
+  required_behavior:
+  - Use decimal arithmetic for amounts and quantities; preserve currencyID, unitCode, listID, schemeID,
+    and related supplementary attributes.
+  - Preserve timezone and lexical precision of date/time values; expose explicit rounding policies for
+    calculations.
+  - Represent monetary amounts and quantities with decimal arithmetic and retain currencyID, unitCode,
+    and scheme attributes through edits, with explicit rounding policies for any calculation - binary
+    floating point is never acceptable for money.
+  normative_rules:
+  - '(OASIS UBL 2.1 — Order document schema) A UBL Order document is rooted at an <Order> element in the
+    UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and common aggregate
+    components (cac: e.g. OrderLine)'
+  - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
+    in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
+    cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
+  - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
+    identifying the ISO 4217 currency of the value
+  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
+    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
+    to the list identified by listID and related attributes where applied
+  - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
+    attribute identifying the unit of measure
+  - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
+    indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
+    cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+  - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
+    identification schemes, and classification code elements
+  - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
+    line extension, tax-inclusive, allowance, charge, and payable amount elements
+  - (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying payment
+    means codes, due dates, and payee financial account elements
+  - (UBL common library - Price) cac:Price is an aggregate component type carrying cbc:PriceAmount and
+    quantity-basis elements for unit pricing
+  - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
+    and nested cac:TaxSubtotal elements per tax category
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
+    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
+    optional schemeID and schemeAgencyID attributes
+  depth_required: 4
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
+  - Extreme decimal fixtures (large precision, trailing zeros) round-trip with attributes intact.
+- release_gates:
+  - Writer output schema-validates for every first-wave type; determinism proven.
+  capability_id: UBL-WRITE-001
+  level: MUST
+  category: write
+  title: Schema-order-aware serialization
+  production_meaning: Serialization emits schema-valid element order regardless of property-set order,
+    with canonical namespace-prefix and formatting policies plus lossless mode.
+  developer_use_case: A developer sets properties in any order and the output always validates against
+    the schema.
+  provenance:
+  - POL-XBZ-WRITE-01
+  - RF-UBL-00008
+  required_behavior:
+  - Write elements in schema-valid order independent of mutation order; offer canonical prefix/formatting
+    policies and lossless mode preserving significant lexical values.
+  - Round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed
+    semantics, and prove schema-valid element order for documents assembled property-by-property in arbitrary
+    order.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
+  - Official-sample round trips per supported document type with canonical XML comparison.
+public_api_contract:
+  diagnostic_types:
+  - UblDiagnostic
+  mutation_operations:
+  - UblDocument.create(document_type)
+  read_operations:
+  - UblDocument.load(path_or_stream_or_bytes)
+  - document.detect_document_type()
+  - document.find_by_id(id)
+  - document.query(qname_or_selector)
+  root_types:
+  - UblDocument
+  - UblDocumentType
+  validation_operations:
+  - document.calculate_totals(policy)
+  - document.reconcile_totals(policy)
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: XML well-formedness and namespace conformance.
+    layer: syntax
+  - description: Schema validation against the specification's document and component schemas.
+    layer: schema
+  - description: ID uniqueness, cross-references between lines/documents/parties resolve.
+    layer: referential
+  - description: Coded values validated against official code lists with list/agency/version identifiers.
+    layer: codelist
+  - description: Profile/customization rulesets plugged in explicitly; never claimed implicitly.
+    layer: business_rule
+  - description: Entity/DTD hardening, size and nesting limits, external-reference policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - XML external entities and DTD expansion enabling file disclosure or denial of service.
+  - Signature wrapping and namespace spoofing changing semantic identity of signed content.
+  - Oversized or deeply nested documents exhausting memory or stack.
+  - External attachment URIs triggering unintended network retrieval.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - External entities and DTD processing disabled by default; no network fetch during parse or validate.
+  - Attachment and external-reference retrieval gated by explicit allowlists, byte limits, and timeouts.
+  - Bounded document size, element count, and nesting depth with configurable limits.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
+- Known-good and known-bad coded values per first-wave list; offline determinism verified.
+- Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official
+  sample.
+- Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
+- Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Typed access for every first-wave component; cardinality violations diagnosed on mutation.
+- Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace
+  fixtures rejected.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'
+- Query result paths verified against fixtures; indexed and linear scans agree.
+- Duplicate-ID and broken-reference fixtures produce complete diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
+- 'Older-version fixtures: migrate-with-report and unsupported-refusal paths.'
+- Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
+- Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
+- Extreme decimal fixtures (large precision, trailing zeros) round-trip with attributes intact.
+- Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
+- Official-sample round trips per supported document type with canonical XML comparison.
+release_gates:
+- Calculation policies documented; reconciliation never mutates by default (tested).
+- Code-list validation produces machine-readable results separated from schema results.
+- Per-type coverage declaration matches tests; no type claimed without a factory + parse + write proof.
+- Every documented mutation proven by round-trip tests.
+- Extension round-trip proven with large and hostile payload fixtures.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Component model covers every element used by first-wave document types.
+- All specification document roots recognized by QName with namespace-variation tests.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- No implicit profile-conformance claims (audited in capability manifest).
+- Query API covers the identifier kinds used by first-wave document types.
+- Referential validation layer has dedicated negative fixtures.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Signature preservation proven; verification/creation explicitly declared separate opt-in scope.
+- No silent version relabeling (negative-tested).
+- Layered validation has separate machine-readable results per layer.
+- No monetary path uses binary floating point (audited).
+- Writer output schema-validates for every first-wave type; determinism proven.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: UBL-CALC-001
+  provenance:
+  - POL-XBZ-CALC-01
+  - SAL-UBL-00110
+  - SAL-UBL-00119
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00127
+  - SAL-UBL-00129
+  - RF-UBL-00005
+- capability_id: UBL-CODELIST-001
+  provenance:
+  - POL-XBZ-CODELIST-01
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00121
+  - SAL-UBL-00124
+  - SAL-UBL-00129
+  - RF-UBL-00003
+- capability_id: UBL-DOCTYPES-001
+  provenance:
+  - POL-XBZ-DOC-01
+  - POL-XBZ-DOC-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00131
+  - SAL-UBL-00132
+  - RF-UBL-00001
+- capability_id: UBL-EDIT-001
+  provenance:
+  - POL-XBZ-EDIT-01
+  - POL-XBZ-EDIT-02
+  - SAL-UBL-00105
+  - SAL-UBL-00123
+  - SAL-UBL-00125
+- capability_id: UBL-EXT-001
+  provenance:
+  - POL-XBZ-EXT-01
+  - SAL-UBL-00002
+  - SAL-UBL-00110
+  - SAL-UBL-00120
+  - SAL-UBL-00122
+  - SAL-UBL-00132
+  - RF-UBL-00007
+- capability_id: UBL-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: UBL-MODEL-001
+  provenance:
+  - POL-XBZ-MODEL-01
+  - POL-XBZ-MODEL-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+- capability_id: UBL-PARSE-001
+  provenance:
+  - POL-XBZ-PARSE-01
+  - POL-XBZ-PARSE-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00111
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00130
+  - SAL-UBL-00132
+- capability_id: UBL-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: UBL-PROFILE-001
+  provenance:
+  - POL-XBZ-PROFILE-01
+  - SAL-UBL-00128
+  - SAL-UBL-00131
+- capability_id: UBL-QUERY-001
+  provenance:
+  - POL-XBZ-QUERY-01
+  - RF-UBL-00006
+- capability_id: UBL-REF-001
+  provenance:
+  - POL-XBZ-REF-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00123
+  - SAL-UBL-00128
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+- capability_id: UBL-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: UBL-SIGN-001
+  provenance:
+  - POL-XBZ-SIGN-01
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00132
+  - RF-UBL-00004
+- capability_id: UBL-UPGRADE-001
+  provenance:
+  - POL-XBZ-UPGRADE-01
+  - SAL-UBL-00131
+- capability_id: UBL-VALIDATE-001
+  provenance:
+  - POL-XBZ-VALIDATE-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00129
+- capability_id: UBL-VALUES-001
+  provenance:
+  - POL-XBZ-VALUES-01
+  - POL-XBZ-VALUES-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00124
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - RF-UBL-00002
+- capability_id: UBL-WRITE-001
+  provenance:
+  - POL-XBZ-WRITE-01
+  - RF-UBL-00008

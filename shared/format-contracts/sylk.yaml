@@ -1,0 +1,604 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-SYLK-V1
+  format_id: sylk
+  format_canonical_name: Symbolic Link (SYLK)
+  extensions:
+  - .slk
+  - .sylk
+  family: tabular_text
+  target_spec_version: SYLK Format (1986)
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53
+    qname_registry_sha256: 947a08cd9e0d665ae73036c9332a0b286aecb203dbb15b372b7a85613e61cc51
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: a00901a38df1530a9ae6c06894c6fbdf0eb1f9c827dd818b1f2f2b27f9c14dbf
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Format carries passive data only; no execution, rendering, or external resolution is ever
+      required to process it.
+  data_model_type: tabular
+  description: 'Symbolic Link (SYLK): delimiter-structured tabular text format (Microsoft (1986) SYLK
+    Format (1986)). Rows of records carrying delimited fields, consumed and produced by spreadsheets,
+    databases, data pipelines, and programming ecosystems.'
+  primary_use_cases:
+  - Exchange tabular data between spreadsheets, databases, and data-processing pipelines
+  - Bulk import/export of records for business and scientific applications
+  - Streaming row-oriented processing of large datasets
+authoritative_sources:
+- title: Microsoft (1986) SYLK Format (1986)
+  source_id: SRC-SYLK-001
+  organization: Microsoft (1986)
+  version: SYLK Format (1986)
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+scope_policy:
+  minimum_viable_support: Load and save specification-conformant files with correct field splitting, quoting,
+    and encoding; expose rows and fields as a typed model; report structural errors with row/column locations.
+  production_complete_target: Read, create, edit, validate, and write every construct defined by the target
+    specification including dialect variations, quoting/escaping rules, header semantics, and encoding
+    declarations, with streaming support for datasets larger than memory.
+capabilities:
+- release_gates:
+  - Dialect matrix documented and covered by detection tests.
+  capability_id: SYLK-DIALECT-001
+  level: SHOULD
+  category: transform
+  title: Dialect detection and configuration
+  production_meaning: Delimiter, quote character, header presence, and line-ending variants are explicit,
+    inspectable configuration; common dialects can be detected from samples with confidence reporting.
+  developer_use_case: A developer loads files from heterogeneous sources and the library reports the detected
+    dialect instead of silently mis-parsing.
+  provenance:
+  - POL-TAB-DIALECT-01
+  - POL-TAB-DIALECT-02
+  required_behavior:
+  - Represent dialect parameters (delimiter, quoting, line endings, header presence) as explicit configuration
+    on load and save.
+  - Provide sample-based dialect detection returning the detected parameters and a confidence signal,
+    never silently guessing in strict mode.
+  depth_required: 2
+  depth_rationale: 'SHOULD transform capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Detection fixtures across the dialect matrix; wrong-guess cases must surface low confidence rather
+    than silent mis-parse.
+- release_gates:
+  - Every mutation operation has a save-reload-verify test.
+  capability_id: SYLK-EDIT-001
+  level: MUST
+  category: edit
+  title: Safe tabular mutation
+  production_meaning: Rows, fields, headers, and columns can be inserted, updated, moved, and removed
+    through the model with invariants (consistent field counts, header uniqueness where required) enforced
+    or diagnosed.
+  developer_use_case: A developer appends rows, renames a header, and deletes a column, then saves - without
+    corrupting quoting or record structure.
+  provenance:
+  - POL-TAB-EDIT-01
+  - POL-TAB-EDIT-02
+  required_behavior:
+  - Insert, update, move, and remove rows and fields through model operations that keep record structure
+    consistent.
+  - Column-level operations (add, rename, remove, reorder) update every affected row and the header consistently.
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Round-trip after each mutation class proves the edit survived save and reload.
+- release_gates:
+  - Encoding matrix covered by tests including failure modes.
+  capability_id: SYLK-ENCODING-001
+  level: MUST
+  category: parse
+  title: Character encoding handling
+  production_meaning: Encoding declaration, detection (BOM), and validation are explicit; data is never
+    silently transcoded or corrupted.
+  developer_use_case: A developer loads UTF-8 files with or without BOM and legacy-encoded files by explicit
+    choice, with encoding errors reported rather than replaced silently in strict mode.
+  provenance:
+  - POL-TAB-ENC-01
+  - POL-TAB-ENC-02
+  - SAL-SYLK-00011
+  required_behavior:
+  - Honor byte-order marks and explicit encoding parameters; report the effective encoding used.
+  - In strict mode, reject undecodable byte sequences with position diagnostics; tolerant mode substitutes
+    with an explicit report.
+  normative_rules:
+  - (spec) SYLK F record W qualifier specifies column width as number of characters
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - BOM and no-BOM fixtures; undecodable-sequence negative fixtures in strict and tolerant modes.
+- release_gates:
+  - At least one export path proven by consumer-side verification.
+  capability_id: SYLK-EXPORT-001
+  level: SHOULD
+  category: export
+  title: Tabular interchange export
+  production_meaning: Tables export to at least one other structured representation (using Format Factory's
+    own libraries where available) preserving cell values, header association, and row order.
+  developer_use_case: A developer converts a loaded table to another supported tabular or document format
+    in one call with a loss report.
+  provenance:
+  - POL-TAB-EXPORT-01
+  required_behavior:
+  - Export preserves cell values, header-to-column association, and row order, reporting any constructs
+    the target cannot represent.
+  depth_required: 4
+  depth_rationale: 'SHOULD export capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Export fixture verified against the target format's own parser.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SYLK-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Typed model APIs cover read access to every construct the parser produces.
+  capability_id: SYLK-MODEL-001
+  level: MUST
+  category: model
+  title: Typed tabular object model
+  production_meaning: Rows, fields, and headers are exposed as a typed domain model with stable accessors
+    - not raw string lists only - so edits and queries are safe and discoverable.
+  developer_use_case: A developer reads column values by header name, iterates typed rows, and inspects
+    table dimensions without hand-indexing arrays.
+  provenance:
+  - POL-TAB-MODEL-01
+  - POL-TAB-MODEL-02
+  - POL-TAB-MODEL-03
+  - SAL-SYLK-00001
+  - SAL-SYLK-00002
+  - SAL-SYLK-00003
+  - SAL-SYLK-00007
+  - SAL-SYLK-00008
+  - SAL-SYLK-00009
+  - SAL-SYLK-00010
+  - SAL-SYLK-00011
+  - SAL-SYLK-00012
+  - SAL-SYLK-00014
+  - SAL-SYLK-00016
+  - SAL-SYLK-00017
+  - SAL-SYLK-00018
+  - SAL-SYLK-00020
+  required_behavior:
+  - Expose table, row, field, and header abstractions with by-index and by-header access.
+  - Preserve the distinction between empty field, quoted empty field, and absent trailing field where
+    the dialect distinguishes them.
+  - Report table dimensions (row count, per-row field count) and header presence without full materialization
+    where streaming.
+  normative_rules:
+  - (spec) SYLK file begins with ID;P header record
+  - '(spec) SYLK row: Y-record with row index and optional row formatting'
+  - '(spec) SYLK cell: C;X;Y;K record with column, row, and value'
+  - (spec) SYLK C record sets cell content at the current or specified row and column position
+  - (spec) SYLK C record K qualifier specifies the cell value as a number or quoted string
+  - (spec) SYLK C record E qualifier specifies a formula expression for the cell
+  - (spec) SYLK F record specifies formatting properties for a cell, row, or column
+  - (spec) SYLK F record W qualifier specifies column width as number of characters
+  - (spec) SYLK F record P qualifier references a format from the P record format table by index
+  - (spec) SYLK B record specifies the bounds of the spreadsheet with row count and column count
+  - (spec) SYLK string values in C records are delimited by double quotes with embedded quotes doubled
+  - (spec) SYLK row and column indices in SYLK records are 1-based integers
+  - (spec) SYLK X and Y qualifiers carry forward their values to subsequent records until changed
+  - (spec) SYLK numeric values are encoded as plain decimal numbers without quotes
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Header-based and index-based access agree on every fixture; dimension reporting matches fixture truth.
+- release_gates:
+  - All specification parsing rules covered by passing tests including quoting and line-ending variants.
+  capability_id: SYLK-PARSE-001
+  level: MUST
+  category: parse
+  title: Specification-conformant record and field parsing
+  production_meaning: The library splits input into records and fields exactly as the specification defines,
+    including every quoting, escaping, and line-ending rule, so downstream consumers never see mis-split
+    data.
+  developer_use_case: A developer loads an arbitrary conformant file produced by another tool and receives
+    the same logical table that tool wrote, without configuring parser internals.
+  provenance:
+  - POL-TAB-PARSE-01
+  - POL-TAB-PARSE-02
+  - POL-TAB-PARSE-03
+  - SAL-SYLK-00001
+  - SAL-SYLK-00002
+  - SAL-SYLK-00003
+  - SAL-SYLK-00004
+  - SAL-SYLK-00005
+  - SAL-SYLK-00006
+  - SAL-SYLK-00007
+  - SAL-SYLK-00008
+  - SAL-SYLK-00009
+  - SAL-SYLK-00010
+  - SAL-SYLK-00011
+  - SAL-SYLK-00012
+  - SAL-SYLK-00013
+  - SAL-SYLK-00014
+  - SAL-SYLK-00015
+  - SAL-SYLK-00016
+  - SAL-SYLK-00017
+  - SAL-SYLK-00018
+  - SAL-SYLK-00020
+  required_behavior:
+  - Split records on the specification's record separator, honoring quoted sections that embed separators,
+    delimiters, and quote characters.
+  - Report malformed constructs (unterminated quotes, illegal characters, inconsistent field counts) with
+    row and column positions in strict mode.
+  - Parse from path, stream, and bytes with identical results, supporting incremental/streaming row iteration
+    without loading the whole input.
+  normative_rules:
+  - (spec) SYLK file begins with ID;P header record
+  - '(spec) SYLK row: Y-record with row index and optional row formatting'
+  - '(spec) SYLK cell: C;X;Y;K record with column, row, and value'
+  - (spec) SYLK files must begin with the record ID:P which identifies the file as SYLK format
+  - (spec) SYLK records are line-oriented with each record on its own line terminated by CR LF
+  - (spec) SYLK record fields are separated by semicolons with the first field being the record type
+  - (spec) SYLK C record sets cell content at the current or specified row and column position
+  - (spec) SYLK C record K qualifier specifies the cell value as a number or quoted string
+  - (spec) SYLK C record E qualifier specifies a formula expression for the cell
+  - (spec) SYLK F record specifies formatting properties for a cell, row, or column
+  - (spec) SYLK F record W qualifier specifies column width as number of characters
+  - (spec) SYLK F record P qualifier references a format from the P record format table by index
+  - (spec) SYLK P record defines reusable format strings and font definitions referenced by F records
+  - (spec) SYLK B record specifies the bounds of the spreadsheet with row count and column count
+  - (spec) SYLK E record marks the end of the file and must be the last record
+  - (spec) SYLK string values in C records are delimited by double quotes with embedded quotes doubled
+  - (spec) SYLK row and column indices in SYLK records are 1-based integers
+  - (spec) SYLK X and Y qualifiers carry forward their values to subsequent records until changed
+  - (spec) SYLK numeric values are encoded as plain decimal numbers without quotes
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Parse every specification example plus edge fixtures for embedded delimiters, embedded quotes, embedded
+    line breaks, and empty fields.
+  - Negative fixtures for unterminated quotes and illegal bare quote characters in strict mode.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SYLK-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SYLK-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Every documented validation rule maps to at least one negative test.
+  capability_id: SYLK-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered structural validation
+  production_meaning: Validation checks lexical, syntax, and structural rules as separate layers with
+    complete diagnostics, so callers can gate pipelines on machine-readable results.
+  developer_use_case: A developer validates an incoming file before processing and receives every violation
+    with row/column locations, not just the first failure.
+  provenance:
+  - POL-TAB-VALIDATE-01
+  - POL-TAB-VALIDATE-02
+  - SAL-SYLK-00004
+  - SAL-SYLK-00015
+  required_behavior:
+  - Validate lexical, syntax, and structural layers independently, returning all diagnostics with locations.
+  - Structural checks include consistent field counts per record and header integrity where headers are
+    declared.
+  normative_rules:
+  - (spec) SYLK files must begin with the record ID:P which identifies the file as SYLK format
+  - (spec) SYLK E record marks the end of the file and must be the last record
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Positive and negative fixtures per validation layer; diagnostics carry stable codes and locations.
+- release_gates:
+  - Writer output validated against parser and at least one external consumer fixture set.
+  capability_id: SYLK-WRITE-001
+  level: MUST
+  category: write
+  title: Specification-conformant serialization
+  production_meaning: Output applies quoting and escaping exactly where the dialect requires, chooses
+    correct line endings, and is deterministic - loadable by the library itself and by mainstream consumers.
+  developer_use_case: A developer writes a table containing embedded delimiters, quotes, and line breaks
+    and every mainstream reader loads it intact.
+  provenance:
+  - POL-TAB-WRITE-01
+  - POL-TAB-WRITE-02
+  - SAL-SYLK-00008
+  - SAL-SYLK-00016
+  - SAL-SYLK-00020
+  required_behavior:
+  - Quote and escape fields exactly where required by the dialect; never emit ambiguous unquoted content.
+  - Offer lossless mode (preserve original quoting and line-ending choices where recorded) and normalized
+    mode (canonical quoting policy), as an explicit caller choice.
+  normative_rules:
+  - (spec) SYLK C record K qualifier specifies the cell value as a number or quoted string
+  - (spec) SYLK string values in C records are delimited by double quotes with embedded quotes doubled
+  - (spec) SYLK numeric values are encoded as plain decimal numbers without quotes
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Deterministic double-serialization byte-compare; round-trip through parser for hostile field content.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: 'Character-level rules: encoding validity, permitted characters, line-ending forms.'
+    layer: lexical
+  - description: 'Field/record splitting: delimiter, quoting, and escaping conformance.'
+    layer: syntax
+  - description: 'Row shape consistency: field counts, header presence, record boundaries.'
+    layer: structural
+  - description: Optional typed-column checks when a schema or type hints are supplied.
+    layer: type
+  - description: Input size, field count, and cell payload limits; formula-injection hazards flagged.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Oversized rows or fields causing unbounded memory allocation during parsing.
+  - Formula-injection payloads (cells beginning with '=', '+', '-', '@') passed to spreadsheet consumers.
+  - Malformed encoding sequences and BOM confusion causing silent data corruption.
+  - Quote-state confusion causing record-boundary smuggling across rows.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Bounded field size, field count per record, and total input size with configurable limits.
+  - No evaluation of cell content; formula-hazard flagging available for export paths.
+  - Strict encoding validation by default with explicit tolerant-mode opt-in.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Detection fixtures across the dialect matrix; wrong-guess cases must surface low confidence rather than
+  silent mis-parse.
+- Round-trip after each mutation class proves the edit survived save and reload.
+- BOM and no-BOM fixtures; undecodable-sequence negative fixtures in strict and tolerant modes.
+- Export fixture verified against the target format's own parser.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Header-based and index-based access agree on every fixture; dimension reporting matches fixture truth.
+- Parse every specification example plus edge fixtures for embedded delimiters, embedded quotes, embedded
+  line breaks, and empty fields.
+- Negative fixtures for unterminated quotes and illegal bare quote characters in strict mode.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Positive and negative fixtures per validation layer; diagnostics carry stable codes and locations.
+- Deterministic double-serialization byte-compare; round-trip through parser for hostile field content.
+release_gates:
+- Dialect matrix documented and covered by detection tests.
+- Every mutation operation has a save-reload-verify test.
+- Encoding matrix covered by tests including failure modes.
+- At least one export path proven by consumer-side verification.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Typed model APIs cover read access to every construct the parser produces.
+- All specification parsing rules covered by passing tests including quoting and line-ending variants.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Every documented validation rule maps to at least one negative test.
+- Writer output validated against parser and at least one external consumer fixture set.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: SYLK-DIALECT-001
+  provenance:
+  - POL-TAB-DIALECT-01
+  - POL-TAB-DIALECT-02
+- capability_id: SYLK-EDIT-001
+  provenance:
+  - POL-TAB-EDIT-01
+  - POL-TAB-EDIT-02
+- capability_id: SYLK-ENCODING-001
+  provenance:
+  - POL-TAB-ENC-01
+  - POL-TAB-ENC-02
+  - SAL-SYLK-00011
+- capability_id: SYLK-EXPORT-001
+  provenance:
+  - POL-TAB-EXPORT-01
+- capability_id: SYLK-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: SYLK-MODEL-001
+  provenance:
+  - POL-TAB-MODEL-01
+  - POL-TAB-MODEL-02
+  - POL-TAB-MODEL-03
+  - SAL-SYLK-00001
+  - SAL-SYLK-00002
+  - SAL-SYLK-00003
+  - SAL-SYLK-00007
+  - SAL-SYLK-00008
+  - SAL-SYLK-00009
+  - SAL-SYLK-00010
+  - SAL-SYLK-00011
+  - SAL-SYLK-00012
+  - SAL-SYLK-00014
+  - SAL-SYLK-00016
+  - SAL-SYLK-00017
+  - SAL-SYLK-00018
+  - SAL-SYLK-00020
+- capability_id: SYLK-PARSE-001
+  provenance:
+  - POL-TAB-PARSE-01
+  - POL-TAB-PARSE-02
+  - POL-TAB-PARSE-03
+  - SAL-SYLK-00001
+  - SAL-SYLK-00002
+  - SAL-SYLK-00003
+  - SAL-SYLK-00004
+  - SAL-SYLK-00005
+  - SAL-SYLK-00006
+  - SAL-SYLK-00007
+  - SAL-SYLK-00008
+  - SAL-SYLK-00009
+  - SAL-SYLK-00010
+  - SAL-SYLK-00011
+  - SAL-SYLK-00012
+  - SAL-SYLK-00013
+  - SAL-SYLK-00014
+  - SAL-SYLK-00015
+  - SAL-SYLK-00016
+  - SAL-SYLK-00017
+  - SAL-SYLK-00018
+  - SAL-SYLK-00020
+- capability_id: SYLK-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: SYLK-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: SYLK-VALIDATE-001
+  provenance:
+  - POL-TAB-VALIDATE-01
+  - POL-TAB-VALIDATE-02
+  - SAL-SYLK-00004
+  - SAL-SYLK-00015
+- capability_id: SYLK-WRITE-001
+  provenance:
+  - POL-TAB-WRITE-01
+  - POL-TAB-WRITE-02
+  - SAL-SYLK-00008
+  - SAL-SYLK-00016
+  - SAL-SYLK-00020

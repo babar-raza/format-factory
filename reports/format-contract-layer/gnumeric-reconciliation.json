@@ -1,0 +1,409 @@
+{
+  "format_id": "gnumeric",
+  "contract_id": "FC-GNUMERIC-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19",
+    "qname_registry_sha256": "5b7810690da47f5ea68ba9af821d52a1f06746712d49ca34ddc841f17ea61f82",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "9b915f2a355840cf5e93321c0e4f8490f7b74081f073c5cc9c52bd642df7ef4d",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 187,
+  "class_count": 9,
+  "test_file_count": 205,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "GNUMERIC-CONTENT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_sheet",
+        "clear_cell",
+        "clear_sheet",
+        "delete_sheet",
+        "rename_sheet",
+        "set_cell_value"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "export_to_csv",
+        "export_to_json",
+        "gnumeric_cell_to_row_ratio",
+        "gnumeric_numeric_to_string_ratio",
+        "gnumeric_to_abw",
+        "gnumeric_to_csv",
+        "gnumeric_to_dif",
+        "gnumeric_to_fodg",
+        "gnumeric_to_fods",
+        "gnumeric_to_fodt",
+        "gnumeric_to_ndjson",
+        "gnumeric_to_ods",
+        "gnumeric_to_odt",
+        "gnumeric_to_pbm",
+        "gnumeric_to_pgm",
+        "gnumeric_to_ppm",
+        "gnumeric_to_sylk",
+        "gnumeric_to_toml",
+        "gnumeric_to_tsv",
+        "save_to_file"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load",
+        "save_to_file",
+        "write_gnumeric"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "GnumericDocument",
+        "GnumericError",
+        "GnumericParseError",
+        "GnumericSheet",
+        "GnumericWorkbook",
+        "GnumericWriteError",
+        "Sheet",
+        "Workbook"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load",
+        "probe_gnumeric",
+        "probe_gnumeric_codec",
+        "read_cell"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "gnumeric_max_cell_length",
+        "gnumeric_max_cell_value_length",
+        "gnumeric_max_column_count",
+        "gnumeric_max_row_count",
+        "gnumeric_max_row_length",
+        "gnumeric_max_sheet_cell_count",
+        "gnumeric_max_string_cell_length",
+        "max_cells_per_sheet",
+        "max_column_value",
+        "workbook_max_sheet_cell_count"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-STYLE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "GnumericDocument",
+        "GnumericError",
+        "GnumericParseError",
+        "GnumericSheet",
+        "GnumericWorkbook",
+        "GnumericWriteError",
+        "Sheet",
+        "Workbook"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "GNUMERIC-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_gnumeric"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_to_gnumeric.py",
+        "tests/python/csv/test_csv_to_gnumeric.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r280_pbm_pgm_abw_gnumeric_deepening.py",
+        "tests/python/deepening/test_r285_csv_abw_gnumeric_ods_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 4,
+    "by_status": {
+      "NOT_STARTED": 3,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 8,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

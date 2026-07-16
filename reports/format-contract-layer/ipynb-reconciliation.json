@@ -1,0 +1,690 @@
+{
+  "format_id": "ipynb",
+  "contract_id": "FC-IPYNB-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456",
+    "qname_registry_sha256": "11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef",
+    "research_sha256": "2cbbf729a97687e4639914bcdbaaccd0d5f4a19b0b481d830d81e2bceb216507",
+    "sal_facts_sha256": "b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 57,
+  "class_count": 11,
+  "test_file_count": 12,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "IPYNB-ATTACH-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "IpynbCell",
+        "IpynbDocument",
+        "IpynbError",
+        "IpynbNotebook",
+        "IpynbOutput",
+        "IpynbParseError",
+        "IpynbValidationError",
+        "IpynbWriteError",
+        "Notebook",
+        "Output"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-CLEAN-001",
+      "category": "transform",
+      "level": "MUST",
+      "depth_required": 6,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 6,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-DIFF-001",
+      "category": "query",
+      "level": "MUST",
+      "depth_required": 6,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 2,
+      "product_symbols": [
+        "get_cell_count",
+        "get_code_cells",
+        "get_markdown_cells",
+        "get_output_representation",
+        "get_representation"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_cell",
+        "add_output_representation",
+        "add_representation",
+        "clear_outputs",
+        "remove_cell",
+        "remove_output_mime_type",
+        "remove_representation"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-EXEC-001",
+      "category": "advanced",
+      "level": "SHOULD",
+      "depth_required": 6,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 2,
+      "product_symbols": [
+        "__init__",
+        "__repr__",
+        "_generate_cell_id",
+        "_read_source",
+        "_source_preview",
+        "_source_text_length",
+        "add_cell",
+        "add_output_representation",
+        "add_representation",
+        "attachments",
+        "cell_count",
+        "cell_type",
+        "cells",
+        "clear_outputs",
+        "code_cells",
+        "data",
+        "ename",
+        "ensure_cell_id",
+        "evalue",
+        "execution_count"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "ipynb_to_csv"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-ID-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "IpynbCell",
+        "IpynbDocument",
+        "IpynbError",
+        "IpynbNotebook",
+        "IpynbOutput",
+        "IpynbParseError",
+        "IpynbValidationError",
+        "IpynbWriteError",
+        "Notebook",
+        "Output"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_ipynb",
+        "write_ipynb"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-MERGE-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "IpynbCell",
+        "IpynbDocument",
+        "IpynbError",
+        "IpynbNotebook",
+        "IpynbOutput",
+        "IpynbParseError",
+        "IpynbValidationError",
+        "IpynbWriteError",
+        "Notebook",
+        "Output"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Cell",
+        "IpynbCell",
+        "IpynbDocument",
+        "IpynbError",
+        "IpynbNotebook",
+        "IpynbOutput",
+        "IpynbParseError",
+        "IpynbValidationError",
+        "IpynbWriteError",
+        "Notebook",
+        "Output"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load_ipynb",
+        "probe_ipynb"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-SANITIZE-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-TRUST-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-UPGRADE-001",
+      "category": "transform",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "validate_notebook",
+        "validate_notebook_schema"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "write_ipynb"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics.py",
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_compat_facades.py",
+        "tests/python/ipynb/test_ipynb_document_mutation.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 20,
+    "with_gap": 9,
+    "by_status": {
+      "NOT_STARTED": 6,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 14,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

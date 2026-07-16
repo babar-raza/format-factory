@@ -1,0 +1,103 @@
+schema_version: '1.0'
+format_id: ipynb
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    mutation_operations:
+    - notebook.clear_outputs(filter=...)
+    - notebook.sanitize(policy)
+    read_operations:
+    - Notebook.load(...)
+    - notebook.cells.find(...)
+    root_types:
+    - Notebook
+    - Cell
+    - NotebookOutput
+    - MimeBundle
+    validation_operations:
+    - notebook.validate(mode='declared|current')
+  capability_domain: MODEL
+  depth_hint: 4
+  finding_id: RF-NB-00001
+  kind: api_expectation
+  requirement: Expose typed Notebook/MarkdownCell/CodeCell/RawCell/NotebookOutput/MimeBundle objects with
+    search by ID, type, tag, and source text, so pipelines manipulate notebooks without raw dictionary
+    access.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NB-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: CLEAN
+  depth_hint: 6
+  finding_id: RF-NB-00002
+  kind: product_requirement
+  requirement: Output clearing, execution-count reset, and transient-metadata stripping run as configurable,
+    dry-runnable, idempotent operations - the pre-commit staple for notebook version control.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NB-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: DIFF
+  depth_hint: 6
+  finding_id: RF-NB-00003
+  kind: product_requirement
+  requirement: Diff notebooks by stable cell identity with move detection and ignore policies for outputs,
+    execution counts, and transient metadata, producing machine-applicable patches with preconditions.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NB-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: TRUST
+  depth_hint: 5
+  finding_id: RF-NB-00004
+  kind: security_expectation
+  requirement: Integrate a pluggable notebook-notary trust backend where modified notebooks are never
+    auto-trusted and cryptographic trust stays separate from schema validity.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NB-003
+- required_tests:
+  - MIME matrix fixtures per output type with byte-exact payload verification.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: OUTPUT
+  finding_id: RF-NB-00005
+  kind: test_obligation
+  requirement: Test the full MIME-bundle matrix including vendor MIME types, binary payloads, large base64
+    attachments, and malformed bundles, proving no output entry is lost or reordered.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NB-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: Jupyter nbformat specification and JSON schema (format 4)
+  source_id: SRC-NB-002
+  organization: Jupyter Project
+  version: nbformat 4.x
+  canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
+  source_id: SRC-NB-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

@@ -1,0 +1,47 @@
+schema_version: '1.0'
+format_id: dif
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    read_operations:
+    - load(path_or_stream_or_bytes)
+    - inspect_header(path)
+  capability_domain: PARSE
+  depth_hint: 3
+  finding_id: RF-DIF-00001
+  kind: api_expectation
+  requirement: Expose both whole-file load and a chunked/vector-wise access path for DIF tables so large
+    spreadsheets export in bounded memory, with header/vector/data tuple structure surfaced as typed rows
+    and columns.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 repair loop (TC-FCL-080-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-DIF-002
+- required_tests:
+  - Focused fixture matrix for the behavior above with negative cases.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALIDATE
+  finding_id: RF-DIF-00002
+  kind: test_obligation
+  requirement: Provide a structural validation pass that checks the DIF header block, vector counts, and
+    tuple terminators with row/position diagnostics before data access.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 repair loop (TC-FCL-080-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-DIF-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: DIF developer-workflow requirements (Format Factory product practice)
+  source_id: SRC-DIF-002
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

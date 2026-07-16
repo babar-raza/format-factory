@@ -1,5 +1,31 @@
 # GAP-FORENSIC-013b: spec_qname ClassVar Backfill — Remaining 18 Formats
 
+## Taskcard Status Summary
+
+| TC-ID | Status |
+|---|---|
+| TC-GF013B-001 | CLOSED |
+| TC-GF013B-002 | CLOSED |
+| TC-GF013B-003 | CLOSED |
+| TC-GF013B-004 | CLOSED |
+| TC-GF013B-006 | CLOSED |
+| TC-GF013B-007 | CLOSED |
+| TC-GF013B-008 | CLOSED |
+| TC-GF013B-005 | CLOSED |
+| TC-GF013B-COMMIT-001 | CLOSED |
+
+**Execution evidence (2026-07-16):**
+
+- **TC-GF013B-001** (ndjson): 6 files (5 planned + `ndjson_codec.py`, discovered mid-execution — see Change Log). Restored-and-reapplied to isolate from unrelated FACT→SAL drift. 2218 passed, 5 pre-existing unrelated failures (dirty test files expecting the other session's in-progress rename, confirmed via git-HEAD comparison).
+- **TC-GF013B-002** (batch A: dif, fodg, fodp, pgm, ppm): 21 files (19 planned + pgm_parser.py/ppm_parser.py). Restored-and-reapplied (21/21 files had unrelated drift). 6501 passed, 11 pre-existing unrelated failures (same pattern, confirmed).
+- **TC-GF013B-003** (batch B: odt, pbm, qoi, sylk): 26 files (24 planned + pbm_parser.py/qoi_parser.py). Restored-and-reapplied (25/26 flagged, all confirmed genuine). odt/pbm/qoi: 7 pre-existing unrelated failures. sylk: 21 failures, root-caused to two distinct pre-existing unrelated causes — FACT→SAL metadata drift (dirty test files) AND unrelated WIP changes to `sylk_writer.py`/`sylk_value_analytics.py` (never touched by this plan) that break a value-type roundtrip; confirmed via direct trace (`write_sylk` imported from the dirty `sylk_writer.py`) since neither file was touched by this plan.
+- **TC-GF013B-004** (batch C: ods, xcf): 15 files as planned. xcf_parser.py/image_document.py confirmed class-level only (not module-level) per the plan's own note. Restored-and-reapplied (15/15). 4439 passed, 15 pre-existing unrelated failures (same pattern).
+- **TC-GF013B-006** (batch D: ipynb, nrrd, safetensors): 14 files as planned. No pre-existing drift found. 700 passed, 0 failures.
+- **TC-GF013B-007** (batch E: xliff, ubl): 14 files as planned. No pre-existing drift found. 405 passed, 0 failures.
+- **TC-GF013B-008** (batch F: mtlx): 12 files as planned. No pre-existing drift found. 266 passed, 0 failures.
+- **TC-GF013B-005** (cross-format verification): Whole-tree AST scan across all 18 formats confirmed 0/103 bare declarations AND 0 typed-but-not-ClassVar declarations remain. Full 18-format regression run twice due to a large number of other concurrently active agent sessions in this repo (confirmed via the coordination hook) altering unrelated files between runs: first run 48 failed/19440 passed, second run (minutes later) 15 failed/19473 passed — the failure count itself fluctuated while this plan's own diff stayed static, which is independent confirmation that all remaining failures are externally caused, not caused by this plan's changes. Final state: 15 failures, all in sylk (root-caused above), 0 failures anywhere else.
+- **TC-GF013B-COMMIT-001**: Built a 109-file intended list (108 source/tool files + this plan file), staged via `git add --pathspec-from-file`, verified staged-set == intended-set exactly (109/109, 0 discrepancy) before committing. Committed as `320033d39821490fefab115d609da82b6972d7fc`. Post-commit: 0/109 intended files remain dirty.
+
 ## Context
 
 GAP-FORENSIC-013 (spec_qname ClassVar backfill for abw, csv, fods, fodt, gnumeric, toml, tsv, zst) was executed and TERMINAL_CLOSED this session — commits `f81f1a8b`, `5fac6038`, `25238b3b`; all 6 taskcards CLOSED; `lifecycle_audit.py` returned `AUDIT_PASS`. Its own plan file now carries a `mutation_policy: "no further plan/hardening/execution writes"` marker, so this is a **successor plan**, not a reopening.

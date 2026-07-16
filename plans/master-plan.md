@@ -7284,3 +7284,34 @@ Executed under the existing `select-6` per-chat plan authority (no competing pla
 - 3 pre-existing test failures out of scope (DIF/ODS/NDJSON/XCF/SYLK spec_fact_ref naming drift, ZST stale __all__ snapshot)
 - Exception class identity mismatch pattern across 15+ formats (architectural tech debt)
 - Full regression across existing test suites (not run — user-cancelled; the 26 new files are isolated)
+
+## Section 109 — gap-forensic-013b-classvar-compat-spec-backfill: spec_qname ClassVar Backfill, Remaining 18 Formats (CLOSED 2026-07-16)
+
+**Plan:** `plans/.claude/gap-forensic-013b-classvar-compat-spec-backfill.md`
+**Type:** forensic_gap_remediation (successor to §106 GAP-FORENSIC-013)
+**Mission ID:** GAP-FORENSIC-013B
+**Verdict:** SPRINT_ALL_GREEN_VERIFIED
+
+### Problem
+
+GAP-FORENSIC-013 (§106) fixed 8 formats missing `spec_qname: ClassVar[str]`. A comprehensive whole-tree AST scan (run while planning this successor, superseding an initial narrower draft that incorrectly assumed 6 formats were already complete based on a partial grep match — corrected before execution, documented in the plan's own Change Log) found 18 more formats with the gap: `ndjson` was fully missed from the original scope (models.py + Compat + spec all bare); 17 others (dif, fodg, fodp, ipynb, mtlx, nrrd, ods, odt, pbm, pgm, ppm, qoi, safetensors, sylk, ubl, xcf, xliff) already had ClassVar on their top-level `models.py` but not on `Compat/`/`spec/` sub-element classes.
+
+### What Was Done
+
+- Reused `tools/backfill/classvar_annotation_backfill.py` (built in §106) across 9 taskcards (ndjson + 6 format batches + mtlx individually).
+- Mid-execution, found and fixed a related, more severe defect: 5 files (`ndjson_codec.py`, `pbm_parser.py`, `pgm_parser.py`, `ppm_parser.py`, `qoi_parser.py`) declared `spec_qname` on a `@dataclass` with a bare `str` type annotation instead of `ClassVar[str]` — meaning it was a genuine per-instance dataclass field, not a shared class attribute. Same tool fixed it; folded into the relevant taskcards' scope with a documented change-log entry rather than triggering a new planning cycle.
+- 108 files, 103 `spec_qname` declarations backfilled. Whole-tree AST scan confirmed 0 bare and 0 typed-but-not-`ClassVar` declarations remain across all 18 formats.
+- Every batch's diff was verified ClassVar-only (values unchanged) via hunk-level comparison against committed HEAD before running tests — this repo has a large, unrelated, concurrently in-progress FACT→SAL identifier rename by other active agent sessions (independently corroborated by §108's own "spec_fact_ref naming drift" follow-up for DIF/ODS/NDJSON/XCF/SYLK) that repeatedly contaminated the working tree mid-backfill; every contaminated file was restored to HEAD and the backfill reapplied in isolation before testing.
+- Full 18-format regression run twice (48 failed/19440 passed, then 15 failed/19473 passed minutes later) — the failure count itself fluctuated while this plan's diff stayed static, independently confirming all remaining failures are externally caused. Final state: 15 failures, all in `sylk`, root-caused to unrelated dirty `sylk_writer.py`/`sylk_value_analytics.py` (never touched by this plan) via direct import trace, not this plan's changes.
+
+### Governed Closure
+
+Followed the same audit→harden→execute→verify convergence pattern as §106: plan hardened in Plan Mode with a Taskcard Register (9 taskcards, full required-implementation/verification/evidence/acceptance-criteria fields), Gate Contract, Evidence Contract, Verification Matrix, Repair Loop, and Anti-Overclaim Rules before any execution began. All 9 taskcards CLOSED with captured command-output evidence (not memory-asserted) — full detail in the plan file's own Taskcard Status Summary.
+
+**Commit:** `320033d39821490fefab115d609da82b6972d7fc` — 109 files changed (108 ClassVar source files + the plan file itself).
+
+### Follow-ups (non-blocking)
+
+- The 12 formats not covered by either §106 or this section (abw, csv, fods, fodt, gnumeric, toml, tsv, zst were §106; ndjson + 17 were this section) — all 26 real Python format packages under `src/python/` now have `spec_qname: ClassVar[str]` with zero known gaps.
+- V51 governance validator still tolerates bare and ClassVar-annotated `spec_qname` equally (deliberate exclusion, carried forward from §106).
+- The unrelated, repo-wide, in-progress FACT→SAL identifier rename remains uncommitted and out of scope — owned by whichever session(s) are performing it; independently corroborated by §108's own follow-up list.

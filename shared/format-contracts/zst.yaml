@@ -1,0 +1,1277 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-ZST-V1
+  format_id: zst
+  format_canonical_name: Zstandard Compressed File
+  extensions:
+  - .zst
+  - .tar.zst
+  family: archive_container
+  target_spec_version: RFC 8878
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
+    qname_registry_sha256: c0394b68f007a8929aded6ea968bba1ae05c305494e5af9ed71467689aa3ec23
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: 80bdb095617244d654516f3b5164b2037334127483f3fd4be7628b178893e4bf
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Containers carry passive payloads; extraction paths are policy-governed; nothing embedded
+      is ever executed.
+  data_model_type: archive
+  description: 'Zstandard Compressed File: compressed container/stream format (IETF RFC 8878). Framed
+    compressed payloads or entry-based archives carrying documents and data.'
+  primary_use_cases:
+  - Compress and decompress payloads or archive entries reliably and safely
+  - Inspect container structure and metadata without full extraction
+  - Stream large payloads in bounded memory
+authoritative_sources:
+- title: IETF RFC 8878
+  source_id: SRC-ZST-001
+  organization: IETF
+  version: RFC 8878
+  canonical_url: https://www.rfc-editor.org/info/rfc8878
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+scope_policy:
+  minimum_viable_support: Decode and encode conformant containers with integrity verification, bounded-memory
+    streaming, and decompression-bomb protection.
+  production_complete_target: 'Full container/frame model of the target specification: framing/entry structure,
+    checksums, metadata, streaming and random access where defined, safe extraction with limits, and deterministic
+    writing.'
+capabilities:
+- release_gates:
+  - Codec verified against reference vectors.
+  capability_id: ZST-CODEC-001
+  level: MUST
+  category: parse
+  title: Compression codec correctness
+  production_meaning: Compression and decompression are bit-correct against reference vectors with all
+    specified parameters/window rules honored.
+  developer_use_case: A developer decompresses reference-produced data and byte-identical content emerges.
+  provenance:
+  - POL-ARC-CODEC-01
+  - SAL-ZST-00003
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00009
+  - SAL-ZST-00010
+  - SAL-ZST-00012
+  - SAL-ZST-00014
+  - SAL-ZST-00018
+  - SAL-ZST-00020
+  - SAL-ZST-00021
+  - SAL-ZST-00022
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00034
+  - SAL-ZST-00035
+  - SAL-ZST-00036
+  - SAL-ZST-00037
+  - SAL-ZST-00038
+  - SAL-ZST-00039
+  - SAL-ZST-00043
+  - SAL-ZST-00046
+  - SAL-ZST-00047
+  - SAL-ZST-00048
+  - SAL-ZST-00049
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00054
+  - SAL-ZST-00060
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00083
+  - SAL-ZST-00084
+  - SAL-ZST-00085
+  - SAL-ZST-00086
+  - SAL-ZST-00087
+  - SAL-ZST-00088
+  - SAL-ZST-00090
+  - SAL-ZST-00091
+  - SAL-ZST-00092
+  - SAL-ZST-00093
+  required_behavior:
+  - Match reference implementation outputs on the specification's test vectors; honor declared parameters,
+    dictionaries, and window constraints.
+  normative_rules:
+  - (3.1.) Zstandard compressed data is made of one or more frames; each frame is independent and can
+    be decompressed independently
+  - '(3.1.) Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user metadata)'
+  - '(3.1.1.1.) Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor,
+    optional Window_Descriptor, optional Dictionary_ID, optional Frame_Content_Size'
+  - '(3.1.1.1.1.) Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6),
+    Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag
+    (bits 1-0)'
+  - '(3.1.1.2.2.) Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated),
+    Compressed_Block (2), Reserved (3, invalid)'
+  - (3.1.1.2.4.) Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame
+  - (3.1.1.3.) Compressed block consists of Literals_Section and Sequences_Section, combined via Sequence
+    Execution
+  - (5.) Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID cannot
+    be 0
+  - '(section-2.--definitions.) encode:  The process of translating data from one form to another; this
+    may include compression, or it may refer to other translations done as part of this specification.'
+  - (section-3.--compression-algorithm.) communications.  The format uses the Zstandard compression method,
+    and an optional xxHash-64 checksum method [XXHASH], for detection of data corruption.
+  - (section-3.--compression-algorithm.) Unless otherwise indicated below, a compliant compressor must
+    produce data sets that conform to the specifications presented here.
+  - (section-3.--compression-algorithm.) A compliant decompressor must be able to decompress at least
+    one working set of parameters that conforms to the specifications
+  - (section-3.--compression-algorithm.) working set of parameters that conforms to the specifications
+    presented here.  It may also ignore informative fields, such as the checksum.  Whenever it does not
+    support a parameter defined in the
+  - (section-3.--compression-algorithm.) checksum.  Whenever it does not support a parameter defined in
+    the compressed stream, it must produce an unambiguous error code and associated error message explaining
+    which parameter is unsupported.
+  - (section-3.1.1.1.2.--window-descriptor.) This provides guarantees about the minimum memory buffer
+    required to decompress a frame.  This information is important for decoders to
+  - (section-3.1.1.1.2.--window-descriptor.) The Window_Descriptor byte is optional.  When Single_Segment_Flag
+    is set, Window_Descriptor is not present.  In this case, Window_Size is
+  - (section-3.1.1.1.3.--dictionary_id.) This is a field of variable size, which contains the ID of the
+    dictionary required to properly decode the frame.  This field is optional.  When it's not present,
+    it's up to the decoder to know
+  - (section-3.1.1.1.3.--dictionary_id.) dictionary required to properly decode the frame.  This field
+    is optional.  When it's not present, it's up to the decoder to know which dictionary to use.
+  - (section-3.1.1.1.3.--dictionary_id.) for frames and dictionaries distributed in public space, Dictionary_ID
+    must be attributed carefully.  The following ranges are reserved for use only with dictionaries that
+    have been registered
+  - (section-3.1.1.1.4.--frame_content_size.) This is the original (uncompressed) size.  This information
+    is optional.  Frame_Content_Size uses a variable number of bytes, provided by FCS_Field_Size.  FCS_Field_Size
+    is provided by the value
+  - (section-3.1.1.2.2.--block_type.) Block_Content consists of a single byte.  On the decompression side,
+    this byte must be repeated Block_Size times.
+  - (section-3.1.1.3.--compressed-blocks.) To decompress a compressed block, the compressed size must
+    be provided from the Block_Size field within Block_Header.
+  - (section-3.1.1.3.--compressed-blocks.) *  The previous Huffman tree, required by Treeless_Literals_Block
+    type.
+  - (section-3.1.1.3.--compressed-blocks.) *  Previous Finite State Entropy (FSE) decoding tables, required
+    by Repeat_Mode, for each symbol type (literals length codes, match
+  - (section-3.1.1.3.1.--literals_section_header.) Literals can be stored uncompressed or compressed using
+    Huffman prefix codes.  When compressed, an optional tree description can be present, followed by 1
+    or 4 streams.
+  - (section-3.1.1.3.1.1.--literals_section_header.) this mode is triggered without any previous Huffman
+    table in the frame (or dictionary, per Section 5), it should be treated as data corruption.  Literals_Section_Content
+    is Compressed_Size.
+  - (section-3.1.1.3.1.1.--literals_section_header.) *  For Compressed_Block and Treeless_Literals_Block,
+    it's required to decode both Compressed_Size and Regenerated_Size (the decompressed
+  - (section-3.1.1.3.1.6.--jump_table.) streams combined.  The decompressed size of each stream is equal
+    to (Regenerated_Size+3)/4, except for the last stream, which may be up to 3 bytes smaller, to reach
+    a total decompressed size as specified
+  - (section-3.1.1.3.2.1.--sequences_section_header.) mode is used without any previous sequence table
+    in the frame (or dictionary; see Section 5) to repeat, this should be treated as corruption.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) In zstd, the compressor writes bits forward into a block,
+    and the decompressor must read the bitstream backwards.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) first to last.  Since the compressor writes the bitstream
+    in the forward direction, this means the compressor must encode the sequences starting with the last
+    one and ending with the first.
+  - (section-3.1.1.4.--sequence-execution.) literals), so an offset of 6 and a match length of 3 means
+    that 3 bytes should be copied from 6 bytes back.  Note that all offsets leading to previously decoded
+    data must be smaller than Window_Size
+  - (section-3.1.1.4.--sequence-execution.) bytes should be copied from 6 bytes back.  Note that all offsets
+    leading to previously decoded data must be smaller than Window_Size defined in Frame_Header_Descriptor
+    (Section 3.1.1.1.1).
+  - (section-5.--dictionary-format.) Zstandard is compatible with "raw content" dictionaries, free of
+    any format restriction, except that they must be at least 8 bytes.  These dictionaries function as
+    if they were just the content part of a
+  - (section-5.--dictionary-format.) are provided out of band.  That is, the Dictionary_ID identifies
+    which should be used, but this specification does not describe the mechanism by which the dictionary
+    is obtained prior to use during
+  - '(section-5.--dictionary-format.) public distribution of compressed frames, the following ranges are
+    reserved and shall not be used:'
+  - (section-5.--dictionary-format.) stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each
+    repeat offset must have a value less than the dictionary size.
+  - (section-5.--dictionary-format.) long as the amount of data decoded from this frame is less than or
+    equal to Window_Size, sequence commands may specify offsets longer than the total length of decoded
+    output so far to reference back
+  - (section-6.--use-of-dictionaries.) dictionaries with zstd payloads, especially with MIME, content
+    encoded with the media type registered here should not use a dictionary.  The exception to this requirement
+    might be a private
+  - (section-8.--security-considerations.) One should never compress a message whose content must remain
+    secret with a message generated by a third party.  Such a compression can be
+  - (section-8.--security-considerations.) An attacker may provide correctly formed compressed frames
+    with unreasonable memory requirements.  A decoder must always control
+  - (section-8.--security-considerations.) Compression can be optimized by training a dictionary on a
+    variety of related content payloads.  This dictionary must then be available at the decoder for decompression
+    of the payload to be possible.  While
+  - (section-8.--security-considerations.) given compressed payload, it is worth noting that third-party
+    dictionaries may interact unexpectedly with a decoder, leading to possible memory or other resource-exhaustion
+    attacks.  We expect such
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Reference-vector round trips; parameter matrix.
+- release_gates:
+  - Container structure decoding covered against the specification's structure inventory.
+  capability_id: ZST-CONTAINER-001
+  level: MUST
+  category: parse
+  title: Frame/entry structure decoding
+  production_meaning: Magic numbers, frames or entries, headers, and checksums decode exactly per specification
+    with integrity verified.
+  developer_use_case: A developer probes a file, enumerates its frames/entries and metadata, and verifies
+    integrity without extraction.
+  provenance:
+  - POL-ARC-CONTAINER-01
+  - SAL-ZST-00001
+  - SAL-ZST-00002
+  - SAL-ZST-00003
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00007
+  - SAL-ZST-00008
+  - SAL-ZST-00009
+  - SAL-ZST-00010
+  - SAL-ZST-00011
+  - SAL-ZST-00012
+  - SAL-ZST-00014
+  - SAL-ZST-00020
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00025
+  - SAL-ZST-00026
+  - SAL-ZST-00028
+  - SAL-ZST-00030
+  - SAL-ZST-00032
+  - SAL-ZST-00033
+  - SAL-ZST-00034
+  - SAL-ZST-00036
+  - SAL-ZST-00037
+  - SAL-ZST-00038
+  - SAL-ZST-00039
+  - SAL-ZST-00040
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00044
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00047
+  - SAL-ZST-00048
+  - SAL-ZST-00049
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00052
+  - SAL-ZST-00056
+  - SAL-ZST-00057
+  - SAL-ZST-00058
+  - SAL-ZST-00059
+  - SAL-ZST-00060
+  - SAL-ZST-00061
+  - SAL-ZST-00067
+  - SAL-ZST-00068
+  - SAL-ZST-00069
+  - SAL-ZST-00075
+  - SAL-ZST-00079
+  - SAL-ZST-00085
+  - SAL-ZST-00087
+  - SAL-ZST-00091
+  required_behavior:
+  - Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity
+    and report exact corruption positions.
+  normative_rules:
+  - (3.1.1.) Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format
+  - (3.1.2.) Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F (16 valid
+    values)
+  - (3.1.) Zstandard compressed data is made of one or more frames; each frame is independent and can
+    be decompressed independently
+  - '(3.1.) Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user metadata)'
+  - '(3.1.1.1.) Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor,
+    optional Window_Descriptor, optional Dictionary_ID, optional Frame_Content_Size'
+  - '(3.1.1.1.1.) Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6),
+    Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag
+    (bits 1-0)'
+  - (3.1.1.2.) Each frame must have at least 1 block; there is no upper limit on the number of blocks
+    per frame
+  - (3.1.1.2.) Block_Header is 3 bytes, little-endian, with Last_Block (bit 0), Block_Type (bits 1-2),
+    Block_Size (bits 3-23)
+  - '(3.1.1.2.2.) Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated),
+    Compressed_Block (2), Reserved (3, invalid)'
+  - (3.1.1.2.4.) Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame
+  - (3.1.1.) Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes stored
+    little-endian
+  - (3.1.1.3.) Compressed block consists of Literals_Section and Sequences_Section, combined via Sequence
+    Execution
+  - (5.) Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID cannot
+    be 0
+  - (section-3.--compression-algorithm.) communications.  The format uses the Zstandard compression method,
+    and an optional xxHash-64 checksum method [XXHASH], for detection of data corruption.
+  - (section-3.--compression-algorithm.) working set of parameters that conforms to the specifications
+    presented here.  It may also ignore informative fields, such as the checksum.  Whenever it does not
+    support a parameter defined in the
+  - (section-3.--compression-algorithm.) checksum.  Whenever it does not support a parameter defined in
+    the compressed stream, it must produce an unambiguous error code and associated error message explaining
+    which parameter is unsupported.
+  - '(section-3.1.1.--zstandard-frames.) Content_Checksum:  An optional 32-bit checksum, only present
+    if Content_Checksum_Flag is set.  The content checksum is the result'
+  - '(section-3.1.1.1.--frame-header.) The frame header has a variable size, with a minimum of 2 bytes
+    up to a maximum of 14 bytes depending on optional parameters.  The structure of Frame_Header is as
+    follows:'
+  - (section-3.1.1.1.1.2.--single_segment_flag.) Frame_Content_Size is necessarily present.  As a consequence,
+    the decoder must allocate a memory segment of a size equal to or larger than Frame_Content_Size.
+  - (section-3.1.1.1.1.3.--unused-bit.) property that is not mandatory to properly decode the frame.  An
+    encoder compliant with this specification must set this bit to zero.
+  - (section-3.1.1.1.1.4.--reserved-bit.) zero.  A decoder compliant with this specification version must
+    ensure it is not set.  This bit may be used in a future revision to signal a feature that must be
+    interpreted to decode the frame
+  - (section-3.1.1.1.1.4.--reserved-bit.) ensure it is not set.  This bit may be used in a future revision
+    to signal a feature that must be interpreted to decode the frame correctly.
+  - (section-3.1.1.1.2.--window-descriptor.) This provides guarantees about the minimum memory buffer
+    required to decompress a frame.  This information is important for decoders to
+  - (section-3.1.1.1.3.--dictionary_id.) This is a field of variable size, which contains the ID of the
+    dictionary required to properly decode the frame.  This field is optional.  When it's not present,
+    it's up to the decoder to know
+  - (section-3.1.1.1.3.--dictionary_id.) dictionary required to properly decode the frame.  This field
+    is optional.  When it's not present, it's up to the decoder to know which dictionary to use.
+  - (section-3.1.1.1.3.--dictionary_id.) for frames and dictionaries distributed in public space, Dictionary_ID
+    must be attributed carefully.  The following ranges are reserved for use only with dictionaries that
+    have been registered
+  - (section-3.1.1.1.4.--frame_content_size.) This is the original (uncompressed) size.  This information
+    is optional.  Frame_Content_Size uses a variable number of bytes, provided by FCS_Field_Size.  FCS_Field_Size
+    is provided by the value
+  - (section-3.1.1.2.--blocks.) After Magic_Number and Frame_Header, there are some number of blocks.
+    Each frame must have at least 1 block, but there is no upper limit on the number of blocks per frame.
+  - (section-3.1.1.2.1.--last_block.) The lowest bit (Last_Block) signals whether this block is the last
+    one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum
+    (see Section 3.1.1).
+  - (section-3.1.1.2.1.--last_block.) one.  The frame will end after this last block.  It may be followed
+    by an optional Content_Checksum (see Section 3.1.1).
+  - (section-3.1.1.2.2.--block_type.) Block_Content consists of a single byte.  On the decompression side,
+    this byte must be repeated Block_Size times.
+  - (section-3.1.1.2.2.--block_type.) current specification.  If such a value is present, it is considered
+    to be corrupt data, and a compliant decoder must reject it.
+  - (section-3.1.1.2.3.--block_size.) When Block_Type is RLE_Block, since Block_Content's size is always
+    1, Block_Size represents the number of times this byte must be repeated.
+  - (section-3.1.1.3.--compressed-blocks.) To decompress a compressed block, the compressed size must
+    be provided from the Block_Size field within Block_Header.
+  - (section-3.1.1.3.--compressed-blocks.) *  The previous Huffman tree, required by Treeless_Literals_Block
+    type.
+  - (section-3.1.1.3.--compressed-blocks.) *  Previous Finite State Entropy (FSE) decoding tables, required
+    by Repeat_Mode, for each symbol type (literals length codes, match
+  - (section-3.1.1.3.1.--literals_section_header.) Literals can be stored uncompressed or compressed using
+    Huffman prefix codes.  When compressed, an optional tree description can be present, followed by 1
+    or 4 streams.
+  - (section-3.1.1.3.1.1.--literals_section_header.) this mode is triggered without any previous Huffman
+    table in the frame (or dictionary, per Section 5), it should be treated as data corruption.  Literals_Section_Content
+    is Compressed_Size.
+  - (section-3.1.1.3.1.1.--literals_section_header.) *  For Compressed_Block and Treeless_Literals_Block,
+    it's required to decode both Compressed_Size and Regenerated_Size (the decompressed
+  - (section-3.1.1.3.1.3.--rle_literals_block.) Stream_1 consists of a single byte that should be repeated
+    Regenerated_Size times to generate the decoded literals.
+  - (section-3.1.1.3.2.--sequences_section.) The Sequences_Section starts by a header, followed by optional
+    probability tables for each symbol type, followed by the bitstream.
+  - (section-3.1.1.3.2.1.--sequences_section_header.) The last field, Reserved, must be all zeroes.
+  - (section-3.1.1.3.2.1.--sequences_section_header.) is 9, and the maximum accuracy log for the offset
+    code table is 8. This mode must not be used when only one symbol is present; RLE_Mode should be used
+    instead (although any other mode will
+  - (section-3.1.1.3.2.1.--sequences_section_header.) This mode must not be used when only one symbol
+    is present; RLE_Mode should be used instead (although any other mode will work).
+  - (section-3.1.1.3.2.1.--sequences_section_header.) mode is used without any previous sequence table
+    in the frame (or dictionary; see Section 5) to repeat, this should be treated as corruption.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) In zstd, the compressor writes bits forward into a block,
+    and the decompressor must read the bitstream backwards.
+  - (section-3.1.1.4.--sequence-execution.) bytes should be copied from 6 bytes back.  Note that all offsets
+    leading to previously decoded data must be smaller than Window_Size defined in Frame_Header_Descriptor
+    (Section 3.1.1.1.1).
+  - (section-3.1.2.--skippable-frames.) It should be noted that a skippable frame can be used to watermark
+    a stream of concatenated frames embedding any kind of tracking
+  - (section-3.1.2.--skippable-frames.) information (even just a Universally Unique Identifier (UUID)).
+    Users wary of such possibility should scan the stream of concatenated frames in an attempt to detect
+    such frames for analysis or removal.
+  - (section-256.--if-the-number-of-symbols-decoded-i.) 256.  If the number of symbols decoded is not
+    equal to the expected, the header should be considered corrupt.
+  - (section-4.2.1.--huffman-tree-description.) The prefix code must not exceed a maximum code length.  More
+    bits improve accuracy but yield a larger header size and require more
+  - '(section-5.--dictionary-format.) public distribution of compressed frames, the following ranges are
+    reserved and shall not be used:'
+  - (section-5.--dictionary-format.) long as the amount of data decoded from this frame is less than or
+    equal to Window_Size, sequence commands may specify offsets longer than the total length of decoded
+    output so far to reference back
+  - (section-8.--security-considerations.) An attacker may provide correctly formed compressed frames
+    with unreasonable memory requirements.  A decoder must always control
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives.
+- release_gates:
+  - Update operations proven consumer-compatible.
+  capability_id: ZST-EDIT-001
+  level: MUST
+  category: edit
+  title: Container update semantics
+  production_meaning: Payloads/entries can be added, replaced, and removed under the format's update rules
+    with integrity recomputed.
+  developer_use_case: A developer replaces one entry and the container remains valid for all consumers.
+  provenance:
+  - POL-ARC-EDIT-01
+  - SAL-ZST-00071
+  - SAL-ZST-00077
+  required_behavior:
+  - Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes
+    recomputed.
+  normative_rules:
+  - (section-4.1.--fse.) the Symbol indicated in the table for that state.  To obtain the next state value,
+    the decoder should consume Num_Bits bits from the stream as a little-endian value and add it to Baseline.
+  - (section-256.--if-the-number-of-symbols-decoded-i.) The next state is determined from the current
+    state by reading the required Number_of_Bits and adding the specified Baseline.
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Update round trips verified by independent decode.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ZST-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Metadata model covers all specified header fields.
+  capability_id: ZST-MODEL-001
+  level: MUST
+  category: model
+  title: Container metadata model
+  production_meaning: Frames/entries, sizes, timestamps, and format metadata are typed and enumerable
+    without full decode.
+  developer_use_case: A developer lists entries with sizes and metadata from a large archive in milliseconds.
+  provenance:
+  - POL-ARC-MODEL-01
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00008
+  - SAL-ZST-00010
+  - SAL-ZST-00011
+  - SAL-ZST-00025
+  - SAL-ZST-00026
+  - SAL-ZST-00027
+  - SAL-ZST-00028
+  - SAL-ZST-00035
+  - SAL-ZST-00036
+  - SAL-ZST-00039
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00052
+  - SAL-ZST-00054
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00079
+  - SAL-ZST-00081
+  - SAL-ZST-00083
+  - SAL-ZST-00086
+  - SAL-ZST-00087
+  - SAL-ZST-00088
+  - SAL-ZST-00090
+  - SAL-ZST-00092
+  required_behavior:
+  - Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without
+    full payload decode.
+  normative_rules:
+  - '(3.1.) Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user metadata)'
+  - '(3.1.1.1.) Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor,
+    optional Window_Descriptor, optional Dictionary_ID, optional Frame_Content_Size'
+  - '(3.1.1.1.1.) Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6),
+    Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag
+    (bits 1-0)'
+  - (3.1.1.2.) Block_Header is 3 bytes, little-endian, with Last_Block (bit 0), Block_Type (bits 1-2),
+    Block_Size (bits 3-23)
+  - (3.1.1.2.4.) Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame
+  - (3.1.1.) Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes stored
+    little-endian
+  - '(section-3.1.1.--zstandard-frames.) Content_Checksum:  An optional 32-bit checksum, only present
+    if Content_Checksum_Flag is set.  The content checksum is the result'
+  - '(section-3.1.1.1.--frame-header.) The frame header has a variable size, with a minimum of 2 bytes
+    up to a maximum of 14 bytes depending on optional parameters.  The structure of Frame_Header is as
+    follows:'
+  - (section-3.1.1.1.1.2.--single_segment_flag.) If this flag is set, data must be regenerated within
+    a single continuous memory segment.
+  - (section-3.1.1.1.1.2.--single_segment_flag.) Frame_Content_Size is necessarily present.  As a consequence,
+    the decoder must allocate a memory segment of a size equal to or larger than Frame_Content_Size.
+  - (section-3.1.1.1.2.--window-descriptor.) The Window_Descriptor byte is optional.  When Single_Segment_Flag
+    is set, Window_Descriptor is not present.  In this case, Window_Size is
+  - (section-3.1.1.1.3.--dictionary_id.) This is a field of variable size, which contains the ID of the
+    dictionary required to properly decode the frame.  This field is optional.  When it's not present,
+    it's up to the decoder to know
+  - (section-3.1.1.1.4.--frame_content_size.) This is the original (uncompressed) size.  This information
+    is optional.  Frame_Content_Size uses a variable number of bytes, provided by FCS_Field_Size.  FCS_Field_Size
+    is provided by the value
+  - (section-3.1.1.2.1.--last_block.) The lowest bit (Last_Block) signals whether this block is the last
+    one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum
+    (see Section 3.1.1).
+  - (section-3.1.1.2.1.--last_block.) one.  The frame will end after this last block.  It may be followed
+    by an optional Content_Checksum (see Section 3.1.1).
+  - (section-3.1.1.2.2.--block_type.) Block_Content consists of a single byte.  On the decompression side,
+    this byte must be repeated Block_Size times.
+  - (section-3.1.1.2.3.--block_size.) When Block_Type is RLE_Block, since Block_Content's size is always
+    1, Block_Size represents the number of times this byte must be repeated.
+  - (section-3.1.1.3.--compressed-blocks.) To decompress a compressed block, the compressed size must
+    be provided from the Block_Size field within Block_Header.
+  - (section-3.1.1.3.1.1.--literals_section_header.) this mode is triggered without any previous Huffman
+    table in the frame (or dictionary, per Section 5), it should be treated as data corruption.  Literals_Section_Content
+    is Compressed_Size.
+  - (section-3.1.1.3.1.1.--literals_section_header.) *  For Compressed_Block and Treeless_Literals_Block,
+    it's required to decode both Compressed_Size and Regenerated_Size (the decompressed
+  - (section-3.1.1.3.1.3.--rle_literals_block.) Stream_1 consists of a single byte that should be repeated
+    Regenerated_Size times to generate the decoded literals.
+  - (section-3.1.1.3.1.6.--jump_table.) streams combined.  The decompressed size of each stream is equal
+    to (Regenerated_Size+3)/4, except for the last stream, which may be up to 3 bytes smaller, to reach
+    a total decompressed size as specified
+  - (section-3.1.1.4.--sequence-execution.) literals), so an offset of 6 and a match length of 3 means
+    that 3 bytes should be copied from 6 bytes back.  Note that all offsets leading to previously decoded
+    data must be smaller than Window_Size
+  - (section-3.1.1.4.--sequence-execution.) bytes should be copied from 6 bytes back.  Note that all offsets
+    leading to previously decoded data must be smaller than Window_Size defined in Frame_Header_Descriptor
+    (Section 3.1.1.1.1).
+  - (section-4.2.1.--huffman-tree-description.) The prefix code must not exceed a maximum code length.  More
+    bits improve accuracy but yield a larger header size and require more
+  - (section-4.2.2.--huffman-coded-streams.) Each bitstream must be read backward, starting from the end
+    and going up to the beginning.  Therefore, it is necessary to know the size of
+  - (section-5.--dictionary-format.) Zstandard is compatible with "raw content" dictionaries, free of
+    any format restriction, except that they must be at least 8 bytes.  These dictionaries function as
+    if they were just the content part of a
+  - (section-5.--dictionary-format.) stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each
+    repeat offset must have a value less than the dictionary size.
+  - (section-5.--dictionary-format.) long as the amount of data decoded from this frame is less than or
+    equal to Window_Size, sequence commands may specify offsets longer than the total length of decoded
+    output so far to reference back
+  - (section-6.--use-of-dictionaries.) dictionaries with zstd payloads, especially with MIME, content
+    encoded with the media type registered here should not use a dictionary.  The exception to this requirement
+    might be a private
+  - (section-8.--security-considerations.) One should never compress a message whose content must remain
+    secret with a message generated by a third party.  Such a compression can be
+  - (section-8.--security-considerations.) Compression can be optimized by training a dictionary on a
+    variety of related content payloads.  This dictionary must then be available at the decoder for decompression
+    of the payload to be possible.  While
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Metadata enumeration matches fixture truth without payload reads.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ZST-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ZST-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Streaming paths pass large-data tests.
+  capability_id: ZST-STREAM-001
+  level: MUST
+  category: performance
+  title: Bounded-memory streaming
+  production_meaning: Compression/decompression stream in bounded memory with random access where the
+    format defines it.
+  developer_use_case: A developer pipes multi-GB data through the codec with flat memory usage.
+  provenance:
+  - POL-ARC-STREAM-01
+  - SAL-ZST-00024
+  - SAL-ZST-00049
+  - SAL-ZST-00052
+  - SAL-ZST-00053
+  - SAL-ZST-00054
+  - SAL-ZST-00056
+  - SAL-ZST-00061
+  - SAL-ZST-00062
+  - SAL-ZST-00063
+  - SAL-ZST-00065
+  - SAL-ZST-00068
+  - SAL-ZST-00069
+  - SAL-ZST-00070
+  - SAL-ZST-00071
+  - SAL-ZST-00081
+  - SAL-ZST-00082
+  required_behavior:
+  - Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the
+    specification defines it.
+  normative_rules:
+  - (section-3.--compression-algorithm.) checksum.  Whenever it does not support a parameter defined in
+    the compressed stream, it must produce an unambiguous error code and associated error message explaining
+    which parameter is unsupported.
+  - (section-3.1.1.3.1.--literals_section_header.) Literals can be stored uncompressed or compressed using
+    Huffman prefix codes.  When compressed, an optional tree description can be present, followed by 1
+    or 4 streams.
+  - (section-3.1.1.3.1.3.--rle_literals_block.) Stream_1 consists of a single byte that should be repeated
+    Regenerated_Size times to generate the decoded literals.
+  - (section-3.1.1.3.1.5.--huffman_tree_description.) Huffman_Tree_Description is determined during the
+    decoding process. It must be used to determine where streams begin.
+  - (section-3.1.1.3.1.6.--jump_table.) streams combined.  The decompressed size of each stream is equal
+    to (Regenerated_Size+3)/4, except for the last stream, which may be up to 3 bytes smaller, to reach
+    a total decompressed size as specified
+  - (section-3.1.1.3.2.--sequences_section.) The Sequences_Section starts by a header, followed by optional
+    probability tables for each symbol type, followed by the bitstream.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) In zstd, the compressor writes bits forward into a block,
+    and the decompressor must read the bitstream backwards.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) The bitstream starts with initial FSE state values,
+    each using the required number of bits in their respective accuracy, decoded previously from their
+    normalized distribution.  It starts with
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) first to last.  Since the compressor writes the bitstream
+    in the forward direction, this means the compressor must encode the sequences starting with the last
+    one and ending with the first.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) This operation will be repeated Number_of_Sequences
+    times.  At the end, the bitstream shall be entirely consumed; otherwise, the bitstream is considered
+    corrupted.
+  - (section-3.1.2.--skippable-frames.) It should be noted that a skippable frame can be used to watermark
+    a stream of concatenated frames embedding any kind of tracking
+  - (section-3.1.2.--skippable-frames.) information (even just a Universally Unique Identifier (UUID)).
+    Users wary of such possibility should scan the stream of concatenated frames in an attempt to detect
+    such frames for analysis or removal.
+  - (section-4.1.--fse.) [ANS].  FSE encoding/decoding involves a state that is carried over between symbols,
+    so decoding must be done in the opposite direction as encoding.  Therefore, all FSE bitstreams are
+    read from end to
+  - (section-4.1.--fse.) the Symbol indicated in the table for that state.  To obtain the next state value,
+    the decoder should consume Num_Bits bits from the stream as a little-endian value and add it to Baseline.
+  - (section-4.2.2.--huffman-coded-streams.) Each bitstream must be read backward, starting from the end
+    and going up to the beginning.  Therefore, it is necessary to know the size of
+  - (section-00010000-00001101.) The process continues reading up to the required number of symbols per
+    stream.  If a bitstream is not entirely and exactly consumed,
+  depth_required: 4
+  depth_rationale: 'MUST performance capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Bounded-memory large-payload tests; random-access fixtures where applicable.
+- release_gates:
+  - Every integrity rule has negative coverage.
+  capability_id: ZST-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Integrity and structure validation
+  production_meaning: Structure, checksums, and declared sizes validate with complete diagnostics before
+    extraction is attempted.
+  developer_use_case: A service validates uploads and rejects corrupt or hostile containers with exact
+    reasons.
+  provenance:
+  - POL-ARC-VALIDATE-01
+  - SAL-ZST-00002
+  - SAL-ZST-00006
+  - SAL-ZST-00007
+  - SAL-ZST-00009
+  - SAL-ZST-00011
+  - SAL-ZST-00014
+  - SAL-ZST-00017
+  - SAL-ZST-00020
+  - SAL-ZST-00021
+  - SAL-ZST-00022
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00025
+  - SAL-ZST-00027
+  - SAL-ZST-00028
+  - SAL-ZST-00030
+  - SAL-ZST-00031
+  - SAL-ZST-00032
+  - SAL-ZST-00033
+  - SAL-ZST-00038
+  - SAL-ZST-00040
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00044
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00053
+  - SAL-ZST-00057
+  - SAL-ZST-00058
+  - SAL-ZST-00059
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00070
+  - SAL-ZST-00072
+  - SAL-ZST-00073
+  - SAL-ZST-00074
+  - SAL-ZST-00079
+  - SAL-ZST-00080
+  - SAL-ZST-00081
+  - SAL-ZST-00083
+  - SAL-ZST-00086
+  - SAL-ZST-00090
+  - SAL-ZST-00091
+  - SAL-ZST-00092
+  required_behavior:
+  - Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits,
+    ratios, paths) as a distinct layer.
+  normative_rules:
+  - (3.1.2.) Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F (16 valid
+    values)
+  - '(3.1.1.1.1.) Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6),
+    Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag
+    (bits 1-0)'
+  - (3.1.1.2.) Each frame must have at least 1 block; there is no upper limit on the number of blocks
+    per frame
+  - '(3.1.1.2.2.) Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated),
+    Compressed_Block (2), Reserved (3, invalid)'
+  - (3.1.1.) Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes stored
+    little-endian
+  - (5.) Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID cannot
+    be 0
+  - (section-unknown.) carefully, as they describe your rights and restrictions with respect to this document.  Code
+    Components extracted from this document must include Simplified BSD License text as described in Section
+    4.e of
+  - (section-3.--compression-algorithm.) communications.  The format uses the Zstandard compression method,
+    and an optional xxHash-64 checksum method [XXHASH], for detection of data corruption.
+  - (section-3.--compression-algorithm.) Unless otherwise indicated below, a compliant compressor must
+    produce data sets that conform to the specifications presented here.
+  - (section-3.--compression-algorithm.) A compliant decompressor must be able to decompress at least
+    one working set of parameters that conforms to the specifications
+  - (section-3.--compression-algorithm.) working set of parameters that conforms to the specifications
+    presented here.  It may also ignore informative fields, such as the checksum.  Whenever it does not
+    support a parameter defined in the
+  - (section-3.--compression-algorithm.) checksum.  Whenever it does not support a parameter defined in
+    the compressed stream, it must produce an unambiguous error code and associated error message explaining
+    which parameter is unsupported.
+  - '(section-3.1.1.--zstandard-frames.) Content_Checksum:  An optional 32-bit checksum, only present
+    if Content_Checksum_Flag is set.  The content checksum is the result'
+  - (section-3.1.1.1.1.2.--single_segment_flag.) If this flag is set, data must be regenerated within
+    a single continuous memory segment.
+  - (section-3.1.1.1.1.2.--single_segment_flag.) Frame_Content_Size is necessarily present.  As a consequence,
+    the decoder must allocate a memory segment of a size equal to or larger than Frame_Content_Size.
+  - (section-3.1.1.1.1.3.--unused-bit.) property that is not mandatory to properly decode the frame.  An
+    encoder compliant with this specification must set this bit to zero.
+  - (section-3.1.1.1.1.4.--reserved-bit.) This bit is reserved for some future feature.  Its value must
+    be zero.  A decoder compliant with this specification version must
+  - (section-3.1.1.1.1.4.--reserved-bit.) zero.  A decoder compliant with this specification version must
+    ensure it is not set.  This bit may be used in a future revision to signal a feature that must be
+    interpreted to decode the frame
+  - (section-3.1.1.1.1.4.--reserved-bit.) ensure it is not set.  This bit may be used in a future revision
+    to signal a feature that must be interpreted to decode the frame correctly.
+  - (section-3.1.1.1.3.--dictionary_id.) for frames and dictionaries distributed in public space, Dictionary_ID
+    must be attributed carefully.  The following ranges are reserved for use only with dictionaries that
+    have been registered
+  - (section-3.1.1.2.--blocks.) After Magic_Number and Frame_Header, there are some number of blocks.
+    Each frame must have at least 1 block, but there is no upper limit on the number of blocks per frame.
+  - (section-3.1.1.2.1.--last_block.) The lowest bit (Last_Block) signals whether this block is the last
+    one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum
+    (see Section 3.1.1).
+  - (section-3.1.1.2.1.--last_block.) one.  The frame will end after this last block.  It may be followed
+    by an optional Content_Checksum (see Section 3.1.1).
+  - (section-3.1.1.2.2.--block_type.) Block_Content consists of a single byte.  On the decompression side,
+    this byte must be repeated Block_Size times.
+  - (section-3.1.1.2.2.--block_type.) current specification.  If such a value is present, it is considered
+    to be corrupt data, and a compliant decoder must reject it.
+  - (section-3.1.1.2.3.--block_size.) When Block_Type is RLE_Block, since Block_Content's size is always
+    1, Block_Size represents the number of times this byte must be repeated.
+  - (section-3.1.1.3.--compressed-blocks.) To decompress a compressed block, the compressed size must
+    be provided from the Block_Size field within Block_Header.
+  - (section-3.1.1.3.1.5.--huffman_tree_description.) Huffman_Tree_Description is determined during the
+    decoding process. It must be used to determine where streams begin.
+  - (section-3.1.1.3.2.1.--sequences_section_header.) The last field, Reserved, must be all zeroes.
+  - (section-3.1.1.3.2.1.--sequences_section_header.) is 9, and the maximum accuracy log for the offset
+    code table is 8. This mode must not be used when only one symbol is present; RLE_Mode should be used
+    instead (although any other mode will
+  - (section-3.1.1.3.2.1.--sequences_section_header.) This mode must not be used when only one symbol
+    is present; RLE_Mode should be used instead (although any other mode will work).
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) In zstd, the compressor writes bits forward into a block,
+    and the decompressor must read the bitstream backwards.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) first to last.  Since the compressor writes the bitstream
+    in the forward direction, this means the compressor must encode the sequences starting with the last
+    one and ending with the first.
+  - (section-3.1.1.4.--sequence-execution.) literals), so an offset of 6 and a match length of 3 means
+    that 3 bytes should be copied from 6 bytes back.  Note that all offsets leading to previously decoded
+    data must be smaller than Window_Size
+  - (section-3.1.1.4.--sequence-execution.) bytes should be copied from 6 bytes back.  Note that all offsets
+    leading to previously decoded data must be smaller than Window_Size defined in Frame_Header_Descriptor
+    (Section 3.1.1.1.1).
+  - (section-4.1.--fse.) [ANS].  FSE encoding/decoding involves a state that is carried over between symbols,
+    so decoding must be done in the opposite direction as encoding.  Therefore, all FSE bitstreams are
+    read from end to
+  - (section-4.1.1.--fse-table-description.) from 0 to the last present one (included) on a normalized
+    scale of (1 << Accuracy_Log).  Note that there must be two or more symbols with nonzero probability.
+  - (section-4.1.1.--fse-table-description.) of 8, and presuming 100 probabilities points have already
+    been distributed, the decoder may read any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore,
+    it must read log_(2)sup(157) ==
+  - (section-4.1.1.--fse-table-description.) distributed, the decoder may read any value from 0 to (256
+    - 100 + 1) == 157, inclusive.  Therefore, it must read log_(2)sup(157) == 8 bits.
+  - (section-4.2.1.--huffman-tree-description.) The prefix code must not exceed a maximum code length.  More
+    bits improve accuracy but yield a larger header size and require more
+  - '(section-4.2.1.--huffman-tree-description.) For example, presume the following Huffman tree must
+    be described:'
+  - (section-4.2.2.--huffman-coded-streams.) Each bitstream must be read backward, starting from the end
+    and going up to the beginning.  Therefore, it is necessary to know the size of
+  - (section-5.--dictionary-format.) Zstandard is compatible with "raw content" dictionaries, free of
+    any format restriction, except that they must be at least 8 bytes.  These dictionaries function as
+    if they were just the content part of a
+  - (section-5.--dictionary-format.) stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each
+    repeat offset must have a value less than the dictionary size.
+  - (section-8.--security-considerations.) One should never compress a message whose content must remain
+    secret with a message generated by a third party.  Such a compression can be
+  - (section-8.--security-considerations.) An attacker may provide correctly formed compressed frames
+    with unreasonable memory requirements.  A decoder must always control
+  - (section-8.--security-considerations.) Compression can be optimized by training a dictionary on a
+    variety of related content payloads.  This dictionary must then be available at the decoder for decompression
+    of the payload to be possible.  While
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+- release_gates:
+  - Writer output accepted by reference decoder.
+  capability_id: ZST-WRITE-001
+  level: MUST
+  category: write
+  title: Deterministic container writing
+  production_meaning: Writers emit specification-conformant containers deterministically; independent
+    decoders accept the output.
+  developer_use_case: A developer writes archives in CI and reruns produce identical bytes.
+  provenance:
+  - POL-ARC-WRITE-01
+  - SAL-ZST-00018
+  - SAL-ZST-00030
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00078
+  - SAL-ZST-00088
+  required_behavior:
+  - Emit conformant containers with deterministic framing/ordering; verify output by self-decode round
+    trip.
+  normative_rules:
+  - '(section-2.--definitions.) encode:  The process of translating data from one form to another; this
+    may include compression, or it may refer to other translations done as part of this specification.'
+  - (section-3.1.1.1.1.3.--unused-bit.) property that is not mandatory to properly decode the frame.  An
+    encoder compliant with this specification must set this bit to zero.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) In zstd, the compressor writes bits forward into a block,
+    and the decompressor must read the bitstream backwards.
+  - (section-3.1.1.3.2.1.2.--decoding-sequences.) first to last.  Since the compressor writes the bitstream
+    in the forward direction, this means the compressor must encode the sequences starting with the last
+    one and ending with the first.
+  - (section-4.2.1.--huffman-tree-description.) bit sequences (codewords), one codeword for each symbol,
+    in a manner such that different symbols may be represented by bit sequences of different lengths,
+    but a parser can always parse an encoded string
+  - (section-6.--use-of-dictionaries.) dictionaries with zstd payloads, especially with MIME, content
+    encoded with the media type registered here should not use a dictionary.  The exception to this requirement
+    might be a private
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Determinism byte-compare; independent-decoder acceptance fixture.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Frame/entry structure, magic numbers, ordering, and size fields.
+    layer: structural
+  - description: Checksum/integrity verification and declared-vs-actual size checks.
+    layer: payload
+  - description: Decompression limits, ratio caps, path safety for entry names.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Decompression bombs exhausting memory or disk.
+  - Entry-name path traversal on extraction.
+  - Corrupted size fields causing over-allocation.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Decompressed-size and ratio limits enforced before and during decode.
+  - Extraction confined to configured roots with entry-name sanitization.
+  - Size fields validated with checked arithmetic before allocation.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Reference-vector round trips; parameter matrix.
+- Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives.
+- Update round trips verified by independent decode.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Metadata enumeration matches fixture truth without payload reads.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Bounded-memory large-payload tests; random-access fixtures where applicable.
+- Corruption matrix negatives; bomb/traversal security fixtures.
+- Determinism byte-compare; independent-decoder acceptance fixture.
+release_gates:
+- Codec verified against reference vectors.
+- Container structure decoding covered against the specification's structure inventory.
+- Update operations proven consumer-compatible.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Metadata model covers all specified header fields.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Streaming paths pass large-data tests.
+- Every integrity rule has negative coverage.
+- Writer output accepted by reference decoder.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: ZST-CODEC-001
+  provenance:
+  - POL-ARC-CODEC-01
+  - SAL-ZST-00003
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00009
+  - SAL-ZST-00010
+  - SAL-ZST-00012
+  - SAL-ZST-00014
+  - SAL-ZST-00018
+  - SAL-ZST-00020
+  - SAL-ZST-00021
+  - SAL-ZST-00022
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00034
+  - SAL-ZST-00035
+  - SAL-ZST-00036
+  - SAL-ZST-00037
+  - SAL-ZST-00038
+  - SAL-ZST-00039
+  - SAL-ZST-00043
+  - SAL-ZST-00046
+  - SAL-ZST-00047
+  - SAL-ZST-00048
+  - SAL-ZST-00049
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00054
+  - SAL-ZST-00060
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00083
+  - SAL-ZST-00084
+  - SAL-ZST-00085
+  - SAL-ZST-00086
+  - SAL-ZST-00087
+  - SAL-ZST-00088
+  - SAL-ZST-00090
+  - SAL-ZST-00091
+  - SAL-ZST-00092
+  - SAL-ZST-00093
+- capability_id: ZST-CONTAINER-001
+  provenance:
+  - POL-ARC-CONTAINER-01
+  - SAL-ZST-00001
+  - SAL-ZST-00002
+  - SAL-ZST-00003
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00007
+  - SAL-ZST-00008
+  - SAL-ZST-00009
+  - SAL-ZST-00010
+  - SAL-ZST-00011
+  - SAL-ZST-00012
+  - SAL-ZST-00014
+  - SAL-ZST-00020
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00025
+  - SAL-ZST-00026
+  - SAL-ZST-00028
+  - SAL-ZST-00030
+  - SAL-ZST-00032
+  - SAL-ZST-00033
+  - SAL-ZST-00034
+  - SAL-ZST-00036
+  - SAL-ZST-00037
+  - SAL-ZST-00038
+  - SAL-ZST-00039
+  - SAL-ZST-00040
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00044
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00047
+  - SAL-ZST-00048
+  - SAL-ZST-00049
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00052
+  - SAL-ZST-00056
+  - SAL-ZST-00057
+  - SAL-ZST-00058
+  - SAL-ZST-00059
+  - SAL-ZST-00060
+  - SAL-ZST-00061
+  - SAL-ZST-00067
+  - SAL-ZST-00068
+  - SAL-ZST-00069
+  - SAL-ZST-00075
+  - SAL-ZST-00079
+  - SAL-ZST-00085
+  - SAL-ZST-00087
+  - SAL-ZST-00091
+- capability_id: ZST-EDIT-001
+  provenance:
+  - POL-ARC-EDIT-01
+  - SAL-ZST-00071
+  - SAL-ZST-00077
+- capability_id: ZST-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: ZST-MODEL-001
+  provenance:
+  - POL-ARC-MODEL-01
+  - SAL-ZST-00004
+  - SAL-ZST-00005
+  - SAL-ZST-00006
+  - SAL-ZST-00008
+  - SAL-ZST-00010
+  - SAL-ZST-00011
+  - SAL-ZST-00025
+  - SAL-ZST-00026
+  - SAL-ZST-00027
+  - SAL-ZST-00028
+  - SAL-ZST-00035
+  - SAL-ZST-00036
+  - SAL-ZST-00039
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00050
+  - SAL-ZST-00051
+  - SAL-ZST-00052
+  - SAL-ZST-00054
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00079
+  - SAL-ZST-00081
+  - SAL-ZST-00083
+  - SAL-ZST-00086
+  - SAL-ZST-00087
+  - SAL-ZST-00088
+  - SAL-ZST-00090
+  - SAL-ZST-00092
+- capability_id: ZST-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: ZST-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: ZST-STREAM-001
+  provenance:
+  - POL-ARC-STREAM-01
+  - SAL-ZST-00024
+  - SAL-ZST-00049
+  - SAL-ZST-00052
+  - SAL-ZST-00053
+  - SAL-ZST-00054
+  - SAL-ZST-00056
+  - SAL-ZST-00061
+  - SAL-ZST-00062
+  - SAL-ZST-00063
+  - SAL-ZST-00065
+  - SAL-ZST-00068
+  - SAL-ZST-00069
+  - SAL-ZST-00070
+  - SAL-ZST-00071
+  - SAL-ZST-00081
+  - SAL-ZST-00082
+- capability_id: ZST-VALIDATE-001
+  provenance:
+  - POL-ARC-VALIDATE-01
+  - SAL-ZST-00002
+  - SAL-ZST-00006
+  - SAL-ZST-00007
+  - SAL-ZST-00009
+  - SAL-ZST-00011
+  - SAL-ZST-00014
+  - SAL-ZST-00017
+  - SAL-ZST-00020
+  - SAL-ZST-00021
+  - SAL-ZST-00022
+  - SAL-ZST-00023
+  - SAL-ZST-00024
+  - SAL-ZST-00025
+  - SAL-ZST-00027
+  - SAL-ZST-00028
+  - SAL-ZST-00030
+  - SAL-ZST-00031
+  - SAL-ZST-00032
+  - SAL-ZST-00033
+  - SAL-ZST-00038
+  - SAL-ZST-00040
+  - SAL-ZST-00041
+  - SAL-ZST-00042
+  - SAL-ZST-00043
+  - SAL-ZST-00044
+  - SAL-ZST-00045
+  - SAL-ZST-00046
+  - SAL-ZST-00053
+  - SAL-ZST-00057
+  - SAL-ZST-00058
+  - SAL-ZST-00059
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00066
+  - SAL-ZST-00067
+  - SAL-ZST-00070
+  - SAL-ZST-00072
+  - SAL-ZST-00073
+  - SAL-ZST-00074
+  - SAL-ZST-00079
+  - SAL-ZST-00080
+  - SAL-ZST-00081
+  - SAL-ZST-00083
+  - SAL-ZST-00086
+  - SAL-ZST-00090
+  - SAL-ZST-00091
+  - SAL-ZST-00092
+- capability_id: ZST-WRITE-001
+  provenance:
+  - POL-ARC-WRITE-01
+  - SAL-ZST-00018
+  - SAL-ZST-00030
+  - SAL-ZST-00061
+  - SAL-ZST-00063
+  - SAL-ZST-00078
+  - SAL-ZST-00088

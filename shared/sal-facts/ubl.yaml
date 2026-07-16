@@ -2,14 +2,14 @@ format_id: ubl
 display_name: UBL (Universal Business Language)
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-UBL-00001
   qname: FACT-UBL-001
   element_qname: ubl:order
-  claim: 'A UBL Order document is rooted at an <Order> element in the UBL-Order-2 namespace, composed
-    of common basic components (cbc: e.g. ID, IssueDate) and common aggregate components (cac: e.g. OrderLine)'
+  claim: 'A UBL Order document is rooted at an <Order> element in the UBL-Order-2 namespace, composed of common
+    basic components (cbc: e.g. ID, IssueDate) and common aggregate components (cac: e.g. OrderLine)'
   section: OASIS UBL 2.1 — Order document schema
   authority: OASIS UBL 2.1 Specification
   source: structural_fact_manual
@@ -23,9 +23,9 @@ facts:
 - fact_id: SAL-UBL-00002
   qname: FACT-UBL-002
   element_qname: ubl:invoice
-  claim: A UBL Invoice document is rooted at an <Invoice> element in the UBL-Invoice-2 namespace; each
-    invoice line is a cac:InvoiceLine aggregate carrying cbc:ID, cbc:InvoicedQuantity, and cbc:LineExtensionAmount
-    (shared aggregate referenced by ubl:line-item)
+  claim: A UBL Invoice document is rooted at an <Invoice> element in the UBL-Invoice-2 namespace; each invoice line
+    is a cac:InvoiceLine aggregate carrying cbc:ID, cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate
+    referenced by ubl:line-item)
   section: OASIS UBL 2.1 — Invoice document schema
   authority: OASIS UBL 2.1 Specification
   source: structural_fact_manual
@@ -39,8 +39,8 @@ facts:
 - fact_id: SAL-UBL-00105
   qname: FACT-UBL-105
   element_qname: ubl:credit-note
-  claim: A UBL CreditNote document is rooted at a <CreditNote> element in the UBL-CreditNote-2 namespace
-    with cac:CreditNoteLine aggregates for its lines
+  claim: A UBL CreditNote document is rooted at a <CreditNote> element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine
+    aggregates for its lines
   section: OASIS UBL 2.1 — CreditNote document schema
   authority: OASIS UBL 2.1 Specification
   source: structural_fact_manual
@@ -50,4 +50,404 @@ facts:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00106
+  qname: FACT-UBL-106
+  element_qname: ubl:application-response
+  claim: A UBL ApplicationResponse document is rooted at an ApplicationResponse document root element carrying cac:DocumentResponse
+    aggregates for business-level acknowledgement
+  section: UBL maindoc schemas - ApplicationResponse
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00107
+  qname: FACT-UBL-107
+  element_qname: ubl:despatch-advice
+  claim: A UBL DespatchAdvice document is rooted at a DespatchAdvice document root element in its own maindoc namespace
+    carrying cac:DespatchLine aggregates
+  section: UBL maindoc schemas - DespatchAdvice
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00108
+  qname: FACT-UBL-108
+  element_qname: ubl:order
+  claim: A UBL Order document is rooted at an Order document root element in its own maindoc namespace with order
+    lines carried as cac:OrderLine aggregate components
+  section: UBL maindoc schemas - Order
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00109
+  qname: FACT-UBL-109
+  element_qname: cbc:amount
+  claim: Amount-typed basic components require a currencyID attribute identifying the ISO 4217 currency of the value
+  section: UBL unqualified data types - AmountType
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00110
+  qname: FACT-UBL-110
+  element_qname: ubl:amount-arithmetic
+  claim: Amounts in UBL are decimal values and totals reconciliation across line extension, tax, and payable amounts
+    must follow the arithmetic the specification defines
+  section: UBL document totals
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00111
+  qname: FACT-UBL-111
+  element_qname: ubl:element-order
+  claim: Child elements inside UBL aggregate components must appear in the order declared by the schema sequence
+    model for the document to be valid
+  section: UBL naming and design rules - element order
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00112
+  qname: FACT-UBL-112
+  element_qname: cbc:code
+  claim: Coded-value basic components are constrained by code lists and values must conform to the list identified
+    by listID and related attributes where applied
+  section: UBL code lists
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00113
+  qname: FACT-UBL-113
+  element_qname: cac:common-aggregate-component
+  claim: Common aggregate components live in the CommonAggregateComponents-2 namespace conventionally prefixed cac
+    and represent typed composite structures
+  section: UBL common library - CAC namespace
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00114
+  qname: FACT-UBL-114
+  element_qname: cbc:common-basic-component
+  claim: Common basic components live in the CommonBasicComponents-2 namespace conventionally prefixed cbc and represent
+    typed leaf values
+  section: UBL common library - CBC namespace
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00115
+  qname: FACT-UBL-115
+  element_qname: ubl:namespace
+  claim: Every UBL maindoc type declares its own document root namespace of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+  section: UBL naming and design rules - namespaces
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00116
+  qname: FACT-UBL-116
+  element_qname: cbc:quantity
+  claim: Quantity-typed basic components carry an optional unitCode attribute identifying the unit of measure
+  section: UBL unqualified data types - QuantityType
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00117
+  qname: FACT-UBL-117
+  element_qname: ubl:schema
+  claim: UBL document schemas are W3C XML Schema definitions and conforming documents must be valid against the
+    maindoc schema of their declared type
+  section: UBL conformance - schema validation
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00118
+  qname: FACT-UBL-118
+  element_qname: cac:allowance-charge
+  claim: cac:AllowanceCharge is an aggregate component type with a charge indicator, reason codes, and amount elements
+    applied at document or line level
+  section: UBL common library - AllowanceCharge
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00119
+  qname: FACT-UBL-119
+  element_qname: cac:external-reference
+  claim: cac:ExternalReference carries external URI references to resources outside the document that consumers
+    resolve at their own risk
+  section: UBL common library - ExternalReference
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00120
+  qname: FACT-UBL-120
+  element_qname: cac:invoice-line
+  claim: cac:InvoiceLine is an aggregate component type carrying cbc:ID, cbc:InvoicedQuantity, cbc:LineExtensionAmount,
+    and a cac:Item element
+  section: UBL common library - InvoiceLine
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00121
+  qname: FACT-UBL-121
+  element_qname: cac:item
+  claim: cac:Item is an aggregate component type describing traded items with names, identification schemes, and
+    classification code elements
+  section: UBL common library - Item
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00122
+  qname: FACT-UBL-122
+  element_qname: cac:legal-monetary-total
+  claim: cac:LegalMonetaryTotal is an aggregate component type carrying line extension, tax-inclusive, allowance,
+    charge, and payable amount elements
+  section: UBL common library - LegalMonetaryTotal
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00123
+  qname: FACT-UBL-123
+  element_qname: cac:party
+  claim: cac:Party is an aggregate component type carrying party identification, names, postal addresses, tax schemes,
+    and contacts as child elements
+  section: UBL common library - Party
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00124
+  qname: FACT-UBL-124
+  element_qname: cac:payment-means
+  claim: cac:PaymentMeans is an aggregate component type carrying payment means codes, due dates, and payee financial
+    account elements
+  section: UBL common library - PaymentMeans
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00125
+  qname: FACT-UBL-125
+  element_qname: cac:postal-address
+  claim: cac:PostalAddress is an aggregate component type composed of street, city, postal zone, and country sub-elements
+  section: UBL common library - Address
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00126
+  qname: FACT-UBL-126
+  element_qname: cac:price
+  claim: cac:Price is an aggregate component type carrying cbc:PriceAmount and quantity-basis elements for unit
+    pricing
+  section: UBL common library - Price
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00127
+  qname: FACT-UBL-127
+  element_qname: cac:tax-total
+  claim: cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount and nested cac:TaxSubtotal elements
+    per tax category
+  section: UBL common library - TaxTotal
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00128
+  qname: FACT-UBL-128
+  element_qname: cbc:customization-id
+  claim: cbc:CustomizationID and cbc:ProfileID identify the customization profile and business process profile a
+    document instance follows
+  section: UBL document metadata - customization and profile
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00129
+  qname: FACT-UBL-129
+  element_qname: cbc:embedded-document-binary-object
+  claim: cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads with mimeCode attributes that consumers
+    must treat as untrusted content with size limits
+  section: UBL common library - attachments
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00130
+  qname: FACT-UBL-130
+  element_qname: cbc:id
+  claim: cbc:ID is a basic component element of UDT IdentifierType carrying optional schemeID and schemeAgencyID
+    attributes
+  section: UBL common library - Identifier type
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00131
+  qname: FACT-UBL-131
+  element_qname: cbc:ubl-version-id
+  claim: cbc:UBLVersionID identifies the UBL specification version a document instance declares
+  section: UBL document metadata - version identification
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00132
+  qname: FACT-UBL-132
+  element_qname: ext:ubl-extensions
+  claim: ext:UBLExtensions is the extension container element preceding document content and may carry arbitrary
+    namespaced payloads including enveloped signatures
+  section: UBL extension model
+  authority: OASIS UBL Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
     added_at: '2026-07-16'

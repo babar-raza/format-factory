@@ -1,0 +1,103 @@
+schema_version: '1.0'
+format_id: mtlx
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    mutation_operations:
+    - nodegraph.connect(output, input)
+    - document.rename(element, new_name, rewrite_references=True)
+    read_operations:
+    - nodegraph.topological_order()
+    - nodegraph.upstream(element)
+    root_types:
+    - MaterialXDocument
+    - Node
+    - NodeGraph
+    - NodeDef
+  capability_domain: GRAPH
+  depth_hint: 6
+  finding_id: RF-MTLX-00001
+  kind: api_expectation
+  requirement: Expose graph editing as typed operations - connect/disconnect with type checks, topological
+    order, upstream/downstream traversal, and dependency closure - so pipeline tools build and analyze
+    graphs without XML manipulation.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-MTLX-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: LIB
+  depth_hint: 4
+  finding_id: RF-MTLX-00002
+  kind: product_requirement
+  requirement: Load standard node libraries over ordered search paths with precedence and content-hash
+    caching, reporting shadowed definitions and version mismatches so pinned pipelines stay reproducible.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-MTLX-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: INCLUDE
+  depth_hint: 5
+  finding_id: RF-MTLX-00003
+  kind: security_expectation
+  requirement: Resolve includes only against configured search paths with cycle detection and depth, file-count,
+    and byte limits, blocking path traversal and network access by default while offering an unresolved-inspection
+    mode.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-MTLX-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: MAT
+  depth_hint: 5
+  finding_id: RF-MTLX-00004
+  kind: product_requirement
+  requirement: Resolve material assignment precedence for a geometry path through collections and looks,
+    reporting conflicting or unreachable assignments - the look-development correctness core.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-MTLX-003
+- required_tests:
+  - Graph validity matrix and resolver security fixtures as enumerated.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALIDATE
+  finding_id: RF-MTLX-00005
+  kind: test_obligation
+  requirement: Test graphs with legal DAGs, direct and indirect cycles, missing ports, type mismatches,
+    multi-output nodes, and deep dependency chains, plus resolver security fixtures for traversal, include
+    cycles, and oversized library trees.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-MTLX-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: MaterialX specification (document model, standard nodes, and libraries)
+  source_id: SRC-MTLX-002
+  organization: Academy Software Foundation
+  version: MaterialX 1.39
+  canonical_url: https://materialx.org/Specification.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Material-pipeline developer-workflow requirements (DCC interchange and look-dev practice)
+  source_id: SRC-MTLX-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

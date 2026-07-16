@@ -1,0 +1,140 @@
+# Family pack: archive_container (ZST, ODS, ODT) - L30 policy store
+# Family review dimensions (mission): entries, compression, encryption,
+# metadata, random access, streaming, path safety, decompression limits,
+# update semantics.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: archive_container
+identity_defaults:
+  data_model_type: archive
+  description_template: "{display_name}: compressed container/stream format ({spec_body} {spec_version}). Framed compressed payloads or entry-based archives carrying documents and data."
+  primary_use_cases:
+  - Compress and decompress payloads or archive entries reliably and safely
+  - Inspect container structure and metadata without full extraction
+  - Stream large payloads in bounded memory
+  active_content_model:
+    has_active_content: false
+    policy: "Containers carry passive payloads; extraction paths are policy-governed; nothing embedded is ever executed."
+scope_defaults:
+  production_complete_target: "Full container/frame model of the target specification: framing/entry structure, checksums, metadata, streaming and random access where defined, safe extraction with limits, and deterministic writing."
+  minimum_viable_support: "Decode and encode conformant containers with integrity verification, bounded-memory streaming, and decompression-bomb protection."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, performance: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 20
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: structural
+  description: "Frame/entry structure, magic numbers, ordering, and size fields."
+- layer: payload
+  description: "Checksum/integrity verification and declared-vs-actual size checks."
+- layer: security
+  description: "Decompression limits, ratio caps, path safety for entry names."
+security_defaults:
+  attack_surfaces:
+  - "Decompression bombs exhausting memory or disk."
+  - "Entry-name path traversal on extraction."
+  - "Corrupted size fields causing over-allocation."
+  safe_defaults:
+  - "Decompressed-size and ratio limits enforced before and during decode."
+  - "Extraction confined to configured roots with entry-name sanitization."
+  - "Size fields validated with checked arithmetic before allocation."
+domains:
+- domain: CONTAINER
+  category: parse
+  level: MUST
+  title: Frame/entry structure decoding
+  production_meaning: "Magic numbers, frames or entries, headers, and checksums decode exactly per specification with integrity verified."
+  developer_use_case: "A developer probes a file, enumerates its frames/entries and metadata, and verifies integrity without extraction."
+  baseline_behavior:
+  - id: POL-ARC-CONTAINER-01
+    text: "Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity and report exact corruption positions."
+  fact_keywords: [frame, magic, header, block, entry, checksum]
+  required_tests:
+  - "Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives."
+  release_gates:
+  - "Container structure decoding covered against the specification's structure inventory."
+- domain: CODEC
+  category: parse
+  level: MUST
+  title: Compression codec correctness
+  production_meaning: "Compression and decompression are bit-correct against reference vectors with all specified parameters/window rules honored."
+  developer_use_case: "A developer decompresses reference-produced data and byte-identical content emerges."
+  baseline_behavior:
+  - id: POL-ARC-CODEC-01
+    text: "Match reference implementation outputs on the specification's test vectors; honor declared parameters, dictionaries, and window constraints."
+  fact_keywords: [compress, decompress, dictionary, window, level]
+  required_tests:
+  - "Reference-vector round trips; parameter matrix."
+  release_gates:
+  - "Codec verified against reference vectors."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Container metadata model
+  production_meaning: "Frames/entries, sizes, timestamps, and format metadata are typed and enumerable without full decode."
+  developer_use_case: "A developer lists entries with sizes and metadata from a large archive in milliseconds."
+  baseline_behavior:
+  - id: POL-ARC-MODEL-01
+    text: "Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without full payload decode."
+  fact_keywords: [size, content, metadata, flag]
+  required_tests:
+  - "Metadata enumeration matches fixture truth without payload reads."
+  release_gates:
+  - "Metadata model covers all specified header fields."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Container update semantics
+  production_meaning: "Payloads/entries can be added, replaced, and removed under the format's update rules with integrity recomputed."
+  developer_use_case: "A developer replaces one entry and the container remains valid for all consumers."
+  baseline_behavior:
+  - id: POL-ARC-EDIT-01
+    text: "Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes recomputed."
+  fact_keywords: [add, replace, update, append]
+  required_tests:
+  - "Update round trips verified by independent decode."
+  release_gates:
+  - "Update operations proven consumer-compatible."
+- domain: STREAM
+  category: performance
+  level: MUST
+  title: Bounded-memory streaming
+  production_meaning: "Compression/decompression stream in bounded memory with random access where the format defines it."
+  developer_use_case: "A developer pipes multi-GB data through the codec with flat memory usage."
+  baseline_behavior:
+  - id: POL-ARC-STREAM-01
+    text: "Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the specification defines it."
+  fact_keywords: [stream, seek, chunk]
+  required_tests:
+  - "Bounded-memory large-payload tests; random-access fixtures where applicable."
+  release_gates:
+  - "Streaming paths pass large-data tests."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Integrity and structure validation
+  production_meaning: "Structure, checksums, and declared sizes validate with complete diagnostics before extraction is attempted."
+  developer_use_case: "A service validates uploads and rejects corrupt or hostile containers with exact reasons."
+  baseline_behavior:
+  - id: POL-ARC-VALIDATE-01
+    text: "Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits, ratios, paths) as a distinct layer."
+  fact_keywords: [valid, checksum, verify, must]
+  required_tests:
+  - "Corruption matrix negatives; bomb/traversal security fixtures."
+  release_gates:
+  - "Every integrity rule has negative coverage."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Deterministic container writing
+  production_meaning: "Writers emit specification-conformant containers deterministically; independent decoders accept the output."
+  developer_use_case: "A developer writes archives in CI and reruns produce identical bytes."
+  baseline_behavior:
+  - id: POL-ARC-WRITE-01
+    text: "Emit conformant containers with deterministic framing/ordering; verify output by self-decode round trip."
+  fact_keywords: [write, emit, encode]
+  required_tests:
+  - "Determinism byte-compare; independent-decoder acceptance fixture."
+  release_gates:
+  - "Writer output accepted by reference decoder."

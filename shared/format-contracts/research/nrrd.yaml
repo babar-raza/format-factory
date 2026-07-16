@@ -1,0 +1,103 @@
+schema_version: '1.0'
+format_id: nrrd
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    mutation_operations:
+    - document.array.permute_axes(order)
+    - document.array.flip_axis(axis)
+    read_operations:
+    - NrrdDocument.load(..., data='eager|lazy|header_only')
+    - document.array.slice(...)
+    - document.index_to_world(index)
+    root_types:
+    - NrrdDocument
+    - NrrdHeader
+    - NrrdArray
+    - NrrdAxis
+  capability_domain: ARRAY
+  depth_hint: 6
+  finding_id: RF-NRRD-00001
+  kind: api_expectation
+  requirement: Expose typed N-dimensional array access with shape, strides, dtype, slicing, axis permutation,
+    flip, and crop where orientation and per-axis metadata follow every operation - the imaging-pipeline
+    core.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NRRD-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: LAZY
+  depth_hint: 5
+  finding_id: RF-NRRD-00002
+  kind: performance_expectation
+  requirement: Provide header-only loading, lazy payload access, memory mapping for eligible raw data,
+    and streaming decode for compressed payloads, reporting when a requested slice forces full decompression.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NRRD-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALIDATE
+  depth_hint: 5
+  finding_id: RF-NRRD-00003
+  kind: security_expectation
+  requirement: Validate declared shape and encoded payload size with checked arithmetic BEFORE any payload
+    allocation, with decompressed-size and ratio limits - hostile headers must fail cheaply.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NRRD-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: SPACE
+  depth_hint: 5
+  finding_id: RF-NRRD-00004
+  kind: product_requirement
+  requirement: Expose index-to-world and measurement-frame transforms from space metadata without ever
+    inferring axis order from a named space - medical-imaging orientation correctness.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NRRD-003
+- required_tests:
+  - Full matrix as enumerated with hostile-fixture negatives.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: ENC
+  finding_id: RF-NRRD-00005
+  kind: test_obligation
+  requirement: Test every magic version, every type alias, every encoding, endian combinations, attached
+    plus all detached data-file forms, and hostile fixtures (decompression bombs, overflow shapes, traversal
+    paths, truncated payloads).
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-NRRD-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: NRRD file format definition (Teem)
+  source_id: SRC-NRRD-002
+  organization: Teem Project
+  version: NRRD0005
+  canonical_url: http://teem.sourceforge.net/nrrd/format.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
+  source_id: SRC-NRRD-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

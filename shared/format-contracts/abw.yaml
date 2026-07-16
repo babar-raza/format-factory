@@ -1,0 +1,647 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-ABW-V1
+  format_id: abw
+  format_canonical_name: AbiWord Word Processing Document
+  extensions:
+  - .abw
+  - .abw.gz
+  - .zabw
+  family: xml_document
+  target_spec_version: AWML 1.0 (outdated DTD)
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    qname_registry_sha256: 249f9453dac647a97ed6ff6f4e4cc386d9a3dfc05bba5870dacd99135fc50a88
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: e757a332a238bdd4ceaa77a7cc116199a69cb90296e1b87448f25c08a9afc250
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Documents may reference external resources and embedded objects; nothing is fetched or executed
+      implicitly; scripts/macros where present are preserved as opaque data.
+  data_model_type: xml
+  description: 'AbiWord Word Processing Document: XML office-document format (AbiSource Project AWML 1.0
+    (outdated DTD)). Namespaced document content (text, cells, shapes) with styles and metadata, produced
+    and consumed by office applications.'
+  primary_use_cases:
+  - Load, inspect, edit, and save office documents programmatically
+  - Extract and transform document content (text, tables, cells, shapes)
+  - Export to interchange representations with fidelity reports
+authoritative_sources:
+- title: AbiSource Project AWML 1.0 (outdated DTD)
+  source_id: SRC-ABW-001
+  organization: AbiSource Project
+  version: AWML 1.0 (outdated DTD)
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+scope_policy:
+  minimum_viable_support: Parse into a typed content model, perform core content edits, save valid output
+    the producing application reopens, and validate structure with positions.
+  production_complete_target: 'Complete content model of the target specification''s document type: structure,
+    content elements, styles, and metadata with QName-aligned typed APIs, layered validation, lossless
+    round trip, and deterministic writing.'
+capabilities:
+- release_gates:
+  - Editing proven producer-compatible.
+  capability_id: ABW-CONTENT-001
+  level: MUST
+  category: edit
+  title: Content editing
+  production_meaning: Core content (text, cells, shapes as applicable) supports create/update/move/delete
+    with structure and reference invariants enforced.
+  developer_use_case: A developer edits cell values or paragraph text and the producing application reopens
+    the file cleanly.
+  provenance:
+  - POL-XDC-CONTENT-01
+  - SAL-ABW-00014
+  - SAL-ABW-00016
+  - SAL-ABW-00026
+  - SAL-ABW-00036
+  required_behavior:
+  - Support content CRUD maintaining structure rules and reference integrity (styles, links, objects).
+  normative_rules:
+  - (spec) ABW metadata is stored in <metadata> container with <m> child key-value elements
+  - (spec) ABW props attribute is a semicolon-separated list of key:value property pairs
+  - (spec) ABW page setup properties are set on the <pagesize>, <margins>, and <paper> elements within
+    a <section>
+  - (spec) ABW paragraph alignment is set via text-align property in props attribute with values left
+    right center justify
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each mutation class save-reload-verifies; producer-reopen fixture where tooling exists.
+- release_gates:
+  - At least one export path consumer-verified.
+  capability_id: ABW-EXPORT-001
+  level: SHOULD
+  category: export
+  title: Interchange export
+  production_meaning: Content exports to at least one interchange representation (Format Factory libraries
+    where available) with a fidelity/loss report.
+  developer_use_case: A developer exports sheets to CSV or text content to another format with explicit
+    loss reporting.
+  provenance:
+  - POL-XDC-EXPORT-01
+  required_behavior:
+  - Export content to supported targets preserving values/structure where representable, with a loss report
+    for the rest.
+  depth_required: 4
+  depth_rationale: 'SHOULD export capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Export verified by target-format parser; loss report accuracy fixtures.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ABW-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Zero metadata loss proven.
+  capability_id: ABW-META-001
+  level: MUST
+  category: preserve
+  title: Metadata and settings preservation
+  production_meaning: Document metadata and application settings round-trip losslessly, including unknown
+    producer extensions.
+  developer_use_case: A developer updates content while author/settings metadata rides along untouched.
+  provenance:
+  - POL-XDC-META-01
+  - SAL-ABW-00014
+  - SAL-ABW-00015
+  - SAL-ABW-00031
+  required_behavior:
+  - Preserve document metadata, settings, and unknown producer extensions losslessly.
+  normative_rules:
+  - (spec) ABW metadata is stored in <metadata> container with <m> child key-value elements
+  - (spec) ABW metadata item element is <m> with key attribute inside <metadata>
+  - (spec) ABW document header element is <data> which may contain document metadata before sections
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Unknown-extension round trips.
+- release_gates:
+  - Model covers every first-wave content construct with QName traceability.
+  capability_id: ABW-MODEL-001
+  level: MUST
+  category: model
+  title: QName-aligned typed content model
+  production_meaning: Content constructs (paragraphs/runs, sheets/rows/cells, shapes/pages as applicable)
+    are typed with spec_qname alignment per repository RULE-LIB-002.
+  developer_use_case: A developer navigates document content through typed collections instead of raw
+    XML.
+  provenance:
+  - POL-XDC-MODEL-01
+  - SAL-ABW-00002
+  - SAL-ABW-00003
+  - SAL-ABW-00007
+  - SAL-ABW-00008
+  - SAL-ABW-00009
+  - SAL-ABW-00017
+  - SAL-ABW-00018
+  - SAL-ABW-00023
+  - SAL-ABW-00024
+  - SAL-ABW-00026
+  - SAL-ABW-00028
+  - SAL-ABW-00029
+  - SAL-ABW-00030
+  - SAL-ABW-00032
+  - SAL-ABW-00033
+  - SAL-ABW-00034
+  - SAL-ABW-00036
+  required_behavior:
+  - Expose QName-aligned typed models for the document type's content constructs with collection semantics
+    on child types (never on the root).
+  normative_rules:
+  - (spec) ABW section element is <section> containing paragraphs
+  - (spec) ABW paragraph element is <p> containing character runs
+  - (spec) ABW table element is <table> containing rows and cells
+  - (spec) ABW table row element is <tr> child of <table>
+  - (spec) ABW table cell element is <td> child of <tr> containing paragraphs
+  - (spec) ABW dom-dir attribute specifies text direction as ltr or rtl on paragraph and section elements
+  - (spec) ABW style attribute on paragraph and character elements references a named style by name
+  - (spec) ABW field element type attribute distinguishes field kinds including date, time, page number,
+    and footnote reference
+  - (spec) ABW paragraph list properties are embedded in the props attribute with list-style, list-decimal,
+    list-level keys
+  - (spec) ABW page setup properties are set on the <pagesize>, <margins>, and <paper> elements within
+    a <section>
+  - (spec) ABW paragraph props support font-family, font-size, font-weight, font-style, color, bgcolor
+    text formatting
+  - (spec) ABW textbox element is <textbox> for floating text frames within a document
+  - (spec) ABW lang attribute on paragraph and character elements specifies ISO 639-1 language code for
+    spell-check
+  - (spec) ABW <pagebreak> element represents a forced page break between paragraphs
+  - (spec) ABW <linebreak> element represents a forced line break within a paragraph
+  - (spec) ABW paragraph numbering-list attribute specifies list continuation for list-item paragraphs
+  - (spec) ABW paragraph alignment is set via text-align property in props attribute with values left
+    right center justify
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Typed access per construct; collection semantics fixtures.
+- release_gates:
+  - Structure rules covered against specification inventory.
+  capability_id: ABW-PARSE-001
+  level: MUST
+  category: parse
+  title: Namespace-aware document parsing
+  production_meaning: Namespaced structure parses by QName with the specification's structure rules enforced
+    and producer quirks tolerated only in explicit tolerant mode.
+  developer_use_case: A developer loads real-world producer output and receives a faithful typed structure.
+  provenance:
+  - POL-XDC-PARSE-01
+  - SAL-ABW-00001
+  - SAL-ABW-00002
+  - SAL-ABW-00003
+  - SAL-ABW-00004
+  - SAL-ABW-00005
+  - SAL-ABW-00006
+  - SAL-ABW-00007
+  - SAL-ABW-00008
+  - SAL-ABW-00009
+  - SAL-ABW-00010
+  - SAL-ABW-00011
+  - SAL-ABW-00012
+  - SAL-ABW-00013
+  - SAL-ABW-00014
+  - SAL-ABW-00015
+  - SAL-ABW-00017
+  - SAL-ABW-00018
+  - SAL-ABW-00019
+  - SAL-ABW-00021
+  - SAL-ABW-00022
+  - SAL-ABW-00023
+  - SAL-ABW-00025
+  - SAL-ABW-00026
+  - SAL-ABW-00027
+  - SAL-ABW-00029
+  - SAL-ABW-00030
+  - SAL-ABW-00031
+  - SAL-ABW-00032
+  - SAL-ABW-00033
+  - SAL-ABW-00035
+  required_behavior:
+  - Parse namespaced document structure by QName; enforce structure rules in strict mode; tolerate documented
+    producer quirks only in tolerant mode with reports.
+  normative_rules:
+  - (spec) ABW root element is <abiword> in AWML namespace
+  - (spec) ABW section element is <section> containing paragraphs
+  - (spec) ABW paragraph element is <p> containing character runs
+  - (spec) ABW character run element is <c> with formatting attributes
+  - (spec) ABW field element is <field> for dynamic content
+  - (spec) ABW image element is <image> for embedded or linked images
+  - (spec) ABW table element is <table> containing rows and cells
+  - (spec) ABW table row element is <tr> child of <table>
+  - (spec) ABW table cell element is <td> child of <tr> containing paragraphs
+  - (spec) ABW list element is <l> for ordered and unordered lists
+  - (spec) ABW hyperlink element is <a> with href attribute
+  - (spec) ABW document styles are defined in <styles> container with <s> child elements
+  - (spec) ABW named style element is <s> with name and props attributes within <styles>
+  - (spec) ABW metadata is stored in <metadata> container with <m> child key-value elements
+  - (spec) ABW metadata item element is <m> with key attribute inside <metadata>
+  - (spec) ABW dom-dir attribute specifies text direction as ltr or rtl on paragraph and section elements
+  - (spec) ABW style attribute on paragraph and character elements references a named style by name
+  - (spec) ABW abiword root element carries version and fileformat attributes
+  - (spec) ABW files are plain UTF-8 XML with XML declaration; no compression by default
+  - (spec) ABW footnote and endnote elements use <footnote> and <endnote> with note-id cross-reference
+  - (spec) ABW field element type attribute distinguishes field kinds including date, time, page number,
+    and footnote reference
+  - (spec) ABW column layout in sections is controlled via columns and column-gap props on the <section>
+    element
+  - (spec) ABW page setup properties are set on the <pagesize>, <margins>, and <paper> elements within
+    a <section>
+  - (spec) ABW revision history is stored in <history> element with <version> child elements
+  - (spec) ABW textbox element is <textbox> for floating text frames within a document
+  - (spec) ABW lang attribute on paragraph and character elements specifies ISO 639-1 language code for
+    spell-check
+  - (spec) ABW document header element is <data> which may contain document metadata before sections
+  - (spec) ABW <pagebreak> element represents a forced page break between paragraphs
+  - (spec) ABW <linebreak> element represents a forced line break within a paragraph
+  - (spec) ABW document encoding is declared in the XML declaration and must be UTF-8 or UTF-16
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Producer-corpus fixtures in strict and tolerant modes.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ABW-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ABW-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Style preservation proven on styled fixtures.
+  capability_id: ABW-STYLE-001
+  level: MUST
+  category: model
+  title: Styles and formatting
+  production_meaning: Style definitions and references are modeled and preserved; edits keep style references
+    resolvable.
+  developer_use_case: A developer reads effective formatting and applies an existing style to new content.
+  provenance:
+  - POL-XDC-STYLE-01
+  - SAL-ABW-00004
+  - SAL-ABW-00012
+  - SAL-ABW-00013
+  - SAL-ABW-00018
+  - SAL-ABW-00019
+  - SAL-ABW-00020
+  - SAL-ABW-00024
+  - SAL-ABW-00026
+  - SAL-ABW-00028
+  required_behavior:
+  - Model style definitions/references with preservation on round trip; keep references resolvable through
+    edits.
+  normative_rules:
+  - (spec) ABW character run element is <c> with formatting attributes
+  - (spec) ABW document styles are defined in <styles> container with <s> child elements
+  - (spec) ABW named style element is <s> with name and props attributes within <styles>
+  - (spec) ABW style attribute on paragraph and character elements references a named style by name
+  - (spec) ABW abiword root element carries version and fileformat attributes
+  - (spec) ABW file format MIME type is application/x-abiword
+  - (spec) ABW paragraph list properties are embedded in the props attribute with list-style, list-decimal,
+    list-level keys
+  - (spec) ABW page setup properties are set on the <pagesize>, <margins>, and <paper> elements within
+    a <section>
+  - (spec) ABW paragraph props support font-family, font-size, font-weight, font-style, color, bgcolor
+    text formatting
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Style-reference integrity after edits; round-trip fidelity fixtures.
+- release_gates:
+  - Every rule class has negative coverage.
+  capability_id: ABW-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered document validation
+  production_meaning: Syntax, schema (where provided), structural, and referential layers validate with
+    positions and stable codes.
+  developer_use_case: A pipeline validates documents before processing with machine-readable results.
+  provenance:
+  - POL-XDC-VALIDATE-01
+  - SAL-ABW-00035
+  required_behavior:
+  - Validate syntax, schema where available, structure, and references as separate layers with positions
+    and stable codes.
+  normative_rules:
+  - (spec) ABW document encoding is declared in the XML declaration and must be UTF-8 or UTF-16
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Layer negatives with position assertions.
+- release_gates:
+  - Writer proven lossless and deterministic.
+  capability_id: ABW-WRITE-001
+  level: MUST
+  category: write
+  title: Lossless and deterministic writing
+  production_meaning: Output round-trips losslessly (unknown constructs intact), writes valid namespaced
+    structure, and is deterministic.
+  developer_use_case: A developer saves and diffs show only intended changes.
+  provenance:
+  - POL-XDC-WRITE-01
+  required_behavior:
+  - Write valid namespaced output preserving unknown constructs in lossless mode with deterministic ordering/formatting.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Lossless round trip on producer corpus; determinism byte-compare.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: XML well-formedness and namespace conformance.
+    layer: syntax
+  - description: Schema/RNG validation where the specification provides one.
+    layer: schema
+  - description: Document-type structure rules - required sections, containment.
+    layer: structural
+  - description: Style references, internal links, and object references resolve.
+    layer: referential
+  - description: Entity hardening, size/nesting limits, external-reference policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - XML external entities and DTD expansion.
+  - External resource references (images, links) triggering implicit retrieval.
+  - Deep nesting and oversized documents exhausting resources.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - External entities disabled; resource retrieval opt-in.
+  - Bounded size/nesting with configurable limits.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Each mutation class save-reload-verifies; producer-reopen fixture where tooling exists.
+- Export verified by target-format parser; loss report accuracy fixtures.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Unknown-extension round trips.
+- Typed access per construct; collection semantics fixtures.
+- Producer-corpus fixtures in strict and tolerant modes.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Style-reference integrity after edits; round-trip fidelity fixtures.
+- Layer negatives with position assertions.
+- Lossless round trip on producer corpus; determinism byte-compare.
+release_gates:
+- Editing proven producer-compatible.
+- At least one export path consumer-verified.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Zero metadata loss proven.
+- Model covers every first-wave content construct with QName traceability.
+- Structure rules covered against specification inventory.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Style preservation proven on styled fixtures.
+- Every rule class has negative coverage.
+- Writer proven lossless and deterministic.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: ABW-CONTENT-001
+  provenance:
+  - POL-XDC-CONTENT-01
+  - SAL-ABW-00014
+  - SAL-ABW-00016
+  - SAL-ABW-00026
+  - SAL-ABW-00036
+- capability_id: ABW-EXPORT-001
+  provenance:
+  - POL-XDC-EXPORT-01
+- capability_id: ABW-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: ABW-META-001
+  provenance:
+  - POL-XDC-META-01
+  - SAL-ABW-00014
+  - SAL-ABW-00015
+  - SAL-ABW-00031
+- capability_id: ABW-MODEL-001
+  provenance:
+  - POL-XDC-MODEL-01
+  - SAL-ABW-00002
+  - SAL-ABW-00003
+  - SAL-ABW-00007
+  - SAL-ABW-00008
+  - SAL-ABW-00009
+  - SAL-ABW-00017
+  - SAL-ABW-00018
+  - SAL-ABW-00023
+  - SAL-ABW-00024
+  - SAL-ABW-00026
+  - SAL-ABW-00028
+  - SAL-ABW-00029
+  - SAL-ABW-00030
+  - SAL-ABW-00032
+  - SAL-ABW-00033
+  - SAL-ABW-00034
+  - SAL-ABW-00036
+- capability_id: ABW-PARSE-001
+  provenance:
+  - POL-XDC-PARSE-01
+  - SAL-ABW-00001
+  - SAL-ABW-00002
+  - SAL-ABW-00003
+  - SAL-ABW-00004
+  - SAL-ABW-00005
+  - SAL-ABW-00006
+  - SAL-ABW-00007
+  - SAL-ABW-00008
+  - SAL-ABW-00009
+  - SAL-ABW-00010
+  - SAL-ABW-00011
+  - SAL-ABW-00012
+  - SAL-ABW-00013
+  - SAL-ABW-00014
+  - SAL-ABW-00015
+  - SAL-ABW-00017
+  - SAL-ABW-00018
+  - SAL-ABW-00019
+  - SAL-ABW-00021
+  - SAL-ABW-00022
+  - SAL-ABW-00023
+  - SAL-ABW-00025
+  - SAL-ABW-00026
+  - SAL-ABW-00027
+  - SAL-ABW-00029
+  - SAL-ABW-00030
+  - SAL-ABW-00031
+  - SAL-ABW-00032
+  - SAL-ABW-00033
+  - SAL-ABW-00035
+- capability_id: ABW-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: ABW-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: ABW-STYLE-001
+  provenance:
+  - POL-XDC-STYLE-01
+  - SAL-ABW-00004
+  - SAL-ABW-00012
+  - SAL-ABW-00013
+  - SAL-ABW-00018
+  - SAL-ABW-00019
+  - SAL-ABW-00020
+  - SAL-ABW-00024
+  - SAL-ABW-00026
+  - SAL-ABW-00028
+- capability_id: ABW-VALIDATE-001
+  provenance:
+  - POL-XDC-VALIDATE-01
+  - SAL-ABW-00035
+- capability_id: ABW-WRITE-001
+  provenance:
+  - POL-XDC-WRITE-01

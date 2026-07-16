@@ -569,3 +569,68 @@ decisions:
       intended.
     evidence: ["tools/capability_layer/capability_compiler.py", "tools/supervisor/capability_queue_consumer.py"]
     decider: "TC-EXT-009-04 (yes-my-earlier-answer-humming-waffle plan)"
+
+  - decision_id: DEC-037
+    timestamp: "2026-07-15T00:00:00Z"
+    title: "Multi-agent coordination plane: ambient hook enforcement over machine-local SQLite, subsuming CONC-HARDENING primitives"
+    candidate_slug: agent-coordination-plane
+    decision: ADOPT_AMBIENT_COORDINATION_PLANE
+    layer_id: L11
+    file_path: tools/supervisor/coordination/
+    disposition: adopted
+    rationale: >
+      Mission AGENT-COORD-2026-07-15 (plans/.claude/lazy-hugging-lovelace.md).
+      Root causes of cross-agent lost work (R1227/GAP-MA-006): no agent
+      identity or write attribution, no pre-write arbitration for interactive
+      sessions, enforcement asymmetry (headless-only), etiquette-based
+      voluntary guards that stochastic agents skip. Decision: (1) ambient
+      enforcement - Claude sessions are auto-registered, auto-claimed and
+      auto-journaled by SessionStart/PreToolUse/PostToolUse/SessionEnd hooks
+      so correct behavior requires zero agent discipline; (2) coordination
+      state lives OFF-repo at %LOCALAPPDATA%/ff-coordination/<repo-key>/
+      (keyed on git common dir; FF_AGENT_COORDINATION_ROOT override) because
+      the repo including .git/.local is OneDrive-synced and SQLite WAL under
+      sync interference is a corruption risk on a per-edit hot path;
+      (3) interactive layer fails OPEN with audited FAIL_OPEN/BYPASS events
+      (a hook bug must not brick sessions) while the pre-commit layer fails
+      CLOSED; V195 fails sprints carrying unexplained degradations;
+      (4) legacy concurrency package (MissionLock/WorkerClaims) subsumed via
+      a mirror bridge - every legacy claim/lock also exists as a coordination
+      lease and coordination conflicts raise the legacy exceptions - rather
+      than a table rewrite, preserving 42 proven tests; full delegation is
+      registered follow-up; (5) attribution never trusts git status: content
+      hashes vs lease baselines, own/other write journal, and HEAD blob
+      (newline-normalized for Windows CRLF), with UNKNOWN always resolving to
+      refuse-and-preserve. Proven by 16/16 pilots including a before/after
+      reproduction of the unsafe git add -A sweep
+      (reports/coordination/pilot-evidence/).
+    evidence: ["tools/supervisor/coordination/", "reports/coordination/pilot-evidence/coordination-pilot-15.json", "tests/supervisor/test_agent_coordination_pilots.py"]
+    decider: "AGENT-COORD-2026-07-15 (lazy-hugging-lovelace plan)"
+  - decision_id: DEC-038
+    timestamp: "2026-07-16T00:00:00Z"
+    title: "Format Contract Layer created as L30 between SAL/Obligation and Capability"
+    candidate_slug: format-contract-layer
+    decision: CREATE_L30_FORMAT_CONTRACT_LAYER
+    layer_id: L30
+    file_path: plans/layers/format-contract-layer.md
+    disposition: adopted
+    rationale: >
+      Mission FCL-MACHINERY-2026-07-16 (plans/.claude/soft-tinkering-fairy.md).
+      No layer converted SAL spec facts into developer-product requirements;
+      the pipeline jumped from "what the spec says" (L01) to "what the product
+      does" (L03) with nothing defining "what the product MUST provide."
+      L30 owns machine-readable per-format contracts (capabilities with stable
+      IDs, depth 0-8, provenance, API/preservation/validation/security/
+      performance/test contracts, release gates) compiled deterministically
+      from committed hash-bound stores (two-plane design: auditable research
+      plane feeding committed stores; deterministic compile plane).
+      Rejected alternatives: (a) merging into L27 Format Language Obligation
+      Layer - charter overload, grammar-level duties vs product-level
+      requirements; (b) RCAL ownership - requirements-authority/ records
+      claims ABOUT implementation, not requirements independent of it;
+      (c) backfilling contracts from the reference contract file - copying is
+      forbidden by mission; plans/from_chat/format_library_feature_contracts_
+      ubl_xliff_ipynb_mtlx_nrrd.yaml is a hash-registered comparison oracle
+      only, path-denylisted as a generation input.
+    evidence: ["plans/.claude/soft-tinkering-fairy.md", "plans/layers/format-contract-layer.md", ".local/evidences/fcl-l30-001/run-record.yaml"]
+    decider: "FCL-MACHINERY-2026-07-16 (soft-tinkering-fairy plan)"

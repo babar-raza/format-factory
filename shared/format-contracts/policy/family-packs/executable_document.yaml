@@ -1,0 +1,286 @@
+# Family pack: executable_document (IPYNB) - L30 policy store
+# Family review dimensions (mission): passive parsing vs execution, trust,
+# active content, sandboxing, outputs, metadata, diff and merge, sanitization.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: executable_document
+identity_defaults:
+  data_model_type: executable_document
+  description_template: "{display_name}: JSON executable-document format ({spec_body} {spec_version}). Ordered cells with sources, rich MIME outputs, attachments, and metadata; documents can carry executable code and active content that must never run implicitly."
+  primary_use_cases:
+  - Programmatic creation, editing, and cleaning of notebooks in CI and publishing pipelines
+  - Structure-aware diff/merge for version control of computational documents
+  - Trust, sanitization, and validation of untrusted notebooks before rendering or execution
+  active_content_model:
+    has_active_content: true
+    policy: "Documents contain executable code and active outputs (HTML/JS/SVG). Parsing, validating, diffing, and saving NEVER execute or render content; execution lives in a separate opt-in adapter behind an isolation boundary; sanitization is explicit and mode-controlled."
+scope_defaults:
+  production_complete_target: "Read, create, edit, validate, clean, trust-manage, sanitize, diff, and write every construct of the target schema version losslessly, with execution exclusively in an opt-in isolated adapter."
+  minimum_viable_support: "Lossless parse/write of conformant documents, typed cell/output model, schema validation with positions, and output/metadata cleanup operations."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, transform: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 40
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: syntax
+  description: "JSON validity and encoding rules."
+- layer: schema
+  description: "Version-matched schema validation (declared and current-minor modes)."
+- layer: structural
+  description: "Cell/output shape, ID uniqueness, attachment references, MIME-bundle shape."
+- layer: semantic
+  description: "Execution-count consistency, orphaned attachments, forward-compatible unknown fields reported separately."
+- layer: security
+  description: "Active-content inventory, size limits, payload decoding limits."
+security_defaults:
+  attack_surfaces:
+  - "Active HTML/JavaScript/SVG in outputs executing in viewers."
+  - "Executable source cells run by careless tooling during processing."
+  - "Oversized base64 attachments/outputs exhausting memory."
+  - "Trust-signature confusion marking modified content trusted."
+  safe_defaults:
+  - "No execution, rendering, or sanitization side effects during load/validate/diff/save."
+  - "Configurable size limits for cells, outputs, and attachments with streaming-safe decoding."
+  - "Modified documents never auto-marked trusted; trust state is explicit and pluggable."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Lossless JSON document parsing
+  production_meaning: "Version fields, multiline-string forms, unknown fields, and numeric/Unicode values parse losslessly; nothing executes or renders during parsing."
+  developer_use_case: "A developer loads notebooks from any conformant producer and gets identical structure back on save."
+  baseline_behavior:
+  - id: POL-EXD-PARSE-01
+    text: "Parse version fields and both multiline text representations, normalizing in the object API while preserving round-trip fidelity."
+  - id: POL-EXD-PARSE-02
+    text: "Preserve unknown fields and metadata namespaces; never coerce numeric or Unicode JSON values lossily."
+  fact_keywords: [json, nbformat, cell, notebook, version]
+  required_tests:
+  - "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+  release_gates:
+  - "Parse is proven side-effect-free (no execution/render hooks reachable)."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Typed cell and document model
+  production_meaning: "Markdown, code, and raw cells are typed with source, metadata, attachments, execution count, and outputs; future cell types are preserved even when not editable."
+  developer_use_case: "A developer filters code cells by tag and inspects outputs without dictionary spelunking."
+  baseline_behavior:
+  - id: POL-EXD-MODEL-01
+    text: "Model every specified cell type with typed accessors; preserve future/unknown cell types as preservation-only nodes."
+  fact_keywords: [markdown, code, raw, source, cell_type]
+  required_tests:
+  - "Typed access per cell type; unknown-cell-type preservation fixture."
+  release_gates:
+  - "Model covers every schema cell construct."
+- domain: ID
+  category: model
+  level: MUST
+  title: Cell identity management
+  production_meaning: "Cell IDs validate for uniqueness and syntax where the schema version requires them; ID generation for older documents is an explicit upgrade operation with a rewrite map."
+  developer_use_case: "A developer upgrades an old notebook and receives stable new IDs plus the mapping."
+  baseline_behavior:
+  - id: POL-EXD-ID-01
+    text: "Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with a rewrite map for references."
+  fact_keywords: [id, unique, identifier]
+  required_tests:
+  - "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+  release_gates:
+  - "ID behavior matches the target schema minor exactly."
+- domain: OUTPUT
+  category: model
+  level: MUST
+  title: Complete rich-output support
+  production_meaning: "All output types and arbitrary MIME bundles (text, HTML, images, JSON, vendor types) are preserved with metadata and counts; active content is data, never rendered."
+  developer_use_case: "A developer extracts image outputs and strips vendor bundles without corrupting remaining outputs."
+  baseline_behavior:
+  - id: POL-EXD-OUTPUT-01
+    text: "Support every specified output type and arbitrary MIME bundles, preserving execution counts, tracebacks, metadata, and unknown bundle entries."
+  fact_keywords: [output, stream, display, mime, execute_result, error]
+  required_tests:
+  - "MIME-bundle matrix round-trips including vendor types and binary payloads."
+  release_gates:
+  - "No output construct is dropped or reordered on round trip."
+- domain: ATTACH
+  category: model
+  level: MUST
+  title: Cell attachments
+  production_meaning: "Attachments read/add/remove/rename with reference validation; orphaned attachments and missing targets are detectable."
+  developer_use_case: "A developer embeds an image attachment and validation confirms its reference resolves."
+  baseline_behavior:
+  - id: POL-EXD-ATTACH-01
+    text: "Manage attachments with MIME-bundle validation and reference checks; detect orphans and missing targets."
+  fact_keywords: [attachment]
+  required_tests:
+  - "Orphan and missing-target fixtures produce diagnostics."
+  release_gates:
+  - "Attachment integrity part of the validation layer."
+- domain: META
+  category: preserve
+  level: MUST
+  title: Metadata preservation with typed adapters
+  production_meaning: "Arbitrary notebook/cell/output metadata is preserved; common namespaces (kernelspec, language info, tags, slideshow, execution) get typed adapters; normalization never deletes unknown metadata."
+  developer_use_case: "A developer reads the kernel spec through a typed adapter while a vendor's custom metadata rides along untouched."
+  baseline_behavior:
+  - id: POL-EXD-META-01
+    text: "Preserve arbitrary metadata at all levels; provide typed adapters for common namespaces; never delete unknown metadata during normalization."
+  fact_keywords: [metadata, kernelspec, language, tags]
+  required_tests:
+  - "Unknown-metadata round trip; typed adapter reads on real fixtures."
+  release_gates:
+  - "Zero unknown-metadata loss proven."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Cell collection editing
+  production_meaning: "Insert, move, copy, remove, and replace cells with search by ID/type/tag/content; bulk operations report their changes."
+  developer_use_case: "A publishing pipeline removes setup cells by tag and appends a colophon cell with a change report."
+  baseline_behavior:
+  - id: POL-EXD-EDIT-01
+    text: "Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return change reports."
+  fact_keywords: [insert, add, remove, move, replace]
+  required_tests:
+  - "Each mutation class save-reload-verifies with IDs stable."
+  release_gates:
+  - "Editing preserves schema validity (validated post-edit)."
+- domain: CLEAN
+  category: transform
+  level: MUST
+  title: Output and execution-state cleanup
+  production_meaning: "Clearing outputs/execution counts and stripping transient metadata are configurable, dry-runnable operations - the CI staple - never implicit."
+  developer_use_case: "A pre-commit hook clears outputs with a dry-run report before mutating."
+  baseline_behavior:
+  - id: POL-EXD-CLEAN-01
+    text: "Clear outputs (all/by type/by cell), reset execution counts consistently, and strip transient metadata via configurable rules with dry-run reporting."
+  fact_keywords: [clear, clean, strip]
+  required_tests:
+  - "Dry-run report matches actual mutation; selective clearing fixtures."
+  release_gates:
+  - "Cleanup is deterministic and idempotent (second run no-op)."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Schema and semantic validation
+  production_meaning: "Declared-version and current-minor validation modes check structure, IDs, MIME shapes, attachments, and counts, reporting forward-compatible unknowns separately from errors."
+  developer_use_case: "A gatekeeper validates untrusted notebooks and distinguishes hard errors from forward-compatible fields."
+  baseline_behavior:
+  - id: POL-EXD-VALIDATE-01
+    text: "Validate against the schema matching declared version and optionally current minor; report unknown forward-compatible fields separately from errors."
+  fact_keywords: [valid, schema, must, conform]
+  required_tests:
+  - "Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+  release_gates:
+  - "Target-minor schema compliance proven on the official corpus."
+- domain: TRUST
+  category: security
+  level: MUST
+  title: Trust and signature integration
+  production_meaning: "Trust signatures compute/store/verify through a pluggable notary; modified documents are never auto-trusted; cryptographic trust stays separate from schema validity."
+  developer_use_case: "A platform verifies notebook trust before enabling rich rendering and re-signs only after review."
+  baseline_behavior:
+  - id: POL-EXD-TRUST-01
+    text: "Integrate a pluggable trust notary (compute/store/verify/revoke); never mark modified content trusted automatically; keep trust separate from validity."
+  fact_keywords: [trust, signature, sign]
+  required_tests:
+  - "Edit-invalidates-trust fixture; notary plug-in contract test."
+  release_gates:
+  - "Trust behavior proven against modification scenarios."
+- domain: SANITIZE
+  category: security
+  level: MUST
+  title: Active-content sanitization
+  production_meaning: "HTML/SVG/JavaScript/external-link sanitizers are configurable with remove/quarantine/mark-untrusted modes; lossless mode never sanitizes silently."
+  developer_use_case: "A viewer quarantines active outputs of an untrusted notebook and renders the rest."
+  baseline_behavior:
+  - id: POL-EXD-SANITIZE-01
+    text: "Provide configurable sanitizers for active content with remove, quarantine, and preserve-but-mark modes; never sanitize silently in lossless mode."
+  fact_keywords: [sanitize, html, script, svg]
+  required_tests:
+  - "Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
+  release_gates:
+  - "Sanitization catalog documented with per-mode tests."
+- domain: EXEC
+  category: advanced
+  level: SHOULD
+  title: Optional isolated execution adapter
+  production_meaning: "Execution lives in a separate opt-in package/service with kernel selection, timeouts, and isolation; core operations are physically incapable of executing content."
+  developer_use_case: "A CI job executes notebooks in a container with per-cell timeouts and consumes a structured execution report."
+  baseline_behavior:
+  - id: POL-EXD-EXEC-01
+    text: "Keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary; return a structured execution report; never execute during load/validate/diff/save."
+  fact_keywords: [execute, kernel, run]
+  required_tests:
+  - "Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
+  release_gates:
+  - "Execution is physically and logically separated from parsing (dependency audit)."
+- domain: DIFF
+  category: query
+  level: MUST
+  title: Structure-aware diff
+  production_meaning: "Diffs compare cells by identity with move detection, distinguishing source/metadata/outputs/counts, with ignore policies - the version-control staple."
+  developer_use_case: "A review tool shows a moved, edited cell as move+edit instead of delete+add noise."
+  baseline_behavior:
+  - id: POL-EXD-DIFF-01
+    text: "Diff by stable cell identity with move detection; distinguish source, metadata, attachments, execution counts, and outputs; support ignore policies and machine-applicable patches with preconditions."
+  fact_keywords: [diff, compare, patch, merge]
+  required_tests:
+  - "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+  release_gates:
+  - "Diff stability under cell moves proven."
+- domain: UPGRADE
+  category: transform
+  level: MUST
+  title: Version conversion framework
+  production_meaning: "Older document versions upgrade through explicit conversion paths with a conversion ledger; downgrades report unsupported constructs and expected loss first; higher-minor documents keep unknown additions."
+  developer_use_case: "A developer batch-upgrades legacy documents and audits every synthesized or dropped construct from the ledger."
+  baseline_behavior:
+  - id: POL-EXD-UPGRADE-01
+    text: "Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade only after reporting unsupported constructs and expected loss; preserve unknown future additions when reading higher minors."
+  fact_keywords: [version, upgrade, convert, minor]
+  required_tests:
+  - "Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
+  release_gates:
+  - "No silent version relabeling; conversion ledger complete (tested)."
+- domain: MERGE
+  category: transform
+  level: SHOULD
+  title: Structure-aware three-way merge
+  production_meaning: "Three-way merges operate on stable cell identity and structure, detecting move/edit, delete/edit, output, and metadata conflicts, with conflicts reported explicitly - never hidden inside executable source."
+  developer_use_case: "A version-control driver merges divergent notebook branches and receives an explicit conflict report."
+  baseline_behavior:
+  - id: POL-EXD-MERGE-01
+    text: "Merge by stable cell identity and structure; detect move/edit, delete/edit, output, and metadata conflicts; produce an explicit conflict report and never hide conflicts inside executable source."
+  fact_keywords: [merge, conflict]
+  required_tests:
+  - "Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
+  release_gates:
+  - "Merge conflicts always surfaced explicitly (negative-tested)."
+- domain: EXPORT
+  category: export
+  level: SHOULD
+  title: Exporter integration
+  production_meaning: "Adapter interfaces export documents to publishing targets with exporter-specific resources kept outside the core parser, returning main output plus ancillary resources."
+  developer_use_case: "A publishing pipeline exports notebooks to a target representation and collects ancillary assets programmatically."
+  baseline_behavior:
+  - id: POL-EXD-EXPORT-01
+    text: "Provide exporter adapter interfaces returning main output plus ancillary resources; keep exporter-specific preprocessors and resources outside the core parser."
+  fact_keywords: [export, convert]
+  required_tests:
+  - "Exporter adapter contract test with ancillary-resource collection."
+  release_gates:
+  - "At least one exporter adapter proven or the domain explicitly deferred by scope."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Deterministic JSON serialization
+  production_meaning: "UTF-8 output with configurable indentation, canonical key ordering without changing cell order, unknown fields retained, and binary payloads intact."
+  developer_use_case: "A pipeline writes notebooks whose diffs contain only real changes."
+  baseline_behavior:
+  - id: POL-EXD-WRITE-01
+    text: "Write valid UTF-8 JSON with configurable formatting and canonical key ordering that never reorders cells or outputs; retain unknown fields and binary MIME payloads exactly."
+  fact_keywords: [write, serialize, save]
+  required_tests:
+  - "Determinism byte-compare; binary-payload integrity fixtures."
+  release_gates:
+  - "Writer round-trips the official corpus with zero semantic loss."

@@ -1,0 +1,334 @@
+{
+  "format_id": "ndjson",
+  "contract_id": "FC-NDJSON-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116",
+    "qname_registry_sha256": "f6203a007a2782dab8a90996b8369085af40bc989c14fc138ac988b4be7cac28",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "fc297ddeb205ec8f51dd352968a5023e2d44a1834bfd1a3f057ea2defde2a718",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 191,
+  "class_count": 8,
+  "test_file_count": 497,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "NDJSON-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "append_record",
+        "rename_field"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_ndjson",
+        "save_to_file",
+        "write_csv",
+        "write_ndjson",
+        "write_ndjson_str"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Field",
+        "NdjsonDocument",
+        "NdjsonError",
+        "NdjsonField",
+        "NdjsonParseError",
+        "NdjsonRecord",
+        "NdjsonWriteError",
+        "Record"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load_ndjson",
+        "probe_ndjson"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "max_keys",
+        "max_value",
+        "ndjson_max_field_count",
+        "ndjson_max_field_name_length",
+        "ndjson_max_field_value_length",
+        "ndjson_max_key_depth",
+        "ndjson_max_list_length",
+        "ndjson_max_nesting_depth",
+        "ndjson_max_numeric_value",
+        "ndjson_max_record_field_count",
+        "ndjson_max_record_size",
+        "ndjson_max_string_length"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-TYPES-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Field",
+        "NdjsonDocument",
+        "NdjsonError",
+        "NdjsonField",
+        "NdjsonParseError",
+        "NdjsonRecord",
+        "NdjsonWriteError",
+        "Record"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "validate_schema"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NDJSON-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_csv",
+        "write_ndjson",
+        "write_ndjson_str"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_ndjson.py",
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_ndjson.py",
+        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "with_gap": 2,
+    "by_status": {
+      "NOT_STARTED": 0,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 9,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

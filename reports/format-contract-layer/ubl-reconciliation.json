@@ -1,0 +1,621 @@
+{
+  "format_id": "ubl",
+  "contract_id": "FC-UBL-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646",
+    "qname_registry_sha256": "9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6",
+    "research_sha256": "d6eb27174fb2b1c67fce6de254baf41e471c4ff9abd0e52b8df9f05da1fe5fcb",
+    "sal_facts_sha256": "8814fd9b67c33e142063077aa6e1e71493046c89033cad2788d190e8804a3a77",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 60,
+  "class_count": 13,
+  "test_file_count": 17,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "UBL-CALC-001",
+      "category": "calculate",
+      "level": "SHOULD",
+      "depth_required": 6,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 3,
+      "product_symbols": [
+        "__init__",
+        "__repr__",
+        "_get_ubl_type",
+        "_parse_contact",
+        "_parse_credit_note",
+        "_parse_endpoint_id",
+        "_parse_invoice",
+        "_parse_invoice_like",
+        "_parse_monetary_total",
+        "_parse_order",
+        "_parse_party",
+        "_parse_party_legal_entity",
+        "_parse_party_tax_scheme",
+        "_parse_postal_address",
+        "_parse_tax_subtotal",
+        "_parse_tax_total",
+        "_read_source",
+        "_text",
+        "_to_float",
+        "_write_contact"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-CODELIST-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_tax_consistency"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-DOCTYPES-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "CreditNote",
+        "Invoice",
+        "LineItem",
+        "Order",
+        "UblCreditNote",
+        "UblDocument",
+        "UblError",
+        "UblInvoice",
+        "UblLineItem",
+        "UblOrder",
+        "UblParseError",
+        "UblTaxInconsistencyWarning",
+        "UblWriteError"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-EXT-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_ubl",
+        "write_ubl"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "CreditNote",
+        "Invoice",
+        "LineItem",
+        "Order",
+        "UblCreditNote",
+        "UblDocument",
+        "UblError",
+        "UblInvoice",
+        "UblLineItem",
+        "UblOrder",
+        "UblParseError",
+        "UblTaxInconsistencyWarning",
+        "UblWriteError"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load_ubl",
+        "probe_ubl"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-PROFILE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_tax_consistency"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-QUERY-001",
+      "category": "query",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "get_line_count"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-REF-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_tax_consistency"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-SIGN-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-UPGRADE-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_tax_consistency"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-VALUES-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "CreditNote",
+        "Invoice",
+        "LineItem",
+        "Order",
+        "UblCreditNote",
+        "UblDocument",
+        "UblError",
+        "UblInvoice",
+        "UblLineItem",
+        "UblOrder",
+        "UblParseError",
+        "UblTaxInconsistencyWarning",
+        "UblWriteError"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "UBL-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "write_ubl"
+      ],
+      "test_files": [
+        "tests/python/fods/test_public_api.py",
+        "tests/python/fods/test_r58_fods_public_api.py",
+        "tests/python/fodt/test_r58_fodt_public_api.py",
+        "tests/python/test_pige_public_api_smoke.py",
+        "tests/python/test_public_api_smoke_phase2.py",
+        "tests/python/ubl/test_ubl_analytics.py",
+        "tests/python/ubl/test_ubl_analytics_coverage.py",
+        "tests/python/ubl/test_ubl_codec.py",
+        "tests/python/ubl/test_ubl_compat.py",
+        "tests/python/ubl/test_ubl_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "with_gap": 6,
+    "by_status": {
+      "NOT_STARTED": 3,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 15,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

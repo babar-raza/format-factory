@@ -1,0 +1,75 @@
+# Shared Library Contract — portfolio-wide baseline requirements (L30 policy store)
+# Authority class: PORTFOLIO_GOVERNANCE. Independently authored from production library
+# engineering practice; the reference contract file is registered ONLY as a comparison
+# oracle (see DEC-038) and its content is not copied here.
+# Every item carries a stable POL- id citable as capability provenance.
+# CANONICAL STORE: committed, hashed into contract input_digests. No timestamps.
+schema_version: '1.0'
+store_id: shared-library-contract
+groups:
+  lifecycle_io:
+    description: Baseline lifecycle I/O every format library must provide where meaningful.
+    items:
+    - id: POL-SLC-LIFECYCLE-01
+      text: Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+    - id: POL-SLC-LIFECYCLE-02
+      text: Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader accepts.
+    - id: POL-SLC-LIFECYCLE-03
+      text: Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+    - id: POL-SLC-LIFECYCLE-04
+      text: Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where the format permits, with recovery actions reported.
+    - id: POL-SLC-LIFECYCLE-05
+      text: Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised during parsing.
+    - id: POL-SLC-LIFECYCLE-06
+      text: Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated calls in the same mode.
+  preservation:
+    description: Baseline preservation duties for lossless handling.
+    items:
+    - id: POL-SLC-PRESERVE-01
+      text: Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
+    - id: POL-SLC-PRESERVE-02
+      text: Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+    - id: POL-SLC-PRESERVE-03
+      text: Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+    - id: POL-SLC-PRESERVE-04
+      text: Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  security_limits:
+    description: Baseline security posture; external effects are opt-in.
+    items:
+    - id: POL-SLC-SEC-01
+      text: Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+    - id: POL-SLC-SEC-02
+      text: Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate, or save unless explicitly enabled by the caller.
+    - id: POL-SLC-SEC-03
+      text: Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+    - id: POL-SLC-SEC-04
+      text: Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+    - id: POL-SLC-SEC-05
+      text: Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion depth.
+  diagnostics:
+    description: Baseline diagnostic quality.
+    items:
+    - id: POL-SLC-DIAG-01
+      text: Every diagnostic carries a stable code, severity, human-readable message, source location (line/column/offset or object path), originating rule, and a repair suggestion where one exists.
+    - id: POL-SLC-DIAG-02
+      text: Validation returns all diagnostics found rather than stopping at the first error, unless the caller requests fail-fast.
+  quality_proof:
+    description: Baseline proof obligations for claiming production readiness.
+    items:
+    - id: POL-SLC-QUALITY-01
+      text: Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs, and hostile inputs for every claimed capability.
+    - id: POL-SLC-QUALITY-02
+      text: Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+    - id: POL-SLC-QUALITY-03
+      text: Prove deterministic output by serializing the same document twice and byte-comparing.
+    - id: POL-SLC-QUALITY-04
+      text: Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees, verified against implementation and tests.
+diagnostic_schema_fields:
+- code
+- severity
+- message
+- source_location
+- object_path
+- originating_rule
+- repair_suggestion
+- auto_repair_eligible

@@ -1,0 +1,968 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-CSV-V1
+  format_id: csv
+  format_canonical_name: Comma-Separated Values (CSV)
+  extensions:
+  - .csv
+  family: tabular_text
+  target_spec_version: RFC 4180 (2005)
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53
+    qname_registry_sha256: 54ac3894254a4432c4fc3d67e897134d30533bea0b6e68f66fe092e49983540b
+    research_sha256: 9e9310764d6d9e2758fc7f09e69108bfe8a01678f9b9b70678ad530f7259c817
+    sal_facts_sha256: 95ae72627eee3a93e68b84553cb25e83f556ff53d41012e8b3b9468b42f09379
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Format carries passive data only; no execution, rendering, or external resolution is ever
+      required to process it.
+  data_model_type: tabular
+  description: 'Comma-Separated Values (CSV): delimiter-structured tabular text format (IETF (RFC 4180)
+    RFC 4180 (2005)). Rows of records carrying delimited fields, consumed and produced by spreadsheets,
+    databases, data pipelines, and programming ecosystems.'
+  primary_use_cases:
+  - Exchange tabular data between spreadsheets, databases, and data-processing pipelines
+  - Bulk import/export of records for business and scientific applications
+  - Streaming row-oriented processing of large datasets
+authoritative_sources:
+- title: IETF (RFC 4180) RFC 4180 (2005)
+  source_id: SRC-CSV-001
+  organization: IETF (RFC 4180)
+  version: RFC 4180 (2005)
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+- title: IETF RFC 4180 - Common Format and MIME Type for CSV Files
+  source_id: SRC-CSV-002
+  organization: IETF
+  version: RFC 4180
+  canonical_url: https://www.rfc-editor.org/rfc/rfc4180
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Format Factory CSV developer-workflow observations (installed-package examples and dogfood export
+    paths)
+  source_id: SRC-CSV-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Load and save specification-conformant files with correct field splitting, quoting,
+    and encoding; expose rows and fields as a typed model; report structural errors with row/column locations.
+  production_complete_target: Read, create, edit, validate, and write every construct defined by the target
+    specification including dialect variations, quoting/escaping rules, header semantics, and encoding
+    declarations, with streaming support for datasets larger than memory.
+capabilities:
+- release_gates:
+  - Dialect matrix documented and covered by detection tests.
+  capability_id: CSV-DIALECT-001
+  level: SHOULD
+  category: transform
+  title: Dialect detection and configuration
+  production_meaning: Delimiter, quote character, header presence, and line-ending variants are explicit,
+    inspectable configuration; common dialects can be detected from samples with confidence reporting.
+  developer_use_case: A developer loads files from heterogeneous sources and the library reports the detected
+    dialect instead of silently mis-parsing.
+  provenance:
+  - POL-TAB-DIALECT-01
+  - POL-TAB-DIALECT-02
+  - SAL-CSV-00035
+  - SAL-CSV-00055
+  required_behavior:
+  - Represent dialect parameters (delimiter, quoting, line endings, header presence) as explicit configuration
+    on load and save.
+  - Provide sample-based dialect detection returning the detected parameters and a confidence signal,
+    never silently guessing in strict mode.
+  normative_rules:
+  - (2.3) RFC 4180 - CSV files may use alternative field delimiters in practice; RFC 4180 only specifies
+    comma
+  - (2.4) RFC 4180 - A parsing algorithm uses a state machine with states for unquoted, quoted, and escape
+    modes
+  depth_required: 2
+  depth_rationale: 'SHOULD transform capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Detection fixtures across the dialect matrix; wrong-guess cases must surface low confidence rather
+    than silent mis-parse.
+- release_gates:
+  - Every mutation operation has a save-reload-verify test.
+  capability_id: CSV-EDIT-001
+  level: MUST
+  category: edit
+  title: Safe tabular mutation
+  production_meaning: Rows, fields, headers, and columns can be inserted, updated, moved, and removed
+    through the model with invariants (consistent field counts, header uniqueness where required) enforced
+    or diagnosed.
+  developer_use_case: A developer appends rows, renames a header, and deletes a column, then saves - without
+    corrupting quoting or record structure.
+  provenance:
+  - POL-TAB-EDIT-01
+  - POL-TAB-EDIT-02
+  - SAL-CSV-00007
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00051
+  required_behavior:
+  - Insert, update, move, and remove rows and fields through model operations that keep record structure
+    consistent.
+  - Column-level operations (add, rename, remove, reorder) update every affected row and the header consistently.
+  normative_rules:
+  - (2.3) RFC 4180 s2.3 - The last field in the record must not be followed by a comma
+  - (programmatic) CSV - Adding a row appends a new record at the end of the document
+  - (programmatic) CSV - Removing a row at index removes that record; subsequent rows shift up by one
+    index position
+  - (programmatic) CSV - A widened row produced by SetCell at a column beyond the current length fills
+    intermediate cells with empty string
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Round-trip after each mutation class proves the edit survived save and reload.
+- release_gates:
+  - Encoding matrix covered by tests including failure modes.
+  capability_id: CSV-ENCODING-001
+  level: MUST
+  category: parse
+  title: Character encoding handling
+  production_meaning: Encoding declaration, detection (BOM), and validation are explicit; data is never
+    silently transcoded or corrupted.
+  developer_use_case: A developer loads UTF-8 files with or without BOM and legacy-encoded files by explicit
+    choice, with encoding errors reported rather than replaced silently in strict mode.
+  provenance:
+  - POL-TAB-ENC-01
+  - POL-TAB-ENC-02
+  - SAL-CSV-00005
+  - SAL-CSV-00008
+  - SAL-CSV-00010
+  - SAL-CSV-00013
+  - SAL-CSV-00016
+  - SAL-CSV-00017
+  - SAL-CSV-00020
+  - SAL-CSV-00029
+  - SAL-CSV-00032
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00054
+  - SAL-CSV-00055
+  required_behavior:
+  - Honor byte-order marks and explicit encoding parameters; report the effective encoding used.
+  - In strict mode, reject undecodable byte sequences with position diagnostics; tolerant mode substitutes
+    with an explicit report.
+  normative_rules:
+  - (2.3) RFC 4180 s2.3 - Within the header and each record there may be one or more fields separated
+    by commas
+  - (2.4) RFC 4180 s2.4 - Each field may or may not be enclosed in double quotes
+  - (2.5) RFC 4180 s2.5 - Fields containing line breaks, double quotes, and commas should be enclosed
+    in double-quotes
+  - (3) RFC 4180 s3 - The default charset for text/csv is UTF-8
+  - (2.3) RFC 4180 - An empty field is represented by two adjacent commas or a comma followed by a record
+    terminator
+  - (2.4) RFC 4180 - A quoted field begins and ends with a double-quote character
+  - (3) RFC 4180 - CSV files may contain UTF-8 encoded Unicode text
+  - (3) RFC 4180 - A BOM byte order mark at the start of a UTF-8 CSV file may be present in practice
+  - (2.3) RFC 4180 - All field values are strings; numeric or boolean interpretation is application-specific
+  - (2.4) RFC 4180 - The quoting character double-quote ASCII 0x22 is fixed; single quotes are not special
+  - (2.6) RFC 4180 - After a closing double-quote within a field only comma, CRLF, or EOF should follow
+  - (2.3) RFC 4180 - Numeric values in CSV are stored as unquoted or quoted strings without special encoding
+  - (2.4) RFC 4180 - A parsing algorithm uses a state machine with states for unquoted, quoted, and escape
+    modes
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - BOM and no-BOM fixtures; undecodable-sequence negative fixtures in strict and tolerant modes.
+- release_gates:
+  - At least one export path proven by consumer-side verification.
+  capability_id: CSV-EXPORT-001
+  level: SHOULD
+  category: export
+  title: Tabular interchange export
+  production_meaning: Tables export to at least one other structured representation (using Format Factory's
+    own libraries where available) preserving cell values, header association, and row order.
+  developer_use_case: A developer converts a loaded table to another supported tabular or document format
+    in one call with a loss report.
+  provenance:
+  - POL-TAB-EXPORT-01
+  required_behavior:
+  - Export preserves cell values, header-to-column association, and row order, reporting any constructs
+    the target cannot represent.
+  depth_required: 4
+  depth_rationale: 'SHOULD export capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Export fixture verified against the target format's own parser.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: CSV-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Typed model APIs cover read access to every construct the parser produces.
+  capability_id: CSV-MODEL-001
+  level: MUST
+  category: model
+  title: Typed tabular object model
+  production_meaning: Rows, fields, and headers are exposed as a typed domain model with stable accessors
+    - not raw string lists only - so edits and queries are safe and discoverable.
+  developer_use_case: A developer reads column values by header name, iterates typed rows, and inspects
+    table dimensions without hand-indexing arrays.
+  provenance:
+  - POL-TAB-MODEL-01
+  - POL-TAB-MODEL-02
+  - POL-TAB-MODEL-03
+  - SAL-CSV-00003
+  - SAL-CSV-00004
+  - SAL-CSV-00005
+  - SAL-CSV-00014
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00022
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00028
+  - SAL-CSV-00030
+  - SAL-CSV-00031
+  - SAL-CSV-00032
+  - SAL-CSV-00033
+  - SAL-CSV-00034
+  - SAL-CSV-00039
+  - SAL-CSV-00040
+  - SAL-CSV-00041
+  - SAL-CSV-00042
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00045
+  - SAL-CSV-00046
+  - SAL-CSV-00047
+  - SAL-CSV-00048
+  - SAL-CSV-00049
+  - SAL-CSV-00050
+  - SAL-CSV-00051
+  - SAL-CSV-00052
+  - SAL-CSV-00053
+  - SAL-CSV-00054
+  required_behavior:
+  - Expose table, row, field, and header abstractions with by-index and by-header access.
+  - Preserve the distinction between empty field, quoted empty field, and absent trailing field where
+    the dialect distinguishes them.
+  - Report table dimensions (row count, per-row field count) and header presence without full materialization
+    where streaming.
+  normative_rules:
+  - (2.2) RFC 4180 s2.2 - There may be an optional header line appearing as the first line of the file
+  - (2.2) RFC 4180 s2.2 - The number of fields in the header should equal the number of fields in records
+  - (2.3) RFC 4180 s2.3 - Within the header and each record there may be one or more fields separated
+    by commas
+  - (3) RFC 4180 s3 - The text/csv type supports a header parameter with values present or absent
+  - (2.5) RFC 4180 - A line break embedded within a double-quoted field is part of the field value not
+    a record separator
+  - (2.5) RFC 4180 - A comma embedded within a double-quoted field is part of the field value not a field
+    separator
+  - (3) RFC 4180 - The file extension .csv is conventionally used for CSV files
+  - (2.2) RFC 4180 - A header row if present must appear as the very first line of the file
+  - (2.2) RFC 4180 - Field names in the header line are subject to the same quoting rules as data fields
+  - (2.1) RFC 4180 - An empty file is a valid CSV document containing zero records
+  - (2.5) RFC 4180 - A quoted field may span multiple lines; embedded CRLF sequences are literal content
+  - (2.3) RFC 4180 - The number of fields is inferred from the first record or header if present
+  - (programmatic) CSV - Column index is zero-based in programmatic access; the first column is column
+    0
+  - (programmatic) CSV - Row index is zero-based for data rows when a header is present
+  - (2.3) RFC 4180 - All field values are strings; numeric or boolean interpretation is application-specific
+  - (2.3) RFC 4180 - NULL or missing values in CSV are conventionally represented by empty fields
+  - (2.2) RFC 4180 - CSV has no schema definition mechanism; structure is inferred from the header row
+  - (2.1) RFC 4180 - The total number of records is not encoded in the file; it must be determined by
+    reading all records
+  - (2.3) RFC 4180 - Column count is determined by the header row if present or the first data row
+  - (programmatic) CSV - Accessing a cell by row and column index is a programmatic operation on the parsed
+    result
+  - (programmatic) CSV - Filtering rows by predicate produces a new document with the same header
+  - (programmatic) CSV - Adding a row appends a new record at the end of the document
+  - (programmatic) CSV - Removing a row at index removes that record; subsequent rows shift up by one
+    index position
+  - (programmatic) CSV - Setting a cell value mutates the field at the given row and column position in
+    place
+  - (programmatic) CSV - A column can be retrieved as a list of values by its zero-based index or header
+    name
+  - (programmatic) CSV - HasColumn(name) tests whether a named column exists in the header row
+  - (programmatic) CSV - IsEmpty returns true when the document contains zero data rows
+  - (programmatic) CSV - RowCount returns the number of data rows excluding the header
+  - (programmatic) CSV - ColumnCount returns the number of columns derived from the header or first data
+    row
+  - (programmatic) CSV - A widened row produced by SetCell at a column beyond the current length fills
+    intermediate cells with empty string
+  - (programmatic) CSV - HasHeaders returns true when the document was loaded with hasHeaders=true and
+    a header row is present
+  - (2.3) RFC 4180 - A row with all empty fields is a valid record
+  - (2.3) RFC 4180 - Numeric values in CSV are stored as unquoted or quoted strings without special encoding
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Header-based and index-based access agree on every fixture; dimension reporting matches fixture truth.
+- release_gates:
+  - All specification parsing rules covered by passing tests including quoting and line-ending variants.
+  capability_id: CSV-PARSE-001
+  level: MUST
+  category: parse
+  title: Specification-conformant record and field parsing
+  production_meaning: The library splits input into records and fields exactly as the specification defines,
+    including every quoting, escaping, and line-ending rule, so downstream consumers never see mis-split
+    data.
+  developer_use_case: A developer loads an arbitrary conformant file produced by another tool and receives
+    the same logical table that tool wrote, without configuring parser internals.
+  provenance:
+  - POL-TAB-PARSE-01
+  - POL-TAB-PARSE-02
+  - POL-TAB-PARSE-03
+  - SAL-CSV-00001
+  - SAL-CSV-00002
+  - SAL-CSV-00003
+  - SAL-CSV-00004
+  - SAL-CSV-00005
+  - SAL-CSV-00006
+  - SAL-CSV-00007
+  - SAL-CSV-00008
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00014
+  - SAL-CSV-00015
+  - SAL-CSV-00016
+  - SAL-CSV-00017
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00021
+  - SAL-CSV-00022
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00028
+  - SAL-CSV-00030
+  - SAL-CSV-00031
+  - SAL-CSV-00032
+  - SAL-CSV-00033
+  - SAL-CSV-00034
+  - SAL-CSV-00035
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00038
+  - SAL-CSV-00039
+  - SAL-CSV-00040
+  - SAL-CSV-00041
+  - SAL-CSV-00042
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00045
+  - SAL-CSV-00046
+  - SAL-CSV-00047
+  - SAL-CSV-00048
+  - SAL-CSV-00049
+  - SAL-CSV-00050
+  - SAL-CSV-00052
+  - SAL-CSV-00053
+  - SAL-CSV-00054
+  - SAL-CSV-00055
+  - RF-CSV-00001
+  required_behavior:
+  - Split records on the specification's record separator, honoring quoted sections that embed separators,
+    delimiters, and quote characters.
+  - Report malformed constructs (unterminated quotes, illegal characters, inconsistent field counts) with
+    row and column positions in strict mode.
+  - Parse from path, stream, and bytes with identical results, supporting incremental/streaming row iteration
+    without loading the whole input.
+  - Expose a streaming row iterator that yields row objects without materializing the full table, so multi-gigabyte
+    CSV files can be processed in bounded memory alongside the whole-file load path.
+  normative_rules:
+  - (2.1) RFC 4180 s2.1 - Each record is on a separate line, delimited by a line break (CRLF)
+  - (2.1) RFC 4180 s2.1 - The last record in the file may or may not have an ending line break
+  - (2.2) RFC 4180 s2.2 - There may be an optional header line appearing as the first line of the file
+  - (2.2) RFC 4180 s2.2 - The number of fields in the header should equal the number of fields in records
+  - (2.3) RFC 4180 s2.3 - Within the header and each record there may be one or more fields separated
+    by commas
+  - (2.3) RFC 4180 s2.3 - Spaces are considered part of a field and should not be ignored
+  - (2.3) RFC 4180 s2.3 - The last field in the record must not be followed by a comma
+  - (2.4) RFC 4180 s2.4 - Each field may or may not be enclosed in double quotes
+  - (2.4) RFC 4180 s2.4 - If fields are not enclosed with double quotes then double quotes may not appear
+    inside the fields
+  - (2.5) RFC 4180 s2.5 - Fields containing line breaks, double quotes, and commas should be enclosed
+    in double-quotes
+  - (2.6) RFC 4180 s2.6 - A double-quote appearing inside a field must be escaped by preceding it with
+    another double quote
+  - (3) RFC 4180 s3 - The text/csv type supports a header parameter with values present or absent
+  - (1) RFC 4180 s1 - Each record should contain the same number of fields throughout the file
+  - (2.3) RFC 4180 - An empty field is represented by two adjacent commas or a comma followed by a record
+    terminator
+  - (2.4) RFC 4180 - A quoted field begins and ends with a double-quote character
+  - (2.5) RFC 4180 - A line break embedded within a double-quoted field is part of the field value not
+    a record separator
+  - (2.5) RFC 4180 - A comma embedded within a double-quoted field is part of the field value not a field
+    separator
+  - (2.1) RFC 4180 - A CSV record is delimited by CRLF; LF alone may be used in practice but CRLF is canonical
+  - (3) RFC 4180 - The file extension .csv is conventionally used for CSV files
+  - (2.2) RFC 4180 - A header row if present must appear as the very first line of the file
+  - (2.2) RFC 4180 - Field names in the header line are subject to the same quoting rules as data fields
+  - (2.1) RFC 4180 - An empty file is a valid CSV document containing zero records
+  - (2.5) RFC 4180 - A quoted field may span multiple lines; embedded CRLF sequences are literal content
+  - (2.1) RFC 4180 - Parsers SHOULD accept LF as well as CRLF as line terminator for cross-platform compatibility
+  - (2.3) RFC 4180 - The number of fields is inferred from the first record or header if present
+  - (programmatic) CSV - Column index is zero-based in programmatic access; the first column is column
+    0
+  - (programmatic) CSV - Row index is zero-based for data rows when a header is present
+  - (2.3) RFC 4180 - All field values are strings; numeric or boolean interpretation is application-specific
+  - (2.3) RFC 4180 - NULL or missing values in CSV are conventionally represented by empty fields
+  - (2.2) RFC 4180 - CSV has no schema definition mechanism; structure is inferred from the header row
+  - (2.3) RFC 4180 - CSV files may use alternative field delimiters in practice; RFC 4180 only specifies
+    comma
+  - (2.4) RFC 4180 - The quoting character double-quote ASCII 0x22 is fixed; single quotes are not special
+  - (2.6) RFC 4180 - After a closing double-quote within a field only comma, CRLF, or EOF should follow
+  - (2.1) RFC 4180 - CSV does not define comment lines; all lines are data unless the application defines
+    otherwise
+  - (2.1) RFC 4180 - The total number of records is not encoded in the file; it must be determined by
+    reading all records
+  - (2.3) RFC 4180 - Column count is determined by the header row if present or the first data row
+  - (programmatic) CSV - Accessing a cell by row and column index is a programmatic operation on the parsed
+    result
+  - (programmatic) CSV - Filtering rows by predicate produces a new document with the same header
+  - (programmatic) CSV - Adding a row appends a new record at the end of the document
+  - (programmatic) CSV - Removing a row at index removes that record; subsequent rows shift up by one
+    index position
+  - (programmatic) CSV - Setting a cell value mutates the field at the given row and column position in
+    place
+  - (programmatic) CSV - A column can be retrieved as a list of values by its zero-based index or header
+    name
+  - (programmatic) CSV - HasColumn(name) tests whether a named column exists in the header row
+  - (programmatic) CSV - IsEmpty returns true when the document contains zero data rows
+  - (programmatic) CSV - RowCount returns the number of data rows excluding the header
+  - (programmatic) CSV - ColumnCount returns the number of columns derived from the header or first data
+    row
+  - (programmatic) CSV - HasHeaders returns true when the document was loaded with hasHeaders=true and
+    a header row is present
+  - (2.3) RFC 4180 - A row with all empty fields is a valid record
+  - (2.3) RFC 4180 - Numeric values in CSV are stored as unquoted or quoted strings without special encoding
+  - (2.4) RFC 4180 - A parsing algorithm uses a state machine with states for unquoted, quoted, and escape
+    modes
+  depth_required: 3
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Parse every specification example plus edge fixtures for embedded delimiters, embedded quotes, embedded
+    line breaks, and empty fields.
+  - Negative fixtures for unterminated quotes and illegal bare quote characters in strict mode.
+  - Streaming iterator produces identical rows to whole-file load on the same fixture.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: CSV-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: CSV-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Every documented validation rule maps to at least one negative test.
+  capability_id: CSV-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered structural validation
+  production_meaning: Validation checks lexical, syntax, and structural rules as separate layers with
+    complete diagnostics, so callers can gate pipelines on machine-readable results.
+  developer_use_case: A developer validates an incoming file before processing and receives every violation
+    with row/column locations, not just the first failure.
+  provenance:
+  - POL-TAB-VALIDATE-01
+  - POL-TAB-VALIDATE-02
+  - SAL-CSV-00004
+  - SAL-CSV-00006
+  - SAL-CSV-00007
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00039
+  - SAL-CSV-00053
+  - RF-CSV-00002
+  required_behavior:
+  - Validate lexical, syntax, and structural layers independently, returning all diagnostics with locations.
+  - Structural checks include consistent field counts per record and header integrity where headers are
+    declared.
+  - Provide an opt-in formula-hazard scan that flags cells beginning with '=', '+', '-', or '@' before
+    export toward spreadsheet consumers, returning affected row/column coordinates so callers can neutralize
+    spreadsheet formula injection.
+  normative_rules:
+  - (2.2) RFC 4180 s2.2 - The number of fields in the header should equal the number of fields in records
+  - (2.3) RFC 4180 s2.3 - Spaces are considered part of a field and should not be ignored
+  - (2.3) RFC 4180 s2.3 - The last field in the record must not be followed by a comma
+  - (2.4) RFC 4180 s2.4 - If fields are not enclosed with double quotes then double quotes may not appear
+    inside the fields
+  - (2.5) RFC 4180 s2.5 - Fields containing line breaks, double quotes, and commas should be enclosed
+    in double-quotes
+  - (2.6) RFC 4180 s2.6 - A double-quote appearing inside a field must be escaped by preceding it with
+    another double quote
+  - (2.2) RFC 4180 - A header row if present must appear as the very first line of the file
+  - (2.2) RFC 4180 - Field names in the header line are subject to the same quoting rules as data fields
+  - (2.1) RFC 4180 - An empty file is a valid CSV document containing zero records
+  - (2.5) RFC 4180 - A quoted field may span multiple lines; embedded CRLF sequences are literal content
+  - (2.1) RFC 4180 - Parsers SHOULD accept LF as well as CRLF as line terminator for cross-platform compatibility
+  - (2.1) RFC 4180 - The total number of records is not encoded in the file; it must be determined by
+    reading all records
+  - (2.3) RFC 4180 - A row with all empty fields is a valid record
+  security_requirements:
+  - Formula-hazard scan is opt-in, never mutates data, and reports cell coordinates.
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Positive and negative fixtures per validation layer; diagnostics carry stable codes and locations.
+  - Hazard scan fixture with leading '=', '+', '-', '@' cells returns exact coordinates; clean fixture
+    returns none.
+- release_gates:
+  - Writer output validated against parser and at least one external consumer fixture set.
+  capability_id: CSV-WRITE-001
+  level: MUST
+  category: write
+  title: Specification-conformant serialization
+  production_meaning: Output applies quoting and escaping exactly where the dialect requires, chooses
+    correct line endings, and is deterministic - loadable by the library itself and by mainstream consumers.
+  developer_use_case: A developer writes a table containing embedded delimiters, quotes, and line breaks
+    and every mainstream reader loads it intact.
+  provenance:
+  - POL-TAB-WRITE-01
+  - POL-TAB-WRITE-02
+  - SAL-CSV-00001
+  - SAL-CSV-00002
+  - SAL-CSV-00008
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00017
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00021
+  - SAL-CSV-00024
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00054
+  - SAL-CSV-00055
+  required_behavior:
+  - Quote and escape fields exactly where required by the dialect; never emit ambiguous unquoted content.
+  - Offer lossless mode (preserve original quoting and line-ending choices where recorded) and normalized
+    mode (canonical quoting policy), as an explicit caller choice.
+  normative_rules:
+  - (2.1) RFC 4180 s2.1 - Each record is on a separate line, delimited by a line break (CRLF)
+  - (2.1) RFC 4180 s2.1 - The last record in the file may or may not have an ending line break
+  - (2.4) RFC 4180 s2.4 - Each field may or may not be enclosed in double quotes
+  - (2.4) RFC 4180 s2.4 - If fields are not enclosed with double quotes then double quotes may not appear
+    inside the fields
+  - (2.5) RFC 4180 s2.5 - Fields containing line breaks, double quotes, and commas should be enclosed
+    in double-quotes
+  - (2.6) RFC 4180 s2.6 - A double-quote appearing inside a field must be escaped by preceding it with
+    another double quote
+  - (2.4) RFC 4180 - A quoted field begins and ends with a double-quote character
+  - (2.5) RFC 4180 - A line break embedded within a double-quoted field is part of the field value not
+    a record separator
+  - (2.5) RFC 4180 - A comma embedded within a double-quoted field is part of the field value not a field
+    separator
+  - (2.1) RFC 4180 - A CSV record is delimited by CRLF; LF alone may be used in practice but CRLF is canonical
+  - (2.2) RFC 4180 - Field names in the header line are subject to the same quoting rules as data fields
+  - (2.5) RFC 4180 - A quoted field may span multiple lines; embedded CRLF sequences are literal content
+  - (2.1) RFC 4180 - Parsers SHOULD accept LF as well as CRLF as line terminator for cross-platform compatibility
+  - (2.4) RFC 4180 - The quoting character double-quote ASCII 0x22 is fixed; single quotes are not special
+  - (2.6) RFC 4180 - After a closing double-quote within a field only comma, CRLF, or EOF should follow
+  - (2.3) RFC 4180 - Numeric values in CSV are stored as unquoted or quoted strings without special encoding
+  - (2.4) RFC 4180 - A parsing algorithm uses a state machine with states for unquoted, quoted, and escape
+    modes
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Deterministic double-serialization byte-compare; round-trip through parser for hostile field content.
+public_api_contract:
+  read_operations:
+  - iter_rows(path_or_stream) -> iterator of row objects
+  - load(path_or_stream) -> table model
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: 'Character-level rules: encoding validity, permitted characters, line-ending forms.'
+    layer: lexical
+  - description: 'Field/record splitting: delimiter, quoting, and escaping conformance.'
+    layer: syntax
+  - description: 'Row shape consistency: field counts, header presence, record boundaries.'
+    layer: structural
+  - description: Optional typed-column checks when a schema or type hints are supplied.
+    layer: type
+  - description: Input size, field count, and cell payload limits; formula-injection hazards flagged.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Oversized rows or fields causing unbounded memory allocation during parsing.
+  - Formula-injection payloads (cells beginning with '=', '+', '-', '@') passed to spreadsheet consumers.
+  - Malformed encoding sequences and BOM confusion causing silent data corruption.
+  - Quote-state confusion causing record-boundary smuggling across rows.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Bounded field size, field count per record, and total input size with configurable limits.
+  - No evaluation of cell content; formula-hazard flagging available for export paths.
+  - Strict encoding validation by default with explicit tolerant-mode opt-in.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Detection fixtures across the dialect matrix; wrong-guess cases must surface low confidence rather than
+  silent mis-parse.
+- Round-trip after each mutation class proves the edit survived save and reload.
+- BOM and no-BOM fixtures; undecodable-sequence negative fixtures in strict and tolerant modes.
+- Export fixture verified against the target format's own parser.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Header-based and index-based access agree on every fixture; dimension reporting matches fixture truth.
+- Parse every specification example plus edge fixtures for embedded delimiters, embedded quotes, embedded
+  line breaks, and empty fields.
+- Negative fixtures for unterminated quotes and illegal bare quote characters in strict mode.
+- Streaming iterator produces identical rows to whole-file load on the same fixture.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Positive and negative fixtures per validation layer; diagnostics carry stable codes and locations.
+- Hazard scan fixture with leading '=', '+', '-', '@' cells returns exact coordinates; clean fixture returns
+  none.
+- Deterministic double-serialization byte-compare; round-trip through parser for hostile field content.
+release_gates:
+- Dialect matrix documented and covered by detection tests.
+- Every mutation operation has a save-reload-verify test.
+- Encoding matrix covered by tests including failure modes.
+- At least one export path proven by consumer-side verification.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Typed model APIs cover read access to every construct the parser produces.
+- All specification parsing rules covered by passing tests including quoting and line-ending variants.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Every documented validation rule maps to at least one negative test.
+- Writer output validated against parser and at least one external consumer fixture set.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: CSV-DIALECT-001
+  provenance:
+  - POL-TAB-DIALECT-01
+  - POL-TAB-DIALECT-02
+  - SAL-CSV-00035
+  - SAL-CSV-00055
+- capability_id: CSV-EDIT-001
+  provenance:
+  - POL-TAB-EDIT-01
+  - POL-TAB-EDIT-02
+  - SAL-CSV-00007
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00051
+- capability_id: CSV-ENCODING-001
+  provenance:
+  - POL-TAB-ENC-01
+  - POL-TAB-ENC-02
+  - SAL-CSV-00005
+  - SAL-CSV-00008
+  - SAL-CSV-00010
+  - SAL-CSV-00013
+  - SAL-CSV-00016
+  - SAL-CSV-00017
+  - SAL-CSV-00020
+  - SAL-CSV-00029
+  - SAL-CSV-00032
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00054
+  - SAL-CSV-00055
+- capability_id: CSV-EXPORT-001
+  provenance:
+  - POL-TAB-EXPORT-01
+- capability_id: CSV-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: CSV-MODEL-001
+  provenance:
+  - POL-TAB-MODEL-01
+  - POL-TAB-MODEL-02
+  - POL-TAB-MODEL-03
+  - SAL-CSV-00003
+  - SAL-CSV-00004
+  - SAL-CSV-00005
+  - SAL-CSV-00014
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00022
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00028
+  - SAL-CSV-00030
+  - SAL-CSV-00031
+  - SAL-CSV-00032
+  - SAL-CSV-00033
+  - SAL-CSV-00034
+  - SAL-CSV-00039
+  - SAL-CSV-00040
+  - SAL-CSV-00041
+  - SAL-CSV-00042
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00045
+  - SAL-CSV-00046
+  - SAL-CSV-00047
+  - SAL-CSV-00048
+  - SAL-CSV-00049
+  - SAL-CSV-00050
+  - SAL-CSV-00051
+  - SAL-CSV-00052
+  - SAL-CSV-00053
+  - SAL-CSV-00054
+- capability_id: CSV-PARSE-001
+  provenance:
+  - POL-TAB-PARSE-01
+  - POL-TAB-PARSE-02
+  - POL-TAB-PARSE-03
+  - SAL-CSV-00001
+  - SAL-CSV-00002
+  - SAL-CSV-00003
+  - SAL-CSV-00004
+  - SAL-CSV-00005
+  - SAL-CSV-00006
+  - SAL-CSV-00007
+  - SAL-CSV-00008
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00014
+  - SAL-CSV-00015
+  - SAL-CSV-00016
+  - SAL-CSV-00017
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00021
+  - SAL-CSV-00022
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00028
+  - SAL-CSV-00030
+  - SAL-CSV-00031
+  - SAL-CSV-00032
+  - SAL-CSV-00033
+  - SAL-CSV-00034
+  - SAL-CSV-00035
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00038
+  - SAL-CSV-00039
+  - SAL-CSV-00040
+  - SAL-CSV-00041
+  - SAL-CSV-00042
+  - SAL-CSV-00043
+  - SAL-CSV-00044
+  - SAL-CSV-00045
+  - SAL-CSV-00046
+  - SAL-CSV-00047
+  - SAL-CSV-00048
+  - SAL-CSV-00049
+  - SAL-CSV-00050
+  - SAL-CSV-00052
+  - SAL-CSV-00053
+  - SAL-CSV-00054
+  - SAL-CSV-00055
+  - RF-CSV-00001
+- capability_id: CSV-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: CSV-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: CSV-VALIDATE-001
+  provenance:
+  - POL-TAB-VALIDATE-01
+  - POL-TAB-VALIDATE-02
+  - SAL-CSV-00004
+  - SAL-CSV-00006
+  - SAL-CSV-00007
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00023
+  - SAL-CSV-00024
+  - SAL-CSV-00025
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00039
+  - SAL-CSV-00053
+  - RF-CSV-00002
+- capability_id: CSV-WRITE-001
+  provenance:
+  - POL-TAB-WRITE-01
+  - POL-TAB-WRITE-02
+  - SAL-CSV-00001
+  - SAL-CSV-00002
+  - SAL-CSV-00008
+  - SAL-CSV-00009
+  - SAL-CSV-00010
+  - SAL-CSV-00011
+  - SAL-CSV-00017
+  - SAL-CSV-00018
+  - SAL-CSV-00019
+  - SAL-CSV-00021
+  - SAL-CSV-00024
+  - SAL-CSV-00026
+  - SAL-CSV-00027
+  - SAL-CSV-00036
+  - SAL-CSV-00037
+  - SAL-CSV-00054
+  - SAL-CSV-00055

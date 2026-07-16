@@ -1,0 +1,316 @@
+# Family pack: typed_graph (MTLX) - L30 policy store
+# Family review dimensions (mission): graph model, types, definitions,
+# references, cycles, traversal, code generation, external libraries,
+# variants, materials/assignments.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: typed_graph
+identity_defaults:
+  data_model_type: graph
+  description_template: "{display_name}: typed node-graph exchange format ({spec_body} {spec_version}). Documents carry typed nodes, ports, definitions, and connection graphs with library resolution, used to exchange materials/shaders/looks across digital-content pipelines."
+  primary_use_cases:
+  - Author, edit, and validate typed node graphs programmatically
+  - Resolve node definitions against standard libraries and traverse dependency closures
+  - Exchange graph assets across applications with lossless preservation of unknown constructs
+  active_content_model:
+    has_active_content: true
+    policy: "Documents reference shader/implementation code and external includes. Core parsing never compiles, executes, or fetches; include resolution is governed by explicit search paths and limits; code generation is a separate opt-in adapter."
+scope_defaults:
+  production_complete_target: "Complete document/graph model of the target version: typed values, names/namespaces, node definitions and implementations, library loading, graph editing with invariant preservation, looks/variants/assignments where specified, layered validation, and lossless writing."
+  minimum_viable_support: "Parse documents with includes governed, expose typed elements and graph connections, validate structure and references, and write lossless output."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, resolve: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 40
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: syntax
+  description: "XML well-formedness, root/version structure."
+- layer: structural
+  description: "Required attributes, names, child rules, element categories."
+- layer: type
+  description: "Value/type compatibility, array and member shapes, typedefs."
+- layer: referential
+  description: "Node/port references, definition resolution, include closure."
+- layer: semantic
+  description: "Graph acyclicity, port compatibility, inheritance, assignment precedence."
+- layer: security
+  description: "Include limits, path policy, size/nesting bounds."
+security_defaults:
+  attack_surfaces:
+  - "Include/XInclude cycles and deep include chains causing resource exhaustion."
+  - "Path traversal via include or filename references escaping configured roots."
+  - "XML external entities during parsing."
+  - "Untrusted shader/implementation code treated as executable by careless consumers."
+  safe_defaults:
+  - "Includes resolve only against configured search paths with depth/count/byte limits and cycle detection; network access off by default."
+  - "External entities disabled; shader code carried as data, never compiled in core."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Secure document parsing
+  production_meaning: "Root/version recognition with source-position tracking; parsing never resolves the network and external entities are disabled."
+  developer_use_case: "A developer loads documents with diagnostics that point at file/line for every issue."
+  baseline_behavior:
+  - id: POL-TGR-PARSE-01
+    text: "Recognize the document root and version; expose source URI and line/column positions where parser support permits; disable external entities."
+  fact_keywords: [root, version, xml, document]
+  required_tests:
+  - "Version-recognition fixtures; entity-hardening negative fixture."
+  release_gates:
+  - "Parse security posture proven by hostile fixtures."
+- domain: INCLUDE
+  category: resolve
+  level: MUST
+  title: Governed include and search-path resolution
+  production_meaning: "Includes resolve deterministically against document-relative and configured search paths with cycle detection, depth/count/byte limits, and an unresolved-inspection mode."
+  developer_use_case: "A developer inspects a document with broken includes instead of failing outright, then fixes the search path."
+  baseline_behavior:
+  - id: POL-TGR-INCLUDE-01
+    text: "Resolve includes against document-relative and configured search paths with cycle/repeat detection and depth, count, and byte limits; block traversal and network by default."
+  - id: POL-TGR-INCLUDE-02
+    text: "Offer an unresolved-reference mode so documents remain inspectable when includes are unavailable."
+  fact_keywords: [include, xinclude, search, path]
+  required_tests:
+  - "Include cycles, deep chains, traversal attempts, and unresolved-mode fixtures."
+  release_gates:
+  - "Include resolution deterministic and secure across the fixture matrix."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Lossless element model
+  production_meaning: "Documents, elements, categories, names, attributes, child order, and provenance are modeled losslessly with unknown constructs preserved; generic APIs coexist with typed wrappers."
+  developer_use_case: "A developer walks any document generically while using typed wrappers for known categories."
+  baseline_behavior:
+  - id: POL-TGR-MODEL-01
+    text: "Model all elements with category, name, attributes, child order, and source provenance; preserve unknown elements/attributes for forward compatibility."
+  fact_keywords: [element, node, attribute, name, category]
+  required_tests:
+  - "Unknown-construct round trip; typed-wrapper equivalence with generic access."
+  release_gates:
+  - "Model lossless across the official example corpus."
+- domain: TYPES
+  category: model
+  level: MUST
+  title: Value and type system
+  production_meaning: "All standard value types (scalars, vectors, colors, matrices, strings, filenames, arrays, typedefs) parse/serialize with lossless lexical fidelity and validate for type/shape compatibility."
+  developer_use_case: "A developer sets a typed port value and type mismatches are diagnosed at edit time."
+  baseline_behavior:
+  - id: POL-TGR-TYPES-01
+    text: "Support every standard value type with lexical round-trip fidelity; support typedefs and structured members; validate value/type and shape compatibility."
+  fact_keywords: [type, float, vector, color, matrix, string, array]
+  required_tests:
+  - "Type matrix round trip; incompatibility negatives."
+  release_gates:
+  - "All standard types round-trip with fidelity tests."
+- domain: NAME
+  category: model
+  level: MUST
+  title: Naming and reference semantics
+  production_meaning: "Names and qualified references validate; namespace scope and cross-library references resolve; rename rewrites referents safely with collision detection."
+  developer_use_case: "A developer renames a node and every connection and interface reference follows."
+  baseline_behavior:
+  - id: POL-TGR-NAME-01
+    text: "Validate names and qualified references; resolve namespace scope and cross-library references; safe rename with reference rewriting and collision detection."
+  fact_keywords: [name, namespace, reference]
+  required_tests:
+  - "Rename-with-references fixture; collision negatives."
+  release_gates:
+  - "Reference integrity proven under rename operations."
+- domain: GRAPH
+  category: edit
+  level: MUST
+  title: Graph editing with invariants
+  production_meaning: "Nodes/ports/graphs create, connect, disconnect, and query under type checks; cycles are detected; topological order and upstream/downstream traversal are first-class."
+  developer_use_case: "A developer wires nodes programmatically and illegal connections or cycles are refused with diagnostics."
+  baseline_behavior:
+  - id: POL-TGR-GRAPH-01
+    text: "Create/remove/clone/rename nodes and connect/disconnect ports with type checks; detect directed cycles; provide topological order, traversal, dependency closure, and dead-node detection."
+  fact_keywords: [graph, connect, port, input, output, cycle]
+  required_tests:
+  - "Legal DAG operations, direct/indirect cycle refusal, traversal on deep chains."
+  release_gates:
+  - "Graph operations preserve DAG/type invariants (property-tested where feasible)."
+- domain: DEF
+  category: resolve
+  level: MUST
+  title: Definition and implementation resolution
+  production_meaning: "Node instances resolve to definitions by category/type/version/target with defaults and explicit versions; ambiguous/missing/incompatible matches are reported, never guessed."
+  developer_use_case: "A developer asks which definition a node resolves to and receives the exact match plus alternatives."
+  baseline_behavior:
+  - id: POL-TGR-DEF-01
+    text: "Resolve instances to definitions and implementations honoring version/target rules; report ambiguous, missing, or incompatible matches explicitly."
+  fact_keywords: [nodedef, definition, implementation, target]
+  required_tests:
+  - "Resolution matrix incl. ambiguity and missing-definition negatives."
+  release_gates:
+  - "Resolution behavior matches the specification's precedence rules."
+- domain: LIB
+  category: resolve
+  level: MUST
+  title: Standard-library management
+  production_meaning: "Standard definitions/implementations load over ordered search paths with precedence, content-hash caching, and shadowing/mismatch reports."
+  developer_use_case: "A developer loads pinned library versions and gets warnings when documents shadow standard definitions."
+  baseline_behavior:
+  - id: POL-TGR-LIB-01
+    text: "Load standard libraries with ordered search paths and precedence; cache immutable libraries by version and content hash; report shadowed definitions and version mismatches."
+  fact_keywords: [library, standard, load]
+  required_tests:
+  - "Precedence and shadowing fixtures; cache-hash invalidation test."
+  release_gates:
+  - "Standard libraries load and resolve without unsupported core constructs."
+- domain: MAT
+  category: model
+  level: MUST
+  title: Material and shader-binding model
+  production_meaning: "Material nodes and shader-semantic bindings are modeled with resolution of bound interfaces and upstream graphs, providing material and texture dependency inventories."
+  developer_use_case: "A developer inventories every texture dependency of a material through its resolved graph."
+  baseline_behavior:
+  - id: POL-TGR-MAT-01
+    text: "Model shader and material nodes with their bindings; resolve material inputs through bound interfaces and upstream graphs; provide dependency inventories."
+  fact_keywords: [material, shader, surfacematerial]
+  required_tests:
+  - "Dependency-inventory fixtures against resolved graphs."
+  release_gates:
+  - "Material resolution matches specification binding rules."
+- domain: LOOK
+  category: model
+  level: MUST
+  title: Looks, collections, and assignment precedence
+  production_meaning: "Looks, collections, material/property assignments, and inheritance resolve assignment precedence for any geometry path, reporting conflicting or unreachable assignments."
+  developer_use_case: "A developer asks which material a geometry path receives under a look and gets the precedence-resolved answer."
+  baseline_behavior:
+  - id: POL-TGR-LOOK-01
+    text: "Model looks, collections, and assignments with inheritance; resolve assignment precedence per geometry path; report conflicting or unreachable assignments."
+  fact_keywords: [look, assign, collection]
+  required_tests:
+  - "Assignment-precedence fixtures including conflicts and unreachable assignments."
+  release_gates:
+  - "Precedence resolution matches specification rules on fixtures."
+- domain: VARIANT
+  category: model
+  level: MUST
+  title: Variants and variant sets
+  production_meaning: "Variant sets, variants, and their assignments apply as non-destructive resolved views with invalid selections and conflicts diagnosed."
+  developer_use_case: "A developer applies a variant selection for preview without rewriting the source document."
+  baseline_behavior:
+  - id: POL-TGR-VARIANT-01
+    text: "Model variant sets, variants, assignments, and inheritance; apply selections to a resolved view without destructive source rewrites by default; detect invalid selections and conflicts."
+  fact_keywords: [variant, variantset]
+  required_tests:
+  - "Variant-selection fixtures incl. invalid names and conflicting assignments."
+  release_gates:
+  - "Variant application proven non-destructive by default."
+- domain: GEOM
+  category: model
+  level: MUST
+  title: Geometry metadata and token resolution
+  production_meaning: "Geometry paths, geometry-scoped properties, and filename token substitutions (including tile-set styles where defined) resolve deterministically; actual geometry loading stays outside the core."
+  developer_use_case: "A developer resolves filename tokens for a geometry binding without loading any geometry data."
+  baseline_behavior:
+  - id: POL-TGR-GEOM-01
+    text: "Represent geometry paths, geometry properties, and filename token substitution rules with deterministic resolution; keep geometry loading outside the core library."
+  fact_keywords: [geom, geometry, udim, token]
+  required_tests:
+  - "Token-resolution fixtures across substitution rules."
+  release_gates:
+  - "Token resolution deterministic across the fixture matrix."
+- domain: COLOR
+  category: model
+  level: MUST
+  title: Color-space metadata
+  production_meaning: "Color-space declarations at document/node/input/value levels resolve hierarchically; numeric transforms happen only through an explicit color-management adapter."
+  developer_use_case: "A developer reads the effective color space of any value and wires an OCIO-style adapter explicitly when transforms are needed."
+  baseline_behavior:
+  - id: POL-TGR-COLOR-01
+    text: "Preserve and hierarchically resolve color-space declarations; provide an adapter interface for transforms; never numerically transform colors without an explicit backend and policy."
+  fact_keywords: [colorspace, color]
+  required_tests:
+  - "Inheritance-resolution fixtures; no-implicit-transform negative."
+  release_gates:
+  - "Color metadata resolution proven; transforms opt-in only."
+- domain: UNIT
+  category: model
+  level: MUST
+  title: Units and unit conversion
+  production_meaning: "Unit types, definitions, and declared/inherited units resolve; conversions run only through explicit operations preserving original units in lossless mode."
+  developer_use_case: "A developer converts a length-typed value to scene units explicitly while the source document keeps its declared units."
+  baseline_behavior:
+  - id: POL-TGR-UNIT-01
+    text: "Load unit types and definitions; resolve declared and inherited units; convert only via explicit operations, preserving original units in lossless mode."
+  fact_keywords: [unit, unittype]
+  required_tests:
+  - "Unit-resolution and explicit-conversion fixtures."
+  release_gates:
+  - "No implicit unit conversion (negative-tested)."
+- domain: UPGRADE
+  category: transform
+  level: MUST
+  title: Document upgrade framework
+  production_meaning: "Older document versions apply ordered, idempotent upgrade transforms with a migration ledger; originals are preserved until upgraded output validates."
+  developer_use_case: "A developer batch-upgrades a library of older assets and audits renamed nodes and changed defaults from the ledger."
+  baseline_behavior:
+  - id: POL-TGR-UPGRADE-01
+    text: "Detect older versions; apply ordered idempotent upgrade transforms producing a migration ledger; preserve the original until the upgraded output validates."
+  fact_keywords: [version, upgrade]
+  required_tests:
+  - "Upgrade fixtures per supported older version with ledger assertions and idempotency."
+  release_gates:
+  - "Upgrade transforms idempotent and ledgered (tested)."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Structural and semantic validation
+  production_meaning: "Structure, types, names, references, graph acyclicity, definition matches, and assignment rules validate with stable codes and element paths."
+  developer_use_case: "A pipeline gates asset ingestion on validation and receives paths for every violation."
+  baseline_behavior:
+  - id: POL-TGR-VALIDATE-01
+    text: "Validate structural, type, referential, and semantic layers (acyclicity, port compatibility, definition matches, assignments) with stable diagnostic codes and element paths."
+  fact_keywords: [valid, must, constraint]
+  required_tests:
+  - "Layer-by-layer negatives with path assertions."
+  release_gates:
+  - "Every semantic rule class has negative coverage."
+- domain: TRANSFORM
+  category: transform
+  level: SHOULD
+  title: Graph transforms
+  production_meaning: "Flatten, prune, clone, and normalize operations preserve type correctness and emit old-to-new path maps."
+  developer_use_case: "A developer flattens a nodegraph for export and remaps external references via the path map."
+  baseline_behavior:
+  - id: POL-TGR-TRANSFORM-01
+    text: "Provide graph transforms (flatten, prune unused, clone subgraph, normalize interfaces) preserving type correctness with an old-to-new path map."
+  fact_keywords: [flatten, prune, transform]
+  required_tests:
+  - "Transform fixtures verify type preservation and path maps."
+  release_gates:
+  - "Transforms proven invariant-preserving."
+- domain: SHADER
+  category: advanced
+  level: MAY
+  title: Code-generation adapters
+  production_meaning: "Target-independent generation interface with per-backend adapters returning source, bindings, and a reproducibility manifest; core never compiles or executes generated code."
+  developer_use_case: "A developer generates backend shader source for a material and consumes the manifest for caching."
+  baseline_behavior:
+  - id: POL-TGR-SHADER-01
+    text: "Offer an opt-in generation interface per backend returning source, stage info, bindings, diagnostics, and a reproducibility manifest; never compile or execute in core."
+  fact_keywords: [shader, generate, glsl, osl]
+  required_tests:
+  - "Generated-source fixtures per shipped backend; core-path no-compile proof."
+  release_gates:
+  - "Generation declared per backend; core completeness independent of it."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Lossless and canonical writing
+  production_meaning: "Unknown constructs, includes, namespaces, and comments survive lossless writes; flatten-includes is an explicit operation; deterministic ordering/formatting policies exist."
+  developer_use_case: "A developer saves with includes intact by default and flattens only on explicit request."
+  baseline_behavior:
+  - id: POL-TGR-WRITE-01
+    text: "Preserve unknown constructs, includes, namespaces, and comments in lossless mode; flatten-includes only as an explicit operation; deterministic ordering/formatting."
+  fact_keywords: [write, serialize, save]
+  required_tests:
+  - "Lossless round trip with includes; determinism byte-compare."
+  release_gates:
+  - "Writer proven lossless on the official corpus."

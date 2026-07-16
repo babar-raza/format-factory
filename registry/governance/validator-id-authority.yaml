@@ -3,7 +3,7 @@ portfolio_id: FF-PORTFOLIO-41-PROD-001
 generated_at: '2026-07-14'
 authority: This file is the canonical registry of @validator-decorated governance
   validators.
-runner_expected_count: 216
+runner_expected_count: 241  # +10 V232-V241 Format Contract Layer L30 (FCL-MACHINERY-2026-07-16, 2026-07-16); prior: reconciled 2026-07-16 (TC-S6P4-FINAL-001b, select-6 Phase 4 final re-audit): was 230; added V231 gate9 baseline integrity digest. Prior note (2026-07-15, TC-S6P4-SYS-001/003/005): was stale at 225; runner is authoritative. V224/V225/V226 were also missing from registered_validators below despite using @validator -- SF1's exact drift pattern recurring generically, fixed here.
 registered_validators:
 - rule_id: V153
   domain: dotnet
@@ -781,5 +781,89 @@ registered_validators:
   domain: spec
   function: validate_spec_fact_refs_density
   source_file: tools/supervisor\governance_validators_spec.py
+- rule_id: V194
+  domain: governance
+  function: validate_coordination_parity
+  source_file: tools/supervisor/governance_validators_coordination.py
+- rule_id: V195
+  domain: governance
+  function: validate_coordination_audit_trail
+  source_file: tools/supervisor/governance_validators_coordination.py
+- rule_id: V196
+  domain: governance
+  function: validate_generator_output_manifests
+  source_file: tools/supervisor/governance_validators_coordination.py
+- rule_id: V224
+  domain: governance
+  function: validate_backfill_completeness
+  source_file: tools/supervisor/governance_validators_ext6.py
+- rule_id: V225
+  domain: governance
+  function: validate_sal_store_reconciliation
+  source_file: tools/supervisor/governance_validators_ext7.py
+- rule_id: V226
+  domain: machinery
+  function: validate_package_install_proof_coverage
+  source_file: tools/supervisor/governance_validators_package_proof.py
+- rule_id: V227
+  domain: governance
+  function: validate_gate9_implementation_authorization_linkage
+  source_file: tools/supervisor/governance_validators_gate9.py
+- rule_id: V228
+  domain: governance
+  function: validate_format_readme_exists
+  source_file: tools/supervisor/governance_validators_gate9_docs_dogfood.py
+- rule_id: V229
+  domain: governance
+  function: validate_dogfood_export_exists
+  source_file: tools/supervisor/governance_validators_gate9_docs_dogfood.py
+- rule_id: V230
+  domain: governance
+  function: validate_coverage_registry_drift
+  source_file: tools/supervisor/governance_validators_gate9_drift.py
+- rule_id: V231
+  domain: governance
+  function: validate_gate9_baseline_integrity
+  source_file: tools/supervisor/governance_validators_gate9_baseline_integrity.py
+- rule_id: V232
+  domain: format_contract
+  function: validate_contract_schema
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V233
+  domain: format_contract
+  function: validate_contract_provenance
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V234
+  domain: format_contract
+  function: validate_contract_depth
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V235
+  domain: format_contract
+  function: validate_contract_shallow_language
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V236
+  domain: format_contract
+  function: validate_contract_capability_ids
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V237
+  domain: format_contract
+  function: validate_contract_test_gate
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V238
+  domain: format_contract
+  function: validate_contract_freshness
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V239
+  domain: format_contract
+  function: validate_contract_determinism
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V240
+  domain: format_contract
+  function: validate_contract_hand_edit_guard
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V241
+  domain: format_contract
+  function: validate_contract_consumption
+  source_file: tools/supervisor/governance_validators_format_contract.py
 note: Additional validators are wired directly in governance_validator_runner.py without
   @validator decorator.

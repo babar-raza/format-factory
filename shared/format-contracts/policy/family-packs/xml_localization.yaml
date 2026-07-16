@@ -1,0 +1,218 @@
+# Family pack: xml_localization (XLIFF) - L30 policy store
+# Family review dimensions (mission): source/target model, segmentation,
+# inline codes, placeholders, annotations, modules, mergeability, QA, extensions.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: xml_localization
+identity_defaults:
+  data_model_type: xml
+  description_template: "{display_name}: XML localization-interchange standard ({spec_body} {spec_version}). Source/target text units with inline codes, segmentation, annotations, and optional modules, exchanged across translation tools and workflows."
+  primary_use_cases:
+  - Extract translatable content, translate, and merge back without corrupting the original format
+  - Segment, annotate, and track translation state across tool chains
+  - Preserve inline formatting codes and tool-specific extensions through round trips
+  active_content_model:
+    has_active_content: false
+    policy: "Localization data is passive; external resource-data resolution is opt-in through a secure resolver."
+scope_defaults:
+  production_complete_target: "Read, create, edit, segment, annotate, validate, and write the full core model plus every optional module of the target version, preserving inline-code relationships, extensions, and mergeability guarantees end to end."
+  minimum_viable_support: "Parse core structure (files, groups, units, segments) with the inline-code model intact, edit target content safely, and write schema-valid output that downstream mergers accept."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, transform: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 40
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: syntax
+  description: "XML well-formedness and version/namespace consistency."
+- layer: schema
+  description: "Official schema validation for core and used modules."
+- layer: structural
+  description: "Tree constraints - IDs, nesting, order, scope inheritance."
+- layer: referential
+  description: "Inline-code pairing, marker pairing, and cross-references resolve."
+- layer: semantic
+  description: "Constraints schemas cannot express - source/target consistency, state transitions."
+- layer: security
+  description: "Size/nesting limits; resource-data resolution policy."
+security_defaults:
+  attack_surfaces:
+  - "XML external entities and DTD expansion during parsing."
+  - "External resource-data references triggering unintended retrieval."
+  - "Deeply nested groups/units exhausting stack or memory."
+  safe_defaults:
+  - "External entities disabled; resource-data resolution opt-in with allowlists and limits."
+  - "Bounded nesting depth and document size with configurable limits."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Version-aware namespace parsing
+  production_meaning: "Declared versions and namespaces are validated for consistency; different major/minor versions are recognized distinctly; legacy versions are separate adapters, never silently treated as current."
+  developer_use_case: "A developer loads files from mixed tool chains and the library reports exact version and module namespaces in use."
+  baseline_behavior:
+  - id: POL-XLC-PARSE-01
+    text: "Recognize supported version namespaces, validate namespace/version consistency, and preserve custom extension namespaces and attributes."
+  - id: POL-XLC-PARSE-02
+    text: "Never interpret an unsupported or legacy version as the target version; route it to an explicit compatibility adapter or refuse with diagnostics."
+  fact_keywords: [version, namespace, xliff, root]
+  required_tests:
+  - "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
+  release_gates:
+  - "Version matrix documented and covered by parse tests."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Complete core structural model
+  production_meaning: "Files, groups, units, segments, ignorables, skeleton, and notes are typed with tree order, IDs, inheritance, and scope preserved - the mergeability substrate."
+  developer_use_case: "A developer walks files-groups-units-segments with inherited attributes resolved and originals preserved."
+  baseline_behavior:
+  - id: POL-XLC-MODEL-01
+    text: "Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through edits."
+  fact_keywords: [file, group, unit, segment, skeleton, note]
+  required_tests:
+  - "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+  release_gates:
+  - "Every core structural element covered by model tests."
+- domain: INLINE
+  category: model
+  level: MUST
+  title: Inline-code model
+  production_meaning: "Inline codes (paired and standalone), their identity, nesting, and original-data references are a token model - never flattened to plain text - and illegal pairings are unrepresentable or diagnosed."
+  developer_use_case: "A developer reorders translated text around inline codes and cannot silently orphan or cross paired codes."
+  baseline_behavior:
+  - id: POL-XLC-INLINE-01
+    text: "Expose inline content as a token tree/sequence preserving paired-code relationships, identity, nesting, and original-data references."
+  - id: POL-XLC-INLINE-02
+    text: "Prevent or diagnose edits that orphan, duplicate, cross, or illegally reorder paired codes before save."
+  fact_keywords: [inline, code, placeholder, pc, ph, mrk]
+  required_tests:
+  - "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+  release_gates:
+  - "Inline-code integrity proven not to corrupt mergeability."
+- domain: TEXT
+  category: edit
+  level: MUST
+  title: Source/target text editing
+  production_meaning: "Source and target content edit with inline-code positions preserved; plain-text and token-aware projections stay consistent; whitespace and language attributes survive."
+  developer_use_case: "A translator tool sets target text from a token projection and the codes land in legal positions."
+  baseline_behavior:
+  - id: POL-XLC-TEXT-01
+    text: "Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections; support target creation from source with explicit code-copy policy."
+  fact_keywords: [source, target, translate, text]
+  required_tests:
+  - "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+  release_gates:
+  - "Text editing proven safe against code corruption."
+- domain: SEG
+  category: transform
+  level: MUST
+  title: Segmentation operations
+  production_meaning: "Split/join/reorder-where-legal maintain IDs, state, inline-code validity, and references, with a machine-readable segment mapping report after structural change."
+  developer_use_case: "A developer re-segments a unit and hands the mapping report downstream so references stay valid."
+  baseline_behavior:
+  - id: POL-XLC-SEG-01
+    text: "Split and join segments maintaining IDs, state, inline-code validity, annotations, and references; produce a segment mapping report after structural edits."
+  fact_keywords: [segment, split, join]
+  required_tests:
+  - "Split/join fixtures verify code validity and mapping-report accuracy."
+  release_gates:
+  - "Segmentation proven mergeability-safe."
+- domain: STATE
+  category: model
+  level: MUST
+  title: Translation-state workflow
+  production_meaning: "Target state/substate are exposed with configurable transition validation; proprietary meanings are never invented for standard states."
+  developer_use_case: "A workflow engine advances unit states and invalid transitions are diagnosed per configured policy."
+  baseline_behavior:
+  - id: POL-XLC-STATE-01
+    text: "Expose target state and substate without inventing proprietary semantics; allow configurable workflow transition validation."
+  fact_keywords: [state, substate, approved]
+  required_tests:
+  - "Transition-policy fixtures (legal and illegal transitions)."
+  release_gates:
+  - "State handling matches the specification's state model exactly."
+- domain: NOTE
+  category: model
+  level: MUST
+  title: Notes and annotations
+  production_meaning: "Note groups, priorities, categories, and annotation spans (including overlapping start/end markers) are represented and survive edits."
+  developer_use_case: "A reviewer attaches an annotation over a span crossing segment content and it round-trips."
+  baseline_behavior:
+  - id: POL-XLC-NOTE-01
+    text: "Support notes with priorities/categories and annotation spans with valid marker relationships, including overlapping structures the standard permits."
+  fact_keywords: [note, annotation, comment, marker]
+  required_tests:
+  - "Overlapping-annotation fixtures round-trip; marker pairing validated."
+  release_gates:
+  - "Annotation model covered including overlap cases."
+- domain: MODULE
+  category: preserve
+  level: MUST
+  title: Optional-module support with explicit coverage
+  production_meaning: "Every optional module of the target version is either fully modeled or explicitly preservation-only in the capability manifest - silent module downgrade is forbidden."
+  developer_use_case: "A developer inspects module coverage programmatically before relying on module data."
+  baseline_behavior:
+  - id: POL-XLC-MODULE-01
+    text: "Declare per-module coverage (modeled/preservation-only/unsupported); preserve unknown module content losslessly; never drop module data silently."
+  fact_keywords: [module, matches, glossary, metadata, resource, size, validation, its]
+  required_tests:
+  - "Per-module round-trip fixtures; coverage manifest matches behavior."
+  release_gates:
+  - "All target-version modules covered or explicitly declared preservation-only; production-complete requires all modeled."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Core and module validation
+  production_meaning: "Well-formedness, schema, structural, referential, and semantic constraints (including source/target consistency and inline pairing) validate at document/file/unit/segment scopes with complete diagnostics."
+  developer_use_case: "A pipeline gates hand-off on unit-scope validation and receives every violation with paths."
+  baseline_behavior:
+  - id: POL-XLC-VALIDATE-01
+    text: "Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target consistency, module constraints) at multiple scopes."
+  fact_keywords: [valid, must, constraint, conform]
+  required_tests:
+  - "Positive/negative fixtures per layer and scope; diagnostics carry paths and codes."
+  release_gates:
+  - "Every documented constraint class has negative-test coverage."
+- domain: MERGE
+  category: transform
+  level: SHOULD
+  title: Extraction and merge framework
+  production_meaning: "Adapter interfaces support extracting source formats and merging targets back with skeleton/original-data mappings; source drift and stale skeletons are detected before merge."
+  developer_use_case: "A developer merges translations back and drifted sources are refused with a drift report instead of corrupting output."
+  baseline_behavior:
+  - id: POL-XLC-MERGE-01
+    text: "Provide extraction/merge adapter interfaces with reversible skeleton mappings; detect source drift and stale skeletons before merge; never claim generic extraction without format-specific adapters."
+  fact_keywords: [merge, extract, skeleton]
+  required_tests:
+  - "Merge with intact and drifted sources; drift refused with report."
+  release_gates:
+  - "Merge reversibility proven per shipped adapter."
+- domain: QA
+  category: validate
+  level: SHOULD
+  title: Localization quality checks
+  production_meaning: "Missing/unchanged targets, code mismatches, whitespace/punctuation drift, length violations, and inconsistent translations are pluggable QA checks kept separate from conformance errors."
+  developer_use_case: "A reviewer runs a QA profile and triages warnings without conflating them with format errors."
+  baseline_behavior:
+  - id: POL-XLC-QA-01
+    text: "Provide pluggable QA checks (missing/unchanged targets, placeholder mismatches, drift, length, consistency) reported separately from conformance diagnostics."
+  fact_keywords: [quality, qa, check]
+  required_tests:
+  - "QA fixtures per check; separation from conformance results asserted."
+  release_gates:
+  - "QA severity taxonomy documented and machine-readable."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Lossless and normalized serialization
+  production_meaning: "Output preserves extensions and module content, writes schema-valid order and namespaces, offers deterministic prefixing/formatting, and reports any version-downgrade loss before writing."
+  developer_use_case: "A developer saves in lossless mode and the downstream merger receives byte-compatible skeleton references."
+  baseline_behavior:
+  - id: POL-XLC-WRITE-01
+    text: "Preserve custom extensions and modules on write; deterministic prefixing/formatting; report version-downgrade loss before writing."
+  fact_keywords: [write, serialize, output]
+  required_tests:
+  - "Lossless round-trip of extension-rich fixtures; determinism byte-compare."
+  release_gates:
+  - "Custom extensions survive load-save unchanged in lossless mode (tested)."

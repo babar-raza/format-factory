@@ -1,0 +1,155 @@
+# Family pack: xml_document (ABW, Gnumeric, FODS, FODT, FODG, FODP) - L30 policy store
+# XML office/word-processing/spreadsheet documents.
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: xml_document
+identity_defaults:
+  data_model_type: xml
+  description_template: "{display_name}: XML office-document format ({spec_body} {spec_version}). Namespaced document content (text, cells, shapes) with styles and metadata, produced and consumed by office applications."
+  primary_use_cases:
+  - Load, inspect, edit, and save office documents programmatically
+  - Extract and transform document content (text, tables, cells, shapes)
+  - Export to interchange representations with fidelity reports
+  active_content_model:
+    has_active_content: false
+    policy: "Documents may reference external resources and embedded objects; nothing is fetched or executed implicitly; scripts/macros where present are preserved as opaque data."
+scope_defaults:
+  production_complete_target: "Complete content model of the target specification's document type: structure, content elements, styles, and metadata with QName-aligned typed APIs, layered validation, lossless round trip, and deterministic writing."
+  minimum_viable_support: "Parse into a typed content model, perform core content edits, save valid output the producing application reopens, and validate structure with positions."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, export: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 25
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: syntax
+  description: "XML well-formedness and namespace conformance."
+- layer: schema
+  description: "Schema/RNG validation where the specification provides one."
+- layer: structural
+  description: "Document-type structure rules - required sections, containment."
+- layer: referential
+  description: "Style references, internal links, and object references resolve."
+- layer: security
+  description: "Entity hardening, size/nesting limits, external-reference policy."
+security_defaults:
+  attack_surfaces:
+  - "XML external entities and DTD expansion."
+  - "External resource references (images, links) triggering implicit retrieval."
+  - "Deep nesting and oversized documents exhausting resources."
+  safe_defaults:
+  - "External entities disabled; resource retrieval opt-in."
+  - "Bounded size/nesting with configurable limits."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Namespace-aware document parsing
+  production_meaning: "Namespaced structure parses by QName with the specification's structure rules enforced and producer quirks tolerated only in explicit tolerant mode."
+  developer_use_case: "A developer loads real-world producer output and receives a faithful typed structure."
+  baseline_behavior:
+  - id: POL-XDC-PARSE-01
+    text: "Parse namespaced document structure by QName; enforce structure rules in strict mode; tolerate documented producer quirks only in tolerant mode with reports."
+  fact_keywords: [namespace, element, root, xml]
+  required_tests:
+  - "Producer-corpus fixtures in strict and tolerant modes."
+  release_gates:
+  - "Structure rules covered against specification inventory."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: QName-aligned typed content model
+  production_meaning: "Content constructs (paragraphs/runs, sheets/rows/cells, shapes/pages as applicable) are typed with spec_qname alignment per repository RULE-LIB-002."
+  developer_use_case: "A developer navigates document content through typed collections instead of raw XML."
+  baseline_behavior:
+  - id: POL-XDC-MODEL-01
+    text: "Expose QName-aligned typed models for the document type's content constructs with collection semantics on child types (never on the root)."
+  fact_keywords: [paragraph, cell, row, sheet, text, table, shape, page]
+  required_tests:
+  - "Typed access per construct; collection semantics fixtures."
+  release_gates:
+  - "Model covers every first-wave content construct with QName traceability."
+- domain: CONTENT
+  category: edit
+  level: MUST
+  title: Content editing
+  production_meaning: "Core content (text, cells, shapes as applicable) supports create/update/move/delete with structure and reference invariants enforced."
+  developer_use_case: "A developer edits cell values or paragraph text and the producing application reopens the file cleanly."
+  baseline_behavior:
+  - id: POL-XDC-CONTENT-01
+    text: "Support content CRUD maintaining structure rules and reference integrity (styles, links, objects)."
+  fact_keywords: [insert, edit, value, set, add, remove]
+  required_tests:
+  - "Each mutation class save-reload-verifies; producer-reopen fixture where tooling exists."
+  release_gates:
+  - "Editing proven producer-compatible."
+- domain: STYLE
+  category: model
+  level: MUST
+  title: Styles and formatting
+  production_meaning: "Style definitions and references are modeled and preserved; edits keep style references resolvable."
+  developer_use_case: "A developer reads effective formatting and applies an existing style to new content."
+  baseline_behavior:
+  - id: POL-XDC-STYLE-01
+    text: "Model style definitions/references with preservation on round trip; keep references resolvable through edits."
+  fact_keywords: [style, font, format, properties]
+  required_tests:
+  - "Style-reference integrity after edits; round-trip fidelity fixtures."
+  release_gates:
+  - "Style preservation proven on styled fixtures."
+- domain: META
+  category: preserve
+  level: MUST
+  title: Metadata and settings preservation
+  production_meaning: "Document metadata and application settings round-trip losslessly, including unknown producer extensions."
+  developer_use_case: "A developer updates content while author/settings metadata rides along untouched."
+  baseline_behavior:
+  - id: POL-XDC-META-01
+    text: "Preserve document metadata, settings, and unknown producer extensions losslessly."
+  fact_keywords: [meta, settings, author, title]
+  required_tests:
+  - "Unknown-extension round trips."
+  release_gates:
+  - "Zero metadata loss proven."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered document validation
+  production_meaning: "Syntax, schema (where provided), structural, and referential layers validate with positions and stable codes."
+  developer_use_case: "A pipeline validates documents before processing with machine-readable results."
+  baseline_behavior:
+  - id: POL-XDC-VALIDATE-01
+    text: "Validate syntax, schema where available, structure, and references as separate layers with positions and stable codes."
+  fact_keywords: [valid, must, schema, conform]
+  required_tests:
+  - "Layer negatives with position assertions."
+  release_gates:
+  - "Every rule class has negative coverage."
+- domain: EXPORT
+  category: export
+  level: SHOULD
+  title: Interchange export
+  production_meaning: "Content exports to at least one interchange representation (Format Factory libraries where available) with a fidelity/loss report."
+  developer_use_case: "A developer exports sheets to CSV or text content to another format with explicit loss reporting."
+  baseline_behavior:
+  - id: POL-XDC-EXPORT-01
+    text: "Export content to supported targets preserving values/structure where representable, with a loss report for the rest."
+  fact_keywords: [export, convert, csv]
+  required_tests:
+  - "Export verified by target-format parser; loss report accuracy fixtures."
+  release_gates:
+  - "At least one export path consumer-verified."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Lossless and deterministic writing
+  production_meaning: "Output round-trips losslessly (unknown constructs intact), writes valid namespaced structure, and is deterministic."
+  developer_use_case: "A developer saves and diffs show only intended changes."
+  baseline_behavior:
+  - id: POL-XDC-WRITE-01
+    text: "Write valid namespaced output preserving unknown constructs in lossless mode with deterministic ordering/formatting."
+  fact_keywords: [write, save, serialize]
+  required_tests:
+  - "Lossless round trip on producer corpus; determinism byte-compare."
+  release_gates:
+  - "Writer proven lossless and deterministic."

@@ -1,0 +1,46 @@
+schema_version: '1.0'
+format_id: qoi
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    read_operations:
+    - load(path_or_stream_or_bytes)
+    - inspect_header(path)
+  capability_domain: PARSE
+  depth_hint: 3
+  finding_id: RF-QOI-00001
+  kind: api_expectation
+  requirement: Expose header-only inspection (dimensions, channels, colorspace) plus full pixel decode
+    returning typed image buffers, with checked dimension arithmetic before any allocation.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 repair loop (TC-FCL-080-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-QOI-002
+- required_tests:
+  - Focused fixture matrix for the behavior above with negative cases.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: WRITE
+  finding_id: RF-QOI-00002
+  kind: test_obligation
+  requirement: Encode QOI deterministically with decode-encode-decode pixel-exact round trips proven across
+    the op-code matrix (index, diff, luma, run, rgb, rgba).
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 repair loop (TC-FCL-080-06)
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-QOI-002
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: QOI developer-workflow requirements (Format Factory product practice)
+  source_id: SRC-QOI-002
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

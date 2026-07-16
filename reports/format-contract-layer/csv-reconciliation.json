@@ -1,0 +1,404 @@
+{
+  "format_id": "csv",
+  "contract_id": "FC-CSV-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
+    "qname_registry_sha256": "54ac3894254a4432c4fc3d67e897134d30533bea0b6e68f66fe092e49983540b",
+    "research_sha256": "9e9310764d6d9e2758fc7f09e69108bfe8a01678f9b9b70678ad530f7259c817",
+    "sal_facts_sha256": "95ae72627eee3a93e68b84553cb25e83f556ff53d41012e8b3b9468b42f09379",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 171,
+  "class_count": 12,
+  "test_file_count": 189,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "CSV-DIALECT-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_row",
+        "set_cell"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-ENCODING-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_and_rewrite",
+        "parse_csv",
+        "parse_csv_strict",
+        "probe_csv"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "csv_to_abw",
+        "csv_to_dicts",
+        "csv_to_dif",
+        "csv_to_fodg",
+        "csv_to_fods",
+        "csv_to_fodt",
+        "csv_to_gnumeric",
+        "csv_to_ndjson",
+        "csv_to_ods",
+        "csv_to_odt",
+        "csv_to_pbm",
+        "csv_to_pgm",
+        "csv_to_ppm",
+        "csv_to_sylk",
+        "csv_to_toml",
+        "csv_to_tsv",
+        "save_to_file",
+        "write_csv_to_file"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "parse_and_rewrite",
+        "parse_csv",
+        "parse_csv_strict",
+        "save_to_file",
+        "write_csv",
+        "write_csv_to_file"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "CsvDocument",
+        "CsvError",
+        "CsvField",
+        "CsvHeader",
+        "CsvInputError",
+        "CsvParseError",
+        "CsvRecord",
+        "CsvSizeError",
+        "CsvWriteError",
+        "Field",
+        "Header",
+        "Record"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_and_rewrite",
+        "parse_csv",
+        "parse_csv_strict",
+        "probe_csv"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "_sniff_delimiter",
+        "csv_delimiter",
+        "csv_max_field_count",
+        "csv_max_field_length",
+        "csv_max_field_value_length",
+        "csv_max_numeric_value",
+        "csv_max_row_length",
+        "delimiter"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "CSV-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_csv",
+        "write_csv_to_file"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_csv.py",
+        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
+        "tests/python/abw/test_abw_to_csv.py",
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/csv/test_csv_advanced_roundtrip.py",
+        "tests/python/csv/test_csv_analytics_ext.py",
+        "tests/python/csv/test_csv_analytics_ext2.py",
+        "tests/python/csv/test_csv_conveyor_deepening.py",
+        "tests/python/csv/test_csv_document_mutation.py",
+        "tests/python/csv/test_csv_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 4,
+    "by_status": {
+      "NOT_STARTED": 3,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 8,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

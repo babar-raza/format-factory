@@ -1,0 +1,851 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-NRRD-V1
+  format_id: nrrd
+  format_canonical_name: Nearly Raw Raster Data
+  extensions:
+  - .nrrd
+  - .nhdr
+  family: scientific_raster
+  target_spec_version: NRRD0005
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
+    qname_registry_sha256: 3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92
+    research_sha256: e61259ab0cdbf554a3af3d4155c09cf4cf1b66b84a599db04287df028ebd744c
+    sal_facts_sha256: 2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Payloads are passive data; detached-file resolution follows a secure path policy and never
+      leaves configured roots.
+  data_model_type: scientific_array
+  description: 'Nearly Raw Raster Data: N-dimensional array/raster data format (Teem Project NRRD0005).
+    Header metadata describing typed, dimensioned payloads used for scientific, medical, and machine-learning
+    data.'
+  primary_use_cases:
+  - Read and write typed N-dimensional arrays with correct shape, type, and byte order
+  - Header-only and lazy access to very large datasets in bounded memory
+  - Validate untrusted data files safely before allocation or processing
+authoritative_sources:
+- title: Teem Project NRRD0005
+  source_id: SRC-NRRD-001
+  organization: Teem Project
+  version: NRRD0005
+  canonical_url: https://teem.sourceforge.net/nrrd/format.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: NRRD file format definition (Teem)
+  source_id: SRC-NRRD-002
+  organization: Teem Project
+  version: NRRD0005
+  canonical_url: http://teem.sourceforge.net/nrrd/format.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
+  source_id: SRC-NRRD-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Parse headers with required-field validation, read/write the core encodings
+    and types with correct shape and endian handling, and validate payload size against declared shape
+    before allocation.
+  production_complete_target: Complete header parsing for all specified fields and versions, every defined
+    encoding and scalar type, endian correctness, attached and detached payload forms, axis/orientation
+    metadata, lazy and streaming access, layered validation, and lossless canonical writing.
+capabilities:
+- release_gates:
+  - Array operations preserve metadata consistency (tested per op).
+  capability_id: NRRD-ARRAY-001
+  level: MUST
+  category: model
+  title: Typed N-dimensional array access
+  production_meaning: Shape/strides/dtype-aware access with slicing, permutation, flip, and crop that
+    update orientation and per-axis metadata correctly; zero-copy views where safe.
+  developer_use_case: A developer crops a volume and every axis-aligned metadata field follows the crop.
+  provenance:
+  - POL-SCR-ARRAY-01
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - RF-NRRD-00001
+  required_behavior:
+  - Expose shape, strides, dtype, and axis metadata with element access, slicing, permutation, flip, and
+    crop that update orientation and per-axis metadata; zero-copy views where safe, explicit copies otherwise.
+  - Expose typed N-dimensional array access with shape, strides, dtype, slicing, axis permutation, flip,
+    and crop where orientation and per-axis metadata follow every operation - the imaging-pipeline core.
+  normative_rules:
+  - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
+    every per-axis field carrying exactly dimension entries
+  - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
+    and the element size exceeds one byte declaring little or big byte order
+  depth_required: 6
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Metadata-follows-operation fixtures for each axis operation.
+- release_gates:
+  - Conversions policy-governed and reported (no silent semantic change).
+  capability_id: NRRD-CONVERT-001
+  level: SHOULD
+  category: transform
+  title: Data conversion
+  production_meaning: Dtype/encoding/endian/layout conversions run with explicit overflow/clipping/rounding
+    policies and produce a conversion report; semantics never change silently.
+  developer_use_case: A developer converts float data to a narrower type under an explicit clipping policy
+    with a report of affected values.
+  provenance:
+  - POL-SCR-CONVERT-01
+  required_behavior:
+  - Convert dtype, encoding, attached/detached form, and endian with explicit overflow/clipping/scaling/rounding
+    policies and a conversion report.
+  depth_required: 4
+  depth_rationale: 'SHOULD transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Policy matrix fixtures with boundary values.
+- release_gates:
+  - All defined encodings round-trip.
+  capability_id: NRRD-ENC-001
+  level: MUST
+  category: parse
+  title: All defined encodings
+  production_meaning: Every specified payload encoding (raw, text, hex, compressed forms) reads and writes
+    with codec availability exposed and explicit failures when optional codecs are absent.
+  developer_use_case: A developer queries supported encodings at runtime and receives explicit errors
+    rather than silent fallbacks.
+  provenance:
+  - POL-SCR-ENC-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00017
+  - RF-NRRD-00005
+  required_behavior:
+  - Read and write every specified encoding using the correct container framing; expose codec availability;
+    fail explicitly when an optional codec is unavailable.
+  - Test every magic version, every type alias, every encoding, endian combinations, attached plus all
+    detached data-file forms, and hostile fixtures (decompression bombs, overflow shapes, traversal paths,
+    truncated payloads).
+  normative_rules:
+  - '(Teem NRRD Format Specification — Section 2 (Header)) An NRRD file begins with an ASCII header: a
+    magic line ''NRRD000X'' (X = format version digit), followed by field specifications ''field: value''
+    and key/value pairs ''key:=value'', terminated by a single blank line'
+  - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
+    (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
+    (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
+    decoded payload byte count for the file to be valid
+  - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
+    raw text hex or a compressed encoding such as gzip or bzip2
+  - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
+    and the element size exceeds one byte declaring little or big byte order
+  - (NRRD format - block type constraints) block type samples require a positive block size field and
+    must not use ascii encoding
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Encoding matrix round trips; missing-codec explicit-failure fixture.
+  - Full matrix as enumerated with hostile-fixture negatives.
+- release_gates:
+  - All specified header fields implemented with tests.
+  capability_id: NRRD-HEADER-001
+  level: MUST
+  category: parse
+  title: Complete header parsing
+  production_meaning: All magic/version forms, field identifiers, comments, and key/value metadata parse
+    with uniqueness/ordering constraints enforced and unknown metadata preserved.
+  developer_use_case: A developer inspects any conformant file's full metadata without touching the payload.
+  provenance:
+  - POL-SCR-HEADER-01
+  - POL-SCR-HEADER-02
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00005
+  - SAL-NRRD-00006
+  - SAL-NRRD-00007
+  - SAL-NRRD-00008
+  - SAL-NRRD-00010
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - SAL-NRRD-00018
+  - SAL-NRRD-00019
+  required_behavior:
+  - Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field
+    uniqueness/ordering; preserve unknown metadata and optional-field absence.
+  - Accept the specification's permitted line endings and lexical variants while preserving original lexical
+    form in lossless mode.
+  normative_rules:
+  - '(Teem NRRD Format Specification — Section 2 (Header)) An NRRD file begins with an ASCII header: a
+    magic line ''NRRD000X'' (X = format version digit), followed by field specifications ''field: value''
+    and key/value pairs ''key:=value'', terminated by a single blank line'
+  - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
+    (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
+    (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - magic and header structure) A NRRD file begins with a magic line of the form NRRD000X
+    identifying the format version followed by header lines terminated by a blank line
+  - (NRRD format - comments) Comment lines begin with a hash character inside the header and carry no
+    field semantics but may be preserved
+  - (NRRD format - detached data files with external references) Detached headers reference payloads via
+    the data file field supporting a single file printf-style numbered sequences and LIST declarations
+    resolved relative to the header
+  - (NRRD format - field identifier rules) Field identifiers are case-insensitive and each field may appear
+    at most once for the header to be valid
+  - (NRRD format - header line syntax) Header lines are either field specifications of the form field
+    colon value or key-value pairs of the form key colon-equals value
+  - (NRRD format - per-axis fields) Per-axis fields include spacings thicknesses mins maxs centers labels
+    units and kinds each constrained to dimension entries with defined value rules
+  - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
+    every per-axis field carrying exactly dimension entries
+  - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
+    raw text hex or a compressed encoding such as gzip or bzip2
+  - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
+    and the element size exceeds one byte declaring little or big byte order
+  - (NRRD format - sizes field and axis ordering) The sizes field is required and declares positive per-axis
+    sample counts in fastest-to-slowest axis order
+  - (NRRD format - type field) The type field is required and declares the sample scalar type from the
+    defined integer float and block type set with documented aliases
+  - (NRRD format - block type constraints) block type samples require a positive block size field and
+    must not use ascii encoding
+  - (NRRD format - skip fields) line skip and byte skip fields declare how much of a data file to skip
+    before payload with line skip applied before byte skip
+  - (NRRD format - space and orientation) space fields declare named spaces or explicit space dimension
+    with space directions space origin and measurement frame vectors matching the space dimension
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip.
+- release_gates:
+  - Header-only, lazy, and bounded-memory paths pass large-data tests.
+  capability_id: NRRD-LAZY-001
+  level: MUST
+  category: performance
+  title: Large-data and lazy I/O
+  production_meaning: Header-only loading, lazy payloads, memory mapping for eligible raw data, and streaming
+    decode for compressed/text payloads keep memory bounded; full-decompression requirements are reported.
+  developer_use_case: A developer streams a slice from a huge compressed dataset and is told when a request
+    forces full decode.
+  provenance:
+  - POL-SCR-LAZY-01
+  - RF-NRRD-00002
+  required_behavior:
+  - Provide header-only and lazy payload loading, memory mapping for eligible uncompressed data, streaming
+    decode, and region reads where layout permits, reporting when full decompression is required.
+  - Provide header-only loading, lazy payload access, memory mapping for eligible raw data, and streaming
+    decode for compressed payloads, reporting when a requested slice forces full decompression.
+  depth_required: 5
+  depth_rationale: 'MUST performance capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Bounded-memory large-file tests; slice-requires-full-decode reporting fixture.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: NRRD-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Metadata fidelity proven by round trip.
+  capability_id: NRRD-META-001
+  level: MUST
+  category: preserve
+  title: Metadata fidelity
+  production_meaning: Optional metadata (content, ranges, units, labels) preserves absence-vs-explicit
+    distinctions and quoting/escaping rules; legacy fields ride along in lossless mode.
+  developer_use_case: A developer round-trips files with unusual labels/units and nothing is normalized
+    away.
+  provenance:
+  - POL-SCR-META-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00004
+  - SAL-NRRD-00009
+  - SAL-NRRD-00010
+  required_behavior:
+  - Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping
+    rules; carry legacy fields in lossless mode.
+  normative_rules:
+  - '(Teem NRRD Format Specification — Section 2 (Header)) An NRRD file begins with an ASCII header: a
+    magic line ''NRRD000X'' (X = format version digit), followed by field specifications ''field: value''
+    and key/value pairs ''key:=value'', terminated by a single blank line'
+  - (NRRD format - magic and header structure) A NRRD file begins with a magic line of the form NRRD000X
+    identifying the format version followed by header lines terminated by a blank line
+  - (NRRD format - quoted values) Labels and units values use quoted string forms with defined escaping
+    rules that must round-trip
+  - (NRRD format - per-axis fields) Per-axis fields include spacings thicknesses mins maxs centers labels
+    units and kinds each constrained to dimension entries with defined value rules
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions.
+- release_gates:
+  - Attached and detached forms pass the full fixture matrix.
+  capability_id: NRRD-PAYLOAD-001
+  level: MUST
+  category: parse
+  title: Attached and detached payload handling
+  production_meaning: Attached and every detached payload form (single file, sequences, lists) read/write
+    with counts validated against dimensions and a secure resolver policy for paths.
+  developer_use_case: A developer loads a detached-header dataset and file-count or path violations surface
+    before any read.
+  provenance:
+  - POL-SCR-PAYLOAD-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00006
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00018
+  required_behavior:
+  - Support attached and all specified detached payload forms with file counts validated against declared
+    dimensions and resolution relative to the header location under a secure path policy.
+  normative_rules:
+  - '(Teem NRRD Format Specification — Section 2 (Header)) An NRRD file begins with an ASCII header: a
+    magic line ''NRRD000X'' (X = format version digit), followed by field specifications ''field: value''
+    and key/value pairs ''key:=value'', terminated by a single blank line'
+  - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
+    (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
+    (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - magic and header structure) A NRRD file begins with a magic line of the form NRRD000X
+    identifying the format version followed by header lines terminated by a blank line
+  - (NRRD format - detached data files with external references) Detached headers reference payloads via
+    the data file field supporting a single file printf-style numbered sequences and LIST declarations
+    resolved relative to the header
+  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
+    decoded payload byte count for the file to be valid
+  - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
+    raw text hex or a compressed encoding such as gzip or bzip2
+  - (NRRD format - skip fields) line skip and byte skip fields declare how much of a data file to skip
+    before payload with line skip applied before byte skip
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each payload form incl. count-mismatch and traversal negatives.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: NRRD-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: NRRD-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Axis semantics proven against ground-truth fixtures.
+  capability_id: NRRD-SHAPE-001
+  level: MUST
+  category: model
+  title: Dimensions, axis order, and endian correctness
+  production_meaning: Dimension counts, per-axis sizes/arity, explicit axis-order semantics, and endian
+    declarations are enforced with checked arithmetic; axis conversion to host order is explicit, never
+    silent.
+  developer_use_case: A developer converts between format axis order and host array order through an explicit
+    documented operation.
+  provenance:
+  - POL-SCR-SHAPE-01
+  - POL-SCR-SHAPE-02
+  - SAL-NRRD-00003
+  - SAL-NRRD-00010
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00019
+  required_behavior:
+  - Validate dimension/sizes/per-axis arity with checked multiplication for sample and byte counts; represent
+    the format's axis order explicitly and convert to host order only via explicit operations.
+  - Enforce endian declaration rules where element size exceeds one byte; byte-swap transparently on read/write;
+    never endian-transform opaque blocks.
+  normative_rules:
+  - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
+    (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
+    (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - per-axis fields) Per-axis fields include spacings thicknesses mins maxs centers labels
+    units and kinds each constrained to dimension entries with defined value rules
+  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
+    decoded payload byte count for the file to be valid
+  - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
+    every per-axis field carrying exactly dimension entries
+  - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
+    and the element size exceeds one byte declaring little or big byte order
+  - (NRRD format - sizes field and axis ordering) The sizes field is required and declares positive per-axis
+    sample counts in fastest-to-slowest axis order
+  - (NRRD format - space and orientation) space fields declare named spaces or explicit space dimension
+    with space directions space origin and measurement frame vectors matching the space dimension
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Axis-order semantics fixtures; endian matrix; overflow-shape negatives.
+- release_gates:
+  - Transforms verified against reference calculations.
+  capability_id: NRRD-SPACE-001
+  level: MUST
+  category: model
+  title: Orientation and space metadata
+  production_meaning: Space names, origins, direction vectors, and measurement frames validate for consistency
+    and expose index-to-world transforms; axis order is never assumed from a space name.
+  developer_use_case: A medical-imaging developer obtains the index-to-world transform and non-spatial
+    axes are handled correctly.
+  provenance:
+  - POL-SCR-SPACE-01
+  - SAL-NRRD-00019
+  - RF-NRRD-00004
+  required_behavior:
+  - Support space/orientation metadata with vector-length validation against space dimension, non-spatial
+    axes, and index-to-world transforms; never infer axis order from a named space.
+  - Expose index-to-world and measurement-frame transforms from space metadata without ever inferring
+    axis order from a named space - medical-imaging orientation correctness.
+  normative_rules:
+  - (NRRD format - space and orientation) space fields declare named spaces or explicit space dimension
+    with space directions space origin and measurement frame vectors matching the space dimension
+  depth_required: 5
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Orientation matrices, non-spatial axes, and mismatch negatives.
+- release_gates:
+  - All specified types and aliases round-trip.
+  capability_id: NRRD-TYPES-001
+  level: MUST
+  category: model
+  title: Complete scalar and block types
+  production_meaning: All specified integer/float widths with aliases plus opaque block types are represented
+    independently of host-language names with validity rules enforced.
+  developer_use_case: A developer reads a dataset's exact declared type and receives documented host-type
+    mappings.
+  provenance:
+  - POL-SCR-TYPES-01
+  - SAL-NRRD-00003
+  - SAL-NRRD-00006
+  - SAL-NRRD-00011
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  required_behavior:
+  - Support every specified scalar type and alias plus block types with their validity rules; represent
+    declared types independently from host-language type names.
+  normative_rules:
+  - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
+    (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
+    (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - detached data files with external references) Detached headers reference payloads via
+    the data file field supporting a single file printf-style numbered sequences and LIST declarations
+    resolved relative to the header
+  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
+    decoded payload byte count for the file to be valid
+  - (NRRD format - type field) The type field is required and declares the sample scalar type from the
+    defined integer float and block type set with documented aliases
+  - (NRRD format - block type constraints) block type samples require a positive block size field and
+    must not use ascii encoding
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Type/alias matrix round trips; invalid type/encoding combination negatives.
+- release_gates:
+  - Validation layer complete against specification rule inventory.
+  capability_id: NRRD-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Header and payload validation
+  production_meaning: Required/conditional fields, per-axis arity, version-feature compatibility, and
+    expected payload size after decoding validate before allocation with complete diagnostics.
+  developer_use_case: A service validates uploads cheaply (header-first) and rejects shape/payload mismatches
+    with exact reasons.
+  provenance:
+  - POL-SCR-VALIDATE-01
+  - SAL-NRRD-00007
+  - SAL-NRRD-00009
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - RF-NRRD-00003
+  required_behavior:
+  - Check required and conditional fields, arity, version-feature compatibility, and expected sample/byte
+    counts after decoding; treat trailing payload per policy with reporting.
+  - Validate declared shape and encoded payload size with checked arithmetic BEFORE any payload allocation,
+    with decompressed-size and ratio limits - hostile headers must fail cheaply.
+  normative_rules:
+  - (NRRD format - field identifier rules) Field identifiers are case-insensitive and each field may appear
+    at most once for the header to be valid
+  - (NRRD format - quoted values) Labels and units values use quoted string forms with defined escaping
+    rules that must round-trip
+  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
+    decoded payload byte count for the file to be valid
+  - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
+    every per-axis field carrying exactly dimension entries
+  - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
+    raw text hex or a compressed encoding such as gzip or bzip2
+  - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
+    and the element size exceeds one byte declaring little or big byte order
+  - (NRRD format - sizes field and axis ordering) The sizes field is required and declares positive per-axis
+    sample counts in fastest-to-slowest axis order
+  - (NRRD format - type field) The type field is required and declares the sample scalar type from the
+    defined integer float and block type set with documented aliases
+  - (NRRD format - block type constraints) block type samples require a positive block size field and
+    must not use ascii encoding
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Truncated/oversized payloads, conditional-field negatives, version-feature mismatches.
+- release_gates:
+  - Writer output validated by independent reload across the fixture matrix.
+  capability_id: NRRD-WRITE-001
+  level: MUST
+  category: write
+  title: Canonical and lossless writing
+  production_meaning: Writers select the correct version/magic for used features (or honor explicit targets
+    after validation), preserve optional absence in lossless mode, and order fields deterministically.
+  developer_use_case: A developer writes a dataset and any conformant reader loads it; rewriting an unchanged
+    file is byte-stable.
+  provenance:
+  - POL-SCR-WRITE-01
+  required_behavior:
+  - Write required/conditional fields correctly with version selection honoring used features; preserve
+    optional absence in lossless mode; deterministic field ordering and detached-partition policies.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Version-selection fixtures; determinism byte-compare; detached-partition round trips.
+public_api_contract:
+  mutation_operations:
+  - document.array.permute_axes(order)
+  - document.array.flip_axis(axis)
+  read_operations:
+  - NrrdDocument.load(..., data='eager|lazy|header_only')
+  - document.array.slice(...)
+  - document.index_to_world(index)
+  root_types:
+  - NrrdDocument
+  - NrrdHeader
+  - NrrdArray
+  - NrrdAxis
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Header line/token rules, magic/version recognition, encodings of the header itself.
+    layer: lexical
+  - description: Required and conditional fields, per-axis arity, field ordering/uniqueness.
+    layer: structural
+  - description: Scalar type validity, block-size rules, encoding/type compatibility.
+    layer: type
+  - description: Declared shape/byte count vs actual payload after decoding; trailing-data policy.
+    layer: payload
+  - description: Overflow-checked size math, decompression limits, detached-path policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Multiplicative overflow in sample/byte-count calculations from hostile dimensions.
+  - Decompression bombs in compressed payload encodings.
+  - Path traversal through detached data-file references.
+  - Allocation of the full declared payload before validating encoded size.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Checked arithmetic for all size calculations; reject overflow explicitly.
+  - Decompressed-byte and compression-ratio limits with configurable policy.
+  - Detached references resolve only inside configured roots; absolute paths gated.
+  - Header-first validation; no full-payload allocation before size verification.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Metadata-follows-operation fixtures for each axis operation.
+- Policy matrix fixtures with boundary values.
+- Encoding matrix round trips; missing-codec explicit-failure fixture.
+- Full matrix as enumerated with hostile-fixture negatives.
+- Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip.
+- Bounded-memory large-file tests; slice-requires-full-decode reporting fixture.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions.
+- Each payload form incl. count-mismatch and traversal negatives.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Axis-order semantics fixtures; endian matrix; overflow-shape negatives.
+- Orientation matrices, non-spatial axes, and mismatch negatives.
+- Type/alias matrix round trips; invalid type/encoding combination negatives.
+- Truncated/oversized payloads, conditional-field negatives, version-feature mismatches.
+- Version-selection fixtures; determinism byte-compare; detached-partition round trips.
+release_gates:
+- Array operations preserve metadata consistency (tested per op).
+- Conversions policy-governed and reported (no silent semantic change).
+- All defined encodings round-trip.
+- All specified header fields implemented with tests.
+- Header-only, lazy, and bounded-memory paths pass large-data tests.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Metadata fidelity proven by round trip.
+- Attached and detached forms pass the full fixture matrix.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Axis semantics proven against ground-truth fixtures.
+- Transforms verified against reference calculations.
+- All specified types and aliases round-trip.
+- Validation layer complete against specification rule inventory.
+- Writer output validated by independent reload across the fixture matrix.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: NRRD-ARRAY-001
+  provenance:
+  - POL-SCR-ARRAY-01
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - RF-NRRD-00001
+- capability_id: NRRD-CONVERT-001
+  provenance:
+  - POL-SCR-CONVERT-01
+- capability_id: NRRD-ENC-001
+  provenance:
+  - POL-SCR-ENC-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00017
+  - RF-NRRD-00005
+- capability_id: NRRD-HEADER-001
+  provenance:
+  - POL-SCR-HEADER-01
+  - POL-SCR-HEADER-02
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00005
+  - SAL-NRRD-00006
+  - SAL-NRRD-00007
+  - SAL-NRRD-00008
+  - SAL-NRRD-00010
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - SAL-NRRD-00018
+  - SAL-NRRD-00019
+- capability_id: NRRD-LAZY-001
+  provenance:
+  - POL-SCR-LAZY-01
+  - RF-NRRD-00002
+- capability_id: NRRD-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: NRRD-META-001
+  provenance:
+  - POL-SCR-META-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00004
+  - SAL-NRRD-00009
+  - SAL-NRRD-00010
+- capability_id: NRRD-PAYLOAD-001
+  provenance:
+  - POL-SCR-PAYLOAD-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00006
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00018
+- capability_id: NRRD-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: NRRD-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: NRRD-SHAPE-001
+  provenance:
+  - POL-SCR-SHAPE-01
+  - POL-SCR-SHAPE-02
+  - SAL-NRRD-00003
+  - SAL-NRRD-00010
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00019
+- capability_id: NRRD-SPACE-001
+  provenance:
+  - POL-SCR-SPACE-01
+  - SAL-NRRD-00019
+  - RF-NRRD-00004
+- capability_id: NRRD-TYPES-001
+  provenance:
+  - POL-SCR-TYPES-01
+  - SAL-NRRD-00003
+  - SAL-NRRD-00006
+  - SAL-NRRD-00011
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+- capability_id: NRRD-VALIDATE-001
+  provenance:
+  - POL-SCR-VALIDATE-01
+  - SAL-NRRD-00007
+  - SAL-NRRD-00009
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - RF-NRRD-00003
+- capability_id: NRRD-WRITE-001
+  provenance:
+  - POL-SCR-WRITE-01

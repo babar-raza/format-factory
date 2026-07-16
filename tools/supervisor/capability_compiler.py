@@ -61,6 +61,32 @@ def reset_sal_cache() -> None:
     _sal_cache = None
 
 
+FORMAT_CONTRACTS_DIR = REPO_ROOT / "shared" / "format-contracts"
+
+
+def load_format_contract(format_id: str) -> dict | None:
+    """Load the L30 canonical contract for a format (HO-011 consumption point).
+
+    Returns the parsed contract document from shared/format-contracts/{fmt}.yaml
+    or None when no contract exists. Callers use `capabilities` entries
+    (capability_id, level, depth_required, required_tests, release_gates) to
+    enrich feature IRs and taskcards with contract requirements. Read-only:
+    contract bodies are compiler-generated (V240 hand-edit guard).
+    """
+    import yaml  # local import: keep module import-light for existing callers
+
+    path = FORMAT_CONTRACTS_DIR / f"{format_id.lower()}.yaml"
+    if not path.is_file():
+        return None
+    try:
+        doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (yaml.YAMLError, OSError):
+        return None
+    if not isinstance(doc, dict) or "capabilities" not in doc:
+        return None
+    return doc
+
+
 # ---------------------------------------------------------------------------
 # Format family metadata
 # ---------------------------------------------------------------------------

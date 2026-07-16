@@ -4447,6 +4447,280 @@ skills:
   external_skill_commit: 9d2f1ae187231d8199c64b5b762e1bdf2244733d
   external_skill_license: Apache-2.0
   risk_level: MEDIUM
+- command: /compile-format-contract
+  command_file: .claude/commands/compile-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/contract_compiler.py
+  - tools/format_contract/canonical_io.py
+  - tools/format_contract/stores.py
+  - tools/format_contract/contract_registry.py
+  mandatory_validations:
+  - readiness_gate_enforced
+  - deterministic_output
+  - registry_updated
+  - no_product_source_mutation
+  notes: >-
+    L30 Format Contract Layer compile plane (mission FCL-MACHINERY-2026-07-16,
+    plans/layers/format-contract-layer.md). Deterministic: same committed
+    stores -> byte-identical contract. Refuses below fact-category readiness
+    threshold (BLOCKED_NEEDS_AUTHORITY). plans/from_chat/ reference contract
+    is a denylisted input (DEC-038).
+  output_paths:
+  - shared/format-contracts/
+  - registry/format-contract-registry.yaml
+  product_track: format_contract
+  purpose: Compile the canonical developer-product contract for one format from
+    committed hash-bound stores (SAL facts, research findings, family pack,
+    shared library contract), with readiness gate and idempotency harness.
+  required_handoff_fields:
+  - format_id
+  skill_id: compile-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_determinism_foundation.py
+  - tests/format_contract/test_consumption_chain.py
+  risk_level: MEDIUM
+- command: /validate-format-contract
+  command_file: .claude/commands/validate-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/contract_validator.py
+  mandatory_validations:
+  - all_checks_reported
+  - exit_nonzero_on_fail
+  - read_only
+  notes: >-
+    L30 Format Contract Layer blocking validator (mission
+    FCL-MACHINERY-2026-07-16). Checks map to governance validators V232-V241:
+    schema, provenance closure, depth floors, shallow-language blocklist,
+    ID uniqueness, MUST test/gate completeness, input-digest freshness,
+    family adequacy with simplicity budgets.
+  output_paths: []
+  product_track: format_contract
+  purpose: Run the blocking check set over a compiled format contract and emit a
+    machine-readable JSON report; exit non-zero on any FAIL.
+  required_handoff_fields:
+  - format_id
+  skill_id: validate-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_determinism_foundation.py
+  risk_level: LOW
+- command: /research-format-contract-sources
+  command_file: .claude/commands/research-format-contract-sources.md
+  created_at: '2026-07-16'
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/format_contract/source_researcher.py
+  - tools/format_contract/research_intake.py
+  mandatory_validations:
+  - review_gate_enforced
+  - source_closure
+  - normative_routing
+  - no_sal_store_write
+  notes: >-
+    L30 research plane (mission FCL-MACHINERY-2026-07-16). Only channel for
+    non-normative product-requirement knowledge into contract compilation.
+    Normative claims refused and routed to .local/supervisor/sal-candidates/
+    for L01 ingest-spec-sal commit. Network acquisition opt-in only.
+  output_paths:
+  - shared/format-contracts/research/
+  - .local/supervisor/sal-candidates/
+  product_track: format_contract
+  purpose: Build source records, author reviewed research findings, and commit them
+    through the intake review gate to the hash-bound research store.
+  required_handoff_fields:
+  - format_id
+  skill_id: research-format-contract-sources
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_research_plane.py
+  risk_level: MEDIUM
+- command: /check-contract-sal-readiness
+  command_file: .claude/commands/check-contract-sal-readiness.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/contract_compiler.py
+  mandatory_validations:
+  - category_report_complete
+  - no_threshold_tampering
+  - read_only_except_registry
+  notes: >-
+    L30 readiness gate (mission FCL-MACHINERY-2026-07-16). Category coverage,
+    never raw fact count; thin stores yield honest BLOCKED_NEEDS_AUTHORITY
+    with missing categories named as seeding tasks. Thresholds change only
+    via reviewed policy revisions.
+  output_paths:
+  - registry/format-contract-registry.yaml
+  product_track: format_contract
+  purpose: Score SAL fact-category coverage against the family threshold and report
+    whether contract compilation may run for a format.
+  required_handoff_fields:
+  - format_id
+  skill_id: check-contract-sal-readiness
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_determinism_foundation.py
+  risk_level: LOW
+- command: /reconcile-contract-capabilities
+  command_file: .claude/commands/reconcile-contract-capabilities.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/contract_reconciler.py
+  mandatory_validations: [read_only_product_source, no_contract_body_writes]
+  notes: L30 contract-vs-implementation reconciliation with false-claim rules (HO-010).
+  output_paths: [reports/format-contract-layer/]
+  product_track: format_contract
+  purpose: Reconcile a compiled contract against observed implementation producing
+    per-capability observed depth, proof status, and false-claim flags.
+  required_handoff_fields: [format_id]
+  skill_id: reconcile-contract-capabilities
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/test_consumption_chain.py]
+  risk_level: LOW
+- command: /compile-contract-gaps
+  command_file: .claude/commands/compile-contract-gaps.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/gap_compiler.py
+  mandatory_validations: [read_only_product_source, no_contract_body_writes]
+  notes: L30 gap compilation into the canonical gap ledger consumed by the ACTIVE
+    supervisor chain (HO-011); reruns update GAP-FCL-* entries in place.
+  output_paths: [reports/capability-layer/gap-ledger.json, reports/format-contract-layer/]
+  product_track: format_contract
+  purpose: Convert reconciliation gaps into schema-conformant canonical gap-ledger
+    entries that flow into next-work-items selection.
+  required_handoff_fields: [format_id]
+  skill_id: compile-contract-gaps
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/test_consumption_chain.py]
+  risk_level: LOW
+- command: /refresh-format-contract
+  command_file: .claude/commands/refresh-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/format_contract/staleness_checker.py
+  mandatory_validations: [read_only_product_source, no_contract_body_writes]
+  notes: L30 staleness/healing sweep; flags STALE, emits repair tasks routed to
+    owning skills; contracts never silently regenerated. Wired into the autonomous
+    cycle prepass (run_contract_healing_prepass).
+  output_paths: [.local/supervisor/contract-repair-tasks.json, registry/format-contract-registry.yaml]
+  product_track: format_contract
+  purpose: Detect stale/missing/blocked/unreconciled/shallow contracts and emit
+    machine-readable repair tasks.
+  required_handoff_fields: []
+  skill_id: refresh-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/]
+  risk_level: LOW
+- command: /review-format-contract
+  command_file: .claude/commands/review-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/quality_scorer.py
+  - tools/format_contract/reference_comparator.py
+  mandatory_validations: [files_not_summaries, verdict_hash_bound, repairs_are_machinery]
+  notes: L30 independent adversarial review; verdict recorded against contract
+    sha256; repairs target packs/policy/facts, never contract bodies.
+  output_paths: [registry/format-contract-registry.yaml]
+  product_track: format_contract
+  purpose: Adversarially review a compiled contract (completeness, authority, depth,
+    false comprehensiveness, overreach) issuing ACCEPT/ACCEPT_WITH_REPAIRS/REJECT.
+  required_handoff_fields: [format_id]
+  skill_id: review-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/test_quality_oracle.py]
+  risk_level: MEDIUM
+- command: /audit-contract-portfolio
+  command_file: .claude/commands/audit-contract-portfolio.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/staleness_checker.py
+  - tools/format_contract/contract_registry.py
+  mandatory_validations: [counts_reconcile, no_silent_caps]
+  notes: L30 portfolio audit answering the supervisor state questions (missing/stale/
+    shallow/unverified contracts, next actions).
+  output_paths: [reports/format-contract-layer/portfolio-audit.json]
+  product_track: format_contract
+  purpose: Assess all format contracts for quality, coverage, freshness, and product
+    alignment with a machine-readable next-action queue.
+  required_handoff_fields: []
+  skill_id: audit-contract-portfolio
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/]
+  risk_level: LOW
+- command: /investigate-format-contract
+  command_file: .claude/commands/investigate-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations: [skill_chain_printed, no_alternate_workflow]
+  notes: Thin routing chain (read-only investigation) over check-contract-sal-readiness
+    + research-format-contract-sources. No own logic.
+  output_paths: []
+  product_track: format_contract
+  purpose: Investigate one format's sources, SAL readiness, and contract state without
+    mutating stores or product code.
+  required_handoff_fields: [format_id]
+  skill_id: investigate-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/]
+  risk_level: LOW
+- command: /backfill-format-contracts
+  command_file: .claude/commands/backfill-format-contracts.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations: [skill_chain_printed, no_alternate_workflow]
+  notes: Thin queue-driven routing chain over readiness/compile/validate/reconcile/gaps
+    for every mapped format; blocked formats recorded honestly. No own logic.
+  output_paths: []
+  product_track: format_contract
+  purpose: Backfill contracts for the whole portfolio through the governed skill chain
+    with BLOCKED_NEEDS_AUTHORITY states for thin formats.
+  required_handoff_fields: []
+  skill_id: backfill-format-contracts
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/]
+  risk_level: MEDIUM
+- command: /prove-format-contract
+  command_file: .claude/commands/prove-format-contract.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations: [skill_chain_printed, no_alternate_workflow]
+  notes: Thin end-to-end proof chain (readiness -> compile idempotency -> validate ->
+    score -> compare -> reconcile -> gaps -> adversarial review). No own logic.
+  output_paths: []
+  product_track: format_contract
+  purpose: Run the full contract proof chain for one format including idempotency and
+    independent review, printing every skill and evidence path.
+  required_handoff_fields: [format_id]
+  skill_id: prove-format-contract
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/format_contract/]
+  risk_level: LOW
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

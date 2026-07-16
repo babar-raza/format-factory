@@ -1,0 +1,141 @@
+# Family pack: config_data (TOML, NDJSON) - L30 policy store
+# Declarative data consumed by contract_compiler.py.
+# STYLE RULE: baseline_behavior text and layer descriptions use quoted block-style
+# scalars - flow mappings truncate unquoted text at commas (defect found+fixed in
+# TC-FCL-010; regression-tested by tests/format_contract/).
+schema_version: '1.0'
+family: config_data
+identity_defaults:
+  data_model_type: text
+  description_template: "{display_name}: structured text data format ({spec_body} {spec_version}). Typed keyed values and nested structures used for configuration and record streams across programming ecosystems."
+  primary_use_cases:
+  - Application and tool configuration authored by humans and written back by tools
+  - Typed data interchange between services and build systems
+  - Streaming or record-oriented structured data processing
+  active_content_model:
+    has_active_content: false
+    policy: "Format carries passive data only; no execution, rendering, or external resolution is ever required to process it."
+scope_defaults:
+  production_complete_target: "Read, create, edit, validate, and write every value type, structure, and syntax rule of the target specification with lossless round-trip of comments, formatting, and key order where the format defines or conventionally preserves them."
+  minimum_viable_support: "Load and save conformant documents with correct typing of all value kinds; expose a typed model; report syntax and type errors with positions."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, advanced: 6}
+simplicity_budget:
+  max_capabilities: 20
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: lexical
+  description: "Character and encoding validity plus token-level rules."
+- layer: syntax
+  description: "Grammar conformance: structure, terminators, nesting."
+- layer: type
+  description: "Value-type rules: permitted forms, ranges, uniqueness."
+- layer: structural
+  description: "Document-level rules: duplicate keys, table/record shape."
+- layer: security
+  description: "Input size, nesting depth, and payload limits."
+security_defaults:
+  attack_surfaces:
+  - "Deeply nested structures causing stack exhaustion during parsing."
+  - "Oversized documents or values causing unbounded memory allocation."
+  - "Numeric edge forms (huge integers, special floats) causing overflow or precision corruption in consumers."
+  safe_defaults:
+  - "Bounded nesting depth, document size, and value size with configurable limits."
+  - "Checked numeric parsing that reports range violations instead of silently wrapping."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Grammar-conformant parsing
+  production_meaning: "The library accepts exactly the documents the specification grammar accepts and rejects what it rejects, with position-accurate diagnostics, so conformance disagreements with other implementations do not corrupt data."
+  developer_use_case: "A developer loads documents produced by any conformant tool and receives the same typed structure that tool intended."
+  baseline_behavior:
+  - id: POL-CFG-PARSE-01
+    text: "Implement the specification grammar completely - every production, terminator, and whitespace/comment rule."
+  - id: POL-CFG-PARSE-02
+    text: "Report syntax violations with line/column positions and the violated grammar rule in strict mode."
+  - id: POL-CFG-PARSE-03
+    text: "Parse from path, stream, and bytes with identical results."
+  fact_keywords: [syntax, grammar, parse, token, comment, whitespace, newline, statement]
+  required_tests:
+  - "Specification example corpus parses; grammar negative fixtures rejected with correct positions."
+  release_gates:
+  - "Grammar coverage demonstrated against the specification's own examples and invalid cases."
+- domain: TYPES
+  category: model
+  level: MUST
+  title: Complete value-type system
+  production_meaning: "Every value kind the specification defines is represented with correct typing, precision, and lexical fidelity - no silent coercion between types or precision loss."
+  developer_use_case: "A developer reads and writes every specified value kind and gets the same typed value back after a round trip."
+  baseline_behavior:
+  - id: POL-CFG-TYPES-01
+    text: "Represent every specified value kind distinctly with documented host-language mappings."
+  - id: POL-CFG-TYPES-02
+    text: "Preserve numeric precision and value-form distinctions the specification treats as significant; report out-of-range values."
+  fact_keywords: [string, integer, float, boolean, date, time, array, value, type, number]
+  required_tests:
+  - "Type matrix fixtures: every value kind in minimal and edge forms, round-tripped."
+  release_gates:
+  - "All specified value kinds round-trip with type and precision fidelity."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Typed document object model
+  production_meaning: "Keys, values, nested structures, and ordering are exposed as a typed navigable model with path-based access, not raw dictionaries only."
+  developer_use_case: "A developer navigates nested structures by path, enumerates keys in document order, and inspects value types without manual casting."
+  baseline_behavior:
+  - id: POL-CFG-MODEL-01
+    text: "Expose typed accessors and path-based navigation over nested structures."
+  - id: POL-CFG-MODEL-02
+    text: "Preserve document key order where the format defines or conventionally preserves it."
+  fact_keywords: [key, table, nested, dotted, structure, order, document]
+  required_tests:
+  - "Path navigation and order preservation verified on nested fixtures."
+  release_gates:
+  - "Model APIs cover every construct the parser produces."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Structure-safe mutation
+  production_meaning: "Values, keys, and nested structures can be created, updated, and removed with grammar invariants (key uniqueness, structure shape) enforced or diagnosed at edit time."
+  developer_use_case: "A developer updates a config value and adds a nested section programmatically, then saves without breaking the document's validity or unrelated formatting."
+  baseline_behavior:
+  - id: POL-CFG-EDIT-01
+    text: "Create, update, and remove keys, values, and nested structures with duplicate-key and shape rules enforced."
+  - id: POL-CFG-EDIT-02
+    text: "Edits do not disturb unrelated content, comments, or formatting in lossless mode."
+  fact_keywords: [duplicate, unique, define, redefine]
+  required_tests:
+  - "Each mutation class has save-reload-verify plus untouched-region byte comparison in lossless mode."
+  release_gates:
+  - "Every mutation operation proven by round-trip and locality tests."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Conformant and deterministic serialization
+  production_meaning: "Output always re-parses to the same typed content, respects the specification's encoding rules, and is deterministic; lossless mode preserves comments and formatting where recorded."
+  developer_use_case: "A developer saves an edited document and diff against the original shows only the intended change."
+  baseline_behavior:
+  - id: POL-CFG-WRITE-01
+    text: "Serialize every value kind in specification-conformant form that re-parses identically."
+  - id: POL-CFG-WRITE-02
+    text: "Offer lossless mode (comments, formatting, ordering preserved) and normalized mode (canonical style) as an explicit caller choice."
+  fact_keywords: [write, emit, serialize, output, escape]
+  required_tests:
+  - "Deterministic double-serialization; lossless-mode minimal-diff fixtures; escape-required content round-trips."
+  release_gates:
+  - "Writer proven by parser round-trip and determinism byte-compare."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered validation with typed diagnostics
+  production_meaning: "Lexical, syntax, type, and structural rules are validated as separate layers returning all diagnostics, so pipelines can gate on machine-readable results."
+  developer_use_case: "A developer validates untrusted input and receives every violation with positions and stable codes before deciding to process it."
+  baseline_behavior:
+  - id: POL-CFG-VALIDATE-01
+    text: "Validate lexical, syntax, type, and structural layers independently, returning all diagnostics with positions and stable codes."
+  fact_keywords: [valid, must, shall, error, invalid, reject, conform]
+  required_tests:
+  - "Positive and negative fixtures per layer; diagnostics carry stable codes and positions."
+  release_gates:
+  - "Every documented validation rule maps to at least one negative test."

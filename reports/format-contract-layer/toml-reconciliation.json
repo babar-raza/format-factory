@@ -1,0 +1,332 @@
+{
+  "format_id": "toml",
+  "contract_id": "FC-TOML-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116",
+    "qname_registry_sha256": "39e301cf61075bccb2bb1b6c4b8613cb6801b344c21cae40624e3b254047e6a7",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "77d596fad6611997e8d4211e5ca35b0dfd7decb8a0cc9e63bd34afd523ff77cd",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 166,
+  "class_count": 10,
+  "test_file_count": 119,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "TOML-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "delete_key",
+        "rename_key",
+        "set_key",
+        "set_value",
+        "update_section"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load_toml",
+        "save_to_file",
+        "write_toml",
+        "write_toml_str"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Key",
+        "Table",
+        "TomlDocument",
+        "TomlError",
+        "TomlInputError",
+        "TomlKey",
+        "TomlParseError",
+        "TomlTable",
+        "TomlWriteError",
+        "Value"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load_toml",
+        "probe_toml"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "max_array_length",
+        "toml_max_key_length",
+        "toml_max_list_length",
+        "toml_max_numeric_value",
+        "toml_max_numeric_value_recursive",
+        "toml_max_string_length",
+        "toml_max_value_length"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-TYPES-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Key",
+        "Table",
+        "TomlDocument",
+        "TomlError",
+        "TomlInputError",
+        "TomlKey",
+        "TomlParseError",
+        "TomlTable",
+        "TomlWriteError",
+        "Value"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "TOML-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_toml",
+        "write_toml_str"
+      ],
+      "test_files": [
+        "tests/python/abw/test_abw_to_toml.py",
+        "tests/python/csv/test_csv_to_toml.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "with_gap": 3,
+    "by_status": {
+      "NOT_STARTED": 1,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 8,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

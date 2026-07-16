@@ -1,0 +1,179 @@
+# Family pack: tabular_text (CSV, TSV, DIF, SYLK) - L30 policy store
+# Declarative data consumed by contract_compiler.py. New requirements enter here
+# (or via research findings), never as compiler code edits.
+# STYLE RULE: baseline_behavior text and layer descriptions use quoted block-style
+# scalars - flow mappings truncate unquoted text at commas (defect found+fixed in
+# TC-FCL-010; regression-tested by tests/format_contract/).
+schema_version: '1.0'
+family: tabular_text
+identity_defaults:
+  data_model_type: tabular
+  description_template: "{display_name}: delimiter-structured tabular text format ({spec_body} {spec_version}). Rows of records carrying delimited fields, consumed and produced by spreadsheets, databases, data pipelines, and programming ecosystems."
+  primary_use_cases:
+  - Exchange tabular data between spreadsheets, databases, and data-processing pipelines
+  - Bulk import/export of records for business and scientific applications
+  - Streaming row-oriented processing of large datasets
+  active_content_model:
+    has_active_content: false
+    policy: "Format carries passive data only; no execution, rendering, or external resolution is ever required to process it."
+scope_defaults:
+  production_complete_target: "Read, create, edit, validate, and write every construct defined by the target specification including dialect variations, quoting/escaping rules, header semantics, and encoding declarations, with streaming support for datasets larger than memory."
+  minimum_viable_support: "Load and save specification-conformant files with correct field splitting, quoting, and encoding; expose rows and fields as a typed model; report structural errors with row/column locations."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 2, model: 3, edit: 4, write: 4, validate: 5, export: 4, advanced: 6}
+simplicity_budget:
+  max_capabilities: 20
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: lexical
+  description: "Character-level rules: encoding validity, permitted characters, line-ending forms."
+- layer: syntax
+  description: "Field/record splitting: delimiter, quoting, and escaping conformance."
+- layer: structural
+  description: "Row shape consistency: field counts, header presence, record boundaries."
+- layer: type
+  description: "Optional typed-column checks when a schema or type hints are supplied."
+- layer: security
+  description: "Input size, field count, and cell payload limits; formula-injection hazards flagged."
+security_defaults:
+  attack_surfaces:
+  - "Oversized rows or fields causing unbounded memory allocation during parsing."
+  - "Formula-injection payloads (cells beginning with '=', '+', '-', '@') passed to spreadsheet consumers."
+  - "Malformed encoding sequences and BOM confusion causing silent data corruption."
+  - "Quote-state confusion causing record-boundary smuggling across rows."
+  safe_defaults:
+  - "Bounded field size, field count per record, and total input size with configurable limits."
+  - "No evaluation of cell content; formula-hazard flagging available for export paths."
+  - "Strict encoding validation by default with explicit tolerant-mode opt-in."
+domains:
+- domain: PARSE
+  category: parse
+  level: MUST
+  title: Specification-conformant record and field parsing
+  production_meaning: "The library splits input into records and fields exactly as the specification defines, including every quoting, escaping, and line-ending rule, so downstream consumers never see mis-split data."
+  developer_use_case: "A developer loads an arbitrary conformant file produced by another tool and receives the same logical table that tool wrote, without configuring parser internals."
+  baseline_behavior:
+  - id: POL-TAB-PARSE-01
+    text: "Split records on the specification's record separator, honoring quoted sections that embed separators, delimiters, and quote characters."
+  - id: POL-TAB-PARSE-02
+    text: "Report malformed constructs (unterminated quotes, illegal characters, inconsistent field counts) with row and column positions in strict mode."
+  - id: POL-TAB-PARSE-03
+    text: "Parse from path, stream, and bytes with identical results, supporting incremental/streaming row iteration without loading the whole input."
+  fact_keywords: [field, record, quote, escape, delimiter, comma, tab, line, crlf, separator, header]
+  required_tests:
+  - "Parse every specification example plus edge fixtures for embedded delimiters, embedded quotes, embedded line breaks, and empty fields."
+  - "Negative fixtures for unterminated quotes and illegal bare quote characters in strict mode."
+  release_gates:
+  - "All specification parsing rules covered by passing tests including quoting and line-ending variants."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Typed tabular object model
+  production_meaning: "Rows, fields, and headers are exposed as a typed domain model with stable accessors - not raw string lists only - so edits and queries are safe and discoverable."
+  developer_use_case: "A developer reads column values by header name, iterates typed rows, and inspects table dimensions without hand-indexing arrays."
+  baseline_behavior:
+  - id: POL-TAB-MODEL-01
+    text: "Expose table, row, field, and header abstractions with by-index and by-header access."
+  - id: POL-TAB-MODEL-02
+    text: "Preserve the distinction between empty field, quoted empty field, and absent trailing field where the dialect distinguishes them."
+  - id: POL-TAB-MODEL-03
+    text: "Report table dimensions (row count, per-row field count) and header presence without full materialization where streaming."
+  fact_keywords: [header, column, row, cell, value, table, name]
+  required_tests:
+  - "Header-based and index-based access agree on every fixture; dimension reporting matches fixture truth."
+  release_gates:
+  - "Typed model APIs cover read access to every construct the parser produces."
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Safe tabular mutation
+  production_meaning: "Rows, fields, headers, and columns can be inserted, updated, moved, and removed through the model with invariants (consistent field counts, header uniqueness where required) enforced or diagnosed."
+  developer_use_case: "A developer appends rows, renames a header, and deletes a column, then saves - without corrupting quoting or record structure."
+  baseline_behavior:
+  - id: POL-TAB-EDIT-01
+    text: "Insert, update, move, and remove rows and fields through model operations that keep record structure consistent."
+  - id: POL-TAB-EDIT-02
+    text: "Column-level operations (add, rename, remove, reorder) update every affected row and the header consistently."
+  fact_keywords: [insert, add, remove, update, modify, append]
+  required_tests:
+  - "Round-trip after each mutation class proves the edit survived save and reload."
+  release_gates:
+  - "Every mutation operation has a save-reload-verify test."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Specification-conformant serialization
+  production_meaning: "Output applies quoting and escaping exactly where the dialect requires, chooses correct line endings, and is deterministic - loadable by the library itself and by mainstream consumers."
+  developer_use_case: "A developer writes a table containing embedded delimiters, quotes, and line breaks and every mainstream reader loads it intact."
+  baseline_behavior:
+  - id: POL-TAB-WRITE-01
+    text: "Quote and escape fields exactly where required by the dialect; never emit ambiguous unquoted content."
+  - id: POL-TAB-WRITE-02
+    text: "Offer lossless mode (preserve original quoting and line-ending choices where recorded) and normalized mode (canonical quoting policy), as an explicit caller choice."
+  fact_keywords: [write, emit, output, serialize, quote, crlf]
+  required_tests:
+  - "Deterministic double-serialization byte-compare; round-trip through parser for hostile field content."
+  release_gates:
+  - "Writer output validated against parser and at least one external consumer fixture set."
+- domain: DIALECT
+  category: transform
+  level: SHOULD
+  title: Dialect detection and configuration
+  production_meaning: "Delimiter, quote character, header presence, and line-ending variants are explicit, inspectable configuration; common dialects can be detected from samples with confidence reporting."
+  developer_use_case: "A developer loads files from heterogeneous sources and the library reports the detected dialect instead of silently mis-parsing."
+  baseline_behavior:
+  - id: POL-TAB-DIALECT-01
+    text: "Represent dialect parameters (delimiter, quoting, line endings, header presence) as explicit configuration on load and save."
+  - id: POL-TAB-DIALECT-02
+    text: "Provide sample-based dialect detection returning the detected parameters and a confidence signal, never silently guessing in strict mode."
+  fact_keywords: [dialect, variant, detect]
+  required_tests:
+  - "Detection fixtures across the dialect matrix; wrong-guess cases must surface low confidence rather than silent mis-parse."
+  release_gates:
+  - "Dialect matrix documented and covered by detection tests."
+- domain: ENCODING
+  category: parse
+  level: MUST
+  title: Character encoding handling
+  production_meaning: "Encoding declaration, detection (BOM), and validation are explicit; data is never silently transcoded or corrupted."
+  developer_use_case: "A developer loads UTF-8 files with or without BOM and legacy-encoded files by explicit choice, with encoding errors reported rather than replaced silently in strict mode."
+  baseline_behavior:
+  - id: POL-TAB-ENC-01
+    text: "Honor byte-order marks and explicit encoding parameters; report the effective encoding used."
+  - id: POL-TAB-ENC-02
+    text: "In strict mode, reject undecodable byte sequences with position diagnostics; tolerant mode substitutes with an explicit report."
+  fact_keywords: [encoding, utf-8, unicode, bom, charset, character]
+  required_tests:
+  - "BOM and no-BOM fixtures; undecodable-sequence negative fixtures in strict and tolerant modes."
+  release_gates:
+  - "Encoding matrix covered by tests including failure modes."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered structural validation
+  production_meaning: "Validation checks lexical, syntax, and structural rules as separate layers with complete diagnostics, so callers can gate pipelines on machine-readable results."
+  developer_use_case: "A developer validates an incoming file before processing and receives every violation with row/column locations, not just the first failure."
+  baseline_behavior:
+  - id: POL-TAB-VALIDATE-01
+    text: "Validate lexical, syntax, and structural layers independently, returning all diagnostics with locations."
+  - id: POL-TAB-VALIDATE-02
+    text: "Structural checks include consistent field counts per record and header integrity where headers are declared."
+  fact_keywords: [valid, must, shall, error, conform, reject]
+  required_tests:
+  - "Positive and negative fixtures per validation layer; diagnostics carry stable codes and locations."
+  release_gates:
+  - "Every documented validation rule maps to at least one negative test."
+- domain: EXPORT
+  category: export
+  level: SHOULD
+  title: Tabular interchange export
+  production_meaning: "Tables export to at least one other structured representation (using Format Factory's own libraries where available) preserving cell values, header association, and row order."
+  developer_use_case: "A developer converts a loaded table to another supported tabular or document format in one call with a loss report."
+  baseline_behavior:
+  - id: POL-TAB-EXPORT-01
+    text: "Export preserves cell values, header-to-column association, and row order, reporting any constructs the target cannot represent."
+  fact_keywords: [export, convert]
+  required_tests:
+  - "Export fixture verified against the target format's own parser."
+  release_gates:
+  - "At least one export path proven by consumer-side verification."

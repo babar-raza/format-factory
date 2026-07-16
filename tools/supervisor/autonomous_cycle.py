@@ -340,9 +340,15 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  [SAL_STALENESS] Error: {_sal_stale_err}")
     # Step 0a-prepass (TC-SH-005) + Step 0a3 (TC-SH-011): extracted to extensions
     try:
-        from autonomous_cycle_extensions import run_sprint_learnings_prepass, run_stale_lock_reaper
+        from autonomous_cycle_extensions import (
+            run_contract_healing_prepass,
+            run_sprint_learnings_prepass,
+            run_stale_lock_reaper,
+        )
         run_sprint_learnings_prepass(repo_root)
         run_stale_lock_reaper(repo_root, timestamp)
+        # Step 0a-fcl (FCL-MACHINERY-2026-07-16): L30 contract healing sweep.
+        run_contract_healing_prepass(repo_root)
     except Exception as _ext_err:
         print(f"  WARNING: Pre-pass extensions skipped (non-blocking): {_ext_err}")
 
@@ -557,7 +563,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
     # Steps 0d + 0e: OIC + CPF checks — extracted to extensions (TC-PGI-045)
     try:
-        from autonomous_cycle_extensions import run_output_invariant_and_parity_checks
+        from autonomous_cycle_oic import run_output_invariant_and_parity_checks
         _oic_rework_entries = run_output_invariant_and_parity_checks(declaration_path, repo_root)
     except Exception as _oic_ext_err:
         print(f"  WARNING: OIC/CPF checks skipped (non-blocking): {_oic_ext_err}")
@@ -3082,7 +3088,6 @@ def main() -> int:
         pass
 
     return exit_code
-
 
 if __name__ == "__main__":
     sys.exit(main())

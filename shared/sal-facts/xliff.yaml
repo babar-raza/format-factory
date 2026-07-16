@@ -2,15 +2,14 @@ format_id: xliff
 display_name: XLIFF 2.0
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-XLIFF-00001
   qname: FACT-XLIFF-001
   element_qname: xliff:file
-  claim: An XLIFF 2.0 document is rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0)
-    with required version and srcLang attributes; it contains one or more <file> elements each holding
-    translation units
+  claim: An XLIFF 2.0 document is rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0) with required
+    version and srcLang attributes; it contains one or more <file> elements each holding translation units
   section: OASIS XLIFF 2.0 — document and file elements
   authority: OASIS XLIFF Version 2.0 Specification
   source: structural_fact_manual
@@ -24,9 +23,9 @@ facts:
 - fact_id: SAL-XLIFF-00002
   qname: FACT-XLIFF-002
   element_qname: xliff:unit
-  claim: A <unit> element carries translatable content as one or more <segment> children, each holding
-    a <source> and optional <target>; segments may be interleaved with <ignorable> content (shared structural
-    fact referenced by xliff:unit and xliff:segment)
+  claim: A <unit> element carries translatable content as one or more <segment> children, each holding a <source>
+    and optional <target>; segments may be interleaved with <ignorable> content (shared structural fact referenced
+    by xliff:unit and xliff:segment)
   section: OASIS XLIFF 2.0 — unit and segment elements
   authority: OASIS XLIFF Version 2.0 Specification
   source: structural_fact_manual
@@ -36,4 +35,273 @@ facts:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00003
+  qname: FACT-XLIFF-3
+  element_qname: xliff:xliff
+  claim: An XLIFF 2.x document is rooted at an xliff element in the urn:oasis:names:tc:xliff:document namespace
+    with a required version attribute and srcLang attribute
+  section: XLIFF core - document root
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00004
+  qname: FACT-XLIFF-4
+  element_qname: xliff:extensions
+  claim: Custom extension elements and attributes from foreign namespaces are permitted at defined extension points
+    and must be preserved by conforming agents
+  section: XLIFF core - extensibility and agent obligations
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00005
+  qname: FACT-XLIFF-5
+  element_qname: xliff:inline-validity
+  claim: Inline code elements must reference existing originalData entries and paired codes must nest without crossing
+    for the document to be valid
+  section: XLIFF core - inline constraints
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00006
+  qname: FACT-XLIFF-6
+  element_qname: xliff:pc
+  claim: Inline placeholder codes are represented by ph elements and paired codes by pc elements or sc/ec start-end
+    pairs with id attributes binding the pair
+  section: XLIFF core - inline elements
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00007
+  qname: FACT-XLIFF-7
+  element_qname: xliff:modules
+  claim: Optional modules such as translation candidates glossary metadata resource data size restriction validation
+    and ITS occupy their own namespaces and extend core elements at defined extension points
+  section: XLIFF modules overview
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00008
+  qname: FACT-XLIFF-8
+  element_qname: xliff:resource-data
+  claim: The Resource Data module references external resource payloads that processors resolve only under explicit
+    policy
+  section: XLIFF modules - resource data with external references
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00009
+  qname: FACT-XLIFF-9
+  element_qname: xliff:version
+  claim: The version attribute on the xliff root identifies the specification version and namespace-version consistency
+    is required for validity
+  section: XLIFF core - version attribute
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00010
+  qname: FACT-XLIFF-10
+  element_qname: xliff:file
+  claim: The xliff root element contains one or more file elements each carrying an id attribute unique within the
+    document
+  section: XLIFF core - file element
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00011
+  qname: FACT-XLIFF-11
+  element_qname: xliff:schema-validity
+  claim: XLIFF documents must be well-formed XML and valid against the core schema with module content valid against
+    its module schema
+  section: XLIFF conformance
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00012
+  qname: FACT-XLIFF-12
+  element_qname: xliff:unit
+  claim: file elements contain unit elements optionally nested in group elements forming the structural tree of
+    translatable content
+  section: XLIFF core - structural elements
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00013
+  qname: FACT-XLIFF-13
+  element_qname: xliff:id-uniqueness
+  claim: id attributes on file group unit and inline elements must be unique within their specification-defined
+    scope and references must resolve
+  section: XLIFF core - identifier constraints
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00014
+  qname: FACT-XLIFF-14
+  element_qname: xliff:mrk
+  claim: mrk elements annotate inline spans and sm/em elements mark span boundaries where spans overlap element
+    structure
+  section: XLIFF core - annotations
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00015
+  qname: FACT-XLIFF-15
+  element_qname: xliff:notes
+  claim: notes elements carry note children with optional priority and category attributes attached to files groups
+    or units
+  section: XLIFF core - notes
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00016
+  qname: FACT-XLIFF-16
+  element_qname: xliff:original-data
+  claim: originalData elements carry native code data referenced from inline codes via dataRef attributes
+  section: XLIFF core - original data
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00017
+  qname: FACT-XLIFF-17
+  element_qname: xliff:skeleton
+  claim: skeleton elements carry or reference the non-translatable document skeleton needed to reconstruct the original
+    file on merge
+  section: XLIFF core - skeleton
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00018
+  qname: FACT-XLIFF-18
+  element_qname: xliff:target-state
+  claim: target elements carry a state attribute whose values progress through the specification-defined translation
+    states
+  section: XLIFF core - translation state
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00019
+  qname: FACT-XLIFF-19
+  element_qname: xliff:segment
+  claim: unit elements contain segment and ignorable elements whose source children carry translatable text and
+    whose target children carry translations
+  section: XLIFF core - segment and ignorable
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00020
+  qname: FACT-XLIFF-20
+  element_qname: xliff:xml-space
+  claim: xml:space and xml:lang attributes govern whitespace handling and language identification and must be honored
+    on round trip
+  section: XLIFF core - whitespace and language
+  authority: OASIS XLIFF Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
     added_at: '2026-07-16'

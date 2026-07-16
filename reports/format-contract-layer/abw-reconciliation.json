@@ -1,0 +1,401 @@
+{
+  "format_id": "abw",
+  "contract_id": "FC-ABW-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19",
+    "qname_registry_sha256": "249f9453dac647a97ed6ff6f4e4cc386d9a3dfc05bba5870dacd99135fc50a88",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "e757a332a238bdd4ceaa77a7cc116199a69cb90296e1b87448f25c08a9afc250",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 241,
+  "class_count": 10,
+  "test_file_count": 241,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "ABW-CONTENT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_paragraph",
+        "append_paragraph"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "abw_consonant_to_vowel_ratio",
+        "abw_to_csv",
+        "abw_to_dif",
+        "abw_to_fodg",
+        "abw_to_fods",
+        "abw_to_fodt",
+        "abw_to_gnumeric",
+        "abw_to_ndjson",
+        "abw_to_ods",
+        "abw_to_odt",
+        "abw_to_pbm",
+        "abw_to_pgm",
+        "abw_to_ppm",
+        "abw_to_sylk",
+        "abw_to_toml",
+        "abw_to_tsv",
+        "abw_typed_children_to_ndjson",
+        "export_to_csv",
+        "export_to_html",
+        "export_to_json"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load",
+        "save_to_file",
+        "write_abw"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "AbwDocument",
+        "AbwError",
+        "AbwParagraph",
+        "AbwParseError",
+        "AbwWriteError",
+        "CharRun",
+        "Document",
+        "Field",
+        "Paragraph",
+        "Section"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load",
+        "probe_abw"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "abw_max_paragraph_char_count",
+        "abw_max_paragraph_length",
+        "abw_max_paragraph_word_count",
+        "abw_max_paragraph_words",
+        "abw_max_word_count_para",
+        "max_word_length"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-STYLE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "AbwDocument",
+        "AbwError",
+        "AbwParagraph",
+        "AbwParseError",
+        "AbwWriteError",
+        "CharRun",
+        "Document",
+        "Field",
+        "Paragraph",
+        "Section"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ABW-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_abw"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1222_abw_gnumeric_installed_workflow.py",
+        "tests/python/abw/test_abw_append_truncate_pipeline.py",
+        "tests/python/abw/test_abw_char_count_export_pipeline.py",
+        "tests/python/abw/test_abw_codec.py",
+        "tests/python/abw/test_abw_conveyor_deepening.py",
+        "tests/python/abw/test_abw_document_model.py",
+        "tests/python/abw/test_abw_document_mutation.py",
+        "tests/python/abw/test_abw_edit_paragraph_pipeline.py",
+        "tests/python/abw/test_abw_export_batch_pipeline.py",
+        "tests/python/abw/test_abw_export_content_rework.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 4,
+    "by_status": {
+      "NOT_STARTED": 3,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 8,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

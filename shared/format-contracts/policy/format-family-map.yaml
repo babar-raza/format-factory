@@ -1,0 +1,32 @@
+# Format -> family-pack mapping (L30 policy store). One family per format.
+# New formats enter the contract workflow by adding one line here (plus a family
+# pack if the family is genuinely new) - no compiler code changes.
+schema_version: '1.0'
+store_id: format-family-map
+map:
+  csv: tabular_text
+  tsv: tabular_text
+  dif: tabular_text
+  sylk: tabular_text
+  toml: config_data
+  ndjson: config_data
+  ubl: xml_business
+  xliff: xml_localization
+  ipynb: executable_document
+  mtlx: typed_graph
+  nrrd: scientific_raster
+  safetensors: scientific_raster
+  zst: archive_container
+  ods: archive_container
+  odt: archive_container
+  qoi: image_raster
+  xcf: image_raster
+  pbm: image_raster
+  pgm: image_raster
+  ppm: image_raster
+  abw: xml_document
+  gnumeric: xml_document
+  fods: xml_document
+  fodt: xml_document
+  fodg: xml_document
+  fodp: xml_document

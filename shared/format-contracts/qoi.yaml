@@ -1,0 +1,453 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-QOI-V1
+  format_id: qoi
+  format_canonical_name: Quite OK Image Format
+  extensions:
+  - .qoi
+  family: image_raster
+  target_spec_version: QOI 1.0 (November 2021)
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241
+    qname_registry_sha256: ec4940c11965b71fa208b42caa6952a6620d37bcd9b55fa044ab1de53d3dcf5f
+    research_sha256: 71485818d56195ec1e5e97815381fc14a8356988f34f9b5a54c838da8ca460be
+    sal_facts_sha256: 1467650c1564b32f817f025031bfb5e41b118db2bf790c58fb776dfc0142dc15
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Images are passive data; no embedded content is executed or rendered by the library.
+  data_model_type: raster
+  description: 'Quite OK Image Format: raster image format (Dominic Szablewski / phoboslab QOI 1.0 (November
+    2021)). Header-described pixel data (and layers/channels where defined) used in imaging pipelines
+    and tooling.'
+  primary_use_cases:
+  - Decode and encode images with exact pixel fidelity
+  - Inspect image structure (dimensions, channels, layers) without full decode
+  - Convert between raster representations safely
+authoritative_sources:
+- title: Dominic Szablewski / phoboslab QOI 1.0 (November 2021)
+  source_id: SRC-QOI-001
+  organization: Dominic Szablewski / phoboslab
+  version: QOI 1.0 (November 2021)
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+- title: QOI developer-workflow requirements (Format Factory product practice)
+  source_id: SRC-QOI-002
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Decode and encode conformant images with exact pixel round-trip, dimension/depth
+    validation, and bounded-memory behavior on large images.
+  production_complete_target: Complete header and pixel-data model for the target specification including
+    all channel/depth/variant forms and (where defined) layers, properties, and compression, with validation
+    and deterministic writing.
+capabilities:
+- release_gates:
+  - Conversions policy-governed and reported.
+  capability_id: QOI-CONVERT-001
+  level: SHOULD
+  category: transform
+  title: Representation conversion
+  production_meaning: Depth/channel/variant conversions run under explicit policies with reports; exports
+    to sibling formats preserve pixels exactly where representable.
+  developer_use_case: A developer converts between family variants with a loss report when depth narrows.
+  provenance:
+  - POL-IMG-CONVERT-01
+  required_behavior:
+  - Convert depth/channels/variants under explicit policies with conversion reports; pixel-exact where
+    representable.
+  depth_required: 4
+  depth_rationale: 'SHOULD transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Conversion matrix with pixel-exact and lossy-report cases.
+- release_gates:
+  - Every mutation class round-trip proven.
+  capability_id: QOI-EDIT-001
+  level: MUST
+  category: edit
+  title: Image mutation
+  production_meaning: Pixels and structural elements (layers/properties where defined) can be modified
+    with invariants (dimension consistency, depth rules) enforced.
+  developer_use_case: A developer edits pixel regions or renames a layer and saves a valid file.
+  provenance:
+  - POL-IMG-EDIT-01
+  required_behavior:
+  - Support pixel-region and structural edits maintaining dimension/depth invariants.
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Edit round trips with pixel-exact verification outside edited regions.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: QOI-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Model covers every structural construct of the specification.
+  capability_id: QOI-MODEL-001
+  level: MUST
+  category: model
+  title: Typed image model
+  production_meaning: Dimensions, channels, depth, and (where defined) layers/properties are typed and
+    inspectable without full pixel decode.
+  developer_use_case: A developer inspects layer structure of a large file instantly.
+  provenance:
+  - POL-IMG-MODEL-01
+  - SAL-QOI-00001
+  - SAL-QOI-00007
+  - SAL-QOI-00008
+  required_behavior:
+  - Expose typed image structure (dimensions, channels, depth, layers/properties where defined) with header-only
+    inspection.
+  normative_rules:
+  - '(1.0) QOI file header: magic qoif, width, height, channels, colorspace'
+  - '(3.0) QOI_OP_DIFF chunk: 2-bit tag 0b01 (mask 0x40), per-channel differences dr, dg, db stored as
+    2-bit values each with a bias of 2 (range -2..1), alpha unchanged; 1 byte total'
+  - '(3.0) QOI_OP_LUMA chunk: 2-bit tag 0b10 (mask 0x80), 6-bit green-channel difference dg with bias
+    32, then 4-bit dr-dg and db-dg deltas each with bias 8, alpha unchanged; 2 bytes total'
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Header-only inspection fixtures match full-decode truth.
+- release_gates:
+  - All specified variants decode with pixel-exact fixtures.
+  capability_id: QOI-PARSE-001
+  level: MUST
+  category: parse
+  title: Header and pixel decoding
+  production_meaning: Magic/header variants and every specified pixel encoding decode exactly, with dimensions
+    validated before allocation.
+  developer_use_case: A developer decodes any conformant image and gets exact pixels with structure metadata.
+  provenance:
+  - POL-IMG-PARSE-01
+  - SAL-QOI-00001
+  - SAL-QOI-00004
+  - SAL-QOI-00005
+  - SAL-QOI-00006
+  - SAL-QOI-00007
+  - SAL-QOI-00008
+  - SAL-QOI-00009
+  - RF-QOI-00001
+  required_behavior:
+  - Decode every specified header variant and pixel encoding with dimension/depth validation before payload
+    allocation.
+  - Expose header-only inspection (dimensions, channels, colorspace) plus full pixel decode returning
+    typed image buffers, with checked dimension arithmetic before any allocation.
+  normative_rules:
+  - '(1.0) QOI file header: magic qoif, width, height, channels, colorspace'
+  - '(3.0) QOI_OP_RGB chunk: tag byte 0xFE (0b11111110), followed by 3 payload bytes r, g, b; encodes
+    a full RGB pixel (4 bytes total, alpha unchanged from previous pixel)'
+  - '(3.0) QOI_OP_RGBA chunk: tag byte 0xFF (0b11111111), followed by 4 payload bytes r, g, b, a; encodes
+    a full RGBA pixel (5 bytes total)'
+  - '(3.0) QOI_OP_INDEX chunk: 2-bit tag 0b00 (mask 0x00), 6-bit index into a 64-entry running array of
+    previously seen pixel values (index = (r*3 + g*5 + b*7 + a*11) % 64); 1 byte total'
+  - '(3.0) QOI_OP_DIFF chunk: 2-bit tag 0b01 (mask 0x40), per-channel differences dr, dg, db stored as
+    2-bit values each with a bias of 2 (range -2..1), alpha unchanged; 1 byte total'
+  - '(3.0) QOI_OP_LUMA chunk: 2-bit tag 0b10 (mask 0x80), 6-bit green-channel difference dg with bias
+    32, then 4-bit dr-dg and db-dg deltas each with bias 8, alpha unchanged; 2 bytes total'
+  - '(3.0) QOI_OP_RUN chunk: 2-bit tag 0b11 (mask 0xC0), 6-bit run length with bias -1 encoding a run
+    of 1..62 identical pixels (values 63 and 64 are reserved for QOI_OP_RGB/QOI_OP_RGBA tags); 1 byte
+    total'
+  depth_required: 3
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Variant matrix decodes; dimension-bomb and truncation negatives.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: QOI-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: QOI-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Every documented rule has negative coverage.
+  capability_id: QOI-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Structure and payload validation
+  production_meaning: Header rules, payload sizes, and compression integrity validate with positions before
+    processing.
+  developer_use_case: A pipeline rejects malformed images with exact reasons.
+  provenance:
+  - POL-IMG-VALIDATE-01
+  required_behavior:
+  - Validate header rules, declared-vs-actual payload sizes, and compression integrity with position diagnostics.
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Negative matrix per rule with positions asserted.
+- release_gates:
+  - Writer proven pixel-exact across the variant matrix.
+  capability_id: QOI-WRITE-001
+  level: MUST
+  category: write
+  title: Deterministic encoding
+  production_meaning: Writers emit conformant files deterministically; decode-encode-decode is pixel-exact.
+  developer_use_case: A developer re-encodes an image and pixel data survives bit-exact.
+  provenance:
+  - POL-IMG-WRITE-01
+  - SAL-QOI-00002
+  - SAL-QOI-00004
+  - SAL-QOI-00005
+  - SAL-QOI-00010
+  - RF-QOI-00002
+  required_behavior:
+  - Encode every supported variant conformantly and deterministically; decode-encode-decode is pixel-exact.
+  - Encode QOI deterministically with decode-encode-decode pixel-exact round trips proven across the op-code
+    matrix (index, diff, luma, run, rgb, rgba).
+  normative_rules:
+  - '(1.0) QOI encoded chunk: QOI_OP_* chunk types'
+  - '(3.0) QOI_OP_RGB chunk: tag byte 0xFE (0b11111110), followed by 3 payload bytes r, g, b; encodes
+    a full RGB pixel (4 bytes total, alpha unchanged from previous pixel)'
+  - '(3.0) QOI_OP_RGBA chunk: tag byte 0xFF (0b11111111), followed by 4 payload bytes r, g, b, a; encodes
+    a full RGBA pixel (5 bytes total)'
+  - '(3.0) QOI_OP_END: the encoded data stream is terminated by an 8-byte sequence of seven 0x00 bytes
+    followed by a single 0x01 byte; op-code-level encoding of the end marker (stream-termination semantics
+    are recorded separately as FACT-QOI-003)'
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Determinism byte-compare; pixel-exact re-encode matrix.
+  - Focused fixture matrix for the behavior above with negative cases.
+public_api_contract:
+  read_operations:
+  - load(path_or_stream_or_bytes)
+  - inspect_header(path)
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Magic/header rules, dimension/depth fields, section structure.
+    layer: structural
+  - description: Pixel-data size vs declared dimensions; compression integrity.
+    layer: payload
+  - description: Dimension bombs, allocation limits, malformed-compression guards.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Huge declared dimensions causing over-allocation before payload checks.
+  - Malformed or hostile compressed pixel data causing runaway decode.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Checked dimension arithmetic and configurable pixel-count limits before allocation.
+  - Bounded decode with corruption positions reported.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Conversion matrix with pixel-exact and lossy-report cases.
+- Edit round trips with pixel-exact verification outside edited regions.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Header-only inspection fixtures match full-decode truth.
+- Variant matrix decodes; dimension-bomb and truncation negatives.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Negative matrix per rule with positions asserted.
+- Determinism byte-compare; pixel-exact re-encode matrix.
+- Focused fixture matrix for the behavior above with negative cases.
+release_gates:
+- Conversions policy-governed and reported.
+- Every mutation class round-trip proven.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Model covers every structural construct of the specification.
+- All specified variants decode with pixel-exact fixtures.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Every documented rule has negative coverage.
+- Writer proven pixel-exact across the variant matrix.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: QOI-CONVERT-001
+  provenance:
+  - POL-IMG-CONVERT-01
+- capability_id: QOI-EDIT-001
+  provenance:
+  - POL-IMG-EDIT-01
+- capability_id: QOI-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: QOI-MODEL-001
+  provenance:
+  - POL-IMG-MODEL-01
+  - SAL-QOI-00001
+  - SAL-QOI-00007
+  - SAL-QOI-00008
+- capability_id: QOI-PARSE-001
+  provenance:
+  - POL-IMG-PARSE-01
+  - SAL-QOI-00001
+  - SAL-QOI-00004
+  - SAL-QOI-00005
+  - SAL-QOI-00006
+  - SAL-QOI-00007
+  - SAL-QOI-00008
+  - SAL-QOI-00009
+  - RF-QOI-00001
+- capability_id: QOI-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: QOI-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: QOI-VALIDATE-001
+  provenance:
+  - POL-IMG-VALIDATE-01
+- capability_id: QOI-WRITE-001
+  provenance:
+  - POL-IMG-WRITE-01
+  - SAL-QOI-00002
+  - SAL-QOI-00004
+  - SAL-QOI-00005
+  - SAL-QOI-00010
+  - RF-QOI-00002

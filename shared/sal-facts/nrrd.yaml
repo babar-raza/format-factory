@@ -2,15 +2,14 @@ format_id: nrrd
 display_name: NRRD (Nearly Raw Raster Data)
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-NRRD-00002
   qname: FACT-NRRD-002
   element_qname: nrrd:header
-  claim: 'An NRRD file begins with an ASCII header: a magic line ''NRRD000X'' (X = format version digit),
-    followed by field specifications ''field: value'' and key/value pairs ''key:=value'', terminated by
-    a single blank line'
+  claim: 'An NRRD file begins with an ASCII header: a magic line ''NRRD000X'' (X = format version digit), followed
+    by field specifications ''field: value'' and key/value pairs ''key:=value'', terminated by a single blank line'
   section: Teem NRRD Format Specification — Section 2 (Header)
   authority: Teem NRRD Format Specification
   source: structural_fact_manual
@@ -28,9 +27,9 @@ facts:
 - fact_id: SAL-NRRD-00003
   qname: FACT-NRRD-003
   element_qname: nrrd:data
-  claim: The data segment follows the header's blank line (or lives in a detached file named by the 'data
-    file' field) and is decoded per the 'encoding' field (raw, txt/ascii, hex, gz, bz2) with layout governed
-    by the sizes/type/endian fields
+  claim: The data segment follows the header's blank line (or lives in a detached file named by the 'data file'
+    field) and is decoded per the 'encoding' field (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian
+    fields
   section: Teem NRRD Format Specification — Section 3 (Data)
   authority: Teem NRRD Format Specification
   source: structural_fact_manual
@@ -40,4 +39,239 @@ facts:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00004
+  qname: FACT-NRRD-4
+  element_qname: nrrd:magic
+  claim: A NRRD file begins with a magic line of the form NRRD000X identifying the format version followed by header
+    lines terminated by a blank line
+  section: NRRD format - magic and header structure
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00005
+  qname: FACT-NRRD-5
+  element_qname: nrrd:comment
+  claim: Comment lines begin with a hash character inside the header and carry no field semantics but may be preserved
+  section: NRRD format - comments
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00006
+  qname: FACT-NRRD-6
+  element_qname: nrrd:datafile
+  claim: Detached headers reference payloads via the data file field supporting a single file printf-style numbered
+    sequences and LIST declarations resolved relative to the header
+  section: NRRD format - detached data files with external references
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00007
+  qname: FACT-NRRD-7
+  element_qname: nrrd:field-uniqueness
+  claim: Field identifiers are case-insensitive and each field may appear at most once for the header to be valid
+  section: NRRD format - field identifier rules
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00008
+  qname: FACT-NRRD-8
+  element_qname: nrrd:header-line
+  claim: Header lines are either field specifications of the form field colon value or key-value pairs of the form
+    key colon-equals value
+  section: NRRD format - header line syntax
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00009
+  qname: FACT-NRRD-9
+  element_qname: nrrd:quoting
+  claim: Labels and units values use quoted string forms with defined escaping rules that must round-trip
+  section: NRRD format - quoted values
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00010
+  qname: FACT-NRRD-10
+  element_qname: nrrd:axis-fields
+  claim: Per-axis fields include spacings thicknesses mins maxs centers labels units and kinds each constrained
+    to dimension entries with defined value rules
+  section: NRRD format - per-axis fields
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00011
+  qname: FACT-NRRD-11
+  element_qname: nrrd:payload-validity
+  claim: The declared sizes type and encoding must agree with the actual decoded payload byte count for the file
+    to be valid
+  section: NRRD format - payload consistency
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00012
+  qname: FACT-NRRD-12
+  element_qname: nrrd:dimension
+  claim: The dimension field is required and declares the array dimension with every per-axis field carrying exactly
+    dimension entries
+  section: NRRD format - dimension field
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00013
+  qname: FACT-NRRD-13
+  element_qname: nrrd:encoding
+  claim: The encoding field is required and declares the payload encoding as raw text hex or a compressed encoding
+    such as gzip or bzip2
+  section: NRRD format - encoding field
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00014
+  qname: FACT-NRRD-14
+  element_qname: nrrd:endian
+  claim: The endian field is required whenever the encoding exposes byte order and the element size exceeds one
+    byte declaring little or big byte order
+  section: NRRD format - endian field
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00015
+  qname: FACT-NRRD-15
+  element_qname: nrrd:sizes
+  claim: The sizes field is required and declares positive per-axis sample counts in fastest-to-slowest axis order
+  section: NRRD format - sizes field and axis ordering
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00016
+  qname: FACT-NRRD-16
+  element_qname: nrrd:type
+  claim: The type field is required and declares the sample scalar type from the defined integer float and block
+    type set with documented aliases
+  section: NRRD format - type field
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00017
+  qname: FACT-NRRD-17
+  element_qname: nrrd:block-size
+  claim: block type samples require a positive block size field and must not use ascii encoding
+  section: NRRD format - block type constraints
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00018
+  qname: FACT-NRRD-18
+  element_qname: nrrd:skip
+  claim: line skip and byte skip fields declare how much of a data file to skip before payload with line skip applied
+    before byte skip
+  section: NRRD format - skip fields
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00019
+  qname: FACT-NRRD-19
+  element_qname: nrrd:space
+  claim: space fields declare named spaces or explicit space dimension with space directions space origin and measurement
+    frame vectors matching the space dimension
+  section: NRRD format - space and orientation
+  authority: NRRD file format definition
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
     added_at: '2026-07-16'

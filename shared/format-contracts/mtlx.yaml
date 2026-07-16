@@ -1,0 +1,1248 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-MTLX-V1
+  format_id: mtlx
+  format_canonical_name: MaterialX
+  extensions:
+  - .mtlx
+  family: typed_graph
+  target_spec_version: MaterialX v1.39
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: medium
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: dafd3307dc08c8c9a7c57b5f41c5a3907a925b8494822d94f536d5c446cd0875
+    qname_registry_sha256: 612cc4e65e82d35e7c477bd11dee95e9951e1ac88ce9d5f54d52412c5bc4fa95
+    research_sha256: 7cfca9d51cb99d9915dc31af0ddce2ffbac61068eee7837e33cd799526635352
+    sal_facts_sha256: 83eb484a54caa3b24b34ed0e8864b911645976926f94cf8ee28b3f031206fe5d
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: true
+    policy: Documents reference shader/implementation code and external includes. Core parsing never compiles,
+      executes, or fetches; include resolution is governed by explicit search paths and limits; code generation
+      is a separate opt-in adapter.
+  data_model_type: graph
+  description: 'MaterialX: typed node-graph exchange format (Academy Software Foundation MaterialX v1.39).
+    Documents carry typed nodes, ports, definitions, and connection graphs with library resolution, used
+    to exchange materials/shaders/looks across digital-content pipelines.'
+  primary_use_cases:
+  - Author, edit, and validate typed node graphs programmatically
+  - Resolve node definitions against standard libraries and traverse dependency closures
+  - Exchange graph assets across applications with lossless preservation of unknown constructs
+authoritative_sources:
+- title: Academy Software Foundation MaterialX v1.39
+  source_id: SRC-MTLX-001
+  organization: Academy Software Foundation
+  version: MaterialX v1.39
+  canonical_url: https://materialx.org/Specification.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: MaterialX specification (document model, standard nodes, and libraries)
+  source_id: SRC-MTLX-002
+  organization: Academy Software Foundation
+  version: MaterialX 1.39
+  canonical_url: https://materialx.org/Specification.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Material-pipeline developer-workflow requirements (DCC interchange and look-dev practice)
+  source_id: SRC-MTLX-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Parse documents with includes governed, expose typed elements and graph connections,
+    validate structure and references, and write lossless output.
+  production_complete_target: 'Complete document/graph model of the target version: typed values, names/namespaces,
+    node definitions and implementations, library loading, graph editing with invariant preservation,
+    looks/variants/assignments where specified, layered validation, and lossless writing.'
+capabilities:
+- release_gates:
+  - Color metadata resolution proven; transforms opt-in only.
+  capability_id: MTLX-COLOR-001
+  level: MUST
+  category: model
+  title: Color-space metadata
+  production_meaning: Color-space declarations at document/node/input/value levels resolve hierarchically;
+    numeric transforms happen only through an explicit color-management adapter.
+  developer_use_case: A developer reads the effective color space of any value and wires an OCIO-style
+    adapter explicitly when transforms are needed.
+  provenance:
+  - POL-TGR-COLOR-01
+  - SAL-MTLX-00108
+  - SAL-MTLX-00110
+  required_behavior:
+  - Preserve and hierarchically resolve color-space declarations; provide an adapter interface for transforms;
+    never numerically transform colors without an explicit backend and policy.
+  normative_rules:
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  - (MaterialX specification - color spaces) colorspace attributes declare the color space of values and
+    images and are inherited hierarchically through the element tree
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Inheritance-resolution fixtures; no-implicit-transform negative.
+- release_gates:
+  - Resolution behavior matches the specification's precedence rules.
+  capability_id: MTLX-DEF-001
+  level: MUST
+  category: resolve
+  title: Definition and implementation resolution
+  production_meaning: Node instances resolve to definitions by category/type/version/target with defaults
+    and explicit versions; ambiguous/missing/incompatible matches are reported, never guessed.
+  developer_use_case: A developer asks which definition a node resolves to and receives the exact match
+    plus alternatives.
+  provenance:
+  - POL-TGR-DEF-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00103
+  - SAL-MTLX-00107
+  - SAL-MTLX-00111
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+  required_behavior:
+  - Resolve instances to definitions and implementations honoring version/target rules; report ambiguous,
+    missing, or incompatible matches explicitly.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - implementations) implementation elements bind nodedefs to source implementations
+    or implementation nodegraphs per target
+  - (MaterialX specification - nodes) node elements instantiate node definitions with typed input elements
+    connected to upstream outputs or carrying literal values
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  depth_required: 4
+  depth_rationale: 'MUST resolve capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Resolution matrix incl. ambiguity and missing-definition negatives.
+- release_gates:
+  - Token resolution deterministic across the fixture matrix.
+  capability_id: MTLX-GEOM-001
+  level: MUST
+  category: model
+  title: Geometry metadata and token resolution
+  production_meaning: Geometry paths, geometry-scoped properties, and filename token substitutions (including
+    tile-set styles where defined) resolve deterministically; actual geometry loading stays outside the
+    core.
+  developer_use_case: A developer resolves filename tokens for a geometry binding without loading any
+    geometry data.
+  provenance:
+  - POL-TGR-GEOM-01
+  - SAL-MTLX-00109
+  - SAL-MTLX-00112
+  required_behavior:
+  - Represent geometry paths, geometry properties, and filename token substitution rules with deterministic
+    resolution; keep geometry loading outside the core library.
+  normative_rules:
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  - (MaterialX specification - looks and assignments) look elements carry materialassign and propertyassign
+    children binding materials and properties to geometry via geom attributes and collections
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Token-resolution fixtures across substitution rules.
+- release_gates:
+  - Graph operations preserve DAG/type invariants (property-tested where feasible).
+  capability_id: MTLX-GRAPH-001
+  level: MUST
+  category: edit
+  title: Graph editing with invariants
+  production_meaning: Nodes/ports/graphs create, connect, disconnect, and query under type checks; cycles
+    are detected; topological order and upstream/downstream traversal are first-class.
+  developer_use_case: A developer wires nodes programmatically and illegal connections or cycles are refused
+    with diagnostics.
+  provenance:
+  - POL-TGR-GRAPH-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00101
+  - SAL-MTLX-00106
+  - SAL-MTLX-00111
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - RF-MTLX-00001
+  required_behavior:
+  - Create/remove/clone/rename nodes and connect/disconnect ports with type checks; detect directed cycles;
+    provide topological order, traversal, dependency closure, and dead-node detection.
+  - Expose graph editing as typed operations - connect/disconnect with type checks, topological order,
+    upstream/downstream traversal, and dependency closure - so pipeline tools build and analyze graphs
+    without XML manipulation.
+  normative_rules:
+  - (MaterialX Specification — NodeGraph Elements) A <nodegraph> element contains a directed acyclic graph
+    of <node> elements connected via named inputs/outputs; the graph exposes <output> elements as its
+    external interface
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - implementations) implementation elements bind nodedefs to source implementations
+    or implementation nodegraphs per target
+  - (MaterialX specification - nodes) node elements instantiate node definitions with typed input elements
+    connected to upstream outputs or carrying literal values
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - node graphs) nodegraph elements contain node children and expose output
+    elements that other elements reference
+  - (MaterialX specification - materials) surfacematerial and shader-semantic node types bind shader nodes
+    to materials through typed material inputs
+  depth_required: 6
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Legal DAG operations, direct/indirect cycle refusal, traversal on deep chains.
+- release_gates:
+  - Include resolution deterministic and secure across the fixture matrix.
+  capability_id: MTLX-INCLUDE-001
+  level: MUST
+  category: resolve
+  title: Governed include and search-path resolution
+  production_meaning: Includes resolve deterministically against document-relative and configured search
+    paths with cycle detection, depth/count/byte limits, and an unresolved-inspection mode.
+  developer_use_case: A developer inspects a document with broken includes instead of failing outright,
+    then fixes the search path.
+  provenance:
+  - POL-TGR-INCLUDE-01
+  - POL-TGR-INCLUDE-02
+  - SAL-MTLX-00101
+  - SAL-MTLX-00105
+  - SAL-MTLX-00109
+  - RF-MTLX-00003
+  required_behavior:
+  - Resolve includes against document-relative and configured search paths with cycle/repeat detection
+    and depth, count, and byte limits; block traversal and network by default.
+  - Offer an unresolved-reference mode so documents remain inspectable when includes are unavailable.
+  - Resolve includes only against configured search paths with cycle detection and depth, file-count,
+    and byte limits, blocking path traversal and network access by default while offering an unresolved-inspection
+    mode.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - includes with external references) MaterialX documents may include other
+    documents via XInclude-style include references resolved against search paths
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  depth_required: 5
+  depth_rationale: 'MUST resolve capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Include cycles, deep chains, traversal attempts, and unresolved-mode fixtures.
+- release_gates:
+  - Standard libraries load and resolve without unsupported core constructs.
+  capability_id: MTLX-LIB-001
+  level: MUST
+  category: resolve
+  title: Standard-library management
+  production_meaning: Standard definitions/implementations load over ordered search paths with precedence,
+    content-hash caching, and shadowing/mismatch reports.
+  developer_use_case: A developer loads pinned library versions and gets warnings when documents shadow
+    standard definitions.
+  provenance:
+  - POL-TGR-LIB-01
+  - SAL-MTLX-00108
+  - RF-MTLX-00002
+  required_behavior:
+  - Load standard libraries with ordered search paths and precedence; cache immutable libraries by version
+    and content hash; report shadowed definitions and version mismatches.
+  - Load standard node libraries over ordered search paths with precedence and content-hash caching, reporting
+    shadowed definitions and version mismatches so pinned pipelines stay reproducible.
+  normative_rules:
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  depth_required: 4
+  depth_rationale: 'MUST resolve capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Precedence and shadowing fixtures; cache-hash invalidation test.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: MTLX-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Precedence resolution matches specification rules on fixtures.
+  capability_id: MTLX-LOOK-001
+  level: MUST
+  category: model
+  title: Looks, collections, and assignment precedence
+  production_meaning: Looks, collections, material/property assignments, and inheritance resolve assignment
+    precedence for any geometry path, reporting conflicting or unreachable assignments.
+  developer_use_case: A developer asks which material a geometry path receives under a look and gets the
+    precedence-resolved answer.
+  provenance:
+  - POL-TGR-LOOK-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00109
+  - SAL-MTLX-00112
+  - SAL-MTLX-00118
+  required_behavior:
+  - Model looks, collections, and assignments with inheritance; resolve assignment precedence per geometry
+    path; report conflicting or unreachable assignments.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  - (MaterialX specification - looks and assignments) look elements carry materialassign and propertyassign
+    children binding materials and properties to geometry via geom attributes and collections
+  - (MaterialX specification - variants) variant and variantset elements define named value overrides
+    applied to interfaces as alternative looks
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Assignment-precedence fixtures including conflicts and unreachable assignments.
+- release_gates:
+  - Material resolution matches specification binding rules.
+  capability_id: MTLX-MAT-001
+  level: MUST
+  category: model
+  title: Material and shader-binding model
+  production_meaning: Material nodes and shader-semantic bindings are modeled with resolution of bound
+    interfaces and upstream graphs, providing material and texture dependency inventories.
+  developer_use_case: A developer inventories every texture dependency of a material through its resolved
+    graph.
+  provenance:
+  - POL-TGR-MAT-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00003
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00110
+  - SAL-MTLX-00111
+  - SAL-MTLX-00112
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+  - SAL-MTLX-00118
+  - RF-MTLX-00004
+  required_behavior:
+  - Model shader and material nodes with their bindings; resolve material inputs through bound interfaces
+    and upstream graphs; provide dependency inventories.
+  - Resolve material assignment precedence for a geometry path through collections and looks, reporting
+    conflicting or unreachable assignments - the look-development correctness core.
+  normative_rules:
+  - (MaterialX Specification — NodeGraph Elements) A <nodegraph> element contains a directed acyclic graph
+    of <node> elements connected via named inputs/outputs; the graph exposes <output> elements as its
+    external interface
+  - (MaterialX Specification — Material Nodes) Material content is defined by material nodes (e.g. <surfacematerial>)
+    that bind shader nodes to renderable elements; in MaterialX 1.38+ materials are nodes rather than
+    dedicated <material> elements
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - document root) A MaterialX document is rooted at a materialx element carrying
+    a version attribute that identifies the specification version
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - element naming) Elements carry category name and type attributes and names
+    must be unique within their containing scope
+  - (MaterialX specification - includes with external references) MaterialX documents may include other
+    documents via XInclude-style include references resolved against search paths
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  - (MaterialX specification - color spaces) colorspace attributes declare the color space of values and
+    images and are inherited hierarchically through the element tree
+  - (MaterialX specification - implementations) implementation elements bind nodedefs to source implementations
+    or implementation nodegraphs per target
+  - (MaterialX specification - looks and assignments) look elements carry materialassign and propertyassign
+    children binding materials and properties to geometry via geom attributes and collections
+  - (MaterialX specification - nodes) node elements instantiate node definitions with typed input elements
+    connected to upstream outputs or carrying literal values
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - node graphs) nodegraph elements contain node children and expose output
+    elements that other elements reference
+  - (MaterialX specification - materials) surfacematerial and shader-semantic node types bind shader nodes
+    to materials through typed material inputs
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  - (MaterialX specification - variants) variant and variantset elements define named value overrides
+    applied to interfaces as alternative looks
+  depth_required: 5
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Dependency-inventory fixtures against resolved graphs.
+- release_gates:
+  - Model lossless across the official example corpus.
+  capability_id: MTLX-MODEL-001
+  level: MUST
+  category: model
+  title: Lossless element model
+  production_meaning: Documents, elements, categories, names, attributes, child order, and provenance
+    are modeled losslessly with unknown constructs preserved; generic APIs coexist with typed wrappers.
+  developer_use_case: A developer walks any document generically while using typed wrappers for known
+    categories.
+  provenance:
+  - POL-TGR-MODEL-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00003
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00110
+  - SAL-MTLX-00111
+  - SAL-MTLX-00112
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+  - SAL-MTLX-00118
+  required_behavior:
+  - Model all elements with category, name, attributes, child order, and source provenance; preserve unknown
+    elements/attributes for forward compatibility.
+  normative_rules:
+  - (MaterialX Specification — NodeGraph Elements) A <nodegraph> element contains a directed acyclic graph
+    of <node> elements connected via named inputs/outputs; the graph exposes <output> elements as its
+    external interface
+  - (MaterialX Specification — Material Nodes) Material content is defined by material nodes (e.g. <surfacematerial>)
+    that bind shader nodes to renderable elements; in MaterialX 1.38+ materials are nodes rather than
+    dedicated <material> elements
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - document root) A MaterialX document is rooted at a materialx element carrying
+    a version attribute that identifies the specification version
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - element naming) Elements carry category name and type attributes and names
+    must be unique within their containing scope
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  - (MaterialX specification - color spaces) colorspace attributes declare the color space of values and
+    images and are inherited hierarchically through the element tree
+  - (MaterialX specification - implementations) implementation elements bind nodedefs to source implementations
+    or implementation nodegraphs per target
+  - (MaterialX specification - looks and assignments) look elements carry materialassign and propertyassign
+    children binding materials and properties to geometry via geom attributes and collections
+  - (MaterialX specification - nodes) node elements instantiate node definitions with typed input elements
+    connected to upstream outputs or carrying literal values
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - node graphs) nodegraph elements contain node children and expose output
+    elements that other elements reference
+  - (MaterialX specification - materials) surfacematerial and shader-semantic node types bind shader nodes
+    to materials through typed material inputs
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  - (MaterialX specification - variants) variant and variantset elements define named value overrides
+    applied to interfaces as alternative looks
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Unknown-construct round trip; typed-wrapper equivalence with generic access.
+- release_gates:
+  - Reference integrity proven under rename operations.
+  capability_id: MTLX-NAME-001
+  level: MUST
+  category: model
+  title: Naming and reference semantics
+  production_meaning: Names and qualified references validate; namespace scope and cross-library references
+    resolve; rename rewrites referents safely with collision detection.
+  developer_use_case: A developer renames a node and every connection and interface reference follows.
+  provenance:
+  - POL-TGR-NAME-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00101
+  - SAL-MTLX-00104
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00115
+  - SAL-MTLX-00118
+  required_behavior:
+  - Validate names and qualified references; resolve namespace scope and cross-library references; safe
+    rename with reference rewriting and collision detection.
+  normative_rules:
+  - (MaterialX Specification — NodeGraph Elements) A <nodegraph> element contains a directed acyclic graph
+    of <node> elements connected via named inputs/outputs; the graph exposes <output> elements as its
+    external interface
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - element naming) Elements carry category name and type attributes and names
+    must be unique within their containing scope
+  - (MaterialX specification - includes with external references) MaterialX documents may include other
+    documents via XInclude-style include references resolved against search paths
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  - (MaterialX specification - collections) collection elements define reusable sets of geometry paths
+    via includegeom and excludegeom attributes referenced from assignments
+  - (MaterialX specification - node graphs) nodegraph elements contain node children and expose output
+    elements that other elements reference
+  - (MaterialX specification - variants) variant and variantset elements define named value overrides
+    applied to interfaces as alternative looks
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Rename-with-references fixture; collision negatives.
+- release_gates:
+  - Parse security posture proven by hostile fixtures.
+  capability_id: MTLX-PARSE-001
+  level: MUST
+  category: parse
+  title: Secure document parsing
+  production_meaning: Root/version recognition with source-position tracking; parsing never resolves the
+    network and external entities are disabled.
+  developer_use_case: A developer loads documents with diagnostics that point at file/line for every issue.
+  provenance:
+  - POL-TGR-PARSE-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+  required_behavior:
+  - Recognize the document root and version; expose source URI and line/column positions where parser
+    support permits; disable external entities.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - document root) A MaterialX document is rooted at a materialx element carrying
+    a version attribute that identifies the specification version
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - includes with external references) MaterialX documents may include other
+    documents via XInclude-style include references resolved against search paths
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Version-recognition fixtures; entity-hardening negative fixture.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: MTLX-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: MTLX-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Generation declared per backend; core completeness independent of it.
+  capability_id: MTLX-SHADER-001
+  level: MAY
+  category: advanced
+  title: Code-generation adapters
+  production_meaning: Target-independent generation interface with per-backend adapters returning source,
+    bindings, and a reproducibility manifest; core never compiles or executes generated code.
+  developer_use_case: A developer generates backend shader source for a material and consumes the manifest
+    for caching.
+  provenance:
+  - POL-TGR-SHADER-01
+  - SAL-MTLX-00003
+  - SAL-MTLX-00116
+  required_behavior:
+  - Offer an opt-in generation interface per backend returning source, stage info, bindings, diagnostics,
+    and a reproducibility manifest; never compile or execute in core.
+  normative_rules:
+  - (MaterialX Specification — Material Nodes) Material content is defined by material nodes (e.g. <surfacematerial>)
+    that bind shader nodes to renderable elements; in MaterialX 1.38+ materials are nodes rather than
+    dedicated <material> elements
+  - (MaterialX specification - materials) surfacematerial and shader-semantic node types bind shader nodes
+    to materials through typed material inputs
+  depth_required: 6
+  depth_rationale: 'MAY advanced capability: family depth floor 6, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Generated-source fixtures per shipped backend; core-path no-compile proof.
+- release_gates:
+  - Transforms proven invariant-preserving.
+  capability_id: MTLX-TRANSFORM-001
+  level: SHOULD
+  category: transform
+  title: Graph transforms
+  production_meaning: Flatten, prune, clone, and normalize operations preserve type correctness and emit
+    old-to-new path maps.
+  developer_use_case: A developer flattens a nodegraph for export and remaps external references via the
+    path map.
+  provenance:
+  - POL-TGR-TRANSFORM-01
+  - SAL-MTLX-00103
+  required_behavior:
+  - Provide graph transforms (flatten, prune unused, clone subgraph, normalize interfaces) preserving
+    type correctness with an old-to-new path map.
+  normative_rules:
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  depth_required: 2
+  depth_rationale: 'SHOULD transform capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Transform fixtures verify type preservation and path maps.
+- release_gates:
+  - All standard types round-trip with fidelity tests.
+  capability_id: MTLX-TYPES-001
+  level: MUST
+  category: model
+  title: Value and type system
+  production_meaning: All standard value types (scalars, vectors, colors, matrices, strings, filenames,
+    arrays, typedefs) parse/serialize with lossless lexical fidelity and validate for type/shape compatibility.
+  developer_use_case: A developer sets a typed port value and type mismatches are diagnosed at edit time.
+  provenance:
+  - POL-TGR-TYPES-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00110
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+  required_behavior:
+  - Support every standard value type with lexical round-trip fidelity; support typedefs and structured
+    members; validate value/type and shape compatibility.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - element naming) Elements carry category name and type attributes and names
+    must be unique within their containing scope
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - value types) The standard type system defines scalar vector color matrix
+    string filename and array value types with lexical value forms
+  - (MaterialX specification - color spaces) colorspace attributes declare the color space of values and
+    images and are inherited hierarchically through the element tree
+  - (MaterialX specification - nodes) node elements instantiate node definitions with typed input elements
+    connected to upstream outputs or carrying literal values
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - materials) surfacematerial and shader-semantic node types bind shader nodes
+    to materials through typed material inputs
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Type matrix round trip; incompatibility negatives.
+- release_gates:
+  - No implicit unit conversion (negative-tested).
+  capability_id: MTLX-UNIT-001
+  level: MUST
+  category: model
+  title: Units and unit conversion
+  production_meaning: Unit types, definitions, and declared/inherited units resolve; conversions run only
+    through explicit operations preserving original units in lossless mode.
+  developer_use_case: A developer converts a length-typed value to scene units explicitly while the source
+    document keeps its declared units.
+  provenance:
+  - POL-TGR-UNIT-01
+  - SAL-MTLX-00117
+  required_behavior:
+  - Load unit types and definitions; resolve declared and inherited units; convert only via explicit operations,
+    preserving original units in lossless mode.
+  normative_rules:
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Unit-resolution and explicit-conversion fixtures.
+- release_gates:
+  - Upgrade transforms idempotent and ledgered (tested).
+  capability_id: MTLX-UPGRADE-001
+  level: MUST
+  category: transform
+  title: Document upgrade framework
+  production_meaning: Older document versions apply ordered, idempotent upgrade transforms with a migration
+    ledger; originals are preserved until upgraded output validates.
+  developer_use_case: A developer batch-upgrades a library of older assets and audits renamed nodes and
+    changed defaults from the ledger.
+  provenance:
+  - POL-TGR-UPGRADE-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00107
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+  required_behavior:
+  - Detect older versions; apply ordered idempotent upgrade transforms producing a migration ledger; preserve
+    the original until the upgraded output validates.
+  normative_rules:
+  - (MaterialX Specification — Document Structure) A MaterialX document is rooted at a <materialx> element
+    carrying a version attribute; top-level children include <nodedef>, <typedef>, <nodegraph>, <look>,
+    and <propertyset> elements (shared structural aggregate referenced by the nodedef/typedef/look/propertyset
+    qnames)
+  - (MaterialX specification - document root) A MaterialX document is rooted at a materialx element carrying
+    a version attribute that identifies the specification version
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  - (MaterialX specification - node definitions) nodedef elements declare node interfaces with typed input
+    and output children and version and target attributes for resolution
+  - (MaterialX specification - units) unittype and unit attributes declare measurement units for values
+    with conversion governed by unit definitions
+  depth_required: 2
+  depth_rationale: 'MUST transform capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Upgrade fixtures per supported older version with ledger assertions and idempotency.
+- release_gates:
+  - Every semantic rule class has negative coverage.
+  capability_id: MTLX-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Structural and semantic validation
+  production_meaning: Structure, types, names, references, graph acyclicity, definition matches, and assignment
+    rules validate with stable codes and element paths.
+  developer_use_case: A pipeline gates asset ingestion on validation and receives paths for every violation.
+  provenance:
+  - POL-TGR-VALIDATE-01
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - RF-MTLX-00005
+  required_behavior:
+  - Validate structural, type, referential, and semantic layers (acyclicity, port compatibility, definition
+    matches, assignments) with stable diagnostic codes and element paths.
+  - Test graphs with legal DAGs, direct and indirect cycles, missing ports, type mismatches, multi-output
+    nodes, and deep dependency chains, plus resolver security fixtures for traversal, include cycles,
+    and oversized library trees.
+  normative_rules:
+  - (MaterialX specification - versioning) Documents with older version attributes must be upgraded through
+    defined version transforms before target-version semantics apply
+  - (MaterialX specification - element naming) Elements carry category name and type attributes and names
+    must be unique within their containing scope
+  - (MaterialX specification - connection constraints) Node connections must reference existing upstream
+    outputs with compatible types and connection graphs must remain acyclic for the document to be valid
+  - (MaterialX specification - definition resolution constraints) Node instances must resolve to a nodedef
+    by category type version and target and unresolvable or ambiguous instances are invalid
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Layer-by-layer negatives with path assertions.
+  - Graph validity matrix and resolver security fixtures as enumerated.
+- release_gates:
+  - Variant application proven non-destructive by default.
+  capability_id: MTLX-VARIANT-001
+  level: MUST
+  category: model
+  title: Variants and variant sets
+  production_meaning: Variant sets, variants, and their assignments apply as non-destructive resolved
+    views with invalid selections and conflicts diagnosed.
+  developer_use_case: A developer applies a variant selection for preview without rewriting the source
+    document.
+  provenance:
+  - POL-TGR-VARIANT-01
+  - SAL-MTLX-00118
+  required_behavior:
+  - Model variant sets, variants, assignments, and inheritance; apply selections to a resolved view without
+    destructive source rewrites by default; detect invalid selections and conflicts.
+  normative_rules:
+  - (MaterialX specification - variants) variant and variantset elements define named value overrides
+    applied to interfaces as alternative looks
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Variant-selection fixtures incl. invalid names and conflicting assignments.
+- release_gates:
+  - Writer proven lossless on the official corpus.
+  capability_id: MTLX-WRITE-001
+  level: MUST
+  category: write
+  title: Lossless and canonical writing
+  production_meaning: Unknown constructs, includes, namespaces, and comments survive lossless writes;
+    flatten-includes is an explicit operation; deterministic ordering/formatting policies exist.
+  developer_use_case: A developer saves with includes intact by default and flattens only on explicit
+    request.
+  provenance:
+  - POL-TGR-WRITE-01
+  required_behavior:
+  - Preserve unknown constructs, includes, namespaces, and comments in lossless mode; flatten-includes
+    only as an explicit operation; deterministic ordering/formatting.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Lossless round trip with includes; determinism byte-compare.
+public_api_contract:
+  mutation_operations:
+  - nodegraph.connect(output, input)
+  - document.rename(element, new_name, rewrite_references=True)
+  read_operations:
+  - nodegraph.topological_order()
+  - nodegraph.upstream(element)
+  root_types:
+  - MaterialXDocument
+  - Node
+  - NodeGraph
+  - NodeDef
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: XML well-formedness, root/version structure.
+    layer: syntax
+  - description: Required attributes, names, child rules, element categories.
+    layer: structural
+  - description: Value/type compatibility, array and member shapes, typedefs.
+    layer: type
+  - description: Node/port references, definition resolution, include closure.
+    layer: referential
+  - description: Graph acyclicity, port compatibility, inheritance, assignment precedence.
+    layer: semantic
+  - description: Include limits, path policy, size/nesting bounds.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Include/XInclude cycles and deep include chains causing resource exhaustion.
+  - Path traversal via include or filename references escaping configured roots.
+  - XML external entities during parsing.
+  - Untrusted shader/implementation code treated as executable by careless consumers.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Includes resolve only against configured search paths with depth/count/byte limits and cycle detection;
+    network access off by default.
+  - External entities disabled; shader code carried as data, never compiled in core.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Inheritance-resolution fixtures; no-implicit-transform negative.
+- Resolution matrix incl. ambiguity and missing-definition negatives.
+- Token-resolution fixtures across substitution rules.
+- Legal DAG operations, direct/indirect cycle refusal, traversal on deep chains.
+- Include cycles, deep chains, traversal attempts, and unresolved-mode fixtures.
+- Precedence and shadowing fixtures; cache-hash invalidation test.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Assignment-precedence fixtures including conflicts and unreachable assignments.
+- Dependency-inventory fixtures against resolved graphs.
+- Unknown-construct round trip; typed-wrapper equivalence with generic access.
+- Rename-with-references fixture; collision negatives.
+- Version-recognition fixtures; entity-hardening negative fixture.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Generated-source fixtures per shipped backend; core-path no-compile proof.
+- Transform fixtures verify type preservation and path maps.
+- Type matrix round trip; incompatibility negatives.
+- Unit-resolution and explicit-conversion fixtures.
+- Upgrade fixtures per supported older version with ledger assertions and idempotency.
+- Layer-by-layer negatives with path assertions.
+- Graph validity matrix and resolver security fixtures as enumerated.
+- Variant-selection fixtures incl. invalid names and conflicting assignments.
+- Lossless round trip with includes; determinism byte-compare.
+release_gates:
+- Color metadata resolution proven; transforms opt-in only.
+- Resolution behavior matches the specification's precedence rules.
+- Token resolution deterministic across the fixture matrix.
+- Graph operations preserve DAG/type invariants (property-tested where feasible).
+- Include resolution deterministic and secure across the fixture matrix.
+- Standard libraries load and resolve without unsupported core constructs.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Precedence resolution matches specification rules on fixtures.
+- Material resolution matches specification binding rules.
+- Model lossless across the official example corpus.
+- Reference integrity proven under rename operations.
+- Parse security posture proven by hostile fixtures.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Generation declared per backend; core completeness independent of it.
+- Transforms proven invariant-preserving.
+- All standard types round-trip with fidelity tests.
+- No implicit unit conversion (negative-tested).
+- Upgrade transforms idempotent and ledgered (tested).
+- Every semantic rule class has negative coverage.
+- Variant application proven non-destructive by default.
+- Writer proven lossless on the official corpus.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: MTLX-COLOR-001
+  provenance:
+  - POL-TGR-COLOR-01
+  - SAL-MTLX-00108
+  - SAL-MTLX-00110
+- capability_id: MTLX-DEF-001
+  provenance:
+  - POL-TGR-DEF-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00103
+  - SAL-MTLX-00107
+  - SAL-MTLX-00111
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+- capability_id: MTLX-GEOM-001
+  provenance:
+  - POL-TGR-GEOM-01
+  - SAL-MTLX-00109
+  - SAL-MTLX-00112
+- capability_id: MTLX-GRAPH-001
+  provenance:
+  - POL-TGR-GRAPH-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00101
+  - SAL-MTLX-00106
+  - SAL-MTLX-00111
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - RF-MTLX-00001
+- capability_id: MTLX-INCLUDE-001
+  provenance:
+  - POL-TGR-INCLUDE-01
+  - POL-TGR-INCLUDE-02
+  - SAL-MTLX-00101
+  - SAL-MTLX-00105
+  - SAL-MTLX-00109
+  - RF-MTLX-00003
+- capability_id: MTLX-LIB-001
+  provenance:
+  - POL-TGR-LIB-01
+  - SAL-MTLX-00108
+  - RF-MTLX-00002
+- capability_id: MTLX-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: MTLX-LOOK-001
+  provenance:
+  - POL-TGR-LOOK-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00109
+  - SAL-MTLX-00112
+  - SAL-MTLX-00118
+- capability_id: MTLX-MAT-001
+  provenance:
+  - POL-TGR-MAT-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00003
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00110
+  - SAL-MTLX-00111
+  - SAL-MTLX-00112
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+  - SAL-MTLX-00118
+  - RF-MTLX-00004
+- capability_id: MTLX-MODEL-001
+  provenance:
+  - POL-TGR-MODEL-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00003
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00110
+  - SAL-MTLX-00111
+  - SAL-MTLX-00112
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00115
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+  - SAL-MTLX-00118
+- capability_id: MTLX-NAME-001
+  provenance:
+  - POL-TGR-NAME-01
+  - SAL-MTLX-00002
+  - SAL-MTLX-00101
+  - SAL-MTLX-00104
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00108
+  - SAL-MTLX-00109
+  - SAL-MTLX-00115
+  - SAL-MTLX-00118
+- capability_id: MTLX-PARSE-001
+  provenance:
+  - POL-TGR-PARSE-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00105
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+- capability_id: MTLX-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: MTLX-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: MTLX-SHADER-001
+  provenance:
+  - POL-TGR-SHADER-01
+  - SAL-MTLX-00003
+  - SAL-MTLX-00116
+- capability_id: MTLX-TRANSFORM-001
+  provenance:
+  - POL-TGR-TRANSFORM-01
+  - SAL-MTLX-00103
+- capability_id: MTLX-TYPES-001
+  provenance:
+  - POL-TGR-TYPES-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - SAL-MTLX-00108
+  - SAL-MTLX-00110
+  - SAL-MTLX-00113
+  - SAL-MTLX-00114
+  - SAL-MTLX-00116
+  - SAL-MTLX-00117
+- capability_id: MTLX-UNIT-001
+  provenance:
+  - POL-TGR-UNIT-01
+  - SAL-MTLX-00117
+- capability_id: MTLX-UPGRADE-001
+  provenance:
+  - POL-TGR-UPGRADE-01
+  - SAL-MTLX-00101
+  - SAL-MTLX-00102
+  - SAL-MTLX-00103
+  - SAL-MTLX-00107
+  - SAL-MTLX-00114
+  - SAL-MTLX-00117
+- capability_id: MTLX-VALIDATE-001
+  provenance:
+  - POL-TGR-VALIDATE-01
+  - SAL-MTLX-00103
+  - SAL-MTLX-00104
+  - SAL-MTLX-00106
+  - SAL-MTLX-00107
+  - RF-MTLX-00005
+- capability_id: MTLX-VARIANT-001
+  provenance:
+  - POL-TGR-VARIANT-01
+  - SAL-MTLX-00118
+- capability_id: MTLX-WRITE-001
+  provenance:
+  - POL-TGR-WRITE-01

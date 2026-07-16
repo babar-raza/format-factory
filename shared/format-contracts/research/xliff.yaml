@@ -1,0 +1,119 @@
+schema_version: '1.0'
+format_id: xliff
+canonical: true
+findings:
+- authority_class: PRODUCT_REQUIREMENT
+  api_expectations:
+    mutation_operations:
+    - segment.set_target_tokens(tokens)
+    - unit.split_segment(...)
+    - unit.join_segments(...)
+    read_operations:
+    - document.files()
+    - unit.segments()
+    - segment.get_source_tokens()
+    root_types:
+    - XliffDocument
+    - XliffFile
+    - XliffUnit
+    - XliffSegment
+  capability_domain: MODEL
+  depth_hint: 4
+  finding_id: RF-XLF-00001
+  kind: api_expectation
+  requirement: Expose the document hierarchy as typed XliffDocument/XliffFile/XliffGroup/XliffUnit/ XliffSegment
+    objects with tree order and inherited attributes resolved, so tools navigate structure without XML
+    spelunking.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: INLINE
+  depth_hint: 5
+  finding_id: RF-XLF-00002
+  kind: product_requirement
+  requirement: Represent inline content as a token sequence preserving paired-code identity and nesting,
+    and refuse edits that orphan, cross, duplicate, or illegally reorder paired codes - the mergeability
+    guarantee translation tools depend on.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: MODULE
+  depth_hint: 4
+  finding_id: RF-XLF-00003
+  kind: product_requirement
+  requirement: Declare per-module coverage programmatically (modeled, preservation-only, or unsupported)
+    for every optional module of the target version, and preserve unknown module content losslessly -
+    production-complete status requires all modules modeled.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-002
+  - SRC-XLF-003
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: SEG
+  depth_hint: 5
+  finding_id: RF-XLF-00004
+  kind: product_requirement
+  requirement: Produce a machine-readable segment mapping report after every split/join so downstream
+    merge tooling can rebind references across re-segmentation.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-003
+- required_tests:
+  - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+  authority_class: PRODUCT_REQUIREMENT
+  capability_domain: VALIDATE
+  finding_id: RF-XLF-00005
+  kind: test_obligation
+  requirement: Build validation matrices covering every core structural and inline element plus each optional
+    module, including deeply nested and overlapping markers, paired-code errors, bidi content, and supplementary
+    Unicode code points.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-002
+- authority_class: PRODUCT_REQUIREMENT
+  capability_domain: WRITE
+  finding_id: RF-XLF-00006
+  kind: security_expectation
+  requirement: Round-trip custom extensions byte-semantically in lossless mode and report any version-downgrade
+    loss before writing, so no tool in the chain silently loses vendor data.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+  source_ids:
+  - SRC-XLF-003
+note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
+  with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
+  here.
+source_records:
+- title: OASIS XLIFF Version 2.x specification (core and modules)
+  source_id: SRC-XLF-002
+  organization: OASIS
+  version: XLIFF 2.x
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+- title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
+  source_id: SRC-XLF-003
+  organization: Format Factory
+  version: null
+  canonical_url: null
+  authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED

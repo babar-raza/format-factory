@@ -2,14 +2,14 @@ format_id: mtlx
 display_name: MaterialX
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-MTLX-00002
   qname: FACT-MTLX-002
   element_qname: materialx:nodegraph
-  claim: A <nodegraph> element contains a directed acyclic graph of <node> elements connected via named
-    inputs/outputs; the graph exposes <output> elements as its external interface
+  claim: A <nodegraph> element contains a directed acyclic graph of <node> elements connected via named inputs/outputs;
+    the graph exposes <output> elements as its external interface
   section: MaterialX Specification — NodeGraph Elements
   authority: MaterialX v1.38 Specification (ASWF)
   source: structural_fact_manual
@@ -23,8 +23,8 @@ facts:
 - fact_id: SAL-MTLX-00003
   qname: FACT-MTLX-003
   element_qname: materialx:material
-  claim: Material content is defined by material nodes (e.g. <surfacematerial>) that bind shader nodes
-    to renderable elements; in MaterialX 1.38+ materials are nodes rather than dedicated <material> elements
+  claim: Material content is defined by material nodes (e.g. <surfacematerial>) that bind shader nodes to renderable
+    elements; in MaterialX 1.38+ materials are nodes rather than dedicated <material> elements
   section: MaterialX Specification — Material Nodes
   authority: MaterialX v1.38 Specification (ASWF)
   source: structural_fact_manual
@@ -38,9 +38,9 @@ facts:
 - fact_id: SAL-MTLX-00101
   qname: FACT-MTLX-101
   element_qname: materialx:document-root
-  claim: A MaterialX document is rooted at a <materialx> element carrying a version attribute; top-level
-    children include <nodedef>, <typedef>, <nodegraph>, <look>, and <propertyset> elements (shared structural
-    aggregate referenced by the nodedef/typedef/look/propertyset qnames)
+  claim: A MaterialX document is rooted at a <materialx> element carrying a version attribute; top-level children
+    include <nodedef>, <typedef>, <nodegraph>, <look>, and <propertyset> elements (shared structural aggregate referenced
+    by the nodedef/typedef/look/propertyset qnames)
   section: MaterialX Specification — Document Structure
   authority: MaterialX v1.38 Specification (ASWF)
   source: structural_fact_manual
@@ -50,4 +50,253 @@ facts:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00102
+  qname: FACT-MTLX-102
+  element_qname: mtlx:materialx
+  claim: A MaterialX document is rooted at a materialx element carrying a version attribute that identifies the
+    specification version
+  section: MaterialX specification - document root
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00103
+  qname: FACT-MTLX-103
+  element_qname: mtlx:version-upgrade
+  claim: Documents with older version attributes must be upgraded through defined version transforms before target-version
+    semantics apply
+  section: MaterialX specification - versioning
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00104
+  qname: FACT-MTLX-104
+  element_qname: mtlx:element
+  claim: Elements carry category name and type attributes and names must be unique within their containing scope
+  section: MaterialX specification - element naming
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00105
+  qname: FACT-MTLX-105
+  element_qname: mtlx:xi-include
+  claim: MaterialX documents may include other documents via XInclude-style include references resolved against
+    search paths
+  section: MaterialX specification - includes with external references
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00106
+  qname: FACT-MTLX-106
+  element_qname: mtlx:graph-validity
+  claim: Node connections must reference existing upstream outputs with compatible types and connection graphs must
+    remain acyclic for the document to be valid
+  section: MaterialX specification - connection constraints
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00107
+  qname: FACT-MTLX-107
+  element_qname: mtlx:resolution-validity
+  claim: Node instances must resolve to a nodedef by category type version and target and unresolvable or ambiguous
+    instances are invalid
+  section: MaterialX specification - definition resolution constraints
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00108
+  qname: FACT-MTLX-108
+  element_qname: mtlx:types
+  claim: The standard type system defines scalar vector color matrix string filename and array value types with
+    lexical value forms
+  section: MaterialX specification - value types
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00109
+  qname: FACT-MTLX-109
+  element_qname: mtlx:collection
+  claim: collection elements define reusable sets of geometry paths via includegeom and excludegeom attributes referenced
+    from assignments
+  section: MaterialX specification - collections
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00110
+  qname: FACT-MTLX-110
+  element_qname: mtlx:colorspace
+  claim: colorspace attributes declare the color space of values and images and are inherited hierarchically through
+    the element tree
+  section: MaterialX specification - color spaces
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00111
+  qname: FACT-MTLX-111
+  element_qname: mtlx:implementation
+  claim: implementation elements bind nodedefs to source implementations or implementation nodegraphs per target
+  section: MaterialX specification - implementations
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00112
+  qname: FACT-MTLX-112
+  element_qname: mtlx:look
+  claim: look elements carry materialassign and propertyassign children binding materials and properties to geometry
+    via geom attributes and collections
+  section: MaterialX specification - looks and assignments
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00113
+  qname: FACT-MTLX-113
+  element_qname: mtlx:node
+  claim: node elements instantiate node definitions with typed input elements connected to upstream outputs or carrying
+    literal values
+  section: MaterialX specification - nodes
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00114
+  qname: FACT-MTLX-114
+  element_qname: mtlx:nodedef
+  claim: nodedef elements declare node interfaces with typed input and output children and version and target attributes
+    for resolution
+  section: MaterialX specification - node definitions
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00115
+  qname: FACT-MTLX-115
+  element_qname: mtlx:nodegraph
+  claim: nodegraph elements contain node children and expose output elements that other elements reference
+  section: MaterialX specification - node graphs
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00116
+  qname: FACT-MTLX-116
+  element_qname: mtlx:surfacematerial
+  claim: surfacematerial and shader-semantic node types bind shader nodes to materials through typed material inputs
+  section: MaterialX specification - materials
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00117
+  qname: FACT-MTLX-117
+  element_qname: mtlx:unit
+  claim: unittype and unit attributes declare measurement units for values with conversion governed by unit definitions
+  section: MaterialX specification - units
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00118
+  qname: FACT-MTLX-118
+  element_qname: mtlx:variant
+  claim: variant and variantset elements define named value overrides applied to interfaces as alternative looks
+  section: MaterialX specification - variants
+  authority: MaterialX Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FCL-050
     added_at: '2026-07-16'
