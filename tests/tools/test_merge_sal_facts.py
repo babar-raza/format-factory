@@ -210,6 +210,70 @@ class TestSpecFactsTotal:
         assert len(facts) == 3  # matched existing, not duplicated
 
 
+def _read_aliases(sandbox) -> dict:
+    return json.loads(sandbox["root"].joinpath("shared", "sal-fact-id-aliases.json").read_text(encoding="utf-8"))
+
+
+class TestAliasReconciliation:
+    """GAP-FORENSIC-008 convergence round 2 (ISSUE-GWB-CONV2-001): the merge
+    step itself must maintain alias completeness, since writer scripts
+    (e.g. seed_sal_candidates.py) cannot be trusted to remember to."""
+
+    def test_missing_alias_backfilled_on_merge(self, sandbox):
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00001", "FACT-QOI-001", "QOI file header"),
+            _fact("SAL-QOI-00099", "FACT-QOI-099", "a newly seeded fact with no alias yet"),
+        ])
+        summary = msf.merge_formats(formats=["qoi"])
+        assert not summary["errors"]
+        aliases = _read_aliases(sandbox)["aliases"]
+        assert aliases.get("FACT-QOI-099") == "SAL-QOI-00099"
+        assert summary["alias_additions"] == [{"format_id": "qoi", "added": 1}]
+
+    def test_alias_conflict_is_hard_error_not_overwrite(self, sandbox):
+        aliases_path = sandbox["root"] / "shared" / "sal-fact-id-aliases.json"
+        doc = json.loads(aliases_path.read_text(encoding="utf-8"))
+        doc["aliases"]["FACT-QOI-099"] = "SAL-QOI-00050"  # pre-existing, disagreeing mapping
+        aliases_path.write_text(json.dumps(doc), encoding="utf-8")
+
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00099", "FACT-QOI-099", "a fact whose qname collides with a different existing alias"),
+        ])
+        summary = msf.merge_formats(formats=["qoi"])
+        assert summary["errors"], "alias conflict must be a hard error"
+        assert "alias conflict" in summary["errors"][0]["reason"]
+        # existing alias must be untouched
+        assert _read_aliases(sandbox)["aliases"]["FACT-QOI-099"] == "SAL-QOI-00050"
+
+    def test_check_mode_reports_alias_drift_without_writing(self, sandbox):
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00099", "FACT-QOI-099", "a newly seeded fact with no alias yet"),
+        ])
+        before = _read_aliases(sandbox)
+        summary = msf.merge_formats(formats=["qoi"], check=True)
+        after = _read_aliases(sandbox)
+        assert before == after, "--check must not write the alias file"
+        assert summary["alias_drift"] == [{"format_id": "qoi", "missing_aliases": 1}]
+
+    def test_total_aliases_recomputed(self, sandbox):
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00099", "FACT-QOI-099", "a newly seeded fact with no alias yet"),
+        ])
+        before_count = len(_read_aliases(sandbox)["aliases"])
+        msf.merge_formats(formats=["qoi"])
+        after = _read_aliases(sandbox)
+        assert after["total_aliases"] == before_count + 1
+        assert after["total_aliases"] == len(after["aliases"])
+
+    def test_second_run_reports_no_alias_additions(self, sandbox):
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00099", "FACT-QOI-099", "a newly seeded fact with no alias yet"),
+        ])
+        msf.merge_formats(formats=["qoi"])
+        summary2 = msf.merge_formats(formats=["qoi"])
+        assert summary2["alias_additions"] == []
+
+
 class TestStoreAutoDiscovery:
     def test_new_store_merged_without_explicit_formats(self, sandbox):
         """TC-GWB-H06: a committed store for a format NOT in the hardcoded

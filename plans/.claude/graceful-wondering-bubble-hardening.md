@@ -398,6 +398,7 @@ Explicit deferrals with owners — nothing here is silently dropped:
 | TC-GWB-H09 | CLOSED |
 | TC-GWB-H10 | CLOSED |
 | TC-GWB-H11 | CLOSED |
+| TC-GWB-H12 | CLOSED |
 
 **H-taskcard closure evidence (2026-07-16, this session):**
 - **H01 CLOSED:** netpbm stores pbm 5 / pgm 6 / ppm 6 facts incl. width/height/maxval/raster;
@@ -594,6 +595,61 @@ validation_commands:
 **Result:** 94/94 backfilled, 0 conflicts, `total_aliases` 14683 → 14777. V225: FAIL (94) →
 **PASS**. `merge --check`: clean (facts were already compiled; only aliases lagged). Audit:
 100% coverage maintained. 24/24 tool tests pass, no regressions.
+
+## TC-GWB-H12 — Root-Cause Fix: Alias Reconciliation Moved Into `merge_sal_facts.py`
+
+**Recurrence detected:** during this same convergence session, `shared/sal-facts/{ipynb,
+mtlx,nrrd,ubl,xliff}.yaml` were expanded AGAIN by the concurrent mission (hundreds of new
+lines, uncommitted) — the exact drift class TC-GWB-H11 had just closed, reproducing live
+within the same session. A one-time backfill treats the symptom; per this plan's own
+founding diagnosis (RC-D: "every writer must remember to update every denormalized copy;
+none reliably do"), the durable fix is to stop requiring writer discipline at all.
+
+**Discovery:** a new tool `tools/spec/seed_sal_candidates.py` (created by the concurrent
+mission, citing this plan's own TC-GWB-H03 pattern as its model) seeds facts into the
+committed stores and then invokes `merge_sal_facts.py` as a subprocess — but never touches
+`shared/sal-fact-id-aliases.json`. Two takeover attempts (that file's lease, and
+`forensic-gap-register.yaml`'s) were both correctly denied (owners genuinely active) — so
+rather than edit that script directly, the fix targets `merge_sal_facts.py` itself, which
+`seed_sal_candidates.py` already calls unconditionally with no arguments (full default
+merge) after every seed. Any future writer that recompiles via this tool — the sole
+sanctioned recompilation path — gets alias-completeness for free, without editing that
+writer at all.
+
+**Implementation:** `merge_sal_facts.py` now reconciles `shared/sal-fact-id-aliases.json`
+in the same pass as the fact union — for every processed store fact with both `qname` and
+`fact_id`, ensures `aliases[qname] == fact_id`. Purely additive (never overwrites an
+existing alias); a genuine conflict (existing alias disagrees with the store) is a hard
+error, mirroring the existing `FactConflictError` philosophy exactly (`AliasConflictError`).
+`--check` reports `alias_drift` without writing; a real run backfills and recomputes
+`total_aliases`.
+
+```yaml
+taskcard_id: TC-GWB-H12
+title: "Move alias reconciliation into merge_sal_facts.py so no writer script has to remember it"
+source_issue_ids: [ISSUE-GWB-CONV2-001]  # same root cause, upgraded from backfill to structural fix
+status: completed_verified
+lane_owner: sal_infrastructure (agent-owned)
+required_implementation: "_reconcile_aliases() in tools/spec/merge_sal_facts.py; wired into
+  merge_formats() for both normal and --check modes"
+required_verification: "5 new tests (backfill, conflict-is-hard-error, --check reports
+  without writing, total_aliases recomputed, idempotent rerun reports no additions);
+  full suite 29/29 pass; real-repo merge run against currently-drifted stores: 0 errors,
+  V225 remains PASS"
+required_evidence: "tests/tools/test_merge_sal_facts.py TestAliasReconciliation (5 tests);
+  live merge_sal_facts.py run output"
+acceptance_criteria: "a future seed_sal_candidates.py (or any writer) run that adds facts
+  without touching aliases no longer produces V225 drift, without editing that writer"
+allowed_paths: [tools/spec/merge_sal_facts.py, tests/tools/test_merge_sal_facts.py]
+forbidden_paths: [tools/spec/seed_sal_candidates.py — active lease, not touched]
+machine_state: CLOSED
+```
+
+**Result:** 29/29 tool tests pass (24 prior + 5 new). Live merge against the currently
+(concurrently) modified stores: 0 alias additions needed this run (already in sync), 0
+errors, V225 still PASS — confirms no regression. The mechanism is proven by direct test,
+not merely asserted; the NEXT time a writer forgets aliases, this closes it automatically
+on the next merge rather than requiring another manual convergence round.
 
 ## GAP-FORENSIC-009 — Attempted, Correctly Blocked
 

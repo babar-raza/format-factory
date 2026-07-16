@@ -22,6 +22,16 @@ Merge semantics (union, never clobber):
     nothing for any format, the combined database is not rewritten (reruns
     are no-ops, output is deterministic).
 
+Alias reconciliation (GAP-FORENSIC-008 convergence round 2, ISSUE-GWB-CONV2-001):
+  - Every merge pass also ensures shared/sal-fact-id-aliases.json maps each
+    processed store fact's legacy 'qname' to its 'fact_id'. This runs
+    regardless of which tool wrote the store (e.g. seed_sal_candidates.py),
+    so alias-completeness is a property of the merge step, not something every
+    future writer must remember to maintain separately (RC-D).
+  - Purely additive: an existing alias is never overwritten. A genuine
+    conflict (existing alias disagrees with the store) is a hard error,
+    exactly like a fact claim conflict — never silently resolved.
+
 Modes:
     python tools/spec/merge_sal_facts.py                 # merge all covered formats
     python tools/spec/merge_sal_facts.py --formats qoi   # merge selected formats
@@ -89,6 +99,38 @@ def _load_aliases() -> dict[str, str]:
         return _load_json(_ALIASES_PATH).get("aliases", {})
     except Exception:
         return {}
+
+
+class AliasConflictError(ValueError):
+    """A store fact's qname->fact_id mapping disagrees with an existing alias."""
+
+
+def _reconcile_aliases(
+    facts: list[dict],
+    aliases: dict[str, str],
+    fmt_id: str,
+) -> dict[str, str]:
+    """Return {qname: fact_id} entries missing from `aliases` for these facts.
+
+    Raises AliasConflictError if a fact's qname already maps to a DIFFERENT
+    fact_id — never silently overwritten.
+    """
+    additions: dict[str, str] = {}
+    for fact in facts:
+        qname = fact.get("qname")
+        fid = fact.get("fact_id")
+        if not qname or not fid:
+            continue
+        existing = aliases.get(qname, additions.get(qname))
+        if existing is None:
+            additions[qname] = fid
+        elif existing != fid:
+            raise AliasConflictError(
+                f"[{fmt_id}] alias conflict: {qname} already maps to {existing}, "
+                f"but store fact declares {fid}. Resolve explicitly in "
+                f"shared/sal-fact-id-aliases.json or shared/sal-facts/{fmt_id}.yaml."
+            )
+    return additions
 
 
 def _fact_key(fact: dict, aliases: dict[str, str]) -> str | None:
@@ -254,9 +296,11 @@ def merge_formats(
     formats_to_check = formats or _default_formats()
     summary: dict = {
         "merged": [], "skipped": [], "errors": [], "drift": [],
+        "alias_additions": [], "alias_drift": [],
         "total_facts_before": total_before, "total_facts_after": total_before,
     }
     changed = False
+    alias_additions: dict[str, str] = {}
 
     for fmt_id in formats_to_check:
         loaded = _load_source_facts(fmt_id)
@@ -276,6 +320,18 @@ def merge_formats(
         except (FactConflictError, ValueError) as exc:
             summary["errors"].append({"format_id": fmt_id, "reason": str(exc)})
             continue
+
+        try:
+            fmt_alias_additions = _reconcile_aliases(source_facts, {**aliases, **alias_additions}, fmt_id)
+        except AliasConflictError as exc:
+            summary["errors"].append({"format_id": fmt_id, "reason": str(exc)})
+            continue
+        if fmt_alias_additions:
+            if check:
+                summary["alias_drift"].append({"format_id": fmt_id, "missing_aliases": len(fmt_alias_additions)})
+            else:
+                alias_additions.update(fmt_alias_additions)
+                summary["alias_additions"].append({"format_id": fmt_id, "added": len(fmt_alias_additions)})
 
         entry_changed = (
             stats["added"] > 0
@@ -332,6 +388,12 @@ def merge_formats(
         _COMBINED.write_text(json.dumps(combined, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         summary["total_facts_after"] = total_after
 
+    if not check and not dry_run and alias_additions and _ALIASES_PATH.exists():
+        alias_doc = _load_json(_ALIASES_PATH)
+        alias_doc.setdefault("aliases", {}).update(alias_additions)
+        alias_doc["total_aliases"] = len(alias_doc["aliases"])
+        _ALIASES_PATH.write_text(json.dumps(alias_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
     return summary
 
 
@@ -358,12 +420,16 @@ def main() -> int:
     for item in summary["drift"]:
         print(f"  DRIFT {item['format_id']}: {item['missing_in_combined']} facts missing in combined, "
               f"{item['content_divergence']} divergent (source: {item['source']})")
+    for item in summary["alias_additions"]:
+        print(f"  {item['format_id']}: +{item['added']} alias(es) backfilled")
+    for item in summary["alias_drift"]:
+        print(f"  ALIAS DRIFT {item['format_id']}: {item['missing_aliases']} alias(es) missing")
     for item in summary["errors"]:
         print(f"  {item['format_id']}: ERROR {item['reason']}", file=sys.stderr)
 
     if summary["errors"]:
         return 1
-    if args.check and summary["drift"]:
+    if args.check and (summary["drift"] or summary["alias_drift"]):
         return 2
     if args.check:
         print("No drift: combined database is a superset of all canonical stores.")
