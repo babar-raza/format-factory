@@ -2,23 +2,23 @@
 XCF structural element: xcf:header
 
 Spec ref: GIMP XCF file format — file header
-Fact ref: FACT-XCF-001
+Fact ref: SAL-XCF-00001
 QName: xcf:header
 Canonical class: Header
 Facade: XcfHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for xcf:header (XCF file header)."""
 
-    spec_qname = "xcf:header"
-    spec_fact_ref = "FACT-XCF-001"
-    namespace_uri = "urn:format:gimp:xcf:1.0"
-    local_name = "header"
-    facade_names = ["XcfHeader"]
+    spec_qname: ClassVar[str] = "xcf:header"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00001"
+    namespace_uri: ClassVar[str] = "urn:format:gimp:xcf:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["XcfHeader"]
 
     MAGIC = b"gimp xcf "
 

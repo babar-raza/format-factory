@@ -8,7 +8,7 @@ Canonical class: Ubl.CreditNote
 Facade: UblCreditNote
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class CreditNote:
@@ -18,11 +18,11 @@ class CreditNote:
     mandatory Peppol pairing for corrections/refunds against a prior Invoice.
     """
 
-    spec_qname = "ubl:credit-note"
-    spec_fact_ref = "FACT-UBL-105"
-    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
-    local_name = "CreditNote"
-    facade_names = ["UblCreditNote"]
+    spec_qname: ClassVar[str] = "ubl:credit-note"
+    spec_fact_ref: ClassVar[str] = "FACT-UBL-105"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
+    local_name: ClassVar[str] = "CreditNote"
+    facade_names: ClassVar[list] = ["UblCreditNote"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

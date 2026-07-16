@@ -1,10 +1,11 @@
 """FodgDocument — production facade for office:document (FODG).
 
 Spec authority: office:document
-Fact ref: FACT-FODG-EX-0029
+Fact ref: SAL-FODG-00031
 Canonical spec class: src/python/fodg/spec/office/document.py::Document
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.office.document import Document as _SpecDocument
 from ..spec.draw.page import Page as _Page
@@ -13,9 +14,9 @@ from ..spec.draw.page import Page as _Page
 class FodgDocument(_SpecDocument):
     """Production facade for office:document (ODF Drawing root element)."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODG-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-FODG-00031"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     @classmethod
     def from_file(cls, path: str) -> "FodgDocument":

@@ -21,18 +21,18 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_DIMENSION = 65536
 MAX_MAXVAL = 65535
 
-# Magic number constants (Netpbm spec — FACT-PPM-001, FACT-PPM-002)
-# FACT-PPM-001: "PPM ASCII format starts with magic 'P3' followed by whitespace"
-# FACT-PPM-002: "PPM binary format starts with magic 'P6' followed by whitespace"
-PPM_MAGIC_ASCII = "P3"   # FACT-PPM-001
-PPM_MAGIC_BINARY = "P6"  # FACT-PPM-002
+# Magic number constants (Netpbm spec — SAL-PPM-00001, SAL-PPM-00002)
+# SAL-PPM-00001: "PPM ASCII format starts with magic 'P3' followed by whitespace"
+# SAL-PPM-00002: "PPM binary format starts with magic 'P6' followed by whitespace"
+PPM_MAGIC_ASCII = "P3"   # SAL-PPM-00001
+PPM_MAGIC_BINARY = "P6"  # SAL-PPM-00002
 
 
 class PpmError(Exception):
@@ -57,7 +57,7 @@ class PpmDecodeError(PpmError):
 
 @dataclass
 class PpmImage:
-    spec_qname: str = "ppm:image"
+    spec_qname: ClassVar[str] = "ppm:image"
     width: int = 0
     height: int = 0
     maxval: int = 255

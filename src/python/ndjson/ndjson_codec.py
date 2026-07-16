@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_LINES = 1_000_000
@@ -37,11 +37,11 @@ class NdjsonRecord:
     Real record access is via load_ndjson() which returns Python objects directly.
     """
 
-    spec_qname: str = "ndjson:record"
-    spec_fact_ref: str = "FACT-NDJSON-001"
-    namespace_uri: str = "https://ndjson.org"
-    local_name: str = "record"
-    authority_only: bool = True
+    spec_qname: ClassVar[str] = "ndjson:record"
+    spec_fact_ref: ClassVar[str] = "SAL-NDJSON-00001"
+    namespace_uri: ClassVar[str] = "https://ndjson.org"
+    local_name: ClassVar[str] = "record"
+    authority_only: ClassVar[bool] = True
 
 
 def probe_ndjson(source) -> bool:

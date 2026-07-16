@@ -2,23 +2,23 @@
 XCF structural element: xcf:layer
 
 Spec ref: GIMP XCF file format — layer record
-Fact ref: FACT-XCF-002
+Fact ref: SAL-XCF-00002
 QName: xcf:layer
 Canonical class: Layer
 Facade: XcfLayer
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Layer:
     """Canonical spec-shaped class for xcf:layer."""
 
-    spec_qname = "xcf:layer"
-    spec_fact_ref = "FACT-XCF-002"
-    namespace_uri = "urn:format:gimp:xcf:1.0"
-    local_name = "layer"
-    facade_names = ["XcfLayer"]
+    spec_qname: ClassVar[str] = "xcf:layer"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00002"
+    namespace_uri: ClassVar[str] = "urn:format:gimp:xcf:1.0"
+    local_name: ClassVar[str] = "layer"
+    facade_names: ClassVar[list] = ["XcfLayer"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

@@ -8,7 +8,7 @@ Canonical class: NodeDef
 Facade: MtlxNodeDef
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class NodeDef:
@@ -22,11 +22,11 @@ class NodeDef:
     underlying dict shape rather than duplicating parsing logic.
     """
 
-    spec_qname = "materialx:nodedef"
-    spec_fact_ref = "FACT-MTLX-101"
-    namespace_uri = "urn:format:materialx:1.39"
-    local_name = "nodedef"
-    facade_names = ["MtlxNodeDef"]
+    spec_qname: ClassVar[str] = "materialx:nodedef"
+    spec_fact_ref: ClassVar[str] = "FACT-MTLX-101"
+    namespace_uri: ClassVar[str] = "urn:format:materialx:1.39"
+    local_name: ClassVar[str] = "nodedef"
+    facade_names: ClassVar[list] = ["MtlxNodeDef"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

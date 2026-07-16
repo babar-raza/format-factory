@@ -2,24 +2,24 @@
 ODF spec element: office:document (ODS root element)
 
 Spec ref: ODF 1.3 §3.1 — Document Root Element
-Fact ref: FACT-ODS-EX-0029
+Fact ref: SAL-ODS-00029
 QName: office:document
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Document
 Facade: OdsDocument
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Document:
     """Canonical spec-shaped class for office:document in ODS context."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-ODS-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "document"
-    facade_names = ["OdsDocument"]
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-ODS-00029"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = ["OdsDocument"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

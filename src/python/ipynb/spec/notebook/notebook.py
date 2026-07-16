@@ -14,17 +14,17 @@ behavior lives here — that is owned by ``ipynb_codec``.
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Notebook:
     """Canonical spec-shaped class for ipynb:notebook (root JSON document)."""
 
-    spec_qname = "ipynb:notebook"
-    spec_fact_ref = "FACT-IPYNB-001"
-    namespace_uri = "urn:format:ipynb:4.5"
-    local_name = "notebook"
-    facade_names = ["IpynbNotebook"]
+    spec_qname: ClassVar[str] = "ipynb:notebook"
+    spec_fact_ref: ClassVar[str] = "FACT-IPYNB-001"
+    namespace_uri: ClassVar[str] = "urn:format:ipynb:4.5"
+    local_name: ClassVar[str] = "notebook"
+    facade_names: ClassVar[list] = ["IpynbNotebook"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

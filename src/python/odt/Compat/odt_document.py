@@ -1,10 +1,11 @@
 """OdtDocument — production facade for office:document (ODT).
 
 Spec authority: office:document
-Fact ref: FACT-ODT-EX-0029
+Fact ref: SAL-ODT-00028
 Canonical spec class: src/python/odt/spec/office/document.py::Document
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.office.document import Document as _SpecDocument
 from ..spec.text.paragraph import Paragraph as _Paragraph
@@ -14,9 +15,9 @@ from ..spec.text.heading import Heading as _Heading
 class OdtDocument(_SpecDocument):
     """Production facade for office:document (ODF Text Document root element)."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-ODT-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-ODT-00028"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     @classmethod
     def from_file(cls, path: str) -> "OdtDocument":

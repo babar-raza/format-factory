@@ -15,17 +15,17 @@ this class is the accessor surface those layers populate.
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Cell:
     """Canonical spec-shaped class for ipynb:cell (a single notebook cell)."""
 
-    spec_qname = "ipynb:cell"
-    spec_fact_ref = "FACT-IPYNB-002"
-    namespace_uri = "urn:format:ipynb:4.5"
-    local_name = "cell"
-    facade_names = ["IpynbCell"]
+    spec_qname: ClassVar[str] = "ipynb:cell"
+    spec_fact_ref: ClassVar[str] = "FACT-IPYNB-002"
+    namespace_uri: ClassVar[str] = "urn:format:ipynb:4.5"
+    local_name: ClassVar[str] = "cell"
+    facade_names: ClassVar[list] = ["IpynbCell"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

@@ -2,23 +2,23 @@
 PBM structural element: pbm:bitmap
 
 Spec ref: Netpbm format — PBM pixel data
-Fact ref: FACT-PBM-002
+Fact ref: SAL-PBM-00002
 QName: pbm:bitmap
 Canonical class: Bitmap
 Facade: PbmBitmap
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Bitmap:
     """Canonical spec-shaped class for pbm:bitmap (pixel data)."""
 
-    spec_qname = "pbm:bitmap"
-    spec_fact_ref = "FACT-PBM-002"
-    namespace_uri = "urn:format:netpbm:pbm:1.0"
-    local_name = "bitmap"
-    facade_names = ["PbmBitmap"]
+    spec_qname: ClassVar[str] = "pbm:bitmap"
+    spec_fact_ref: ClassVar[str] = "SAL-PBM-00002"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:pbm:1.0"
+    local_name: ClassVar[str] = "bitmap"
+    facade_names: ClassVar[list] = ["PbmBitmap"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

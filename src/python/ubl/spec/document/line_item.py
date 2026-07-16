@@ -8,7 +8,7 @@ Canonical class: Ubl.LineItem
 Facade: UblLineItem
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class LineItem:
@@ -18,11 +18,11 @@ class LineItem:
     ubl_codec._parse_invoice / _parse_order.
     """
 
-    spec_qname = "ubl:line-item"
-    spec_fact_ref = "FACT-UBL-002"
-    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-    local_name = "InvoiceLine"
-    facade_names = ["UblLineItem"]
+    spec_qname: ClassVar[str] = "ubl:line-item"
+    spec_fact_ref: ClassVar[str] = "FACT-UBL-002"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+    local_name: ClassVar[str] = "InvoiceLine"
+    facade_names: ClassVar[list] = ["UblLineItem"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

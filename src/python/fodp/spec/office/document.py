@@ -2,24 +2,24 @@
 ODF spec element: office:document (FODP root element)
 
 Spec ref: ODF 1.3 §3.1 — Document Root Element
-Fact ref: FACT-FODP-EX-0029
+Fact ref: SAL-FODP-00031
 QName: office:document
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Document
 Facade: FodpDocument
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Document:
     """Canonical spec-shaped class for office:document in FODP context."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODP-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "document"
-    facade_names = ["FodpDocument"]
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-FODP-00031"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = ["FodpDocument"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

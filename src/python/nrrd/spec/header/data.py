@@ -8,7 +8,7 @@ Canonical class: Data
 Facade: NrrdData
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Data:
@@ -19,11 +19,11 @@ class Data:
     view over already-computed payload metadata.
     """
 
-    spec_qname = "nrrd:data"
-    spec_fact_ref = "FACT-NRRD-003"
-    namespace_uri = "urn:format:nrrd:5.0"
-    local_name = "data"
-    facade_names = ["NrrdData"]
+    spec_qname: ClassVar[str] = "nrrd:data"
+    spec_fact_ref: ClassVar[str] = "FACT-NRRD-003"
+    namespace_uri: ClassVar[str] = "urn:format:nrrd:5.0"
+    local_name: ClassVar[str] = "data"
+    facade_names: ClassVar[list] = ["NrrdData"]
 
     # Encodings named in FACT-NRRD-003. raw/ascii/hex are uncompressed;
     # gzip/bzip2/zlib (and the "gz" alias accepted by the codec) are compressed.

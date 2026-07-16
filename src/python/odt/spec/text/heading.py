@@ -2,24 +2,24 @@
 ODF spec element: text:h (ODT heading)
 
 Spec ref: ODF 1.3 §5.1.2 — Heading
-Fact ref: FACT-ODT-EX-0094
+Fact ref: SAL-ODT-00091
 QName: text:h
 Namespace: urn:oasis:names:tc:opendocument:xmlns:text:1.0
 Canonical class: Heading
 Facade: OdtHeading
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Heading:
     """Canonical spec-shaped class for text:h in ODT context."""
 
-    spec_qname = "text:h"
-    spec_fact_ref = "FACT-ODT-EX-0094"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
-    local_name = "h"
-    facade_names = ["OdtHeading"]
+    spec_qname: ClassVar[str] = "text:h"
+    spec_fact_ref: ClassVar[str] = "SAL-ODT-00091"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    local_name: ClassVar[str] = "h"
+    facade_names: ClassVar[list] = ["OdtHeading"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

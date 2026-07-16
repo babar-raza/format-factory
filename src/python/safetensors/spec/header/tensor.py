@@ -8,17 +8,17 @@ Canonical class: Tensor
 Facade: SafetensorsTensor
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Tensor:
     """Canonical spec-shaped class for safetensors:tensor (dtype/shape/data_offsets descriptor)."""
 
-    spec_qname = "safetensors:tensor"
-    spec_fact_ref = "FACT-SAFETENSORS-002"
-    namespace_uri = "urn:format:safetensors:0.4"
-    local_name = "tensor"
-    facade_names = ["SafetensorsTensor"]
+    spec_qname: ClassVar[str] = "safetensors:tensor"
+    spec_fact_ref: ClassVar[str] = "FACT-SAFETENSORS-002"
+    namespace_uri: ClassVar[str] = "urn:format:safetensors:0.4"
+    local_name: ClassVar[str] = "tensor"
+    facade_names: ClassVar[list] = ["SafetensorsTensor"]
 
     VALID_DTYPES = (
         "F16", "BF16", "F32", "F64",

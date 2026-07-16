@@ -8,7 +8,7 @@ Canonical class: Header
 Facade: NrrdHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 # NRRD `kinds` values that denote a domain (spatial/temporal) axis, per the
 # Teem spec's kind enumeration. Any other declared kind (scalar, vector,
@@ -47,11 +47,11 @@ class Header:
     already-parsed header value), not file/byte parsing.
     """
 
-    spec_qname = "nrrd:header"
-    spec_fact_ref = "FACT-NRRD-002"
-    namespace_uri = "urn:format:nrrd:5.0"
-    local_name = "header"
-    facade_names = ["NrrdHeader"]
+    spec_qname: ClassVar[str] = "nrrd:header"
+    spec_fact_ref: ClassVar[str] = "FACT-NRRD-002"
+    namespace_uri: ClassVar[str] = "urn:format:nrrd:5.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["NrrdHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

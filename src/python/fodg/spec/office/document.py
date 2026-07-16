@@ -1,13 +1,13 @@
 """FODG spec Document — canonical implementation of office:document.
 
 spec_qname: office:document
-spec_fact_ref: FACT-FODG-EX-0029
+spec_fact_ref: SAL-FODG-00031
 Spec ref: ODF 1.3 §3.1
 Facade: FodgDocument (Compat/fodg_document.py)
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Document:
@@ -18,11 +18,11 @@ class Document:
         pages (list[dict]), shapes_total (int)
     """
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-FODG-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-    local_name = "document"
-    facade_names = ["FodgDocument"]
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-FODG-00031"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = ["FodgDocument"]
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

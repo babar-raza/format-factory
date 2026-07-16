@@ -8,17 +8,17 @@ Canonical class: Unit
 Facade: XliffUnit
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Unit:
     """Canonical spec-shaped class for xliff:unit (a translation unit)."""
 
-    spec_qname = "xliff:unit"
-    spec_fact_ref = "FACT-XLIFF-002"
-    namespace_uri = "urn:oasis:names:tc:xliff:document:2.0"
-    local_name = "unit"
-    facade_names = ["XliffUnit"]
+    spec_qname: ClassVar[str] = "xliff:unit"
+    spec_fact_ref: ClassVar[str] = "FACT-XLIFF-002"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:xliff:document:2.0"
+    local_name: ClassVar[str] = "unit"
+    facade_names: ClassVar[list] = ["XliffUnit"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

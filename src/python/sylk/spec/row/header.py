@@ -2,23 +2,23 @@
 SYLK structural element: sylk:header
 
 Spec ref: SYLK (Symbolic Link) format — ID record header
-Fact ref: FACT-SYLK-001
+Fact ref: SAL-SYLK-00001
 QName: sylk:header
 Canonical class: Header
 Facade: SylkHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for sylk:header (SYLK ID record)."""
 
-    spec_qname = "sylk:header"
-    spec_fact_ref = "FACT-SYLK-001"
-    namespace_uri = "urn:format:sylk:1.0"
-    local_name = "header"
-    facade_names = ["SylkHeader"]
+    spec_qname: ClassVar[str] = "sylk:header"
+    spec_fact_ref: ClassVar[str] = "SAL-SYLK-00001"
+    namespace_uri: ClassVar[str] = "urn:format:sylk:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["SylkHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

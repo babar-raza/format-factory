@@ -2,23 +2,23 @@
 NDJSON structural element: ndjson:field
 
 Spec ref: NDJSON — key-value field within a record
-Fact ref: FACT-NDJSON-002
+Fact ref: SAL-NDJSON-00002
 QName: ndjson:field
 Canonical class: Field
 Facade: NdjsonField
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Field:
     """Canonical spec-shaped class for ndjson:field."""
 
-    spec_qname = "ndjson:field"
-    spec_fact_ref = "FACT-NDJSON-002"
-    namespace_uri = "urn:format:ndjson:1.0"
-    local_name = "field"
-    facade_names = ["NdjsonField"]
+    spec_qname: ClassVar[str] = "ndjson:field"
+    spec_fact_ref: ClassVar[str] = "SAL-NDJSON-00002"
+    namespace_uri: ClassVar[str] = "urn:format:ndjson:1.0"
+    local_name: ClassVar[str] = "field"
+    facade_names: ClassVar[list] = ["NdjsonField"]
 
     def __init__(self, key: str, value: Any) -> None:
         self._key = key

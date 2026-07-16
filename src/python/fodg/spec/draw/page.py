@@ -1,13 +1,13 @@
 """FODG spec Page — canonical implementation of draw:page.
 
 spec_qname: draw:page
-spec_fact_ref: FACT-FODG-EX-0417
+spec_fact_ref: SAL-FODG-00414
 Spec ref: ODF 1.3 §9.1.4
 Facade: FodgPage (Compat/fodg_page.py)
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Page:
@@ -17,11 +17,11 @@ class Page:
     Typical keys: name (str), shape_count (int), shapes (list[dict]).
     """
 
-    spec_qname = "draw:page"
-    spec_fact_ref = "FACT-FODG-EX-0417"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
-    local_name = "page"
-    facade_names = ["FodgPage"]
+    spec_qname: ClassVar[str] = "draw:page"
+    spec_fact_ref: ClassVar[str] = "SAL-FODG-00414"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    local_name: ClassVar[str] = "page"
+    facade_names: ClassVar[list] = ["FodgPage"]
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

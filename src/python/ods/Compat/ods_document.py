@@ -1,10 +1,11 @@
 """OdsDocument — production facade for office:document (ODS).
 
 Spec authority: office:document
-Fact ref: FACT-ODS-EX-0029
+Fact ref: SAL-ODS-00029
 Canonical spec class: src/python/ods/spec/office/document.py::Document
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from ..spec.office.document import Document as _SpecDocument
 from ..spec.table.table import Table as _Table
@@ -13,9 +14,9 @@ from ..spec.table.table import Table as _Table
 class OdsDocument(_SpecDocument):
     """Production facade for office:document (ODF Spreadsheet root element)."""
 
-    spec_qname = "office:document"
-    spec_fact_ref = "FACT-ODS-EX-0029"
-    namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "SAL-ODS-00029"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     @classmethod
     def from_file(cls, path: str) -> "OdsDocument":

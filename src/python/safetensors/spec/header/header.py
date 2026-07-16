@@ -8,17 +8,17 @@ Canonical class: Header
 Facade: SafetensorsHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for safetensors:header (8-byte length + JSON header)."""
 
-    spec_qname = "safetensors:header"
-    spec_fact_ref = "FACT-SAFETENSORS-001"
-    namespace_uri = "urn:format:safetensors:0.4"
-    local_name = "header"
-    facade_names = ["SafetensorsHeader"]
+    spec_qname: ClassVar[str] = "safetensors:header"
+    spec_fact_ref: ClassVar[str] = "FACT-SAFETENSORS-001"
+    namespace_uri: ClassVar[str] = "urn:format:safetensors:0.4"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["SafetensorsHeader"]
 
     HEADER_LEN_SIZE = 8
 

@@ -8,17 +8,17 @@ Canonical class: Ubl.Order
 Facade: UblOrder
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Order:
     """Canonical spec-shaped class for ubl:order (architecture_only marker)."""
 
-    spec_qname = "ubl:order"
-    spec_fact_ref = "FACT-UBL-001"
-    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:Order-2"
-    local_name = "Order"
-    facade_names = ["UblOrder"]
+    spec_qname: ClassVar[str] = "ubl:order"
+    spec_fact_ref: ClassVar[str] = "FACT-UBL-001"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:specification:ubl:schema:xsd:Order-2"
+    local_name: ClassVar[str] = "Order"
+    facade_names: ClassVar[list] = ["UblOrder"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

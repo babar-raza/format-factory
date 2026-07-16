@@ -2,23 +2,23 @@
 NDJSON structural element: ndjson:record
 
 Spec ref: Newline Delimited JSON (ndjson.org) — one JSON object per line
-Fact ref: FACT-NDJSON-001
+Fact ref: SAL-NDJSON-00001
 QName: ndjson:record
 Canonical class: Record
 Facade: NdjsonRecord
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Record:
     """Canonical spec-shaped class for ndjson:record (one JSON line)."""
 
-    spec_qname = "ndjson:record"
-    spec_fact_ref = "FACT-NDJSON-001"
-    namespace_uri = "urn:format:ndjson:1.0"
-    local_name = "record"
-    facade_names = ["NdjsonRecord"]
+    spec_qname: ClassVar[str] = "ndjson:record"
+    spec_fact_ref: ClassVar[str] = "SAL-NDJSON-00001"
+    namespace_uri: ClassVar[str] = "urn:format:ndjson:1.0"
+    local_name: ClassVar[str] = "record"
+    facade_names: ClassVar[list] = ["NdjsonRecord"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = dict(data)

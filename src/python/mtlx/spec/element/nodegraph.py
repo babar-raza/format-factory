@@ -8,17 +8,17 @@ Canonical class: NodeGraph
 Facade: MtlxNodeGraph
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class NodeGraph:
     """Canonical spec-shaped class for materialx:nodegraph (a <nodegraph> element)."""
 
-    spec_qname = "materialx:nodegraph"
-    spec_fact_ref = "FACT-MTLX-002"
-    namespace_uri = "urn:format:materialx:1.39"
-    local_name = "nodegraph"
-    facade_names = ["MtlxNodeGraph"]
+    spec_qname: ClassVar[str] = "materialx:nodegraph"
+    spec_fact_ref: ClassVar[str] = "FACT-MTLX-002"
+    namespace_uri: ClassVar[str] = "urn:format:materialx:1.39"
+    local_name: ClassVar[str] = "nodegraph"
+    facade_names: ClassVar[list] = ["MtlxNodeGraph"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

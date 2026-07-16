@@ -2,23 +2,23 @@
 SYLK structural element: sylk:cell
 
 Spec ref: SYLK format — C (cell) record
-Fact ref: FACT-SYLK-003
+Fact ref: SAL-SYLK-00003
 QName: sylk:cell
 Canonical class: Cell
 Facade: SylkCell
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Cell:
     """Canonical spec-shaped class for sylk:cell."""
 
-    spec_qname = "sylk:cell"
-    spec_fact_ref = "FACT-SYLK-003"
-    namespace_uri = "urn:format:sylk:1.0"
-    local_name = "cell"
-    facade_names = ["SylkCell"]
+    spec_qname: ClassVar[str] = "sylk:cell"
+    spec_fact_ref: ClassVar[str] = "SAL-SYLK-00003"
+    namespace_uri: ClassVar[str] = "urn:format:sylk:1.0"
+    local_name: ClassVar[str] = "cell"
+    facade_names: ClassVar[list] = ["SylkCell"]
 
     def __init__(self, row: int, col: int, value: Any) -> None:
         self._row = row

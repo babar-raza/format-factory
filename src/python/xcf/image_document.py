@@ -6,7 +6,7 @@ Implements image-level predicates and metrics for the XCF (GIMP Native Image) fo
 Spec authority : GIMP XCF 2.10 File Format Specification
 QName         : xcf:image
 Namespace URI : urn:format:xcf:2.10
-Spec fact ref : FACT-XCF-001
+Spec fact ref : SAL-XCF-00001
 
 Functions in this module derive directly from the XCF image-level structure:
 - xcf:image root element (width, height, image type, layer count, pixel data)
@@ -16,13 +16,14 @@ This is a behavioral implementation module, NOT an architecture_only spec stub.
 The corresponding spec stubs are under src/python/xcf/spec/.
 """
 from __future__ import annotations
+from typing import ClassVar
 
 from pathlib import Path
 
 from .xcf_parser import parse_xcf_strict
 
 spec_qname = "xcf:image"
-spec_fact_ref = "FACT-XCF-001"
+spec_fact_ref = "SAL-XCF-00001"
 namespace_uri = "urn:format:xcf:2.10"
 
 
@@ -30,20 +31,20 @@ class XcfImageSpec:
     """Spec authority class for xcf:image.
 
     spec_qname: xcf:image
-    Spec fact ref: FACT-XCF-001
+    Spec fact ref: SAL-XCF-00001
     Namespace URI: urn:format:xcf:2.10
     Source layer: Spec
     """
 
-    spec_qname = "xcf:image"
-    spec_fact_ref = "FACT-XCF-001"
-    namespace_uri = "urn:format:xcf:2.10"
+    spec_qname: ClassVar[str] = "xcf:image"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00001"
+    namespace_uri: ClassVar[str] = "urn:format:xcf:2.10"
 
 
 def xcf_is_landscape(file_path: "str | Path") -> bool:
     """Return True if the image width is strictly greater than its height.
 
-    Spec: XCF image header — width and height fields (FACT-XCF-001).
+    Spec: XCF image header — width and height fields (SAL-XCF-00001).
     Orientation is derived from the xcf:image root-level width/height values.
     """
     img = parse_xcf_strict(file_path)

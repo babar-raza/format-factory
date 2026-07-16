@@ -8,17 +8,17 @@ Canonical class: Material
 Facade: MtlxMaterial
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Material:
     """Canonical spec-shaped class for materialx:material (a <surfacematerial> element)."""
 
-    spec_qname = "materialx:material"
-    spec_fact_ref = "FACT-MTLX-003"
-    namespace_uri = "urn:format:materialx:1.39"
-    local_name = "surfacematerial"
-    facade_names = ["MtlxMaterial"]
+    spec_qname: ClassVar[str] = "materialx:material"
+    spec_fact_ref: ClassVar[str] = "FACT-MTLX-003"
+    namespace_uri: ClassVar[str] = "urn:format:materialx:1.39"
+    local_name: ClassVar[str] = "surfacematerial"
+    facade_names: ClassVar[list] = ["MtlxMaterial"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

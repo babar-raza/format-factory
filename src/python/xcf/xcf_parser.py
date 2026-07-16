@@ -21,7 +21,7 @@ import os
 import struct
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 # XCF constants
 XCF_MAGIC = b"gimp xcf "  # 9 bytes including trailing space
@@ -55,10 +55,10 @@ class XcfParseError(XcfError):
 @dataclass
 class XcfImage:
     # Spec authority metadata — class-level constants (no annotation = not a dataclass field)
-    spec_qname = "xcf:image"
-    spec_fact_ref = "FACT-XCF-001"
-    namespace_uri = "https://www.gimp.org/standards/xcf"
-    local_name = "image"
+    spec_qname: ClassVar[str] = "xcf:image"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00001"
+    namespace_uri: ClassVar[str] = "https://www.gimp.org/standards/xcf"
+    local_name: ClassVar[str] = "image"
 
     width: int = 0
     height: int = 0

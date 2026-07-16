@@ -21,17 +21,17 @@ parallel/dead-code path.
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Output:
     """Canonical spec-shaped class for ipynb:output (a code cell output)."""
 
-    spec_qname = "ipynb:output"
-    spec_fact_ref = "FACT-IPYNB-003"
-    namespace_uri = "urn:format:ipynb:4.5"
-    local_name = "output"
-    facade_names = ["IpynbOutput"]
+    spec_qname: ClassVar[str] = "ipynb:output"
+    spec_fact_ref: ClassVar[str] = "FACT-IPYNB-003"
+    namespace_uri: ClassVar[str] = "urn:format:ipynb:4.5"
+    local_name: ClassVar[str] = "output"
+    facade_names: ClassVar[list] = ["IpynbOutput"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

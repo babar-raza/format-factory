@@ -8,17 +8,17 @@ Canonical class: Ubl.Invoice
 Facade: UblInvoice
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Invoice:
     """Canonical spec-shaped class for ubl:invoice (architecture_only marker)."""
 
-    spec_qname = "ubl:invoice"
-    spec_fact_ref = "FACT-UBL-002"
-    namespace_uri = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
-    local_name = "Invoice"
-    facade_names = ["UblInvoice"]
+    spec_qname: ClassVar[str] = "ubl:invoice"
+    spec_fact_ref: ClassVar[str] = "FACT-UBL-002"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    local_name: ClassVar[str] = "Invoice"
+    facade_names: ClassVar[list] = ["UblInvoice"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

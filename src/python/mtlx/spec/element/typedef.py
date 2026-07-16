@@ -8,17 +8,17 @@ Canonical class: TypeDef
 Facade: MtlxTypeDef
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class TypeDef:
     """Canonical spec-shaped class for materialx:typedef (a <typedef> element)."""
 
-    spec_qname = "materialx:typedef"
-    spec_fact_ref = "FACT-MTLX-101"
-    namespace_uri = "urn:format:materialx:1.39"
-    local_name = "typedef"
-    facade_names = ["MtlxTypeDef"]
+    spec_qname: ClassVar[str] = "materialx:typedef"
+    spec_fact_ref: ClassVar[str] = "FACT-MTLX-101"
+    namespace_uri: ClassVar[str] = "urn:format:materialx:1.39"
+    local_name: ClassVar[str] = "typedef"
+    facade_names: ClassVar[list] = ["MtlxTypeDef"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

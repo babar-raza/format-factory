@@ -2,23 +2,23 @@
 PGM structural element: pgm:header
 
 Spec ref: Netpbm format — PGM (Portable Graymap) header
-Fact ref: FACT-PGM-001
+Fact ref: SAL-PGM-00001
 QName: pgm:header
 Canonical class: Header
 Facade: PgmHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for pgm:header."""
 
-    spec_qname = "pgm:header"
-    spec_fact_ref = "FACT-PGM-001"
-    namespace_uri = "urn:format:netpbm:pgm:1.0"
-    local_name = "header"
-    facade_names = ["PgmHeader"]
+    spec_qname: ClassVar[str] = "pgm:header"
+    spec_fact_ref: ClassVar[str] = "SAL-PGM-00001"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:pgm:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["PgmHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

@@ -10,7 +10,7 @@ spec_fact_ref: see shared/qname-registry/ndjson.yaml
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 class NdjsonDocument:
@@ -20,11 +20,11 @@ class NdjsonDocument:
     Each record is typically a dict, but may be any JSON-serializable value.
     """
 
-    spec_qname = "ndjson:record"
-    spec_fact_ref = "FACT-NDJSON-001"
-    namespace_uri = "https://ndjson.org/"
-    local_name = "record"
-    facade_names = []
+    spec_qname: ClassVar[str] = "ndjson:record"
+    spec_fact_ref: ClassVar[str] = "SAL-NDJSON-00001"
+    namespace_uri: ClassVar[str] = "https://ndjson.org/"
+    local_name: ClassVar[str] = "record"
+    facade_names: ClassVar[list] = []
 
     def __init__(self, records: list[Any]) -> None:
         self._records = list(records)
@@ -58,7 +58,7 @@ class NdjsonDocument:
             return record.get(field, default)
         return default
 
-    # Document dimension properties (FACT-NDJSON-001)
+    # Document dimension properties (SAL-NDJSON-00001)
 
     @property
     def is_empty(self) -> bool:
@@ -90,7 +90,7 @@ class NdjsonDocument:
         """True if all records are JSON arrays (lists)."""
         return bool(self._records) and all(isinstance(r, list) for r in self._records)
 
-    # Additional record analysis properties (FACT-NDJSON-001)
+    # Additional record analysis properties (SAL-NDJSON-00001)
 
     @property
     def has_mixed_types(self) -> bool:
@@ -110,7 +110,7 @@ class NdjsonDocument:
         key_counts = [len(r) for r in self._records if isinstance(r, dict)]
         return max(key_counts) if key_counts else 0
 
-    # Record count classification properties (FACT-NDJSON-001)
+    # Record count classification properties (SAL-NDJSON-00001)
 
     @property
     def is_small(self) -> bool:
@@ -128,7 +128,7 @@ class NdjsonDocument:
         key_counts = [len(r) for r in self._records if isinstance(r, dict)]
         return min(key_counts) if key_counts else 0
 
-    # Object shape analysis properties (FACT-NDJSON-001)
+    # Object shape analysis properties (SAL-NDJSON-00001)
 
     @property
     def has_uniform_keys(self) -> bool:
@@ -154,7 +154,7 @@ class NdjsonDocument:
         """True if the maximum key count in any object record exceeds 20."""
         return self.max_keys > 20
 
-    # Key distribution analysis properties (FACT-NDJSON-001)
+    # Key distribution analysis properties (SAL-NDJSON-00001)
 
     @property
     def key_range(self) -> int:
@@ -178,7 +178,7 @@ class NdjsonDocument:
         """Number of records that are JSON objects (dicts)."""
         return sum(1 for r in self._records if isinstance(r, dict))
 
-    # Record type distribution properties (FACT-NDJSON-001)
+    # Record type distribution properties (SAL-NDJSON-00001)
 
     @property
     def array_count(self) -> int:

@@ -8,18 +8,18 @@ Canonical class: PropertySet
 Facade: MtlxPropertySet
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class PropertySet:
     """Canonical spec-shaped class for materialx:propertyset (a <propertyset>
     element, containing <property> children)."""
 
-    spec_qname = "materialx:propertyset"
-    spec_fact_ref = "FACT-MTLX-101"
-    namespace_uri = "urn:format:materialx:1.39"
-    local_name = "propertyset"
-    facade_names = ["MtlxPropertySet"]
+    spec_qname: ClassVar[str] = "materialx:propertyset"
+    spec_fact_ref: ClassVar[str] = "FACT-MTLX-101"
+    namespace_uri: ClassVar[str] = "urn:format:materialx:1.39"
+    local_name: ClassVar[str] = "propertyset"
+    facade_names: ClassVar[list] = ["MtlxPropertySet"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

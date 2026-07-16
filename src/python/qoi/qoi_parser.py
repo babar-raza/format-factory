@@ -20,7 +20,7 @@ import os
 import struct
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 # QOI constants
@@ -108,7 +108,7 @@ class QoiDecodeError(QoiError):
 
 @dataclass
 class QoiImage:
-    spec_qname: str = "qoi:image"
+    spec_qname: ClassVar[str] = "qoi:image"
     width: int = 0
     height: int = 0
     channels: int = 4

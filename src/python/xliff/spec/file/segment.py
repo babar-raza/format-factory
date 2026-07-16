@@ -8,17 +8,17 @@ Canonical class: Segment
 Facade: XliffSegment
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Segment:
     """Canonical spec-shaped class for xliff:segment (source/target text pair)."""
 
-    spec_qname = "xliff:segment"
-    spec_fact_ref = "FACT-XLIFF-002"
-    namespace_uri = "urn:oasis:names:tc:xliff:document:2.0"
-    local_name = "segment"
-    facade_names = ["XliffSegment"]
+    spec_qname: ClassVar[str] = "xliff:segment"
+    spec_fact_ref: ClassVar[str] = "FACT-XLIFF-002"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:xliff:document:2.0"
+    local_name: ClassVar[str] = "segment"
+    facade_names: ClassVar[list] = ["XliffSegment"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

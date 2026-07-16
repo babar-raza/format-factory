@@ -2,23 +2,23 @@
 PPM structural element: ppm:header
 
 Spec ref: Netpbm format — PPM (Portable Pixmap) header
-Fact ref: FACT-PPM-001
+Fact ref: SAL-PPM-00001
 QName: ppm:header
 Canonical class: Header
 Facade: PpmHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for ppm:header."""
 
-    spec_qname = "ppm:header"
-    spec_fact_ref = "FACT-PPM-001"
-    namespace_uri = "urn:format:netpbm:ppm:1.0"
-    local_name = "header"
-    facade_names = ["PpmHeader"]
+    spec_qname: ClassVar[str] = "ppm:header"
+    spec_fact_ref: ClassVar[str] = "SAL-PPM-00001"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:ppm:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["PpmHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

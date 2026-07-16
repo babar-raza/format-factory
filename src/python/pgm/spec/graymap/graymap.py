@@ -2,23 +2,23 @@
 PGM structural element: pgm:graymap
 
 Spec ref: Netpbm format — PGM pixel data
-Fact ref: FACT-PGM-002
+Fact ref: SAL-PGM-00002
 QName: pgm:graymap
 Canonical class: Graymap
 Facade: PgmGraymap
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Graymap:
     """Canonical spec-shaped class for pgm:graymap (grayscale pixel data)."""
 
-    spec_qname = "pgm:graymap"
-    spec_fact_ref = "FACT-PGM-002"
-    namespace_uri = "urn:format:netpbm:pgm:1.0"
-    local_name = "graymap"
-    facade_names = ["PgmGraymap"]
+    spec_qname: ClassVar[str] = "pgm:graymap"
+    spec_fact_ref: ClassVar[str] = "SAL-PGM-00002"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:pgm:1.0"
+    local_name: ClassVar[str] = "graymap"
+    facade_names: ClassVar[list] = ["PgmGraymap"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

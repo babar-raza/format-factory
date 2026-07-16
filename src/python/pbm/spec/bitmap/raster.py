@@ -2,23 +2,23 @@
 PBM structural element: pbm:raster
 
 Spec ref: Netpbm format — PBM (Portable Bitmap) raster data
-Fact ref: FACT-PBM-002
+Fact ref: SAL-PBM-00002
 QName: pbm:raster
 Canonical class: Raster
 Facade: PbmRaster
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Raster:
     """Canonical spec-shaped class for pbm:raster."""
 
-    spec_qname = "pbm:raster"
-    spec_fact_ref = "FACT-PBM-002"
-    namespace_uri = "urn:format:netpbm:pbm:1.0"
-    local_name = "raster"
-    facade_names = ["PbmRaster"]
+    spec_qname: ClassVar[str] = "pbm:raster"
+    spec_fact_ref: ClassVar[str] = "SAL-PBM-00002"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:pbm:1.0"
+    local_name: ClassVar[str] = "raster"
+    facade_names: ClassVar[list] = ["PbmRaster"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

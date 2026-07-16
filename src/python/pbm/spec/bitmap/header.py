@@ -2,23 +2,23 @@
 PBM structural element: pbm:header
 
 Spec ref: Netpbm format — PBM (Portable Bitmap) header
-Fact ref: FACT-PBM-001
+Fact ref: SAL-PBM-00001
 QName: pbm:header
 Canonical class: Header
 Facade: PbmHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for pbm:header."""
 
-    spec_qname = "pbm:header"
-    spec_fact_ref = "FACT-PBM-001"
-    namespace_uri = "urn:format:netpbm:pbm:1.0"
-    local_name = "header"
-    facade_names = ["PbmHeader"]
+    spec_qname: ClassVar[str] = "pbm:header"
+    spec_fact_ref: ClassVar[str] = "SAL-PBM-00001"
+    namespace_uri: ClassVar[str] = "urn:format:netpbm:pbm:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["PbmHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

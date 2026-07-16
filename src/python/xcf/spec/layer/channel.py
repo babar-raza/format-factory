@@ -2,23 +2,23 @@
 XCF structural element: xcf:channel
 
 Spec ref: GIMP XCF file format — channel record
-Fact ref: FACT-XCF-003
+Fact ref: SAL-XCF-00003
 QName: xcf:channel
 Canonical class: Channel
 Facade: XcfChannel
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Channel:
     """Canonical spec-shaped class for xcf:channel."""
 
-    spec_qname = "xcf:channel"
-    spec_fact_ref = "FACT-XCF-003"
-    namespace_uri = "urn:format:gimp:xcf:1.0"
-    local_name = "channel"
-    facade_names = ["XcfChannel"]
+    spec_qname: ClassVar[str] = "xcf:channel"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00003"
+    namespace_uri: ClassVar[str] = "urn:format:gimp:xcf:1.0"
+    local_name: ClassVar[str] = "channel"
+    facade_names: ClassVar[list] = ["XcfChannel"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

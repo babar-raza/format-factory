@@ -2,23 +2,23 @@
 QOI structural element: qoi:header
 
 Spec ref: QOI — The "Quite OK Image" format specification
-Fact ref: FACT-QOI-001
+Fact ref: SAL-QOI-00001
 QName: qoi:header
 Canonical class: Header
 Facade: QoiHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for qoi:header (14-byte QOI header)."""
 
-    spec_qname = "qoi:header"
-    spec_fact_ref = "FACT-QOI-001"
-    namespace_uri = "urn:format:qoi:1.0"
-    local_name = "header"
-    facade_names = ["QoiHeader"]
+    spec_qname: ClassVar[str] = "qoi:header"
+    spec_fact_ref: ClassVar[str] = "SAL-QOI-00001"
+    namespace_uri: ClassVar[str] = "urn:format:qoi:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["QoiHeader"]
 
     MAGIC = b"qoif"
 

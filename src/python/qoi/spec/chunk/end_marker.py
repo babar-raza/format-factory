@@ -2,23 +2,23 @@
 QOI structural element: qoi:end-marker
 
 Spec ref: QOI format — end marker (8 zero bytes)
-Fact ref: FACT-QOI-003
+Fact ref: SAL-QOI-00003
 QName: qoi:end-marker
 Canonical class: EndMarker
 Facade: QoiEndMarker
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class EndMarker:
     """Canonical spec-shaped class for qoi:end-marker."""
 
-    spec_qname = "qoi:end-marker"
-    spec_fact_ref = "FACT-QOI-003"
-    namespace_uri = "urn:format:qoi:1.0"
-    local_name = "end-marker"
-    facade_names = ["QoiEndMarker"]
+    spec_qname: ClassVar[str] = "qoi:end-marker"
+    spec_fact_ref: ClassVar[str] = "SAL-QOI-00003"
+    namespace_uri: ClassVar[str] = "urn:format:qoi:1.0"
+    local_name: ClassVar[str] = "end-marker"
+    facade_names: ClassVar[list] = ["QoiEndMarker"]
 
     # QOI end marker is 7 zero bytes followed by 0x01
     MARKER_BYTES = b"\x00" * 7 + b"\x01"
