@@ -4721,6 +4721,69 @@ skills:
   status: active
   test_paths: [tests/format_contract/]
   risk_level: LOW
+- command: /fix-exception-hierarchy
+  command_file: .claude/commands/fix-exception-hierarchy.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations: [exception_root_is_format_factory_error, no_shadow_class_redefinition,
+    focused_tests]
+  notes: Thin governed wrapper around tools/backfill/exception_hierarchy_backfill.py.
+    Registered 2026-07-16 by the Skills-First Control sprint (was an ownerless command
+    surface flagged by tools/governance/skills_first/audit.py).
+  output_paths: []
+  product_track: src_healing
+  purpose: Repair a duplicate/shadow exception-class hierarchy in a Python format package;
+    the single source of truth is exceptions.py rooted at FormatFactoryError.
+  required_handoff_fields: [format_id]
+  skill_id: fix-exception-hierarchy
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  risk_level: MEDIUM
+- command: /wire-analytics-module
+  command_file: .claude/commands/wire-analytics-module.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations: [analytics_module_reachable_via_import, all_list_updated,
+    focused_tests]
+  notes: Thin governed wrapper around tools/backfill/analytics_wiring_backfill.py.
+    Registered 2026-07-16 by the Skills-First Control sprint (was an ownerless command
+    surface flagged by tools/governance/skills_first/audit.py).
+  output_paths: []
+  product_track: src_healing
+  purpose: Wire an orphaned analytics module into its format package __init__.py so its
+    public functions are importable and appear in __all__.
+  required_handoff_fields: [format_id]
+  skill_id: wire-analytics-module
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  risk_level: LOW
+- command: /skills-first-audit
+  command_file: .claude/commands/skills-first-audit.md
+  created_at: '2026-07-16'
+  idempotency: idempotent
+  implementation_paths: [tools/governance/skills_first/, tools/governance/validate_skills_first_control.py]
+  mandatory_validations: [skills_first_parity_no_critical, skills_first_policy_consistent,
+    skills_first_closeout_evidence_present]
+  notes: Created 2026-07-16 by the Skills-First Control sprint as the governed
+    resolution of a real skill gap (no prior skill owned SFC cross-registry parity +
+    execution-manifest + closeout enforcement; nearest match sync-readmes rejected by
+    the extend-vs-create rubric). Thin interface over tools/governance/skills_first/.
+  output_paths: [reports/skills-first-control/]
+  product_track: governance
+  purpose: Audit + enforce the Skills-First Control system — skill/command parity,
+    execution-manifest validity, and the fail-closed closeout evidence gate. Contains
+    no policy of its own; authority is docs/governance/skill-only-policy.yaml.
+  required_handoff_fields: [mode]
+  skill_id: skills-first-audit
+  spec_qname_required: false
+  status: active
+  test_paths: [tests/governance/test_skills_first_manifest_resolve.py, tests/governance/test_skills_first_closeout_exceptions.py,
+    tests/governance/test_skills_first_integration_adversarial.py]
+  risk_level: LOW
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

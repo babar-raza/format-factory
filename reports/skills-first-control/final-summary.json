@@ -1,0 +1,103 @@
+{
+  "schema": "skills-first-control/final-summary@1",
+  "sprint": "SKILLS-FIRST-CONTROL-2026-07-16",
+  "date": "2026-07-16",
+  "repo": "format-factory",
+  "branch": "main",
+  "intent": "Establish a strict, technically-enforced skills-first operating model: make ad-hoc work hard to do, easy to detect, and impossible to close without skills-first evidence.",
+  "production_verdict": "READY_WITH_EXTERNAL_BLOCKERS",
+  "independent_verification_verdict": "ACCEPT_WITH_EXTERNAL_BLOCKERS",
+
+  "metrics": {
+    "skills_total_before": 185,
+    "skills_total_after": 188,
+    "skills_active_after": 185,
+    "skills_created": 3,
+    "skills_created_ids": ["fix-exception-hierarchy", "wire-analytics-module", "skills-first-audit"],
+    "commands_registered_before": 185,
+    "commands_registered_after": 188,
+    "ownerless_commands_before": 2,
+    "ownerless_commands_after": 0,
+    "capability_routes_before": 36,
+    "capability_routes_after": 37,
+    "routes_added": ["skills_first_control"],
+    "sfc_modules_added": 7,
+    "sfc_module_paths": [
+      "tools/governance/skills_first/__init__.py",
+      "tools/governance/skills_first/registries.py",
+      "tools/governance/skills_first/audit.py",
+      "tools/governance/skills_first/manifest.py",
+      "tools/governance/skills_first/resolve.py",
+      "tools/governance/skills_first/closeout.py",
+      "tools/governance/skills_first/exceptions.py"
+    ],
+    "validators_added": 1,
+    "validator_paths": ["tools/governance/validate_skills_first_control.py"],
+    "schemas_added": 1,
+    "schema_paths": [".supervisor/schemas/execution-manifest.schema.json"],
+    "tests_added": 36,
+    "test_files": [
+      "tests/governance/test_skills_first_manifest_resolve.py",
+      "tests/governance/test_skills_first_closeout_exceptions.py",
+      "tests/governance/test_skills_first_integration_adversarial.py"
+    ],
+    "tests_passing": 36,
+    "tests_failing": 0,
+    "enforcement_points_added": ["EP-011", "EP-012", "EP-013"],
+    "enforcement_gaps_documented": ["EP-010-GAP", "RUNLOOP-SKIPPERMS-GAP", "DIRECT-GENERATOR-GAP"],
+    "policy_version_before": "2.0",
+    "policy_version_after": "2.1",
+    "policy_stale_statuses_fixed": ["EP-007 NOT_IMPLEMENTED->IMPLEMENTED_AND_INSTALLED", "EP-009 IMPLEMENTED->IMPLEMENTED_MANUAL_ONLY"],
+    "audit_severity_after": {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 1, "INFO": 6},
+    "duplicated_policy_findings": 2,
+    "duplicated_policy_note": ".supervisor/skill-first-policy.md inverts authority; CLAUDE.md EP-3 restates rule w/o citing policy path (documented in consolidated-audit; reconciliation is a tracked follow-up, not silently fixed to avoid destabilizing shared agent-entry docs mid-sprint)",
+    "changed_files_this_sprint": 14,
+    "working_tree_total_changes": 857,
+    "product_source_files_touched": 0
+  },
+
+  "bypass_attempts": {
+    "classes_tested": [
+      "material action without a skill (empty skill list)",
+      "name an unregistered/unrelated skill",
+      "empty allowed_paths (unbounded mutation)",
+      "invalid agent_type",
+      "out-of-scope file modification at closeout",
+      "omit skill-use evidence at closeout",
+      "command-hash drift since resolution",
+      "manifest with stale/missing skill hash",
+      "broad exception (wildcard signature)",
+      "expired exception",
+      "forbidden-reason exception",
+      "malformed registry / non-mapping top-level (scan failure)",
+      "naming a skill without evidence"
+    ],
+    "total_classes": 13,
+    "successful_bypasses_before_repair": 1,
+    "successful_bypasses_before_repair_detail": "empty-allowed-paths ['' ] slipped through create_manifest as a truthy list; found and fixed during build (now filters empty path strings -> exit 2).",
+    "successful_bypasses_after_repair": 0
+  },
+
+  "pilots": {
+    "product": {"status": "GOVERNANCE_PROVEN_WRITE_EXTERNALLY_BLOCKED", "blocker": "Write(src/python/*/**) DENY in settings"},
+    "machinery": {"status": "PASS", "result": "CLOSE_OK — this sprint's own machinery governed via manifest+closeout"},
+    "skill_gap": {"status": "PASS", "result": "gap->rubric->create->register->use skills-first-audit"},
+    "autonomous": {"status": "CONTRACT_PROVEN_LIVE_LOOP_NOT_RUN", "result": "out-of-scope autonomous change BLOCKED at closeout; live run-loop deferred (RUNLOOP-SKIPPERMS-GAP)"}
+  },
+
+  "external_blockers": [
+    "src/ write permission DENY-listed in .claude/settings.json (operator authorization required for the product pilot's actual mutation)",
+    "headless run-loop not yet wired to create per-sprint manifests + run closeout (RUNLOOP-SKIPPERMS-GAP)",
+    "EP-010 PreToolUse tool-layer skill gate remains coordination-only (deferred pending staged rollout on shared live infra)"
+  ],
+
+  "repository_safety": {
+    "git_reset_used": false,
+    "git_clean_used": false,
+    "git_stash_used": false,
+    "broad_staging_used": false,
+    "product_source_modified": false,
+    "unrelated_work_preserved": true,
+    "commit_pushed": false
+  }
+}

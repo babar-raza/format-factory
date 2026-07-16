@@ -1,0 +1,56 @@
+# Stage 3 — Controlled Execution (prompt3 role) + Reaudit (iteration 2)
+# Bound plan revision r1-hardened. Single supervisor.
+preflight:
+  branch: main
+  dirty_tree: true
+  dirty_classification: >
+    857 changed files: 843 unrelated concurrent/prior-agent work (NOT touched);
+    14 owned_by_this_sprint (SFC files). No unrelated file overwritten. No destructive op.
+  safety: exact-path staging only for closure; no git reset/clean/stash/broad-add.
+
+executed_taskcards:
+  - taskcard_id: TC-SFC-CONV-001
+    source_finding: CF-001
+    action: >
+      Reconciled .supervisor/skill-first-policy.md authority chain: added
+      docs/governance/skill-only-policy.yaml as PRIMARY authority + subordinate_to;
+      rewrote "Canonical authority" paragraph. Bumped v1.0 -> v1.1.
+    allowed_paths: [.supervisor/skill-first-policy.md]
+    forbidden_paths: [src/**]
+    verification:
+      - "grep: 4 references to canonical policy; declares it PRIMARY (RC-8 RESOLVED)"
+      - "validate_skills_first_control.py exit 0 (PASS_WITH_WARNINGS)"
+      - "36/36 SFC tests pass (no regression)"
+      - "audit PASS: 0 CRITICAL, 0 HIGH"
+    status: CLOSED
+    quality_scores:   # 1-5, required dims must be >=4
+      requirement_correctness: 5
+      implementation_correctness: 5
+      integration_completeness: 5
+      governance_compliance: 5
+      evidence_completeness: 5
+      documentation_sync_quality: 5
+      idempotency: 5           # re-running the grep/validator is stable
+      production_readiness: 5
+    accepted: true
+
+deferred_taskcards:   # VALID_DEFERRED with recorded authority (not prose-only; taskcarded in plan)
+  - {taskcard_id: TC-SFC-CONV-002, finding: CF-002, known_gap: EP-010-GAP, reason: shared-live-hook staged rollout mission}
+  - {taskcard_id: TC-SFC-CONV-003, finding: CF-003, known_gap: RUNLOOP-SKIPPERMS-GAP, reason: shared actuator mission}
+  - {taskcard_id: TC-SFC-CONV-004, finding: CF-004, known_gap: DIRECT-GENERATOR-GAP, reason: ~25-script backfill mission}
+  - {taskcard_id: TC-SFC-CONV-005, finding: CF-005, reason: MEDIUM non-mandatory; /normalize-skill-registry}
+  - {taskcard_id: TC-SFC-CONV-006, finding: CF-006, reason: count-fragile 226-runner integration}
+blocked_taskcards:
+  - {taskcard_id: TC-SFC-CONV-007, finding: CF-007, external_blocker: "Write(src/**) DENY in .claude/settings.json"}
+
+reaudit_iteration_2:
+  audit_verdict: PASS
+  control_validator: PASS_WITH_WARNINGS   # exit 0; MEDIUM=1 (CF-005, non-mandatory)
+  severity: {CRITICAL: 0, HIGH: 0, MEDIUM: 1, INFO: 6}
+  tests: {passed: 36, failed: 0}
+  machinery_pilot: CLOSE_OK
+  independent_verification: ACCEPT_WITH_EXTERNAL_BLOCKERS
+  in_scope_actionable_findings: 0
+  rc8_authority_inversion: RESOLVED
+
+verdict: EXECUTION_COMPLETE_VERIFIED

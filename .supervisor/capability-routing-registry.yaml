@@ -609,6 +609,27 @@ routes:
       an open gap in work-type-skill-map.yaml, skill-system-baseline.yaml, and
       skill-registry.yaml missing_skill_workflow.known_open_gaps (see TC-EXT-009-03).
 
+  - route_id: skills_first_control
+    description: >
+      Audit and enforce the Skills-First Control system: skill/command cross-registry
+      parity, execution-manifest validity, and the fail-closed closeout evidence gate.
+      Added 2026-07-16 by the Skills-First Control sprint as the governed resolution of
+      a real skill gap (no prior route owned SFC consistency; nearest match
+      root_readme_governance -> sync-readmes was rejected by the extend-vs-create rubric).
+    preferred_skill_ids:
+      - skills-first-audit
+    fallback_skill_ids:
+      - run-governance-validators
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - mode
+    evidence_path_pattern: "reports/skills-first-control/"
+    note: >
+      Interface commands: /skills-first-audit. Backing tools:
+      tools/governance/skills_first/ + tools/governance/validate_skills_first_control.py.
+      Authority: docs/governance/skill-only-policy.yaml (SKILL-ONLY-POLICY-001).
+
 gap_count:
   total_routes: 36
   active_routes: 35

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://format-factory/schemas/execution-manifest.schema.json",
+  "title": "Skills-First Execution Manifest",
+  "description": "Machine-readable record binding a material agent action to a resolved skill BEFORE mutation begins. Referenced by docs/governance/skill-only-policy.yaml (SKILL-ONLY-POLICY-001) as the concrete skill-resolution + execution record. Created by tools/governance/skills_first/manifest.py.",
+  "type": "object",
+  "required": [
+    "schema", "execution_id", "task_id", "agent_type", "requested_operation",
+    "selected_skill_ids", "skill_hashes", "allowed_paths", "status", "created_at"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": {"const": "skills-first-control/execution-manifest@1"},
+    "execution_id": {"type": "string", "minLength": 6},
+    "task_id": {"type": "string", "minLength": 1},
+    "agent_type": {
+      "type": "string",
+      "enum": ["CLAUDE_CODE", "CODEX", "SUPERVISOR", "CI", "LOCAL_AUTOMATION"]
+    },
+    "agent_instance": {"type": "string"},
+    "mission_id": {"type": "string"},
+    "sprint_id": {"type": "string"},
+    "requested_operation": {"type": "string", "minLength": 1},
+    "affected_layers": {"type": "array", "items": {"type": "string"}},
+    "affected_paths": {"type": "array", "items": {"type": "string"}},
+    "selected_skill_ids": {
+      "type": "array", "minItems": 1, "items": {"type": "string"}
+    },
+    "skill_hashes": {
+      "type": "object",
+      "description": "skill_id -> sha256(command_file) captured at resolution time",
+      "additionalProperties": {"type": "string"}
+    },
+    "selected_command": {"type": "string"},
+    "command_hash": {"type": "string"},
+    "composition_order": {"type": "array", "items": {"type": "string"}},
+    "resolution_decision": {
+      "type": "string",
+      "enum": [
+        "REUSE_EXACT_MATCH", "REUSE_PARAMETERIZED_MATCH",
+        "COMPOSE_EXISTING_SKILLS", "REPAIR_EXISTING_SKILL",
+        "EXTEND_EXISTING_SKILL", "CREATE_MISSING_MICRO_SKILL"
+      ]
+    },
+    "resolution_rationale": {"type": "string"},
+    "preconditions": {"type": "array", "items": {"type": "string"}},
+    "allowed_paths": {"type": "array", "items": {"type": "string"}},
+    "forbidden_paths": {"type": "array", "items": {"type": "string"}},
+    "required_validators": {"type": "array", "items": {"type": "string"}},
+    "required_tests": {"type": "array", "items": {"type": "string"}},
+    "evidence_requirements": {"type": "array", "items": {"type": "string"}},
+    "exceptions": {"type": "array", "items": {"type": "string"}},
+    "status": {
+      "type": "string",
+      "enum": ["CREATED", "IN_PROGRESS", "CLOSED", "ABORTED"]
+    },
+    "final_outcome": {"type": "string"},
+    "created_at": {"type": "string"},
+    "updated_at": {"type": "string"},
+    "closed_at": {"type": "string"}
+  }
+}

@@ -1222,6 +1222,28 @@ commands:
   command_id: prove-format-contract
   skill_id: prove-format-contract
   status: active
+- command_file: .claude/commands/fix-exception-hierarchy.md
+  command_id: fix-exception-hierarchy
+  description: Repair duplicate/shadow exception-class hierarchy in a Python format package
+  file: .claude/commands/fix-exception-hierarchy.md
+  skill_id: fix-exception-hierarchy
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/wire-analytics-module.md
+  command_id: wire-analytics-module
+  description: Wire an orphaned analytics module into its format package __init__.py
+  file: .claude/commands/wire-analytics-module.md
+  skill_id: wire-analytics-module
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/skills-first-audit.md
+  command_id: skills-first-audit
+  description: Audit + enforce the Skills-First Control system (parity, manifest, closeout gate)
+  file: .claude/commands/skills-first-audit.md
+  phase: 3
+  skill_id: skills-first-audit
+  skill_registry_ref: true
+  status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004
 notes: 'v1.1 (2026-06-21): Added skill_registry_ref cross-references for commands

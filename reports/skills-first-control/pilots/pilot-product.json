@@ -1,0 +1,9 @@
+{
+  "pilot": "product_source_workflow",
+  "status": "GOVERNANCE_PROVEN_WRITE_EXTERNALLY_BLOCKED",
+  "resolve": "add-python-api skill resolves for the product op",
+  "manifest": "created + validated (scoped to src/python/fods/**, tests/python/fods/**)",
+  "actual_write": "BLOCKED",
+  "external_blocker": "Write(src/python/*/**) is DENY-listed in .claude/settings.json permissions",
+  "conclusion": "The skills-first governance path (resolve->manifest->closeout) functions for product source; the file mutation itself is denied by repository permission policy, not by a governance failure. Full product pilot requires operator authorization to write src/."
+}

@@ -1,0 +1,144 @@
+# Stage 1 — Post-Sprint Strict Evidence Audit (prompt1 role)
+# Bound plan: skills-first-control-sprint (SKILLS-FIRST-CONTROL-2026-07-16)
+# Conforms in spirit to .supervisor/schemas/stage1-issue-model.schema.json
+audit_meta:
+  iteration: 1
+  audit_verdict: SPRINT_ACCEPTED_WITH_LIMITATIONS
+  evidence_quality: STRONG
+  method: re-ran validator + 36 tests + machinery-pilot closeout + read all evidence + independent-verification.md
+
+# ── Section A/B: achievements with proof levels ──
+achievements:
+  - id: A-SFC-PKG
+    what: tools/governance/skills_first/ (registries,audit,manifest,resolve,closeout,exceptions)
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 3          # INTEGRATION_OR_REAL_EXECUTION (tests over real registries)
+    evidence: [tests/governance/test_skills_first_*.py, reports/skills-first-control/logs/pytest-sfc.log]
+  - id: A-VALIDATOR
+    what: validate_skills_first_control.py (EP-013), fail-closed gate
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 3
+    evidence: [reports/skills-first-control/logs/validator.json]
+  - id: A-POLICY
+    what: skill-only-policy.yaml reconciled to v2.1 (EP-007/009 fixed; EP-011/012/013; known_gaps)
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 2          # FOCUSED_VALIDATION (validator asserts policy self-consistency)
+    evidence: [docs/governance/skill-only-policy.yaml]
+  - id: A-HEAL
+    what: 2 ownerless commands registered (fix-exception-hierarchy, wire-analytics-module)
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 3          # cross-confirmed: sync_skill_command_registry.py -> 0 flags
+    evidence: [audit-summary.json ownerless=0, sync tool 0 flags]
+  - id: A-SKILLGAP
+    what: new skills-first-audit skill+command+route (skill-gap pilot)
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 3
+    evidence: [pilots/pilot-skillgap.json, resolve routes to skills_first_control]
+  - id: A-MACHINERY-PILOT
+    what: this sprint's own machinery governed via manifest+closeout -> CLOSE_OK
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 4          # END_TO_END self-governance
+    evidence: [pilots/pilot-machinery.json]
+  - id: A-IV
+    what: independent verification by fresh agent
+    classification: COMPLETED_AND_VERIFIED
+    proof_level: 4
+    evidence: [independent-verification.md verdict ACCEPT_WITH_EXTERNAL_BLOCKERS]
+
+# ── Structured findings (L1/L2/L3) ──
+findings:
+  - issue_id: CF-001
+    issue_level: L2_INTEGRATION
+    title: skill-first-policy.md authority chain inverted (does not cite canonical policy)
+    description: >
+      .supervisor/skill-first-policy.md (v1.0) lists AGENTS.md/CLAUDE.md/skill-registry
+      as "Canonical sources" and never cites docs/governance/skill-only-policy.yaml, which
+      (created a day later) declares this file a subordinate derived summary. RC-8.
+    evidence: [".supervisor/skill-first-policy.md lines 5-18"]
+    root_cause: canonical policy postdated the derived summary; the summary was never back-linked
+    severity: MEDIUM
+    blocker: false
+    classification: PARTIAL
+    proof_current: 0
+    proof_target: 2
+    missing_boundary: policy authority header does not name the canonical SSoT
+    required_fix_type: governance_reconciliation
+    requires_plan_update: true
+    requires_taskcard: true
+    in_scope_for_this_plan: true       # governance-consistency healing = this sprint's scope
+    exact_next_work: add skill-only-policy.yaml as PRIMARY authority + mark this file subordinate
+    recommended_next_stage: prompt3_execute
+
+  - issue_id: CF-002
+    issue_level: L3_SYSTEM_WEAKNESS
+    title: tool-layer PreToolUse hook (gate.py) is coordination-only / skill-blind
+    classification: VALID_DEFERRED
+    severity: HIGH
+    blocker: false
+    proof_current: 1
+    proof_target: 4
+    known_gap_id: EP-010-GAP
+    compensating_controls: [EP-007, EP-012, EP-013]
+    in_scope_for_this_plan: false      # successor mission: staged advisory->enforcing rollout on shared live infra (44 agents)
+    exact_next_work: add skill-resolution to PreToolUse hook behind staged rollout
+    authority_for_defer: documented known_gap + compensating controls; hot-patching shared live hook is unsafe
+
+  - issue_id: CF-003
+    issue_level: L3_SYSTEM_WEAKNESS
+    title: headless run-loop spawns --dangerously-skip-permissions, binds no skill
+    classification: VALID_DEFERRED
+    severity: HIGH
+    blocker: false
+    known_gap_id: RUNLOOP-SKIPPERMS-GAP
+    in_scope_for_this_plan: false
+    exact_next_work: run-loop must create a manifest + run closeout gate per sprint
+    authority_for_defer: documented known_gap; changing shared actuator requires its own mission
+
+  - issue_id: CF-004
+    issue_level: L3_SYSTEM_WEAKNESS
+    title: ~25 direct-mutation tools/*.py scripts bypass skills
+    classification: VALID_DEFERRED
+    severity: MEDIUM
+    known_gap_id: DIRECT-GENERATOR-GAP
+    in_scope_for_this_plan: false
+    exact_next_work: wrap each in a governed skill or mark read-only/deprecated
+    authority_for_defer: documented known_gap; signal list emitted by auditor
+
+  - issue_id: CF-005
+    issue_level: L1_EXECUTION
+    title: 137 command-registry entries lack a file field (traceability debt)
+    classification: VALID_DEFERRED
+    severity: MEDIUM
+    proof_current: 1
+    proof_target: 2
+    in_scope_for_this_plan: false      # non-mandatory MEDIUM; governed remediation = normalize-skill-registry skill
+    exact_next_work: backfill file fields via /normalize-skill-registry (avoids unsafe hand-reserialization under 44 live agents)
+    authority_for_defer: MEDIUM non-blocking; governed remediation skill exists
+
+  - issue_id: CF-006
+    issue_level: L2_INTEGRATION
+    title: control validator not wired into the 226-validator runner
+    classification: VALID_DEFERRED
+    severity: LOW
+    in_scope_for_this_plan: false
+    exact_next_work: register as V227 in governance_validator_runner.py (count-fragile shared file)
+    authority_for_defer: standalone validator works; runner integration is count-fragile under concurrent agents
+
+  - issue_id: CF-007
+    issue_level: L1_EXECUTION
+    title: product pilot actual src/ write blocked
+    classification: BLOCKED
+    severity: LOW
+    blocker: true
+    in_scope_for_this_plan: false
+    external_blocker: Write(src/python/*/**) DENY-listed in .claude/settings.json
+    authority_for_defer: true external blocker (operator permission); governance path itself proven
+
+# ── Convergence gate for iteration 1 ──
+convergence_status:
+  in_scope_actionable_findings: [CF-001]
+  in_scope_actionable_count: 1
+  deferred_with_authority: [CF-002, CF-003, CF-004, CF-005, CF-006]
+  blocked_true_external: [CF-007]
+  verdict: SPRINT_REQUIRES_EXECUTION   # execute CF-001 then reaudit
+  next_stage: prompt2_harden_then_prompt3_execute

@@ -1,0 +1,18 @@
+# Skills-First Control — accepted-findings (governed exceptions)
+# Authority: docs/governance/skill-only-policy.yaml section 8 (Exception Policy).
+#
+# An entry here temporarily accepts a SPECIFIC skills-first control finding so the
+# gate does not block on it — WITHOUT weakening the gate silently. The control
+# validator (tools/governance/validate_skills_first_control.py) treats a HIGH
+# finding as blocking UNLESS a VALID, non-expired exception covers its exact
+# signature. Any INVALID exception (missing field, expired, broad, forbidden
+# reason) is itself a hard failure — fail-closed by construction.
+#
+# Required fields (ALL): exception_id, finding_signature, severity, owner,
+#   reason, remediation_task, created, expires, compensating_control.
+# Forbidden reasons: no_skill_applicable, small_change, documentation_only,
+#   urgent, pre_existing, one_time, assistant_discretion, convenience, speed.
+#
+# TARGET: zero active exceptions. The current control state has no HIGH findings,
+# so this list is intentionally EMPTY. Do not add entries for convenience.
+exceptions: []

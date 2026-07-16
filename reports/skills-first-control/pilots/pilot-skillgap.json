@@ -1,0 +1,14 @@
+{
+  "pilot": "skill_gap_scenario",
+  "status": "PASS",
+  "steps": [
+    "1. resolve('audit skills-first control parity...') returned a LOOSELY-RELATED skill (sync-readmes) - not an exact match.",
+    "2. Applied the extend-vs-create rubric: sync-readmes governs README sync (different responsibility, layer, invariants) -> REJECTED. No existing skill governed SFC cross-registry parity + manifest + closeout.",
+    "3. Decision: CREATE_MISSING_MICRO_SKILL (distinct responsibility, distinct layer, distinct validation/failure model).",
+    "4. Created .claude/commands/skills-first-audit.md (thin interface, no own policy).",
+    "5. Registered in skill-registry.yaml + command-registry.yaml + capability-routing-registry.yaml (route skills_first_control).",
+    "6. Added tests (test_paths).",
+    "7. USED it: resolve('skills first control parity and closeout gate') now RESOLVES to route=skills_first_control -> skill=skills-first-audit."
+  ],
+  "conclusion": "A genuine skill gap was handled through the governed path (gap -> rubric -> create -> register -> use) without reverting to ad-hoc behavior."
+}

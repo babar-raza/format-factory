@@ -1,0 +1,14 @@
+{
+  "pilot": "autonomous_continuation_bounded",
+  "status": "CONTRACT_PROVEN_LIVE_LOOP_NOT_RUN",
+  "demonstrated": [
+    "A per-work-item execution manifest binds skill + allowed_paths before mutation.",
+    "The closeout gate BLOCKS any work-item whose changed files fall outside its manifest (exit 1, CLOSE_BLOCKED) - proven live against an out-of-scope path.",
+    "Command-hash drift and missing evidence also block closeout (see tests)."
+  ],
+  "honest_limitations": [
+    "The live headless run-loop (sprint_executor.py --dangerously-skip-permissions) was NOT started: (a) CCI isolation rules forbid auto-starting the autonomous ledger loop from an unrelated user task; (b) RUNLOOP-SKIPPERMS-GAP means the loop does not yet create manifests itself.",
+    "Remediation is registered as RUNLOOP-SKIPPERMS-GAP in skill-only-policy.yaml known_gaps: the loop must create a manifest per sprint and run the closeout gate before accepting work."
+  ],
+  "conclusion": "The manifest+closeout contract that makes autonomous continuation ungoverned-proof is implemented and proven; wiring it into the headless actuator is the tracked next step."
+}

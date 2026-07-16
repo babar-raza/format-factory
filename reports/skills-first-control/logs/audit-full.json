@@ -1,0 +1,491 @@
+{
+  "counts": {
+    "command_md_on_disk": 189,
+    "commands_registered": 188,
+    "ownerless_command_md": 0,
+    "registry_entries_missing_file_field": 137,
+    "skills_active": 185,
+    "skills_referenced_by_commands": 188,
+    "skills_total": 188
+  },
+  "enforcement_report": {
+    "acknowledged_gaps": [
+      "tool-layer PreToolUse hook is skill-blind \u2014 ACKNOWLEDGED as EP-010 gap with compensating controls (EP-007/EP-012/EP-013)"
+    ],
+    "declared_points": [
+      {
+        "declared_status": "PROMPT_ONLY",
+        "id": "EP-001",
+        "name": "skill_registry_query"
+      },
+      {
+        "declared_status": "IMPLEMENTED",
+        "id": "EP-002",
+        "name": "mutation_guard_pre_mutation"
+      },
+      {
+        "declared_status": "PARTIAL",
+        "id": "EP-003",
+        "name": "declaration_governance_validators"
+      },
+      {
+        "declared_status": "PROMPT_ONLY",
+        "id": "EP-004",
+        "name": "execution_receipt_required"
+      },
+      {
+        "declared_status": "PARTIAL",
+        "id": "EP-005",
+        "name": "supervisor_rejection_of_unskilled_work"
+      },
+      {
+        "declared_status": "IMPLEMENTED",
+        "id": "EP-006",
+        "name": "ci_skill_attribution_check"
+      },
+      {
+        "declared_status": "IMPLEMENTED_AND_INSTALLED",
+        "id": "EP-007",
+        "name": "pre_commit_hook"
+      },
+      {
+        "declared_status": "SCHEMA_CREATED_NOT_ENFORCED",
+        "id": "EP-008",
+        "name": "taskcard_schema_execution_contract"
+      },
+      {
+        "declared_status": "IMPLEMENTED_MANUAL_ONLY",
+        "id": "EP-009",
+        "name": "plan_skill_route_validation"
+      },
+      {
+        "declared_status": "IMPLEMENTED",
+        "id": "EP-011",
+        "name": "execution_manifest"
+      },
+      {
+        "declared_status": "IMPLEMENTED",
+        "id": "EP-012",
+        "name": "skills_first_closeout_gate"
+      },
+      {
+        "declared_status": "IMPLEMENTED",
+        "id": "EP-013",
+        "name": "skills_first_control_validator"
+      },
+      {
+        "declared_status": "OPEN",
+        "id": "EP-010",
+        "name": "tool_layer_skill_gate"
+      }
+    ],
+    "ground_truth": {
+      "precommit_hook_file_exists": true,
+      "precommit_hook_installed": true,
+      "tool_layer_hook_exists": true,
+      "tool_layer_hook_skill_aware": false
+    },
+    "inconsistencies": []
+  },
+  "findings": [
+    {
+      "category": "command_registry_entry_missing_file_field",
+      "detail": "137 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
+      "sample": [
+        "add-spec-analytics-function",
+        "agent-owasp-compliance",
+        "agent-supply-chain",
+        "allocate-sprint-number",
+        "append-layer-verification-log",
+        "append-layer-work-log",
+        "audit-context-building",
+        "audit-contract-portfolio",
+        "audit-enhanced-control-layer",
+        "audit-root-tools"
+      ],
+      "severity": "MEDIUM"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "applying_patches",
+      "severity": "INFO"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "changing_project_files",
+      "severity": "INFO"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "changing_package_metadata",
+      "severity": "INFO"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "updating_product_capability_documentation",
+      "severity": "INFO"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "changing_approval_gates",
+      "severity": "INFO"
+    },
+    {
+      "category": "governed_operation_without_route",
+      "detail": "no active route/skill maps to this governed operation",
+      "operation": "creating_release_artifacts",
+      "severity": "INFO"
+    }
+  ],
+  "generated_at": "2026-07-16T18:32:42.619165+00:00",
+  "hash_drift": {
+    "no_baseline": [],
+    "stale": []
+  },
+  "material_action_matrix": {
+    "rows": [
+      {
+        "covered": true,
+        "operation": "creating_editing_moving_deleting_files",
+        "routes": [
+          {
+            "route_id": "taskcard_execution",
+            "skills": [
+              "autonomous-loop",
+              "execution-handoff"
+            ]
+          },
+          {
+            "route_id": "fact_normalization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          },
+          {
+            "route_id": "fact_authorization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": false,
+        "operation": "applying_patches",
+        "routes": []
+      },
+      {
+        "covered": true,
+        "operation": "generating_code",
+        "routes": [
+          {
+            "route_id": "fact_normalization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          },
+          {
+            "route_id": "fact_authorization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          },
+          {
+            "route_id": "hierarchy_generation",
+            "skills": [
+              "spec-shaped-product-architecture-blueprint"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": false,
+        "operation": "changing_project_files",
+        "routes": []
+      },
+      {
+        "covered": false,
+        "operation": "changing_package_metadata",
+        "routes": []
+      },
+      {
+        "covered": false,
+        "operation": "updating_product_capability_documentation",
+        "routes": []
+      },
+      {
+        "covered": true,
+        "operation": "changing_tests_or_fixtures",
+        "routes": [
+          {
+            "route_id": "specification_ingestion",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          },
+          {
+            "route_id": "fact_normalization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          },
+          {
+            "route_id": "test_migration",
+            "skills": [
+              "add-roundtrip-test"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": true,
+        "operation": "running_migrations_or_backfills",
+        "routes": [
+          {
+            "route_id": "qname_generation",
+            "skills": [
+              "spec-literal-qname-to-code-mapping",
+              "qname-backfill"
+            ]
+          },
+          {
+            "route_id": "source_generation",
+            "skills": [
+              "spec-parity-source-regeneration-and-migration"
+            ]
+          },
+          {
+            "route_id": "source_migration",
+            "skills": [
+              "spec-parity-source-regeneration-and-migration"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": true,
+        "operation": "changing_taskcard_states",
+        "routes": [
+          {
+            "route_id": "status_and_recon",
+            "skills": [
+              "reproduce-master-plan",
+              "build-context-pack"
+            ]
+          },
+          {
+            "route_id": "plan_creation",
+            "skills": [
+              "create-taskcard",
+              "plan-hardening"
+            ]
+          },
+          {
+            "route_id": "plan_hardening",
+            "skills": [
+              "plan-hardening",
+              "execution-handoff"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": true,
+        "operation": "changing_sprint_state",
+        "routes": [
+          {
+            "route_id": "plan_hardening",
+            "skills": [
+              "plan-hardening",
+              "execution-handoff"
+            ]
+          },
+          {
+            "route_id": "taskcard_execution",
+            "skills": [
+              "autonomous-loop",
+              "execution-handoff"
+            ]
+          },
+          {
+            "route_id": "capability_audit",
+            "skills": [
+              "check-gate",
+              "check-skill-coverage"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": false,
+        "operation": "changing_approval_gates",
+        "routes": []
+      },
+      {
+        "covered": true,
+        "operation": "changing_ledgers_or_registries",
+        "routes": [
+          {
+            "route_id": "plan_creation",
+            "skills": [
+              "create-taskcard",
+              "plan-hardening"
+            ]
+          },
+          {
+            "route_id": "taskcard_generation",
+            "skills": [
+              "create-taskcard",
+              "promote-gap-to-taskcard"
+            ]
+          },
+          {
+            "route_id": "fact_normalization",
+            "skills": [
+              "sal-pipeline-heal"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": true,
+        "operation": "accepting_or_closing_gap_findings",
+        "routes": [
+          {
+            "route_id": "plan_creation",
+            "skills": [
+              "create-taskcard",
+              "plan-hardening"
+            ]
+          },
+          {
+            "route_id": "plan_hardening",
+            "skills": [
+              "plan-hardening",
+              "execution-handoff"
+            ]
+          },
+          {
+            "route_id": "taskcard_generation",
+            "skills": [
+              "create-taskcard",
+              "promote-gap-to-taskcard"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": false,
+        "operation": "creating_release_artifacts",
+        "routes": []
+      },
+      {
+        "covered": true,
+        "operation": "producing_canonical_evidence",
+        "routes": [
+          {
+            "route_id": "status_and_recon",
+            "skills": [
+              "reproduce-master-plan",
+              "build-context-pack"
+            ]
+          },
+          {
+            "route_id": "taskcard_generation",
+            "skills": [
+              "create-taskcard",
+              "promote-gap-to-taskcard"
+            ]
+          },
+          {
+            "route_id": "forensic_audit",
+            "skills": [
+              "post-sprint-audit",
+              "evidence-review-next-prompt"
+            ]
+          }
+        ]
+      },
+      {
+        "covered": true,
+        "operation": "marking_gates_complete",
+        "routes": [
+          {
+            "route_id": "status_and_recon",
+            "skills": [
+              "reproduce-master-plan",
+              "build-context-pack"
+            ]
+          },
+          {
+            "route_id": "capability_audit",
+            "skills": [
+              "check-gate",
+              "check-skill-coverage"
+            ]
+          },
+          {
+            "route_id": "capability_compiler",
+            "skills": [
+              "capability-compiler"
+            ]
+          }
+        ]
+      }
+    ],
+    "uncovered_operations": [
+      "applying_patches",
+      "changing_project_files",
+      "changing_package_metadata",
+      "updating_product_capability_documentation",
+      "changing_approval_gates",
+      "creating_release_artifacts"
+    ]
+  },
+  "schema": "skills-first-control/audit@1",
+  "severity_counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "INFO": 6,
+    "MEDIUM": 1
+  },
+  "sfc_version": "1.0.0",
+  "skill_command_matrix": {
+    "counts": {
+      "command_md_on_disk": 189,
+      "commands_registered": 188,
+      "ownerless_command_md": 0,
+      "registry_entries_missing_file_field": 137,
+      "skills_active": 185,
+      "skills_referenced_by_commands": 188,
+      "skills_total": 188
+    },
+    "findings": [
+      {
+        "category": "command_registry_entry_missing_file_field",
+        "detail": "137 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
+        "sample": [
+          "add-spec-analytics-function",
+          "agent-owasp-compliance",
+          "agent-supply-chain",
+          "allocate-sprint-number",
+          "append-layer-verification-log",
+          "append-layer-work-log",
+          "audit-context-building",
+          "audit-contract-portfolio",
+          "audit-enhanced-control-layer",
+          "audit-root-tools"
+        ],
+        "severity": "MEDIUM"
+      }
+    ]
+  },
+  "ungoverned_generator_signal": {
+    "count": null
+  }
+}

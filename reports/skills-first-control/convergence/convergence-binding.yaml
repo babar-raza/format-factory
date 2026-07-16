@@ -1,0 +1,39 @@
+convergence_binding:
+  mission_id: SKILLS-FIRST-CONTROL-2026-07-16
+  plan_id: skills-first-control-sprint
+  plan_path: plans/.claude/skills-first-control-sprint.md
+  plan_revision: r1-hardened
+  plan_hash: 97e051eb937698dc86ae556f0834121d5c6ec3a1e32c942e16b87dd516ce6bb9
+  binding_rationale: >
+    This is the exact plan authored AND executed in the current session (the SFC
+    machinery, policy reconciliation, healing, tests, pilots, IV). It is bound from
+    current mission state, taskcards, and evidence under reports/skills-first-control/.
+    The prior active-plan-lock (stateful-wibbling-babbage.md) belongs to a DIFFERENT
+    session (session_id 71d6552a09a4) and is NOT this mission — not selected.
+  post_sprint_audit:
+    expected: .supervisor/prompts/prompt1-post-sprint-audit.md
+    path: .supervisor/prompts/prompt1-post-sprint-audit.md
+    hash: 263dab3dadad6845f5dd2874fe22cd860403151156cadb2dffedef5258103099
+    role_verified: true   # content: "POST-SPRINT STRICT EVIDENCE AUDIT"; output contract stage1-issue-model.schema.json
+    output_contract: .supervisor/schemas/stage1-issue-model.schema.json
+  plan_hardening:
+    expected: .supervisor/prompts/prompt2-plan-hardening.md
+    path: .supervisor/prompts/prompt2-plan-hardening.md
+    hash: 4fe227b68c0e58e08381f89f5381bb8d29eebd89cba328ea3fb33c957c5d3d00
+    role_verified: true   # content: "PLAN MODE: HARDEN CURRENT PLAN"; consumes stage1-*, output stage2-taskcard-contract.schema.json
+    input_contract: stage1-*
+    output_contract: .supervisor/schemas/stage2-taskcard-contract.schema.json
+  controlled_execution:
+    expected: .supervisor/prompts/prompt3-controlled-execution.md
+    path: .supervisor/prompts/prompt3-controlled-execution.md
+    hash: 5246d218a39a8464cdc32c542d5411d2f29ad034f3e867651c0f731e1269edd9
+    role_verified: true   # content: "EXECUTION MODE: CONTROLLED TASKCARD EXECUTION"; output stage3-quality-scoring-rubric.schema.json
+    output_contract: .supervisor/schemas/stage3-quality-scoring-rubric.schema.json
+  close_task:
+    expected: .supervisor/prompts/prompt4-close-task.md
+    resolved: .supervisor/prompts/prompt4-close-task.md
+    hash: 3196a5bd52bd6e037b84d602dbde8d32a8dbac31798c0947bac03784ff6ef81b
+    role_verified: true   # content: "Close this task cleanly. ... Commit ... Update the master plan ... Mark the task closed"
+  contract_compatibility: COMPATIBLE   # stage1 -> stage2 -> stage3 input/output chain verified
+  supervisor: single   # one supervisor drives audit->harden->validate->execute->verify->reaudit->close->verify->terminal
+  status: BOUND

@@ -1,21 +1,28 @@
 ---
-version: "1.0"
+version: "1.1"
 created: "2026-06-24"
+last_reconciled: "2026-07-16"   # SFC convergence TC-SFC-CONV-001: authority-chain fix
 mission: SKILL-FIRST-001
 authority:
+  - docs/governance/skill-only-policy.yaml   # PRIMARY canonical operational policy (SKILL-ONLY-POLICY-001)
   - AGENTS.md §E (Reuse-Before-Regenerate)
   - AGENTS.md §B2 (Phase Verification)
   - .supervisor/skill-registry.yaml global_controls
   - .supervisor/autonomy-boundary-contract.yaml
   - CLAUDE.md "Supreme Directive" and "Governance" sections
+subordinate_to: docs/governance/skill-only-policy.yaml
 ---
 
 # Skill-First Execution Policy
 
-**Canonical sources:** This document extracts and consolidates rules from
-`AGENTS.md`, `CLAUDE.md`, `.supervisor/skill-registry.yaml`, and
-`.supervisor/autonomy-boundary-contract.yaml`. Those files are the authority.
-This document is a derived operational summary. On conflict, the source wins.
+**Canonical authority:** The single authoritative machine-readable policy is
+`docs/governance/skill-only-policy.yaml` (SKILL-ONLY-POLICY-001), which explicitly
+lists THIS file as a subordinate derived summary. This document is a human-readable
+operational summary of that policy plus `AGENTS.md`, `CLAUDE.md`,
+`.supervisor/skill-registry.yaml`, and `.supervisor/autonomy-boundary-contract.yaml`.
+**On any conflict, `docs/governance/skill-only-policy.yaml` wins**, then the other
+sources. Do not redefine governance semantics here — reference the canonical policy.
+(Authority-chain inversion reconciled 2026-07-16 by SFC convergence TC-SFC-CONV-001.)
 
 ---
 
