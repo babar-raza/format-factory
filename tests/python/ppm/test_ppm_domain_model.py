@@ -22,7 +22,7 @@ class TestPpmDocumentSpecQname:
         assert isinstance(PpmDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert PpmDocument.spec_fact_ref == "FACT-PPM-001"
+        assert PpmDocument.spec_fact_ref == "SAL-PPM-00001"
 
     def test_from_file_returns_model(self):
         doc = PpmDocument.from_file(_SAMPLE)

@@ -22,7 +22,7 @@ class TestQoiDocumentSpecQname:
         assert isinstance(QoiDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert QoiDocument.spec_fact_ref == "FACT-QOI-001"
+        assert QoiDocument.spec_fact_ref == "SAL-QOI-00001"
 
     def test_from_file_returns_model(self):
         doc = QoiDocument.from_file(_SAMPLE)

@@ -1,0 +1,53 @@
+format_id: mtlx
+display_name: MaterialX
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-MTLX-00002
+  qname: FACT-MTLX-002
+  element_qname: materialx:nodegraph
+  claim: A <nodegraph> element contains a directed acyclic graph of <node> elements connected via named
+    inputs/outputs; the graph exposes <output> elements as its external interface
+  section: MaterialX Specification — NodeGraph Elements
+  authority: MaterialX v1.38 Specification (ASWF)
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00003
+  qname: FACT-MTLX-003
+  element_qname: materialx:material
+  claim: Material content is defined by material nodes (e.g. <surfacematerial>) that bind shader nodes
+    to renderable elements; in MaterialX 1.38+ materials are nodes rather than dedicated <material> elements
+  section: MaterialX Specification — Material Nodes
+  authority: MaterialX v1.38 Specification (ASWF)
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-MTLX-00101
+  qname: FACT-MTLX-101
+  element_qname: materialx:document-root
+  claim: A MaterialX document is rooted at a <materialx> element carrying a version attribute; top-level
+    children include <nodedef>, <typedef>, <nodegraph>, <look>, and <propertyset> elements (shared structural
+    aggregate referenced by the nodedef/typedef/look/propertyset qnames)
+  section: MaterialX Specification — Document Structure
+  authority: MaterialX v1.38 Specification (ASWF)
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

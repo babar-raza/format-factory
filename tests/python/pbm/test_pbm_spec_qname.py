@@ -62,7 +62,7 @@ class TestPbmCompatLayerSpecQname:
 
     def test_pbm_header_spec_fact_ref(self):
         from src.python.pbm.Compat import PbmHeader
-        assert PbmHeader.spec_fact_ref == "FACT-PBM-001"
+        assert PbmHeader.spec_fact_ref == "SAL-PBM-00001"
 
     def test_pbm_header_namespace_uri(self):
         from src.python.pbm.Compat import PbmHeader

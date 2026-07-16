@@ -1,0 +1,225 @@
+format_id: ndjson
+display_name: Newline Delimited JSON (NDJSON)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-NDJSON-00001
+  qname: FACT-NDJSON-001
+  claim: 'NDJSON record: one complete JSON value per line'
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: ndjson
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1'
+    spec_id: ndjson-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from NDJSON format element vocabulary and parser implementation
+      in src/python/ndjson/
+    verification_status: verified_with_note
+  claim_id: FACT-NDJSON-001
+- fact_id: SAL-NDJSON-00002
+  qname: FACT-NDJSON-002
+  claim: 'NDJSON field: a key-value pair within a JSON object record'
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: ndjson
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1'
+    spec_id: ndjson-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from NDJSON format element vocabulary and parser implementation
+      in src/python/ndjson/
+    verification_status: verified_with_note
+  claim_id: FACT-NDJSON-002
+- fact_id: SAL-NDJSON-00003
+  qname: FACT-NDJSON-003
+  claim: NDJSON files contain one valid JSON value per line separated by newline characters
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: each line must be a valid JSON value'
+    confidence: medium
+  claim_id: FACT-NDJSON-003
+- fact_id: SAL-NDJSON-00004
+  qname: FACT-NDJSON-004
+  claim: NDJSON uses LF (0x0A) as the line separator with optional CR before LF
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: newline separator is LF optionally preceded by CR'
+    confidence: medium
+  claim_id: FACT-NDJSON-004
+- fact_id: SAL-NDJSON-00005
+  qname: FACT-NDJSON-005
+  claim: NDJSON files must be encoded in UTF-8 without BOM
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: UTF-8 encoding required, BOM not allowed'
+    confidence: medium
+  claim_id: FACT-NDJSON-005
+- fact_id: SAL-NDJSON-00006
+  qname: FACT-NDJSON-006
+  claim: NDJSON each line may be any valid JSON type including object, array, string, number, boolean,
+    or null
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: any JSON value type is permitted per line'
+    confidence: medium
+  claim_id: FACT-NDJSON-006
+- fact_id: SAL-NDJSON-00007
+  qname: FACT-NDJSON-007
+  claim: NDJSON blank lines are not permitted between records
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: blank lines are invalid — every line must be a JSON value'
+    confidence: medium
+  claim_id: FACT-NDJSON-007
+- fact_id: SAL-NDJSON-00008
+  qname: FACT-NDJSON-008
+  claim: NDJSON lines must not contain embedded unescaped newlines within string values
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: newlines within strings must be JSON-escaped as \n'
+    confidence: medium
+  claim_id: FACT-NDJSON-008
+- fact_id: SAL-NDJSON-00009
+  qname: FACT-NDJSON-009
+  claim: NDJSON common use case is streaming JSON objects where each line is a JSON object
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: canonical usage is one JSON object per line for streaming'
+    confidence: medium
+  claim_id: FACT-NDJSON-009
+- fact_id: SAL-NDJSON-00010
+  qname: FACT-NDJSON-010
+  claim: NDJSON files use the .ndjson file extension and MIME type application/x-ndjson
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1 and IANA: .ndjson extension, application/x-ndjson MIME'
+    confidence: medium
+  claim_id: FACT-NDJSON-010
+- fact_id: SAL-NDJSON-00011
+  qname: FACT-NDJSON-011
+  claim: NDJSON is equivalent to JSON Lines format which uses the same one-value-per-line structure
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '4.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: NDJSON and JSON Lines describe the same format'
+    confidence: medium
+  claim_id: FACT-NDJSON-011
+- fact_id: SAL-NDJSON-00012
+  qname: FACT-NDJSON-012
+  claim: NDJSON trailing newline after the last record is optional
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: final newline is optional but recommended'
+    confidence: medium
+  claim_id: FACT-NDJSON-012
+- fact_id: SAL-NDJSON-00013
+  qname: FACT-NDJSON-013
+  claim: NDJSON parsers must handle each line independently so malformed lines do not prevent parsing
+    others
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: line independence allows partial-file processing'
+    confidence: medium
+  claim_id: FACT-NDJSON-013
+- fact_id: SAL-NDJSON-00014
+  qname: FACT-NDJSON-014
+  claim: NDJSON number encoding follows JSON RFC 8259 with no leading zeros and optional exponent notation
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: inherits all JSON RFC 8259 number encoding rules'
+    confidence: medium
+  claim_id: FACT-NDJSON-014
+- fact_id: SAL-NDJSON-00015
+  qname: FACT-NDJSON-015
+  claim: NDJSON files may contain comments only if the consuming application explicitly allows them as
+    an extension
+  verification_status: verified_with_note
+  provenance:
+    format_id: ndjson
+    spec_id: ndjson-v1
+    section_id: '1.9'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'NDJSON spec v1: comments not part of standard; application extension only'
+    confidence: medium
+  claim_id: FACT-NDJSON-015

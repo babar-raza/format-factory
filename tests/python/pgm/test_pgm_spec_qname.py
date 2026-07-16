@@ -61,7 +61,7 @@ class TestPgmCompatLayerSpecQname:
 
     def test_pgm_header_spec_fact_ref(self):
         from pgm.Compat import PgmHeader
-        assert PgmHeader.spec_fact_ref == "FACT-PGM-001"
+        assert PgmHeader.spec_fact_ref == "SAL-PGM-00001"
 
     def test_pgm_header_namespace_uri(self):
         from pgm.Compat import PgmHeader

@@ -61,7 +61,7 @@ class TestPpmCompatLayerSpecQname:
 
     def test_ppm_header_spec_fact_ref(self):
         from ppm.Compat import PpmHeader
-        assert PpmHeader.spec_fact_ref == "FACT-PPM-001"
+        assert PpmHeader.spec_fact_ref == "SAL-PPM-00001"
 
     def test_ppm_header_namespace_uri(self):
         from ppm.Compat import PpmHeader

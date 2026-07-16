@@ -20,7 +20,7 @@ class TestPpmHeaderMetadata:
         assert PpmHeader.spec_qname == "ppm:header"
 
     def test_spec_fact_ref(self):
-        assert PpmHeader.spec_fact_ref == "FACT-PPM-001"
+        assert PpmHeader.spec_fact_ref == "SAL-PPM-00001"
 
     def test_namespace_uri_present(self):
         assert PpmHeader.namespace_uri

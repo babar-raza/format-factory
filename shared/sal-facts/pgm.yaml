@@ -1,0 +1,99 @@
+format_id: pgm
+display_name: Portable Graymap (PGM / Netpbm)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-PGM-00001
+  qname: FACT-PGM-001
+  claim: PGM ASCII format starts with magic number 'P2' followed by whitespace
+  section: pgm.html#magicnumber
+  description: PGM ASCII format starts with magic number 'P2' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/pgm/pgm_parser.py
+    symbol: PGM_MAGIC_ASCII
+    expected: P2
+- fact_id: SAL-PGM-00002
+  qname: FACT-PGM-002
+  claim: PGM binary format starts with magic number 'P5' followed by whitespace
+  section: pgm.html#magicnumber
+  description: PGM binary format starts with magic number 'P5' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/pgm/pgm_parser.py
+    symbol: PGM_MAGIC_BINARY
+    expected: P5
+- fact_id: SAL-PGM-00003
+  qname: FACT-PGM-003
+  element_qname: pgm:width
+  claim: PGM header contains the image width as an ASCII decimal number after the magic number, separated
+    by whitespace
+  section: pgm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: pgm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PGM-00004
+  qname: FACT-PGM-004
+  element_qname: pgm:height
+  claim: PGM header contains the image height as an ASCII decimal number after the width, separated by
+    whitespace
+  section: pgm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: pgm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PGM-00005
+  qname: FACT-PGM-005
+  element_qname: pgm:maxval
+  claim: PGM header contains the maximum gray value as an ASCII decimal number after the height; 0 < maxval
+    < 65536
+  section: pgm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: pgm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PGM-00006
+  qname: FACT-PGM-006
+  element_qname: pgm:raster
+  claim: 'PGM raster is width*height gray samples in row-major order: P2 stores ASCII decimals, P5 stores
+    1 byte per sample when maxval < 256 else 2 bytes big-endian'
+  section: pgm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: pgm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'

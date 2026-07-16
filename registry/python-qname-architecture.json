@@ -1,42 +1,64 @@
 {
   "version": "1.0",
-  "generated_at": "2026-06-22",
+  "generated_at": "2026-07-15",
   "formats": {
     "abw": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 5,
       "facade_classes": 2,
-      "sal_facts_count": 5,
-      "sal_facts_count_consolidated": 5,
+      "sal_facts_count": 36,
+      "sal_facts_count_consolidated": 36,
       "tests_count": 16,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "abw-element-abiword-root",
+        "abw-element-section",
+        "abw-element-p",
+        "abw-element-c",
+        "abw-element-image"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "csv": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 55,
+      "sal_facts_count_consolidated": 55,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "csv-rfc4180-file-production",
+        "csv-rfc4180-record-production"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "dif": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 3,
       "facade_classes": 3,
-      "sal_facts_count": 3,
-      "sal_facts_count_consolidated": 3,
+      "sal_facts_count": 15,
+      "sal_facts_count_consolidated": 15,
       "tests_count": 20,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "dif-record-TABLE",
+        "dif-record-VECTORS",
+        "dif-record-DATA"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "fodg": {
       "state": "ACCEPTED_VERIFIED",
@@ -45,10 +67,18 @@
       "sal_facts_count": 1066,
       "sal_facts_count_consolidated": 1066,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-draw-page",
+        "odf-presentation-class"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "fodp": {
       "state": "ACCEPTED_VERIFIED",
@@ -57,10 +87,18 @@
       "sal_facts_count": 1066,
       "sal_facts_count_consolidated": 1066,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-draw-page",
+        "odf-presentation-presentation-class"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "fods": {
       "state": "ACCEPTED_VERIFIED",
@@ -69,10 +107,20 @@
       "sal_facts_count": 4987,
       "sal_facts_count_consolidated": 4987,
       "tests_count": 18,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-office-spreadsheet",
+        "odf-table-table",
+        "odf-table-table-row",
+        "odf-table-table-cell"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "fodt": {
       "state": "ACCEPTED_VERIFIED",
@@ -81,34 +129,57 @@
       "sal_facts_count": 4933,
       "sal_facts_count_consolidated": 4933,
       "tests_count": 19,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-office-text",
+        "odf-text-p",
+        "odf-text-span",
+        "odf-text-h"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "gnumeric": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 3,
-      "sal_facts_count_consolidated": 3,
+      "sal_facts_count": 61,
+      "sal_facts_count_consolidated": 61,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "gnumeric-element-Workbook",
+        "gnumeric-element-Sheet",
+        "gnumeric-element-Cell"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "ndjson": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 15,
+      "sal_facts_count_consolidated": 15,
       "tests_count": 16,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "ndjson-line-record",
+        "ndjson-empty-line"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "ods": {
       "state": "ACCEPTED_VERIFIED",
@@ -117,10 +188,18 @@
       "sal_facts_count": 1069,
       "sal_facts_count_consolidated": 1069,
       "tests_count": 19,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-office-spreadsheet",
+        "odf-table-table"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "odt": {
       "state": "ACCEPTED_VERIFIED",
@@ -129,106 +208,170 @@
       "sal_facts_count": 1066,
       "sal_facts_count_consolidated": 1066,
       "tests_count": 21,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "INTENTIONAL_GROUPING",
+      "collapse_note": "ODF: many spec facts map to few semantic qnames (intentional architecture, RC-002)",
+      "source_fact_ids": [
+        "odf-office-document-root",
+        "odf-office-text"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "pbm": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 5,
+      "sal_facts_count_consolidated": 5,
       "tests_count": 16,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "netpbm-pbm-magic-number",
+        "netpbm-pbm-pixel-data"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "pgm": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 6,
+      "sal_facts_count_consolidated": 6,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "netpbm-pgm-magic-number",
+        "netpbm-pgm-maxval"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "ppm": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 6,
+      "sal_facts_count_consolidated": 6,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "netpbm-ppm-magic-number",
+        "netpbm-ppm-maxval"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "qoi": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 10,
+      "sal_facts_count_consolidated": 10,
       "tests_count": 18,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-07-15",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "qoi-spec-header",
+        "qoi-spec-chunk-aggregate",
+        "qoi-spec-end-marker",
+        "qoi-op-rgb",
+        "qoi-op-rgba",
+        "qoi-op-index",
+        "qoi-op-diff",
+        "qoi-op-luma",
+        "qoi-op-run",
+        "qoi-op-end"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "sylk": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 3,
       "facade_classes": 3,
-      "sal_facts_count": 3,
-      "sal_facts_count_consolidated": 3,
+      "sal_facts_count": 20,
+      "sal_facts_count_consolidated": 20,
       "tests_count": 22,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "sylk-record-ID",
+        "sylk-record-C",
+        "sylk-record-F"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "toml": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 65,
+      "sal_facts_count_consolidated": 65,
       "tests_count": 19,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "toml-key-value-pair",
+        "toml-table-header"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "tsv": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 15,
+      "sal_facts_count_consolidated": 15,
       "tests_count": 15,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "tsv-record",
+        "tsv-field"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "xcf": {
       "state": "ACCEPTED_VERIFIED",
       "spec_classes": 2,
       "facade_classes": 2,
-      "sal_facts_count": 2,
-      "sal_facts_count_consolidated": 2,
+      "sal_facts_count": 42,
+      "sal_facts_count_consolidated": 42,
       "tests_count": 18,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "xcf-header",
+        "xcf-layer-property"
+      ],
+      "backfill_date": "2026-07-15"
     },
     "zst": {
       "state": "ACCEPTED_VERIFIED",
@@ -237,10 +380,20 @@
       "sal_facts_count": 94,
       "sal_facts_count_consolidated": 94,
       "tests_count": 18,
-      "backfill_done": false,
+      "backfill_done": true,
       "phase_8_deferred": true,
       "reviewer_verdict": "ACCEPTED_VERIFIED",
-      "last_updated": "2026-06-22"
+      "last_updated": "2026-06-22",
+      "derivation_method": "MANUALLY_SEEDED",
+      "source_fact_ids": [
+        "zst-frame-magic",
+        "zst-frame-header",
+        "zst-block-header",
+        "zst-data-block",
+        "zst-checksum"
+      ],
+      "backfill_date": "2026-07-15"
     }
-  }
+  },
+  "backfill_note": "TC-FF-AUDIT-062: source_fact_ids and derivation_method added 2026-07-15"
 }

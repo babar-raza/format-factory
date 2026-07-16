@@ -34,7 +34,7 @@ class TestQoiSampleRoundtrip:
     @pytest.mark.roundtrip
     def test_spec_qname_matches_registry(self):
         assert QoiDocument.spec_qname == "qoi:image"
-        assert QoiDocument.spec_fact_ref == "FACT-QOI-001"
+        assert QoiDocument.spec_fact_ref == "SAL-QOI-00001"
 
     @pytest.mark.roundtrip
     def test_sample_model_typed_properties(self):

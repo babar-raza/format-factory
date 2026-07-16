@@ -1,0 +1,53 @@
+format_id: ubl
+display_name: UBL (Universal Business Language)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-UBL-00001
+  qname: FACT-UBL-001
+  element_qname: ubl:order
+  claim: 'A UBL Order document is rooted at an <Order> element in the UBL-Order-2 namespace, composed
+    of common basic components (cbc: e.g. ID, IssueDate) and common aggregate components (cac: e.g. OrderLine)'
+  section: OASIS UBL 2.1 — Order document schema
+  authority: OASIS UBL 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00002
+  qname: FACT-UBL-002
+  element_qname: ubl:invoice
+  claim: A UBL Invoice document is rooted at an <Invoice> element in the UBL-Invoice-2 namespace; each
+    invoice line is a cac:InvoiceLine aggregate carrying cbc:ID, cbc:InvoicedQuantity, and cbc:LineExtensionAmount
+    (shared aggregate referenced by ubl:line-item)
+  section: OASIS UBL 2.1 — Invoice document schema
+  authority: OASIS UBL 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-UBL-00105
+  qname: FACT-UBL-105
+  element_qname: ubl:credit-note
+  claim: A UBL CreditNote document is rooted at a <CreditNote> element in the UBL-CreditNote-2 namespace
+    with cac:CreditNoteLine aggregates for its lines
+  section: OASIS UBL 2.1 — CreditNote document schema
+  authority: OASIS UBL 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

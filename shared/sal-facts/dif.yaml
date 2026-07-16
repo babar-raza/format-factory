@@ -1,0 +1,235 @@
+format_id: dif
+display_name: DIF
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-DIF-00001
+  qname: FACT-DIF-001
+  claim: DIF file begins with TABLE header followed by vectors and data
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: dif
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '2'
+    spec_id: dif-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from DIF format element vocabulary and parser implementation
+      in src/python/dif/
+    verification_status: verified_with_note
+  claim_id: FACT-DIF-001
+- fact_id: SAL-DIF-00002
+  qname: FACT-DIF-002
+  claim: 'DIF vector: a row or column of tabular data'
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: dif
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '3'
+    spec_id: dif-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from DIF format element vocabulary and parser implementation
+      in src/python/dif/
+    verification_status: verified_with_note
+  claim_id: FACT-DIF-002
+- fact_id: SAL-DIF-00003
+  qname: FACT-DIF-003
+  claim: 'DIF datum: a single cell value (numeric or text)'
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: dif
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '4'
+    spec_id: dif-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from DIF format element vocabulary and parser implementation
+      in src/python/dif/
+    verification_status: verified_with_note
+  claim_id: FACT-DIF-003
+- fact_id: SAL-DIF-00004
+  qname: FACT-DIF-004
+  claim: DIF files begin with a TABLE header record followed by a version number and table name
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: first record is TABLE indicator with 0,1 version and name'
+    confidence: medium
+  claim_id: FACT-DIF-004
+- fact_id: SAL-DIF-00005
+  qname: FACT-DIF-005
+  claim: DIF header records VECTORS and TUPLES specify the number of columns and rows respectively
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: VECTORS=column count, TUPLES=row count in header section'
+    confidence: medium
+  claim_id: FACT-DIF-005
+- fact_id: SAL-DIF-00006
+  qname: FACT-DIF-006
+  claim: DIF DATA marker ends the header section and signals the start of cell data
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: DATA record with 0,0 separates header from data'
+    confidence: medium
+  claim_id: FACT-DIF-006
+- fact_id: SAL-DIF-00007
+  qname: FACT-DIF-007
+  claim: DIF cell data is organized into tuples separated by -1,0 BOT records marking beginning of tuple
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: BOT record type=-1 value=0 starts each data row'
+    confidence: medium
+  claim_id: FACT-DIF-007
+- fact_id: SAL-DIF-00008
+  qname: FACT-DIF-008
+  claim: DIF numeric cells use type indicator 0 followed by the value and an empty string on the next
+    line
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: numeric cell type=0 with float value and empty double-quote string'
+    confidence: medium
+  claim_id: FACT-DIF-008
+- fact_id: SAL-DIF-00009
+  qname: FACT-DIF-009
+  claim: DIF string cells use type indicator 1 followed by 0 on one line and the quoted string on the
+    next
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: string cell type=1 value=0 then double-quoted string'
+    confidence: medium
+  claim_id: FACT-DIF-009
+- fact_id: SAL-DIF-00010
+  qname: FACT-DIF-010
+  claim: DIF empty cells use type indicator 1 followed by 0 and an empty double-quoted string
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: empty cell type=1 value=0 string is empty double-quotes'
+    confidence: medium
+  claim_id: FACT-DIF-010
+- fact_id: SAL-DIF-00011
+  qname: FACT-DIF-011
+  claim: DIF error cells use type indicator -1 followed by the error code and an error label string
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: error cell type=-1 with error code and string label'
+    confidence: medium
+  claim_id: FACT-DIF-011
+- fact_id: SAL-DIF-00012
+  qname: FACT-DIF-012
+  claim: DIF file ends with an EOD record that signals end of data with type=-1 value=0 string EOD
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '1.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: EOD record terminates the file'
+    confidence: medium
+  claim_id: FACT-DIF-012
+- fact_id: SAL-DIF-00013
+  qname: FACT-DIF-013
+  claim: 'DIF records consist of exactly three lines: the topic, the numeric value pair, and the string
+    value'
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: each record is 3 lines — topic header + num pair + string'
+    confidence: medium
+  claim_id: FACT-DIF-013
+- fact_id: SAL-DIF-00014
+  qname: FACT-DIF-014
+  claim: DIF uses CR LF line endings and the file extension is .dif
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '3.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec and IANA: CRLF line endings, .dif extension'
+    confidence: medium
+  claim_id: FACT-DIF-014
+- fact_id: SAL-DIF-00015
+  qname: FACT-DIF-015
+  claim: DIF numeric values are stored as floating-point decimal strings in the value pair line
+  verification_status: verified_with_note
+  provenance:
+    format_id: dif
+    spec_id: dif-v1
+    section_id: '2.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'DIF v1 spec: float decimal encoding for all numeric values'
+    confidence: medium
+  claim_id: FACT-DIF-015

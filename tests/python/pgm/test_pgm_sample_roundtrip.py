@@ -33,7 +33,7 @@ class TestPgmSampleRoundtrip:
     @pytest.mark.roundtrip
     def test_spec_qname_matches_registry(self):
         assert PgmDocument.spec_qname == "pgm:image"
-        assert PgmDocument.spec_fact_ref == "FACT-PGM-001"
+        assert PgmDocument.spec_fact_ref == "SAL-PGM-00001"
 
     @pytest.mark.roundtrip
     def test_sample_model_typed_properties(self):

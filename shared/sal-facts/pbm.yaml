@@ -1,0 +1,83 @@
+format_id: pbm
+display_name: Portable Bitmap (PBM / Netpbm)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-PBM-00001
+  qname: FACT-PBM-001
+  claim: PBM ASCII format starts with magic number 'P1' followed by whitespace
+  section: pbm.html#magicnumber
+  description: PBM ASCII format starts with magic number 'P1' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/pbm/pbm_parser.py
+    symbol: PBM_MAGIC_ASCII
+    expected: P1
+- fact_id: SAL-PBM-00002
+  qname: FACT-PBM-002
+  claim: PBM binary format starts with magic number 'P4' followed by whitespace
+  section: pbm.html#magicnumber
+  description: PBM binary format starts with magic number 'P4' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/pbm/pbm_parser.py
+    symbol: PBM_MAGIC_BINARY
+    expected: P4
+- fact_id: SAL-PBM-00003
+  qname: FACT-PBM-003
+  element_qname: pbm:width
+  claim: PBM header contains the image width as an ASCII decimal number after the magic number, separated
+    by whitespace
+  section: pbm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: pbm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PBM-00004
+  qname: FACT-PBM-004
+  element_qname: pbm:height
+  claim: PBM header contains the image height as an ASCII decimal number after the width, separated by
+    whitespace
+  section: pbm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: pbm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PBM-00005
+  qname: FACT-PBM-005
+  element_qname: pbm:raster
+  claim: 'PBM raster is height rows of width bits (1=black, 0=white): P1 stores pixels as ASCII ''0''/''1''
+    characters, P4 packs 8 pixels per byte with each row padded to a whole byte'
+  section: pbm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: pbm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'

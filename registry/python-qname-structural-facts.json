@@ -201,6 +201,69 @@
       "approved_by": "indexed-crafting-peacock-plan"
     },
     {
+      "fact_id": "FACT-QOI-004",
+      "qname": "qoi:op-rgb",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_RGB chunk: tag byte 0xFE (0b11111110), followed by 3 payload bytes r, g, b; encodes a full RGB pixel (4 bytes total, alpha unchanged from previous pixel)",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-005",
+      "qname": "qoi:op-rgba",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_RGBA chunk: tag byte 0xFF (0b11111111), followed by 4 payload bytes r, g, b, a; encodes a full RGBA pixel (5 bytes total)",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-006",
+      "qname": "qoi:op-index",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_INDEX chunk: 2-bit tag 0b00 (mask 0x00), 6-bit index into a 64-entry running array of previously seen pixel values (index = (r*3 + g*5 + b*7 + a*11) % 64); 1 byte total",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-007",
+      "qname": "qoi:op-diff",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_DIFF chunk: 2-bit tag 0b01 (mask 0x40), per-channel differences dr, dg, db stored as 2-bit values each with a bias of 2 (range -2..1), alpha unchanged; 1 byte total",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-008",
+      "qname": "qoi:op-luma",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_LUMA chunk: 2-bit tag 0b10 (mask 0x80), 6-bit green-channel difference dg with bias 32, then 4-bit dr-dg and db-dg deltas each with bias 8, alpha unchanged; 2 bytes total",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-009",
+      "qname": "qoi:op-run",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_RUN chunk: 2-bit tag 0b11 (mask 0xC0), 6-bit run length with bias -1 encoding a run of 1..62 identical pixels (values 63 and 64 are reserved for QOI_OP_RGB/QOI_OP_RGBA tags); 1 byte total",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
+      "fact_id": "FACT-QOI-010",
+      "qname": "qoi:op-end",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "QOI_OP_END: the encoded data stream is terminated by an 8-byte sequence of seven 0x00 bytes followed by a single 0x01 byte; op-code-level encoding of the end marker (stream-termination semantics are recorded separately as FACT-QOI-003)",
+      "approved_date": "2026-07-15",
+      "approved_by": "GAP-FORENSIC-008"
+    },
+    {
       "fact_id": "FACT-XCF-001",
       "qname": "xcf:header",
       "format": "xcf",

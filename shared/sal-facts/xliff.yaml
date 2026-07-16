@@ -1,0 +1,39 @@
+format_id: xliff
+display_name: XLIFF 2.0
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-XLIFF-00001
+  qname: FACT-XLIFF-001
+  element_qname: xliff:file
+  claim: An XLIFF 2.0 document is rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0)
+    with required version and srcLang attributes; it contains one or more <file> elements each holding
+    translation units
+  section: OASIS XLIFF 2.0 — document and file elements
+  authority: OASIS XLIFF Version 2.0 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-XLIFF-00002
+  qname: FACT-XLIFF-002
+  element_qname: xliff:unit
+  claim: A <unit> element carries translatable content as one or more <segment> children, each holding
+    a <source> and optional <target>; segments may be interleaved with <ignorable> content (shared structural
+    fact referenced by xliff:unit and xliff:segment)
+  section: OASIS XLIFF 2.0 — unit and segment elements
+  authority: OASIS XLIFF Version 2.0 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

@@ -1,0 +1,39 @@
+format_id: safetensors
+display_name: SafeTensors
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-SAFETENSORS-00001
+  qname: FACT-SAFETENSORS-001
+  element_qname: safetensors:header
+  claim: A safetensors file starts with an unsigned little-endian 64-bit integer N, followed by exactly
+    N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets}, plus an optional
+    __metadata__ string map
+  section: SafeTensors v0.4 — file format
+  authority: Hugging Face SafeTensors Specification v0.4
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-SAFETENSORS-00002
+  qname: FACT-SAFETENSORS-002
+  element_qname: safetensors:tensor
+  claim: Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape (list of non-negative ints),
+    and data_offsets [begin, end) into the byte buffer immediately following the header; offsets are contiguous
+    and non-overlapping
+  section: SafeTensors v0.4 — tensor entries
+  authority: Hugging Face SafeTensors Specification v0.4
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

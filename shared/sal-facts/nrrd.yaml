@@ -1,0 +1,43 @@
+format_id: nrrd
+display_name: NRRD (Nearly Raw Raster Data)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-NRRD-00002
+  qname: FACT-NRRD-002
+  element_qname: nrrd:header
+  claim: 'An NRRD file begins with an ASCII header: a magic line ''NRRD000X'' (X = format version digit),
+    followed by field specifications ''field: value'' and key/value pairs ''key:=value'', terminated by
+    a single blank line'
+  section: Teem NRRD Format Specification — Section 2 (Header)
+  authority: Teem NRRD Format Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  code_bindings:
+  - file: src/python/nrrd/nrrd_codec.py
+    symbol: MAGIC_PREFIX
+    expected: 4e52524430
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-NRRD-00003
+  qname: FACT-NRRD-003
+  element_qname: nrrd:data
+  claim: The data segment follows the header's blank line (or lives in a detached file named by the 'data
+    file' field) and is decoded per the 'encoding' field (raw, txt/ascii, hex, gz, bz2) with layout governed
+    by the sizes/type/endian fields
+  section: Teem NRRD Format Specification — Section 3 (Data)
+  authority: Teem NRRD Format Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

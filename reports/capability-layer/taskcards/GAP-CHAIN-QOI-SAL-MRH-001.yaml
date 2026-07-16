@@ -12,14 +12,25 @@ gap_type: ""
 priority: "P3"
 severity: "LOW"
 
-taskcard_status: "BLOCKED"
-active_classification: "OPEN_BLOCKED"
-
-blocker: |
-  SAL pipeline (sal_master_runner.py) does not have a spec parser for QOI. Only ODF variants and some image formats have SAL-generated facts.
+taskcard_status: "CLOSED"
+active_classification: "CLOSED"
+closed_at: "2026-07-15"
+closure_evidence: |
+  GAP-FORENSIC-008 remediation (plan graceful-wondering-bubble, 2026-07-15):
+  - 10 SAL facts now in committed store shared/sal-facts/qoi.yaml
+    (SAL-QOI-00001..00010), including all 7 op-codes OP_RGB/RGBA/INDEX/DIFF/
+    LUMA/RUN/END that were previously unseeded.
+  - Compiled into .local/spec-cache/sal-facts-latest.json via union-semantics
+    merge_sal_facts.py (never drops combined-only facts).
+  - V225 governance validator (governance_validators_ext7.py) re-verifies
+    store/alias/count/qname/code-binding reconciliation every run; all 7
+    op-code facts carry code_bindings checked against qoi_parser.py constants.
+  - Root-cause note: original blocker said the SAL pipeline lacks a QOI spec
+    parser. The committed canonical store pattern removes that dependency for
+    manually-seeded formats — facts survive fresh checkout without a parser.
 
 exact_next_action: |
-  run /ingest-spec-sal for QOI to add SAL facts and repair authority chain
+  none — closed
 
 required_skill: "/ingest-spec-sal"
 dependencies: []

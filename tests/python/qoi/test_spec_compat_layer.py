@@ -20,7 +20,7 @@ class TestQoiHeaderMetadata:
         assert QoiHeader.spec_qname == "qoi:header"
 
     def test_spec_fact_ref(self):
-        assert QoiHeader.spec_fact_ref == "FACT-QOI-001"
+        assert QoiHeader.spec_fact_ref == "SAL-QOI-00001"
 
     def test_magic_constant(self):
         assert QoiHeader.MAGIC == b"qoif"

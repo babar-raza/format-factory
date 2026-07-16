@@ -1,0 +1,181 @@
+format_id: qoi
+display_name: QOI
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-QOI-00001
+  qname: FACT-QOI-001
+  claim: 'QOI file header: magic qoif, width, height, channels, colorspace'
+  section: '1.0'
+  description: 'QOI file header: magic qoif, width, height, channels, colorspace'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-QOI-00002
+  qname: FACT-QOI-002
+  claim: 'QOI encoded chunk: QOI_OP_* chunk types'
+  section: '1.0'
+  description: 'QOI encoded chunk: QOI_OP_* chunk types'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-QOI-00003
+  qname: FACT-QOI-003
+  element_qname: qoi:end-marker
+  claim: QOI end marker is an 8-byte sequence 0x00000000_00000001 that terminates the QOI byte stream
+  verification_status: workbench_verified
+  provenance:
+    format_id: qoi
+    spec_id: qoi-spec-1.0
+    section_id: '2.4'
+    extraction_method: structural_derivation
+    verification_status: workbench_verified
+    verification_evidence: 'QOI specification §2.4: the end marker is 8 bytes of value 0x00 0x00 0x00
+      0x00 0x00 0x00 0x00 0x01. Required terminator for all valid QOI streams. Confirmed in src/python/qoi/qoi_parser.py:
+      QOI_END_MARKER constant.'
+    confidence: high
+    updated_at: '2026-07-01'
+  claim_id: FACT-QOI-003
+- fact_id: SAL-QOI-00004
+  qname: FACT-QOI-004
+  element_qname: qoi:op-rgb
+  claim: 'QOI_OP_RGB chunk: tag byte 0xFE (0b11111110), followed by 3 payload bytes r, g, b; encodes
+    a full RGB pixel (4 bytes total, alpha unchanged from previous pixel)'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_RGB
+    expected: '0xFE'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00005
+  qname: FACT-QOI-005
+  element_qname: qoi:op-rgba
+  claim: 'QOI_OP_RGBA chunk: tag byte 0xFF (0b11111111), followed by 4 payload bytes r, g, b, a; encodes
+    a full RGBA pixel (5 bytes total)'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_RGBA
+    expected: '0xFF'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00006
+  qname: FACT-QOI-006
+  element_qname: qoi:op-index
+  claim: 'QOI_OP_INDEX chunk: 2-bit tag 0b00 (mask 0x00), 6-bit index into a 64-entry running array of
+    previously seen pixel values (index = (r*3 + g*5 + b*7 + a*11) % 64); 1 byte total'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_INDEX
+    expected: '0x00'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00007
+  qname: FACT-QOI-007
+  element_qname: qoi:op-diff
+  claim: 'QOI_OP_DIFF chunk: 2-bit tag 0b01 (mask 0x40), per-channel differences dr, dg, db stored as
+    2-bit values each with a bias of 2 (range -2..1), alpha unchanged; 1 byte total'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_DIFF
+    expected: '0x40'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00008
+  qname: FACT-QOI-008
+  element_qname: qoi:op-luma
+  claim: 'QOI_OP_LUMA chunk: 2-bit tag 0b10 (mask 0x80), 6-bit green-channel difference dg with bias 32,
+    then 4-bit dr-dg and db-dg deltas each with bias 8, alpha unchanged; 2 bytes total'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_LUMA
+    expected: '0x80'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00009
+  qname: FACT-QOI-009
+  element_qname: qoi:op-run
+  claim: 'QOI_OP_RUN chunk: 2-bit tag 0b11 (mask 0xC0), 6-bit run length with bias -1 encoding a run of
+    1..62 identical pixels (values 63 and 64 are reserved for QOI_OP_RGB/QOI_OP_RGBA tags); 1 byte total'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_OP_RUN
+    expected: '0xC0'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'
+- fact_id: SAL-QOI-00010
+  qname: FACT-QOI-010
+  element_qname: qoi:op-end
+  claim: 'QOI_OP_END: the encoded data stream is terminated by an 8-byte sequence of seven 0x00 bytes
+    followed by a single 0x01 byte; op-code-level encoding of the end marker (stream-termination
+    semantics are recorded separately as FACT-QOI-003)'
+  section: '3.0'
+  authority: QOI Specification 2021
+  source: structural_fact_manual
+  fact_status: verified
+  code_bindings:
+  - file: src/python/qoi/qoi_parser.py
+    symbol: QOI_END_MARKER
+    expected: '0000000000000001'
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: '3.0'
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: GAP-FORENSIC-008
+    added_at: '2026-07-15'

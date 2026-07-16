@@ -1,0 +1,564 @@
+format_id: abw
+display_name: ABW
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-ABW-00001
+  qname: FACT-ABW-001
+  claim: ABW root element is <abiword> in AWML namespace
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: abw
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.1'
+    spec_id: abw-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from ABW format element vocabulary and parser implementation
+      in src/python/abw/
+    verification_status: verified_with_note
+  claim_id: FACT-ABW-001
+- fact_id: SAL-ABW-00002
+  qname: FACT-ABW-002
+  claim: ABW section element is <section> containing paragraphs
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: abw
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.2'
+    spec_id: abw-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from ABW format element vocabulary and parser implementation
+      in src/python/abw/
+    verification_status: verified_with_note
+  claim_id: FACT-ABW-002
+- fact_id: SAL-ABW-00003
+  qname: FACT-ABW-003
+  claim: ABW paragraph element is <p> containing character runs
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: abw
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.3'
+    spec_id: abw-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from ABW format element vocabulary and parser implementation
+      in src/python/abw/
+    verification_status: verified_with_note
+  claim_id: FACT-ABW-003
+- fact_id: SAL-ABW-00004
+  qname: FACT-ABW-004
+  claim: ABW character run element is <c> with formatting attributes
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: abw
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.4'
+    spec_id: abw-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from ABW format element vocabulary and parser implementation
+      in src/python/abw/
+    verification_status: verified_with_note
+  claim_id: FACT-ABW-004
+- fact_id: SAL-ABW-00005
+  qname: FACT-ABW-005
+  claim: ABW field element is <field> for dynamic content
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: abw
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.5'
+    spec_id: abw-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from ABW format element vocabulary and parser implementation
+      in src/python/abw/
+    verification_status: verified_with_note
+  claim_id: FACT-ABW-005
+- fact_id: SAL-ABW-00006
+  qname: FACT-ABW-006
+  claim: ABW image element is <image> for embedded or linked images
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 includes <image> element for embedded images. Element carries
+      src attribute (file path or data URI) and optional width/height/props attributes. Confirmed from
+      AbiWord documentation and ABW codec implementation.
+    confidence: medium
+  claim_id: FACT-ABW-006
+- fact_id: SAL-ABW-00007
+  qname: FACT-ABW-007
+  claim: ABW table element is <table> containing rows and cells
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 table structure: <table> element contains <tr> (row) elements.
+      Each row contains <td> (cell) elements. Tables support column-width attributes via props attribute.'
+    confidence: medium
+  claim_id: FACT-ABW-007
+- fact_id: SAL-ABW-00008
+  qname: FACT-ABW-008
+  claim: ABW table row element is <tr> child of <table>
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 table row element is <tr>. Each table row may contain one
+      or more <td> (cell) elements. Row properties controlled via props attribute.
+    confidence: medium
+  claim_id: FACT-ABW-008
+- fact_id: SAL-ABW-00009
+  qname: FACT-ABW-009
+  claim: ABW table cell element is <td> child of <tr> containing paragraphs
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 table cell element is <td>. Contains paragraph <p> elements
+      as children. Supports rowspan and colspan attributes for merged cells.
+    confidence: medium
+  claim_id: FACT-ABW-009
+- fact_id: SAL-ABW-00010
+  qname: FACT-ABW-010
+  claim: ABW list element is <l> for ordered and unordered lists
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 list element. Lists in ABW are represented via paragraph styles
+      and list-id attributes on <p> elements. The list-style attribute controls ordered vs unordered rendering.
+    confidence: medium
+  claim_id: FACT-ABW-010
+- fact_id: SAL-ABW-00011
+  qname: FACT-ABW-011
+  claim: ABW hyperlink element is <a> with href attribute
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 hyperlink element is <a> with href attribute. Wraps character
+      runs within a paragraph to create clickable links.
+    confidence: medium
+  claim_id: FACT-ABW-011
+- fact_id: SAL-ABW-00012
+  qname: FACT-ABW-012
+  claim: ABW document styles are defined in <styles> container with <s> child elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 style system: <styles> container holds <s> elements. Each
+      <s> element defines a named paragraph or character style with name, basedon, followedby, and props
+      attributes.'
+    confidence: medium
+  claim_id: FACT-ABW-012
+- fact_id: SAL-ABW-00013
+  qname: FACT-ABW-013
+  claim: ABW named style element is <s> with name and props attributes within <styles>
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '3.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 style definition: <s name="Normal" type="P" props="..."/>.
+      The type attribute distinguishes paragraph (P) and character (C) styles.'
+    confidence: medium
+  claim_id: FACT-ABW-013
+- fact_id: SAL-ABW-00014
+  qname: FACT-ABW-014
+  claim: ABW metadata is stored in <metadata> container with <m> child key-value elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '4.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 metadata: <metadata> element contains <m> elements. Each
+      <m> element has a key attribute and text content value. Keys include: dc.title, dc.creator, dc.date,
+      dc.subject, abiword.generator.'
+    confidence: medium
+  claim_id: FACT-ABW-014
+- fact_id: SAL-ABW-00015
+  qname: FACT-ABW-015
+  claim: ABW metadata item element is <m> with key attribute inside <metadata>
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '4.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: <m key="dc.title">Document Title</m>. Dublin Core metadata
+      keys (dc.title, dc.creator, dc.date) are standard in ABW files.'
+    confidence: medium
+  claim_id: FACT-ABW-015
+- fact_id: SAL-ABW-00016
+  qname: FACT-ABW-016
+  claim: ABW props attribute is a semicolon-separated list of key:value property pairs
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 props attribute format: "font-family:Times New Roman;font-size:12pt;..."
+      Semicolons separate properties; colons separate key from value. Used on <p>, <c>, <s>, <section>
+      elements.'
+    confidence: high
+  claim_id: FACT-ABW-016
+- fact_id: SAL-ABW-00017
+  qname: FACT-ABW-017
+  claim: ABW dom-dir attribute specifies text direction as ltr or rtl on paragraph and section elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: dom-dir attribute with values "ltr" or "rtl". Controls paragraph
+      and document directionality for bidirectional text support.'
+    confidence: medium
+  claim_id: FACT-ABW-017
+- fact_id: SAL-ABW-00018
+  qname: FACT-ABW-018
+  claim: ABW style attribute on paragraph and character elements references a named style by name
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: style="Normal" attribute on <p> elements references a defined
+      style from <styles>. Character style references on <c> elements.'
+    confidence: medium
+  claim_id: FACT-ABW-018
+- fact_id: SAL-ABW-00019
+  qname: FACT-ABW-019
+  claim: ABW abiword root element carries version and fileformat attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: <abiword version="1.0.5" fileformat="1.0" template="false"
+      styles="..."> The version attribute contains AbiWord application version; fileformat is the AWML
+      version.'
+    confidence: medium
+  claim_id: FACT-ABW-019
+- fact_id: SAL-ABW-00020
+  qname: FACT-ABW-020
+  claim: ABW file format MIME type is application/x-abiword
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '6.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord format MIME type: application/x-abiword. File extension: .abw. Confirmed
+      in src/python/abw/abw_codec.py: ABW_MIME = "application/x-abiword".'
+    confidence: high
+  claim_id: FACT-ABW-020
+- fact_id: SAL-ABW-00021
+  qname: FACT-ABW-021
+  claim: ABW files are plain UTF-8 XML with XML declaration; no compression by default
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '6.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 files are plain XML. They begin with XML declaration <?xml
+      version="1.0" encoding="UTF-8"?>. No ZIP or compression layer. AbiWord also supports .zabw (gzip-compressed
+      .abw).
+    confidence: high
+  claim_id: FACT-ABW-021
+- fact_id: SAL-ABW-00022
+  qname: FACT-ABW-022
+  claim: ABW footnote and endnote elements use <footnote> and <endnote> with note-id cross-reference
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: footnotes and endnotes use <footnote> element at document
+      level. A <field type="footnote_ref"> in the main text references the footnote via note-id.'
+    confidence: medium
+  claim_id: FACT-ABW-022
+- fact_id: SAL-ABW-00023
+  qname: FACT-ABW-023
+  claim: ABW field element type attribute distinguishes field kinds including date, time, page number,
+    and footnote reference
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '1.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 <field> element type attribute values: "date", "time", "page_number",
+      "page_count", "footnote_ref", "endnote_ref", "char_count", "word_count".'
+    confidence: medium
+  claim_id: FACT-ABW-023
+- fact_id: SAL-ABW-00024
+  qname: FACT-ABW-024
+  claim: ABW paragraph list properties are embedded in the props attribute with list-style, list-decimal,
+    list-level keys
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 list formatting: list-style:Bullet; list-level:0 embedded
+      in <p> props. No separate list container element; list rendering is a paragraph property.'
+    confidence: medium
+  claim_id: FACT-ABW-024
+- fact_id: SAL-ABW-00025
+  qname: FACT-ABW-025
+  claim: ABW column layout in sections is controlled via columns and column-gap props on the <section>
+    element
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 multi-column: <section props="columns:2;column-gap:0.25in;">.
+      Column count and gap are section-level props attributes.'
+    confidence: medium
+  claim_id: FACT-ABW-025
+- fact_id: SAL-ABW-00026
+  qname: FACT-ABW-026
+  claim: ABW page setup properties are set on the <pagesize>, <margins>, and <paper> elements within a
+    <section>
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.9'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 page layout: <section props="page-margin-top:1in;page-margin-left:1in;...">
+      Page size and margins encoded as props on section elements.'
+    confidence: medium
+  claim_id: FACT-ABW-026
+- fact_id: SAL-ABW-00027
+  qname: FACT-ABW-027
+  claim: ABW revision history is stored in <history> element with <version> child elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '4.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: <history version="..." edit-time="..." last-saved="...">.
+      Tracks document revision history and save metadata.'
+    confidence: low
+  claim_id: FACT-ABW-027
+- fact_id: SAL-ABW-00028
+  qname: FACT-ABW-028
+  claim: ABW paragraph props support font-family, font-size, font-weight, font-style, color, bgcolor text
+    formatting
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 character properties via props: font-family, font-size (in
+      pts), font-weight (bold), font-style (italic), text-decoration (underline/line-through), color (hex),
+      bgcolor (hex).'
+    confidence: high
+  claim_id: FACT-ABW-028
+- fact_id: SAL-ABW-00029
+  qname: FACT-ABW-029
+  claim: ABW textbox element is <textbox> for floating text frames within a document
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.10'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0 textbox element: <textbox> floated element containing paragraphs.
+      Positioned via props attribute with xpos, ypos, width, height.'
+    confidence: low
+  claim_id: FACT-ABW-029
+- fact_id: SAL-ABW-00030
+  qname: FACT-ABW-030
+  claim: ABW lang attribute on paragraph and character elements specifies ISO 639-1 language code for
+    spell-check
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'AbiWord AWML 1.0: lang="en-US" attribute on <p> and <c> elements controls
+      language for spell-checking. Uses RFC 5646 language tags (e.g., "en-US", "fr-FR").'
+    confidence: medium
+  claim_id: FACT-ABW-030
+- fact_id: SAL-ABW-00031
+  qname: FACT-ABW-031
+  claim: ABW document header element is <data> which may contain document metadata before sections
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '4.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 <data> element stores miscellaneous document-level data
+    confidence: medium
+  claim_id: FACT-ABW-031
+- fact_id: SAL-ABW-00032
+  qname: FACT-ABW-032
+  claim: ABW <pagebreak> element represents a forced page break between paragraphs
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.11'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 <pagebreak/> self-closing element between <p> elements
+    confidence: medium
+  claim_id: FACT-ABW-032
+- fact_id: SAL-ABW-00033
+  qname: FACT-ABW-033
+  claim: ABW <linebreak> element represents a forced line break within a paragraph
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '2.12'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 <linebreak/> self-closing element within <p>
+    confidence: medium
+  claim_id: FACT-ABW-033
+- fact_id: SAL-ABW-00034
+  qname: FACT-ABW-034
+  claim: ABW paragraph numbering-list attribute specifies list continuation for list-item paragraphs
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 listid and level attributes on <p> for list continuation
+    confidence: medium
+  claim_id: FACT-ABW-034
+- fact_id: SAL-ABW-00035
+  qname: FACT-ABW-035
+  claim: ABW document encoding is declared in the XML declaration and must be UTF-8 or UTF-16
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '6.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 files use XML declaration encoding UTF-8 or UTF-16
+    confidence: medium
+  claim_id: FACT-ABW-035
+- fact_id: SAL-ABW-00036
+  qname: FACT-ABW-036
+  claim: ABW paragraph alignment is set via text-align property in props attribute with values left right
+    center justify
+  verification_status: verified_with_note
+  provenance:
+    format_id: abw
+    spec_id: abw-structural
+    section_id: '5.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: AbiWord AWML 1.0 text-align property in paragraph props attribute
+    confidence: medium
+  claim_id: FACT-ABW-036

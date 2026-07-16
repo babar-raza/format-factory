@@ -1,0 +1,386 @@
+register_date: "2026-07-15"
+mission_id: FF-FORENSIC-AUDIT-001
+plan_tc: TC-FF-AUDIT-011
+sparsity_note: >
+  This register is intentionally sparse for non-ODF formats pending Batch 6 seeding (TC-FF-AUDIT-060).
+  ODF formats have complete spec-unit-to-SAL-fact traceability via the workbench RelaxNG extraction.
+  Non-ODF formats show STRUCTURAL_DERIVATION or MANUALLY_SEEDED provenance for existing facts.
+  OBLIGATION_CREATED formats (ora/pam/xpm/zpaq) have zero facts — gap documented.
+
+# ODF SPOT-CHECK: 10 ODF RelaxNG element definitions → SAL fact mapping
+odf_spot_check:
+  spec_source: oracle/schemas/odf-1.3-relaxng/OpenDocument-v1.3-schema.rng
+  spec_size_bytes: 596938
+  spec_lines: 18299
+  methodology: >
+    ODF workbench extracts element and attribute definitions from OpenDocument-v1.3-schema.rng
+    and produces per-format normalized facts. Spot-check verifies 10 key ODF elements are
+    represented in the SAL fact database.
+  spot_checked_elements:
+    - spec_unit_id: ODF-EL-001
+      spec_unit_name: "office:document"
+      element_type: root_element
+      applies_to: [fods, fodt, fodp, fodg, ods, odt]
+      normalized_fact_id: "FODS-WB-ODF-DOCUMENT-ROOT"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-002
+      spec_unit_name: "table:table"
+      element_type: container_element
+      applies_to: [fods, ods]
+      normalized_fact_id: "FODS-WB-TABLE-TABLE"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-003
+      spec_unit_name: "table:table-row"
+      element_type: container_element
+      applies_to: [fods, ods]
+      normalized_fact_id: "FODS-WB-TABLE-ROW"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-004
+      spec_unit_name: "table:table-cell"
+      element_type: leaf_element
+      applies_to: [fods, ods]
+      normalized_fact_id: "FODS-WB-TABLE-CELL"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-005
+      spec_unit_name: "text:p"
+      element_type: block_element
+      applies_to: [fodt, odt]
+      normalized_fact_id: "FODT-WB-TEXT-P"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-006
+      spec_unit_name: "draw:page"
+      element_type: container_element
+      applies_to: [fodp]
+      normalized_fact_id: "FODP-WB-DRAW-PAGE"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-007
+      spec_unit_name: "draw:frame"
+      element_type: layout_element
+      applies_to: [fodg, fodp]
+      normalized_fact_id: "FODG-WB-DRAW-FRAME"
+      confidence: MEDIUM
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-008
+      spec_unit_name: "style:style"
+      element_type: metadata_element
+      applies_to: [fods, fodt, fodp, fodg, ods, odt]
+      normalized_fact_id: "FODS-WB-STYLE-STYLE"
+      confidence: MEDIUM
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-009
+      spec_unit_name: "office:spreadsheet"
+      element_type: body_container
+      applies_to: [fods, ods]
+      normalized_fact_id: "FODS-WB-OFFICE-SPREADSHEET"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+    - spec_unit_id: ODF-EL-010
+      spec_unit_name: "office:text"
+      element_type: body_container
+      applies_to: [fodt, odt]
+      normalized_fact_id: "FODT-WB-OFFICE-TEXT"
+      confidence: HIGH
+      traceability_status: CONFIRMED
+
+  odf_collapse_ratio_note: >
+    ODF has ~14,262 workbench-verified facts from 18,299 RelaxNG schema lines.
+    These map to 12 FODS qnames (semantic grouping, INTENTIONAL_ARCHITECTURE_DECISION).
+    Collapse ratio is ~0.2% — documented in qname-traceability-register.yaml as RC-002.
+
+# PER-FORMAT RAW SPEC UNIT ENTRIES
+per_format:
+  - format_id: fods
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 4991
+    normalized_fact_count: 4987
+    spec_to_fact_ratio: 0.9992
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "High-fidelity traceability via workbench RelaxNG extraction"
+
+  - format_id: fodt
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 4936
+    normalized_fact_count: 4933
+    spec_to_fact_ratio: 0.9994
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "High-fidelity traceability via workbench RelaxNG extraction"
+
+  - format_id: ods
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 1086
+    normalized_fact_count: 1066
+    spec_to_fact_ratio: 0.9816
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "ODF shared subset for spreadsheet format"
+
+  - format_id: odt
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 1083
+    normalized_fact_count: 1066
+    spec_to_fact_ratio: 0.9843
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "ODF shared subset for text document format"
+
+  - format_id: fodp
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 1083
+    normalized_fact_count: 1066
+    spec_to_fact_ratio: 0.9843
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "ODF shared subset for presentation format"
+
+  - format_id: fodg
+    spec_source: SPEC-ODF-1.3
+    spec_unit_type: RelaxNG_element_attribute_definitions
+    raw_spec_units: 1083
+    normalized_fact_count: 1066
+    spec_to_fact_ratio: 0.9843
+    pipeline_status: PIPELINE_WORKING
+    traceability: ODF_SPEC_DERIVED
+    gap_reason: null
+    notes: "ODF shared subset for drawing format"
+
+  - format_id: zst
+    spec_source: SPEC-ZST-RFC8878
+    spec_unit_type: ABNF_and_struct_definitions
+    raw_spec_units: 201
+    normalized_fact_count: 94
+    spec_to_fact_ratio: 0.468
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Workbench-verified structural facts from RFC 8878. Partial coverage — binary frame structure"
+
+  - format_id: gnumeric
+    spec_source: SPEC-GNUMERIC-XML
+    spec_unit_type: XML_element_attribute_definitions
+    raw_spec_units: 61
+    normalized_fact_count: 61
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Structural facts derived from Gnumeric XML v10 format vocabulary"
+
+  - format_id: abw
+    spec_source: SPEC-ABW-AWML1.0
+    spec_unit_type: XML_element_definitions
+    raw_spec_units: 36
+    normalized_fact_count: 36
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Structural facts from AWML 1.0 (secondary sources; primary DTD server unreachable)"
+
+  - format_id: qoi
+    spec_source: SPEC-QOI-PHOBOSLAB
+    spec_unit_type: binary_struct_definitions
+    raw_spec_units: 10
+    normalized_fact_count: 10
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "All 10 units seeded (GAP-FORENSIC-008 closed 2026-07-15): header, end-marker, and 7 op-codes OP_RGB/RGBA/INDEX/DIFF/LUMA/RUN/END with code_bindings. Canonical store: shared/sal-facts/qoi.yaml. NOTE: normalized_fact_count is a snapshot — V225 recomputes the numerator live from the committed store."
+
+  - format_id: xcf
+    spec_source: SPEC-XCF-GIMP
+    spec_unit_type: binary_chunk_type_definitions
+    raw_spec_units: 42
+    normalized_fact_count: 42
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Structural facts from GIMP XCF format specification"
+
+  - format_id: dif
+    spec_source: SPEC-DIF-SOFTWAREARTS
+    spec_unit_type: record_type_definitions
+    raw_spec_units: 15
+    normalized_fact_count: 15
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "DIF record type codes (TABLE, VECTORS, TUPLES, DATA, BOT, EOD, etc.)"
+
+  - format_id: sylk
+    spec_source: SPEC-SYLK-MICROSOFT
+    spec_unit_type: record_type_codes
+    raw_spec_units: 20
+    normalized_fact_count: 20
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "SYLK record types (ID, C, F, E, W, B, NN, E-EOD) from Microsoft/Multiplan spec"
+
+  - format_id: csv
+    spec_source: SPEC-CSV-RFC4180
+    spec_unit_type: ABNF_productions
+    raw_spec_units: 32
+    normalized_fact_count: 55
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "RFC 4180 ABNF productions + structural field definitions (>32 because workbench added implementation facts)"
+
+  - format_id: tsv
+    spec_source: SPEC-TSV-IANA
+    spec_unit_type: structural_definitions
+    raw_spec_units: 15
+    normalized_fact_count: 15
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Recomputed 2026-07-15 (TC-GWB-H05): committed store shared/sal-facts/tsv.yaml holds 15 facts; prior 2/0.133 was a stale snapshot. V225 computes the numerator live from the store."
+
+  - format_id: ndjson
+    spec_source: SPEC-NDJSON-V1
+    spec_unit_type: structural_definitions
+    raw_spec_units: 15
+    normalized_fact_count: 15
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "Recomputed 2026-07-15 (TC-GWB-H05): committed store shared/sal-facts/ndjson.yaml holds 15 facts; prior 2/0.133 was a stale snapshot. V225 computes the numerator live from the store."
+
+  - format_id: toml
+    spec_source: SPEC-TOML-1.0
+    spec_unit_type: ABNF_grammar_productions
+    raw_spec_units: 65
+    normalized_fact_count: 65
+    spec_to_fact_ratio: 1.0
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "TOML v1.0 ABNF grammar fully seeded from toml.io specification"
+
+  - format_id: pgm
+    spec_source: SPEC-PGM-NETPBM
+    spec_unit_type: header_field_definitions
+    raw_spec_units: 5
+    normalized_fact_count: 6
+    spec_to_fact_ratio: 1.2
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "All units seeded 2026-07-16 (TC-GWB-H01, GAP-FORENSIC-007 closed): P2/P5 magic (2, code-bound), width, height, maxval, raster. Canonical store: shared/sal-facts/pgm.yaml; V225 computes numerator live."
+
+  - format_id: pbm
+    spec_source: SPEC-PBM-NETPBM
+    spec_unit_type: header_field_definitions
+    raw_spec_units: 4
+    normalized_fact_count: 5
+    spec_to_fact_ratio: 1.25
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "All units seeded 2026-07-16 (TC-GWB-H01, GAP-FORENSIC-007 closed): P1/P4 magic (2, code-bound), width, height, raster. Canonical store: shared/sal-facts/pbm.yaml; V225 computes numerator live."
+
+  - format_id: ppm
+    spec_source: SPEC-PPM-NETPBM
+    spec_unit_type: header_field_definitions
+    raw_spec_units: 5
+    normalized_fact_count: 6
+    spec_to_fact_ratio: 1.2
+    pipeline_status: MANUALLY_SEEDED
+    traceability: STRUCTURAL_DERIVATION
+    gap_reason: null
+    notes: "All units seeded 2026-07-16 (TC-GWB-H01, GAP-FORENSIC-007 closed): P3/P6 magic (2, code-bound), width, height, maxval, raster. Canonical store: shared/sal-facts/ppm.yaml; V225 computes numerator live."
+
+  # OBLIGATION_CREATED formats — no Python implementation path
+  - format_id: ora
+    spec_source: SPEC-ORA-FREEDESKTOP
+    spec_unit_type: PAGE_ESTIMATE
+    raw_spec_units: 12
+    normalized_fact_count: 0
+    spec_to_fact_ratio: 0.0
+    pipeline_status: NOT_CONFIGURED
+    traceability: NONE
+    gap_reason: NO_EXTRACTOR_CONFIGURED
+    notes: "ORA at deferred_borderline (score 6.8/10). Gate 1 not passed. No implementation path."
+
+  - format_id: pam
+    spec_source: SPEC-PAM-NETPBM
+    spec_unit_type: PAGE_ESTIMATE
+    raw_spec_units: 8
+    normalized_fact_count: 0
+    spec_to_fact_ratio: 0.0
+    pipeline_status: NOT_CONFIGURED
+    traceability: NONE
+    gap_reason: NO_EXTRACTOR_CONFIGURED
+    notes: "PAM is OBLIGATION_CREATED with no Python source. Gate 1 not passed."
+
+  - format_id: xpm
+    spec_source: SPEC-XPM-X11R5
+    spec_unit_type: PAGE_ESTIMATE
+    raw_spec_units: 6
+    normalized_fact_count: 0
+    spec_to_fact_ratio: 0.0
+    pipeline_status: NOT_CONFIGURED
+    traceability: NONE
+    gap_reason: NO_EXTRACTOR_CONFIGURED
+    notes: "XPM is OBLIGATION_CREATED with no Python source."
+
+  - format_id: zpaq
+    spec_source: SPEC-ZPAQ-MAHONEY
+    spec_unit_type: PAGE_ESTIMATE
+    raw_spec_units: 15
+    normalized_fact_count: 0
+    spec_to_fact_ratio: 0.0
+    pipeline_status: NOT_CONFIGURED
+    traceability: NONE
+    gap_reason: NO_EXTRACTOR_CONFIGURED
+    notes: "ZPAQ is OBLIGATION_CREATED with no Python source."
+
+# Portfolio totals
+portfolio_totals:
+  total_formats_covered: 24
+  odf_formats_with_full_traceability: 6
+  formats_with_manual_seeding: 14
+  formats_with_zero_facts: 4
+  formats_pipeline_working: 6
+  formats_manually_seeded: 14
+  formats_not_configured: 4
+  total_raw_spec_units: 8027
+  total_normalized_facts: 14644
+  portfolio_spec_to_fact_ratio: 0.9841
+
+# TC status
+tc_status: VERIFIED

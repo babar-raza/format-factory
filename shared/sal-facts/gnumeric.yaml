@@ -1,0 +1,882 @@
+format_id: gnumeric
+display_name: GNUMERIC
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-GNUMERIC-00001
+  qname: FACT-GNUMERIC-001
+  claim: Gnumeric workbook root element is <gnm:Workbook>
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: gnumeric
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.1'
+    spec_id: gnumeric-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from GNUMERIC format element vocabulary and parser
+      implementation in src/python/gnumeric/
+    verification_status: verified_with_note
+  claim_id: FACT-GNUMERIC-001
+- fact_id: SAL-GNUMERIC-00002
+  qname: FACT-GNUMERIC-002
+  claim: Gnumeric sheet element is <gnm:Sheet> child of Workbook
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: gnumeric
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.2'
+    spec_id: gnumeric-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from GNUMERIC format element vocabulary and parser
+      implementation in src/python/gnumeric/
+    verification_status: verified_with_note
+  claim_id: FACT-GNUMERIC-002
+- fact_id: SAL-GNUMERIC-00003
+  qname: FACT-GNUMERIC-003
+  claim: Gnumeric cells container is <gnm:Cells>
+  verification_status: verified_with_note
+  provenance:
+    chunk_id: null
+    confidence: medium
+    created_by: create_structural_workbench_facts.py
+    extraction_method: structural_derivation
+    format_id: gnumeric
+    normalized_artifact: null
+    page_end: null
+    page_start: null
+    section_id: '1.3'
+    spec_id: gnumeric-structural
+    spec_page_confirmed: false
+    updated_at: '2026-06-21'
+    validated_at: '2026-06-21'
+    validated_by: structural_derivation
+    verification_evidence: Structural fact derived from GNUMERIC format element vocabulary and parser
+      implementation in src/python/gnumeric/
+    verification_status: verified_with_note
+  claim_id: FACT-GNUMERIC-003
+- fact_id: SAL-GNUMERIC-00004
+  qname: FACT-GNUMERIC-004
+  claim: Gnumeric individual cell element is <gnm:Cell> with Row and Col attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Cell Row="0" Col="0" ValueType="60"> element. Row and
+      Col attributes are zero-indexed integers. ValueType specifies the cell value type: 40=float, 60=boolean,
+      20=error, 30=string, 10=empty.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-004
+- fact_id: SAL-GNUMERIC-00005
+  qname: FACT-GNUMERIC-005
+  claim: Gnumeric cell value is stored as text content in <gnm:Cell> element or via <gnm:V> child
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: cell value is in <gnm:V> child element or as text content.
+      Formula cells use the ExprID attribute and formula text.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-005
+- fact_id: SAL-GNUMERIC-00006
+  qname: FACT-GNUMERIC-006
+  claim: Gnumeric ValueType attribute codes are 10=empty, 20=error, 30=string, 40=float, 60=boolean
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 ValueType codes: 10=empty, 20=error, 30=string (text), 40=float
+      (numeric), 60=boolean. These are the standard GNM_VALUE_* constants.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-006
+- fact_id: SAL-GNUMERIC-00007
+  qname: FACT-GNUMERIC-007
+  claim: Gnumeric sheets container is <gnm:Sheets> child of <gnm:Workbook>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Sheets> element is a child of <gnm:Workbook> and contains
+      one or more <gnm:Sheet> elements.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-007
+- fact_id: SAL-GNUMERIC-00008
+  qname: FACT-GNUMERIC-008
+  claim: Gnumeric row info element is <gnm:RowInfo> with No and Unit attributes for row height
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:RowInfo No="0" Unit="12.75" Hidden="0"/> No is the
+      zero-indexed row number; Unit is row height in points.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-008
+- fact_id: SAL-GNUMERIC-00009
+  qname: FACT-GNUMERIC-009
+  claim: Gnumeric column info element is <gnm:ColInfo> with No and Unit attributes for column width
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:ColInfo No="0" Unit="72" Hidden="0"/> No is the zero-indexed
+      column number; Unit is column width in points.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-009
+- fact_id: SAL-GNUMERIC-00010
+  qname: FACT-GNUMERIC-010
+  claim: Gnumeric named ranges are stored in <gnm:Names> container with <gnm:Name> child elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Names> container holds <gnm:Name> elements. Each <gnm:Name>
+      has <gnm:name> (text), <gnm:value> (formula string), and optional <gnm:position> child elements.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-010
+- fact_id: SAL-GNUMERIC-00011
+  qname: FACT-GNUMERIC-011
+  claim: Gnumeric individual named range element is <gnm:Name> with name and value children
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '3.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 named range: <gnm:Name><gnm:name>MyRange</gnm:name> <gnm:value>Sheet1!$A$1:$B$10</gnm:value></gnm:Name>'
+    confidence: high
+  claim_id: FACT-GNUMERIC-011
+- fact_id: SAL-GNUMERIC-00012
+  qname: FACT-GNUMERIC-012
+  claim: Gnumeric cell styles are applied via <gnm:StyleRegion> elements within a <gnm:Styles> container
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Styles> contains <gnm:StyleRegion startCol="0" startRow="0"
+      endCol="255" endRow="65535"> elements each containing a <gnm:Style> child.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-012
+- fact_id: SAL-GNUMERIC-00013
+  qname: FACT-GNUMERIC-013
+  claim: Gnumeric style region element is <gnm:StyleRegion> with startRow, startCol, endRow, endCol attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:StyleRegion startCol="0" startRow="0" endCol="255"
+      endRow="65535"> defines which cell range a style applies to. Ranges are zero-indexed.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-013
+- fact_id: SAL-GNUMERIC-00014
+  qname: FACT-GNUMERIC-014
+  claim: Gnumeric cell style element is <gnm:Style> with HAlign, VAlign, WrapText, Format attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 <gnm:Style> attributes: HAlign (1=general,2=left,4=right,8=center),
+      VAlign (1=top,2=bottom,4=center), WrapText="0/1", Format="General" (number format string).'
+    confidence: high
+  claim_id: FACT-GNUMERIC-014
+- fact_id: SAL-GNUMERIC-00015
+  qname: FACT-GNUMERIC-015
+  claim: Gnumeric merged cell regions are stored in <gnm:MergedRegions> container
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '5.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:MergedRegions> container holds <gnm:Merge> elements.
+      Each merge defines the cell range as startRow:startCol-endRow:endCol format.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-015
+- fact_id: SAL-GNUMERIC-00016
+  qname: FACT-GNUMERIC-016
+  claim: Gnumeric merged cell element is <gnm:Merge> with cell range string content
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '5.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 merge: <gnm:Merge>A1:B3</gnm:Merge> defines merged cell range
+      using spreadsheet notation (column letter + row number, 1-indexed).'
+    confidence: high
+  claim_id: FACT-GNUMERIC-016
+- fact_id: SAL-GNUMERIC-00017
+  qname: FACT-GNUMERIC-017
+  claim: Gnumeric sheet preferences are stored in <gnm:SheetPrefs> element within each <gnm:Sheet>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '6.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:SheetPrefs> element inside <gnm:Sheet> stores sheet-level
+      settings: ShowFormulas, ShowGridLines, ShowColHeader, ShowRowHeader, ShowZeros, PrintTitles, FrozenRows,
+      FrozenCols.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-017
+- fact_id: SAL-GNUMERIC-00018
+  qname: FACT-GNUMERIC-018
+  claim: Gnumeric print information is stored in <gnm:PrintInformation> element within each <gnm:Sheet>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '6.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:PrintInformation> in each sheet holds page margins,
+      orientation, paper size, header/footer settings.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-018
+- fact_id: SAL-GNUMERIC-00019
+  qname: FACT-GNUMERIC-019
+  claim: Gnumeric file format is gzip-compressed XML with file extension .gnumeric
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '7.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric format: files are gzip-compressed XML. Extension is .gnumeric. MIME
+      type: application/x-gnumeric. Confirmed in src/python/gnumeric/gnumeric_codec.py: GNM_MIME = "application/x-gnumeric";
+      files opened with gzip.open().'
+    confidence: high
+  claim_id: FACT-GNUMERIC-019
+- fact_id: SAL-GNUMERIC-00020
+  qname: FACT-GNUMERIC-020
+  claim: 'Gnumeric XML namespace is http://www.gnumeric.org/v10.dtd for all gnm: prefixed elements'
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '7.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 namespace: xmlns:gnm="http://www.gnumeric.org/v10.dtd" Confirmed
+      in src/python/gnumeric/gnumeric_codec.py: GNM_NS = "http://www.gnumeric.org/v10.dtd"'
+    confidence: high
+  claim_id: FACT-GNUMERIC-020
+- fact_id: SAL-GNUMERIC-00021
+  qname: FACT-GNUMERIC-021
+  claim: Gnumeric sheet Name element is <gnm:Name> (text child) within <gnm:Sheet> for the sheet tab name
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Sheet><gnm:Name>Sheet1</gnm:Name>...</gnm:Sheet> The
+      text content of <gnm:Name> is the sheet tab display name.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-021
+- fact_id: SAL-GNUMERIC-00022
+  qname: FACT-GNUMERIC-022
+  claim: Gnumeric embedded objects are stored in <gnm:Objects> container with typed child elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '8.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Objects> container for embedded charts, images, and
+      other objects. Object types include <gnm:SheetObjectGraph> for charts.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-022
+- fact_id: SAL-GNUMERIC-00023
+  qname: FACT-GNUMERIC-023
+  claim: Gnumeric autofilter configuration is stored in <gnm:Filters> container per sheet
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '9.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Filters> element within a sheet holds <gnm:Filter>
+      elements describing autofilter regions and active filter conditions.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-023
+- fact_id: SAL-GNUMERIC-00024
+  qname: FACT-GNUMERIC-024
+  claim: Gnumeric solver parameters are stored in <gnm:Solver> element within a sheet
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '10.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Solver> element contains solver configuration including
+      objective cell, constraint cells, and optimization direction.'
+    confidence: low
+  claim_id: FACT-GNUMERIC-024
+- fact_id: SAL-GNUMERIC-00025
+  qname: FACT-GNUMERIC-025
+  claim: Gnumeric document summary metadata is in <gnm:Summary> element as child of <gnm:Workbook>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '11.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Summary> element at workbook level holds document properties
+      like title, subject, author, keywords, comments.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-025
+- fact_id: SAL-GNUMERIC-00026
+  qname: FACT-GNUMERIC-026
+  claim: Gnumeric summary item element is <gnm:Item> with <gnm:name> and <gnm:val-string> or <gnm:val-float>
+    children
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '11.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Item><gnm:name>title</gnm:name> <gnm:val-string>My
+      Sheet</gnm:val-string></gnm:Item>'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-026
+- fact_id: SAL-GNUMERIC-00027
+  qname: FACT-GNUMERIC-027
+  claim: Gnumeric cell formula is stored as ExprID attribute on <gnm:Cell> with formula string content
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.9'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: formula cells have ExprID attribute and formula text content
+      starting with = (e.g. <gnm:Cell Row="1" Col="1" ValueType="40" ExprID="1">=SUM(A1:A10)</gnm:Cell>).'
+    confidence: high
+  claim_id: FACT-GNUMERIC-027
+- fact_id: SAL-GNUMERIC-00028
+  qname: FACT-GNUMERIC-028
+  claim: Gnumeric MIME type is application/x-gnumeric
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '7.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric MIME type: application/x-gnumeric. Confirmed in gnumeric_codec.py:
+      GNM_MIME = "application/x-gnumeric". Used for MIME-type detection.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-028
+- fact_id: SAL-GNUMERIC-00029
+  qname: FACT-GNUMERIC-029
+  claim: Gnumeric sheet is hidden or visible controlled by the Visibility attribute on <gnm:Sheet>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.10'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Sheet Visibility="GNM_SHEET_VISIBILITY_VISIBLE"> attribute.
+      Values: GNM_SHEET_VISIBILITY_VISIBLE, GNM_SHEET_VISIBILITY_HIDDEN, GNM_SHEET_VISIBILITY_VERY_HIDDEN.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-029
+- fact_id: SAL-GNUMERIC-00030
+  qname: FACT-GNUMERIC-030
+  claim: Gnumeric font properties within a style are stored in <gnm:Font> child element of <gnm:Style>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0"
+      Script="0">Arial</gnm:Font> inside <gnm:Style>. Unit is font size in points; text content is font
+      family name.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-030
+- fact_id: SAL-GNUMERIC-00031
+  qname: FACT-GNUMERIC-031
+  claim: Gnumeric border properties within a style are stored in <gnm:Border> child elements
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Border><gnm:Top Style="1" Color="0:0:0"/></gnm:Border>
+      inside <gnm:Style>. Border Style codes: 0=none, 1=thin, 2=medium, 3=thick, etc.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-031
+- fact_id: SAL-GNUMERIC-00032
+  qname: FACT-GNUMERIC-032
+  claim: Gnumeric background color in style is <gnm:Interior Color="..." Pattern="1"/> child of <gnm:Style>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Interior Color="65535:65535:65535" Pattern="1" PatternColor="0:0:0"/>
+      Color is in 16-bit RGB format (0-65535 per channel).'
+    confidence: high
+  claim_id: FACT-GNUMERIC-032
+- fact_id: SAL-GNUMERIC-00033
+  qname: FACT-GNUMERIC-033
+  claim: Gnumeric column and row indices in cells are zero-based (Row=0 is the first row)
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.11'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: Row and Col attributes on <gnm:Cell> are 0-indexed. Row=0
+      corresponds to row 1 in spreadsheet UI. Col=0 is column A.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-033
+- fact_id: SAL-GNUMERIC-00034
+  qname: FACT-GNUMERIC-034
+  claim: Gnumeric sheet type attribute distinguishes regular (GNM_SHEET_DATA) from chart (GNM_SHEET_OBJECT)
+    sheets
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.12'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Sheet DisplayFormulas="0" HideZeros="0" AutomaticColumnWidth="0"
+      DisplayGridlines="1" DisplayColHeader="1" DisplayRowHeader="1" PrintGridLines="0" ...>'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-034
+- fact_id: SAL-GNUMERIC-00035
+  qname: FACT-GNUMERIC-035
+  claim: Gnumeric UIData element stores workbook-level UI state including active sheet index
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '12.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:UIData SelectedTab="0"/> at workbook level stores which
+      sheet tab is currently selected.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-035
+- fact_id: SAL-GNUMERIC-00036
+  qname: FACT-GNUMERIC-036
+  claim: Gnumeric calculation settings are stored in <gnm:Calculation> element as child of <gnm:Workbook>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '13.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Calculation ManualRecalc="0" EnableIteration="0" MaxIterations="100"
+      MaxChangeBeforeAccepting="0.001" FloatRadix="2" FloatDigits="53"/> at workbook level.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-036
+- fact_id: SAL-GNUMERIC-00037
+  qname: FACT-GNUMERIC-037
+  claim: Gnumeric workbook version information is in <gnm:Version> element as child of <gnm:Workbook>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '14.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Version Epoch="1" Major="14" Minor="57" Full="1.14.57"/>
+      stores the Gnumeric application version that last saved the file.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-037
+- fact_id: SAL-GNUMERIC-00038
+  qname: FACT-GNUMERIC-038
+  claim: Gnumeric sheet max row and column are stored as MaxRow and MaxCol attributes on <gnm:Sheet>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.13'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: sheet dimensions inferred from MaxRow/MaxCol attribute or
+      calculated from max Cell Row/Col values. Default max is 65536 rows x 256 cols.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-038
+- fact_id: SAL-GNUMERIC-00039
+  qname: FACT-GNUMERIC-039
+  claim: Gnumeric cell comment (note) is stored as <gnm:CellComment> element with Author and Text children
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '8.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: cell comments use <gnm:CellComment Author="User" Row="0"
+      Col="0"> <gnm:Text>Comment text</gnm:Text></gnm:CellComment> within <gnm:Objects>.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-039
+- fact_id: SAL-GNUMERIC-00040
+  qname: FACT-GNUMERIC-040
+  claim: Gnumeric hyperlink in a cell is stored as <gnm:HLink> within <gnm:Objects> referencing the cell
+    position
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '8.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:HLink Row="0" Col="0" Url="https://example.com" Tip="tooltip"/>
+      element stored within sheet <gnm:Objects> container.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-040
+- fact_id: SAL-GNUMERIC-00041
+  qname: FACT-GNUMERIC-041
+  claim: Gnumeric frozen panes row count is stored as FrozenRows attribute-like preference in SheetPrefs
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '6.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: frozen panes in <gnm:SheetPrefs> or through <gnm:Panes>
+      element with freeze row/col counts.'
+    confidence: low
+  claim_id: FACT-GNUMERIC-041
+- fact_id: SAL-GNUMERIC-00042
+  qname: FACT-GNUMERIC-042
+  claim: Gnumeric uses standard number format strings in the Format attribute of <gnm:Style>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: Format attribute on <gnm:Style> uses Excel-compatible number
+      format strings: "General", "#,##0.00", "0%", "MM/DD/YYYY", etc.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-042
+- fact_id: SAL-GNUMERIC-00043
+  qname: FACT-GNUMERIC-043
+  claim: Gnumeric script attribute on Font distinguishes superscript (1), subscript (-1), and normal (0)
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 Font element Script attribute: 0=normal, 1=superscript, -1=subscript.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-043
+- fact_id: SAL-GNUMERIC-00044
+  qname: FACT-GNUMERIC-044
+  claim: Gnumeric sheet display name is always a non-empty string; duplicate sheet names are not permitted
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.14'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric format constraint: each <gnm:Sheet> must have a unique <gnm:Name>.
+      Empty or duplicate names would cause a parse error in Gnumeric application.'
+    confidence: medium
+  claim_id: FACT-GNUMERIC-044
+- fact_id: SAL-GNUMERIC-00045
+  qname: FACT-GNUMERIC-045
+  claim: Gnumeric workbook contains at least one sheet; empty workbook files are not valid
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.15'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10 structural constraint: <gnm:Sheets> must contain at least
+      one <gnm:Sheet> element. A workbook with zero sheets is invalid.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-045
+- fact_id: SAL-GNUMERIC-00046
+  qname: FACT-GNUMERIC-046
+  claim: Gnumeric cell string values of type 30 are stored as plain text content within <gnm:Cell>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.16'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Cell Row="0" Col="0" ValueType="30">Hello World</gnm:Cell>
+      String value (ValueType=30) is the text content of the cell element.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-046
+- fact_id: SAL-GNUMERIC-00047
+  qname: FACT-GNUMERIC-047
+  claim: Gnumeric sheet index is determined by position order of <gnm:Sheet> elements within <gnm:Sheets>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.17'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: sheet tab order follows document order of <gnm:Sheet> elements.
+      The first <gnm:Sheet> in <gnm:Sheets> is sheet index 0.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-047
+- fact_id: SAL-GNUMERIC-00048
+  qname: FACT-GNUMERIC-048
+  claim: Gnumeric float cell values (ValueType=40) are stored as decimal number strings within <gnm:Cell>
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.18'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Cell Row="1" Col="1" ValueType="40">3.14159</gnm:Cell>
+      Float values use standard decimal notation with full precision.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-048
+- fact_id: SAL-GNUMERIC-00049
+  qname: FACT-GNUMERIC-049
+  claim: Gnumeric boolean cell values (ValueType=60) are stored as 1 for TRUE and 0 for FALSE
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.19'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:Cell Row="2" Col="0" ValueType="60">1</gnm:Cell> =
+      TRUE; content "0" = FALSE. Boolean cells always have ValueType=60.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-049
+- fact_id: SAL-GNUMERIC-00050
+  qname: FACT-GNUMERIC-050
+  claim: Gnumeric ColInfo Hidden attribute value 1 means the column is hidden from display
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '2.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'Gnumeric XML v10: <gnm:ColInfo No="2" Unit="64.8" Hidden="1"/> marks column
+      C as hidden. Same Hidden attribute exists on <gnm:RowInfo> for hidden rows.'
+    confidence: high
+  claim_id: FACT-GNUMERIC-050
+- fact_id: SAL-GNUMERIC-00051
+  qname: FACT-GNUMERIC-051
+  claim: Gnumeric uses a Sheets container holding Sheet elements in display tab order
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.20'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 tab order matches document order of Sheet elements in Sheets
+    confidence: medium
+  claim_id: FACT-GNUMERIC-051
+- fact_id: SAL-GNUMERIC-00052
+  qname: FACT-GNUMERIC-052
+  claim: Gnumeric file format uses gzip level 9 compression by default for output
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '7.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 gzip compression for .gnumeric files
+    confidence: medium
+  claim_id: FACT-GNUMERIC-052
+- fact_id: SAL-GNUMERIC-00053
+  qname: FACT-GNUMERIC-053
+  claim: Gnumeric cell value element gnm:V contains the cell value as text for all value types
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.21'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 gnm:V element as value container in gnm:Cell
+    confidence: medium
+  claim_id: FACT-GNUMERIC-053
+- fact_id: SAL-GNUMERIC-00054
+  qname: FACT-GNUMERIC-054
+  claim: Gnumeric row height unit is points where 12.75 points represents the default row height
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '2.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 RowInfo Unit attribute in points
+    confidence: medium
+  claim_id: FACT-GNUMERIC-054
+- fact_id: SAL-GNUMERIC-00055
+  qname: FACT-GNUMERIC-055
+  claim: Gnumeric column width unit is points where 48 points represents a standard column width
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '2.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 ColInfo Unit attribute in points
+    confidence: medium
+  claim_id: FACT-GNUMERIC-055
+- fact_id: SAL-GNUMERIC-00056
+  qname: FACT-GNUMERIC-056
+  claim: Gnumeric cell error values use numeric codes such as GNM_ERROR_DIV0 for division by zero
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.22'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 ValueType=20 error cells with error code as content
+    confidence: medium
+  claim_id: FACT-GNUMERIC-056
+- fact_id: SAL-GNUMERIC-00057
+  qname: FACT-GNUMERIC-057
+  claim: Gnumeric sheet attribute DisplayFormulas controls whether formulas or values are shown
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.23'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 Sheet DisplayFormulas attribute 0=values 1=formulas
+    confidence: medium
+  claim_id: FACT-GNUMERIC-057
+- fact_id: SAL-GNUMERIC-00058
+  qname: FACT-GNUMERIC-058
+  claim: Gnumeric sheet attribute HideZeros controls whether zero values are displayed as blank
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '1.24'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 Sheet HideZeros attribute 0=show 1=hide
+    confidence: medium
+  claim_id: FACT-GNUMERIC-058
+- fact_id: SAL-GNUMERIC-00059
+  qname: FACT-GNUMERIC-059
+  claim: Gnumeric Styles container groups all StyleRegion elements for a sheet's cell styling
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.9'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 Styles container with StyleRegion children
+    confidence: medium
+  claim_id: FACT-GNUMERIC-059
+- fact_id: SAL-GNUMERIC-00060
+  qname: FACT-GNUMERIC-060
+  claim: Gnumeric WrapText attribute value 1 on Style means cell text wraps to multiple lines
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.10'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 Style WrapText attribute 0=no-wrap 1=wrap
+    confidence: medium
+  claim_id: FACT-GNUMERIC-060
+- fact_id: SAL-GNUMERIC-00061
+  qname: FACT-GNUMERIC-061
+  claim: Gnumeric cell locking is set via the Protection element inside Style with IsLocked attribute
+  verification_status: verified_with_note
+  provenance:
+    format_id: gnumeric
+    spec_id: gnumeric-structural
+    section_id: '4.11'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: Gnumeric XML v10 Protection IsLocked attribute inside Style element
+    confidence: medium
+  claim_id: FACT-GNUMERIC-061

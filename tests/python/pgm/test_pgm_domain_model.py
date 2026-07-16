@@ -22,7 +22,7 @@ class TestPgmDocumentSpecQname:
         assert isinstance(PgmDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert PgmDocument.spec_fact_ref == "FACT-PGM-001"
+        assert PgmDocument.spec_fact_ref == "SAL-PGM-00001"
 
     def test_from_file_returns_model(self):
         doc = PgmDocument.from_file(_SAMPLE)

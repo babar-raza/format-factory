@@ -61,7 +61,7 @@ class TestQoiCompatLayerSpecQname:
 
     def test_qoi_header_spec_fact_ref(self):
         from qoi.Compat import QoiHeader
-        assert QoiHeader.spec_fact_ref == "FACT-QOI-001"
+        assert QoiHeader.spec_fact_ref == "SAL-QOI-00001"
 
     def test_qoi_header_namespace_uri(self):
         from qoi.Compat import QoiHeader

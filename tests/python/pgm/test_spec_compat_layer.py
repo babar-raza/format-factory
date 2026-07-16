@@ -20,7 +20,7 @@ class TestPgmHeaderMetadata:
         assert PgmHeader.spec_qname == "pgm:header"
 
     def test_spec_fact_ref(self):
-        assert PgmHeader.spec_fact_ref == "FACT-PGM-001"
+        assert PgmHeader.spec_fact_ref == "SAL-PGM-00001"
 
     def test_namespace_uri_present(self):
         assert PgmHeader.namespace_uri

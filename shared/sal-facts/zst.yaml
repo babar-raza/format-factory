@@ -1,0 +1,1137 @@
+format_id: zst
+display_name: Zstandard Compressed File
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-ZST-00001
+  qname: FACT-ZST-001
+  claim: Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format
+  section: 3.1.1.
+  description: Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00002
+  qname: FACT-ZST-002
+  claim: Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F (16 valid values)
+  section: 3.1.2.
+  description: Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F (16 valid
+    values)
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00003
+  qname: FACT-ZST-003
+  claim: Zstandard compressed data is made of one or more frames; each frame is independent and can be
+    decompressed independently
+  section: 3.1.
+  description: Zstandard compressed data is made of one or more frames; each frame is independent and
+    can be decompressed independently
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00004
+  qname: FACT-ZST-004
+  claim: 'Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user metadata)'
+  section: 3.1.
+  description: 'Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user
+    metadata)'
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00005
+  qname: FACT-ZST-005
+  claim: 'Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor,
+    optional Window_Descriptor, optional Dictionary_ID, optional Frame_Content_Size'
+  section: 3.1.1.1.
+  description: 'Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor,
+    optional Window_Descriptor, optional Dictionary_ID, optional Frame_Content_Size'
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00006
+  qname: FACT-ZST-006
+  claim: 'Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6), Single_Segment_Flag
+    (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag (bits
+    1-0)'
+  section: 3.1.1.1.1.
+  description: 'Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6),
+    Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3), Content_Checksum_Flag (bit 2), Dictionary_ID_Flag
+    (bits 1-0)'
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00007
+  qname: FACT-ZST-007
+  claim: Each frame must have at least 1 block; there is no upper limit on the number of blocks per frame
+  section: 3.1.1.2.
+  description: Each frame must have at least 1 block; there is no upper limit on the number of blocks
+    per frame
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00008
+  qname: FACT-ZST-008
+  claim: Block_Header is 3 bytes, little-endian, with Last_Block (bit 0), Block_Type (bits 1-2), Block_Size
+    (bits 3-23)
+  section: 3.1.1.2.
+  description: Block_Header is 3 bytes, little-endian, with Last_Block (bit 0), Block_Type (bits 1-2),
+    Block_Size (bits 3-23)
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00009
+  qname: FACT-ZST-009
+  claim: 'Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated), Compressed_Block
+    (2), Reserved (3, invalid)'
+  section: 3.1.1.2.2.
+  description: 'Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated), Compressed_Block
+    (2), Reserved (3, invalid)'
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00010
+  qname: FACT-ZST-010
+  claim: Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame
+  section: 3.1.1.2.4.
+  description: Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00011
+  qname: FACT-ZST-011
+  claim: Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes stored
+    little-endian
+  section: 3.1.1.
+  description: Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes
+    stored little-endian
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00012
+  qname: FACT-ZST-012
+  claim: Compressed block consists of Literals_Section and Sequences_Section, combined via Sequence Execution
+  section: 3.1.1.3.
+  description: Compressed block consists of Literals_Section and Sequences_Section, combined via Sequence
+    Execution
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00013
+  qname: FACT-ZST-013
+  claim: 'Two entropy encoding methods: Huffman coding for literals, FSE (Finite State Entropy) for all
+    other symbols'
+  section: '4.'
+  description: 'Two entropy encoding methods: Huffman coding for literals, FSE (Finite State Entropy)
+    for all other symbols'
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00014
+  qname: FACT-ZST-014
+  claim: Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID cannot
+    be 0
+  section: '5.'
+  description: Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID
+    cannot be 0
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00015
+  qname: FACT-ZST-015
+  claim: IANA media type is application/zstd; file extension is .zst; encoding is binary
+  section: 7.1.
+  description: IANA media type is application/zstd; file extension is .zst; encoding is binary
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: rfc8878
+- fact_id: SAL-ZST-00016
+  qname: FACT-ZST-EX-0001
+  claim: Information about the current status of this document, any errata, and how to provide feedback
+    on it may be obtained at https://www.rfc-editor.org/info/rfc8878.
+  section: section-unknown.
+  description: Information about the current status of this document, any errata, and how to provide feedback
+    on it may be obtained at https://www.rfc-editor.org/info/rfc8878.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00017
+  qname: FACT-ZST-EX-0002
+  claim: carefully, as they describe your rights and restrictions with respect to this document.  Code
+    Components extracted from this document must include Simplified BSD License text as described in Section
+    4.e of
+  section: section-unknown.
+  description: carefully, as they describe your rights and restrictions with respect to this document.  Code
+    Components extracted from this document must include Simplified BSD License text as described in Section
+    4.e of
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00018
+  qname: FACT-ZST-EX-0003
+  claim: 'encode:  The process of translating data from one form to another; this may include compression,
+    or it may refer to other translations done as part of this specification.'
+  section: section-2.--definitions.
+  description: 'encode:  The process of translating data from one form to another; this may include compression,
+    or it may refer to other translations done as part of this specification.'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00019
+  qname: FACT-ZST-EX-0004
+  claim: Mixed_Case_With_Underscores.  Identifiers inside square brackets indicate that the identifier
+    is optional in the presented context.
+  section: section-2.--definitions.
+  description: Mixed_Case_With_Underscores.  Identifiers inside square brackets indicate that the identifier
+    is optional in the presented context.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00020
+  qname: FACT-ZST-EX-0005
+  claim: communications.  The format uses the Zstandard compression method, and an optional xxHash-64
+    checksum method [XXHASH], for detection of data corruption.
+  section: section-3.--compression-algorithm.
+  description: communications.  The format uses the Zstandard compression method, and an optional xxHash-64
+    checksum method [XXHASH], for detection of data corruption.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00021
+  qname: FACT-ZST-EX-0006
+  claim: Unless otherwise indicated below, a compliant compressor must produce data sets that conform
+    to the specifications presented here.
+  section: section-3.--compression-algorithm.
+  description: Unless otherwise indicated below, a compliant compressor must produce data sets that conform
+    to the specifications presented here.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00022
+  qname: FACT-ZST-EX-0007
+  claim: A compliant decompressor must be able to decompress at least one working set of parameters that
+    conforms to the specifications
+  section: section-3.--compression-algorithm.
+  description: A compliant decompressor must be able to decompress at least one working set of parameters
+    that conforms to the specifications
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00023
+  qname: FACT-ZST-EX-0008
+  claim: working set of parameters that conforms to the specifications presented here.  It may also ignore
+    informative fields, such as the checksum.  Whenever it does not support a parameter defined in the
+  section: section-3.--compression-algorithm.
+  description: working set of parameters that conforms to the specifications presented here.  It may also
+    ignore informative fields, such as the checksum.  Whenever it does not support a parameter defined
+    in the
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00024
+  qname: FACT-ZST-EX-0009
+  claim: checksum.  Whenever it does not support a parameter defined in the compressed stream, it must
+    produce an unambiguous error code and associated error message explaining which parameter is unsupported.
+  section: section-3.--compression-algorithm.
+  description: checksum.  Whenever it does not support a parameter defined in the compressed stream, it
+    must produce an unambiguous error code and associated error message explaining which parameter is
+    unsupported.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00025
+  qname: FACT-ZST-EX-0010
+  claim: 'Content_Checksum:  An optional 32-bit checksum, only present if Content_Checksum_Flag is set.  The
+    content checksum is the result'
+  section: section-3.1.1.--zstandard-frames.
+  description: 'Content_Checksum:  An optional 32-bit checksum, only present if Content_Checksum_Flag
+    is set.  The content checksum is the result'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00026
+  qname: FACT-ZST-EX-0011
+  claim: 'The frame header has a variable size, with a minimum of 2 bytes up to a maximum of 14 bytes
+    depending on optional parameters.  The structure of Frame_Header is as follows:'
+  section: section-3.1.1.1.--frame-header.
+  description: 'The frame header has a variable size, with a minimum of 2 bytes up to a maximum of 14
+    bytes depending on optional parameters.  The structure of Frame_Header is as follows:'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00027
+  qname: FACT-ZST-EX-0012
+  claim: If this flag is set, data must be regenerated within a single continuous memory segment.
+  section: section-3.1.1.1.1.2.--single_segment_flag.
+  description: If this flag is set, data must be regenerated within a single continuous memory segment.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00028
+  qname: FACT-ZST-EX-0013
+  claim: Frame_Content_Size is necessarily present.  As a consequence, the decoder must allocate a memory
+    segment of a size equal to or larger than Frame_Content_Size.
+  section: section-3.1.1.1.1.2.--single_segment_flag.
+  description: Frame_Content_Size is necessarily present.  As a consequence, the decoder must allocate
+    a memory segment of a size equal to or larger than Frame_Content_Size.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00029
+  qname: FACT-ZST-EX-0014
+  claim: A decoder compliant with this specification version shall not interpret this bit.  It might be
+    used in a future version to signal a
+  section: section-3.1.1.1.1.3.--unused-bit.
+  description: A decoder compliant with this specification version shall not interpret this bit.  It might
+    be used in a future version to signal a
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00030
+  qname: FACT-ZST-EX-0015
+  claim: property that is not mandatory to properly decode the frame.  An encoder compliant with this
+    specification must set this bit to zero.
+  section: section-3.1.1.1.1.3.--unused-bit.
+  description: property that is not mandatory to properly decode the frame.  An encoder compliant with
+    this specification must set this bit to zero.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00031
+  qname: FACT-ZST-EX-0016
+  claim: This bit is reserved for some future feature.  Its value must be zero.  A decoder compliant with
+    this specification version must
+  section: section-3.1.1.1.1.4.--reserved-bit.
+  description: This bit is reserved for some future feature.  Its value must be zero.  A decoder compliant
+    with this specification version must
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00032
+  qname: FACT-ZST-EX-0017
+  claim: zero.  A decoder compliant with this specification version must ensure it is not set.  This bit
+    may be used in a future revision to signal a feature that must be interpreted to decode the frame
+  section: section-3.1.1.1.1.4.--reserved-bit.
+  description: zero.  A decoder compliant with this specification version must ensure it is not set.  This
+    bit may be used in a future revision to signal a feature that must be interpreted to decode the frame
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00033
+  qname: FACT-ZST-EX-0018
+  claim: ensure it is not set.  This bit may be used in a future revision to signal a feature that must
+    be interpreted to decode the frame correctly.
+  section: section-3.1.1.1.1.4.--reserved-bit.
+  description: ensure it is not set.  This bit may be used in a future revision to signal a feature that
+    must be interpreted to decode the frame correctly.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00034
+  qname: FACT-ZST-EX-0019
+  claim: This provides guarantees about the minimum memory buffer required to decompress a frame.  This
+    information is important for decoders to
+  section: section-3.1.1.1.2.--window-descriptor.
+  description: This provides guarantees about the minimum memory buffer required to decompress a frame.  This
+    information is important for decoders to
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00035
+  qname: FACT-ZST-EX-0020
+  claim: The Window_Descriptor byte is optional.  When Single_Segment_Flag is set, Window_Descriptor is
+    not present.  In this case, Window_Size is
+  section: section-3.1.1.1.2.--window-descriptor.
+  description: The Window_Descriptor byte is optional.  When Single_Segment_Flag is set, Window_Descriptor
+    is not present.  In this case, Window_Size is
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00036
+  qname: FACT-ZST-EX-0021
+  claim: This is a field of variable size, which contains the ID of the dictionary required to properly
+    decode the frame.  This field is optional.  When it's not present, it's up to the decoder to know
+  section: section-3.1.1.1.3.--dictionary_id.
+  description: This is a field of variable size, which contains the ID of the dictionary required to properly
+    decode the frame.  This field is optional.  When it's not present, it's up to the decoder to know
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00037
+  qname: FACT-ZST-EX-0022
+  claim: dictionary required to properly decode the frame.  This field is optional.  When it's not present,
+    it's up to the decoder to know which dictionary to use.
+  section: section-3.1.1.1.3.--dictionary_id.
+  description: dictionary required to properly decode the frame.  This field is optional.  When it's not
+    present, it's up to the decoder to know which dictionary to use.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00038
+  qname: FACT-ZST-EX-0023
+  claim: for frames and dictionaries distributed in public space, Dictionary_ID must be attributed carefully.  The
+    following ranges are reserved for use only with dictionaries that have been registered
+  section: section-3.1.1.1.3.--dictionary_id.
+  description: for frames and dictionaries distributed in public space, Dictionary_ID must be attributed
+    carefully.  The following ranges are reserved for use only with dictionaries that have been registered
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00039
+  qname: FACT-ZST-EX-0024
+  claim: This is the original (uncompressed) size.  This information is optional.  Frame_Content_Size
+    uses a variable number of bytes, provided by FCS_Field_Size.  FCS_Field_Size is provided by the value
+  section: section-3.1.1.1.4.--frame_content_size.
+  description: This is the original (uncompressed) size.  This information is optional.  Frame_Content_Size
+    uses a variable number of bytes, provided by FCS_Field_Size.  FCS_Field_Size is provided by the value
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00040
+  qname: FACT-ZST-EX-0025
+  claim: After Magic_Number and Frame_Header, there are some number of blocks. Each frame must have at
+    least 1 block, but there is no upper limit on the number of blocks per frame.
+  section: section-3.1.1.2.--blocks.
+  description: After Magic_Number and Frame_Header, there are some number of blocks. Each frame must have
+    at least 1 block, but there is no upper limit on the number of blocks per frame.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00041
+  qname: FACT-ZST-EX-0026
+  claim: The lowest bit (Last_Block) signals whether this block is the last one.  The frame will end after
+    this last block.  It may be followed by an optional Content_Checksum (see Section 3.1.1).
+  section: section-3.1.1.2.1.--last_block.
+  description: The lowest bit (Last_Block) signals whether this block is the last one.  The frame will
+    end after this last block.  It may be followed by an optional Content_Checksum (see Section 3.1.1).
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00042
+  qname: FACT-ZST-EX-0027
+  claim: one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum
+    (see Section 3.1.1).
+  section: section-3.1.1.2.1.--last_block.
+  description: one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum
+    (see Section 3.1.1).
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00043
+  qname: FACT-ZST-EX-0028
+  claim: Block_Content consists of a single byte.  On the decompression side, this byte must be repeated
+    Block_Size times.
+  section: section-3.1.1.2.2.--block_type.
+  description: Block_Content consists of a single byte.  On the decompression side, this byte must be
+    repeated Block_Size times.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00044
+  qname: FACT-ZST-EX-0029
+  claim: current specification.  If such a value is present, it is considered to be corrupt data, and
+    a compliant decoder must reject it.
+  section: section-3.1.1.2.2.--block_type.
+  description: current specification.  If such a value is present, it is considered to be corrupt data,
+    and a compliant decoder must reject it.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00045
+  qname: FACT-ZST-EX-0030
+  claim: When Block_Type is RLE_Block, since Block_Content's size is always 1, Block_Size represents the
+    number of times this byte must be repeated.
+  section: section-3.1.1.2.3.--block_size.
+  description: When Block_Type is RLE_Block, since Block_Content's size is always 1, Block_Size represents
+    the number of times this byte must be repeated.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00046
+  qname: FACT-ZST-EX-0031
+  claim: To decompress a compressed block, the compressed size must be provided from the Block_Size field
+    within Block_Header.
+  section: section-3.1.1.3.--compressed-blocks.
+  description: To decompress a compressed block, the compressed size must be provided from the Block_Size
+    field within Block_Header.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00047
+  qname: FACT-ZST-EX-0032
+  claim: '*  The previous Huffman tree, required by Treeless_Literals_Block type.'
+  section: section-3.1.1.3.--compressed-blocks.
+  description: '*  The previous Huffman tree, required by Treeless_Literals_Block type.'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00048
+  qname: FACT-ZST-EX-0033
+  claim: '*  Previous Finite State Entropy (FSE) decoding tables, required by Repeat_Mode, for each symbol
+    type (literals length codes, match'
+  section: section-3.1.1.3.--compressed-blocks.
+  description: '*  Previous Finite State Entropy (FSE) decoding tables, required by Repeat_Mode, for each
+    symbol type (literals length codes, match'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00049
+  qname: FACT-ZST-EX-0034
+  claim: Literals can be stored uncompressed or compressed using Huffman prefix codes.  When compressed,
+    an optional tree description can be present, followed by 1 or 4 streams.
+  section: section-3.1.1.3.1.--literals_section_header.
+  description: Literals can be stored uncompressed or compressed using Huffman prefix codes.  When compressed,
+    an optional tree description can be present, followed by 1 or 4 streams.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00050
+  qname: FACT-ZST-EX-0035
+  claim: this mode is triggered without any previous Huffman table in the frame (or dictionary, per Section
+    5), it should be treated as data corruption.  Literals_Section_Content is Compressed_Size.
+  section: section-3.1.1.3.1.1.--literals_section_header.
+  description: this mode is triggered without any previous Huffman table in the frame (or dictionary,
+    per Section 5), it should be treated as data corruption.  Literals_Section_Content is Compressed_Size.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00051
+  qname: FACT-ZST-EX-0036
+  claim: '*  For Compressed_Block and Treeless_Literals_Block, it''s required to decode both Compressed_Size
+    and Regenerated_Size (the decompressed'
+  section: section-3.1.1.3.1.1.--literals_section_header.
+  description: '*  For Compressed_Block and Treeless_Literals_Block, it''s required to decode both Compressed_Size
+    and Regenerated_Size (the decompressed'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00052
+  qname: FACT-ZST-EX-0037
+  claim: Stream_1 consists of a single byte that should be repeated Regenerated_Size times to generate
+    the decoded literals.
+  section: section-3.1.1.3.1.3.--rle_literals_block.
+  description: Stream_1 consists of a single byte that should be repeated Regenerated_Size times to generate
+    the decoded literals.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00053
+  qname: FACT-ZST-EX-0038
+  claim: Huffman_Tree_Description is determined during the decoding process. It must be used to determine
+    where streams begin.
+  section: section-3.1.1.3.1.5.--huffman_tree_description.
+  description: Huffman_Tree_Description is determined during the decoding process. It must be used to
+    determine where streams begin.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00054
+  qname: FACT-ZST-EX-0039
+  claim: streams combined.  The decompressed size of each stream is equal to (Regenerated_Size+3)/4, except
+    for the last stream, which may be up to 3 bytes smaller, to reach a total decompressed size as specified
+  section: section-3.1.1.3.1.6.--jump_table.
+  description: streams combined.  The decompressed size of each stream is equal to (Regenerated_Size+3)/4,
+    except for the last stream, which may be up to 3 bytes smaller, to reach a total decompressed size
+    as specified
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00055
+  qname: FACT-ZST-EX-0040
+  claim: 'The Sequences_Section regroups all symbols required to decode commands.  There are three symbol
+    types: literals length codes,'
+  section: section-3.1.1.3.2.--sequences_section.
+  description: 'The Sequences_Section regroups all symbols required to decode commands.  There are three
+    symbol types: literals length codes,'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00056
+  qname: FACT-ZST-EX-0041
+  claim: The Sequences_Section starts by a header, followed by optional probability tables for each symbol
+    type, followed by the bitstream.
+  section: section-3.1.1.3.2.--sequences_section.
+  description: The Sequences_Section starts by a header, followed by optional probability tables for each
+    symbol type, followed by the bitstream.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00057
+  qname: FACT-ZST-EX-0042
+  claim: The last field, Reserved, must be all zeroes.
+  section: section-3.1.1.3.2.1.--sequences_section_header.
+  description: The last field, Reserved, must be all zeroes.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00058
+  qname: FACT-ZST-EX-0043
+  claim: is 9, and the maximum accuracy log for the offset code table is 8. This mode must not be used
+    when only one symbol is present; RLE_Mode should be used instead (although any other mode will
+  section: section-3.1.1.3.2.1.--sequences_section_header.
+  description: is 9, and the maximum accuracy log for the offset code table is 8. This mode must not be
+    used when only one symbol is present; RLE_Mode should be used instead (although any other mode will
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00059
+  qname: FACT-ZST-EX-0044
+  claim: This mode must not be used when only one symbol is present; RLE_Mode should be used instead (although
+    any other mode will work).
+  section: section-3.1.1.3.2.1.--sequences_section_header.
+  description: This mode must not be used when only one symbol is present; RLE_Mode should be used instead
+    (although any other mode will work).
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00060
+  qname: FACT-ZST-EX-0045
+  claim: mode is used without any previous sequence table in the frame (or dictionary; see Section 5)
+    to repeat, this should be treated as corruption.
+  section: section-3.1.1.3.2.1.--sequences_section_header.
+  description: mode is used without any previous sequence table in the frame (or dictionary; see Section
+    5) to repeat, this should be treated as corruption.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00061
+  qname: FACT-ZST-EX-0046
+  claim: In zstd, the compressor writes bits forward into a block, and the decompressor must read the
+    bitstream backwards.
+  section: section-3.1.1.3.2.1.2.--decoding-sequences.
+  description: In zstd, the compressor writes bits forward into a block, and the decompressor must read
+    the bitstream backwards.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00062
+  qname: FACT-ZST-EX-0047
+  claim: The bitstream starts with initial FSE state values, each using the required number of bits in
+    their respective accuracy, decoded previously from their normalized distribution.  It starts with
+  section: section-3.1.1.3.2.1.2.--decoding-sequences.
+  description: The bitstream starts with initial FSE state values, each using the required number of bits
+    in their respective accuracy, decoded previously from their normalized distribution.  It starts with
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00063
+  qname: FACT-ZST-EX-0048
+  claim: first to last.  Since the compressor writes the bitstream in the forward direction, this means
+    the compressor must encode the sequences starting with the last one and ending with the first.
+  section: section-3.1.1.3.2.1.2.--decoding-sequences.
+  description: first to last.  Since the compressor writes the bitstream in the forward direction, this
+    means the compressor must encode the sequences starting with the last one and ending with the first.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00064
+  qname: FACT-ZST-EX-0049
+  claim: Decoding starts by reading the Number_of_Bits required to decode offset.  It does the same for
+    Match_Length and then for
+  section: section-3.1.1.3.2.1.2.--decoding-sequences.
+  description: Decoding starts by reading the Number_of_Bits required to decode offset.  It does the same
+    for Match_Length and then for
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00065
+  qname: FACT-ZST-EX-0050
+  claim: This operation will be repeated Number_of_Sequences times.  At the end, the bitstream shall be
+    entirely consumed; otherwise, the bitstream is considered corrupted.
+  section: section-3.1.1.3.2.1.2.--decoding-sequences.
+  description: This operation will be repeated Number_of_Sequences times.  At the end, the bitstream shall
+    be entirely consumed; otherwise, the bitstream is considered corrupted.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00066
+  qname: FACT-ZST-EX-0051
+  claim: literals), so an offset of 6 and a match length of 3 means that 3 bytes should be copied from
+    6 bytes back.  Note that all offsets leading to previously decoded data must be smaller than Window_Size
+  section: section-3.1.1.4.--sequence-execution.
+  description: literals), so an offset of 6 and a match length of 3 means that 3 bytes should be copied
+    from 6 bytes back.  Note that all offsets leading to previously decoded data must be smaller than
+    Window_Size
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00067
+  qname: FACT-ZST-EX-0052
+  claim: bytes should be copied from 6 bytes back.  Note that all offsets leading to previously decoded
+    data must be smaller than Window_Size defined in Frame_Header_Descriptor (Section 3.1.1.1.1).
+  section: section-3.1.1.4.--sequence-execution.
+  description: bytes should be copied from 6 bytes back.  Note that all offsets leading to previously
+    decoded data must be smaller than Window_Size defined in Frame_Header_Descriptor (Section 3.1.1.1.1).
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00068
+  qname: FACT-ZST-EX-0053
+  claim: It should be noted that a skippable frame can be used to watermark a stream of concatenated frames
+    embedding any kind of tracking
+  section: section-3.1.2.--skippable-frames.
+  description: It should be noted that a skippable frame can be used to watermark a stream of concatenated
+    frames embedding any kind of tracking
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00069
+  qname: FACT-ZST-EX-0054
+  claim: information (even just a Universally Unique Identifier (UUID)). Users wary of such possibility
+    should scan the stream of concatenated frames in an attempt to detect such frames for analysis or
+    removal.
+  section: section-3.1.2.--skippable-frames.
+  description: information (even just a Universally Unique Identifier (UUID)). Users wary of such possibility
+    should scan the stream of concatenated frames in an attempt to detect such frames for analysis or
+    removal.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00070
+  qname: FACT-ZST-EX-0055
+  claim: '[ANS].  FSE encoding/decoding involves a state that is carried over between symbols, so decoding
+    must be done in the opposite direction as encoding.  Therefore, all FSE bitstreams are read from end
+    to'
+  section: section-4.1.--fse.
+  description: '[ANS].  FSE encoding/decoding involves a state that is carried over between symbols, so
+    decoding must be done in the opposite direction as encoding.  Therefore, all FSE bitstreams are read
+    from end to'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00071
+  qname: FACT-ZST-EX-0056
+  claim: the Symbol indicated in the table for that state.  To obtain the next state value, the decoder
+    should consume Num_Bits bits from the stream as a little-endian value and add it to Baseline.
+  section: section-4.1.--fse.
+  description: the Symbol indicated in the table for that state.  To obtain the next state value, the
+    decoder should consume Num_Bits bits from the stream as a little-endian value and add it to Baseline.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00072
+  qname: FACT-ZST-EX-0057
+  claim: from 0 to the last present one (included) on a normalized scale of (1 << Accuracy_Log).  Note
+    that there must be two or more symbols with nonzero probability.
+  section: section-4.1.1.--fse-table-description.
+  description: from 0 to the last present one (included) on a normalized scale of (1 << Accuracy_Log).  Note
+    that there must be two or more symbols with nonzero probability.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00073
+  qname: FACT-ZST-EX-0058
+  claim: of 8, and presuming 100 probabilities points have already been distributed, the decoder may read
+    any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore, it must read log_(2)sup(157) ==
+  section: section-4.1.1.--fse-table-description.
+  description: of 8, and presuming 100 probabilities points have already been distributed, the decoder
+    may read any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore, it must read log_(2)sup(157)
+    ==
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00074
+  qname: FACT-ZST-EX-0059
+  claim: distributed, the decoder may read any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore,
+    it must read log_(2)sup(157) == 8 bits.
+  section: section-4.1.1.--fse-table-description.
+  description: distributed, the decoder may read any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore,
+    it must read log_(2)sup(157) == 8 bits.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00075
+  qname: FACT-ZST-EX-0060
+  claim: 256.  If the number of symbols decoded is not equal to the expected, the header should be considered
+    corrupt.
+  section: section-256.--if-the-number-of-symbols-decoded-i.
+  description: 256.  If the number of symbols decoded is not equal to the expected, the header should
+    be considered corrupt.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00076
+  qname: FACT-ZST-EX-0061
+  claim: To get the Number_of_Bits and Baseline required for the next state, it is first necessary to
+    sort all states in their natural order.  The
+  section: section-256.--if-the-number-of-symbols-decoded-i.
+  description: To get the Number_of_Bits and Baseline required for the next state, it is first necessary
+    to sort all states in their natural order.  The
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00077
+  qname: FACT-ZST-EX-0062
+  claim: The next state is determined from the current state by reading the required Number_of_Bits and
+    adding the specified Baseline.
+  section: section-256.--if-the-number-of-symbols-decoded-i.
+  description: The next state is determined from the current state by reading the required Number_of_Bits
+    and adding the specified Baseline.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00078
+  qname: FACT-ZST-EX-0063
+  claim: bit sequences (codewords), one codeword for each symbol, in a manner such that different symbols
+    may be represented by bit sequences of different lengths, but a parser can always parse an encoded
+    string
+  section: section-4.2.1.--huffman-tree-description.
+  description: bit sequences (codewords), one codeword for each symbol, in a manner such that different
+    symbols may be represented by bit sequences of different lengths, but a parser can always parse an
+    encoded string
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00079
+  qname: FACT-ZST-EX-0064
+  claim: The prefix code must not exceed a maximum code length.  More bits improve accuracy but yield
+    a larger header size and require more
+  section: section-4.2.1.--huffman-tree-description.
+  description: The prefix code must not exceed a maximum code length.  More bits improve accuracy but
+    yield a larger header size and require more
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00080
+  qname: FACT-ZST-EX-0065
+  claim: 'For example, presume the following Huffman tree must be described:'
+  section: section-4.2.1.--huffman-tree-description.
+  description: 'For example, presume the following Huffman tree must be described:'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00081
+  qname: FACT-ZST-EX-0066
+  claim: Each bitstream must be read backward, starting from the end and going up to the beginning.  Therefore,
+    it is necessary to know the size of
+  section: section-4.2.2.--huffman-coded-streams.
+  description: Each bitstream must be read backward, starting from the end and going up to the beginning.  Therefore,
+    it is necessary to know the size of
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00082
+  qname: FACT-ZST-EX-0067
+  claim: The process continues reading up to the required number of symbols per stream.  If a bitstream
+    is not entirely and exactly consumed,
+  section: section-00010000-00001101.
+  description: The process continues reading up to the required number of symbols per stream.  If a bitstream
+    is not entirely and exactly consumed,
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00083
+  qname: FACT-ZST-EX-0068
+  claim: Zstandard is compatible with "raw content" dictionaries, free of any format restriction, except
+    that they must be at least 8 bytes.  These dictionaries function as if they were just the content
+    part of a
+  section: section-5.--dictionary-format.
+  description: Zstandard is compatible with "raw content" dictionaries, free of any format restriction,
+    except that they must be at least 8 bytes.  These dictionaries function as if they were just the content
+    part of a
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00084
+  qname: FACT-ZST-EX-0069
+  claim: are provided out of band.  That is, the Dictionary_ID identifies which should be used, but this
+    specification does not describe the mechanism by which the dictionary is obtained prior to use during
+  section: section-5.--dictionary-format.
+  description: are provided out of band.  That is, the Dictionary_ID identifies which should be used,
+    but this specification does not describe the mechanism by which the dictionary is obtained prior to
+    use during
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00085
+  qname: FACT-ZST-EX-0070
+  claim: 'public distribution of compressed frames, the following ranges are reserved and shall not be
+    used:'
+  section: section-5.--dictionary-format.
+  description: 'public distribution of compressed frames, the following ranges are reserved and shall
+    not be used:'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00086
+  qname: FACT-ZST-EX-0071
+  claim: stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each repeat offset must
+    have a value less than the dictionary size.
+  section: section-5.--dictionary-format.
+  description: stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each repeat offset
+    must have a value less than the dictionary size.
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00087
+  qname: FACT-ZST-EX-0072
+  claim: long as the amount of data decoded from this frame is less than or equal to Window_Size, sequence
+    commands may specify offsets longer than the total length of decoded output so far to reference back
+  section: section-5.--dictionary-format.
+  description: long as the amount of data decoded from this frame is less than or equal to Window_Size,
+    sequence commands may specify offsets longer than the total length of decoded output so far to reference
+    back
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00088
+  qname: FACT-ZST-EX-0073
+  claim: dictionaries with zstd payloads, especially with MIME, content encoded with the media type registered
+    here should not use a dictionary.  The exception to this requirement might be a private
+  section: section-6.--use-of-dictionaries.
+  description: dictionaries with zstd payloads, especially with MIME, content encoded with the media type
+    registered here should not use a dictionary.  The exception to this requirement might be a private
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00089
+  qname: FACT-ZST-EX-0076
+  claim: 'Fragment Identifier Considerations:  The syntax and semantics of fragment identifiers specified
+    for +zstd should be as specified for ''application/zstd''.'
+  section: section-7.3.--structured-syntax-suffix.
+  description: 'Fragment Identifier Considerations:  The syntax and semantics of fragment identifiers
+    specified for +zstd should be as specified for ''application/zstd''.'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00090
+  qname: FACT-ZST-EX-0077
+  claim: One should never compress a message whose content must remain secret with a message generated
+    by a third party.  Such a compression can be
+  section: section-8.--security-considerations.
+  description: One should never compress a message whose content must remain secret with a message generated
+    by a third party.  Such a compression can be
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00091
+  qname: FACT-ZST-EX-0078
+  claim: An attacker may provide correctly formed compressed frames with unreasonable memory requirements.  A
+    decoder must always control
+  section: section-8.--security-considerations.
+  description: An attacker may provide correctly formed compressed frames with unreasonable memory requirements.  A
+    decoder must always control
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00092
+  qname: FACT-ZST-EX-0079
+  claim: Compression can be optimized by training a dictionary on a variety of related content payloads.  This
+    dictionary must then be available at the decoder for decompression of the payload to be possible.  While
+  section: section-8.--security-considerations.
+  description: Compression can be optimized by training a dictionary on a variety of related content payloads.  This
+    dictionary must then be available at the decoder for decompression of the payload to be possible.  While
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00093
+  qname: FACT-ZST-EX-0080
+  claim: given compressed payload, it is worth noting that third-party dictionaries may interact unexpectedly
+    with a decoder, leading to possible memory or other resource-exhaustion attacks.  We expect such
+  section: section-8.--security-considerations.
+  description: given compressed payload, it is worth noting that third-party dictionaries may interact
+    unexpectedly with a decoder, leading to possible memory or other resource-exhaustion attacks.  We
+    expect such
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized
+- fact_id: SAL-ZST-00094
+  qname: FACT-ZST-EX-0081
+  claim: '[RFC1952]  Deutsch, P., "GZIP file format specification version 4.3", RFC 1952, DOI 10.17487/RFC1952,
+    May 1996, <https://www.rfc-editor.org/info/rfc1952>.'
+  section: section-9.2.--informative-references.
+  description: '[RFC1952]  Deutsch, P., "GZIP file format specification version 4.3", RFC 1952, DOI 10.17487/RFC1952,
+    May 1996, <https://www.rfc-editor.org/info/rfc1952>.'
+  authority: 'verified-facts-review.yaml (status: verified_with_note)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified_with_note
+  source_id: zst-normalized

@@ -1,0 +1,100 @@
+format_id: ppm
+display_name: Portable Pixmap (PPM / Netpbm)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-PPM-00001
+  qname: FACT-PPM-001
+  claim: PPM ASCII format starts with magic number 'P3' followed by whitespace
+  section: ppm.html#magicnumber
+  description: PPM ASCII format starts with magic number 'P3' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/ppm/ppm_parser.py
+    symbol: PPM_MAGIC_ASCII
+    expected: P3
+- fact_id: SAL-PPM-00002
+  qname: FACT-PPM-002
+  claim: PPM binary format starts with magic number 'P6' followed by whitespace
+  section: ppm.html#magicnumber
+  description: PPM binary format starts with magic number 'P6' followed by whitespace
+  authority: 'verified-facts-review.yaml (status: verified)'
+  source: workbench_verified
+  fact_status: verified
+  verification_status: verified
+  source_id: netpbm-spec
+  code_bindings:
+  - file: src/python/ppm/ppm_parser.py
+    symbol: PPM_MAGIC_BINARY
+    expected: P6
+- fact_id: SAL-PPM-00003
+  qname: FACT-PPM-003
+  element_qname: ppm:width
+  claim: PPM header contains the image width as an ASCII decimal number after the magic number, separated
+    by whitespace
+  section: ppm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: ppm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PPM-00004
+  qname: FACT-PPM-004
+  element_qname: ppm:height
+  claim: PPM header contains the image height as an ASCII decimal number after the width, separated by
+    whitespace
+  section: ppm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: ppm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PPM-00005
+  qname: FACT-PPM-005
+  element_qname: ppm:maxval
+  claim: PPM header contains the maximum color value as an ASCII decimal number after the height; 0 <
+    maxval < 65536
+  section: ppm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: ppm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'
+- fact_id: SAL-PPM-00006
+  qname: FACT-PPM-006
+  element_qname: ppm:raster
+  claim: 'PPM raster is width*height pixels in row-major order, each an RGB triplet in red-green-blue
+    sample order: P3 stores ASCII decimals, P6 stores 1 byte per sample when maxval < 256 else 2 bytes
+    big-endian'
+  section: ppm.html#format
+  authority: Netpbm format specification (netpbm.sourceforge.net)
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: ppm.html#format
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H01
+    added_at: '2026-07-16'

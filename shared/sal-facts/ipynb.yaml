@@ -1,0 +1,53 @@
+format_id: ipynb
+display_name: Jupyter Notebook (nbformat)
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-IPYNB-00001
+  qname: FACT-IPYNB-001
+  element_qname: ipynb:notebook
+  claim: A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int),
+    nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  section: nbformat 4.5 — top-level structure
+  authority: Jupyter nbformat v4.5 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00002
+  qname: FACT-IPYNB-002
+  element_qname: ipynb:cell
+  claim: Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and
+    source (string or list of strings); code cells additionally require execution_count and outputs
+  section: nbformat 4.5 — cell types
+  authority: Jupyter nbformat v4.5 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'
+- fact_id: SAL-IPYNB-00003
+  qname: FACT-IPYNB-003
+  element_qname: ipynb:output
+  claim: Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream,
+    error}; execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries
+    ename/evalue/traceback
+  section: nbformat 4.5 — cell outputs
+  authority: Jupyter nbformat v4.5 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-GWB-H03
+    added_at: '2026-07-16'

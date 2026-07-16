@@ -1,0 +1,473 @@
+format_id: csv
+display_name: CSV
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-CSV-00001
+  qname: FACT-CSV-001
+  claim: RFC 4180 s2.1 - Each record is on a separate line, delimited by a line break (CRLF)
+  section: '2.1'
+  description: Records are separated by CRLF line breaks. CRLF is the canonical line terminator.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00002
+  qname: FACT-CSV-002
+  claim: RFC 4180 s2.1 - The last record in the file may or may not have an ending line break
+  section: '2.1'
+  description: The final record is not required to end with CRLF; this is an optional trailing terminator.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00003
+  qname: FACT-CSV-003
+  claim: RFC 4180 s2.2 - There may be an optional header line appearing as the first line of the file
+  section: '2.2'
+  description: The optional header line contains column names. It has the same delimited structure as
+    data records.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00004
+  qname: FACT-CSV-004
+  claim: RFC 4180 s2.2 - The number of fields in the header should equal the number of fields in records
+  section: '2.2'
+  description: Headers and data rows must have equal field counts for well-formed CSV.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00005
+  qname: FACT-CSV-005
+  claim: RFC 4180 s2.3 - Within the header and each record there may be one or more fields separated by
+    commas
+  section: '2.3'
+  description: The comma character is the field delimiter. Each record consists of one or more comma-separated
+    fields.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00006
+  qname: FACT-CSV-006
+  claim: RFC 4180 s2.3 - Spaces are considered part of a field and should not be ignored
+  section: '2.3'
+  description: Leading and trailing spaces within a field are significant. Parsers must not strip spaces.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00007
+  qname: FACT-CSV-007
+  claim: RFC 4180 s2.3 - The last field in the record must not be followed by a comma
+  section: '2.3'
+  description: A trailing comma would create an additional empty field.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00008
+  qname: FACT-CSV-008
+  claim: RFC 4180 s2.4 - Each field may or may not be enclosed in double quotes
+  section: '2.4'
+  description: Quoting is optional when the field contains no special characters.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00009
+  qname: FACT-CSV-009
+  claim: RFC 4180 s2.4 - If fields are not enclosed with double quotes then double quotes may not appear
+    inside the fields
+  section: '2.4'
+  description: Unquoted fields must not contain embedded double quotes.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00010
+  qname: FACT-CSV-010
+  claim: RFC 4180 s2.5 - Fields containing line breaks, double quotes, and commas should be enclosed in
+    double-quotes
+  section: '2.5'
+  description: Any field containing the delimiter, the quoting character, or line breaks must be enclosed
+    in double quotes.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00011
+  qname: FACT-CSV-011
+  claim: RFC 4180 s2.6 - A double-quote appearing inside a field must be escaped by preceding it with
+    another double quote
+  section: '2.6'
+  description: The escape sequence for an embedded double quote within a quoted field is two consecutive
+    double quotes.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00012
+  qname: FACT-CSV-012
+  claim: RFC 4180 s3 - The MIME type for CSV files is text/csv
+  section: '3'
+  description: The official MIME type is text/csv as registered with IANA.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00013
+  qname: FACT-CSV-013
+  claim: RFC 4180 s3 - The default charset for text/csv is UTF-8
+  section: '3'
+  description: When the charset parameter is absent, UTF-8 is assumed for text/csv.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00014
+  qname: FACT-CSV-014
+  claim: RFC 4180 s3 - The text/csv type supports a header parameter with values present or absent
+  section: '3'
+  description: The MIME parameter header=present or header=absent indicates whether the first row is a
+    header.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00015
+  qname: FACT-CSV-015
+  claim: RFC 4180 s1 - Each record should contain the same number of fields throughout the file
+  section: '1'
+  description: Well-formed CSV has uniform field counts across all records. Ragged records are non-standard.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00016
+  qname: FACT-CSV-016
+  claim: RFC 4180 - An empty field is represented by two adjacent commas or a comma followed by a record
+    terminator
+  section: '2.3'
+  description: Empty fields have no characters between their delimiters.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00017
+  qname: FACT-CSV-017
+  claim: RFC 4180 - A quoted field begins and ends with a double-quote character
+  section: '2.4'
+  description: The opening and closing characters of a quoted field are both double-quote.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00018
+  qname: FACT-CSV-018
+  claim: RFC 4180 - A line break embedded within a double-quoted field is part of the field value not
+    a record separator
+  section: '2.5'
+  description: CRLF inside quotes is literal content. Only CRLF outside quotes terminates records.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00019
+  qname: FACT-CSV-019
+  claim: RFC 4180 - A comma embedded within a double-quoted field is part of the field value not a field
+    separator
+  section: '2.5'
+  description: The comma delimiter loses its special meaning inside a double-quoted field.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00020
+  qname: FACT-CSV-020
+  claim: RFC 4180 - CSV files may contain UTF-8 encoded Unicode text
+  section: '3'
+  description: The MIME type text/csv is a text type supporting UTF-8 encoded characters.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00021
+  qname: FACT-CSV-021
+  claim: RFC 4180 - A CSV record is delimited by CRLF; LF alone may be used in practice but CRLF is canonical
+  section: '2.1'
+  description: RFC 4180 specifies CRLF as the canonical line ending; LF-only is tolerated by many parsers.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00022
+  qname: FACT-CSV-022
+  claim: RFC 4180 - The file extension .csv is conventionally used for CSV files
+  section: '3'
+  description: The .csv extension is widely recognized as denoting comma-separated values files.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00023
+  qname: FACT-CSV-023
+  claim: RFC 4180 - A header row if present must appear as the very first line of the file
+  section: '2.2'
+  description: The optional header is always at line 1. There is no mechanism for a header to appear mid-file.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00024
+  qname: FACT-CSV-024
+  claim: RFC 4180 - Field names in the header line are subject to the same quoting rules as data fields
+  section: '2.2'
+  description: A header field name containing a comma or double quote must be enclosed in double quotes.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00025
+  qname: FACT-CSV-025
+  claim: RFC 4180 - An empty file is a valid CSV document containing zero records
+  section: '2.1'
+  description: An empty file has no records and no header. It is a valid empty CSV document.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00026
+  qname: FACT-CSV-026
+  claim: RFC 4180 - A quoted field may span multiple lines; embedded CRLF sequences are literal content
+  section: '2.5'
+  description: Multi-line cell values are valid when enclosed in double quotes.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00027
+  qname: FACT-CSV-027
+  claim: RFC 4180 - Parsers SHOULD accept LF as well as CRLF as line terminator for cross-platform compatibility
+  section: '2.1'
+  description: Practical CSV parsing must tolerate both LF and CRLF line endings.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00028
+  qname: FACT-CSV-028
+  claim: RFC 4180 - The number of fields is inferred from the first record or header if present
+  section: '2.3'
+  description: Field count is established by the first row. Subsequent rows should have the same count.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00029
+  qname: FACT-CSV-029
+  claim: RFC 4180 - A BOM byte order mark at the start of a UTF-8 CSV file may be present in practice
+  section: '3'
+  description: The BOM U+FEFF may precede the data in CSV files created by certain tools.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00030
+  qname: FACT-CSV-030
+  claim: CSV - Column index is zero-based in programmatic access; the first column is column 0
+  section: programmatic
+  description: Column 0 corresponds to the first field in a record.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00031
+  qname: FACT-CSV-031
+  claim: CSV - Row index is zero-based for data rows when a header is present
+  section: programmatic
+  description: When headers are extracted, data rows are numbered starting at 0.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00032
+  qname: FACT-CSV-032
+  claim: RFC 4180 - All field values are strings; numeric or boolean interpretation is application-specific
+  section: '2.3'
+  description: CSV is a text format. All field values are character strings.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00033
+  qname: FACT-CSV-033
+  claim: RFC 4180 - NULL or missing values in CSV are conventionally represented by empty fields
+  section: '2.3'
+  description: Empty fields conventionally represent NULL or absent values.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00034
+  qname: FACT-CSV-034
+  claim: RFC 4180 - CSV has no schema definition mechanism; structure is inferred from the header row
+  section: '2.2'
+  description: There is no metadata or schema language for CSV. Column types and semantics are inferred.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00035
+  qname: FACT-CSV-035
+  claim: RFC 4180 - CSV files may use alternative field delimiters in practice; RFC 4180 only specifies
+    comma
+  section: '2.3'
+  description: Only the comma is the RFC 4180 delimiter. Tab-separated and semicolon-separated are non-standard
+    variants.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00036
+  qname: FACT-CSV-036
+  claim: RFC 4180 - The quoting character double-quote ASCII 0x22 is fixed; single quotes are not special
+  section: '2.4'
+  description: Only the double-quote character 0x22 has special meaning as a field enclosure in RFC 4180.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00037
+  qname: FACT-CSV-037
+  claim: RFC 4180 - After a closing double-quote within a field only comma, CRLF, or EOF should follow
+  section: '2.6'
+  description: Characters after the closing quote other than field/record delimiters are undefined per
+    RFC 4180.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00038
+  qname: FACT-CSV-038
+  claim: RFC 4180 - CSV does not define comment lines; all lines are data unless the application defines
+    otherwise
+  section: '2.1'
+  description: 'There is no comment syntax in RFC 4180. Lines beginning with # are data fields.'
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00039
+  qname: FACT-CSV-039
+  claim: RFC 4180 - The total number of records is not encoded in the file; it must be determined by reading
+    all records
+  section: '2.1'
+  description: CSV has no record count header. The row count is determined by parsing the entire file.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00040
+  qname: FACT-CSV-040
+  claim: RFC 4180 - Column count is determined by the header row if present or the first data row
+  section: '2.3'
+  description: The expected number of fields per record is established by the first row encountered.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00041
+  qname: FACT-CSV-041
+  claim: CSV - Accessing a cell by row and column index is a programmatic operation on the parsed result
+  section: programmatic
+  description: GetCellValue(row, col) returns the field value at the given zero-based row and column offset.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00042
+  qname: FACT-CSV-042
+  claim: CSV - Filtering rows by predicate produces a new document with the same header
+  section: programmatic
+  description: Filter(predicate) applies a condition to each row and returns matching rows with the original
+    header.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00043
+  qname: FACT-CSV-043
+  claim: CSV - Adding a row appends a new record at the end of the document
+  section: programmatic
+  description: AddRow(values) appends a new data record; the header row is unaffected.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00044
+  qname: FACT-CSV-044
+  claim: CSV - Removing a row at index removes that record; subsequent rows shift up by one index position
+  section: programmatic
+  description: RemoveRow(index) removes the record at the given position; remaining rows are renumbered.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00045
+  qname: FACT-CSV-045
+  claim: CSV - Setting a cell value mutates the field at the given row and column position in place
+  section: programmatic
+  description: SetCell(row, col, value) replaces the field value without changing other fields in the
+    record.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00046
+  qname: FACT-CSV-046
+  claim: CSV - A column can be retrieved as a list of values by its zero-based index or header name
+  section: programmatic
+  description: GetColumn(index) or GetColumn(headerName) returns all values from a single field position
+    across all rows.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00047
+  qname: FACT-CSV-047
+  claim: CSV - HasColumn(name) tests whether a named column exists in the header row
+  section: programmatic
+  description: HasColumn returns true if the specified name is found in the header row.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00048
+  qname: FACT-CSV-048
+  claim: CSV - IsEmpty returns true when the document contains zero data rows
+  section: programmatic
+  description: An empty document has no data rows; the header row if present does not count as a data
+    row.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00049
+  qname: FACT-CSV-049
+  claim: CSV - RowCount returns the number of data rows excluding the header
+  section: programmatic
+  description: RowCount equals the number of records in the file minus the header row if present.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00050
+  qname: FACT-CSV-050
+  claim: CSV - ColumnCount returns the number of columns derived from the header or first data row
+  section: programmatic
+  description: ColumnCount equals the number of fields in the header row or first data row.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00051
+  qname: FACT-CSV-051
+  claim: CSV - A widened row produced by SetCell at a column beyond the current length fills intermediate
+    cells with empty string
+  section: programmatic
+  description: When SetCell addresses a column beyond the row length, the row is extended and intermediate
+    cells become empty string.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00052
+  qname: FACT-CSV-052
+  claim: CSV - HasHeaders returns true when the document was loaded with hasHeaders=true and a header
+    row is present
+  section: programmatic
+  description: The HasHeaders property reflects whether the first row was extracted as column names.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00053
+  qname: FACT-CSV-053
+  claim: RFC 4180 - A row with all empty fields is a valid record
+  section: '2.3'
+  description: A record consisting only of commas is valid with empty field values.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00054
+  qname: FACT-CSV-054
+  claim: RFC 4180 - Numeric values in CSV are stored as unquoted or quoted strings without special encoding
+  section: '2.3'
+  description: Numbers like 42 or 3.14 appear as plain text strings in CSV fields.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified
+- fact_id: SAL-CSV-00055
+  qname: FACT-CSV-055
+  claim: RFC 4180 - A parsing algorithm uses a state machine with states for unquoted, quoted, and escape
+    modes
+  section: '2.4'
+  description: A compliant CSV parser transitions between unquoted and quoted modes on detecting double-quote
+    characters.
+  authority: RFC 4180
+  source: structural_fact_manual
+  fact_status: verified

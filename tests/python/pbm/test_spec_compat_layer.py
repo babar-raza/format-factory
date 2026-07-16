@@ -20,7 +20,7 @@ class TestPbmHeaderMetadata:
         assert PbmHeader.spec_qname == "pbm:header"
 
     def test_spec_fact_ref(self):
-        assert PbmHeader.spec_fact_ref == "FACT-PBM-001"
+        assert PbmHeader.spec_fact_ref == "SAL-PBM-00001"
 
     def test_namespace_uri_present(self):
         assert PbmHeader.namespace_uri
@@ -66,7 +66,7 @@ class TestPbmBitmapBehavior:
         assert PbmBitmap.spec_qname == "pbm:bitmap"
 
     def test_spec_fact_ref(self):
-        assert PbmBitmap.spec_fact_ref == "FACT-PBM-002"
+        assert PbmBitmap.spec_fact_ref == "SAL-PBM-00002"
 
     def test_pixel_count(self):
         b = PbmBitmap(_SAMPLE_BITMAP)
