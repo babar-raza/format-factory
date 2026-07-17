@@ -594,3 +594,36 @@ issues:
   evidence:
     - "src/python/ndjson/__init__.py"
     - "src/python/ndjson/ndjson_field_analytics.py"
+
+- issue_id: FI-026
+  stable_semantic_key: "coordination:session_id_collision:active_plan_lock_clobber"
+  status: discovered
+  discovered_at: "2026-07-17T13:52:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/continuation_identity.py
+  affected_paths:
+    - tools/supervisor/continuation_identity.py
+    - tools/supervisor/write_plan_lock.py
+    - .local/supervisor/active-plan-lock.json
+  observed_behavior: "Live, directly-observed instance of the cross-chat session_id collision already documented as TC-MACH-001 (F1 mitigation) in continuation_identity.py's _resolve_via_coordination() docstring. While closing plan sfc-remaining-gaps-closure.md and opening plan found-issue-ownership-enforcement.md (this session, session_id bd020585-65d4-49ac-9c8e-95e67e7e5595), .local/supervisor/active-plan-lock.json and a keyed lock file at .local/supervisor/plan-locks/bd020585-65d4-49ac-9c8e-95e67e7e5595-267b6ab3.json were found holding plan_path 'plans/.claude/primary-purpose-the-python-starry-cupcake.md' (a different, unrelated PORTFOLIO-AUDIT-2026-07-16 mission plan, confirmed to be a real 68KB file authored by a different concurrent agent) -- tagged with MY session_id, not theirs. This confirms the documented root cause is actively occurring under real ~40-50-agent concurrent load, not just theoretical: the F1 mitigation's precondition (exactly one ACTIVE, fresh agent) fails whenever multiple agents are genuinely concurrent (the normal operating condition here), so both this agent and the other one fell through to the same colliding nonce-based session_id derivation in _derive_stable_session_id()."
+  expected_behavior: "Each genuinely-distinct chat/conversation should resolve to a distinct session_id, so that .local/supervisor/active-plan-lock.json and per-session keyed lock files are never cross-attributed between unrelated concurrent agents' plans."
+  severity: P2
+  reproducibility: OBSERVED_LIVE_UNDER_REAL_CONCURRENT_LOAD
+  root_cause_id: RC-CCI-001
+  healing_taskcard_id: TC-MACH-001
+  verification_verdict: null
+  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  evidence:
+    - "tools/supervisor/continuation_identity.py:22-49 (TC-MACH-001 docstring: 'the full fix needs the harness to pipe its real per-conversation session_id into every subprocess invocation; no such channel currently exists here (CLAUDE_SESSION_ID is never set by any hook or settings.json in this repo, and the PreToolUse hook that DOES receive the real session_id (coordination/hooks/gate.py) has no mechanism to inject env vars into the Bash command it is gating -- confirmed by reading the hook, not assumed).')"
+    - ".local/supervisor/plan-locks/bd020585-65d4-49ac-9c8e-95e67e7e5595-267b6ab3.json (live clobbered artifact, session_id matches this session but plan_path belongs to a different agent's mission)"
+  notes: >
+    Not a new defect requiring a repo-side code fix in this plan's scope -- the existing
+    F1 mitigation already represents the safely-achievable partial fix given the harness
+    constraint; this entry exists to (a) record a real, concrete confirming instance rather
+    than leave it as an unregistered prose observation, and (b) flag that TC-MACH-001's
+    "exactly one fresh agent" precondition is not met in the repo's actual normal operating
+    condition (40-50 concurrent agents), so the residual collision window should be treated
+    as routinely occurring, not rare. Worked around for this session via coordination
+    conflict resolve + rebaseline on the shared pointer file (does not affect the other
+    agent's actual plan file, which is untouched).
