@@ -30,7 +30,7 @@ headless supervisor invoked (One-Mechanism Lock, AGENTS.md §AH1).
 |-------|--------|
 | TC-RG-001 | CLOSED |
 | TC-RG-002 | CLOSED |
-| TC-RG-003 | TODO |
+| TC-RG-003 | CLOSED |
 
 (Updated as work is actually implemented, verified, and evidenced — never
 marked CLOSED in advance. See Execution Log below.)
@@ -143,3 +143,57 @@ this mission's scope. Core coordination suite
 `docs/governance/skill-only-policy.yaml`'s `DIRECT-GENERATOR-GAP` entry
 updated with the full corrected count, fix description, and per-candidate
 disposition — no longer stale.
+
+Committed: `491d2857`.
+
+### TC-RG-003 — Evidence-gated enforcing-promotion evaluation (CLOSED)
+
+Ran `python -m tools.supervisor.coordination advisory-report --check <id>`
+(Gap C's C3 observe-only analyzer) against the real accumulated
+`advisory-log.jsonl` for both checks Gap C/E shipped in `advisory` mode:
+
+- `skill_resolution`: 70 real events over ~16.7 hours
+  (2026-07-16T20:33:25Z -> 2026-07-17T13:14:16Z), 3 distinct agents, 11
+  distinct paths, **100% would-block rate**, tier breakdown 100%
+  `SKILL_EXISTS_BUT_NO_MANIFEST` — **zero `MANIFEST_COVERING` events have
+  ever been recorded**. Confirmed via `check-mode get` the check is still
+  correctly `advisory` (not accidentally already promoted).
+- `sprint_closeout_governance`: **0 events** — no headless sprint has run
+  through `cmd_run_sprint`'s manifest-gated path since Gap E shipped.
+
+**Disposition: BOTH REMAIN ADVISORY. No promotion.** This is the honest
+reading of the evidence, not a placeholder deferral:
+- `sprint_closeout_governance` has no traffic at all — there is nothing to
+  evaluate yet, full stop.
+- `skill_resolution`'s 100% would-block rate with zero observed
+  `MANIFEST_COVERING` events is not "the check is working and catching real
+  gaps" — it's a sign that manifest creation isn't part of anyone's actual
+  interactive workflow yet (including this session's — none of TC-RG-001/
+  002's edits went through `manifest.create_manifest()` first either).
+  Promoting to `enforcing` today would not validate the check; it would
+  block essentially every Edit/Write on a skill-governed path across the
+  entire live agent population (44-53 registered agents this session, only
+  3 of which have even triggered the check once) — exactly the "oscillation
+  /governance-defeat" risk the plan's Gap C design flagged for premature
+  *automatic rollback*, and it applies equally to premature promotion: a
+  100%-block check with zero passing examples proves adoption is absent,
+  not that the check is calibrated.
+- Per the plan's own C4 design ("minimum sample size *and* minimum elapsed
+  time, not just one or the other"): the elapsed-time leg is arguably
+  approaching a first checkpoint, but the *adoption* leg (do agents ever
+  actually satisfy `MANIFEST_COVERING`?) has not been observed even once.
+  Time alone was never meant to be sufficient.
+
+**Follow-on (explicitly not performed here, correctly out of TC-RG-003's
+scope — "run the analyzer and make a disposition," not "build manifest-
+creation integration into the standard Edit/Write flow")**: before
+promotion can be responsibly reconsidered, there needs to be a burn-in
+period where `MANIFEST_COVERING` events actually start appearing — which
+requires manifest creation to be wired into the normal interactive workflow
+(or at minimum into a governed skill population large enough to generate
+real passing examples), not just the sprint/generator paths Gap C/E
+instrumented. That integration is a distinct, larger task and is not
+started here; recorded as a named follow-up rather than silently dropped.
+No `set_check_mode` call was made — remaining on the default `advisory` is
+itself the deliberate, evidence-based decision (no state mutation to make
+when the evidence says "not yet").
