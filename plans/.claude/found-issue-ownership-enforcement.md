@@ -108,16 +108,29 @@ this incident, and none of them caught `FI-025` either.
 
 | TC-ID | Status |
 |-------|--------|
-| TC-FIX-001 | PENDING |
+| TC-FIX-001 | EXCLUDED |
 | TC-STRUCT-002 | CLOSED |
 | TC-STRUCT-001 | CLOSED |
 | TC-FI025-001 | CLOSED |
 | TC-STRUCT-003 | CLOSED |
-| TC-STRUCT-004 | PARTIALLY_COMPLETED |
+| TC-STRUCT-004 | EXCLUDED |
 
 (Updated as work is actually implemented, verified, and evidenced — never marked
 CLOSED in advance. See per-taskcard sections below for detail, and the Execution
 Log appended at closure time.)
+
+**`EXCLUDED` here means, specifically:** the substantive work for that taskcard
+is designed, and where independently completable, implemented and tested; the
+remaining step(s) are blocked by a verified (not assumed) `TRUE_EXTERNAL_DEPENDENCY`
+— a different concurrent agent's confirmed-`ACTIVE` lease on the exact file(s)
+needed, re-checked multiple times across this session including immediately
+before closure. It does not mean "decided not to do" or "irrelevant" — both are
+registered in `registry/found-issue-register.yaml` (FI-027, FI-030) with a named
+retry plan for a future session once the blocking lease is confirmed released.
+TC-FIX-001's own root-cause analysis and fix design are complete (see its
+section above) — only the actual file edit is blocked. TC-STRUCT-004's V252
+validator is fully implemented and tested — only its dispatch wiring and
+session-resume.md surfacing are blocked.
 
 ## Taskcards
 
