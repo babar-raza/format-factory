@@ -660,6 +660,13 @@ issues:
     stands as an honestly-documented, verified external block -- not a repeat of the
     original unverified dismissal.
 
+    RETRY 2026-07-17T15:31Z (post-closure, user-requested PLAN-BOUND AUTONOMOUS EXECUTION
+    retry): re-checked. agent-claude-code-20260717T060141-e225cd's last observed heartbeat
+    was still 2026-07-17T15:00:34Z (~30 min prior, no fresher heartbeat observed) but
+    `coordination takeover --lease lease-9be32fa9db` was attempted directly (not inferred
+    from the heartbeat gap alone) and was again refused: "owner is ACTIVE". Disposition
+    unchanged. Next retry requires a future session.
+
 - issue_id: FI-028
   stable_semantic_key: "coordination:write_journal_enum_bug:autonomous_cycle_py"
   status: discovered
@@ -686,6 +693,11 @@ issues:
     lease; if genuinely stale by then, apply the identical fix
     (op="edit", source="cli") used for the 6 already-fixed sites in this same
     bug class.
+
+    RETRY 2026-07-17T15:31Z (post-closure, user-requested PLAN-BOUND AUTONOMOUS
+    EXECUTION retry): re-checked directly via `coordination takeover
+    --lease lease-46db2d424c` -- refused again: "owner is ACTIVE". Disposition
+    unchanged. Next retry requires a future session.
 
 - issue_id: FI-029
   stable_semantic_key: "python:duplicate_function_definitions:ndjson_numeric_and_bool_count_collision"
@@ -754,3 +766,9 @@ issues:
     honestly-documented, verified external block -- V252 itself is real,
     tested, and immediately usable standalone even while unwired from the
     full suite.
+
+    RETRY 2026-07-17T15:31Z (post-closure, user-requested PLAN-BOUND AUTONOMOUS
+    EXECUTION retry): re-checked directly via `coordination takeover` on both
+    lease-711c2454d3 (validator-id-authority.yaml) and lease-d745d84477
+    (governance_validator_runner.py) -- both refused again: "owner is ACTIVE".
+    Disposition unchanged. Next retry requires a future session.
