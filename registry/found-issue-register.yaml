@@ -721,3 +721,36 @@ issues:
     this does not become another untracked, prose-only finding. Requires
     dedicated investigation of which semantic real callers actually need
     before any fix is safe.
+
+- issue_id: FI-030
+  stable_semantic_key: "governance:validator_v252_wiring_blocked_by_active_lease"
+  status: discovered
+  discovered_at: "2026-07-17T15:05:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/governance_validator_runner.py
+  affected_paths:
+    - tools/supervisor/governance_validator_runner.py
+    - registry/governance/validator-id-authority.yaml
+    - tools/supervisor/autonomous_cycle.py
+  observed_behavior: "TC-STRUCT-004 implemented and fully tested a new validator, V252 (validate_stale_lease_drift_and_gap_aging, in tools/supervisor/governance_validators_coordination.py -- the one file in this dependency chain NOT under another agent's lease). Two remaining integration steps are genuinely blocked: (1) registering V252 in registry/governance/validator-id-authority.yaml and wiring its dispatch into governance_validator_runner.py's run_all_governance_validators() (confirmed: V-numbered validators are NOT auto-discovered via the @validator decorator alone -- the runner explicitly imports and calls each one by name; V252 will not actually run as part of the governance suite until this wiring exists); (2) surfacing aged known_gaps/stale-lease-drift findings into reports/supervisor/session-resume.md's generation step, which lives in tools/supervisor/autonomous_cycle.py. BOTH files are confirmed, re-verified at write-time, under a lease genuinely held by agent-claude-code-20260717T060141-e225cd (fresh heartbeat, real concurrent PORTFOLIO-AUDIT-2026-07-16 work spanning a large swath of tools/supervisor/) -- the same agent already blocking FI-027 and FI-028's fixes. Not forced, for the same reason."
+  expected_behavior: "V252 should be dispatched by governance_validator_runner.py's full validator suite, and its WARN-level findings should be visible in reports/supervisor/session-resume.md at the start of every future session, per this plan's own TC-STRUCT-004 design."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-LEASE-BLOCKED-002
+  healing_taskcard_id: TC-STRUCT-004
+  verification_verdict: null
+  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  evidence:
+    - "tools/supervisor/governance_validators_coordination.py (V252 implemented and tested, 9/9 tests pass)"
+    - "tests/supervisor/test_governance_validators_coordination_v252.py"
+    - "coordination status: leases on governance_validator_runner.py and autonomous_cycle.py, owner agent-claude-code-20260717T060141-e225cd, re-verified ACTIVE at write time"
+  notes: >
+    Retry planned before this plan's own closure, same pattern as FI-027/
+    FI-028: re-check both leases; if genuinely stale by then, complete the
+    wiring (add V252 to validator-id-authority.yaml + the runner's dispatch
+    list) and the session-resume.md surfacing. If both files are still
+    genuinely active at closure time, this disposition stands as an
+    honestly-documented, verified external block -- V252 itself is real,
+    tested, and immediately usable standalone even while unwired from the
+    full suite.
