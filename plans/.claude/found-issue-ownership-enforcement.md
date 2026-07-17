@@ -554,3 +554,12 @@ commit time, not a latent, still-open finding. V194-V196
 (`governance_validators_coordination.py`) having zero pre-existing test
 coverage is already recorded directly in this plan's TC-STRUCT-004 execution
 log above, not left as an untracked chat-only remark.
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-17T15:20:51.948864+00:00"
+  locked_by: "bd020585-65d4-49ac-9c8e-95e67e7e5595"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
