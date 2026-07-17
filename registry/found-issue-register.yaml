@@ -805,3 +805,41 @@ issues:
     active work (not a stale/abandoned lease) beyond the heartbeat check alone.
     No safe append point exists that escapes the file-level (not line-level)
     lock. Disposition unchanged.
+
+- issue_id: FI-031
+  stable_semantic_key: "coordination:shared_git_index_staging_uncoordinated"
+  status: discovered
+  discovered_at: "2026-07-17T17:28:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/coordination
+  affected_paths:
+    - .hooks/pre-commit-skill-guard
+    - tools/supervisor/coordination/precommit.py
+  observed_behavior: "Near-miss, directly experienced, not hypothetical: running `git add plans/.claude/found-issue-ownership-enforcement-resume.md` (one specific, intentional file) followed by `git commit` picked up 72 ADDITIONAL files already sitting staged in the shared git index -- 36 src/ dogfood-export converters (format-to-pbm/pgm/ppm across 12 formats) and their 36 matching tests, all staged as DELETIONS (git status: 'D'), none of which I staged. This matches another concurrent agent's own stated mission scope (a PORTFOLIO-AUDIT-2026-07-16 plan read earlier this session explicitly named '223 mechanically-generated cross-format converters, many meaningless projections' as a target defect) -- almost certainly their legitimate, real, in-progress `git rm --cached` cleanup, not corruption or accident on their part. The commit was incidentally blocked by .hooks/pre-commit-skill-guard's src/-file/skill-transcript check (a side effect of the deletions touching src/, not a purpose-built protection for this scenario) -- had these been e.g. docs/report file deletions instead of src/, the same accidental co-commit would have gone through silently. The coordination lease system protects Edit/Write-tool content mutations and (per TC-STRUCT-003) conflict-resolution claims, but has NO mediation at all over `git add`/`git rm --cached` staging operations in this single shared working tree -- one agent's staged-but-uncommitted index state is invisible to, and unprotected against, every other agent's next `git commit`."
+  expected_behavior: "An agent's git-commit action should never silently incorporate a different agent's staged-but-not-yet-committed changes. Either the coordination system should track/warn on staged content outside an agent's own claimed scope, or commit tooling/guidance should make path-scoped commits (`git commit -- <exact paths>`) the mandatory default rather than an incidental workaround discovered ad hoc."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-COORD-GITINDEX-001
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: VALID_GOVERNED_EXCLUSION
+  evidence:
+    - "git diff --cached --name-only showed 73 files staged (72 unrelated + my 1) immediately before this commit, none of the 72 added by me this session"
+    - "git commit -F <msg> -- plans/.claude/found-issue-ownership-enforcement-resume.md (path-scoped) correctly committed only my file, verified via git show --stat HEAD and a post-commit git diff --cached --name-only still showing the same 72 files staged, untouched"
+    - "plans/.claude/found-issue-ownership-enforcement-resume.md's own prior context: PORTFOLIO-AUDIT-2026-07-16 plan text (read earlier this session) named '223 mechanically-generated cross-format converters, many meaningless projections' as an explicit target"
+  notes: >
+    Disposition is VALID_GOVERNED_EXCLUSION, not a healing taskcard, because
+    the immediate risk was already avoided (path-scoped commit used, no
+    unrelated files touched) and a full architectural fix (extending the
+    coordination/lease model to mediate git staging operations, not just
+    Edit/Write content and conflict-resolution claims) is a genuinely
+    separate, larger design question -- explicitly out of scope for the
+    narrow FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME plan this was found
+    under (which is scoped only to FI-027/028/030). Recorded so the practice
+    that avoided harm here (`git commit -- <exact paths>`, never a bare
+    `git commit` when other staged content might exist in this shared tree)
+    is not lost as an ad hoc, one-off save -- a future session/mission
+    should evaluate whether this should become documented, repo-wide
+    guidance (e.g. in AGENTS.md's coordination section) or a mechanical
+    pre-commit check of its own.
