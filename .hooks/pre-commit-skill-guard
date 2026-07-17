@@ -88,34 +88,155 @@ def find_skill_transcript_for_head() -> bool:
     return False
 
 
-def check_exception_record() -> bool:
-    """Return True if a --no-verify exception record exists for this session."""
+# SFC-GAP (EP-007-EXCEPTION-SCAN-UNSCOPED-GAP, discovered 2026-07-17 during
+# post-hardening pilot verification): the original check_exception_record()
+# scanned the ENTIRE .local/exceptions/ directory for ANY file containing a
+# matching substring, with no expiry and no relevance to the files actually
+# being committed. A single stale exception (from a different, already-
+# completed mission) then silently bypassed the skill-guard for every future
+# commit indefinitely -- the exact same unscoped-global-state pattern already
+# fixed in lifecycle_audit.py (mission scoping) and gate.py (hot-file
+# generator recognition) this same hardening pass.
+_FORBIDDEN_EXCEPTION_REASONS = frozenset({
+    "no_skill_applicable", "small_change", "documentation_only", "urgent",
+    "pre_existing", "one_time", "assistant_discretion", "convenience", "speed",
+})
+
+
+def _parse_exception_yaml(path: Path) -> dict | None:
+    try:
+        import yaml  # type: ignore
+    except ImportError:
+        return None
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _exception_is_valid_and_current(exc: dict, today) -> bool:
+    """Fail-closed validity check: requires an unexpired `expires` date and a
+    non-empty `paths` list. A path-less or expiry-less exception -- exactly
+    the shape of the stale bug that motivated this fix -- is INVALID, not a
+    silent blanket pass."""
+    from datetime import date as _date
+    if not (exc.get("no_verify_exception") or exc.get("pre_commit_bypass")):
+        return False
+    reason = str(exc.get("reason", "")).strip().lower().replace(" ", "_")
+    # Historical records (this repo's earlier schema) may omit `reason`
+    # entirely; only reject when a reason IS present and forbidden.
+    if reason and reason in _FORBIDDEN_EXCEPTION_REASONS:
+        return False
+    expires_raw = exc.get("expires") or exc.get("expiry")
+    if not expires_raw:
+        return False  # no expiry declared -> fail closed, never perpetual
+    try:
+        expires = _date.fromisoformat(str(expires_raw)[:10])
+    except ValueError:
+        return False
+    if expires < today:
+        return False
+    paths = exc.get("paths")
+    if not isinstance(paths, list) or not paths:
+        return False  # no declared scope -> fail closed, never blanket
+    return True
+
+
+def check_exception_record(staged: list[str] | None = None) -> bool:
+    """Return True only if EVERY staged file is covered by at least one
+    valid (unexpired, scoped, non-forbidden-reason) exception record. A
+    stale, expired, path-less, or irrelevant exception file no longer grants
+    a bypass -- it must be reissued, scoped to the actual staged files, for
+    the current commit. `staged` is required (not optional) for a real
+    bypass decision; called with no/empty staged list, this always fails
+    closed -- there is nothing to scope an exception against.
+    """
+    from datetime import datetime, timezone
     if not EXCEPTION_DIR.exists():
         return False
+    staged = staged or []
+    if not staged:
+        return False  # nothing to authorize a bypass for in this context
+    today = datetime.now(timezone.utc).date()
+
+    covered_paths: list[str] = []
     for p in EXCEPTION_DIR.glob("*.yaml"):
-        try:
-            content = p.read_text(encoding="utf-8")
-            if "no_verify_exception" in content or "pre_commit_bypass" in content:
-                return True
-        except Exception:
+        exc = _parse_exception_yaml(p)
+        if exc is None or not _exception_is_valid_and_current(exc, today):
             continue
-    return False
+        covered_paths.extend(str(x) for x in exc["paths"])
+
+    if not covered_paths:
+        return False
+    return all(any(f.startswith(cp) for cp in covered_paths) for f in staged)
+
+
+def coordination_check(staged: list[str]) -> int:
+    """TC-COORD-010 (mission AGENT-COORD-2026-07-15): block committing files
+    under another live agent's coordination lease or carrying an unresolved
+    OPEN conflict. Fail-CLOSED at this layer: commits are rare and human-
+    gated; a corrupt coordination db is repaired with `doctor --fix-safe`,
+    and the governed .local/exceptions/ bypass still applies upstream."""
+    supervisor_dir = REPO_ROOT / "tools" / "supervisor"
+    if str(supervisor_dir) not in sys.path:
+        sys.path.insert(0, str(supervisor_dir))
+    try:
+        from coordination.precommit import precommit_check
+        from coordination.root import db_path
+    except ImportError:
+        return 0  # coordination plane not present in this checkout
+    try:
+        if not db_path().exists():
+            return 0
+        report = precommit_check(staged_files=staged, repo=REPO_ROOT)
+    except Exception as exc:
+        print("[coord-guard] BLOCKED: coordination check failed"
+              f" ({type(exc).__name__}: {exc}).", file=sys.stderr)
+        print("  Repair with: python -m tools.supervisor.coordination"
+              " doctor --fix-safe", file=sys.stderr)
+        print("  Governed bypass: .local/exceptions/<id>.yaml with"
+              " pre_commit_bypass: true", file=sys.stderr)
+        return 1
+    if report["ok"]:
+        return 0
+    print("", file=sys.stderr)
+    print("=" * 70, file=sys.stderr)
+    print("[coord-guard] BLOCKED: staged files conflict with live agent"
+          " coordination state", file=sys.stderr)
+    for v in report["violations"]:
+        print(f"  - {v['message']}", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("  Inspect owners: python -m tools.supervisor.coordination status",
+          file=sys.stderr)
+    print("  Never commit another agent's in-progress work; stage an"
+          " explicit reviewed file list for YOUR task only.", file=sys.stderr)
+    print("=" * 70, file=sys.stderr)
+    return 1
 
 
 def main() -> int:
     staged = get_staged_files()
+    if not staged:
+        return 0
 
-    # If no src/ files staged, skip guard
+    bypass = check_exception_record(staged)
+    if bypass:
+        print("[skill-guard] Exception record found — bypassing guards",
+              file=sys.stderr)
+        return 0
+
+    # Coordination staged-set check runs on ALL staged files (TC-COORD-010).
+    coord_rc = coordination_check(staged)
+    if coord_rc != 0:
+        return coord_rc
+
+    # If no src/ files staged, skip the skill guard
     if not staged_touches_src(staged):
         return 0
 
     src_files = [f for f in staged if f.startswith(SRC_PREFIX)]
     print(f"[skill-guard] src/ files staged: {src_files}", file=sys.stderr)
-
-    # Check for exception record
-    if check_exception_record():
-        print("[skill-guard] Exception record found — bypassing skill check", file=sys.stderr)
-        return 0
 
     # Check for skill transcript
     if find_skill_transcript_for_head():
@@ -133,9 +254,14 @@ def main() -> int:
     print("  To execute a skill:", file=sys.stderr)
     print("    /add-python-api, /add-python-object-model-feature, etc.", file=sys.stderr)
     print("", file=sys.stderr)
-    print("  To override (with documented exception):", file=sys.stderr)
-    print("    1. Create .local/exceptions/<id>.yaml with pre_commit_bypass: true", file=sys.stderr)
-    print("    2. Document the reason for the bypass", file=sys.stderr)
+    print("  To override (with documented, SCOPED, TIME-BOUND exception):", file=sys.stderr)
+    print("    1. Create .local/exceptions/<id>.yaml with:", file=sys.stderr)
+    print("       pre_commit_bypass: true", file=sys.stderr)
+    print("       expires: <YYYY-MM-DD>   # required -- no perpetual bypasses", file=sys.stderr)
+    print("       paths: [<staged file or dir prefix>, ...]  # required -- exact scope only", file=sys.stderr)
+    print("       reason: <not urgent/small_change/convenience/etc.>", file=sys.stderr)
+    print("    2. It authorizes ONLY commits whose staged files are all covered", file=sys.stderr)
+    print("       by `paths`, and only until `expires`.", file=sys.stderr)
     print("    3. Re-commit (NOT --no-verify)", file=sys.stderr)
     print("", file=sys.stderr)
     print("  See: docs/governance/skill-only-policy.yaml for the full policy.", file=sys.stderr)
