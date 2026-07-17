@@ -272,6 +272,41 @@ def test_v142_pass_no_disposition_in_flight():
     assert r["blocks_sprint"] is False
 
 
+def test_v142_rejects_novel_invalid_disposition_not_in_denylist():
+    """TC-STRUCT-002 (2026-07-17): allowlist regression pin, real FI-025 shape.
+
+    The pre-fix V142 only checked a fixed denylist of known-bad strings
+    (pre_existing, unrelated, not_caused_by_me, ignored, outside_current_task)
+    and never checked OWNERSHIP_VALID_DISPOSITIONS at all. The real,
+    live `FI-025` entry in registry/found-issue-register.yaml carries
+    `disposition: OPEN_OUT_OF_SCOPE` -- a value that matches none of those 5
+    denylist strings and sailed through undetected. This reproduces that
+    exact shape and asserts the allowlist-based check now catches it.
+    """
+    issues = [
+        {"issue_id": "FI-025", "status": "discovered", "disposition": "OPEN_OUT_OF_SCOPE"},
+    ]
+    td = _make_repo(issues)
+    r = validate_invalid_ownership_disposition({}, td)
+    assert r["result"] == "FAIL"
+    assert r["blocks_sprint"] is True
+    assert any("FI-025" in item and "OPEN_OUT_OF_SCOPE" in item for item in r["items"])
+
+
+def test_v142_pass_all_six_allowlisted_dispositions():
+    """Every one of the 6 valid ownership dispositions must PASS individually."""
+    valid = [
+        "HEALED_AND_VERIFIED", "DUPLICATE_OF_ACTIVE_ISSUE",
+        "INVALID_FINDING_WITH_PROOF", "VALID_GOVERNED_EXCLUSION",
+        "BLOCKED_TRUE_EXTERNAL_DEPENDENCY", "WAITING_VALID_GATE_11_AUTHORIZATION",
+    ]
+    for i, disp in enumerate(valid):
+        issues = [{"issue_id": f"FI-{i:03d}", "status": "closed", "disposition": disp}]
+        td = _make_repo(issues)
+        r = validate_invalid_ownership_disposition({}, td)
+        assert r["result"] == "PASS", f"{disp} should be allowlisted"
+
+
 # ---------------------------------------------------------------------------
 # Edge cases
 # ---------------------------------------------------------------------------

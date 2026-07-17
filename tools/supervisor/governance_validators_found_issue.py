@@ -407,16 +407,30 @@ def validate_no_prose_only_findings(declaration: dict) -> dict:
 def validate_invalid_ownership_disposition(
     declaration: dict, repo_root: "Path | None" = None
 ) -> dict:
-    """V142: No issue in found-issue-register.yaml may use an invalid ownership disposition.
+    """V142: Every disposition in found-issue-register.yaml must be one of the 6
+    valid ownership dispositions (found-issue-ownership-policy.md §6) — an
+    ALLOWLIST check, not a denylist.
 
-    OWNERSHIP dispositions are the 6 from found-issue-ownership-policy.md §6.
-    These differ from V133 sprint-audit dispositions — different scopes.
+    TC-STRUCT-002 (2026-07-17): the original version only rejected a fixed set
+    of KNOWN-bad dismissal strings (_INVALID_DISMISSALS) and never checked
+    OWNERSHIP_VALID_DISPOSITIONS at all, even though that allowlist was already
+    defined above. A denylist can only catch dismissals someone thought to
+    enumerate in advance — any NOVEL invalid value (e.g. the real, live
+    `FI-025` entry's `disposition: OPEN_OUT_OF_SCOPE`, which matches none of
+    the 5 named-bad strings and was never flagged by anything) passed through
+    silently. Requiring allowlist membership closes that gap categorically:
+    anything that isn't one of the 6 valid values is now invalid, regardless
+    of whether anyone anticipated that exact wording.
+
     blocks_sprint=True — invalid dispositions are never acceptable.
     Missing register file = PASS.
     """
     issues = _load_found_issue_register(repo_root)
     if issues is None or not issues:
         return _result("V142", "invalid_ownership_disposition", True, [], True)
+
+    valid_norm = {d.lower() for d in OWNERSHIP_VALID_DISPOSITIONS}
+    invalid_norm = {d.lower().replace("-", "_").replace(" ", "_") for d in _INVALID_DISMISSALS}
 
     invalid: list[str] = []
     for issue in issues:
@@ -426,11 +440,19 @@ def validate_invalid_ownership_disposition(
             continue  # In-flight issue with no disposition yet — not a violation
 
         disp_norm = disp.lower().replace("-", "_").replace(" ", "_")
-        invalid_norm = {d.lower().replace("-", "_").replace(" ", "_") for d in _INVALID_DISMISSALS}
+        if disp_norm in valid_norm:
+            continue
+
         if disp_norm in invalid_norm:
             invalid.append(
-                f"[V142] {issue_id} disposition='{disp}' is an invalid dismissal "
+                f"[V142] {issue_id} disposition='{disp}' is a known-invalid dismissal "
                 f"(not one of the 6 valid ownership dispositions; see found-issue-ownership-policy.md §6)"
+            )
+        else:
+            invalid.append(
+                f"[V142] {issue_id} disposition='{disp}' is not one of the 6 valid ownership "
+                f"dispositions (allowed: {', '.join(sorted(OWNERSHIP_VALID_DISPOSITIONS))}; "
+                f"see found-issue-ownership-policy.md §6)"
             )
 
     return _result("V142", "invalid_ownership_disposition", not invalid, invalid, True)
