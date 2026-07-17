@@ -104,6 +104,21 @@ this incident, and none of them caught `FI-025` either.
 
 ---
 
+## Taskcard Status Summary
+
+| TC-ID | Status |
+|-------|--------|
+| TC-FIX-001 | PENDING |
+| TC-STRUCT-002 | CLOSED |
+| TC-STRUCT-001 | CLOSED |
+| TC-FI025-001 | PENDING |
+| TC-STRUCT-003 | PENDING |
+| TC-STRUCT-004 | PENDING |
+
+(Updated as work is actually implemented, verified, and evidenced — never marked
+CLOSED in advance. See per-taskcard sections below for detail, and the Execution
+Log appended at closure time.)
+
 ## Taskcards
 
 ### TC-FIX-001 — Fix the actual finding: reconcile-contract-capabilities.md
@@ -301,3 +316,70 @@ narrowed, explicitly-scoped remaining limit — none are left as bare acknowledg
 
 No item in this plan is left as an accepted gap without either a shipped mitigation above or an
 explicitly bounded (not open-ended) residual limit.
+
+---
+
+## Execution Log
+
+### TC-STRUCT-002 (CLOSED)
+
+Fixed `V142` (`tools/supervisor/governance_validators_found_issue.py`) to require
+`disposition` be one of the 6 allowlisted values instead of only rejecting a fixed
+denylist. Regression test reproduces the real `FI-025` shape
+(`disposition: OPEN_OUT_OF_SCOPE`) and confirms it now correctly FAILs — it did not
+before. 2 new tests + 34 pre-existing pass (36/36). Full `tests/governance/` suite:
+179/180 (1 pre-existing, already-registered failure, FI-027). Commit `0dcdf6f8`.
+
+### TC-STRUCT-001 (CLOSED)
+
+Built the ambient enforcement mechanism: `tools/governance/skills_first/surfaced_findings.py`
+(new — append-only per-agent HIGH/CRITICAL findings log, mirroring the existing
+`advisory-log.jsonl` convention), wired into `audit.py`'s `run_audit()`. New
+`lifecycle_audit.py` guard `check_found_issue_ownership_guard` (G5) implements the
+two-tier check (Tier A: this agent's own reproducing findings need a fix or an
+allowlisted register entry; Tier B: any HIGH/CRITICAL finding >48h old with zero
+register entry, from any agent, needs at minimum to be registered) and is wired into
+`run_lifecycle_audit`'s guard list, returning CRITICAL (blocking, same as G1/G2) on
+violation. `write_plan_lock.py` gained `_parse_prose_findings_disclosed_from_plan` —
+an optional, non-blocking `## Prose Findings Disclosed` plan section read into the
+terminal closure record.
+
+**Scope adjustment, disclosed not hidden:** the plan text described the mandatory
+closure-time audit as covering both `validate_skills_first_control.py` and the
+broader ~226-validator governance suite. Implemented: the SFC audit only. The full
+validator suite (`run_all_governance_validators`) requires a synthesized
+`declaration` dict (changed_files, test_results, etc.) as input — building a
+closure-time constructor for that from write-journal diffs is a real, separate,
+larger task, not completed here. Named as a follow-up, not silently dropped.
+
+**Found while testing this taskcard, not part of its original scope, fixed anyway
+per found-issue-ownership**: `lifecycle_audit.py`'s own closure-time write
+(`op="lifecycle_audit", source="lifecycle_audit"`) hit the exact same
+`write_journal` CHECK-constraint bug already fixed in `write_plan_lock.py` earlier
+this session. Grepped for the same pattern across `tools/supervisor/*.py` and found
+6 more live instances: `sprint_executor.py` (2, fixed — file was under my own
+lease), `autonomous_cycle.py` (4, **blocked**: the owning lease is held by a
+genuinely ACTIVE concurrent agent, re-verified at takeover time, not forced —
+registered as FI-028, `BLOCKED_TRUE_EXTERNAL_DEPENDENCY`, same honest pattern as
+FI-027).
+
+Also found and fixed: my own plan file's `## Taskcard Status Summary` table used
+`TODO` as a status label, which `lifecycle_audit.py`'s `_TC_TABLE_RE` regex does not
+recognize (only `CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED|READY|...`) —
+every row silently parsed as zero taskcards. Corrected to `PENDING`. Not registered
+as a separate found-issue (a plan-authoring mistake in a file I created this same
+session, caught and fixed within the same taskcard, not a latent defect that
+escaped to another session).
+
+Evidence: `tests/governance/test_surfaced_findings.py` (9 new), 
+`tests/supervisor/test_found_issue_ownership_guard.py` (9 new, isolated/monkeypatched
+— not dependent on live repo noise), `tests/supervisor/test_prose_findings_disclosed.py`
+(5 new). Full plan-lock + lifecycle-audit regression:
+`test_plan_lock_machinery.py` + `test_plan_lock_gate.py` +
+`test_tc_hard_002_stream_field_plan_locked.py` +
+`test_write_plan_lock_master_plan_rollup.py` + `test_prose_findings_disclosed.py` +
+`test_lifecycle_audit_mission_scoping.py` + `test_found_issue_ownership_guard.py`:
+72/72 pass. End-to-end proof: ran `lifecycle_audit.py` against this very plan file
+live — G5 correctly returns no violation (FI-027 already covers the one live HIGH
+finding with a valid disposition), confirming the mechanism doesn't false-positive
+against its own honest, already-registered blocker.

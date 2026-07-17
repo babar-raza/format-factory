@@ -657,3 +657,30 @@ issues:
     complete the fix then. If still genuinely active at closure time, this disposition
     stands as an honestly-documented, verified external block -- not a repeat of the
     original unverified dismissal.
+
+- issue_id: FI-028
+  stable_semantic_key: "coordination:write_journal_enum_bug:autonomous_cycle_py"
+  status: discovered
+  discovered_at: "2026-07-17T14:30:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/autonomous_cycle.py
+  affected_paths:
+    - tools/supervisor/autonomous_cycle.py
+  observed_behavior: "The same write_journal CHECK-constraint bug already fixed this session in write_plan_lock.py (op/source values that are not in the schema's allowed enum: op IN ('create','edit','append','regenerate','delete'), source IN ('hook','cli','guard')) also exists in autonomous_cycle.py at 4 call sites: op='continuation_signal'/'stream_signal'/'continuation_signal_error' with source='autonomous_cycle' (none of which are valid enum values). Confirmed by grepping the same pattern across tools/supervisor/*.py during TC-STRUCT-001 testing -- lifecycle_audit.py (1 site) and sprint_executor.py (2 sites) had the identical bug and were fixed in the same pass. autonomous_cycle.py's 4 sites were NOT fixed: the file is under a lease owned by agent-claude-code-20260717T060141-e225cd, verified genuinely ACTIVE (fresh heartbeat, real concurrent PORTFOLIO-AUDIT-2026-07-16 work) at the moment of the takeover attempt -- the takeover was correctly refused by the coordination system ('owner is ACTIVE'). Not forced, for the same reason FI-027 was not forced."
+  expected_behavior: "Every coordinated_write() call site should pass a valid op and source value so the write_journal INSERT never raises sqlite3.IntegrityError -- this would otherwise crash any real autonomous_cycle.py run that reaches these 4 lines with a live coordination DB attached."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-COORD-ENUM-001
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  evidence:
+    - "tools/supervisor/write_plan_lock.py (same bug class, already fixed this session, commit e0e30527)"
+    - "tools/supervisor/lifecycle_audit.py:1228, tools/supervisor/sprint_executor.py:281,707 (same bug class, fixed this session, TC-STRUCT-001)"
+    - "coordination status: lease on autonomous_cycle.py owner agent-claude-code-20260717T060141-e225cd, ACTIVE, fresh heartbeat re-checked at takeover-attempt time, not assumed"
+  notes: >
+    Retry planned before this plan's own closure, same as FI-027: re-check the
+    lease; if genuinely stale by then, apply the identical fix
+    (op="edit", source="cli") used for the 6 already-fixed sites in this same
+    bug class.

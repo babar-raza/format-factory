@@ -278,7 +278,7 @@ def cmd_inject_declaration(sprint_id: str, repo_root: Path) -> Path:
     }
 
     declaration_path = evidence_dir / "evidence-declaration.yaml"
-    with _coordinated_write(declaration_path, op="inject_declaration", source="sprint_executor"):
+    with _coordinated_write(declaration_path, op="edit", source="cli"):
         _atomic_write(declaration_path, yaml.dump(skeleton, default_flow_style=False, sort_keys=False))
 
     abs_path = declaration_path.resolve()
@@ -704,7 +704,7 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
                 try:
                     sig = json.loads(sig_path.read_text(encoding="utf-8"))
                     sig["iteration"] = 0
-                    with _coordinated_write(sig_path, op="signal_reset", source="sprint_executor"):
+                    with _coordinated_write(sig_path, op="edit", source="cli"):
                         _atomic_write(sig_path, json.dumps(sig, indent=2))
                     print("Iteration counter reset to 0.")
                 except Exception as e:

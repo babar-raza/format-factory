@@ -429,6 +429,17 @@ def run_audit(scan_generators: bool = True) -> dict[str, Any]:
     for f in all_findings:
         sev_counts[f.get("severity", SEVERITY_INFO)] += 1
 
+    # TC-STRUCT-001 (2026-07-17): record HIGH/CRITICAL findings to the ambient
+    # per-agent surfaced-findings log so a plan-closure guard can require a
+    # disposition later, regardless of whether anyone submits a formal
+    # declaration for this specific run — closes the "found in an interactive
+    # session, never declared, never checked" gap this mechanism exists for.
+    try:
+        from .surfaced_findings import record_surfaced_findings
+        record_surfaced_findings(all_findings)
+    except Exception:
+        pass  # Never let logging failure break the audit it's observing.
+
     return {
         "schema": "skills-first-control/audit@1",
         "sfc_version": SFC_VERSION,

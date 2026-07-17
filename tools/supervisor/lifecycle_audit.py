@@ -618,6 +618,168 @@ def check_sprint_audit_guard(
     return None
 
 
+def check_found_issue_ownership_guard(
+    repo_root: Path,
+    agent_id: "str | None" = None,
+) -> dict | None:
+    """G5 (TC-STRUCT-001, FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17).
+
+    Ambient closure-time check for the found-issue-ownership-policy.md rule
+    that no HIGH/CRITICAL finding may be silently abandoned — the gap that
+    let the mission's own triggering incident (a HIGH stale-command-hash
+    finding, dismissed in prose as "someone else's work") slip through every
+    existing, declaration-gated validator.
+
+    Runs a FRESH skills-first-control audit right now (not relying on
+    whatever happened to run earlier this session) via
+    tools/governance/skills_first/audit.run_audit(), which also logs any
+    HIGH/CRITICAL findings to the surfaced-findings log as a side effect.
+
+    Two tiers, deliberately different bars:
+      Tier A — THIS agent's own surfaced findings (this session, per the
+        surfaced-findings log) that still reproduce right now: must be fixed
+        (no longer reproducing) or covered by a found-issue-register.yaml
+        entry with an allowlisted (OWNERSHIP_VALID_DISPOSITIONS) disposition.
+      Tier B — ANY HIGH/CRITICAL finding from the fresh audit, regardless of
+        origin, whose earliest-seen timestamp (across all agents, from the
+        surfaced-findings log) is >48h old (matching V195's existing SLA) and
+        has NO found-issue-register entry AT ALL: must at least be
+        registered (any disposition, including WONT_FIX/DEFERRED with a real
+        reason) — not fixed, just no longer invisible. This is the low-bar
+        check for "a different agent's finding nobody ever picked up."
+
+    Returns a CRITICAL-severity finding (blocks the same way G1/G2 do) when
+    either tier has an unresolved violation; otherwise None. Any internal
+    failure is swallowed — this guard is additive, never a new fragility
+    point for closures that don't touch found-issue territory at all.
+    """
+    try:
+        import sys as _sys_fio
+        _skills_first_dir = repo_root / "tools"
+        if str(_skills_first_dir) not in _sys_fio.path:
+            _sys_fio.path.insert(0, str(_skills_first_dir))
+        from governance.skills_first import audit as _sfc_audit  # noqa: PLC0415
+        from governance.skills_first.surfaced_findings import (  # noqa: PLC0415
+            _fingerprint as _fp,
+            read_surfaced_findings,
+            resolve_agent_id,
+        )
+
+        _sup_dir = repo_root / "tools" / "supervisor"
+        if str(_sup_dir) not in _sys_fio.path:
+            _sys_fio.path.insert(0, str(_sup_dir))
+        from governance_validators_found_issue import (  # noqa: PLC0415
+            OWNERSHIP_VALID_DISPOSITIONS,
+            _load_found_issue_register,
+        )
+    except Exception:
+        return None  # Modules unavailable in this checkout — never block on it.
+
+    try:
+        fresh = _sfc_audit.run_audit()
+        fresh_findings = fresh.get("findings", [])
+        current_fps = {_fp(f) for f in fresh_findings
+                       if f.get("severity") in ("HIGH", "CRITICAL")}
+
+        issues = _load_found_issue_register(repo_root) or []
+        valid_disp = {d.lower() for d in OWNERSHIP_VALID_DISPOSITIONS}
+
+        def _has_any_register_entry(finding: dict) -> bool:
+            path_hint = str(finding.get("command_file") or "")
+            for issue in issues:
+                for ap in issue.get("affected_paths", []) or []:
+                    if path_hint and path_hint in str(ap):
+                        return True
+            return False
+
+        def _has_valid_register_entry(finding: dict) -> bool:
+            path_hint = str(finding.get("command_file") or "")
+            for issue in issues:
+                disp = str(issue.get("disposition") or "").lower()
+                if disp not in valid_disp:
+                    continue
+                for ap in issue.get("affected_paths", []) or []:
+                    if path_hint and path_hint in str(ap):
+                        return True
+            return False
+
+        aid = agent_id or resolve_agent_id()
+        violations: list[str] = []
+
+        # Tier A: this agent's own surfaced findings, still reproducing, no
+        # valid disposition on record.
+        own_entries = read_surfaced_findings(agent_id=aid)
+        for entry in own_entries:
+            fp = entry.get("fingerprint")
+            if fp not in current_fps:
+                continue  # no longer reproduces — treated as fixed
+            fake_finding = {"command_file": entry.get("command_file")}
+            if not _has_valid_register_entry(fake_finding):
+                violations.append(
+                    f"[G5-A] {aid}'s own surfaced finding "
+                    f"({entry.get('category')}: {entry.get('command_file')}) "
+                    "still reproduces with no found-issue-register entry "
+                    "carrying an allowlisted disposition."
+                )
+
+        # Tier B: any HIGH/CRITICAL finding >=48h old (first seen by ANYONE),
+        # regardless of origin, with zero register entry at all.
+        all_entries = read_surfaced_findings()
+        earliest_by_fp: dict[str, str] = {}
+        for entry in all_entries:
+            fp = entry.get("fingerprint")
+            ts = entry.get("ts", "")
+            if fp and (fp not in earliest_by_fp or ts < earliest_by_fp[fp]):
+                earliest_by_fp[fp] = ts
+
+        now = datetime.now(timezone.utc)
+        for f in fresh_findings:
+            if f.get("severity") not in ("HIGH", "CRITICAL"):
+                continue
+            fp = _fp(f)
+            first_seen = earliest_by_fp.get(fp)
+            if not first_seen:
+                continue  # not yet logged long enough to have an age signal
+            try:
+                age_h = (now - datetime.fromisoformat(first_seen)).total_seconds() / 3600.0
+            except Exception:
+                continue
+            if age_h < 48.0:
+                continue
+            if not _has_any_register_entry(f):
+                violations.append(
+                    f"[G5-B] HIGH/CRITICAL finding older than 48h "
+                    f"({f.get('category')}: {f.get('command_file')}) has no "
+                    "found-issue-register entry at all — must be registered "
+                    "(any allowlisted disposition, including WONT_FIX/DEFERRED "
+                    "with a real reason) before this plan can close."
+                )
+
+        if not violations:
+            return None
+
+        return {
+            "finding_id": "FIND-GUARD-005",
+            "type": "FOUND_ISSUE_OWNERSHIP_UNRESOLVED",
+            "severity": "CRITICAL",
+            "description": (
+                f"{len(violations)} found-issue-ownership violation(s) at closure "
+                "time (see items). TERMINAL_CLOSED is refused until each is fixed "
+                "or registered with an allowlisted disposition."
+            ),
+            "items": violations,
+            "source_file": str(_skills_first_dir / "governance" / "skills_first" / "audit.py"),
+            "recommended_action": (
+                "Fix each reported finding, or add a registry/found-issue-register.yaml "
+                "entry with a disposition from found-issue-ownership-policy.md §6."
+            ),
+            "guard_id": "G5_FOUND_ISSUE_OWNERSHIP",
+        }
+    except Exception:
+        return None  # Non-blocking by design — an internal guard failure must
+        # never itself become the reason closure is refused.
+
+
 # ---------------------------------------------------------------------------
 # Core audit function
 # ---------------------------------------------------------------------------
@@ -700,6 +862,9 @@ def run_lifecycle_audit(
         # SFC-GAP-D fix: mission_id was previously never forwarded here, so G4
         # always ran in unscoped (global) mode regardless of caller intent.
         (check_sprint_audit_guard, (repo_root,), {"mission_id": mission_id}),
+        # TC-STRUCT-001: G5 — ambient found-issue-ownership check, runs a fresh
+        # audit at every closure rather than depending on incidental earlier runs.
+        (check_found_issue_ownership_guard, (repo_root,), {}),
     ]:
         try:
             _gf = _guard_fn(*_guard_args, **_guard_kwargs)  # type: ignore[operator]
@@ -1060,7 +1225,7 @@ def run_lifecycle_audit(
     # ------------------------------------------------------------------
     output_path = repo_root / _OUTPUT_PATH_REL
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with _coordinated_write(output_path, op="lifecycle_audit", source="lifecycle_audit"):
+    with _coordinated_write(output_path, op="edit", source="cli"):
         output_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 
     # TC-TCF-003: Persist closure_contract.json alongside output when authorized.

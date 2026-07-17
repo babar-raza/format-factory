@@ -211,6 +211,36 @@ def _should_require_audit(plan_path: str) -> bool:
         return False
 
 
+def _parse_prose_findings_disclosed_from_plan(plan_path: str) -> list[str] | None:
+    """TC-STRUCT-001 (2026-07-17): read an optional '## Prose Findings Disclosed'
+    section from the plan file — the closing agent's explicit, recorded
+    enumeration of any problem/risk/concern it stated in its own final-response
+    text this session that isn't already represented in the surfaced-findings
+    log or already fixed.
+
+    This is intentionally NOT a hard gate: most plans in this repo predate the
+    convention, and requiring it unconditionally would regress every unrelated
+    plan's --terminal flow. Returns None (not []) when the section is absent,
+    so the closure record can distinguish "not provided" from "provided, and
+    empty" (an explicit, deliberate "nothing to disclose").
+    """
+    import re as _re_pfd
+    try:
+        text = Path(plan_path).read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return None
+    m = _re_pfd.search(
+        r"^## Prose Findings Disclosed\s*$(.*?)(?=^## |\Z)",
+        text, _re_pfd.MULTILINE | _re_pfd.DOTALL,
+    )
+    if not m:
+        return None
+    body = m.group(1)
+    items = [ln.strip().lstrip("-*").strip() for ln in body.splitlines()
+             if ln.strip().startswith(("-", "*"))]
+    return items
+
+
 def _write_terminal_closure_record(
     plan_path: str,
     session_id: str,
@@ -241,6 +271,11 @@ def _write_terminal_closure_record(
         # TC-MOR-001: deferred obligations registered at closure (IDs only; full
         # records are in reports/supervisor/maintenance-obligations.json)
         "deferred_obligations": deferred_obligation_ids or [],
+        # TC-STRUCT-001: explicit, recorded self-disclosure — see
+        # _parse_prose_findings_disclosed_from_plan's docstring. None means the
+        # plan file has no such section (pre-existing convention, informational
+        # only); [] means the closing agent explicitly disclosed nothing.
+        "prose_findings_disclosed": _parse_prose_findings_disclosed_from_plan(plan_path),
     }
     try:
         ph = plan_hash or _hashlib_tcf.sha256(plan_path.encode()).hexdigest()[:16]
