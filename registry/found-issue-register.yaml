@@ -627,3 +627,33 @@ issues:
     as routinely occurring, not rare. Worked around for this session via coordination
     conflict resolve + rebaseline on the shared pointer file (does not affect the other
     agent's actual plan file, which is untouched).
+
+- issue_id: FI-027
+  stable_semantic_key: "governance:stale_command_hash:reconcile_contract_capabilities"
+  status: discovered
+  discovered_at: "2026-07-17T13:20:00Z"
+  discovering_task_id: SFC-REMAINING-GAPS-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/reconcile-contract-capabilities.md
+  affected_paths:
+    - .claude/commands/reconcile-contract-capabilities.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "validate_skills_first_control.py reports a HIGH stale_command_hash finding for this file (baseline 5543ad12... vs current b713c799...). Root-caused (read-only): the committed HEAD content matches the baseline exactly; a legitimate, coherent, uncommitted working-tree edit (two documentation bullets referencing real, shipped validators V247/validate_format_coherence and V248/validate_coverage_xref_integrity) sits on top of it, never committed and never re-synced into the baseline. This is bookkeeping drift, not corruption -- confirmed by direct git history/hash comparison, not assumed. First attempt to fix (2026-07-17 initial session) incorrectly treated the owning lease as live without checking -- this was itself the triggering incident for the found-issue-ownership-enforcement mission. On retry (this session, TC-FIX-001), the lease (lease-9be32fa9db, owner agent-claude-code-20260717T060141-e225cd) was re-verified live: STALE at 13:36:31Z (heartbeat 10:58:04Z, ~2h38m old) but flipped back to genuinely ACTIVE by 14:11:45Z with a fresh heartbeat -- a governed takeover attempt was made and correctly REFUSED by `coordination takeover` ('owner is ACTIVE'). The owning agent is confirmed to be currently, genuinely executing a large, active PORTFOLIO-AUDIT-2026-07-16 mission (many concurrent ACTIVE/fresh leases across fodp/, format-contract-layer, and governance validator files) -- this is not a repeat of the earlier misjudgment; it is a verified-in-real-time active lease."
+  expected_behavior: "The command file's committed content should match its hash baseline; the pending uncommitted edit should be committed and the baseline refreshed once the file is not under another agent's live, active lease."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: TC-FIX-001
+  verification_verdict: null
+  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  evidence:
+    - "reports/skills-first-control/command-skill-hash-baseline.json (baseline entry, generated_at 2026-07-16T18:20:55Z)"
+    - "git show HEAD:.claude/commands/reconcile-contract-capabilities.md (hashes to the baseline value, confirming committed content is not the source of drift)"
+    - "coordination status: lease-9be32fa9db owner agent-claude-code-20260717T060141-e225cd, ACTIVE, hb 2026-07-17T14:11:45Z (re-checked at fix time, not assumed)"
+  notes: >
+    Retry planned before this plan's own closure: re-check lease-9be32fa9db's state; if it
+    has gone genuinely stale (or the owning agent has committed/released it, which would
+    likely resolve the hash drift on its own since their content is coherent and correct),
+    complete the fix then. If still genuinely active at closure time, this disposition
+    stands as an honestly-documented, verified external block -- not a repeat of the
+    original unverified dismissal.
