@@ -527,15 +527,51 @@ known_gaps:
 
   - gap_id: DIRECT-GENERATOR-GAP
     description: >
-      ~25 tools/*.py generator/repair/backfill/migrate scripts write src/ and
-      registries directly with no skill resolution and no receipt (signal scan in
-      reports/skills-first-control/audit-summary.json -> ungoverned_generator_signal).
+      TRIAGED 2026-07-17 (TC-RG-002). The original estimate ("~25") was stale —
+      the scan actually flagged 125 tools/*.py files, because
+      scan_ungoverned_generators() matched a write call ANYWHERE in a file
+      against a mutation-target string (src/python/, registry/, .supervisor/,
+      oracle/) ANYWHERE ELSE in the same file, with no relation between the
+      two. Fixed: the match now requires the target string in a bounded line
+      window around the actual write call (see
+      tools/governance/skills_first/audit.py's _write_call_targets_mutation_path
+      and tests/governance/test_scan_ungoverned_generators_proximity.py).
+      This alone cut the real-repo signal from 125 to 5 candidates. Manual
+      triage of all 5 (tests/governance/test_direct_generator_gap_triage.py):
+        - tools/supervisor/bounded_repair_engine.py: CONFIRMED real gap —
+          writes directly to src/ with no skill resolution, and two of its
+          repair actions (MISSING_ATTRIBUTE, NAME_ERROR) write a literal
+          `# TODO: implement` stub into product source, an EP-1 conflict.
+          Confirmed dead code (no importer outside its own test) — marked
+          deprecated-pending-redesign in its own module docstring rather than
+          governance-wrapped, since wrapping would legitimize code that must
+          not run as-is. Remediation option (b) applied.
+        - tools/supervisor/build_context_pack.py: CONFIRMED real gap — GOVERNED
+          this pass. Added to
+          tools/governance/hot-governance-files/output-manifest.yaml (outputs
+          .supervisor/context-pack.yaml + its report) and to gate.py's
+          GENERATOR_PATTERNS, following the SFC-GAP-B precedent exactly.
+          Remediation option (a) applied.
+        - tools/supervisor/supervisor_loop.py: its .supervisor/state/
+          current-run.json write is already declared under the pre-existing
+          tools/supervisor/autonomous-cycle-output-manifest.yaml; gate.py does
+          not yet route it through guard-run enforcement. Backlogged (not
+          urgent — single-writer ephemeral heartbeat file, not a shared
+          multi-writer canonical policy document like the hot-files set).
+        - tools/review/architecture_audit.py, tools/oracle/self_test_oracle_harness.py:
+          reclassified FALSE POSITIVE on manual read — both write only to
+          reports/self-test scratch dirs; the nearby match was a
+          docstring/error-message describing what the tool *reads*, not its
+          write target.
     status: open
     blocking: false
     remediation: >
       Each such script must be either (a) wrapped by a governed skill+command, or
       (b) marked read-only/deprecated. The closeout gate flags their outputs as
-      out-of-scope when no manifest authorizes the touched paths.
+      out-of-scope when no manifest authorizes the touched paths. Both real
+      candidates from the 2026-07-17 triage have remediation applied (see
+      description). Remaining open item: supervisor_loop.py's guard-run
+      enforcement wiring (backlog, non-blocking).
 
   - gap_id: EP-007-EXCEPTION-SCAN-UNSCOPED-GAP
     description: >

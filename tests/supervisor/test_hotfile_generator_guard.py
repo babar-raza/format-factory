@@ -31,6 +31,8 @@ _HOT_FILES = [
     "registry/governance/validator-id-authority.yaml",
     "oracle/registry/format-oracle-registry.yaml",
     ".supervisor/skill-first-policy.md",
+    ".supervisor/context-pack.yaml",
+    "reports/supervisor/context-pack.md",
 ]
 
 
@@ -52,6 +54,7 @@ def test_manifest_covers_all_known_hot_files():
     "tools/supervisor/sync_skill_command_registry.py",
     "tools/supervisor/patch_registry_missing_fields.py",
     "tools/supervisor/build_capability_routes.py",
+    "tools/supervisor/build_context_pack.py",
 ])
 def test_generator_patterns_recognizes_hot_file_writers(script_path):
     matched = [gid for gid, pat in GENERATOR_PATTERNS if pat.search(script_path)]

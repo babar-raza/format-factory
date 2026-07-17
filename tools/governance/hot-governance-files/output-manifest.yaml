@@ -29,8 +29,19 @@ outputs:
   - registry/governance/validator-id-authority.yaml
   - oracle/registry/format-oracle-registry.yaml
   - .supervisor/skill-first-policy.md
+  - .supervisor/context-pack.yaml
+  - reports/supervisor/context-pack.md
 notes: >
   A live instance of the exact problem this manifest exists to solve:
   docs/governance/skill-only-policy.yaml has been dirty with an interleaved
   mixed-authorship edit (mission AGENT-COORD-2026-07-15) since 2026-07-16 —
   reconciled via this mechanism as the first proof-of-use (SFC-GAP-B taskcard).
+
+  TC-RG-002 (2026-07-17): .supervisor/context-pack.yaml and its companion
+  report added. build_context_pack.py writes both directly via Path.write_text
+  with no lease/attribution when invoked raw via Bash -- same shape as the
+  original SFC-GAP-B finding, surfaced by the DIRECT-GENERATOR-GAP triage.
+  context-pack.yaml is read as session-bootstrap authority by the
+  build-context-pack/build-resume-context/build-product-context/
+  build-task-context skill family, making it the same kind of high-fan-in
+  canonical state as the original 8 files.

@@ -42,10 +42,14 @@ GENERATOR_PATTERNS = (
     # governance files (skill-registry.yaml, command-registry.yaml, etc. — see
     # tools/governance/hot-governance-files/output-manifest.yaml). These scripts
     # previously bypassed lease/attribution entirely when invoked via Bash.
+    # TC-RG-002 (2026-07-17): build_context_pack.py added — writes
+    # .supervisor/context-pack.yaml the same ungoverned way, surfaced by the
+    # DIRECT-GENERATOR-GAP triage (plans/.claude/sfc-remaining-gaps-closure.md).
     ("hot-governance-files", re.compile(
         r"tools[/\\]supervisor[/\\]sync_skill_command_registry\.py"
         r"|tools[/\\]supervisor[/\\]patch_registry_missing_fields\.py"
-        r"|tools[/\\]supervisor[/\\]build_capability_routes\.py")),
+        r"|tools[/\\]supervisor[/\\]build_capability_routes\.py"
+        r"|tools[/\\]supervisor[/\\]build_context_pack\.py")),
 )
 READONLY_BASH_HINT = re.compile(
     r"^\s*(git\s+(status|log|diff|show|rev-parse|branch)\b|ls\b|dir\b|cat\b"

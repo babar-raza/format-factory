@@ -45,6 +45,27 @@ HASH_BASELINE = REPORT_DIR / "command-skill-hash-baseline.json"
 # Registry/source roots a "generator" script writing directly would bypass skills.
 _MUTATION_TARGET_RE = re.compile(r"src/(python|net)/|registry/|\.supervisor/|oracle/")
 _WRITE_CALL_RE = re.compile(r"\.write_text\(|open\([^)]*['\"][wa]|\.dump\(|shutil\.copy")
+# TC-RG-002 (2026-07-17): a target-pattern match now only counts near an actual
+# write call (a bounded line window) instead of anywhere in the whole file.
+# The original whole-file check conflated an unrelated write (e.g. to reports/)
+# with an unrelated mention of src/, registry/, etc. elsewhere in the same file
+# (a module docstring describing what the tool *reads*, e.g. "Scans
+# src/python/{format}/..." on a report generator that writes only to reports/).
+#
+# A tighter "the match must be on a path-construction-syntax line" gate was
+# tried and reverted: this codebase's idiom is `Path` objects joined with `/`
+# across separately-quoted segments (`root / "src" / "python" / mod`), which
+# never produces a contiguous "src/python/" substring in the actual
+# construction code -- the literal substring this regex can find mostly shows
+# up in comments/docstrings/error-messages describing the target, which
+# remains a legitimate (if imperfect) signal here. Requiring path-join syntax
+# produced false NEGATIVES on confirmed real gaps (e.g. an f-string error
+# message "not found in src/python/" is exactly this shape and is the only
+# nearby textual evidence for a genuine direct src/ writer). Windowing alone
+# is the defensible fix; the residual candidates still require human/agent
+# triage -- this remains a signal scan, never a precise static analyzer.
+_PROXIMITY_WINDOW_BEFORE = 8
+_PROXIMITY_WINDOW_AFTER = 2
 
 SEVERITY_CRITICAL = "CRITICAL"  # blocks always
 SEVERITY_HIGH = "HIGH"          # blocks unless --warn-high
@@ -335,6 +356,14 @@ def _acknowledged_gaps(eps, facts, ep_ids) -> list[str]:
     return out
 
 
+def _write_call_targets_mutation_path(lines: list[str], write_line_idx: int) -> bool:
+    """True if the write call at `lines[write_line_idx]` has a mutation-target
+    string in a nearby line (bounded window, not just anywhere in the file)."""
+    lo = max(0, write_line_idx - _PROXIMITY_WINDOW_BEFORE)
+    hi = min(len(lines), write_line_idx + _PROXIMITY_WINDOW_AFTER + 1)
+    return any(_MUTATION_TARGET_RE.search(line) for line in lines[lo:hi])
+
+
 def scan_ungoverned_generators(limit: int = 40) -> dict[str, Any]:
     """Signal scan: tools/**/*.py that both write files AND target src/ or a
     registry are candidate ungoverned mutation entry points. Heuristic — this is
@@ -349,7 +378,11 @@ def scan_ungoverned_generators(limit: int = 40) -> dict[str, Any]:
             text = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        if _WRITE_CALL_RE.search(text) and _MUTATION_TARGET_RE.search(text):
+        if not _WRITE_CALL_RE.search(text):
+            continue
+        lines = text.splitlines()
+        if any(_WRITE_CALL_RE.search(line) and _write_call_targets_mutation_path(lines, i)
+               for i, line in enumerate(lines)):
             hits.append(rel)
     return {"count": len(hits), "sample": hits[:limit], "truncated": len(hits) > limit}
 

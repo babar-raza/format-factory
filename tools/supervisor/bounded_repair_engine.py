@@ -5,6 +5,19 @@ Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-3-001
 Classifies pytest failure output and applies deterministic bounded repairs.
 Used by the autonomous executor to self-heal test failures before giving up.
 
+STATUS (TC-RG-002, 2026-07-17): NOT WIRED IN — confirmed no caller outside its
+own test suite (tests/supervisor/test_bounded_repair_engine.py) imports this
+module. DO NOT wire this into any live autonomous path as-is: the
+MISSING_ATTRIBUTE and NAME_ERROR repairs write a literal
+`# TODO: implement` stub directly into src/ files (see
+_repair_missing_attribute / _repair_name_error below), which is a direct
+violation of EP-1 Zero-Stub Enforcement (CLAUDE.md) the moment it fires
+against real product source. It also writes to src/ with no skill/manifest
+resolution (EP-3). Left unmodified here (no test-breaking behavior change) —
+resolving the stub-write policy conflict is a prerequisite redesign, tracked
+in docs/governance/skill-only-policy.yaml known_gaps (DIRECT-GENERATOR-GAP),
+not performed as part of this triage pass.
+
 Repair contract:
   - Max 3 repair attempts per work item
   - On SYNTAX_ERROR: always rollback immediately (no repair attempt)
