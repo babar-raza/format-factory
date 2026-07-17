@@ -503,3 +503,25 @@ V194-V196 in the same module have zero pre-existing test coverage anywhere in
 this repo (confirmed by search) — out of this taskcard's scope to backfill, but
 disclosed rather than silently discovered-and-ignored. Full `tests/governance/`
 suite + this new file: 161/162 (same 1 pre-existing FI-027 failure).
+
+### Final pre-closure retry (TC-FIX-001 / FI-027, FI-028, FI-030)
+
+Re-attempted governed takeover on all 4 blocked leases immediately before closing
+this plan (`.claude/commands/reconcile-contract-capabilities.md`,
+`tools/supervisor/autonomous_cycle.py`, `registry/governance/validator-id-authority.yaml`,
+`tools/supervisor/governance_validator_runner.py`) — all 4 still confirmed
+genuinely `ACTIVE` by the coordination system's real liveness check (not the
+cached lease-row status flag, which reads `STALE` on all 4 and would be
+misleading if trusted directly — exactly the distinction this whole mission
+started from). `agent-claude-code-20260717T060141-e225cd` has been continuously,
+verifiably active across every check this session (10:58 → 13:36 → 14:11 →
+14:30 → 15:00 → 15:11, ~13 minutes before this final retry), running a large,
+real, unrelated `PORTFOLIO-AUDIT-2026-07-16` mission spanning a significant
+portion of `tools/supervisor/`.
+
+**TC-FIX-001 remains `PENDING`. FI-027, FI-028, and FI-030 remain
+`BLOCKED_TRUE_EXTERNAL_DEPENDENCY`** — honestly, verifiably, not assumed. This is
+the correct, final disposition for this session: forcing a takeover against a
+confirmed-live agent's real work would repeat the exact class of error this
+mission exists to fix, in the opposite direction. Retrying again requires a
+future session where that agent's mission has actually concluded.
