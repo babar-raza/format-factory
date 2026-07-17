@@ -525,3 +525,19 @@ the correct, final disposition for this session: forcing a takeover against a
 confirmed-live agent's real work would repeat the exact class of error this
 mission exists to fix, in the opposite direction. Retrying again requires a
 future session where that agent's mission has actually concluded.
+
+## Prose Findings Disclosed
+
+None. Every problem, risk, or concern surfaced during this session is either (a)
+fixed with evidence in the Execution Log above, or (b) registered in
+`registry/found-issue-register.yaml` (FI-026 through FI-030) with a disposition
+from found-issue-ownership-policy.md's §6 allowlist. Two incidental
+observations were made and resolved inline rather than needing separate
+tracking: `tools/supervisor/coordination/conflicts.py` and
+`governance_validators_coordination.py` were found to be pre-existing,
+previously-uncommitted (but actively relied-upon) code, swept into this
+session's commits alongside the actual changes made to them — disclosed at
+commit time, not a latent, still-open finding. V194-V196
+(`governance_validators_coordination.py`) having zero pre-existing test
+coverage is already recorded directly in this plan's TC-STRUCT-004 execution
+log above, not left as an untracked chat-only remark.
