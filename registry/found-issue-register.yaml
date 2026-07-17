@@ -667,6 +667,23 @@ issues:
     from the heartbeat gap alone) and was again refused: "owner is ACTIVE". Disposition
     unchanged. Next retry requires a future session.
 
+    RETRY 2026-07-17T15:45Z (PLAN-THEN-EXECUTE mandate: 3 materially different attempts
+    required before BLOCKED_EXTERNAL, not the same command repeated). Three distinct
+    angles, not one repeated: (1) governed takeover re-attempted, refused again, same
+    result as prior retries; (2) read-only check of whether the other agent's own commit
+    cycle had already landed and incidentally resolved this -- `git log`/`git status`
+    confirm zero new commits touching this file, working-tree diff unchanged (same 9-line
+    addition observed originally); (3) analyzed whether a line-level edit avoiding their
+    change region could bypass the file-level lock -- concluded no: this repo's
+    coordination model leases whole files, not line ranges (confirmed via
+    tools/supervisor/coordination/schema.sql's leases table and the PreToolUse hook's
+    behavior observed earlier this session blocking edits to actively-leased files
+    outright), and the pre-commit coordination_check() is also file-level -- a
+    non-overlapping edit would still be blocked before either an Edit or a commit could
+    land, by design, since the coordination system cannot verify non-conflict without
+    both sides being committed and diffed. All three converge on the same conclusion:
+    genuinely, verifiably still blocked. Disposition unchanged.
+
 - issue_id: FI-028
   stable_semantic_key: "coordination:write_journal_enum_bug:autonomous_cycle_py"
   status: discovered
@@ -698,6 +715,14 @@ issues:
     EXECUTION retry): re-checked directly via `coordination takeover
     --lease lease-46db2d424c` -- refused again: "owner is ACTIVE". Disposition
     unchanged. Next retry requires a future session.
+
+    RETRY 2026-07-17T15:45Z: same 3-distinct-angle analysis as FI-027 (see that
+    entry for full reasoning) applied here. git log/status confirm zero new
+    commits, working-tree diff unchanged (6 lines, a function rename at
+    line ~421-430 -- confirmed NOT overlapping this issue's 4 target call
+    sites near line 2644+, but the coordination model leases whole files, not
+    line ranges, so a non-overlapping edit would still be blocked before an
+    Edit or commit could land). Disposition unchanged.
 
 - issue_id: FI-029
   stable_semantic_key: "python:duplicate_function_definitions:ndjson_numeric_and_bool_count_collision"
@@ -772,3 +797,11 @@ issues:
     lease-711c2454d3 (validator-id-authority.yaml) and lease-d745d84477
     (governance_validator_runner.py) -- both refused again: "owner is ACTIVE".
     Disposition unchanged. Next retry requires a future session.
+
+    RETRY 2026-07-17T15:45Z: same 3-distinct-angle analysis as FI-027 (see that
+    entry). git diff --stat shows validator-id-authority.yaml +72/-1 and
+    governance_validator_runner.py +407/-55 uncommitted -- substantially large,
+    actively-growing diffs, independently corroborating genuine large-scale
+    active work (not a stale/abandoned lease) beyond the heartbeat check alone.
+    No safe append point exists that escapes the file-level (not line-level)
+    lock. Disposition unchanged.
