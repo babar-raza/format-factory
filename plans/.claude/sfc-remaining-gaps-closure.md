@@ -197,3 +197,12 @@ started here; recorded as a named follow-up rather than silently dropped.
 No `set_check_mode` call was made — remaining on the default `advisory` is
 itself the deliberate, evidence-based decision (no state mutation to make
 when the evidence says "not yet").
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-17T13:23:45.740600+00:00"
+  locked_by: "bd020585-65d4-49ac-9c8e-95e67e7e5595"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

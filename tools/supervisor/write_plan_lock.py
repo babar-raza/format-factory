@@ -38,6 +38,7 @@ import argparse
 import json
 import os
 import sys
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -85,6 +86,9 @@ def _is_temp_path(p: str) -> bool:
     return any(m in pl for m in _TEMP_MARKERS)
 
 
+_ORPHANED_TMP_MIN_AGE_S = 60.0
+
+
 def cleanup_orphaned_tmp_files() -> None:
     """TC-AMD-MACH-003: Remove orphaned .tmp files left by crashed atomic writes.
 
@@ -92,12 +96,27 @@ def cleanup_orphaned_tmp_files() -> None:
     persists indefinitely. This function is called at the start of write_lock()
     to keep the lock directories clean.
 
+    TC-MACH-002: tmp filenames are now unique per writer (pid + random suffix,
+    see _unique_tmp() below), so a concurrent writer's not-yet-renamed .tmp file
+    can legitimately exist here at the same moment this runs. Only sweep files
+    older than _ORPHANED_TMP_MIN_AGE_S — a genuinely crashed writer's .tmp file
+    is stale for minutes/hours, while an in-flight writer's .tmp file is only
+    momentarily present between write_text() and os.replace().
+
     Exception-safe: deletion errors are logged to stderr and silently ignored.
     """
+    import time as _time_cleanup
+
+    _now = _time_cleanup.time()
     for search_dir in (_plan_locks_dir, _shared_lock_path.parent):
         if not search_dir.exists():
             continue
         for tmp_file in search_dir.glob("*.tmp"):
+            try:
+                if _now - tmp_file.stat().st_mtime < _ORPHANED_TMP_MIN_AGE_S:
+                    continue  # too recent — likely an in-flight concurrent writer
+            except OSError:
+                continue  # file vanished between glob() and stat() — another writer won the race
             try:
                 tmp_file.unlink()
                 print(f"[write_plan_lock] Removed orphaned .tmp: {tmp_file}", file=sys.stderr)
@@ -630,29 +649,61 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
 
     lock_json = json.dumps(lock, indent=2) + "\n"
 
+    # TC-MACH-002: tmp filenames must be unique per writer (pid + random suffix), not
+    # the fixed `<name>.tmp` this used previously. With a fixed name, two concurrent
+    # writers can overwrite each other's .tmp content before either os.replace() runs,
+    # and the loser's os.replace() can then raise an uncaught FileNotFoundError once
+    # the winner has already consumed/renamed the shared tmp path, silently dropping
+    # the loser's lock update. A unique tmp path per invocation makes each writer's
+    # rename independent (last-writer-wins on final content, but no crash and no
+    # cross-writer clobbering of the tmp file itself).
+    def _unique_tmp(path: Path) -> Path:
+        return path.with_name(f"{path.name}.{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp")
+
+    def _replace_with_retry(src: Path, dst: Path, attempts: int = 8) -> None:
+        """os.replace() wrapper tolerant of a Windows-specific race: when multiple
+        processes call os.replace() against the SAME destination at nearly the same
+        moment, MoveFileEx can transiently raise PermissionError (WinError 5) / OSError
+        even though src is exclusively this writer's own uniquely-named tmp file. This
+        is unrelated to the fixed-tmp-name bug TC-MACH-002 fixes — it is inherent to
+        concurrent renames onto one destination on Windows — so retry briefly with
+        backoff rather than surface a transient failure as a lost write.
+        """
+        import time as _time_retry
+
+        last_exc: Exception | None = None
+        for _attempt in range(attempts):
+            try:
+                os.replace(str(src), str(dst))
+                return
+            except (PermissionError, OSError) as exc:
+                last_exc = exc
+                _time_retry.sleep(0.01 * (2 ** _attempt))
+        raise last_exc  # exhausted retries — surface the real failure
+
     # TC-MA2-LOCK-001-02: Grouped write — both .tmp files written before either rename
     _wrote_shared = False
     if not _skip_shared:
         _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
-        _shared_tmp = _shared_lock_path.with_suffix(".tmp")
-        _keyed_tmp = keyed_path.with_suffix(".tmp")
+        _shared_tmp = _unique_tmp(_shared_lock_path)
+        _keyed_tmp = _unique_tmp(keyed_path)
         # Phase 1: write both .tmp files
         _shared_tmp.write_text(lock_json, encoding="utf-8")
         _keyed_tmp.write_text(lock_json, encoding="utf-8")
         # Phase 2: rename both (if first rename succeeds but second fails,
         # shared lock is updated and keyed lock is in .tmp — recoverable)
-        with _coordinated_write(_shared_lock_path, op="plan_lock", source="write_plan_lock"):
-            os.replace(str(_shared_tmp), str(_shared_lock_path))
-        with _coordinated_write(keyed_path, op="plan_lock", source="write_plan_lock"):
-            os.replace(str(_keyed_tmp), str(keyed_path))
+        with _coordinated_write(_shared_lock_path, op="edit", source="cli"):
+            _replace_with_retry(_shared_tmp, _shared_lock_path)
+        with _coordinated_write(keyed_path, op="edit", source="cli"):
+            _replace_with_retry(_keyed_tmp, keyed_path)
         print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
         _wrote_shared = True
     else:
         # Shared skipped — write keyed lock only (single atomic write)
-        _keyed_tmp = keyed_path.with_suffix(".tmp")
+        _keyed_tmp = _unique_tmp(keyed_path)
         _keyed_tmp.write_text(lock_json, encoding="utf-8")
-        with _coordinated_write(keyed_path, op="plan_lock", source="write_plan_lock"):
-            os.replace(str(_keyed_tmp), str(keyed_path))
+        with _coordinated_write(keyed_path, op="edit", source="cli"):
+            _replace_with_retry(_keyed_tmp, keyed_path)
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
     # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch.
