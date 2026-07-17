@@ -187,6 +187,11 @@ def build_parser() -> argparse.ArgumentParser:
     cfr.add_argument("--state", required=True,
                      choices=["ACKNOWLEDGED", "RESOLVED", "WONT_FIX"])
     cfr.add_argument("--note", required=True)
+    cfr.add_argument("--evidence", default=None,
+                     help="Required for --state RESOLVED: a git commit hash, a "
+                          "found-issue-register FI-NNN id with an allowlisted "
+                          "disposition, or 'same-session-rebaseline' (verified "
+                          "against the write_journal, not just asserted).")
 
     tk = sub.add_parser("takeover")
     tk.add_argument("--lease", required=True)
@@ -367,7 +372,8 @@ def main(argv: list[str] | None = None) -> int:
                 return _emit(args, True, 0, verb, rows)
             ident = _identity(args, registry)
             resolver = ident[0] if ident else "operator"
-            clog.resolve(args.id, resolver, args.state, args.note)
+            clog.resolve(args.id, resolver, args.state, args.note,
+                         evidence=getattr(args, "evidence", None))
             return _emit(args, True, 0, verb, {"resolved": args.id,
                                                "state": args.state})
 

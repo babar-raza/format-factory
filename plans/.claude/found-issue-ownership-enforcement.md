@@ -112,7 +112,7 @@ this incident, and none of them caught `FI-025` either.
 | TC-STRUCT-002 | CLOSED |
 | TC-STRUCT-001 | CLOSED |
 | TC-FI025-001 | CLOSED |
-| TC-STRUCT-003 | PENDING |
+| TC-STRUCT-003 | CLOSED |
 | TC-STRUCT-004 | PENDING |
 
 (Updated as work is actually implemented, verified, and evidenced — never marked
@@ -430,3 +430,40 @@ duplicate-only tests and adding 5 new ones — 0 coverage regression, confirmed 
 running the full suite, not just the changed files). `V142`/`V140` re-verified
 PASS against the live, updated register. Full `tests/governance/` suite: 152/153
 (1 pre-existing, already-registered FI-027 failure).
+
+### TC-STRUCT-003 (CLOSED)
+
+`ConflictLog.resolve()` (`tools/supervisor/coordination/conflicts.py`) now requires,
+for `state="RESOLVED"` specifically, an `--evidence` value resolving to one of: a
+real git commit (verified via `git cat-file -e <hash>^{commit}` against the actual
+repo, not merely well-formatted), a `found-issue-register.yaml` entry whose
+disposition passes TC-STRUCT-002's allowlist, or the literal
+`same-session-rebaseline` — itself verified against `write_journal` (the resolving
+agent must actually be the resource's most recent recorded writer, not merely
+assert it). `ACKNOWLEDGED`/`WONT_FIX` remain lower-friction but now reject a
+small set of generic, information-free reasons (`"done"`, `"fixed"`, `"ok"`, etc.)
+via the same forbidden-reason pattern shipped this session for
+`.hooks/pre-commit-skill-guard` (TC-RG-001). CLI gained `--evidence` on
+`conflicts resolve`.
+
+**Friction validated against real data, not just asserted (per the plan's own
+mitigation requirement):** dry-run verified all 11 of this session's actual
+`resolve --state RESOLVED` calls (read-only query against the live coordination
+DB, no mutation) against the new `same-session-rebaseline` check —
+**11/11 pass**. If any had failed, the carve-out's definition would have needed
+fixing before this taskcard could be considered done; none did.
+
+Evidence: `tests/supervisor/test_conflict_resolution_evidence.py` (14 new tests,
+hermetic — isolated coordination root + sandbox git repo per test, following the
+existing `test_coordination_guards.py` pattern): no-evidence rejected,
+garbage-evidence rejected, real commit accepted, fabricated commit rejected,
+valid FI-id accepted, FI-id with invalid disposition rejected, nonexistent FI-id
+rejected, same-session-rebaseline accepted when the agent is genuinely the last
+writer, rejected when a different agent wrote last, rejected with no journal
+entry at all, generic ACKNOWLEDGED/WONT_FIX reasons rejected, real reasons
+accepted, WONT_FIX confirmed not to require `--evidence` (intentionally
+lower-friction). Full coordination regression (`test_coordination_guards.py` +
+`test_coordination_foundation.py` + `test_coordination_registry_leases.py` +
+`test_coordination_preflight_gate.py` + this new file): 103/103 pass. Full
+`tests/governance/` suite: 152/153 (1 pre-existing, already-registered FI-027
+failure) — no new regressions from this change.
