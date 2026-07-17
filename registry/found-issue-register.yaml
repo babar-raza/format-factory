@@ -588,12 +588,14 @@ issues:
   severity: P3
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-FIO-008
-  healing_taskcard_id: null
-  verification_verdict: null
-  disposition: OPEN_OUT_OF_SCOPE
+  healing_taskcard_id: TC-FI025-001
+  verification_verdict: "Deleted all 10 permanently-dead duplicate functions (ndjson_bool_value_count, ndjson_null_field_count, ndjson_numeric_field_count, ndjson_string_field_count, ndjson_max_field_count, ndjson_record_count, ndjson_min_field_count, ndjson_dict_record_count, ndjson_unique_key_count, ndjson_total_field_count) from src/python/ndjson/ndjson_field_analytics.py, keeping the 8 non-colliding, still-imported functions unchanged. Removed the corresponding duplicate-function test coverage from 4 test files (test_ndjson_field_analytics.py, test_ndjson_field_analytics_ext.py, test_ndjson_field_analytics_ext2.py, test_ndjson_gap_coverage.py) since the code they tested no longer exists; confirmed the canonical implementations of the same 10 names already have independent coverage elsewhere (test_ndjson_record_stats_ext.py, test_r305_ndjson_new_analytics.py) -- no coverage lost. New tests/python/ndjson/test_fi025_dead_duplicates_removed.py (5 tests) asserts the 10 names are genuinely gone, the 8 kept names still work, and the canonical implementations behave correctly. Full tests/python/ndjson/ suite: 2191/2191 pass (was 2196 before removing 10 duplicate-only test methods and adding 5 new ones -- net -1 test count, 0 coverage regression). registry/source-structure-baseline.json's loc/functions fields updated (263->124, 18->8); baseline_loc_cap/baseline_functions_cap left unchanged (write-once). CORRECTION to this finding's own 'incompatible signature' claim, discovered while verifying: the canonical versions are not simply incompatible, they are a strict superset (accept raw source OR pre-parsed list; the deleted versions only accepted raw source). Also discovered while verifying (registered separately, NOT fixed here, out of this taskcard's scope): ndjson_bool_value_count and ndjson_numeric_field_count have DIFFERENT semantics between json_stream.py and ndjson_record_stats.py themselves (a live collision between two already-wired modules, with import order silently deciding the winner) -- see FI-029."
+  disposition: HEALED_AND_VERIFIED
   evidence:
     - "src/python/ndjson/__init__.py"
     - "src/python/ndjson/ndjson_field_analytics.py"
+    - "tests/python/ndjson/test_fi025_dead_duplicates_removed.py"
+    - "registry/source-structure-baseline.json"
 
 - issue_id: FI-026
   stable_semantic_key: "coordination:session_id_collision:active_plan_lock_clobber"
@@ -684,3 +686,38 @@ issues:
     lease; if genuinely stale by then, apply the identical fix
     (op="edit", source="cli") used for the 6 already-fixed sites in this same
     bug class.
+
+- issue_id: FI-029
+  stable_semantic_key: "python:duplicate_function_definitions:ndjson_numeric_and_bool_count_collision"
+  status: discovered
+  discovered_at: "2026-07-17T14:45:00Z"
+  discovering_task_id: TC-FI025-001
+  issue_type: incorrect_implementation
+  affected_component: src/python/ndjson/json_stream.py
+  affected_paths:
+    - src/python/ndjson/json_stream.py
+    - src/python/ndjson/ndjson_record_stats.py
+    - src/python/ndjson/__init__.py
+  observed_behavior: "Discovered while verifying FI-025's fix (writing a regression test against the CANONICAL, still-wired implementations, not assumed correct). ndjson_bool_value_count is defined in BOTH json_stream.py (counts ALL boolean values, True and False -- 3 for the standard minimal.ndjson fixture) with no ndjson_record_stats.py counterpart of that exact name, so it is unambiguous; BUT ndjson_numeric_field_count is defined in BOTH json_stream.py:222 (counts total numeric VALUES across all fields -- 3 for minimal.ndjson's 3 score values) AND ndjson_record_stats.py:677 (counts distinct numeric field NAMES -- 1, since there is only one field named 'score') -- two semantically DIFFERENT functions sharing one name, both wired into __init__.py via `from .ndjson_codec import *` then `from .ndjson_record_stats import *`, with the LATER import silently winning (Python's normal star-import shadowing) -- so the record_stats.py semantics are what every real caller actually gets today, and json_stream.py's same-named function is dead/shadowed code, not a deliberate alternative. A pre-existing test (tests/python/ndjson/test_ndjson_gap_coverage.py, now-removed line ~517-520 as part of TC-FI025-001's cleanup) had already documented this exact discrepancy in a comment, so this is a known-but-unregistered issue, not a fresh one -- it had simply never been captured in found-issue-register.yaml."
+  expected_behavior: "Each function name should have exactly one definition and one clear semantic across the package. Either json_stream.py's ndjson_numeric_field_count should be renamed/removed (since it is fully shadowed and unreachable today), or -- if BOTH semantics (total-values vs distinct-field-names) are genuinely wanted -- they should have distinct names, not rely on import-order shadowing to pick a winner silently."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-NDJSON-SHADOW-001
+  healing_taskcard_id: TC-NDJSON-NUMERIC-COLLISION-001
+  verification_verdict: null
+  disposition: null
+  evidence:
+    - "src/python/ndjson/json_stream.py:222-231 (ndjson_numeric_field_count, total-values semantics)"
+    - "src/python/ndjson/ndjson_record_stats.py:676-685 (ndjson_numeric_field_count, distinct-field-names semantics)"
+    - "src/python/ndjson/__init__.py:12-13 (star-import order: ndjson_codec then ndjson_record_stats -- record_stats wins)"
+  notes: >
+    NOT fixed in this pass -- deliberately out of TC-FI025-001's scope (that
+    taskcard closes 10 CONFIRMED-dead duplicates in one file; this is a live
+    semantic collision between two already-wired, already-tested modules,
+    where changing either function's behavior or removing one risks breaking
+    a real caller that depends on whichever semantics currently wins).
+    Registered with no disposition yet (status: discovered, in-flight) rather
+    than a premature or invalid one -- a real healing taskcard ID is named so
+    this does not become another untracked, prose-only finding. Requires
+    dedicated investigation of which semantic real callers actually need
+    before any fix is safe.

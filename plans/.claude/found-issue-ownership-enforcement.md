@@ -111,7 +111,7 @@ this incident, and none of them caught `FI-025` either.
 | TC-FIX-001 | PENDING |
 | TC-STRUCT-002 | CLOSED |
 | TC-STRUCT-001 | CLOSED |
-| TC-FI025-001 | PENDING |
+| TC-FI025-001 | CLOSED |
 | TC-STRUCT-003 | PENDING |
 | TC-STRUCT-004 | PENDING |
 
@@ -383,3 +383,50 @@ Evidence: `tests/governance/test_surfaced_findings.py` (9 new),
 live — G5 correctly returns no violation (FI-027 already covers the one live HIGH
 finding with a valid disposition), confirming the mechanism doesn't false-positive
 against its own honest, already-registered blocker.
+
+### TC-FI025-001 (CLOSED)
+
+Deleted all 10 permanently-dead duplicate functions from
+`src/python/ndjson/ndjson_field_analytics.py` (confirmed dead: never imported by
+`__init__.py`, explicitly excluded there with an inline comment predating this
+session). Kept the 8 genuinely non-colliding, still-imported functions unchanged.
+Removed the corresponding duplicate-function test coverage from 4 test files
+(discovered a 4th file, `test_ndjson_gap_coverage.py`, beyond the 3 found by the
+initial grep — its import style, `from ndjson import ndjson_field_analytics as
+field_analytics`, didn't match the `from X import Y` pattern searched for
+initially; found via running the full test suite and reading the failures, not
+assumed complete from grep alone). Confirmed the canonical implementations of the
+same 10 names already have independent test coverage elsewhere — no coverage lost.
+
+**Corrected an inaccuracy in FI-025's own original claim, caught while verifying
+(not assumed correct):** the canonical versions are not "incompatible" with the
+deleted ones — they are a strict superset (accept a raw source OR an
+already-parsed list; the deleted versions only accepted raw source, always
+calling `load_ndjson()` unconditionally).
+
+**Found while verifying, registered as FI-029, explicitly not fixed here (out of
+this taskcard's scope):** `ndjson_bool_value_count` and `ndjson_numeric_field_count`
+have DIFFERENT semantics between `json_stream.py` and `ndjson_record_stats.py`
+themselves — two already-wired modules colliding on the same name, with
+`__init__.py`'s star-import order silently deciding the winner. This is a live
+defect in already-shipped, already-tested code, not dead code — fixing it safely
+requires determining which semantic real callers actually depend on, a
+dedicated investigation disproportionate to this taskcard's scope. Registered
+with `status: discovered`, no disposition yet (in-flight, not a premature/invalid
+one), and a named healing taskcard ID (`TC-NDJSON-NUMERIC-COLLISION-001`) so it
+does not become another untracked, prose-only finding.
+
+Also updated `registry/source-structure-baseline.json`'s `loc`/`functions` fields
+for this file (263→124, 18→8) to reflect the new measured state;
+`baseline_loc_cap`/`baseline_functions_cap` left unchanged (write-once ceiling).
+
+Evidence: `tests/python/ndjson/test_fi025_dead_duplicates_removed.py` (5 new
+tests: all 10 deleted names confirmed gone, all 8 kept names still work, kept
+names still re-exported from the package, canonical implementations behave
+correctly for the exact scenarios the duplicates existed for, canonical
+implementations additionally accept pre-parsed lists). Full
+`tests/python/ndjson/` suite: 2191/2191 pass (net -1 test count from removing 10
+duplicate-only tests and adding 5 new ones — 0 coverage regression, confirmed by
+running the full suite, not just the changed files). `V142`/`V140` re-verified
+PASS against the live, updated register. Full `tests/governance/` suite: 152/153
+(1 pre-existing, already-registered FI-027 failure).

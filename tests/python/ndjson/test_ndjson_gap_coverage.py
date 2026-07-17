@@ -466,6 +466,20 @@ class TestNdjsonDocumentMutationAndSerialization:
 
 # ===========================================================================
 # ndjson_field_analytics.py — orphaned module (not re-exported by __init__)
+#
+# TC-FI025-001 (2026-07-17): 10 methods removed here (bool_value_count,
+# null_field_count, numeric_field_count, string_field_count, max_field_count,
+# record_count, dict_record_count, unique_key_count, min_field_count,
+# total_field_count) -- they tested functions of the same names deleted from
+# ndjson_field_analytics.py per registry/found-issue-register.yaml FI-025
+# (permanently-dead duplicates, never re-exported by __init__.py). The
+# canonical, still-wired implementations of these same names already have
+# their own coverage elsewhere (test_ndjson_record_stats_ext.py,
+# test_r305_ndjson_new_analytics.py). This removal also surfaced FI-029: the
+# comment on the old numeric_field_count test already noted its value (5,
+# total numeric VALUES) differed from ndjson_record_stats's same-named
+# function (distinct numeric field NAMES) -- a real, separate, pre-existing
+# collision between two already-wired modules, registered but not fixed here.
 # ===========================================================================
 
 class TestNdjsonFieldAnalytics:
@@ -488,13 +502,6 @@ class TestNdjsonFieldAnalytics:
         path = _write(tmp_path, [{"a": 1}, {"b": 2}], name="incons.ndjson")
         assert field_analytics.ndjson_has_consistent_keys(path) is False
 
-    def test_bool_value_count_only_counts_true(self, file_a):
-        # ndjson_field_analytics counts `v is True` only (not False).
-        assert field_analytics.ndjson_bool_value_count(file_a) == 2
-
-    def test_null_field_count(self, file_a):
-        assert field_analytics.ndjson_null_field_count(file_a) == 1
-
     def test_sorted_key_names(self, file_a):
         assert field_analytics.ndjson_sorted_key_names(file_a) == [
             "active", "id", "meta", "name", "score", "tags"
@@ -514,14 +521,6 @@ class TestNdjsonFieldAnalytics:
         path = _write(tmp_path, ["a", "b"], name="scalars.ndjson")
         assert field_analytics.ndjson_last_record_keys(path) == []
 
-    def test_numeric_field_count_counts_total_values(self, file_a):
-        # Distinguishing this from ndjson_record_stats.ndjson_numeric_field_count,
-        # which counts distinct field NAMES instead (see TestRecordStatsListFriendly).
-        assert field_analytics.ndjson_numeric_field_count(file_a) == 5
-
-    def test_string_field_count(self, file_a):
-        assert field_analytics.ndjson_string_field_count(file_a) == 3
-
     def test_has_nested_records_true(self, file_a):
         assert field_analytics.ndjson_has_nested_records(file_a) is True
 
@@ -529,30 +528,12 @@ class TestNdjsonFieldAnalytics:
         path = _write(tmp_path, [{"a": 1}], name="flat.ndjson")
         assert field_analytics.ndjson_has_nested_records(path) is False
 
-    def test_max_field_count(self, file_a):
-        assert field_analytics.ndjson_max_field_count(file_a) == 6
-
-    def test_record_count(self, file_a):
-        assert field_analytics.ndjson_record_count(file_a) == 3
-
-    def test_dict_record_count(self, file_a):
-        assert field_analytics.ndjson_dict_record_count(file_a) == 3
-
-    def test_unique_key_count(self, file_a):
-        assert field_analytics.ndjson_unique_key_count(file_a) == 6
-
-    def test_min_field_count(self, file_a):
-        assert field_analytics.ndjson_min_field_count(file_a) == 6
-
     def test_has_arrays_true(self, file_a):
         assert field_analytics.ndjson_has_arrays(file_a) is True
 
     def test_has_arrays_false(self, tmp_path):
         path = _write(tmp_path, [{"a": 1}], name="noarr.ndjson")
         assert field_analytics.ndjson_has_arrays(path) is False
-
-    def test_total_field_count(self, file_a):
-        assert field_analytics.ndjson_total_field_count(file_a) == 18
 
 
 # ===========================================================================
@@ -1067,13 +1048,14 @@ class TestExceptions:
         with pytest.raises(NdjsonError, match="boom"):
             raise NdjsonError("boom")
 
-    def test_codec_level_ndjson_error_is_distinct_class(self):
-        # ndjson_codec.py defines its own local NdjsonError/NdjsonParseError,
-        # separate from the _shared-based classes in exceptions.py.
+    def test_codec_level_ndjson_error_is_unified_with_shared_class(self):
+        """Healed: ndjson_codec.py imports NdjsonError/NdjsonParseError from
+        exceptions.py rather than redefining them -- single source of truth.
+        See plans/.claude/quizzical-munching-gadget.md section 7."""
         from ndjson import exceptions as shared_exceptions
 
-        assert codec.NdjsonError is not shared_exceptions.NdjsonError
-        assert codec.NdjsonParseError is not shared_exceptions.NdjsonParseError
+        assert codec.NdjsonError is shared_exceptions.NdjsonError
+        assert codec.NdjsonParseError is shared_exceptions.NdjsonParseError
 
     def test_codec_ndjson_parse_error_raised_on_malformed_json(self, tmp_path):
         bad = tmp_path / "bad.ndjson"

@@ -10,8 +10,6 @@ from src.python.ndjson.ndjson_field_analytics import (
     ndjson_first_record_keys,
     ndjson_first_record_field_count,
     ndjson_has_consistent_keys,
-    ndjson_bool_value_count,
-    ndjson_null_field_count,
     ndjson_sorted_key_names,
 )
 
@@ -60,31 +58,6 @@ def test_has_consistent_keys_minimal():
 
 def test_has_consistent_keys_returns_bool():
     assert isinstance(ndjson_has_consistent_keys(MINIMAL), bool)
-
-
-# --- ndjson_bool_value_count ---
-
-def test_bool_value_count_minimal():
-    # Alice(active=True) + Carol(active=True) = 2 True values
-    assert ndjson_bool_value_count(MINIMAL) == 2
-
-
-def test_bool_value_count_returns_int():
-    assert isinstance(ndjson_bool_value_count(MINIMAL), int)
-
-
-def test_bool_value_count_nonnegative():
-    assert ndjson_bool_value_count(MINIMAL) >= 0
-
-
-# --- ndjson_null_field_count ---
-
-def test_null_field_count_minimal():
-    assert ndjson_null_field_count(MINIMAL) == 0
-
-
-def test_null_field_count_returns_int():
-    assert isinstance(ndjson_null_field_count(MINIMAL), int)
 
 
 # --- ndjson_sorted_key_names ---

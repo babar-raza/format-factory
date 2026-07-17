@@ -6,10 +6,7 @@ from pathlib import Path
 from ndjson.ndjson_field_analytics import (
     ndjson_all_key_names,
     ndjson_last_record_keys,
-    ndjson_numeric_field_count,
-    ndjson_string_field_count,
     ndjson_has_nested_records,
-    ndjson_max_field_count,
 )
 
 SAMPLES = Path("samples/by-format/ndjson/valid")
@@ -51,30 +48,6 @@ def test_last_record_keys_subset_of_all_keys():
     assert last_keys.issubset(all_keys)
 
 
-# --- ndjson_numeric_field_count ---
-
-def test_numeric_field_count_returns_int():
-    result = ndjson_numeric_field_count(MINIMAL)
-    assert isinstance(result, int)
-
-
-def test_numeric_field_count_positive():
-    result = ndjson_numeric_field_count(MINIMAL)
-    assert result > 0
-
-
-# --- ndjson_string_field_count ---
-
-def test_string_field_count_returns_int():
-    result = ndjson_string_field_count(MINIMAL)
-    assert isinstance(result, int)
-
-
-def test_string_field_count_positive():
-    result = ndjson_string_field_count(MINIMAL)
-    assert result > 0
-
-
 # --- ndjson_has_nested_records ---
 
 def test_has_nested_records_returns_bool():
@@ -86,22 +59,3 @@ def test_has_nested_records_minimal_false():
     # minimal.ndjson has flat records
     result = ndjson_has_nested_records(MINIMAL)
     assert result is False
-
-
-# --- ndjson_max_field_count ---
-
-def test_max_field_count_returns_int():
-    result = ndjson_max_field_count(MINIMAL)
-    assert isinstance(result, int)
-
-
-def test_max_field_count_positive():
-    result = ndjson_max_field_count(MINIMAL)
-    assert result > 0
-
-
-def test_max_field_count_geq_first_record():
-    from ndjson.ndjson_field_analytics import ndjson_first_record_field_count
-    max_count = ndjson_max_field_count(MINIMAL)
-    first_count = ndjson_first_record_field_count(MINIMAL)
-    assert max_count >= first_count
