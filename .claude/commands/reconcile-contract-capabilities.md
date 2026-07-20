@@ -26,6 +26,15 @@ Reconcile a format's compiled contract against observed implementation (AST/test
 
 - **read_only_product_source**: never writes under src/
 - **no_contract_body_writes**: contract bodies change only via /compile-format-contract (V240)
+- **coherence_diagnostics**: the reconciliation this skill writes is one of the two
+  inputs to V247 (validate_format_coherence), which correlates it against the format's
+  spec-coverage report. V247 is WARN-only and never blocks; it does not gate this skill.
+- **xref_completeness**: adding or removing a capability changes what V248
+  (validate_coverage_xref_integrity) expects in
+  shared/format-contracts/coverage-capability-xref.yaml. A new capability that is
+  neither mapped nor listed under `unmapped_capabilities` makes V248 WARN; an
+  unresolvable capability_id makes it FAIL. Update the xref by hand in the same change
+  — it is curated, not generated.
 
 ## Required Inputs
 
