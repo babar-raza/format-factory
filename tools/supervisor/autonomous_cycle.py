@@ -421,14 +421,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     # Step 0a-prepass (TC-SH-005) + Step 0a3 (TC-SH-011): extracted to extensions
     try:
         from autonomous_cycle_extensions import (
-            run_contract_healing_prepass,
+            run_contract_full_refresh,
             run_sprint_learnings_prepass,
             run_stale_lock_reaper,
         )
         run_sprint_learnings_prepass(repo_root)
         run_stale_lock_reaper(repo_root, timestamp)
-        # Step 0a-fcl (FCL-MACHINERY-2026-07-16): L30 contract healing sweep.
-        run_contract_healing_prepass(repo_root)
+        # Step 0a-fcl: L30 full chain — staleness/recompile -> reconcile -> gaps.
+        run_contract_full_refresh(repo_root)
     except Exception as _ext_err:
         print(f"  WARNING: Pre-pass extensions skipped (non-blocking): {_ext_err}")
 
@@ -2641,11 +2641,11 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         # Corrects incoherent combinations that can reach the disk (REQ-SIGNAL-001).
         signal = _validate_and_correct_signal_coherence(signal, sprint_id)
 
-        with _coordinated_write(signal_path, op="continuation_signal", source="autonomous_cycle"):
+        with _coordinated_write(signal_path, op="edit", source="cli"):
             atomic_write_json(signal_path, signal)
         # Also update legacy path for Track P (backward compat) — NOT for Track M (strict isolation)
         if _legacy_signal_path is not None:
-            with _coordinated_write(_legacy_signal_path, op="continuation_signal", source="autonomous_cycle"):
+            with _coordinated_write(_legacy_signal_path, op="edit", source="cli"):
                 atomic_write_json(_legacy_signal_path, signal)
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
               f"iter={existing_iteration}/{max_iterations}, track={track!r})")
@@ -2663,7 +2663,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         stream_signal_dir.mkdir(parents=True, exist_ok=True)
         stream_signal = {**signal, "stream": detected_stream}
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
-        with _coordinated_write(stream_signal_path, op="stream_signal", source="autonomous_cycle"):
+        with _coordinated_write(stream_signal_path, op="edit", source="cli"):
             atomic_write_json(stream_signal_path, stream_signal)
         print(f"  Stream signal: {stream_signal_path}")
 
@@ -2744,7 +2744,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 # Non-silent: record failure in signal so check_continuation surfaces it
                 signal["evidence_continuation_failed"] = True
                 signal["evidence_continuation_error"] = str(ec_err)
-                with _coordinated_write(signal_path, op="continuation_signal_error", source="autonomous_cycle"):
+                with _coordinated_write(signal_path, op="edit", source="cli"):
                     atomic_write_json(signal_path, signal)
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
