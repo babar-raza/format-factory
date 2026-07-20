@@ -698,7 +698,7 @@ issues:
 
 - issue_id: FI-028
   stable_semantic_key: "coordination:write_journal_enum_bug:autonomous_cycle_py"
-  status: discovered
+  status: verified
   discovered_at: "2026-07-17T14:30:00Z"
   discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17
   issue_type: incorrect_implementation
@@ -710,13 +710,13 @@ issues:
   severity: HIGH
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-COORD-ENUM-001
-  healing_taskcard_id: null
-  verification_verdict: null
-  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  healing_taskcard_id: TC-RESUME-001
+  verification_verdict: "PASS: tests/supervisor/test_autonomous_cycle_write_journal_enum.py 4/4 pass (proves both the IntegrityError root cause on the old values and success on the fixed ones); tests/supervisor/test_autonomous_cycle_e2e.py + test_autonomous_cycle_integration_closeout.py + test_autonomous_cycle_sfc_gate.py + test_autonomous_cycle_stale_repair_pre_cycle.py: 45/45 pass, no regressions."
+  disposition: HEALED_AND_VERIFIED
   evidence:
     - "tools/supervisor/write_plan_lock.py (same bug class, already fixed this session, commit e0e30527)"
     - "tools/supervisor/lifecycle_audit.py:1228, tools/supervisor/sprint_executor.py:281,707 (same bug class, fixed this session, TC-STRUCT-001)"
-    - "coordination status: lease on autonomous_cycle.py owner agent-claude-code-20260717T060141-e225cd, ACTIVE, fresh heartbeat re-checked at takeover-attempt time, not assumed"
+    - "commit c63d9a49: all 4 call sites fixed to op=\"edit\", source=\"cli\"; new regression test added"
   notes: >
     Retry planned before this plan's own closure, same as FI-027: re-check the
     lease; if genuinely stale by then, apply the identical fix
@@ -735,6 +735,18 @@ issues:
     sites near line 2644+, but the coordination model leases whole files, not
     line ranges, so a non-overlapping edit would still be blocked before an
     Edit or commit could land). Disposition unchanged.
+
+    HEALED 2026-07-20T12:05Z (PLAN-THEN-EXECUTE resume, TC-RESUME-001): owning
+    lease's agent (e225cd) confirmed STALE_SUSPECT (~66h frozen heartbeat);
+    `coordination takeover --lease lease-46db2d424c` succeeded (new
+    lease-7254da490a). Re-read the file fresh -- content at the 4 target sites
+    unchanged from what this entry describes. Applied the fix, added a new
+    regression test proving the root cause and the fix (4/4 pass), ran the
+    full existing autonomous_cycle test suite (45/45 pass), committed
+    (c63d9a49). A separate stale OPEN conflict record on this file
+    (conf-757b7b75f1, from the 2026-07-17 lease-denial) was also resolved
+    (RESOLVED, same-session-rebaseline) since it would otherwise have blocked
+    the commit under precommit_check()'s unresolved-conflict gate.
 
 - issue_id: FI-029
   stable_semantic_key: "python:duplicate_function_definitions:ndjson_numeric_and_bool_count_collision"
