@@ -632,7 +632,7 @@ issues:
 
 - issue_id: FI-027
   stable_semantic_key: "governance:stale_command_hash:reconcile_contract_capabilities"
-  status: discovered
+  status: verified
   discovered_at: "2026-07-17T13:20:00Z"
   discovering_task_id: SFC-REMAINING-GAPS-2026-07-17
   issue_type: incorrect_implementation
@@ -646,12 +646,12 @@ issues:
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-SFC-HASH-001
   healing_taskcard_id: TC-FIX-001
-  verification_verdict: null
-  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  verification_verdict: "PASS: validate_skills_first_control.py verdict flipped FAIL (uncovered_high_signatures: stale_command_hash::reconcile-contract-capabilities) -> PASS_WITH_WARNINGS, HIGH count 1 -> 0. Remaining MEDIUM/INFO counts unrelated to this finding."
+  disposition: HEALED_AND_VERIFIED
   evidence:
-    - "reports/skills-first-control/command-skill-hash-baseline.json (baseline entry, generated_at 2026-07-16T18:20:55Z)"
-    - "git show HEAD:.claude/commands/reconcile-contract-capabilities.md (hashes to the baseline value, confirming committed content is not the source of drift)"
-    - "coordination status: lease-9be32fa9db owner agent-claude-code-20260717T060141-e225cd, ACTIVE, hb 2026-07-17T14:11:45Z (re-checked at fix time, not assumed)"
+    - "commit 8957cbbd: committed the previously-uncommitted V247/V248 documentation bullets (9 insertions, path-scoped)"
+    - "commit a0ec5f59: refreshed reports/skills-first-control/command-skill-hash-baseline.json's entry for this file from 5543ad12... to b713c799... (sha256 of the now-committed content, path-scoped)"
+    - "validate_skills_first_control.py post-fix: {'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 1, 'INFO': 6}, verdict=PASS_WITH_WARNINGS"
   notes: >
     Retry planned before this plan's own closure: re-check lease-9be32fa9db's state; if it
     has gone genuinely stale (or the owning agent has committed/released it, which would
@@ -683,6 +683,18 @@ issues:
     land, by design, since the coordination system cannot verify non-conflict without
     both sides being committed and diffed. All three converge on the same conclusion:
     genuinely, verifiably still blocked. Disposition unchanged.
+
+    HEALED 2026-07-20T11:41Z (PLAN-THEN-EXECUTE resume, TC-RESUME-001): 3 days elapsed
+    since the last retry; agent-claude-code-20260717T060141-e225cd's heartbeat was frozen
+    at 2026-07-17T17:14:22Z (~66h stale, display STALE_SUSPECT) with no fresher observation
+    anywhere in coordination status. `coordination takeover --lease lease-9be32fa9db`
+    (new lease-f282731509) succeeded -- the authoritative check, not inferred from the
+    heartbeat gap. Re-read the file fresh (content unchanged from what this entry already
+    described: same 9-line uncommitted addition). Committed it, took over a second,
+    previously-unnoticed lease on the baseline file itself (lease-366ffb89a1, same owner,
+    same staleness) to commit the baseline refresh, and verified via
+    validate_skills_first_control.py that the HIGH finding is gone. Genuinely closed, not
+    assumed.
 
 - issue_id: FI-028
   stable_semantic_key: "coordination:write_journal_enum_bug:autonomous_cycle_py"
