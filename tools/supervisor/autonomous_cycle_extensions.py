@@ -55,34 +55,136 @@ def run_sprint_learnings_prepass(repo_root: Path) -> None:
         print(f"  WARNING: Sprint learnings pre-pass skipped (non-blocking): {exc}")
 
 
-def run_contract_healing_prepass(repo_root: Path) -> int:
-    """Step 0a-fcl (mission FCL-MACHINERY-2026-07-16): Format Contract Layer
-    self-healing sweep. Runs the L30 staleness checker, which flags STALE
-    contracts in registry/format-contract-registry.yaml and emits
-    machine-readable repair tasks (NO_CONTRACT / STALE / BLOCKED /
-    UNRECONCILED / SHALLOW) to .local/supervisor/contract-repair-tasks.json,
-    each routed to its owning skill. Non-blocking by contract: contracts are
-    never silently regenerated here. Returns the repair-task count."""
-    import json
-    import subprocess
+_FCL_RECON_SUFFIX = "-reconciliation.json"
 
-    checker = repo_root / "tools" / "format_contract" / "staleness_checker.py"
-    if not checker.is_file():
-        return 0
-    result = subprocess.run(
-        [sys.executable, str(checker), "--refresh"], cwd=str(repo_root),
-        capture_output=True, text=True, timeout=300,
-    )
-    if result.returncode != 0:
-        print(f"  [FCL-HEAL] checker error (non-blocking): {result.stderr[-200:]}")
-        return 0
+
+def _reconciliation_is_stale(recon_path: Path, contract_doc: "dict | None") -> bool:
+    """True when a report's ``contract_input_digests`` (a copy of the contract's
+    ``contract_metadata.input_digests`` as of reconcile time) no longer match the
+    contract — i.e. it was recompiled since. Never raises.
+    """
+    if not contract_doc:
+        return False
+    try:
+        recon = json.loads(recon_path.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return (recon.get("contract_input_digests")
+            != (contract_doc.get("contract_metadata") or {}).get("input_digests"))
+
+
+def run_contract_full_refresh(repo_root: Path) -> dict:
+    """Step 0a-fcl (mission FCL-MACHINERY-2026-07-16): full-chain Format Contract
+    Layer healing — staleness/recompile -> reconciliation -> gap ledger.
+
+    Phase 1: check_all(refresh=True) recompiles contracts whose input_digests
+      drifted from the committed stores, and writes the repair tasks.
+    Phase 2: reconcile() each format refreshed in Phase 1, carrying an
+      UNRECONCILED task, or holding a stale report (the case the staleness
+      checker misses: recompiled, never re-reconciled). It returns the report —
+      writing it is the caller's job.
+    Phase 3: compile_gaps() per report, replacing that format's GAP-FCL-* ledger
+      entries. Reads JSON only, so it stays cheap.
+
+    In-process; non-blocking per format — failures land in "errors", never raise.
+    Returns {"refreshed": [], "reconciled": [], "gaps_updated": [], "errors": []}.
+    """
+    result: dict = {"refreshed": [], "reconciled": [], "gaps_updated": [], "errors": []}
+    fcl_dir = repo_root / "tools" / "format_contract"
+    if not (fcl_dir / "staleness_checker.py").is_file():
+        return result
+
+    # tools/format_contract modules import each other by bare name, so the dir
+    # must be importable — but it also holds a quality_scorer.py that would
+    # shadow tools/supervisor/quality_scorer.py (imported bare by
+    # post_sprint_loop_controller) for the rest of the process. Restoring the
+    # whole snapshot also drops the copies those modules insert themselves at
+    # import time, which no filter keyed on our spelling of the path would catch.
+    path_snapshot = list(sys.path)
+    if str(fcl_dir) not in sys.path:
+        sys.path.insert(0, str(fcl_dir))
+    try:
+        import contract_reconciler
+        import gap_compiler
+        import staleness_checker
+        from canonical_io import load_yaml
+        try:  # check_all imports this lazily under refresh=True: warm the cache
+            import contract_compiler  # noqa: F401  while the path is still up
+        except Exception:
+            pass  # best-effort — check_all handles its own import failure
+
+        recon_dir = repo_root / "reports" / "format-contract-layer"
+        contracts_dir = repo_root / "shared" / "format-contracts"
+        # glob() on a missing dir yields nothing, so no is_dir() guard is needed.
+        reports_now = lambda: sorted(recon_dir.glob(f"*{_FCL_RECON_SUFFIX}"))  # noqa: E731
+
+        # --- Phase 1: staleness detection + auto-recompilation ---------------
+        tasks: list = []
+        try:
+            report = staleness_checker.check_all(refresh=True)
+            # "refreshed" is only written when non-empty — never index it.
+            result["refreshed"] = list(report.get("refreshed", []))
+            tasks = report.get("tasks", []) or []
+        except Exception as exc:
+            result["errors"].append(f"phase1:check_all: {exc}")
+            print(f"  [FCL-HEAL] phase 1 failed (non-blocking): {exc}")
+
+        # --- Phase 2: reconcile the formats that need it ---------------------
+        candidates = set(result["refreshed"])
+        for task in tasks:
+            if (isinstance(task, dict) and task.get("condition") == "UNRECONCILED"
+                    and task.get("format_id")):
+                candidates.add(task["format_id"])
+        for recon_path in reports_now():
+            fmt = recon_path.name[: -len(_FCL_RECON_SUFFIX)]
+            try:
+                if _reconciliation_is_stale(
+                        recon_path, load_yaml(contracts_dir / f"{fmt}.yaml")):
+                    candidates.add(fmt)
+            except Exception as exc:
+                result["errors"].append(f"phase2:staleness:{fmt}: {exc}")
+
+        for fmt in sorted(candidates):
+            try:
+                recon = contract_reconciler.reconcile(fmt)
+                out_path = recon_dir / f"{fmt}{_FCL_RECON_SUFFIX}"
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(json.dumps(recon, indent=2) + "\n", encoding="utf-8")
+                result["reconciled"].append(fmt)
+            except Exception as exc:
+                result["errors"].append(f"phase2:reconcile:{fmt}: {exc}")
+
+        # --- Phase 3: gap-ledger refresh (re-globbed: Phase 2 adds reports) ---
+        for recon_path in reports_now():
+            fmt = recon_path.name[: -len(_FCL_RECON_SUFFIX)]
+            try:
+                gap_compiler.compile_gaps(fmt)
+                result["gaps_updated"].append(fmt)
+            except Exception as exc:
+                result["errors"].append(f"phase3:compile_gaps:{fmt}: {exc}")
+        print(f"  [FCL-HEAL] {len(tasks)} repair tasks | recompiled="
+              f"{len(result['refreshed'])} reconciled={len(result['reconciled'])} "
+              f"gaps={len(result['gaps_updated'])} | {len(result['errors'])} errors"
+              + (f"; first: {result['errors'][0][:120]}" if result["errors"] else ""))
+    except Exception as exc:
+        result["errors"].append(f"prepass: {exc}")
+        print(f"  [FCL-HEAL] full refresh skipped (non-blocking): {exc}")
+    finally:
+        sys.path[:] = path_snapshot
+    return result
+
+
+def run_contract_healing_prepass(repo_root: Path) -> int:
+    """Backward-compatible alias for run_contract_full_refresh() — kept
+    importable for older callers/docs naming the Step 0a-fcl prepass. Returns
+    the repair-task count, preserving this function's original int contract.
+    """
+    run_contract_full_refresh(repo_root)
     out_path = repo_root / ".local" / "supervisor" / "contract-repair-tasks.json"
     try:
-        count = int(json.loads(out_path.read_text(encoding="utf-8")).get("task_count", 0))
+        return int(json.loads(out_path.read_text(encoding="utf-8")).get("task_count", 0))
     except Exception:
-        count = 0
-    print(f"  [FCL-HEAL] {count} contract repair tasks emitted -> {out_path.name}")
-    return count
+        return 0
 
 
 def run_stale_lock_reaper(repo_root: Path, timestamp: str) -> int:
