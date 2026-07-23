@@ -17,6 +17,7 @@ from tools.supervisor.production_program import (
     Gap,
     ProductTarget,
     ProductionProgram,
+    source_creation_authorization,
     validate_target_registry,
 )
 
@@ -225,6 +226,123 @@ def test_equal_priority_gaps_follow_locked_format_wave_order(tmp_path: Path) -> 
     program.reconcile_gap(nrrd)
     program.reconcile_gap(safetensors)
     assert program.next_gap() == safetensors
+
+
+def test_blocked_format_cannot_stall_an_actionable_product(tmp_path: Path) -> None:
+    program = ProductionProgram(tmp_path)
+    blocked = Gap(
+        "G-ORA",
+        "openraster",
+        "PRODUCTION_PACKAGE_CHASSIS",
+        "referential_integrity",
+        "HIGH",
+        "Gate 9 is not passed",
+        blocking_status="BLOCKED_DEPENDENCY",
+    )
+    actionable = Gap(
+        "G-XLIFF",
+        "xliff",
+        "PRODUCTION_PACKAGE_CHASSIS",
+        "referential_integrity",
+        "HIGH",
+        "package is missing",
+    )
+    program.reconcile_gap(blocked)
+    program.reconcile_gap(actionable)
+    assert program.next_gap() == actionable
+    assert program.next_blocked_gap() == blocked
+    status = program.status()
+    assert status["open_gap_count"] == 2
+    assert status["blocked_gap_count"] == 1
+
+
+def test_source_creation_requires_complete_gate_9_record(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    registry = repo / "registry" / "format-registry.yaml"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        """
+formats:
+  - format_id: ora
+    implementation_authorized: false
+    gates:
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+""".lstrip(),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    target = ProductTarget("openraster", "ora", "openraster")
+    denied = source_creation_authorization(target)
+    assert denied["authorized"] is False
+    assert "implementation_authorized=true" in denied["reason"]
+
+    registry.write_text(
+        registry.read_text(encoding="utf-8")
+        .replace("implementation_authorized: false", "implementation_authorized: true")
+        .replace("status: not_started", "status: passed_oss_readiness")
+        .replace("approved_by: null", "approved_by: delegated-gate-decision")
+        .replace("approved_date: null", "approved_date: 2026-07-23"),
+        encoding="utf-8",
+    )
+    allowed = source_creation_authorization(target)
+    assert allowed["authorized"] is True
+    assert len(allowed["registry_sha256"]) == 64
+
+
+def test_chassis_audit_marks_unapproved_source_as_blocked_dependency(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    registry = repo / "registry" / "format-registry.yaml"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        """
+formats:
+  - format_id: ora
+    gates:
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+""".lstrip(),
+        encoding="utf-8",
+    )
+    core_module = (
+        repo / "src" / "python" / "core" / "src" / "format_factory" / "core"
+    )
+    core_module.mkdir(parents=True)
+    (core_module / "__init__.py").write_text("", encoding="utf-8")
+    (repo / "src" / "python" / "core" / "pyproject.toml").write_text(
+        """
+[project]
+name = "format-factory-core"
+requires-python = ">=3.11"
+""".lstrip(),
+        encoding="utf-8",
+    )
+    (repo / "tests" / "python" / "core").mkdir(parents=True)
+    target = ProductTarget("openraster", "ora", "openraster")
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    monkeypatch.setattr(module, "TARGETS", (target,))
+    monkeypatch.setattr(module, "TARGETS_BY_PRODUCT", {"openraster": target})
+
+    program = ProductionProgram(tmp_path / "state")
+    observed = program._audit_chassis()
+    gap = next(item for item in observed if item["format_id"] == "openraster")
+    assert gap["blocking_status"] == "BLOCKED_DEPENDENCY"
+    assert gap["owning_task"] == "AUTO-OPENRASTER-GATE9-READINESS"
+    assert "Gate 9" in gap["root_cause"]
+    assert program.next_gap() is None
+    assert program.next_blocked_gap() is not None
 
 
 def test_controller_resumes_last_verified_transition(tmp_path: Path) -> None:

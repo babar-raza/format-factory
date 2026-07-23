@@ -1,0 +1,102 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-autonomous-loop-blocked-format-skip-001",
+  "execution_id": "ff6-autonomous-loop-blocked-format-skip-001",
+  "task_id": "AUTO-CONTROLLER-BLOCKED-FORMAT-SKIP",
+  "skill_id": "autonomous-loop",
+  "selected_skill_ids": ["autonomous-loop"],
+  "skill_hashes": {
+    "autonomous-loop": "1fcf4e2d6049f484be3acf6db9cbd60e57e11eeea5eff77aed23b79fbd6fc07c"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACHINERY-BLOCKED-FORMAT-SKIP",
+  "requested_operation": "prevent a governance-blocked format from stalling other autonomous product work",
+  "inputs": {
+    "sprint_track": "infrastructure",
+    "blocked_product": "openraster",
+    "registry_format_id": "ora",
+    "registry_sha256": "1e3fad6de81e2005a0c1005df1551193081e06b07f21844cb49ddd3b8951198f",
+    "gate_9_status": "not_started",
+    "implementation_authorized": false,
+    "blocked_gap": "GAP-90A0341AADB89D33",
+    "next_unblocked_task": "AUTO-XLIFF-PACKAGE-CHASSIS"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/autonomous-loop-blocked-format-skip.json",
+    "tests/production_program/test_production_program.py",
+    "tools/supervisor/production_program.py"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/autonomous-loop-blocked-format-skip.json",
+    "tests/production_program/test_production_program.py",
+    "tools/supervisor/production_program.py"
+  ],
+  "base_git_commit": "8bd674c1269ac0ce74f14b6bb9d1fea0bc8cf815",
+  "target_tree_sha256": "343adbebf0c76c76de0eff54cf68bb026b781f4c4217ee4d71886500b628f0e7",
+  "clean_target_scope": true,
+  "input_digests": {
+    "registry": {
+      "format-registry.yaml": "1e3fad6de81e2005a0c1005df1551193081e06b07f21844cb49ddd3b8951198f"
+    },
+    "tools": {
+      "production_program.py": "c62cc920fccc09de8b540c363efc3fc9741c8749d8ac6455de3b81667330870b"
+    },
+    "tests": {
+      "test_production_program.py": "500d8e88d9328eae68b5e55314360a88f6b360f34127835a7989c8ca01e1d734"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64"
+    }
+  },
+  "tests_run": [
+    "pytest tests/production_program: 36 passed",
+    "ruff check controller and regression tests: pass",
+    "mypy --strict tools/supervisor/production_program.py: pass",
+    "live bootstrap: OpenRaster BLOCKED_DEPENDENCY and XLIFF selected"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/production_program"],
+      "exit_code": 0,
+      "test_selector": "36 tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "tools/supervisor/production_program.py", "tests/production_program/test_production_program.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "tools/supervisor/production_program.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "tools.supervisor.production_program", "bootstrap"],
+      "exit_code": 0
+    }
+  ],
+  "ledger_entry_id": null,
+  "proof_nodes": [],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 619,
+    "blocked_gap_count": 1,
+    "openraster_blocking_status": "BLOCKED_DEPENDENCY",
+    "next_task": "AUTO-XLIFF-PACKAGE-CHASSIS"
+  },
+  "open_gaps": [
+    "OpenRaster source creation remains blocked until its canonical ora registry record has implementation_authorized=true and an evidence-backed passed Gate 9 approval record.",
+    "The controller intentionally does not mutate or synthesize the registry decision.",
+    "Blocked dependencies remain visible through next_blocked_gap and are not treated as completion."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "QUEUE_RESILIENCE_VERIFIED",
+  "timestamp": "2026-07-23T20:52:39Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -123,6 +123,66 @@ def validate_target_registry() -> dict[str, Any]:
     }
 
 
+def source_creation_authorization(target: ProductTarget) -> dict[str, Any]:
+    """Read the live Gate 9 source-creation decision from the registry.
+
+    Persisted controller state is never authoritative for this decision. A
+    status label alone is insufficient: implementation authorization, a
+    passed Gate 9 status, and an approval identity/date must all be present.
+    """
+
+    registry_path = REPO_ROOT / "registry" / "format-registry.yaml"
+    document = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+    records = [
+        item
+        for item in document.get("formats", [])
+        if isinstance(item, dict)
+        and str(item.get("format_id", "")) == target.contract_format_id
+    ]
+    if len(records) != 1:
+        return {
+            "authorized": False,
+            "reason": (
+                "canonical registry must contain exactly one format record for "
+                f"{target.contract_format_id!r}; found {len(records)}"
+            ),
+            "registry_sha256": sha256_path(registry_path),
+        }
+    record = records[0]
+    gates = record.get("gates", {})
+    gate_9 = gates.get("gate_9", {}) if isinstance(gates, dict) else {}
+    status = str(gate_9.get("status", "")).strip().lower()
+    approved_by = gate_9.get("approved_by")
+    approved_date = gate_9.get("approved_date")
+    implementation_authorized = record.get("implementation_authorized") is True
+    status_passed = status.startswith("pass") or status.startswith("approved")
+    authorized = bool(
+        implementation_authorized and status_passed and approved_by and approved_date
+    )
+    missing: list[str] = []
+    if not implementation_authorized:
+        missing.append("implementation_authorized=true")
+    if not status_passed:
+        missing.append("a passed Gate 9 status")
+    if not approved_by:
+        missing.append("Gate 9 approved_by")
+    if not approved_date:
+        missing.append("Gate 9 approved_date")
+    return {
+        "authorized": authorized,
+        "reason": (
+            "source creation authorized"
+            if authorized
+            else "source creation requires " + ", ".join(missing)
+        ),
+        "registry_sha256": sha256_path(registry_path),
+        "gate_9_status": status,
+        "approved_by": approved_by,
+        "approved_date": str(approved_date) if approved_date else None,
+        "implementation_authorized": implementation_authorized,
+    }
+
+
 def canonical_bytes(value: Any) -> bytes:
     return json.dumps(
         value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
@@ -357,8 +417,22 @@ class ProductionProgram:
             self.persist()
 
     def next_gap(self) -> Gap | None:
-        open_gaps = [gap for gap in self.gaps.values() if gap.state == "OPEN"]
+        open_gaps = [
+            gap
+            for gap in self.gaps.values()
+            if gap.state == "OPEN" and gap.blocking_status == "UNBLOCKED"
+        ]
         return min(open_gaps, key=Gap.sort_key) if open_gaps else None
+
+    def next_blocked_gap(self) -> Gap | None:
+        """Expose dependencies without allowing one format to stall the queue."""
+
+        blocked = [
+            gap
+            for gap in self.gaps.values()
+            if gap.state == "OPEN" and gap.blocking_status != "UNBLOCKED"
+        ]
+        return min(blocked, key=Gap.sort_key) if blocked else None
 
     @staticmethod
     def _repo_inputs(values: list[str] | tuple[str, ...], *, label: str) -> list[Path]:
@@ -500,6 +574,13 @@ class ProductionProgram:
             issues = self._package_chassis_issues(
                 source_package_id, distribution_suffix
             )
+            authorization: dict[str, Any] | None = None
+            if product_id != "_core":
+                authorization = source_creation_authorization(
+                    TARGETS_BY_PRODUCT[product_id]
+                )
+                if not authorization["authorized"]:
+                    issues.append(str(authorization["reason"]))
             identity = f"{product_id}:production-package-chassis"
             gap_id = (
                 "GAP-"
@@ -514,6 +595,9 @@ class ProductionProgram:
                 ]
             )
             if issues:
+                source_blocked = bool(
+                    authorization is not None and not authorization["authorized"]
+                )
                 gap = Gap(
                     gap_id=gap_id,
                     format_id=product_id,
@@ -522,7 +606,14 @@ class ProductionProgram:
                     severity="HIGH",
                     root_cause="; ".join(issues),
                     evidence_digest=evidence_digest,
-                    owning_task=f"AUTO-{product_id.upper()}-PACKAGE-CHASSIS",
+                    owning_task=(
+                        f"AUTO-{product_id.upper()}-GATE9-READINESS"
+                        if source_blocked
+                        else f"AUTO-{product_id.upper()}-PACKAGE-CHASSIS"
+                    ),
+                    blocking_status=(
+                        "BLOCKED_DEPENDENCY" if source_blocked else "UNBLOCKED"
+                    ),
                 )
                 self.reconcile_gap(gap, persist=False)
                 observed.append(asdict(gap))
@@ -651,7 +742,27 @@ class ProductionProgram:
             "executed": True,
         }
         proof_id = "PROOF-" + hashlib.sha256(canonical_bytes(material)).hexdigest().upper()
-        proof = ExecutedProof(proof_id=proof_id, **material)
+        proof = ExecutedProof(
+            proof_id=proof_id,
+            format_id=format_id,
+            obligation_id=obligation_id,
+            polarity=polarity,
+            contract_digest=compiled.digest,
+            source_paths=self._relative_paths(source_inputs),
+            source_digest=before["source"],
+            test_paths=self._relative_paths(tests),
+            test_digest=before["tests"],
+            fixture_paths=self._relative_paths(fixtures),
+            fixture_digest=before["fixtures"],
+            dependency_paths=self._relative_paths(dependencies),
+            dependency_digest=before["dependencies"],
+            environment_digest=environment_digest,
+            command=self._canonical_command(command),
+            exit_code=result.returncode,
+            stdout_sha256=hashlib.sha256(result.stdout).hexdigest(),
+            stderr_sha256=hashlib.sha256(result.stderr).hexdigest(),
+            executed=True,
+        )
         self.proofs[proof_id] = proof
         self.persist()
         self.journal(
@@ -1229,10 +1340,17 @@ class ProductionProgram:
         return results
 
     def status(self) -> dict[str, Any]:
+        open_gaps = [gap for gap in self.gaps.values() if gap.state == "OPEN"]
         return {
             "formats": {key: asdict(value) for key, value in sorted(self.formats.items())},
             "next_gap": asdict(gap) if (gap := self.next_gap()) else None,
-            "open_gap_count": sum(gap.state == "OPEN" for gap in self.gaps.values()),
+            "next_blocked_gap": (
+                asdict(blocked) if (blocked := self.next_blocked_gap()) else None
+            ),
+            "open_gap_count": len(open_gaps),
+            "blocked_gap_count": sum(
+                gap.blocking_status != "UNBLOCKED" for gap in open_gaps
+            ),
         }
 
 
