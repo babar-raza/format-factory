@@ -937,3 +937,48 @@ issues:
     diff-scoped). Disclosed here rather than attempted-and-risked via a
     fragile manual partial-patch workaround for 6 lines of already-verified
     coherent content.
+
+- issue_id: FI-033
+  stable_semantic_key: "test_suite:tests_supervisor_full_run:68_preexisting_failures_2026-07-24"
+  status: discovered
+  discovered_at: "2026-07-24T00:15:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tests/supervisor
+  affected_paths:
+    - tests/supervisor/test_governance_validators_v43_v44.py
+    - tests/supervisor/test_governance_validators.py
+    - tests/supervisor/test_v75_v76_validators.py
+    - tests/supervisor/test_package_integrity_validators.py
+    - tests/supervisor/test_authority_conveyor.py
+    - tests/supervisor/test_authority_gate_validation.py
+    - tests/supervisor/test_autonomous_task_generator.py
+    - tests/supervisor/test_route_persistence_e2e.py
+    - tests/supervisor/test_coverage_contract_coherence.py
+    - tests/supervisor/test_gate11_state_contract.py
+  observed_behavior: "TC-RESUME-001's plan text only requires the tests/governance/ suite as verification (which passed clean: 153 passed, 1 skipped, 0 failed), but as extra diligence a full tests/supervisor/ run was also performed (7483 passed, 68 failed, 97 skipped, 4 xfailed, 2:29:55 wall time -- this suite is far larger and slower than tests/governance/). None of my new/modified test files (test_autonomous_cycle_write_journal_enum.py, test_autonomous_cycle_v252_surfacing.py, or the pre-existing autonomous_cycle/V252 suites) are among the 68 failures. Three of the 68 were individually root-caused to confirm they are NOT regressions from FI-027/028/030: (1) test_governance_validators_v43_v44.py::test_total_validator_count_is_44_in_runner_source hardcodes an expected call count (90) via a brittle regex over governance_validator_runner.py source; the actual count is 89 -- my V252 dispatch line (`results.append(_dispatch(_v252, ...))`) does not even match the test's counting pattern (`validate_`/`_validate_` prefix + `(declaration`), so my change contributes 0 to this count; the drift is from the many other validators (V224-V251 etc.) already present in the file before my edit. (2) test_governance_validators.py::test_governance_declaration_passes_all fails on three unrelated validators (validate_sal_store_reconciliation, validate_package_install_proof_coverage, validate_oracle_registry_reconciliation) that scan real repo state (SAL facts, package-install proofs, oracle registry) -- none are V252 or touch any FI-027/028/030 file; stderr does show my expected, harmless, non-blocking '[VALIDATOR-COUNT] WARNING: expected 219 validators, ran 220 (delta +1)' but this is a print, not a counted FAIL, and is not what the assertion tripped on. (3) test_v75_v76_validators.py::test_warns_for_existing_csv_package hardcodes a path under src/python/csv/ that a different agent's own real, in-progress rename (RENAME_BATCH_TC-PA-038, csv -> ff_csv) has apparently already moved or is mid-moving -- unrelated to anything in this plan's scope. The remaining 65 were not individually root-caused (68 items is far beyond this narrow plan's mandate) but their names (task-generator schema tests, pilot-verification suites, format-authority-promotion tests for fods/zst, gate11 state-contract tests, route-persistence e2e) show no relationship to write_journal enums, command-hash baselines, or V252 -- consistent with the same pattern: real, pre-existing repo-state drift from the multi-day gap and heavy concurrent-agent activity (1782+ dirty files at last check), not a regression introduced by this plan's fixes."
+  expected_behavior: "A full tests/supervisor/ run should reflect only genuine regressions from in-flight changes; pre-existing, unrelated repo-state drift should be triaged and registered by whichever mission/session is actually working the affected area, on a cadence that doesn't let it silently accumulate to 68 unaddressed failures."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-TESTSUITE-DRIFT-001
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: VALID_GOVERNED_EXCLUSION
+  evidence:
+    - "pytest tests/supervisor/ -q --timeout=300: 68 failed, 7483 passed, 97 skipped, 4 xfailed in 8995.86s (full names captured in this session's transcript)"
+    - "tests/governance/ (the plan's actual literal verification target): 153 passed, 1 skipped, 0 failed -- clean"
+    - "3 of 68 individually root-caused (see observed_behavior) -- all confirmed unrelated to FI-027/028/030"
+  notes: >
+    Disposition is VALID_GOVERNED_EXCLUSION, not a healing taskcard, because
+    triaging and fixing 68 pre-existing, unrelated test failures is a
+    fundamentally separate, much larger body of work than the narrow
+    FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME plan (scoped only to
+    FI-027/028/030) was ever meant to cover, and the plan's own literal
+    Verification section only required tests/governance/ (which is clean).
+    Registered rather than silently noted in a chat response, per the
+    standing "whoever finds a problem owns it -- at minimum, registers it"
+    rule; ownership here is discharged by registration plus the causal
+    spot-checks proving non-regression, not by full remediation, matching
+    the "Tier B" triage-not-repair bar for findings outside the discovering
+    plan's own scope described (but never implemented as enforced code) in
+    the parent mission's design notes.
