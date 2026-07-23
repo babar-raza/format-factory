@@ -109,6 +109,8 @@ Do not manually edit the combined cache in `.local/spec-cache/`.
 - `.local/spec-cache/**`
 - `reports/**`
 
+- `schemas/sal-facts/sal-facts-schema.json` â€” versioned ingestion schema
+
 ## Forbidden paths
 
 - `src/**`

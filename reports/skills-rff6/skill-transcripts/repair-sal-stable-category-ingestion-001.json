@@ -1,0 +1,118 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-repair-sal-stable-category-ingestion-001",
+  "execution_id": "ff6-repair-sal-stable-category-ingestion-001",
+  "task_id": "REPAIR-SAL-STABLE-CATEGORY-INGESTION",
+  "skill_id": "ingest-spec-sal",
+  "selected_skill_ids": [
+    "ingest-spec-sal",
+    "check-contract-sal-readiness"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-SAL-READINESS-005",
+  "requested_operation": "make new SAL identities content-stable and make authority-readiness categories explicit",
+  "inputs": {
+    "format_id": "cross-format",
+    "spec_source_uri": "acquired research source records",
+    "spec_version": "pinned per format",
+    "spec_body": "registered primary authority",
+    "target_fact_count_min": 1
+  },
+  "root_causes": [
+    {
+      "id": "RC-SAL-IDENTITY-005A",
+      "symptom": "New facts received sequential IDs that changed with candidate insertion order.",
+      "cause": "The seeder derived canonical fact_id from max(existing numeric suffix)+1."
+    },
+    {
+      "id": "RC-SAL-CATEGORY-005B",
+      "symptom": "Valid XML authority facts did not satisfy syntax readiness because wording lacked a small global keyword list.",
+      "cause": "Readiness inferred all categories from substring matching and facts had no explicit category field."
+    }
+  ],
+  "solution": {
+    "stable_identity": "New canonical SAL IDs hash format, claim, element identity, section, and sorted acquired source digests; FACT aliases remain sequential compatibility projections.",
+    "category_assignment": "New reviewed candidates carry explicit readiness_categories. Legacy facts retain keyword compatibility until migrated.",
+    "collision_policy": "A stable ID collision with a different claim fails closed."
+  },
+  "allowed_files": [
+    "tools/spec/seed_sal_candidates.py",
+    "tests/tools/test_seed_sal_candidates.py",
+    "schemas/sal-facts/sal-facts-schema.json",
+    "tools/format_contract/contract_compiler.py",
+    ".claude/commands/ingest-spec-sal.md",
+    ".supervisor/skill-registry.yaml",
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-sal-stable-category-ingestion-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/seed_sal_candidates.py",
+    "tests/tools/test_seed_sal_candidates.py",
+    "schemas/sal-facts/sal-facts-schema.json",
+    "tools/format_contract/contract_compiler.py",
+    ".claude/commands/ingest-spec-sal.md",
+    ".supervisor/skill-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-sal-stable-category-ingestion-001.json"
+  ],
+  "base_git_commit": "b0b5a6aca89f7268792107ebfd48fcb26913823b",
+  "input_digests": {
+    "contract_compiler": "2440c85f57b9c388b0402ef95dac5467dbd4b35ddc53bf200b44ef3b2bcd2cc9",
+    "seeder": "414a99bd70f67d00d4f313d5101fc9184c02e32344a16ac3b591a3eaa57aff41",
+    "seeder_tests": "619375b35265de98a6fd04e4b1eec761f5ec7e7c23f7f14f20c65e824d0b8653",
+    "sal_schema": "d7d0614994ccd35c60dcf729749460895717b5afde7288d399d5342eb9b17c39",
+    "command_contract": "417131df427be353d129f5ad8f9e35b45950e14e2fcfbe97a7ff18abe8d108ce",
+    "skill_registry": "a99171919c17347870ff51ecff8060988dbc6cb6b77bfdb280b378e390e04ea9"
+  },
+  "tests_run": [
+    "authority-bound initialization, missing-authority rejection, idempotency, and candidate-order identity: 4 passed",
+    "strict mypy on seeder: pass",
+    "Ruff on changed ingestion/readiness code: pass",
+    "skill registry contracts: 194 skills, 0 FAIL, 0 WARN"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/tools/test_seed_sal_candidates.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "4 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "tools/spec/seed_sal_candidates.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/supervisor/validate_skill_contracts.py"
+      ],
+      "exit_code": 0,
+      "test_selector": "194 skills"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_INGESTION_REPAIR",
+  "open_gaps": [
+    "The reviewed XLIFF and UBL syntax candidates must be committed by this repaired seeder and then validated through the strict contract gate."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "NEW_SAL_FACTS_HAVE_CONTENT_STABLE_IDENTITIES_AND_EXPLICIT_READINESS_CATEGORIES",
+  "timestamp": "2026-07-24T03:42:19+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -2328,6 +2328,7 @@ skills:
   - tools/spec/extract_sal_facts.py
   - tools/spec/merge_sal_facts.py
   - tools/spec/seed_sal_candidates.py
+  - schemas/sal-facts/sal-facts-schema.json
   mandatory_validations:
   - sal_facts_nonzero
   - spec_fact_refs_populated
@@ -2335,8 +2336,9 @@ skills:
   notes: Created TC-LA-004 (2026-06-26). Governs SAL ingestion for the 14 formats
     with zero spec_facts. For stdlib-backed formats, see /run-oracle as alternative.
   product_track: sal_ingestion
-  purpose: Ingest a format specification into the SAL to produce FACT-{FORMAT}-NNN
-    entries in sal-facts-latest.json. Only governed entry point for adding spec facts.
+  purpose: Ingest a format specification into the SAL with stable canonical
+    SAL-{FORMAT}-{content-id} identities, compatibility FACT aliases, explicit
+    readiness categories, and acquired-authority digests.
   required_handoff_fields:
   - format_id
   - spec_source_uri

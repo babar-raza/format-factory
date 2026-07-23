@@ -82,7 +82,10 @@ def readiness(ctx: dict) -> dict:
         keywords = [k.lower() for k in cat["match_keywords"]]
         matched = [
             f.get("fact_id") for f in facts
-            if any(k in _fact_text(f) for k in keywords)
+            if (
+                cat_name in (f.get("readiness_categories") or [])
+                or any(k in _fact_text(f) for k in keywords)
+            )
         ]
         min_facts = int(overrides.get(cat_name, cat.get("min_facts", 1)))
         covered = len(matched) >= min_facts
@@ -102,10 +105,10 @@ def readiness(ctx: dict) -> dict:
     threshold = float(family_rules.get("threshold", policy.get("default_threshold", 0.7)))
     report["score"] = round(score, 4)
     report["threshold"] = threshold
-    report["ready"] = score >= threshold
     report["missing_categories"] = sorted(
         name for name, c in report["categories"].items() if not c["covered"]
     )
+    report["ready"] = score >= threshold and not report["missing_categories"]
     return report
 
 

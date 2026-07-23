@@ -189,6 +189,15 @@
           "type": "string",
           "description": "Current status of the fact in the pipeline."
         },
+        "readiness_categories": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["structure_roots", "data_model", "syntax_encoding", "constraints_validation", "versioning_profiles", "security_behavior"]
+          },
+          "description": "Explicit authority-readiness categories. New facts use these stable tags; legacy facts may still be classified by compatibility keyword rules."
+        },
         "authority_class": {
           "type": "string",
           "enum": ["AUTHORITATIVE", "VERIFIED_DERIVATION", "ACCEPTED_EMPIRICAL_EVIDENCE", "AI_DRAFT", "UNVERIFIED"],

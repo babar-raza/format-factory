@@ -85,6 +85,54 @@ def test_thin_sal_store_is_blocked(tmp_path, monkeypatch):
     assert report["missing_categories"], "blocked report must name missing categories"
 
 
+def test_weighted_score_cannot_mask_a_missing_required_category():
+    context = {
+        "format_id": "synthetic",
+        "family": "synthetic_family",
+        "sal": {
+            "facts": [
+                {
+                    "fact_id": "SAL-SYNTHETIC-00001",
+                    "claim": "root document structure",
+                }
+            ]
+        },
+        "research": {"findings": []},
+        "categories_policy": {
+            "categories": {
+                "structure_roots": {
+                    "match_keywords": ["root"],
+                    "min_facts": 1,
+                },
+                "syntax_encoding": {
+                    "match_keywords": ["encoding"],
+                    "min_facts": 1,
+                },
+            },
+            "families": {
+                "synthetic_family": {
+                    "threshold": 0.8,
+                    "required_categories": [
+                        "structure_roots",
+                        "syntax_encoding",
+                    ],
+                    "weights": {
+                        "structure_roots": 0.9,
+                        "syntax_encoding": 0.1,
+                    },
+                }
+            },
+        },
+    }
+
+    report = cc.readiness(context)
+
+    assert report["score"] == 0.9
+    assert report["score"] >= report["threshold"]
+    assert report["missing_categories"] == ["syntax_encoding"]
+    assert report["ready"] is False
+
+
 @pytest.mark.parametrize("fmt", ["ubl", "xliff", "ipynb", "mtlx", "nrrd"])
 def test_seeded_pilot_stores_are_ready(fmt):
     """Post-TC-FCL-050 state: pilots were seeded through the governed research

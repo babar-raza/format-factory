@@ -75,6 +75,7 @@ def _write_inputs(sandbox: dict[str, Path], *, source_ids=True) -> None:
         "element_qname": "ora:archive",
         "section": "File Layout",
         "authority": "OpenRaster 0.0.5",
+        "readiness_categories": ["syntax_encoding"],
     }
     if source_ids:
         candidate["source_ids"] = ["SRC-ORA-001"]
@@ -94,7 +95,9 @@ def test_initializes_missing_store_with_authority_digest(sandbox) -> None:
     store = yaml.safe_load(sandbox["store"].read_text(encoding="utf-8"))
     assert store["display_name"] == "OpenRaster"
     fact = store["facts"][0]
-    assert fact["fact_id"] == "SAL-ORA-00001"
+    assert fact["fact_id"].startswith("SAL-ORA-")
+    assert len(fact["fact_id"].removeprefix("SAL-ORA-")) == 16
+    assert fact["readiness_categories"] == ["syntax_encoding"]
     assert fact["provenance"]["authority_sources"] == [
         {"source_id": "SRC-ORA-001", "sha256": "a" * 64}
     ]
@@ -116,3 +119,39 @@ def test_second_run_is_idempotent(sandbox) -> None:
     result = seed_sal_candidates.seed("ora", "TC-TEST")
 
     assert result == {"seeded": 0, "skipped": 1, "total_facts": 1}
+
+
+def test_stable_id_does_not_depend_on_candidate_position(sandbox) -> None:
+    _write_inputs(sandbox)
+    queue = yaml.safe_load(sandbox["queue"].read_text(encoding="utf-8"))
+    second = {
+        **queue["candidates"][0],
+        "claim": "The mimetype member identifies an OpenRaster archive.",
+        "element_qname": "ora:mimetype",
+    }
+    queue["candidates"].append(second)
+    sandbox["queue"].write_text(
+        yaml.safe_dump(queue, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    seed_sal_candidates.seed("ora", "TC-TEST")
+    first_store = yaml.safe_load(sandbox["store"].read_text(encoding="utf-8"))
+    ids_by_claim = {
+        fact["claim"]: fact["fact_id"]
+        for fact in first_store["facts"]
+    }
+
+    sandbox["store"].unlink()
+    queue["candidates"].reverse()
+    sandbox["queue"].write_text(
+        yaml.safe_dump(queue, sort_keys=False),
+        encoding="utf-8",
+    )
+    seed_sal_candidates.seed("ora", "TC-TEST")
+    second_store = yaml.safe_load(sandbox["store"].read_text(encoding="utf-8"))
+
+    assert {
+        fact["claim"]: fact["fact_id"]
+        for fact in second_store["facts"]
+    } == ids_by_claim

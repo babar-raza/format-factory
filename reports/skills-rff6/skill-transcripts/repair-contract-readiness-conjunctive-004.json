@@ -1,0 +1,76 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-repair-contract-readiness-conjunctive-004",
+  "execution_id": "ff6-repair-contract-readiness-conjunctive-004",
+  "task_id": "REPAIR-CONTRACT-READINESS-CONJUNCTIVE",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": [
+    "compile-format-contract",
+    "check-contract-sal-readiness"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-READINESS-004",
+  "requested_operation": "make every named required authority category conjunctive with the weighted readiness threshold",
+  "inputs": {
+    "format_id": "cross-format",
+    "defect_id": "RC-CONTRACT-READINESS-PERCENTAGE-004",
+    "failing_regression": "XLIFF and UBL scored 0.9 and compiled despite missing required syntax_encoding authority coverage.",
+    "expected_invalidation_input": "fact-category policy and explicit per-fact readiness categories"
+  },
+  "root_cause": {
+    "symptom": "A high weighted score masked a missing required category.",
+    "cause": "readiness used score >= threshold as its complete verdict while missing_categories was advisory output.",
+    "structural_weakness": "The field name required_categories had no fail-closed semantics, allowing percentage coverage to substitute for mandatory authority closure."
+  },
+  "allowed_files": [
+    "tools/format_contract/contract_compiler.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    "reports/skills-rff6/skill-transcripts/repair-contract-readiness-conjunctive-004.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/contract_compiler.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    "reports/skills-rff6/skill-transcripts/repair-contract-readiness-conjunctive-004.json"
+  ],
+  "base_git_commit": "b0b5a6aca89f7268792107ebfd48fcb26913823b",
+  "input_digests": {
+    "contract_compiler": "2440c85f57b9c388b0402ef95dac5467dbd4b35ddc53bf200b44ef3b2bcd2cc9",
+    "determinism_tests": "0cc9ae625066460e3216b5f2e9cbda5b767fd21f30d78f9fcc16dd34c5d9ce24"
+  },
+  "tests_run": [
+    "synthetic score 0.9 / threshold 0.8 with one missing required category: correctly blocked",
+    "thin SAL store remains blocked: pass",
+    "full focused suite: 34 passed; XLIFF and UBL readiness tests failed only on the newly exposed syntax authority gaps"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract/test_determinism_foundation.py",
+        "-q",
+        "-k",
+        "weighted_score_cannot_mask or thin_sal_store_is_blocked"
+      ],
+      "exit_code": 0,
+      "test_selector": "2 tests"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_MACHINERY_REPAIR",
+  "open_gaps": [
+    "XLIFF requires one additional explicit syntax_encoding authority fact.",
+    "UBL requires three explicit syntax_encoding authority facts."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "REQUIRED_AUTHORITY_CATEGORIES_NOW_FAIL_CLOSED_INDEPENDENT_OF_WEIGHTED_SCORE",
+  "timestamp": "2026-07-24T03:42:19+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
