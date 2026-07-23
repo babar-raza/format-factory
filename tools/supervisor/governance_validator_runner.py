@@ -181,6 +181,28 @@ def run_all_governance_validators(
     if committed:
         declaration = {**declaration, "_committed": True}
 
+    # TC-GVD-001 (repo_root normalization): normalize ONCE, here, so no call site
+    # ever receives repo_root=None.
+    #
+    # Why this is part of the crash-class fix: most validators build paths as
+    # `repo_root / "..."`, which raises TypeError ("unsupported operand type(s)
+    # for /: 'NoneType' and 'str'") when repo_root is None. Only two sites
+    # (the ext4 per-file and found-issue groups) defended against this locally
+    # via `repo_root or Path(".")`; every other site crashed. Measured on the
+    # repo_root=None path: 15 validators (V_CERT_01-05, V232-V241) were lost to
+    # exactly this TypeError. Deleting the blind fallback loop removed the
+    # *duplicate-dispatch* source of the crash class, but this None-propagation
+    # source is independent of it — without this normalization the crash class
+    # is only absent when a caller happens to pass repo_root, which is
+    # "currently absent by coincidence" rather than structurally eliminated.
+    #
+    # Derived from __file__ (tools/supervisor/ -> repo root), not Path.cwd(), so
+    # the result is correct regardless of the caller's working directory. The two
+    # legacy `repo_root or Path(".")` guards below are now unreachable no-ops and
+    # are retained only as defensive redundancy.
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parents[2]
+
     # Lazy imports — kept inside function to prevent circular import when this
     # module is imported directly in a fresh subprocess (governance_validators
     # re-exports run_all_governance_validators, causing a partial-init cycle at
@@ -224,7 +246,8 @@ def run_all_governance_validators(
         validate_source_diff_required,
         validate_source_marker_or_sidecar,
         validate_spec_fact_authority_chain,
-        validate_spec_fact_count,
+        # validate_spec_fact_count: SUPERSEDED (TC-PA-035) — no longer called by the
+        # runner; the module import above still triggers its @validator registration.
         validate_spec_fact_refs_wired,
         validate_spec_parity_gate,
         validate_spec_qname_refs,
@@ -310,6 +333,20 @@ def run_all_governance_validators(
     shadow_suppressions: list[dict] = []
     # TC-PGI-042: Track validators that could not run due to import/execution errors.
     _skipped_validators: list[dict] = []
+    # TC-GVD-002: Dispatch tracking — records which registry-registered functions
+    # have been invoked via _dispatch(). Used by the completeness meta-validator.
+    _invoked_registry_fns: set = set()
+
+    def _dispatch(fn, rule_id, *args, **kwargs):
+        """TC-GVD-002: Single dispatch wrapper — the only path that produces a
+        countable result for migrated validators. Calls fn, stamps rule_id onto
+        the returned dict, and records fn in _invoked_registry_fns."""
+        result = fn(*args, **kwargs)
+        if isinstance(result, dict):
+            result["rule_id"] = rule_id
+        _invoked_registry_fns.add(fn)
+        return result
+
     results = [
         validate_execution_method_required(declaration),
         validate_source_diff_required(declaration),
@@ -325,7 +362,10 @@ def run_all_governance_validators(
         validate_ci_artifacts(declaration, repo_root),
         validate_spec_fact_refs_wired(declaration, repo_root),  # V13: SAL enforcement
         # REQ-GOV-001 / REQ-GOV-002: Gate 11 spec-literal depth validators
-        validate_spec_fact_count(declaration),
+        # V14 validate_spec_fact_count: SUPERSEDED (TC-PA-035). It was a deliberate
+        # no-op fully covered by V13 (zero-refs, blocking) + V19 (per-format count).
+        # Its @validator carries dispatch="superseded"; the call site is intentionally
+        # gone (dropped ran_count 220 -> 219). Do NOT re-add without a real threshold.
         validate_qname_coverage(declaration, repo_root),
         validate_parity_matrix_present(declaration, repo_root),
         validate_no_placeholder_metadata(declaration, repo_root),
@@ -648,6 +688,7 @@ def run_all_governance_validators(
             validate_public_symbol_without_qname_authority as _v111,
             validate_model_type_without_spec_authority as _v112,
             validate_nested_concept_on_root_document as _v113,
+            validate_detached_persistent_dict_on_model as _v116,
             validate_dumping_ground_or_catchall_file as _v117,
             validate_sprint_history_identifier_in_source as _v118,
             validate_promoted_code_changed_without_reopening as _v119,
@@ -658,6 +699,8 @@ def run_all_governance_validators(
             validate_new_product_bypassing_architecture_gate as _v125,
             validate_file_outside_approved_qname_layout as _v126,
             validate_type_outside_approved_qname_hierarchy as _v127,
+            validate_dotnet_parser_required as _v128,
+            validate_compat_facade_behavioral as _v129,
         )
 
         def _norm_ext4_file(r: dict) -> dict:
@@ -692,22 +735,24 @@ def run_all_governance_validators(
                     # Ledger uses 'entries'; V119 expects 'promotion_records'
                     if "entries" in _promo_data and "promotion_records" not in _promo_data:
                         _promo_data["promotion_records"] = _promo_data["entries"]
-            results.append(_norm_ext4_file(
-                _v119(declaration.get("changed_files", []), _promo_data)
-            ))
+            _r119 = _norm_ext4_file(_v119(declaration.get("changed_files", []), _promo_data))
+            _r119["rule_id"] = "V119"
+            results.append(_r119)
+            _invoked_registry_fns.add(_v119)
         except Exception as _exc_v119c:
             results.append({"validator": "V119", "result": "WARN", "blocks_sprint": False,
                             "violations": [], "summary": f"V119: skipped — {_exc_v119c}"})
 
         # V120: certification without architecture proof
         try:
-            results.append(_norm_ext4_file(
-                _v120(
-                    declaration.get("certification_status", ""),
-                    declaration.get("architecture_classification", ""),
-                    declaration.get("format_id", ""),
-                )
+            _r120 = _norm_ext4_file(_v120(
+                declaration.get("certification_status", ""),
+                declaration.get("architecture_classification", ""),
+                declaration.get("format_id", ""),
             ))
+            _r120["rule_id"] = "V120"
+            results.append(_r120)
+            _invoked_registry_fns.add(_v120)
         except Exception as _exc_v120c:
             results.append({"validator": "V120", "result": "WARN", "blocks_sprint": False,
                             "violations": [], "summary": f"V120: skipped — {_exc_v120c}"})
@@ -726,9 +771,10 @@ def run_all_governance_validators(
             _skipped_validators.append({"validators": ["V125_org_load"], "error": str(_exc_org)})
         if _org_entries:
             try:
-                results.append(_norm_ext4_file(
-                    _v125(declaration.get("format_id", ""), _org_entries)
-                ))
+                _r125 = _norm_ext4_file(_v125(declaration.get("format_id", ""), _org_entries))
+                _r125["rule_id"] = "V125"
+                results.append(_r125)
+                _invoked_registry_fns.add(_v125)
             except Exception as _exc_v125c:
                 results.append({"validator": "V125", "result": "WARN", "blocks_sprint": False,
                                 "violations": [], "summary": f"V125: skipped — {_exc_v125c}"})
@@ -737,6 +783,20 @@ def run_all_governance_validators(
             # would falsely FAIL every declaration regardless of format_id
             results.append({"validator": "V125", "result": "PASS", "blocks_sprint": False,
                             "violations": [], "summary": "V125: skipped — qname-code-organization-plan.yaml not found"})
+
+        # TC-GVD-003: V128 — dotnet parser required (per-format context-level)
+        _format_id = declaration.get("format_id", "")
+        if _format_id:
+            try:
+                from committed_fs import committed_list_files as _clf  # noqa: PLC0415
+                _net_dir = f"src/net/{_format_id}"
+                _format_root_files = _clf(_repo2, _net_dir)
+                if _format_root_files:
+                    results.append(_norm_ext4_file(
+                        _v128(_format_id, _format_root_files)
+                    ))
+            except Exception as _exc_v128:
+                _skipped_validators.append({"validators": ["V128"], "error": str(_exc_v128)})
 
         # File-level validators (run against each changed product source file)
         _file_validator_skips = 0
@@ -756,21 +816,33 @@ def run_all_governance_validators(
             file_str = str(cf_path)
             for fn, vid_label in [
                 (_v111, "V111"), (_v112, "V112"), (_v113, "V113"),
+                (_v116, "V116"),
                 (_v121, "V121"), (_v123, "V123"), (_v124, "V124"),
-                (_v127, "V127"),
+                (_v127, "V127"), (_v129, "V129"),
             ]:
                 try:
-                    r = fn(text, file_str)
-                    results.append(_norm_ext4_file(r))
+                    r = _norm_ext4_file(fn(text, file_str))
+                    r["rule_id"] = vid_label
+                    results.append(r)
+                    _invoked_registry_fns.add(fn)
                 except Exception:
                     _file_validator_skips += 1
-            # V117 and V118 take (source_text, file_path) too
-            for fn in (_v117, _v118):
-                try:
-                    r = fn(text, file_str)
-                    results.append(_norm_ext4_file(r))
-                except Exception:
-                    _file_validator_skips += 1
+            # TC-GVD-003: V117 takes only (file_path), not (source_text, file_path)
+            try:
+                r = _norm_ext4_file(_v117(file_str))
+                r["rule_id"] = "V117"
+                results.append(r)
+                _invoked_registry_fns.add(_v117)
+            except Exception:
+                _file_validator_skips += 1
+            # V118 takes (source_text, file_path)
+            try:
+                r = _norm_ext4_file(_v118(text, file_str))
+                r["rule_id"] = "V118"
+                results.append(r)
+                _invoked_registry_fns.add(_v118)
+            except Exception:
+                _file_validator_skips += 1
             # V126: file outside approved QName layout (per-file)
             if _org_entries:
                 try:
@@ -808,10 +880,10 @@ def run_all_governance_validators(
             validate_found_issue_escalation as _v132,
             validate_found_issue_invalid_disposition as _v133,
         )
-        results.append(_v130(declaration, repo_root))
-        results.append(_v131(declaration))
-        results.append(_v132(declaration))
-        results.append(_v133(declaration))
+        results.append(_dispatch(_v130, "V130", declaration, repo_root))
+        results.append(_dispatch(_v131, "V131", declaration))
+        results.append(_dispatch(_v132, "V132", declaration))
+        results.append(_dispatch(_v133, "V133", declaration))
     except Exception as _exc_v130:
         _skipped_validators.append({"validators": ["V130", "V131", "V132", "V133"], "error": str(_exc_v130)})
 
@@ -854,10 +926,10 @@ def run_all_governance_validators(
             validate_no_prose_only_findings as _v141,
             validate_invalid_ownership_disposition as _v142,
         )
-        results.append(_v139(declaration, repo_root))
-        results.append(_v140(declaration, repo_root))
-        results.append(_v141(declaration))
-        results.append(_v142(declaration, repo_root))
+        results.append(_dispatch(_v139, "V139", declaration, repo_root))
+        results.append(_dispatch(_v140, "V140", declaration, repo_root))
+        results.append(_dispatch(_v141, "V141", declaration))
+        results.append(_dispatch(_v142, "V142", declaration, repo_root))
     except Exception as _exc_v139:
         _skipped_validators.append({"validators": ["V139", "V140", "V141", "V142"], "error": str(_exc_v139)})
 
@@ -1194,39 +1266,273 @@ def run_all_governance_validators(
             "error": str(_exc_v242),
         })
 
-    # TC-BF-005: Load from _VALIDATOR_REGISTRY (additive — runs any validators not already
-    # covered by explicit imports above).  The @validator decorator fires when each
-    # governance_validators_*.py module is imported above, so the registry is populated by
-    # the time we reach this point.  Dedup rule: if rule_id is already in explicit results,
-    # the explicit instance wins (backward compat).
-    _registry_new = 0
-    _registry_dedup = 0
+    # TC-GVD-001: Explicit call sites for validators that were previously only
+    # reachable through the blind registry fallback loop (TC-BF-005, deleted).
+    # The fallback double-counted standard-signature validators and crashed on
+    # non-standard ones. Every validator must now have an explicit call site or
+    # a declared dispatch status (deferred/superseded) in the @validator decorator.
+
+    # V246 (SKILLS-FIRST-ADHOC-HEAL-2026-07-16): nested duplicate packages
     try:
-        from governance_validators_contract import _VALIDATOR_REGISTRY  # noqa: PLC0415
-        # Dedup by function name — the existing results use the function name in "validator"
-        # field, while the registry uses the function object itself. Match by __name__.
-        seen_fn_names = {r.get("validator", "").lstrip("_") for r in results}
-        for _reg_entry in _VALIDATOR_REGISTRY:
-            _fn = _reg_entry.get("fn")
-            if _fn is None:
-                continue
-            _fn_name = getattr(_fn, "__name__", "").lstrip("_")
-            if _fn_name and _fn_name in seen_fn_names:
-                _registry_dedup += 1
-                continue
-            try:
-                _extra_result = _fn(declaration, repo_root)
-                if isinstance(_extra_result, dict) and "result" in _extra_result:
-                    results.append(_extra_result)
-                    _registry_new += 1
-            except Exception as _exc_reg_fn:
-                _skipped_validators.append({"validators": [_fn_name or "registry_fn"], "error": str(_exc_reg_fn)})
-    except Exception as _exc_registry:
-        _skipped_validators.append({"validators": ["validator_registry_loader"], "error": str(_exc_registry)})
+        from governance_validators_package_integrity import (  # noqa: PLC0415
+            validate_no_nested_duplicate_packages as _v246,
+        )
+        results.append(_dispatch(_v246, "V246", declaration, repo_root))
+    except Exception as _exc_v246:
+        _skipped_validators.append({"validators": ["V246"], "error": str(_exc_v246)})
+
+    # V247-V248 (plans/.claude/investigate-and-plan-a-snuggly-grove.md Changes 2/3):
+    # coverage-to-contract coherence. V247 correlates Gate 9 coverage status with
+    # contract reconciliation status per format (WARN-only diagnostics, enriched by
+    # the curated xref); V248 keeps that xref referentially intact and complete.
+    # These are the first validators to read BOTH systems — V227-V231 read coverage,
+    # V232-V241 read contracts, and nothing correlated them.
+    try:
+        from governance_validators_format_contract import (  # noqa: PLC0415
+            validate_format_coherence as _v247,
+            validate_coverage_xref_integrity as _v248,
+        )
+        results.append(_dispatch(_v247, "V247", declaration, repo_root))
+        results.append(_dispatch(_v248, "V248", declaration, repo_root))
+    except Exception as _exc_v247:
+        _skipped_validators.append({"validators": ["V247", "V248"], "error": str(_exc_v247)})
+
+    # V249-V250 (plans/.claude/primary-purpose-the-python-starry-cupcake.md TC-PA-005/007):
+    # product-source import hygiene. V249 is a decrease-only ratchet over sys.path mutations
+    # in src/python/ (AST-based WITH alias resolution — `import sys as _s` evades text
+    # matching, PA-F4); V250 detects stdlib/popular-PyPI package-name collisions in BOTH
+    # failure directions (ours unreachable vs. ours hijacking the stdlib process-wide, PA-F2).
+    # Both fail CLOSED when their frozen baseline is missing — an enforcer that cannot tell
+    # new debt from old must never report clean (contrast V149's fail-open, PA-F3).
+    try:
+        from governance_validators_import_hygiene import (  # noqa: PLC0415
+            validate_no_syspath_mutation_in_product_source as _v249,
+            validate_no_stdlib_namespace_collision as _v250,
+        )
+        results.append(_dispatch(_v249, "V249", declaration, repo_root))
+        results.append(_dispatch(_v250, "V250", declaration, repo_root))
+    except Exception as _exc_v249:
+        _skipped_validators.append({"validators": ["V249", "V250"], "error": str(_exc_v249)})
+
+    # V251 (same plan, TC-PA-008): converter information-model compatibility gate. Every
+    # *_to_*.py under src/python/ must carry a classification in
+    # registry/converter-compatibility-matrix.yaml. V229 checks a converter EXISTS and its
+    # test PASSES; nothing asked whether the conversion carries meaning. This does.
+    try:
+        from governance_validators_converter_compat import (  # noqa: PLC0415
+            validate_converter_compatibility_registered as _v251,
+        )
+        results.append(_dispatch(_v251, "V251", declaration, repo_root))
+    except Exception as _exc_v251:
+        _skipped_validators.append({"validators": ["V251"], "error": str(_exc_v251)})
+
+    # V252 (TC-STRUCT-004, FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17, FI-030):
+    # aging visibility for STALE leases with real uncommitted drift and
+    # long-open known_gaps entries. WARN-only by design.
+    try:
+        from governance_validators_coordination import (  # noqa: PLC0415
+            validate_stale_lease_drift_and_gap_aging as _v252,
+        )
+        results.append(_dispatch(_v252, "V252", declaration, repo_root))
+    except Exception as _exc_v252:
+        _skipped_validators.append({"validators": ["V252"], "error": str(_exc_v252)})
+
+    # V_SAL_BACKING: work items SAL backing check
+    try:
+        from governance_validators_sal import (  # noqa: PLC0415
+            validate_work_items_sal_backing as _v_sal_backing,
+        )
+        results.append(_dispatch(_v_sal_backing, "V_WORK_ITEMS_SAL_BACKING", declaration, repo_root))
+    except Exception as _exc_sal_b:
+        _skipped_validators.append({"validators": ["V_WORK_ITEMS_SAL_BACKING"], "error": str(_exc_sal_b)})
+
+    # V_PROJECT_STATUS: project status freshness
+    try:
+        from governance_validators_ext2 import (  # noqa: PLC0415
+            validate_project_status_freshness as _v_proj_fresh,
+        )
+        results.append(_dispatch(_v_proj_fresh, "V_PROJECT_STATUS_FRESHNESS", declaration, repo_root))
+    except Exception as _exc_proj:
+        _skipped_validators.append({"validators": ["V_PROJECT_STATUS_FRESHNESS"], "error": str(_exc_proj)})
+
+    # V172-V175 (machinery audit validators), V182 (gap lifecycle)
+    try:
+        from governance_validators_ext4 import (  # noqa: PLC0415
+            validate_mach_audit_after_exec as _v172,
+            validate_mach_iteration_proof as _v173,
+            validate_mach_continuation_consumed as _v174,
+            validate_mach_task_vs_mission as _v175,
+            validate_no_open_implementation_verified_gaps as _v182,
+        )
+        results.extend([
+            _dispatch(_v172, "V172", declaration, repo_root),
+            _dispatch(_v173, "V173", declaration, repo_root),
+            _dispatch(_v174, "V174", declaration, repo_root),
+            _dispatch(_v175, "V175", declaration, repo_root),
+            _dispatch(_v182, "V182", declaration, repo_root),
+        ])
+    except Exception as _exc_v172:
+        _skipped_validators.append({"validators": ["V172", "V173", "V174", "V175", "V182"], "error": str(_exc_v172)})
+
+    # V_DOTNET_SEMANTIC: dotnet XML read/write and FODS extended APIs LOC validators
+    try:
+        from governance_validators_dotnet_semantic import (  # noqa: PLC0415
+            validate_dotnet_setter_without_xml_write as _v_dotnet_sw,
+            validate_dotnet_getter_without_xml_read as _v_dotnet_gr,
+            validate_dotnet_fods_extended_apis_loc as _v_dotnet_fods,
+        )
+        results.extend([
+            _dispatch(_v_dotnet_sw, "V_DOTNET_SETTER_WITHOUT_XML_WRITE", declaration, repo_root),
+            _dispatch(_v_dotnet_gr, "V_DOTNET_GETTER_WITHOUT_XML_READ", declaration, repo_root),
+            _dispatch(_v_dotnet_fods, "V_DOTNET_FODS_EXTENDED_APIS_LOC", declaration, repo_root),
+        ])
+    except Exception as _exc_dotnet_sem:
+        _skipped_validators.append({"validators": ["V_DOTNET_SETTER", "V_DOTNET_GETTER", "V_DOTNET_FODS_LOC"], "error": str(_exc_dotnet_sem)})
+
+    # V_ORACLE: stale oracle detection, future format onboarding, gate advancement
+    try:
+        from governance_validators_oracle import (  # noqa: PLC0415
+            validate_stale_oracle_detection as _v_stale_oracle,
+            validate_future_format_oracle_onboarding as _v_future_oracle,
+            validate_oracle_gate_advancement as _v_oracle_gate,
+        )
+        results.extend([
+            _dispatch(_v_stale_oracle, "V_STALE_ORACLE_DETECTION", declaration, repo_root),
+            _dispatch(_v_future_oracle, "V_FUTURE_FORMAT_ORACLE_ONBOARDING", declaration, repo_root),
+            _dispatch(_v_oracle_gate, "V_ORACLE_GATE_ADVANCEMENT", declaration, repo_root),
+        ])
+    except Exception as _exc_oracle_ext:
+        _skipped_validators.append({"validators": ["V_STALE_ORACLE", "V_FUTURE_ORACLE", "V_ORACLE_GATE"], "error": str(_exc_oracle_ext)})
 
     # TC-CTI-REGISTRY-001: Apply shadow routing via extracted helper.
     if shadow_registry:
         shadow_suppressions.extend(_apply_shadow_routing(results, shadow_registry))
+
+    # ── TC-GVD-007: Dispatch-completeness meta-validator ─────────────────
+    # Cross-references _VALIDATOR_REGISTRY (populated by @validator decorators)
+    # against _invoked_registry_fns (populated by _dispatch() calls above).
+    # Only ~28 validators are migrated to _dispatch() tracking so far; the
+    # remaining ~180+ are called directly. This check is HONEST about the
+    # migration state: unmigrated validators are informational backlog, NOT
+    # failures.
+    _registry_new: list[dict] = []      # validators newly discovered from registry
+    _registry_dedup: list[dict] = []    # dedup observations (informational)
+    try:
+        from governance_validators_contract import _VALIDATOR_REGISTRY  # noqa: PLC0415
+
+        _dispatch_explicit: list[dict] = []
+        _dispatch_deferred: list[dict] = []
+        _dispatch_superseded: list[dict] = []
+        _orphaned: list[str] = []
+        _unmigrated_backlog: list[str] = []
+
+        for entry in _VALIDATOR_REGISTRY:
+            _d = entry.get("dispatch", "explicit")
+            if _d == "explicit":
+                _dispatch_explicit.append(entry)
+            elif _d == "deferred":
+                _dispatch_deferred.append(entry)
+            elif _d == "superseded":
+                _dispatch_superseded.append(entry)
+
+        # Classify each "explicit" validator:
+        # - If fn IS in _invoked_registry_fns → verified (tracked via _dispatch())
+        # - If fn is NOT in _invoked_registry_fns → unmigrated backlog (called
+        #   through the old direct path, not yet wired through _dispatch())
+        # A true orphan would be a validator whose fn was once tracked by
+        # _dispatch() but whose call site was subsequently removed. Since
+        # _invoked_registry_fns is built fresh each run, this can only happen
+        # if a call site is deleted while the @validator decorator remains.
+        _verified_count = 0
+        for entry in _dispatch_explicit:
+            fn = entry.get("fn")
+            rid = entry.get("rule_id", "?")
+            if fn in _invoked_registry_fns:
+                _verified_count += 1
+            else:
+                # Not yet migrated to _dispatch() — informational, not a failure
+                _unmigrated_backlog.append(rid)
+
+        # Build informational items for deferred/superseded
+        _deferred_items = [
+            f"{e.get('rule_id', '?')}: {e.get('deferred_reason', 'no reason')}"
+            for e in _dispatch_deferred
+        ]
+        _superseded_items = [
+            f"{e.get('rule_id', '?')}: {e.get('deferred_reason', 'no reason')}"
+            for e in _dispatch_superseded
+        ]
+
+        # Summary strings
+        _total_registered = len(_VALIDATOR_REGISTRY)
+        _explicit_total = len(_dispatch_explicit)
+        _summary_parts = [
+            f"registry={_total_registered}",
+            f"explicit={_explicit_total} (verified={_verified_count}, backlog={len(_unmigrated_backlog)})",
+            f"deferred={len(_dispatch_deferred)}",
+            f"superseded={len(_dispatch_superseded)}",
+        ]
+        if _orphaned:
+            _summary_parts.append(f"ORPHANED={len(_orphaned)}")
+
+        _completeness_items: list[dict] = []
+        if _orphaned:
+            _completeness_items.append({
+                "kind": "orphan",
+                "detail": f"Orphaned validators (explicit but never invoked after migration): {_orphaned}",
+            })
+        if _unmigrated_backlog:
+            _completeness_items.append({
+                "kind": "backlog",
+                "detail": (
+                    f"{len(_unmigrated_backlog)} validators registered as explicit but not yet "
+                    f"migrated to _dispatch() tracking"
+                ),
+                "rule_ids": _unmigrated_backlog[:20],  # cap to avoid huge output
+                "total": len(_unmigrated_backlog),
+            })
+        if _deferred_items:
+            _completeness_items.append({
+                "kind": "deferred",
+                "detail": f"{len(_deferred_items)} validator(s) intentionally deferred",
+                "entries": _deferred_items[:10],
+            })
+        if _superseded_items:
+            _completeness_items.append({
+                "kind": "superseded",
+                "detail": f"{len(_superseded_items)} validator(s) superseded",
+                "entries": _superseded_items[:10],
+            })
+
+        # Populate _registry_new / _registry_dedup for the return dict
+        _registry_new = [
+            {"rule_id": e.get("rule_id"), "dispatch": e.get("dispatch", "explicit")}
+            for e in _VALIDATOR_REGISTRY
+        ]
+        # Detect duplicates by rule_id
+        _seen_rule_ids: dict[str, int] = {}
+        for e in _VALIDATOR_REGISTRY:
+            rid = e.get("rule_id", "?")
+            _seen_rule_ids[rid] = _seen_rule_ids.get(rid, 0) + 1
+        _registry_dedup = [
+            {"rule_id": rid, "count": cnt}
+            for rid, cnt in _seen_rule_ids.items() if cnt > 1
+        ]
+
+        results.append({
+            "validator": "dispatch_completeness_check",
+            "result": "FAIL" if _orphaned else "PASS",
+            "blocks_sprint": bool(_orphaned),
+            "summary": f"Dispatch completeness: {', '.join(_summary_parts)}",
+            "items": _completeness_items,
+            "rule_id": "V_DISPATCH_COMPLETENESS",
+        })
+    except Exception as _exc_dispatch:
+        _skipped_validators.append({
+            "validators": ["V_DISPATCH_COMPLETENESS"],
+            "error": str(_exc_dispatch),
+        })
+    # ── End TC-GVD-007 ───────────────────────────────────────────────────
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")

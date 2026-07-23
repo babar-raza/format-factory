@@ -71,6 +71,27 @@ except ImportError:
         yield
 
 
+def _surface_v252_aging_findings(repo_root) -> int:
+    """FI-030/TC-STRUCT-004: append V252's WARN-level aging-visibility findings
+    (STALE leases with real uncommitted drift, known_gaps entries open > 14 days)
+    to session-resume.md, so every future session reads them at start (CLAUDE.md's
+    mandatory session-resume.md read) rather than only when a validator happens to
+    be run explicitly. Returns the number of items appended (0 if none/unavailable).
+    """
+    from governance_validators_coordination import (
+        validate_stale_lease_drift_and_gap_aging as _v252_check,
+    )
+    result = _v252_check({}, repo_root)
+    resume_path = repo_root / "reports" / "supervisor" / "session-resume.md"
+    if result.get("result") != "WARN" or not resume_path.exists():
+        return 0
+    items = result.get("violations", [])
+    section = "\n## Aging Visibility (V252)\n\n" + "\n".join(f"- {item}" for item in items) + "\n"
+    with open(resume_path, "a", encoding="utf-8") as rf:
+        rf.write(section)
+    return len(items)
+
+
 def _validate_and_correct_signal_coherence(signal: dict, sprint_id: str) -> dict:
     """TC-MA2-SIGNAL-001-02: Validate and correct signal field coherence at write time.
 
@@ -2179,6 +2200,15 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  Regenerated: session-resume.md, approval-gates.md, next-sprint.md (stream={detected_stream})")
     except Exception as e:
         print(f"  WARNING: Legacy markdown regeneration failed: {e}")
+
+    # Step 7b2 (TC-STRUCT-004, FI-030): surface V252's aging-visibility findings
+    # into session-resume.md (see _surface_v252_aging_findings docstring).
+    try:
+        _v252_count = _surface_v252_aging_findings(repo_root)
+        if _v252_count:
+            print(f"  V252 aging findings appended to session-resume.md ({_v252_count} item(s))")
+    except Exception as e:
+        print(f"  WARNING: V252 session-resume.md surfacing failed: {e}")
 
     # Step 7c: Rebuild context pack (R99 fix: D99-STALE-02)
     print("\n=== STEP 7c: REBUILD CONTEXT PACK ===")

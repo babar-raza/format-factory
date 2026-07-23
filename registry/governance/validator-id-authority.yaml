@@ -3,7 +3,43 @@ portfolio_id: FF-PORTFOLIO-41-PROD-001
 generated_at: '2026-07-14'
 authority: This file is the canonical registry of @validator-decorated governance
   validators.
-runner_expected_count: 241  # +10 V232-V241 Format Contract Layer L30 (FCL-MACHINERY-2026-07-16, 2026-07-16); prior: reconciled 2026-07-16 (TC-S6P4-FINAL-001b, select-6 Phase 4 final re-audit): was 230; added V231 gate9 baseline integrity digest. Prior note (2026-07-15, TC-S6P4-SYS-001/003/005): was stale at 225; runner is authoritative. V224/V225/V226 were also missing from registered_validators below despite using @validator -- SF1's exact drift pattern recurring generically, fixed here.
+# RECALIBRATED 2026-07-17 (GVD-2026-07-17 / TC-GVD-009): 246 -> 215.
+# This is a DOCUMENTATION mirror of the count. The enforced source of truth is
+# tools/supervisor/validator-manifest.yaml, read by _load_expected_count(); no
+# Python reads this field. Keep the two reconciled.
+#
+# Why the number DROPPED (do not "restore" 246): until 2026-07-17 the runner had
+# a blind fallback loop that re-invoked every registry validator as
+# fn(declaration, repo_root). Its dedup guard compared fn.__name__ against the
+# free-text result "validator" field — namespaces that never align — so it never
+# fired, and 32 validators that already had correct explicit call sites appended
+# a SECOND, duplicate result each. 246 was therefore 214 real validators + 32
+# phantom duplicates. TC-GVD-001 deleted the loop; TC-GVD-007 added one new
+# meta-validator (V_DISPATCH_COMPLETENESS).
+#
+# Reconciliation (every number confirmed by live before/after runs):
+#   246 (HEAD, incl. 32 dupes) - 32 phantom dupes + 1 V_DISPATCH_COMPLETENESS = 215
+# Evidence: .local/evidences/gvd-2026-07-17/TC-GVD-009-reconciliation.md
+#
+# 2026-07-17 (later, coverage-contract coherence — plan investigate-and-plan-a-snuggly-grove):
+#   215 + V247 (validate_format_coherence) + V248 (validate_coverage_xref_integrity) = 217
+#   Both are format_contract-domain and land in the format_contract manifest module
+#   (count 10 -> 12). V246 was already taken by validate_no_nested_duplicate_packages,
+#   so the plan's proposed V246/V247 pair shifted to V247/V248.
+# 2026-07-17 (portfolio audit Phase 1 — plan primary-purpose-the-python-starry-cupcake):
+#   217 + V249 (validate_no_syspath_mutation_in_product_source, import_direction)
+#       + V250 (validate_no_stdlib_namespace_collision, import_direction)
+#       + V251 (validate_converter_compatibility_registered, structural) = 220
+#   V249/V250 land in the new import_hygiene manifest module (count 2); V251 in the new
+#   converter_compat module (count 1). The plan's proposed IDs (V246/V248/V249) all collided
+#   with shipped validators and were reallocated. The plan's TC-PA-006 (V247, nested duplicate
+#   detector) is OBSOLETE: it already shipped as V246.
+# 2026-07-17 (portfolio audit Phase 1 — TC-PA-035): 220 -> 219. V14
+#   validate_spec_fact_count was SUPERSEDED (deliberate no-op fully covered by V13 +
+#   V19); its @validator carries dispatch="superseded" and its runner call site was
+#   removed. The V_VALIDATE_SPEC_FACT_COUNT entry below stays (function still exists
+#   and is still decorated), annotated dispatch: superseded — it just no longer runs.
+runner_expected_count: 219
 registered_validators:
 - rule_id: V153
   domain: dotnet
@@ -77,6 +113,7 @@ registered_validators:
   domain: structural
   function: validate_spec_fact_count
   source_file: tools/supervisor\governance_validators.py
+  dispatch: superseded  # TC-PA-035: no-op redundant with V13+V19; no runner call site
 - rule_id: V_VALIDATE_QNAME_COVERAGE
   domain: structural
   function: validate_qname_coverage
@@ -865,5 +902,49 @@ registered_validators:
   domain: format_contract
   function: validate_contract_consumption
   source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V242
+  domain: governance
+  function: validate_exception_class_single_source
+  source_file: tools/supervisor/governance_validators_package_integrity.py
+- rule_id: V243
+  domain: governance
+  function: validate_exception_hierarchy_correctness
+  source_file: tools/supervisor/governance_validators_package_integrity.py
+- rule_id: V244
+  domain: governance
+  function: validate_analytics_module_wiring
+  source_file: tools/supervisor/governance_validators_package_integrity.py
+- rule_id: V245
+  domain: oracle
+  function: validate_oracle_registry_reconciliation
+  source_file: tools/supervisor/governance_validators_package_integrity.py
+- rule_id: V246
+  domain: governance
+  function: validate_no_nested_duplicate_packages
+  source_file: tools/supervisor/governance_validators_package_integrity.py
+- rule_id: V247
+  domain: format_contract
+  function: validate_format_coherence
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V248
+  domain: format_contract
+  function: validate_coverage_xref_integrity
+  source_file: tools/supervisor/governance_validators_format_contract.py
+- rule_id: V249
+  domain: import_direction
+  function: validate_no_syspath_mutation_in_product_source
+  source_file: tools/supervisor/governance_validators_import_hygiene.py
+- rule_id: V250
+  domain: import_direction
+  function: validate_no_stdlib_namespace_collision
+  source_file: tools/supervisor/governance_validators_import_hygiene.py
+- rule_id: V251
+  domain: structural
+  function: validate_converter_compatibility_registered
+  source_file: tools/supervisor/governance_validators_converter_compat.py
+- rule_id: V252
+  domain: governance
+  function: validate_stale_lease_drift_and_gap_aging
+  source_file: tools/supervisor/governance_validators_coordination.py
 note: Additional validators are wired directly in governance_validator_runner.py without
   @validator decorator.
