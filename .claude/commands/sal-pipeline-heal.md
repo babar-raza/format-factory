@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-21"
+version: "1.1"
+last-updated: "2026-07-23"
 phase-available: "all"
 gate-required: null
 created-by: TC-SAL-SKILL-001 (skill-governance-sync-sprint)
@@ -11,7 +11,8 @@ product_track: sal_infrastructure
 
 Execute one governed sprint of SAL (Specification Authority Layer) pipeline healing work.
 This skill governs all implementation work against ROOT-01..ROOT-08 root causes documented
-in `plans/strategic/snoopy-juggling-seal.md`.
+in `plans/strategic/snoopy-juggling-seal.md` and current SAL integrity gaps materialized by
+the production controller.
 
 **This is the REQUIRED skill for all TC-SAL-IMPL-* and TC-SAL-DIAG-* taskcards that are
 NOT STARTED. No agent may modify SAL implementation files without first invoking this skill.**
@@ -68,6 +69,8 @@ Do NOT run for read-only recon or evidence reviews.
 4. Confirm the spec cache path exists and contains a SHA-256 verified source file.
    - If spec cache is missing: this is a TRUE_EXTERNAL_GATE (spec acquisition required).
    - Do NOT proceed with empty or missing spec cache. Report: `BLOCKED_SPEC_CACHE_MISSING`.
+   - For `schema_migration`, committed canonical stores plus their derived combined
+     projection satisfy this precondition; a single-format source cache is not required.
 5. Confirm `tools/specification-authority-layer/` contains the tool for the target stage.
 6. Read the preservation constraints in Section 12 of snoopy-juggling-seal.md.
 
@@ -104,6 +107,11 @@ Do NOT run for read-only recon or evidence reviews.
 ## Allowed Paths
 
 - `tools/specification-authority-layer/` (read + targeted repair)
+- `tools/spec/` (targeted SAL merge/status repair)
+- `schemas/sal-facts/` (schema migration only)
+- `tests/tools/` and `tests/spec_authority/` (focused regression controls)
+- `tools/supervisor/production_program.py` and
+  `tests/production_program/test_production_program.py` (live gap projection only)
 - `.local/spec-cache/<format>/<version>/workbench/` (write fact artifacts)
 - `.local/sal-output/` (write runner output)
 - `plans/strategic/snoopy-juggling-seal.md` (update taskcard status only)
@@ -172,6 +180,9 @@ Per Section 22 of snoopy-juggling-seal.md, do NOT:
 ## Changelog
 
 - 1.0 (2026-06-21): Initial version — TC-SAL-SKILL-001 (skill-governance-sync-sprint, SKILL-GAP-011)
+
+- 1.1 (2026-07-23): Added controller-materialized schema-migration coverage,
+  canonical-status policy checks, and live gap projection.
 
 ## Stop Conditions
 

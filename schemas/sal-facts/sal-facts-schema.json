@@ -39,6 +39,69 @@
     }
   },
   "$defs": {
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "verified_with_note",
+        "workbench_verified",
+        "structural_derivation",
+        "unverified",
+        "ai_draft",
+        "disputed",
+        "pending",
+        "pending_verification",
+        "needs_review",
+        "not_found_in_normalized_text"
+      ],
+      "description": "Closed SAL verification-state vocabulary. Recognition by this schema does not itself make a fact promotion-eligible.",
+      "x-status-policy": {
+        "verified": {
+          "promotion_class": "PROMOTING",
+          "meaning": "Independently verified against pinned primary authority."
+        },
+        "verified_with_note": {
+          "promotion_class": "CONDITIONAL",
+          "meaning": "Verified with a material qualification that consumers must evaluate."
+        },
+        "workbench_verified": {
+          "promotion_class": "CONDITIONAL",
+          "meaning": "Verified inside the governed workbench; promotion requires retained workbench proof."
+        },
+        "structural_derivation": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Structurally derived claim; the derivation method is not independent verification."
+        },
+        "unverified": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "No completed verification."
+        },
+        "ai_draft": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Model-generated candidate evidence."
+        },
+        "disputed": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Contradicted or unresolved evidence."
+        },
+        "pending": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Queued for verification."
+        },
+        "pending_verification": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Extraction completed but verification is pending."
+        },
+        "needs_review": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Requires independent review."
+        },
+        "not_found_in_normalized_text": {
+          "promotion_class": "NON_PROMOTING",
+          "meaning": "Claim could not be located in the normalized authority text."
+        }
+      }
+    },
     "format_result": {
       "type": "object",
       "required": ["format_id", "spec_facts"],
@@ -73,11 +136,31 @@
       "type": "object",
       "required": ["qname", "claim"],
       "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "qname": {
+                "pattern": "^FACT-[A-Z0-9]+-[0-9]+$"
+              }
+            },
+            "required": ["qname"]
+          },
+          "else": {
+            "required": ["fact_id"]
+          }
+        }
+      ],
       "properties": {
+        "fact_id": {
+          "type": "string",
+          "pattern": "^SAL-[A-Z0-9]+-[A-Z0-9]+(?:-[A-Z0-9]+)*$",
+          "description": "Canonical stable SAL identity. Required when qname carries an extended legacy alias."
+        },
         "qname": {
           "type": "string",
-          "pattern": "^FACT-[A-Z]+-[0-9]+$",
-          "description": "Canonical fact identifier (e.g. 'FACT-FODS-001'). NOTE: Despite the name 'qname', this field contains FACT-IDs, not namespace:element QNames. Historical naming quirk from SAL pipeline."
+          "pattern": "^FACT-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]+$",
+          "description": "Compatibility fact alias (for example FACT-FODS-001 or legacy FACT-ZST-EX-0001), not an XML QName. Extended legacy aliases require a canonical fact_id."
         },
         "claim": {
           "type": "string",
@@ -96,9 +179,7 @@
           "description": "Authority source citation."
         },
         "verification_status": {
-          "type": "string",
-          "enum": ["verified", "unverified", "ai_draft", "disputed", "pending"],
-          "description": "Verification status of this fact."
+          "$ref": "#/$defs/verification_status"
         },
         "source": {
           "type": "string",

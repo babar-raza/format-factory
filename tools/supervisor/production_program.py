@@ -73,6 +73,7 @@ TARGETS = (
 )
 TARGETS_BY_PRODUCT = {target.product_id: target for target in TARGETS}
 FORMATS = tuple(target.product_id for target in TARGETS)
+SAL_STATUS_SCHEMA_GAP_ID = "GAP-SAL-SCHEMA-VERIFIED-WITH-NOTE"
 
 
 def validate_target_registry() -> dict[str, Any]:
@@ -324,8 +325,132 @@ class ProductionProgram:
                 and gap.gap_id not in current_ids
             ):
                 gap.state = "RESOLVED"
+        observed.extend(self.audit_sal_status_policy())
         self.persist()
         return sorted(observed, key=lambda item: item["gap_id"])
+
+    def audit_sal_status_policy(self) -> list[dict[str, Any]]:
+        """Recompute schema drift and non-promoting mandatory fact gaps."""
+
+        from tools.spec.sal_status import PROMOTING, load_status_policy
+
+        schema_path = (
+            REPO_ROOT / "schemas" / "sal-facts" / "sal-facts-schema.json"
+        )
+        store_dir = REPO_ROOT / "shared" / "sal-facts"
+        evidence_digest = tree_digest([schema_path, store_dir])
+        observed_statuses: set[str] = set()
+        for path in sorted(store_dir.glob("*.yaml")):
+            document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            observed_statuses.update(
+                str(fact["verification_status"])
+                for fact in document.get("facts", [])
+                if fact.get("verification_status")
+            )
+
+        policy_error = ""
+        try:
+            policy = load_status_policy(schema_path)
+            unknown = sorted(observed_statuses - set(policy))
+            if unknown:
+                policy_error = (
+                    "canonical SAL stores use statuses absent from the schema: "
+                    + ", ".join(unknown)
+                )
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            policy = {}
+            policy_error = str(error)
+
+        observed: list[dict[str, Any]] = []
+        if policy_error:
+            gap = Gap(
+                gap_id=SAL_STATUS_SCHEMA_GAP_ID,
+                format_id="_machinery",
+                obligation_id="SAL_SCHEMA_STATUS_ENUM",
+                category="referential_integrity",
+                severity="HIGH",
+                root_cause=policy_error,
+                evidence_digest=evidence_digest,
+                owning_task="AUTO-SAL-SCHEMA-ENUM-REPAIR",
+            )
+            self.reconcile_gap(gap)
+            observed.append(asdict(gap))
+            return observed
+
+        if existing := self.gaps.get(SAL_STATUS_SCHEMA_GAP_ID):
+            existing.state = "RESOLVED"
+            existing.evidence_digest = evidence_digest
+
+        for target in TARGETS:
+            contract_path = (
+                REPO_ROOT
+                / "shared"
+                / "format-contracts"
+                / f"{target.contract_format_id}.yaml"
+            )
+            store_path = store_dir / f"{target.contract_format_id}.yaml"
+            if not contract_path.is_file() or not store_path.is_file():
+                continue
+            contract = yaml.safe_load(contract_path.read_text(encoding="utf-8")) or {}
+            store = yaml.safe_load(store_path.read_text(encoding="utf-8")) or {}
+            status_by_id: dict[str, str] = {}
+            for fact in store.get("facts", []):
+                status = str(fact.get("verification_status", "UNSPECIFIED"))
+                for identity in (fact.get("fact_id"), fact.get("qname")):
+                    if identity:
+                        status_by_id[str(identity)] = status
+
+            non_promoting: dict[str, int] = {}
+            referenced: set[str] = set()
+            for capability in contract.get("capabilities", []):
+                if str(capability.get("level", "")).upper() != "MUST":
+                    continue
+                referenced.update(
+                    str(reference)
+                    for reference in capability.get("provenance", [])
+                    if str(reference).startswith("SAL-")
+                )
+            for reference in referenced:
+                status = status_by_id.get(reference, "UNSPECIFIED")
+                rule = policy.get(status)
+                if rule is None or rule.promotion_class != PROMOTING:
+                    non_promoting[status] = non_promoting.get(status, 0) + 1
+
+            identity = f"{target.product_id}:mandatory-fact-authority"
+            gap_id = (
+                "GAP-"
+                + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16].upper()
+            )
+            if non_promoting:
+                counts = ", ".join(
+                    f"{status}={count}"
+                    for status, count in sorted(non_promoting.items())
+                )
+                gap = Gap(
+                    gap_id=gap_id,
+                    format_id=target.product_id,
+                    obligation_id="MANDATORY_FACT_AUTHORITY",
+                    category="authority",
+                    severity="CRITICAL",
+                    root_cause=(
+                        "mandatory contract facts are referentially present but not "
+                        f"promotion-eligible under the canonical SAL policy: {counts}"
+                    ),
+                    evidence_digest=tree_digest(
+                        [schema_path, contract_path, store_path]
+                    ),
+                    owning_task=(
+                        f"AUTO-{target.product_id.upper()}-FACT-AUTHORITY"
+                    ),
+                )
+                self.reconcile_gap(gap)
+                observed.append(asdict(gap))
+            elif existing := self.gaps.get(gap_id):
+                existing.state = "RESOLVED"
+                existing.evidence_digest = tree_digest(
+                    [schema_path, contract_path, store_path]
+                )
+        return observed
 
     def discover(self, format_id: str) -> dict[str, Any]:
         target = self.target(format_id)

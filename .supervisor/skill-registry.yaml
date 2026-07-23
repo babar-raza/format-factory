@@ -1630,13 +1630,20 @@ skills:
 - command: /sal-pipeline-heal
   command_file: .claude/commands/sal-pipeline-heal.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - tools/specification-authority-layer/
+  - tools/spec/
+  - schemas/sal-facts/
+  - tools/supervisor/production_program.py
   mandatory_validations:
   - spec_cache_verified
   - tool_invoked
   - output_artifact_produced
   - fact_ids_in_correct_namespace
   - skill_transcript_written
+  - canonical_status_vocabulary_closed
+  - unknown_status_rejected
+  - live_gap_projection_recomputed
   notes: SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered.
     Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
   product_track: sal_infrastructure
@@ -1655,7 +1662,10 @@ skills:
   skill_id: sal-pipeline-heal
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/tools/
+  - tests/spec_authority/
+  - tests/production_program/test_production_program.py
   advisory_only: true
 - command: /scan-residual-bypasses
   command_file: .claude/commands/scan-residual-bypasses.md

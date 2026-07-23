@@ -11,8 +11,10 @@ import pytest
 from tools.format_contract.product_contract import compile_product_contract
 from tools.requirements_authority.production_graph import ProductionProofGraph
 from tools.supervisor.production_program import (
+    SAL_STATUS_SCHEMA_GAP_ID,
     TARGETS_BY_PRODUCT,
     Gap,
+    ProductTarget,
     ProductionProgram,
     validate_target_registry,
 )
@@ -209,6 +211,9 @@ def test_machinery_failures_enter_current_projection(
         encoding="utf-8",
     )
     monkeypatch.setattr(module, "REPO_ROOT", repo)
+    monkeypatch.setattr(
+        ProductionProgram, "audit_sal_status_policy", lambda _self: []
+    )
     program = ProductionProgram(tmp_path / "state")
     observed = program.audit_machinery()
     assert len(observed) == 1
@@ -318,3 +323,76 @@ def test_target_contract_ids_are_backed_by_canonical_registry() -> None:
     assert set(evidence["contract_format_ids"]) == {
         target.contract_format_id for target in TARGETS_BY_PRODUCT.values()
     }
+
+
+def test_sal_status_audit_resolves_schema_drift_and_tracks_fact_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    schema_source = (
+        Path(module.__file__).resolve().parents[2]
+        / "schemas"
+        / "sal-facts"
+        / "sal-facts-schema.json"
+    )
+    schema = repo / "schemas" / "sal-facts" / "sal-facts-schema.json"
+    schema.parent.mkdir(parents=True)
+    schema.write_bytes(schema_source.read_bytes())
+    store = repo / "shared" / "sal-facts" / "testfmt.yaml"
+    store.parent.mkdir(parents=True)
+    contract = repo / "shared" / "format-contracts" / "testfmt.yaml"
+    contract.parent.mkdir(parents=True)
+    store.write_text(
+        """
+format_id: testfmt
+facts:
+  - fact_id: SAL-TESTFMT-00001
+    qname: FACT-TESTFMT-001
+    claim: A structurally derived test fact.
+    verification_status: structural_derivation
+""".lstrip(),
+        encoding="utf-8",
+    )
+    contract.write_text(
+        """
+contract_metadata:
+  format_id: testfmt
+capabilities:
+  - capability_id: TESTFMT-READ-001
+    level: MUST
+    provenance: [SAL-TESTFMT-00001]
+""".lstrip(),
+        encoding="utf-8",
+    )
+    target = ProductTarget("testproduct", "testfmt", "testproduct")
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    monkeypatch.setattr(module, "TARGETS", (target,))
+
+    program = ProductionProgram(tmp_path / "state")
+    program.reconcile_gap(
+        Gap(
+            SAL_STATUS_SCHEMA_GAP_ID,
+            "_machinery",
+            "SAL_SCHEMA_STATUS_ENUM",
+            "referential_integrity",
+            "HIGH",
+            "stale",
+        )
+    )
+    observed = program.audit_sal_status_policy()
+    assert program.gaps[SAL_STATUS_SCHEMA_GAP_ID].state == "RESOLVED"
+    authority_gap = next(
+        gap for gap in observed if gap["format_id"] == "testproduct"
+    )
+    assert "structural_derivation=1" in authority_gap["root_cause"]
+
+    store.write_text(
+        store.read_text(encoding="utf-8").replace(
+            "structural_derivation", "verified"
+        ),
+        encoding="utf-8",
+    )
+    assert not program.audit_sal_status_policy()
+    assert program.gaps[authority_gap["gap_id"]].state == "RESOLVED"
