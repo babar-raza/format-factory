@@ -21,13 +21,13 @@
     ],
     "semantic_scope": "bounded metadata describing named typed tensor regions in one raw byte payload",
     "excluded_concepts": [
-      "detached file",
-      "compression codec",
-      "spatial axis",
-      "image raster",
+      "detached",
+      "compression",
+      "spatial",
+      "raster",
       "line ending",
-      "comment syntax",
-      "magic string"
+      "comment",
+      "magic"
     ],
     "required_fact_categories": [
       "structure_roots",
@@ -54,7 +54,7 @@
   ],
   "base_git_commit": "a67626866f1f168b8ad4093adbeda243181b05f8",
   "input_digests": {
-    "family_pack": "53063b02cc8459768f62b1b6695e748ec3ae5693f2333dbad19a27bb78a4ef42",
+    "family_pack": "229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574",
     "family_map": "f306be8511ffe45470600cdfd0716cedc58e0a8a5d9d49b597cc48f80cbeb3c7",
     "fact_category_requirements": "1a12376206dba61c43ad49967a5492444f80fe77038e93f8dc4573eb885e2999"
   },
@@ -73,7 +73,7 @@
   "tests_run": [
     "family pack schema, duplicate policy IDs, normalized readiness weights, mapping, excluded concepts, and deterministic replay: pass",
     "SafeTensors fact-category readiness: 1.0 with no missing applicable categories",
-    "family-pack validator focused regression: 3 passed",
+    "family-pack and contract projection focused regression: 36 passed",
     "Ruff focused validator regression: pass",
     "broader format-contract regression: 65 passed, 5 failed on pre-existing CSV ledger/hash and empty reference-oracle fixture state unrelated to this family"
   ],
@@ -126,16 +126,21 @@
   "computed_promotion_state": "NOT_APPLICABLE_POLICY_AUTHORING",
   "invalidation_impact": {
     "prior_contract": "shared/format-contracts/safetensors.yaml",
-    "effect": "The subsequent governed compile must replace false raster obligations and invalidate every descendant proof bound to the prior contract digest.",
+    "prior_capability_count": 15,
+    "prior_obligation_count": 96,
+    "new_capability_count": 11,
+    "new_obligation_count": 86,
+    "new_contract_sha256": "38dccef4ad4d8898300e9d8cdd75cbf502591e00569569bfea2ff2e037e61efe",
+    "new_product_contract_digest": "a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574",
+    "effect": "False scientific-raster obligations were removed; every descendant proof bound to the prior contract digest must be invalidated and selectively replayed against the new obligation identities.",
     "legacy_evidence_policy": "No old proof is promoted across the contract change without replay."
   },
   "open_gaps": [
-    "Forward compilation and strict ProductContract validation remain to be executed through compile-format-contract against the committed policy inputs.",
     "The five unrelated format-contract baseline failures remain visible and were not suppressed."
   ],
   "result": "PASS",
-  "status": "OPEN",
-  "final_outcome": "BINARY_TENSOR_POLICY_AUTHORED_VALIDATED_AND_READY_FOR_GOVERNED_COMPILE",
+  "status": "CLOSED",
+  "final_outcome": "BINARY_TENSOR_POLICY_FORWARD_COMPILED_WITH_FALSE_OBLIGATIONS_REMOVED",
   "timestamp": "2026-07-24T03:15:36+05:00",
   "generated_by": "codex",
   "visibility": "generated"

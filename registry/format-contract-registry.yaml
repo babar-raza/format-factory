@@ -272,22 +272,18 @@ contracts:
 - format_id: safetensors
   state: COMPILED
   readiness_score: 1.0
-  readiness_threshold: 0.75
-  missing_categories:
-  - constraints_validation
-  - data_model
-  - structure_roots
-  - syntax_encoding
-  updated_at: '2026-07-23T18:43:22Z'
+  readiness_threshold: 0.8
+  missing_categories: []
+  updated_at: '2026-07-23T22:32:22Z'
   contract_path: shared/format-contracts/safetensors.yaml
-  capability_count: 15
+  capability_count: 11
   generator_version: fcl-compiler/1.0.0
   input_digests:
     sal_facts_sha256: c9ae14874c3cd0f00a767ee3a61b7cce40520ce6d7f9010bf1e95f4885777de6
     research_sha256: 9bc2de8e29af5aeeff8ce3ac52c3dab2e26602e2fe422330675ebfdb58ac4c32
-    family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
+    family_pack_sha256: 229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
 - format_id: sylk
   state: VALIDATED

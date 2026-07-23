@@ -1,0 +1,142 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-safetensors-binary-tensor-001",
+  "execution_id": "ff6-compile-format-contract-safetensors-binary-tensor-001",
+  "task_id": "AUTO-COMPILE-SAFETENSORS-BINARY-TENSOR",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": [
+    "compile-format-contract",
+    "validate-format-contract",
+    "product-contract-runtime-repair"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-SAFETENSORS-CONTRACT-001",
+  "requested_operation": "compile the SafeTensors production contract from its committed binary-tensor family policy and strict authority stores",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "family": "binary_tensor",
+    "target_spec_version": "v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6",
+    "input_digests": {
+      "sal_facts_sha256": "c9ae14874c3cd0f00a767ee3a61b7cce40520ce6d7f9010bf1e95f4885777de6",
+      "research_sha256": "9bc2de8e29af5aeeff8ce3ac52c3dab2e26602e2fe422330675ebfdb58ac4c32",
+      "family_pack_sha256": "229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574",
+      "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494",
+      "fact_categories_sha256": "fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce",
+      "qname_registry_sha256": "934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51"
+    }
+  },
+  "allowed_files": [
+    "shared/format-contracts/safetensors.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-safetensors-binary-tensor-001.json",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-binary-tensor-001.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/safetensors.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-safetensors-binary-tensor-001.json",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-binary-tensor-001.json"
+  ],
+  "base_git_commit": "f0197f8da95d6104565208f157e69e4104869e3f",
+  "outputs": {
+    "contract_path": "shared/format-contracts/safetensors.yaml",
+    "contract_sha256": "38dccef4ad4d8898300e9d8cdd75cbf502591e00569569bfea2ff2e037e61efe",
+    "product_contract_digest": "a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574",
+    "capability_count": 11,
+    "obligation_count": 86,
+    "strict_ready": true,
+    "strict_issues": [],
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.8,
+    "missing_categories": []
+  },
+  "migration_comparison": {
+    "prior_family": "scientific_raster",
+    "prior_contract_sha256": "62bd59f1e04b87ad8ca5b49076847834bc018c2a4ecb5c87d429b7239768ed30",
+    "prior_capability_count": 15,
+    "prior_obligation_count": 96,
+    "new_family": "binary_tensor",
+    "new_capability_count": 11,
+    "new_obligation_count": 86,
+    "removed_false_concepts": [
+      "detached payloads",
+      "compression codecs",
+      "spatial axes and orientation",
+      "raster/image behavior",
+      "line endings and comments",
+      "magic/version headers"
+    ],
+    "coverage_policy": "The removed obligations do not exist in the pinned SafeTensors grammar. No mandatory applicable obligation was deferred or relabeled optional."
+  },
+  "tests_run": [
+    "readiness: score 1.0, threshold 0.8, no missing categories",
+    "compiler check against generated body: pass",
+    "two in-process compilations byte-identical: pass",
+    "fully expanded excluded-concept scan over canonical contract: no matches",
+    "legacy format-contract validator: pass",
+    "strict ProductContract: ready, 86 obligations, no issues"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/contract_compiler.py",
+        "--format-id",
+        "safetensors"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/contract_compiler.py",
+        "--format-id",
+        "safetensors",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/contract_compiler.py",
+        "--format-id",
+        "safetensors",
+        "--verify-idempotency"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-c",
+        "load_and_compile(Path('shared/format-contracts/safetensors.yaml'))"
+      ],
+      "exit_code": 0,
+      "result": "ready=True obligations=86 digest=a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "CONTRACT_READY",
+  "invalidation": {
+    "reason": "Contract family, family-pack digest, source digest, capability inventory, and obligation identities changed.",
+    "required_action": "Invalidate all descendant implementation evidence and selectively replay only exact new obligations against current source, tests, fixtures, package, and environment digests.",
+    "legacy_proof_reuse": "forbidden without replay"
+  },
+  "open_gaps": [
+    "SafeTensors implementation proofs must be rebound to the new 86-obligation production contract.",
+    "The sdist gzip/PKG-INFO timestamp reproducibility defect remains release-blocking.",
+    "The repository-wide format-contract baseline retains five unrelated CSV/reference-oracle failures."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_BINARY_TENSOR_CONTRACT_COMPILED_STRICT_READY_AND_LEGACY_PROOFS_INVALIDATED",
+  "timestamp": "2026-07-24T03:32:35+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
