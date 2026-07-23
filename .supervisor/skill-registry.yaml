@@ -4934,6 +4934,41 @@ skills:
   test_paths:
   - tests/production_program/test_production_program.py
   risk_level: HIGH
+- command: /plan-control
+  command_file: .claude/commands/plan-control.md
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/plan_control/
+  - plans/.control/
+  - tests/plan_control/
+  - tools/evidence/contracts/ff-plan-control-*.yaml
+  mandatory_validations:
+  - coordination_preflight_and_write_journal_pass
+  - event_chain_and_replay_deterministic
+  - no_duplicate_plan_or_task_identity
+  - external_worktrees_read_only
+  - source_item_accounting_no_loss
+  - focused_and_governance_tests_pass
+  - skill_transcript_valid
+  - evidence_declaration_valid
+  - evidence_contract_valid
+  notes: Created by TC-FFPC-SKILL-001 for FF-PLAN-CONTROL-001.
+  product_track: infrastructure
+  purpose: Implement and operate the repository-wide plan lifecycle control plane
+    while preserving master-plan, coordination, and domain-evidence authority boundaries.
+  required_handoff_fields:
+  - task_id
+  - mission_id
+  - operation
+  - target_paths
+  - coordination_scope
+  - acceptance_evidence
+  skill_id: plan-control
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/plan_control/
+  advisory_only: false
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated
