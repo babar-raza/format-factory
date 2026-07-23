@@ -93,6 +93,12 @@
       "argv": ["python", "tools/supervisor/production_program.py", "prove", "--format", "safetensors", "--obligation", "SAL-SAFETENSORS-OBL-0D00F815AE4AFC4F", "--polarity", "positive", "--test", "tests/python/safetensors/test_production_namespace.py", "--fixture", "samples/by-format/safetensors/valid/with-metadata.safetensors", "--run", "<tooling-python>", "-m", "pytest", "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract", "-q"],
       "exit_code": 0,
       "proof_id": "PROOF-1BFA65AE9A132FEBA42F44C4A5CBD1B591799D8AEB5E74B08115F2F376C49368"
+    },
+    {
+      "argv": ["python", "tools/supervisor/production_program.py", "prove", "--format", "safetensors", "--obligation", "SAL-SAFETENSORS-OBL-0D00F815AE4AFC4F", "--polarity", "positive", "--test", "tests/python/safetensors/test_production_namespace.py", "--fixture", "samples/by-format/safetensors/valid/with-metadata.safetensors", "--run", "<tooling-python>", "-m", "pytest", "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract", "-q"],
+      "exit_code": 0,
+      "reason": "replay after source and environment digest changes",
+      "proof_id": "PROOF-5A95DDDDE7DAA1FF9CB21DE694DC45B565BFF77E25C238CAA0A440D24B6ED531"
     }
   ],
   "installed_import_locations": [
@@ -101,19 +107,20 @@
   "ledger_entry_id": "FF6-SAFETENSORS-LAZY-METADATA-PROOF-001",
   "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
   "proof_nodes": [
-    "PROOF-1BFA65AE9A132FEBA42F44C4A5CBD1B591799D8AEB5E74B08115F2F376C49368"
+    "PROOF-1BFA65AE9A132FEBA42F44C4A5CBD1B591799D8AEB5E74B08115F2F376C49368",
+    "PROOF-5A95DDDDE7DAA1FF9CB21DE694DC45B565BFF77E25C238CAA0A440D24B6ED531"
   ],
   "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
   "current_gap_projection": {
-    "program_open_gap_count": 615,
-    "safetensors_open_mandatory_obligations": 95,
+    "program_open_gap_count": 613,
+    "safetensors_open_mandatory_obligations": 93,
     "blocked_gap_count": 1,
-    "next_task": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001"
+    "next_task": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001"
   },
   "open_gaps": [
     "The obligation combines metadata semantics with a lazy-I/O release gate; the discriminating test covers both branches without pretending they are the same requirement.",
-    "The complete optional NumPy legacy regression requires the declared NumPy extra in a separate locked environment.",
-    "Changing the shared SafeTensors production test module correctly invalidated the earlier scalar-roundtrip proof; the controller scheduled its deterministic replay as the next task."
+    "The initial optional-NumPy environment gap was resolved by the successor lazy-I/O run, which executed all 272 SafeTensors tests.",
+    "The original proof is retained as invalidated audit history; the successor replay proof is live against the current source, test, fixture, dependency, and environment digests."
   ],
   "result": "PASS",
   "status": "CLOSED",
