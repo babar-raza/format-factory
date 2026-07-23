@@ -15,6 +15,7 @@ import re
 import sys
 import tarfile
 import zipfile
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
@@ -45,6 +46,11 @@ SUPPORTED_ASSERTIONS = frozenset(
         "json_pointer_has_keys",
         "json_schema_accepts",
         "json_schema_rejects",
+        "archive_members_match",
+        "archive_xml_root_attributes_match",
+        "xml_xpath_attributes_equal",
+        "xml_xpath_count",
+        "xml_xpath_text_contains",
         "html_text_contains",
         "text_contains",
     }
@@ -109,6 +115,56 @@ def _read_member(artifact: Path, member: str | None) -> bytes:
             except KeyError as error:
                 raise VerificationError(f"ZIP member is missing: {member}") from error
     raise VerificationError(f"member requested from unsupported artifact: {artifact}")
+
+
+def _archive_member_names(content: bytes) -> list[str]:
+    """Return normalized member names without extracting archive content."""
+
+    stream = io.BytesIO(content)
+    if zipfile.is_zipfile(stream):
+        stream.seek(0)
+        with zipfile.ZipFile(stream) as archive:
+            return [item.filename.replace("\\", "/") for item in archive.infolist()]
+    stream.seek(0)
+    try:
+        with tarfile.open(fileobj=stream, mode="r:*") as archive:
+            return [item.name.replace("\\", "/") for item in archive.getmembers()]
+    except tarfile.TarError as error:
+        raise VerificationError("archive assertion target is not ZIP or tar") from error
+
+
+def _archive_member_payloads(
+    content: bytes,
+    expression: re.Pattern[str],
+) -> list[tuple[str, bytes]]:
+    """Read only matching archive members, ordered by normalized member name."""
+
+    stream = io.BytesIO(content)
+    payloads: list[tuple[str, bytes]] = []
+    if zipfile.is_zipfile(stream):
+        stream.seek(0)
+        with zipfile.ZipFile(stream) as archive:
+            for item in archive.infolist():
+                name = item.filename.replace("\\", "/")
+                if expression.fullmatch(name):
+                    payloads.append((name, archive.read(item)))
+    else:
+        stream.seek(0)
+        try:
+            with tarfile.open(fileobj=stream, mode="r:*") as archive:
+                for item in archive.getmembers():
+                    name = item.name.replace("\\", "/")
+                    if not item.isfile() or not expression.fullmatch(name):
+                        continue
+                    extracted = archive.extractfile(item)
+                    if extracted is None:
+                        raise VerificationError(
+                            f"matched tar member is not readable: {name}"
+                        )
+                    payloads.append((name, extracted.read()))
+        except tarfile.TarError as error:
+            raise VerificationError("archive assertion target is not ZIP or tar") from error
+    return sorted(payloads, key=lambda item: item[0])
 
 
 def _assertion_result(
@@ -180,6 +236,208 @@ def _assertion_result(
                 "expected_sha256": sha256_bytes(canonical_json_bytes(expected)),
                 "observed_sha256": sha256_bytes(canonical_json_bytes(observed)),
                 "result": "PASS" if passed else "FAIL",
+            }
+        )
+        return result
+
+    if kind == "archive_members_match":
+        pattern = str(assertion.get("pattern", ""))
+        if not pattern or len(pattern) > 512:
+            raise VerificationError(
+                "archive_members_match requires a non-empty pattern of at most 512 characters"
+            )
+        try:
+            expression = re.compile(pattern)
+        except re.error as error:
+            raise VerificationError(f"invalid archive member pattern: {error}") from error
+        names = sorted(
+            name
+            for name in _archive_member_names(content)
+            if expression.fullmatch(name)
+        )
+        observed_names_sha256 = sha256_bytes(canonical_json_bytes(names))
+        expected_count = assertion.get("expected_count")
+        expected_names_sha256 = str(assertion.get("expected_names_sha256", ""))
+        if not isinstance(expected_count, int) or expected_count < 0:
+            raise VerificationError(
+                "archive_members_match requires a non-negative expected_count"
+            )
+        if not re.fullmatch(r"[0-9a-f]{64}", expected_names_sha256):
+            raise VerificationError(
+                "archive_members_match requires expected_names_sha256"
+            )
+        passed = (
+            len(names) == expected_count
+            and observed_names_sha256 == expected_names_sha256
+        )
+        result.update(
+            {
+                "pattern": pattern,
+                "expected_count": expected_count,
+                "observed_count": len(names),
+                "expected_names_sha256": expected_names_sha256,
+                "observed_names_sha256": observed_names_sha256,
+                "result": "PASS" if passed else "FAIL",
+            }
+        )
+        return result
+
+    if kind == "archive_xml_root_attributes_match":
+        pattern = str(assertion.get("pattern", ""))
+        attribute = str(assertion.get("attribute", ""))
+        expected_template = str(assertion.get("expected_template", ""))
+        expected_count = assertion.get("expected_count")
+        if (
+            not pattern
+            or len(pattern) > 512
+            or not attribute
+            or not expected_template
+            or not isinstance(expected_count, int)
+            or expected_count < 0
+        ):
+            raise VerificationError(
+                "archive_xml_root_attributes_match requires pattern, attribute, "
+                "expected_template, and non-negative expected_count"
+            )
+        try:
+            expression = re.compile(pattern)
+        except re.error as error:
+            raise VerificationError(f"invalid archive member pattern: {error}") from error
+        observed: list[dict[str, str]] = []
+        mismatches: list[str] = []
+        for name, payload in _archive_member_payloads(content, expression):
+            match = expression.fullmatch(name)
+            if match is None:  # pragma: no cover - filtered by helper
+                continue
+            try:
+                root = ET.fromstring(payload)
+            except ET.ParseError as error:
+                raise VerificationError(
+                    f"matched archive member is not well-formed XML: {name}: {error}"
+                ) from error
+            try:
+                expected = expected_template.format_map(match.groupdict())
+            except (KeyError, ValueError) as error:
+                raise VerificationError(
+                    f"invalid archive XML expected_template: {error}"
+                ) from error
+            value = str(root.attrib.get(attribute, "__MISSING__"))
+            observed.append({"member": name, "value": value})
+            if value != expected:
+                mismatches.append(name)
+        result.update(
+            {
+                "pattern": pattern,
+                "attribute": attribute,
+                "expected_template": expected_template,
+                "expected_count": expected_count,
+                "observed_count": len(observed),
+                "observed_values_sha256": sha256_bytes(
+                    canonical_json_bytes(observed)
+                ),
+                "mismatch_count": len(mismatches),
+                "mismatches_sha256": sha256_bytes(
+                    canonical_json_bytes(mismatches)
+                ),
+                "result": (
+                    "PASS"
+                    if len(observed) == expected_count and not mismatches
+                    else "FAIL"
+                ),
+            }
+        )
+        return result
+
+    if kind.startswith("xml_"):
+        try:
+            root = ET.fromstring(content)
+        except ET.ParseError as error:
+            raise VerificationError(f"assertion target is not well-formed XML: {error}") from error
+        xpath = str(assertion.get("xpath", ""))
+        if not xpath:
+            raise VerificationError(f"{kind} requires xpath")
+        raw_namespaces = assertion.get("namespaces", {})
+        if not isinstance(raw_namespaces, dict) or not all(
+            isinstance(prefix, str) and isinstance(uri, str)
+            for prefix, uri in raw_namespaces.items()
+        ):
+            raise VerificationError("XML namespaces must be a string mapping")
+        namespaces = {
+            str(prefix): str(uri) for prefix, uri in raw_namespaces.items()
+        }
+        try:
+            nodes = [root] if xpath == "." else root.findall(xpath, namespaces)
+        except (KeyError, SyntaxError) as error:
+            raise VerificationError(f"invalid XML XPath {xpath!r}: {error}") from error
+
+        if kind == "xml_xpath_count":
+            expected_count = assertion.get("expected")
+            if not isinstance(expected_count, int) or expected_count < 0:
+                raise VerificationError(
+                    "xml_xpath_count requires a non-negative integer expected value"
+                )
+            result.update(
+                {
+                    "xpath": xpath,
+                    "expected": expected_count,
+                    "observed": len(nodes),
+                    "result": "PASS" if len(nodes) == expected_count else "FAIL",
+                }
+            )
+            return result
+
+        if kind == "xml_xpath_attributes_equal":
+            attribute = str(assertion.get("attribute", ""))
+            expected_values = assertion.get("expected")
+            if not attribute or not isinstance(expected_values, list) or not all(
+                isinstance(value, str) for value in expected_values
+            ):
+                raise VerificationError(
+                    "xml_xpath_attributes_equal requires attribute and a string-list expected value"
+                )
+            observed_values = [
+                str(node.attrib.get(attribute, "__MISSING__")) for node in nodes
+            ]
+            result.update(
+                {
+                    "xpath": xpath,
+                    "attribute": attribute,
+                    "expected_sha256": sha256_bytes(
+                        canonical_json_bytes(expected_values)
+                    ),
+                    "observed_sha256": sha256_bytes(
+                        canonical_json_bytes(observed_values)
+                    ),
+                    "observed_count": len(observed_values),
+                    "result": "PASS" if observed_values == expected_values else "FAIL",
+                }
+            )
+            return result
+
+        expected_text = str(assertion.get("expected", ""))
+        if len(_normalized_text(expected_text)) < 24:
+            raise VerificationError(
+                f"XML text assertion {assertion_id} is too short to be discriminating"
+            )
+        normalized_expected = _normalized_text(expected_text)
+        normalized_observed = _normalized_text(
+            " ".join(" ".join(node.itertext()) for node in nodes)
+        )
+        result.update(
+            {
+                "xpath": xpath,
+                "expected_sha256": sha256_bytes(
+                    normalized_expected.encode("utf-8")
+                ),
+                "observed_sha256": sha256_bytes(
+                    normalized_observed.encode("utf-8")
+                ),
+                "observed_count": len(nodes),
+                "result": (
+                    "PASS"
+                    if normalized_expected in normalized_observed
+                    else "FAIL"
+                ),
             }
         )
         return result

@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 import tarfile
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -227,3 +228,140 @@ def test_html_assertion_uses_visible_text_without_matching_markup() -> None:
         b"<p>field <b>specifications</b> have the same <i>structure</i></p>",
     )
     assert result["result"] == "PASS"
+
+
+def test_archive_inventory_assertion_binds_count_and_exact_names() -> None:
+    stream = io.BytesIO()
+    with zipfile.ZipFile(stream, "w") as archive:
+        archive.writestr("xsd/maindoc/UBL-Invoice-2.3.xsd", b"<schema/>")
+        archive.writestr("xsd/maindoc/UBL-Order-2.3.xsd", b"<schema/>")
+        archive.writestr("README.md", b"ignored")
+    expected_names = [
+        "xsd/maindoc/UBL-Invoice-2.3.xsd",
+        "xsd/maindoc/UBL-Order-2.3.xsd",
+    ]
+    result = _assertion_result(
+        {
+            "assertion_id": "maindoc-inventory",
+            "kind": "archive_members_match",
+            "pattern": r"xsd/maindoc/UBL-[^/]+-2\.3\.xsd",
+            "expected_count": 2,
+            "expected_names_sha256": sha256_bytes(
+                canonical_json_bytes(expected_names)
+            ),
+        },
+        stream.getvalue(),
+    )
+    assert result["result"] == "PASS"
+    assert result["observed_count"] == 2
+
+
+def test_archive_xml_root_attributes_follow_named_capture_template() -> None:
+    stream = io.BytesIO()
+    with zipfile.ZipFile(stream, "w") as archive:
+        archive.writestr(
+            "xsd/maindoc/UBL-Invoice-2.3.xsd",
+            b'<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" '
+            b'targetNamespace="urn:ubl:Invoice-2"/>',
+        )
+        archive.writestr(
+            "xsd/maindoc/UBL-Order-2.3.xsd",
+            b'<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" '
+            b'targetNamespace="urn:ubl:Order-2"/>',
+        )
+    result = _assertion_result(
+        {
+            "assertion_id": "maindoc-namespaces",
+            "kind": "archive_xml_root_attributes_match",
+            "pattern": r"xsd/maindoc/UBL-(?P<document>[^/]+)-2\.3\.xsd",
+            "attribute": "targetNamespace",
+            "expected_template": "urn:ubl:{document}-2",
+            "expected_count": 2,
+        },
+        stream.getvalue(),
+    )
+    assert result["result"] == "PASS"
+    assert result["mismatch_count"] == 0
+
+
+def test_xml_assertions_bind_ordered_attributes_counts_and_text() -> None:
+    xml = b"""\
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:example">
+  <xs:complexType name="ExampleType">
+    <xs:annotation><xs:documentation>An exact normative description for this type.</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element ref="cbc:ID"/>
+      <xs:element ref="cac:Item"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+"""
+    namespaces = {"xs": "http://www.w3.org/2001/XMLSchema"}
+    root_attribute = _assertion_result(
+        {
+            "assertion_id": "namespace",
+            "kind": "xml_xpath_attributes_equal",
+            "xpath": ".",
+            "attribute": "targetNamespace",
+            "expected": ["urn:example"],
+        },
+        xml,
+    )
+    sequence = _assertion_result(
+        {
+            "assertion_id": "sequence",
+            "kind": "xml_xpath_attributes_equal",
+            "xpath": ".//xs:complexType[@name='ExampleType']/xs:sequence/xs:element",
+            "attribute": "ref",
+            "expected": ["cbc:ID", "cac:Item"],
+            "namespaces": namespaces,
+        },
+        xml,
+    )
+    count = _assertion_result(
+        {
+            "assertion_id": "element-count",
+            "kind": "xml_xpath_count",
+            "xpath": ".//xs:element",
+            "expected": 2,
+            "namespaces": namespaces,
+        },
+        xml,
+    )
+    text = _assertion_result(
+        {
+            "assertion_id": "documentation",
+            "kind": "xml_xpath_text_contains",
+            "xpath": ".//xs:complexType[@name='ExampleType']/xs:annotation",
+            "expected": "An exact normative description for this type.",
+            "namespaces": namespaces,
+        },
+        xml,
+    )
+    assert [
+        root_attribute["result"],
+        sequence["result"],
+        count["result"],
+        text["result"],
+    ] == ["PASS", "PASS", "PASS", "PASS"]
+
+
+def test_xml_attribute_assertion_is_order_sensitive() -> None:
+    xml = b"""\
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:sequence><xs:element ref="cbc:ID"/><xs:element ref="cac:Item"/></xs:sequence>
+</xs:schema>
+"""
+    result = _assertion_result(
+        {
+            "assertion_id": "wrong-order",
+            "kind": "xml_xpath_attributes_equal",
+            "xpath": ".//xs:sequence/xs:element",
+            "attribute": "ref",
+            "expected": ["cac:Item", "cbc:ID"],
+            "namespaces": {"xs": "http://www.w3.org/2001/XMLSchema"},
+        },
+        xml,
+    )
+    assert result["result"] == "FAIL"
