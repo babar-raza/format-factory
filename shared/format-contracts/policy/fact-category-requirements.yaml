@@ -72,6 +72,14 @@ families:
     required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]
     weights: {structure_roots: 0.30, data_model: 0.30, syntax_encoding: 0.20, constraints_validation: 0.20}
     min_facts_overrides: {structure_roots: 3, data_model: 6, syntax_encoding: 3, constraints_validation: 3}
+  binary_tensor:
+    threshold: 0.80
+    # Raw tensor containers such as SafeTensors do not carry an on-disk
+    # version/profile field.  The selected upstream release remains pinned in
+    # the authority manifest; it is not fabricated as a format obligation.
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation, security_behavior]
+    weights: {structure_roots: 0.20, data_model: 0.25, syntax_encoding: 0.15, constraints_validation: 0.20, security_behavior: 0.20}
+    min_facts_overrides: {structure_roots: 3, data_model: 6, syntax_encoding: 3, constraints_validation: 5, security_behavior: 2}
   archive_container:
     threshold: 0.70
     required_categories: [structure_roots, data_model, constraints_validation]

@@ -1,0 +1,221 @@
+# Family pack: binary_tensor (SafeTensors and future raw tensor containers)
+# STYLE RULE: quoted block-style scalars only.
+schema_version: '1.0'
+family: binary_tensor
+applicability:
+  representative_formats:
+  - safetensors
+  semantic_scope: "Binary containers whose bounded metadata describes named typed tensor regions in one raw byte payload."
+  excluded_concepts:
+  - detached file
+  - compression codec
+  - spatial axis
+  - image raster
+  - line ending
+  - comment syntax
+  - magic string
+identity_defaults:
+  data_model_type: binary_tensor_container
+  description_template: "{display_name}: binary tensor container ({spec_body} {spec_version}) with bounded metadata, named typed tensor descriptors, and a raw byte payload."
+  primary_use_cases:
+  - Inspect tensor names, dtypes, shapes, metadata, and byte regions without loading the payload
+  - Read and write framework-neutral tensor files deterministically
+  - Validate untrusted tensor containers before exposing payload views or allocating framework arrays
+  active_content_model:
+    has_active_content: false
+    policy: "Tensor metadata and payload bytes are passive data and are never executed, imported, or interpreted as plugins."
+scope_defaults:
+  production_complete_target: "Complete target-version header, metadata, dtype, shape, offset, payload, validation, lazy-access, deterministic-writing, adapter, sharding-index, and official-implementation interoperability behavior."
+  minimum_viable_support: "Strictly parse, validate, and deterministically write complete tensor containers with checked sizes and bounded path-backed access."
+shared_groups: [security_limits, diagnostics, quality_proof]
+depth_floors: {lifecycle: 4, parse: 3, model: 4, preserve: 4, write: 4, validate: 5, performance: 4, interoperability: 5, advanced: 4}
+simplicity_budget:
+  max_capabilities: 16
+  max_requirement_lines_per_capability: 15
+validation_layers:
+- layer: lexical
+  description: "Fixed-width prefix, declared metadata extent, UTF-8, and JSON object syntax."
+- layer: descriptor
+  description: "Tensor names, dtypes, shapes, metadata types, and byte-range fields."
+- layer: payload
+  description: "Checked tensor sizes, region coverage, order, overlap, holes, truncation, and trailing bytes."
+- layer: security
+  description: "Header, input, tensor-count, arithmetic, mapping, and borrowed-view lifetime limits."
+security_defaults:
+  attack_surfaces:
+  - "Hostile header lengths, tensor counts, dimensions, and bit widths causing excessive allocation or arithmetic overflow."
+  - "Overlapping, out-of-order, truncated, or unindexed tensor byte ranges exposing unintended bytes."
+  - "Duplicate JSON keys changing descriptor meaning across parsers."
+  - "Borrowed payload views outliving their mapped document owner."
+  safe_defaults:
+  - "Validate the fixed prefix and bounded metadata before creating any payload view."
+  - "Use checked size arithmetic and require complete contiguous payload coverage."
+  - "Reject duplicate keys and non-string file metadata."
+  - "Expose borrowed-view ownership rules and require callers to release views before closing mapped documents."
+domains:
+- domain: LIFECYCLE
+  category: lifecycle
+  level: MUST
+  title: Strict lifecycle API
+  production_meaning: "Paths, binary streams, and in-memory bytes use one typed lifecycle with strict and preservation modes, structured validation, and deterministic output."
+  developer_use_case: "A developer uses probe/load/loads/dump/dumps/validate consistently without importing framework adapters."
+  baseline_behavior:
+  - id: POL-BT-LIFECYCLE-01
+    text: "Provide probe, path/stream/bytes load, path/stream dump, bytes serialization, and structured validation through the production namespace."
+  - id: POL-BT-LIFECYCLE-02
+    text: "Strict mode rejects invalid input; preservation mode retains safe unknown descriptor fields; no recovery mode exists without separately specified deterministic rules."
+  fact_keywords: []
+  required_tests:
+  - "Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests."
+  release_gates:
+  - "Every lifecycle entry point passes from the installed wheel."
+- domain: HEADER
+  category: parse
+  level: MUST
+  title: Exact bounded metadata parsing
+  production_meaning: "The fixed prefix and complete bounded UTF-8 JSON metadata object parse with duplicate-key, metadata-type, padding, and extent rules enforced."
+  developer_use_case: "A developer inspects all tensor descriptors and file metadata without reading payload bytes."
+  baseline_behavior:
+  - id: POL-BT-HEADER-01
+    text: "Parse the exact fixed-width little-endian metadata-length prefix and only the declared UTF-8 JSON metadata bytes."
+  - id: POL-BT-HEADER-02
+    text: "Reject duplicate keys, malformed UTF-8 or JSON, invalid metadata values, truncated metadata, and configured header-limit violations."
+  fact_keywords: [header, json, utf-8, metadata, whitespace]
+  required_tests:
+  - "Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors."
+  release_gates:
+  - "Header-only inspection matches full-load descriptor truth without reading payload bytes."
+- domain: MODEL
+  category: model
+  level: MUST
+  title: Complete framework-neutral tensor model
+  production_meaning: "Every target-version dtype, tensor name, rank, shape, scalar, empty tensor, byte region, and safe unknown descriptor field has a typed framework-neutral representation."
+  developer_use_case: "A developer reasons about tensor structure without NumPy, PyTorch, or device allocation."
+  baseline_behavior:
+  - id: POL-BT-MODEL-01
+    text: "Represent every target-version dtype, tensor descriptor, file metadata entry, scalar, empty tensor, and aligned sub-byte tensor independently of framework types."
+  fact_keywords: [tensor, dtype, shape, scalar, empty, subbyte]
+  required_tests:
+  - "Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases."
+  release_gates:
+  - "The public model inventory covers every target-version descriptor construct."
+- domain: PAYLOAD
+  category: parse
+  level: MUST
+  title: Exact raw payload coverage
+  production_meaning: "Tensor-relative byte ranges use checked sizes and cover the raw payload exactly once in required order."
+  developer_use_case: "A developer obtains an exact read-only region and malformed coverage is rejected before access."
+  baseline_behavior:
+  - id: POL-BT-PAYLOAD-01
+    text: "Validate tensor byte lengths from shape and dtype, enforce required region order and complete coverage, and reject overlap, holes, truncation, or unindexed trailing bytes."
+  - id: POL-BT-PAYLOAD-02
+    text: "Expose bounds-checked tensor-relative read-only byte regions without silently copying path-backed payloads."
+  fact_keywords: [payload, data buffer, data_offsets, byte span, little-endian, row-major, coverage, overlap]
+  required_tests:
+  - "Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary matrices."
+  release_gates:
+  - "All payload invariants have positive and negative executed evidence."
+- domain: LAZY
+  category: performance
+  level: MUST
+  title: Header-only and memory-mapped access
+  production_meaning: "Header inspection reads only metadata; eligible path-backed payloads use read-only memory mapping and bounded region views with access strategy disclosed."
+  developer_use_case: "A developer inspects or slices a multi-gigabyte tensor file with flat Python heap usage."
+  baseline_behavior:
+  - id: POL-BT-LAZY-01
+    text: "Provide header-only validation, read-only path mapping, tensor-relative region views, configurable size limits, and machine-readable access-strategy disclosure."
+  fact_keywords: []
+  performance_requirements:
+  - "Large sparse-file tests prove header bytes copied, mapping mode, bounded Python allocations, and borrowed-view lifetime behavior."
+  required_tests:
+  - "Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests."
+  release_gates:
+  - "Header-only and mapped-region paths pass installed-wheel large-data tests."
+- domain: PRESERVE
+  category: preserve
+  level: MUST
+  title: Safe metadata preservation
+  production_meaning: "String file metadata and safe unknown tensor descriptor fields survive semantic round trips without inventing support."
+  developer_use_case: "A developer updates known tensor data while retaining forward-compatible descriptor extensions."
+  baseline_behavior:
+  - id: POL-BT-PRESERVE-01
+    text: "Preserve string file metadata, optional metadata absence, and safe unknown tensor descriptor fields in preservation mode; reject values that cannot be represented safely."
+  fact_keywords: [metadata]
+  preservation_rules:
+  - "Semantic preservation is the default guarantee; exact original JSON spelling and key order are not claimed."
+  required_tests:
+  - "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+  release_gates:
+  - "Every preserved construct survives an independently parsed semantic round trip."
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Deterministic conformant writing
+  production_meaning: "Writers emit one complete target-version container with canonical metadata ordering and exact payload bytes."
+  developer_use_case: "A developer builds reproducible tensor artifacts accepted by the official implementation."
+  baseline_behavior:
+  - id: POL-BT-WRITE-01
+    text: "Write deterministic metadata and exact payload bytes, recomputing all offsets and rejecting inconsistent models before output."
+  fact_keywords: []
+  required_tests:
+  - "Repeated byte comparison, every dtype, metadata, scalar/empty/sub-byte, and official-reader acceptance."
+  release_gates:
+  - "Two clean writes are byte-identical and accepted by the pinned official implementation."
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered structural and security validation
+  production_meaning: "Metadata, descriptors, arithmetic, region coverage, resource limits, and document invariants produce stable structured diagnostics."
+  developer_use_case: "A service validates hostile tensor uploads without creating framework arrays."
+  baseline_behavior:
+  - id: POL-BT-VALIDATE-01
+    text: "Validate metadata, dtype, shape, checked size arithmetic, offsets, complete coverage, limits, and borrowed-view ownership with stable diagnostic codes."
+  fact_keywords: [invalid, reject, overflow, hole, overlap, trailing, limit, must]
+  validation_rules:
+  - "Positive and rejection obligations are distinct and each rejection rule requires an executed negative result."
+  required_tests:
+  - "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
+  release_gates:
+  - "No mandatory validation or security rule lacks executed negative evidence."
+- domain: ADAPTER
+  category: advanced
+  level: MUST
+  title: Optional framework adapters
+  production_meaning: "NumPy and PyTorch conversion is isolated behind optional adapters while the core model remains framework-neutral."
+  developer_use_case: "A developer opts into a framework adapter without forcing that dependency on other users."
+  baseline_behavior:
+  - id: POL-BT-ADAPTER-01
+    text: "Provide separately importable optional NumPy and PyTorch adapters with explicit dtype/device/copy behavior and no framework import in the base package."
+  fact_keywords: [dtype, shape]
+  required_tests:
+  - "Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior."
+  release_gates:
+  - "Base, NumPy, and PyTorch environments pass independently."
+- domain: SHARD
+  category: advanced
+  level: MUST
+  title: Separately scoped sharded index
+  production_meaning: "Multi-file sharded indexes are modeled as an explicit companion convention and never misrepresented as part of the core file grammar."
+  developer_use_case: "A developer resolves a named tensor to one shard under explicit root and resource policies."
+  baseline_behavior:
+  - id: POL-BT-SHARD-01
+    text: "Provide separately documented sharded-index parsing, deterministic writing, tensor-to-shard resolution, duplicate detection, and root-confined path policy."
+  fact_keywords: []
+  required_tests:
+  - "Official index examples, multi-shard resolution, duplicate/missing tensor, traversal, and deterministic index writing."
+  release_gates:
+  - "Sharded-index support is packaged and documented separately from core file conformance."
+- domain: INTEROP
+  category: interoperability
+  level: MUST
+  title: Pinned official implementation interoperability
+  production_meaning: "The library reads official output, the pinned official implementation reads this writer's output, and both distributions co-install without namespace collision."
+  developer_use_case: "A developer exchanges tensor files with the dominant implementation without replacing either package."
+  baseline_behavior:
+  - id: POL-BT-INTEROP-01
+    text: "Run bidirectional differential vectors against the pinned official release and prove collision-free co-installation."
+  fact_keywords: []
+  required_tests:
+  - "Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof."
+  release_gates:
+  - "No unexplained official-oracle contradiction remains open."
