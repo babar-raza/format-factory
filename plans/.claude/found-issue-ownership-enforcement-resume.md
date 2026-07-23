@@ -72,7 +72,43 @@ matches what this plan or the parent mission's notes describe from memory.
 
 | TC-ID | Status |
 |-------|--------|
-| TC-RESUME-001 | PENDING |
+| TC-RESUME-001 | CLOSED |
+
+## Execution Log (2026-07-23/24, PLAN-THEN-EXECUTE resume)
+
+Trigger condition met: `coordination takeover` succeeded on all 4 originally-blocking
+leases (previously refused repeatedly against agent-claude-code-20260717T060141-e225cd;
+its heartbeat had gone from ACTIVE to frozen at 2026-07-17T17:14:22Z, ~66h+ stale by the
+time of this resume).
+
+- **FI-027** (command-hash drift): committed the verified-legitimate V247/V248 doc
+  bullets (`8957cbbd`), refreshed the hash baseline (`a0ec5f59`). SFC HIGH finding
+  cleared (verified via `validate_skills_first_control.py`). Register updated to
+  `HEALED_AND_VERIFIED` (`eaa44f14`).
+- **FI-028** (`write_journal` enum bug): fixed all 4 call sites in
+  `autonomous_cycle.py` to `op="edit", source="cli"` (`c63d9a49`), with a new
+  regression test proving both the root cause (IntegrityError on the old values)
+  and the fix. Full existing autonomous_cycle suite (45 tests) + new test (4)
+  pass. Register updated (`3b09a2c9`).
+- **FI-030** (V252 wiring): registered V252 in `validator-id-authority.yaml`,
+  wired its dispatch into `governance_validator_runner.py`, and added
+  session-resume.md surfacing to `autonomous_cycle.py` (`d4ea564b`), with a new
+  test file (5 tests, plus the 9 pre-existing V252 unit tests, all pass).
+  Committing this fix surfaced a large amount of other agents' legitimate
+  uncommitted work already sitting in the same two files (whole-file staging
+  side effect) -- verified functionally sound before committing, disclosed as
+  **FI-032** rather than silently absorbed. Register updated (`0650e125`).
+- **Verification**: `tests/governance/` (the suite this plan's own Verification
+  section requires) -- 153 passed, 1 skipped, 0 failed. As additional diligence,
+  the full `tests/supervisor/` suite was also run (7483 passed, 68 failed, 97
+  skipped, 4 xfailed) -- 3 of the 68 failures individually root-caused and
+  confirmed unrelated to this plan's changes; registered as **FI-033** rather
+  than silently noted, since triaging the remaining 65 is outside this plan's
+  scope. `validate_skills_first_control.py`: 0 CRITICAL/HIGH.
+
+All 3 originally-blocked findings (FI-027, FI-028, FI-030) are `HEALED_AND_VERIFIED`
+with real evidence. No file outside the 4 named in this plan (plus the found-issue
+register, which this plan always intended to update) was modified.
 
 ## Taskcards
 
@@ -121,3 +157,12 @@ flow.
 - Each `found-issue-register.yaml` entry's `verification_verdict` filled in
   with real evidence, not left null.
 
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-23T21:05:27.545581+00:00"
+  locked_by: "be9b42eb52a2"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
