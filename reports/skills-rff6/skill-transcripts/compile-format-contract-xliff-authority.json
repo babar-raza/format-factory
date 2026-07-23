@@ -1,0 +1,44 @@
+{
+  "invocation_id": "FF6-XLIFF-CONTRACT-AUTHORITY-20260724",
+  "skill_id": "compile-format-contract",
+  "task_id": "AUTO-XLIFF-CONTRACT-REFRESH",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "authority_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "sal_store_sha256": "04940368a7659b606e53eb4668d90f71ddda879a6cd66ca2e6c86816b1344339"
+  },
+  "allowed_files": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-authority.json"
+  ],
+  "tests_run": [
+    "contract compiler --verify-idempotency xliff: PASS",
+    "strict XLIFF ProductContract: ready with 124 obligations",
+    "production controller contract readiness: PASS",
+    "production controller reports no remaining format-level authority gaps"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "module_obligations_compiled": "PASS",
+    "live_sal_proof_closure": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/xliff.yaml": "527c645f1f97007e0c770f904aca4ccaa67ceb6ff24dcf494c04e6c0d8353b42",
+    "registry/format-contract-registry.yaml": "8fc3b45909a8b4676ba0aa29cb0cba45a126c657a5881816c198f376afe28cad",
+    "strict_xliff_product_contract": "2d0f78b1f810bf5041e11f2ca12a247ca680f54616016d975b929fe5e84c2932"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:03:19+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

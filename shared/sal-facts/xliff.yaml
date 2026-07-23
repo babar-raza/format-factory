@@ -1,191 +1,277 @@
 format_id: xliff
-display_name: XLIFF 2.0
+display_name: XLIFF 2.0 and 2.1
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
-  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-XLIFF-00001
   qname: FACT-XLIFF-001
   element_qname: xliff:file
-  claim: An XLIFF 2.0 document is rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0) with required
-    version and srcLang attributes; it contains one or more <file> elements each holding translation units
+  claim: An XLIFF 2.0 document is rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0)
+    with required version and srcLang attributes; it contains one or more <file> elements each holding
+    translation units
   section: OASIS XLIFF 2.0 — document and file elements
   authority: OASIS XLIFF Version 2.0 Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: bc728cfdb1d5b6d67e803cfdea223c5395000a510abfa5fedb1d64236f3f911e
 - fact_id: SAL-XLIFF-00002
   qname: FACT-XLIFF-002
   element_qname: xliff:unit
-  claim: A <unit> element carries translatable content as one or more <segment> children, each holding a <source>
-    and optional <target>; segments may be interleaved with <ignorable> content (shared structural fact referenced
-    by xliff:unit and xliff:segment)
+  claim: A unit contains at least one segment or ignorable child; each segment and ignorable contains
+    exactly one source followed by at most one target.
   section: OASIS XLIFF 2.0 — unit and segment elements
   authority: OASIS XLIFF Version 2.0 Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 3d0e2ab2da93511f0c16ef6e58d03de5ddef8c22da4c1d0463163942e7f176cd
 - fact_id: SAL-XLIFF-00003
   qname: FACT-XLIFF-3
   element_qname: xliff:xliff
-  claim: An XLIFF 2.x document is rooted at an xliff element in the urn:oasis:names:tc:xliff:document namespace
-    with a required version attribute and srcLang attribute
+  claim: XLIFF 2.0 and 2.1 use the core namespace urn:oasis:names:tc:xliff:document:2.0; the XLIFF 2.1
+    standard identifies version 2.1 through the required version attribute.
   section: XLIFF core - document root
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 8d6b339909bd3649d49abd30b688a299623f270c995fd35825929f463c09c237
 - fact_id: SAL-XLIFF-00004
   qname: FACT-XLIFF-4
   element_qname: xliff:extensions
-  claim: Custom extension elements and attributes from foreign namespaces are permitted at defined extension points
-    and must be preserved by conforming agents
+  claim: Foreign-namespace elements and attributes are permitted at defined wildcard extension points.
+    Conformant applications should preserve existing custom extensions unless their containing elements
+    are removed under applicable processing requirements.
   section: XLIFF core - extensibility and agent obligations
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 0cebbb76b5fb0f16cc74640d560b7c8f189aa1b28abe28d03d33b6e42304d69b
 - fact_id: SAL-XLIFF-00005
   qname: FACT-XLIFF-5
   element_qname: xliff:inline-validity
-  claim: Inline code elements must reference existing originalData entries and paired codes must nest without crossing
-    for the document to be valid
+  claim: Inline original-data references must resolve to data elements in the same unit. Paired container
+    codes use pc, while spanning start and end codes use sc id and ec startRef with the pairing constraints
+    defined by the core Schematron.
   section: XLIFF core - inline constraints
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 72d5c2cfb14217c07f09829d3d88cf5831dd7b50cafb0cab8deaa8eeb83b1e0f
 - fact_id: SAL-XLIFF-00006
   qname: FACT-XLIFF-6
   element_qname: xliff:pc
-  claim: Inline placeholder codes are represented by ph elements and paired codes by pc elements or sc/ec start-end
-    pairs with id attributes binding the pair
+  claim: Standalone placeholders use ph with a required id; paired containers use pc with a required id;
+    spanning pairs use sc with a required id and non-isolated ec with a startRef to that id.
   section: XLIFF core - inline elements
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 8a15d890f018874b507456e2ac34869b3488d2046a2c6b1dfbd04dad91eb0847
 - fact_id: SAL-XLIFF-00007
   qname: FACT-XLIFF-7
   element_qname: xliff:modules
-  claim: Optional modules such as translation candidates glossary metadata resource data size restriction validation
-    and ITS occupy their own namespaces and extend core elements at defined extension points
+  claim: The XLIFF 2.1 standard package defines the Translation Candidates, Glossary, Format Style, Metadata,
+    Resource Data, Size and Length Restriction, Validation, and ITS modules in their own namespaces.
   section: XLIFF modules overview
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: e2cdc5ef02c95e3af300a0cea985e967887f147f764b6fe44de2a0e6f89196cd
 - fact_id: SAL-XLIFF-00008
   qname: FACT-XLIFF-8
   element_qname: xliff:resource-data
-  claim: The Resource Data module references external resource payloads that processors resolve only under explicit
-    policy
+  claim: The Resource Data module models resource items and references; source and target resource payloads
+    may use optional href attributes, while a reference element requires href.
   section: XLIFF modules - resource data with external references
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 6b0e8b425350455a7cd0603b8e1e50859d889f790b548e5054511a6a4b8a1df9
 - fact_id: SAL-XLIFF-00009
   qname: FACT-XLIFF-9
   element_qname: xliff:version
-  claim: The version attribute on the xliff root identifies the specification version and namespace-version consistency
-    is required for validity
+  claim: The version and srcLang attributes are required on the xliff root. The trgLang attribute is optional
+    in the XSD but required by the core Schematron when target elements are present.
   section: XLIFF core - version attribute
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: fd10f4bca46d16d45a56ddf2339d5c46d1ee88cc88ec602eded0054bda1b9430
 - fact_id: SAL-XLIFF-00010
   qname: FACT-XLIFF-10
   element_qname: xliff:file
-  claim: The xliff root element contains one or more file elements each carrying an id attribute unique within the
-    document
+  claim: The xliff root element contains one or more file elements each carrying an id attribute unique
+    within the document
   section: XLIFF core - file element
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 7697b43c6cb201896eb73b162c515d3388b0a7721d589f2ee87b355b1a2bc4d4
 - fact_id: SAL-XLIFF-00011
   qname: FACT-XLIFF-11
   element_qname: xliff:schema-validity
-  claim: XLIFF documents must be well-formed XML and valid against the core schema with module content valid against
-    its module schema
+  claim: XLIFF documents must be well-formed XML and valid against the core schema with module content
+    valid against its module schema
   section: XLIFF conformance
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 6d1fde6ec7f72ab269a69d3a3582668279280b494c353cbac8f3cbbcb1d3be99
 - fact_id: SAL-XLIFF-00012
   qname: FACT-XLIFF-12
   element_qname: xliff:unit
-  claim: file elements contain unit elements optionally nested in group elements forming the structural tree of
-    translatable content
+  claim: file elements contain unit elements optionally nested in group elements forming the structural
+    tree of translatable content
   section: XLIFF core - structural elements
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 4eab7ae2b382922a3bbc6b6d1d7365a1258d55c7b322031e4fb3518e9b0e5107
 - fact_id: SAL-XLIFF-00013
   qname: FACT-XLIFF-13
   element_qname: xliff:id-uniqueness
@@ -195,42 +281,63 @@ facts:
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 7cd37ba7c64a30eefabd0d703dfb6ec74c06c67e5714b57e30066087d86e7df6
 - fact_id: SAL-XLIFF-00014
   qname: FACT-XLIFF-14
   element_qname: xliff:mrk
-  claim: mrk elements annotate inline spans and sm/em elements mark span boundaries where spans overlap element
-    structure
+  claim: mrk elements annotate inline spans and sm/em elements mark span boundaries where spans overlap
+    element structure
   section: XLIFF core - annotations
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 05a75bbf5c977bcf49c428884f8f771ed7ca5e781faffac4953ab84b2338f7ba
 - fact_id: SAL-XLIFF-00015
   qname: FACT-XLIFF-15
   element_qname: xliff:notes
-  claim: notes elements carry note children with optional priority and category attributes attached to files groups
-    or units
+  claim: notes elements carry note children with optional priority and category attributes attached to
+    files groups or units
   section: XLIFF core - notes
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 31c981435e8a46626e76be43684e93e98b9d284febf680b83624817181498046
 - fact_id: SAL-XLIFF-00016
   qname: FACT-XLIFF-16
   element_qname: xliff:original-data
@@ -239,69 +346,327 @@ facts:
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 681faf7ee68fc830b3cf349b66a9cb82cce1848b07dae2c5fd5c771bded4e5e4
 - fact_id: SAL-XLIFF-00017
   qname: FACT-XLIFF-17
   element_qname: xliff:skeleton
-  claim: skeleton elements carry or reference the non-translatable document skeleton needed to reconstruct the original
-    file on merge
+  claim: skeleton elements carry or reference the non-translatable document skeleton needed to reconstruct
+    the original file on merge
   section: XLIFF core - skeleton
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: f9f5252860287d3701aeaa2a0a2f70a6291698a7a95266a46b336aa7a5249b84
 - fact_id: SAL-XLIFF-00018
   qname: FACT-XLIFF-18
   element_qname: xliff:target-state
-  claim: target elements carry a state attribute whose values progress through the specification-defined translation
-    states
+  claim: Segment elements carry an optional state attribute defaulting to initial with values initial,
+    translated, reviewed, and final; translated, reviewed, or final requires a target child.
   section: XLIFF core - translation state
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 1a54d4363787613958387f1784b4c0126a99e2562909e8a0105a580e416d6a37
 - fact_id: SAL-XLIFF-00019
   qname: FACT-XLIFF-19
   element_qname: xliff:segment
-  claim: unit elements contain segment and ignorable elements whose source children carry translatable text and
-    whose target children carry translations
+  claim: unit elements contain segment and ignorable elements whose source children carry translatable
+    text and whose target children carry translations
   section: XLIFF core - segment and ignorable
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 840b40b01c6175a1ea787c1005d13e608e4e7313711e39a3d72e3743ea973387
 - fact_id: SAL-XLIFF-00020
   qname: FACT-XLIFF-20
   element_qname: xliff:xml-space
-  claim: xml:space and xml:lang attributes govern whitespace handling and language identification and must be honored
-    on round trip
+  claim: The xliff root declares xml:space with default value default, and source and target permit optional
+    xml:lang and xml:space attributes.
   section: XLIFF core - whitespace and language
   authority: OASIS XLIFF Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 76358b0ed483a5c6da140e5a2534f184455dc61c506c18c6205c9aff02e1e30a
+- fact_id: SAL-XLIFF-00021
+  qname: FACT-XLIFF-21
+  element_qname: mtc:matches
+  claim: The Translation Candidates module uses namespace urn:oasis:names:tc:xliff:matches:2.0; matches
+    contains one or more match elements, and each match requires ref plus one source and one target.
+  section: XLIFF 2.1 Translation Candidates module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: f87440150328c9cc01572c6832516b25b9fd41a4092283c1d34a941a87fb8263
+- fact_id: SAL-XLIFF-00022
+  qname: FACT-XLIFF-22
+  element_qname: gls:glossary
+  claim: The Glossary module uses namespace urn:oasis:names:tc:xliff:glossary:2.0; a glossary contains
+    one or more glossEntry elements, each with one term, zero or more translations, and at most one definition.
+  section: XLIFF 2.1 Glossary module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 8c83f307b059b99ddad3992d3523e3d0e710f9382acb1ac63d452ad8beb40781
+- fact_id: SAL-XLIFF-00023
+  qname: FACT-XLIFF-23
+  element_qname: mda:metadata
+  claim: The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0; metadata contains one
+    or more metaGroup elements, and meta elements require a type attribute.
+  section: XLIFF 2.1 Metadata module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 92c1d1a567214667cb7620fe86d8466dc880b217a5a5b25fed1d032af8259684
+- fact_id: SAL-XLIFF-00024
+  qname: FACT-XLIFF-24
+  element_qname: slr:profiles
+  claim: The Size and Length Restriction module uses namespace urn:oasis:names:tc:xliff:sizerestriction:2.0
+    and defines profiles, normalization, data, and restriction attributes including sizeRestriction and
+    storageRestriction.
+  section: XLIFF 2.1 Size and Length Restriction module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: a36dba6c51b65873d119f92dbe85499ec509cbce4c07d9fb21b765e6c4f48823
+- fact_id: SAL-XLIFF-00025
+  qname: FACT-XLIFF-25
+  element_qname: val:validation
+  claim: The Validation module uses namespace urn:oasis:names:tc:xliff:validation:2.0; validation contains
+    one or more rule elements whose constraints include presence, occurrence, boundary, source-existence,
+    case, normalization, and disabled controls.
+  section: XLIFF 2.1 Validation module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 6b182a0ebd76203e9055f7e39fbd1658d38b00c0896fef16e662866d1dfa106b
+- fact_id: SAL-XLIFF-00026
+  qname: FACT-XLIFF-26
+  element_qname: fs:fs
+  claim: The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0 and defines fs and subFs
+    attributes; fs values are constrained by the module schema.
+  section: XLIFF 2.1 Format Style module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 4222cc4787ab2596249ec565f141af667efa3600c13c4cb2e17fa2320aa29882
+- fact_id: SAL-XLIFF-00027
+  qname: FACT-XLIFF-27
+  element_qname: its:annotations
+  claim: The ITS module uses the W3C ITS namespace http://www.w3.org/2005/11/its and the XLIFF 2.1 mapping
+    adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.
+  section: XLIFF 2.1 ITS module
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: e567b72f89c67ae514ea75f824b25f41b8fa0240bac7cea7713c1f914521b883
+- fact_id: SAL-XLIFF-00028
+  qname: FACT-XLIFF-28
+  element_qname: xliff:schema-bundle
+  claim: The official XLIFF 2.1 schema bundle contains exactly nine first-party module XSDs covering Format
+    Style, Glossary, ITS, ITS mapping, Translation Candidates, Metadata, Resource Data, Size and Length
+    Restriction, and Validation.
+  section: XLIFF 2.1 normative schema inventory
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 993dd8658f7a63c912df769fd70f2dc82dc98059f978e4102789e99b3f70e70f
+- fact_id: SAL-XLIFF-00029
+  qname: FACT-XLIFF-29
+  element_qname: xliff:schematron-bundle
+  claim: The official XLIFF 2.1 schema bundle contains exactly nine Schematron rule sets covering core
+    processing constraints and the modules that define Schematron constraints.
+  section: XLIFF 2.1 processing-requirement schema inventory
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 8883630c2b9b651408afbdf17780dbdc7fb807094c2f99ba0ed5f0c03af42a23
+- fact_id: SAL-XLIFF-00030
+  qname: FACT-XLIFF-30
+  element_qname: xliff:advanced-validation
+  claim: 'XLIFF 2.1 validation is layered: the release package supplies the core XSD, a core Schematron,
+    module XSDs and Schematrons, and an NVDL advanced-validation dispatch artifact.'
+  section: XLIFF 2.1 advanced validation artifacts
+  authority: OASIS XLIFF Version 2.1 Specification
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: codex
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/xliff.yaml
+      manifest_sha256: f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed
+      receipt_path: reports/sal-verification/xliff.json
+      receipt_sha256: 09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06
+      fact_proof_sha256: 234afb06562313055e32ceed66ea46f12f9f0ce029b8cd4ee29bcf546d84ad6e

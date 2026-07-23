@@ -1,0 +1,65 @@
+{
+  "invocation_id": "FF6-SAL-XLIFF-AUTHORITY-20260724",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "AUTO-XLIFF-FACT-AUTHORITY",
+  "taskcard_id": "AUTO-XLIFF-FACT-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "AUTO-XLIFF-FACT-AUTHORITY",
+    "format_id": "xliff",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff/src-xlf-002.bin",
+    "target_stage": "schema_migration",
+    "authority_source_id": "SRC-XLF-002",
+    "authority_version": "XLIFF 2.1 OASIS Standard release package",
+    "authority_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751"
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "shared/sal-facts/xliff.yaml",
+    ".local/spec-cache/sal-facts-latest.json",
+    "shared/sal-fact-id-aliases.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "shared/sal-facts/xliff.yaml",
+    ".local/spec-cache/sal-facts-latest.json",
+    "shared/sal-fact-id-aliases.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-authority.json"
+  ],
+  "tests_run": [
+    "verify_sal_facts xliff: 30 facts, 95 exact source assertions, PASS",
+    "three same-input XLIFF verification runs: identical digest da6791f08a0c9b4ee00a707ad126272e97c8fd83a5a4387477fcf9a5fb0ff679",
+    "exact official module inventory: 9 XSDs, names digest 186653433bf92e23c309167853701e8013b062db317f91fad0d06ab7d6aabaf7",
+    "exact official Schematron inventory: 9 rule sets, names digest 7c66b67d0025f48b477a6280501d07f3d72965cc9989d9160de2f091ed95de05",
+    "focused SAL, controller, contract determinism, machinery, and legacy XLIFF suite: 266 passed",
+    "Ruff verifier, merge, controller, XLIFF source, and Python tests: PASS"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "exact_authority_assertions_pass": "PASS",
+    "all_official_modules_bound": "PASS",
+    "processing_rule_artifacts_bound": "PASS",
+    "content_addressed_receipt_bound": "PASS",
+    "live_gap_projection_recomputed": "PASS"
+  },
+  "output_digests": {
+    "shared/sal-facts/evidence/xliff.yaml": "f99288dba1d53c179a56dac627a97c1eba26a29e9767266a3d74f53a738901ed",
+    "reports/sal-verification/xliff.json": "09d2697bfc80f0b1bb8fc03cec0215d15ffe97162f99233068382f55e279ea06",
+    "shared/sal-facts/xliff.yaml": "04940368a7659b606e53eb4668d90f71ddda879a6cd66ca2e6c86816b1344339",
+    ".local/spec-cache/sal-facts-latest.json": "f1d22997b5524b947b56e344001ba15df7658cab3b3426da14defa8ab65972c6",
+    "shared/sal-fact-id-aliases.json": "5fe816edceba1a31cb03164e3ce54921ed5d199679679bf48720248bb27aefb3"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "verdict": "PROCEED",
+  "timestamp": "2026-07-24T00:03:19+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
