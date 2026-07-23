@@ -287,7 +287,21 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         display_name=display_name, spec_body=spec_body, spec_version=spec_version
     )
 
-    sources = [{
+    research_sources = [
+        dict(record)
+        for record in sorted(
+            research.get("source_records", []),
+            key=lambda record: str(record.get("source_id", "")),
+        )
+    ]
+    pinned_authorities = [
+        record
+        for record in research_sources
+        if record.get("authority_class") == "AUTHORITATIVE"
+        and record.get("acquisition_status") == "ACQUIRED"
+        and record.get("content_hash")
+    ]
+    registry_source = {
         "source_id": f"SRC-{fmt}-001",
         "title": f"{spec_body} {spec_version}".strip(),
         "organization": spec_body,
@@ -295,14 +309,32 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         "canonical_url": reg.get("spec_url"),
         "authority_class": "AUTHORITATIVE",
         "acquisition_status": "URL_ONLY" if reg.get("spec_url") else "NEEDS_AUTHORITY",
-    }]
-    for idx, record in enumerate(
-        sorted(research.get("source_records", []), key=lambda r: str(r.get("source_id", ""))),
-        start=2,
-    ):
-        rec = dict(record)
-        rec.setdefault("source_id", f"SRC-{fmt}-{idx:03d}")
-        sources.append(rec)
+    }
+    # An acquired, digest-bound research authority supersedes the synthetic
+    # registry URL record. Keeping both would make production readiness
+    # impossible because the synthetic record is necessarily URL_ONLY.
+    sources = (
+        [
+            record
+            for record in research_sources
+            if record.get("authority_class") != "AUTHORITATIVE"
+            or (
+                record.get("acquisition_status") == "ACQUIRED"
+                and record.get("content_hash")
+            )
+        ]
+        if pinned_authorities
+        else [registry_source, *research_sources]
+    )
+    seen_source_ids: set[str] = set()
+    sources = [
+        source
+        for source in sources
+        if not (
+            source.get("source_id") in seen_source_ids
+            or seen_source_ids.add(str(source.get("source_id")))
+        )
+    ]
 
     shared_groups = shared_store["groups"]
     preserve_items = {i["id"]: i["text"] for i in shared_groups["preservation"]["items"]}

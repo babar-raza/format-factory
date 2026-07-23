@@ -117,6 +117,38 @@ def test_compiled_csv_has_traceable_capabilities():
     assert ids == sorted(ids), "capabilities must be ID-ordered for determinism"
 
 
+def test_acquired_research_authority_replaces_synthetic_url_record(
+    monkeypatch,
+):
+    original = stores.load_research
+
+    def acquired(format_id: str) -> dict:
+        document = copy.deepcopy(original(format_id))
+        document["source_records"].insert(
+            0,
+            {
+                "source_id": "SRC-CSV-099",
+                "title": "Pinned authority",
+                "authority_class": "AUTHORITATIVE",
+                "canonical_url": "https://example.invalid/pinned",
+                "content_hash": "a" * 64,
+                "acquisition_status": "ACQUIRED",
+            },
+        )
+        return document
+
+    monkeypatch.setattr(stores, "load_research", acquired)
+    _, document = cc.compile_contract("csv")
+    assert any(
+        source["source_id"] == "SRC-CSV-099"
+        for source in document["authoritative_sources"]
+    )
+    assert all(
+        source["source_id"] != "SRC-CSV-001"
+        for source in document["authoritative_sources"]
+    )
+
+
 def test_contract_body_has_no_timestamps():
     _, doc = cc.compile_contract("csv")
     text = canonical_io.canonical_dump(doc).lower()

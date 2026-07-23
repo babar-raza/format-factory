@@ -1,0 +1,849 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-SAFETENSORS-V1
+  format_id: safetensors
+  format_canonical_name: SafeTensors
+  extensions:
+  - .safetensors
+  family: scientific_raster
+  target_spec_version: v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
+    qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
+    research_sha256: 9bc2de8e29af5aeeff8ce3ac52c3dab2e26602e2fe422330675ebfdb58ac4c32
+    sal_facts_sha256: 3aa8359e3e26e5a65addea0edcd7fd2b2bfbb20cb892000c6e19e7fe4504fb32
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Payloads are passive data; detached-file resolution follows a secure path policy and never
+      leaves configured roots.
+  data_model_type: scientific_array
+  description: 'SafeTensors: N-dimensional array/raster data format (Hugging Face v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6).
+    Header metadata describing typed, dimensioned payloads used for scientific, medical, and machine-learning
+    data.'
+  primary_use_cases:
+  - Read and write typed N-dimensional arrays with correct shape, type, and byte order
+  - Header-only and lazy access to very large datasets in bounded memory
+  - Validate untrusted data files safely before allocation or processing
+authoritative_sources:
+- title: SafeTensors pinned authority
+  source_id: SRC-SAFETENSORS-002
+  organization: Hugging Face
+  version: safetensors v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+  local_path: .local/format-contracts/acquired/safetensors/src-safetensors-002.bin
+  canonical_url: https://github.com/safetensors/safetensors/archive/a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6.tar.gz
+  content_hash: 3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3
+  authority_class: AUTHORITATIVE
+  acquisition_status: ACQUIRED
+scope_policy:
+  minimum_viable_support: Parse headers with required-field validation, read/write the core encodings
+    and types with correct shape and endian handling, and validate payload size against declared shape
+    before allocation.
+  production_complete_target: Complete header parsing for all specified fields and versions, every defined
+    encoding and scalar type, endian correctness, attached and detached payload forms, axis/orientation
+    metadata, lazy and streaming access, layered validation, and lossless canonical writing.
+capabilities:
+- release_gates:
+  - Array operations preserve metadata consistency (tested per op).
+  capability_id: SAFETENSORS-ARRAY-001
+  level: MUST
+  category: model
+  title: Typed N-dimensional array access
+  production_meaning: Shape/strides/dtype-aware access with slicing, permutation, flip, and crop that
+    update orientation and per-axis metadata correctly; zero-copy views where safe.
+  developer_use_case: A developer crops a volume and every axis-aligned metadata field follows the crop.
+  provenance:
+  - POL-SCR-ARRAY-01
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00016
+  required_behavior:
+  - Expose shape, strides, dtype, and axis metadata with element access, slicing, permutation, flip, and
+    crop that update orientation and per-axis metadata; zero-copy views where safe, explicit copies otherwise.
+  normative_rules:
+  - (tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer) A complete SafeTensors file
+    may not contain unindexed trailing payload bytes after the final tensor because incomplete metadata
+    coverage is invalid.
+  - (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape
+    list is a valid scalar whose data span contains exactly one element of its declared dtype.
+  - (README Notes lines 102-104) SafeTensors tensor payload values use little-endian byte order and C
+    row-major element order.
+  - (tensor.rs Metadata.validate and test_validation_overflow) Shape multiplication and element-bit multiplication
+    overflow are invalid and must be rejected instead of wrapping during validation.
+  - (tensor.rs Dtype.bitsize and Metadata.validate) Sub-byte F4 and six-bit tensor types are valid only
+    when the complete tensor bit count ends on a byte boundary; a misaligned slice is invalid.
+  - (README Notes line 99 and tensor.rs Metadata.validate) The data buffer must be entirely indexed by
+    tensor entries without holes, and ordered tensor offsets must be contiguous and non-overlapping.
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Metadata-follows-operation fixtures for each axis operation.
+- release_gates:
+  - Conversions policy-governed and reported (no silent semantic change).
+  capability_id: SAFETENSORS-CONVERT-001
+  level: SHOULD
+  category: transform
+  title: Data conversion
+  production_meaning: Dtype/encoding/endian/layout conversions run with explicit overflow/clipping/rounding
+    policies and produce a conversion report; semantics never change silently.
+  developer_use_case: A developer converts float data to a narrower type under an explicit clipping policy
+    with a report of affected values.
+  provenance:
+  - POL-SCR-CONVERT-01
+  required_behavior:
+  - Convert dtype, encoding, attached/detached form, and endian with explicit overflow/clipping/scaling/rounding
+    policies and a conversion report.
+  depth_required: 4
+  depth_rationale: 'SHOULD transform capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Policy matrix fixtures with boundary values.
+- release_gates:
+  - All defined encodings round-trip.
+  capability_id: SAFETENSORS-ENC-001
+  level: MUST
+  category: parse
+  title: All defined encodings
+  production_meaning: Every specified payload encoding (raw, text, hex, compressed forms) reads and writes
+    with codec availability exposed and explicit failures when optional codecs are absent.
+  developer_use_case: A developer queries supported encodings at runtime and receives explicit errors
+    rather than silent fallbacks.
+  provenance:
+  - POL-SCR-ENC-01
+  - SAL-SAFETENSORS-00010
+  required_behavior:
+  - Read and write every specified encoding using the correct container framing; expose codec availability;
+    fail explicitly when an optional codec is unavailable.
+  normative_rules:
+  - (README Notes lines 102-104) SafeTensors tensor payload values use little-endian byte order and C
+    row-major element order.
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Encoding matrix round trips; missing-codec explicit-failure fixture.
+- release_gates:
+  - All specified header fields implemented with tests.
+  capability_id: SAFETENSORS-HEADER-001
+  level: MUST
+  category: parse
+  title: Complete header parsing
+  production_meaning: All magic/version forms, field identifiers, comments, and key/value metadata parse
+    with uniqueness/ordering constraints enforced and unknown metadata preserved.
+  developer_use_case: A developer inspects any conformant file's full metadata without touching the payload.
+  provenance:
+  - POL-SCR-HEADER-01
+  - POL-SCR-HEADER-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00017
+  required_behavior:
+  - Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field
+    uniqueness/ordering; preserve unknown metadata and optional-field absence.
+  - Accept the specification's permitted line endings and lexical variants while preserving original lexical
+    form in lossless mode.
+  normative_rules:
+  - (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned little-endian 64-bit integer
+    N, followed by exactly N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets},
+    plus an optional __metadata__ string map
+  - (SafeTensors v0.4 — tensor entries) Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape
+    (list of non-negative ints), and data_offsets [begin, end) into the byte buffer immediately following
+    the header; offsets are contiguous and non-overlapping
+  - (README Format lines 74-79) A SafeTensors file header prefix is exactly eight bytes interpreted as
+    an unsigned little-endian 64-bit integer containing the UTF-8 JSON header byte length.
+  - (tensor.rs read_metadata and invalid-header tests) A declared header length that exceeds the available
+    file bytes, malformed UTF-8, or malformed JSON is invalid and must be rejected.
+  - (README Format lines 80-82) Each tensor entry has a dtype field, a shape field containing dimensions,
+    and a data_offsets field containing a begin and end byte offset.
+  - (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the beginning or end of the header,
+    allowing writers to align the following data section while preserving valid syntax.
+  - (README Format line 81) Tensor data offsets are relative to the beginning of the data buffer that
+    immediately follows the variable-length JSON header.
+  - (README Format lines 76-83) The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name
+    keys to tensor entries, with __metadata__ reserved for file metadata.
+  - (tensor.rs MAX_HEADER_SIZE and read_metadata) The official implementation limits a JSON header to
+    100,000,000 bytes and rejects a declared header length above that resource limit.
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip.
+- release_gates:
+  - Header-only, lazy, and bounded-memory paths pass large-data tests.
+  capability_id: SAFETENSORS-LAZY-001
+  level: MUST
+  category: performance
+  title: Large-data and lazy I/O
+  production_meaning: Header-only loading, lazy payloads, memory mapping for eligible raw data, and streaming
+    decode for compressed/text payloads keep memory bounded; full-decompression requirements are reported.
+  developer_use_case: A developer streams a slice from a huge compressed dataset and is told when a request
+    forces full decode.
+  provenance:
+  - POL-SCR-LAZY-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  required_behavior:
+  - Provide header-only and lazy payload loading, memory mapping for eligible uncompressed data, streaming
+    decode, and region reads where layout permits, reporting when full decompression is required.
+  normative_rules:
+  - (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned little-endian 64-bit integer
+    N, followed by exactly N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets},
+    plus an optional __metadata__ string map
+  - (README Format lines 76-83) The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name
+    keys to tensor entries, with __metadata__ reserved for file metadata.
+  - (README Format line 83) The __metadata__ entry may contain only a free-form string-to-string map;
+    arbitrary nested JSON metadata values are not valid.
+  depth_required: 4
+  depth_rationale: 'MUST performance capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Bounded-memory large-file tests; slice-requires-full-decode reporting fixture.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SAFETENSORS-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Metadata fidelity proven by round trip.
+  capability_id: SAFETENSORS-META-001
+  level: MUST
+  category: preserve
+  title: Metadata fidelity
+  production_meaning: Optional metadata (content, ranges, units, labels) preserves absence-vs-explicit
+    distinctions and quoting/escaping rules; legacy fields ride along in lossless mode.
+  developer_use_case: A developer round-trips files with unusual labels/units and nothing is normalized
+    away.
+  provenance:
+  - POL-SCR-META-01
+  - SAL-SAFETENSORS-00017
+  required_behavior:
+  - Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping
+    rules; carry legacy fields in lossless mode.
+  normative_rules:
+  - (tensor.rs MAX_HEADER_SIZE and read_metadata) The official implementation limits a JSON header to
+    100,000,000 bytes and rejects a declared header length above that resource limit.
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions.
+- release_gates:
+  - Attached and detached forms pass the full fixture matrix.
+  capability_id: SAFETENSORS-PAYLOAD-001
+  level: MUST
+  category: parse
+  title: Attached and detached payload handling
+  production_meaning: Attached and every detached payload form (single file, sequences, lists) read/write
+    with counts validated against dimensions and a secure resolver policy for paths.
+  developer_use_case: A developer loads a detached-header dataset and file-count or path violations surface
+    before any read.
+  provenance:
+  - POL-SCR-PAYLOAD-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+  required_behavior:
+  - Support attached and all specified detached payload forms with file counts validated against declared
+    dimensions and resolution relative to the header location under a secure path policy.
+  normative_rules:
+  - (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned little-endian 64-bit integer
+    N, followed by exactly N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets},
+    plus an optional __metadata__ string map
+  - (SafeTensors v0.4 — tensor entries) Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape
+    (list of non-negative ints), and data_offsets [begin, end) into the byte buffer immediately following
+    the header; offsets are contiguous and non-overlapping
+  - (README Format lines 74-79) A SafeTensors file header prefix is exactly eight bytes interpreted as
+    an unsigned little-endian 64-bit integer containing the UTF-8 JSON header byte length.
+  - (tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer) A complete SafeTensors file
+    may not contain unindexed trailing payload bytes after the final tensor because incomplete metadata
+    coverage is invalid.
+  - (tensor.rs read_metadata and invalid-header tests) A declared header length that exceeds the available
+    file bytes, malformed UTF-8, or malformed JSON is invalid and must be rejected.
+  - (tensor.rs test_zero_sized_tensor) A tensor shape containing a zero dimension is valid and has an
+    empty data span whose begin and end offsets are equal.
+  - (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape
+    list is a valid scalar whose data span contains exactly one element of its declared dtype.
+  - (README Format lines 80-82) Each tensor entry has a dtype field, a shape field containing dimensions,
+    and a data_offsets field containing a begin and end byte offset.
+  - (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the beginning or end of the header,
+    allowing writers to align the following data section while preserving valid syntax.
+  - (README Notes lines 102-104) SafeTensors tensor payload values use little-endian byte order and C
+    row-major element order.
+  - (tensor.rs Metadata.validate and test_validation_overflow) Shape multiplication and element-bit multiplication
+    overflow are invalid and must be rejected instead of wrapping during validation.
+  - (tensor.rs Dtype.bitsize and Metadata.validate) Sub-byte F4 and six-bit tensor types are valid only
+    when the complete tensor bit count ends on a byte boundary; a misaligned slice is invalid.
+  - (README Format line 81) Tensor data offsets are relative to the beginning of the data buffer that
+    immediately follows the variable-length JSON header.
+  - (README Format lines 76-83) The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name
+    keys to tensor entries, with __metadata__ reserved for file metadata.
+  - (README Format line 83) The __metadata__ entry may contain only a free-form string-to-string map;
+    arbitrary nested JSON metadata values are not valid.
+  - (README Notes line 99 and tensor.rs Metadata.validate) The data buffer must be entirely indexed by
+    tensor entries without holes, and ordered tensor offsets must be contiguous and non-overlapping.
+  - (tensor.rs MAX_HEADER_SIZE and read_metadata) The official implementation limits a JSON header to
+    100,000,000 bytes and rejects a declared header length above that resource limit.
+  - (tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal the checked product of
+    all shape dimensions and the dtype bit width divided by eight.
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each payload form incl. count-mismatch and traversal negatives.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SAFETENSORS-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: SAFETENSORS-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Axis semantics proven against ground-truth fixtures.
+  capability_id: SAFETENSORS-SHAPE-001
+  level: MUST
+  category: model
+  title: Dimensions, axis order, and endian correctness
+  production_meaning: Dimension counts, per-axis sizes/arity, explicit axis-order semantics, and endian
+    declarations are enforced with checked arithmetic; axis conversion to host order is explicit, never
+    silent.
+  developer_use_case: A developer converts between format axis order and host array order through an explicit
+    documented operation.
+  provenance:
+  - POL-SCR-SHAPE-01
+  - POL-SCR-SHAPE-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00018
+  required_behavior:
+  - Validate dimension/sizes/per-axis arity with checked multiplication for sample and byte counts; represent
+    the format's axis order explicitly and convert to host order only via explicit operations.
+  - Enforce endian declaration rules where element size exceeds one byte; byte-swap transparently on read/write;
+    never endian-transform opaque blocks.
+  normative_rules:
+  - (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned little-endian 64-bit integer
+    N, followed by exactly N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets},
+    plus an optional __metadata__ string map
+  - (SafeTensors v0.4 — tensor entries) Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape
+    (list of non-negative ints), and data_offsets [begin, end) into the byte buffer immediately following
+    the header; offsets are contiguous and non-overlapping
+  - (README Format lines 74-79) A SafeTensors file header prefix is exactly eight bytes interpreted as
+    an unsigned little-endian 64-bit integer containing the UTF-8 JSON header byte length.
+  - (tensor.rs test_zero_sized_tensor) A tensor shape containing a zero dimension is valid and has an
+    empty data span whose begin and end offsets are equal.
+  - (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape
+    list is a valid scalar whose data span contains exactly one element of its declared dtype.
+  - (README Format lines 80-82) Each tensor entry has a dtype field, a shape field containing dimensions,
+    and a data_offsets field containing a begin and end byte offset.
+  - (README Notes lines 102-104) SafeTensors tensor payload values use little-endian byte order and C
+    row-major element order.
+  - (tensor.rs Metadata.validate and test_validation_overflow) Shape multiplication and element-bit multiplication
+    overflow are invalid and must be rejected instead of wrapping during validation.
+  - (README Notes line 99 and tensor.rs Metadata.validate) The data buffer must be entirely indexed by
+    tensor entries without holes, and ordered tensor offsets must be contiguous and non-overlapping.
+  - (tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal the checked product of
+    all shape dimensions and the dtype bit width divided by eight.
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Axis-order semantics fixtures; endian matrix; overflow-shape negatives.
+- release_gates:
+  - Transforms verified against reference calculations.
+  capability_id: SAFETENSORS-SPACE-001
+  level: MUST
+  category: model
+  title: Orientation and space metadata
+  production_meaning: Space names, origins, direction vectors, and measurement frames validate for consistency
+    and expose index-to-world transforms; axis order is never assumed from a space name.
+  developer_use_case: A medical-imaging developer obtains the index-to-world transform and non-spatial
+    axes are handled correctly.
+  provenance:
+  - POL-SCR-SPACE-01
+  - SAL-SAFETENSORS-00009
+  required_behavior:
+  - Support space/orientation metadata with vector-length validation against space dimension, non-spatial
+    axes, and index-to-world transforms; never infer axis order from a named space.
+  normative_rules:
+  - (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the beginning or end of the header,
+    allowing writers to align the following data section while preserving valid syntax.
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Orientation matrices, non-spatial axes, and mismatch negatives.
+- release_gates:
+  - All specified types and aliases round-trip.
+  capability_id: SAFETENSORS-TYPES-001
+  level: MUST
+  category: model
+  title: Complete scalar and block types
+  production_meaning: All specified integer/float widths with aliases plus opaque block types are represented
+    independently of host-language names with validity rules enforced.
+  developer_use_case: A developer reads a dataset's exact declared type and receives documented host-type
+    mappings.
+  provenance:
+  - POL-SCR-TYPES-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00018
+  - SAL-SAFETENSORS-00019
+  required_behavior:
+  - Support every specified scalar type and alias plus block types with their validity rules; represent
+    declared types independently from host-language type names.
+  normative_rules:
+  - (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned little-endian 64-bit integer
+    N, followed by exactly N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets},
+    plus an optional __metadata__ string map
+  - (SafeTensors v0.4 — tensor entries) Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape
+    (list of non-negative ints), and data_offsets [begin, end) into the byte buffer immediately following
+    the header; offsets are contiguous and non-overlapping
+  - (README Format lines 74-79) A SafeTensors file header prefix is exactly eight bytes interpreted as
+    an unsigned little-endian 64-bit integer containing the UTF-8 JSON header byte length.
+  - (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape
+    list is a valid scalar whose data span contains exactly one element of its declared dtype.
+  - (README Format lines 80-82) Each tensor entry has a dtype field, a shape field containing dimensions,
+    and a data_offsets field containing a begin and end byte offset.
+  - (tensor.rs Dtype.bitsize and Metadata.validate) Sub-byte F4 and six-bit tensor types are valid only
+    when the complete tensor bit count ends on a byte boundary; a misaligned slice is invalid.
+  - (tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal the checked product of
+    all shape dimensions and the dtype bit width divided by eight.
+  - (tensor.rs Dtype enum lines 811-865) The v0.8.0 dtype inventory includes BOOL, F4, F6_E2M3, F6_E3M2,
+    U8, I8, F8_E5M2, F8_E4M3, F8_E8M0, F8_E4M3FNUZ, F8_E5M2FNUZ, I16, U16, F16, BF16, I32, U32, F32, C64,
+    F64, I64, and U64.
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Type/alias matrix round trips; invalid type/encoding combination negatives.
+- release_gates:
+  - Validation layer complete against specification rule inventory.
+  capability_id: SAFETENSORS-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Header and payload validation
+  production_meaning: Required/conditional fields, per-axis arity, version-feature compatibility, and
+    expected payload size after decoding validate before allocation with complete diagnostics.
+  developer_use_case: A service validates uploads cheaply (header-first) and rejects shape/payload mismatches
+    with exact reasons.
+  provenance:
+  - POL-SCR-VALIDATE-01
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00018
+  required_behavior:
+  - Check required and conditional fields, arity, version-feature compatibility, and expected sample/byte
+    counts after decoding; treat trailing payload per policy with reporting.
+  normative_rules:
+  - (tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer) A complete SafeTensors file
+    may not contain unindexed trailing payload bytes after the final tensor because incomplete metadata
+    coverage is invalid.
+  - (tensor.rs read_metadata and invalid-header tests) A declared header length that exceeds the available
+    file bytes, malformed UTF-8, or malformed JSON is invalid and must be rejected.
+  - (tensor.rs test_zero_sized_tensor) A tensor shape containing a zero dimension is valid and has an
+    empty data span whose begin and end offsets are equal.
+  - (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape
+    list is a valid scalar whose data span contains exactly one element of its declared dtype.
+  - (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the beginning or end of the header,
+    allowing writers to align the following data section while preserving valid syntax.
+  - (tensor.rs Metadata.validate and test_validation_overflow) Shape multiplication and element-bit multiplication
+    overflow are invalid and must be rejected instead of wrapping during validation.
+  - (tensor.rs Dtype.bitsize and Metadata.validate) Sub-byte F4 and six-bit tensor types are valid only
+    when the complete tensor bit count ends on a byte boundary; a misaligned slice is invalid.
+  - (README Format line 83) The __metadata__ entry may contain only a free-form string-to-string map;
+    arbitrary nested JSON metadata values are not valid.
+  - (README Notes line 99 and tensor.rs Metadata.validate) The data buffer must be entirely indexed by
+    tensor entries without holes, and ordered tensor offsets must be contiguous and non-overlapping.
+  - (tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal the checked product of
+    all shape dimensions and the dtype bit width divided by eight.
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Truncated/oversized payloads, conditional-field negatives, version-feature mismatches.
+- release_gates:
+  - Writer output validated by independent reload across the fixture matrix.
+  capability_id: SAFETENSORS-WRITE-001
+  level: MUST
+  category: write
+  title: Canonical and lossless writing
+  production_meaning: Writers select the correct version/magic for used features (or honor explicit targets
+    after validation), preserve optional absence in lossless mode, and order fields deterministically.
+  developer_use_case: A developer writes a dataset and any conformant reader loads it; rewriting an unchanged
+    file is byte-stable.
+  provenance:
+  - POL-SCR-WRITE-01
+  - SAL-SAFETENSORS-00009
+  required_behavior:
+  - Write required/conditional fields correctly with version selection honoring used features; preserve
+    optional absence in lossless mode; deterministic field ordering and detached-partition policies.
+  normative_rules:
+  - (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the beginning or end of the header,
+    allowing writers to align the following data section while preserving valid syntax.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Version-selection fixtures; determinism byte-compare; detached-partition round trips.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Header line/token rules, magic/version recognition, encodings of the header itself.
+    layer: lexical
+  - description: Required and conditional fields, per-axis arity, field ordering/uniqueness.
+    layer: structural
+  - description: Scalar type validity, block-size rules, encoding/type compatibility.
+    layer: type
+  - description: Declared shape/byte count vs actual payload after decoding; trailing-data policy.
+    layer: payload
+  - description: Overflow-checked size math, decompression limits, detached-path policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Multiplicative overflow in sample/byte-count calculations from hostile dimensions.
+  - Decompression bombs in compressed payload encodings.
+  - Path traversal through detached data-file references.
+  - Allocation of the full declared payload before validating encoded size.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Checked arithmetic for all size calculations; reject overflow explicitly.
+  - Decompressed-byte and compression-ratio limits with configurable policy.
+  - Detached references resolve only inside configured roots; absolute paths gated.
+  - Header-first validation; no full-payload allocation before size verification.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Metadata-follows-operation fixtures for each axis operation.
+- Policy matrix fixtures with boundary values.
+- Encoding matrix round trips; missing-codec explicit-failure fixture.
+- Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip.
+- Bounded-memory large-file tests; slice-requires-full-decode reporting fixture.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions.
+- Each payload form incl. count-mismatch and traversal negatives.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Axis-order semantics fixtures; endian matrix; overflow-shape negatives.
+- Orientation matrices, non-spatial axes, and mismatch negatives.
+- Type/alias matrix round trips; invalid type/encoding combination negatives.
+- Truncated/oversized payloads, conditional-field negatives, version-feature mismatches.
+- Version-selection fixtures; determinism byte-compare; detached-partition round trips.
+release_gates:
+- Array operations preserve metadata consistency (tested per op).
+- Conversions policy-governed and reported (no silent semantic change).
+- All defined encodings round-trip.
+- All specified header fields implemented with tests.
+- Header-only, lazy, and bounded-memory paths pass large-data tests.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Metadata fidelity proven by round trip.
+- Attached and detached forms pass the full fixture matrix.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Axis semantics proven against ground-truth fixtures.
+- Transforms verified against reference calculations.
+- All specified types and aliases round-trip.
+- Validation layer complete against specification rule inventory.
+- Writer output validated by independent reload across the fixture matrix.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: SAFETENSORS-ARRAY-001
+  provenance:
+  - POL-SCR-ARRAY-01
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00016
+- capability_id: SAFETENSORS-CONVERT-001
+  provenance:
+  - POL-SCR-CONVERT-01
+- capability_id: SAFETENSORS-ENC-001
+  provenance:
+  - POL-SCR-ENC-01
+  - SAL-SAFETENSORS-00010
+- capability_id: SAFETENSORS-HEADER-001
+  provenance:
+  - POL-SCR-HEADER-01
+  - POL-SCR-HEADER-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00017
+- capability_id: SAFETENSORS-LAZY-001
+  provenance:
+  - POL-SCR-LAZY-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+- capability_id: SAFETENSORS-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: SAFETENSORS-META-001
+  provenance:
+  - POL-SCR-META-01
+  - SAL-SAFETENSORS-00017
+- capability_id: SAFETENSORS-PAYLOAD-001
+  provenance:
+  - POL-SCR-PAYLOAD-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+- capability_id: SAFETENSORS-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: SAFETENSORS-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: SAFETENSORS-SHAPE-001
+  provenance:
+  - POL-SCR-SHAPE-01
+  - POL-SCR-SHAPE-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00018
+- capability_id: SAFETENSORS-SPACE-001
+  provenance:
+  - POL-SCR-SPACE-01
+  - SAL-SAFETENSORS-00009
+- capability_id: SAFETENSORS-TYPES-001
+  provenance:
+  - POL-SCR-TYPES-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00018
+  - SAL-SAFETENSORS-00019
+- capability_id: SAFETENSORS-VALIDATE-001
+  provenance:
+  - POL-SCR-VALIDATE-01
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00018
+- capability_id: SAFETENSORS-WRITE-001
+  provenance:
+  - POL-SCR-WRITE-01
+  - SAL-SAFETENSORS-00009

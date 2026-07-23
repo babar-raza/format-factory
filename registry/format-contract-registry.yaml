@@ -105,7 +105,7 @@ contracts:
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: b5dc8a3edc1fd16e94848fe7113b12a0e78cadc2313f13358cda5b79c1c4dab3
 - format_id: ipynb
-  state: REVIEWED
+  state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories:
@@ -113,17 +113,17 @@ contracts:
   - security_behavior
   - structure_roots
   - versioning_profiles
-  updated_at: '2026-07-16T10:42:07Z'
+  updated_at: '2026-07-23T15:43:30Z'
   contract_path: shared/format-contracts/ipynb.yaml
   capability_count: 20
   generator_version: fcl-compiler/1.0.0
   input_digests:
     sal_facts_sha256: b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0
-    research_sha256: 2cbbf729a97687e4639914bcdbaaccd0d5f4a19b0b481d830d81e2bceb216507
+    research_sha256: 260f6442866661b26e8bf85a4153fda1ec890a4be0100013b0efb31f5ee7a9ac
     family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
-    qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
+    qname_registry_sha256: 40558eda169cb74b3b27e47ef1bdc0c6893c959efc00e9db7c7b2b2df77bc776
   quality_score: 82.5
   quality_verdict: PASS
   quality_policy_revision: 1
@@ -256,15 +256,25 @@ contracts:
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 3998ce003088b77b9309cf6a17c75616ca9af62ea90ea6a3acedd65e02b4d85c
 - format_id: safetensors
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
+  state: COMPILED
+  readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories:
   - constraints_validation
   - data_model
   - structure_roots
   - syntax_encoding
-  updated_at: '2026-07-16T10:40:22Z'
+  updated_at: '2026-07-23T16:06:13Z'
+  contract_path: shared/format-contracts/safetensors.yaml
+  capability_count: 15
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: 3aa8359e3e26e5a65addea0edcd7fd2b2bfbb20cb892000c6e19e7fe4504fb32
+    research_sha256: 9bc2de8e29af5aeeff8ce3ac52c3dab2e26602e2fe422330675ebfdb58ac4c32
+    family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
 - format_id: sylk
   state: VALIDATED
   contract_path: shared/format-contracts/sylk.yaml

@@ -27,7 +27,7 @@ contracts:
       - "V45 (governance_validators.py — no format prefix outside Compat/)"
     applies_to:
       - "src/python/*/models.py"
-    last_verified_date: "2026-06-24"
+    last_verified_date: "2026-07-23"
 
   - contract_id: "KC-PYTHON-002"
     stable_semantic_key: "python_format_source_structure"
@@ -40,7 +40,26 @@ contracts:
       - "V68 (tools/supervisor/knowledge_freshness_validator.py — drift detection)"
     applies_to:
       - "src/python/*/"
-    last_verified_date: "2026-06-24"
+    last_verified_date: "2026-07-23"
+
+  - contract_id: "KC-PYTHON-003"
+    stable_semantic_key: "python_production_package_architecture"
+    title: "Python Production Distribution and Package Architecture"
+    subject_type: "DIRECTORY_LAYOUT"
+    path: ".supervisor/knowledge/contracts/python-production-package.yaml"
+    status: "VERIFIED_CURRENT"
+    enforcement: "PARTIALLY_ENFORCED"
+    validators:
+      - "tests/production_program/test_production_skills.py"
+    applies_to:
+      - "src/python/core/"
+      - "src/python/ipynb/"
+      - "src/python/openraster/"
+      - "src/python/nrrd/"
+      - "src/python/xliff/"
+      - "src/python/safetensors/"
+      - "src/python/ubl/"
+    last_verified_date: "2026-07-23"
 
 gaps_path: ".supervisor/knowledge/gaps.yaml"
 growth_events_path: ".supervisor/knowledge/growth-events.yaml"

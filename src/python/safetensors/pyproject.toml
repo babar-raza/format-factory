@@ -1,41 +1,56 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "format-factory-safetensors"
-version = "0.1.0.dev0"
-description = "Format Factory SafeTensors FOSS Python parser and writer"
-license = {text = "Apache-2.0"}
-requires-python = ">=3.9"
-dependencies = ["numpy>=1.24"]
-
+version = "0.2.0.dev0"
+description = "Bounded, framework-neutral SafeTensors reader and writer"
 readme = "README.md"
-authors = [
-    {name = "Format Factory", email = "formatfactory@aspose.com"},
-]
-keywords = ["format-factory", "safetensors", "machine-learning", "tensor"]
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [{name = "Format Factory"}]
+dependencies = ["format-factory-core==0.1.0.dev0"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: Apache Software License",
-    "Operating System :: OS Independent",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Operating System :: OS Independent",
+  "Typing :: Typed",
 ]
 
-[project.urls]
-Homepage = "https://github.com/format-factory/format-factory"
-Repository = "https://github.com/format-factory/format-factory"
-"Bug Tracker" = "https://github.com/format-factory/format-factory/issues"
+[project.optional-dependencies]
+numpy = ["numpy>=1.26"]
+torch = ["torch>=2.2"]
+test = ["pytest>=8.3", "hypothesis>=6.100"]
 
 [project.scripts]
-ff-safetensors = "safetensors.cli:main"
+ff-safetensors = "format_factory.safetensors.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
-where = [".."]
-include = ["safetensors*"]
+where = ["src"]
+include = ["format_factory.safetensors*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"format_factory.safetensors" = ["py.typed"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["format_factory.safetensors"]
+
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*", "torch", "torch.*"]
+follow_imports = "skip"
+ignore_missing_imports = true

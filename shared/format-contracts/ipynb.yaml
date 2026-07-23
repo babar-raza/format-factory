@@ -15,8 +15,8 @@ contract_metadata:
   input_digests:
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-    qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
-    research_sha256: 2cbbf729a97687e4639914bcdbaaccd0d5f4a19b0b481d830d81e2bceb216507
+    qname_registry_sha256: 40558eda169cb74b3b27e47ef1bdc0c6893c959efc00e9db7c7b2b2df77bc776
+    research_sha256: 260f6442866661b26e8bf85a4153fda1ec890a4be0100013b0efb31f5ee7a9ac
     sal_facts_sha256: b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
@@ -34,20 +34,15 @@ format_identity:
   - Structure-aware diff/merge for version control of computational documents
   - Trust, sanitization, and validation of untrusted notebooks before rendering or execution
 authoritative_sources:
-- title: Jupyter Project nbformat v4.5
-  source_id: SRC-IPYNB-001
-  organization: Jupyter Project
-  version: nbformat v4.5
-  canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
-  authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
 - title: Jupyter nbformat specification and JSON schema (format 4)
   source_id: SRC-NB-002
   organization: Jupyter Project
-  version: nbformat 4.x
-  canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
+  version: nbformat 5.10.4 commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+  local_path: .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  canonical_url: https://github.com/jupyter/nbformat/archive/60b6151fedcbdc9f137fb2d223eeb10c935a8378.tar.gz
+  content_hash: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
   source_id: SRC-NB-003
   organization: Format Factory

@@ -1,0 +1,160 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "execution_id": "ff6-core-chassis-001",
+  "task_id": "TC-FF6-CHASSIS-001",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "WAVE-2-CHASSIS",
+  "requested_operation": "create production core distribution",
+  "selected_skill_ids": [
+    "new-format-kickstart"
+  ],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "allowed_paths": [
+    "src/python/core/**",
+    "tests/python/core/**",
+    "reports/skills-rff6/skill-transcripts/**"
+  ],
+  "status": "CLOSED",
+  "created_at": "2026-07-23T15:34:34Z",
+  "updated_at": "2026-07-23T15:34:34Z",
+  "closed_at": "2026-07-23T15:34:34Z",
+  "expires_at": "2026-07-23T19:34:34Z",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "git_commit": "dabcc73285fec05d990fc267b6463ac196983c91",
+  "target_tree_sha256": "28e4f6f35af5190175d264e27e53dbfb7bd2f2de1c3159a55b594af3ff41fb25",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {},
+    "product_contracts": {
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {},
+    "tools": {
+      "pyproject.toml": "d28b82c9ae7631a07a54f808ef65eacfe7e07b55d619f7b0e6ff2e8aa09030bf"
+    },
+    "corpora": {},
+    "dependency_locks": {
+      "requirements-build.lock": "c3a224c38a823ab03d2fc25298488682656959656672f6b83ce812c5f3e3358a"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/python/core",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "13 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "src/python/core/src",
+        "tests/python/core"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "--namespace-packages",
+        "--explicit-package-bases",
+        "src/python/core/src/format_factory/core"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pip",
+        "install",
+        "--dry-run",
+        "--require-hashes",
+        "-r",
+        "src/python/core/requirements-build.lock"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "build",
+        "--wheel",
+        "--sdist",
+        "--outdir",
+        ".local/build/core-r5",
+        "src/python/core"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "build",
+        "--wheel",
+        "--sdist",
+        "--outdir",
+        ".local/build/core-r6",
+        "src/python/core"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "<isolated-python>",
+        "-I",
+        "-c",
+        "import format_factory.core"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077"
+    },
+    {
+      "kind": "sdist",
+      "sha256": "f4ace0c9d78186bfab23d006e733a258b2967892830885f891ff8a6911194bf3"
+    },
+    {
+      "kind": "sdist",
+      "sha256": "7a759ad6d1fbad7efc5abd78c5dc202d0517402698593876c955f8079dc22f25"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": false,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/core/__init__.py"
+  ],
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "proof_nodes": [],
+  "open_gaps": [
+    "Setuptools sdist gzip output is not byte-reproducible across equivalent builds; certification remains blocked until the packaging pipeline normalizes the archive.",
+    "Full cross-platform Python 3.11-3.14 certification, SBOM, provenance, signature, license, and vulnerability checks remain open."
+  ]
+}

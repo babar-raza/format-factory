@@ -2,15 +2,15 @@ format_id: safetensors
 display_name: SafeTensors
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
-  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
+  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-SAFETENSORS-00001
   qname: FACT-SAFETENSORS-001
   element_qname: safetensors:header
-  claim: A safetensors file starts with an unsigned little-endian 64-bit integer N, followed by exactly
-    N bytes of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets}, plus an optional
-    __metadata__ string map
+  claim: A safetensors file starts with an unsigned little-endian 64-bit integer N, followed by exactly N bytes
+    of UTF-8 JSON header mapping tensor names to {dtype, shape, data_offsets}, plus an optional __metadata__ string
+    map
   section: SafeTensors v0.4 — file format
   authority: Hugging Face SafeTensors Specification v0.4
   source: structural_fact_manual
@@ -24,9 +24,8 @@ facts:
 - fact_id: SAL-SAFETENSORS-00002
   qname: FACT-SAFETENSORS-002
   element_qname: safetensors:tensor
-  claim: Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape (list of non-negative ints),
-    and data_offsets [begin, end) into the byte buffer immediately following the header; offsets are contiguous
-    and non-overlapping
+  claim: Each tensor entry declares dtype (e.g. F16, F32, I64, BF16), shape (list of non-negative ints), and data_offsets
+    [begin, end) into the byte buffer immediately following the header; offsets are contiguous and non-overlapping
   section: SafeTensors v0.4 — tensor entries
   authority: Hugging Face SafeTensors Specification v0.4
   source: structural_fact_manual
@@ -37,3 +36,257 @@ facts:
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+- fact_id: SAL-SAFETENSORS-00003
+  qname: FACT-SAFETENSORS-3
+  element_qname: safetensors:header_length
+  claim: A SafeTensors file header prefix is exactly eight bytes interpreted as an unsigned little-endian 64-bit
+    integer containing the UTF-8 JSON header byte length.
+  section: README Format lines 74-79
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00004
+  qname: FACT-SAFETENSORS-4
+  element_qname: safetensors:file_coverage
+  claim: A complete SafeTensors file may not contain unindexed trailing payload bytes after the final tensor because
+    incomplete metadata coverage is invalid.
+  section: tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00005
+  qname: FACT-SAFETENSORS-5
+  element_qname: safetensors:header_validation
+  claim: A declared header length that exceeds the available file bytes, malformed UTF-8, or malformed JSON is invalid
+    and must be rejected.
+  section: tensor.rs read_metadata and invalid-header tests
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00006
+  qname: FACT-SAFETENSORS-6
+  element_qname: safetensors:empty_tensor
+  claim: A tensor shape containing a zero dimension is valid and has an empty data span whose begin and end offsets
+    are equal.
+  section: tensor.rs test_zero_sized_tensor
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00007
+  qname: FACT-SAFETENSORS-7
+  element_qname: safetensors:scalar
+  claim: A zero-rank tensor with an empty shape list is a valid scalar whose data span contains exactly one element
+    of its declared dtype.
+  section: README Notes line 98 and tensor.rs test_empty_shapes_allowed
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00008
+  qname: FACT-SAFETENSORS-8
+  element_qname: safetensors:tensor_entry
+  claim: Each tensor entry has a dtype field, a shape field containing dimensions, and a data_offsets field containing
+    a begin and end byte offset.
+  section: README Format lines 80-82
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00009
+  qname: FACT-SAFETENSORS-9
+  element_qname: safetensors:header_padding
+  claim: JSON whitespace may pad the beginning or end of the header, allowing writers to align the following data
+    section while preserving valid syntax.
+  section: tensor.rs test_whitespace_padded_header
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00010
+  qname: FACT-SAFETENSORS-10
+  element_qname: safetensors:payload_encoding
+  claim: SafeTensors tensor payload values use little-endian byte order and C row-major element order.
+  section: README Notes lines 102-104
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00011
+  qname: FACT-SAFETENSORS-11
+  element_qname: safetensors:shape
+  claim: Shape multiplication and element-bit multiplication overflow are invalid and must be rejected instead of
+    wrapping during validation.
+  section: tensor.rs Metadata.validate and test_validation_overflow
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00012
+  qname: FACT-SAFETENSORS-12
+  element_qname: safetensors:subbyte_alignment
+  claim: Sub-byte F4 and six-bit tensor types are valid only when the complete tensor bit count ends on a byte boundary;
+    a misaligned slice is invalid.
+  section: tensor.rs Dtype.bitsize and Metadata.validate
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00013
+  qname: FACT-SAFETENSORS-13
+  element_qname: safetensors:data_offsets
+  claim: Tensor data offsets are relative to the beginning of the data buffer that immediately follows the variable-length
+    JSON header.
+  section: README Format line 81
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00014
+  qname: FACT-SAFETENSORS-14
+  element_qname: safetensors:header
+  claim: The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name keys to tensor entries,
+    with __metadata__ reserved for file metadata.
+  section: README Format lines 76-83
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00015
+  qname: FACT-SAFETENSORS-15
+  element_qname: safetensors:metadata
+  claim: The __metadata__ entry may contain only a free-form string-to-string map; arbitrary nested JSON metadata
+    values are not valid.
+  section: README Format line 83
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00016
+  qname: FACT-SAFETENSORS-16
+  element_qname: safetensors:data_buffer
+  claim: The data buffer must be entirely indexed by tensor entries without holes, and ordered tensor offsets must
+    be contiguous and non-overlapping.
+  section: README Notes line 99 and tensor.rs Metadata.validate
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00017
+  qname: FACT-SAFETENSORS-17
+  element_qname: safetensors:header_limit
+  claim: The official implementation limits a JSON header to 100,000,000 bytes and rejects a declared header length
+    above that resource limit.
+  section: tensor.rs MAX_HEADER_SIZE and read_metadata
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00018
+  qname: FACT-SAFETENSORS-18
+  element_qname: safetensors:tensor_size
+  claim: The tensor byte span must equal the checked product of all shape dimensions and the dtype bit width divided
+    by eight.
+  section: tensor.rs Metadata.validate lines 627-659
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+- fact_id: SAL-SAFETENSORS-00019
+  qname: FACT-SAFETENSORS-19
+  element_qname: safetensors:dtype
+  claim: The v0.8.0 dtype inventory includes BOOL, F4, F6_E2M3, F6_E3M2, U8, I8, F8_E5M2, F8_E4M3, F8_E8M0, F8_E4M3FNUZ,
+    F8_E5M2FNUZ, I16, U16, F16, BF16, I32, U32, F32, C64, F64, I64, and U64.
+  section: tensor.rs Dtype enum lines 811-865
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'

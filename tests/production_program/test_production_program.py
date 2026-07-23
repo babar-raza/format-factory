@@ -14,14 +14,20 @@ from tools.supervisor.production_program import Gap, ProductionProgram
 
 def _contract(format_id: str = "ipynb") -> dict:
     return {
-        "contract_metadata": {"format_id": format_id},
+        "contract_metadata": {
+            "format_id": format_id,
+            "contract_id": f"FC-{format_id.upper()}-V1",
+            "family": "test",
+            "target_spec_version": "1.0",
+            "input_digests": {"sal_facts_sha256": "b" * 64},
+        },
         "authoritative_sources": [
             {
                 "source_id": f"SRC-{format_id.upper()}-001",
                 "title": "Primary",
                 "authority_class": "AUTHORITATIVE",
                 "acquisition_status": "ACQUIRED",
-                "sha256": "a" * 64,
+                "content_hash": "a" * 64,
             }
         ],
         "capabilities": [
@@ -46,11 +52,49 @@ def test_product_contract_is_deterministic_and_deferral_is_not_coverage() -> Non
     assert first.digest == second.digest
     assert len(first.obligations) == 2
     assert {item["kind"] for item in first.obligations} == {"positive", "rejection"}
+    assert all(
+        item["fact_ids"] == ("SAL-IPYNB-00001",)
+        for item in first.obligations
+    )
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("target_spec_version", "2.0"),
+        ("family", "changed-family"),
+        ("contract_id", "FC-IPYNB-V2"),
+    ],
+)
+def test_contract_identity_change_invalidates_digest(field: str, value: str) -> None:
+    baseline = _contract()
+    changed = _contract()
+    changed["contract_metadata"][field] = value
+    assert compile_product_contract(
+        baseline, run_legacy_validator=False
+    ).digest != compile_product_contract(changed, run_legacy_validator=False).digest
+
+
+def test_contract_input_digest_change_invalidates_digest() -> None:
+    baseline = _contract()
+    changed = _contract()
+    changed["contract_metadata"]["input_digests"]["sal_facts_sha256"] = "c" * 64
+    assert compile_product_contract(
+        baseline, run_legacy_validator=False
+    ).digest != compile_product_contract(changed, run_legacy_validator=False).digest
+
+
+def test_mandatory_capability_without_provenance_fails_closed() -> None:
+    source = _contract()
+    source["capabilities"][0]["provenance"] = []
+    compiled = compile_product_contract(source, run_legacy_validator=False)
+    assert "MISSING_PROVENANCE_REFERENCE" in {issue.code for issue in compiled.issues}
+    assert not compiled.ready
 
 
 def test_unpinned_authority_and_foreign_fact_fail_closed() -> None:
     source = _contract()
-    source["authoritative_sources"][0].pop("sha256")
+    source["authoritative_sources"][0].pop("content_hash")
     source["capabilities"][0]["provenance"].append("SAL-NRRD-99999")
     compiled = compile_product_contract(source, run_legacy_validator=False)
     codes = {issue.code for issue in compiled.issues}
@@ -138,3 +182,32 @@ def test_invalid_transition_fails_closed(tmp_path: Path) -> None:
     program = ProductionProgram(tmp_path)
     with pytest.raises(ValueError, match="unsafe transition"):
         program.transition("ipynb", "VERIFY", evidence={})
+
+
+def test_machinery_failures_enter_current_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    report = repo / ".supervisor" / "skill-contract-validation-results.yaml"
+    report.parent.mkdir(parents=True)
+    report.write_text(
+        """
+- skill_id: broken-skill
+  findings:
+    - check: command_file_exists
+      detail: command file missing
+      result: FAIL
+""".lstrip(),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    program = ProductionProgram(tmp_path / "state")
+    observed = program.audit_machinery()
+    assert len(observed) == 1
+    gap = program.next_gap()
+    assert gap is not None
+    assert gap.format_id == "_machinery"
+    assert gap.obligation_id == "broken-skill"
+    assert gap.category == "referential_integrity"

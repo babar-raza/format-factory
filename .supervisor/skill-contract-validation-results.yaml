@@ -1,7 +1,7 @@
-fail_count: 0
+fail_count: 2
 generated_by: validate_skill_contracts.py
 mission_id: SKILL-FIRST-001
-overall_verdict: PASS
+overall_verdict: FAIL
 results:
 - note: deprecated skill excluded from contract validation
   skill_id: add-analytics-function
@@ -1104,5 +1104,41 @@ results:
   status: active
   verdict: PASS
   warn_count: 0
-total_skills: 185
+- fail_count: 1
+  findings:
+  - check: command_file_exists
+    detail: 'command_file not found: .claude/commands/fix-exception-hierarchy.md'
+    result: FAIL
+  skill_id: fix-exception-hierarchy
+  status: active
+  verdict: FAIL
+  warn_count: 0
+- fail_count: 1
+  findings:
+  - check: command_file_exists
+    detail: 'command_file not found: .claude/commands/wire-analytics-module.md'
+    result: FAIL
+  skill_id: wire-analytics-module
+  status: active
+  verdict: FAIL
+  warn_count: 0
+- fail_count: 0
+  findings: []
+  skill_id: skills-first-audit
+  status: active
+  verdict: PASS
+  warn_count: 0
+- fail_count: 0
+  findings: []
+  skill_id: product-contract-runtime-repair
+  status: active
+  verdict: PASS
+  warn_count: 0
+- fail_count: 0
+  findings: []
+  skill_id: worktree-skill-guard-repair
+  status: active
+  verdict: PASS
+  warn_count: 0
+total_skills: 190
 warn_count: 0

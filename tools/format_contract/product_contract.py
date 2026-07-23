@@ -49,6 +49,8 @@ class ContractIssue:
 class CompiledProductContract:
     format_id: str
     profile_id: str
+    target_spec_version: str
+    source_digest: str
     digest: str
     authorities: tuple[dict[str, Any], ...]
     obligations: tuple[dict[str, Any], ...]
@@ -83,6 +85,8 @@ def compile_product_contract(
 ) -> CompiledProductContract:
     meta = contract.get("contract_metadata", {})
     format_id = str(meta.get("format_id", "")).lower()
+    target_spec_version = str(meta.get("target_spec_version", ""))
+    source_digest = hashlib.sha256(_canonical(contract)).hexdigest()
     issues: list[ContractIssue] = []
 
     if run_legacy_validator:
@@ -100,14 +104,14 @@ def compile_product_contract(
 
     authorities: list[dict[str, Any]] = []
     for source in contract.get("authoritative_sources", []) or []:
-        digest = source.get("sha256")
+        digest = source.get("content_hash")
         acquired = source.get("acquisition_status") == "ACQUIRED" and bool(digest)
         authority = {
             "source_id": source.get("source_id"),
             "title": source.get("title"),
             "version": source.get("version"),
             "canonical_url": source.get("canonical_url"),
-            "sha256": digest,
+            "content_hash": digest,
             "acquired": acquired,
         }
         authorities.append(authority)
@@ -125,8 +129,20 @@ def compile_product_contract(
     for capability in contract.get("capabilities", []) or []:
         capability_id = str(capability.get("capability_id", ""))
         level = str(capability.get("level", "MUST"))
+        provenance_ids = tuple(
+            sorted({str(item) for item in capability.get("provenance", []) or []})
+        )
+        if level == "MUST" and not provenance_ids:
+            issues.append(
+                ContractIssue(
+                    "MISSING_PROVENANCE_REFERENCE",
+                    "CRITICAL",
+                    "MUST capability has no authority, fact, research, or policy reference",
+                    capability_id,
+                )
+            )
         capability_fact_ids: set[str] = set()
-        for fact_id in capability.get("provenance", []) or []:
+        for fact_id in provenance_ids:
             match = SAL_ID.match(str(fact_id))
             if not match:
                 # Legacy POL/RF identifiers remain aliases during migration,
@@ -176,6 +192,8 @@ def compile_product_contract(
                     "kind": kind,
                     "source_field": field,
                     "text": text,
+                    "provenance_ids": provenance_ids,
+                    "fact_ids": tuple(sorted(capability_fact_ids)),
                     "required_tests": tuple(capability.get("required_tests", []) or []),
                     "release_gates": tuple(capability.get("release_gates", []) or []),
                     # Deferral text is audit context only and is deliberately
@@ -188,12 +206,19 @@ def compile_product_contract(
     projection = {
         "format_id": format_id,
         "profile_id": profile_id,
+        "contract_id": meta.get("contract_id"),
+        "family": meta.get("family"),
+        "target_spec_version": target_spec_version,
+        "input_digests": dict(sorted((meta.get("input_digests") or {}).items())),
+        "source_digest": source_digest,
         "authorities": authorities,
         "obligations": obligations,
     }
     return CompiledProductContract(
         format_id=format_id,
         profile_id=profile_id,
+        target_spec_version=target_spec_version,
+        source_digest=source_digest,
         digest=hashlib.sha256(_canonical(projection)).hexdigest(),
         authorities=tuple(authorities),
         obligations=tuple(obligations),

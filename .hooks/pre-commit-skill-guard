@@ -15,12 +15,37 @@ Exit codes:
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+
+def _resolve_repo_root() -> Path:
+    """Return the active worktree root, even when this hook is shared.
+
+    Linked worktrees commonly execute a hook whose physical file lives in the
+    primary checkout. Deriving the repository from ``__file__`` therefore
+    searches the wrong index, transcripts, receipts, and coordination scope.
+    Git is the authority for the active worktree; the physical hook checkout is
+    only a fallback for direct execution outside a Git context.
+    """
+    fallback = Path(__file__).resolve().parent.parent
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=str(Path.cwd()),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except (OSError, ValueError):
+        return fallback
+    if result.returncode != 0 or not result.stdout.strip():
+        return fallback
+    return Path(result.stdout.strip()).resolve()
+
+
+REPO_ROOT = _resolve_repo_root()
 SRC_PREFIX = "src/"
 TRANSCRIPT_DIRS = [
     REPO_ROOT / ".local" / "transcripts",

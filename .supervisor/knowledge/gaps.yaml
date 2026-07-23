@@ -60,3 +60,16 @@ gaps:
       WARN-only (non-blocking). Called as V68 in run_all_governance_validators().
       autonomous_cycle.py is at LOC cap — wiring via governance runner (not inline) per plan stop condition.
       Closed by TC-P2-001 (hidden-puzzling-rain Phase 2), 2026-06-24.
+  - gap_id: "KG-008"
+    subject: "Production Python package architecture contradicts legacy POC source layout"
+    affected_agents_or_tasks:
+      - "TC-FF6-CHASSIS-001"
+      - "all production Python format implementations"
+    severity: "CRITICAL"
+    current_state: "KC-PYTHON-002 accurately describes the legacy POC tree but was scoped as the universal target"
+    expected_state: "Migrated production packages use PEP 420 namespaces, independent builds, and separated model/codec/validation/security/adapters/analytics/cli layers"
+    ambiguity_type: "KNOWLEDGE_CONTRADICTED"
+    root_cause: "The original knowledge contract promoted an observed POC convention into a universal architecture rule"
+    contract_id: "KC-PYTHON-003"
+    status: "CONTRACT_WRITTEN"
+    resolution: "KC-PYTHON-003 governs production_namespace_v1 packages; KC-PYTHON-002 remains the verified legacy description during migration"

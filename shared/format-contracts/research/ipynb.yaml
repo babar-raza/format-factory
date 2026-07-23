@@ -87,13 +87,22 @@ note: Committed canonical research store (L30 research plane). Findings are PROD
   with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
   here.
 source_records:
-- title: Jupyter nbformat specification and JSON schema (format 4)
-  source_id: SRC-NB-002
+- title: Jupyter Project nbformat v4.5
+  source_id: SRC-IPYNB-004
   organization: Jupyter Project
-  version: nbformat 4.x
+  version: nbformat v4.5
   canonical_url: https://nbformat.readthedocs.io/en/latest/format_description.html
   authority_class: AUTHORITATIVE
   acquisition_status: URL_ONLY
+- title: Jupyter nbformat specification and JSON schema (format 4)
+  source_id: SRC-NB-002
+  organization: Jupyter Project
+  version: nbformat 5.10.4 commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+  local_path: .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  canonical_url: https://github.com/jupyter/nbformat/archive/60b6151fedcbdc9f137fb2d223eeb10c935a8378.tar.gz
+  content_hash: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
+  authority_class: AUTHORITATIVE
+  acquisition_status: ACQUIRED
 - title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
   source_id: SRC-NB-003
   organization: Format Factory

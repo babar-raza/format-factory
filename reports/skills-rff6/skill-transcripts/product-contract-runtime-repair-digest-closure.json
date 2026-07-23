@@ -1,0 +1,22 @@
+{
+  "skill_id": "product-contract-runtime-repair",
+  "task_id": "TC-FF6-PRODUCT-CONTRACT-DIGEST-CLOSURE",
+  "defect_id": "FF6-PCONTRACT-DIGEST-CLOSURE-001",
+  "failing_regression": "Changing target_spec_version from v0.4 to the pinned v0.8.0 commit left the production contract digest unchanged.",
+  "expected_invalidation_input": "contract identity, target version, input digests, complete source projection",
+  "changed_files": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py"
+  ],
+  "validations": {
+    "complete_contract_digest_closure": "PASS",
+    "obligation_fact_edges_preserved": "PASS",
+    "equivalent_rerun_determinism": "PASS",
+    "changed_contract_input_invalidates_digest": "PASS",
+    "focused_tests": "51 passed"
+  },
+  "tool_sha256": "414dfe211e8eaab14992e996b93bc98ddbf7854fedf3f52f2b8d550761af448c",
+  "verdict": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

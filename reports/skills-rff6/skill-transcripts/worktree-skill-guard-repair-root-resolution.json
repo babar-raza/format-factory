@@ -1,0 +1,27 @@
+{
+  "skill_id": "worktree-skill-guard-repair",
+  "task_id": "TC-FF6-WORKTREE-SKILL-GUARD-REPAIR",
+  "defect_id": "FF6-WORKTREE-SKILL-GUARD-ROOT-001",
+  "linked_worktree_reproduction": "The physical shared-hook path caused REPO_ROOT to resolve to the main checkout while the staged index and transcripts were in the active linked worktree.",
+  "expected_repository_root": "git rev-parse --show-toplevel for the active hook invocation",
+  "changed_files": [
+    ".hooks/pre-commit-skill-guard",
+    "tests/governance/test_pre_commit_skill_guard_worktree.py"
+  ],
+  "validations": {
+    "linked_hook_resolves_active_worktree": "PASS",
+    "transcript_search_is_worktree_scoped": "PASS",
+    "coordination_check_uses_active_worktree": "PASS",
+    "shared_checkout_behavior_is_preserved": "PASS",
+    "focused_tests": "2 passed",
+    "actual_mission_guard": "PASS"
+  },
+  "digests": {
+    "hook": "62583f6c5d13c510efd4652f5c762e62df921fb8cd19661a1acf50647eb3add0",
+    "test": "dffbf93c60d864cef7d09c7dfa86c6608fc4734b8a30e5fb971b6042e3c4aceb",
+    "skill": "6e2ef7d7e1725c29293e54ae01ceccae27a641d8101b939ca445f10296439fc6"
+  },
+  "verdict": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,100 +1,89 @@
 ---
-version: "1.0"
-last-updated: "2026-07-02"
+version: "2.0"
+last-updated: "2026-07-23"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization"
-generated_by: claude
+skill_type: "ATOMIC_SKILL"
+idempotency: "The same obligation, bounded change, and input closure produce the same source, tests, and proof projection."
+loc_budget: "One coherent obligation slice; split work when more than one independently testable behavior changes."
+test_path: "tests/production_program/test_production_skills.py"
+risk_level: "MEDIUM"
+created-by: "TC-FF6-MACH-001"
+product_track: "foss_python"
+generated_by: codex
 visibility: generated
 ---
 
 # /format-feature-expansion
 
-Add a new export, transform, or accessor function to an existing Python FOSS format codec.
-Generates bounded taskcards via `tools/playbook/generate_playbook_taskcards.py`.
-Detailed playbook contract is in `playbooks/format-factory/format-feature-expansion.md`.
+Implement one unmet ProductContract obligation in an existing production
+format library. This skill is obligation-driven; adding an arbitrary export or
+meeting a test-count target is not a completion criterion.
 
 ## Required Inputs
 
-- `format_name` — target format id (e.g. `fods`, `csv`, `ndjson`)
-- `codec_file` — path to the codec source file (e.g. `src/python/fods/fods_codec.py`)
-- `init_file` — path to `__init__.py` for `__all__` export update
-- `test_dir` — path to the format's test directory
-- `function_name` — name of the new function to implement
-- `function_signature` — full Python signature string
-- `capability_label` — one-line description for the capability matrix
+- `format_id`
+- `profile_id`
+- `obligation_id`
+- `contract_digest`
+- `authority_digests`
+- `affected_layer`
+- `planned_paths`
+- `proof_inputs`
+- `task_id`
 
-## Steps
+## Execution
 
-1. Read the codec file and `__init__.py` to understand existing patterns and exports
-2. Verify the spec QName for this capability exists in the SAL and is assigned to this format
-3. Draft the new function in the codec file, following existing naming and type conventions
-4. Write focused tests in the test directory: minimum 7 tests per new function
-5. Verify import: `from <format>.<codec_module> import <function_name>` must succeed
-6. Run the focused test command and confirm all new tests pass
-7. Update `__all__` in `__init__.py` to export the new function
-8. Write evidence: changed files list, test result output, import proof
+1. Run `/check-skill-coverage`, load `KC-PYTHON-003`, acquire exact leases, and
+   pass the pre-mutation guard.
+2. Confirm the obligation is current, belongs to the format/profile, and is
+   mandatory or deliberately selected by deterministic queue priority.
+3. Characterize affected working behavior and enumerate every public caller.
+4. Add a failing positive test. For rejection/security obligations, also add
+   the required failing negative test. Use licensed independent fixtures where
+   interoperability is claimed.
+5. Implement the smallest coherent change in the correct package layer.
+6. Run focused tests, then format regression, architecture, typing, lint,
+   installed-wheel, and the risk-appropriate security tier.
+7. Record exact executed evidence and input closure. Recompute invalidation and
+   promotion; never edit readiness directly.
+8. If another obligation is exposed, materialize it in the current-gap
+   projection and allow deterministic scheduling.
+
+## Mandatory Validations
+
+- obligation and SAL fact resolve to the selected format
+- tests were observed failing for the intended reason before implementation
+- executed positive proof; executed negative proof where applicable
+- no source/test/fixture/environment digest is omitted
+- public API snapshot and caller blast radius remain compatible or have an
+  explicit pre-1.0 migration record
+- installed wheel, not source tree, passes import and behavior checks
+- format and machinery regression tiers pass
 
 ## Allowed Paths
 
-- `src/python/<format_name>/` — codec source files (read and write)
-- `tests/python/<format_name>/` — test files (read and write)
-- `examples/python/<format_name>/` — example files (optional, write)
-- `reports/` — evidence output (write)
+- the selected format’s source, tests, fixtures, examples, docs, and manifests
+- canonical proof/run outputs
 
 ## Forbidden Paths
 
-- `src/net/**` — .NET product source is out of scope
-- `poc-targets.yaml` — no gate or POC state changes
-- `registry/format-registry.yaml` — registry is read-only in this skill
-- `AGENTS.md`, `CLAUDE.md`, `GOVERNANCE.md` — governance docs are read-only
-- `.supervisor/skill-registry.yaml` — skill registry is read-only here
-- `plans/strategic/**` — strategic plans are read-only
+- unrelated formats
+- manual coverage or promotion labels
+- test-count substitutions for behavior
+- implementation-derived fixtures as the only oracle
+- `src/net/**`, `src/dotnet/**`, `plans/strategic/**`
 
 ## Stop Conditions
 
-- Stop if the function requires an external library not already in the format's dependencies
-- Stop if no valid spec QName exists for the target capability (consult SAL first)
-- Stop if the installed format package breaks after adding the function
-- Stop if governance validators fail (`governance_validators_pass` must be true)
-- Stop if fewer than 7 tests pass for the new function
+- Quarantine a corrupt fixture without erasing its digest/history.
+- On oracle disagreement, add a discriminating test and consult primary
+  authority; do not choose the convenient outcome.
+- On repeated root cause, apply the controller’s three-attempt technical-block
+  rule and continue other work.
 
-## Output Format
+## Output
 
-Report at the end of execution:
-- List of changed files with brief description of each change
-- Test result summary: `N/N tests pass`
-- Import proof: the import command and its success output
-- Capability label used in the matrix update
-
-## Validation
-
-- `governance_validators_pass` — all governance validators must pass
-- `min_7_tests_per_function` — at least 7 focused tests per new function
-- `no_new_external_imports` — no new third-party imports added
-- `init_all_export_updated` — `__all__` in `__init__.py` is updated
-
-## Rollback
-
-Revert the codec source change, remove the new tests, and restore `__all__` in `__init__.py`.
-Confirm the format package still imports cleanly after revert.
-
-Transcript mention: execution produces a skill invocation transcript at
-`reports/skills-r<N>/skill-transcripts/format-feature-expansion-<format>.json`.
-
-## Sample Invocation
-
-```
-/format-feature-expansion
-format_name: fods
-codec_file: src/python/fods/fods_codec.py
-init_file: src/python/fods/__init__.py
-test_dir: tests/python/fods/
-function_name: get_sheet_names
-function_signature: def get_sheet_names(model: dict) -> list[str]
-capability_label: Return ordered list of sheet names from FODS spreadsheet
-```
-
-## Changelog
-
-- 1.0 (2026-07-02): Initial command file. Skill registered FF-PLAYBOOK-SYSTEM-001.
-  Playbook contract at playbooks/format-factory/format-feature-expansion.md v1.2.
+Return obligation ID, changed paths, before/after test evidence, regression
+results, input/output digests, new proof nodes, computed readiness, and next
+queued obligation.

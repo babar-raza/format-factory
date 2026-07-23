@@ -215,6 +215,63 @@ class ProductionProgram:
         open_gaps = [gap for gap in self.gaps.values() if gap.state == "OPEN"]
         return min(open_gaps, key=Gap.sort_key) if open_gaps else None
 
+    def audit_machinery(self) -> list[dict[str, Any]]:
+        """Materialize current validator failures without scanning history."""
+        sources = (
+            (
+                REPO_ROOT / ".supervisor" / "skill-contract-validation-results.yaml",
+                "findings",
+            ),
+            (
+                REPO_ROOT / ".supervisor" / "skill-command-registry-sync-report.yaml",
+                "flags",
+            ),
+        )
+        observed: list[dict[str, Any]] = []
+        current_ids: set[str] = set()
+        for path, finding_key in sources:
+            if not path.exists():
+                continue
+            document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            records = document if isinstance(document, list) else [document]
+            for record in records:
+                findings = record.get(finding_key, []) if isinstance(record, dict) else []
+                for finding in findings or []:
+                    result = str(finding.get("result", ""))
+                    if result not in {"FAIL", "BROKEN_POINTER"}:
+                        continue
+                    obligation = str(
+                        record.get("skill_id")
+                        or finding.get("item")
+                        or finding.get("check")
+                        or "MACHINERY"
+                    )
+                    identity = f"machinery:{path.name}:{obligation}:{finding.get('check', '')}"
+                    gap_id = "GAP-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16].upper()
+                    current_ids.add(gap_id)
+                    detail = str(finding.get("detail", result))
+                    evidence_digest = sha256_path(path)
+                    gap = Gap(
+                        gap_id=gap_id,
+                        format_id="_machinery",
+                        obligation_id=obligation,
+                        category="referential_integrity",
+                        severity="HIGH",
+                        root_cause=detail,
+                        evidence_digest=evidence_digest,
+                        owning_task="AUTO-MACHINERY-INTEGRITY",
+                    )
+                    self.reconcile_gap(gap)
+                    observed.append(asdict(gap))
+        for gap in self.gaps.values():
+            if (
+                gap.owning_task == "AUTO-MACHINERY-INTEGRITY"
+                and gap.gap_id not in current_ids
+            ):
+                gap.state = "RESOLVED"
+        self.persist()
+        return sorted(observed, key=lambda item: item["gap_id"])
+
     def discover(self, format_id: str) -> dict[str, Any]:
         paths = [
             REPO_ROOT / "src" / "python" / format_id,
@@ -277,7 +334,7 @@ class ProductionProgram:
         return evidence
 
     def bootstrap(self) -> dict[str, Any]:
-        results: dict[str, Any] = {}
+        results: dict[str, Any] = {"machinery": self.audit_machinery()}
         for format_id in FORMATS:
             state = self.formats[format_id].state
             if state == "DISCOVER":

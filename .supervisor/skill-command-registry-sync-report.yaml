@@ -1,7 +1,15 @@
 auto_repaired: 0
-flags: []
+flags:
+- check: broken_pointer
+  detail: .claude/commands/fix-exception-hierarchy.md
+  item: fix-exception-hierarchy
+  result: BROKEN_POINTER
+- check: broken_pointer
+  detail: .claude/commands/wire-analytics-module.md
+  item: wire-analytics-module
+  result: BROKEN_POINTER
 generated_by: sync_skill_command_registry.py
 mission_id: SKILL-FIRST-001
 new_entries_added: 0
-overall_verdict: PASS
+overall_verdict: WARN
 status_drift: []
