@@ -42789,9 +42789,55 @@
         {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "5cf3ea4c4fcc3534b523f561e381c97b23922ff9b906dd23801d0a44327a14a8"}
       ],
       "tests": "tests/python/nrrd/test_production_namespace.py; tests/python/nrrd/"
+    },
+    {
+      "entry_id": "FF6-XLIFF-PRODUCTION-CHASSIS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W5-XLIFF-CHASSIS",
+      "skill": "new-format-kickstart",
+      "task_id": "AUTO-XLIFF-PACKAGE-CHASSIS",
+      "product": "XLIFF 2.x Python FOSS",
+      "format": "XLIFF",
+      "gap_ref": "GAP-D7DCA95220DD360C",
+      "capability_refs": [
+        "foss_python.xliff.production_package_chassis",
+        "foss_python.xliff.common_lifecycle",
+        "foss_python.xliff.deterministic_packaging",
+        "foss_python.xliff.structured_inline_preservation"
+      ],
+      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "XliffDocument"],
+      "source_files": [
+        {"path": "src/python/xliff/_build_backend.py", "state": "present", "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"},
+        {"path": "src/python/xliff/CHANGELOG.md", "state": "present", "sha256": "e6a93588b83e4f71858dbdcdf404d1f3514203edf8132f0df5be13d5b88646d5"},
+        {"path": "src/python/xliff/MANIFEST.in", "state": "present", "sha256": "2623550da83e971a5e5572306bca05b0576dc9fdc27cc16f28b2a7cb1fa955dd"},
+        {"path": "src/python/xliff/MIGRATION.md", "state": "present", "sha256": "60de12843d43aefbde46531fb5f20db08347605a42501215fbf1e5e0d3fb6cab"},
+        {"path": "src/python/xliff/pyproject.toml", "state": "present", "sha256": "16d05df7b7f26c7af597f7e23a4b066cdf510ed20d143205b154cc755459c18b"},
+        {"path": "src/python/xliff/README.md", "state": "present", "sha256": "a9b2aa11590fc0877e758aef1631555803f6c00866704c404945f65248d74beb"},
+        {"path": "src/python/xliff/requirements-build.lock", "state": "present", "sha256": "2e9f08e76551e50d1a85d46d7f5821e7ab5af9b778604bfaab14d8ba4d4cf9fe"},
+        {"path": "src/python/xliff/SECURITY.md", "state": "present", "sha256": "51e5fd8c66962126e8fa0baec6bbc65201c415044a7701ae726817b7eb81cd15"},
+        {"path": "src/python/xliff/src/format_factory/xliff/__init__.py", "state": "present", "sha256": "6b3b7c107bb7c445eab04d28bef49d48f33bf6265b9b20845c9712f90877ea7f"},
+        {"path": "src/python/xliff/src/format_factory/xliff/adapters/__init__.py", "state": "present", "sha256": "ace06eee844e7ed633de06f6b1058816dd864c4b950cdc3b7947ca9a9ae37121"},
+        {"path": "src/python/xliff/src/format_factory/xliff/analytics/__init__.py", "state": "present", "sha256": "ad376c089f7886a8b932c88553751d40b8e6ff3934c685107704dd39a48d62bd"},
+        {"path": "src/python/xliff/src/format_factory/xliff/cli/__init__.py", "state": "present", "sha256": "4c4b4290478e3b137515bb3d5e1583fe9f22f5a12bd5090c32a4d625c518cf60"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/__init__.py", "state": "present", "sha256": "8cd8a0f6924127c57a7f99292779eb145f09a0c45f4a632fdacbcda1fa48c332"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py", "state": "present", "sha256": "438497db5c6aabdb09767e3cd618c8193a2199640d71b40facf2b19bb52fefcd"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py", "state": "present", "sha256": "3094abca6d55309db19297f22b297f7caa552466254685864cf98d44b641d4a5"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py", "state": "present", "sha256": "a9fe4d6515d826e9788317ff86a9d7dbfff0bae815c42bdd6889b2bd92b0c2c3"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py", "state": "present", "sha256": "05f32643c959238008aa3c8372ed54b07a14a340af50e8951043aa2a5d3d966a"},
+        {"path": "src/python/xliff/src/format_factory/xliff/errors.py", "state": "present", "sha256": "c58d4c76fac41d0d9ffef98a5a86dc10c786fe55e0c018c0a654136c90850d9b"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/__init__.py", "state": "present", "sha256": "72b041da6c444c4c14c99a393857d39a9f97f82d80e4fc04fa2427f91c853328"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/document.py", "state": "present", "sha256": "481087a840d3c7800e79cc861085bfc4289f2c8e3c6d1fb7247973d20b43df33"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/inline.py", "state": "present", "sha256": "cc493b8fad529f88b5252948324279bb0c1dfc4c925eceeba08626a635232935"},
+        {"path": "src/python/xliff/src/format_factory/xliff/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
+        {"path": "src/python/xliff/src/format_factory/xliff/security/__init__.py", "state": "present", "sha256": "5a166f6efd6ef0e83285289922667d521124a6efafc2f54895b0c040ffe6561d"},
+        {"path": "src/python/xliff/src/format_factory/xliff/security/limits.py", "state": "present", "sha256": "3afd5a3755844998b6b5304c019ebb79ede25d0890320afa4ac287e2f9acb07c"},
+        {"path": "src/python/xliff/src/format_factory/xliff/validation/__init__.py", "state": "present", "sha256": "e4d6a2802d7956d5043bbc0cf63fd50a46d83fba0a4e089cc84ba1a0c890f23e"},
+        {"path": "src/python/xliff/src/format_factory/xliff/validation/validator.py", "state": "present", "sha256": "ecf3a1c584d41602b8a4d429fa48155b7fe31e9918c73338b3c1c40111d96589"}
+      ],
+      "tests": "tests/python/xliff/test_production_namespace.py; tests/python/xliff/"
     }
   ],
-  "total_entries": 2750,
+  "total_entries": 2751,
   "changes": [
     {
       "file": "src/python/dif/models.py",
