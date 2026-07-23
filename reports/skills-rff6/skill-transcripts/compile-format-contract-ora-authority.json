@@ -1,0 +1,49 @@
+{
+  "invocation_id": "FF6-ORA-CONTRACT-AUTHORITY-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "AUTO-OPENRASTER-CONTRACT-REFRESH",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ora",
+    "authority_sha256": [
+      "b6d041b4880556cb3e0a86612b203e82787078bacbc810ea0735e806a200568a",
+      "e1dac00ff0d9c27cb40b04cc21ae44fcf0ddb50f23ef49a12dc8057c5a6f20d6",
+      "78c993f79cfd831b6b4afcbdbc38eb8b156397d3b6995da41688fac603f6bba5"
+    ],
+    "sal_store_sha256": "d1a3e51edf034b6a9c1afbe8d582cd0e316e5c0cad7d11509780687647bee4ec"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ora-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ora-authority.json"
+  ],
+  "tests_run": [
+    "contract compiler --verify-idempotency ora: PASS",
+    "strict OpenRaster ProductContract: ready with 32 obligations",
+    "production controller contract readiness: PASS",
+    "production controller authority gap removed; next deterministic gap SafeTensors"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "no_product_source_mutation": "PASS",
+    "live_sal_proof_closure": "PASS",
+    "interoperability_profile_boundary_preserved": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ora.yaml": "472bba94000b4cff9b638cf4ea6c36715fb668aad369c92b9a250237dfb496c5",
+    "registry/format-contract-registry.yaml": "bb80b4349ada88e1e71fb2fe0e65fa3a1b2b40104072ddf171f1bc70b66d0501",
+    "strict_openraster_product_contract": "0e5185bf526595c0b6b239ef1428aebf8c0ee6d68054127bbd2b1058785733b1"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-23T23:14:56+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

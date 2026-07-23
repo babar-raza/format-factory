@@ -16,7 +16,7 @@ contract_metadata:
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
     research_sha256: 196a4b2684dfe3be5fc70bd289cb0f5a731b31e844ca5f046ea0c783e9cdf70d
-    sal_facts_sha256: 9807abb88fcc7b124629f83736f84d4d39a9b8a97ffb272bb439e036822d0b00
+    sal_facts_sha256: d1a3e51edf034b6a9c1afbe8d582cd0e316e5c0cad7d11509780687647bee4ec
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -178,12 +178,15 @@ capabilities:
   provenance:
   - POL-ARC-MODEL-01
   - SAL-ORA-00004
+  - SAL-ORA-00014
   required_behavior:
   - Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without
     full payload decode.
   normative_rules:
   - (File Layout — Storage) Member names in an OpenRaster ZIP archive are case-sensitive and must be UTF-8
     encoded with the ZIP UTF-8 flag used for non-ASCII names.
+  - (Layer Stack — Draft status) The OpenRaster Layer Stack authority labels version 0.0.5 an early draft
+    and warns that its contents remain open for discussion.
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -436,6 +439,7 @@ coverage_map:
   provenance:
   - POL-ARC-MODEL-01
   - SAL-ORA-00004
+  - SAL-ORA-00014
 - capability_id: ORA-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01

@@ -1,0 +1,76 @@
+{
+  "invocation_id": "FF6-SAL-ORA-AUTHORITY-20260723",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "AUTO-OPENRASTER-FACT-AUTHORITY",
+  "taskcard_id": "AUTO-OPENRASTER-FACT-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "AUTO-OPENRASTER-FACT-AUTHORITY",
+    "format_id": "ora",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/ora/",
+    "target_stage": "schema_migration",
+    "authority_sources": [
+      {
+        "source_id": "SRC-ORA-001",
+        "path": ".local/format-contracts/acquired/ora/src-ora-001.bin",
+        "sha256": "b6d041b4880556cb3e0a86612b203e82787078bacbc810ea0735e806a200568a"
+      },
+      {
+        "source_id": "SRC-ORA-002",
+        "path": ".local/format-contracts/acquired/ora/src-ora-002.bin",
+        "sha256": "e1dac00ff0d9c27cb40b04cc21ae44fcf0ddb50f23ef49a12dc8057c5a6f20d6"
+      },
+      {
+        "source_id": "SRC-ORA-003",
+        "path": ".local/format-contracts/acquired/ora/src-ora-003.bin",
+        "sha256": "78c993f79cfd831b6b4afcbdbc38eb8b156397d3b6995da41688fac603f6bba5"
+      }
+    ]
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/ora.yaml",
+    "reports/sal-verification/ora.json",
+    "shared/sal-facts/ora.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ora-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/ora.yaml",
+    "reports/sal-verification/ora.json",
+    "shared/sal-facts/ora.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ora-authority.json"
+  ],
+  "tests_run": [
+    "verify_sal_facts ora: 20 facts, 41 exact HTML-visible-text assertions, PASS",
+    "three same-input ORA verification runs: identical digest 7203d244e9c7058a996a760d83cf02b4ea60fba9e821a7fd1947a0c33ee73b37",
+    "live proof-closure validation: 20 of 20 facts valid",
+    "focused SAL, controller, contract determinism, and machinery suite: 89 passed",
+    "Ruff verifier, proof, merge, controller, and focused tests: PASS"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "exact_authority_assertions_pass": "PASS",
+    "html_resources_not_loaded": "PASS",
+    "content_addressed_receipt_bound": "PASS",
+    "draft_status_separated_from_certification_policy": "PASS",
+    "live_gap_projection_recomputed": "PASS"
+  },
+  "regression_observations": [
+    "A broader legacy format-contract consumption test selected three pre-existing CSV ledger/contract drift failures outside the ORA change set.",
+    "The repository-level mypy executable lacks PyYAML and jsonschema stubs; no Python source changed in this task."
+  ],
+  "output_digests": {
+    "shared/sal-facts/evidence/ora.yaml": "12946f0641a0315cc178ab513fff766ab72b46a75379dc1f516dad957cf4c3ad",
+    "reports/sal-verification/ora.json": "2dd390abde7e7c22cd5159e59969049635c69fb6379a2363a10d0998548cf0d4",
+    "shared/sal-facts/ora.yaml": "d1a3e51edf034b6a9c1afbe8d582cd0e316e5c0cad7d11509780687647bee4ec"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "verdict": "PROCEED",
+  "timestamp": "2026-07-23T23:14:56+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
