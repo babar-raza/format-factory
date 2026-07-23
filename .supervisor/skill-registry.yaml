@@ -1634,6 +1634,9 @@ skills:
   - tools/specification-authority-layer/
   - tools/spec/
   - schemas/sal-facts/
+  - shared/sal-facts/evidence/
+  - shared/sal-facts/
+  - reports/sal-verification/
   - tools/supervisor/production_program.py
   mandatory_validations:
   - spec_cache_verified
@@ -1644,6 +1647,9 @@ skills:
   - canonical_status_vocabulary_closed
   - unknown_status_rejected
   - live_gap_projection_recomputed
+  - exact_authority_assertions_pass
+  - content_addressed_receipt_bound
+  - manual_status_edit_non_promoting
   notes: SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered.
     Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
   product_track: sal_infrastructure

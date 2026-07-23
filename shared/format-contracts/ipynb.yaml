@@ -17,7 +17,7 @@ contract_metadata:
     family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
     qname_registry_sha256: 40558eda169cb74b3b27e47ef1bdc0c6893c959efc00e9db7c7b2b2df77bc776
     research_sha256: 260f6442866661b26e8bf85a4153fda1ec890a4be0100013b0efb31f5ee7a9ac
-    sal_facts_sha256: b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0
+    sal_facts_sha256: c22872ca1b7f2557f77a172baf7cc867f598ba8eefa88e6fed762f8888c2313c
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -73,8 +73,8 @@ capabilities:
   required_behavior:
   - Manage attachments with MIME-bundle validation and reference checks; detect orphans and missing targets.
   normative_rules:
-  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
-    that must resolve to entries in the cell attachments object
+  - (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment
+    URI whose filename corresponds to a key in that cell's attachments mapping
   - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
     to MIME bundles referenced from cell content
   depth_required: 3
@@ -93,16 +93,12 @@ capabilities:
   developer_use_case: A pre-commit hook clears outputs with a dry-run report before mutating.
   provenance:
   - POL-EXD-CLEAN-01
-  - SAL-IPYNB-00017
   - RF-NB-00002
   required_behavior:
   - Clear outputs (all/by type/by cell), reset execution counts consistently, and strip transient metadata
     via configurable rules with dry-run reporting.
   - Output clearing, execution-count reset, and transient-metadata stripping run as configurable, dry-runnable,
     idempotent operations - the pre-commit staple for notebook version control.
-  normative_rules:
-  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
-    and conforming tools must preserve them rather than strip them
   depth_required: 6
   depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -143,7 +139,8 @@ capabilities:
   provenance:
   - POL-EXD-EDIT-01
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00016
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00017
   required_behavior:
   - Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return
     change reports.
@@ -151,9 +148,11 @@ capabilities:
   - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
     metadata (object), and source (string or list of strings); code cells additionally require execution_count
     and outputs
-  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
-    with higher minor versions than the reader supports must still be readable with unknown additions
-    preserved
+  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
+    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   depth_required: 4
   depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -173,7 +172,6 @@ capabilities:
   - POL-EXD-EXEC-01
   - SAL-IPYNB-00003
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
   - SAL-IPYNB-00018
   required_behavior:
@@ -183,10 +181,8 @@ capabilities:
   - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
     display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
     name+text, error carries ename/evalue/traceback
-  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+  - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
     the execution kernel and language
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
   - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
     error each with its own required fields
   - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
@@ -228,23 +224,30 @@ capabilities:
   developer_use_case: A developer upgrades an old notebook and receives stable new IDs plus the mapping.
   provenance:
   - POL-EXD-ID-01
+  - SAL-IPYNB-00006
   - SAL-IPYNB-00011
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
   required_behavior:
   - Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with
     a rewrite map for references.
   normative_rules:
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
-  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
-    and nbformat_minor version pair
+  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
+    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
+  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
+    payloads
+  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
+    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
   - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
     within the notebook conforming to the permitted character set and length rules
-  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
-    with higher minor versions than the reader supports must still be readable with unknown additions
-    preserved
+  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
+    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
+    by official tooling
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -337,9 +340,9 @@ capabilities:
     and outputs
   - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
     nbformat and nbformat_minor integers plus metadata and a cells array
-  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
-    tool-namespaced keys that must be preserved
-  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
+    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
+  - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
     the execution kernel and language
   - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
     types to content and metadata objects with per-MIME rendering hints
@@ -379,8 +382,8 @@ capabilities:
   - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
     display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
     name+text, error carries ename/evalue/traceback
-  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
-    that must resolve to entries in the cell attachments object
+  - (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment
+    URI whose filename corresponds to a key in that cell's attachments mapping
   - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
     that concatenate to the logical source text
   - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
@@ -412,6 +415,8 @@ capabilities:
   - SAL-IPYNB-00009
   - SAL-IPYNB-00011
   - SAL-IPYNB-00013
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
@@ -431,10 +436,16 @@ capabilities:
     outputs array of output objects
   - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
     to MIME bundles referenced from cell content
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
+    payloads
   - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
     error each with its own required fields
+  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
+    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
+    by official tooling
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
     types to content and metadata objects with per-MIME rendering hints
   - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
@@ -491,33 +502,34 @@ capabilities:
     name+text, error carries ename/evalue/traceback
   - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
     nbformat and nbformat_minor integers plus metadata and a cells array
-  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
-    that must resolve to entries in the cell attachments object
-  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
-    tool-namespaced keys that must be preserved
+  - (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment
+    URI whose filename corresponds to a key in that cell's attachments mapping
+  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
+    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
   - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
     that concatenate to the logical source text
   - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
     outputs array of output objects
   - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
     to MIME bundles referenced from cell content
-  - (nbformat - notebook metadata) Notebook metadata carries kernelspec and language_info objects describing
+  - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
     the execution kernel and language
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
-  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
-    and nbformat_minor version pair
+  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
+    payloads
+  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
+    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
   - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
     error each with its own required fields
   - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
     within the notebook conforming to the permitted character set and length rules
   - (nbformat - cell types) The cells array holds cell objects in document order and each cell declares
     a cell_type of markdown code or raw
-  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
-    with higher minor versions than the reader supports must still be readable with unknown additions
-    preserved
-  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
-    and conforming tools must preserve them rather than strip them
+  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
+    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
+    by official tooling
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
     types to content and metadata objects with per-MIME rendering hints
   - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
@@ -572,8 +584,8 @@ capabilities:
   - Provide configurable sanitizers for active content with remove, quarantine, and preserve-but-mark
     modes; never sanitize silently in lossless mode.
   normative_rules:
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
+  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
+    payloads
   depth_required: 2
   depth_rationale: 'MUST security capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -624,16 +636,12 @@ capabilities:
     after review.
   provenance:
   - POL-EXD-TRUST-01
-  - SAL-IPYNB-00011
   - RF-NB-00004
   required_behavior:
   - Integrate a pluggable trust notary (compute/store/verify/revoke); never mark modified content trusted
     automatically; keep trust separate from validity.
   - Integrate a pluggable notebook-notary trust backend where modified notebooks are never auto-trusted
     and cryptographic trust stays separate from schema validity.
-  normative_rules:
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
   depth_required: 5
   depth_rationale: 'MUST security capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -657,6 +665,7 @@ capabilities:
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
   required_behavior:
   - Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade
     only after reporting unsupported constructs and expected loss; preserve unknown future additions when
@@ -666,13 +675,16 @@ capabilities:
     top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
   - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
     nbformat and nbformat_minor integers plus metadata and a cells array
-  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
-    and nbformat_minor version pair
+  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
+    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
   - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
     within the notebook conforming to the permitted character set and length rules
-  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
-    with higher minor versions than the reader supports must still be readable with unknown additions
-    preserved
+  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
+    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
+    by official tooling
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   depth_required: 4
   depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -691,32 +703,20 @@ capabilities:
     fields.
   provenance:
   - POL-EXD-VALIDATE-01
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
   required_behavior:
   - Validate against the schema matching declared version and optionally current minor; report unknown
     forward-compatible fields separately from errors.
   normative_rules:
-  - (nbformat - attachment references) Attachment references from markdown content use attachment URIs
-    that must resolve to entries in the cell attachments object
-  - (nbformat - cell metadata) Cell metadata may carry tags as a list of distinct strings plus arbitrary
-    tool-namespaced keys that must be preserved
-  - (nbformat - output security considerations) Notebook outputs may embed active HTML SVG and JavaScript
-    content that renderers execute and processors must treat as untrusted data
-  - (nbformat - validation) Notebooks must validate against the JSON schema matching their declared nbformat
-    and nbformat_minor version pair
+  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
+    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
   - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
     within the notebook conforming to the permitted character set and length rules
-  - (nbformat - versioning rules) The nbformat version pair identifies the schema version and documents
-    with higher minor versions than the reader supports must still be readable with unknown additions
-    preserved
-  - (nbformat - forward compatibility) Unknown fields beyond the schema are permitted for forward compatibility
-    and conforming tools must preserve them rather than strip them
+  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
+    fields, cell types, and output types; official validation relaxes additionalProperties and permits
+    unrecognized cell and output types for future minors
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -873,7 +873,6 @@ coverage_map:
 - capability_id: IPYNB-CLEAN-001
   provenance:
   - POL-EXD-CLEAN-01
-  - SAL-IPYNB-00017
   - RF-NB-00002
 - capability_id: IPYNB-DIFF-001
   provenance:
@@ -883,13 +882,13 @@ coverage_map:
   provenance:
   - POL-EXD-EDIT-01
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00016
+  - SAL-IPYNB-00006
+  - SAL-IPYNB-00017
 - capability_id: IPYNB-EXEC-001
   provenance:
   - POL-EXD-EXEC-01
   - SAL-IPYNB-00003
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
   - SAL-IPYNB-00018
 - capability_id: IPYNB-EXPORT-001
@@ -898,10 +897,12 @@ coverage_map:
 - capability_id: IPYNB-ID-001
   provenance:
   - POL-EXD-ID-01
+  - SAL-IPYNB-00006
   - SAL-IPYNB-00011
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
 - capability_id: IPYNB-LIFECYCLE-001
   provenance:
   - POL-SLC-LIFECYCLE-01
@@ -942,6 +943,8 @@ coverage_map:
   - SAL-IPYNB-00009
   - SAL-IPYNB-00011
   - SAL-IPYNB-00013
+  - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
@@ -988,7 +991,6 @@ coverage_map:
 - capability_id: IPYNB-TRUST-001
   provenance:
   - POL-EXD-TRUST-01
-  - SAL-IPYNB-00011
   - RF-NB-00004
 - capability_id: IPYNB-UPGRADE-001
   provenance:
@@ -998,15 +1000,12 @@ coverage_map:
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
+  - SAL-IPYNB-00017
 - capability_id: IPYNB-VALIDATE-001
   provenance:
   - POL-EXD-VALIDATE-01
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
 - capability_id: IPYNB-WRITE-001
   provenance:

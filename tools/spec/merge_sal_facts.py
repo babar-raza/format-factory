@@ -8,17 +8,15 @@ Sources per format, in priority order:
   1. shared/sal-facts/{format}.yaml       — committed canonical store (preferred)
   2. .local/spec-cache/sal-facts-*.json   — legacy per-format cache (fallback)
 
-Merge semantics (union, never clobber):
+Projection semantics:
+  - A committed canonical store is the complete current-state authority for
+    its format. Its derived combined entry is rebuilt exactly from that store,
+    so removed or corrected facts invalidate stale derived records.
+  - Legacy per-format cache fallback retains union semantics because those
+    caches have no stronger committed authority.
   - Facts are keyed by fact_id (falling back to the alias-resolved legacy
-    FACT-* id in 'qname'/'claim_id'). The merged entry is the UNION of the
-    combined database's existing facts and the source facts — existing facts
-    are never dropped, even if absent from the source file.
-  - Conflict — same fact key but different 'claim' text — is a hard error
-    (exit 1) listing both claims. Resolve in the committed store explicitly;
-    this tool never silently overwrites a claim.
-  - On matching keys, the canonical source wins on field content; fields
-    present only in the combined record are preserved.
-  - Facts in rebuilt entries are sorted by fact key; if the union changes
+    FACT-* id in 'qname'/'claim_id'). Duplicate canonical identities fail.
+  - Facts in rebuilt entries are sorted by fact key; if the projection changes
     nothing for any format, the combined database is not rewritten (reruns
     are no-ops, output is deterministic).
 
@@ -29,8 +27,8 @@ Alias reconciliation (GAP-FORENSIC-008 convergence round 2, ISSUE-GWB-CONV2-001)
     so alias-completeness is a property of the merge step, not something every
     future writer must remember to maintain separately (RC-D).
   - Purely additive: an existing alias is never overwritten. A genuine
-    conflict (existing alias disagrees with the store) is a hard error,
-    exactly like a fact claim conflict — never silently resolved.
+    conflict (existing alias disagrees with the store) is a hard error and is
+    never silently resolved.
 
 Modes:
     python tools/spec/merge_sal_facts.py                 # merge all covered formats
@@ -42,7 +40,7 @@ Modes:
 
 Exit codes:
     0 — success / no drift
-    1 — error (unreadable inputs, fact conflict, invalid fact)
+    1 — error (unreadable inputs, duplicate/invalid fact, alias conflict)
     2 — drift detected (--check only)
 """
 from __future__ import annotations
@@ -50,7 +48,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 try:
@@ -176,10 +173,12 @@ def _default_formats() -> list[str]:
     return sorted(discovered | set(_FORMAT_FILE_CANDIDATES))
 
 
-def _load_source_facts(fmt_id: str) -> tuple[list[dict], str, dict] | None:
+def _load_source_facts(
+    fmt_id: str,
+) -> tuple[list[dict], str, dict, bool] | None:
     """Load facts for a format from the canonical store or legacy cache.
 
-    Returns (facts, source_label, metadata) or None if no source exists.
+    Returns (facts, source_label, metadata, is_canonical) or None.
     """
     store_path = _STORE_DIR / f"{fmt_id}.yaml"
     if _HAS_YAML and store_path.exists():
@@ -190,7 +189,12 @@ def _load_source_facts(fmt_id: str) -> tuple[list[dict], str, dict] | None:
             "spec_version": doc.get("spec_version", ""),
             "spec_url": doc.get("spec_url", ""),
         }
-        return list(doc.get("facts", [])), str(store_path.relative_to(_REPO)), meta
+        return (
+            list(doc.get("facts", [])),
+            str(store_path.relative_to(_REPO)),
+            meta,
+            True,
+        )
 
     legacy_path = _find_per_format_file(fmt_id)
     if legacy_path is not None:
@@ -201,7 +205,7 @@ def _load_source_facts(fmt_id: str) -> tuple[list[dict], str, dict] | None:
             "spec_version": doc.get("spec_version", ""),
             "spec_url": doc.get("spec_url", ""),
         }
-        return list(doc.get("spec_facts", [])), str(legacy_path.name), meta
+        return list(doc.get("spec_facts", [])), str(legacy_path.name), meta, False
 
     return None
 
@@ -263,6 +267,47 @@ def _union_facts(
     return ordered, {"added": added, "updated": updated, "unkeyed_preserved": len(unkeyed)}
 
 
+def _project_canonical_facts(
+    existing: list[dict],
+    source: list[dict],
+    aliases: dict[str, str],
+    fmt_id: str,
+) -> tuple[list[dict], dict]:
+    """Build the exact current projection of a committed canonical store."""
+
+    projected: dict[str, dict] = {}
+    for raw_fact in source:
+        fact = _normalize_fact(raw_fact)
+        key = _fact_key(fact, aliases)
+        if key is None:
+            raise ValueError(
+                f"[{fmt_id}] canonical fact without resolvable id: "
+                f"{fact.get('claim', '')[:80]}"
+            )
+        if key in projected:
+            raise ValueError(f"[{fmt_id}] duplicate canonical fact identity: {key}")
+        record = dict(fact)
+        if key.startswith("SAL-"):
+            record.setdefault("fact_id", key)
+        projected[key] = record
+
+    existing_by_key = {
+        key: fact
+        for fact in existing
+        if (key := _fact_key(fact, aliases)) is not None
+    }
+    ordered = [projected[key] for key in sorted(projected)]
+    return ordered, {
+        "added": len(set(projected) - set(existing_by_key)),
+        "updated": sum(
+            existing_by_key[key] != projected[key]
+            for key in set(existing_by_key) & set(projected)
+        ),
+        "removed": len(set(existing_by_key) - set(projected)),
+        "unkeyed_preserved": 0,
+    }
+
+
 def merge_formats(
     formats: list[str] | None = None,
     dry_run: bool = False,
@@ -307,7 +352,7 @@ def merge_formats(
         if loaded is None:
             summary["skipped"].append({"format_id": fmt_id, "reason": "no_source_file"})
             continue
-        source_facts, source_label, meta = loaded
+        source_facts, source_label, meta, is_canonical = loaded
         if not source_facts:
             summary["skipped"].append({"format_id": fmt_id, "reason": "no_facts_in_source"})
             continue
@@ -316,7 +361,15 @@ def merge_formats(
         existing_facts = results[existing_idx].get("spec_facts", []) if existing_idx is not None else []
 
         try:
-            merged_facts, stats = _union_facts(existing_facts, source_facts, aliases, fmt_id)
+            if is_canonical:
+                merged_facts, stats = _project_canonical_facts(
+                    existing_facts, source_facts, aliases, fmt_id
+                )
+            else:
+                merged_facts, stats = _union_facts(
+                    existing_facts, source_facts, aliases, fmt_id
+                )
+                stats.setdefault("removed", 0)
         except (FactConflictError, ValueError) as exc:
             summary["errors"].append({"format_id": fmt_id, "reason": str(exc)})
             continue
@@ -336,15 +389,17 @@ def merge_formats(
         entry_changed = (
             stats["added"] > 0
             or stats["updated"] > 0
+            or stats["removed"] > 0
             or [f for f in existing_facts] != merged_facts
         )
 
         if check:
-            if stats["added"] or stats["updated"]:
+            if stats["added"] or stats["updated"] or stats["removed"]:
                 summary["drift"].append({
                     "format_id": fmt_id,
                     "missing_in_combined": stats["added"],
                     "content_divergence": stats["updated"],
+                    "stale_in_combined": stats["removed"],
                     "source": source_label,
                 })
             continue
@@ -375,6 +430,7 @@ def merge_formats(
             "facts_after": len(merged_facts),
             "added": stats["added"],
             "updated": stats["updated"],
+            "removed": stats["removed"],
             "source": source_label,
         })
 
@@ -383,8 +439,8 @@ def merge_formats(
         total_after = sum(len(e.get("spec_facts", [])) for e in results)
         combined["spec_facts_total"] = total_after
         combined["formats_processed"] = len(results)
-        combined["generated_at"] = datetime.now(timezone.utc).isoformat()
-        combined["generator"] = "merge_sal_facts.py (union, GAP-FORENSIC-008)"
+        combined["generated_at"] = "deterministic-from-committed-stores"
+        combined["generator"] = "merge_sal_facts.py (canonical current projection)"
         _COMBINED.write_text(json.dumps(combined, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         summary["total_facts_after"] = total_after
 
@@ -414,12 +470,14 @@ def main() -> int:
 
     for item in summary["merged"]:
         print(f"  {item['format_id']}: {item['facts_before']} -> {item['facts_after']} facts "
-              f"(+{item['added']} added, {item['updated']} updated) from {item['source']}")
+              f"(+{item['added']} added, {item['updated']} updated, "
+              f"-{item['removed']} stale) from {item['source']}")
     for item in summary["skipped"]:
         print(f"  {item['format_id']}: skipped ({item['reason']})")
     for item in summary["drift"]:
         print(f"  DRIFT {item['format_id']}: {item['missing_in_combined']} facts missing in combined, "
-              f"{item['content_divergence']} divergent (source: {item['source']})")
+              f"{item['content_divergence']} divergent, "
+              f"{item['stale_in_combined']} stale (source: {item['source']})")
     for item in summary["alias_additions"]:
         print(f"  {item['format_id']}: +{item['added']} alias(es) backfilled")
     for item in summary["alias_drift"]:
@@ -432,7 +490,7 @@ def main() -> int:
     if args.check and (summary["drift"] or summary["alias_drift"]):
         return 2
     if args.check:
-        print("No drift: combined database is a superset of all canonical stores.")
+        print("No drift: combined database matches all canonical current stores.")
     return 0
 
 

@@ -1,5 +1,5 @@
 ---
-version: "1.1"
+version: "1.2"
 last-updated: "2026-07-23"
 phase-available: "all"
 gate-required: null
@@ -48,6 +48,7 @@ Run this skill BEFORE any sprint that involves:
 - Running `sal_master_runner.py` with source-modifying flags
 - Producing or validating `FACT-<FORMAT>-NNN` fact IDs
 - Modifying `sal-facts-latest.json` or context packs
+- Defining or applying content-addressed authority proofs for a SAL fact
 
 Do NOT run for read-only recon or evidence reviews.
 
@@ -92,9 +93,13 @@ Do NOT run for read-only recon or evidence reviews.
    - Each fact has: format_id, spec_id, spec_version, source_sha256, section_id, verification_status.
    - Facts stored in `verified-facts-review.yaml` under the format's workbench directory.
 5. **Run focused tests** if test files exist for the modified tool.
-6. **Write skill transcript** to `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
+6. For authority promotion, run `tools/spec/verify_sal_facts.py`. A literal
+   `verification_status: verified` edit is not proof. The verifier must bind
+   the exact claim, evidence manifest, authority artifact/member, verifier
+   closure, and passing receipt before updating a canonical store.
+7. **Write skill transcript** to `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
    with schema: `{skill_id, taskcard_id, format_id, root_cause_id, changed_files, output_artifacts, test_results, verdict}`.
-7. **Update plan** status for this taskcard in `plans/strategic/snoopy-juggling-seal.md`.
+8. **Update plan** status for this taskcard in `plans/strategic/snoopy-juggling-seal.md`.
 
 ## Mandatory Validations
 
@@ -109,6 +114,9 @@ Do NOT run for read-only recon or evidence reviews.
 - `tools/specification-authority-layer/` (read + targeted repair)
 - `tools/spec/` (targeted SAL merge/status repair)
 - `schemas/sal-facts/` (schema migration only)
+- `shared/sal-facts/evidence/` (reviewed declarative authority assertions)
+- `shared/sal-facts/{format_id}.yaml` (verifier-mediated status and proof only)
+- `reports/sal-verification/` (content-addressed verification receipts)
 - `tests/tools/` and `tests/spec_authority/` (focused regression controls)
 - `tools/supervisor/production_program.py` and
   `tests/production_program/test_production_program.py` (live gap projection only)
@@ -128,6 +136,8 @@ Do NOT run for read-only recon or evidence reviews.
 
 **NEVER:**
 - Delete or overwrite verified facts already in workbench YAML files
+- Promote a fact from a label, keyword count, filename, or test presence
+- Hand-author a passing receipt or bypass a failed declarative assertion
 - Modify `validate_spec_fact_refs.py` in ways that weaken validation
 - Change fact IDs for already-validated facts
 - Mark a taskcard COMPLETE without a skill transcript
@@ -183,6 +193,8 @@ Per Section 22 of snoopy-juggling-seal.md, do NOT:
 
 - 1.1 (2026-07-23): Added controller-materialized schema-migration coverage,
   canonical-status policy checks, and live gap projection.
+- 1.2 (2026-07-23): Required content-addressed, exact-assertion receipts for
+  authority promotion; labels and keyword overlap are non-promoting.
 
 ## Stop Conditions
 

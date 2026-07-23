@@ -1,9 +1,11 @@
 """
 run_fact_verification.py — Deterministic spec text search verification runner.
 
-Processes all pending_verification and needs_review facts that have a cached
-normalized spec text, runs deterministic section-window text search against
-that text, and updates their verification_status in-place.
+Processes pending_verification and needs_review facts that have cached
+normalized spec text and records deterministic discovery hints. Keyword
+overlap is not authority proof, so this runner can produce
+``verified_with_note`` at most and never the promoting ``verified`` status.
+Exact promotion is owned by ``tools/spec/verify_sal_facts.py``.
 
 Usage:
     python run_fact_verification.py [--format <id>] [--dry-run] [--calibrate]
@@ -51,7 +53,7 @@ _MIN_TERM_LEN = 4
 _WINDOW_HALF = 50
 
 # Score thresholds
-_VERIFIED_THRESHOLD = 3       # ≥N key terms → verified
+_VERIFIED_THRESHOLD = 3       # >=N key terms -> strong conditional hint
 _PARTIAL_THRESHOLD = 1        # 1-2 key terms → verified_with_note
 
 
@@ -128,7 +130,7 @@ def _score_claim(lines: list[str], section_line: int, terms: list[str]) -> tuple
     n = len(matched)
 
     if n >= _VERIFIED_THRESHOLD:
-        return "verified", matched
+        return "verified_with_note", matched
     elif n >= _PARTIAL_THRESHOLD:
         return "verified_with_note", matched
     else:
@@ -331,10 +333,7 @@ def _process_format(
         }
         result["changes"].append(change)
 
-        if status == "verified":
-            result["promoted_verified"] += 1
-        else:
-            result["promoted_verified_with_note"] += 1
+        result["promoted_verified_with_note"] += 1
 
         if not dry_run:
             # Apply update in-place to provenance

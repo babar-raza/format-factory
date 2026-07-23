@@ -1,0 +1,44 @@
+{
+  "invocation_id": "FF6-IPYNB-CONTRACT-AUTHORITY-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "AUTO-IPYNB-CONTRACT-REFRESH",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ipynb",
+    "authority_sha256": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9",
+    "sal_store_sha256": "c22872ca1b7f2557f77a172baf7cc867f598ba8eefa88e6fed762f8888c2313c"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ipynb.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ipynb-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ipynb.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ipynb-authority.json"
+  ],
+  "tests_run": [
+    "contract compiler --check ipynb: PASS",
+    "contract compiler --verify-idempotency ipynb: PASS",
+    "strict ProductContract: ready with 106 obligations",
+    "production controller contract readiness: PASS"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "no_product_source_mutation": "PASS",
+    "live_sal_proof_closure": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ipynb.yaml": "d7c9ef27716092720432de2fc4f19239541c31d7b36603c72324105b50136f3c",
+    "registry/format-contract-registry.yaml": "0f07bc32f4df6ad6d82bd9c549e79826e1d5afd9e1fb38825fb9f1ba864d7fa4",
+    "strict_product_contract": "d4d53ab85244227b7c24a167602c15cddc711e1a172a8472789dfd894c709793"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-23T23:04:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

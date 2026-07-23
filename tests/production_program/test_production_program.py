@@ -394,5 +394,64 @@ capabilities:
         ),
         encoding="utf-8",
     )
-    assert not program.audit_sal_status_policy()
-    assert program.gaps[authority_gap["gap_id"]].state == "RESOLVED"
+    relabeled = program.audit_sal_status_policy()
+    relabeled_gap = next(
+        gap for gap in relabeled if gap["format_id"] == "testproduct"
+    )
+    assert "no content-addressed verification record=1" in relabeled_gap["root_cause"]
+    assert program.gaps[authority_gap["gap_id"]].state == "OPEN"
+
+
+def test_verified_label_without_live_receipt_still_blocks_promotion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    schema_source = (
+        Path(module.__file__).resolve().parents[2]
+        / "schemas"
+        / "sal-facts"
+        / "sal-facts-schema.json"
+    )
+    schema = repo / "schemas" / "sal-facts" / "sal-facts-schema.json"
+    schema.parent.mkdir(parents=True)
+    schema.write_bytes(schema_source.read_bytes())
+    store = repo / "shared" / "sal-facts" / "testfmt.yaml"
+    store.parent.mkdir(parents=True)
+    store.write_text(
+        """
+format_id: testfmt
+facts:
+  - fact_id: SAL-TESTFMT-00001
+    qname: FACT-TESTFMT-001
+    claim: A fact whose label was edited without proof.
+    verification_status: verified
+""".lstrip(),
+        encoding="utf-8",
+    )
+    contract = repo / "shared" / "format-contracts" / "testfmt.yaml"
+    contract.parent.mkdir(parents=True)
+    contract.write_text(
+        """
+contract_metadata:
+  format_id: testfmt
+capabilities:
+  - capability_id: TESTFMT-READ-001
+    level: MUST
+    provenance: [SAL-TESTFMT-00001]
+""".lstrip(),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    monkeypatch.setattr(
+        module,
+        "TARGETS",
+        (ProductTarget("testproduct", "testfmt", "testproduct"),),
+    )
+
+    observed = ProductionProgram(tmp_path / "state").audit_sal_status_policy()
+    authority_gap = next(
+        gap for gap in observed if gap["format_id"] == "testproduct"
+    )
+    assert "no content-addressed verification record=1" in authority_gap["root_cause"]

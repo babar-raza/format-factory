@@ -332,6 +332,12 @@ class ProductionProgram:
     def audit_sal_status_policy(self) -> list[dict[str, Any]]:
         """Recompute schema drift and non-promoting mandatory fact gaps."""
 
+        from tools.spec.sal_proof import (
+            canonical_json_bytes,
+            fact_proof_closure,
+            sha256_bytes,
+            validate_fact_promotion,
+        )
         from tools.spec.sal_status import PROMOTING, load_status_policy
 
         schema_path = (
@@ -393,14 +399,15 @@ class ProductionProgram:
                 continue
             contract = yaml.safe_load(contract_path.read_text(encoding="utf-8")) or {}
             store = yaml.safe_load(store_path.read_text(encoding="utf-8")) or {}
-            status_by_id: dict[str, str] = {}
+            fact_by_id: dict[str, dict[str, Any]] = {}
             for fact in store.get("facts", []):
-                status = str(fact.get("verification_status", "UNSPECIFIED"))
                 for identity in (fact.get("fact_id"), fact.get("qname")):
                     if identity:
-                        status_by_id[str(identity)] = status
+                        fact_by_id[str(identity)] = fact
 
             non_promoting: dict[str, int] = {}
+            proof_failures: dict[str, int] = {}
+            proof_closures: list[dict[str, Any]] = []
             referenced: set[str] = set()
             for capability in contract.get("capabilities", []):
                 if str(capability.get("level", "")).upper() != "MUST":
@@ -411,21 +418,36 @@ class ProductionProgram:
                     if str(reference).startswith("SAL-")
                 )
             for reference in referenced:
-                status = status_by_id.get(reference, "UNSPECIFIED")
+                fact = fact_by_id.get(reference)
+                status = (
+                    str(fact.get("verification_status", "UNSPECIFIED"))
+                    if fact is not None
+                    else "UNSPECIFIED"
+                )
                 rule = policy.get(status)
                 if rule is None or rule.promotion_class != PROMOTING:
                     non_promoting[status] = non_promoting.get(status, 0) + 1
+                elif fact is not None:
+                    proof_closures.append(fact_proof_closure(fact, REPO_ROOT))
+                    valid, reason = validate_fact_promotion(fact, REPO_ROOT)
+                    if not valid:
+                        proof_failures[reason] = proof_failures.get(reason, 0) + 1
 
             identity = f"{target.product_id}:mandatory-fact-authority"
             gap_id = (
                 "GAP-"
                 + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16].upper()
             )
-            if non_promoting:
+            if non_promoting or proof_failures:
                 counts = ", ".join(
                     f"{status}={count}"
                     for status, count in sorted(non_promoting.items())
                 )
+                proof_counts = "; ".join(
+                    f"{reason}={count}"
+                    for reason, count in sorted(proof_failures.items())
+                )
+                details = ", ".join(filter(None, (counts, proof_counts)))
                 gap = Gap(
                     gap_id=gap_id,
                     format_id=target.product_id,
@@ -434,10 +456,21 @@ class ProductionProgram:
                     severity="CRITICAL",
                     root_cause=(
                         "mandatory contract facts are referentially present but not "
-                        f"promotion-eligible under the canonical SAL policy: {counts}"
+                        "promotion-eligible under the canonical SAL policy and live "
+                        f"proof closure: {details}"
                     ),
-                    evidence_digest=tree_digest(
-                        [schema_path, contract_path, store_path]
+                    evidence_digest=sha256_bytes(
+                        canonical_json_bytes(
+                            {
+                                "base": tree_digest(
+                                    [schema_path, contract_path, store_path]
+                                ),
+                                "proof_closures": sorted(
+                                    proof_closures,
+                                    key=lambda item: item["fact_id"],
+                                ),
+                            }
+                        )
                     ),
                     owning_task=(
                         f"AUTO-{target.product_id.upper()}-FACT-AUTHORITY"
