@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "format-factory/plan-control-event@1",
+  "title": "Plan Control Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "sequence",
+    "occurred_at",
+    "event_type",
+    "payload",
+    "previous_hash",
+    "event_hash"
+  ],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "sequence": {"type": "integer", "minimum": 1},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "event_type": {"type": "string", "minLength": 1},
+    "payload": {"type": "object"},
+    "previous_hash": {"type": "string", "minLength": 7},
+    "event_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false,
+  "x-generated-by": "codex"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "format-factory/plan-control-config@1",
+  "generated_by": "codex",
+  "repository_id": "format-factory",
+  "master_plan": "plans/master-plan.md",
+  "approved_plan_roots": [
+    "plans/.claude",
+    "plans/.governance",
+    "plans/healing",
+    "plans/layers",
+    "plans/secondary",
+    "plans/source-portfolios",
+    "plans/strategic"
+  ],
+  "reported_not_adopted_roots": [
+    "plans/oracle"
+  ],
+  "journal": "plans/.control/events.jsonl",
+  "projection_root": "plans/.control/projections",
+  "local_runtime_root": ".local/plan-control",
+  "claim_authority": "tools.supervisor.coordination",
+  "retry_limit_per_root_cause": 3,
+  "global_iteration_limit": null,
+  "migration_checkpoints": [
+    {
+      "plan_alias": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+      "source_commit": "dabcc732",
+      "branch": "codex/ff-six-python-production",
+      "verification": "git-object-and-ancestry"
+    }
+  ]
+}

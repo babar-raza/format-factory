@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "format-factory/plan-control-registry@1",
+  "title": "Plan Control Registry Projection",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_by",
+    "journal_head",
+    "plans",
+    "tasks",
+    "aliases",
+    "gaps",
+    "source_accounting"
+  ],
+  "properties": {
+    "schema": {"const": "format-factory/plan-control-registry@1"},
+    "generated_by": {"const": "codex"},
+    "journal_head": {"type": "string"},
+    "plans": {"type": "array", "items": {"type": "object"}},
+    "tasks": {"type": "array", "items": {"type": "object"}},
+    "aliases": {"type": "object", "additionalProperties": {"type": "string"}},
+    "gaps": {"type": "array", "items": {"type": "object"}},
+    "source_accounting": {
+      "type": "object",
+      "required": ["total", "still_open", "disposed"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "still_open": {"type": "integer", "minimum": 0},
+        "disposed": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "x-generated-by": "codex"
+}
