@@ -1,0 +1,130 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-create-format-family-pack-skill-001",
+  "execution_id": "ff6-create-format-family-pack-skill-001",
+  "task_id": "SKILL-GAP-FF6-FAMILY-PACK-AUTHORING",
+  "skill_id": "validate-missing-skill-workflow",
+  "selected_skill_ids": [
+    "validate-missing-skill-workflow",
+    "preflight-skill-entry"
+  ],
+  "skill_hashes": {
+    "validate-missing-skill-workflow": "a58f29a763a725e06e412d9cd19a322a297389b4a861427f8bcaa2684309053b",
+    "preflight-skill-entry": "00ee25c32913afec45ed1399c352524208a59a9e8a7192938bd8fc242952f16c"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-FAMILY-PACK-SKILL-001",
+  "requested_operation": "resolve the missing reusable capability for authoring and validating new format-family policy packs",
+  "inputs": {
+    "task_id": "SKILL-GAP-FF6-FAMILY-PACK-AUTHORING",
+    "capability_description": "Author and validate a new format-family policy pack, readiness policy, and deterministic mapping.",
+    "operation_type": "changing_project_files",
+    "route_id": "format_family_policy_authoring",
+    "gap_record": ".local/taskcards/SKILL-GAP-FF6-FAMILY-PACK-AUTHORING.yaml",
+    "preferred_resolution": "CREATE",
+    "search_results": [
+      "compile-format-contract",
+      "format-contract-onboard",
+      "check-contract-sal-readiness",
+      "validate-format-contract"
+    ],
+    "rejection_reasons": {
+      "compile-format-contract": "Generated contract writer; family policy is read-only input.",
+      "format-contract-onboard": "Maps formats only after a family pack exists.",
+      "check-contract-sal-readiness": "Read-only readiness evaluator.",
+      "validate-format-contract": "Validates generated contracts, not family policy."
+    }
+  },
+  "allowed_files": [
+    ".claude/commands/create-format-family-pack.md",
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "tests/supervisor/test_build_capability_routes.py",
+    ".supervisor/skill-registry.yaml",
+    ".supervisor/capability-routing-registry.yaml",
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-skill-001.json"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/create-format-family-pack.md",
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "tests/supervisor/test_build_capability_routes.py",
+    ".supervisor/skill-registry.yaml",
+    ".supervisor/capability-routing-registry.yaml",
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-skill-001.json"
+  ],
+  "base_git_commit": "7f9e77f8c38c746a73931f7167539cc9dae913be",
+  "input_digests": {
+    "command_contract": "0e2a4ea6a3f4353fd9a96e727c009fab8a1f402e46047540e4f0b2ad4cf1833c",
+    "validator": "84c27ff64781b8f7bcef1dd9801ee40246c4f85aa3759cacbe53ad653ff74f3b",
+    "focused_tests": "4746f43b2638198adf4e460a0cbfbab08e569f593a224cf3fdfb588d7d436f9f",
+    "skill_registry": "e5442d23c3b0f08bb6a0785ec75fdc6ca5263b0f9d3c216996b8a8e568bc2033",
+    "routing_registry": "2a1d42deec0db1e60be7db3c0ed563a457662ba3f2fdaf1c1918165ced95a264"
+  },
+  "resolution": {
+    "decision": "CREATE",
+    "created_skill_id": "create-format-family-pack",
+    "rationale": "The capability is recurrent and no existing skill owns family semantics, excluded-concept controls, readiness policy, and routing as one atomic responsibility.",
+    "rejection_reasons": {
+      "compile-format-contract": "Generated contract writer; family policy is read-only input.",
+      "format-contract-onboard": "Maps formats only after a family pack exists.",
+      "check-contract-sal-readiness": "Read-only readiness evaluator.",
+      "validate-format-contract": "Validates generated contracts, not family policy."
+    }
+  },
+  "tests_run": [
+    "family-pack validator positive, deterministic replay, mapping/weight/exclusion negatives, duplicate-ID and shared-group negatives: 3 passed",
+    "capability route builder and route-consumption regressions: 14 passed",
+    "combined focused regression: 17 passed",
+    "Ruff and strict mypy: pass",
+    "skill registry contract validation: 194 skills, 0 FAIL, 0 WARN",
+    "new skill entry preflight: pass"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "tools/supervisor/preflight_skill_entry.py", "--inline", "<create-format-family-pack-entry>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "pytest", "tests/format_contract/test_family_pack_validator.py", "tests/supervisor/test_build_capability_routes.py", "tests/supervisor/test_tc_fl_004_route_consumption.py", "-q"],
+      "exit_code": 0,
+      "test_selector": "17 tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "tools/format_contract/family_pack_validator.py", "tests/format_contract/test_family_pack_validator.py", "tests/supervisor/test_build_capability_routes.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "tools/format_contract/family_pack_validator.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "tools/supervisor/validate_skill_contracts.py"],
+      "exit_code": 0,
+      "test_selector": "194 skills"
+    },
+    {
+      "argv": ["python", "tools/governance/validate_skills_first_control.py", "--json"],
+      "exit_code": 1,
+      "reason": "global baseline contains 62 stale command-hash findings unrelated to this skill; no schema or policy error was reported"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_SKILL_REGISTRATION",
+  "open_gaps": [
+    "The repository-wide Skills-First Control audit remains red on 62 pre-existing stale command hashes; this skill did not suppress or rewrite them.",
+    "The new skill must now be forward-used on the SafeTensors binary-tensor family and its execution receipt validated."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "MISSING_SKILL_CREATED_REGISTERED_ROUTED_AND_FOCUSED_VERIFIED",
+  "timestamp": "2026-07-24T03:45:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

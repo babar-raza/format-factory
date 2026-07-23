@@ -4876,6 +4876,42 @@ skills:
   test_paths:
   - tests/governance/test_pre_commit_skill_guard_worktree.py
   risk_level: HIGH
+- command: /create-format-family-pack
+  command_file: .claude/commands/create-format-family-pack.md
+  created_at: '2026-07-24'
+  created_by: SKILL-GAP-FF6-FAMILY-PACK-AUTHORING
+  idempotency: idempotent
+  implementation_paths:
+  - shared/format-contracts/policy/family-packs/
+  - shared/format-contracts/policy/format-family-map.yaml
+  - shared/format-contracts/policy/fact-category-requirements.yaml
+  mandatory_validations:
+  - family_pack_schema_valid
+  - baseline_ids_unique
+  - readiness_weights_normalized
+  - mapping_resolves
+  - excluded_concepts_do_not_leak
+  - semantic_applicability_review_recorded
+  - validator_idempotent
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: format_contract
+  purpose: Create and validate a reusable format-family policy pack with explicit
+    semantic boundaries, readiness policy, deterministic routing, and excluded-concept
+    controls.
+  required_handoff_fields:
+  - family_id
+  - representative_formats
+  - semantic_scope
+  - excluded_concepts
+  - required_fact_categories
+  - policy_pack_path
+  skill_id: create-format-family-pack
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_family_pack_validator.py
+  risk_level: MEDIUM
 - command: /format-contract-onboard
   command_file: .claude/commands/format-contract-onboard.md
   created_at: '2026-07-23'
