@@ -1,12 +1,12 @@
 {
   "counts": {
-    "command_md_on_disk": 189,
-    "commands_registered": 188,
+    "command_md_on_disk": 193,
+    "commands_registered": 192,
     "ownerless_command_md": 0,
-    "registry_entries_missing_file_field": 137,
-    "skills_active": 185,
-    "skills_referenced_by_commands": 188,
-    "skills_total": 188
+    "registry_entries_missing_file_field": 141,
+    "skills_active": 189,
+    "skills_referenced_by_commands": 192,
+    "skills_total": 192
   },
   "enforcement_report": {
     "acknowledged_gaps": [],
@@ -79,7 +79,7 @@
     ],
     "ground_truth": {
       "precommit_hook_file_exists": true,
-      "precommit_hook_installed": true,
+      "precommit_hook_installed": false,
       "tool_layer_hook_exists": true,
       "tool_layer_hook_skill_aware": true
     },
@@ -87,8 +87,442 @@
   },
   "findings": [
     {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/add-dogfood-export.md",
+      "detail": "command content diverged from baseline (f87045b180e5->35383a5d203e)",
+      "severity": "HIGH",
+      "skill_id": "add-dogfood-export"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/add-python-api.md",
+      "detail": "command content diverged from baseline (03e73835dfad->a57508c9b19e)",
+      "severity": "HIGH",
+      "skill_id": "add-python-api"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/add-spec-analytics-function.md",
+      "detail": "command content diverged from baseline (c2721113d644->57505fdb820c)",
+      "severity": "HIGH",
+      "skill_id": "add-spec-analytics-function"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/agent-owasp-compliance.md",
+      "detail": "command content diverged from baseline (04d1f145973b->2977d13418fa)",
+      "severity": "HIGH",
+      "skill_id": "agent-owasp-compliance"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/agent-supply-chain.md",
+      "detail": "command content diverged from baseline (a0c3a9b6557f->3d68f5b587f4)",
+      "severity": "HIGH",
+      "skill_id": "agent-supply-chain"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/audit-context-building.md",
+      "detail": "command content diverged from baseline (debefc2e93c8->9ded852b62a3)",
+      "severity": "HIGH",
+      "skill_id": "audit-context-building"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/audit-contract-portfolio.md",
+      "detail": "command content diverged from baseline (577f78ea54aa->52428878065b)",
+      "severity": "HIGH",
+      "skill_id": "audit-contract-portfolio"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/audit-enhanced-control-layer.md",
+      "detail": "command content diverged from baseline (527da50181c2->8cdea4bde0b7)",
+      "severity": "HIGH",
+      "skill_id": "audit-enhanced-control-layer"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/autonomous-loop.md",
+      "detail": "command content diverged from baseline (eb6a1b96ce10->1fcf4e2d6049)",
+      "severity": "HIGH",
+      "skill_id": "autonomous-loop"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/backfill-format-contracts.md",
+      "detail": "command content diverged from baseline (aa8aebb693de->9c673d5b65eb)",
+      "severity": "HIGH",
+      "skill_id": "backfill-format-contracts"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/build-product-context.md",
+      "detail": "command content diverged from baseline (054165fb1447->7bbd9762237a)",
+      "severity": "HIGH",
+      "skill_id": "build-product-context"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/build-resume-context.md",
+      "detail": "command content diverged from baseline (43e57455d37f->045c696efd50)",
+      "severity": "HIGH",
+      "skill_id": "build-resume-context"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/build-task-context.md",
+      "detail": "command content diverged from baseline (0962cdbf4bc6->923a552ccb45)",
+      "severity": "HIGH",
+      "skill_id": "build-task-context"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/capability-compiler.md",
+      "detail": "command content diverged from baseline (4d94109650d8->076566226efa)",
+      "severity": "HIGH",
+      "skill_id": "capability-compiler"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/certification-ci-gate.md",
+      "detail": "command content diverged from baseline (bbfe37d20184->3c1eda449cbf)",
+      "severity": "HIGH",
+      "skill_id": "certification-ci-gate"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/certification-cross-language-parity.md",
+      "detail": "command content diverged from baseline (4ceff0b0eb1c->37861e7909e5)",
+      "severity": "HIGH",
+      "skill_id": "certification-cross-language-parity"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/certification-mutation-tester.md",
+      "detail": "command content diverged from baseline (d7c2630579f6->2ce7008ff490)",
+      "severity": "HIGH",
+      "skill_id": "certification-mutation-tester"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/certification-performance-benchmark.md",
+      "detail": "command content diverged from baseline (e2cc56f8ec14->5e6259779d4a)",
+      "severity": "HIGH",
+      "skill_id": "certification-performance-benchmark"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/check-contract-sal-readiness.md",
+      "detail": "command content diverged from baseline (5ce14687b289->ae9a4fc859db)",
+      "severity": "HIGH",
+      "skill_id": "check-contract-sal-readiness"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/comment-analyzer.md",
+      "detail": "command content diverged from baseline (69aeee07e210->934120a038b3)",
+      "severity": "HIGH",
+      "skill_id": "comment-analyzer"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/compile-contract-gaps.md",
+      "detail": "command content diverged from baseline (913131d0c26f->3417ad3a8061)",
+      "severity": "HIGH",
+      "skill_id": "compile-contract-gaps"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/compile-format-contract.md",
+      "detail": "command content diverged from baseline (a99be6122d32->afa2c0bb39e9)",
+      "severity": "HIGH",
+      "skill_id": "compile-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/create-ff-skill.md",
+      "detail": "command content diverged from baseline (ffb2aff7239d->76dd7b6faa90)",
+      "severity": "HIGH",
+      "skill_id": "create-ff-skill"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/dependabot-config.md",
+      "detail": "command content diverged from baseline (7f55b6f6610a->c009b014748a)",
+      "severity": "HIGH",
+      "skill_id": "dependabot-config"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/discover-existing-control-layers.md",
+      "detail": "command content diverged from baseline (405ef5ea6272->d614e3144bf8)",
+      "severity": "HIGH",
+      "skill_id": "discover-existing-control-layers"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/execution-handoff.md",
+      "detail": "command content diverged from baseline (8fe24d5e0ca3->e2b3a558ade7)",
+      "severity": "HIGH",
+      "skill_id": "execution-handoff"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/format-feature-expansion.md",
+      "detail": "command content diverged from baseline (d74ab14f4fc6->df65862c51ce)",
+      "severity": "HIGH",
+      "skill_id": "format-feature-expansion"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/gh-address-comments.md",
+      "detail": "command content diverged from baseline (49df5b98bddb->efbe25556ad3)",
+      "severity": "HIGH",
+      "skill_id": "gh-address-comments"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/gh-fix-ci.md",
+      "detail": "command content diverged from baseline (a7904df17d16->b5579c7e6bb1)",
+      "severity": "HIGH",
+      "skill_id": "gh-fix-ci"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/gha-security-review.md",
+      "detail": "command content diverged from baseline (1f0c2bfa0266->8a51eecdac19)",
+      "severity": "HIGH",
+      "skill_id": "gha-security-review"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/github-release.md",
+      "detail": "command content diverged from baseline (eadca7cd8cee->0334831f0bc7)",
+      "severity": "HIGH",
+      "skill_id": "github-release"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/ingest-spec-sal.md",
+      "detail": "command content diverged from baseline (5a390e551600->829f0ce21c75)",
+      "severity": "HIGH",
+      "skill_id": "ingest-spec-sal"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/inventory-existing-control-features.md",
+      "detail": "command content diverged from baseline (6b51a218dc94->c0337f1ded98)",
+      "severity": "HIGH",
+      "skill_id": "inventory-existing-control-features"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/investigate-format-contract.md",
+      "detail": "command content diverged from baseline (b624a1bebbe3->19660554b6fd)",
+      "severity": "HIGH",
+      "skill_id": "investigate-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/mcp-builder.md",
+      "detail": "command content diverged from baseline (b6a7df6cff3a->dee96fbbed91)",
+      "severity": "HIGH",
+      "skill_id": "mcp-builder"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/new-format-kickstart.md",
+      "detail": "command content diverged from baseline (a79537438130->1339c048cdbe)",
+      "severity": "HIGH",
+      "skill_id": "new-format-kickstart"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/package-install-proof.md",
+      "detail": "command content diverged from baseline (3ef7748b4b67->f008c935af04)",
+      "severity": "HIGH",
+      "skill_id": "package-install-proof"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/pr-test-analyzer.md",
+      "detail": "command content diverged from baseline (73721dd51ff0->7e1562b07a7e)",
+      "severity": "HIGH",
+      "skill_id": "pr-test-analyzer"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/pre-sprint-governance-hook.md",
+      "detail": "command content diverged from baseline (8f77ebef84a6->6fb17ef779be)",
+      "severity": "HIGH",
+      "skill_id": "pre-sprint-governance-hook"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/product-source-task.md",
+      "detail": "command content diverged from baseline (958054a7b316->3c4ba18d70c4)",
+      "severity": "HIGH",
+      "skill_id": "product-source-task"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/property-based-testing.md",
+      "detail": "command content diverged from baseline (f1018b0e23f7->3b4efdb2ee75)",
+      "severity": "HIGH",
+      "skill_id": "property-based-testing"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/prove-format-contract.md",
+      "detail": "command content diverged from baseline (6d077c588e1c->23eee7d23a6a)",
+      "severity": "HIGH",
+      "skill_id": "prove-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/quarantine-invalid-artifact.md",
+      "detail": "command content diverged from baseline (b6318e73d47d->51b99718caa4)",
+      "severity": "HIGH",
+      "skill_id": "quarantine-invalid-artifact"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/rebuild-operational-index.md",
+      "detail": "command content diverged from baseline (d773023536e0->7572e2c0bc9f)",
+      "severity": "HIGH",
+      "skill_id": "rebuild-operational-index"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/receiving-code-review.md",
+      "detail": "command content diverged from baseline (d359f58451f9->ac7e4b7738f4)",
+      "severity": "HIGH",
+      "skill_id": "receiving-code-review"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/reconcile-contract-capabilities.md",
+      "detail": "command content diverged from baseline (b713c7996471->c63802eba582)",
+      "severity": "HIGH",
+      "skill_id": "reconcile-contract-capabilities"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/refresh-format-contract.md",
+      "detail": "command content diverged from baseline (44cb775a00bd->a5924daed11e)",
+      "severity": "HIGH",
+      "skill_id": "refresh-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/research-format-contract-sources.md",
+      "detail": "command content diverged from baseline (cd5281c847c2->f46cd21189fd)",
+      "severity": "HIGH",
+      "skill_id": "research-format-contract-sources"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/review-format-contract.md",
+      "detail": "command content diverged from baseline (da499de93caa->c04d2c59138f)",
+      "severity": "HIGH",
+      "skill_id": "review-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/sal-pipeline-heal.md",
+      "detail": "command content diverged from baseline (b5d74960e56a->a5895f8cbf56)",
+      "severity": "HIGH",
+      "skill_id": "sal-pipeline-heal"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/sharp-edges.md",
+      "detail": "command content diverged from baseline (09bdb5f2a956->4464dc4220fc)",
+      "severity": "HIGH",
+      "skill_id": "sharp-edges"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/silent-failure-hunter.md",
+      "detail": "command content diverged from baseline (62f1ed5b2f86->135e3b54a08f)",
+      "severity": "HIGH",
+      "skill_id": "silent-failure-hunter"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/skill-improver.md",
+      "detail": "command content diverged from baseline (f88d41099c67->5bf80ed7e072)",
+      "severity": "HIGH",
+      "skill_id": "skill-improver"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/skill-scanner.md",
+      "detail": "command content diverged from baseline (63fb4155629a->a8ecbdf2de01)",
+      "severity": "HIGH",
+      "skill_id": "skill-scanner"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/skills-first-audit.md",
+      "detail": "command content diverged from baseline (96068f9415bc->cbee72acb1e7)",
+      "severity": "HIGH",
+      "skill_id": "skills-first-audit"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/systematic-debugging.md",
+      "detail": "command content diverged from baseline (7002c17a001f->13b56951c688)",
+      "severity": "HIGH",
+      "skill_id": "systematic-debugging"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/test-driven-development.md",
+      "detail": "command content diverged from baseline (6e9a676ef95b->8d68aac3bc91)",
+      "severity": "HIGH",
+      "skill_id": "test-driven-development"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/trailmark.md",
+      "detail": "command content diverged from baseline (52bab50ebfd0->aede06d7be95)",
+      "severity": "HIGH",
+      "skill_id": "trailmark"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/type-design-analyzer.md",
+      "detail": "command content diverged from baseline (5fe0c3d04a94->754215511280)",
+      "severity": "HIGH",
+      "skill_id": "type-design-analyzer"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/validate-format-contract.md",
+      "detail": "command content diverged from baseline (be1316c5c2bc->bd5ce80175c6)",
+      "severity": "HIGH",
+      "skill_id": "validate-format-contract"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/validate-operational-index.md",
+      "detail": "command content diverged from baseline (7d2276d71f53->6500fe0418af)",
+      "severity": "HIGH",
+      "skill_id": "validate-operational-index"
+    },
+    {
+      "category": "stale_command_hash",
+      "command_file": ".claude/commands/verify-control-feature-parity.md",
+      "detail": "command content diverged from baseline (0836ed29ef98->2c56737380cc)",
+      "severity": "HIGH",
+      "skill_id": "verify-control-feature-parity"
+    },
+    {
       "category": "command_registry_entry_missing_file_field",
-      "detail": "137 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
+      "detail": "141 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
       "sample": [
         "add-spec-analytics-function",
         "agent-owasp-compliance",
@@ -140,10 +574,383 @@
       "severity": "INFO"
     }
   ],
-  "generated_at": "2026-07-16T20:59:02.876624+00:00",
+  "generated_at": "2026-07-23T19:17:46.943080+00:00",
   "hash_drift": {
     "no_baseline": [],
-    "stale": []
+    "stale": [
+      {
+        "baseline": "f87045b180e5",
+        "command_file": ".claude/commands/add-dogfood-export.md",
+        "current": "35383a5d203e",
+        "skill_id": "add-dogfood-export"
+      },
+      {
+        "baseline": "03e73835dfad",
+        "command_file": ".claude/commands/add-python-api.md",
+        "current": "a57508c9b19e",
+        "skill_id": "add-python-api"
+      },
+      {
+        "baseline": "c2721113d644",
+        "command_file": ".claude/commands/add-spec-analytics-function.md",
+        "current": "57505fdb820c",
+        "skill_id": "add-spec-analytics-function"
+      },
+      {
+        "baseline": "04d1f145973b",
+        "command_file": ".claude/commands/agent-owasp-compliance.md",
+        "current": "2977d13418fa",
+        "skill_id": "agent-owasp-compliance"
+      },
+      {
+        "baseline": "a0c3a9b6557f",
+        "command_file": ".claude/commands/agent-supply-chain.md",
+        "current": "3d68f5b587f4",
+        "skill_id": "agent-supply-chain"
+      },
+      {
+        "baseline": "debefc2e93c8",
+        "command_file": ".claude/commands/audit-context-building.md",
+        "current": "9ded852b62a3",
+        "skill_id": "audit-context-building"
+      },
+      {
+        "baseline": "577f78ea54aa",
+        "command_file": ".claude/commands/audit-contract-portfolio.md",
+        "current": "52428878065b",
+        "skill_id": "audit-contract-portfolio"
+      },
+      {
+        "baseline": "527da50181c2",
+        "command_file": ".claude/commands/audit-enhanced-control-layer.md",
+        "current": "8cdea4bde0b7",
+        "skill_id": "audit-enhanced-control-layer"
+      },
+      {
+        "baseline": "eb6a1b96ce10",
+        "command_file": ".claude/commands/autonomous-loop.md",
+        "current": "1fcf4e2d6049",
+        "skill_id": "autonomous-loop"
+      },
+      {
+        "baseline": "aa8aebb693de",
+        "command_file": ".claude/commands/backfill-format-contracts.md",
+        "current": "9c673d5b65eb",
+        "skill_id": "backfill-format-contracts"
+      },
+      {
+        "baseline": "054165fb1447",
+        "command_file": ".claude/commands/build-product-context.md",
+        "current": "7bbd9762237a",
+        "skill_id": "build-product-context"
+      },
+      {
+        "baseline": "43e57455d37f",
+        "command_file": ".claude/commands/build-resume-context.md",
+        "current": "045c696efd50",
+        "skill_id": "build-resume-context"
+      },
+      {
+        "baseline": "0962cdbf4bc6",
+        "command_file": ".claude/commands/build-task-context.md",
+        "current": "923a552ccb45",
+        "skill_id": "build-task-context"
+      },
+      {
+        "baseline": "4d94109650d8",
+        "command_file": ".claude/commands/capability-compiler.md",
+        "current": "076566226efa",
+        "skill_id": "capability-compiler"
+      },
+      {
+        "baseline": "bbfe37d20184",
+        "command_file": ".claude/commands/certification-ci-gate.md",
+        "current": "3c1eda449cbf",
+        "skill_id": "certification-ci-gate"
+      },
+      {
+        "baseline": "4ceff0b0eb1c",
+        "command_file": ".claude/commands/certification-cross-language-parity.md",
+        "current": "37861e7909e5",
+        "skill_id": "certification-cross-language-parity"
+      },
+      {
+        "baseline": "d7c2630579f6",
+        "command_file": ".claude/commands/certification-mutation-tester.md",
+        "current": "2ce7008ff490",
+        "skill_id": "certification-mutation-tester"
+      },
+      {
+        "baseline": "e2cc56f8ec14",
+        "command_file": ".claude/commands/certification-performance-benchmark.md",
+        "current": "5e6259779d4a",
+        "skill_id": "certification-performance-benchmark"
+      },
+      {
+        "baseline": "5ce14687b289",
+        "command_file": ".claude/commands/check-contract-sal-readiness.md",
+        "current": "ae9a4fc859db",
+        "skill_id": "check-contract-sal-readiness"
+      },
+      {
+        "baseline": "69aeee07e210",
+        "command_file": ".claude/commands/comment-analyzer.md",
+        "current": "934120a038b3",
+        "skill_id": "comment-analyzer"
+      },
+      {
+        "baseline": "913131d0c26f",
+        "command_file": ".claude/commands/compile-contract-gaps.md",
+        "current": "3417ad3a8061",
+        "skill_id": "compile-contract-gaps"
+      },
+      {
+        "baseline": "a99be6122d32",
+        "command_file": ".claude/commands/compile-format-contract.md",
+        "current": "afa2c0bb39e9",
+        "skill_id": "compile-format-contract"
+      },
+      {
+        "baseline": "ffb2aff7239d",
+        "command_file": ".claude/commands/create-ff-skill.md",
+        "current": "76dd7b6faa90",
+        "skill_id": "create-ff-skill"
+      },
+      {
+        "baseline": "7f55b6f6610a",
+        "command_file": ".claude/commands/dependabot-config.md",
+        "current": "c009b014748a",
+        "skill_id": "dependabot-config"
+      },
+      {
+        "baseline": "405ef5ea6272",
+        "command_file": ".claude/commands/discover-existing-control-layers.md",
+        "current": "d614e3144bf8",
+        "skill_id": "discover-existing-control-layers"
+      },
+      {
+        "baseline": "8fe24d5e0ca3",
+        "command_file": ".claude/commands/execution-handoff.md",
+        "current": "e2b3a558ade7",
+        "skill_id": "execution-handoff"
+      },
+      {
+        "baseline": "d74ab14f4fc6",
+        "command_file": ".claude/commands/format-feature-expansion.md",
+        "current": "df65862c51ce",
+        "skill_id": "format-feature-expansion"
+      },
+      {
+        "baseline": "49df5b98bddb",
+        "command_file": ".claude/commands/gh-address-comments.md",
+        "current": "efbe25556ad3",
+        "skill_id": "gh-address-comments"
+      },
+      {
+        "baseline": "a7904df17d16",
+        "command_file": ".claude/commands/gh-fix-ci.md",
+        "current": "b5579c7e6bb1",
+        "skill_id": "gh-fix-ci"
+      },
+      {
+        "baseline": "1f0c2bfa0266",
+        "command_file": ".claude/commands/gha-security-review.md",
+        "current": "8a51eecdac19",
+        "skill_id": "gha-security-review"
+      },
+      {
+        "baseline": "eadca7cd8cee",
+        "command_file": ".claude/commands/github-release.md",
+        "current": "0334831f0bc7",
+        "skill_id": "github-release"
+      },
+      {
+        "baseline": "5a390e551600",
+        "command_file": ".claude/commands/ingest-spec-sal.md",
+        "current": "829f0ce21c75",
+        "skill_id": "ingest-spec-sal"
+      },
+      {
+        "baseline": "6b51a218dc94",
+        "command_file": ".claude/commands/inventory-existing-control-features.md",
+        "current": "c0337f1ded98",
+        "skill_id": "inventory-existing-control-features"
+      },
+      {
+        "baseline": "b624a1bebbe3",
+        "command_file": ".claude/commands/investigate-format-contract.md",
+        "current": "19660554b6fd",
+        "skill_id": "investigate-format-contract"
+      },
+      {
+        "baseline": "b6a7df6cff3a",
+        "command_file": ".claude/commands/mcp-builder.md",
+        "current": "dee96fbbed91",
+        "skill_id": "mcp-builder"
+      },
+      {
+        "baseline": "a79537438130",
+        "command_file": ".claude/commands/new-format-kickstart.md",
+        "current": "1339c048cdbe",
+        "skill_id": "new-format-kickstart"
+      },
+      {
+        "baseline": "3ef7748b4b67",
+        "command_file": ".claude/commands/package-install-proof.md",
+        "current": "f008c935af04",
+        "skill_id": "package-install-proof"
+      },
+      {
+        "baseline": "73721dd51ff0",
+        "command_file": ".claude/commands/pr-test-analyzer.md",
+        "current": "7e1562b07a7e",
+        "skill_id": "pr-test-analyzer"
+      },
+      {
+        "baseline": "8f77ebef84a6",
+        "command_file": ".claude/commands/pre-sprint-governance-hook.md",
+        "current": "6fb17ef779be",
+        "skill_id": "pre-sprint-governance-hook"
+      },
+      {
+        "baseline": "958054a7b316",
+        "command_file": ".claude/commands/product-source-task.md",
+        "current": "3c4ba18d70c4",
+        "skill_id": "product-source-task"
+      },
+      {
+        "baseline": "f1018b0e23f7",
+        "command_file": ".claude/commands/property-based-testing.md",
+        "current": "3b4efdb2ee75",
+        "skill_id": "property-based-testing"
+      },
+      {
+        "baseline": "6d077c588e1c",
+        "command_file": ".claude/commands/prove-format-contract.md",
+        "current": "23eee7d23a6a",
+        "skill_id": "prove-format-contract"
+      },
+      {
+        "baseline": "b6318e73d47d",
+        "command_file": ".claude/commands/quarantine-invalid-artifact.md",
+        "current": "51b99718caa4",
+        "skill_id": "quarantine-invalid-artifact"
+      },
+      {
+        "baseline": "d773023536e0",
+        "command_file": ".claude/commands/rebuild-operational-index.md",
+        "current": "7572e2c0bc9f",
+        "skill_id": "rebuild-operational-index"
+      },
+      {
+        "baseline": "d359f58451f9",
+        "command_file": ".claude/commands/receiving-code-review.md",
+        "current": "ac7e4b7738f4",
+        "skill_id": "receiving-code-review"
+      },
+      {
+        "baseline": "b713c7996471",
+        "command_file": ".claude/commands/reconcile-contract-capabilities.md",
+        "current": "c63802eba582",
+        "skill_id": "reconcile-contract-capabilities"
+      },
+      {
+        "baseline": "44cb775a00bd",
+        "command_file": ".claude/commands/refresh-format-contract.md",
+        "current": "a5924daed11e",
+        "skill_id": "refresh-format-contract"
+      },
+      {
+        "baseline": "cd5281c847c2",
+        "command_file": ".claude/commands/research-format-contract-sources.md",
+        "current": "f46cd21189fd",
+        "skill_id": "research-format-contract-sources"
+      },
+      {
+        "baseline": "da499de93caa",
+        "command_file": ".claude/commands/review-format-contract.md",
+        "current": "c04d2c59138f",
+        "skill_id": "review-format-contract"
+      },
+      {
+        "baseline": "b5d74960e56a",
+        "command_file": ".claude/commands/sal-pipeline-heal.md",
+        "current": "a5895f8cbf56",
+        "skill_id": "sal-pipeline-heal"
+      },
+      {
+        "baseline": "09bdb5f2a956",
+        "command_file": ".claude/commands/sharp-edges.md",
+        "current": "4464dc4220fc",
+        "skill_id": "sharp-edges"
+      },
+      {
+        "baseline": "62f1ed5b2f86",
+        "command_file": ".claude/commands/silent-failure-hunter.md",
+        "current": "135e3b54a08f",
+        "skill_id": "silent-failure-hunter"
+      },
+      {
+        "baseline": "f88d41099c67",
+        "command_file": ".claude/commands/skill-improver.md",
+        "current": "5bf80ed7e072",
+        "skill_id": "skill-improver"
+      },
+      {
+        "baseline": "63fb4155629a",
+        "command_file": ".claude/commands/skill-scanner.md",
+        "current": "a8ecbdf2de01",
+        "skill_id": "skill-scanner"
+      },
+      {
+        "baseline": "96068f9415bc",
+        "command_file": ".claude/commands/skills-first-audit.md",
+        "current": "cbee72acb1e7",
+        "skill_id": "skills-first-audit"
+      },
+      {
+        "baseline": "7002c17a001f",
+        "command_file": ".claude/commands/systematic-debugging.md",
+        "current": "13b56951c688",
+        "skill_id": "systematic-debugging"
+      },
+      {
+        "baseline": "6e9a676ef95b",
+        "command_file": ".claude/commands/test-driven-development.md",
+        "current": "8d68aac3bc91",
+        "skill_id": "test-driven-development"
+      },
+      {
+        "baseline": "52bab50ebfd0",
+        "command_file": ".claude/commands/trailmark.md",
+        "current": "aede06d7be95",
+        "skill_id": "trailmark"
+      },
+      {
+        "baseline": "5fe0c3d04a94",
+        "command_file": ".claude/commands/type-design-analyzer.md",
+        "current": "754215511280",
+        "skill_id": "type-design-analyzer"
+      },
+      {
+        "baseline": "be1316c5c2bc",
+        "command_file": ".claude/commands/validate-format-contract.md",
+        "current": "bd5ce80175c6",
+        "skill_id": "validate-format-contract"
+      },
+      {
+        "baseline": "7d2276d71f53",
+        "command_file": ".claude/commands/validate-operational-index.md",
+        "current": "6500fe0418af",
+        "skill_id": "validate-operational-index"
+      },
+      {
+        "baseline": "0836ed29ef98",
+        "command_file": ".claude/commands/verify-control-feature-parity.md",
+        "current": "2c56737380cc",
+        "skill_id": "verify-control-feature-parity"
+      }
+    ]
   },
   "material_action_matrix": {
     "rows": [
@@ -448,25 +1255,25 @@
   "schema": "skills-first-control/audit@1",
   "severity_counts": {
     "CRITICAL": 0,
-    "HIGH": 0,
+    "HIGH": 62,
     "INFO": 6,
     "MEDIUM": 1
   },
   "sfc_version": "1.0.0",
   "skill_command_matrix": {
     "counts": {
-      "command_md_on_disk": 189,
-      "commands_registered": 188,
+      "command_md_on_disk": 193,
+      "commands_registered": 192,
       "ownerless_command_md": 0,
-      "registry_entries_missing_file_field": 137,
-      "skills_active": 185,
-      "skills_referenced_by_commands": 188,
-      "skills_total": 188
+      "registry_entries_missing_file_field": 141,
+      "skills_active": 189,
+      "skills_referenced_by_commands": 192,
+      "skills_total": 192
     },
     "findings": [
       {
         "category": "command_registry_entry_missing_file_field",
-        "detail": "137 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
+        "detail": "141 command-registry entries lack a 'file' field (rely on command_id convention); traceability debt -- backfill via normalize-skill-registry",
         "sample": [
           "add-spec-analytics-function",
           "agent-owasp-compliance",
@@ -484,49 +1291,6 @@
     ]
   },
   "ungoverned_generator_signal": {
-    "count": 125,
-    "sample": [
-      "tools/assurance/verify_package_install.py",
-      "tools/audit_deepening_tests.py",
-      "tools/audit_parity_compliance.py",
-      "tools/audit_qname_coverage.py",
-      "tools/audit_sal_to_qname.py",
-      "tools/backfill/analytics_wiring_backfill.py",
-      "tools/backfill/audit_qname_vs_src.py",
-      "tools/backfill/dry_run_migration.py",
-      "tools/backfill/inventory.py",
-      "tools/backfill/qname_migration_planner.py",
-      "tools/backfill/qname_structure_validator.py",
-      "tools/build_cross_format_index.py",
-      "tools/build_portfolio_maps.py",
-      "tools/canary/validator_promotion.py",
-      "tools/capability_layer/_write_pilots.py",
-      "tools/capability_layer/capability_compiler.py",
-      "tools/capability_layer/capability_map_generator.py",
-      "tools/capability_sync/inventory_capabilities.py",
-      "tools/certification/mutation_tester.py",
-      "tools/docs/generate_project_status.py",
-      "tools/docs/migration_engine.py",
-      "tools/evidence/run050_sprint_writer.py",
-      "tools/format_contract/canonical_io.py",
-      "tools/format_contract/contract_reconciler.py",
-      "tools/format_contract/contract_registry.py",
-      "tools/gates/patch_gate4_registry_fields.py",
-      "tools/gates/update_gate4_registry.py",
-      "tools/governance/ci_skill_attribution_check.py",
-      "tools/governance/pre_mutation_guard.py",
-      "tools/governance/skills_first/audit.py",
-      "tools/oracle/calculate_oracle_coverage.py",
-      "tools/oracle/compare_fods_oracle.py",
-      "tools/oracle/compare_fodt_oracle.py",
-      "tools/oracle/detect_stale_oracles.py",
-      "tools/oracle/execute_oracle.py",
-      "tools/oracle/preflight_oracle.py",
-      "tools/oracle/run_fods_oracle.py",
-      "tools/oracle/run_fodt_oracle.py",
-      "tools/oracle/run_portfolio_oracle.py",
-      "tools/oracle/scaffold_oracle_obligation.py"
-    ],
-    "truncated": true
+    "count": null
   }
 }

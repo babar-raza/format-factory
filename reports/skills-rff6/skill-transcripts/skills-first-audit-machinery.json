@@ -1,0 +1,40 @@
+{
+  "invocation_id": "FF6-SKILLS-FIRST-AUDIT-20260724",
+  "skill_id": "skills-first-audit",
+  "task_id": "AUTO-MACHINERY-INTEGRITY",
+  "mode": "live",
+  "inputs": {"mode": "audit"},
+  "allowed_files": [
+    "reports/skills-first-control/audit-summary.json",
+    "reports/skills-first-control/audit-summary.md",
+    "reports/skills-first-control/command-skill-hash-baseline.json",
+    "reports/skills-rff6/skill-transcripts/skills-first-audit-machinery.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-first-control/audit-summary.json",
+    "reports/skills-first-control/audit-summary.md",
+    "reports/skills-first-control/command-skill-hash-baseline.json",
+    "reports/skills-rff6/skill-transcripts/skills-first-audit-machinery.json"
+  ],
+  "tests_run": [
+    "skills-first audit: 0 CRITICAL, 62 pre-existing HIGH command-hash findings",
+    "skills-first validator --warn-high: PASS_WITH_WARNINGS",
+    "new command hashes match the explicitly refreshed baseline entries"
+  ],
+  "validations": {
+    "skills_first_parity_no_critical": "PASS",
+    "skills_first_policy_consistent": "PASS",
+    "new_command_hashes_bound": "PASS",
+    "preexisting_hash_drift_preserved": "PASS"
+  },
+  "output_digests": {
+    "reports/skills-first-control/audit-summary.json": "683469a13cb9a06c4229332c9aca368f67c180db4d2b92b55cedbb2b3e59aef3",
+    "reports/skills-first-control/audit-summary.md": "72f411345c73a53e2e1f2eb09ba3ba387f195ed891e94c028b2a45b16fec63a5",
+    "reports/skills-first-control/command-skill-hash-baseline.json": "1801e4dcbd9707bf3ad86f2de5b27484ac07d1d3a62c5643be45097ef31198c8"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:18:01+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

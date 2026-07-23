@@ -1,0 +1,32 @@
+{
+  "invocation_id": "FF6-SYNC-SKILL-COMMAND-REGISTRY-20260724",
+  "skill_id": "sync-skill-command-registry",
+  "task_id": "AUTO-MACHINERY-INTEGRITY",
+  "mode": "live",
+  "inputs": {"dry_run": false},
+  "allowed_files": [
+    ".supervisor/skill-command-registry-sync-report.yaml",
+    "reports/skills-rff6/skill-transcripts/sync-skill-command-registry-machinery.json"
+  ],
+  "actual_files_changed": [
+    ".supervisor/skill-command-registry-sync-report.yaml",
+    "reports/skills-rff6/skill-transcripts/sync-skill-command-registry-machinery.json"
+  ],
+  "tests_run": [
+    "sync_skill_command_registry.py: 0 repaired, 0 flags, PASS",
+    "production controller machinery projection: no open gaps"
+  ],
+  "validations": {
+    "registry_consistency_verified": "PASS",
+    "no_orphan_commands_after_sync": "PASS",
+    "second_pass_zero_repairs": "PASS"
+  },
+  "output_digests": {
+    ".supervisor/skill-command-registry-sync-report.yaml": "62c41ea90d276c26e752a16e22bd7fe92b21733e9db90c814cbfcfdbcc158b75"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:18:01+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

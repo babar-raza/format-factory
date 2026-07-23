@@ -1,0 +1,42 @@
+{
+  "invocation_id": "FF6-WIRE-ANALYTICS-MODULE-20260724",
+  "skill_id": "wire-analytics-module",
+  "task_id": "AUTO-MACHINERY-INTEGRITY-ANALYTICS",
+  "mode": "live",
+  "inputs": {"format_id": "_machinery"},
+  "allowed_files": [
+    ".claude/commands/wire-analytics-module.md",
+    "tools/backfill/analytics_wiring_backfill.py",
+    "tests/tools/test_backfill_healing.py",
+    "reports/skills-rff6/skill-transcripts/wire-analytics-module-machinery.json"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/wire-analytics-module.md",
+    "tools/backfill/analytics_wiring_backfill.py",
+    "tests/tools/test_backfill_healing.py",
+    "reports/skills-rff6/skill-transcripts/wire-analytics-module-machinery.json"
+  ],
+  "tests_run": [
+    "tests/tools/test_backfill_healing.py: 8 passed",
+    "Ruff exception repair, analytics wiring, and regression tests: PASS",
+    "validate_skill_contracts: wire-analytics-module PASS"
+  ],
+  "validations": {
+    "analytics_module_reachable_via_import": "PASS",
+    "all_list_updated": "PASS",
+    "focused_tests": "PASS",
+    "explicit_export_precedence": "PASS",
+    "atomic_apply": "PASS",
+    "idempotent_replay": "PASS"
+  },
+  "output_digests": {
+    ".claude/commands/wire-analytics-module.md": "fa499712ac106a6d3e28a1f1ad593256f0958837034be019204872500986ab59",
+    "tools/backfill/analytics_wiring_backfill.py": "e9288a5f1807f3096b91e2cbb6f73a74a0917032c97f399f2a99bc226940bde2",
+    "tests/tools/test_backfill_healing.py": "4dd46161a05a8d013ee610f2ebfe21afc5796f05049ff933b9607b680a2c7ca2"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:18:01+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
