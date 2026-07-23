@@ -17,7 +17,7 @@ contract_metadata:
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
-    research_sha256: 5efc3d82a30045dac295461a67a481abb8c28b6e2b9cbcfcaf4434a81657f58c
+    research_sha256: 8be15851f44a44ecb019090f0c7f892de6db330d2b667b67bafa69190199f52f
     sal_facts_sha256: 566738660e95f95e4d70a1027635090936c1cb147f753cbf75b7f1a5af9d211d
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
@@ -34,26 +34,30 @@ format_identity:
   - Segment, annotate, and track translation state across tool chains
   - Preserve inline formatting codes and tool-specific extensions through round trips
 authoritative_sources:
-- title: OASIS XLIFF 2.1
-  source_id: SRC-XLIFF-001
-  organization: OASIS
-  version: XLIFF 2.1
-  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
-  authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
 - title: OASIS XLIFF Version 2.x specification (core and modules)
   source_id: SRC-XLF-002
   organization: OASIS
-  version: XLIFF 2.x
-  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  version: XLIFF 2.1 OASIS Standard release package
+  local_path: .local/format-contracts/acquired/xliff/src-xlf-002.bin
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip
+  content_hash: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
   source_id: SRC-XLF-003
   organization: Format Factory
   version: null
   canonical_url: null
   authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+- title: OASIS XLIFF 2.1 OASIS Standard prose specification
+  source_id: SRC-XLIFF-001
+  organization: OASIS
+  version: XLIFF 2.1
+  local_path: .local/format-contracts/acquired/xliff/src-xliff-001.bin
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  content_hash: 56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0
+  authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 scope_policy:
   minimum_viable_support: Parse core structure (files, groups, units, segments) with the inline-code model

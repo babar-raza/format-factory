@@ -160,8 +160,88 @@ def test_researcher_upgrades_existing_url_only_authority(
         prepare_intake=True,
     )
     draft = load_yaml(Path(result["intake_draft"]))
-    source = draft["source_records"][0]
+    source = next(
+        item
+        for item in draft["source_records"]
+        if item["source_id"] == "SRC-CSV-002"
+    )
     assert source["acquisition_status"] == "ACQUIRED"
     assert source["content_hash"] == "a" * 64
     assert source["version"] == "commit-123"
     assert draft["findings"] == _draft_base()["findings"]
+
+
+def test_researcher_preserves_multiple_sources_across_draft_runs(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
+    monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(
+        stores,
+        "load_format_registry_entry",
+        lambda _format_id: {
+            "display_name": "Multi",
+            "spec_body": "Authority",
+            "spec_version": "1",
+            "spec_url": None,
+        },
+    )
+    monkeypatch.setattr(
+        stores,
+        "load_research",
+        lambda _format_id: {"source_records": [], "findings": []},
+    )
+
+    sr.research_sources(
+        "multi",
+        source_id="SRC-MULTI-001",
+        source_url="https://example.invalid/prose",
+    )
+    result = sr.research_sources(
+        "multi",
+        source_id="SRC-MULTI-002",
+        source_url="https://example.invalid/schemas",
+        prepare_intake=True,
+    )
+
+    draft = load_yaml(Path(result["intake_draft"]))
+    assert [item["source_id"] for item in draft["source_records"]] == [
+        "SRC-MULTI-001",
+        "SRC-MULTI-002",
+    ]
+
+
+def test_researcher_allocates_lowest_unused_canonical_source_id(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
+    monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(
+        stores,
+        "load_format_registry_entry",
+        lambda _format_id: {
+            "display_name": "UBL",
+            "spec_body": "OASIS",
+            "spec_version": "2.3",
+            "spec_url": "https://example.invalid/spec",
+        },
+    )
+    monkeypatch.setattr(
+        stores,
+        "load_research",
+        lambda _format_id: {
+            "source_records": [
+                {"source_id": "SRC-UBL-002", "canonical_url": "urn:two"},
+                {"source_id": "SRC-UBL-003", "canonical_url": "urn:three"},
+            ],
+            "findings": [],
+        },
+    )
+
+    result = sr.research_sources("ubl", reset_draft=True)
+    draft = load_yaml(Path(result["out"]))
+    assert [item["source_id"] for item in draft["source_records"]] == [
+        "SRC-UBL-001",
+        "SRC-UBL-002",
+        "SRC-UBL-003",
+    ]

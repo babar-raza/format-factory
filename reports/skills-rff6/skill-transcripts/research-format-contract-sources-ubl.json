@@ -1,0 +1,41 @@
+{
+  "invocation_id": "FF6-UBL-AUTHORITY-20260723",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-UBL-AUTHORITY-PINNING",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ubl",
+    "source_ids": [
+      "SRC-UBL-001",
+      "SRC-UBL-002"
+    ],
+    "prose_uri": "https://docs.oasis-open.org/ubl/UBL-2.3.html",
+    "release_uri": "https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip"
+  },
+  "allowed_files": [
+    "shared/format-contracts/research/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/ubl.yaml"
+  ],
+  "tests_run": [
+    "OASIS prose SHA-256 b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6",
+    "OASIS release ZIP SHA-256 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "ZIP integrity: 927 entries, no bad member",
+    "Normative schema inventory: exactly 91 maindoc XSDs and 15 common XSDs",
+    "reset-draft research replay and intake: PASS"
+  ],
+  "validations": {
+    "review_gate_enforced": "PASS",
+    "source_closure": "PASS",
+    "authority_digest_pinning": "PASS",
+    "normative_schema_inventory": "PASS",
+    "no_sal_store_write": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/research/ubl.yaml": "a1eca70e12ce35f789098bb5a8b2a9991d9b11644a5ee7ec1b00a09f1aaee0db"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

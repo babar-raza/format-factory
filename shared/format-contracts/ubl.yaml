@@ -16,7 +16,7 @@ contract_metadata:
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
-    research_sha256: d6eb27174fb2b1c67fce6de254baf41e471c4ff9abd0e52b8df9f05da1fe5fcb
+    research_sha256: a1eca70e12ce35f789098bb5a8b2a9991d9b11644a5ee7ec1b00a09f1aaee0db
     sal_facts_sha256: 8814fd9b67c33e142063077aa6e1e71493046c89033cad2788d190e8804a3a77
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
@@ -33,20 +33,24 @@ format_identity:
   - Programmatic document assembly from business data with schema-valid output
   - Compliance validation against schemas, code lists, and profile rules before transmission
 authoritative_sources:
-- title: OASIS UBL 2.3
+- title: OASIS UBL 2.3 OASIS Standard prose specification
   source_id: SRC-UBL-001
   organization: OASIS
   version: UBL 2.3
+  local_path: .local/format-contracts/acquired/ubl/src-ubl-001.bin
   canonical_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
+  content_hash: b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: OASIS Universal Business Language specification (maindoc and common component schemas)
   source_id: SRC-UBL-002
   organization: OASIS
-  version: UBL 2.x
-  canonical_url: https://docs.oasis-open.org/ubl/
+  version: UBL 2.3 OASIS Standard release package
+  local_path: .local/format-contracts/acquired/ubl/src-ubl-002.bin
+  canonical_url: https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip
+  content_hash: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Business-document library developer-workflow requirements (invoicing/procurement integration
     practice)
   source_id: SRC-UBL-003

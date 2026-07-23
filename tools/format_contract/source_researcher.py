@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import stores
-from canonical_io import canonical_write
+from canonical_io import canonical_write, load_yaml
 
 DRAFTS_DIR = stores.REPO_ROOT / ".local" / "format-contracts" / "drafts"
 ACQUIRED_DIR = stores.REPO_ROOT / ".local" / "format-contracts" / "acquired"
@@ -40,6 +40,41 @@ def _fetch(url: str, dest: Path) -> str | None:
         return None
 
 
+def _source_records(
+    format_id: str, committed: list[dict], *, reset_draft: bool
+) -> list[dict]:
+    """Merge the durable local draft over committed source records.
+
+    Source discovery often needs several official artifacts.  The local draft
+    is the transaction workspace between invocations; discarding it makes a
+    second acquisition silently erase the first.
+    """
+
+    records = {
+        str(record.get("source_id", "")): dict(record)
+        for record in committed
+        if record.get("source_id")
+    }
+    draft_path = DRAFTS_DIR / f"{format_id}-sources.yaml"
+    if not reset_draft and draft_path.is_file():
+        draft = load_yaml(draft_path)
+        if draft.get("format_id") == format_id:
+            for record in draft.get("source_records", []):
+                source_id = str(record.get("source_id", ""))
+                if source_id:
+                    records[source_id] = dict(record)
+    return list(records.values())
+
+
+def _next_source_id(format_id: str, records: list[dict]) -> str:
+    prefix = format_id.upper().replace("_", "")
+    used = {str(record.get("source_id", "")) for record in records}
+    number = 1
+    while f"SRC-{prefix}-{number:03d}" in used:
+        number += 1
+    return f"SRC-{prefix}-{number:03d}"
+
+
 def research_sources(
     format_id: str,
     allow_network: bool = False,
@@ -48,13 +83,13 @@ def research_sources(
     source_url: str | None = None,
     source_version: str | None = None,
     prepare_intake: bool = False,
+    reset_draft: bool = False,
 ) -> dict:
     reg = stores.load_format_registry_entry(format_id)
     research = stores.load_research(format_id)
     existing = research.get("source_records", [])
-    fmt = format_id.upper().replace("_", "")
 
-    records = [dict(record) for record in existing]
+    records = _source_records(format_id, existing, reset_draft=reset_draft)
     if source_id or source_url:
         if not source_id or not source_url:
             raise stores.StoreError("--source-id and --source-url must be supplied together")
@@ -76,7 +111,7 @@ def research_sources(
     spec_url = reg.get("spec_url")
     if spec_url and spec_url not in known_urls:
         record = {
-            "source_id": f"SRC-{fmt}-{len(records) + 2:03d}",
+            "source_id": _next_source_id(format_id, records),
             "title": f"{reg.get('spec_body', 'unknown authority')} {reg.get('spec_version', '')}".strip(),
             "organization": reg.get("spec_body"),
             "version": str(reg.get("spec_version", "")) or None,
@@ -87,7 +122,7 @@ def research_sources(
         records.append(record)
     elif not spec_url and not records:
         records.append({
-            "source_id": f"SRC-{fmt}-002",
+            "source_id": _next_source_id(format_id, records),
             "title": f"{format_id} specification source (not yet identified)",
             "organization": None,
             "authority_class": "UNVERIFIED",
@@ -141,6 +176,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--source-url")
     parser.add_argument("--source-version")
     parser.add_argument("--prepare-intake", action="store_true")
+    parser.add_argument(
+        "--reset-draft",
+        action="store_true",
+        help="ignore the local source draft and rebuild from committed research",
+    )
     args = parser.parse_args(argv)
     try:
         result = research_sources(
@@ -150,6 +190,7 @@ def main(argv: list[str] | None = None) -> int:
             source_url=args.source_url,
             source_version=args.source_version,
             prepare_intake=args.prepare_intake,
+            reset_draft=args.reset_draft,
         )
     except stores.StoreError as exc:
         print(f"[fcl-sources] ERROR {exc}", file=sys.stderr)

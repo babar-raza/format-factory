@@ -1,0 +1,39 @@
+{
+  "invocation_id": "FF6-SOURCE-RESEARCHER-MULTI-20260723",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-SOURCE-RESEARCHER-MULTI-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ubl",
+    "defect_id": "FCL-SOURCE-DRAFT-LOSS-001",
+    "root_cause": "Each acquisition invocation rebuilt from committed research and discarded the prior local draft; source IDs were allocated from record count rather than the lowest free canonical slot."
+  },
+  "allowed_files": [
+    "tools/format_contract/source_researcher.py",
+    "tests/format_contract/test_research_plane.py"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/source_researcher.py",
+    "tests/format_contract/test_research_plane.py"
+  ],
+  "tests_run": [
+    "pytest tests/format_contract/test_research_plane.py -q: 11 passed",
+    "ruff check source researcher and research-plane tests: PASS",
+    "mypy source researcher: PASS",
+    "UBL and XLIFF reset-draft replay plus intake: PASS"
+  ],
+  "validations": {
+    "draft_transaction_preserved_across_invocations": "PASS",
+    "explicit_reset_supported": "PASS",
+    "lowest_unused_canonical_id_selected": "PASS",
+    "committed_research_remains_authoritative": "PASS",
+    "equivalent_replay_is_idempotent": "PASS"
+  },
+  "output_digests": {
+    "tools/format_contract/source_researcher.py": "7fdf04197bc6f6d5047441983863f9af9ce7df984bccdffc9b92a93485a74f3a",
+    "tests/format_contract/test_research_plane.py": "e7b1514ee4c867d1fe067543d03503392e01d889c966297519d6e40c407e44e4"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
