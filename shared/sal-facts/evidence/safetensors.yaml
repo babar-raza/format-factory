@@ -1,0 +1,336 @@
+schema_version: '1.0'
+format_id: safetensors
+coverage: complete
+authority_policy: >-
+  Every assertion is an exact text predicate over the SHA-256 pinned official
+  SafeTensors v0.8.0 source archive at commit
+  a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6. Format prose, validation code,
+  and executable upstream regression tests are separately identified.
+targets:
+  format_readme:
+    source_id: SRC-SAFETENSORS-002
+    member: safetensors-a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6/README.md
+    member_sha256: 0a932f120de5c2477b286cae5517b6fec5e1d3ed64a19b99ccfc0a8504db7b13
+  reference_codec:
+    source_id: SRC-SAFETENSORS-002
+    member: safetensors-a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6/safetensors/src/tensor.rs
+    member_sha256: d7033872125a58f2fca600a30646f69f585e6699991556186eb144e8ff17ffc6
+facts:
+- fact_id: SAL-SAFETENSORS-00001
+  claim_sha256: d6a19fda92fcd3b14cff1bce38693d5d69535a583250626716b5b75949f89c3c
+  assertions:
+  - assertion_id: prefix-and-header
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      8 bytes: `N`, an unsigned little-endian 64-bit integer, containing the
+      size of the header - N bytes: a JSON UTF-8 string representing the header.
+  - assertion_id: tensor-map-and-metadata
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      The header is a dict like `{"TENSOR_NAME": {"dtype": "F16", "shape":
+      [1, 16, 256], "data_offsets": [BEGIN, END]}, "NEXT_TENSOR_NAME":
+      {...}, ...}`,
+  - assertion_id: optional-metadata-map
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      A special key `__metadata__` is allowed to contain free form
+      string-to-string map.
+- fact_id: SAL-SAFETENSORS-00002
+  claim_sha256: 5359ce93ad25df7c536742b65992de662111d4b2bace30b74fc6e4b1280615cc
+  assertions:
+  - assertion_id: tensor-entry-fields-and-offsets
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      The header is a dict like `{"TENSOR_NAME": {"dtype": "F16", "shape":
+      [1, 16, 256], "data_offsets": [BEGIN, END]}, "NEXT_TENSOR_NAME":
+      {...}, ...}`,
+  - assertion_id: tensor-offset-semantics
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      `data_offsets` point to the tensor data relative to the beginning of the
+      byte buffer
+  - assertion_id: contiguous-nonoverlapping-validation
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let (s, e) = info.data_offsets; if s != start || e < s {
+      let tensor_name = self .index_map .iter()
+- fact_id: SAL-SAFETENSORS-00003
+  claim_sha256: 8a83bd216279c360eb8c652fbf1e47443c9d282122955796959d5f95f53a6c51
+  assertions:
+  - assertion_id: exact-prefix-definition
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      8 bytes: `N`, an unsigned little-endian 64-bit integer, containing the
+      size of the header
+  - assertion_id: reference-little-endian-read
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let n: usize = u64::from_le_bytes(arr) .try_into()
+      .map_err(|_| SafeTensorError::HeaderTooLarge)?;
+- fact_id: SAL-SAFETENSORS-00004
+  claim_sha256: 3c6bdbff5bc67b6bcfce0bd7b8436ecd138f2ef2fb103955bce710bb9c9e150d
+  assertions:
+  - assertion_id: fully-indexed-buffer
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      The byte buffer needs to be entirely indexed, and cannot contain holes.
+      This prevents the creation of polyglot files.
+  - assertion_id: trailing-bytes-rejected
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      if buffer_end + N_LEN + n != buffer_len {
+      return Err(SafeTensorError::MetadataIncompleteBuffer);
+- fact_id: SAL-SAFETENSORS-00005
+  claim_sha256: 33c306ad33ee2cb0eba20f51ba4da7d1f7f0c049618fbf8ababab3e8d3fc1eef
+  assertions:
+  - assertion_id: header-length-bounds
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let Some(header_bytes) = buffer.get(N_LEN..stop) else {
+      return Err(SafeTensorError::InvalidHeaderLength);
+  - assertion_id: utf8-and-json-rejection
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let string = core::str::from_utf8(header_bytes).map_err(SafeTensorError::InvalidHeader)?;
+      let metadata: HashMetadata =
+      serde_json::from_str(string).map_err(SafeTensorError::InvalidHeaderDeserialization)?;
+- fact_id: SAL-SAFETENSORS-00006
+  claim_sha256: f544da465e9a851c1c48f5cd3c70e24668bf8374456a9da8bdffaa577055c36c
+  assertions:
+  - assertion_id: empty-tensor-format-rule
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      Empty tensors (tensors with 1 dimension being 0) are allowed. They are not
+      storing any data in the databuffer, yet retaining size in the header.
+  - assertion_id: zero-sized-upstream-test
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      fn test_zero_sized_tensor() { let serialized =
+      b"<\x00\x00\x00\x00\x00\x00\x00{\"test\":{\"dtype\":\"I32\",\"shape\":[2,0],\"data_offsets\":[0, 0]}}";
+- fact_id: SAL-SAFETENSORS-00007
+  claim_sha256: d1564a778835949da500e1ca7ef4bbd4c2e42e8a7ce2ee7f984fb767248ebb54
+  assertions:
+  - assertion_id: scalar-format-rule
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      0-rank Tensors (tensors with shape `[]`) are allowed, they are merely a scalar.
+  - assertion_id: scalar-reference-test
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      fn test_empty_shapes_allowed() { let serialized =
+      b"8\x00\x00\x00\x00\x00\x00\x00{\"test\":{\"dtype\":\"I32\",\"shape\":[],\"data_offsets\":[0,4]}}\x00\x00\x00\x00";
+- fact_id: SAL-SAFETENSORS-00008
+  claim_sha256: 3298246519bc9a6a4e16eba67a475b72245aef27c73660f90d3357090ed806a9
+  assertions:
+  - assertion_id: tensor-info-fields
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      pub struct TensorInfo { /// The type of each element of the tensor pub
+      dtype: Dtype, /// The shape of the tensor pub shape: Vec<usize>, /// The
+      offsets to find the data within the byte-buffer array. pub data_offsets:
+      (usize, usize),
+- fact_id: SAL-SAFETENSORS-00009
+  claim_sha256: 207e4f437036659151c73242095686d8085d21445955b20d5ee6c359fe036032
+  assertions:
+  - assertion_id: trailing-whitespace-format-rule
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      The header data MAY be trailing padded with whitespace (0x20).
+  - assertion_id: leading-whitespace-reference-behavior
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      Test that the JSON header may be leading-padded with JSON whitespace
+      characters. /// This is intentional: writers may pad the header to align
+      the data section to a /// page boundary, so readers must tolerate leading
+      whitespace.
+- fact_id: SAL-SAFETENSORS-00010
+  claim_sha256: d9d134ba684915bab8f0ecf3b6ec08f404c2cecccb798c8173dc2d97ecd0ad8b
+  assertions:
+  - assertion_id: endian-and-order
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      Endianness: Little-endian. moment. - Order: 'C' or row-major.
+  - assertion_id: tensor-info-layout
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      A single tensor information. /// Endianness is assumed to be little endian
+      /// Ordering is assumed to be 'C'.
+- fact_id: SAL-SAFETENSORS-00011
+  claim_sha256: 58aabf3d958ca75049ea75b0b3d55e676f635b5161abfab80bd47dbf3e30575c
+  assertions:
+  - assertion_id: checked-shape-product
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let nelements: usize = info .shape .iter() .copied()
+      .try_fold(1usize, usize::checked_mul)
+      .ok_or(SafeTensorError::ValidationOverflow)?;
+  - assertion_id: checked-bit-product
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let nbits = nelements .checked_mul(info.dtype.bitsize())
+      .ok_or(SafeTensorError::ValidationOverflow)?;
+- fact_id: SAL-SAFETENSORS-00012
+  claim_sha256: aa08f016d42a13719dcdb9dc3fefe7f9a3ddddbe6fae847ff041c5cdc7b43ae2
+  assertions:
+  - assertion_id: subbyte-dtype-widths
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      Dtype::F4 => 4, Dtype::F6_E3M2 => 6, Dtype::F6_E2M3 => 6,
+  - assertion_id: whole-tensor-byte-alignment
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      if nbits % 8 != 0 { return Err(SafeTensorError::MisalignedSlice);
+  - assertion_id: slice-alignment-rule
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      For now, the library will simply error out whenever an operation triggers
+      an non aligned read.
+- fact_id: SAL-SAFETENSORS-00013
+  claim_sha256: f2fb550c003aca23b821a404f472a3a181499b3a5156421ba7b98fc8a1a9f952
+  assertions:
+  - assertion_id: data-relative-offset
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      `data_offsets` point to the tensor data relative to the beginning of the
+      byte buffer (i.e. not an absolute position in the file)
+  - assertion_id: half-open-offset
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      with `BEGIN` as the starting offset and `END` as the one-past offset
+      (so total tensor byte size = `END - BEGIN`).
+- fact_id: SAL-SAFETENSORS-00014
+  claim_sha256: 63f6b104276bc479d11a029b92cdfcc062f9666435c9e08ecd0e83840519629e
+  assertions:
+  - assertion_id: utf8-json-header
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      N bytes: a JSON UTF-8 string representing the header.
+  - assertion_id: flattened-tensor-map
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      #[serde(rename = "__metadata__")] metadata: Option<HashMap<String,
+      String>>, #[serde(flatten)] tensors: HashMap<String, TensorInfo>,
+- fact_id: SAL-SAFETENSORS-00015
+  claim_sha256: b6c58c4e1005da62c0d0610976549423a8da46b41c6e31567174decaad009756
+  assertions:
+  - assertion_id: metadata-string-map
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      A special key `__metadata__` is allowed to contain free form
+      string-to-string map. Arbitrary JSON is not allowed, all values must be strings.
+  - assertion_id: metadata-reference-type
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      metadata: Option<HashMap<String, String>>,
+- fact_id: SAL-SAFETENSORS-00016
+  claim_sha256: cabe6f232a3846b33172fcfcacfa3e7a5bd12a93100e868702ef6b23b960c611
+  assertions:
+  - assertion_id: no-hole-format-rule
+    target: format_readme
+    kind: text_contains
+    expected: >-
+      The byte buffer needs to be entirely indexed, and cannot contain holes.
+  - assertion_id: ordered-offset-validation
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      Notably the tensors need to be ordered by increasing data_offsets.
+  - assertion_id: contiguous-span-validation
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let mut start = 0; for (i, info) in self.tensors.iter().enumerate() {
+      let (s, e) = info.data_offsets; if s != start || e < s {
+- fact_id: SAL-SAFETENSORS-00017
+  claim_sha256: 121f6ca4d946f93de29b422a15bcd3b58aae10062f23e4469676a660fc4cbb0e
+  assertions:
+  - assertion_id: exact-header-limit
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      const MAX_HEADER_SIZE: usize = 100_000_000;
+  - assertion_id: header-limit-rejection
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      if n > MAX_HEADER_SIZE { return Err(SafeTensorError::HeaderTooLarge);
+- fact_id: SAL-SAFETENSORS-00018
+  claim_sha256: 02505e13ea369206a2a87b4ae1d8fc5375854c9c2c29cbcdba7cba2cdd8c20d2
+  assertions:
+  - assertion_id: checked-element-and-bit-count
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let nelements: usize = info .shape .iter() .copied()
+      .try_fold(1usize, usize::checked_mul)
+      .ok_or(SafeTensorError::ValidationOverflow)?; let nbits = nelements
+      .checked_mul(info.dtype.bitsize())
+      .ok_or(SafeTensorError::ValidationOverflow)?;
+  - assertion_id: span-size-match
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      let size = nbits .checked_div(8)
+      .ok_or(SafeTensorError::ValidationOverflow)?; if e - s != size {
+      return Err(SafeTensorError::TensorInvalidInfo);
+- fact_id: SAL-SAFETENSORS-00019
+  claim_sha256: 2ef9889a18357d8d6debb34c65d5aead18fbe11c47f87bffb134a6cf82b6f798
+  assertions:
+  - assertion_id: complete-v080-dtype-enum
+    target: reference_codec
+    kind: text_contains
+    expected: >-
+      pub enum Dtype { /// Boolan type BOOL, /// MXF4
+      <https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf>_
+      F4, /// MXF6
+      <https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf>_
+      #[allow(non_camel_case_types)] F6_E2M3, /// MXF6
+      <https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf>_
+      #[allow(non_camel_case_types)] F6_E3M2, /// Unsigned byte U8, /// Signed
+      byte I8, /// FP8 <https://arxiv.org/pdf/2209.05433.pdf>_
+      #[allow(non_camel_case_types)] F8_E5M2, /// FP8
+      <https://arxiv.org/pdf/2209.05433.pdf>_ #[allow(non_camel_case_types)]
+      F8_E4M3, /// F8_E8M0
+      <https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf>_
+      #[allow(non_camel_case_types)] F8_E8M0, /// FP8 E4M3 (FNUZ)
+      <https://arxiv.org/pdf/2206.02915.pdf>_ #[allow(non_camel_case_types)]
+      F8_E4M3FNUZ, /// FP8 E5M2 (FNUZ)
+      <https://arxiv.org/pdf/2206.02915.pdf>_ #[allow(non_camel_case_types)]
+      F8_E5M2FNUZ, /// Signed integer (16-bit) I16, /// Unsigned integer (16-bit)
+      U16, /// Half-precision floating point F16, /// Brain floating point BF16,
+      /// Signed integer (32-bit) I32, /// Unsigned integer (32-bit) U32, ///
+      Floating point (32-bit) F32, /// Complex (32-bit parts) C64, /// Floating
+      point (64-bit) F64, /// Signed integer (64-bit) I64, /// Unsigned integer
+      (64-bit) U64,

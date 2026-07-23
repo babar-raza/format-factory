@@ -1,0 +1,44 @@
+{
+  "invocation_id": "FF6-SAFETENSORS-CONTRACT-AUTHORITY-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "AUTO-SAFETENSORS-CONTRACT-REFRESH",
+  "mode": "live",
+  "inputs": {
+    "format_id": "safetensors",
+    "authority_sha256": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3",
+    "sal_store_sha256": "f2b4dad3b84930509f98e634486e9ae05dba8591e79158768184e231ad0ca7d2"
+  },
+  "allowed_files": [
+    "shared/format-contracts/safetensors.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-safetensors-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/safetensors.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-safetensors-authority.json"
+  ],
+  "tests_run": [
+    "contract compiler --verify-idempotency safetensors: PASS",
+    "strict SafeTensors ProductContract: ready with 97 obligations",
+    "production controller contract readiness: PASS",
+    "production controller authority gap removed; next deterministic gap UBL"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "existing_product_source_preserved": "PASS",
+    "live_sal_proof_closure": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/safetensors.yaml": "d5082d88ec4f8b6059c522128e7a030c3af3e87e1601848741361367d8d83144",
+    "registry/format-contract-registry.yaml": "7b03daab6f351e3ec9e15f08399627670514866be8d0ea2870290247b7b6f8cc",
+    "strict_safetensors_product_contract": "bb7a83403efcfe9fbeba9be67266d836935c033015c8a1d530d9cad5bbb1e814"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-23T23:14:56+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
