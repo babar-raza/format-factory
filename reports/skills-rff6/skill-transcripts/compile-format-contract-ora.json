@@ -1,0 +1,36 @@
+{
+  "invocation_id": "FF6-ORA-CONTRACT-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "TC-FF6-ORA-CONTRACT-COMPILE",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ora",
+    "certification_scope": "OpenRaster draft-profile interoperability"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "tests_run": [
+    "contract compiler --check ora: PASS",
+    "contract compiler --verify-idempotency ora: PASS",
+    "strict ProductContract: ready with 31 obligations"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "no_product_source_mutation": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ora.yaml": "81425625eebff8c32c66079bdd3bf6ace0bd4e3ec579a78f376da363cb2717ce",
+    "strict_product_contract": "f607f9faf1166bedefa7c92cc7ebd771be3ab74023a6de009a1ad69689413bdc"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

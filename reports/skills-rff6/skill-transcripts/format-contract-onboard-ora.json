@@ -1,0 +1,41 @@
+{
+  "invocation_id": "FF6-ORA-CONTRACT-ONBOARD-20260723",
+  "skill_id": "format-contract-onboard",
+  "task_id": "SKILL-GAP-FF6-FORMAT-CONTRACT-ONBOARD",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ora",
+    "family": "archive_container",
+    "authority_source_ids": [
+      "SRC-ORA-001",
+      "SRC-ORA-002",
+      "SRC-ORA-003"
+    ],
+    "sal_store_path": "shared/sal-facts/ora.yaml"
+  },
+  "allowed_files": [
+    "shared/format-contracts/policy/format-family-map.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/policy/format-family-map.yaml"
+  ],
+  "tests_run": [
+    "contract compiler --check ora: PASS",
+    "contract compiler --verify-idempotency ora: PASS",
+    "focused machinery/contract suite: 67 passed"
+  ],
+  "validations": {
+    "registry_entry_exists": "PASS",
+    "family_pack_exists": "PASS",
+    "authority_sources_acquired": "PASS",
+    "sal_store_nonempty": "PASS",
+    "deterministic_contract_compilation": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ora.yaml": "81425625eebff8c32c66079bdd3bf6ace0bd4e3ec579a78f376da363cb2717ce",
+    "strict_product_contract": "f607f9faf1166bedefa7c92cc7ebd771be3ab74023a6de009a1ad69689413bdc"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

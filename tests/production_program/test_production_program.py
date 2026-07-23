@@ -4,12 +4,18 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 from tools.format_contract.product_contract import compile_product_contract
 from tools.requirements_authority.production_graph import ProductionProofGraph
-from tools.supervisor.production_program import Gap, ProductionProgram
+from tools.supervisor.production_program import (
+    TARGETS_BY_PRODUCT,
+    Gap,
+    ProductionProgram,
+    validate_target_registry,
+)
 
 
 def _contract(format_id: str = "ipynb") -> dict:
@@ -211,3 +217,104 @@ def test_machinery_failures_enter_current_projection(
     assert gap.format_id == "_machinery"
     assert gap.obligation_id == "broken-skill"
     assert gap.category == "referential_integrity"
+
+
+def test_openraster_target_uses_canonical_ora_contract_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.format_contract.product_contract as contract_module
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    package = repo / "src" / "python" / "openraster"
+    tests = repo / "tests" / "python" / "openraster"
+    contract = repo / "shared" / "format-contracts" / "ora.yaml"
+    package.mkdir(parents=True)
+    tests.mkdir(parents=True)
+    contract.parent.mkdir(parents=True)
+    (package / "marker.py").write_text("PACKAGE = 'openraster'\n", encoding="utf-8")
+    (tests / "test_marker.py").write_text("def test_marker(): pass\n", encoding="utf-8")
+    contract.write_text("contract_metadata:\n  format_id: ora\n", encoding="utf-8")
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+
+    compiled_paths: list[Path] = []
+
+    def fake_compile(path: Path) -> SimpleNamespace:
+        compiled_paths.append(path)
+        return SimpleNamespace(
+            format_id="ora",
+            digest="a" * 64,
+            ready=True,
+            obligations=(),
+            issues=(),
+        )
+
+    monkeypatch.setattr(contract_module, "load_and_compile", fake_compile)
+    program = ProductionProgram(tmp_path / "state")
+    snapshot = program.discover("openraster")
+    evidence = program.compile_contract("openraster")
+
+    assert TARGETS_BY_PRODUCT["openraster"].contract_format_id == "ora"
+    assert snapshot["format_id"] == "openraster"
+    assert snapshot["contract_format_id"] == "ora"
+    assert snapshot["source_package_id"] == "openraster"
+    assert snapshot["paths"] == [
+        "src/python/openraster",
+        "tests/python/openraster",
+        "shared/format-contracts/ora.yaml",
+    ]
+    assert compiled_paths == [contract]
+    assert evidence["format_id"] == "openraster"
+    assert evidence["contract_format_id"] == "ora"
+    assert set(program.formats) >= {"openraster"}
+    assert "ora" not in program.formats
+
+
+def test_identity_targets_retain_previous_path_behavior(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    for target in TARGETS_BY_PRODUCT.values():
+        if target.product_id == "openraster":
+            continue
+        assert target.contract_format_id == target.product_id
+        assert target.source_package_id == target.product_id
+
+    first = ProductionProgram(tmp_path / "state-one").discover("ipynb")
+    second = ProductionProgram(tmp_path / "state-two").discover("ipynb")
+    assert first == second
+
+
+def test_compiled_contract_identity_mismatch_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.format_contract.product_contract as contract_module
+    import tools.supervisor.production_program as module
+
+    monkeypatch.setattr(module, "REPO_ROOT", tmp_path / "repo")
+    monkeypatch.setattr(
+        contract_module,
+        "load_and_compile",
+        lambda _path: SimpleNamespace(
+            format_id="openraster",
+            digest="b" * 64,
+            ready=True,
+            obligations=(),
+            issues=(),
+        ),
+    )
+    program = ProductionProgram(tmp_path / "state")
+    program.transition("openraster", "SNAPSHOT", evidence={})
+    with pytest.raises(ValueError, match="compiled contract identity mismatch"):
+        program.compile_contract("openraster")
+
+
+def test_target_contract_ids_are_backed_by_canonical_registry() -> None:
+    evidence = validate_target_registry()
+    assert len(evidence["registry_sha256"]) == 64
+    assert set(evidence["contract_format_ids"]) == {
+        target.contract_format_id for target in TARGETS_BY_PRODUCT.values()
+    }

@@ -1,0 +1,41 @@
+{
+  "invocation_id": "FF6-CONTROLLER-IDENTITY-20260723",
+  "skill_id": "production-program-controller-repair",
+  "task_id": "SKILL-GAP-FF6-PRODUCTION-PROGRAM-IDENTITY",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "FF6-OPENRASTER-CONTRACT-ID-001",
+    "product_id": "openraster",
+    "contract_format_id": "ora",
+    "source_package_id": "openraster",
+    "source_commit": "e4c59c4e5ce0df3f5aa191410d0ac95057f6ff74"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py"
+  ],
+  "tests_run": [
+    "pytest tests/production_program/test_production_program.py -q: 18 passed",
+    "ruff check tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
+    "mypy --strict --follow-imports=skip --ignore-missing-imports tools/supervisor/production_program.py: PASS",
+    "production_program bootstrap: OpenRaster contract digest f607f9faf1166bedefa7c92cc7ebd771be3ab74023a6de009a1ad69689413bdc and prior missing-contract gap resolved"
+  ],
+  "validations": {
+    "canonical_contract_registry_mapping": "PASS",
+    "stable_product_state_identity": "PASS",
+    "stable_gap_ownership_identity": "PASS",
+    "identity_target_regression": "PASS",
+    "deterministic_bootstrap": "PASS"
+  },
+  "output_digests": {
+    "tools/supervisor/production_program.py": "c0702c54a86d46b3ba74aac5f24d49de92726cc964a8603e49db88f41ed3dbb4",
+    "tests/production_program/test_production_program.py": "7daa76ce1c3be31cbd25f919d2c9dd391c16b61ddfcc2c119324274e3289653f"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -2311,6 +2311,7 @@ skills:
   implementation_paths:
   - tools/spec/extract_sal_facts.py
   - tools/spec/merge_sal_facts.py
+  - tools/spec/seed_sal_candidates.py
   mandatory_validations:
   - sal_facts_nonzero
   - spec_fact_refs_populated
@@ -2332,7 +2333,8 @@ skills:
   skill_id: ingest-spec-sal
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/tools/test_seed_sal_candidates.py
 - command: /run-oracle
   command_file: .claude/commands/run-oracle.md
   idempotency: idempotent
@@ -4857,6 +4859,64 @@ skills:
   status: active
   test_paths:
   - tests/governance/test_pre_commit_skill_guard_worktree.py
+  risk_level: HIGH
+- command: /format-contract-onboard
+  command_file: .claude/commands/format-contract-onboard.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-FORMAT-CONTRACT-ONBOARD
+  idempotency: idempotent
+  implementation_paths:
+  - shared/format-contracts/policy/format-family-map.yaml
+  mandatory_validations:
+  - registry_entry_exists
+  - family_pack_exists
+  - authority_sources_acquired
+  - sal_store_nonempty
+  - deterministic_contract_compilation
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: format_contract
+  purpose: Add a registry-backed format to the canonical format-contract family
+    policy after acquired authority and SAL readiness are proven.
+  required_handoff_fields:
+  - format_id
+  - family
+  - authority_source_ids
+  - sal_store_path
+  skill_id: format-contract-onboard
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_determinism_foundation.py
+  risk_level: MEDIUM
+- command: /production-program-controller-repair
+  command_file: .claude/commands/production-program-controller-repair.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-PRODUCTION-PROGRAM-IDENTITY
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/production_program.py
+  mandatory_validations:
+  - canonical_contract_registry_mapping
+  - stable_product_state_identity
+  - stable_gap_ownership_identity
+  - identity_target_regression
+  - deterministic_bootstrap
+  output_paths:
+  - reports/skills-rff6/skill-transcripts/
+  product_track: machinery_repair
+  purpose: Repair explicit product, canonical contract, and source-package identity
+    routing in the persistent six-format production controller.
+  required_handoff_fields:
+  - defect_id
+  - product_id
+  - contract_format_id
+  - source_package_id
+  skill_id: production-program-controller-repair
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/production_program/test_production_program.py
   risk_level: HIGH
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'

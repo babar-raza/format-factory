@@ -17,7 +17,7 @@ contract_metadata:
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
     qname_registry_sha256: 3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92
-    research_sha256: e61259ab0cdbf554a3af3d4155c09cf4cf1b66b84a599db04287df028ebd744c
+    research_sha256: 8f037d14ed2001ca78a901f0eb029fa3e417bb7a561fc7cd2c8ea5c7b7492ba8
     sal_facts_sha256: 2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
@@ -34,20 +34,24 @@ format_identity:
   - Header-only and lazy access to very large datasets in bounded memory
   - Validate untrusted data files safely before allocation or processing
 authoritative_sources:
-- title: Teem Project NRRD0005
+- title: Nearly Raw Raster Data pinned authority
   source_id: SRC-NRRD-001
   organization: Teem Project
   version: NRRD0005
+  local_path: .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
   canonical_url: https://teem.sourceforge.net/nrrd/format.html
+  content_hash: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: NRRD file format definition (Teem)
   source_id: SRC-NRRD-002
   organization: Teem Project
   version: NRRD0005
+  local_path: .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
   canonical_url: http://teem.sourceforge.net/nrrd/format.html
+  content_hash: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
   source_id: SRC-NRRD-003
   organization: Format Factory

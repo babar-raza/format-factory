@@ -32,7 +32,6 @@ STATES = (
     "RELEASE_PREP",
     "COMPLETE",
 )
-FORMATS = ("ipynb", "openraster", "nrrd", "xliff", "safetensors", "ubl")
 SEVERITY_ORDER = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
 GAP_PRIORITY = {
     "authority": 0,
@@ -48,6 +47,55 @@ GAP_PRIORITY = {
     "optional": 6,
     "analytics": 7,
 }
+
+
+@dataclass(frozen=True)
+class ProductTarget:
+    """Stable identities used by one independently publishable product.
+
+    Repository format IDs are historical authorities and do not always match a
+    distribution/import name.  Keeping these identities explicit prevents a
+    package rename from silently changing contract lookup or persistent state.
+    """
+
+    product_id: str
+    contract_format_id: str
+    source_package_id: str
+
+
+TARGETS = (
+    ProductTarget("ipynb", "ipynb", "ipynb"),
+    ProductTarget("openraster", "ora", "openraster"),
+    ProductTarget("nrrd", "nrrd", "nrrd"),
+    ProductTarget("xliff", "xliff", "xliff"),
+    ProductTarget("safetensors", "safetensors", "safetensors"),
+    ProductTarget("ubl", "ubl", "ubl"),
+)
+TARGETS_BY_PRODUCT = {target.product_id: target for target in TARGETS}
+FORMATS = tuple(target.product_id for target in TARGETS)
+
+
+def validate_target_registry() -> dict[str, Any]:
+    """Fail closed when a target references a non-canonical format ID."""
+
+    registry_path = REPO_ROOT / "registry" / "format-registry.yaml"
+    document = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+    registered = {
+        str(item.get("format_id", ""))
+        for item in document.get("formats", [])
+        if isinstance(item, dict)
+    }
+    referenced = {target.contract_format_id for target in TARGETS}
+    missing = sorted(referenced - registered)
+    if missing:
+        raise ValueError(
+            "production targets reference unregistered contract format IDs: "
+            + ", ".join(missing)
+        )
+    return {
+        "registry_sha256": sha256_path(registry_path),
+        "contract_format_ids": sorted(referenced),
+    }
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -128,6 +176,13 @@ class ProductionProgram:
         self.formats = {format_id: FormatState(format_id) for format_id in FORMATS}
         self.gaps: dict[str, Gap] = {}
         self.load()
+
+    @staticmethod
+    def target(format_id: str) -> ProductTarget:
+        try:
+            return TARGETS_BY_PRODUCT[format_id]
+        except KeyError as error:
+            raise ValueError(f"unknown production product: {format_id}") from error
 
     def load(self) -> None:
         if self.state_path.exists():
@@ -273,15 +328,21 @@ class ProductionProgram:
         return sorted(observed, key=lambda item: item["gap_id"])
 
     def discover(self, format_id: str) -> dict[str, Any]:
+        target = self.target(format_id)
         paths = [
-            REPO_ROOT / "src" / "python" / format_id,
-            REPO_ROOT / "tests" / "python" / format_id,
-            REPO_ROOT / "shared" / "format-contracts" / f"{format_id}.yaml",
+            REPO_ROOT / "src" / "python" / target.source_package_id,
+            REPO_ROOT / "tests" / "python" / target.source_package_id,
+            REPO_ROOT
+            / "shared"
+            / "format-contracts"
+            / f"{target.contract_format_id}.yaml",
         ]
         digest = tree_digest(paths)
         self.formats[format_id].input_digest = digest
         evidence = {
             "format_id": format_id,
+            "contract_format_id": target.contract_format_id,
+            "source_package_id": target.source_package_id,
             "input_digest": digest,
             "paths": [path.relative_to(REPO_ROOT).as_posix() for path in paths],
         }
@@ -291,8 +352,19 @@ class ProductionProgram:
     def compile_contract(self, format_id: str) -> dict[str, Any]:
         from tools.format_contract.product_contract import load_and_compile
 
-        path = REPO_ROOT / "shared" / "format-contracts" / f"{format_id}.yaml"
+        target = self.target(format_id)
+        path = (
+            REPO_ROOT
+            / "shared"
+            / "format-contracts"
+            / f"{target.contract_format_id}.yaml"
+        )
         compiled = load_and_compile(path)
+        if compiled.format_id != target.contract_format_id:
+            raise ValueError(
+                "compiled contract identity mismatch: "
+                f"expected {target.contract_format_id}, got {compiled.format_id}"
+            )
         self.formats[format_id].contract_digest = compiled.digest
         current_ids: set[str] = set()
         for issue in compiled.issues:
@@ -325,6 +397,8 @@ class ProductionProgram:
                 gap.state = "RESOLVED"
         evidence = {
             "format_id": format_id,
+            "contract_format_id": target.contract_format_id,
+            "source_package_id": target.source_package_id,
             "contract_digest": compiled.digest,
             "ready": compiled.ready,
             "obligation_count": len(compiled.obligations),
@@ -334,7 +408,10 @@ class ProductionProgram:
         return evidence
 
     def bootstrap(self) -> dict[str, Any]:
-        results: dict[str, Any] = {"machinery": self.audit_machinery()}
+        results: dict[str, Any] = {
+            "target_registry": validate_target_registry(),
+            "machinery": self.audit_machinery(),
+        }
         for format_id in FORMATS:
             state = self.formats[format_id].state
             if state == "DISCOVER":
@@ -371,6 +448,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("command", choices=("bootstrap", "status", "next"))
     args = parser.parse_args(argv)
     program = ProductionProgram(args.state_dir)
+    payload: Any
     if args.command == "bootstrap":
         payload = {
             "git_commit": _git_commit(),

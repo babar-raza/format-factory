@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-26"
+version: "2.0"
+last-updated: "2026-07-23"
 phase-available: "all"
 gate-required: null
 created-by: TC-LA-004
@@ -10,106 +10,114 @@ product_track: "sal_ingestion"
 
 # /ingest-spec-sal
 
-Ingest a format specification into the SAL (Specification Authority Layer) to produce
-`FACT-{FORMAT}-NNN` entries in `sal-facts-latest.json`.
+Ingest a format specification into the SAL (Specification Authority Layer) to
+produce canonical `SAL-{FORMAT}-<stable-id>` facts and derived
+`FACT-{FORMAT}-NNN` compatibility aliases.
 
-This skill is the ONLY governed entry point for adding spec facts. Do NOT manually
-edit `sal-facts-latest.json` or `.local/spec-cache/` files.
+This skill is the only governed entry point for adding specification facts.
+Do not manually edit the combined cache in `.local/spec-cache/`.
 
-## Prerequisites (ALL required before execution)
+## Prerequisites
 
-1. **Spec source MUST exist** — a PDF, HTML, or plain-text specification for the format
-   must be available at a stable URI or locally in `.local/spec-cache/`.
-2. **Format must have a qname-registry entry** — `shared/qname-registry/{format}.yaml`
-   must exist with at least one entry in `implementing` or `implemented` status.
-3. **Format ID must appear in gap-ledger** — at least one `GAP-CHAIN-{FORMAT}-SAL-*`
-   entry must exist in `reports/capability-layer/gap-ledger.json`.
+1. The specification source is acquired and digest-pinned. A PDF, HTML,
+   schema, archive, or plain-text specification appears as an `ACQUIRED`
+   source record with a SHA-256 `content_hash` in
+   `shared/format-contracts/research/{format}.yaml`.
+2. Every reviewed candidate cites acquired `source_ids`. An optional
+   `source_sha256` declaration must match the acquired record.
+3. QName registries are downstream. A format may initialize SAL before a
+   QName registry or product source exists; requiring them here creates a
+   circular dependency.
+4. The active authority gap is recorded in the historical gap ledger or the
+   production controller's current-gap projection. A missing legacy
+   `GAP-CHAIN-*` row never authorizes unpinned ingestion.
 
-## Mandatory Validations (run before declaring success)
+## Mandatory validations
 
-- **sal_facts_nonzero**: After ingestion, `sal-facts-latest.json` must contain ≥1
-  spec_fact for the target format. Zero facts = ingestion failed.
-- **spec_fact_refs_populated**: Each extracted fact must have a non-empty `qname`
-  field matching pattern `^FACT-{FORMAT}-[0-9]+$` and a non-empty `claim` field.
-- **schema_valid**: The updated `sal-facts-latest.json` must validate against
+- `sal_facts_nonzero`: the target format contributes at least one fact.
+- `spec_fact_refs_populated`: every fact has a canonical SAL ID, a non-empty
+  `FACT-{FORMAT}-NNN` alias, and a non-empty claim.
+- `authority_digest_bound`: every newly committed fact records acquired source
+  IDs and SHA-256 digests.
+- `schema_valid`: the derived combined database validates against
   `schemas/sal-facts/sal-facts-schema.json`.
+- `strict_contract_resolves`: the strict ProductContract resolves all new fact
+  references.
 
-## Handoff Fields (required in execution context)
+## Required inputs
 
 | Field | Description |
 |---|---|
-| `format_id` | Lowercase format identifier (e.g. `csv`, `tsv`, `gnumeric`) |
-| `spec_source_uri` | URI or local path to the specification document |
-| `spec_version` | Version of the specification (e.g. `RFC 4180`, `ODF 1.3`) |
-| `spec_body` | Issuing body (e.g. `IETF`, `OASIS`, `LibreOffice`) |
-| `target_fact_count_min` | Minimum expected fact count after ingestion (for validation) |
+| `format_id` | Lowercase canonical registry identifier |
+| `spec_source_uri` | Acquired URI or local authority path |
+| `spec_version` | Pinned specification version/profile |
+| `spec_body` | Issuing authority |
+| `target_fact_count_min` | Minimum expected facts after ingestion |
 
-## Execution Steps
+## Execution
 
-1. Verify prerequisites — check qname-registry entry and gap-ledger entry exist
-2. Run the SAL extractor:
-   ```
+1. Verify acquired source records and SHA-256 digests.
+2. Run the SAL extractor when the authority type has a supported extractor:
+
+   ```text
    python tools/spec/extract_sal_facts.py \
      --format-id <format_id> \
      --spec-source <spec_source_uri> \
      --output .local/sal-output/sal-facts-<format_id>.json
    ```
-3. Merge into the combined database:
+
+3. For reviewed candidates from the research plane, commit through the
+   authority-bound manual-seed path:
+
+   ```text
+   python tools/spec/seed_sal_candidates.py \
+     --format-id <format_id> \
+     --added-by <task_id>
    ```
-   python tools/spec/merge_sal_facts.py \
-     --input .local/sal-output/sal-facts-<format_id>.json \
-     --into .local/spec-cache/sal-facts-latest.json
+
+   The seeder initializes a missing canonical store, preserves existing facts
+   by union, verifies source digests, and records authority evidence in fact
+   provenance.
+4. Rebuild the derived combined database:
+
+   ```text
+   python tools/spec/merge_sal_facts.py
    ```
-4. Validate the result:
-   ```
-   python -c "
-   import json, jsonschema, pathlib
-   schema = json.loads(pathlib.Path('schemas/sal-facts/sal-facts-schema.json').read_text())
-   data = json.loads(pathlib.Path('.local/spec-cache/sal-facts-latest.json').read_text())
-   jsonschema.validate(data, schema)
-   print('SCHEMA VALID')
-   "
-   ```
-5. Confirm `sal_facts_nonzero` — count facts for target format in the merged file
-6. Close the `GAP-CHAIN-{FORMAT}-SAL-*` entry in gap-ledger if all facts extracted
 
-## Evidence Artifacts Required
+5. Validate the combined database against
+   `schemas/sal-facts/sal-facts-schema.json`.
+6. Confirm the target fact count meets `target_fact_count_min`.
+7. Compile the strict ProductContract and prove every referenced fact resolves.
+   Close the authority gap only when all checks pass.
 
-- `.local/sal-output/sal-facts-<format_id>.json` — raw extracted facts
-- A grep/count showing ≥1 fact for the format in `sal-facts-latest.json`
-- Schema validation output (SCHEMA VALID)
-- Gap-ledger closure record
+## Evidence artifacts
 
-## Known Gaps (as of 2026-06-26)
+- Acquired source record and SHA-256 digest.
+- Reviewed candidate queue.
+- Canonical `shared/sal-facts/{format_id}.yaml`.
+- Derived combined-cache validation output.
+- Strict ProductContract result.
+- Skill transcript with exact inputs, commands, and digests.
 
-The following 14 formats have zero spec_facts and are candidates for this skill:
-`csv`, `tsv`, `ndjson`, `abw`, `dif`, `gnumeric`, `sylk`, `toml`, `xcf`, `zst`,
-`pbm`, `pgm`, `ppm`, `qoi`
-
-SAL extraction tools may not yet support all spec formats. For stdlib-backed formats
-(CSV, TSV, NDJSON, ZST), see `/run-oracle` for an alternative approach using Python
-reference implementations.
-
-## Required Inputs
-
-- `format_id` — format identifier from the format registry
-- `spec_source_uri` — value for `spec_source_uri`
-- `spec_version` — value for `spec_version`
-- `spec_body` — value for `spec_body`
-- `target_fact_count_min` — value for `target_fact_count_min`
-
-## Allowed Paths
+## Allowed paths
 
 - `tools/spec/extract_sal_facts.py`
 - `tools/spec/merge_sal_facts.py`
-- `reports/` — evidence output (write)
+- `tools/spec/seed_sal_candidates.py`
+- `shared/sal-facts/{format_id}.yaml` — seeder-only append/initialization
+- `.local/sal-output/**`
+- `.local/spec-cache/**`
+- `reports/**`
 
-## Forbidden Paths
+## Forbidden paths
 
-- `src/**` — no product source mutation during SAL ingestion
-- `plans/strategic/**` — strategic plans are read-only
+- `src/**`
+- `plans/strategic/**`
+- manual edits to the combined SAL cache
+- facts without acquired authority digests
 
-## Stop Conditions
+## Stop conditions
 
-- Stop if the skill's mandatory validations cannot be completed
-- Stop if any required input field is missing or invalid
+- Stop the affected format if an authority digest is missing or mismatched.
+- Stop if the canonical store or combined cache fails schema/identity checks.
+- Do not manufacture a QName or product implementation to satisfy ingestion.

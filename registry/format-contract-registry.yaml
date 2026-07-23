@@ -175,7 +175,7 @@ contracts:
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 2dfadfefd7b6d9ffab7a8b66f557da2168f587c5a548873b282db6a3b9829686
 - format_id: nrrd
-  state: REVIEWED
+  state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories:
@@ -183,13 +183,13 @@ contracts:
   - data_model
   - structure_roots
   - syntax_encoding
-  updated_at: '2026-07-16T10:42:16Z'
+  updated_at: '2026-07-23T16:58:09Z'
   contract_path: shared/format-contracts/nrrd.yaml
   capability_count: 15
   generator_version: fcl-compiler/1.0.0
   input_digests:
     sal_facts_sha256: 2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1
-    research_sha256: e61259ab0cdbf554a3af3d4155c09cf4cf1b66b84a599db04287df028ebd744c
+    research_sha256: 8f037d14ed2001ca78a901f0eb029fa3e417bb7a561fc7cd2c8ea5c7b7492ba8
     family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
@@ -211,6 +211,20 @@ contracts:
   missing_categories:
   - no_sal_fact_store
   updated_at: '2026-07-16T10:40:56Z'
+- format_id: ora
+  state: COMPILED
+  contract_path: shared/format-contracts/ora.yaml
+  readiness_score: 1.0
+  readiness_threshold: 0.7
+  capability_count: 10
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: 9807abb88fcc7b124629f83736f84d4d39a9b8a97ffb272bb439e036822d0b00
+    research_sha256: 196a4b2684dfe3be5fc70bd289cb0f5a731b31e844ca5f046ea0c783e9cdf70d
+    family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+  updated_at: '2026-07-23T16:58:10Z'
 - format_id: pbm
   state: BLOCKED_NEEDS_AUTHORITY
   readiness_score: 0.5
