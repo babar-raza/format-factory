@@ -4,8 +4,10 @@ perform deterministic sort, query incoming/outgoing edges.
 """
 import hashlib
 import json
+import os
 from pathlib import Path
-from typing import Dict, List, Optional
+import tempfile
+from typing import Dict, Iterable, List, Optional
 
 from .models import GraphNode, GraphEdge
 
@@ -40,22 +42,42 @@ class GraphStore:
 
     def save_nodes(self, path: Path) -> None:
         """Write nodes to a JSONL file (sorted by node_id for determinism)."""
-        path.parent.mkdir(parents=True, exist_ok=True)
         sorted_nodes = sorted(self.nodes.values(), key=lambda n: (n.node_type, n.node_id))
-        with open(path, "w", encoding="utf-8") as f:
-            for node in sorted_nodes:
-                f.write(json.dumps(node.to_dict(), sort_keys=True) + "\n")
+        self._atomic_write_lines(
+            path,
+            (json.dumps(node.to_dict(), sort_keys=True) + "\n" for node in sorted_nodes),
+        )
 
     def save_edges(self, path: Path) -> None:
         """Write edges to a JSONL file (sorted for determinism)."""
-        path.parent.mkdir(parents=True, exist_ok=True)
         sorted_edges = sorted(
             self.edges,
             key=lambda e: (e.edge_type, e.source_node_id, e.target_node_id)
         )
-        with open(path, "w", encoding="utf-8") as f:
-            for edge in sorted_edges:
-                f.write(json.dumps(edge.to_dict(), sort_keys=True) + "\n")
+        self._atomic_write_lines(
+            path,
+            (json.dumps(edge.to_dict(), sort_keys=True) + "\n" for edge in sorted_edges),
+        )
+
+    @staticmethod
+    def _atomic_write_lines(path: Path, lines: Iterable[str]) -> None:
+        """Replace *path* atomically after a complete, flushed write."""
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fd, tmp_name = tempfile.mkstemp(
+            prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
+                stream.writelines(lines)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(tmp_name, path)
+        except BaseException:
+            try:
+                os.unlink(tmp_name)
+            except FileNotFoundError:
+                pass
+            raise
 
     def add_node(self, node: GraphNode) -> None:
         self.nodes[node.node_id] = node
@@ -106,6 +128,15 @@ class GraphStore:
     def nodes_by_type(self, node_type: str) -> List[GraphNode]:
         return [n for n in self.nodes.values() if n.node_type == node_type]
 
+    def dangling_edges(self) -> List[GraphEdge]:
+        """Return edges whose source or target does not exist."""
+        return [
+            edge
+            for edge in self.edges
+            if edge.source_node_id not in self.nodes
+            or edge.target_node_id not in self.nodes
+        ]
+
     # ── Graph hash ─────────────────────────────────────────────────────────────
 
     def compute_graph_hash(self) -> str:
@@ -113,16 +144,25 @@ class GraphStore:
         Compute deterministic SHA-256 of sorted nodes+edges content.
         Same inputs always produce the same hash.
         """
-        node_lines = sorted(
-            json.dumps(n.to_dict(), sort_keys=True)
-            for n in self.nodes.values()
-        )
-        edge_lines = sorted(
-            json.dumps(e.to_dict(), sort_keys=True)
-            for e in self.edges
-        )
+        # Timestamps are audit metadata, not semantic graph inputs.  Excluding
+        # them makes clean same-input replays byte-for-byte comparable.
+        node_lines = sorted(self._canonical_record(n.to_dict()) for n in self.nodes.values())
+        edge_lines = sorted(self._canonical_record(e.to_dict()) for e in self.edges)
         content = "\n".join(node_lines + edge_lines)
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+    @staticmethod
+    def _canonical_record(record: dict) -> str:
+        stable = dict(record)
+        stable.pop("created_at", None)
+        metadata = stable.get("metadata")
+        if isinstance(metadata, dict):
+            metadata = dict(metadata)
+            metadata.pop("recorded_at", None)
+            stable["metadata"] = metadata
+        return json.dumps(
+            stable, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        )
 
     @classmethod
     def load_from_dir(cls, graph_dir: Path) -> "GraphStore":

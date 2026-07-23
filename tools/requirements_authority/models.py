@@ -1,6 +1,10 @@
 """
 Data models for the Canonical Capability Proof Graph.
-All 18 node types and 19 edge types are represented here.
+
+The legacy POC vocabulary remains readable, while the production vocabulary
+binds authorities, obligations, source, executed evidence, packages, and
+release artifacts in the same graph.  The production types are additive so
+historical graphs can be migrated without being mistaken for current proof.
 """
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
@@ -14,6 +18,11 @@ NODE_TYPES = [
     "ProductPolicyDecision", "ContextPackRef", "CoverageRecord",
     "CapabilityDelta", "PocTargetField", "StreamHandoff",
     "UsageRecord", "StalenessEvent",
+    # Production proof vocabulary.
+    "AuthorityArtifact", "NormativeObligation", "PublicCapability",
+    "SourceSymbol", "CorpusArtifact", "ExecutedTestResult",
+    "ExternalOracleResult", "BuiltPackage", "InstalledPackageResult",
+    "QualityResult", "Certification", "Promotion", "ReleaseArtifact",
 ]
 
 # ── Edge type enum values ──────────────────────────────────────────────────────
@@ -23,6 +32,19 @@ EDGE_TYPES = [
     "blocked_by", "supersedes", "invalidates", "proposed_by",
     "accepted_by", "syncs_to", "consumed_by", "stale_due_to",
     "narrows", "broadens", "conflicts_with",
+    # Production proof relationships.
+    "defines", "satisfies", "depends_on", "verified_by", "produced_by",
+    "packaged_as", "installed_as", "certifies", "promotes", "released_as",
+]
+
+PRODUCTION_PROMOTION_STATES = [
+    "UNASSESSED",
+    "CONTRACT_READY",
+    "IMPLEMENTATION_IN_PROGRESS",
+    "IMPLEMENTATION_VERIFIED",
+    "RELEASE_CANDIDATE",
+    "RELEASED",
+    "INVALIDATED",
 ]
 
 # ── Claim status progression ───────────────────────────────────────────────────
