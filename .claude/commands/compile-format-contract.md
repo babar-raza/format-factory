@@ -63,6 +63,9 @@ Options: `--readiness-only` (report the gate verdict without compiling),
 - `registry/format-contract-registry.yaml` (write — volatile state)
 - `shared/sal-facts/`, `shared/format-contracts/research/`, `shared/format-contracts/policy/` (read)
 
+- `schemas/format-contracts/format-contract.schema.json` (write only for a
+  regression-proven, cross-format contract vocabulary)
+
 ## Forbidden Paths
 
 - `src/python/**`, `src/net/**` — no product source mutation

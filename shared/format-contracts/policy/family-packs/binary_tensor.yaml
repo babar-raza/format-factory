@@ -15,7 +15,7 @@ applicability:
   - comment
   - magic
 identity_defaults:
-  data_model_type: binary_tensor_container
+  data_model_type: binary
   description_template: "{display_name}: binary tensor container ({spec_body} {spec_version}) with bounded metadata, named typed tensor descriptors, and a raw byte payload."
   primary_use_cases:
   - Inspect tensor names, dtypes, shapes, metadata, and byte regions without loading the payload
@@ -42,7 +42,7 @@ simplicity_budget:
 validation_layers:
 - layer: lexical
   description: "Fixed-width prefix, declared metadata extent, UTF-8, and JSON object syntax."
-- layer: descriptor
+- layer: type
   description: "Tensor names, dtypes, shapes, metadata types, and byte-range fields."
 - layer: payload
   description: "Checked tensor sizes, region coverage, order, overlap, holes, truncation, and trailing bytes."

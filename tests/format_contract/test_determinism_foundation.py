@@ -128,6 +128,20 @@ def test_safetensors_contract_respects_expanded_family_exclusions():
         "tensor" in limit.casefold() or "payload" in limit.casefold()
         for limit in document["security_contract"]["limits"]
     )
+    assert cv.check_schema(document)["result"] == "PASS"
+    interoperability = [
+        capability
+        for capability in document["capabilities"]
+        if capability["category"] == "interoperability"
+    ]
+    assert len(interoperability) == 1
+
+
+def test_schema_still_rejects_unknown_capability_category():
+    _, document = cc.compile_contract("safetensors")
+    bad = copy.deepcopy(document)
+    bad["capabilities"][0]["category"] = "convenient_but_unregistered"
+    assert cv.check_schema(bad)["result"] == "FAIL"
 
 
 def test_compiled_csv_has_traceable_capabilities():
