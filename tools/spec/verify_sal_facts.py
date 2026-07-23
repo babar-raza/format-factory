@@ -15,6 +15,7 @@ import re
 import sys
 import tarfile
 import zipfile
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
@@ -44,6 +45,7 @@ SUPPORTED_ASSERTIONS = frozenset(
         "json_pointer_has_keys",
         "json_schema_accepts",
         "json_schema_rejects",
+        "html_text_contains",
         "text_contains",
     }
 )
@@ -51,6 +53,17 @@ SUPPORTED_ASSERTIONS = frozenset(
 
 class VerificationError(RuntimeError):
     """Raised for malformed or unverifiable evidence definitions."""
+
+
+class _VisibleHTMLText(HTMLParser):
+    """Collect visible HTML text without executing or resolving anything."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+
+    def handle_data(self, data: str) -> None:
+        self.parts.append(data)
 
 
 def _json_pointer(document: Any, pointer: str) -> Any:
@@ -181,7 +194,13 @@ def _assertion_result(
             f"text assertion {assertion_id} is too short to be discriminating"
         )
     normalized_expected = _normalized_text(expected_text)
-    normalized_observed = _normalized_text(text)
+    if kind == "html_text_contains":
+        parser = _VisibleHTMLText()
+        parser.feed(text)
+        parser.close()
+        normalized_observed = _normalized_text(" ".join(parser.parts))
+    else:
+        normalized_observed = _normalized_text(text)
     passed = normalized_expected in normalized_observed
     result.update(
         {

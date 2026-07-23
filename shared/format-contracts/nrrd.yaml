@@ -18,7 +18,7 @@ contract_metadata:
     family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
     qname_registry_sha256: 3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92
     research_sha256: 8f037d14ed2001ca78a901f0eb029fa3e417bb7a561fc7cd2c8ea5c7b7492ba8
-    sal_facts_sha256: 2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1
+    sal_facts_sha256: bfcc20a61e50658a1c29633b70cdffc98cafae6d2587dc268e9ea074bcda1ba6
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -78,6 +78,7 @@ capabilities:
   developer_use_case: A developer crops a volume and every axis-aligned metadata field follows the crop.
   provenance:
   - POL-SCR-ARRAY-01
+  - SAL-NRRD-00011
   - SAL-NRRD-00012
   - SAL-NRRD-00014
   - RF-NRRD-00001
@@ -87,6 +88,9 @@ capabilities:
   - Expose typed N-dimensional array access with shape, strides, dtype, slicing, axis permutation, flip,
     and crop where orientation and per-axis metadata follow every operation - the imaging-pipeline core.
   normative_rules:
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
     every per-axis field carrying exactly dimension entries
   - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
@@ -148,8 +152,9 @@ capabilities:
   - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
     (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
     (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
-  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
-    decoded payload byte count for the file to be valid
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
     raw text hex or a compressed encoding such as gzip or bzip2
   - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
@@ -311,6 +316,7 @@ capabilities:
   - SAL-NRRD-00004
   - SAL-NRRD-00009
   - SAL-NRRD-00010
+  - SAL-NRRD-00011
   required_behavior:
   - Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping
     rules; carry legacy fields in lossless mode.
@@ -320,10 +326,13 @@ capabilities:
     and key/value pairs ''key:=value'', terminated by a single blank line'
   - (NRRD format - magic and header structure) A NRRD file begins with a magic line of the form NRRD000X
     identifying the format version followed by header lines terminated by a blank line
-  - (NRRD format - quoted values) Labels and units values use quoted string forms with defined escaping
-    rules that must round-trip
+  - (NRRD format - quoted values) Labels and units are per-axis quote-delimited strings; labels escape
+    embedded double quotes with backslash-quote and support no other escaping
   - (NRRD format - per-axis fields) Per-axis fields include spacings thicknesses mins maxs centers labels
     units and kinds each constrained to dimension entries with defined value rules
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   depth_required: 2
   depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -363,8 +372,9 @@ capabilities:
   - (NRRD format - detached data files with external references) Detached headers reference payloads via
     the data file field supporting a single file printf-style numbered sequences and LIST declarations
     resolved relative to the header
-  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
-    decoded payload byte count for the file to be valid
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
     raw text hex or a compressed encoding such as gzip or bzip2
   - (NRRD format - skip fields) line skip and byte skip fields declare how much of a data file to skip
@@ -452,6 +462,7 @@ capabilities:
   - POL-SCR-SHAPE-01
   - POL-SCR-SHAPE-02
   - SAL-NRRD-00003
+  - SAL-NRRD-00009
   - SAL-NRRD-00010
   - SAL-NRRD-00011
   - SAL-NRRD-00012
@@ -467,10 +478,13 @@ capabilities:
   - (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows the header's blank line
     (or lives in a detached file named by the 'data file' field) and is decoded per the 'encoding' field
     (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian fields
+  - (NRRD format - quoted values) Labels and units are per-axis quote-delimited strings; labels escape
+    embedded double quotes with backslash-quote and support no other escaping
   - (NRRD format - per-axis fields) Per-axis fields include spacings thicknesses mins maxs centers labels
     units and kinds each constrained to dimension entries with defined value rules
-  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
-    decoded payload byte count for the file to be valid
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
     every per-axis field carrying exactly dimension entries
   - (NRRD format - endian field) The endian field is required whenever the encoding exposes byte order
@@ -525,6 +539,7 @@ capabilities:
   - POL-SCR-TYPES-01
   - SAL-NRRD-00003
   - SAL-NRRD-00006
+  - SAL-NRRD-00009
   - SAL-NRRD-00011
   - SAL-NRRD-00016
   - SAL-NRRD-00017
@@ -538,8 +553,11 @@ capabilities:
   - (NRRD format - detached data files with external references) Detached headers reference payloads via
     the data file field supporting a single file printf-style numbered sequences and LIST declarations
     resolved relative to the header
-  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
-    decoded payload byte count for the file to be valid
+  - (NRRD format - quoted values) Labels and units are per-axis quote-delimited strings; labels escape
+    embedded double quotes with backslash-quote and support no other escaping
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - type field) The type field is required and declares the sample scalar type from the
     defined integer float and block type set with documented aliases
   - (NRRD format - block type constraints) block type samples require a positive block size field and
@@ -562,7 +580,6 @@ capabilities:
   provenance:
   - POL-SCR-VALIDATE-01
   - SAL-NRRD-00007
-  - SAL-NRRD-00009
   - SAL-NRRD-00011
   - SAL-NRRD-00012
   - SAL-NRRD-00013
@@ -579,10 +596,9 @@ capabilities:
   normative_rules:
   - (NRRD format - field identifier rules) Field identifiers are case-insensitive and each field may appear
     at most once for the header to be valid
-  - (NRRD format - quoted values) Labels and units values use quoted string forms with defined escaping
-    rules that must round-trip
-  - (NRRD format - payload consistency) The declared sizes type and encoding must agree with the actual
-    decoded payload byte count for the file to be valid
+  - (NRRD format - payload consistency) The expected uncompressed payload byte count is the product of
+    the declared sizes multiplied by the byte length of one element as determined by type and, for block
+    samples, block size
   - (NRRD format - dimension field) The dimension field is required and declares the array dimension with
     every per-axis field carrying exactly dimension entries
   - (NRRD format - encoding field) The encoding field is required and declares the payload encoding as
@@ -735,6 +751,7 @@ coverage_map:
 - capability_id: NRRD-ARRAY-001
   provenance:
   - POL-SCR-ARRAY-01
+  - SAL-NRRD-00011
   - SAL-NRRD-00012
   - SAL-NRRD-00014
   - RF-NRRD-00001
@@ -790,6 +807,7 @@ coverage_map:
   - SAL-NRRD-00004
   - SAL-NRRD-00009
   - SAL-NRRD-00010
+  - SAL-NRRD-00011
 - capability_id: NRRD-PAYLOAD-001
   provenance:
   - POL-SCR-PAYLOAD-01
@@ -818,6 +836,7 @@ coverage_map:
   - POL-SCR-SHAPE-01
   - POL-SCR-SHAPE-02
   - SAL-NRRD-00003
+  - SAL-NRRD-00009
   - SAL-NRRD-00010
   - SAL-NRRD-00011
   - SAL-NRRD-00012
@@ -834,6 +853,7 @@ coverage_map:
   - POL-SCR-TYPES-01
   - SAL-NRRD-00003
   - SAL-NRRD-00006
+  - SAL-NRRD-00009
   - SAL-NRRD-00011
   - SAL-NRRD-00016
   - SAL-NRRD-00017
@@ -841,7 +861,6 @@ coverage_map:
   provenance:
   - POL-SCR-VALIDATE-01
   - SAL-NRRD-00007
-  - SAL-NRRD-00009
   - SAL-NRRD-00011
   - SAL-NRRD-00012
   - SAL-NRRD-00013

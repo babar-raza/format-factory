@@ -20,6 +20,7 @@ from tools.spec.sal_proof import (
 )
 from tools.spec.verify_sal_facts import (
     VerificationError,
+    _assertion_result,
     apply_receipt,
     verify_format,
 )
@@ -214,3 +215,15 @@ def test_changed_manifest_receipt_tool_and_authority_each_revoke_proof(
         valid, _ = validate_fact_promotion(original_fact, repo)
         assert not valid, f"changed input did not revoke proof: {path}"
         path.write_bytes(original)
+
+
+def test_html_assertion_uses_visible_text_without_matching_markup() -> None:
+    result = _assertion_result(
+        {
+            "assertion_id": "visible",
+            "kind": "html_text_contains",
+            "expected": "field specifications have the same structure",
+        },
+        b"<p>field <b>specifications</b> have the same <i>structure</i></p>",
+    )
+    assert result["result"] == "PASS"

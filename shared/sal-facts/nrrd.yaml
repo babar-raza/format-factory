@@ -2,19 +2,20 @@ format_id: nrrd
 display_name: NRRD (Nearly Raw Raster Data)
 schema_version: '1.0'
 canonical: true
-note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth; .local/spec-cache/
-  copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
 facts:
 - fact_id: SAL-NRRD-00002
   qname: FACT-NRRD-002
   element_qname: nrrd:header
-  claim: 'An NRRD file begins with an ASCII header: a magic line ''NRRD000X'' (X = format version digit), followed
-    by field specifications ''field: value'' and key/value pairs ''key:=value'', terminated by a single blank line'
+  claim: 'An NRRD file begins with an ASCII header: a magic line ''NRRD000X'' (X = format version digit),
+    followed by field specifications ''field: value'' and key/value pairs ''key:=value'', terminated by
+    a single blank line'
   section: Teem NRRD Format Specification — Section 2 (Header)
   authority: Teem NRRD Format Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   code_bindings:
   - file: src/python/nrrd/nrrd_codec.py
     symbol: MAGIC_PREFIX
@@ -24,109 +25,168 @@ facts:
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 92190438fb7c1c05dcd7f10aa067621b09cb3c705bc45060e44bcb540a11a3c9
 - fact_id: SAL-NRRD-00003
   qname: FACT-NRRD-003
   element_qname: nrrd:data
-  claim: The data segment follows the header's blank line (or lives in a detached file named by the 'data file'
-    field) and is decoded per the 'encoding' field (raw, txt/ascii, hex, gz, bz2) with layout governed by the sizes/type/endian
-    fields
+  claim: The data segment follows the header's blank line (or lives in a detached file named by the 'data
+    file' field) and is decoded per the 'encoding' field (raw, txt/ascii, hex, gz, bz2) with layout governed
+    by the sizes/type/endian fields
   section: Teem NRRD Format Specification — Section 3 (Data)
   authority: Teem NRRD Format Specification
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: f961177c940043e94fb3ae2a4cfe1a1942b5e3489a0e939d700504f57055ed97
 - fact_id: SAL-NRRD-00004
   qname: FACT-NRRD-4
   element_qname: nrrd:magic
-  claim: A NRRD file begins with a magic line of the form NRRD000X identifying the format version followed by header
-    lines terminated by a blank line
+  claim: A NRRD file begins with a magic line of the form NRRD000X identifying the format version followed
+    by header lines terminated by a blank line
   section: NRRD format - magic and header structure
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 2e4579a1a531f0d46f25fdac3e546a300f3106ea2326e351f27ce1d4272407ce
 - fact_id: SAL-NRRD-00005
   qname: FACT-NRRD-5
   element_qname: nrrd:comment
-  claim: Comment lines begin with a hash character inside the header and carry no field semantics but may be preserved
+  claim: Comment lines begin with a hash character inside the header and carry no field semantics but
+    may be preserved
   section: NRRD format - comments
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 3d385a071240b5b52ba4c9e2eade13a265e5d815a7821d3f078a1417941e83c5
 - fact_id: SAL-NRRD-00006
   qname: FACT-NRRD-6
   element_qname: nrrd:datafile
-  claim: Detached headers reference payloads via the data file field supporting a single file printf-style numbered
-    sequences and LIST declarations resolved relative to the header
+  claim: Detached headers reference payloads via the data file field supporting a single file printf-style
+    numbered sequences and LIST declarations resolved relative to the header
   section: NRRD format - detached data files with external references
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: ee5ee9fc9c4d48fb64a911eb472621603edb5d8eedf7a28090cf6bc0d7de4a5a
 - fact_id: SAL-NRRD-00007
   qname: FACT-NRRD-7
   element_qname: nrrd:field-uniqueness
-  claim: Field identifiers are case-insensitive and each field may appear at most once for the header to be valid
+  claim: Field identifiers are case-insensitive and each field may appear at most once for the header
+    to be valid
   section: NRRD format - field identifier rules
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 93c056af5883c501f14fab11c2ae60545c276ffc21330173f364bfa26a761709
 - fact_id: SAL-NRRD-00008
   qname: FACT-NRRD-8
   element_qname: nrrd:header-line
-  claim: Header lines are either field specifications of the form field colon value or key-value pairs of the form
-    key colon-equals value
+  claim: Header lines are either field specifications of the form field colon value or key-value pairs
+    of the form key colon-equals value
   section: NRRD format - header line syntax
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: c4c0e016073bfef39a6f19f28f40d35943330bc34f706b38cebcf283cd194a85
 - fact_id: SAL-NRRD-00009
   qname: FACT-NRRD-9
   element_qname: nrrd:quoting
-  claim: Labels and units values use quoted string forms with defined escaping rules that must round-trip
+  claim: Labels and units are per-axis quote-delimited strings; labels escape embedded double quotes with
+    backslash-quote and support no other escaping
   section: NRRD format - quoted values
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 75d0a8fd8939cfa8b61ea2edefec9f4026388642dbb8b8ad069507b53f7e51f9
 - fact_id: SAL-NRRD-00010
   qname: FACT-NRRD-10
   element_qname: nrrd:axis-fields
@@ -136,101 +196,151 @@ facts:
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 54a03e3ab9fc29affca00e49944bdbf16629772da2209798123eddb8779549ca
 - fact_id: SAL-NRRD-00011
   qname: FACT-NRRD-11
   element_qname: nrrd:payload-validity
-  claim: The declared sizes type and encoding must agree with the actual decoded payload byte count for the file
-    to be valid
+  claim: The expected uncompressed payload byte count is the product of the declared sizes multiplied
+    by the byte length of one element as determined by type and, for block samples, block size
   section: NRRD format - payload consistency
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 1b1ef3b31f4aebd543e1f691906f4d7f088fcf6dc2cfed4bb4e99fcf770addf1
 - fact_id: SAL-NRRD-00012
   qname: FACT-NRRD-12
   element_qname: nrrd:dimension
-  claim: The dimension field is required and declares the array dimension with every per-axis field carrying exactly
-    dimension entries
+  claim: The dimension field is required and declares the array dimension with every per-axis field carrying
+    exactly dimension entries
   section: NRRD format - dimension field
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: bcaceef0eeebe33e72e88d580753e217292a2a95163a7ef7a9d3e75c1edd84cb
 - fact_id: SAL-NRRD-00013
   qname: FACT-NRRD-13
   element_qname: nrrd:encoding
-  claim: The encoding field is required and declares the payload encoding as raw text hex or a compressed encoding
-    such as gzip or bzip2
+  claim: The encoding field is required and declares the payload encoding as raw text hex or a compressed
+    encoding such as gzip or bzip2
   section: NRRD format - encoding field
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 601e4228b3690c21bbc273a9688940dc1c317c1c3b494f85029e5ae77e1c2a9b
 - fact_id: SAL-NRRD-00014
   qname: FACT-NRRD-14
   element_qname: nrrd:endian
-  claim: The endian field is required whenever the encoding exposes byte order and the element size exceeds one
-    byte declaring little or big byte order
+  claim: The endian field is required whenever the encoding exposes byte order and the element size exceeds
+    one byte declaring little or big byte order
   section: NRRD format - endian field
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 8e631209e6a0df6413e0bdd8f10c908f3c22505af142a2bb8ca6fd6dc1b7e5da
 - fact_id: SAL-NRRD-00015
   qname: FACT-NRRD-15
   element_qname: nrrd:sizes
-  claim: The sizes field is required and declares positive per-axis sample counts in fastest-to-slowest axis order
+  claim: The sizes field is required and declares positive per-axis sample counts in fastest-to-slowest
+    axis order
   section: NRRD format - sizes field and axis ordering
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: e0e02adcc03e2ff2e6b600b551fae59ab43dc916b3f48267b7c7712393cc2d88
 - fact_id: SAL-NRRD-00016
   qname: FACT-NRRD-16
   element_qname: nrrd:type
-  claim: The type field is required and declares the sample scalar type from the defined integer float and block
-    type set with documented aliases
+  claim: The type field is required and declares the sample scalar type from the defined integer float
+    and block type set with documented aliases
   section: NRRD format - type field
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 52a2c02f5a7f0a1937ab294b5033a5520ee86b97e5c9ae4211383378e93416ab
 - fact_id: SAL-NRRD-00017
   qname: FACT-NRRD-17
   element_qname: nrrd:block-size
@@ -239,39 +349,60 @@ facts:
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 45186ff38518d311377154946964f06e4898a6767732623206b74b295474cb48
 - fact_id: SAL-NRRD-00018
   qname: FACT-NRRD-18
   element_qname: nrrd:skip
-  claim: line skip and byte skip fields declare how much of a data file to skip before payload with line skip applied
-    before byte skip
+  claim: line skip and byte skip fields declare how much of a data file to skip before payload with line
+    skip applied before byte skip
   section: NRRD format - skip fields
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: 9f9bb60b284db5c05a738975334225a2f302ddf1449cdc71c7e8f17205d73914
 - fact_id: SAL-NRRD-00019
   qname: FACT-NRRD-19
   element_qname: nrrd:space
-  claim: space fields declare named spaces or explicit space dimension with space directions space origin and measurement
-    frame vectors matching the space dimension
+  claim: space fields declare named spaces or explicit space dimension with space directions space origin
+    and measurement frame vectors matching the space dimension
   section: NRRD format - space and orientation
   authority: NRRD file format definition
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: medium
     added_by: TC-FCL-050
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/nrrd.yaml
+      manifest_sha256: e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4
+      receipt_path: reports/sal-verification/nrrd.json
+      receipt_sha256: b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19
+      fact_proof_sha256: fe6ec95339554707068065f954bd4248bcb174ef552fd796bbfa3682b8ff4cd2
