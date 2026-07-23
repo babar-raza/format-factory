@@ -42889,9 +42889,29 @@
         {"path": "tests/python/ubl/test_production_namespace.py", "state": "present", "sha256": "518c7558bdc67ee1122d34e664b318926267ea03b88830439ef7b7f5236a9a4f"}
       ],
       "tests": "tests/python/ubl/test_production_namespace.py; tests/python/ubl/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-LAZY-METADATA-PROOF-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W3-SAFETENSORS-LAZY-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-6BA98CFA34F0293B",
+      "capability_refs": [
+        "foss_python.safetensors.metadata_string_map",
+        "foss_python.safetensors.lazy_path_payload",
+        "foss_python.safetensors.borrowed_view_lifetime"
+      ],
+      "api_symbols": ["load", "loads", "dumps", "SafeTensorsDocument.tensor_bytes"],
+      "source_files": [
+        {"path": "tests/python/safetensors/test_production_namespace.py", "state": "present", "sha256": "360eea9e7abb85bcc2e5c86bdf93d7be3620cc22a12ea6c8936d4c7beb0d2aa1"}
+      ],
+      "tests": "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract"
     }
   ],
-  "total_entries": 2752,
+  "total_entries": 2753,
   "changes": [
     {
       "file": "src/python/dif/models.py",

@@ -18,6 +18,8 @@ from format_factory.safetensors import (
     validate,
 )
 
+SAMPLES = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "safetensors"
+
 
 def make_file(header: dict[str, object], payload: bytes = b"") -> bytes:
     raw = json.dumps(header, separators=(",", ":")).encode()
@@ -109,6 +111,30 @@ def test_memory_mapped_path(tmp_path: Path) -> None:
     path.write_bytes(make_file({"x": {"dtype": "U8", "shape": [1], "data_offsets": [0, 1]}}, b"\x07"))
     with load(path) as document:
         assert bytes(document.tensor_bytes("x")) == b"\x07"
+
+
+def test_string_metadata_and_path_backed_payload_contract() -> None:
+    """Discriminate metadata semantics from the obligation's lazy-I/O gate."""
+
+    source = SAMPLES / "valid" / "with-metadata.safetensors"
+    with load(source) as document:
+        assert dict(document.metadata) == {
+            "format": "pt",
+            "framework": "pytorch",
+        }
+        payload = document.tensor_bytes("bias")
+        assert isinstance(payload, memoryview)
+        assert payload.readonly
+        assert len(payload) == 8
+        expected_payload = bytes(payload)
+        payload.release()
+        rebuilt = dumps(document)
+    with loads(rebuilt) as reloaded:
+        assert dict(reloaded.metadata) == {
+            "format": "pt",
+            "framework": "pytorch",
+        }
+        assert bytes(reloaded.tensor_bytes("bias")) == expected_payload
 
 
 def test_probe_and_validation() -> None:
