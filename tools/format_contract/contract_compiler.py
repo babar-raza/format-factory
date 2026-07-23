@@ -512,6 +512,7 @@ def main(argv: list[str] | None = None) -> int:
         contract_path=str(target.relative_to(stores.REPO_ROOT)).replace("\\", "/"),
         readiness_score=report["score"],
         readiness_threshold=report["threshold"],
+        missing_categories=[],
         capability_count=len(doc["capabilities"]),
         generator_version=GENERATOR_VERSION,
         input_digests=doc["contract_metadata"]["input_digests"],

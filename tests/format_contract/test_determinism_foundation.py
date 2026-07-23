@@ -262,3 +262,31 @@ def test_registry_rejects_invalid_state(tmp_path, monkeypatch):
     monkeypatch.setattr(contract_registry, "REGISTRY_PATH", tmp_path / "reg.yaml")
     with pytest.raises(ValueError):
         contract_registry.update_entry("csv", state="NOT_A_STATE")
+
+
+def test_successful_compile_clears_stale_missing_categories(tmp_path, monkeypatch):
+    captured: dict[str, object] = {}
+    report = {
+        "ready": True,
+        "score": 1.0,
+        "threshold": 0.8,
+        "missing_categories": [],
+    }
+    document = {
+        "capabilities": [],
+        "contract_metadata": {"input_digests": {}},
+    }
+
+    monkeypatch.setattr(cc, "compile_contract", lambda _format_id: (report, document))
+    monkeypatch.setattr(stores, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(stores, "contract_path", lambda _format_id: tmp_path / "contract.yaml")
+    monkeypatch.setattr(cc, "canonical_write", lambda _path, _document: None)
+    monkeypatch.setattr(
+        contract_registry,
+        "update_entry",
+        lambda _format_id, **fields: captured.update(fields),
+    )
+
+    assert cc.main(["--format-id", "synthetic"]) == 0
+    assert captured["state"] == "COMPILED"
+    assert captured["missing_categories"] == []

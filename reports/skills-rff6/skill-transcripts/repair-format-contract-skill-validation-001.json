@@ -1,0 +1,162 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-repair-format-contract-skill-validation-001",
+  "execution_id": "ff6-repair-format-contract-skill-validation-001",
+  "task_id": "REPAIR-FORMAT-CONTRACT-SKILL-VALIDATION",
+  "skill_id": "validate-missing-skill-workflow",
+  "selected_skill_ids": [
+    "validate-missing-skill-workflow",
+    "create-format-family-pack",
+    "compile-format-contract"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-FORMAT-CONTRACT-SKILL-REPAIR-001",
+  "requested_operation": "repair the existing family-policy validation and contract-registry success transition after forward compilation exposed cross-store semantic leakage",
+  "inputs": {
+    "capability_description": "Validate excluded concepts against the fully expanded family policy and clear stale blocked-state fields on successful contract compilation.",
+    "operation_type": "changing_project_files",
+    "route_id": "format_family_policy_authoring",
+    "search_results": [
+      "create-format-family-pack",
+      "compile-format-contract",
+      "validate-format-contract"
+    ],
+    "rejection_reasons": {
+      "create-format-family-pack": "Owns the family policy and validator but not the compiler registry transition.",
+      "compile-format-contract": "Owns compilation and registry transition but not family-policy expansion validation.",
+      "validate-format-contract": "Validates compiled bodies after generation and cannot prevent a bad expanded family from compiling."
+    },
+    "preferred_resolution": "REPAIR"
+  },
+  "resolution": {
+    "decision": "REPAIR",
+    "skill_ids": [
+      "create-format-family-pack",
+      "compile-format-contract"
+    ],
+    "rationale": "Both defects sit inside existing skill responsibilities; creating another validator or registry layer would duplicate authority."
+  },
+  "root_causes": [
+    {
+      "id": "RC-FAMILY-EXPANSION-001",
+      "symptom": "The authored binary-tensor pack passed validation but compiled a detached-resource obligation.",
+      "cause": "Excluded-concept checks inspected only local domains and ignored policies inherited through shared_groups."
+    },
+    {
+      "id": "RC-REGISTRY-STALE-001",
+      "symptom": "A successful readiness score of 1.0 retained old missing_categories in the contract registry.",
+      "cause": "The successful compile transition updated selected fields but did not explicitly clear fields written by a prior blocked state."
+    },
+    {
+      "id": "RC-SKILL-OWNERSHIP-001",
+      "symptom": "The family-pack command invoked a validator that was absent from the skill registry's implementation paths.",
+      "cause": "The initial skill registration listed policy outputs and tests but omitted its validator implementation."
+    }
+  ],
+  "allowed_files": [
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "tools/format_contract/contract_compiler.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    ".supervisor/skill-registry.yaml",
+    ".supervisor/skill-contract-validation-results.yaml",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-skill-validation-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "tools/format_contract/contract_compiler.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    ".supervisor/skill-registry.yaml",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-skill-validation-001.json"
+  ],
+  "base_git_commit": "50491b50a18b08f1de19eff1039eb4e0359405e1",
+  "input_digests": {
+    "family_pack_validator": "9a9b86d51139a8f54cd79da40db3e83cfa1a692db19cf92b5d80f51c8939009d",
+    "family_pack_tests": "2a09e3c8fee5522a0a7a89c1b1f02d52485349a3420832e195fe92627de45f9c",
+    "contract_compiler": "8453aa610b0a84b48843bc1e42e207d07b709670a2ed24a75c8237c0a4c36db3",
+    "determinism_tests": "c42f1324891b3cb11fa41141bdd3cb072ab095e86d3a920a9bbac80a48c18945",
+    "skill_registry": "d64d7c094fa483933cba97b5e57963d36452ea9a2ba30b461ea89e48d58b0443",
+    "binary_tensor_pack": "21816911abfdef9486e68f3e4a7eafa9267244d3ea8863c0a48b3a718f8c3689"
+  },
+  "tests_run": [
+    "family validator direct and expanded-policy exclusion regression: 4 passed",
+    "contract determinism, readiness, schema, registry, and stale-state transition regression: 29 passed",
+    "combined focused suite: 33 passed",
+    "binary-tensor fully expanded family validation and replay: pass",
+    "Ruff focused changed files: pass",
+    "family validator strict mypy: pass",
+    "compiler strict mypy: 18 pre-existing failures retained as visible debt",
+    "skill registry contracts: 194 skills, 0 FAIL, 0 WARN"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract/test_family_pack_validator.py",
+        "tests/format_contract/test_determinism_foundation.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "33 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/family_pack_validator.py",
+        "--pack",
+        "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+        "--verify-idempotency"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "<changed Python files>"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "tools/format_contract/family_pack_validator.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/supervisor/validate_skill_contracts.py"
+      ],
+      "exit_code": 0,
+      "test_selector": "194 skills"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_MACHINERY_REPAIR",
+  "open_gaps": [
+    "The format-contract compiler's existing strict-mypy debt remains open; this bounded repair did not conceal or widen it.",
+    "The SafeTensors contract must be recompiled from this committed repaired policy before its receipt can close."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "EXISTING_FAMILY_AND_COMPILER_SKILLS_REPAIRED_WITH_CROSS_STORE_REGRESSIONS",
+  "timestamp": "2026-07-24T03:22:21+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

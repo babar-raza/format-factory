@@ -147,6 +147,7 @@ def validate_family_pack(
             _issue("SHARED_GROUPS_INVALID", "shared_groups must be a list", "shared_groups")
         )
         shared_groups = []
+    shared_policy_ids: set[str] = set()
     for group in shared_groups:
         if group not in known_shared:
             issues.append(
@@ -156,13 +157,69 @@ def validate_family_pack(
                     "shared_groups",
                 )
             )
+            continue
+        group_value = known_shared[group]
+        if not isinstance(group_value, dict):
+            issues.append(
+                _issue(
+                    "SHARED_GROUP_INVALID",
+                    f"shared group {group!r} must be a mapping",
+                    f"shared_groups.{group}",
+                )
+            )
+            continue
+        items = group_value.get("items", [])
+        if not isinstance(items, list):
+            issues.append(
+                _issue(
+                    "SHARED_GROUP_ITEMS_INVALID",
+                    f"shared group {group!r} items must be a list",
+                    f"shared_groups.{group}.items",
+                )
+            )
+            continue
+        for item_index, item in enumerate(items):
+            item_path = f"shared_groups.{group}.items[{item_index}]"
+            if not isinstance(item, dict):
+                issues.append(
+                    _issue("SHARED_POLICY_INVALID", "shared policy item must be a mapping", item_path)
+                )
+                continue
+            policy_id = str(item.get("id", "")).strip()
+            if not policy_id.startswith("POL-"):
+                issues.append(
+                    _issue(
+                        "SHARED_POLICY_ID_INVALID",
+                        "shared policy IDs must use the POL- policy namespace",
+                        f"{item_path}.id",
+                    )
+                )
+            if policy_id in shared_policy_ids:
+                issues.append(
+                    _issue(
+                        "DUPLICATE_POLICY_ID",
+                        f"duplicate policy ID {policy_id!r}",
+                        item_path,
+                    )
+                )
+            shared_policy_ids.add(policy_id)
+            text = str(item.get("text", "")).strip()
+            for concept in excluded:
+                if concept and concept in text.casefold():
+                    issues.append(
+                        _issue(
+                            "EXCLUDED_CONCEPT_LEAK",
+                            f"excluded concept {concept!r} appears in selected shared policy",
+                            f"{item_path}.text",
+                        )
+                    )
 
     domains = pack.get("domains", [])
     if not isinstance(domains, list) or not domains:
         issues.append(_issue("DOMAINS_MISSING", "domains must be a non-empty list", "domains"))
         domains = []
     domain_ids: set[str] = set()
-    policy_ids: set[str] = set()
+    policy_ids: set[str] = set(shared_policy_ids)
     for index, raw_domain in enumerate(domains):
         path = f"domains[{index}]"
         if not isinstance(raw_domain, dict):

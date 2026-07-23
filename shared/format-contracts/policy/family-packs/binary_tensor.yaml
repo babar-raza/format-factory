@@ -7,13 +7,13 @@ applicability:
   - safetensors
   semantic_scope: "Binary containers whose bounded metadata describes named typed tensor regions in one raw byte payload."
   excluded_concepts:
-  - detached file
-  - compression codec
-  - spatial axis
-  - image raster
+  - detached
+  - compression
+  - spatial
+  - raster
   - line ending
-  - comment syntax
-  - magic string
+  - comment
+  - magic
 identity_defaults:
   data_model_type: binary_tensor_container
   description_template: "{display_name}: binary tensor container ({spec_body} {spec_version}) with bounded metadata, named typed tensor descriptors, and a raw byte payload."
@@ -27,7 +27,7 @@ identity_defaults:
 scope_defaults:
   production_complete_target: "Complete target-version header, metadata, dtype, shape, offset, payload, validation, lazy-access, deterministic-writing, adapter, sharding-index, and official-implementation interoperability behavior."
   minimum_viable_support: "Strictly parse, validate, and deterministically write complete tensor containers with checked sizes and bounded path-backed access."
-shared_groups: [security_limits, diagnostics, quality_proof]
+shared_groups: [diagnostics, quality_proof]
 depth_floors: {lifecycle: 4, parse: 3, model: 4, preserve: 4, write: 4, validate: 5, performance: 4, interoperability: 5, advanced: 4}
 simplicity_budget:
   max_capabilities: 16

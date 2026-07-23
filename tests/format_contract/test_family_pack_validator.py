@@ -98,3 +98,25 @@ def test_rejects_duplicate_policy_ids_and_unknown_shared_group() -> None:
         "DUPLICATE_POLICY_ID",
         "UNKNOWN_SHARED_GROUP",
     }
+
+
+def test_rejects_excluded_concept_from_selected_shared_group() -> None:
+    pack, family_map, requirements, shared = valid_inputs()
+    shared["groups"]["lifecycle_io"] = {
+        "items": [
+            {
+                "id": "POL-SLC-LIFECYCLE-01",
+                "text": "Resolve each detached file relative to the document.",
+            }
+        ]
+    }
+
+    report = validate_family_pack(pack, family_map, requirements, shared)
+
+    assert not report["valid"]
+    assert [issue["code"] for issue in report["issues"]] == [
+        "EXCLUDED_CONCEPT_LEAK"
+    ]
+    assert report["issues"][0]["path"] == (
+        "shared_groups.lifecycle_io.items[0].text"
+    )
