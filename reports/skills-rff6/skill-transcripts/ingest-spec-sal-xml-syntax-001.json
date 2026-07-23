@@ -1,0 +1,216 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-ingest-spec-sal-xml-syntax-001",
+  "execution_id": "ff6-ingest-spec-sal-xml-syntax-001",
+  "task_id": "INGEST-XML-SYNTAX-AUTHORITY",
+  "skill_id": "ingest-spec-sal",
+  "selected_skill_ids": [
+    "research-format-contract-sources",
+    "ingest-spec-sal",
+    "check-contract-sal-readiness",
+    "product-contract-runtime-repair"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-AUTH-XML-SYNTAX-001",
+  "requested_operation": "close XLIFF and UBL XML syntax authority readiness from their pinned normative XSD bundles",
+  "inputs": {
+    "format_id": "xliff,ubl",
+    "spec_source_uri": [
+      ".local/format-contracts/acquired/xliff/src-xlf-002.bin",
+      ".local/format-contracts/acquired/ubl/src-ubl-002.bin"
+    ],
+    "spec_version": [
+      "XLIFF 2.1 OASIS Standard release package",
+      "UBL 2.3 OASIS Standard release package"
+    ],
+    "spec_body": "OASIS",
+    "target_fact_count_min": {
+      "xliff": 31,
+      "ubl": 34
+    },
+    "authority_digests": {
+      "SRC-XLF-002": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-UBL-002": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+    }
+  },
+  "allowed_files": [
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "shared/sal-fact-id-aliases.json",
+    "schemas/format-contracts/format-contract.schema.json",
+    "tests/format_contract/test_determinism_foundation.py",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xml-syntax-001.json",
+    ".local/format-contracts/drafts/xliff-draft.yaml",
+    ".local/format-contracts/drafts/ubl-draft.yaml",
+    ".local/supervisor/sal-candidates/xliff.yaml",
+    ".local/supervisor/sal-candidates/ubl.yaml",
+    ".local/spec-cache/sal-facts-latest.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "shared/sal-fact-id-aliases.json",
+    "schemas/format-contracts/format-contract.schema.json",
+    "tests/format_contract/test_determinism_foundation.py",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xml-syntax-001.json"
+  ],
+  "base_git_commit": "14e130cce496b38ed0e8b369974a2dd453b19343",
+  "input_digests": {
+    "xliff_sal_store": "c092d92db73b4195ea6a508bbdec1add9fae1b27d2000bfc7c4344d84231dc1e",
+    "ubl_sal_store": "27412b9ae8d304d5011e8ebfcb1949640a199601179e80902638f16e366d1b31",
+    "fact_aliases": "d3d64c513fadb9492c69fdc0f7817e6385fa38a71ffeb08d5816c94a011f13b8",
+    "format_contract_schema": "472bad33dcea60b290a42b893eab27dc06e4949653e5f9bcd511ea6cb0650dd9",
+    "sal_schema": "d7d0614994ccd35c60dcf729749460895717b5afde7288d399d5342eb9b17c39"
+  },
+  "facts_added": [
+    {
+      "fact_id": "SAL-XLIFF-10A6F1FB1C146A18",
+      "compatibility_alias": "FACT-XLIFF-31",
+      "readiness_categories": [
+        "syntax_encoding"
+      ],
+      "source_id": "SRC-XLF-002"
+    },
+    {
+      "fact_id": "SAL-UBL-50613DF5EFE944E0",
+      "compatibility_alias": "FACT-UBL-134",
+      "readiness_categories": [
+        "syntax_encoding"
+      ],
+      "source_id": "SRC-UBL-002"
+    },
+    {
+      "fact_id": "SAL-UBL-6D5AF510AAF4874B",
+      "compatibility_alias": "FACT-UBL-135",
+      "readiness_categories": [
+        "syntax_encoding"
+      ],
+      "source_id": "SRC-UBL-002"
+    },
+    {
+      "fact_id": "SAL-UBL-87F7B313CE24D408",
+      "compatibility_alias": "FACT-UBL-136",
+      "readiness_categories": [
+        "syntax_encoding"
+      ],
+      "source_id": "SRC-UBL-002"
+    }
+  ],
+  "readiness_results": {
+    "xliff": {
+      "score": 1.0,
+      "threshold": 0.75,
+      "missing_categories": [],
+      "ready": true
+    },
+    "ubl": {
+      "score": 1.0,
+      "threshold": 0.75,
+      "missing_categories": [],
+      "ready": true
+    }
+  },
+  "strict_contract_results": {
+    "xliff": {
+      "ready": true,
+      "obligation_count": 125,
+      "digest": "1a1a4df755aaa68833c03cd9daa3d612ba9c9c9fce1142a173263c1e6fed5fae",
+      "issues": []
+    },
+    "ubl": {
+      "ready": true,
+      "obligation_count": 194,
+      "digest": "561239e32daaee4e1523fb2d350de03291f4d41cf00c811a94387a53461ff1f6",
+      "issues": []
+    }
+  },
+  "tests_run": [
+    "combined SAL cache drift check: pass",
+    "seeder, merge, readiness, schema, and deterministic compilation regressions: 56 passed",
+    "XLIFF readiness: 1.0, no missing categories",
+    "UBL readiness: 1.0, no missing categories",
+    "strict in-memory contracts resolve all four new stable fact references: pass"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/research_intake.py",
+        "--format-id",
+        "xliff"
+      ],
+      "exit_code": 0,
+      "result": "1 SAL candidate queued; committed research store digest unchanged"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/research_intake.py",
+        "--format-id",
+        "ubl"
+      ],
+      "exit_code": 0,
+      "result": "3 SAL candidates queued; committed research store digest unchanged"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/spec/seed_sal_candidates.py",
+        "--format-id",
+        "xliff",
+        "--added-by",
+        "RFF6-AUTH-XML-SYNTAX-001"
+      ],
+      "exit_code": 0,
+      "result": "seeded=1 total=31"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/spec/seed_sal_candidates.py",
+        "--format-id",
+        "ubl",
+        "--added-by",
+        "RFF6-AUTH-XML-SYNTAX-001"
+      ],
+      "exit_code": 0,
+      "result": "seeded=3 total=34"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/spec/merge_sal_facts.py",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/tools/test_seed_sal_candidates.py",
+        "tests/tools/test_merge_sal_facts.py",
+        "tests/format_contract/test_determinism_foundation.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "56 tests"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": [
+    "Committed XLIFF and UBL contract bodies must be regenerated from the new SAL digests before their implementation proofs can replay."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "XLIFF_AND_UBL_XML_SYNTAX_AUTHORITY_COMPLETE_WITH_STABLE_FACT_IDENTITIES",
+  "timestamp": "2026-07-24T03:46:23+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -264,6 +264,14 @@ def test_schema_rejects_capability_without_provenance():
     assert cv.check_schema(bad)["result"] == "FAIL"
 
 
+def test_schema_accepts_content_stable_sal_provenance_ids():
+    _, doc = cc.compile_contract("csv")
+    doc["capabilities"][0]["provenance"].append(
+        "SAL-CSV-0123456789ABCDEF"
+    )
+    assert cv.check_schema(doc)["result"] == "PASS"
+
+
 def test_validator_rejects_duplicate_ids():
     _, doc = cc.compile_contract("csv")
     bad = copy.deepcopy(doc)
