@@ -1,0 +1,129 @@
+"""Characterization and package-chassis checks for the production namespace."""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+from pathlib import Path
+
+import pytest
+
+from format_factory.ipynb import (
+    IpynbDocument,
+    dump,
+    dumps,
+    load,
+    loads,
+    probe,
+    validate,
+)
+
+ROOT = Path(__file__).resolve().parents[3]
+PACKAGE = ROOT / "src" / "python" / "ipynb"
+SAMPLE = ROOT / "samples" / "by-format" / "ipynb" / "valid" / "minimal.ipynb"
+
+
+def test_implicit_namespace_has_no_parent_init() -> None:
+    assert not (PACKAGE / "src" / "format_factory" / "__init__.py").exists()
+    spec = importlib.util.find_spec("format_factory.ipynb")
+    assert spec is not None
+    assert spec.origin is not None
+    assert str(PACKAGE / "src") in spec.origin
+
+
+def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> None:
+    source = json.dumps(
+        {
+            "nbformat": 4,
+            "nbformat_minor": 5,
+            "metadata": {"vendor": {"enabled": True}},
+            "cells": [
+                {
+                    "cell_type": "markdown",
+                    "id": "known-id",
+                    "metadata": {},
+                    "source": "# title",
+                    "vendor_cell": {"retained": 1},
+                }
+            ],
+            "vendor_root": ["retained"],
+        }
+    )
+    result = probe(source)
+    assert result.matched
+    assert result.profile == "nbformat-4.5"
+
+    document = loads(source)
+    assert isinstance(document, IpynbDocument)
+    assert validate(document).is_valid
+    assert document.raw["vendor_root"] == ["retained"]
+    assert document.cells[0]["vendor_cell"] == {"retained": 1}
+
+    destination = tmp_path / "roundtrip.ipynb"
+    dump(document, destination)
+    reloaded = load(destination)
+    assert reloaded.raw["vendor_root"] == ["retained"]
+    assert reloaded.cells[0]["vendor_cell"] == {"retained": 1}
+
+
+def test_deterministic_missing_cell_id_normalization() -> None:
+    source = json.dumps(
+        {
+            "nbformat": 4,
+            "nbformat_minor": 4,
+            "metadata": {},
+            "cells": [{"cell_type": "markdown", "metadata": {}, "source": "same"}],
+        }
+    )
+    first = load(source).raw
+    second = load(source).raw
+    assert first["cells"][0]["id"] == second["cells"][0]["id"]
+    assert dumps(first) == dumps(second)
+
+
+def test_default_writer_emits_45_and_rejects_nonfinite_json() -> None:
+    document = {
+        "nbformat": 4,
+        "nbformat_minor": 4,
+        "metadata": {},
+        "cells": [{"cell_type": "code", "metadata": {}, "source": "", "value": float("nan")}],
+    }
+    with pytest.raises(Exception, match="serialize"):
+        dumps(document)
+
+    document["cells"][0].pop("value")
+    serialized = json.loads(dumps(document))
+    assert (serialized["nbformat"], serialized["nbformat_minor"]) == (4, 5)
+    assert serialized["cells"][0]["id"]
+
+
+def test_package_chassis_and_python_policy() -> None:
+    package_root = PACKAGE / "src" / "format_factory" / "ipynb"
+    for layer in (
+        "model",
+        "codec/reader",
+        "codec/writer",
+        "validation",
+        "security",
+        "adapters",
+        "analytics",
+        "cli",
+    ):
+        assert (package_root / layer).is_dir()
+    assert (package_root / "py.typed").is_file()
+
+    pyproject = (PACKAGE / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'requires-python = ">=3.11"' in pyproject
+    assert 'include = ["format_factory.ipynb*"]' in pyproject
+    assert 'build-backend = "_build_backend"' in pyproject
+    assert 'backend-path = ["."]' in pyproject
+    assert (PACKAGE / "_build_backend.py").is_file()
+    assert (PACKAGE / "MANIFEST.in").is_file()
+    assert "Programming Language :: Python :: 3.9" not in pyproject
+    assert "Programming Language :: Python :: 3.10" not in pyproject
+
+
+def test_repository_fixture_is_loadable() -> None:
+    document = load(SAMPLE, mode="preservation")
+    assert document.nbformat == 4
+    assert document.cell_count >= 0

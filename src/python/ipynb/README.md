@@ -1,68 +1,68 @@
-# Format Factory — ipynb
+# Format Factory — Jupyter Notebook
 
-Parse, edit, and write Jupyter Notebook (.ipynb) files with Format Factory.
+Typed, bounded parsing and deterministic writing for Jupyter Notebook
+nbformat 4.0 through 4.5.
+
+> This package is under production migration. The package chassis and
+> compatibility characterization are implemented; full obligation and
+> interoperability certification remain computed release gates.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-15T19:34:54+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-ipynb
 ```
-<!-- END:README-INSTALLATION -->
 
-## Quick Start
+Python 3.11 through 3.14 is supported. The separately installed
+`format-factory-core` package supplies diagnostics and resource-limit types.
+
+## Common lifecycle
 
 ```python
-from ipynb.ipynb_codec import load_ipynb, write_ipynb, probe_ipynb
-from ipynb.models import add_cell, add_output_representation
+from format_factory.ipynb import dump, load, probe, validate
 
-# Detect and load
-assert probe_ipynb("notebook.ipynb")
-model = load_ipynb("notebook.ipynb")
-print(model["nbformat"], len(model["cells"]))
+result = probe("notebook.ipynb")
+if not result:
+    raise ValueError(result.reason)
 
-# Mutate: append a cell, then attach an output MIME representation
-model = add_cell(model, cell_type="markdown", source="# New section")
-write_ipynb(model, "notebook-edited.ipynb")
+document = load("notebook.ipynb")
+report = validate(document)
+if not report:
+    raise ValueError(report.errors)
+
+document.add_cell("markdown", "# New section")
+dump(document, "notebook-edited.ipynb")
 ```
 
-## Features
+`load` defaults to strict mode. `mode="preservation"` retains safe unknown
+JSON members. The library parses notebook structure only and never executes
+code.
 
-- Cell id preservation (nbformat 4.5 required field)
-- Markdown/raw cell attachments
-- First-class output MIME-bundle API (`add_output_representation`, `get_output_representation`)
-- Structural mutation API (`add_cell`, `remove_cell`, `clear_outputs`)
-- Notebook schema/structural validation
-- Cell types (code/markdown/raw) and output types (stream/display_data/execute_result/error)
+## Public namespace
 
-**Not yet supported:** nbformat v1-3 upgrade/downgrade (targets nbformat v4.x notebooks — the standard since ~2016). See `reports/spec-coverage/ipynb-deferred.json`.
+The supported namespace is `format_factory.ipynb`. The earlier top-level
+`ipynb` alpha namespace is not included in built distributions. See
+`MIGRATION.md` for symbol mappings.
+
+## Security boundary
+
+Input size and nesting are bounded by default and configurable with
+`format_factory.core.ResourceLimits`. The security policy and disclosure
+process are documented in `SECURITY.md`.
+
+## Current scope
+
+- Typed notebook, cell, and output views
+- Deterministic JSON serialization
+- Cell-ID normalization and structural validation
+- Unknown JSON-member preservation
+- MIME-bundle helpers and structural mutation
+- Installed-package CLI and analytics in isolated modules
+
+Version conversion and complete differential certification against the
+official `nbformat` implementation are tracked as mandatory obligations and
+are not claimed by this package chassis.
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-15T19:34:54+00:00 source=package-metadata -->
 Apache-2.0
-<!-- END:README-LICENSE -->
-
-## Package Info
-
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-15T19:34:54+00:00 source=repository-metadata -->
-| Field | Value |
-|---|---|
-| Format | Jupyter Notebook |
-| Track | python |
-| Package | format-factory-ipynb |
-| Version | 0.1.0.dev0 |
-| License | Apache-2.0 |
-| Python | >=3.9 |
-| .NET | unknown |
-| Spec | Jupyter Project nbformat v4.5 |
-| QName coverage | 3/3 implemented |
-| Source files | 16 |
-| Test files | 11 |
-<!-- END:README-PACKAGE_INFO -->
-
-## Public API
-
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-15T19:34:54+00:00 source=src-python-init -->
-- `(dynamic)`
-<!-- END:README-PUBLIC_API -->
