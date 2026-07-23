@@ -42909,9 +42909,43 @@
         {"path": "tests/python/safetensors/test_production_namespace.py", "state": "present", "sha256": "360eea9e7abb85bcc2e5c86bdf93d7be3620cc22a12ea6c8936d4c7beb0d2aa1"}
       ],
       "tests": "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-LAZY-IO-002",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W3-SAFETENSORS-LAZY-IO-002",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-0400D9F77F528C68",
+      "capability_refs": [
+        "foss_python.safetensors.header_only",
+        "foss_python.safetensors.memory_mapped_regions",
+        "foss_python.safetensors.access_strategy_disclosure",
+        "foss_python.safetensors.bounded_large_file"
+      ],
+      "api_symbols": [
+        "read_header",
+        "PayloadAccess",
+        "PayloadAccessMode",
+        "SafeTensorsHeader",
+        "SafeTensorsDocument.tensor_region"
+      ],
+      "source_files": [
+        {"path": "src/python/safetensors/README.md", "state": "present", "sha256": "07569a4f582388c3574c8048a301797e23ca02a80c6126eabba6e9ce55c8104c"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/__init__.py", "state": "present", "sha256": "6c21fb7b921703e92e7194ac89edec3ea820a30992eaabdb5422eb266ada3aea"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py", "state": "present", "sha256": "5277c9508b5a5e1b395c16d8d31e8233c8e386a674b6779711ad25a43a0c249e"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py", "state": "present", "sha256": "20eee1419b47e125dadcff13aa0c2ab0006f2f7aeca0b2ba49ab271f94723006"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py", "state": "present", "sha256": "b82fe1789e221d342af05a82b56ac1e6392e9131a72f1667841fba74f72a3480"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py", "state": "present", "sha256": "0b83c45ba09fda6fbf269f83a1818fc2bbc1d96511f1a8003ac685256b233778"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/model/document.py", "state": "present", "sha256": "dcd8a183d79e8edcf239b1554887ad17599d4ce9805a7780e52c9ccf3de5961f"},
+        {"path": "tests/python/safetensors/test_lazy_io.py", "state": "present", "sha256": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04"}
+      ],
+      "tests": "tests/python/safetensors/test_lazy_io.py; tests/python/safetensors/"
     }
   ],
-  "total_entries": 2753,
+  "total_entries": 2754,
   "changes": [
     {
       "file": "src/python/dif/models.py",

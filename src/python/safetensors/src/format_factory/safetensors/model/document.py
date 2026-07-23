@@ -94,10 +94,70 @@ class TensorDescriptor:
         return bits // 8
 
 
+class PayloadAccessMode(StrEnum):
+    """How a document or header reaches its tensor payload."""
+
+    HEADER_ONLY = "header_only"
+    MEMORY_MAPPED = "memory_mapped"
+    BORROWED_BUFFER = "borrowed_buffer"
+    BUFFERED_STREAM = "buffered_stream"
+
+
+@dataclass(frozen=True, slots=True)
+class PayloadAccess:
+    """Machine-readable disclosure of I/O and decoding behavior."""
+
+    mode: PayloadAccessMode
+    zero_copy: bool
+    region_reads: bool
+    full_payload_read_required: bool
+    full_decode_required: bool
+    detail: str
+
+
+@dataclass(frozen=True, slots=True)
+class SafeTensorsHeader:
+    """Validated metadata and descriptors without an opened tensor payload."""
+
+    tensors: Mapping[str, TensorDescriptor]
+    metadata: Mapping[str, str] = field(default_factory=dict)
+    payload_size: int = 0
+    header_size: int = 0
+    profile: str = "v0.8.0"
+    access: PayloadAccess = field(
+        default_factory=lambda: PayloadAccess(
+            mode=PayloadAccessMode.HEADER_ONLY,
+            zero_copy=False,
+            region_reads=False,
+            full_payload_read_required=False,
+            full_decode_required=False,
+            detail="only the prefix and JSON header were read",
+        )
+    )
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "tensors", MappingProxyType(dict(self.tensors)))
+        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        if self.payload_size < 0 or self.header_size < 0:
+            raise ValueError("header and payload sizes must be non-negative")
+
+    @property
+    def tensor_names(self) -> tuple[str, ...]:
+        return tuple(sorted(self.tensors))
+
+
 class SafeTensorsDocument:
     """Immutable descriptors plus a zero-copy view of the tensor data buffer."""
 
-    __slots__ = ("_metadata", "_owner", "_payload", "_tensors", "header_size", "profile")
+    __slots__ = (
+        "_metadata",
+        "_owner",
+        "_payload",
+        "_tensors",
+        "access",
+        "header_size",
+        "profile",
+    )
 
     def __init__(
         self,
@@ -108,6 +168,7 @@ class SafeTensorsDocument:
         header_size: int = 0,
         profile: str = "v0.8.0",
         owner: Any = None,
+        access: PayloadAccess | None = None,
     ) -> None:
         self._tensors = MappingProxyType(dict(tensors))
         self._metadata = MappingProxyType(dict(metadata or {}))
@@ -115,6 +176,14 @@ class SafeTensorsDocument:
         self._owner = owner
         self.header_size = header_size
         self.profile = profile
+        self.access = access or PayloadAccess(
+            mode=PayloadAccessMode.BORROWED_BUFFER,
+            zero_copy=True,
+            region_reads=True,
+            full_payload_read_required=False,
+            full_decode_required=False,
+            detail="tensor regions are borrowed from the caller-provided buffer",
+        )
 
     @property
     def tensors(self) -> Mapping[str, TensorDescriptor]:
@@ -133,9 +202,31 @@ class SafeTensorsDocument:
         return len(self._payload)
 
     def tensor_bytes(self, name: str) -> memoryview:
+        return self.tensor_region(name)
+
+    def tensor_region(
+        self,
+        name: str,
+        start: int = 0,
+        stop: int | None = None,
+    ) -> memoryview:
+        """Return a zero-copy byte region relative to one tensor."""
+
         descriptor = self._tensors[name]
-        start, end = descriptor.data_offsets
-        return self._payload[start:end]
+        tensor_start, tensor_end = descriptor.data_offsets
+        tensor_size = tensor_end - tensor_start
+        selected_stop = tensor_size if stop is None else stop
+        if (
+            isinstance(start, bool)
+            or isinstance(selected_stop, bool)
+            or not isinstance(start, int)
+            or not isinstance(selected_stop, int)
+            or start < 0
+            or selected_stop < start
+            or selected_stop > tensor_size
+        ):
+            raise ValueError(f"tensor region must satisfy 0 <= start <= stop <= {tensor_size}")
+        return self._payload[tensor_start + start : tensor_start + selected_stop]
 
     def items(self) -> Iterator[tuple[str, memoryview]]:
         for name in self.tensor_names:

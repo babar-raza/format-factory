@@ -1,3 +1,3 @@
-from .reader import load, loads, probe, safe_open
+from .reader import load, loads, probe, read_header, safe_open
 
-__all__ = ["load", "loads", "probe", "safe_open"]
+__all__ = ["load", "loads", "probe", "read_header", "safe_open"]

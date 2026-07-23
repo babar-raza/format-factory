@@ -1,18 +1,28 @@
 """Production SafeTensors API."""
 
-from .codec import dump, dumps, load, loads, probe, safe_open
+from .codec import dump, dumps, load, loads, probe, read_header, safe_open
 from .errors import (
     SafeTensorsError,
     SafeTensorsParseError,
     SafeTensorsWriteError,
 )
-from .model import DType, SafeTensorsDocument, TensorDescriptor
+from .model import (
+    DType,
+    PayloadAccess,
+    PayloadAccessMode,
+    SafeTensorsDocument,
+    SafeTensorsHeader,
+    TensorDescriptor,
+)
 from .validation import validate
 
 __all__ = [
     "DType",
+    "PayloadAccess",
+    "PayloadAccessMode",
     "SafeTensorsDocument",
     "SafeTensorsError",
+    "SafeTensorsHeader",
     "SafeTensorsParseError",
     "SafeTensorsWriteError",
     "TensorDescriptor",
@@ -21,6 +31,7 @@ __all__ = [
     "load",
     "loads",
     "probe",
+    "read_header",
     "safe_open",
     "validate",
 ]

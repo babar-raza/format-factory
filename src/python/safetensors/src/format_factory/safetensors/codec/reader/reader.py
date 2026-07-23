@@ -7,12 +7,19 @@ import mmap
 import struct
 from os import PathLike
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO
 
 from format_factory.core import BinarySource, ProbeResult, ResourceLimits
 
 from ...errors import SafeTensorsParseError
-from ...model import DType, SafeTensorsDocument, TensorDescriptor
+from ...model import (
+    DType,
+    PayloadAccess,
+    PayloadAccessMode,
+    SafeTensorsDocument,
+    SafeTensorsHeader,
+    TensorDescriptor,
+)
 from ...security import effective_limits
 
 _PREFIX_SIZE = 8
@@ -28,22 +35,17 @@ def _object_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return output
 
 
-def _parse(buffer: memoryview, limits: ResourceLimits, *, owner: Any = None) -> SafeTensorsDocument:
-    limits.enforce("max_input_bytes", len(buffer))
-    if len(buffer) < _PREFIX_SIZE:
-        raise SafeTensorsParseError("input is shorter than the 8-byte header prefix")
-    header_size = struct.unpack_from("<Q", buffer, 0)[0]
-    header_limit = min(limits.max_header_bytes, _UPSTREAM_MAX_HEADER)
-    if header_size > header_limit:
-        raise SafeTensorsParseError(
-            f"header length {header_size} exceeds configured limit {header_limit}"
-        )
-    header_end = _PREFIX_SIZE + header_size
-    if header_end > len(buffer):
-        raise SafeTensorsParseError("declared header extends beyond the input")
+def _decode_header(
+    encoded: bytes,
+    *,
+    payload_size: int,
+    limits: ResourceLimits,
+) -> tuple[dict[str, TensorDescriptor], dict[str, str]]:
+    """Validate a JSON header against the known payload extent."""
+
     try:
         header = json.loads(
-            bytes(buffer[_PREFIX_SIZE:header_end]).decode("utf-8"),
+            encoded.decode("utf-8"),
             object_pairs_hook=_object_no_duplicates,
         )
     except SafeTensorsParseError:
@@ -55,13 +57,11 @@ def _parse(buffer: memoryview, limits: ResourceLimits, *, owner: Any = None) -> 
 
     raw_metadata = header.pop("__metadata__", {})
     if not isinstance(raw_metadata, dict) or any(
-        not isinstance(k, str) or not isinstance(v, str)
-        for k, v in raw_metadata.items()
+        not isinstance(k, str) or not isinstance(v, str) for k, v in raw_metadata.items()
     ):
         raise SafeTensorsParseError("__metadata__ must be a string-to-string object")
 
     limits.enforce("max_tensor_count", len(header))
-    payload = buffer[header_end:]
     descriptors: dict[str, TensorDescriptor] = {}
     spans: list[TensorDescriptor] = []
     for name, raw in header.items():
@@ -71,9 +71,7 @@ def _parse(buffer: memoryview, limits: ResourceLimits, *, owner: Any = None) -> 
             raise SafeTensorsParseError(f"tensor {name!r} descriptor must be an object")
         missing = {"dtype", "shape", "data_offsets"}.difference(raw)
         if missing:
-            raise SafeTensorsParseError(
-                f"tensor {name!r} is missing {', '.join(sorted(missing))}"
-            )
+            raise SafeTensorsParseError(f"tensor {name!r} is missing {', '.join(sorted(missing))}")
         try:
             dtype = DType(raw["dtype"])
         except (TypeError, ValueError) as exc:
@@ -102,7 +100,7 @@ def _parse(buffer: memoryview, limits: ResourceLimits, *, owner: Any = None) -> 
         except (TypeError, ValueError) as exc:
             raise SafeTensorsParseError(f"invalid tensor {name!r}: {exc}") from exc
         start, end = descriptor.data_offsets
-        if end > len(payload):
+        if end > payload_size:
             raise SafeTensorsParseError(f"tensor {name!r} extends beyond the payload")
         if end - start != expected_size:
             raise SafeTensorsParseError(
@@ -120,17 +118,165 @@ def _parse(buffer: memoryview, limits: ResourceLimits, *, owner: Any = None) -> 
                 f"tensor {descriptor.name!r} {relation} offset {expected_start}"
             )
         expected_start = end
-    if expected_start != len(payload):
+    if expected_start != payload_size:
         raise SafeTensorsParseError(
-            f"tensor offsets cover {expected_start} of {len(payload)} payload bytes"
+            f"tensor offsets cover {expected_start} of {payload_size} payload bytes"
         )
+    return descriptors, raw_metadata
+
+
+def _header_extent(
+    prefix: bytes | memoryview,
+    *,
+    total_size: int,
+    limits: ResourceLimits,
+) -> tuple[int, int]:
+    if len(prefix) < _PREFIX_SIZE:
+        raise SafeTensorsParseError("input is shorter than the 8-byte header prefix")
+    header_size = struct.unpack_from("<Q", prefix, 0)[0]
+    header_limit = min(limits.max_header_bytes, _UPSTREAM_MAX_HEADER)
+    if header_size > header_limit:
+        raise SafeTensorsParseError(
+            f"header length {header_size} exceeds configured limit {header_limit}"
+        )
+    header_end = _PREFIX_SIZE + header_size
+    if header_end > total_size:
+        raise SafeTensorsParseError("declared header extends beyond the input")
+    return header_size, header_end
+
+
+def _parse(
+    buffer: memoryview,
+    limits: ResourceLimits,
+    *,
+    owner: Any = None,
+    access: PayloadAccess | None = None,
+) -> SafeTensorsDocument:
+    limits.enforce("max_input_bytes", len(buffer))
+    header_size, header_end = _header_extent(
+        buffer[:_PREFIX_SIZE],
+        total_size=len(buffer),
+        limits=limits,
+    )
+    payload = buffer[header_end:]
+    descriptors, metadata = _decode_header(
+        bytes(buffer[_PREFIX_SIZE:header_end]),
+        payload_size=len(payload),
+        limits=limits,
+    )
     return SafeTensorsDocument(
         tensors=descriptors,
-        metadata=raw_metadata,
+        metadata=metadata,
         payload=payload,
         header_size=header_size,
         owner=owner,
+        access=access,
     )
+
+
+def _read_exact(stream: BinaryIO, size: int) -> bytes:
+    chunks: list[bytes] = []
+    remaining = size
+    while remaining:
+        chunk = stream.read(remaining)
+        if not isinstance(chunk, bytes):
+            raise TypeError("binary source read() must return bytes")
+        if not chunk:
+            raise SafeTensorsParseError(
+                f"input ended with {remaining} required header bytes missing"
+            )
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    return b"".join(chunks)
+
+
+def _stream_size(stream: BinaryIO) -> tuple[int, int]:
+    """Return (current position, bytes available) without consuming the stream."""
+
+    try:
+        start = stream.tell()
+        stream.seek(0, 2)
+        end = stream.tell()
+        stream.seek(start)
+    except (AttributeError, OSError) as exc:
+        raise SafeTensorsParseError(
+            "header-only inspection requires a seekable binary stream"
+        ) from exc
+    if end < start:
+        raise SafeTensorsParseError("binary stream reports an invalid extent")
+    return start, end - start
+
+
+def _read_header_stream(
+    stream: BinaryIO,
+    *,
+    total_size: int,
+    limits: ResourceLimits,
+) -> SafeTensorsHeader:
+    limits.enforce("max_input_bytes", total_size)
+    prefix = _read_exact(stream, _PREFIX_SIZE)
+    header_size, header_end = _header_extent(
+        prefix,
+        total_size=total_size,
+        limits=limits,
+    )
+    encoded = _read_exact(stream, header_size)
+    payload_size = total_size - header_end
+    descriptors, metadata = _decode_header(
+        encoded,
+        payload_size=payload_size,
+        limits=limits,
+    )
+    return SafeTensorsHeader(
+        tensors=descriptors,
+        metadata=metadata,
+        payload_size=payload_size,
+        header_size=header_size,
+    )
+
+
+def read_header(
+    source: BinarySource,
+    *,
+    limits: ResourceLimits | None = None,
+) -> SafeTensorsHeader:
+    """Read and validate only the prefix and JSON header.
+
+    Payload bytes are never copied or mapped. A stream must be seekable so its
+    payload extent can be validated without consuming it.
+    """
+
+    selected = effective_limits(limits)
+    if isinstance(source, (bytes, bytearray, memoryview)):
+        buffer = memoryview(source)
+        selected.enforce("max_input_bytes", len(buffer))
+        header_size, header_end = _header_extent(
+            buffer[:_PREFIX_SIZE],
+            total_size=len(buffer),
+            limits=selected,
+        )
+        descriptors, metadata = _decode_header(
+            bytes(buffer[_PREFIX_SIZE:header_end]),
+            payload_size=len(buffer) - header_end,
+            limits=selected,
+        )
+        return SafeTensorsHeader(
+            tensors=descriptors,
+            metadata=metadata,
+            payload_size=len(buffer) - header_end,
+            header_size=header_size,
+        )
+    if isinstance(source, (str, PathLike)):
+        path = Path(source)
+        total_size = path.stat().st_size
+        with path.open("rb") as stream:
+            return _read_header_stream(
+                stream,
+                total_size=total_size,
+                limits=selected,
+            )
+    _, total_size = _stream_size(source)
+    return _read_header_stream(source, total_size=total_size, limits=selected)
 
 
 def loads(
@@ -141,7 +287,18 @@ def loads(
 ) -> SafeTensorsDocument:
     if mode not in {"strict", "preservation"}:
         raise ValueError("mode must be 'strict' or 'preservation'")
-    return _parse(memoryview(data), effective_limits(limits))
+    return _parse(
+        memoryview(data),
+        effective_limits(limits),
+        access=PayloadAccess(
+            mode=PayloadAccessMode.BORROWED_BUFFER,
+            zero_copy=True,
+            region_reads=True,
+            full_payload_read_required=False,
+            full_decode_required=False,
+            detail="tensor regions are borrowed from the caller-provided buffer",
+        ),
+    )
 
 
 def load(
@@ -150,6 +307,8 @@ def load(
     mode: str = "strict",
     limits: ResourceLimits | None = None,
 ) -> SafeTensorsDocument:
+    if mode not in {"strict", "preservation"}:
+        raise ValueError("mode must be 'strict' or 'preservation'")
     if isinstance(source, (bytes, bytearray, memoryview)):
         return loads(source, mode=mode, limits=limits)
     if isinstance(source, (str, PathLike)):
@@ -164,14 +323,43 @@ def load(
             raise
         file.close()
         try:
-            return _parse(memoryview(mapped), selected, owner=mapped)
+            return _parse(
+                memoryview(mapped),
+                selected,
+                owner=mapped,
+                access=PayloadAccess(
+                    mode=PayloadAccessMode.MEMORY_MAPPED,
+                    zero_copy=True,
+                    region_reads=True,
+                    full_payload_read_required=False,
+                    full_decode_required=False,
+                    detail=(
+                        "the raw SafeTensors payload is memory mapped; the format "
+                        "defines no compressed payload encoding"
+                    ),
+                ),
+            )
         except Exception:
             mapped.close()
             raise
     raw = source.read()
     if not isinstance(raw, bytes):
         raise TypeError("binary source read() must return bytes")
-    return loads(raw, mode=mode, limits=limits)
+    return _parse(
+        memoryview(raw),
+        effective_limits(limits),
+        access=PayloadAccess(
+            mode=PayloadAccessMode.BUFFERED_STREAM,
+            zero_copy=True,
+            region_reads=True,
+            full_payload_read_required=True,
+            full_decode_required=False,
+            detail=(
+                "the non-path stream was fully buffered; SafeTensors defines no "
+                "compressed payload encoding"
+            ),
+        ),
+    )
 
 
 def safe_open(
