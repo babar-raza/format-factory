@@ -1,0 +1,110 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-repair-format-contract-projection-002",
+  "execution_id": "ff6-repair-format-contract-projection-002",
+  "task_id": "REPAIR-FORMAT-CONTRACT-PROJECTION",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": [
+    "create-format-family-pack",
+    "compile-format-contract"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-FORMAT-CONTRACT-PROJECTION-002",
+  "requested_operation": "make shared-group selection authoritative for every compiled contract projection",
+  "inputs": {
+    "format_id": "safetensors",
+    "family_id": "binary_tensor",
+    "trigger": "A second forward compile retained a detached-resource sentence after security_limits was removed from shared_groups."
+  },
+  "root_cause": {
+    "id": "RC-CONTRACT-PROJECTION-002",
+    "symptom": "Capability derivation honored shared_groups, but security_contract and preservation_contract did not.",
+    "cause": "The assembler unconditionally copied portfolio preservation, security, and quality groups into fixed contract sections.",
+    "structural_weakness": "One policy selector controlled only one projection, so a locally valid family could still acquire foreign obligations elsewhere in the generated document."
+  },
+  "solution": {
+    "selection_rule": "Every shared contract section is now projected only when its group is selected.",
+    "family_fallback_rule": "A family excluding shared preservation or security must provide explicit preservation_defaults and security_defaults.limits; validation and compilation fail closed when either is absent.",
+    "regression_rule": "SafeTensors compilation scans the complete canonical document for all excluded family concepts."
+  },
+  "allowed_files": [
+    "tools/format_contract/contract_compiler.py",
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-projection-002.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/contract_compiler.py",
+    "tools/format_contract/family_pack_validator.py",
+    "tests/format_contract/test_determinism_foundation.py",
+    "tests/format_contract/test_family_pack_validator.py",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-projection-002.json"
+  ],
+  "base_git_commit": "9a9009fd30f250bb7b91546229239dcc379b833e",
+  "input_digests": {
+    "family_pack_validator": "8e840e77db828fa2e9196753a6ff7d7ba99ed8008beb389c250b37d132e71a28",
+    "family_pack_tests": "45b5100d6e4d31d87a5bcaf965fbafdc37546760a43cbd38193dd0c75bf639af",
+    "contract_compiler": "97bab53705d1bdef88f6f3289173f95341963ec4b95b6c61c32e09fb3926820e",
+    "determinism_tests": "1de16631d1979e7c85ece9c1d075f980a57333c29eee2081e9ce53109b87805a",
+    "binary_tensor_pack": "98e3ad53f7f9702bea15b368f2e9c742067068be696951d103c49ea0864ecd94"
+  },
+  "tests_run": [
+    "family policy validation, expanded shared-policy exclusions, and missing family-default negatives: pass",
+    "compiler readiness, determinism, schema, registry transition, and full-document SafeTensors exclusion scan: pass",
+    "combined focused suite: 35 passed",
+    "family validator deterministic replay: pass",
+    "Ruff focused changed files: pass"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract/test_family_pack_validator.py",
+        "tests/format_contract/test_determinism_foundation.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "35 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/family_pack_validator.py",
+        "--pack",
+        "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+        "--verify-idempotency"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "<changed Python files>"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_MACHINERY_REPAIR",
+  "open_gaps": [
+    "The committed repaired inputs must now be forward-compiled and validated before the SafeTensors contract receipt closes."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SHARED_GROUP_SELECTION_IS_AUTHORITATIVE_ACROSS_ALL_CONTRACT_PROJECTIONS",
+  "timestamp": "2026-07-24T03:26:41+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

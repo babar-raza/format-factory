@@ -214,6 +214,54 @@ def validate_family_pack(
                         )
                     )
 
+    if "preservation" not in shared_groups:
+        preservation_defaults = pack.get("preservation_defaults")
+        required_preservation_fields = {
+            "structural_roundtrip",
+            "lexical_roundtrip",
+            "unknown_construct_policy",
+            "loss_reporting_policy",
+        }
+        if not isinstance(preservation_defaults, dict):
+            issues.append(
+                _issue(
+                    "PRESERVATION_DEFAULTS_MISSING",
+                    "a family that excludes shared preservation must define preservation_defaults",
+                    "preservation_defaults",
+                )
+            )
+        else:
+            for field in sorted(required_preservation_fields):
+                value = preservation_defaults.get(field)
+                valid = (
+                    bool(_strings(value))
+                    if field.endswith("_roundtrip")
+                    else isinstance(value, str) and bool(value.strip())
+                )
+                if not valid:
+                    issues.append(
+                        _issue(
+                            "PRESERVATION_DEFAULT_FIELD_MISSING",
+                            f"preservation_defaults.{field} must be non-empty",
+                            f"preservation_defaults.{field}",
+                        )
+                    )
+    if "security_limits" not in shared_groups:
+        security_defaults = pack.get("security_defaults")
+        limits = (
+            security_defaults.get("limits")
+            if isinstance(security_defaults, dict)
+            else None
+        )
+        if not _strings(limits):
+            issues.append(
+                _issue(
+                    "SECURITY_LIMITS_MISSING",
+                    "a family that excludes shared security_limits must define security_defaults.limits",
+                    "security_defaults.limits",
+                )
+            )
+
     domains = pack.get("domains", [])
     if not isinstance(domains, list) or not domains:
         issues.append(_issue("DOMAINS_MISSING", "domains must be a non-empty list", "domains"))

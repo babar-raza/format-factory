@@ -28,6 +28,13 @@ scope_defaults:
   production_complete_target: "Complete target-version header, metadata, dtype, shape, offset, payload, validation, lazy-access, deterministic-writing, adapter, sharding-index, and official-implementation interoperability behavior."
   minimum_viable_support: "Strictly parse, validate, and deterministically write complete tensor containers with checked sizes and bounded path-backed access."
 shared_groups: [diagnostics, quality_proof]
+preservation_defaults:
+  structural_roundtrip:
+  - "Preserve file metadata, tensor descriptors, safe unknown descriptor fields, and exact tensor payload bytes across semantic round trips."
+  lexical_roundtrip:
+  - "Exact JSON spelling, whitespace, and object order are not preserved; normalized deterministic metadata serialization is the explicit guarantee."
+  unknown_construct_policy: "Preservation mode retains safe unknown tensor descriptor fields without treating them as understood; strict mode rejects unsafe or structurally conflicting fields."
+  loss_reporting_policy: "Validation reports any unknown value that cannot be retained safely before writing; writers never drop it silently."
 depth_floors: {lifecycle: 4, parse: 3, model: 4, preserve: 4, write: 4, validate: 5, performance: 4, interoperability: 5, advanced: 4}
 simplicity_budget:
   max_capabilities: 16
@@ -52,6 +59,10 @@ security_defaults:
   - "Use checked size arithmetic and require complete contiguous payload coverage."
   - "Reject duplicate keys and non-string file metadata."
   - "Expose borrowed-view ownership rules and require callers to release views before closing mapped documents."
+  limits:
+  - "Bound input bytes, header bytes, tensor count, rank, dimensions, mapped regions, and borrowed views with configurable safe defaults."
+  - "Use checked arithmetic for shape products, dtype bit widths, byte counts, and absolute payload offsets."
+  - "Never resolve network resources, execute payload bytes, import plugins, or allocate framework arrays during base parsing or validation."
 domains:
 - domain: LIFECYCLE
   category: lifecycle

@@ -107,6 +107,29 @@ def test_compile_csv_idempotent():
     assert canonical_io.canonical_dump(doc1) == canonical_io.canonical_dump(doc2)
 
 
+def test_safetensors_contract_respects_expanded_family_exclusions():
+    report, document = cc.compile_contract("safetensors")
+    assert report["ready"] is True
+    text = canonical_io.canonical_dump(document).casefold()
+    for excluded in (
+        "detached",
+        "compression",
+        "spatial",
+        "raster",
+        "line ending",
+        "comment",
+        "magic",
+    ):
+        assert excluded not in text, (
+            f"compiled SafeTensors contract leaked excluded concept {excluded!r}"
+        )
+    assert document["security_contract"]["limits"]
+    assert all(
+        "tensor" in limit.casefold() or "payload" in limit.casefold()
+        for limit in document["security_contract"]["limits"]
+    )
+
+
 def test_compiled_csv_has_traceable_capabilities():
     _, doc = cc.compile_contract("csv")
     assert len(doc["capabilities"]) >= 8

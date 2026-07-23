@@ -17,9 +17,15 @@ def valid_inputs() -> tuple[dict, dict, dict, dict]:
         "identity_defaults": {},
         "scope_defaults": {},
         "shared_groups": ["lifecycle_io"],
+        "preservation_defaults": {
+            "structural_roundtrip": ["Preserve tensor descriptors."],
+            "lexical_roundtrip": ["Normalize JSON metadata."],
+            "unknown_construct_policy": "Retain safe unknown descriptor fields.",
+            "loss_reporting_policy": "Report unsafe unknown fields before writing.",
+        },
         "depth_floors": {},
         "validation_layers": [],
-        "security_defaults": {},
+        "security_defaults": {"limits": ["Bound header and payload bytes."]},
         "domains": [
             {
                 "domain": "HEADER",
@@ -120,3 +126,17 @@ def test_rejects_excluded_concept_from_selected_shared_group() -> None:
     assert report["issues"][0]["path"] == (
         "shared_groups.lifecycle_io.items[0].text"
     )
+
+
+def test_rejects_missing_family_specific_preservation_and_limits() -> None:
+    pack, family_map, requirements, shared = valid_inputs()
+    pack.pop("preservation_defaults")
+    pack["security_defaults"] = {}
+
+    report = validate_family_pack(pack, family_map, requirements, shared)
+
+    assert not report["valid"]
+    assert {issue["code"] for issue in report["issues"]} == {
+        "PRESERVATION_DEFAULTS_MISSING",
+        "SECURITY_LIMITS_MISSING",
+    }

@@ -337,9 +337,55 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
     ]
 
     shared_groups = shared_store["groups"]
-    preserve_items = {i["id"]: i["text"] for i in shared_groups["preservation"]["items"]}
-    sec_items = [i["text"] for i in shared_groups["security_limits"]["items"]]
-    quality_items = [i["text"] for i in shared_groups["quality_proof"]["items"]]
+    selected_shared_groups = set(pack.get("shared_groups", []))
+
+    if "preservation" in selected_shared_groups:
+        preserve_items = {
+            i["id"]: i["text"] for i in shared_groups["preservation"]["items"]
+        }
+        preservation_contract = {
+            "structural_roundtrip": [preserve_items["POL-SLC-PRESERVE-02"]],
+            "lexical_roundtrip": [preserve_items["POL-SLC-PRESERVE-04"]],
+            "unknown_construct_policy": preserve_items["POL-SLC-PRESERVE-01"],
+            "loss_reporting_policy": preserve_items["POL-SLC-PRESERVE-03"],
+        }
+    else:
+        preservation_defaults = pack.get("preservation_defaults")
+        if not isinstance(preservation_defaults, dict):
+            raise stores.StoreError(
+                f"family {ctx['family']} excludes shared preservation but has no "
+                "preservation_defaults"
+            )
+        preservation_contract = {
+            "structural_roundtrip": list(
+                preservation_defaults.get("structural_roundtrip", [])
+            ),
+            "lexical_roundtrip": list(
+                preservation_defaults.get("lexical_roundtrip", [])
+            ),
+            "unknown_construct_policy": str(
+                preservation_defaults.get("unknown_construct_policy", "")
+            ),
+            "loss_reporting_policy": str(
+                preservation_defaults.get("loss_reporting_policy", "")
+            ),
+        }
+
+    security_defaults = pack.get("security_defaults", {})
+    if "security_limits" in selected_shared_groups:
+        sec_items = [i["text"] for i in shared_groups["security_limits"]["items"]]
+    else:
+        sec_items = list(security_defaults.get("limits", []))
+        if not sec_items:
+            raise stores.StoreError(
+                f"family {ctx['family']} excludes shared security_limits but has no "
+                "security_defaults.limits"
+            )
+    quality_items = (
+        [i["text"] for i in shared_groups["quality_proof"]["items"]]
+        if "quality_proof" in selected_shared_groups
+        else []
+    )
 
     test_contract = list(quality_items)
     release_gates = []
@@ -350,7 +396,6 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         "Capability manifest published and independently verified against implementation and tests."
     )
 
-    security_defaults = pack.get("security_defaults", {})
     doc = {
         "contract_metadata": {
             "schema_version": "1.0",
@@ -379,12 +424,7 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
             "minimum_viable_support": pack["scope_defaults"]["minimum_viable_support"],
         },
         "capabilities": capabilities,
-        "preservation_contract": {
-            "structural_roundtrip": [preserve_items["POL-SLC-PRESERVE-02"]],
-            "lexical_roundtrip": [preserve_items["POL-SLC-PRESERVE-04"]],
-            "unknown_construct_policy": preserve_items["POL-SLC-PRESERVE-01"],
-            "loss_reporting_policy": preserve_items["POL-SLC-PRESERVE-03"],
-        },
+        "preservation_contract": preservation_contract,
         "validation_contract": {
             "layers": [dict(layer) for layer in pack.get("validation_layers", [])],
             "diagnostic_schema": {"fields": list(shared_store["diagnostic_schema_fields"])},
