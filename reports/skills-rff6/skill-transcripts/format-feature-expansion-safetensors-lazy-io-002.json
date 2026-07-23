@@ -117,6 +117,11 @@
     {
       "argv": ["<installed-python>", "-c", "co-import official safetensors 0.8.0 and format_factory.safetensors"],
       "exit_code": 0
+    },
+    {
+      "argv": ["python", "tools/supervisor/production_program.py", "prove", "--format", "safetensors", "--obligation", "SAL-SAFETENSORS-OBL-117F7126A23370CB", "--polarity", "positive", "--test", "tests/python/safetensors/test_lazy_io.py", "--run", "<tooling-python>", "-m", "pytest", "tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded", "-q"],
+      "exit_code": 0,
+      "proof_id": "PROOF-38AF83B1BC27127DB30E237648D3A88CB1E276DA31A5FB10B095CDEB848E39E0"
     }
   ],
   "built_artifacts": [
@@ -139,22 +144,23 @@
   ],
   "ledger_entry_id": "FF6-SAFETENSORS-LAZY-IO-002",
   "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
-  "proof_nodes": [],
+  "proof_nodes": [
+    "PROOF-38AF83B1BC27127DB30E237648D3A88CB1E276DA31A5FB10B095CDEB848E39E0"
+  ],
   "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
   "current_gap_projection": {
-    "program_open_gap_count": 614,
-    "safetensors_open_mandatory_obligations": 94,
+    "program_open_gap_count": 615,
+    "safetensors_open_mandatory_obligations": 95,
     "blocked_gap_count": 1,
-    "next_task": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001"
+    "next_task": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001"
   },
   "open_gaps": [
-    "Digest-bound controller proof is deferred until source and test inputs are committed.",
-    "The source-tree change correctly invalidates earlier SafeTensors proofs; they must be replayed against this committed source digest.",
+    "The source-tree and tooling-environment changes correctly invalidated the two earlier SafeTensors proofs; the controller scheduled their replay against the current digests.",
     "The wheel is reproducible, but the setuptools sdist is not; release promotion remains blocked until the canonical sdist builder normalizes archive and generated-metadata timestamps."
   ],
   "result": "PASS",
   "status": "CLOSED",
-  "final_outcome": "SOURCE_TEST_AND_INSTALLED_BEHAVIOR_VERIFIED_PROOF_PENDING_COMMIT",
+  "final_outcome": "EXECUTED_PROOF_RECORDED_NOT_CERTIFIED",
   "timestamp": "2026-07-24T03:15:00+05:00",
   "generated_by": "codex",
   "visibility": "generated"
