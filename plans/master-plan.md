@@ -3,9 +3,54 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 6.0
+**Version:** 6.1
 **Last updated:** 2026-07-10 (v8.0: PQLM-001 Phase 4 closure — TC-PQLM-026/027/028/029 CLOSED, commit 2102bd63; GOV-WINDOW-FIX-001 — V105/V106 detection windows extended 300→500/400→600, commit 6bc5ad75; 4 governance-masked methods restored; 4233 .NET + 876 Python xcf tests pass)
 **Last verified:** 2026-06-24
+
+**Closeout amendment:** 2026-07-23 — FF-PLAN-CONTROL-001 final status is recorded in Section 110; all prior master-plan history remains in place.
+
+## Section 110 — FF-PLAN-CONTROL-001: Concurrent-Safe Plan Control and Backlog Recovery (CLOSED 2026-07-23)
+
+**Mission:** `FF-PLAN-CONTROL-001`
+**Taskcards:** `TC-FFPC-SKILL-001`, `TC-FFPC-001`
+**Implementation commits:** `45e65ed6`, `347bf5dd`
+**Branch:** `codex/ff-plan-control`
+**Verdict:** CLOSED — implementation, independent verification, production-shaped pilot, serialized integration, and SCM closeout complete.
+
+### What was completed
+
+- Added `python -m tools.plan_control` as the repository-wide plan lifecycle control plane without replacing this master plan, the coordination SQLite authority, `action_queue.py`, or domain-specific evidence producers.
+- Implemented immutable Plan Identity v2 aliases; hash-chained append-only events; deterministic replay, projections, queue ordering, retry quarantine, dependency readiness, lifecycle transitions, and explicit authority relationships.
+- Added approved-root discovery, parser-gap reporting, portfolio reconciliation, external-worktree observation, coordination claim mirroring, and digest-bound `ProductionProgram` checkpoints.
+- Preserved all 2,326 source-register items and imported the seven `TC-FF6-*` tasks without duplicate dispatch while the six-format mission remained externally claimed.
+- Registered the governed `/plan-control` skill and command after rebasing onto accepted six-format checkpoint `9ff5265c`; both missions' command and skill registry entries were preserved.
+
+### What changed
+
+- New implementation: `tools/plan_control/`.
+- New focused suites: `tests/plan_control/`.
+- New committed schemas/configuration: `plans/.control/`.
+- New evidence contract: `tools/evidence/contracts/ff-plan-control-001.yaml`.
+- New governed command and skill registration: `.claude/commands/plan-control.md`, command/skill registries, validation projections, and Planning Layer attribution.
+- New taskcards and index entries: `taskcards/TC-FFPC-SKILL-001.md`, `taskcards/TC-FFPC-001.md`, and `taskcards/index.yaml`.
+- The pilot found and repaired replay aliasing: reducers now deep-copy nested event payloads so replay cannot mutate the journal cache.
+
+### Verification performed
+
+- Focused Plan Control suite: 40 passed after the pilot regression repair.
+- Existing plan/lifecycle/continuation compatibility baseline: 155 passed, exceeding the required 143-test baseline.
+- Independent verification: PASS, including a 64-writer concurrent journal probe.
+- Live-shadow pilot: 212 plans, 3,728 tasks, 2,326/2,326 source items retained, seven FF6 tasks externally claimed, and zero FF6 duplicate dispatches.
+- Disposable canary: dependency release, digest/verifier-bound producer checkpoint, quarantined publication blocker with unrelated work continuing, crash recovery, deterministic replay, and CLI exit codes all PASS.
+- Two consecutive no-change reconciliations produced identical journal heads and projection digests in both pilot lanes.
+- Skill transcript validation, Ruff, diff checks, evidence declaration validation, bundle CRC, bundle manifest hashes, and required-entry validation all PASS.
+
+### Remaining follow-ups and non-blockers
+
+- Startup/CI/supervisor enforcement remains a separate integration wave; the control plane is committed and callable but is not promoted by silently replacing existing startup surfaces.
+- Three pre-existing plan-routing violations remain explicitly reported and unadopted: `plans/oracle/`, `plans/master-plan-memory.md`, and `plans/plan-hardening-addendum-from-latest-audit.md`.
+- Two inherited skill-contract failures remain outside this mission: missing command files for `fix-exception-hierarchy` and `wire-analytics-module`; `/plan-control` itself validates PASS with zero duplicate or overlapping skills.
+- Product source, product contracts, packaging, release status, Gate 8/10/11 authority, publication credentials, and domain proof graphs remain outside Plan Control ownership.
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
 
