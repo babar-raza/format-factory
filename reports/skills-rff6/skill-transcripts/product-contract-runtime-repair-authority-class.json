@@ -1,0 +1,40 @@
+{
+  "invocation_id": "FF6-PRODUCT-CONTRACT-AUTHORITY-CLASS-20260724",
+  "skill_id": "product-contract-runtime-repair",
+  "task_id": "AUTO-PRODUCT-CONTRACT-AUTHORITY-CLASS",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "FF6-AUTHORITY-CLASS-PROJECTION-LOSS",
+    "failing_regression": "product requirements without normative artifact hashes forced UNASSESSED promotion",
+    "expected_invalidation_input": "authority_class or local authority identity"
+  },
+  "allowed_files": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-authority-class.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-authority-class.json"
+  ],
+  "tests_run": [
+    "pytest tests/production_program/test_production_program.py tests/format_contract/test_determinism_foundation.py -q: 55 passed",
+    "full focused production proof suite: 74 passed"
+  ],
+  "validations": {
+    "complete_contract_digest_closure": "PASS: authority_class and local_path are in the canonical projection",
+    "obligation_fact_edges_preserved": "PASS",
+    "equivalent_rerun_determinism": "PASS",
+    "changed_contract_input_invalidates_digest": "PASS"
+  },
+  "output_digests": {
+    "tools/format_contract/product_contract.py": "40ebf81f7f8d228dc891360835a1296e6b05c1f6b5cc4967f3e2c5c72e0a80b7",
+    "tests/production_program/test_production_program.py": "7ae124ab011d0311a49024eb364bd6c616d21b06ef4cb6698ce04ed54f8b8248"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T01:10:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

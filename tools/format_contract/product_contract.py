@@ -110,7 +110,9 @@ def compile_product_contract(
             "source_id": source.get("source_id"),
             "title": source.get("title"),
             "version": source.get("version"),
+            "authority_class": source.get("authority_class"),
             "canonical_url": source.get("canonical_url"),
+            "local_path": source.get("local_path"),
             "content_hash": digest,
             "acquired": acquired,
         }

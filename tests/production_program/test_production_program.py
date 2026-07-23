@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -52,6 +53,30 @@ def _contract(format_id: str = "ipynb") -> dict:
     }
 
 
+def _proof_repo(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[Path, Path, Path]:
+    import tools.supervisor.production_program as module
+
+    repo = tmp_path / "repo"
+    source = repo / "src" / "python" / "ipynb"
+    module_root = source / "src" / "format_factory" / "ipynb"
+    module_root.mkdir(parents=True)
+    (module_root / "__init__.py").write_text("VALUE = 1\n", encoding="utf-8")
+    test_path = repo / "tests" / "python" / "ipynb" / "test_contract.py"
+    test_path.parent.mkdir(parents=True)
+    test_path.write_text("def test_contract(): assert True\n", encoding="utf-8")
+    contract_path = repo / "shared" / "format-contracts" / "ipynb.yaml"
+    contract_path.parent.mkdir(parents=True)
+    import yaml
+
+    contract_path.write_text(
+        yaml.safe_dump(_contract(), sort_keys=False), encoding="utf-8"
+    )
+    monkeypatch.setattr(module, "REPO_ROOT", repo)
+    return repo, source, test_path
+
+
 def test_product_contract_is_deterministic_and_deferral_is_not_coverage() -> None:
     source = _contract()
     source["capabilities"][0]["deferral_reason"] = "later"
@@ -90,6 +115,23 @@ def test_contract_input_digest_change_invalidates_digest() -> None:
     assert compile_product_contract(
         baseline, run_legacy_validator=False
     ).digest != compile_product_contract(changed, run_legacy_validator=False).digest
+
+
+def test_authority_class_is_preserved_and_digest_bound() -> None:
+    baseline = _contract()
+    changed = _contract()
+    changed["authoritative_sources"][0]["authority_class"] = "PRODUCT_REQUIREMENT"
+
+    baseline_compiled = compile_product_contract(
+        baseline, run_legacy_validator=False
+    )
+    changed_compiled = compile_product_contract(
+        changed, run_legacy_validator=False
+    )
+
+    assert baseline_compiled.authorities[0]["authority_class"] == "AUTHORITATIVE"
+    assert changed_compiled.authorities[0]["authority_class"] == "PRODUCT_REQUIREMENT"
+    assert baseline_compiled.digest != changed_compiled.digest
 
 
 def test_mandatory_capability_without_provenance_fails_closed() -> None:
@@ -172,6 +214,17 @@ def test_gap_priority_is_deterministic(tmp_path: Path) -> None:
     assert program.next_gap() == high
     reloaded = ProductionProgram(tmp_path)
     assert reloaded.next_gap() == high
+
+
+def test_equal_priority_gaps_follow_locked_format_wave_order(tmp_path: Path) -> None:
+    program = ProductionProgram(tmp_path)
+    nrrd = Gap("G-NRRD", "nrrd", "read", "security", "HIGH", "missing")
+    safetensors = Gap(
+        "G-SAFE", "safetensors", "read", "security", "HIGH", "missing"
+    )
+    program.reconcile_gap(nrrd)
+    program.reconcile_gap(safetensors)
+    assert program.next_gap() == safetensors
 
 
 def test_controller_resumes_last_verified_transition(tmp_path: Path) -> None:
@@ -455,3 +508,165 @@ capabilities:
         gap for gap in observed if gap["format_id"] == "testproduct"
     )
     assert "no content-addressed verification record=1" in authority_gap["root_cause"]
+
+
+def test_source_and_test_presence_do_not_satisfy_mandatory_obligations(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _proof_repo(tmp_path, monkeypatch)
+    program = ProductionProgram(tmp_path / "state")
+
+    evidence = program.audit_implementation("ipynb")
+
+    assert evidence["mandatory_obligation_count"] == 2
+    assert evidence["unmet_obligation_count"] == 2
+    assert evidence["promotion"]["state"] == "IMPLEMENTATION_IN_PROGRESS"
+    gaps = [
+        gap
+        for gap in program.gaps.values()
+        if gap.format_id == "ipynb" and gap.state == "OPEN"
+    ]
+    assert len(gaps) == 2
+    assert all("no live digest-bound executed" in gap.root_cause for gap in gaps)
+
+
+def test_one_executed_result_satisfies_only_its_bound_obligation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+
+    proof = program.execute_proof(
+        "ipynb",
+        positive["obligation_id"],
+        polarity="positive",
+        test_paths=[test_path.relative_to(_repo).as_posix()],
+        fixture_paths=[],
+        command=[sys.executable, "-c", "print('executed')"],
+    )
+    evidence = program.audit_implementation("ipynb")
+
+    assert proof["executed"] is True
+    assert evidence["unmet_obligation_count"] == 1
+    remaining = evidence["promotion"]["unmet_obligations"]
+    assert positive["obligation_id"] not in remaining
+    assert len(remaining) == 1
+
+
+@pytest.mark.parametrize("mutation", ("change", "delete"))
+def test_changed_or_deleted_test_revokes_executed_proof(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+    program.execute_proof(
+        "ipynb",
+        positive["obligation_id"],
+        polarity="positive",
+        test_paths=[test_path.relative_to(repo).as_posix()],
+        fixture_paths=[],
+        command=[sys.executable, "-c", "print('executed')"],
+    )
+
+    if mutation == "change":
+        test_path.write_text("def test_contract(): assert 1 == 1\n", encoding="utf-8")
+    else:
+        test_path.unlink()
+    evidence = program.audit_implementation("ipynb")
+
+    assert evidence["promotion"]["state"] == "INVALIDATED"
+    assert positive["obligation_id"] in evidence["stale_proof_obligations"]
+    gap = next(
+        gap
+        for gap in program.gaps.values()
+        if gap.obligation_id == positive["obligation_id"]
+    )
+    assert gap.invalidation_reason == "proof_input_changed"
+
+
+def test_wrong_polarity_and_nonzero_command_cannot_record_proof(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+    args = {
+        "format_id": "ipynb",
+        "obligation_id": positive["obligation_id"],
+        "test_paths": [test_path.relative_to(repo).as_posix()],
+        "fixture_paths": [],
+    }
+
+    with pytest.raises(ValueError, match="requires positive proof"):
+        program.execute_proof(
+            **args,
+            polarity="negative",
+            command=[sys.executable, "-c", "print('wrong polarity')"],
+        )
+    with pytest.raises(RuntimeError, match="exit code 7"):
+        program.execute_proof(
+            **args,
+            polarity="positive",
+            command=[sys.executable, "-c", "raise SystemExit(7)"],
+        )
+    assert program.proofs == {}
+
+
+def test_input_modified_during_execution_is_rejected(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    fixture = repo / "samples" / "input.bin"
+    fixture.parent.mkdir(parents=True)
+    fixture.write_bytes(b"before")
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+
+    with pytest.raises(ValueError, match="inputs changed during execution"):
+        program.execute_proof(
+            "ipynb",
+            positive["obligation_id"],
+            polarity="positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[fixture.relative_to(repo).as_posix()],
+            command=[
+                sys.executable,
+                "-c",
+                "from pathlib import Path; Path('samples/input.bin').write_bytes(b'after')",
+            ],
+        )
+    assert program.proofs == {}
+
+
+def test_three_implementation_projections_are_byte_identical(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _proof_repo(tmp_path, monkeypatch)
+    graph_digests = []
+    graph_bytes = []
+    for index in range(3):
+        program = ProductionProgram(tmp_path / f"state-{index}")
+        evidence = program.audit_implementation("ipynb")
+        graph_digests.append(evidence["graph_digest"])
+        graph_bytes.append(
+            (
+                (program.graph_root / "ipynb" / "nodes.jsonl").read_bytes(),
+                (program.graph_root / "ipynb" / "edges.jsonl").read_bytes(),
+            )
+        )
+    assert len(set(graph_digests)) == 1
+    assert graph_bytes[0] == graph_bytes[1] == graph_bytes[2]

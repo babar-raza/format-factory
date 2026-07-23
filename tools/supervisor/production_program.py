@@ -9,10 +9,14 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import os
+import platform
 import subprocess
+import sys
 import tempfile
+import tomllib
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -47,6 +51,16 @@ GAP_PRIORITY = {
     "optional": 6,
     "analytics": 7,
 }
+PRODUCT_PRIORITY = {
+    "_machinery": -2,
+    "_core": -1,
+    "safetensors": 0,
+    "ipynb": 1,
+    "nrrd": 2,
+    "openraster": 3,
+    "xliff": 4,
+    "ubl": 5,
+}
 
 
 @dataclass(frozen=True)
@@ -74,6 +88,16 @@ TARGETS = (
 TARGETS_BY_PRODUCT = {target.product_id: target for target in TARGETS}
 FORMATS = tuple(target.product_id for target in TARGETS)
 SAL_STATUS_SCHEMA_GAP_ID = "GAP-SAL-SCHEMA-VERIFIED-WITH-NOTE"
+TRANSIENT_TREE_PARTS = {
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".pyright",
+    ".ruff_cache",
+    "__pycache__",
+    "build",
+    "dist",
+}
 
 
 def validate_target_registry() -> dict[str, Any]:
@@ -119,7 +143,19 @@ def tree_digest(paths: list[Path]) -> str:
         if not root.exists():
             entries.append({"path": root.relative_to(REPO_ROOT).as_posix(), "missing": True})
             continue
-        files = [root] if root.is_file() else sorted(p for p in root.rglob("*") if p.is_file())
+        files = (
+            [root]
+            if root.is_file()
+            else sorted(
+                path
+                for path in root.rglob("*")
+                if path.is_file()
+                and not any(
+                    part in TRANSIENT_TREE_PARTS or part.endswith(".egg-info")
+                    for part in path.relative_to(root).parts
+                )
+            )
+        )
         for path in files:
             entries.append(
                 {
@@ -149,6 +185,7 @@ class Gap:
         return (
             GAP_PRIORITY.get(self.category, 99),
             SEVERITY_ORDER.get(self.severity, 99),
+            PRODUCT_PRIORITY.get(self.format_id, 99),
             self.format_id,
             self.obligation_id,
             self.gap_id,
@@ -166,6 +203,29 @@ class FormatState:
     retry_roots: dict[str, int] = field(default_factory=dict)
 
 
+@dataclass(frozen=True)
+class ExecutedProof:
+    proof_id: str
+    format_id: str
+    obligation_id: str
+    polarity: str
+    contract_digest: str
+    source_paths: tuple[str, ...]
+    source_digest: str
+    test_paths: tuple[str, ...]
+    test_digest: str
+    fixture_paths: tuple[str, ...]
+    fixture_digest: str
+    dependency_paths: tuple[str, ...]
+    dependency_digest: str
+    environment_digest: str
+    command: tuple[str, ...]
+    exit_code: int
+    stdout_sha256: str
+    stderr_sha256: str
+    executed: bool = True
+
+
 class ProductionProgram:
     def __init__(self, state_dir: Path):
         # Absolute paths are required for reliable atomic replacement on
@@ -174,8 +234,11 @@ class ProductionProgram:
         self.state_path = self.state_dir / "state.json"
         self.journal_path = self.state_dir / "journal.jsonl"
         self.gaps_path = self.state_dir / "current-gaps.json"
+        self.proofs_path = self.state_dir / "executed-proofs.json"
+        self.graph_root = self.state_dir / "proof-graphs"
         self.formats = {format_id: FormatState(format_id) for format_id in FORMATS}
         self.gaps: dict[str, Gap] = {}
+        self.proofs: dict[str, ExecutedProof] = {}
         self.load()
 
     @staticmethod
@@ -194,6 +257,21 @@ class ProductionProgram:
         if self.gaps_path.exists():
             document = json.loads(self.gaps_path.read_text(encoding="utf-8"))
             self.gaps = {item["gap_id"]: Gap(**item) for item in document["gaps"]}
+        if self.proofs_path.exists():
+            document = json.loads(self.proofs_path.read_text(encoding="utf-8"))
+            self.proofs = {
+                item["proof_id"]: ExecutedProof(
+                    **{
+                        **item,
+                        "source_paths": tuple(item["source_paths"]),
+                        "test_paths": tuple(item["test_paths"]),
+                        "fixture_paths": tuple(item["fixture_paths"]),
+                        "dependency_paths": tuple(item["dependency_paths"]),
+                        "command": tuple(item["command"]),
+                    }
+                )
+                for item in document["proofs"]
+            }
 
     @staticmethod
     def _atomic_json(path: Path, value: Any) -> None:
@@ -229,6 +307,16 @@ class ProductionProgram:
                 "gaps": [asdict(gap) for gap in sorted(self.gaps.values(), key=Gap.sort_key)],
             },
         )
+        self._atomic_json(
+            self.proofs_path,
+            {
+                "schema": "format-factory/executed-proof@1",
+                "proofs": [
+                    asdict(proof)
+                    for proof in sorted(self.proofs.values(), key=lambda item: item.proof_id)
+                ],
+            },
+        )
 
     def journal(self, event: dict[str, Any]) -> None:
         self.journal_path.parent.mkdir(parents=True, exist_ok=True)
@@ -260,16 +348,567 @@ class ProductionProgram:
         current.last_verified_transition = evidence_digest
         self.persist()
 
-    def reconcile_gap(self, gap: Gap) -> None:
+    def reconcile_gap(self, gap: Gap, *, persist: bool = True) -> None:
         existing = self.gaps.get(gap.gap_id)
         if existing:
             gap.retry_count = existing.retry_count
         self.gaps[gap.gap_id] = gap
-        self.persist()
+        if persist:
+            self.persist()
 
     def next_gap(self) -> Gap | None:
         open_gaps = [gap for gap in self.gaps.values() if gap.state == "OPEN"]
         return min(open_gaps, key=Gap.sort_key) if open_gaps else None
+
+    @staticmethod
+    def _repo_inputs(values: list[str] | tuple[str, ...], *, label: str) -> list[Path]:
+        root = REPO_ROOT.resolve()
+        paths: list[Path] = []
+        for value in values:
+            candidate = Path(value)
+            if not candidate.is_absolute():
+                candidate = root / candidate
+            candidate = candidate.resolve()
+            try:
+                candidate.relative_to(root)
+            except ValueError as error:
+                raise ValueError(f"{label} input escapes the repository: {value}") from error
+            if not candidate.exists():
+                raise ValueError(f"{label} input does not exist: {value}")
+            paths.append(candidate)
+        return sorted(set(paths))
+
+    @staticmethod
+    def _relative_paths(paths: list[Path]) -> tuple[str, ...]:
+        return tuple(path.relative_to(REPO_ROOT.resolve()).as_posix() for path in paths)
+
+    @staticmethod
+    def _environment_digest() -> str:
+        distributions = sorted(
+            (
+                str(distribution.metadata.get("Name", "")).lower().replace("_", "-"),
+                distribution.version,
+            )
+            for distribution in importlib.metadata.distributions()
+        )
+        return hashlib.sha256(
+            canonical_bytes(
+                {
+                    "python": platform.python_version(),
+                    "implementation": platform.python_implementation(),
+                    "os": platform.system(),
+                    "architecture": platform.machine(),
+                    "distributions": distributions,
+                }
+            )
+        ).hexdigest()
+
+    @staticmethod
+    def _canonical_command(command: list[str]) -> tuple[str, ...]:
+        canonical: list[str] = []
+        root = REPO_ROOT.resolve()
+        executable = Path(sys.executable).resolve()
+        for index, value in enumerate(command):
+            candidate = Path(value)
+            if index == 0 and candidate.exists():
+                resolved = candidate.resolve()
+                if resolved == executable:
+                    canonical.append(f"<python:{sha256_path(resolved)}>")
+                    continue
+                try:
+                    canonical.append(resolved.relative_to(root).as_posix())
+                except ValueError:
+                    canonical.append(
+                        f"<external:{resolved.name}:{sha256_path(resolved)}>"
+                    )
+                continue
+            if candidate.is_absolute():
+                resolved = candidate.resolve()
+                try:
+                    canonical.append(resolved.relative_to(root).as_posix())
+                except ValueError as error:
+                    raise ValueError(
+                        f"command argument contains an external absolute path: {value}"
+                    ) from error
+            else:
+                canonical.append(value)
+        return tuple(canonical)
+
+    def _dependency_inputs(self, target: ProductTarget) -> list[Path]:
+        package_root = REPO_ROOT / "src" / "python" / target.source_package_id
+        candidates = [REPO_ROOT / "pyproject.toml", package_root / "pyproject.toml"]
+        for root in (REPO_ROOT, package_root):
+            if not root.is_dir():
+                continue
+            candidates.extend(root.glob("*.lock"))
+            candidates.extend(root.glob("requirements*.txt"))
+        return sorted({path.resolve() for path in candidates if path.is_file()})
+
+    @staticmethod
+    def _package_chassis_issues(
+        source_package_id: str, distribution_suffix: str
+    ) -> list[str]:
+        package_root = REPO_ROOT / "src" / "python" / source_package_id
+        pyproject = package_root / "pyproject.toml"
+        issues: list[str] = []
+        if not package_root.is_dir():
+            return [f"source package directory is missing: {package_root.relative_to(REPO_ROOT)}"]
+        if not pyproject.is_file():
+            return [f"package metadata is missing: {pyproject.relative_to(REPO_ROOT)}"]
+        try:
+            document = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            return [f"package metadata is not parseable TOML: {error}"]
+        project = document.get("project", {})
+        expected_name = f"format-factory-{distribution_suffix}"
+        if project.get("name") != expected_name:
+            issues.append(
+                f"distribution name must be {expected_name!r}, got {project.get('name')!r}"
+            )
+        requires_python = str(project.get("requires-python", ""))
+        if ">=3.11" not in requires_python or "3.9" in requires_python or "3.10" in requires_python:
+            issues.append(
+                "requires-python must establish the Python 3.11 production floor"
+            )
+        namespace_root = package_root / "src" / "format_factory"
+        module_root = namespace_root / distribution_suffix
+        if not (module_root / "__init__.py").is_file():
+            issues.append(
+                "PEP 420 package is missing "
+                f"{module_root.relative_to(REPO_ROOT).as_posix()}/__init__.py"
+            )
+        if (namespace_root / "__init__.py").exists():
+            issues.append("PEP 420 parent format_factory/__init__.py is prohibited")
+        tests_root = REPO_ROOT / "tests" / "python" / source_package_id
+        if not tests_root.is_dir():
+            issues.append(
+                f"package test root is missing: {tests_root.relative_to(REPO_ROOT)}"
+            )
+        return issues
+
+    def _audit_chassis(self) -> list[dict[str, Any]]:
+        observed: list[dict[str, Any]] = []
+        targets = [
+            ("_core", "core", "core"),
+            *[
+                (target.product_id, target.source_package_id, target.product_id)
+                for target in TARGETS
+            ],
+        ]
+        current_ids: set[str] = set()
+        for product_id, source_package_id, distribution_suffix in targets:
+            issues = self._package_chassis_issues(
+                source_package_id, distribution_suffix
+            )
+            identity = f"{product_id}:production-package-chassis"
+            gap_id = (
+                "GAP-"
+                + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16].upper()
+            )
+            current_ids.add(gap_id)
+            package_root = REPO_ROOT / "src" / "python" / source_package_id
+            evidence_digest = tree_digest(
+                [
+                    package_root,
+                    REPO_ROOT / "tests" / "python" / source_package_id,
+                ]
+            )
+            if issues:
+                gap = Gap(
+                    gap_id=gap_id,
+                    format_id=product_id,
+                    obligation_id="PRODUCTION_PACKAGE_CHASSIS",
+                    category="referential_integrity",
+                    severity="HIGH",
+                    root_cause="; ".join(issues),
+                    evidence_digest=evidence_digest,
+                    owning_task=f"AUTO-{product_id.upper()}-PACKAGE-CHASSIS",
+                )
+                self.reconcile_gap(gap, persist=False)
+                observed.append(asdict(gap))
+            elif existing := self.gaps.get(gap_id):
+                existing.state = "RESOLVED"
+                existing.evidence_digest = evidence_digest
+        for gap in self.gaps.values():
+            if (
+                gap.obligation_id == "PRODUCTION_PACKAGE_CHASSIS"
+                and gap.gap_id not in current_ids
+            ):
+                gap.state = "RESOLVED"
+        self.persist()
+        return observed
+
+    def execute_proof(
+        self,
+        format_id: str,
+        obligation_id: str,
+        *,
+        polarity: str,
+        test_paths: list[str],
+        fixture_paths: list[str],
+        command: list[str],
+    ) -> dict[str, Any]:
+        """Execute one digest-bound proof command and persist only a live PASS."""
+
+        from tools.format_contract.product_contract import load_and_compile
+
+        target = self.target(format_id)
+        contract_path = (
+            REPO_ROOT
+            / "shared"
+            / "format-contracts"
+            / f"{target.contract_format_id}.yaml"
+        )
+        compiled = load_and_compile(contract_path)
+        obligations = {
+            item["obligation_id"]: item
+            for item in compiled.obligations
+            if item["level"] == "MUST"
+        }
+        obligation = obligations.get(obligation_id)
+        if obligation is None:
+            raise ValueError(
+                f"proof obligation is unknown or non-mandatory: {obligation_id}"
+            )
+        required_polarity = (
+            "negative" if obligation["kind"] == "rejection" else "positive"
+        )
+        if polarity != required_polarity:
+            raise ValueError(
+                f"{obligation_id} requires {required_polarity} proof, got {polarity}"
+            )
+        if not command:
+            raise ValueError("proof command is empty")
+        if not test_paths:
+            raise ValueError("at least one test input is required")
+
+        source_root = REPO_ROOT / "src" / "python" / target.source_package_id
+        source_inputs = self._repo_inputs(
+            [source_root.as_posix()], label="source"
+        )
+        tests = self._repo_inputs(test_paths, label="test")
+        tests_root = (REPO_ROOT / "tests").resolve()
+        for path in tests:
+            try:
+                path.relative_to(tests_root)
+            except ValueError as error:
+                raise ValueError(
+                    f"test input must be under tests/: {path.relative_to(REPO_ROOT)}"
+                ) from error
+        fixtures = self._repo_inputs(fixture_paths, label="fixture")
+        dependencies = self._dependency_inputs(target)
+        before = {
+            "source": tree_digest(source_inputs),
+            "tests": tree_digest(tests),
+            "fixtures": tree_digest(fixtures),
+            "dependencies": tree_digest(dependencies),
+        }
+        environment_digest = self._environment_digest()
+        run_environment = {
+            **os.environ,
+            "PYTHONHASHSEED": "0",
+            "SOURCE_DATE_EPOCH": "0",
+            "TZ": "UTC",
+        }
+        result = subprocess.run(
+            command,
+            cwd=REPO_ROOT,
+            env=run_environment,
+            capture_output=True,
+            check=False,
+        )
+        after = {
+            "source": tree_digest(source_inputs),
+            "tests": tree_digest(tests),
+            "fixtures": tree_digest(fixtures),
+            "dependencies": tree_digest(dependencies),
+        }
+        if before != after:
+            raise ValueError("proof inputs changed during execution")
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"proof command failed with exit code {result.returncode}; result not recorded"
+            )
+
+        material = {
+            "format_id": format_id,
+            "obligation_id": obligation_id,
+            "polarity": polarity,
+            "contract_digest": compiled.digest,
+            "source_paths": self._relative_paths(source_inputs),
+            "source_digest": before["source"],
+            "test_paths": self._relative_paths(tests),
+            "test_digest": before["tests"],
+            "fixture_paths": self._relative_paths(fixtures),
+            "fixture_digest": before["fixtures"],
+            "dependency_paths": self._relative_paths(dependencies),
+            "dependency_digest": before["dependencies"],
+            "environment_digest": environment_digest,
+            "command": self._canonical_command(command),
+            "exit_code": result.returncode,
+            "stdout_sha256": hashlib.sha256(result.stdout).hexdigest(),
+            "stderr_sha256": hashlib.sha256(result.stderr).hexdigest(),
+            "executed": True,
+        }
+        proof_id = "PROOF-" + hashlib.sha256(canonical_bytes(material)).hexdigest().upper()
+        proof = ExecutedProof(proof_id=proof_id, **material)
+        self.proofs[proof_id] = proof
+        self.persist()
+        self.journal(
+            {
+                "event": "EXECUTED_PROOF_RECORDED",
+                "format_id": format_id,
+                "obligation_id": obligation_id,
+                "proof_id": proof_id,
+            }
+        )
+        return asdict(proof)
+
+    def _build_product_graph(
+        self, format_id: str, compiled: Any
+    ) -> tuple[Any, dict[str, str], set[str]]:
+        from tools.requirements_authority.production_graph import ProductionProofGraph
+
+        graph = ProductionProofGraph()
+        current: dict[str, str] = {}
+        authority_nodes = []
+        for authority in compiled.authorities:
+            identity = str(authority["source_id"])
+            input_key = f"authority:{format_id}:{identity}"
+            is_normative = authority.get("authority_class") == "AUTHORITATIVE"
+            digest = str(
+                authority.get("content_hash")
+                or hashlib.sha256(canonical_bytes(authority)).hexdigest()
+            )
+            current[input_key] = digest
+            authority_nodes.append(
+                graph.add_content_node(
+                    "AuthorityArtifact" if is_normative else "ProductRequirement",
+                    identity,
+                    {
+                        "format_id": format_id,
+                        "acquired": authority["acquired"] if is_normative else True,
+                        "authority_class": authority.get("authority_class"),
+                        "content_hash": digest,
+                    },
+                    input_digests={input_key: digest},
+                )
+            )
+
+        contract_key = f"contract:{format_id}"
+        current[contract_key] = compiled.digest
+        obligation_nodes = {}
+        for obligation in compiled.obligations:
+            node = graph.add_content_node(
+                "NormativeObligation",
+                obligation["obligation_id"],
+                {
+                    "format_id": format_id,
+                    "level": obligation["level"],
+                    "kind": obligation["kind"],
+                    "capability_id": obligation["capability_id"],
+                    "source_field": obligation["source_field"],
+                },
+                input_digests={contract_key: compiled.digest},
+            )
+            graph.add_dependencies(node, authority_nodes)
+            obligation_nodes[obligation["obligation_id"]] = node
+
+        target = self.target(format_id)
+        source_root = REPO_ROOT / "src" / "python" / target.source_package_id
+        source_node = None
+        if source_root.is_dir():
+            source_key = f"source:{format_id}"
+            source_digest = tree_digest([source_root])
+            current[source_key] = source_digest
+            source_node = graph.add_content_node(
+                "SourceSymbol",
+                f"{target.source_package_id}:product-tree",
+                {"format_id": format_id, "path": source_root.relative_to(REPO_ROOT).as_posix()},
+                input_digests={source_key: source_digest},
+            )
+
+        stale_obligations: set[str] = set()
+        for proof in sorted(self.proofs.values(), key=lambda item: item.proof_id):
+            if proof.format_id != format_id:
+                continue
+            try:
+                source_paths = self._repo_inputs(proof.source_paths, label="source")
+                test_paths = self._repo_inputs(proof.test_paths, label="test")
+                fixture_paths = self._repo_inputs(proof.fixture_paths, label="fixture")
+                dependency_paths = self._repo_inputs(
+                    proof.dependency_paths, label="dependency"
+                )
+            except ValueError:
+                stale_obligations.add(proof.obligation_id)
+                continue
+            live = {
+                "contract": compiled.digest,
+                "source": tree_digest(source_paths),
+                "tests": tree_digest(test_paths),
+                "fixtures": tree_digest(fixture_paths),
+                "dependencies": tree_digest(dependency_paths),
+                "environment": self._environment_digest(),
+            }
+            recorded = {
+                "contract": proof.contract_digest,
+                "source": proof.source_digest,
+                "tests": proof.test_digest,
+                "fixtures": proof.fixture_digest,
+                "dependencies": proof.dependency_digest,
+                "environment": proof.environment_digest,
+            }
+            if live != recorded:
+                stale_obligations.add(proof.obligation_id)
+                continue
+            obligation_node = obligation_nodes.get(proof.obligation_id)
+            if obligation_node is None:
+                stale_obligations.add(proof.obligation_id)
+                continue
+            input_digests = {
+                f"proof:{proof.proof_id}:{key}": value
+                for key, value in sorted(recorded.items())
+            }
+            current.update(input_digests)
+            result_node = graph.add_content_node(
+                "ExecutedTestResult",
+                proof.proof_id,
+                {
+                    "format_id": format_id,
+                    "outcome": "PASS",
+                    "executed": proof.executed,
+                    "polarity": proof.polarity,
+                    "command": proof.command,
+                    "exit_code": proof.exit_code,
+                    "stdout_sha256": proof.stdout_sha256,
+                    "stderr_sha256": proof.stderr_sha256,
+                },
+                input_digests=input_digests,
+            )
+            graph.add_dependency(
+                result_node, obligation_node, edge_type="verified_by"
+            )
+            if source_node is not None:
+                graph.add_dependency(result_node, source_node)
+        return graph, current, stale_obligations
+
+    @staticmethod
+    def _obligation_gap_category(obligation: dict[str, Any]) -> str:
+        source_field = obligation["source_field"]
+        if source_field in {"security_requirements", "error_behavior"}:
+            return "security"
+        if source_field == "preservation_rules":
+            return "data_loss"
+        return "mandatory_read_write"
+
+    def audit_implementation(self, format_id: str) -> dict[str, Any]:
+        """Rebuild current proof and materialize every unproved MUST obligation."""
+
+        from tools.format_contract.product_contract import load_and_compile
+        from tools.requirements_authority.production_graph import PromotionDecision
+
+        target = self.target(format_id)
+        contract_path = (
+            REPO_ROOT
+            / "shared"
+            / "format-contracts"
+            / f"{target.contract_format_id}.yaml"
+        )
+        compiled = load_and_compile(contract_path)
+        graph, current, stale_obligations = self._build_product_graph(
+            format_id, compiled
+        )
+        decision = graph.compute_promotion(
+            format_id, current_identity_digests=current
+        )
+        unmet = set(decision.unmet_obligations)
+        stale_unmet = sorted(stale_obligations & unmet)
+        if stale_unmet:
+            decision = PromotionDecision(
+                format_id=format_id,
+                state="INVALIDATED",
+                unmet_obligations=decision.unmet_obligations,
+                invalidated_nodes=tuple(stale_unmet),
+                reasons=("one or more previously executed proof inputs changed",),
+            )
+
+        graph_dir = self.graph_root / format_id
+        graph.store.save_nodes(graph_dir / "nodes.jsonl")
+        graph.store.save_edges(graph_dir / "edges.jsonl")
+        graph_digest = graph.graph_digest()
+        self.formats[format_id].proof_digest = graph_digest
+        current_ids: set[str] = set()
+        obligations = {
+            item["obligation_id"]: item
+            for item in compiled.obligations
+            if item["level"] == "MUST"
+        }
+        source_exists = (
+            REPO_ROOT / "src" / "python" / target.source_package_id
+        ).is_dir()
+        for obligation_id in sorted(unmet):
+            obligation = obligations[obligation_id]
+            identity = f"{format_id}:implementation:{obligation_id}"
+            gap_id = (
+                "GAP-"
+                + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16].upper()
+            )
+            current_ids.add(gap_id)
+            stale = obligation_id in stale_obligations
+            if not source_exists:
+                root_cause = (
+                    "production source package is absent; executed behavior proof "
+                    "cannot be produced"
+                )
+            elif stale:
+                root_cause = (
+                    "previous executed proof was invalidated by a changed or deleted "
+                    "contract, source, test, fixture, dependency, or environment input"
+                )
+            else:
+                required_polarity = (
+                    "negative" if obligation["kind"] == "rejection" else "positive"
+                )
+                root_cause = (
+                    "mandatory obligation has no live digest-bound executed "
+                    f"{required_polarity} result"
+                )
+            gap = Gap(
+                gap_id=gap_id,
+                format_id=format_id,
+                obligation_id=obligation_id,
+                category=self._obligation_gap_category(obligation),
+                severity="HIGH",
+                root_cause=root_cause,
+                evidence_digest=graph_digest,
+                owning_task=(
+                    f"AUTO-{format_id.upper()}-IMPLEMENT-"
+                    f"{obligation['capability_id']}"
+                ),
+                invalidation_reason=(
+                    "proof_input_changed" if stale else ""
+                ),
+            )
+            self.reconcile_gap(gap, persist=False)
+        prefix = f"AUTO-{format_id.upper()}-IMPLEMENT-"
+        for gap in self.gaps.values():
+            if gap.owning_task.startswith(prefix) and gap.gap_id not in current_ids:
+                gap.state = "RESOLVED"
+                gap.evidence_digest = graph_digest
+        self.persist()
+
+        evidence = {
+            "format_id": format_id,
+            "contract_digest": compiled.digest,
+            "graph_digest": graph_digest,
+            "promotion": asdict(decision),
+            "mandatory_obligation_count": len(obligations),
+            "unmet_obligation_count": len(unmet),
+            "stale_proof_obligations": stale_unmet,
+        }
+        if self.formats[format_id].state == "CONTRACT":
+            self.transition(format_id, "IMPLEMENT", evidence=evidence)
+        return evidence
 
     def audit_machinery(self) -> list[dict[str, Any]]:
         """Materialize current validator failures without scanning history."""
@@ -562,24 +1201,31 @@ class ProductionProgram:
             "obligation_count": len(compiled.obligations),
             "issues": [asdict(issue) for issue in compiled.issues],
         }
-        self.transition(format_id, "CONTRACT", evidence=evidence)
+        if self.formats[format_id].state == "SNAPSHOT":
+            self.transition(format_id, "CONTRACT", evidence=evidence)
+        else:
+            self.persist()
         return evidence
 
     def bootstrap(self) -> dict[str, Any]:
         results: dict[str, Any] = {
             "target_registry": validate_target_registry(),
             "machinery": self.audit_machinery(),
+            "package_chassis": self._audit_chassis(),
         }
         for format_id in FORMATS:
             state = self.formats[format_id].state
             if state == "DISCOVER":
                 results[f"{format_id}:snapshot"] = self.discover(format_id)
-                state = self.formats[format_id].state
             # CONTRACT is a materialized projection, not a terminal snapshot.
             # Recompile it on each bootstrap so repaired inputs resolve their
             # old gaps and changed inputs cannot retain stale readiness.
-            if state in {"SNAPSHOT", "CONTRACT"}:
-                results[f"{format_id}:contract"] = self.compile_contract(format_id)
+            contract = self.compile_contract(format_id)
+            results[f"{format_id}:contract"] = contract
+            if contract["ready"]:
+                results[f"{format_id}:implementation"] = self.audit_implementation(
+                    format_id
+                )
         return results
 
     def status(self) -> dict[str, Any]:
@@ -603,7 +1249,13 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         default=REPO_ROOT / ".local" / "production-program",
     )
-    parser.add_argument("command", choices=("bootstrap", "status", "next"))
+    parser.add_argument("command", choices=("bootstrap", "status", "next", "prove"))
+    parser.add_argument("--format", dest="format_id", choices=FORMATS)
+    parser.add_argument("--obligation")
+    parser.add_argument("--polarity", choices=("positive", "negative"))
+    parser.add_argument("--test", action="append", default=[])
+    parser.add_argument("--fixture", action="append", default=[])
+    parser.add_argument("--run", nargs=argparse.REMAINDER, default=[])
     args = parser.parse_args(argv)
     program = ProductionProgram(args.state_dir)
     payload: Any
@@ -615,6 +1267,24 @@ def main(argv: list[str] | None = None) -> int:
         }
     elif args.command == "next":
         payload = asdict(gap) if (gap := program.next_gap()) else None
+    elif args.command == "prove":
+        if not all((args.format_id, args.obligation, args.polarity, args.run)):
+            parser.error(
+                "prove requires --format, --obligation, --polarity, --test, and --run"
+            )
+        proof = program.execute_proof(
+            args.format_id,
+            args.obligation,
+            polarity=args.polarity,
+            test_paths=args.test,
+            fixture_paths=args.fixture,
+            command=args.run,
+        )
+        payload = {
+            "proof": proof,
+            "implementation": program.audit_implementation(args.format_id),
+            "status": program.status(),
+        }
     else:
         payload = program.status()
     print(json.dumps(payload, indent=2, sort_keys=True))
