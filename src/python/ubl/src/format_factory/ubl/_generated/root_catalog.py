@@ -1,0 +1,112 @@
+"""Generated UBL 2.3 root inventory. Do not edit by hand.
+
+visibility: generated
+generated_by: codex
+"""
+
+from __future__ import annotations
+
+from typing import Final
+
+AUTHORITY_SHA256: Final = "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+ARCHIVE_MEMBER_NAMES_SHA256: Final = "f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2"
+ROOT_NAMES_SHA256: Final = "070d1ad3f211514ad2144dc1dd6ed52df465db0e0268edee1d62900daca1480f"
+PROFILE: Final = "UBL-2.3"
+ROOT_NAMES: Final = (
+    "ApplicationResponse",
+    "AttachedDocument",
+    "AwardedNotification",
+    "BillOfLading",
+    "BusinessCard",
+    "CallForTenders",
+    "Catalogue",
+    "CatalogueDeletion",
+    "CatalogueItemSpecificationUpdate",
+    "CataloguePricingUpdate",
+    "CatalogueRequest",
+    "CertificateOfOrigin",
+    "CommonTransportationReport",
+    "ContractAwardNotice",
+    "ContractNotice",
+    "CreditNote",
+    "DebitNote",
+    "DespatchAdvice",
+    "DigitalAgreement",
+    "DigitalCapability",
+    "DocumentStatus",
+    "DocumentStatusRequest",
+    "Enquiry",
+    "EnquiryResponse",
+    "ExceptionCriteria",
+    "ExceptionNotification",
+    "ExportCustomsDeclaration",
+    "ExpressionOfInterestRequest",
+    "ExpressionOfInterestResponse",
+    "Forecast",
+    "ForecastRevision",
+    "ForwardingInstructions",
+    "FreightInvoice",
+    "FulfilmentCancellation",
+    "GoodsCertificate",
+    "GoodsItemItinerary",
+    "GoodsItemPassport",
+    "GuaranteeCertificate",
+    "ImportCustomsDeclaration",
+    "InstructionForReturns",
+    "InventoryReport",
+    "Invoice",
+    "ItemInformationRequest",
+    "Manifest",
+    "Order",
+    "OrderCancellation",
+    "OrderChange",
+    "OrderResponse",
+    "OrderResponseSimple",
+    "PackingList",
+    "PriorInformationNotice",
+    "ProductActivity",
+    "ProofOfReexportation",
+    "ProofOfReexportationReminder",
+    "ProofOfReexportationRequest",
+    "QualificationApplicationRequest",
+    "QualificationApplicationResponse",
+    "Quotation",
+    "ReceiptAdvice",
+    "Reminder",
+    "RemittanceAdvice",
+    "RequestForQuotation",
+    "RetailEvent",
+    "SelfBilledCreditNote",
+    "SelfBilledInvoice",
+    "Statement",
+    "StockAvailabilityReport",
+    "Tender",
+    "TenderContract",
+    "TenderReceipt",
+    "TenderStatus",
+    "TenderStatusRequest",
+    "TenderWithdrawal",
+    "TendererQualification",
+    "TendererQualificationResponse",
+    "TradeItemLocationProfile",
+    "TransitCustomsDeclaration",
+    "TransportExecutionPlan",
+    "TransportExecutionPlanRequest",
+    "TransportProgressStatus",
+    "TransportProgressStatusRequest",
+    "TransportServiceDescription",
+    "TransportServiceDescriptionRequest",
+    "TransportationStatus",
+    "TransportationStatusRequest",
+    "UnawardedNotification",
+    "UnsubscribeFromProcedureRequest",
+    "UnsubscribeFromProcedureResponse",
+    "UtilityStatement",
+    "Waybill",
+    "WeightStatement",
+)
+ROOT_NAME_SET: Final = frozenset(ROOT_NAMES)
+ROOT_NAMESPACES: Final = {
+    name: f"urn:oasis:names:specification:ubl:schema:xsd:{name}-2"
+    for name in ROOT_NAMES
+}

@@ -1,0 +1,7 @@
+<!DOCTYPE Invoice [
+  <!ENTITY hostile SYSTEM "file:///format-factory-must-not-read">
+]>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:vendor="urn:example:vendor">
+  <vendor:Payload>&hostile;</vendor:Payload>
+</Invoice>
