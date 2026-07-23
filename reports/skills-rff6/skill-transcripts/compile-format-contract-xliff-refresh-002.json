@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-xliff-refresh-002",
+  "execution_id": "ff6-compile-format-contract-xliff-refresh-002",
+  "task_id": "AUTO-REFRESH-SIX-PYTHON-CONTRACTS-XLIFF",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-002",
+  "requested_operation": "regenerate the XLIFF product contract from the pinned OASIS schema bundle and current policy digests",
+  "inputs": {
+    "format_id": "xliff",
+    "family": "xml_localization",
+    "target_spec_version": "XLIFF 2.1",
+    "base_git_commit": "29c23d668d85a97a2584f524d79802ed2db576be"
+  },
+  "allowed_files": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-refresh-002.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-refresh-002.json"
+  ],
+  "outputs": {
+    "contract_sha256": "ba6e9119233cbbe1b97bc37078be45955bc6e144c0aac915fee5827264f84495",
+    "product_contract_digest": "1a1a4df755aaa68833c03cd9daa3d612ba9c9fce1142a173263c1e6fed5fae",
+    "registry_sha256": "4a27395d11877327f108a73008e10250ccc8dd4036a478743f3ae08c29a3c5e4",
+    "capability_count": 15,
+    "obligation_count": 125,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.75,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "strict ProductContract: ready with 125 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": ["Implementation proof descendants require replay against the refreshed contract digest."],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "XLIFF_CONTRACT_REFRESHED_WITH_XML_SYNTAX_AUTHORITY_AND_STRICT_READY",
+  "timestamp": "2026-07-24T03:55:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

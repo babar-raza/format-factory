@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-ora-refresh-002",
+  "execution_id": "ff6-compile-format-contract-ora-refresh-002",
+  "task_id": "AUTO-REFRESH-SIX-PYTHON-CONTRACTS-ORA",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-002",
+  "requested_operation": "regenerate the OpenRaster product contract from current authority and policy digests",
+  "inputs": {
+    "format_id": "ora",
+    "family": "archive_container",
+    "target_spec_version": "OpenRaster 0.0.3 (informal)",
+    "base_git_commit": "29c23d668d85a97a2584f524d79802ed2db576be"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ora-refresh-002.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ora-refresh-002.json"
+  ],
+  "outputs": {
+    "contract_sha256": "abaf05d32a4df27aac2d51d7bdf13ab2f0dbb1a1dbfa9836b80d5ba8dfcbcab7",
+    "product_contract_digest": "2ecf3c51da0443e1d68a82d528dce020b877fe5bb0a9070c629fa338ff785fcf",
+    "registry_sha256": "4a27395d11877327f108a73008e10250ccc8dd4036a478743f3ae08c29a3c5e4",
+    "capability_count": 10,
+    "obligation_count": 32,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.7,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "strict ProductContract: ready with 32 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": [
+    "Implementation proof descendants require replay against the refreshed contract digest.",
+    "OpenRaster source work remains subject to the repository's recorded Gate 9 authorization boundary."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "OPENRASTER_CONTRACT_REFRESHED_AND_STRICT_READY",
+  "timestamp": "2026-07-24T03:55:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -14,11 +14,11 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
     research_sha256: 8be15851f44a44ecb019090f0c7f892de6db330d2b667b67bafa69190199f52f
-    sal_facts_sha256: 04940368a7659b606e53eb4668d90f71ddda879a6cd66ca2e6c86816b1344339
+    sal_facts_sha256: c092d92db73b4195ea6a508bbdec1add9fae1b27d2000bfc7c4344d84231dc1e
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -390,6 +390,7 @@ capabilities:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-10A6F1FB1C146A18
   required_behavior:
   - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom
     extension namespaces and attributes.
@@ -470,6 +471,8 @@ capabilities:
   - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
     the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
     artifact.'
+  - (schemas/xliff_core_2.1.xsd) The XLIFF 2.1 core XSD defines namespace-qualified XML element syntax
+    for the core document vocabulary in urn:oasis:names:tc:xliff:document:2.0.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -969,6 +972,7 @@ coverage_map:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-10A6F1FB1C146A18
 - capability_id: XLIFF-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01

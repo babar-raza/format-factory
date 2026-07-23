@@ -13,11 +13,11 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
     research_sha256: a1eca70e12ce35f789098bb5a8b2a9991d9b11644a5ee7ec1b00a09f1aaee0db
-    sal_facts_sha256: 50378e9ec94777a8d516fac29ebd641ba325520ee1f33f0a268ec88515672982
+    sal_facts_sha256: 27412b9ae8d304d5011e8ebfcb1949640a199601179e80902638f16e366d1b31
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -84,6 +84,7 @@ capabilities:
   - SAL-UBL-00122
   - SAL-UBL-00123
   - SAL-UBL-00127
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00005
   required_behavior:
   - Calculate document totals under explicit rounding/tolerance policies and compare to declared totals
@@ -100,6 +101,8 @@ capabilities:
     names, postal addresses, tax schemes, and contacts as child elements
   - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
     and nested cac:TaxSubtotal elements per tax category
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
   depth_required: 6
   depth_rationale: 'SHOULD calculate capability: family depth floor 6, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -184,6 +187,7 @@ capabilities:
   - SAL-UBL-00131
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00001
   required_behavior:
   - Expose a distinct typed root per supported document type plus create_empty, detect_document_type,
@@ -232,6 +236,8 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -395,6 +401,9 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Represent shared aggregate components as typed composites and basic components as typed values retaining
     lexical form where round-trip fidelity requires it.
@@ -464,6 +473,12 @@ capabilities:
   - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
     each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
     lax validation.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -507,6 +522,9 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Resolve every element and attribute by QName; default and prefixed namespace forms with identical
     expanded names behave identically.
@@ -564,6 +582,12 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -835,6 +859,8 @@ capabilities:
   - SAL-UBL-00117
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable
     layers, returning all diagnostics with paths rather than stopping at the first error.
@@ -864,6 +890,10 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -1105,6 +1135,7 @@ coverage_map:
   - SAL-UBL-00122
   - SAL-UBL-00123
   - SAL-UBL-00127
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00005
 - capability_id: UBL-CODELIST-001
   provenance:
@@ -1140,6 +1171,7 @@ coverage_map:
   - SAL-UBL-00131
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00001
 - capability_id: UBL-EDIT-001
   provenance:
@@ -1199,6 +1231,9 @@ coverage_map:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-PARSE-001
   provenance:
   - POL-XBZ-PARSE-01
@@ -1227,6 +1262,9 @@ coverage_map:
   - SAL-UBL-00130
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -1292,6 +1330,8 @@ coverage_map:
   - SAL-UBL-00117
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-VALUES-001
   provenance:
   - POL-XBZ-VALUES-01
