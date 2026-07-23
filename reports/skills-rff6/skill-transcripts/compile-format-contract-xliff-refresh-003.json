@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-xliff-refresh-003",
+  "execution_id": "ff6-compile-format-contract-xliff-refresh-003",
+  "task_id": "AUTO-REFRESH-XML-CONTRACTS-AFTER-AUTHORITY-XLIFF",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-003",
+  "requested_operation": "propagate the live XLIFF SAL authority-proof digest into the canonical product contract",
+  "inputs": {
+    "format_id": "xliff",
+    "family": "xml_localization",
+    "target_spec_version": "XLIFF 2.1",
+    "base_git_commit": "b5f84c4c",
+    "sal_facts_sha256": "d0856a8c662242b64b094fb73b6e865195e43c138a03b144cb87a9b741d8a941"
+  },
+  "allowed_files": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-refresh-003.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-refresh-003.json"
+  ],
+  "outputs": {
+    "contract_sha256": "46a7d5e38330ccec494250360939787865204c0e809fcf6cfa4fd8a69ff00cc8",
+    "product_contract_digest": "a8f20ae84167690d27130ad0c24076e66d538e14f48a7f6f75eb1b4fb11deaf3",
+    "registry_sha256": "48c53e4d79ce51007f0fdef5971894559a1154caf129ad900acbf13324d40fa6",
+    "capability_count": 15,
+    "obligation_count": 125,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.75,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "blocking contract validator: all eight checks pass",
+    "strict ProductContract: ready with 125 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": ["Implementation proof descendants require replay against the authority-bound contract digest."],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "XLIFF_CONTRACT_REFRESHED_FROM_LIVE_AUTHORITY_PROOF",
+  "timestamp": "2026-07-24T04:10:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-ubl-refresh-003",
+  "execution_id": "ff6-compile-format-contract-ubl-refresh-003",
+  "task_id": "AUTO-REFRESH-XML-CONTRACTS-AFTER-AUTHORITY-UBL",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-003",
+  "requested_operation": "propagate the live UBL SAL authority-proof digest into the canonical product contract",
+  "inputs": {
+    "format_id": "ubl",
+    "family": "xml_business",
+    "target_spec_version": "UBL 2.3",
+    "base_git_commit": "b5f84c4c",
+    "sal_facts_sha256": "1efe0b967ba828dbf9c87255d9e58235fabc39c3807831e9a61ee69244607f4f"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ubl-refresh-003.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ubl-refresh-003.json"
+  ],
+  "outputs": {
+    "contract_sha256": "fe3a9d0048dbadd31f64d18c1489ed8b32c00c60eaa5af8b8632a69fc7a6f12f",
+    "product_contract_digest": "81ca59edbd396364fc89c5d12154b0f53a7b7d693f8fd21d4e6f337c2b8804f7",
+    "registry_sha256": "48c53e4d79ce51007f0fdef5971894559a1154caf129ad900acbf13324d40fa6",
+    "capability_count": 18,
+    "obligation_count": 194,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.75,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "blocking contract validator: all eight checks pass",
+    "strict ProductContract: ready with 194 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": ["Implementation proof descendants require replay against the authority-bound contract digest."],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "UBL_CONTRACT_REFRESHED_FROM_LIVE_AUTHORITY_PROOF",
+  "timestamp": "2026-07-24T04:10:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
