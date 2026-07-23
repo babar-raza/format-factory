@@ -1,66 +1,37 @@
-# Format Factory — nrrd
+# Format Factory — NRRD
 
-Parse, edit, and write NRRD (.nrrd, .nhdr) scientific/medical imaging files with Format Factory.
+Typed, bounded parsing and deterministic writing for NRRD0001 through
+NRRD0005 scientific raster data.
 
-## Installation
+> This package is under production migration. The package chassis and legacy
+> characterization are verified; complete contract and interoperability
+> certification remain computed release gates.
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-15T19:25:43+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-nrrd
 ```
-<!-- END:README-INSTALLATION -->
-
-## Quick Start
 
 ```python
-from nrrd.nrrd_codec import load_nrrd, write_nrrd, roundtrip, get_array
+from format_factory.nrrd import dump, load, probe, validate
 
-model = load_nrrd("volume.nrrd")
-print(model["header"]["type"], model["array_shape"])
-array = get_array(model)  # nested list, reshaped per axis
+result = probe("volume.nrrd")
+if not result:
+    raise ValueError(result.reason)
 
-# write_nrrd(model, dest) re-encodes model["array"] by default (not a zero-fill)
-write_nrrd(model, "volume-copy.nrrd")
-reloaded = roundtrip("volume.nrrd", "volume-roundtrip.nrrd")
+document = load("volume.nrrd")
+if not validate(document):
+    raise ValueError("invalid NRRD")
+dump(document, "volume-copy.nrrd")
 ```
 
-## Features
+The production namespace is `format_factory.nrrd`; the collision-prone alpha
+namespace `nrrd` is excluded from built distributions. Readers enforce input,
+header, decompression, element-count, and allocation limits. Loading never
+renders or executes content.
 
-- Payload decode into typed, shaped arrays (raw and gzip encodings)
-- Endianness byte-swapping when the declared `endian` differs from host order
-- `line skip` / `byte skip` offset handling, including the `-1` "skip to tail" case
-- `kinds` (domain vs. range axis semantics)
-- `space` / `space directions` / `space origin` physical-coordinate mapping
-- Key/value pair parsing (`key:=value`)
+Current chassis support includes attached raw, ASCII, hex, gzip, and bzip2
+payloads and safe single-file detached payloads. Complete detached LIST/pattern
+semantics, block types, mmap, streaming, full metadata typing, and independent
+Teem/pynrrd certification remain mandatory open obligations.
 
-**Scope note:** ascii/hex/bzip2/zlib encodings and detached (.nhdr) header data loading remain out of scope for this pass. Stdlib-only decode (`struct`) — no numpy dependency. See `reports/spec-coverage/nrrd-deferred.json`.
-
-## License
-
-<!-- BEGIN:README-LICENSE generated=2026-07-15T19:25:43+00:00 source=package-metadata -->
-Apache-2.0
-<!-- END:README-LICENSE -->
-
-## Package Info
-
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-15T19:25:43+00:00 source=repository-metadata -->
-| Field | Value |
-|---|---|
-| Format | Nearly Raw Raster Data |
-| Track | python |
-| Package | format-factory-nrrd |
-| Version | 0.1.0.dev0 |
-| License | Apache-2.0 |
-| Python | >=3.9 |
-| .NET | unknown |
-| Spec | Teem Project NRRD0005 |
-| QName coverage | 2/2 implemented |
-| Source files | 13 |
-| Test files | 5 |
-<!-- END:README-PACKAGE_INFO -->
-
-## Public API
-
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-15T19:25:43+00:00 source=src-python-init -->
-- `(dynamic)`
-<!-- END:README-PUBLIC_API -->
+License: Apache-2.0.
