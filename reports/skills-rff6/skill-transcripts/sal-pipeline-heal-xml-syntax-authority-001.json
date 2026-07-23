@@ -1,0 +1,114 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-sal-pipeline-heal-xml-syntax-authority-001",
+  "execution_id": "ff6-sal-pipeline-heal-xml-syntax-authority-001",
+  "task_id": "AUTO-XML-FACT-AUTHORITY",
+  "skill_id": "sal-pipeline-heal",
+  "selected_skill_ids": ["sal-pipeline-heal", "ingest-spec-sal"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-SAL-XML-SYNTAX-PROMOTION-001",
+  "requested_operation": "close the controller-materialized XLIFF and UBL mandatory-fact authority gaps with live content-addressed proof",
+  "inputs": {
+    "taskcard_id": "AUTO-XML-FACT-AUTHORITY",
+    "format_id": "xliff,ubl",
+    "root_cause_id": "MANDATORY_FACT_AUTHORITY",
+    "target_stage": "authority_promotion",
+    "spec_cache_path": ".local/format-contracts/acquired/{xliff,ubl}",
+    "authority_artifacts": {
+      "SRC-XLF-002": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-UBL-002": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+    }
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/xliff.yaml",
+    "shared/sal-facts/evidence/ubl.yaml",
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/ubl.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xml-syntax-authority-001.json",
+    ".local/spec-cache/sal-facts-latest.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/xliff.yaml",
+    "shared/sal-facts/evidence/ubl.yaml",
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/ubl.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xml-syntax-authority-001.json"
+  ],
+  "facts_promoted": [
+    "SAL-XLIFF-10A6F1FB1C146A18",
+    "SAL-UBL-50613DF5EFE944E0",
+    "SAL-UBL-6D5AF510AAF4874B",
+    "SAL-UBL-87F7B313CE24D408"
+  ],
+  "assertion_design": {
+    "xliff": [
+      "exact core target namespace",
+      "qualified element-form policy",
+      "single xliff document root"
+    ],
+    "ubl": [
+      "all 91 maindoc XSD namespaces derived from exact archive member identities",
+      "all 91 maindoc schemas require qualified elements",
+      "CBC namespace, qualified elements, exact datatype imports, and 1105-element inventory",
+      "UDT namespace, 20 simple-content types, and 7 restriction definitions"
+    ]
+  },
+  "outputs": {
+    "xliff": {
+      "fact_count": 31,
+      "verified_count": 31,
+      "promotion_valid_count": 31,
+      "manifest_sha256": "10a0a91262328f900fc722dac63ae6909e106d51ebf8a3dbf468207bbcf84462",
+      "store_sha256": "d0856a8c662242b64b094fb73b6e865195e43c138a03b144cb87a9b741d8a941",
+      "receipt_sha256": "800ac53e8b541b9cfeccaa4abe43b8486cff982d5815deacced0d52b8d185f62",
+      "receipt_result": "PASS"
+    },
+    "ubl": {
+      "fact_count": 34,
+      "verified_count": 34,
+      "promotion_valid_count": 34,
+      "manifest_sha256": "b9cc50e93cb053971efaf96172cd91cd2d9ff8d46ae8a3024b66b614038d40e6",
+      "store_sha256": "1efe0b967ba828dbf9c87255d9e58235fabc39c3807831e9a61ee69244607f4f",
+      "receipt_sha256": "19ee2eba1ccf61e286fe8922e5af3a563d55de932cecffc102429862c5c150b1",
+      "receipt_result": "PASS"
+    }
+  },
+  "tests_run": [
+    "dry verifier replay for XLIFF: PASS",
+    "dry verifier replay for UBL: PASS",
+    "applied content-addressed verifier replay for XLIFF: PASS",
+    "applied content-addressed verifier replay for UBL: PASS",
+    "all 31 XLIFF facts pass live promotion closure",
+    "all 34 UBL facts pass live promotion closure",
+    "combined SAL cache regeneration and drift check: PASS",
+    "SAL verifier, seeder, merge, and controller regressions: 67 passed"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "complete_manifest_coverage": "PASS",
+    "literal_status_edit_not_used": "PASS",
+    "claim_manifest_tool_authority_closure_live": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "no_product_source_mutation": "PASS"
+  },
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": [
+    "XLIFF and UBL contracts must be regenerated because verified proof records changed their SAL store digests."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "verdict": "PROCEED",
+  "final_outcome": "XLIFF_AND_UBL_XML_SYNTAX_FACTS_PROMOTED_WITH_LIVE_CONTENT_ADDRESSED_AUTHORITY_PROOF",
+  "timestamp": "2026-07-24T04:05:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -803,3 +803,24 @@ facts:
     xpath: .
     attribute: startMode
     expected: [core]
+- fact_id: SAL-XLIFF-10A6F1FB1C146A18
+  claim_sha256: 07219dd9ab516d8e9c9ad12ff6219a9588baaab9bd3eaec8252ebfbb781ddd39
+  assertions:
+  - assertion_id: core-xml-target-namespace
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:document:2.0]
+  - assertion_id: core-qualified-elements
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: elementFormDefault
+    expected: [qualified]
+  - assertion_id: core-document-root
+    target: core
+    kind: xml_xpath_count
+    xpath: "./xs:element[@name='xliff']"
+    expected: 1
+    namespaces: *xsd_namespaces

@@ -970,3 +970,71 @@ facts:
     pattern: 'xsd/maindoc/UBL-[^/]+-2\.3\.xsd'
     expected_count: 91
     expected_names_sha256: f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2
+- fact_id: SAL-UBL-50613DF5EFE944E0
+  claim_sha256: 836fe566c55f9db372f61161b58263c969667fd53c7dfc39735ed5080be84641
+  assertions:
+  - assertion_id: exact-91-maindoc-qualified-namespaces
+    target: package
+    kind: archive_xml_root_attributes_match
+    pattern: 'xsd/maindoc/UBL-(?P<document>[A-Za-z0-9]+)-2\.3\.xsd'
+    attribute: targetNamespace
+    expected_template: 'urn:oasis:names:specification:ubl:schema:xsd:{document}-2'
+    expected_count: 91
+  - assertion_id: exact-91-maindoc-qualified-elements
+    target: package
+    kind: archive_xml_root_attributes_match
+    pattern: 'xsd/maindoc/UBL-(?P<document>[A-Za-z0-9]+)-2\.3\.xsd'
+    attribute: elementFormDefault
+    expected_template: qualified
+    expected_count: 91
+- fact_id: SAL-UBL-6D5AF510AAF4874B
+  claim_sha256: cb95e81173010d5196afbe47c6382a5a3f04c284979f3d786541351d25a912b6
+  assertions:
+  - assertion_id: cbc-target-namespace
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2]
+  - assertion_id: cbc-qualified-elements
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: elementFormDefault
+    expected: [qualified]
+  - assertion_id: cbc-qualified-and-unqualified-type-imports
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: "./xs:import"
+    attribute: namespace
+    expected:
+    - urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2
+    - urn:oasis:names:specification:bdndr:schema:xsd:UnqualifiedDataTypes-1
+    namespaces: *xsd_namespaces
+  - assertion_id: cbc-element-type-inventory
+    target: cbc
+    kind: xml_xpath_count
+    xpath: "./xs:element"
+    expected: 1105
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-87F7B313CE24D408
+  claim_sha256: fc8156344087ea8a601ea095f4021442533fbed516f3e3d42ddb76a93c262f21
+  assertions:
+  - assertion_id: udt-target-namespace
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:bdndr:schema:xsd:UnqualifiedDataTypes-1]
+  - assertion_id: udt-simple-content-inventory
+    target: udt
+    kind: xml_xpath_count
+    xpath: ".//xs:simpleContent"
+    expected: 20
+    namespaces: *xsd_namespaces
+  - assertion_id: udt-restriction-inventory
+    target: udt
+    kind: xml_xpath_count
+    xpath: ".//xs:restriction"
+    expected: 7
+    namespaces: *xsd_namespaces
