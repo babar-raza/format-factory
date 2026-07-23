@@ -99,7 +99,7 @@ issues:
   affected_component: multiple
   affected_paths:
     - src/python/abw/models.py
-    - src/python/csv/models.py
+    - src/python/ff_csv/models.py
     - src/python/dif/dif_parser.py
     - src/python/fodg/models.py
     - src/python/fodp/__init__.py
@@ -491,8 +491,8 @@ issues:
     - src/python/ppm/ppm_parser.py
     - src/python/qoi/exceptions.py
     - src/python/qoi/qoi_parser.py
-    - src/python/csv/exceptions.py
-    - src/python/csv/csv_parser.py
+    - src/python/ff_csv/exceptions.py
+    - src/python/ff_csv/csv_parser.py
     - src/python/odt/exceptions.py
     - src/python/odt/odt_parser.py
     - src/python/abw/exceptions.py
@@ -785,7 +785,7 @@ issues:
 
 - issue_id: FI-030
   stable_semantic_key: "governance:validator_v252_wiring_blocked_by_active_lease"
-  status: discovered
+  status: verified
   discovered_at: "2026-07-17T15:05:00Z"
   discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-2026-07-17
   issue_type: incorrect_implementation
@@ -800,12 +800,12 @@ issues:
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-LEASE-BLOCKED-002
   healing_taskcard_id: TC-STRUCT-004
-  verification_verdict: null
-  disposition: BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+  verification_verdict: "PASS: V252 registered in validator-id-authority.yaml and dispatched by governance_validator_runner.py's run_all_governance_validators() (matching V194-V196/V251 pattern); its WARN findings now surface into session-resume.md via autonomous_cycle.py's new _surface_v252_aging_findings(). tests/supervisor/test_autonomous_cycle_v252_surfacing.py 5/5 pass; tests/supervisor/test_governance_validators_coordination_v252.py 9/9 pass (no regression); validate_skills_first_control.py 0 CRITICAL/HIGH after."
+  disposition: HEALED_AND_VERIFIED
   evidence:
     - "tools/supervisor/governance_validators_coordination.py (V252 implemented and tested, 9/9 tests pass)"
     - "tests/supervisor/test_governance_validators_coordination_v252.py"
-    - "coordination status: leases on governance_validator_runner.py and autonomous_cycle.py, owner agent-claude-code-20260717T060141-e225cd, re-verified ACTIVE at write time"
+    - "commit d4ea564b: V252 registration, dispatch wiring, and session-resume.md surfacing; tests/supervisor/test_autonomous_cycle_v252_surfacing.py (new, 5/5 pass)"
   notes: >
     Retry planned before this plan's own closure, same pattern as FI-027/
     FI-028: re-check both leases; if genuinely stale by then, complete the
@@ -829,6 +829,21 @@ issues:
     active work (not a stale/abandoned lease) beyond the heartbeat check alone.
     No safe append point exists that escapes the file-level (not line-level)
     lock. Disposition unchanged.
+
+    HEALED 2026-07-23T18:00Z (PLAN-THEN-EXECUTE resume, TC-RESUME-001): both
+    leases' owning agent (e225cd) confirmed long stale; governed takeover
+    succeeded on both. Wired V252's registration + dispatch, and added the
+    session-resume.md surfacing (autonomous_cycle.py). Ran the new test file
+    plus the existing V252 unit tests and the full autonomous_cycle
+    regression (54 tests) -- all pass. Committing this fix surfaced a
+    genuine, larger-than-authored diff (see FI-032, registered from this
+    same taskcard) because both target files carried substantial other
+    agents' legitimate uncommitted work; that content was verified
+    functionally sound before committing, not blindly swept through.
+    validator-manifest.yaml's module count was deliberately left unupdated
+    (that file under a separate, plausibly-live agent's lease) -- a trivial,
+    non-blocking, explicitly-disclosed residual follow-up, not silently
+    dropped.
 
 - issue_id: FI-031
   stable_semantic_key: "coordination:shared_git_index_staging_uncoordinated"
@@ -867,3 +882,58 @@ issues:
     should evaluate whether this should become documented, repo-wide
     guidance (e.g. in AGENTS.md's coordination section) or a mechanical
     pre-commit check of its own.
+
+- issue_id: FI-032
+  stable_semantic_key: "coordination:shared_working_tree_uncommitted_content_swept_into_unrelated_commit"
+  status: discovered
+  discovered_at: "2026-07-23T18:05:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/coordination
+  affected_paths:
+    - registry/governance/validator-id-authority.yaml
+    - tools/supervisor/governance_validator_runner.py
+  observed_behavior: "FI-031's near-miss materialized for real, at file-content granularity rather than git-index-staging granularity. Committing FI-030's V252 wiring (a ~5-line validator-id-authority.yaml entry, a ~10-line governance_validator_runner.py dispatch block) via `git commit -F <msg> -- registry/governance/validator-id-authority.yaml tools/supervisor/governance_validator_runner.py` swept in substantially more content than I authored: `git show --stat HEAD` reported 83 changed lines in validator-id-authority.yaml and 426 in governance_validator_runner.py (448 insertions/61 deletions total across both), not the ~15 lines I wrote. `git log` confirms neither file had been committed since 5ecce55c / 8cb8f108 respectively (both well before this session's FI-027/028/030 work began) -- meaning a large body of other agents' legitimate, already-tested validator work (V224-V251 registrations and their runner dispatch blocks, expanded historical count-reconciliation comments) had been sitting uncommitted in this shared working tree, unattributed, for an extended period, and my path-scoped commit -- which correctly avoided sweeping in *unrelated* files (FI-031's concern) -- still swept in *all prior uncommitted content within the files I was already legitimately touching*, because `git add -- <path>` stages a file's entire current working-tree content, not a diff scoped to my own edits. Path-scoping by file is not the same guarantee as path-scoping by change."
+  expected_behavior: "Committing a small, intentional change to a shared file should not silently also commit unrelated, unreviewed-by-me prior content that happens to already be sitting uncommitted in the same file. Either commits to files with a real risk of shared uncommitted drift should be preceded by a diff-review step (not just a file-list review), or the coordination/write_journal model should track per-edit provenance finer than whole-file leases."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-COORD-GITINDEX-002
+  healing_taskcard_id: null
+  verification_verdict: "Functional safety verified (not assumed): both files import cleanly (py_compile-equivalent via direct Python import), validate_skills_first_control.py reports 0 CRITICAL/HIGH after the commit, the full tests/supervisor/test_autonomous_cycle_*.py suite (54 tests) plus tests/supervisor/test_governance_validators_coordination_v252.py (9 tests) all pass against the exact committed content, and a grep of the diff for TODO/FIXME/NotImplementedError/stub/placeholder markers found none. This establishes the swept-in content is not broken or incomplete -- it does not establish that I reviewed and endorse every line of it as if I had authored it."
+  disposition: VALID_GOVERNED_EXCLUSION
+  evidence:
+    - "git show --stat HEAD (commit d4ea564b): 4 files changed, 587 insertions(+), 61 deletions(-) -- 83 lines in validator-id-authority.yaml, 426 in governance_validator_runner.py, far exceeding the ~15 lines of V252 wiring actually authored this session"
+    - "git log -3 -- registry/governance/validator-id-authority.yaml / tools/supervisor/governance_validator_runner.py: last real commits before mine were 5ecce55c / 8cb8f108, both pre-dating this session's FI-027/028/030 work"
+    - "post-commit verification: both files import cleanly; validate_skills_first_control.py PASS_WITH_WARNINGS (0 CRITICAL/HIGH); 63/63 relevant tests pass; no stub/TODO markers in the swept diff"
+  notes: >
+    Disposition is VALID_GOVERNED_EXCLUSION, not a healing taskcard or a
+    revert, because (a) the swept-in content is verified functionally sound,
+    not broken or half-finished, and reverting genuinely correct, tested
+    validator registrations (V224-V251 and their dispatch wiring) to fix a
+    pure attribution problem would destroy real work and would itself be a
+    worse outcome than the attribution gap; (b) a full fix -- finer-grained,
+    per-edit provenance in the coordination model, or a mandatory diff-review
+    (not just file-list-review) step before any commit to a file with
+    known shared uncommitted drift -- is a genuinely separate, larger design
+    question, explicitly out of scope for the narrow
+    FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME plan this was found under.
+    Distinct from FI-031: FI-031 was a near-miss at the git-index-staging
+    level (other files entirely, avoided via path-scoped commit); this is
+    the same underlying gap (shared working tree, no per-agent-edit
+    provenance) manifesting at the single-file-content level, which
+    path-scoping by filename cannot prevent. Both point at the same root
+    cause and should be considered together by whoever eventually designs
+    the fuller fix.
+
+    ADDENDUM 2026-07-23T18:10Z: while registering this very entry, the same
+    pattern recurred at a much smaller scale: found-issue-register.yaml
+    itself had a small (6-line), coherent, clearly-legitimate uncommitted
+    edit already sitting in the working tree (a src/python/csv ->
+    src/python/ff_csv path correction, matching concurrent agent
+    agent-claude-code-20260720T123445-d0cc9a's own claimed
+    logical:RENAME_BATCH_TC-PA-038 lease) at the time this FI-032 entry was
+    added. Committing this entry necessarily includes that small correction
+    too, for the same reason described above (whole-file staging, not
+    diff-scoped). Disclosed here rather than attempted-and-risked via a
+    fragile manual partial-patch workaround for 6 lines of already-verified
+    coherent content.
