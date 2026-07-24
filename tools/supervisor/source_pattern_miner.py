@@ -20,6 +20,22 @@ from typing import Any
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+_CROSS_FORMAT_CONVERTER_RE = re.compile(r"^[a-z0-9]+_to_[a-z0-9]+$")
+
+
+def _is_cross_format_converter(stem: str, format_id: str) -> bool:
+    """True for this format's own {format_id}_to_{other}.py converter glue files.
+
+    These legitimately live under the format's own source directory but name
+    a *different* format in the filename -- mining them for "{format_id}'s own
+    implementation patterns" would leak the other format's terminology into
+    results, violating the format-isolation guarantee this module promises."""
+    if not _CROSS_FORMAT_CONVERTER_RE.match(stem):
+        return False
+    prefix = f"{format_id}_to_"
+    return stem.startswith(prefix) and stem != prefix.rstrip("_")
+
+
 def _load_source_chunks(format_id: str) -> list[dict[str, str]]:
     """Load source files for the given format as text chunks."""
     chunks: list[dict[str, str]] = []
@@ -29,6 +45,8 @@ def _load_source_chunks(format_id: str) -> list[dict[str, str]]:
             continue
         for ext in ("*.cs", "*.py"):
             for p in base.rglob(ext):
+                if _is_cross_format_converter(p.stem, format_id):
+                    continue
                 try:
                     text = p.read_text(encoding="utf-8", errors="replace")
                     chunks.append({

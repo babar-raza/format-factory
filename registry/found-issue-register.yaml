@@ -1074,3 +1074,31 @@ issues:
     regression, spin off a dedicated FI-0xx + taskcard"), matching the
     session's Root-Cause Repair standard (strongest safe bounded repair,
     verified via focused regression, not deferred as a mere classification).
+
+- issue_id: FI-036
+  stable_semantic_key: "python:format_isolation_broken_by_cross_format_converter_filename:source_pattern_miner"
+  status: verified
+  discovered_at: "2026-07-24T14:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/source_pattern_miner.py
+  affected_paths:
+    - tools/supervisor/source_pattern_miner.py
+  observed_behavior: "TC-FI033-001 triage traced tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_format_isolation to a real logic defect: _load_source_chunks(format_id) walks every *.py/*.cs under src/{net,python}/{format_id}/ with no filtering. This repo's cross-format converters follow a repo-wide {format_id}_to_{other}.py naming convention and legitimately live inside their SOURCE format's own directory (e.g. src/python/fods/fods_to_fodt.py). Mining 'fods' therefore returned fods_to_fodt.py, whose chunk id contains the substring 'fodt' -- violating the module's own stated guarantee (docstring: 'Format namespace is enforced: fods query never returns fodt chunks')."
+  expected_behavior: "Mining format_id's own implementation patterns should exclude that format's cross-format converter glue files (which by definition reference a different format's terminology), matching the module's documented format-isolation guarantee."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FORMAT-ISOLATION-001
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PASS: tests/supervisor/acceleration/test_r113_source_pattern_miner.py 5/5 pass after excluding {format_id}_to_*.py converter files from the mining corpus."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "tests/supervisor/acceleration/test_r113_source_pattern_miner.py: 1 failed/4 passed (before) -> 5 passed (after)"
+    - "confirmed naming convention repo-wide: ls src/python/fods/*.py shows 12 fods_to_*.py converter files"
+    - "py_compile clean after fix"
+  notes: >
+    Found during TC-FI033-001's individual root-cause triage of the FI-033
+    hardening addendum. Classified as (a) REAL regression per the addendum's
+    own Repair Loop, fixed immediately (added _is_cross_format_converter()
+    filter to _load_source_chunks(), matching the {fmt}_to_{other}.py
+    convention already established repo-wide for dogfood-export converters).
