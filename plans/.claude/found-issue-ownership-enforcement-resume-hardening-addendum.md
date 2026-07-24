@@ -319,3 +319,12 @@ another concurrent agent on one of the FI-034 files at commit time — resolvabl
 retrying later, not a hard external gate (the only real TRUE_EXTERNAL_GATEs per `CLAUDE.md` —
 git push credentials, Gate 11 execution by Babar Raza, package-publication credentials — do not
 apply to this addendum's work).
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-24T14:22:40.788186+00:00"
+  locked_by: "5cafc4219dc7"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
