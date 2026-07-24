@@ -17,6 +17,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 ORACLE_ROOT = REPO_ROOT / "oracle" / "formats"
 REPORTS_DIR = REPO_ROOT / "oracle" / "reports"
+ORACLE_REGISTRY = REPO_ROOT / "oracle" / "registry" / "format-oracle-registry.yaml"
 
 BLOCKING_AUTHORITY_CLASSES = {
     "AI_DRAFT_UNVERIFIED",
@@ -24,6 +25,32 @@ BLOCKING_AUTHORITY_CLASSES = {
     "REJECTED",
     "UNKNOWN",
 }
+
+
+def load_registry_status(registry_path: Path = ORACLE_REGISTRY) -> dict[str, str]:
+    """Read the authoritative oracle status per format from the oracle registry.
+
+    `oracle/registry/format-oracle-registry.yaml` is the single source of truth for
+    oracle status (TC-PA-031/TC-PA-041). Its `product_oracle_status` is what the
+    blocking oracle validators read; the package `status:` mirror was a duplicate with
+    no producer and was removed. Coverage now derives status FROM the registry so a
+    reverted/re-onboarded package can no longer publish a false-green `verified_formats`.
+
+    Returns {format_id: product_oracle_status}.
+    """
+    if not registry_path.exists():
+        return {}
+    try:
+        registry = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+    except Exception as e:  # pragma: no cover - defensive
+        print(f"WARNING: could not load oracle registry {registry_path}: {e}", file=sys.stderr)
+        return {}
+    status: dict[str, str] = {}
+    for entry in (registry.get("format_oracles") or []):
+        fid = entry.get("format_id")
+        if fid:
+            status[fid] = entry.get("product_oracle_status", "UNKNOWN")
+    return status
 
 
 def load_all_oracle_packages(oracle_root: Path) -> dict[str, dict]:
@@ -80,8 +107,14 @@ def _load_run_summary(fmt_id: str) -> dict:
     return {}
 
 
-def compute_format_coverage(fmt_id: str, pkg: dict) -> dict:
-    """Return per-format metrics dict."""
+def compute_format_coverage(fmt_id: str, pkg: dict, registry_status: dict[str, str] | None = None) -> dict:
+    """Return per-format metrics dict.
+
+    `status` is sourced from the authoritative registry (`registry_status`), never from
+    the oracle-package.yaml mirror. If the format is absent from the registry the status
+    is reported as UNKNOWN rather than trusting a package-authored value.
+    """
+    registry_status = registry_status or {}
     valid_cases: list[dict] = pkg.get("valid_cases", [])
     invalid_cases: list[dict] = pkg.get("invalid_cases", [])
     roundtrip_cases: list[dict] = pkg.get("roundtrip_cases", [])
@@ -95,7 +128,7 @@ def compute_format_coverage(fmt_id: str, pkg: dict) -> dict:
 
     return {
         "format_id": fmt_id,
-        "status": pkg.get("status", "UNKNOWN"),
+        "status": registry_status.get(fmt_id, "UNKNOWN"),
         "total_valid_cases": len(valid_cases),
         "total_invalid_cases": len(invalid_cases),
         "total_roundtrip_cases": len(roundtrip_cases),
@@ -140,9 +173,12 @@ def main() -> None:
     packages = load_all_oracle_packages(ORACLE_ROOT)
     print(f"Loaded {len(packages)} oracle packages.", file=sys.stderr)
 
+    registry_status = load_registry_status()
+    print(f"Loaded {len(registry_status)} registry status entries (authoritative).", file=sys.stderr)
+
     coverage: dict[str, dict] = {}
     for fmt_id, pkg in packages.items():
-        coverage[fmt_id] = compute_format_coverage(fmt_id, pkg)
+        coverage[fmt_id] = compute_format_coverage(fmt_id, pkg, registry_status)
 
     total_formats = len(coverage)
     total_cases = sum(m["total_cases"] for m in coverage.values())
