@@ -1044,3 +1044,33 @@ issues:
     "whoever finds a problem owns it -- at minimum, registers it" rule:
     this is exactly the kind of large, real, easily-deferred discovery that
     rule exists to prevent from being silently dropped.
+
+- issue_id: FI-035
+  stable_semantic_key: "python:unencoded_read_text_windows_decode_crash:autonomous_task_generator"
+  status: verified
+  discovered_at: "2026-07-24T13:40:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/autonomous_task_generator.py
+  affected_paths:
+    - tools/supervisor/autonomous_task_generator.py
+  observed_behavior: "TC-FI033-001 triage (FI-033 hardening addendum) traced all 14 failures in tests/supervisor/test_autonomous_task_generator.py to a single root cause: line ~1729's `_SAL_FACTS_PATH.read_text()` call with no `encoding=` argument. On this Windows machine, Python's platform-default encoding is cp1252; the target file (.local/sal-output/sal-facts-latest.json, 10.8MB, real spec-extracted content) contains UTF-8 bytes outside the cp1252 codepage, raising `UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 292296` on every call. Unlike the two sibling calls immediately above it (load_excluded_gap_ids, load_selected_gap_ids), this one line was not wrapped in try/except, so the exception propagates out of generate_task_candidates() uncaught -- not just a test artifact, this breaks the function for any real invocation on Windows (confirmed via git blame: present unchanged since commit f3e492ad, 2026-06-25)."
+  expected_behavior: "generate_task_candidates() should read the SAL-facts file with explicit UTF-8 encoding (matching its actual content) and should not crash if the file is temporarily malformed or mid-write, consistent with the defensive try/except pattern already used by its two sibling calls a few lines above."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-ENCODING-WINDOWS-001
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PASS: tests/supervisor/test_autonomous_task_generator.py went from 14 failed/8 passed to 22/22 passed after adding encoding=\"utf-8\" and a try/except guard (matching sibling calls) around the read_text() + json.loads() call."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "tests/supervisor/test_autonomous_task_generator.py: 14 failed/8 passed (before) -> 22 passed (after)"
+    - "git blame tools/supervisor/autonomous_task_generator.py: unencoded read_text() present since f3e492ad (2026-06-25), never fixed"
+    - "py_compile clean after fix"
+  notes: >
+    Found during TC-FI033-001's individual root-cause triage of the FI-033
+    hardening addendum (65 not-yet-classified tests/supervisor/ failures).
+    Classified as (a) REAL regression, not repo-state drift -- fixed
+    immediately per the addendum's own Repair Loop ("if triage finds a real
+    regression, spin off a dedicated FI-0xx + taskcard"), matching the
+    session's Root-Cause Repair standard (strongest safe bounded repair,
+    verified via focused regression, not deferred as a mere classification).

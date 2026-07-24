@@ -1725,8 +1725,14 @@ def generate_task_candidates(
         pass
 
     # Lane 6: gap-ledger is PRIMARY; hardcoded goals demoted to fallback (missing fns only).
-    # TC-SA-HEAL-006: require spec_facts for formats with â‰¥15 SAL facts (MIN_FACTS_T=15).
-    _req_sf = _SAL_FACTS_PATH.exists() and any(len(e.get("spec_facts", [])) >= 15 for e in json.loads(_SAL_FACTS_PATH.read_text()).get("results", []))
+    # TC-SA-HEAL-006: require spec_facts for formats with >=15 SAL facts (MIN_FACTS_T=15).
+    _req_sf = False
+    try:
+        if _SAL_FACTS_PATH.exists():
+            _sal_data = json.loads(_SAL_FACTS_PATH.read_text(encoding="utf-8"))
+            _req_sf = any(len(e.get("spec_facts", [])) >= 15 for e in _sal_data.get("results", []))
+    except Exception:
+        pass
     gap_ledger_goals, _spec_grounded_available = _load_gap_ledger_goals(
         require_spec_facts=_req_sf,
         exclude_gap_ids=_excluded_gap_ids,
