@@ -51,10 +51,43 @@ an isolated `git worktree` at commit `63733c3a`) plus `registry/found-issue-regi
 
 | TC-ID | Status |
 |-------|--------|
-| TC-FI034-001 | not_attempted |
-| TC-FI034-002 | not_attempted |
-| TC-FI034-003 | not_attempted |
-| TC-FI033-001 | partially_done |
+| TC-FI034-001 | completed_verified |
+| TC-FI034-002 | completed_but_weakly_verified |
+| TC-FI034-003 | completed_verified |
+| TC-FI033-001 | completed_verified |
+
+### Execution Log (2026-07-24)
+
+- **TC-FI034-001**: all 15 coordination-package files committed (`b2d9f946`), verified via
+  `test_coordination_foundation.py` + `test_coordination_preflight_gate.py` (46/46 pass).
+- **TC-FI034-002**: 3/5 files committed (`9788abee` manifest, `05769e22` ext5+import_hygiene,
+  `6bf1fc65` coordination_bridge). 2/5 (`skill_gate_bridge.py`,
+  `governance_validators_converter_compat.py`) remain genuinely blocked — owner
+  `agent-claude-code-20260717T060141-e225cd` confirmed continuously, actively working across
+  3 separate authoritative `coordination takeover` attempts over ~1 hour (heartbeat verified
+  advancing in real time). Marked `completed_but_weakly_verified`, not `completed_verified`,
+  precisely because of this honest residual — see FI-034's register entry for the full
+  evidence chain and the exact retry condition for a future session.
+- **TC-FI034-003**: fresh `git worktree` proof at HEAD confirms `import coordination` (full
+  package + hooks) and the 3 committed FI-034/040 modules succeed with zero manual file
+  copying. The 2 still-deferred files correctly show as missing (expected, not a surprise
+  discovery) — and the proof additionally surfaced a concrete, stronger finding:
+  `governance_validators_import_hygiene.py` hard-imports `skill_gate_bridge`, so that one
+  deferred file is a real fresh-checkout break, not just a nice-to-have. Documented in
+  FI-034's evidence.
+- **TC-FI033-001**: all 68 originally-failing tests individually triaged via 7 parallel
+  read-only investigation batches (not a sample). 6 real regressions found, fixed, and
+  independently re-verified: FI-035 (`ec5a3a18`), FI-036 (`8c0d4176`), FI-037 (`401f00d9`),
+  FI-039 (`0bf01a41`), FI-040 (`0bf01a41`, same commit), FI-041 (`cd8a586a`). 1 real-but-separate
+  maintenance action registered without action: FI-038 (V226 STALE install-proof manifest).
+  The remaining ~55 confirmed as real-repo-state drift from concurrent multi-agent activity or
+  brittle/stale test expectations superseded by later deliberate commits — full breakdown in
+  FI-033's register entry.
+
+Also discovered and closed along the way (not originally-scoped taskcards, registered per the
+standing found-issue-ownership rule and fixed immediately since each was small, safe, and
+independently verifiable): FI-035, FI-036, FI-037, FI-039, FI-040, FI-041. FI-038 registered,
+deliberately not actioned (separate maintenance scope).
 
 ### TC-FI034-001 — Commit the coordination package core (15 files)
 
