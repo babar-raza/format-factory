@@ -982,3 +982,65 @@ issues:
     the "Tier B" triage-not-repair bar for findings outside the discovering
     plan's own scope described (but never implemented as enforced code) in
     the parent mission's design notes.
+
+- issue_id: FI-034
+  stable_semantic_key: "git:coordination_package_and_several_validator_modules_never_committed"
+  status: discovered
+  discovered_at: "2026-07-24T16:00:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-2026-07-17
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/coordination
+  affected_paths:
+    - tools/supervisor/coordination/__init__.py
+    - tools/supervisor/coordination/__main__.py
+    - tools/supervisor/coordination/baselines.py
+    - tools/supervisor/coordination/doctor.py
+    - tools/supervisor/coordination/errors.py
+    - tools/supervisor/coordination/generator_guard.py
+    - tools/supervisor/coordination/hooks/__init__.py
+    - tools/supervisor/coordination/ids.py
+    - tools/supervisor/coordination/leases.py
+    - tools/supervisor/coordination/precommit.py
+    - tools/supervisor/coordination/preflight.py
+    - tools/supervisor/coordination/registry.py
+    - tools/supervisor/coordination/root.py
+    - tools/supervisor/coordination/schema.sql
+    - tools/supervisor/coordination/verbs.py
+    - tools/supervisor/concurrency/coordination_bridge.py
+    - tools/supervisor/governance_validators_converter_compat.py
+    - tools/supervisor/governance_validators_ext5.py
+    - tools/supervisor/governance_validators_import_hygiene.py
+    - tools/supervisor/skill_gate_bridge.py
+    - tools/supervisor/autonomous-cycle-output-manifest.yaml
+  observed_behavior: "Discovered as a side effect of building a `git worktree` pilot to prove FI-027/028/030 (user-requested before/after verification): reproducing FI-028's bug live in an isolated pre-fix checkout required importing `coordination.db`, which failed with `ModuleNotFoundError`/`ImportError` cascades. Root cause, confirmed via `git status --short` and `git log --all -- <path>` (zero hits, on any branch, ever): 15 files making up the ENTIRE implementation of the multi-agent coordination package (`__init__.py`, `leases.py`, `registry.py`, `preflight.py`, `root.py`, `schema.sql`, `errors.py`, `baselines.py`, `doctor.py`, `generator_guard.py`, `precommit.py`, `ids.py`, `verbs.py`, `__main__.py`, `hooks/__init__.py`) plus `tools/supervisor/concurrency/coordination_bridge.py`, four governance-validator source modules that back registered validators in `validator-id-authority.yaml` (V194-V196/V252's `governance_validators_coordination.py` companion pieces are tracked, but `governance_validators_converter_compat.py` [V251], `governance_validators_import_hygiene.py` [V249/V250], `governance_validators_ext5.py`), and `skill_gate_bridge.py` are ALL untracked (`??` in `git status`), not excluded by `.gitignore` (checked: no matching pattern), not a deliberate exclusion -- genuinely never `git add`-ed by anyone, on any branch, at any point in this repo's history. Every coordination lease, takeover, conflict-resolution, and ambient hook action performed by this session and, per `coordination status`, ~60+ other concurrent agent sessions this week, has been running entirely on code that exists ONLY in this one shared working directory's filesystem -- not in version control at all."
+  expected_behavior: "Source files backing an actively-used, safety-critical, multi-agent-relied-upon subsystem (and any governance validator registered in validator-id-authority.yaml) must be committed to git. A fresh clone, a lost/corrupted working directory, or an accidental deletion of any of these 20 files would silently and completely disable the coordination system (every lease/takeover/conflict-resolution operation this entire session depended on) and at least 5 registered governance validators, with no version-control recovery path."
+  severity: CRITICAL
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-GIT-UNTRACKED-CORE-001
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: null
+  evidence:
+    - "git status --short tools/supervisor/ | grep '^??' | grep -v __pycache__: lists all 20 files as untracked"
+    - "git log --all --oneline -- tools/supervisor/coordination/__init__.py: zero output (never committed, any branch)"
+    - "git check-ignore -v tools/supervisor/coordination/__init__.py: zero output (not a .gitignore exclusion)"
+    - "reproduced live: importing coordination.db against a git-worktree checkout (which by definition only contains committed content) fails with ImportError/ModuleNotFoundError until these files are manually copied in from the working directory"
+  notes: >
+    Disposition intentionally left null (in-flight, not yet closed) rather
+    than forced to a premature value -- per V142's existing "no disposition
+    yet is not itself a violation, provided a healing_taskcard_id or an
+    explicit in-flight status exists" logic, and matching this session's own
+    prior FI-029 precedent for a finding too consequential to disposition
+    hastily. This is explicitly NOT actioned in this session: committing
+    ~20 files spanning the entire coordination package plus several
+    governance validator modules is a large, high-blast-radius change
+    (dozens of concurrent agents currently depend on this exact code)
+    that is far outside the scope of the task that surfaced it (a
+    pilot-verification rerun of FI-027/028/030), and given this session's
+    own FI-032 lesson (whole-file commits can silently sweep in unrelated,
+    unreviewed content), committing 20 files at once needs its own
+    dedicated, careful mission -- not a rushed addition to an unrelated
+    verification task. Registered immediately regardless, per the standing
+    "whoever finds a problem owns it -- at minimum, registers it" rule:
+    this is exactly the kind of large, real, easily-deferred discovery that
+    rule exists to prevent from being silently dropped.
