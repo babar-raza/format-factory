@@ -1,0 +1,20 @@
+# Generator output manifest (TC-COORD-009, mission AGENT-COORD-2026-07-15).
+# autonomous_cycle.py performs ~20 report writes per cycle and is too risky
+# to refactor in-process; run it through the subprocess bridge instead:
+#
+#   python -m tools.supervisor.coordination guard-run \
+#     --generator-id autonomous_cycle \
+#     --manifest-file tools/supervisor/autonomous-cycle-output-manifest.yaml \
+#     -- python tools/supervisor/autonomous_cycle.py --declaration <path>
+generator_id: autonomous_cycle
+mode: exclusive
+outputs:
+  - "reports/supervisor/*"
+  - "reports/supervisor-streams/*"
+  - .supervisor/project-memory.md
+  - .supervisor/state/current-run.json
+  - .local/supervisor/next-work-items.json
+notes: >
+  Supervisor pipeline output set (post-hoc record lives at
+  reports/supervisor/supervisor-cycle-manifest.yaml). The .local path is
+  listed for documentation; runtime paths are never leased.
