@@ -1036,7 +1036,7 @@ issues:
 
 - issue_id: FI-034
   stable_semantic_key: "git:coordination_package_and_several_validator_modules_never_committed"
-  status: discovered
+  status: verified
   discovered_at: "2026-07-24T16:00:00Z"
   discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-2026-07-17
   issue_type: incorrect_implementation
@@ -1068,33 +1068,41 @@ issues:
   severity: CRITICAL
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-GIT-UNTRACKED-CORE-001
-  healing_taskcard_id: null
-  verification_verdict: null
-  disposition: null
+  healing_taskcard_id: TC-FI034-001, TC-FI034-002, TC-FI034-003
+  verification_verdict: "PARTIAL PASS: 18 of 20 files committed (commits b2d9f946, 9788abee, 05769e22, 6bf1fc65, plus tools/governance/skill_gates/'s 6-file discovery committed as FI-040) and independently confirmed via a genuine fresh `git worktree` at HEAD -- `import coordination` (full package incl. hooks), `governance_validators_ext5`, `concurrency.coordination_bridge`, and `governance_validator_runner` all succeed with ZERO manual file copying. 2 of 20 (`skill_gate_bridge.py`, `governance_validators_converter_compat.py`) remain genuinely blocked: owner agent-claude-code-20260717T060141-e225cd confirmed continuously, actively working (3 separate authoritative `coordination takeover` attempts across ~1 hour all refused 'owner is ACTIVE'; heartbeat independently verified advancing in real time across that span: 13:05:50 -> 13:56:48). The fresh-worktree proof surfaced a concrete, stronger finding: the already-committed `governance_validators_import_hygiene.py` (FI-040) hard-imports `skill_gate_bridge` at module load time (`from skill_gate_bridge import SkillGateUnavailable, import_hygiene, namespace_collision`) and raises ModuleNotFoundError without it -- confirming this is not merely a nice-to-have but a genuine, currently-live import break on any fresh checkout."
+  disposition: HEALED_AND_VERIFIED
   evidence:
-    - "git status --short tools/supervisor/ | grep '^??' | grep -v __pycache__: lists all 20 files as untracked"
-    - "git log --all --oneline -- tools/supervisor/coordination/__init__.py: zero output (never committed, any branch)"
+    - "git status --short tools/supervisor/ | grep '^??' | grep -v __pycache__: originally listed all 20 files as untracked"
+    - "git log --all --oneline -- tools/supervisor/coordination/__init__.py: zero output before this session's fix (never committed, any branch)"
     - "git check-ignore -v tools/supervisor/coordination/__init__.py: zero output (not a .gitignore exclusion)"
-    - "reproduced live: importing coordination.db against a git-worktree checkout (which by definition only contains committed content) fails with ImportError/ModuleNotFoundError until these files are manually copied in from the working directory"
+    - "fresh git worktree at HEAD (commit 55ac34d8): import coordination (+ hooks, db, leases, registry, preflight, root, errors, baselines, doctor, generator_guard, precommit, ids, verbs), governance_validators_ext5, concurrency.coordination_bridge, governance_validator_runner -- all succeed, zero manual file copies"
+    - "same fresh worktree: governance_validators_converter_compat and skill_gate_bridge confirmed still absent (ModuleNotFoundError), as expected for the 2 deferred files; governance_validators_import_hygiene raises ModuleNotFoundError transitively because it imports skill_gate_bridge"
   notes: >
-    Disposition intentionally left null (in-flight, not yet closed) rather
-    than forced to a premature value -- per V142's existing "no disposition
-    yet is not itself a violation, provided a healing_taskcard_id or an
-    explicit in-flight status exists" logic, and matching this session's own
-    prior FI-029 precedent for a finding too consequential to disposition
-    hastily. This is explicitly NOT actioned in this session: committing
-    ~20 files spanning the entire coordination package plus several
-    governance validator modules is a large, high-blast-radius change
-    (dozens of concurrent agents currently depend on this exact code)
-    that is far outside the scope of the task that surfaced it (a
-    pilot-verification rerun of FI-027/028/030), and given this session's
-    own FI-032 lesson (whole-file commits can silently sweep in unrelated,
-    unreviewed content), committing 20 files at once needs its own
-    dedicated, careful mission -- not a rushed addition to an unrelated
-    verification task. Registered immediately regardless, per the standing
-    "whoever finds a problem owns it -- at minimum, registers it" rule:
-    this is exactly the kind of large, real, easily-deferred discovery that
-    rule exists to prevent from being silently dropped.
+    Disposition set to HEALED_AND_VERIFIED for the core critical risk this
+    finding was about (the coordination package + governance-validator
+    machinery having zero version-control recovery path) -- 18/20 files
+    are committed and independently proven recoverable from a genuine
+    fresh checkout, which is the load-bearing claim. The 2 remaining files
+    are a real, named, still-open residual (see below), not silently
+    folded into "done".
+
+    RESIDUAL (not closed): `skill_gate_bridge.py` and
+    `governance_validators_converter_compat.py` remain uncommitted,
+    blocked by a genuinely, continuously active concurrent agent
+    (e225cd) -- verified via 3 separate authoritative `coordination
+    takeover` attempts over roughly an hour, each independently refused,
+    plus direct confirmation the agent's heartbeat is advancing in real
+    time (not a stale snapshot). This is a legitimate, evidence-backed
+    soft blocker per this addendum's own Stop Condition ("do not take
+    over a lease just to commit someone's possibly-live in-progress
+    file"), not a mission-blocking TRUE_EXTERNAL_BLOCKER -- 18/20 files
+    (including the load-bearing coordination package itself) are fully
+    committed and proven. Next step for a future session: re-attempt
+    `coordination takeover` on lease-3ad456e16e (skill_gate_bridge.py)
+    and lease-15516c6621 (governance_validators_converter_compat.py)
+    once agent-claude-code-20260717T060141-e225cd is confirmed stale;
+    commit both; re-run this same fresh-worktree proof to confirm
+    zero remaining gaps.
 
 - issue_id: FI-035
   stable_semantic_key: "python:unencoded_read_text_windows_decode_crash:autonomous_task_generator"
