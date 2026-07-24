@@ -151,9 +151,14 @@ skills:
   - dogfood_backend_is_format_factory_library
   - external_export_dependency_scan
   - focused_export_tests
+  - converter_compatibility_gate
+  - import_hygiene_gate
+  pre_execution_gate_command: python -m tools.governance.skill_gates.dogfood_export_gate
+    --source-format {source_format_id} --target-format {target_format_id} --target-paths
+    {exact_source_paths}
   product_track: cross_product_export
   purpose: Add one bounded export path whose write backend is another Format Factory
-    library.
+    library, for a source-target pair registered as information-model compatible.
   required_handoff_fields:
   - source_format_id
   - target_format_id
@@ -166,8 +171,17 @@ skills:
   skill_id: add-dogfood-export
   spec_qname_required: false
   status: active
-  test_paths: []
-  advisory_only: true
+  test_paths:
+  - tests/governance/test_skill_gates.py
+  # TC-PA-009 (2026-07-17): was `true`. The skill now carries pre-execution gates,
+  # so `false` is the truthful declaration.
+  # HONESTY NOTE: flipping this changes NO behaviour. `advisory_only` is parsed into
+  # SkillRecord (tools/governance/skills_first/registries.py:136) and read by nothing --
+  # `grep -rn "\.advisory_only"` across the repo returns zero consumers. The plan's
+  # TC-PA-009 step 5 claims this flip lets "governance validators block non-compliant
+  # converters"; that premise is false. Actual blocking must come from V249/V251 or the
+  # pre-commit hook. Do not cite this line as an enforcement mechanism.
+  advisory_only: false
 - command: /add-dotnet-api
   command_file: .claude/commands/add-dotnet-api.md
   idempotency: create_or_update
@@ -3497,8 +3511,15 @@ skills:
   - no_new_external_imports
   - probe_never_raises
   - product_code_ledger_validator
+  - format_name_collision_gate
+  - no_syspath_mutation
+  pre_execution_gate_command: python -m tools.governance.skill_gates.format_name_gate
+    --format-name {format_name}
   notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions.
+    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions. TC-PA-010
+    (2026-07-17) added the stdlib/popular-package name collision gate — run it BEFORE
+    creating src/python/<format>/; the defect it prevents (src/python/csv/) is
+    unfixable once code imports the package.
   product_track: foss_python
   purpose: Start a brand-new Python FOSS format codec from scratch. Produces minimum
     slice probe, load, write, tests. Uses canonical contract in playbook_contract
@@ -3513,6 +3534,7 @@ skills:
   status: active
   test_paths:
   - tests/playbook/test_task_generation.py
+  - tests/governance/test_skill_gates.py
 - command: /product-source-task
   command_file: .claude/commands/product-source-task.md
   idempotency: create_or_update
@@ -4621,7 +4643,8 @@ skills:
   product_track: format_contract
   purpose: Detect stale/missing/blocked/unreconciled/shallow contracts and emit
     machine-readable repair tasks.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - mission_id
   skill_id: refresh-format-contract
   spec_qname_required: false
   status: active
@@ -4661,7 +4684,8 @@ skills:
   product_track: format_contract
   purpose: Assess all format contracts for quality, coverage, freshness, and product
     alignment with a machine-readable next-action queue.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - mission_id
   skill_id: audit-contract-portfolio
   spec_qname_required: false
   status: active
@@ -4697,7 +4721,8 @@ skills:
   product_track: format_contract
   purpose: Backfill contracts for the whole portfolio through the governed skill chain
     with BLOCKED_NEEDS_AUTHORITY states for thin formats.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - mission_id
   skill_id: backfill-format-contracts
   spec_qname_required: false
   status: active

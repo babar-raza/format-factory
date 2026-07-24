@@ -1162,3 +1162,72 @@ issues:
     running a full fleet-wide regeneration pipeline. A future session
     should run it and re-verify test_governance_closure_pilots.py
     afterward.
+
+- issue_id: FI-039
+  stable_semantic_key: "governance:skill_registry_missing_required_handoff_fields:3_skills"
+  status: verified
+  discovered_at: "2026-07-24T15:10:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: .supervisor/skill-registry.yaml
+  affected_paths:
+    - .supervisor/skill-registry.yaml
+  observed_behavior: "TC-FI033-001 triage traced tests/supervisor/test_validate_skill_registry.py::TestRegistryValidatorPositive::test_real_registry_passes to 3 skills (refresh-format-contract, audit-contract-portfolio, backfill-format-contracts -- all created_at 2026-07-16, all portfolio/fleet-wide format_contract operations) with `required_handoff_fields: []`, which validate_registry() rejects. The same empty-required_handoff_fields defect class was already fixed for other skills at an earlier point (matching sibling fleet-wide skill portfolio-reconcile's established convention of required_handoff_fields: [mission_id] for whole-portfolio, non-single-format operations) -- these 3 were simply never given the same treatment."
+  expected_behavior: "Every active skill's required_handoff_fields should be non-empty, matching the established convention: single-format skills use [format_id] (e.g. review-format-contract, investigate-format-contract); fleet/portfolio-wide skills use [mission_id] (e.g. portfolio-reconcile)."
+  severity: LOW
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SKILL-REGISTRY-HANDOFF-001
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PASS: tests/supervisor/test_validate_skill_registry.py 13/13 pass (was 12 passed/1 failed)."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "direct validate_registry() call before fix: 3 errors ('[refresh-format-contract] required_handoff_fields is empty', same for audit-contract-portfolio, backfill-format-contracts)"
+    - "tests/supervisor/test_validate_skill_registry.py: 12 passed/1 failed -> 13 passed"
+    - "YAML validity confirmed after edit"
+  notes: >
+    Found during TC-FI033-001's individual root-cause triage of the FI-033
+    hardening addendum. Classified as (a) real registry gap, fixed
+    immediately (added required_handoff_fields: [mission_id] to all 3,
+    matching the closest established precedent for fleet-wide,
+    non-single-format skills -- portfolio-reconcile).
+
+    ADDENDUM: committing this fix swept in other legitimate uncommitted
+    content already sitting in .supervisor/skill-registry.yaml (a
+    different concurrent agent's TC-PA-009/TC-PA-010 skill-gate wiring
+    for add-dogfood-export and new-format-kickstart) -- the same
+    whole-file-staging pattern as FI-032. Verified functionally sound
+    (tests/governance/test_skill_gates.py already passing: 50/1 before
+    and after) before committing, not blindly swept through.
+
+- issue_id: FI-040
+  stable_semantic_key: "git:skill_gates_directory_never_committed"
+  status: verified
+  discovered_at: "2026-07-24T15:20:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: tools/governance/skill_gates
+  affected_paths:
+    - tools/governance/skill_gates/__init__.py
+    - tools/governance/skill_gates/converter_compat.py
+    - tools/governance/skill_gates/dogfood_export_gate.py
+    - tools/governance/skill_gates/format_name_gate.py
+    - tools/governance/skill_gates/import_hygiene.py
+    - tools/governance/skill_gates/namespace_collision.py
+  observed_behavior: "Discovered while fixing FI-039: the swept-in skill-registry.yaml content references pre_execution_gate_command entries pointing at tools/governance/skill_gates/dogfood_export_gate.py and format_name_gate.py. Checking confirmed the ENTIRE tools/governance/skill_gates/ directory (6 files) is untracked in git (git log --all: zero hits, any branch) -- the same FI-034 pattern (critical governance-gate machinery with zero version-control recovery path), just a different directory not in FI-034's original 20-file scope."
+  expected_behavior: "Same as FI-034: source files backing actively-used governance gates must be committed."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-GIT-UNTRACKED-CORE-002
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PASS: all 6 files py_compile clean; tests/governance/test_skill_gates.py 50 passed/1 skipped both before and after commit (already exercising this exact code from the working tree, confirming no functional change from adding git history)."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "git log --all -- tools/governance/skill_gates/: zero hits before this fix"
+    - "py_compile clean on all 6 files"
+    - "tests/governance/test_skill_gates.py: 50 passed/1 skipped (unchanged before/after -- confirms git-tracking-only change)"
+    - "no ACTIVE lease conflicts on any of the 6 files (1 historical lease-denied conflict record, resolved)"
+  notes: >
+    Same root cause as FI-034 (RC-GIT-UNTRACKED-CORE-001), discovered
+    independently in a different directory. Committed immediately since
+    verification was cheap and no live lease conflicts existed, unlike
+    FI-034's 2 still-deferred files.
