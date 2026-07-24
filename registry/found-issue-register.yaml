@@ -1231,3 +1231,34 @@ issues:
     independently in a different directory. Committed immediately since
     verification was cheap and no live lease conflicts existed, unlike
     FI-034's 2 still-deferred files.
+
+- issue_id: FI-041
+  stable_semantic_key: "test:sprint_executor_govblock_fixture_stale_after_mission_lock_hardening"
+  status: verified
+  discovered_at: "2026-07-24T15:35:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: tests/supervisor/test_sprint_executor_structural_govblock.py
+  affected_paths:
+    - tests/supervisor/test_sprint_executor_structural_govblock.py
+  observed_behavior: "TC-FI033-001 triage found test_ordinary_stop_reason_still_overrides_and_proceeds failing with sprint_calls == [] and stderr 'BLOCKED: mission lock could not be acquired'. Root cause: _patch_no_mission_lock's simulated _get_session_id() raise (a plain RuntimeError, not MissionLockConflict) used to fail-open in cmd_run_loop(); commit 8cb8f108 (TC-COORD-008, 2026-07-16) deliberately made non-conflict mission-lock errors FATAL by default (documented rationale: prevents two controllers sharing one working tree, incident R1227), with FF_COORDINATION_SOFT=1 as the explicit, documented escape hatch. The test fixture was never updated after that intentional hardening, so it now exercises the new FATAL branch instead of reaching the STOP-reason override logic (Supreme Directive override for ordinary, non-structural STOP reasons) the test exists to verify -- a real, if narrow, coverage gap: that override logic was unverified by this suite until fixed."
+  expected_behavior: "The test fixture should use the product's own documented FF_COORDINATION_SOFT=1 escape hatch to bypass mission-lock acquisition for testing purposes, so the STOP-reason override logic remains under test."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-TEST-FIXTURE-STALE-MISSIONLOCK-001
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PASS: tests/supervisor/test_sprint_executor_structural_govblock.py 7 passed/1 failed -> 8 passed. Confirms the STOP-reason override logic (the actual behavior under test) is functioning correctly -- this was a fixture staleness issue, not a functional regression in sprint_executor.py itself, which needed no code change."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "tests/supervisor/test_sprint_executor_structural_govblock.py: 7 passed/1 failed (before) -> 8 passed (after)"
+    - "git blame/log: commit 8cb8f108 (TC-COORD-008, 2026-07-16) introduced the FATAL-by-default non-conflict lock error handling; test fixture last touched Jul 14, never updated for it"
+  notes: >
+    Found during TC-FI033-001's individual root-cause triage. Classified
+    initially by the triaging agent as (a) real regression / HIGH-PRIORITY
+    ("test coverage gap"), but on investigation the underlying product
+    behavior (mission-lock FATAL-by-default) is itself correct and
+    intentional -- the fix belongs in the test fixture (use the existing
+    FF_COORDINATION_SOFT=1 escape hatch), not in sprint_executor.py.
+    Distinguishes "the behavior under test was unverified" (true, now
+    fixed) from "the behavior under test was broken" (false, confirmed
+    correct once actually exercised).

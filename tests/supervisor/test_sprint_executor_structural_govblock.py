@@ -97,6 +97,14 @@ def _patch_no_mission_lock(monkeypatch):
     def _raise(*_a, **_kw):
         raise RuntimeError("test-forced-no-mission-lock")
     monkeypatch.setattr(sprint_executor, "_get_session_id", _raise)
+    # TC-COORD-008 (2026-07-16) made non-conflict lock errors FATAL by
+    # default (return 1) to prevent two controllers sharing one tree
+    # (R1227) -- exactly what _get_session_id's raise above now triggers.
+    # FF_COORDINATION_SOFT=1 is the product's own documented escape hatch
+    # for proceeding without a lock; set it here so these tests can still
+    # reach the downstream STOP-reason logic they exist to verify, without
+    # special-casing or mocking MissionLock itself.
+    monkeypatch.setenv("FF_COORDINATION_SOFT", "1")
 
 
 class TestRunLoopHaltsOnStructuralGovBlock:
