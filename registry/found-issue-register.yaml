@@ -1102,3 +1102,63 @@ issues:
     own Repair Loop, fixed immediately (added _is_cross_format_converter()
     filter to _load_source_chunks(), matching the {fmt}_to_{other}.py
     convention already established repo-wide for dogfood-export converters).
+
+- issue_id: FI-037
+  stable_semantic_key: "python:v226_directory_vs_format_id_mismatch_csv_ff_csv"
+  status: verified
+  discovered_at: "2026-07-24T14:20:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: tools/supervisor/governance_validators_package_proof.py
+  affected_paths:
+    - tools/supervisor/governance_validators_package_proof.py
+  observed_behavior: "TC-FI033-001 triage traced all 7 failures in tests/supervisor/test_governance_closure_pilots.py to a real logic bug in V226 (validate_package_install_proof_coverage): its DRIFT check compared src/python/<dir> directory names directly against packaging/python/package-matrix.yaml's format_id values. The csv package's module deliberately lives at src/python/ff_csv/ (not src/python/csv/) to dodge stdlib `import csv` shadowing -- documented in the matrix entry itself under install_proof.known_failure.gap_id: GAP-FORENSIC-025 -- but its format_id is still `csv`. Since V226 compared directory names against format_id values (not the matrix's own module_path field, which already correctly recorded src/python/ff_csv/), it permanently reported 'src packages missing from matrix: ['ff_csv']' and set blocks_sprint=True on every single call to run_all_governance_validators, regardless of declaration content -- a real production bug (added in commit 2dd4258a), not test staleness."
+  expected_behavior: "V226's DRIFT check should compare against each matrix entry's own module_path directory name (already present in the matrix data), not format_id, since the two are allowed to differ for exactly this kind of stdlib-shadow workaround."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-V226-DIRNAME-MISMATCH-001
+  healing_taskcard_id: TC-FI033-001
+  verification_verdict: "PARTIAL PASS: direct invocation of validate_package_install_proof_coverage confirms the DRIFT false-positive is gone (no more 'ff_csv missing from matrix'). tests/supervisor/test_governance_closure_pilots.py's 7 tests still FAIL, but now for a materially different, legitimate, orthogonal reason (V226's separate STALE check -- see FI-038) -- the DRIFT bug this finding is about is confirmed fixed."
+  disposition: HEALED_AND_VERIFIED
+  evidence:
+    - "confirmed all 26 package-matrix.yaml entries have module_path; only csv's basename (ff_csv) differs from its format_id (csv)"
+    - "direct call to validate_package_install_proof_coverage before fix: 'V226 DRIFT: src packages missing from matrix: [\'ff_csv\']'; after fix: DRIFT check clears, next check (STALE) fires instead -- confirms the DRIFT logic itself is now correct"
+    - "py_compile clean after fix"
+  notes: >
+    Found during TC-FI033-001's individual root-cause triage of the FI-033
+    hardening addendum. Classified as (a) REAL regression per the addendum's
+    Repair Loop, fixed immediately (derive matrix_dirs from module_path
+    instead of format_id, with a fallback to format_id for any entry
+    missing module_path). Uncovered a second, independent, legitimate
+    finding once the false-positive was removed -- see FI-038.
+
+- issue_id: FI-038
+  stable_semantic_key: "governance:v226_stale_install_proof_manifest_23_formats"
+  status: discovered
+  discovered_at: "2026-07-24T14:35:00Z"
+  discovering_task_id: FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME-HARDING-2026-07-24
+  issue_type: incorrect_implementation
+  affected_component: reports/package-install-proof/proof-manifest.json
+  affected_paths:
+    - reports/package-install-proof/proof-manifest.json
+  observed_behavior: "After fixing FI-037 (V226's DRIFT false-positive), V226 still returns FAIL/blocks_sprint=True, now via its separate STALE check: 'V226 STALE: source changed since proof for [abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ipynb, mtlx, ndjson, nrrd, ods, odt, qoi, safetensors, sylk, toml, tsv, ubl, xcf, xliff, zst]' (23 of 26 formats). This is V226 correctly detecting that reports/package-install-proof/proof-manifest.json's recorded source-hash proofs are now stale relative to real, current source content -- source has changed substantially across this week's heavy concurrent multi-agent activity without a corresponding re-run of tools/run_package_install_proof.py."
+  expected_behavior: "The install-proof manifest should be regenerated (python tools/run_package_install_proof.py, per-format smoke tests) periodically enough that V226's STALE check does not permanently block sprints. This is not a code defect -- the validator is working exactly as designed -- it is a real, currently-true maintenance/freshness gap."
+  severity: MEDIUM
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-INSTALL-PROOF-STALE-001
+  healing_taskcard_id: null
+  verification_verdict: null
+  disposition: null
+  evidence:
+    - "tests/supervisor/test_governance_closure_pilots.py::TestGecPilot001GovernanceOnlyPass::test_no_blocks_sprint FAILED after FI-037's fix, with V226 STALE (not DRIFT) as the sole blocker"
+    - "reports/package-install-proof/proof-manifest.json exists (26 format entries) but its recorded proofs predate current source for 23 of them"
+  notes: >
+    Deliberately left disposition null / not actioned in this session:
+    regenerating install proofs for 23 formats via
+    tools/run_package_install_proof.py is a real but separate,
+    potentially slow (per-format smoke-test) maintenance action, not a
+    fix to V226's logic (which FI-037 already confirmed correct) -- out
+    of scope for a triage taskcard whose job is classification, not
+    running a full fleet-wide regeneration pipeline. A future session
+    should run it and re-verify test_governance_closure_pilots.py
+    afterward.

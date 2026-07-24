@@ -54,13 +54,22 @@ def validate_package_install_proof_coverage(
     matrix_ids = {p.get("format_id") for p in packages}
     no_spec = sorted(p.get("format_id") for p in packages if "install_proof" not in p)
 
-    # DRIFT: every shipped-shaped source package must be in the matrix with a spec
+    # DRIFT: every shipped-shaped source package must be in the matrix with a spec.
+    # Compare against each entry's own module_path directory name, not format_id --
+    # a package's format_id and its actual src/python/ directory name can legitimately
+    # differ (e.g. csv's module lives at src/python/ff_csv/ to dodge stdlib `import csv`
+    # shadowing; see GAP-FORENSIC-025). Falls back to format_id for any entry missing
+    # module_path so a genuinely-undeclared package is still caught.
+    matrix_dirs = {
+        Path(p["module_path"]).name if p.get("module_path") else p.get("format_id")
+        for p in packages
+    }
     src_python = repo / "src" / "python"
     src_formats = sorted(
         d.name for d in src_python.iterdir()
         if d.is_dir() and (d / "pyproject.toml").exists()
     ) if src_python.exists() else []
-    unmatrixed = sorted(set(src_formats) - matrix_ids)
+    unmatrixed = sorted(set(src_formats) - matrix_dirs)
     if unmatrixed or no_spec:
         problems = []
         if unmatrixed:
