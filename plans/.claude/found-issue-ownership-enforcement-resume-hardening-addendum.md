@@ -60,10 +60,19 @@ an isolated `git worktree` at commit `63733c3a`) plus `registry/found-issue-regi
 
 | TC-ID | Status |
 |-------|--------|
-| TC-FI034-001 | completed_verified |
-| TC-FI034-002 | completed_but_weakly_verified |
-| TC-FI034-003 | completed_verified |
-| TC-FI033-001 | completed_verified |
+| TC-FI034-001 | CLOSED |
+| TC-FI034-002 | EXCLUDED |
+| TC-FI034-003 | CLOSED |
+| TC-FI033-001 | CLOSED |
+
+`EXCLUDED` here means, specifically (same meaning as the parent plan's use of the same status):
+the substantive work for TC-FI034-002 is designed, and independently completable, work is
+implemented and tested (3 of 5 named files committed and verified) -- the remaining 2 files
+are blocked by a verified, evidence-backed, currently-active concurrent agent (3 separate
+authoritative `coordination takeover` attempts over ~1 hour, all refused; heartbeat confirmed
+advancing in real time), not left incomplete by omission. See the Execution Log below and
+FI-034's `registry/found-issue-register.yaml` entry for the full evidence chain and exact
+retry condition.
 
 ### Execution Log (2026-07-24)
 
