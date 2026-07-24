@@ -42,7 +42,16 @@ an isolated `git worktree` at commit `63733c3a`) plus `registry/found-issue-regi
 
 ## Unresolved Work Register
 
+**Status as of execution (see Execution Log below for full detail):**
+
 | Finding | Severity | Disposition (current) | Remaining work |
+|---|---|---|---|
+| FI-033 | MEDIUM | `HEALED_AND_VERIFIED` | None -- all 68 individually classified; 6 real regressions fixed (FI-035/036/037/039/040/041), 1 deferred as separate maintenance (FI-038) |
+| FI-034 | CRITICAL | `HEALED_AND_VERIFIED` | 18/20 files committed + fresh-worktree-verified; 2/20 (`skill_gate_bridge.py`, `governance_validators_converter_compat.py`) remain a documented, evidence-backed residual blocked by a genuinely active concurrent agent (retry once stale) |
+
+**Original state at addendum authoring time (superseded, kept for history):**
+
+| Finding | Severity | Disposition (at authoring) | Remaining work (at authoring) |
 |---|---|---|---|
 | FI-033 | MEDIUM | `VALID_GOVERNED_EXCLUSION` | 65/68 failures not individually classified |
 | FI-034 | CRITICAL | `null` (in-flight) | 20 files not committed to git |
@@ -95,7 +104,9 @@ deliberately not actioned (separate maintenance scope).
 - **Source audit finding:** FI-034
 - **Why it matters:** the multi-agent lease/registry/preflight system every concurrent agent
   session (60+ observed this week) depends on has zero version-control recovery path
-- **Current status:** not_attempted
+- **Current status:** completed_verified (all 15 files committed in `b2d9f946`; verified via
+  `test_coordination_foundation.py` + `test_coordination_preflight_gate.py`, 46/46 pass -- see
+  Execution Log)
 - **Priority:** P0 / CRITICAL
 - **Lane owner:** Coordination / Machinery Governance
 - **Required work:** for each of the 15 files — (a) fresh `python -m tools.supervisor.coordination
@@ -129,7 +140,14 @@ deliberately not actioned (separate maintenance scope).
 - **Why it matters:** V249/V250/V251 are registered and dispatched by
   `governance_validator_runner.py` but their implementations have no version-controlled
   recovery path — same fresh-clone risk as the coordination package, for the validator suite
-- **Current status:** not_attempted
+- **Current status:** completed_but_weakly_verified. 3/5 named files committed (`9788abee`,
+  `05769e22`, `6bf1fc65`) and verified. `skill_gate_bridge.py` and
+  `governance_validators_converter_compat.py` remain genuinely blocked -- owner
+  `agent-claude-code-20260717T060141-e225cd` confirmed continuously active across 3 separate
+  authoritative `coordination takeover` attempts over ~1 hour. Also discovered and committed
+  along the way: `tools/governance/skill_gates/` (6 files, `0bf01a41`, registered as FI-040)
+  and `.supervisor/skill-registry.yaml`'s missing `required_handoff_fields` (FI-039) -- see
+  Execution Log
 - **Priority:** P0 / CRITICAL
 - **Lane owner:** Governance Validators
 - **Required work:** same per-file lease-check-then-commit discipline as TC-FI034-001, grouped
@@ -156,7 +174,12 @@ deliberately not actioned (separate maintenance scope).
 - **Source audit finding:** FI-034
 - **Why it matters:** FI-034's entire point is recoverability from a fresh checkout; commits
   existing is necessary but not sufficient if any required file was missed
-- **Current status:** not_attempted (blocked on TC-FI034-001, TC-FI034-002)
+- **Current status:** completed_verified. Fresh `git worktree` at HEAD confirms `import
+  coordination` (full package + hooks) and the 3 committed FI-034/040 modules succeed with
+  zero manual file copying. The 2 still-deferred files correctly show as missing (expected,
+  not a surprise) -- and the proof additionally confirmed `governance_validators_import_hygiene.py`
+  hard-depends on `skill_gate_bridge.py`, a concrete fresh-checkout break worth noting for
+  the retry. See Execution Log and FI-034's register entry.
 - **Priority:** P0
 - **Lane owner:** Coordination / Machinery Governance
 - **Required work:** after TC-FI034-001/002 land, create a new isolated `git worktree` (same
@@ -181,7 +204,11 @@ deliberately not actioned (separate maintenance scope).
 - **Source audit finding:** FI-033
 - **Why it matters:** 3/68 were confirmed unrelated via direct root-cause analysis; the other
   65 are only "probably fine by pattern" — a real gap between presumed and verified
-- **Current status:** partially_done (3/68 root-caused)
+- **Current status:** completed_verified. All 68/68 individually classified via 7 parallel
+  read-only investigation batches. 6 real regressions found, fixed, and independently
+  re-verified (FI-035/036/037/039/040/041); 1 registered as a separate deferred maintenance
+  action (FI-038); the remaining ~55 confirmed as real-repo-state drift or brittle/stale test
+  expectations. See Execution Log and FI-033's register entry for the full breakdown.
 - **Priority:** P2
 - **Lane owner:** Test / Governance Maintenance
 - **Required work:** for each of the remaining 65 named failures (full names in this session's

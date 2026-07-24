@@ -970,19 +970,27 @@ issues:
     - "TC-FI033-001 full triage (7 parallel Explore-agent batches, 63 remaining failures + the original 3): every one classified with a quoted assertion error and identified root cause"
     - "6 real regressions found, fixed, and independently re-verified: FI-035 (autonomous_task_generator UnicodeDecodeError, 14 tests: 14F/8P -> 22P), FI-036 (source_pattern_miner format isolation, 1 test: 1F/4P -> 5P), FI-037 (V226 csv/ff_csv directory mismatch, contributes to 7 test_governance_closure_pilots.py failures), FI-039 (skill-registry missing required_handoff_fields, 1 test: 12P/1F -> 13P), FI-040 (untracked tools/governance/skill_gates/ package, 6 files), FI-041 (stale mission-lock test fixture, 1 test: 7P/1F -> 8P)"
   notes: >
-    Disposition is VALID_GOVERNED_EXCLUSION, not a healing taskcard, because
-    triaging and fixing 68 pre-existing, unrelated test failures is a
-    fundamentally separate, much larger body of work than the narrow
-    FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME plan (scoped only to
-    FI-027/028/030) was ever meant to cover, and the plan's own literal
-    Verification section only required tests/governance/ (which is clean).
-    Registered rather than silently noted in a chat response, per the
-    standing "whoever finds a problem owns it -- at minimum, registers it"
-    rule; ownership here is discharged by registration plus the causal
-    spot-checks proving non-regression, not by full remediation, matching
-    the "Tier B" triage-not-repair bar for findings outside the discovering
-    plan's own scope described (but never implemented as enforced code) in
-    the parent mission's design notes.
+    AT INITIAL REGISTRATION (2026-07-24, during the parent
+    FOUND-ISSUE-OWNERSHIP-ENFORCEMENT-RESUME plan's closure), disposition
+    was set to VALID_GOVERNED_EXCLUSION, not a healing taskcard, because
+    triaging and fixing 68 pre-existing, unrelated test failures was a
+    fundamentally separate, much larger body of work than that narrow plan
+    (scoped only to FI-027/028/030) was ever meant to cover, and its own
+    literal Verification section only required tests/governance/ (which was
+    clean). Registered rather than silently noted in a chat response, per
+    the standing "whoever finds a problem owns it -- at minimum, registers
+    it" rule; ownership was discharged at that point by registration plus
+    3 causal spot-checks proving non-regression, not by full remediation,
+    matching the "Tier B" triage-not-repair bar for findings outside the
+    discovering plan's own scope described (but never implemented as
+    enforced code) in the parent mission's design notes.
+
+    THIS RATIONALE IS SUPERSEDED (kept above only for decision-history
+    continuity, not as the current justification) by the full triage
+    below, which a dedicated successor addendum plan *did* subsequently
+    take on as in-scope work. `disposition` was upgraded to
+    `HEALED_AND_VERIFIED` accordingly -- do not read the paragraph above as
+    describing the current state.
 
     FULL TRIAGE 2026-07-24 (TC-FI033-001, FI-033/FI-034 hardening
     addendum): all 68 failures individually classified via 7 parallel
