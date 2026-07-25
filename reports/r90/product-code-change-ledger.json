@@ -43491,9 +43491,45 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_lifecycle_modes.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-VALIDATION-PROFILES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-004",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-VALIDATION-PROFILES-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1F8C3D9742EBC830,SAL-IPYNB-OBL-44E62E9AB8ECC2E3,SAL-IPYNB-OBL-679A623D14CBF763,SAL-IPYNB-OBL-CDB7DEE07F2275F7",
+      "capability_refs": [
+        "foss_python.ipynb.declared_current_validation_profiles",
+        "foss_python.ipynb.forward_compatible_warning_channel",
+        "foss_python.ipynb.attachment_reference_integrity",
+        "foss_python.ipynb.mime_bundle_shape_validation",
+        "foss_python.ipynb.complete_output_semantics",
+        "foss_python.ipynb.tag_and_source_semantics"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.validate",
+        "format_factory.ipynb.validate_notebook",
+        "format_factory.ipynb.validate_notebook_schema"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+          "state": "present",
+          "sha256": "6e8e77e1948a029520db573e1866d61b140fd5d855f6781faabab39e6de52f17"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+          "state": "present",
+          "sha256": "e222c5f5b74a5fe0a50441b44a7e46d9b6a394c9359ca8a7a6f61273c2846c7a"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_validation_profiles.py"
     }
   ],
-  "total_entries": 2768,
+  "total_entries": 2769,
   "changes": [
     {
       "file": "src/python/dif/models.py",
