@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import re
+from copy import deepcopy
 from os import PathLike
 from pathlib import Path
-from typing import Any, TextIO
+from typing import Any, NoReturn, TextIO
 
 from format_factory.core import ProbeResult, ResourceLimits
 
 from ...errors import IpynbParseError
-from ...model import IpynbDocument
+from ...model import IpynbDocument, NotebookVersion, RecoveryAction
 from ...security import effective_limits
 
 CELL_ID_PATTERN = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
@@ -110,60 +111,297 @@ def ensure_cell_id(cell: dict[str, Any], used_ids: set[str]) -> dict[str, Any]:
     return cell
 
 
+def _raise_parse(
+    code: str,
+    message: str,
+    path: tuple[str | int, ...] = (),
+) -> NoReturn:
+    raise IpynbParseError(message, code=code, context={"path": path})
+
+
+def _recover_missing(
+    mapping: dict[str, Any],
+    key: str,
+    value: Any,
+    *,
+    code: str,
+    path: tuple[str | int, ...],
+    message: str,
+    actions: list[RecoveryAction],
+) -> None:
+    if key not in mapping:
+        mapping[key] = value
+        actions.append(RecoveryAction(code, path, message))
+
+
 def _parse(
     text: str, *, mode: str, limits: ResourceLimits
-) -> dict[str, Any]:
-    if mode not in {"strict", "preservation"}:
-        raise ValueError("mode must be 'strict' or 'preservation'")
+) -> IpynbDocument:
+    if mode not in {"strict", "preservation", "recovery"}:
+        raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
     try:
         data = json.loads(text)
     except json.JSONDecodeError as exc:
-        raise IpynbParseError(f"invalid JSON: {exc}") from exc
+        raise IpynbParseError(
+            f"invalid JSON: {exc}",
+            code="IPYNB_JSON",
+            context={"line": exc.lineno, "column": exc.colno, "offset": exc.pos},
+        ) from exc
     except (RecursionError, MemoryError) as exc:
-        raise IpynbParseError("JSON complexity exceeds safe parser limits") from exc
+        raise IpynbParseError(
+            "JSON complexity exceeds safe parser limits",
+            code="IPYNB_JSON_COMPLEXITY",
+            context={"path": ()},
+        ) from exc
     if not isinstance(data, dict):
-        raise IpynbParseError("notebook root must be a JSON object")
+        _raise_parse("IPYNB_ROOT", "notebook root must be a JSON object")
     _enforce_structure(data, limits)
     if "nbformat" not in data:
-        raise IpynbParseError("missing required key: nbformat")
-    major = data.get("nbformat")
-    minor = data.get("nbformat_minor", 0)
-    if isinstance(major, bool) or not isinstance(major, int):
-        raise IpynbParseError("nbformat must be an integer")
-    if isinstance(minor, bool) or not isinstance(minor, int) or minor < 0:
-        raise IpynbParseError("nbformat_minor must be a non-negative integer")
-    if mode == "strict" and (major != 4 or minor > 5):
-        raise IpynbParseError(
-            f"strict profile supports nbformat 4.0 through 4.5, got {major}.{minor}"
+        _raise_parse(
+            "IPYNB_VERSION",
+            "missing required key: nbformat",
+            ("nbformat",),
         )
-    metadata = data.get("metadata", {})
-    raw_cells = data.get("cells", [])
-    if not isinstance(metadata, dict):
-        raise IpynbParseError("metadata must be an object")
-    if not isinstance(raw_cells, list):
-        raise IpynbParseError("cells must be an array")
+    major = data.get("nbformat")
+    if isinstance(major, bool) or not isinstance(major, int):
+        _raise_parse(
+            "IPYNB_VERSION",
+            "nbformat must be an integer",
+            ("nbformat",),
+        )
+    declared_minor = data.get("nbformat_minor")
+    if declared_minor is not None and (
+        isinstance(declared_minor, bool)
+        or not isinstance(declared_minor, int)
+        or declared_minor < 0
+    ):
+        _raise_parse(
+            "IPYNB_MINOR_VERSION",
+            "nbformat_minor must be a non-negative integer",
+            ("nbformat_minor",),
+        )
 
-    notebook = dict(data)
-    notebook["metadata"] = dict(metadata)
-    cells: list[dict[str, Any]] = []
+    declared_version = NotebookVersion(major, declared_minor)
+    notebook = deepcopy(data) if mode == "recovery" else data
+    actions: list[RecoveryAction] = []
+    if mode == "strict" and "nbformat_minor" not in notebook:
+        _raise_parse(
+            "IPYNB_MINOR_VERSION",
+            "strict mode requires nbformat_minor",
+            ("nbformat_minor",),
+        )
+    if mode == "recovery":
+        _recover_missing(
+            notebook,
+            "nbformat_minor",
+            0,
+            code="IPYNB_RECOVER_MINOR",
+            path=("nbformat_minor",),
+            message="synthesized the legacy default minor version 0",
+            actions=actions,
+        )
+        _recover_missing(
+            notebook,
+            "metadata",
+            {},
+            code="IPYNB_RECOVER_METADATA",
+            path=("metadata",),
+            message="synthesized an empty notebook metadata object",
+            actions=actions,
+        )
+        _recover_missing(
+            notebook,
+            "cells",
+            [],
+            code="IPYNB_RECOVER_CELLS",
+            path=("cells",),
+            message="synthesized an empty cell array",
+            actions=actions,
+        )
+
+    minor = notebook.get("nbformat_minor")
+    if minor is not None and (
+        isinstance(minor, bool) or not isinstance(minor, int) or minor < 0
+    ):
+        _raise_parse(
+            "IPYNB_MINOR_VERSION",
+            "nbformat_minor must be a non-negative integer",
+            ("nbformat_minor",),
+        )
+    if mode == "strict" and (
+        major != 4 or not isinstance(minor, int) or minor > 5
+    ):
+        rendered_minor = "missing" if minor is None else str(minor)
+        _raise_parse(
+            "IPYNB_UNSUPPORTED_VERSION",
+            f"strict profile supports nbformat 4.0 through 4.5, "
+            f"got {major}.{rendered_minor}",
+            ("nbformat", "nbformat_minor"),
+        )
+
+    metadata = notebook.get("metadata")
+    if mode == "strict" and "metadata" not in notebook:
+        _raise_parse(
+            "IPYNB_METADATA",
+            "strict mode requires notebook metadata",
+            ("metadata",),
+        )
+    if metadata is not None and not isinstance(metadata, dict):
+        _raise_parse(
+            "IPYNB_METADATA",
+            "metadata must be an object",
+            ("metadata",),
+        )
+    raw_cells = notebook.get("cells")
+    if mode == "strict" and "cells" not in notebook:
+        _raise_parse("IPYNB_CELLS", "strict mode requires cells", ("cells",))
+    if raw_cells is None:
+        raw_cells = []
+    if not isinstance(raw_cells, list):
+        _raise_parse("IPYNB_CELLS", "cells must be an array", ("cells",))
+
     used_ids: set[str] = set()
     for index, raw_cell in enumerate(raw_cells):
         if not isinstance(raw_cell, dict):
-            raise IpynbParseError(f"cell {index} is not a JSON object")
-        cell = dict(raw_cell)
-        cell.setdefault("cell_type", "raw")
-        cell.setdefault("source", "")
-        cell.setdefault("metadata", {})
-        if not isinstance(cell["metadata"], dict):
-            raise IpynbParseError(f"cell {index} metadata must be an object")
-        if cell["cell_type"] == "code":
-            cell.setdefault("outputs", [])
-            cell.setdefault("execution_count", None)
-        ensure_cell_id(cell, used_ids)
-        cells.append(cell)
-    notebook["cells"] = cells
-    notebook.setdefault("nbformat_minor", 0)
-    return notebook
+            _raise_parse(
+                "IPYNB_CELL",
+                f"cell {index} is not a JSON object",
+                ("cells", index),
+            )
+        cell = raw_cell
+        cell_path = ("cells", index)
+        if mode == "recovery":
+            _recover_missing(
+                cell,
+                "cell_type",
+                "raw",
+                code="IPYNB_RECOVER_CELL_TYPE",
+                path=(*cell_path, "cell_type"),
+                message="synthesized the legacy default raw cell type",
+                actions=actions,
+            )
+            _recover_missing(
+                cell,
+                "metadata",
+                {},
+                code="IPYNB_RECOVER_CELL_METADATA",
+                path=(*cell_path, "metadata"),
+                message="synthesized an empty cell metadata object",
+                actions=actions,
+            )
+            _recover_missing(
+                cell,
+                "source",
+                "",
+                code="IPYNB_RECOVER_CELL_SOURCE",
+                path=(*cell_path, "source"),
+                message="synthesized an empty cell source",
+                actions=actions,
+            )
+            if cell.get("cell_type") == "code":
+                _recover_missing(
+                    cell,
+                    "outputs",
+                    [],
+                    code="IPYNB_RECOVER_OUTPUTS",
+                    path=(*cell_path, "outputs"),
+                    message="synthesized an empty code-cell output array",
+                    actions=actions,
+                )
+                _recover_missing(
+                    cell,
+                    "execution_count",
+                    None,
+                    code="IPYNB_RECOVER_EXECUTION_COUNT",
+                    path=(*cell_path, "execution_count"),
+                    message="synthesized a null code-cell execution count",
+                    actions=actions,
+                )
+
+        cell_type = cell.get("cell_type")
+        if mode == "strict" and cell_type not in {"code", "markdown", "raw"}:
+            _raise_parse(
+                "IPYNB_CELL_TYPE",
+                f"invalid or missing cell_type {cell_type!r}",
+                (*cell_path, "cell_type"),
+            )
+        cell_metadata = cell.get("metadata")
+        if mode == "strict" and "metadata" not in cell:
+            _raise_parse(
+                "IPYNB_CELL_METADATA",
+                "strict mode requires cell metadata",
+                (*cell_path, "metadata"),
+            )
+        if cell_metadata is not None and not isinstance(cell_metadata, dict):
+            _raise_parse(
+                "IPYNB_CELL_METADATA",
+                "cell metadata must be an object",
+                (*cell_path, "metadata"),
+            )
+        source = cell.get("source")
+        if mode == "strict" and "source" not in cell:
+            _raise_parse(
+                "IPYNB_CELL_SOURCE",
+                "strict mode requires cell source",
+                (*cell_path, "source"),
+            )
+        if source is not None and (
+            not isinstance(source, (str, list))
+            or isinstance(source, list)
+            and any(not isinstance(line, str) for line in source)
+        ):
+            _raise_parse(
+                "IPYNB_CELL_SOURCE",
+                "cell source must be a string or an array of strings",
+                (*cell_path, "source"),
+            )
+        if mode == "strict" and cell_type == "code":
+            outputs = cell.get("outputs")
+            count = cell.get("execution_count")
+            if not isinstance(outputs, list):
+                _raise_parse(
+                    "IPYNB_OUTPUTS",
+                    "strict mode requires code-cell outputs to be an array",
+                    (*cell_path, "outputs"),
+                )
+            if isinstance(count, bool) or (
+                count is not None and not isinstance(count, int)
+            ):
+                _raise_parse(
+                    "IPYNB_EXECUTION_COUNT",
+                    "execution_count must be an integer or null",
+                    (*cell_path, "execution_count"),
+                )
+            if "execution_count" not in cell:
+                _raise_parse(
+                    "IPYNB_EXECUTION_COUNT",
+                    "strict mode requires code-cell execution_count",
+                    (*cell_path, "execution_count"),
+                )
+        if mode == "strict" and isinstance(minor, int) and minor >= 5:
+            cell_id = cell.get("id")
+            if (
+                not isinstance(cell_id, str)
+                or CELL_ID_PATTERN.fullmatch(cell_id) is None
+                or cell_id in used_ids
+            ):
+                _raise_parse(
+                    "IPYNB_CELL_ID",
+                    f"invalid, missing, or duplicate cell id {cell_id!r}",
+                    (*cell_path, "id"),
+                )
+            used_ids.add(cell_id)
+
+    detected_version = NotebookVersion(
+        major,
+        minor if isinstance(minor, int) and not isinstance(minor, bool) else None,
+    )
+    return IpynbDocument(
+        notebook,
+        declared_version=declared_version,
+        detected_version=detected_version,
+        recovery_actions=actions,
+    )
 
 
 def loads(
@@ -173,7 +411,7 @@ def loads(
     limits: ResourceLimits | None = None,
 ) -> IpynbDocument:
     selected = effective_limits(limits)
-    return IpynbDocument(_parse(_read_source(data, selected), mode=mode, limits=selected))
+    return _parse(_read_source(data, selected), mode=mode, limits=selected)
 
 
 def load(
@@ -183,15 +421,22 @@ def load(
     limits: ResourceLimits | None = None,
 ) -> IpynbDocument:
     selected = effective_limits(limits)
-    return IpynbDocument(
-        _parse(_read_source(source, selected), mode=mode, limits=selected)
-    )
+    return _parse(_read_source(source, selected), mode=mode, limits=selected)
 
 
 def load_ipynb(
     source: Source, *, limits: ResourceLimits | None = None
 ) -> dict[str, Any]:
-    return load(source, mode="preservation", limits=limits).raw
+    # Alpha compatibility facade: retain its characterized normalization.
+    # The production ``load``/``loads`` APIs never synthesize IDs implicitly.
+    notebook = load(source, mode="recovery", limits=limits).raw
+    used_ids: set[str] = set()
+    cells = notebook.get("cells", [])
+    if isinstance(cells, list):
+        for cell in cells:
+            if isinstance(cell, dict):
+                ensure_cell_id(cell, used_ids)
+    return notebook
 
 
 def probe(

@@ -43424,9 +43424,76 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_security_limits.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-LIFECYCLE-PRESERVATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-003",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-LIFECYCLE-PRESERVATION-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1CEEABB4EB56C405,SAL-IPYNB-OBL-6401915AE1FC1ECF,SAL-IPYNB-OBL-650D957D94A33790,SAL-IPYNB-OBL-6D98E9BE6A406DC3,SAL-IPYNB-OBL-6F4551856EC21F7B,SAL-IPYNB-OBL-733D902E103E53BD,SAL-IPYNB-OBL-C599FB180ACF8D49,SAL-IPYNB-OBL-C62F62D99CDA6EAF,SAL-IPYNB-OBL-FFF232183E2BB71E",
+      "capability_refs": [
+        "foss_python.ipynb.strict_preservation_recovery_modes",
+        "foss_python.ipynb.non_mutating_preservation",
+        "foss_python.ipynb.declared_and_detected_version",
+        "foss_python.ipynb.structured_parse_diagnostics",
+        "foss_python.ipynb.deterministic_recovery_ledger",
+        "foss_python.ipynb.explicit_version_upgrade",
+        "foss_python.ipynb.explicit_cell_id_rewrite_map",
+        "foss_python.ipynb.deterministic_serialization"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.load",
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dump",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.upgrade",
+        "format_factory.ipynb.NotebookVersion",
+        "format_factory.ipynb.RecoveryAction",
+        "format_factory.ipynb.ConversionResult",
+        "format_factory.ipynb.CellIdRewrite",
+        "format_factory.ipynb.IpynbDocument.declared_version",
+        "format_factory.ipynb.IpynbDocument.detected_version",
+        "format_factory.ipynb.IpynbDocument.recovery_actions"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "2e0f2aae9ab01f50e065d59fbff46dc6c4b79e60c842f9fa566c4a71b5d464db"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "74a141267aa9871cdc97cc5c239d57eda3f6d9ba92c4c1ae1c125a80740310bd"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "43838d1e16df6bff02859675545e7277931e7e52e21c66bbf9854e48019ffe9b"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+          "state": "present",
+          "sha256": "e9390b6822e3484903a24aee0723d214abc1351d6cf011e90b63690d083fa0d8"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "cec47c6e244a464db3b6a93c80871d6bf8b64230160cadb9d50b2e2c9e9e0f79"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "a231c9f6458aa436a87fc0eddb6d4eb1cb254d21e373a89110a1451411b18a03"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_lifecycle_modes.py"
     }
   ],
-  "total_entries": 2767,
+  "total_entries": 2768,
   "changes": [
     {
       "file": "src/python/dif/models.py",

@@ -17,6 +17,14 @@ from .document import (
     cell_from_dict,
     output_from_dict,
 )
+from .lifecycle import (
+    CellIdRewrite,
+    ConversionAction,
+    ConversionResult,
+    NotebookVersion,
+    RecoveryAction,
+    upgrade,
+)
 from .output import (
     add_output_representation,
     get_output_representation,
@@ -25,7 +33,10 @@ from .output import (
 
 __all__ = [
     "Cell",
+    "CellIdRewrite",
     "CodeCell",
+    "ConversionAction",
+    "ConversionResult",
     "DisplayDataOutput",
     "Document",
     "ErrorOutput",
@@ -33,9 +44,11 @@ __all__ = [
     "IpynbDocument",
     "MarkdownCell",
     "MimeBundle",
+    "NotebookVersion",
     "NotebookOutput",
     "Output",
     "RawCell",
+    "RecoveryAction",
     "StreamOutput",
     "UnknownCell",
     "UnknownOutput",
@@ -44,4 +57,5 @@ __all__ = [
     "get_output_representation",
     "output_from_dict",
     "remove_output_mime_type",
+    "upgrade",
 ]

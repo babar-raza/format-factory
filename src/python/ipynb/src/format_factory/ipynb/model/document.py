@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar, Iterable, cast
+
+from .lifecycle import NotebookVersion, RecoveryAction
 
 
 class MimeBundle:
@@ -208,8 +210,28 @@ class IpynbDocument:
 
     spec_qname: ClassVar[str] = "ipynb:notebook"
 
-    def __init__(self, data: dict[str, Any]) -> None:
+    def __init__(
+        self,
+        data: dict[str, Any],
+        *,
+        declared_version: NotebookVersion | None = None,
+        detected_version: NotebookVersion | None = None,
+        recovery_actions: Iterable[RecoveryAction] = (),
+    ) -> None:
         self._data = data
+        inferred = NotebookVersion(
+            data.get("nbformat")
+            if isinstance(data.get("nbformat"), int)
+            and not isinstance(data.get("nbformat"), bool)
+            else None,
+            data.get("nbformat_minor")
+            if isinstance(data.get("nbformat_minor"), int)
+            and not isinstance(data.get("nbformat_minor"), bool)
+            else None,
+        )
+        self._declared_version = declared_version or inferred
+        self._detected_version = detected_version or inferred
+        self._recovery_actions = tuple(recovery_actions)
 
     @classmethod
     def from_file(cls, path: str) -> "IpynbDocument":
@@ -228,6 +250,18 @@ class IpynbDocument:
     @property
     def nbformat_minor(self) -> int:
         return int(self._data.get("nbformat_minor", 0))
+
+    @property
+    def declared_version(self) -> NotebookVersion:
+        return self._declared_version
+
+    @property
+    def detected_version(self) -> NotebookVersion:
+        return self._detected_version
+
+    @property
+    def recovery_actions(self) -> tuple[RecoveryAction, ...]:
+        return self._recovery_actions
 
     @property
     def metadata(self) -> dict[str, Any]:

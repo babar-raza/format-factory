@@ -16,6 +16,7 @@ from format_factory.ipynb import (
     load,
     loads,
     probe,
+    upgrade,
     validate,
 )
 
@@ -84,7 +85,7 @@ def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> Non
     assert reloaded.cells[0]["vendor_cell"] == {"retained": 1}
 
 
-def test_deterministic_missing_cell_id_normalization() -> None:
+def test_deterministic_cell_ids_are_created_only_by_explicit_upgrade() -> None:
     source = json.dumps(
         {
             "nbformat": 4,
@@ -95,16 +96,31 @@ def test_deterministic_missing_cell_id_normalization() -> None:
     )
     first = load(source).raw
     second = load(source).raw
-    assert first["cells"][0]["id"] == second["cells"][0]["id"]
-    assert dumps(first) == dumps(second)
+    assert "id" not in first["cells"][0]
+    assert "id" not in second["cells"][0]
+
+    first_upgrade = upgrade(first).document
+    second_upgrade = upgrade(second).document
+    assert first_upgrade.cells[0]["id"] == second_upgrade.cells[0]["id"]
+    assert dumps(first_upgrade) == dumps(second_upgrade)
 
 
 def test_default_writer_emits_45_and_rejects_nonfinite_json() -> None:
     document = {
         "nbformat": 4,
-        "nbformat_minor": 4,
+        "nbformat_minor": 5,
         "metadata": {},
-        "cells": [{"cell_type": "code", "metadata": {}, "source": "", "value": float("nan")}],
+        "cells": [
+            {
+                "cell_type": "code",
+                "id": "nan-cell",
+                "metadata": {},
+                "source": "",
+                "outputs": [],
+                "execution_count": None,
+                "value": float("nan"),
+            }
+        ],
     }
     with pytest.raises(Exception, match="serialize"):
         dumps(document)
@@ -112,7 +128,7 @@ def test_default_writer_emits_45_and_rejects_nonfinite_json() -> None:
     document["cells"][0].pop("value")
     serialized = json.loads(dumps(document))
     assert (serialized["nbformat"], serialized["nbformat_minor"]) == (4, 5)
-    assert serialized["cells"][0]["id"]
+    assert serialized["cells"][0]["id"] == "nan-cell"
 
 
 def test_package_chassis_and_python_policy() -> None:

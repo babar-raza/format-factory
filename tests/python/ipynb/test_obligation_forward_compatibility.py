@@ -13,7 +13,7 @@ import json
 import pytest
 
 import nbformat
-from format_factory.ipynb import IpynbParseError, dumps, loads
+from format_factory.ipynb import IpynbParseError, IpynbWriteError, dumps, loads, upgrade
 
 
 def _future_minor_notebook() -> dict[str, object]:
@@ -84,7 +84,7 @@ def test_future_minor_remains_outside_strict_supported_profile() -> None:
         loads(encoded, mode="strict")
 
 
-def test_default_writer_profile_remains_nbformat_45() -> None:
+def test_default_writer_profile_requires_explicit_upgrade_to_45() -> None:
     current = {
         "nbformat": 4,
         "nbformat_minor": 4,
@@ -98,7 +98,9 @@ def test_default_writer_profile_remains_nbformat_45() -> None:
         ],
     }
 
-    serialized = json.loads(dumps(current))
+    with pytest.raises(IpynbWriteError, match="explicit upgrade"):
+        dumps(current)
 
+    serialized = json.loads(dumps(upgrade(current, target="4.5").document))
     assert (serialized["nbformat"], serialized["nbformat_minor"]) == (4, 5)
     assert isinstance(serialized["cells"][0]["id"], str)

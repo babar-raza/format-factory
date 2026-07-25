@@ -31,7 +31,10 @@ from .errors import (
 )
 from .model import (
     Cell,
+    CellIdRewrite,
     CodeCell,
+    ConversionAction,
+    ConversionResult,
     DisplayDataOutput,
     Document,
     ErrorOutput,
@@ -39,9 +42,11 @@ from .model import (
     IpynbDocument,
     MarkdownCell,
     MimeBundle,
+    NotebookVersion,
     NotebookOutput,
     Output,
     RawCell,
+    RecoveryAction,
     StreamOutput,
     UnknownCell,
     UnknownOutput,
@@ -50,6 +55,7 @@ from .model import (
     get_output_representation,
     output_from_dict,
     remove_output_mime_type,
+    upgrade,
 )
 from .security import IPYNB_DEFAULT_LIMITS
 from .validation import validate, validate_notebook, validate_notebook_schema
@@ -57,7 +63,10 @@ from .validation import validate, validate_notebook, validate_notebook_schema
 __all__ = [
     "CELL_ID_PATTERN",
     "Cell",
+    "CellIdRewrite",
     "CodeCell",
+    "ConversionAction",
+    "ConversionResult",
     "DisplayDataOutput",
     "Document",
     "ErrorOutput",
@@ -70,9 +79,11 @@ __all__ = [
     "IpynbWriteError",
     "MarkdownCell",
     "MimeBundle",
+    "NotebookVersion",
     "NotebookOutput",
     "Output",
     "RawCell",
+    "RecoveryAction",
     "StreamOutput",
     "UnknownCell",
     "UnknownOutput",
@@ -101,6 +112,7 @@ __all__ = [
     "validate",
     "validate_notebook",
     "validate_notebook_schema",
+    "upgrade",
     "write_ipynb",
 ]
 

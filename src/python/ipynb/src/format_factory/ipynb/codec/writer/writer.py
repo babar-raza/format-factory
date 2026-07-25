@@ -32,7 +32,7 @@ def _profile_version(
         selected = selected.removeprefix("nbformat-")
     if selected == "declared":
         major = source.get("nbformat")
-        minor = source.get("nbformat_minor", 0)
+        minor = source.get("nbformat_minor")
         if (
             isinstance(major, bool)
             or not isinstance(major, int)
@@ -58,8 +58,48 @@ def _normalized(
 ) -> dict[str, Any]:
     source = deepcopy(dict(_as_mapping(value)))
     major, minor = _profile_version(profile, source)
-    source["nbformat"] = major
-    source["nbformat_minor"] = minor
+    if profile == "declared" or (
+        isinstance(profile, str)
+        and profile.removeprefix("nbformat-") == "declared"
+    ):
+        return source
+
+    declared_major = source.get("nbformat")
+    declared_minor = source.get("nbformat_minor")
+    if (declared_major, declared_minor) != (major, minor):
+        raise IpynbWriteError(
+            f"writing nbformat {major}.{minor} from declared version "
+            f"{declared_major}.{declared_minor} requires explicit upgrade()",
+            code="IPYNB_EXPLICIT_UPGRADE_REQUIRED",
+            context={
+                "declared_version": (declared_major, declared_minor),
+                "target_version": (major, minor),
+            },
+        )
+
+    from ...validation import validate
+
+    report = validate(source, profile=f"nbformat-{major}.{minor}")
+    if not report.is_valid:
+        first = report.errors[0]
+        raise IpynbWriteError(
+            f"notebook is not valid for nbformat {major}.{minor}: {first.message}",
+            code=first.code,
+            context={
+                "path": first.location.path if first.location is not None else (),
+                "error_count": len(report.errors),
+            },
+        )
+    return source
+
+
+def _legacy_normalized(
+    value: IpynbDocument | Mapping[str, Any],
+) -> dict[str, Any]:
+    """Retain the alpha facade's characterized implicit 4.5 normalization."""
+    source = deepcopy(dict(_as_mapping(value)))
+    source["nbformat"] = 4
+    source["nbformat_minor"] = 5
     source.setdefault("metadata", {})
     raw_cells = source.setdefault("cells", [])
     if not isinstance(raw_cells, list):
@@ -77,10 +117,7 @@ def _normalized(
         if cell["cell_type"] == "code":
             cell.setdefault("outputs", [])
             cell.setdefault("execution_count", None)
-        if minor >= 5:
-            ensure_cell_id(cell, used_ids)
-        else:
-            cell.pop("id", None)
+        ensure_cell_id(cell, used_ids)
         cells.append(cell)
     source["cells"] = cells
     return source
@@ -140,9 +177,20 @@ def write_ipynb(
     model: IpynbDocument | Mapping[str, Any],
     dest: Destination | None = None,
 ) -> str:
-    text = dumps(model)
+    try:
+        normalized = _legacy_normalized(model)
+        text = json.dumps(
+            normalized,
+            ensure_ascii=False,
+            indent=1,
+            sort_keys=True,
+            allow_nan=False,
+        )
+    except (TypeError, ValueError) as exc:
+        raise IpynbWriteError(f"cannot serialize notebook: {exc}") from exc
+    IPYNB_DEFAULT_LIMITS.enforce("max_output_bytes", len(text.encode("utf-8")))
     if dest is not None:
-        dump(model, dest)
+        dump(normalized, dest)
     return text
 
 
@@ -172,7 +220,7 @@ def get_markdown_cells(
 
 def roundtrip(source: Source, dest: Destination) -> dict[str, Any]:
     document = load(source, mode="preservation")
-    dump(document, dest)
+    dump(document, dest, profile="declared")
     return load(dest, mode="preservation").raw
 
 
