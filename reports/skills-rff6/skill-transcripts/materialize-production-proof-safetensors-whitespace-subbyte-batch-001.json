@@ -1,0 +1,130 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-whitespace-subbyte-batch-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-whitespace-subbyte-batch-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": ["materialize-production-proof"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-015",
+  "pre_mutation_guard_authorization_id": "f38ddce4d5965998",
+  "requested_operation": "materialize five independent SafeTensors whitespace, sub-byte, file-structure, offset-coverage, and empty-tensor obligations",
+  "inputs": {
+    "defect_id": "SAL-SAFETENSORS-OBL-476F8E85C6A97D63",
+    "failing_regression": "five mandatory obligations lacked live digest-bound executed results",
+    "invalidation_input": "current repaired source, installed wheel, isolated tests, dependency, tool, contract, and environment closure",
+    "target_product": "safetensors",
+    "base_git_commit": "28d637ed"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-whitespace-subbyte-batch-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-whitespace-subbyte-batch-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "test_obligation_header_whitespace.py: 3 passed",
+    "complete dtype inventory plus sub-byte misalignment: 23 passed",
+    "scalar deterministic roundtrip: 1 passed",
+    "test_obligation_offset_layout.py: 4 passed",
+    "empty tensor validity: 1 passed"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS: five separate controller executions",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "leading_and_trailing_header_whitespace": "PASS",
+    "aligned_and_misaligned_subbyte_rules": "PASS",
+    "prefix_header_payload_structure": "PASS",
+    "complete_offset_coverage": "PASS",
+    "zero_dimension_empty_span": "PASS",
+    "stale_proof_count": 0,
+    "promotion_claimed": "NO"
+  },
+  "common_proof_closure": {
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "b8315cff101b15e87451d127c439f37c0bb74b18db75268c33dc52daa2a0ce96",
+    "package_digest": "ae17f6673612e73328d6ff671776e83bddd3a970e4eb6d29ae976acdced57220",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "8729408f1b9d1545676d0164eaa8d838a04d8a4c38fe3d2079e905f9b73bca98"
+  },
+  "proofs": [
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-476F8E85C6A97D63",
+      "proof_id": "PROOF-00A484AE4EE070364E71DA8A757AAA081FAD322C2DA403C111688C31778CA6F6",
+      "test_path": "tests/python/safetensors/test_obligation_header_whitespace.py",
+      "test_digest": "12bcd1b1dc0c856a5b5a7ae91a714e1adc50bc49ee74675ceec20b7a94a99362",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-492410BC838B4612",
+      "proof_id": "PROOF-5CAF6110950820D01FC202C546CDF122A76ED42F99895E2AAEE21A4023A14A25",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-4C8D62AC5DDF2A12",
+      "proof_id": "PROOF-ADFB9DA26B725AEE8F38FA7A4FAAC266ED4F184E8EE350750B562CC7ED9C4F8F",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-52673B6F1B81CF00",
+      "proof_id": "PROOF-52FFC2DD4C6323CC1BB4014934A3B1F2DE55F2840FDA7C5F8EEB91A86B95C2C4",
+      "test_path": "tests/python/safetensors/test_obligation_offset_layout.py",
+      "test_digest": "2d9470485b3425977f97db2ad0ab7948f5f1452951bb7f3e18e167e72b01b4f3",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-539FA05A327BD8DC",
+      "proof_id": "PROOF-C463161ED4F35F7EDDDE6DA460CE820B9BC0B0AD8A11405336778C6F899F526F",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    }
+  ],
+  "controller_result": {
+    "final_graph_digest": "b0f8089a79d0fbb2919cc3e2f8643a8b987a00e8cc2d85a2776d1dd0fc7362c1",
+    "program_open_gaps_before": 595,
+    "program_open_gaps_after": 590,
+    "mandatory_obligations_remaining": 60,
+    "stale_proof_obligations": [],
+    "next_obligation_id": "SAL-SAFETENSORS-OBL-54D64568BF06E6D4"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for these five obligations; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_WHITESPACE_SUBBYTE_BATCH_PROVED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T19:24:00.7125305Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
