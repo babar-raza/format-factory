@@ -24,12 +24,31 @@ def _as_mapping(value: IpynbDocument | Mapping[str, Any]) -> Mapping[str, Any]:
     raise TypeError("document must be an IpynbDocument or mapping")
 
 
-def _profile_version(profile: str | None) -> tuple[int, int]:
+def _profile_version(
+    profile: str | None, source: Mapping[str, Any]
+) -> tuple[int, int]:
     selected = profile or "4.5"
     if selected.startswith("nbformat-"):
         selected = selected.removeprefix("nbformat-")
+    if selected == "declared":
+        major = source.get("nbformat")
+        minor = source.get("nbformat_minor", 0)
+        if (
+            isinstance(major, bool)
+            or not isinstance(major, int)
+            or major != 4
+            or isinstance(minor, bool)
+            or not isinstance(minor, int)
+            or minor < 0
+        ):
+            raise IpynbWriteError(
+                "declared profile requires a non-negative nbformat 4.x version"
+            )
+        return major, minor
     if selected not in {"4.0", "4.1", "4.2", "4.3", "4.4", "4.5"}:
-        raise ValueError("profile must be one of nbformat 4.0 through 4.5")
+        raise ValueError(
+            "profile must be 'declared' or one of nbformat 4.0 through 4.5"
+        )
     major, minor = selected.split(".", 1)
     return int(major), int(minor)
 
@@ -38,7 +57,7 @@ def _normalized(
     value: IpynbDocument | Mapping[str, Any], *, profile: str | None
 ) -> dict[str, Any]:
     source = deepcopy(dict(_as_mapping(value)))
-    major, minor = _profile_version(profile)
+    major, minor = _profile_version(profile, source)
     source["nbformat"] = major
     source["nbformat_minor"] = minor
     source.setdefault("metadata", {})
@@ -72,7 +91,13 @@ def dumps(
     *,
     profile: str | None = None,
 ) -> str:
-    """Serialize a notebook with stable ordering and whitespace."""
+    """Serialize a notebook with stable ordering and whitespace.
+
+    The default production profile writes nbformat 4.5.  ``profile="declared"``
+    is a preservation-only path that retains a loaded nbformat 4.x version,
+    including unknown future-minor constructs, without claiming support for
+    that future version.
+    """
     try:
         result = json.dumps(
             _normalized(document, profile=profile),

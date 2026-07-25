@@ -43242,9 +43242,47 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_real_torch_adapter.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-OUTPUT-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-010C554B8692D166",
+      "capability_refs": [
+        "foss_python.ipynb.future_minor_preservation",
+        "foss_python.ipynb.unknown_cell_output_preservation",
+        "foss_python.ipynb.declared_version_writer_profile",
+        "foss_python.ipynb.official_nbformat_differential"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "ef4138b5b40357fc1fc314451f6378dd3b7135ba2782a7cb89dd5d1c5475817b"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_forward_compatibility.py",
+          "state": "present",
+          "sha256": "40a1579024d7ddc28b342199f98d119907bd25f4f581f616ccb1ac4613c6cd9b"
+        },
+        {
+          "path": "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+          "state": "present",
+          "sha256": "a1adeb0088adcaffb1ea41c164cd4e58b35dcf7fe7eef570051f54787f8dcacc"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_forward_compatibility.py"
     }
   ],
-  "total_entries": 2762,
+  "total_entries": 2763,
   "changes": [
     {
       "file": "src/python/dif/models.py",
