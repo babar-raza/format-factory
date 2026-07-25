@@ -1,0 +1,110 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-safetensors-tensor-regions-001",
+  "execution_id": "ff6-format-feature-expansion-safetensors-tensor-regions-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+  "pre_mutation_guard_authorization_id": "07f899e03801e23b",
+  "requested_operation": "add direct installed-wheel evidence that path-backed tensor-relative regions are bounds checked, read only, and remain mmap-backed without a silent copy",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001",
+    "obligation_id": "SAL-SAFETENSORS-OBL-A91A04F261997A05",
+    "capability_id": "SAFETENSORS-PAYLOAD-001",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "authority_digests": {
+      "SRC-SAFETENSORS-002": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "root_cause": "Existing large-file tests proved bounded mapped access but did not directly bind object identity, two-tensor relative slicing, and the full invalid-boundary matrix to this obligation.",
+    "affected_layer": "SafeTensors installed-wheel obligation evidence only; production source and built package are unchanged",
+    "planned_paths": [
+      "tests/python/safetensors/test_obligation_tensor_regions.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-tensor-regions-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/safetensors.yaml",
+      "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+      "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+      "tests/python/safetensors/test_obligation_tensor_regions.py",
+      ".local/build/safetensors-validation-contract-001/format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/safetensors-current-proof"
+    ],
+    "base_git_commit": "b6f4accac01a855d1a54d7bd51e828317baf3b48"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_tensor_regions.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-tensor-regions-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_tensor_regions.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-tensor-regions-001.json"
+  ],
+  "implementation": {
+    "path_backing": "The test opens a real temporary .safetensors path through the installed wheel and requires PayloadAccessMode.MEMORY_MAPPED.",
+    "no_copy_proof": "The read-only memoryviews for two distinct tensor-relative selections expose the same mmap.mmap object identity.",
+    "relative_slice_proof": "A selection [1, 4) from the second tensor resolves to its own payload-relative bytes rather than file-absolute or first-tensor-relative bytes.",
+    "bounds_matrix": "Negative, reversed, beyond-end, boolean, float-start, and float-stop requests all fail closed.",
+    "scope": "No production source behavior changed; this slice converts an evidence ambiguity into an explicit regression contract."
+  },
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_tensor_regions.py -q: 9 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_obligation_tensor_regions.py: PASS",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors -q: 361 passed"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "installed_wheel_behavior": "PASS",
+    "memory_mapped_access_mode": "PASS",
+    "read_only_regions": "PASS",
+    "shared_mmap_object_identity": "PASS",
+    "tensor_relative_slice": "PASS",
+    "invalid_region_matrix": "PASS: 8 cases",
+    "declared_regression_tier": "PASS: 361 tests",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS: declared test SHA-256 equals the current file",
+    "source_or_package_digest_changed": "NO",
+    "controller_proof_required": "YES: the new test must be bound to the exact live proof closure before the obligation closes"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_tensor_regions.py": "eeda0fb18ce6ba2bc6de36ae51e40a3e982120b9ab0b2bc6d2c04467a353f37d",
+    "reports/r90/product-code-change-ledger.json": "30155b39ffc3be87812a5e431ef43652176d8aeb32c4290e0a64edbcd0d7a47b"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded evidence implementation; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES for path-backed region behavior",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure claimed until controller proof",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_TENSOR_REGION_EVIDENCE_VERIFIED_PROOF_MATERIALIZATION_PENDING",
+  "timestamp": "2026-07-25T21:40:32.4109559Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -43153,9 +43153,37 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_validation_contract.py; tests/python/safetensors/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-A91A04F261997A05",
+      "capability_refs": [
+        "foss_python.safetensors.path_backed_zero_copy_regions",
+        "foss_python.safetensors.tensor_relative_bounds_validation",
+        "foss_python.safetensors.read_only_mmap_views"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.safe_open",
+        "format_factory.safetensors.SafeTensorsDocument.tensor_region",
+        "format_factory.safetensors.PayloadAccessMode.MEMORY_MAPPED"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_tensor_regions.py",
+          "state": "present",
+          "sha256": "eeda0fb18ce6ba2bc6de36ae51e40a3e982120b9ab0b2bc6d2c04467a353f37d"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_tensor_regions.py"
     }
   ],
-  "total_entries": 2759,
+  "total_entries": 2760,
   "changes": [
     {
       "file": "src/python/dif/models.py",
