@@ -12,11 +12,11 @@
   "agent_instance": "agent-codex-20260725T152151-4da361",
   "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
   "sprint_id": "RFF6-MACH-PACKAGE-PROOF-CLOSURE-001",
-  "requested_operation": "bind built wheel artifacts and the actual executed environment into canonical production proof",
+  "requested_operation": "bind built wheel artifacts, verified installed wheel contents, proof-producing tools, and the actual executed environment into canonical production proof",
   "inputs": {
     "defect_id": "FF6-PROOF-PACKAGE-ENV-CLOSURE-001",
-    "failing_regression": "An installed-wheel proof could close a mandatory obligation without recording the wheel bytes, while environment_digest described the controller interpreter rather than the command interpreter.",
-    "invalidation_input": "built package bytes and executed command environment",
+    "failing_regression": "An installed-wheel proof could close a mandatory obligation without recording the wheel bytes, while environment_digest described the controller interpreter rather than the command interpreter. A supplied wheel also created an InstalledPackageResult without proving that the command environment contained those exact wheel contents, and proof-producing controller code was outside the invalidation closure.",
+    "invalidation_input": "built package bytes, verified installed wheel contents, proof-producing tools, and executed command environment",
     "target_product": "safetensors",
     "base_git_commit": "2f54fbcd57b631736b1a187c5a6cfd3d082cf168"
   },
@@ -45,16 +45,19 @@
   "behavior_added": [
     "prove accepts explicit package artifacts and records package paths plus an aggregate digest",
     "proof execution captures the command executable hash, Python/runtime identity, complete installed distribution versions, and deterministic environment",
+    "every supplied wheel is opened, its distribution metadata is resolved in the command interpreter, and every installed member except generated RECORD is byte-compared with the wheel before an InstalledPackageResult can exist",
     "the execution environment is sampled before and after the proof and environment drift fails closed",
     "built package and installed package result nodes are added to the canonical proof graph",
     "changed or deleted package bytes invalidate the proof and descendants",
+    "changes to the controller, contract compiler, or graph builder invalidate executed proof and descendants",
     "legacy executed-proof schema v1 records lacking an environment manifest remain historical and are invalidated until replayed"
   ],
   "tests_run": [
-    "pytest tests/production_program/test_production_program.py -q: 34 passed",
-    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 84 passed",
+    "pytest tests/production_program/test_production_program.py -q: 36 passed",
+    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 86 passed",
     "ruff check tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
-    "three complete bootstrap projections: byte-identical canonical state, gaps, executed proofs, and 12 graph files",
+    "three complete bootstrap projections: 15 byte-identical canonical files per run, aggregate SHA-256 1ac08741a25a038a53f43f3df2190765731fc205d46daa3008495fed6d4c4a57",
+    "real installed-wheel replay: 34 wheel members verified byte-for-byte before the official oracle passed",
     "SafeTensors official oracle: 1 passed",
     "SafeTensors installed production regression: 40 passed",
     "SafeTensors complete compatibility regression: 273 passed"
@@ -66,6 +69,8 @@
     "complete_execution_input_closure": "PASS",
     "changed_test_or_fixture_invalidates": "PASS",
     "changed_package_invalidates": "PASS",
+    "changed_proof_tool_invalidates": "PASS",
+    "uninstalled_or_mismatched_wheel_rejected": "PASS",
     "deleted_input_revokes_proof": "PASS",
     "nonzero_execution_rejected": "PASS",
     "three_run_determinism": "PASS",
@@ -73,10 +78,21 @@
   },
   "proof": {
     "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
-    "proof_id": "PROOF-E96AD28DA8ECCBCE2638063D69CB1FF88DE20DA1AFAA8F7AE04ECAE594B02773",
+    "proof_id": "PROOF-2A1478C67103B9CE2F1F318F632121B1065D51F9741D8D408D50420BCB557865",
     "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
-    "environment_digest": "e690597b0bd36942643305c78d19457b81e40a8e551550c171659a02140c7d09",
-    "graph_digest": "9604bd0affe86eb37c4e43b73f355eade629d2ee9821a8a5842b5ad5fb9bef30",
+    "environment_digest": "525a721d888decaff7d0fd6d189bc20f5ad1f783046860f72738eb579f09d9ac",
+    "tool_digest": "699a46f9bc01dff4fa550afe4e67c549afcbe568e8d8d6d2a82807b65b6d565b",
+    "graph_digest": "b382b11ce26ca74489720d0614bb24701ad5b11019db62d8fe92aa93bc765279",
+    "installed_wheel_verification": {
+      "format-factory-core": {
+        "verified_file_count": 9,
+        "installed_content_digest": "a805d232be2f4337001146c9719f1a955e5ad607a049d4ae19dab466d0299a2c"
+      },
+      "format-factory-safetensors": {
+        "verified_file_count": 25,
+        "installed_content_digest": "d4f798bda17db6b0adc2e2ef0527eddd010080cb15f31149cd6df72a72e93118"
+      }
+    },
     "command_exit_code": 0
   },
   "current_projection": {

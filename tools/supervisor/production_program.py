@@ -286,6 +286,8 @@ class ExecutedProof:
     stderr_sha256: str
     package_paths: tuple[str, ...] = ()
     package_digest: str = ""
+    tool_paths: tuple[str, ...] = ()
+    tool_digest: str = ""
     environment: dict[str, Any] = field(default_factory=dict)
     executed: bool = True
 
@@ -333,6 +335,8 @@ class ProductionProgram:
                         "dependency_paths": tuple(item["dependency_paths"]),
                         "package_paths": tuple(item.get("package_paths", ())),
                         "package_digest": str(item.get("package_digest", "")),
+                        "tool_paths": tuple(item.get("tool_paths", ())),
+                        "tool_digest": str(item.get("tool_digest", "")),
                         "environment": dict(item.get("environment", {})),
                         "command": tuple(item["command"]),
                     }
@@ -556,6 +560,98 @@ print(json.dumps({
         }
 
     @staticmethod
+    def _installed_wheel_manifest(
+        command: list[str], packages: list[Path]
+    ) -> list[dict[str, Any]]:
+        """Prove that exact wheel members exist unchanged in the test runtime."""
+
+        if not packages:
+            return []
+        wheels = [path for path in packages if path.suffix.lower() == ".whl"]
+        if len(wheels) != len(packages):
+            raise ValueError("installed package proof accepts wheel files only")
+        executable = Path(command[0])
+        if not executable.is_absolute():
+            located = shutil.which(command[0])
+            if located is None:
+                raise ValueError(f"proof executable cannot be resolved: {command[0]}")
+            executable = Path(located)
+        executable = executable.resolve()
+        probe = r"""
+import email.parser
+import hashlib
+import importlib.metadata
+import json
+from pathlib import Path
+import sys
+import zipfile
+
+results = []
+for value in json.loads(sys.stdin.read()):
+    wheel = Path(value)
+    with zipfile.ZipFile(wheel) as archive:
+        members = sorted(
+            name for name in archive.namelist()
+            if not name.endswith("/") and not name.endswith(".dist-info/RECORD")
+        )
+        metadata_names = [
+            name for name in members if name.endswith(".dist-info/METADATA")
+        ]
+        if len(metadata_names) != 1:
+            raise RuntimeError(f"{wheel.name}: expected exactly one METADATA")
+        metadata = email.parser.BytesParser().parsebytes(
+            archive.read(metadata_names[0])
+        )
+        distribution_name = str(metadata["Name"])
+        distribution = importlib.metadata.distribution(distribution_name)
+        entries = []
+        for name in members:
+            installed = Path(distribution.locate_file(name))
+            if not installed.is_file():
+                raise RuntimeError(f"{distribution_name}: installed file missing: {name}")
+            expected = hashlib.sha256(archive.read(name)).hexdigest()
+            actual = hashlib.sha256(installed.read_bytes()).hexdigest()
+            if actual != expected:
+                raise RuntimeError(
+                    f"{distribution_name}: installed file differs from wheel: {name}"
+                )
+            entries.append({"path": name, "sha256": actual})
+        results.append({
+            "wheel_name": wheel.name,
+            "wheel_sha256": hashlib.sha256(wheel.read_bytes()).hexdigest(),
+            "distribution": distribution_name,
+            "version": distribution.version,
+            "verified_file_count": len(entries),
+            "installed_content_digest": hashlib.sha256(
+                json.dumps(
+                    entries, sort_keys=True, separators=(",", ":")
+                ).encode("utf-8")
+            ).hexdigest(),
+        })
+print(json.dumps(results, sort_keys=True, separators=(",", ":")))
+""".strip()
+        result = subprocess.run(
+            [str(executable), "-c", probe],
+            input=json.dumps([str(path) for path in wheels]).encode("utf-8"),
+            capture_output=True,
+            check=False,
+            timeout=60,
+        )
+        if result.returncode != 0:
+            detail = result.stderr.decode("utf-8", errors="replace").strip()
+            raise ValueError(
+                "installed wheel verification failed: "
+                + (detail[-1000:] or f"{executable.name} exited {result.returncode}")
+            )
+        try:
+            manifest = json.loads(result.stdout)
+        except json.JSONDecodeError as error:
+            raise ValueError("installed wheel verifier returned invalid JSON") from error
+        if not isinstance(manifest, list) or len(manifest) != len(wheels):
+            raise ValueError("installed wheel verifier returned incomplete results")
+        return manifest
+
+    @staticmethod
     def _canonical_command(command: list[str]) -> tuple[str, ...]:
         canonical: list[str] = []
         root = REPO_ROOT.resolve()
@@ -595,6 +691,24 @@ print(json.dumps({
             candidates.extend(root.glob("*.lock"))
             candidates.extend(root.glob("requirements*.txt"))
         return sorted({path.resolve() for path in candidates if path.is_file()})
+
+    @staticmethod
+    def _proof_tool_inputs() -> list[Path]:
+        paths = [
+            REPO_ROOT / "tools" / "supervisor" / "production_program.py",
+            REPO_ROOT / "tools" / "format_contract" / "product_contract.py",
+            REPO_ROOT
+            / "tools"
+            / "requirements_authority"
+            / "production_graph.py",
+        ]
+        missing = [path for path in paths if not path.is_file()]
+        if missing:
+            raise ValueError(
+                "proof tool input is missing: "
+                + ", ".join(str(path.relative_to(REPO_ROOT)) for path in missing)
+            )
+        return sorted(path.resolve() for path in paths)
 
     @staticmethod
     def _package_chassis_issues(
@@ -773,14 +887,19 @@ print(json.dumps({
                     f"package input must be a file: {package.relative_to(REPO_ROOT)}"
                 )
         dependencies = self._dependency_inputs(target)
+        tools = self._proof_tool_inputs()
         before = {
             "source": tree_digest(source_inputs),
             "tests": tree_digest(tests),
             "fixtures": tree_digest(fixtures),
             "packages": tree_digest(packages),
             "dependencies": tree_digest(dependencies),
+            "tools": tree_digest(tools),
         }
         environment = self._execution_environment(command)
+        environment["installed_wheels"] = self._installed_wheel_manifest(
+            command, packages
+        )
         environment_digest = hashlib.sha256(canonical_bytes(environment)).hexdigest()
         run_environment = {
             **os.environ,
@@ -801,8 +920,12 @@ print(json.dumps({
             "fixtures": tree_digest(fixtures),
             "packages": tree_digest(packages),
             "dependencies": tree_digest(dependencies),
+            "tools": tree_digest(tools),
         }
         environment_after = self._execution_environment(command)
+        environment_after["installed_wheels"] = self._installed_wheel_manifest(
+            command, packages
+        )
         if before != after:
             raise ValueError("proof inputs changed during execution")
         if environment != environment_after:
@@ -827,6 +950,8 @@ print(json.dumps({
             "package_digest": before["packages"],
             "dependency_paths": self._relative_paths(dependencies),
             "dependency_digest": before["dependencies"],
+            "tool_paths": self._relative_paths(tools),
+            "tool_digest": before["tools"],
             "environment_digest": environment_digest,
             "environment": environment,
             "command": self._canonical_command(command),
@@ -852,6 +977,8 @@ print(json.dumps({
             package_digest=before["packages"],
             dependency_paths=self._relative_paths(dependencies),
             dependency_digest=before["dependencies"],
+            tool_paths=self._relative_paths(tools),
+            tool_digest=before["tools"],
             environment_digest=environment_digest,
             environment=environment,
             command=self._canonical_command(command),
@@ -948,6 +1075,7 @@ print(json.dumps({
                 dependency_paths = self._repo_inputs(
                     proof.dependency_paths, label="dependency"
                 )
+                tool_paths = self._repo_inputs(proof.tool_paths, label="tool")
             except ValueError:
                 stale_obligations.add(proof.obligation_id)
                 continue
@@ -958,6 +1086,7 @@ print(json.dumps({
                 "fixtures": tree_digest(fixture_paths),
                 "packages": tree_digest(package_paths),
                 "dependencies": tree_digest(dependency_paths),
+                "tools": tree_digest(tool_paths),
                 "environment": hashlib.sha256(
                     canonical_bytes(proof.environment)
                 ).hexdigest(),
@@ -969,6 +1098,7 @@ print(json.dumps({
                 "fixtures": proof.fixture_digest,
                 "packages": proof.package_digest,
                 "dependencies": proof.dependency_digest,
+                "tools": proof.tool_digest,
                 "environment": proof.environment_digest,
             }
             if not proof.environment or live != recorded:

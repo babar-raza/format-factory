@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+import zipfile
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -74,6 +75,14 @@ def _proof_repo(
     contract_path.write_text(
         yaml.safe_dump(_contract(), sort_keys=False), encoding="utf-8"
     )
+    for relative in (
+        "tools/supervisor/production_program.py",
+        "tools/format_contract/product_contract.py",
+        "tools/requirements_authority/production_graph.py",
+    ):
+        tool = repo / relative
+        tool.parent.mkdir(parents=True, exist_ok=True)
+        tool.write_text(f"# {relative}\n", encoding="utf-8")
     monkeypatch.setattr(module, "REPO_ROOT", repo)
     return repo, source, test_path
 
@@ -781,6 +790,22 @@ def test_package_and_executed_environment_are_digest_bound(
     package = repo / ".local" / "packages" / "format_factory_ipynb.whl"
     package.parent.mkdir(parents=True)
     package.write_bytes(b"wheel-one")
+    monkeypatch.setattr(
+        ProductionProgram,
+        "_installed_wheel_manifest",
+        staticmethod(
+            lambda _command, packages: [
+                {
+                    "wheel_name": packages[0].name,
+                    "wheel_sha256": "a" * 64,
+                    "distribution": "format-factory-ipynb",
+                    "version": "1.0",
+                    "verified_file_count": 1,
+                    "installed_content_digest": "b" * 64,
+                }
+            ]
+        ),
+    )
     compiled = compile_product_contract(_contract(), run_legacy_validator=False)
     positive = next(
         item for item in compiled.obligations if item["kind"] == "positive"
@@ -825,6 +850,22 @@ def test_package_modified_during_execution_is_rejected(
     package = repo / ".local" / "packages" / "format_factory_ipynb.whl"
     package.parent.mkdir(parents=True)
     package.write_bytes(b"before")
+    monkeypatch.setattr(
+        ProductionProgram,
+        "_installed_wheel_manifest",
+        staticmethod(
+            lambda _command, packages: [
+                {
+                    "wheel_name": packages[0].name,
+                    "wheel_sha256": "a" * 64,
+                    "distribution": "format-factory-ipynb",
+                    "version": "1.0",
+                    "verified_file_count": 1,
+                    "installed_content_digest": "b" * 64,
+                }
+            ]
+        ),
+    )
     compiled = compile_product_contract(_contract(), run_legacy_validator=False)
     positive = next(
         item for item in compiled.obligations if item["kind"] == "positive"
@@ -850,6 +891,50 @@ def test_package_modified_during_execution_is_rejected(
             ],
         )
     assert program.proofs == {}
+
+
+def test_uninstalled_wheel_cannot_be_claimed_as_installed(
+    tmp_path: Path,
+) -> None:
+    wheel = tmp_path / "ff_proof_never_installed-1.0-py3-none-any.whl"
+    with zipfile.ZipFile(wheel, "w") as archive:
+        archive.writestr(
+            "ff_proof_never_installed-1.0.dist-info/METADATA",
+            "Metadata-Version: 2.1\nName: ff-proof-never-installed\nVersion: 1.0\n",
+        )
+        archive.writestr("ff_proof_never_installed/__init__.py", "VALUE = 1\n")
+
+    with pytest.raises(ValueError, match="installed wheel verification failed"):
+        ProductionProgram._installed_wheel_manifest(
+            [sys.executable, "-c", "print('unused')"], [wheel]
+        )
+
+
+def test_changed_proof_tool_revokes_executed_proof(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+    program.execute_proof(
+        "ipynb",
+        positive["obligation_id"],
+        polarity="positive",
+        test_paths=[test_path.relative_to(repo).as_posix()],
+        fixture_paths=[],
+        package_paths=[],
+        command=[sys.executable, "-c", "print('executed')"],
+    )
+
+    tool = repo / "tools" / "supervisor" / "production_program.py"
+    tool.write_text("# changed proof tool\n", encoding="utf-8")
+    evidence = program.audit_implementation("ipynb")
+
+    assert evidence["promotion"]["state"] == "INVALIDATED"
+    assert positive["obligation_id"] in evidence["stale_proof_obligations"]
 
 
 def test_three_implementation_projections_are_byte_identical(
