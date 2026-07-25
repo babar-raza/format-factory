@@ -1,0 +1,76 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-add-roundtrip-test-safetensors-header-whitespace-001",
+  "execution_id": "ff6-add-roundtrip-test-safetensors-header-whitespace-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+  "skill_id": "add-roundtrip-test",
+  "selected_skill_ids": ["add-roundtrip-test"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-HEADER-WHITESPACE-001",
+  "pre_mutation_guard_authorization_id": "781b27b9c4471c70",
+  "requested_operation": "add installed-package semantic roundtrips for leading, trailing, and combined JSON header whitespace",
+  "inputs": {
+    "format_id": "safetensors",
+    "language": "python",
+    "edit_operation": "normalize a valid whitespace-padded header through deterministic serialization",
+    "test_file": "tests/python/safetensors/test_obligation_header_whitespace.py",
+    "exact_test_paths": [
+      "tests/python/safetensors/test_obligation_header_whitespace.py"
+    ],
+    "roundtrip_scope": "leading JSON whitespace, trailing JSON whitespace, combined JSON whitespace, aligned writer output, descriptor and payload semantics",
+    "obligation_id": "SAL-SAFETENSORS-OBL-476F8E85C6A97D63",
+    "base_git_commit": "bcfcdce5"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_header_whitespace.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-safetensors-header-whitespace-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_header_whitespace.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-safetensors-header-whitespace-001.json"
+  ],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_header_whitespace.py -q: 3 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_obligation_header_whitespace.py: PASS",
+    "installed-wheel SafeTensors regression tier: 82 passed"
+  ],
+  "validations": {
+    "leading_whitespace": "PASS",
+    "trailing_whitespace": "PASS",
+    "combined_whitespace": "PASS",
+    "writer_alignment": "PASS",
+    "reloaded_descriptor_and_payload": "PASS",
+    "installed_package_execution": "PASS",
+    "source_behavior_changed": "NO",
+    "controller_proof_pending": "YES"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_header_whitespace.py": "0d70f85be39d4d1db00d88cda390ac31bbf67417c4188c07e75f3dad41d6f473"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the isolated whitespace roundtrip matrix; controller proof remains separate",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_HEADER_WHITESPACE_ROUNDTRIP_ADDED_PROOF_PENDING",
+  "timestamp": "2026-07-25T19:21:35.2283815Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
