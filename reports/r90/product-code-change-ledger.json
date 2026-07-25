@@ -43309,9 +43309,43 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_attachments.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-06EFB1D8AC058AC6,SAL-IPYNB-OBL-13F3815D0E5C95E6,SAL-IPYNB-OBL-2558D9E311DA3594,SAL-IPYNB-OBL-27E9715B97C8FD8B,SAL-IPYNB-OBL-2B44543CA510ED94,SAL-IPYNB-OBL-3AE0DC2692EF0AD9,SAL-IPYNB-OBL-3B3B7588125383AB,SAL-IPYNB-OBL-3FA9A87DE3411DC4,SAL-IPYNB-OBL-4471354A239702DB,SAL-IPYNB-OBL-4651E92D2D018089,SAL-IPYNB-OBL-499CD4389B386A40,SAL-IPYNB-OBL-6998AFE571DA4FA3,SAL-IPYNB-OBL-6EA457DD191446C5,SAL-IPYNB-OBL-77C54BA16B30D129,SAL-IPYNB-OBL-793EE40165C8DB16,SAL-IPYNB-OBL-7B4D9801EC12E4D6,SAL-IPYNB-OBL-83A15CABF90C4B84,SAL-IPYNB-OBL-8CB6767A2C5B196C,SAL-IPYNB-OBL-91F2FEE89658B49D,SAL-IPYNB-OBL-9C6A2746BA63E841,SAL-IPYNB-OBL-A34640B83CC70822,SAL-IPYNB-OBL-A87B92BEB23E3B35,SAL-IPYNB-OBL-A9D840BD579F5C6F,SAL-IPYNB-OBL-AA72252FB6D0AA7C,SAL-IPYNB-OBL-AAB3BBF81F346B07,SAL-IPYNB-OBL-AF1F9CEECF5D7E42,SAL-IPYNB-OBL-B2FA0BFF8CA07D78,SAL-IPYNB-OBL-B3EFD046C72D3E4B,SAL-IPYNB-OBL-BBE5B3445AD56F9C,SAL-IPYNB-OBL-BCE9E0CCCCC2236B,SAL-IPYNB-OBL-BE024415D521227D,SAL-IPYNB-OBL-C1DA361949F015E7,SAL-IPYNB-OBL-C795205AC0A4BD0F,SAL-IPYNB-OBL-C98190C29177A3A6,SAL-IPYNB-OBL-CF73A081DA5F99EA,SAL-IPYNB-OBL-D2D8157D991DBDCA,SAL-IPYNB-OBL-DB0F793B92DED8A3,SAL-IPYNB-OBL-E561BFC0FADBA29D,SAL-IPYNB-OBL-EAD1D09BDE25610F,SAL-IPYNB-OBL-ECA691E11183033E,SAL-IPYNB-OBL-FDC73ED8FA39A31E",
+      "capability_refs": [
+        "foss_python.ipynb.nbformat_45_top_level",
+        "foss_python.ipynb.complete_cell_type_matrix",
+        "foss_python.ipynb.complete_output_type_matrix",
+        "foss_python.ipynb.mime_bundle_and_rendering_metadata",
+        "foss_python.ipynb.kernelspec_language_and_tag_metadata",
+        "foss_python.ipynb.cell_id_positive_invariants",
+        "foss_python.ipynb.inert_active_content_preservation",
+        "foss_python.ipynb.official_nbformat_core_validation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.validate",
+        "format_factory.ipynb.IpynbDocument.cells"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/ipynb/test_obligation_nbformat_core.py",
+          "state": "present",
+          "sha256": "2cbb1bb0a600475338d652bcf6b47fe454277ec3d9dcddf5e2b4f4d796219a19"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_nbformat_core.py"
     }
   ],
-  "total_entries": 2764,
+  "total_entries": 2765,
   "changes": [
     {
       "file": "src/python/dif/models.py",

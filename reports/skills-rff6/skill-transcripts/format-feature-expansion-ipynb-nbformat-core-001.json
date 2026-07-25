@@ -1,0 +1,137 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-nbformat-core-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-nbformat-core-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+  "pre_mutation_guard_authorization_id": "d3f558e9d76a998a",
+  "requested_operation": "add one installed-wheel and official-oracle nbformat 4.5 vector for the complete core document, cell, output, MIME, metadata, and ID structure",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+    "obligation_id": "SAL-IPYNB-OBL-06EFB1D8AC058AC6",
+    "obligation_count": 41,
+    "obligation_ids_csv": "SAL-IPYNB-OBL-06EFB1D8AC058AC6,SAL-IPYNB-OBL-13F3815D0E5C95E6,SAL-IPYNB-OBL-2558D9E311DA3594,SAL-IPYNB-OBL-27E9715B97C8FD8B,SAL-IPYNB-OBL-2B44543CA510ED94,SAL-IPYNB-OBL-3AE0DC2692EF0AD9,SAL-IPYNB-OBL-3B3B7588125383AB,SAL-IPYNB-OBL-3FA9A87DE3411DC4,SAL-IPYNB-OBL-4471354A239702DB,SAL-IPYNB-OBL-4651E92D2D018089,SAL-IPYNB-OBL-499CD4389B386A40,SAL-IPYNB-OBL-6998AFE571DA4FA3,SAL-IPYNB-OBL-6EA457DD191446C5,SAL-IPYNB-OBL-77C54BA16B30D129,SAL-IPYNB-OBL-793EE40165C8DB16,SAL-IPYNB-OBL-7B4D9801EC12E4D6,SAL-IPYNB-OBL-83A15CABF90C4B84,SAL-IPYNB-OBL-8CB6767A2C5B196C,SAL-IPYNB-OBL-91F2FEE89658B49D,SAL-IPYNB-OBL-9C6A2746BA63E841,SAL-IPYNB-OBL-A34640B83CC70822,SAL-IPYNB-OBL-A87B92BEB23E3B35,SAL-IPYNB-OBL-A9D840BD579F5C6F,SAL-IPYNB-OBL-AA72252FB6D0AA7C,SAL-IPYNB-OBL-AAB3BBF81F346B07,SAL-IPYNB-OBL-AF1F9CEECF5D7E42,SAL-IPYNB-OBL-B2FA0BFF8CA07D78,SAL-IPYNB-OBL-B3EFD046C72D3E4B,SAL-IPYNB-OBL-BBE5B3445AD56F9C,SAL-IPYNB-OBL-BCE9E0CCCCC2236B,SAL-IPYNB-OBL-BE024415D521227D,SAL-IPYNB-OBL-C1DA361949F015E7,SAL-IPYNB-OBL-C795205AC0A4BD0F,SAL-IPYNB-OBL-C98190C29177A3A6,SAL-IPYNB-OBL-CF73A081DA5F99EA,SAL-IPYNB-OBL-D2D8157D991DBDCA,SAL-IPYNB-OBL-DB0F793B92DED8A3,SAL-IPYNB-OBL-E561BFC0FADBA29D,SAL-IPYNB-OBL-EAD1D09BDE25610F,SAL-IPYNB-OBL-ECA691E11183033E,SAL-IPYNB-OBL-FDC73ED8FA39A31E",
+    "capability_ids": [
+      "IPYNB-PARSE-001",
+      "IPYNB-META-001",
+      "IPYNB-MODEL-001",
+      "IPYNB-OUTPUT-001",
+      "IPYNB-ID-001",
+      "IPYNB-EDIT-001",
+      "IPYNB-UPGRADE-001",
+      "IPYNB-VALIDATE-001",
+      "IPYNB-SANITIZE-001"
+    ],
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The baseline had broad legacy tests but no single installed-production vector tied to official schema validation that exercised every core cell and output discriminator together.",
+    "affected_layer": "IPYNB installed-wheel normative core evidence only; production source and package are unchanged",
+    "planned_paths": [
+      "tests/python/ipynb/test_obligation_nbformat_core.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-nbformat-core-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_nbformat_core.py",
+      "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+      ".local/build/core-r5/format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-forward-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof"
+    ],
+    "base_git_commit": "da6dd208"
+  },
+  "allowed_files": [
+    "tests/python/ipynb/test_obligation_nbformat_core.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-nbformat-core-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ipynb/test_obligation_nbformat_core.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-nbformat-core-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "EVIDENCE_GAP_AND_INVALID_FIXTURE_CAUGHT",
+    "observations": [
+      "The first draft correctly failed official validation because it put an unknown property at the current 4.5 top level.",
+      "That invalid fixture produced no controller proof and was corrected by retaining custom data only inside schema-permitted metadata.",
+      "The corrected vector is accepted by both official nbformat 5.10.4 and factory validation."
+    ]
+  },
+  "implementation": {
+    "document": "Requires the exact top-level nbformat, nbformat_minor, metadata, and ordered cells structure.",
+    "cells": "Covers markdown, raw, and code cells in order; string and list multiline representations; namespaced metadata and unique tags; and valid unique 4.5 IDs.",
+    "outputs": "Covers stream, display_data, execute_result, and error with every required field, execution counts, tracebacks, MIME data, and per-MIME metadata.",
+    "active_content": "HTML, SVG, and JavaScript representations remain inert strings through parsing and serialization; executable-looking code source is not run.",
+    "oracle": "Official nbformat 5.10.4 reads and validates the exact corrected vector.",
+    "installed_origin": "The test fails unless format_factory.ipynb resolves from site-packages.",
+    "scope": "Only repeated positive normative facts are covered. Editing APIs, validation rejection cases, sanitization behavior, and upgrade conversion behavior remain open."
+  },
+  "tests_run": [
+    "initial invalid fixture: focused 1 failed, 1 passed and full suite 1 failed, 260 passed; no proof credited",
+    "corrected installed-wheel focused test: 2 passed",
+    "corrected installed-wheel full tests/python/ipynb suite: 261 passed",
+    "Ruff on tests/python/ipynb/test_obligation_nbformat_core.py: PASS"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligations_resolve_to_selected_format": "PASS: 41",
+    "official_distribution_version": "PASS: 5.10.4",
+    "official_current_schema_validation": "PASS",
+    "factory_current_validation": "PASS",
+    "top_level_and_cell_order": "PASS",
+    "all_cell_types": "PASS",
+    "all_output_types_and_required_fields": "PASS",
+    "mime_bundle_and_rendering_metadata": "PASS",
+    "cell_ids_and_tags_positive_invariants": "PASS",
+    "active_payloads_preserved_as_data": "PASS",
+    "installed_wheel_origin": "PASS",
+    "declared_regression_tier": "PASS: 261 tests",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS",
+    "source_or_package_digest_changed": "NO",
+    "controller_proof_required": "YES"
+  },
+  "output_digests": {
+    "tests/python/ipynb/test_obligation_nbformat_core.py": "2cbb1bb0a600475338d652bcf6b47fe454277ec3d9dcddf5e2b4f4d796219a19",
+    "reports/r90/product-code-change-ledger.json": "9ed0adc49ceff9b9ca662726ddf192895007aa8bcaaa9c119302bcc398c6c31b"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded evidence implementation; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for 41 repeated positive normative facts only; higher-level behavior remains open",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_NBFORMAT_CORE_INSTALLED_ORACLE_EVIDENCE_READY_FOR_PROOF",
+  "timestamp": "2026-07-25T22:30:15.4714451Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
