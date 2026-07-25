@@ -43181,9 +43181,38 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_tensor_regions.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-INTEROP-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
+      "capability_refs": [
+        "foss_python.safetensors.official_to_factory_interop",
+        "foss_python.safetensors.factory_to_official_interop",
+        "foss_python.safetensors.collision_free_coinstallation"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.dumps",
+        "safetensors.serialize",
+        "safetensors.deserialize"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+          "state": "present",
+          "sha256": "b5a3a5bb310c97e1698cbd480619432643eea82e3dc187bda7beb70b694e2dde"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_bidirectional_interop.py"
     }
   ],
-  "total_entries": 2760,
+  "total_entries": 2761,
   "changes": [
     {
       "file": "src/python/dif/models.py",

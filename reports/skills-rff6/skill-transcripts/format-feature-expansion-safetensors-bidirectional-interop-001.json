@@ -1,0 +1,119 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-safetensors-bidirectional-interop-001",
+  "execution_id": "ff6-format-feature-expansion-safetensors-bidirectional-interop-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-INTEROP-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+  "pre_mutation_guard_authorization_id": "c7b33de3fbd22142",
+  "requested_operation": "add direct bidirectional interoperability and collision-free co-installation evidence against the pinned official SafeTensors 0.8.0 distribution",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-INTEROP-001",
+    "obligation_id": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
+    "capability_id": "SAFETENSORS-INTEROP-001",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "authority_digests": {
+      "SRC-SAFETENSORS-002": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "root_cause": "Existing official interoperability evidence exercised only factory-writer to official-reader preservation cases. It did not prove official-writer to factory-reader vectors or simultaneous collision-free distribution origins.",
+    "affected_layer": "SafeTensors installed-wheel interoperability evidence only; production source and built package are unchanged",
+    "planned_paths": [
+      "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-bidirectional-interop-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/safetensors.yaml",
+      "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+      ".local/build/safetensors-validation-contract-001/format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/safetensors-current-proof"
+    ],
+    "base_git_commit": "50f14da11544c5484df3b197225a5dcc2627cb8f"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-bidirectional-interop-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-bidirectional-interop-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "EVIDENCE_GAP_CONFIRMED",
+    "observations": [
+      "The existing installed-wheel oracle test covered factory output accepted by official 0.8.0.",
+      "No test used official 0.8.0 serialization output as input to the factory reader.",
+      "No single installed-use test asserted both distributions' versions, origins, namespace boundaries, and co-importability."
+    ]
+  },
+  "implementation": {
+    "official_to_factory": "The official Rust extension constructs F32 and U8 tensors through TensorSpec and serialize; the factory reader verifies metadata, dtype, shape, and exact payload bytes.",
+    "factory_to_official": "The factory typed document and deterministic writer create F32 and U8 tensors; official 0.8.0 deserialize verifies dtype, shape, and exact payload bytes.",
+    "coinstallation": "Both distribution metadata records and installed module origins are loaded in one process and proven to occupy distinct safetensors and format_factory.safetensors namespaces.",
+    "shadow_control": "The official package is loaded from its installed distribution path under an alias so the tests/python/safetensors directory cannot masquerade as the oracle.",
+    "scope": "No production source behavior changed; the slice adds missing independent evidence."
+  },
+  "tests_run": [
+    "initial collection attempt: FAIL as expected because the tests/python/safetensors path shadowed a direct safetensors.numpy import; no result was credited",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_bidirectional_interop.py -q: 3 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_obligation_bidirectional_interop.py: PASS",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors -q: 364 passed"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "official_distribution_version": "PASS: 0.8.0",
+    "factory_distribution_version": "PASS: 0.2.0.dev0",
+    "official_to_factory_vector": "PASS",
+    "factory_to_official_vector": "PASS",
+    "dtype_shape_and_payload_semantics": "PASS",
+    "simultaneous_installed_imports": "PASS",
+    "namespace_collision_absent": "PASS",
+    "oracle_loaded_from_distribution_not_test_tree": "PASS",
+    "declared_regression_tier": "PASS: 364 tests",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS: declared test SHA-256 equals the current file",
+    "source_or_package_digest_changed": "NO",
+    "controller_proof_required": "YES: the new independent test must be bound to the live proof closure"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_bidirectional_interop.py": "b5a3a5bb310c97e1698cbd480619432643eea82e3dc187bda7beb70b694e2dde",
+    "reports/r90/product-code-change-ledger.json": "b54da282bf81e28d5c6cd0e8cd3d5dcf21ae162aa86ba7cd38f06c09e9ccfb07"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded evidence implementation; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES for bidirectional official interoperability and co-installation",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure claimed until controller proof",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_BIDIRECTIONAL_OFFICIAL_INTEROP_VERIFIED_PROOF_MATERIALIZATION_PENDING",
+  "timestamp": "2026-07-25T21:48:02.5913045Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
