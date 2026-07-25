@@ -1,0 +1,132 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-header-model-batch-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-header-model-batch-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-011",
+  "pre_mutation_guard_authorization_id": "85bbf9c7cd0a82e2",
+  "requested_operation": "materialize five independent SafeTensors header, model, dtype, and invalid-input obligations against the repaired installed wheel",
+  "inputs": {
+    "defect_id": "GAP-4A82738584A6E64C",
+    "failing_regression": "five mandatory obligations lacked live digest-bound executed results",
+    "invalidation_input": "current repaired source, installed wheel, test, dependency, tool, contract, and environment closure",
+    "target_product": "safetensors",
+    "base_git_commit": "da7a7f19"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-header-model-batch-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-header-model-batch-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "test_official_interop.py::test_preservation_roundtrip_is_officially_readable: 1 passed",
+    "test_production_namespace.py::test_scalar_roundtrip_is_deterministic: 1 passed, executed independently for two obligations",
+    "test_production_namespace.py::test_complete_dtype_inventory: 22 passed",
+    "test_obligation_invalid_headers.py: 3 passed"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS: five separate controller executions",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "utf8_json_top_level_model": "PASS",
+    "prefix_header_mapping_structure": "PASS",
+    "complete_v0_8_dtype_inventory": "PASS",
+    "declared_extent_utf8_json_rejection": "PASS",
+    "stale_proof_count": 0,
+    "promotion_claimed": "NO"
+  },
+  "common_proof_closure": {
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "b8315cff101b15e87451d127c439f37c0bb74b18db75268c33dc52daa2a0ce96",
+    "package_digest": "ae17f6673612e73328d6ff671776e83bddd3a970e4eb6d29ae976acdced57220",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "8729408f1b9d1545676d0164eaa8d838a04d8a4c38fe3d2079e905f9b73bca98"
+  },
+  "proofs": [
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-1182706F1A2BBB3A",
+      "proof_id": "PROOF-FFED79D98C91B96C5DF5090FCE26C2E7F0E4C65D28F18A01E990EE4B78B477D4",
+      "test_path": "tests/python/safetensors/test_official_interop.py",
+      "test_digest": "d0ff6b1693d481fb62900761f3625c4ca874254bbca0a8a5d1862fae03b58f9d",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-12CE1029701DCBC7",
+      "proof_id": "PROOF-AC7826263DA2F43990E4E35A7892406D848C7EA3E339E11931CC93AEEBE68369",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-1BF9DF98F6727A2F",
+      "proof_id": "PROOF-7978CF61712240827D0627B25F2EB74238FF8EDE33290B0B0EA171261E81540E",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-238D57F52B18998B",
+      "proof_id": "PROOF-34209BE92FAFAC1D81A172083C90B65B6BD4E5AEBE0F3BF01602474995491A32",
+      "test_path": "tests/python/safetensors/test_production_namespace.py",
+      "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+      "polarity": "positive",
+      "command_exit_code": 0
+    },
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-1FCACA122285E0E0",
+      "proof_id": "PROOF-F8D231CCB08AE2EFB69B2F4ADFEB533AEDC17F57C309AE1F0618916CFA8BC561",
+      "test_path": "tests/python/safetensors/test_obligation_invalid_headers.py",
+      "test_digest": "42f8b0837e2b42937fec39ec1ec560f8076ff04fe6f08a0f126dfe8d538e76d4",
+      "polarity": "positive",
+      "command_exit_code": 0
+    }
+  ],
+  "controller_result": {
+    "final_graph_digest": "f92723e4e144532f9bcbc580b9728bd3205a24bf2e06f27bff9684225307afe7",
+    "program_open_gaps_before": 609,
+    "program_open_gaps_after": 604,
+    "mandatory_obligations_remaining": 74,
+    "stale_proof_obligations": [],
+    "next_gap_id": "GAP-291B2E8D4F7AEF86",
+    "next_obligation_id": "SAL-SAFETENSORS-OBL-269BD11F3B41735C",
+    "next_task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-001"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for these five obligations; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_FIVE_HEADER_MODEL_OBLIGATIONS_PROVED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T19:12:27.9256376Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
