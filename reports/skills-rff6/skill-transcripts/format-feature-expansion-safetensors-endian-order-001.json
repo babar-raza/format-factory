@@ -12,7 +12,7 @@
   "agent_instance": "agent-codex-20260725T152151-4da361",
   "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
   "sprint_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
-  "pre_mutation_guard_authorization_id": "471fbb152bbae304",
+  "pre_mutation_guard_authorization_id": "02ef5ae970254ad7",
   "requested_operation": "characterize little-endian value decoding and C row-major reshaping through the installed production NumPy adapter",
   "inputs": {
     "format_id": "safetensors",
@@ -25,6 +25,7 @@
     "affected_layer": "tests/python/safetensors production namespace and optional NumPy adapter characterization",
     "planned_paths": [
       "tests/python/safetensors/test_production_namespace.py",
+      "reports/r90/product-code-change-ledger.json",
       "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-endian-order-001.json"
     ],
     "proof_inputs": [
@@ -38,10 +39,12 @@
   },
   "allowed_files": [
     "tests/python/safetensors/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
     "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-endian-order-001.json"
   ],
   "actual_files_changed": [
     "tests/python/safetensors/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
     "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-endian-order-001.json"
   ],
   "behavior_added": [],
@@ -59,6 +62,8 @@
     ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_production_namespace.py -q: 39 passed",
     ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_production_namespace.py: PASS"
   ],
+  "ledger_entry_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
   "validations": {
     "obligation_resolves_to_selected_format": "PASS",
     "authority_digest_pinned": "PASS",
@@ -66,11 +71,15 @@
     "little_endian_value_interpretation": "PASS",
     "c_row_major_order": "PASS",
     "format_regression": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hash": "PASS: declared test SHA-256 equals current file SHA-256",
+    "full_historical_ledger_validator": "FAIL_PREEXISTING: validator crashes on 160 legacy string-valued source_files entries before evaluating current entries",
     "source_change_avoided_when_unnecessary": "PASS",
     "controller_proof_pending": "YES"
   },
   "output_digests": {
-    "tests/python/safetensors/test_production_namespace.py": "46c71b7250fa93d938e4677b7bcfa777b371561456838830b90ec4f1e10a5743"
+    "tests/python/safetensors/test_production_namespace.py": "46c71b7250fa93d938e4677b7bcfa777b371561456838830b90ec4f1e10a5743",
+    "reports/r90/product-code-change-ledger.json": "f1448274ed6f89f9d48a418ac66f05ea444a230f364b25e1e813e620e4ba84b7"
   },
   "self_challenge": {
     "1_all_required_steps": "YES for characterization; controller proof is the next action",
@@ -92,7 +101,7 @@
   "result": "PASS",
   "status": "CLOSED",
   "final_outcome": "SAFETENSORS_ENDIAN_AND_ROW_MAJOR_CHARACTERIZATION_ADDED_PROOF_PENDING",
-  "timestamp": "2026-07-25T18:45:31.3742810Z",
+  "timestamp": "2026-07-25T18:48:01.8116496Z",
   "generated_by": "codex",
   "visibility": "generated"
 }

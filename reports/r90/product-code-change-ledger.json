@@ -42943,9 +42943,35 @@
         {"path": "tests/python/safetensors/test_lazy_io.py", "state": "present", "sha256": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04"}
       ],
       "tests": "tests/python/safetensors/test_lazy_io.py; tests/python/safetensors/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-F544FCB25C177A69",
+      "capability_refs": [
+        "foss_python.safetensors.little_endian_payload",
+        "foss_python.safetensors.c_row_major_order"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.adapters.to_numpy"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_production_namespace.py",
+          "state": "present",
+          "sha256": "46c71b7250fa93d938e4677b7bcfa777b371561456838830b90ec4f1e10a5743"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_production_namespace.py::test_numpy_adapter_uses_little_endian_c_row_major_order"
     }
   ],
-  "total_entries": 2754,
+  "total_entries": 2755,
   "changes": [
     {
       "file": "src/python/dif/models.py",
