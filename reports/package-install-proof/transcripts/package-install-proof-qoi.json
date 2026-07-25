@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-241E390F141B5C8D3596E7389F909673CBE93C08E7B442BF7A65BC949DEFB648-qoi",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "qoi",
+    "package_name": "format-factory-qoi"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-qoi.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-qoi.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "qoi.qoi_parser.parse_qoi_strict on samples/by-format/qoi/valid/1x1-red.qoi",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "qoi",
   "package_name": "format-factory-qoi",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_qoi-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "a88ea059cdca57ac1dc1eecdff6f7288865c71ecee2654b167be937f6bf34b80",
-  "source_digest": "7731450dadb3cc368ac0364189cc789567de5ca392579cd9fbb76578d61c9e7c",
+  "wheel_sha256": "1ad931ec92a947cc4432586a2ff4503bed825686be7854daf129186dd244ac25",
+  "proof_id": "PACKAGE-PROOF-241E390F141B5C8D3596E7389F909673CBE93C08E7B442BF7A65BC949DEFB648",
+  "source_digest": "ee71cedd7db7e76209432fbde1b7ced0917166dc53d2f67fbdbc34b649bd479a",
+  "proof_input_digest": "f8e0d0a3e5721289e1be04da50e911a795515d74ac4208d683f7723c8963dc60",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

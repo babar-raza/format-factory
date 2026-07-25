@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-8BEA842539473B5A2675FF2130DC98087E0B68ED8ED1203D397BDC6F54B6FF97-nrrd",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "package_name": "format-factory-nrrd"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "nrrd",
   "package_name": "format-factory-nrrd",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "66bd121d8523d5130548bc49bde9ecc886d5fcb066a8dfababdf18a19dd8f7f8",
-  "source_digest": "de56fca8299c8b93525fdea2388a822a008c912e7970c98d1ce34719d1465816",
+  "wheel_sha256": "47f15cf94e20ba50fdf45633f6a1bd03173a29e99cf56bfa04d6bdecbb9c2734",
+  "proof_id": "PACKAGE-PROOF-8BEA842539473B5A2675FF2130DC98087E0B68ED8ED1203D397BDC6F54B6FF97",
+  "source_digest": "769ca815835ad53093b172715c077ba61480d84c504b4b061e52c41ee1dd448c",
+  "proof_input_digest": "cd634a239fe2a0fe34b1350acb42bf76ceee58ffd20949320e54fa43b5d52b7d",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-16T06:12:37+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

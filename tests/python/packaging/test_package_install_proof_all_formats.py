@@ -7,8 +7,9 @@ pip install <wheel> -> import <format> -> call the primary load/parse API
 on the same sample corpus the oracle verified.
 
 Contract with the orchestrator (all via environment variables):
-  FF_PROOF_SPECS    path to a JSON file: {format_id: {smoke_module, smoke_callable,
-                    smoke_sample_abs | smoke_inline_bytes, expected, package_name}}
+  FF_PROOF_SPECS    path to a JSON file: {format_id: {module_import, smoke_module,
+                    smoke_callable, smoke_sample_abs | smoke_inline_bytes,
+                    expected, package_name}}
                     (serialized from packaging/python/package-matrix.yaml — the
                     single source of truth; this file hardcodes NO fleet list)
   FF_PROOF_FORMATS  comma-separated format_ids to prove in this run; others skip
@@ -58,7 +59,8 @@ def test_wheel_import(fmt: str) -> None:
     """The top-level package imports and resolves to the installed wheel,
     not to the repo source tree (editable installs would be fake proof)."""
     _skip_if_not_requested(fmt)
-    module = importlib.import_module(fmt)
+    module_import = _SPECS[fmt]["module_import"]
+    module = importlib.import_module(module_import)
 
     mod_file = getattr(module, "__file__", None)
     assert mod_file, f"{fmt} has no __file__ — cannot verify wheel origin"

@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-A2CF48387AC4FC15AA2C163E0C105F398DEC14D2BEF8D5F65D29A1F5CF86DBC7-ndjson",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ndjson",
+    "package_name": "format-factory-ndjson"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ndjson.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ndjson.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "ndjson.ndjson_codec.load_ndjson on samples/by-format/ndjson/valid/minimal.ndjson",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "ndjson",
   "package_name": "format-factory-ndjson",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_ndjson-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "fec2a389653b75f4da6fe18a142ffb936d58ac14b76270b53475ee1b4265c80a",
-  "source_digest": "873e306a3eabe1c094cf3051ce1d5b840f070183a99fbc81806b618b0d6c627a",
+  "wheel_sha256": "f1dcb66b6fbd42012ddc8914e33142b9c5382a616492689c162c9abfa7f303eb",
+  "proof_id": "PACKAGE-PROOF-A2CF48387AC4FC15AA2C163E0C105F398DEC14D2BEF8D5F65D29A1F5CF86DBC7",
+  "source_digest": "f51621f6d70d3a810e9c643f5894c874548ffc0b9a6dcd8dfc5fe35a8cd9ceb4",
+  "proof_input_digest": "991f0d21ca40335e4e38da5135b8410f81e83b73b2d0c3409802f1d71427f777",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

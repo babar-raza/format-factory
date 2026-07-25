@@ -582,6 +582,7 @@ packages:
   - 1
   capability_level: alpha-foss-preview
   commercial_ready: false
+  build_mode: native_pyproject
   dependencies: []
   description: Minimal FOSS Jupyter Notebook (.ipynb) codec
   examples_path: null
@@ -589,16 +590,19 @@ packages:
   install_proof:
     expected: dict
     smoke_callable: load_ipynb
-    smoke_module: ipynb.ipynb_codec
+    smoke_module: format_factory.ipynb
     smoke_sample: samples/by-format/ipynb/valid/minimal.ipynb
   license: Apache-2.0
-  module_import: ipynb
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.ipynb
   module_path: src/python/ipynb/
   onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
   package_name: format-factory-ipynb
   publication_authorized: false
   publish_status: local_only_not_published
-  python_version: '>=3.9'
+  python_version: '>=3.11'
   source_path: src/python/ipynb/
   tests_path: tests/python/ipynb/
 - acquisition_gates_passed:

@@ -1243,7 +1243,12 @@ skills:
 - command: /package-install-proof
   command_file: .claude/commands/package-install-proof.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - tools/run_package_install_proof.py
+  - tools/supervisor/package_proof_common.py
+  - tools/supervisor/governance_validators_package_proof.py
+  - packaging/python/build-local-packages.py
+  - packaging/python/package-matrix.yaml
   mandatory_validations:
   - wheel_builds
   - import_succeeds
@@ -1255,7 +1260,10 @@ skills:
   skill_id: package-install-proof
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/python/packaging/test_package_install_proof_all_formats.py
+  - tests/packaging/test_package_install_proof_runtime.py
+  - tests/supervisor/test_validate_package_install_proof_coverage.py
   advisory_only: true
 - command: /sync-installed-packages
   command_file: .claude/commands/sync-installed-packages.md

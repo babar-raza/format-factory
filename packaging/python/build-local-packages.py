@@ -1,11 +1,13 @@
 """
 build-local-packages.py — Local (non-publishing) package build script.
 
-Reads package-matrix.yaml and pyproject.template.toml, then:
-1. Instantiates pyproject.toml for each package into .local/package-builds/python-foss/<package>/
-2. Attempts `python -m build --wheel --sdist` for each package.
-3. Records checksums and sizes.
-4. Does NOT publish to PyPI or any external registry.
+Reads package-matrix.yaml, then:
+1. Builds `native_pyproject` entries from their authoritative source tree.
+2. Retains template staging for explicitly legacy entries.
+3. Builds declared local dependency projects before their consumer.
+4. Attempts `python -m build --wheel --sdist` for each selected package.
+5. Records checksums and sizes.
+6. Does NOT publish to PyPI or any external registry.
 
 publication_authorized: false
 commercial_ready: false
@@ -20,6 +22,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -32,6 +35,23 @@ SRC_PYTHON = REPO_ROOT / "src" / "python"
 # of truth since the GAP-FORENSIC-001 heal). Do not add per-package dicts here.
 
 
+def _ignore_transient_source(_directory: str, names: list[str]) -> set[str]:
+    return {
+        name
+        for name in names
+        if name
+        in {
+            "__pycache__",
+            ".pytest_cache",
+            ".mypy_cache",
+            ".ruff_cache",
+            "build",
+            "dist",
+        }
+        or name.endswith((".pyc", ".pyo", ".egg-info"))
+    }
+
+
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -40,12 +60,155 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def build_package(pkg: dict, version: str = "0.1.0.dev0") -> dict:
-    """Instantiate template and attempt local wheel/sdist build.
+def _project_metadata(source_dir: Path) -> tuple[str, str]:
+    pyproject_path = source_dir / "pyproject.toml"
+    if not pyproject_path.is_file():
+        raise ValueError(f"native_pyproject source has no pyproject.toml: {source_dir}")
+    with pyproject_path.open("rb") as fh:
+        project = tomllib.load(fh).get("project") or {}
+    name = project.get("name")
+    version = project.get("version")
+    if not isinstance(name, str) or not name:
+        raise ValueError(f"native pyproject has no [project].name: {pyproject_path}")
+    if not isinstance(version, str) or not version:
+        raise ValueError(f"native pyproject has no [project].version: {pyproject_path}")
+    return name, version
+
+
+def _build_source(source_dir: Path, package_name: str, version: str) -> dict:
+    """Build one source tree into its content-owned central artifact directory."""
+    pkg_dir = BUILD_DIR / package_name
+    dist_dir = pkg_dir / "dist"
+    if dist_dir.exists():
+        shutil.rmtree(dist_dir)
+    dist_dir.mkdir(parents=True, exist_ok=True)
+
+    result = {
+        "package_name": package_name,
+        "version": version,
+        "build_dir": str(source_dir),
+        "artifacts": [],
+        "status": "unknown",
+        "error": None,
+    }
+
+    # Inject user site-packages so build/hatchling are found even via system Python.
+    import site as _site
+
+    user_sp = _site.getusersitepackages()
+    env = os.environ.copy()
+    existing_pypath = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = (user_sp + os.pathsep + existing_pypath).rstrip(os.pathsep)
+    # PEP 427 ZIP member timestamps otherwise inherit mutable source/build times.
+    # The repository's native build adapters use the same stable epoch for sdists.
+    env["SOURCE_DATE_EPOCH"] = "315532800"
+
+    try:
+        proc = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "build",
+                "--wheel",
+                "--sdist",
+                "--outdir",
+                str(dist_dir),
+                str(source_dir),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=180,
+            env=env,
+        )
+        if proc.returncode == 0:
+            result["status"] = "built"
+            for artifact in sorted(dist_dir.iterdir()):
+                result["artifacts"].append(
+                    {
+                        "file": artifact.name,
+                        "size_bytes": artifact.stat().st_size,
+                        "sha256": sha256_file(artifact),
+                    }
+                )
+            dist_latest = pkg_dir / "dist-latest"
+            if dist_latest.exists():
+                shutil.rmtree(dist_latest)
+            shutil.copytree(dist_dir, dist_latest)
+        else:
+            result["status"] = "build_failed"
+            result["error"] = proc.stderr[-2000:] if proc.stderr else proc.stdout[-2000:]
+    except FileNotFoundError:
+        result["status"] = "build_backend_unavailable"
+        result["error"] = "python -m build not available (install: pip install build)"
+    except subprocess.TimeoutExpired:
+        result["status"] = "timeout"
+    return result
+
+
+def _build_native_project(
+    source_path: str,
+    expected_name: str,
+    version_override: str | None = None,
+) -> dict:
+    source_dir = (REPO_ROOT / source_path).resolve()
+    if REPO_ROOT.resolve() not in source_dir.parents:
+        raise ValueError(f"native source_path escapes repository: {source_path}")
+    actual_name, actual_version = _project_metadata(source_dir)
+    if actual_name != expected_name:
+        raise ValueError(
+            f"matrix package_name {expected_name!r} does not match native project {actual_name!r}"
+        )
+    if version_override is not None and version_override != actual_version:
+        raise ValueError(
+            f"--version {version_override!r} cannot override native project version "
+            f"{actual_version!r}; edit the authoritative pyproject instead"
+        )
+    result = _build_source(source_dir, actual_name, actual_version)
+    result["module"] = None
+    result["build_mode"] = "native_pyproject"
+    return result
+
+
+def build_package(pkg: dict, version: str | None = None) -> dict:
+    """Build a native project or stage a legacy project, then build artifacts.
 
     `pkg` is the full package-matrix.yaml entry; description and dependencies
     come from the matrix, not from local dicts.
     """
+    if pkg.get("build_mode", "legacy_staging") == "native_pyproject":
+        dependency_results = []
+        for dependency in pkg.get("local_dependencies") or []:
+            dependency_results.append(
+                _build_native_project(
+                    dependency["source_path"],
+                    dependency["package_name"],
+                )
+            )
+        failed_dependencies = [
+            result for result in dependency_results if result["status"] != "built"
+        ]
+        if failed_dependencies:
+            return {
+                "package_name": pkg["package_name"],
+                "module": pkg["module_import"],
+                "version": None,
+                "build_mode": "native_pyproject",
+                "build_dir": str(REPO_ROOT / pkg["source_path"]),
+                "artifacts": [],
+                "status": "dependency_build_failed",
+                "error": failed_dependencies,
+                "local_dependencies": dependency_results,
+            }
+        result = _build_native_project(
+            pkg["source_path"],
+            pkg["package_name"],
+            version,
+        )
+        result["module"] = pkg["module_import"]
+        result["local_dependencies"] = dependency_results
+        return result
+
+    version = version or "0.1.0.dev0"
     module = pkg["module_import"]
     package_name = pkg["package_name"]
     pkg_dir = BUILD_DIR / package_name
@@ -56,7 +219,7 @@ def build_package(pkg: dict, version: str = "0.1.0.dev0") -> dict:
     dst_src = pkg_dir / "src" / "python" / module
     if dst_src.exists():
         shutil.rmtree(dst_src)
-    shutil.copytree(src, dst_src)
+    shutil.copytree(src, dst_src, ignore=_ignore_transient_source)
 
     # Write README
     (pkg_dir / "README.md").write_text(
@@ -91,46 +254,10 @@ def build_package(pkg: dict, version: str = "0.1.0.dev0") -> dict:
         "error": None,
     }
 
-    # Attempt build
-    dist_dir = pkg_dir / "dist"
-    dist_dir.mkdir(exist_ok=True)
-
-    # Inject user site-packages so build/hatchling are found even via system Python
-    import site as _site
-    user_sp = _site.getusersitepackages()
-    env = os.environ.copy()
-    existing_pypath = env.get("PYTHONPATH", "")
-    env["PYTHONPATH"] = (user_sp + os.pathsep + existing_pypath).rstrip(os.pathsep)
-
-    try:
-        proc = subprocess.run(
-            [sys.executable, "-m", "build", "--wheel", "--sdist",
-             "--outdir", str(dist_dir), str(pkg_dir)],
-            capture_output=True, text=True, timeout=180, env=env,
-        )
-        if proc.returncode == 0:
-            result["status"] = "built"
-            for artifact in sorted(dist_dir.iterdir()):
-                result["artifacts"].append({
-                    "file": artifact.name,
-                    "size_bytes": artifact.stat().st_size,
-                    "sha256": sha256_file(artifact),
-                })
-            # Copy artifacts to dist-latest/ for release workflow consumption
-            dist_latest = pkg_dir / "dist-latest"
-            if dist_latest.exists():
-                shutil.rmtree(dist_latest)
-            shutil.copytree(dist_dir, dist_latest)
-        else:
-            result["status"] = "build_failed"
-            result["error"] = proc.stderr[-2000:] if proc.stderr else proc.stdout[-2000:]
-    except FileNotFoundError:
-        result["status"] = "build_backend_unavailable"
-        result["error"] = "python -m build not available (install: pip install build)"
-    except subprocess.TimeoutExpired:
-        result["status"] = "timeout"
-
-    return result
+    built = _build_source(pkg_dir, package_name, version)
+    built["module"] = module
+    built["build_mode"] = "legacy_staging"
+    return built
 
 
 def main():
@@ -152,7 +279,7 @@ def main():
     packages = matrix["packages"]
 
     if args.format:
-        packages = [p for p in packages if p["module_import"] == args.format]
+        packages = [p for p in packages if p["format_id"] == args.format]
         if not packages:
             print(f"ERROR: format '{args.format}' not found in package matrix")
             return 1
@@ -163,8 +290,11 @@ def main():
     for pkg in packages:
         module = pkg["module_import"]
         name = pkg["package_name"]
-        version = args.version or "0.1.0.dev0"
-        print(f"Building {name} (module: {module}, version: {version}) ...")
+        version = args.version
+        display_version = version or (
+            "native" if pkg.get("build_mode") == "native_pyproject" else "0.1.0.dev0"
+        )
+        print(f"Building {name} (module: {module}, version: {display_version}) ...")
         r = build_package(pkg, version)
         results.append(r)
         status = r["status"]

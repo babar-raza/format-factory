@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-5FCE0DA41B865E2658B36643FCB2E1E1C4C1E39FA0BAF9DA01EE515C24D87F48-fodg",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "fodg",
+    "package_name": "format-factory-fodg"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-fodg.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-fodg.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "fodg.fodg_codec.load on samples/by-format/fodg/minimal-drawing.fodg",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "fodg",
   "package_name": "format-factory-fodg",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_fodg-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "b3f262edba1f2584a78de2495246068b8c98ec253ca6920d1bd3a74139998948",
-  "source_digest": "c1a349f484613cb913184ed47483b46f5c48f16da0dcb866aea11ee7b2a91fb9",
+  "wheel_sha256": "82d95b44d9f22edc1a15fe574e0e9b27130b9cfb895dfb74c3448bb094a95df6",
+  "proof_id": "PACKAGE-PROOF-5FCE0DA41B865E2658B36643FCB2E1E1C4C1E39FA0BAF9DA01EE515C24D87F48",
+  "source_digest": "f998e355d330853c4b8133c2aa57d2f146aad91441467174d273ebd3bb6acc0f",
+  "proof_input_digest": "f0f94eee9812e4648c76dcba546fee546bfa85b723ebae3d3c08781eefe5249b",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

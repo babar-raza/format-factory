@@ -1,594 +1,658 @@
 {
-  "schema_version": 1,
-  "generated_by": "tools/run_package_install_proof.py",
   "formats": {
     "abw": {
-      "package_name": "format-factory-abw",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_abw-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "4d64890cfa333b11f5cb5237bca66be673de1933acb2a98a6e719925afbfd2c7",
-      "source_digest": "1341af9a26302e0fee0f7ebbd8d51128ce1d7a58ab08346dbb40a3e7e023a6e3",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "abw.abw_codec.load on samples/by-format/abw/minimal-document.abw",
-      "verdict": "PASS",
+      "build_mode": "legacy_staging",
       "deep_import": {
-        "total": 36,
-        "failed": 3,
-        "failing_modules": {
-          "abw.abw_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "abw.abw_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "abw.abw_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "csv": {
-      "package_name": "format-factory-csv",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_csv-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "7c7e20f8cab141e94492d452ad5cb965bd6cc03ff41d173844334ded32e87199",
-      "source_digest": "1d963d73393fbbba7492576d5f64d912a8320b503976c8acca4b445937982ec9",
-      "install_result": "PASS",
-      "import_result": "FAIL: AssertionError: csv resolved to C:\\Python313\\Lib\\csv.py, not to site-packages C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-install-proof-venv\\Lib\\site-packages \u2014 this is not ",
-      "smoke_result": "FAIL: ModuleNotFoundError: No module named 'csv.csv_parser'; 'csv' is not a package",
-      "smoke_test": "csv.csv_parser.parse_csv_strict on samples/by-format/csv/minimal-2x2.csv",
-      "verdict": "FAIL",
-      "deep_import": {
-        "total": 0,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "dif": {
-      "package_name": "format-factory-dif",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_dif-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "7975b5ca8cd51a289726a4da23cd225c2703d7fedcb69714c3beaeee8d3ac979",
-      "source_digest": "2fb245af1e1cff580a63b28849bb7864d6046c053ece640d6b9b3eef3978e3d2",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "dif.dif_parser.parse_dif on samples/by-format/dif/valid/minimal-2x2.dif",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 33,
-        "failed": 3,
-        "failing_modules": {
-          "dif.dif_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "dif.dif_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "dif.dif_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "fodg": {
-      "package_name": "format-factory-fodg",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_fodg-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "e153b211da0ba8cf65a09631a6d5c918e4f8e94f6389aceae27364e990d13b2b",
-      "source_digest": "802bc922f645eb6e4ccf05f6eefe72ac9d9ad655376995099fae65ce6446cc57",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "fodg.fodg_codec.load on samples/by-format/fodg/minimal-drawing.fodg",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 32,
-        "failed": 3,
-        "failing_modules": {
-          "fodg.fodg_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "fodg.fodg_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "fodg.fodg_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "fodp": {
-      "package_name": "format-factory-fodp",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_fodp-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "e6f41b9d9476ceca1de343d0b5a518ecfb0ecea49e5c82aeba5765a8dcfa4f8d",
-      "source_digest": "79cfcc403b86e11fc22836c2fb5400d6f40fa9a3a902cc54d39ecbb226e121e9",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "fodp.fodp_codec.load on samples/by-format/fodp/minimal-presentation.fodp",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 32,
-        "failed": 15,
-        "failing_modules": {
-          "fodp.fodp_to_abw": "ModuleNotFoundError: No module named 'abw'",
-          "fodp.fodp_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "fodp.fodp_to_dif": "ModuleNotFoundError: No module named 'dif'",
-          "fodp.fodp_to_fodg": "ModuleNotFoundError: No module named 'fodg'",
-          "fodp.fodp_to_fods": "ModuleNotFoundError: No module named 'fods'",
-          "fodp.fodp_to_fodt": "ModuleNotFoundError: No module named 'fodt'",
-          "fodp.fodp_to_gnumeric": "ModuleNotFoundError: No module named 'gnumeric'",
-          "fodp.fodp_to_ndjson": "ModuleNotFoundError: No module named 'ndjson'",
-          "fodp.fodp_to_ods": "ModuleNotFoundError: No module named 'ods'",
-          "fodp.fodp_to_pbm": "ModuleNotFoundError: No module named 'pbm'",
-          "fodp.fodp_to_pgm": "ModuleNotFoundError: No module named 'pgm'",
-          "fodp.fodp_to_ppm": "ModuleNotFoundError: No module named 'ppm'",
-          "fodp.fodp_to_sylk": "ModuleNotFoundError: No module named 'sylk'",
-          "fodp.fodp_to_toml": "ModuleNotFoundError: No module named 'toml'",
-          "fodp.fodp_to_tsv": "ModuleNotFoundError: No module named 'tsv'"
-        }
-      },
-      "proved_at": "2026-07-16T16:57:47+00:00"
-    },
-    "fods": {
-      "package_name": "format-factory-fods",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_fods-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "690681f277c10f1a372bb8e3dcfcdaca62ae9d23aebb628fa0df08267d22cb63",
-      "source_digest": "b97799a4e947f1d49eb4f6bf5a1d1e1d239c46b60605c50ce83693afa57630eb",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "fods.parser.parse_fods_strict on samples/by-format/fods/minimal-spreadsheet.fods",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 51,
-        "failed": 15,
-        "failing_modules": {
-          "fods.Compat": "ModuleNotFoundError: No module named 'src'",
-          "fods.fods_to_abw": "ModuleNotFoundError: No module named 'abw'",
-          "fods.fods_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "fods.fods_to_dif": "ModuleNotFoundError: No module named 'dif'",
-          "fods.fods_to_fodg": "ModuleNotFoundError: No module named 'fodg'",
-          "fods.fods_to_fodt": "ModuleNotFoundError: No module named 'fodt'",
-          "fods.fods_to_gnumeric": "ModuleNotFoundError: No module named 'gnumeric'",
-          "fods.fods_to_ndjson": "ModuleNotFoundError: No module named 'ndjson'",
-          "fods.fods_to_ods": "ModuleNotFoundError: No module named 'ods'",
-          "fods.fods_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "fods.fods_to_pbm": "ModuleNotFoundError: No module named 'pbm'",
-          "fods.fods_to_pgm": "ModuleNotFoundError: No module named 'pgm'",
-          "fods.fods_to_ppm": "ModuleNotFoundError: No module named 'ppm'",
-          "fods.fods_to_sylk": "ModuleNotFoundError: No module named 'sylk'",
-          "fods.fods_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:50:24+00:00"
-    },
-    "fodt": {
-      "package_name": "format-factory-fodt",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_fodt-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "7b0edbc39ce730edf7bbfb38bb80bb743e1f67c531b82b39d67e0615d7b5418e",
-      "source_digest": "a93919b71350a98bf448d0b2f4e185074ce62ce7674d97adad0704ab43150b04",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "fodt.parser.parse_fodt_strict on samples/by-format/fodt/minimal-document.fodt",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 55,
-        "failed": 3,
-        "failing_modules": {
-          "fodt.fodt_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "fodt.fodt_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "fodt.fodt_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "gnumeric": {
-      "package_name": "format-factory-gnumeric",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_gnumeric-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "3359d1f23098cd2a3909d7b8ab726907a2dbddc0628445da06148e56e8838ddc",
-      "source_digest": "36129f6f4f9979438766f944ee9f2fe48d3d082db1d0c911dd9c977d97b2335d",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "gnumeric.gnumeric_codec.load on samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 31,
-        "failed": 3,
-        "failing_modules": {
-          "gnumeric.gnumeric_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "gnumeric.gnumeric_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "gnumeric.gnumeric_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "ipynb": {
-      "package_name": "format-factory-ipynb",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ipynb-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "41f3dc16d206fe82a6f28dca4fb67939063266ab62adf6f652a49dcf75fc1f6f",
-      "source_digest": "6801d32060d7dc91672f85ff44d5ccfd7404f382aabdfa0a69e5fdc891d63d35",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "ipynb.ipynb_codec.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 15,
         "failed": 1,
         "failing_modules": {
-          "ipynb.ipynb_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
+          "abw.abw_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 36
       },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "abw",
+      "package_name": "format-factory-abw",
+      "proof_id": "PACKAGE-PROOF-2B54A202A17645D813F70CC0CC161721B0E02B2FB22B9F9B6E6562B6EAE2126B",
+      "proof_input_digest": "eb15696689fc5b39299a651e58538c37fe38e02e3e1925a67779dc77500182f7",
+      "smoke_result": "PASS",
+      "smoke_test": "abw.abw_codec.load on samples/by-format/abw/minimal-document.abw",
+      "source_digest": "6b01108c314747f27e6caa8aca1d9b21535f8c9fcddf2a8d40fa0f0cf76af5a0",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_abw-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "73a142bbf499c842a4e7874f9e4eb0efee88f100a56e7d6fced77943b5b511fa"
+    },
+    "csv": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 0
+      },
+      "import_result": "FAIL: AssertionError: csv resolved to C:\\Python313\\Lib\\csv.py, not to site-packages C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\worktrees\\ff-six-python-production\\.local\\package-install-p",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "csv",
+      "package_name": "format-factory-csv",
+      "proof_id": "PACKAGE-PROOF-74B15FD85BF56A8BFB023BB389F5AB2781F5E7D8FA6B8BFDBE065230AD3483CA",
+      "proof_input_digest": "f0669fd8571ab5202127739fc5296f36d482bd0ddeb610151c034a795c87dc74",
+      "smoke_result": "FAIL: ModuleNotFoundError: No module named 'csv.csv_parser'; 'csv' is not a package",
+      "smoke_test": "csv.csv_parser.parse_csv_strict on samples/by-format/csv/minimal-2x2.csv",
+      "source_digest": "d3080653a988bc5bdd7ed842195c0580463cc283cd7b3c417d532f52b3467343",
+      "verdict": "FAIL",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_csv-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "b25e46d5bdc5cbf61402ba4a81595203933fba74d4102c20e5b9d480119d3e51"
+    },
+    "dif": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "dif.dif_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 33
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "dif",
+      "package_name": "format-factory-dif",
+      "proof_id": "PACKAGE-PROOF-94D755CF5826FE6D821CED1E029199F781596FE7612BD559BD80E75703E6E990",
+      "proof_input_digest": "db12e64a6b60357baa78a188ee59ca65a73bded2dea1b9acf597b055d0b6ade4",
+      "smoke_result": "PASS",
+      "smoke_test": "dif.dif_parser.parse_dif on samples/by-format/dif/valid/minimal-2x2.dif",
+      "source_digest": "0e37ed3619e6a78f5c85cb3c3f4d7df6dcbfb3caee83c5e308b232fe74537f9e",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_dif-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "92e62ab228c7f525c0688c3521946c3debdb6400f25a4798db69d4c22ae5e9ef"
+    },
+    "fodg": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "fodg.fodg_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 32
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "fodg",
+      "package_name": "format-factory-fodg",
+      "proof_id": "PACKAGE-PROOF-5FCE0DA41B865E2658B36643FCB2E1E1C4C1E39FA0BAF9DA01EE515C24D87F48",
+      "proof_input_digest": "f0f94eee9812e4648c76dcba546fee546bfa85b723ebae3d3c08781eefe5249b",
+      "smoke_result": "PASS",
+      "smoke_test": "fodg.fodg_codec.load on samples/by-format/fodg/minimal-drawing.fodg",
+      "source_digest": "f998e355d330853c4b8133c2aa57d2f146aad91441467174d273ebd3bb6acc0f",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_fodg-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "82d95b44d9f22edc1a15fe574e0e9b27130b9cfb895dfb74c3448bb094a95df6"
+    },
+    "fodp": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "fodp.fodp_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 32
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "fodp",
+      "package_name": "format-factory-fodp",
+      "proof_id": "PACKAGE-PROOF-47F9471B9022DB9977A3E07F21DE1F0A8B5A1B7E9DE58C125D9C763F12A1FE3E",
+      "proof_input_digest": "461ef082ac1459d75096da8e997ad05390da34a33256f01976237cf1ce142eb6",
+      "smoke_result": "PASS",
+      "smoke_test": "fodp.fodp_codec.load on samples/by-format/fodp/minimal-presentation.fodp",
+      "source_digest": "761cb61c634cfb00c169243d6e092b24520f0366c2f0cc6203adec0714e63131",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_fodp-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "5cf0cb67d5834475d4f7482ef14b82de3f50c4fb9d38b4883c806124c950abdb"
+    },
+    "fods": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 3,
+        "failing_modules": {
+          "fods.Compat": "ModuleNotFoundError: No module named 'src'",
+          "fods.fods.Compat": "ModuleNotFoundError: No module named 'src'",
+          "fods.fods_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 88
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "fods",
+      "package_name": "format-factory-fods",
+      "proof_id": "PACKAGE-PROOF-12C7404E2E843E3D587F1EBF145F9C73208164B95DA1BCDA3CC216EC6A6092C4",
+      "proof_input_digest": "1e74d2bb0054d3253713f758d663a97ad267dbda600ce682cdfd4fa44cc79d8d",
+      "smoke_result": "PASS",
+      "smoke_test": "fods.parser.parse_fods_strict on samples/by-format/fods/minimal-spreadsheet.fods",
+      "source_digest": "0794d0788d4387ed3e39337fed5c8a4a9eac1688aa4aa7242ded9ed6fb2fc884",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_fods-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "69ee5a39dcafa3d5272dd7ed8e92617e538ea870e86fe522a1733523a7822a9d"
+    },
+    "fodt": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "fodt.fodt_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 55
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "fodt",
+      "package_name": "format-factory-fodt",
+      "proof_id": "PACKAGE-PROOF-27D23B79293CD1DD27DE34791DDBF1E1B4B131A8157E3D525D84C27C9105CA0E",
+      "proof_input_digest": "36fc8b368ec4c857b5a9ec34746d2fdbd3b300992ca5e2a3db1f71a247f44745",
+      "smoke_result": "PASS",
+      "smoke_test": "fodt.parser.parse_fodt_strict on samples/by-format/fodt/minimal-document.fodt",
+      "source_digest": "3812ab846ab7cc94bb6c4d485b2553e478c50ab06026d91eef539399df140b62",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_fodt-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "1f64e7ffac1ddecfb3d0fd0870c3fef199d10c0fbb0568d82005203c2f2fdc26"
+    },
+    "gnumeric": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "gnumeric.gnumeric_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 31
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "gnumeric",
+      "package_name": "format-factory-gnumeric",
+      "proof_id": "PACKAGE-PROOF-A7F22633ECAE2EAB743D018BA958AD95853ABA8AB6CE6465FED5DBEA81F45F18",
+      "proof_input_digest": "4af815c7f87efb2430d92f1b8a6da8bc72699fc6b72bd40d0606abca6a697c7d",
+      "smoke_result": "PASS",
+      "smoke_test": "gnumeric.gnumeric_codec.load on samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+      "source_digest": "c38251cc8ae49061f4f11950c889243bec51c6933792fd3afe6fef61ded76f82",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_gnumeric-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "c2a38430b8327d66571f7a5732c00a8b9de59d04ed569eed40eec983744c6837"
+    },
+    "ipynb": {
+      "build_mode": "native_pyproject",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 18
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077"
+        }
+      ],
+      "module_import": "format_factory.ipynb",
+      "package_name": "format-factory-ipynb",
+      "proof_id": "PACKAGE-PROOF-AFD32293AB780507CF06E09837634424D110C0ABFE1BD7CDEED167BE9DCF6A9A",
+      "proof_input_digest": "1526f1da77a760b20da5a05331bafe3539fb23d241187ade13ec02da261b67fb",
+      "smoke_result": "PASS",
+      "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+      "source_digest": "61f59be686e188211033ee21d8f307048d1d2297750d81760fcb0f5fc2bab1a4",
+      "verdict": "PASS",
+      "version": "0.2.0.dev0",
+      "wheel_file": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041"
     },
     "mtlx": {
-      "package_name": "format-factory-mtlx",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_mtlx-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "8f4904f7919b1b94ee66f8a79a319830cd12428e6cf8b16ca10ceb66893ef2ea",
-      "source_digest": "46bde71d73e1fc8040c538000cbe6811cc4c376af6a5ab481d4028b32daab7fe",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "mtlx.mtlx_codec.load_mtlx on samples/by-format/mtlx/valid/simple-material.mtlx",
-      "verdict": "PASS",
+      "build_mode": "legacy_staging",
       "deep_import": {
-        "total": 22,
         "failed": 1,
         "failing_modules": {
           "mtlx.mtlx_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
+        },
+        "total": 22
       },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "mtlx",
+      "package_name": "format-factory-mtlx",
+      "proof_id": "PACKAGE-PROOF-1618CFD641043E4D86F58C44A3E998634E58B2F63C261BCFEAE5BBE439001A94",
+      "proof_input_digest": "cf32ad0b9dfe2218e0dd1968fd47a6d3b0f8b2eefb2e2951c0c7698f70b985d4",
+      "smoke_result": "PASS",
+      "smoke_test": "mtlx.mtlx_codec.load_mtlx on samples/by-format/mtlx/valid/simple-material.mtlx",
+      "source_digest": "33c986e109c95a5ed3b46792ab34f1cb165effeeb24f694150fe9950166e43a4",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_mtlx-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "11e823a73b48d55ec9b0b36c55bf632865d0a24fa1ebb9adde594adb51991e47"
     },
     "ndjson": {
-      "package_name": "format-factory-ndjson",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ndjson-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "41efe7e25bc1346422a3de3d0d8d961a380ce2c33438687443c28120c930cbe3",
-      "source_digest": "745b772d459927071a1125a2511ad2898949bc9d23eddd50325b67c810fbdc5f",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "ndjson.ndjson_codec.load_ndjson on samples/by-format/ndjson/valid/minimal.ndjson",
-      "verdict": "PASS",
+      "build_mode": "legacy_staging",
       "deep_import": {
-        "total": 33,
-        "failed": 3,
-        "failing_modules": {
-          "ndjson.ndjson_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "ndjson.ndjson_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "ndjson.ndjson_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
-    },
-    "nrrd": {
-      "package_name": "format-factory-nrrd",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "9b73bfec4c6a494270c20863dc372b6dd6b6236fcf06af9877e438bbcf479107",
-      "source_digest": "74f57f0ef44959347515d95d53213d0f1cabd7aaea19f662d3a136cd620956d9",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
-      "verdict": "PASS",
-      "deep_import": {
-        "total": 13,
         "failed": 1,
         "failing_modules": {
-          "nrrd.nrrd_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
+          "ndjson.ndjson_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 33
       },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "ndjson",
+      "package_name": "format-factory-ndjson",
+      "proof_id": "PACKAGE-PROOF-A2CF48387AC4FC15AA2C163E0C105F398DEC14D2BEF8D5F65D29A1F5CF86DBC7",
+      "proof_input_digest": "991f0d21ca40335e4e38da5135b8410f81e83b73b2d0c3409802f1d71427f777",
+      "smoke_result": "PASS",
+      "smoke_test": "ndjson.ndjson_codec.load_ndjson on samples/by-format/ndjson/valid/minimal.ndjson",
+      "source_digest": "f51621f6d70d3a810e9c643f5894c874548ffc0b9a6dcd8dfc5fe35a8cd9ceb4",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_ndjson-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "f1dcb66b6fbd42012ddc8914e33142b9c5382a616492689c162c9abfa7f303eb"
+    },
+    "nrrd": {
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 2,
+        "failing_modules": {
+          "nrrd._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
+          "nrrd.nrrd_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 14
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "nrrd",
+      "package_name": "format-factory-nrrd",
+      "proof_id": "PACKAGE-PROOF-8BEA842539473B5A2675FF2130DC98087E0B68ED8ED1203D397BDC6F54B6FF97",
+      "proof_input_digest": "cd634a239fe2a0fe34b1350acb42bf76ceee58ffd20949320e54fa43b5d52b7d",
+      "smoke_result": "PASS",
+      "smoke_test": "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+      "source_digest": "769ca815835ad53093b172715c077ba61480d84c504b4b061e52c41ee1dd448c",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "47f15cf94e20ba50fdf45633f6a1bd03173a29e99cf56bfa04d6bdecbb9c2734"
     },
     "ods": {
-      "package_name": "format-factory-ods",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ods-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "3d22551d79e16cf5e339188504c58d6cc04f9640fff6930fd9a6b2eca8f775a2",
-      "source_digest": "d1e75fdd22e1904c94ae67f221e3f071e49b34b97e27998fe079aa828cc6a80f",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "ods.ods_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 37
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "ods",
+      "package_name": "format-factory-ods",
+      "proof_id": "PACKAGE-PROOF-1EA1E0AE96DDD1A345FB0B15D65228267CA1CCBEDB0600360FBAAD5889F37FF6",
+      "proof_input_digest": "4fe68a72ed74c688a64ac37f14269dea6c43ef8550bbea0a5b2e726c6924e0b8",
       "smoke_result": "PASS",
       "smoke_test": "ods.ods_parser.parse_ods_strict on samples/by-format/ods/valid/minimal-spreadsheet.ods",
+      "source_digest": "750448cc2753a6dbfa646eb23ddacfc6c37083206ae8e9c6ec8003f4e6c0251a",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 37,
-        "failed": 3,
-        "failing_modules": {
-          "ods.ods_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "ods.ods_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "ods.ods_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_ods-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "de22264559fd7f427e66e5a6cc9097cc33221c7628abe181795fcc373a9ec00a"
     },
     "odt": {
-      "package_name": "format-factory-odt",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_odt-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "660d52c9475c2e502195004137dfb97dec2cc0c377b916c260c044bc9ccf8440",
-      "source_digest": "1292da123bf9c2d5ab700a29b6fa1e7ae05714cb4b02a2ae3b3424be17377c58",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "odt.odt_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 35
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "odt",
+      "package_name": "format-factory-odt",
+      "proof_id": "PACKAGE-PROOF-780B411F36513913EE2F8EE5D1DD67CB7D175DA51D223E50CE029B58AF74E1EC",
+      "proof_input_digest": "7d54ec4ba74d7b059cabff1d7dfedb30fc19738e8cf5444f4dcdab6e7ff9dc69",
       "smoke_result": "PASS",
       "smoke_test": "odt.odt_parser.parse_odt_strict on samples/by-format/odt/valid/minimal-document.odt",
+      "source_digest": "e358f7fd2733e90e46a23da772e09c6a1870c1f6db48abf61a1a2e41b36fc7d6",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 35,
-        "failed": 15,
-        "failing_modules": {
-          "odt.odt_to_abw": "ModuleNotFoundError: No module named 'abw'",
-          "odt.odt_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "odt.odt_to_dif": "ModuleNotFoundError: No module named 'dif'",
-          "odt.odt_to_fodg": "ModuleNotFoundError: No module named 'fodg'",
-          "odt.odt_to_fods": "ModuleNotFoundError: No module named 'fods'",
-          "odt.odt_to_fodt": "ModuleNotFoundError: No module named 'fodt'",
-          "odt.odt_to_gnumeric": "ModuleNotFoundError: No module named 'gnumeric'",
-          "odt.odt_to_ndjson": "ModuleNotFoundError: No module named 'ndjson'",
-          "odt.odt_to_ods": "ModuleNotFoundError: No module named 'ods'",
-          "odt.odt_to_pbm": "ModuleNotFoundError: No module named 'pbm'",
-          "odt.odt_to_pgm": "ModuleNotFoundError: No module named 'pgm'",
-          "odt.odt_to_ppm": "ModuleNotFoundError: No module named 'ppm'",
-          "odt.odt_to_sylk": "ModuleNotFoundError: No module named 'sylk'",
-          "odt.odt_to_toml": "ModuleNotFoundError: No module named 'toml'",
-          "odt.odt_to_tsv": "ModuleNotFoundError: No module named 'tsv'"
-        }
-      },
-      "proved_at": "2026-07-16T16:57:47+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_odt-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "4b9b876b79a064da9309daa7906f3669a21cce5cb82422902248adbfde2e704d"
     },
     "pbm": {
-      "package_name": "format-factory-pbm",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_pbm-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "98996d3818f5e63f4207fbc21bf14ca9424a3e1b262b31c377b29092740725ad",
-      "source_digest": "d2cf2afb207e065d6c2ea99a26b9f1387ec85f09499d35b5894b16560fcd4c18",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 18
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "pbm",
+      "package_name": "format-factory-pbm",
+      "proof_id": "PACKAGE-PROOF-C44BF7561BD6DFF8FA53E22F81AC639FBD8E68ED54EE5C2C3E3D87C749FC3408",
+      "proof_input_digest": "f80c936011c0ef2a27fdc7a6aa0785440f8205ab389bbb47e17baa648c139de2",
       "smoke_result": "PASS",
       "smoke_test": "pbm.pbm_parser.parse_pbm_strict on samples/by-format/pbm/valid/2x2-checker.pbm",
+      "source_digest": "fa9e9e40cc87230238fd73aa86fa05fc7813050fed05fa60e51c1c7b685cb33f",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 18,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_pbm-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "e5210fe6f175fbc544595407c140ca4b85bd8628818527100a1cd33d65fb65ab"
     },
     "pgm": {
-      "package_name": "format-factory-pgm",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_pgm-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "f0bd4ef49000ca27c4c485ad3efc00469e34a54c11635744d5d681cff1ea5a2f",
-      "source_digest": "9c1563e027d2ceea5514618a9106042ec3b26fed959bbe553ef20de2e55a41a3",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 16
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "pgm",
+      "package_name": "format-factory-pgm",
+      "proof_id": "PACKAGE-PROOF-DDB0F7224730F8020CC06D19C35593737ED7903885584613D89EB93D20796704",
+      "proof_input_digest": "8bb5616a4d9d1f71e7038e4b28b99d7b4b9b32a262762eda9258862da3d66860",
       "smoke_result": "PASS",
       "smoke_test": "pgm.pgm_parser.parse_pgm_strict on samples/by-format/pgm/valid/2x2-gradient.pgm",
+      "source_digest": "a63bfc5d6e49292b72bf3e8e1b68396eb245144bf67521e57ff1a184dc8be0b0",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 16,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_pgm-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "a5d448930c090f6c2ab4c8c380b0f9e013754397212aad04d94ccc17482aa75b"
     },
     "ppm": {
-      "package_name": "format-factory-ppm",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ppm-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "bb1160433f87af362f20ed55c7e96f87a55b20a98f79ed22d0a4ccd6f3b6fbd4",
-      "source_digest": "09a90108120625a605ed363e29440724acf8248da8520a6cd2016c6c87e59876",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 17
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "ppm",
+      "package_name": "format-factory-ppm",
+      "proof_id": "PACKAGE-PROOF-8C6CE6137E6598EC14EBEB7B3A90A64FC3C00BAA49625B688E44120C7D6A3284",
+      "proof_input_digest": "f4ac425cb985d1ed11a2b0f792cf59f58990b4058ecc335fdcfbae29b47d7376",
       "smoke_result": "PASS",
       "smoke_test": "ppm.ppm_parser.parse_ppm_strict on samples/by-format/ppm/valid/2x2-rgbw.ppm",
+      "source_digest": "387f8e002ab2257293e50dd5c4816f7534a38f9bb56a03548be42ec8b1e810b7",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 17,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_ppm-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "11168e28a22fce60db9e5174b35068ef4994f24108a3c52b8f382a13160ed5be"
     },
     "qoi": {
-      "package_name": "format-factory-qoi",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_qoi-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "58490e61ef901c4b3a713139eabf3a4c5af2bf9d1db490f13852bda3001257d1",
-      "source_digest": "968b1daec10472fc0e8d19f5e4f5af2237b5daf0d5b46cef92867863e1e5f4c6",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 18
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "qoi",
+      "package_name": "format-factory-qoi",
+      "proof_id": "PACKAGE-PROOF-241E390F141B5C8D3596E7389F909673CBE93C08E7B442BF7A65BC949DEFB648",
+      "proof_input_digest": "f8e0d0a3e5721289e1be04da50e911a795515d74ac4208d683f7723c8963dc60",
       "smoke_result": "PASS",
       "smoke_test": "qoi.qoi_parser.parse_qoi_strict on samples/by-format/qoi/valid/1x1-red.qoi",
+      "source_digest": "ee71cedd7db7e76209432fbde1b7ced0917166dc53d2f67fbdbc34b649bd479a",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 18,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_qoi-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "1ad931ec92a947cc4432586a2ff4503bed825686be7854daf129186dd244ac25"
     },
     "safetensors": {
-      "package_name": "format-factory-safetensors",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_safetensors-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "24d32b6ef38349b3cefd274abeedc534e4ad1a12326260a0c450391e91095cc6",
-      "source_digest": "95fea5890e245470e67a0db0ea1b9d63dc758c555b8d9c2eb3b7bf22d60e6274",
-      "install_result": "PASS",
-      "import_result": "PASS",
-      "smoke_result": "PASS",
-      "smoke_test": "safetensors.safetensors_codec.load_safetensors on samples/by-format/safetensors/valid/single-tensor.safetensors",
-      "verdict": "PASS",
+      "build_mode": "legacy_staging",
       "deep_import": {
-        "total": 15,
         "failed": 1,
         "failing_modules": {
           "safetensors.safetensors_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
+        },
+        "total": 15
       },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "safetensors",
+      "package_name": "format-factory-safetensors",
+      "proof_id": "PACKAGE-PROOF-66E72D09AAD4EBC1FFED89B0EB748129D509EACE2AF7C8EBB9832A7363B526CF",
+      "proof_input_digest": "167a0fd1fc9607164e6aea5eca44c05c45fea308d9d138132d14ec80ffb60b9b",
+      "smoke_result": "PASS",
+      "smoke_test": "safetensors.safetensors_codec.load_safetensors on samples/by-format/safetensors/valid/single-tensor.safetensors",
+      "source_digest": "656c2558bf46429d80d98879358962d32479dfa9d29f835f2cc2771447983684",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_safetensors-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "b711714b2a8a0b5987b04522a06d266f4f2c9441e9bb07fc2f7631e71cf1284a"
     },
     "sylk": {
-      "package_name": "format-factory-sylk",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_sylk-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "c9adecdd90c99e5f62fc8d8b4d1508261128327f02d5a51255d8ae3db6093c2a",
-      "source_digest": "2d15add108f05ffa16885d9dee03fee59ee3f7444c0cceb77412057559c25776",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "sylk.sylk_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 34
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "sylk",
+      "package_name": "format-factory-sylk",
+      "proof_id": "PACKAGE-PROOF-6E9AF2E5E095E2C2774F6E6ECA3C4E2F9CB05B993650AC3D10A5F263B0C8718E",
+      "proof_input_digest": "ff9bc0643e852f3fc35f6a3edfe05f62f7f164b6756ebfda53c2486aab707155",
       "smoke_result": "PASS",
       "smoke_test": "sylk.sylk_parser.parse_sylk on samples/by-format/sylk/valid/minimal-2x2.slk",
+      "source_digest": "3cf725d1927fe1e9d9101f337baf8f862f14f0b54c7c07f37994216d8e3a8b40",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 34,
-        "failed": 3,
-        "failing_modules": {
-          "sylk.sylk_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "sylk.sylk_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "sylk.sylk_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_sylk-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "c3c7bd0d1cab4b184118a099537ca9ac4a710aca8494eab37f592b51bb3e441e"
     },
     "toml": {
-      "package_name": "format-factory-toml",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_toml-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "8a9a5560434e63e70b9709a2f233797a9a2730435adeef59ae0b741efd2164a7",
-      "source_digest": "542d4b25a7b12452f91afce03ce12054f2e7046a20d14ab26382d1dee76cdda1",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "toml.toml_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 33
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "toml",
+      "package_name": "format-factory-toml",
+      "proof_id": "PACKAGE-PROOF-B8EEDFA2F052FEE0C494AE6060FA2AEDB24544A1E0E2D064389A6A439A9694F2",
+      "proof_input_digest": "92014779dae5e844f19ca7843d87c8a380d4874308927e0b2a8e6d02bf9d81d3",
       "smoke_result": "PASS",
       "smoke_test": "toml.toml_codec.load_toml on samples/by-format/toml/minimal.toml",
+      "source_digest": "9cbeb69050c0ad229896a4e2d0b32940b172b28ab182fa6c6a3d0ab00b467605",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 33,
-        "failed": 15,
-        "failing_modules": {
-          "toml.toml_to_abw": "ModuleNotFoundError: No module named 'abw'",
-          "toml.toml_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "toml.toml_to_dif": "ModuleNotFoundError: No module named 'dif'",
-          "toml.toml_to_fodg": "ModuleNotFoundError: No module named 'fodg'",
-          "toml.toml_to_fods": "ModuleNotFoundError: No module named 'fods'",
-          "toml.toml_to_fodt": "ModuleNotFoundError: No module named 'fodt'",
-          "toml.toml_to_gnumeric": "ModuleNotFoundError: No module named 'gnumeric'",
-          "toml.toml_to_ndjson": "ModuleNotFoundError: No module named 'ndjson'",
-          "toml.toml_to_ods": "ModuleNotFoundError: No module named 'ods'",
-          "toml.toml_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "toml.toml_to_pbm": "ModuleNotFoundError: No module named 'pbm'",
-          "toml.toml_to_pgm": "ModuleNotFoundError: No module named 'pgm'",
-          "toml.toml_to_ppm": "ModuleNotFoundError: No module named 'ppm'",
-          "toml.toml_to_sylk": "ModuleNotFoundError: No module named 'sylk'",
-          "toml.toml_to_tsv": "ModuleNotFoundError: No module named 'tsv'"
-        }
-      },
-      "proved_at": "2026-07-16T17:08:13+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_toml-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "f4290e7b92b291af64369242bb3dc2280fb92501f4e4f6db6e708da2961b9a9e"
     },
     "tsv": {
-      "package_name": "format-factory-tsv",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_tsv-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "12c75144667d7316761a7e9fae3325d50e7259c70fba29f37722d9e8ba7eb0de",
-      "source_digest": "6798bd4faee7c7d8bb1e8b07a07e0707622f6797193b41b04adf695752c7aa19",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 1,
+        "failing_modules": {
+          "tsv.tsv_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 33
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "tsv",
+      "package_name": "format-factory-tsv",
+      "proof_id": "PACKAGE-PROOF-664F5E9C9AF74BFE4C0BD73B0B7A8B5A5C81E9FC3CB5E871331F1A48FA183290",
+      "proof_input_digest": "780e414e6513ff9ad9ba0a347a38fd41e0b8767eeb4fb62c77383d2718bff582",
       "smoke_result": "PASS",
       "smoke_test": "tsv.tsv_parser.parse_tsv_strict on samples/by-format/tsv/minimal-2x2.tsv",
+      "source_digest": "6e310e44d539de63c1da9279ca0b700a7783512676c08d5f0c0b58449147838e",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 33,
-        "failed": 3,
-        "failing_modules": {
-          "tsv.tsv_to_csv": "ModuleNotFoundError: No module named 'src'",
-          "tsv.tsv_to_odt": "ModuleNotFoundError: No module named 'odt'",
-          "tsv.tsv_to_toml": "ModuleNotFoundError: No module named 'toml'"
-        }
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_tsv-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "52d75f4efdebac0199b5b161c404c4f94daf5804a51346dd232a868f7a7168f1"
     },
     "ubl": {
-      "package_name": "format-factory-ubl",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ubl-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "dbdacf4fd874ea5baeb87581b5329b19a61c0c04978089a0404b65b3de2610f2",
-      "source_digest": "188335e0530d411f659edad62139c996317da1c51b6fd9da53f270d44453822a",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 2,
+        "failing_modules": {
+          "ubl._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
+          "ubl.ubl_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 18
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "ubl",
+      "package_name": "format-factory-ubl",
+      "proof_id": "PACKAGE-PROOF-B6BFDA39DC40D71E2C7C90DE534E18B04326A45E43FFDD5F4823AA9B671317D2",
+      "proof_input_digest": "64f3154d9ccaff04ff8cd960df3e8f89ce20804fc8baf347ae8a3c6dcb35cf53",
       "smoke_result": "PASS",
       "smoke_test": "ubl.ubl_codec.load_ubl on samples/by-format/ubl/valid/minimal-order.xml",
+      "source_digest": "7526e907501a5e840b3bac3cdc9caaecf91da3a4a6c3d02bcdacda3901affc9f",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 17,
-        "failed": 1,
-        "failing_modules": {
-          "ubl.ubl_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
-      },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_ubl-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "42cf8cd49fc62b3f0a723205fe4216acbaf43f84b80d9a5d807a185f2b49d7f7"
     },
     "xcf": {
-      "package_name": "format-factory-xcf",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_xcf-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "e9c6c222eb44401065fd15af695f8b1fe57ca48d4de3a956a97427b5dda1f4cd",
-      "source_digest": "fbd1a4270904c17eec63780dd1f64c1ec4dcfb42e153a5c5f090b00d6ad1c12a",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 18
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "xcf",
+      "package_name": "format-factory-xcf",
+      "proof_id": "PACKAGE-PROOF-DB6520D6A6EC821EB30D2A46269491569E4D26E4C964246E0D9A1231981EFA89",
+      "proof_input_digest": "a805d3684681652b08217d122af45e26c5a7b2384a18cd63ce8e162b4e799c4c",
       "smoke_result": "PASS",
       "smoke_test": "xcf.xcf_parser.parse_xcf_strict on samples/by-format/xcf/valid/1x1-red-rgb.xcf",
+      "source_digest": "c9c9d27090903d549fb20fe4b691ef58a60db45909612a94cf15ee3a8a65b591",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 18,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_xcf-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "b7514cd4ea134c4c17a284230b5f8d964a87ebee8dd06f90bc80fb6a525b49ad"
     },
     "xliff": {
-      "package_name": "format-factory-xliff",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_xliff-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "a19cbbc36940312a74eef4eb6c8c333873e9e245a7277ad1ed9a07b2acd0bfb9",
-      "source_digest": "7a5e841ec0315b35a0f92ef78065cf64c1cd2bd958c4febb691c9eb37fa172cb",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 2,
+        "failing_modules": {
+          "xliff._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
+          "xliff.xliff_to_csv": "ModuleNotFoundError: No module named 'src'"
+        },
+        "total": 18
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "xliff",
+      "package_name": "format-factory-xliff",
+      "proof_id": "PACKAGE-PROOF-164EC705C42049EB9BE784F37C917FE6594AF9F6FF2B6AD1590A8684C2B1DD9E",
+      "proof_input_digest": "2e58956ff90af7bda009bc0aa8ab9e5a59f76a80698a1403fba7f758bd318409",
       "smoke_result": "PASS",
       "smoke_test": "xliff.xliff_codec.load_xliff on samples/by-format/xliff/valid/minimal.xliff",
+      "source_digest": "b1b7a724ef583fd57aea912124089635d4cd2eb37e2a0ac6a570634af7b3d845",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 17,
-        "failed": 1,
-        "failing_modules": {
-          "xliff.xliff_to_csv": "ModuleNotFoundError: No module named 'src'"
-        }
-      },
-      "proved_at": "2026-07-16T12:37:48+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_xliff-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "613a6ec624dc5d7b6959d0fa0f5bd618f08d198c4691413f4300417bf886b579"
     },
     "zst": {
-      "package_name": "format-factory-zst",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_zst-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "64ad882b8b38189549ab829bc054f73aa23f6277f5b87b437dae18fc9d0ca077",
-      "source_digest": "cd84b8e82b3ba536cfc81ad0d79039682fdccd175199c17cf64fcbd7e59a3ffa",
-      "install_result": "PASS",
+      "build_mode": "legacy_staging",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 17
+      },
       "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [],
+      "module_import": "zst",
+      "package_name": "format-factory-zst",
+      "proof_id": "PACKAGE-PROOF-020389FF76AC2972C4572B8D3BFAE901C6BDE865257A201CA2C3FBCB61C56883",
+      "proof_input_digest": "eae5a602ad7d8389004e4c3c116f9fd1dcc90c7a3a49e6f2b9d1c0ea36ff5e09",
       "smoke_result": "PASS",
       "smoke_test": "zst.zst_codec.compress_bytes on inline bytes",
+      "source_digest": "3ea69be40aaed8b065ffc5f30b17231ea4f6d148a7da4bde4b4febeb33aa3abc",
       "verdict": "PASS",
-      "deep_import": {
-        "total": 17,
-        "failed": 0,
-        "failing_modules": {}
-      },
-      "proved_at": "2026-07-16T17:03:21+00:00"
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_zst-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "cad6e1034d515680c5c2d0decf1a6140a5dc258d8996d37ac640f06f3b525529"
     }
   },
-  "python_version": "3.13.2",
+  "generated_by": "tools/run_package_install_proof.py",
   "last_run": {
-    "at": "2026-07-16T17:50:24+00:00",
     "formats": [
-      "fods"
+      "abw",
+      "csv",
+      "dif",
+      "fodg",
+      "fodp",
+      "fods",
+      "fodt",
+      "gnumeric",
+      "ipynb",
+      "mtlx",
+      "ndjson",
+      "nrrd",
+      "ods",
+      "odt",
+      "pbm",
+      "pgm",
+      "ppm",
+      "qoi",
+      "safetensors",
+      "sylk",
+      "toml",
+      "tsv",
+      "ubl",
+      "xcf",
+      "xliff",
+      "zst"
     ],
-    "full_fleet": false
-  }
+    "full_fleet": true
+  },
+  "python_version": "3.13.2",
+  "schema_version": 3
 }

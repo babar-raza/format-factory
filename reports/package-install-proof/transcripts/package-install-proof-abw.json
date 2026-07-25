@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-2B54A202A17645D813F70CC0CC161721B0E02B2FB22B9F9B6E6562B6EAE2126B-abw",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "abw",
+    "package_name": "format-factory-abw"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-abw.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-abw.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "abw.abw_codec.load on samples/by-format/abw/minimal-document.abw",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "abw",
   "package_name": "format-factory-abw",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_abw-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "0cc93a1d9cdedd737a675e12e723921780db37a2cddd028227f1984e605a79f0",
-  "source_digest": "42a3dc6b0609d743f49706caa4261caee219fbb05ccc2e4f8ab7b368ec208deb",
+  "wheel_sha256": "73a142bbf499c842a4e7874f9e4eb0efee88f100a56e7d6fced77943b5b511fa",
+  "proof_id": "PACKAGE-PROOF-2B54A202A17645D813F70CC0CC161721B0E02B2FB22B9F9B6E6562B6EAE2126B",
+  "source_digest": "6b01108c314747f27e6caa8aca1d9b21535f8c9fcddf2a8d40fa0f0cf76af5a0",
+  "proof_input_digest": "eb15696689fc5b39299a651e58538c37fe38e02e3e1925a67779dc77500182f7",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }
