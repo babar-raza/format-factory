@@ -43000,9 +43000,69 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_integer_overflow.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-SHARDED-INDEX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-SHARDED-INDEX-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-SHARD-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-D549F06143FE4492",
+      "capability_refs": [
+        "foss_python.safetensors.sharded_index_model",
+        "foss_python.safetensors.sharded_index_codec",
+        "foss_python.safetensors.root_confined_shard_resolution"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.SafeTensorsShardIndex",
+        "format_factory.safetensors.load_index",
+        "format_factory.safetensors.loads_index",
+        "format_factory.safetensors.dump_index",
+        "format_factory.safetensors.dumps_index"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/sharded.py",
+          "state": "present",
+          "sha256": "13aef93d144f8849d8b76dd1273d236af92213ab7750ec33e9a669263a356708"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py",
+          "state": "present",
+          "sha256": "bb9fa871a6c82d69fa382057530c18904f04ec1e508f0eb952538f23f266e6f9"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py",
+          "state": "present",
+          "sha256": "57c07896a59da7415e905df7e0fd7419abc1c587c359c9f7894257998685a503"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py",
+          "state": "present",
+          "sha256": "7abb959b18ef62a263a6978680e73c5d189eb2e94b6326e21fdd6f5a1e55cd4b"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/__init__.py",
+          "state": "present",
+          "sha256": "2a278f213872fe1ce8c5409a3368a3fd180b3ee39328f322854c6e52fc526d1b"
+        },
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "0ad746bbd30962b02db03008a9da02d05637efe039feb39456505f745c6aeb9c"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_sharded_index.py",
+          "state": "present",
+          "sha256": "68da31f728fe10143da836ef4515ec842ca27663d105c874ac28a73b69d96cc9"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_sharded_index.py"
     }
   ],
-  "total_entries": 2756,
+  "total_entries": 2757,
   "changes": [
     {
       "file": "src/python/dif/models.py",

@@ -30,3 +30,17 @@ were fully buffered.
 
 The package does not install a top-level `safetensors` module and can be
 co-installed with Hugging Face's official implementation.
+
+Sharded model indexes are a separate JSON lifecycle:
+
+```python
+from format_factory.safetensors import load_index
+
+index = load_index("model.safetensors.index.json")
+shard_path = index.resolve_shard("model.weight", "model-directory")
+```
+
+`load_index` rejects duplicate JSON keys and unsafe shard references.
+References must be normalized relative POSIX paths. `dump_index` writes
+deterministic compact JSON, and `resolve_shard` proves the resolved path stays
+under the caller-provided root.

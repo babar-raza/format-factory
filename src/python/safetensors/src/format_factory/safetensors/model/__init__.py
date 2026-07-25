@@ -8,6 +8,7 @@ from .document import (
     SafeTensorsHeader,
     TensorDescriptor,
 )
+from .sharded import SafeTensorsShardIndex
 
 __all__ = [
     "DType",
@@ -15,5 +16,6 @@ __all__ = [
     "PayloadAccessMode",
     "SafeTensorsDocument",
     "SafeTensorsHeader",
+    "SafeTensorsShardIndex",
     "TensorDescriptor",
 ]
