@@ -43280,9 +43280,38 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_forward_compatibility.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-ATTACHMENTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-ATTACHMENTS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-029B1CD925618F17,SAL-IPYNB-OBL-02A00C213D2B0190,SAL-IPYNB-OBL-356297A15A50C85B,SAL-IPYNB-OBL-3EF5FF3B64091AB4,SAL-IPYNB-OBL-5CA1914777C61A9D,SAL-IPYNB-OBL-F1F17437C4D0257D,SAL-IPYNB-OBL-FD198DA5CD4E92A6",
+      "capability_refs": [
+        "foss_python.ipynb.markdown_raw_attachment_mapping",
+        "foss_python.ipynb.attachment_uri_reference",
+        "foss_python.ipynb.attachment_mime_bundle_preservation",
+        "foss_python.ipynb.official_nbformat_attachment_validation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.IpynbDocument.cells"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/ipynb/test_obligation_attachments.py",
+          "state": "present",
+          "sha256": "f3bea58041546c9b2e5c43613abc72363d931919a5e0826134bcec82b2d1d363"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_attachments.py"
     }
   ],
-  "total_entries": 2763,
+  "total_entries": 2764,
   "changes": [
     {
       "file": "src/python/dif/models.py",
