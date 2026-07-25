@@ -1,0 +1,82 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-certification-generate-security-tests-safetensors-header-limit-001",
+  "execution_id": "ff6-certification-generate-security-tests-safetensors-header-limit-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+  "skill_id": "certification-generate-security-tests",
+  "selected_skill_ids": [
+    "certification-generate-security-tests"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-HEADER-LIMIT-001",
+  "pre_mutation_guard_authorization_id": "9d5b326db3e70501",
+  "requested_operation": "add an allocation-free installed-package regression for the official SafeTensors 100,000,000-byte header ceiling",
+  "inputs": {
+    "format_id": "safetensors",
+    "test_path": "tests/python/safetensors/test_production_namespace.py",
+    "obligation_id": "SAL-SAFETENSORS-OBL-02473EA0687C68C6",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "contract_file_sha256": "38dccef4ad4d8898300e9d8cdd75cbf502591e00569569bfea2ff2e037e61efe",
+    "target_namespace": "format_factory.safetensors",
+    "base_git_commit": "9f892775"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_production_namespace.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-header-limit-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_production_namespace.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-header-limit-001.json"
+  ],
+  "behavior_added": [
+    "A focused regression supplies only the eight-byte length prefix for a 100,000,001-byte declared header, proving rejection occurs before header allocation or read.",
+    "The caller limit is deliberately raised above the upstream ceiling so the test discriminates the immutable upstream 100,000,000-byte cap from the library's stricter 16 MiB default."
+  ],
+  "observed_test_development": {
+    "first_run": "FAILED because the default 16 MiB policy rejected first; this did not discriminate the upstream cap",
+    "correction": "supplied ResourceLimits(max_header_bytes=100_000_001) so the upstream cap is the active boundary",
+    "source_change_required": false
+  },
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_production_namespace.py::test_upstream_header_limit_rejected_before_allocation -q: 1 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_production_namespace.py -q: 38 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_production_namespace.py: PASS"
+  ],
+  "validations": {
+    "security_tests_generated": "PASS",
+    "focused_tests_pass": "PASS",
+    "allocation_free_oversized_header_case": "PASS",
+    "configured_limit_discriminated_from_upstream_limit": "PASS",
+    "installed_package_execution": "PASS",
+    "source_behavior_changed": "NO"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_production_namespace.py": "75a331962fbc5dce6ba8cc8bae1ef258dc65c23179ef438701559de29c82f196"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for generation of this focused security regression; obligation proof remains a separate controller action",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_UPSTREAM_HEADER_LIMIT_SECURITY_REGRESSION_ADDED_PROOF_PENDING",
+  "timestamp": "2026-07-25T18:42:31.0695521Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

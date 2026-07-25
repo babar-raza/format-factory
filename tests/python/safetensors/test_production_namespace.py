@@ -5,6 +5,7 @@ import struct
 from pathlib import Path
 
 import pytest
+from format_factory.core import ResourceLimits
 
 from format_factory.safetensors import (
     DType,
@@ -62,6 +63,15 @@ def test_subbyte_misalignment_rejected() -> None:
     raw = make_file({"x": {"dtype": "F4", "shape": [1], "data_offsets": [0, 0]}})
     with pytest.raises(SafeTensorsParseError, match="byte boundary"):
         loads(raw)
+
+
+def test_upstream_header_limit_rejected_before_allocation() -> None:
+    raw = struct.pack("<Q", 100_000_001)
+    with pytest.raises(
+        SafeTensorsParseError,
+        match=r"header length 100000001 exceeds configured limit 100000000",
+    ):
+        loads(raw, limits=ResourceLimits(max_header_bytes=100_000_001))
 
 
 def test_duplicate_key_rejected() -> None:
