@@ -18,6 +18,7 @@ from format_factory.safetensors import (
     probe,
     validate,
 )
+from format_factory.safetensors.adapters import to_numpy
 
 SAMPLES = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "safetensors"
 
@@ -57,6 +58,18 @@ def test_complete_dtype_inventory(dtype: DType) -> None:
     )
     with loads(raw) as document:
         assert document.tensors["x"].dtype is dtype
+
+
+def test_numpy_adapter_uses_little_endian_c_row_major_order() -> None:
+    raw = make_file(
+        {"matrix": {"dtype": "I16", "shape": [2, 2], "data_offsets": [0, 8]}},
+        struct.pack("<hhhh", 1, 2, 3, 4),
+    )
+    with loads(raw) as document:
+        matrix = to_numpy(document, "matrix")
+        assert matrix.dtype.str == "<i2"
+        assert matrix.flags.c_contiguous
+        assert matrix.tolist() == [[1, 2], [3, 4]]
 
 
 def test_subbyte_misalignment_rejected() -> None:
