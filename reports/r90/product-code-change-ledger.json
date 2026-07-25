@@ -43210,9 +43210,41 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_bidirectional_interop.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-REAL-TORCH-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+      "capability_refs": [
+        "foss_python.safetensors.real_torch_dtype_matrix",
+        "foss_python.safetensors.safe_torch_copy_ownership",
+        "foss_python.safetensors.torch_empty_tensor",
+        "foss_python.safetensors.hash_locked_torch_proof_environment"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.adapters.to_torch"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+          "state": "present",
+          "sha256": "a41f58cc4635f8c1c259bf4314c2adf92fc12d7868af171caf5b0f06d5d9ab17"
+        },
+        {
+          "path": "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+          "state": "present",
+          "sha256": "30b91cd3fc84cd6beb6a1461f71d25c48098f44f883f4c348b0ce1af111c698c"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_real_torch_adapter.py"
     }
   ],
-  "total_entries": 2761,
+  "total_entries": 2762,
   "changes": [
     {
       "file": "src/python/dif/models.py",
