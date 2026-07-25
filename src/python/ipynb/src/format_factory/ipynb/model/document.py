@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, ClassVar, Iterable, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Iterable, cast
 
 from .lifecycle import NotebookVersion, RecoveryAction
+
+if TYPE_CHECKING:
+    from .cleanup import ChangeReport, CleanupPolicy
 
 
 class MimeBundle:
@@ -357,6 +360,16 @@ class IpynbDocument:
         cell["outputs"] = []
         cell["execution_count"] = None
         return cell
+
+    def cleanup(
+        self,
+        *,
+        policy: "CleanupPolicy | None" = None,
+        dry_run: bool = False,
+    ) -> "ChangeReport":
+        from .cleanup import cleanup
+
+        return cleanup(self, policy=policy, dry_run=dry_run)
 
     def to_dict(self) -> dict[str, Any]:
         return dict(self._data)

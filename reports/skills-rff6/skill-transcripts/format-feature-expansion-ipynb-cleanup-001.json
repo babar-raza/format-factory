@@ -1,0 +1,138 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-cleanup-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-cleanup-001",
+  "task_id": "AUTO-IPYNB-CLEANUP-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-005",
+  "pre_mutation_guard_authorization_id": "ca6f855e41acbd96",
+  "requested_operation": "implement configurable, dry-runnable, deterministic, idempotent notebook output and transient-metadata cleanup",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-CLEANUP-001",
+    "obligation_id": "SAL-IPYNB-OBL-BB3A2A8AA8E143B3",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-BB3A2A8AA8E143B3",
+      "SAL-IPYNB-OBL-C7460C113E33FAE7"
+    ],
+    "capability_id": "IPYNB-CLEAN-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The only production mutation cleared one code cell directly and returned the cell. It had no selection policy, output-type filtering, metadata policy, preview, ordered report, or idempotence contract, so CI callers could not prove what a cleanup rerun would change.",
+    "affected_layer": "IPYNB pure model cleanup operations and public API",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "tests/python/ipynb/test_obligation_cleanup.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cleanup-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_cleanup.py",
+      ".local/build/ipynb-cleanup-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "c3c0ae34"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_cleanup.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cleanup-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_cleanup.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cleanup-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "outcome": "The failure-first test could not import CleanupPolicy or cleanup because no reportable cleanup API existed."
+  },
+  "implementation": {
+    "selection": "CleanupPolicy selects cells by stable ID, outputs by output_type, exact notebook and cell metadata keys, and execution-count reset behavior.",
+    "reporting": "Preview and apply return the same immutable ordered ChangeReport with defensive before/after values and logical paths.",
+    "preservation": "Unknown metadata is untouched unless its exact key is selected; retained outputs keep their original order and values.",
+    "idempotence": "A second identical apply returns an empty report and performs no mutation.",
+    "compatibility": "IpynbDocument.clear_outputs(index) remains available; the production bulk path is IpynbDocument.cleanup or cleanup()."
+  },
+  "tests_run": [
+    "failure-first cleanup test: collection failed because CleanupPolicy did not exist",
+    "focused cleanup and lifecycle tests: 7 passed",
+    "source-tree format regression excluding installed-origin assertions: 274 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and cleanup test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 22 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 2d4ba9445b1ad19cd236a36308ce87644c0fabc3c2c37af5dbb6ba6256e19dae",
+    "installed-wheel full tests/python/ipynb suite: 277 passed"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-CLEANUP-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "dry_run_no_mutation": "PASS",
+    "preview_apply_report_equivalence": "PASS",
+    "cell_and_output_type_selection": "PASS",
+    "execution_count_reset": "PASS",
+    "explicit_metadata_stripping": "PASS",
+    "retained_output_order": "PASS",
+    "idempotent_second_run": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "declared_regression_tier": "PASS: 277 tests",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "a83e7ad1f1ed0b289e3e2c63f93eeef1b806e57b62f8d9265972ea70726a43ea",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "8f397abb752da7e0deb4aff2a932564fc2bdd00b653a2cf37ef1b1a5967125ac",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py": "6f8e07409e708d3424b5902b99669a58b73947785979ccc655d97269a8716af0",
+    "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py": "09dd4d7bb529094d89d49dc8eb8df402725f0f1729d817fbba23352b155968bf",
+    "tests/python/ipynb/test_obligation_cleanup.py": "797a2b346b6682a4265bf3a719b037eb76d7f4fde8ca5bb17acc58610121bd64",
+    "reports/r90/product-code-change-ledger.json": "4a8c5262aabd5b3e7b3a831cdb4133e54497efa2801946880ae6fc0da086864e",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "2d4ba9445b1ad19cd236a36308ce87644c0fabc3c2c37af5dbb6ba6256e19dae"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_CLEANUP_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T23:20:52.6651715Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -43527,9 +43527,55 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_validation_profiles.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CLEANUP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-005",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-CLEANUP-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-BB3A2A8AA8E143B3,SAL-IPYNB-OBL-C7460C113E33FAE7",
+      "capability_refs": [
+        "foss_python.ipynb.selective_output_cleanup",
+        "foss_python.ipynb.execution_count_reset",
+        "foss_python.ipynb.explicit_transient_metadata_cleanup",
+        "foss_python.ipynb.dry_run_change_report",
+        "foss_python.ipynb.idempotent_cleanup"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.cleanup",
+        "format_factory.ipynb.CleanupPolicy",
+        "format_factory.ipynb.ChangeReport",
+        "format_factory.ipynb.IpynbDocument.cleanup"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "a83e7ad1f1ed0b289e3e2c63f93eeef1b806e57b62f8d9265972ea70726a43ea"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "8f397abb752da7e0deb4aff2a932564fc2bdd00b653a2cf37ef1b1a5967125ac"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "6f8e07409e708d3424b5902b99669a58b73947785979ccc655d97269a8716af0"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py",
+          "state": "present",
+          "sha256": "09dd4d7bb529094d89d49dc8eb8df402725f0f1729d817fbba23352b155968bf"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_cleanup.py"
     }
   ],
-  "total_entries": 2769,
+  "total_entries": 2770,
   "changes": [
     {
       "file": "src/python/dif/models.py",

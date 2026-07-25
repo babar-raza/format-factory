@@ -1,3 +1,4 @@
+from .cleanup import Change, ChangeReport, CleanupPolicy, cleanup
 from .document import (
     Cell,
     CodeCell,
@@ -34,6 +35,9 @@ from .output import (
 __all__ = [
     "Cell",
     "CellIdRewrite",
+    "Change",
+    "ChangeReport",
+    "CleanupPolicy",
     "CodeCell",
     "ConversionAction",
     "ConversionResult",
@@ -54,6 +58,7 @@ __all__ = [
     "UnknownOutput",
     "add_output_representation",
     "cell_from_dict",
+    "cleanup",
     "get_output_representation",
     "output_from_dict",
     "remove_output_mime_type",
