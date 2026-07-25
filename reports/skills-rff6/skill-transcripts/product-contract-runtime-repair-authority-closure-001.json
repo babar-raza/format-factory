@@ -1,0 +1,121 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-product-contract-authority-closure-001",
+  "execution_id": "ff6-product-contract-authority-closure-001",
+  "task_id": "TC-FF6-MACH-AUTHORITY-CLOSURE-001",
+  "skill_id": "product-contract-runtime-repair",
+  "selected_skill_ids": [
+    "product-contract-runtime-repair"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-AUTHORITY-CLOSURE-001",
+  "pre_mutation_guard_authorization_id": "351b5aa1837576aa",
+  "requested_operation": "bind authoritative source readiness and contract digests to physical repository artifact bytes",
+  "inputs": {
+    "defect_id": "FF6-CONTRACT-AUTHORITY-BYTE-CLOSURE-001",
+    "failing_regression": "ACQUIRED plus a declared SHA-256 made an authority appear ready without proving the referenced local artifact existed, remained repository-local, or matched those bytes.",
+    "expected_invalidation_input": "authoritative artifact existence, path containment, and bytes",
+    "base_git_commit": "548ae1a7"
+  },
+  "allowed_files": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-authority-closure-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-authority-closure-001.json"
+  ],
+  "behavior_added": [
+    "load_and_compile resolves authority artifacts against the repository root",
+    "authoritative artifact paths escaping the repository fail closed",
+    "missing authoritative artifact paths or files fail closed",
+    "artifact bytes are SHA-256 hashed and compared with the declared content hash",
+    "compiled authority projections contain the observed artifact digest and verification result",
+    "changing authority bytes changes the compiled contract digest and revokes acquired status"
+  ],
+  "tests_run": [
+    "pytest tests/production_program/test_production_program.py -q: 38 passed",
+    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 88 passed",
+    "ruff check tools/format_contract/product_contract.py tests/production_program/test_production_program.py: PASS",
+    "all six contracts: 11 normative authority artifacts present and digest-verified",
+    "three complete bootstrap projections: 15 byte-identical canonical files per run, aggregate SHA-256 4160911ac6d446799e2cbb0afd08b3c700d81587b793c268acf3e1940b722b3c",
+    "SafeTensors installed-wheel official oracle replay: PASS"
+  ],
+  "validations": {
+    "complete_contract_digest_closure": "PASS",
+    "obligation_fact_edges_preserved": "PASS",
+    "equivalent_rerun_determinism": "PASS",
+    "changed_contract_input_invalidates_digest": "PASS",
+    "missing_authority_artifact_fails_closed": "PASS",
+    "unsafe_authority_path_fails_closed": "PASS",
+    "changed_authority_bytes_invalidate_digest": "PASS"
+  },
+  "authority_results": {
+    "ipynb": {
+      "verified_normative_artifacts": 1,
+      "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac"
+    },
+    "openraster": {
+      "verified_normative_artifacts": 3,
+      "contract_digest": "72c9de56d8c0c677b03eb553e596964c97b03cf184c8946d82fe31033de4a3e0"
+    },
+    "nrrd": {
+      "verified_normative_artifacts": 2,
+      "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5"
+    },
+    "xliff": {
+      "verified_normative_artifacts": 2,
+      "contract_digest": "670416ada043c6c4962ea41812c4e449655d4207a44ebc32c8e242a7ff4e20cd"
+    },
+    "safetensors": {
+      "verified_normative_artifacts": 1,
+      "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806"
+    },
+    "ubl": {
+      "verified_normative_artifacts": 2,
+      "contract_digest": "cc690c6b98ccbc4471560d0104a881194d65d315df0b60f4bf39f4b3d776f9a2"
+    }
+  },
+  "proof_replay": {
+    "format_id": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
+    "proof_id": "PROOF-95097A6FFC4801359D32EB7F24E91211B0C4D546D15CDD6A87C7FE5D7665187A",
+    "graph_digest": "103e632f8af851d5c9bf6380bfce83fe0c494215daab7aa96e53bed721279f20",
+    "tool_digest": "ed82848e048fc37883ca1694a7ae31165e9a8538f86f0b790a268965fecd9f7f",
+    "command_exit_code": 0
+  },
+  "new_gap": {
+    "id": "FF6-PERSISTED-FORMAT-STATE-CONTRACT-DIGEST-STALE-001",
+    "severity": "CRITICAL",
+    "root_cause": "audit_implementation rebuilt the live graph with the new contract digest but did not refresh the persisted FormatState.contract_digest summary.",
+    "next_skill": "materialize-production-proof",
+    "status": "OPEN"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for authority-byte closure; no format certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "AUTHORITY_ARTIFACT_BYTE_CLOSURE_IMPLEMENTED_FORMATS_NOT_CERTIFIED",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

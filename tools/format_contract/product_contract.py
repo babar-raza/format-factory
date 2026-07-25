@@ -19,7 +19,9 @@ import yaml
 
 from .contract_validator import validate_contract
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
 SAL_ID = re.compile(r"^SAL-([A-Z0-9]+)-([A-Z0-9_-]+)$")
+SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
 OBLIGATION_FIELDS = (
     ("required_behavior", "positive"),
     ("normative_rules", "positive"),
@@ -82,6 +84,7 @@ def compile_product_contract(
     *,
     profile_id: str = "production",
     run_legacy_validator: bool = True,
+    authority_root: Path | None = None,
 ) -> CompiledProductContract:
     meta = contract.get("contract_metadata", {})
     format_id = str(meta.get("format_id", "")).lower()
@@ -105,19 +108,79 @@ def compile_product_contract(
     authorities: list[dict[str, Any]] = []
     for source in contract.get("authoritative_sources", []) or []:
         digest = source.get("content_hash")
-        acquired = source.get("acquisition_status") == "ACQUIRED" and bool(digest)
+        authority_class = source.get("authority_class")
+        acquired_label = (
+            source.get("acquisition_status") == "ACQUIRED"
+            and isinstance(digest, str)
+            and SHA256.fullmatch(digest) is not None
+        )
+        local_path = source.get("local_path")
+        artifact_sha256: str | None = None
+        artifact_verified = False
+        if authority_class == "AUTHORITATIVE" and authority_root is not None:
+            reference = str(source.get("source_id", ""))
+            if not local_path:
+                issues.append(
+                    ContractIssue(
+                        "AUTHORITY_ARTIFACT_PATH_MISSING",
+                        "CRITICAL",
+                        "authoritative source has no repository-local artifact path",
+                        reference,
+                    )
+                )
+            else:
+                root = authority_root.resolve()
+                artifact = (root / str(local_path)).resolve()
+                try:
+                    artifact.relative_to(root)
+                except ValueError:
+                    issues.append(
+                        ContractIssue(
+                            "AUTHORITY_ARTIFACT_PATH_UNSAFE",
+                            "CRITICAL",
+                            "authoritative source artifact resolves outside the repository",
+                            reference,
+                        )
+                    )
+                else:
+                    if not artifact.is_file():
+                        issues.append(
+                            ContractIssue(
+                                "AUTHORITY_ARTIFACT_MISSING",
+                                "CRITICAL",
+                                "authoritative source artifact does not exist",
+                                reference,
+                            )
+                        )
+                    else:
+                        artifact_sha256 = hashlib.sha256(artifact.read_bytes()).hexdigest()
+                        artifact_verified = artifact_sha256 == digest
+                        if not artifact_verified:
+                            issues.append(
+                                ContractIssue(
+                                    "AUTHORITY_ARTIFACT_DIGEST_MISMATCH",
+                                    "CRITICAL",
+                                    "authoritative source artifact bytes do not match content_hash",
+                                    reference,
+                                )
+                            )
+        elif authority_class != "AUTHORITATIVE":
+            artifact_verified = True
         authority = {
             "source_id": source.get("source_id"),
             "title": source.get("title"),
             "version": source.get("version"),
-            "authority_class": source.get("authority_class"),
+            "authority_class": authority_class,
             "canonical_url": source.get("canonical_url"),
-            "local_path": source.get("local_path"),
+            "local_path": local_path,
             "content_hash": digest,
-            "acquired": acquired,
+            "artifact_sha256": artifact_sha256,
+            "artifact_verified": artifact_verified,
+            "acquired": acquired_label
+            and (authority_root is None or artifact_verified),
         }
         authorities.append(authority)
-        if source.get("authority_class") == "AUTHORITATIVE" and not acquired:
+        if authority_class == "AUTHORITATIVE" and not acquired_label:
             issues.append(
                 ContractIssue(
                     "AUTHORITY_NOT_PINNED",
@@ -253,4 +316,8 @@ def load_and_compile(path: Path, *, profile_id: str = "production") -> CompiledP
             }
         )
     document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    return compile_product_contract(document, profile_id=profile_id)
+    return compile_product_contract(
+        document,
+        profile_id=profile_id,
+        authority_root=REPO_ROOT,
+    )

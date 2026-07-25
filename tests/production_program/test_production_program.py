@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 import zipfile
@@ -9,6 +10,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import yaml
 
 from tools.format_contract.product_contract import compile_product_contract
 from tools.requirements_authority.production_graph import ProductionProofGraph
@@ -58,6 +60,7 @@ def _contract(format_id: str = "ipynb") -> dict:
 def _proof_repo(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> tuple[Path, Path, Path]:
+    import tools.format_contract.product_contract as contract_module
     import tools.supervisor.production_program as module
 
     repo = tmp_path / "repo"
@@ -70,10 +73,16 @@ def _proof_repo(
     test_path.write_text("def test_contract(): assert True\n", encoding="utf-8")
     contract_path = repo / "shared" / "format-contracts" / "ipynb.yaml"
     contract_path.parent.mkdir(parents=True)
-    import yaml
-
+    artifact = repo / "authorities" / "ipynb.bin"
+    artifact.parent.mkdir()
+    artifact.write_bytes(b"test authority")
+    contract = _contract()
+    contract["authoritative_sources"][0]["local_path"] = "authorities/ipynb.bin"
+    contract["authoritative_sources"][0]["content_hash"] = hashlib.sha256(
+        artifact.read_bytes()
+    ).hexdigest()
     contract_path.write_text(
-        yaml.safe_dump(_contract(), sort_keys=False), encoding="utf-8"
+        yaml.safe_dump(contract, sort_keys=False), encoding="utf-8"
     )
     for relative in (
         "tools/supervisor/production_program.py",
@@ -84,6 +93,7 @@ def _proof_repo(
         tool.parent.mkdir(parents=True, exist_ok=True)
         tool.write_text(f"# {relative}\n", encoding="utf-8")
     monkeypatch.setattr(module, "REPO_ROOT", repo)
+    monkeypatch.setattr(contract_module, "REPO_ROOT", repo)
     return repo, source, test_path
 
 
@@ -142,6 +152,63 @@ def test_authority_class_is_preserved_and_digest_bound() -> None:
     assert baseline_compiled.authorities[0]["authority_class"] == "AUTHORITATIVE"
     assert changed_compiled.authorities[0]["authority_class"] == "PRODUCT_REQUIREMENT"
     assert baseline_compiled.digest != changed_compiled.digest
+
+
+def test_loaded_authority_is_bound_to_repository_artifact_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.format_contract.product_contract as contract_module
+
+    contract = _contract()
+    artifact = tmp_path / "authorities" / "spec.bin"
+    artifact.parent.mkdir()
+    artifact.write_bytes(b"normative-v1")
+    authority = contract["authoritative_sources"][0]
+    authority["local_path"] = "authorities/spec.bin"
+    authority["content_hash"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    contract_path = tmp_path / "shared" / "format-contracts" / "ipynb.yaml"
+    contract_path.parent.mkdir(parents=True)
+    contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
+    monkeypatch.setattr(contract_module, "REPO_ROOT", tmp_path)
+
+    first = contract_module.load_and_compile(contract_path)
+    assert first.authorities[0]["artifact_verified"] is True
+    assert first.authorities[0]["artifact_sha256"] == authority["content_hash"]
+    assert not {
+        issue.code for issue in first.issues
+    } & {
+        "AUTHORITY_ARTIFACT_PATH_MISSING",
+        "AUTHORITY_ARTIFACT_PATH_UNSAFE",
+        "AUTHORITY_ARTIFACT_MISSING",
+        "AUTHORITY_ARTIFACT_DIGEST_MISMATCH",
+    }
+
+    artifact.write_bytes(b"normative-v2")
+    changed = contract_module.load_and_compile(contract_path)
+    assert changed.digest != first.digest
+    assert changed.authorities[0]["acquired"] is False
+    assert "AUTHORITY_ARTIFACT_DIGEST_MISMATCH" in {
+        issue.code for issue in changed.issues
+    }
+
+
+def test_loaded_authority_rejects_path_outside_repository(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.format_contract.product_contract as contract_module
+
+    contract = _contract()
+    authority = contract["authoritative_sources"][0]
+    authority["local_path"] = "../outside.bin"
+    contract_path = tmp_path / "contract.yaml"
+    contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
+    monkeypatch.setattr(contract_module, "REPO_ROOT", tmp_path)
+
+    compiled = contract_module.load_and_compile(contract_path)
+    assert compiled.authorities[0]["acquired"] is False
+    assert "AUTHORITY_ARTIFACT_PATH_UNSAFE" in {
+        issue.code for issue in compiled.issues
+    }
 
 
 def test_mandatory_capability_without_provenance_fails_closed() -> None:
