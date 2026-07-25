@@ -1,0 +1,75 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-certification-generate-security-tests-safetensors-prefix-encoding-001",
+  "execution_id": "ff6-certification-generate-security-tests-safetensors-prefix-encoding-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+  "skill_id": "certification-generate-security-tests",
+  "selected_skill_ids": ["certification-generate-security-tests"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PREFIX-ENCODING-001",
+  "pre_mutation_guard_authorization_id": "b2ba2e97e4a5383c",
+  "requested_operation": "add installed-package tests discriminating the exact eight-byte unsigned little-endian SafeTensors header prefix",
+  "inputs": {
+    "format_id": "safetensors",
+    "test_path": "tests/python/safetensors/test_obligation_prefix_encoding.py",
+    "obligation_id": "SAL-SAFETENSORS-OBL-6EFF7A75CBD532C3",
+    "target_namespace": "format_factory.safetensors",
+    "base_git_commit": "5ebb2c2d"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_prefix_encoding.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-prefix-encoding-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_prefix_encoding.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-prefix-encoding-001.json"
+  ],
+  "behavior_added": [
+    "A valid exact eight-byte little-endian prefix is accepted.",
+    "A big-endian prefix is not silently treated as little-endian.",
+    "A prefix shorter than eight bytes is rejected.",
+    "Writer output declares exactly its padded JSON header extent in an eight-byte little-endian prefix."
+  ],
+  "tests_run": [
+    "focused prefix suite: 4 passed",
+    "Ruff on prefix test: PASS",
+    "installed-wheel SafeTensors regression tier: 88 passed"
+  ],
+  "validations": {
+    "exact_prefix_width": "PASS",
+    "unsigned_little_endian_interpretation": "PASS",
+    "short_prefix_rejection": "PASS",
+    "writer_prefix_extent": "PASS",
+    "installed_package_execution": "PASS",
+    "source_behavior_changed": "NO"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_prefix_encoding.py": "ee5a67722eaae0ae5f149cc046afcdf6ea86b15934c50494de84c14918ad57f2"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the isolated prefix regression; controller proof remains separate",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_PREFIX_ENCODING_REGRESSION_ADDED_PROOF_PENDING",
+  "timestamp": "2026-07-25T19:32:34.8174747Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
