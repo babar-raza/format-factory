@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.metadata
 import importlib.util
 import json
 from pathlib import Path
@@ -28,7 +29,24 @@ def test_implicit_namespace_has_no_parent_init() -> None:
     spec = importlib.util.find_spec("format_factory.ipynb")
     assert spec is not None
     assert spec.origin is not None
-    assert str(PACKAGE / "src") in spec.origin
+    source_root = str((PACKAGE / "src").resolve())
+    distributions = [
+        distribution
+        for distribution in importlib.metadata.distributions()
+        if distribution.metadata.get("Name", "").lower()
+        == "format-factory-ipynb"
+    ]
+    installed_roots = [
+        str(Path(distribution.locate_file("")).resolve())
+        for distribution in distributions
+        if source_root not in str(Path(distribution.locate_file("")).resolve())
+    ]
+    resolved_origin = str(Path(spec.origin).resolve())
+    if not installed_roots:
+        assert source_root in str(Path(spec.origin).resolve())
+    else:
+        assert any(root in resolved_origin for root in installed_roots)
+        assert source_root not in resolved_origin
 
 
 def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> None:
