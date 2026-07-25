@@ -724,6 +724,23 @@ def test_source_and_test_presence_do_not_satisfy_mandatory_obligations(
     assert all("no live digest-bound executed" in gap.root_cause for gap in gaps)
 
 
+def test_implementation_audit_refreshes_persisted_contract_digest(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _proof_repo(tmp_path, monkeypatch)
+    state_dir = tmp_path / "state"
+    program = ProductionProgram(state_dir)
+    program.formats["ipynb"].contract_digest = "stale-contract"
+    program.persist()
+
+    evidence = program.audit_implementation("ipynb")
+
+    reloaded = ProductionProgram(state_dir)
+    assert evidence["contract_digest"] != "stale-contract"
+    assert reloaded.formats["ipynb"].contract_digest == evidence["contract_digest"]
+    assert reloaded.formats["ipynb"].proof_digest == evidence["graph_digest"]
+
+
 def test_one_executed_result_satisfies_only_its_bound_obligation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

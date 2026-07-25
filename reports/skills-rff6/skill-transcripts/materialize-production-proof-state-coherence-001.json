@@ -1,0 +1,86 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-state-coherence-001",
+  "execution_id": "ff6-materialize-production-proof-state-coherence-001",
+  "task_id": "TC-FF6-MACH-STATE-COHERENCE-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-STATE-COHERENCE-001",
+  "pre_mutation_guard_authorization_id": "ac9371f7cced39c0",
+  "requested_operation": "make persisted format state atomically reflect the contract and proof graph used by direct proof execution",
+  "inputs": {
+    "defect_id": "FF6-PERSISTED-FORMAT-STATE-CONTRACT-DIGEST-STALE-001",
+    "failing_regression": "A direct prove cycle rebuilt a graph with an authority-bound contract while state.json retained the prior contract digest.",
+    "invalidation_input": "compiled contract digest used by audit_implementation",
+    "target_product": "safetensors",
+    "base_git_commit": "c403b8fa"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-state-coherence-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-state-coherence-001.json"
+  ],
+  "behavior_added": [
+    "audit_implementation writes the compiled contract digest and graph digest to the same FormatState before one atomic persist",
+    "direct prove cycles no longer require a prior bootstrap compile pass to keep status coherent",
+    "historical proofs remain append-only while live graph evaluation selects only digest-valid inputs"
+  ],
+  "tests_run": [
+    "pytest tests/production_program/test_production_program.py -q: 39 passed",
+    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 89 passed",
+    "ruff check tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
+    "SafeTensors installed-wheel proof replay: PASS",
+    "three complete bootstrap projections: 15 byte-identical canonical files per run, aggregate SHA-256 4160911ac6d446799e2cbb0afd08b3c700d81587b793c268acf3e1940b722b3c"
+  ],
+  "validations": {
+    "mandatory_obligations_materialized": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "direct_prove_state_coherence": "PASS",
+    "historical_proof_does_not_override_live_inputs": "PASS",
+    "three_run_determinism": "PASS",
+    "manual_promotion_cannot_override": "PASS"
+  },
+  "proof": {
+    "format_id": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
+    "proof_id": "PROOF-688A27AB9FC2479F23699AAB456DF0130FF34EDE4F181053073D46F3F70E1506",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "state_proof_digest": "2f72987a8988f5473ca3201e39770a70bfe1e7192ded7a820d2f4fc7bcda9c91",
+    "state_and_proof_contract_coherent": true,
+    "command_exit_code": 0
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for state coherence; no format certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "PERSISTED_CONTRACT_AND_PROOF_STATE_COHERENCE_REPAIRED_FORMATS_NOT_CERTIFIED",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

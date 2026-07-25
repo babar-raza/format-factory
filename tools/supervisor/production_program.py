@@ -1211,7 +1211,12 @@ print(json.dumps(results, sort_keys=True, separators=(",", ":")))
         graph.store.save_nodes(graph_dir / "nodes.jsonl")
         graph.store.save_edges(graph_dir / "edges.jsonl")
         graph_digest = graph.graph_digest()
-        self.formats[format_id].proof_digest = graph_digest
+        format_state = self.formats[format_id]
+        # Proof execution can call audit_implementation directly, without the
+        # bootstrap compile_contract pass. Keep the persisted summary bound to
+        # the same compiled contract used to build this graph.
+        format_state.contract_digest = compiled.digest
+        format_state.proof_digest = graph_digest
         current_ids: set[str] = set()
         obligations = {
             item["obligation_id"]: item
