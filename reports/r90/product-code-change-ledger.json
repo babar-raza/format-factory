@@ -42969,9 +42969,40 @@
         }
       ],
       "tests": "tests/python/safetensors/test_production_namespace.py::test_numpy_adapter_uses_little_endian_c_row_major_order"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-95F9E9FF0E74B319",
+      "capability_refs": [
+        "foss_python.safetensors.checked_shape_multiplication",
+        "foss_python.safetensors.checked_element_bit_multiplication"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.model.TensorDescriptor"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+          "state": "present",
+          "sha256": "0758d76eee2582e753b99c7fb2d8412ba4df07a80b4d46be1f80fe9dc7babe0e"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_integer_overflow.py",
+          "state": "present",
+          "sha256": "3662988e943492abd0df79fbe4ebb95be6329725dd4bf174bb13a198cc44806b"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_integer_overflow.py"
     }
   ],
-  "total_entries": 2755,
+  "total_entries": 2756,
   "changes": [
     {
       "file": "src/python/dif/models.py",

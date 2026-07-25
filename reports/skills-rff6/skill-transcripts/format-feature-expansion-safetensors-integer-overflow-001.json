@@ -1,0 +1,138 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-safetensors-integer-overflow-001",
+  "execution_id": "ff6-format-feature-expansion-safetensors-integer-overflow-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+  "pre_mutation_guard_authorization_id": "97e78937a36a9411",
+  "requested_operation": "implement explicit unsigned 64-bit checked arithmetic for SafeTensors shape and element-bit size calculations",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+    "obligation_id": "SAL-SAFETENSORS-OBL-0DEA50E8E2B34729",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "contract_file_sha256": "38dccef4ad4d8898300e9d8cdd75cbf502591e00569569bfea2ff2e037e61efe",
+    "authority_digests": {
+      "SRC-SAFETENSORS-002": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "root_cause": "Python arbitrary-precision multiplication prevented wrapping but left hostile dimensions and products beyond the official implementation's 64-bit size domain representable in TensorDescriptor; the implementation therefore did not enforce its documented integer-overflow invariant.",
+    "affected_layer": "src/python/safetensors production TensorDescriptor model invariants and installed reader behavior",
+    "planned_paths": [
+      "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+      "tests/python/safetensors/test_obligation_integer_overflow.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-integer-overflow-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/safetensors.yaml",
+      "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+      "tests/python/safetensors/test_obligation_integer_overflow.py",
+      ".local/build/safetensors-overflow-001/format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/safetensors-current-proof"
+    ],
+    "base_git_commit": "efde70d8"
+  },
+  "allowed_files": [
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_obligation_integer_overflow.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-integer-overflow-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_obligation_integer_overflow.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-integer-overflow-001.json"
+  ],
+  "defect_reproduction": {
+    "environment": ".local/venvs/safetensors-current-proof before wheel replacement",
+    "result": "FAIL_CONFIRMED",
+    "observations": [
+      "shape (2**64,) with U8 was accepted with byte_length 18446744073709551616",
+      "shape (2**63, 2) with U8 was accepted with byte_length 18446744073709551616",
+      "shape (2**61,) with F64 was accepted with byte_length 18446744073709551616"
+    ]
+  },
+  "implementation": {
+    "arithmetic_domain": "unsigned 64-bit, matching the official x86_64/arm64 SafeTensors implementation and the format's 64-bit extent model",
+    "dimension_check": "reject each shape dimension greater than 2**64-1",
+    "shape_product_check": "reject before multiplication when total > MAX_U64 // dimension",
+    "element_bit_check": "reject before multiplication when element_count > MAX_U64 // dtype.bits",
+    "zero_dimension_semantics": "preserved; multiplication by zero remains valid when no earlier multiplication overflow occurred",
+    "sub_byte_alignment_semantics": "preserved; alignment remains a distinct byte_length validation"
+  },
+  "proof_descendants_invalidated_by_source_change": [
+    "SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD",
+    "SAL-SAFETENSORS-OBL-02473EA0687C68C6",
+    "SAL-SAFETENSORS-OBL-058466FF549B062E",
+    "SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6",
+    "SAL-SAFETENSORS-OBL-0C953736CF0A664C"
+  ],
+  "tests_run": [
+    "pre-repair installed-wheel inline reproduction: three overflow cases accepted",
+    "source-tree focused test with explicit package path: 6 passed",
+    ".local/venvs/build-runner/Scripts/python.exe -m build --wheel --outdir .local/build/safetensors-overflow-001 src/python/safetensors: PASS",
+    "force-install rebuilt wheel into .local/venvs/safetensors-current-proof: PASS",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_integer_overflow.py -q: 6 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_production_namespace.py tests/python/safetensors/test_official_interop.py tests/python/safetensors/test_obligation_offset_layout.py tests/python/safetensors/test_obligation_integer_overflow.py -q: 50 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check src/python/safetensors/src/format_factory/safetensors/model/document.py tests/python/safetensors/test_obligation_integer_overflow.py: PASS",
+    "installed TensorDescriptor import location assertion: PASS, resolved under .local/venvs/safetensors-current-proof/Lib/site-packages"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "authority_digest_pinned": "PASS",
+    "reproduced_failure": "PASS",
+    "bounded_model_layer_change": "PASS",
+    "shape_dimension_overflow_rejected": "PASS",
+    "shape_product_overflow_rejected": "PASS",
+    "element_bit_overflow_rejected": "PASS",
+    "zero_dimension_and_subbyte_semantics_preserved": "PASS",
+    "installed_wheel_behavior": "PASS",
+    "installed_wheel_origin_outside_source_tree": "PASS",
+    "declared_regression_tier": "PASS: 50 tests",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS: declared source and test SHA-256 values equal current files",
+    "full_historical_ledger_validator": "FAIL_PREEXISTING: validator assumes every historical source_files item is an object, but 160 legacy entries contain strings",
+    "controller_proof_replay_required": "YES"
+  },
+  "output_digests": {
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py": "0758d76eee2582e753b99c7fb2d8412ba4df07a80b4d46be1f80fe9dc7babe0e",
+    "tests/python/safetensors/test_obligation_integer_overflow.py": "3662988e943492abd0df79fbe4ebb95be6329725dd4bf174bb13a198cc44806b",
+    "reports/r90/product-code-change-ledger.json": "995f02fa8c0144f386fd700058a00434165ff1f774b9c506890bf28e29a17e74",
+    "built_wheel_sha256": "4a0ebc020bacf6203d73694f88bfb0f8c5f4b3a4312f68f8a96ee819708cf7db"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for source repair; digest-bound controller proof and invalidated proof replays are the next actions",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this bounded implementation change; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_INTEGER_OVERFLOW_REPAIRED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T19:02:08.8561950Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

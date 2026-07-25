@@ -8,6 +8,8 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Any
 
+_MAX_U64 = (1 << 64) - 1
+
 
 class DType(StrEnum):
     BOOL = "BOOL"
@@ -77,14 +79,24 @@ class TensorDescriptor:
         start, end = self.data_offsets
         if isinstance(start, bool) or isinstance(end, bool) or start < 0 or end < start:
             raise ValueError("data offsets must be an ordered non-negative pair")
+        element_count = self._checked_element_count()
+        if element_count > _MAX_U64 // self.dtype.bits:
+            raise ValueError("tensor element-bit count overflows unsigned 64-bit size")
         object.__setattr__(self, "unknown_fields", MappingProxyType(dict(self.unknown_fields)))
+
+    def _checked_element_count(self) -> int:
+        total = 1
+        for dim in self.shape:
+            if dim > _MAX_U64:
+                raise ValueError("shape dimension exceeds unsigned 64-bit size")
+            if dim and total > _MAX_U64 // dim:
+                raise ValueError("shape element count overflows unsigned 64-bit size")
+            total *= dim
+        return total
 
     @property
     def element_count(self) -> int:
-        total = 1
-        for dim in self.shape:
-            total *= dim
-        return total
+        return self._checked_element_count()
 
     @property
     def byte_length(self) -> int:
