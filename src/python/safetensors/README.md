@@ -44,3 +44,26 @@ shard_path = index.resolve_shard("model.weight", "model-directory")
 References must be normalized relative POSIX paths. `dump_index` writes
 deterministic compact JSON, and `resolve_shard` proves the resolved path stays
 under the caller-provided root.
+
+Optional framework adapters remain separately importable:
+
+```python
+from format_factory.safetensors.adapters import to_numpy, to_torch
+
+with safe_open("model.safetensors") as mapped:
+    borrowed = to_numpy(mapped, "model.weight")  # read-only; mapped must stay open
+    independent = to_numpy(mapped, "model.weight", copy=True)  # writable copy
+    gpu_tensor = to_torch(
+        mapped,
+        "model.weight",
+        copy=True,
+        device="cuda:0",
+    )
+```
+
+Importing the base package or the adapter modules does not import NumPy or
+PyTorch. NumPy's `copy=False` path is a read-only borrowed view. PyTorch is
+intentionally copy-only because PyTorch tensors are mutable and cannot safely
+alias a read-only bytes object or memory map. Unsupported framework dtypes are
+rejected rather than reinterpreted, and device validation/transfer is delegated
+to PyTorch.

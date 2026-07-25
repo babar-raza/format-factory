@@ -7,6 +7,14 @@ from ..model import DType, SafeTensorsDocument
 
 
 def to_numpy(document: SafeTensorsDocument, name: str, *, copy: bool = False) -> Any:
+    """Expose a tensor as a C-order NumPy array.
+
+    ``copy=False`` returns a read-only view borrowed from the document payload,
+    so the document must remain open while the array is used. ``copy=True``
+    returns an independent writable C-order array. Dtypes without an exact
+    NumPy storage dtype are rejected instead of being silently reinterpreted.
+    """
+
     np: Any = importlib.import_module("numpy")
 
     descriptor = document.tensors[name]
@@ -29,4 +37,7 @@ def to_numpy(document: SafeTensorsDocument, name: str, *, copy: bool = False) ->
         raise TypeError(f"NumPy adapter does not natively expose {descriptor.dtype}")
     result = np.frombuffer(document.tensor_bytes(name), dtype=dtype_map[descriptor.dtype])
     result = result.reshape(descriptor.shape)
-    return result.copy() if copy else result
+    if copy:
+        return result.copy(order="C")
+    result.setflags(write=False)
+    return result

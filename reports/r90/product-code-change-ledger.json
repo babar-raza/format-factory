@@ -43060,9 +43060,52 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_sharded_index.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+      "capability_refs": [
+        "foss_python.safetensors.optional_numpy_adapter",
+        "foss_python.safetensors.safe_torch_copy_policy",
+        "foss_python.safetensors.torch_device_transfer",
+        "foss_python.safetensors.optional_dependency_isolation"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.adapters.to_numpy",
+        "format_factory.safetensors.adapters.to_torch"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+          "state": "present",
+          "sha256": "56bf37cf5cb3954f86e7ac3a906eeb4b0cbdd08a35af048e910eb7150e4dafbd"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+          "state": "present",
+          "sha256": "6f81bcabc1c584eab511c130e637565165bf8bef26b08c2d14ea6893e65fd6f8"
+        },
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "985d3e86eeb0fe170da9ab75bddf33f91be833230fe7e84f53eb2673569ef39d"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_optional_adapters.py",
+          "state": "present",
+          "sha256": "6cd797fcbbc8994a3122abce056d392d4e84c94b3d67e894136d8a8229bdc026"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_optional_adapters.py"
     }
   ],
-  "total_entries": 2757,
+  "total_entries": 2758,
   "changes": [
     {
       "file": "src/python/dif/models.py",
