@@ -43103,9 +43103,59 @@
         }
       ],
       "tests": "tests/python/safetensors/test_obligation_optional_adapters.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-VALIDATION-CONTRACT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-VALIDATION-CONTRACT-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-VALIDATE-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-9E8D26062317CBCE",
+      "capability_refs": [
+        "foss_python.safetensors.stable_validation_diagnostics",
+        "foss_python.safetensors.configurable_rank_limit",
+        "foss_python.safetensors.borrowed_view_close_retry",
+        "foss_python.safetensors.closed_document_guard"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.validate",
+        "format_factory.safetensors.SafeTensorsDocument.closed",
+        "format_factory.safetensors.SafeTensorsDocument.close",
+        "format_factory.safetensors.SafeTensorsDocument.tensor_region"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "3349737fc8cf40de3e2fc0db633dbd95d4ae4f69fd73575e5d5ade30ae6595ae"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "fe8136cffabe87a5b6aaa825a9a97592f01ae2478f389b455d9edd8c2ca4b953"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+          "state": "present",
+          "sha256": "8be4a98c2ce66064a09a3ff8ed9610a4ee59498eced6c256f3034f3fbe6bb6b8"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/validation/validator.py",
+          "state": "present",
+          "sha256": "0209ee406d1bc1e262072c7817d1ba9c00b92cf4ba97132995fd2782c3bf38c1"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_validation_contract.py",
+          "state": "present",
+          "sha256": "fa32f4fc5389af277ba096bac79a2659f87b817536020164b0d8596c1bbe36c6"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_validation_contract.py; tests/python/safetensors/"
     }
   ],
-  "total_entries": 2758,
+  "total_entries": 2759,
   "changes": [
     {
       "file": "src/python/dif/models.py",

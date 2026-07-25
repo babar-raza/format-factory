@@ -2,12 +2,27 @@
 
 from __future__ import annotations
 
-from format_factory.core import Diagnostic, ResourceLimits, Severity, ValidationReport
+from format_factory.core import (
+    Diagnostic,
+    FormatFactoryError,
+    ResourceLimitError,
+    ResourceLimits,
+    Severity,
+    ValidationReport,
+)
 
+from ..errors import SafeTensorsError
 from ..model import SafeTensorsDocument
 
 
 def _model_diagnostics(document: SafeTensorsDocument) -> list[Diagnostic]:
+    if document.closed:
+        return [
+            Diagnostic(
+                "SAFETENSORS_DOCUMENT_CLOSED",
+                "the SafeTensors document is closed",
+            )
+        ]
     diagnostics: list[Diagnostic] = []
     expected_start = 0
     ordered = sorted(document.tensors.values(), key=lambda item: item.data_offsets)
@@ -47,6 +62,31 @@ def _model_diagnostics(document: SafeTensorsDocument) -> list[Diagnostic]:
     return diagnostics
 
 
+def _exception_diagnostic(exc: Exception) -> Diagnostic:
+    if isinstance(exc, ResourceLimitError):
+        return Diagnostic(
+            "SAFETENSORS_RESOURCE_LIMIT",
+            str(exc),
+            Severity.ERROR,
+            details=exc.context,
+        )
+    if isinstance(exc, SafeTensorsError) and exc.code.startswith("SAFETENSORS_"):
+        return Diagnostic(
+            exc.code,
+            str(exc),
+            Severity.ERROR,
+            details=exc.context,
+        )
+    if isinstance(exc, FormatFactoryError):
+        return Diagnostic(
+            "SAFETENSORS_INVALID",
+            str(exc),
+            Severity.ERROR,
+            details=exc.context,
+        )
+    return Diagnostic("SAFETENSORS_INVALID", str(exc), Severity.ERROR)
+
+
 def validate(
     value: SafeTensorsDocument | bytes | bytearray | memoryview | str,
     *,
@@ -62,6 +102,4 @@ def validate(
         with load(value, limits=limits) as document:
             return ValidationReport(_model_diagnostics(document))
     except Exception as exc:  # public validation reports instead of raising
-        return ValidationReport(
-            [Diagnostic("SAFETENSORS_INVALID", str(exc), Severity.ERROR)]
-        )
+        return ValidationReport([_exception_diagnostic(exc)])

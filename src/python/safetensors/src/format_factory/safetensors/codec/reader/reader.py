@@ -26,11 +26,28 @@ _PREFIX_SIZE = 8
 _UPSTREAM_MAX_HEADER = 100_000_000
 
 
+def _error(code: str, message: str) -> SafeTensorsParseError:
+    return SafeTensorsParseError(message, code=code)
+
+
+def _descriptor_error_code(exc: Exception) -> str:
+    message = str(exc)
+    if "overflow" in message or "exceeds unsigned 64-bit" in message:
+        return "SAFETENSORS_SIZE_OVERFLOW"
+    if "shape dimension" in message:
+        return "SAFETENSORS_SHAPE"
+    if "data offsets" in message:
+        return "SAFETENSORS_OFFSETS"
+    if "sub-byte" in message:
+        return "SAFETENSORS_SUBBYTE_ALIGNMENT"
+    return "SAFETENSORS_DESCRIPTOR"
+
+
 def _object_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     output: dict[str, Any] = {}
     for key, value in pairs:
         if key in output:
-            raise SafeTensorsParseError(f"duplicate JSON key: {key!r}")
+            raise _error("SAFETENSORS_DUPLICATE_KEY", f"duplicate JSON key: {key!r}")
         output[key] = value
     return output
 
@@ -51,39 +68,62 @@ def _decode_header(
     except SafeTensorsParseError:
         raise
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise SafeTensorsParseError(f"invalid UTF-8 JSON header: {exc}") from exc
+        raise _error(
+            "SAFETENSORS_HEADER_ENCODING",
+            f"invalid UTF-8 JSON header: {exc}",
+        ) from exc
     if not isinstance(header, dict):
-        raise SafeTensorsParseError("header must be a JSON object")
+        raise _error("SAFETENSORS_HEADER_ROOT", "header must be a JSON object")
 
     raw_metadata = header.pop("__metadata__", {})
     if not isinstance(raw_metadata, dict) or any(
         not isinstance(k, str) or not isinstance(v, str) for k, v in raw_metadata.items()
     ):
-        raise SafeTensorsParseError("__metadata__ must be a string-to-string object")
+        raise _error(
+            "SAFETENSORS_METADATA_TYPE",
+            "__metadata__ must be a string-to-string object",
+        )
 
     limits.enforce("max_tensor_count", len(header))
     descriptors: dict[str, TensorDescriptor] = {}
     spans: list[TensorDescriptor] = []
     for name, raw in header.items():
         if not isinstance(name, str) or not name:
-            raise SafeTensorsParseError("tensor names must be non-empty strings")
+            raise _error(
+                "SAFETENSORS_TENSOR_NAME",
+                "tensor names must be non-empty strings",
+            )
         if not isinstance(raw, dict):
-            raise SafeTensorsParseError(f"tensor {name!r} descriptor must be an object")
+            raise _error(
+                "SAFETENSORS_DESCRIPTOR",
+                f"tensor {name!r} descriptor must be an object",
+            )
         missing = {"dtype", "shape", "data_offsets"}.difference(raw)
         if missing:
-            raise SafeTensorsParseError(f"tensor {name!r} is missing {', '.join(sorted(missing))}")
+            raise _error(
+                "SAFETENSORS_DESCRIPTOR_FIELDS",
+                f"tensor {name!r} is missing {', '.join(sorted(missing))}",
+            )
         try:
             dtype = DType(raw["dtype"])
         except (TypeError, ValueError) as exc:
-            raise SafeTensorsParseError(
-                f"tensor {name!r} has unsupported dtype {raw.get('dtype')!r}"
+            raise _error(
+                "SAFETENSORS_DTYPE",
+                f"tensor {name!r} has unsupported dtype {raw.get('dtype')!r}",
             ) from exc
         shape_raw = raw["shape"]
         offsets_raw = raw["data_offsets"]
         if not isinstance(shape_raw, list):
-            raise SafeTensorsParseError(f"tensor {name!r} shape must be a list")
+            raise _error(
+                "SAFETENSORS_SHAPE",
+                f"tensor {name!r} shape must be a list",
+            )
+        limits.enforce("max_nesting_depth", len(shape_raw))
         if not isinstance(offsets_raw, list) or len(offsets_raw) != 2:
-            raise SafeTensorsParseError(f"tensor {name!r} data_offsets must have two items")
+            raise _error(
+                "SAFETENSORS_OFFSETS",
+                f"tensor {name!r} data_offsets must have two items",
+            )
         try:
             descriptor = TensorDescriptor(
                 name=name,
@@ -98,13 +138,20 @@ def _decode_header(
             )
             expected_size = descriptor.byte_length
         except (TypeError, ValueError) as exc:
-            raise SafeTensorsParseError(f"invalid tensor {name!r}: {exc}") from exc
+            raise _error(
+                _descriptor_error_code(exc),
+                f"invalid tensor {name!r}: {exc}",
+            ) from exc
         start, end = descriptor.data_offsets
         if end > payload_size:
-            raise SafeTensorsParseError(f"tensor {name!r} extends beyond the payload")
+            raise _error(
+                "SAFETENSORS_TENSOR_BOUNDS",
+                f"tensor {name!r} extends beyond the payload",
+            )
         if end - start != expected_size:
-            raise SafeTensorsParseError(
-                f"tensor {name!r} spans {end - start} bytes, expected {expected_size}"
+            raise _error(
+                "SAFETENSORS_TENSOR_SIZE",
+                f"tensor {name!r} spans {end - start} bytes, expected {expected_size}",
             )
         descriptors[name] = descriptor
         spans.append(descriptor)
@@ -114,13 +161,15 @@ def _decode_header(
         start, end = descriptor.data_offsets
         if start != expected_start:
             relation = "overlaps" if start < expected_start else "leaves a hole before"
-            raise SafeTensorsParseError(
-                f"tensor {descriptor.name!r} {relation} offset {expected_start}"
+            raise _error(
+                "SAFETENSORS_OFFSET_COVERAGE",
+                f"tensor {descriptor.name!r} {relation} offset {expected_start}",
             )
         expected_start = end
     if expected_start != payload_size:
-        raise SafeTensorsParseError(
-            f"tensor offsets cover {expected_start} of {payload_size} payload bytes"
+        raise _error(
+            "SAFETENSORS_TRAILING_DATA",
+            f"tensor offsets cover {expected_start} of {payload_size} payload bytes",
         )
     return descriptors, raw_metadata
 
@@ -132,16 +181,23 @@ def _header_extent(
     limits: ResourceLimits,
 ) -> tuple[int, int]:
     if len(prefix) < _PREFIX_SIZE:
-        raise SafeTensorsParseError("input is shorter than the 8-byte header prefix")
+        raise _error(
+            "SAFETENSORS_PREFIX_TRUNCATED",
+            "input is shorter than the 8-byte header prefix",
+        )
     header_size = struct.unpack_from("<Q", prefix, 0)[0]
     header_limit = min(limits.max_header_bytes, _UPSTREAM_MAX_HEADER)
     if header_size > header_limit:
-        raise SafeTensorsParseError(
-            f"header length {header_size} exceeds configured limit {header_limit}"
+        raise _error(
+            "SAFETENSORS_HEADER_LIMIT",
+            f"header length {header_size} exceeds configured limit {header_limit}",
         )
     header_end = _PREFIX_SIZE + header_size
     if header_end > total_size:
-        raise SafeTensorsParseError("declared header extends beyond the input")
+        raise _error(
+            "SAFETENSORS_HEADER_TRUNCATED",
+            "declared header extends beyond the input",
+        )
     return header_size, header_end
 
 
@@ -182,8 +238,9 @@ def _read_exact(stream: BinaryIO, size: int) -> bytes:
         if not isinstance(chunk, bytes):
             raise TypeError("binary source read() must return bytes")
         if not chunk:
-            raise SafeTensorsParseError(
-                f"input ended with {remaining} required header bytes missing"
+            raise _error(
+                "SAFETENSORS_HEADER_TRUNCATED",
+                f"input ended with {remaining} required header bytes missing",
             )
         chunks.append(chunk)
         remaining -= len(chunk)
@@ -199,11 +256,15 @@ def _stream_size(stream: BinaryIO) -> tuple[int, int]:
         end = stream.tell()
         stream.seek(start)
     except (AttributeError, OSError) as exc:
-        raise SafeTensorsParseError(
-            "header-only inspection requires a seekable binary stream"
+        raise _error(
+            "SAFETENSORS_STREAM_NOT_SEEKABLE",
+            "header-only inspection requires a seekable binary stream",
         ) from exc
     if end < start:
-        raise SafeTensorsParseError("binary stream reports an invalid extent")
+        raise _error(
+            "SAFETENSORS_STREAM_EXTENT",
+            "binary stream reports an invalid extent",
+        )
     return start, end - start
 
 

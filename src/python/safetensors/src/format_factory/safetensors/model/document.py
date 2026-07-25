@@ -8,6 +8,8 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Any
 
+from ..errors import SafeTensorsError
+
 _MAX_U64 = (1 << 64) - 1
 
 
@@ -162,6 +164,7 @@ class SafeTensorsDocument:
     """Immutable descriptors plus a zero-copy view of the tensor data buffer."""
 
     __slots__ = (
+        "_closed",
         "_metadata",
         "_owner",
         "_payload",
@@ -186,6 +189,7 @@ class SafeTensorsDocument:
         self._metadata = MappingProxyType(dict(metadata or {}))
         self._payload = memoryview(payload).toreadonly()
         self._owner = owner
+        self._closed = False
         self.header_size = header_size
         self.profile = profile
         self.access = access or PayloadAccess(
@@ -211,7 +215,21 @@ class SafeTensorsDocument:
 
     @property
     def payload_size(self) -> int:
+        self._require_open()
         return len(self._payload)
+
+    @property
+    def closed(self) -> bool:
+        """Whether tensor payload access has been closed."""
+
+        return self._closed
+
+    def _require_open(self) -> None:
+        if self._closed:
+            raise SafeTensorsError(
+                "the SafeTensors document is closed",
+                code="SAFETENSORS_DOCUMENT_CLOSED",
+            )
 
     def tensor_bytes(self, name: str) -> memoryview:
         return self.tensor_region(name)
@@ -224,6 +242,7 @@ class SafeTensorsDocument:
     ) -> memoryview:
         """Return a zero-copy byte region relative to one tensor."""
 
+        self._require_open()
         descriptor = self._tensors[name]
         tensor_start, tensor_end = descriptor.data_offsets
         tensor_size = tensor_end - tensor_start
@@ -245,11 +264,21 @@ class SafeTensorsDocument:
             yield name, self.tensor_bytes(name)
 
     def close(self) -> None:
-        self._payload.release()
+        if not self._closed:
+            self._payload.release()
+            self._closed = True
         owner = self._owner
-        self._owner = None
         if owner is not None and hasattr(owner, "close"):
-            owner.close()
+            try:
+                owner.close()
+            except BufferError as exc:
+                # Retain the owner so callers can release exported regions and
+                # retry. Dropping it here would leak a live memory mapping.
+                raise SafeTensorsError(
+                    "cannot close the SafeTensors payload while borrowed views are active",
+                    code="SAFETENSORS_BORROWED_VIEW_ACTIVE",
+                ) from exc
+            self._owner = None
 
     def __enter__(self) -> "SafeTensorsDocument":
         return self

@@ -28,6 +28,19 @@ has no compressed payload encoding, so access reports
 `full_decode_required=False`; non-path streams explicitly report that they
 were fully buffered.
 
+`validate()` returns deterministic rule-specific diagnostic codes such as
+`SAFETENSORS_DTYPE`, `SAFETENSORS_TENSOR_SIZE`,
+`SAFETENSORS_OFFSET_COVERAGE`, and `SAFETENSORS_RESOURCE_LIMIT`. Resource
+diagnostics include the limit name, actual value, and configured maximum.
+Tensor rank is bounded by `ResourceLimits.max_nesting_depth`; header, input,
+and tensor-count ceilings use their corresponding resource-limit fields.
+
+Closing a mapped document while an exported region is alive raises
+`SafeTensorsError` with code `SAFETENSORS_BORROWED_VIEW_ACTIVE`. The document
+retains the mapping owner, so callers can release all regions and retry
+`close()` without leaking the mapping. Closed documents reject further region
+access with `SAFETENSORS_DOCUMENT_CLOSED`.
+
 The package does not install a top-level `safetensors` module and can be
 co-installed with Hugging Face's official implementation.
 
