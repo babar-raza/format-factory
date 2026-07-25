@@ -2,7 +2,28 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any, ClassVar, cast
+
+
+class MimeBundle:
+    """Typed, non-I/O view over a notebook MIME bundle."""
+
+    def __init__(self, data: dict[str, Any]) -> None:
+        self._data = data
+
+    @property
+    def mime_types(self) -> tuple[str, ...]:
+        return tuple(self._data)
+
+    def __getitem__(self, mime_type: str) -> Any:
+        return self._data[mime_type]
+
+    def get(self, mime_type: str, default: Any = None) -> Any:
+        return self._data.get(mime_type, default)
+
+    def to_dict(self) -> dict[str, Any]:
+        return deepcopy(self._data)
 
 
 class Cell:
@@ -21,9 +42,20 @@ class Cell:
         return value if isinstance(value, str) else None
 
     @property
-    def source(self) -> str | list[str]:
+    def source(self) -> str:
+        """Return the logical source text, independent of JSON representation."""
+        value = self.raw_source
+        return value if isinstance(value, str) else "".join(value)
+
+    @property
+    def raw_source(self) -> str | list[str]:
+        """Return a defensive copy of the original string or string-list form."""
         value = self._data.get("source", "")
-        return value if isinstance(value, (str, list)) else ""
+        if isinstance(value, str):
+            return value
+        if isinstance(value, list) and all(isinstance(item, str) for item in value):
+            return list(value)
+        return ""
 
     @property
     def metadata(self) -> dict[str, Any]:
@@ -35,13 +67,60 @@ class Cell:
 
     @property
     def attachments(self) -> dict[str, Any]:
-        return dict(self._data.get("attachments", {}))
+        return deepcopy(self._data.get("attachments", {}))
+
+    @property
+    def tags(self) -> tuple[str, ...]:
+        value = self._data.get("metadata", {}).get("tags", [])
+        if not isinstance(value, list):
+            return ()
+        return tuple(item for item in value if isinstance(item, str))
+
+    @property
+    def preservation_only(self) -> bool:
+        return False
+
+    @property
+    def output_objects(self) -> list["NotebookOutput"]:
+        return []
 
     def to_dict(self) -> dict[str, Any]:
-        return dict(self._data)
+        return deepcopy(self._data)
 
 
-class Output:
+class MarkdownCell(Cell):
+    pass
+
+
+class RawCell(Cell):
+    pass
+
+
+class CodeCell(Cell):
+    @property
+    def execution_count(self) -> int | None:
+        value = self._data.get("execution_count")
+        return value if isinstance(value, int) and not isinstance(value, bool) else None
+
+    @property
+    def output_objects(self) -> list["NotebookOutput"]:
+        values = self._data.get("outputs", [])
+        if not isinstance(values, list):
+            return []
+        return [
+            output_from_dict(value)
+            for value in values
+            if isinstance(value, dict)
+        ]
+
+
+class UnknownCell(Cell):
+    @property
+    def preservation_only(self) -> bool:
+        return True
+
+
+class NotebookOutput:
     spec_qname: ClassVar[str] = "ipynb:output"
 
     def __init__(self, data: dict[str, Any]) -> None:
@@ -53,7 +132,16 @@ class Output:
 
     @property
     def data(self) -> dict[str, Any]:
-        return dict(self._data.get("data", {}))
+        return deepcopy(self._data.get("data", {}))
+
+    @property
+    def mime_bundle(self) -> MimeBundle:
+        value = self._data.get("data", {})
+        return MimeBundle(value if isinstance(value, dict) else {})
+
+    @property
+    def preservation_only(self) -> bool:
+        return False
 
     def get_representation(self, mime_type: str) -> Any:
         return self._data.get("data", {}).get(mime_type)
@@ -69,7 +157,50 @@ class Output:
         return False
 
     def to_dict(self) -> dict[str, Any]:
-        return dict(self._data)
+        return deepcopy(self._data)
+
+
+class StreamOutput(NotebookOutput):
+    pass
+
+
+class DisplayDataOutput(NotebookOutput):
+    pass
+
+
+class ExecuteResultOutput(NotebookOutput):
+    pass
+
+
+class ErrorOutput(NotebookOutput):
+    pass
+
+
+class UnknownOutput(NotebookOutput):
+    @property
+    def preservation_only(self) -> bool:
+        return True
+
+
+CELL_TYPES: dict[str, type[Cell]] = {
+    "markdown": MarkdownCell,
+    "raw": RawCell,
+    "code": CodeCell,
+}
+OUTPUT_TYPES: dict[str, type[NotebookOutput]] = {
+    "stream": StreamOutput,
+    "display_data": DisplayDataOutput,
+    "execute_result": ExecuteResultOutput,
+    "error": ErrorOutput,
+}
+
+
+def cell_from_dict(data: dict[str, Any]) -> Cell:
+    return CELL_TYPES.get(str(data.get("cell_type")), UnknownCell)(data)
+
+
+def output_from_dict(data: dict[str, Any]) -> NotebookOutput:
+    return OUTPUT_TYPES.get(str(data.get("output_type")), UnknownOutput)(data)
 
 
 class IpynbDocument:
@@ -110,6 +241,10 @@ class IpynbDocument:
         return cast(list[dict[str, Any]], cells)
 
     @property
+    def cell_objects(self) -> list[Cell]:
+        return [cell_from_dict(cell) for cell in self.cells]
+
+    @property
     def cell_count(self) -> int:
         return len(self.cells)
 
@@ -128,6 +263,28 @@ class IpynbDocument:
     @property
     def raw_cells(self) -> list[dict[str, Any]]:
         return [cell for cell in self.cells if cell.get("cell_type") == "raw"]
+
+    def find_cells(
+        self,
+        *,
+        cell_id: str | None = None,
+        cell_type: str | None = None,
+        tag: str | None = None,
+        source_text: str | None = None,
+    ) -> list[Cell]:
+        """Search typed cell views without exposing raw dictionary traversal."""
+        matches: list[Cell] = []
+        for cell in self.cell_objects:
+            if cell_id is not None and cell.id != cell_id:
+                continue
+            if cell_type is not None and cell.cell_type != cell_type:
+                continue
+            if tag is not None and tag not in cell.tags:
+                continue
+            if source_text is not None and source_text not in cell.source:
+                continue
+            matches.append(cell)
+        return matches
 
     def add_cell(
         self,
@@ -175,3 +332,4 @@ class IpynbDocument:
 
 
 Document = IpynbDocument
+Output = NotebookOutput

@@ -1,4 +1,22 @@
-from .document import Cell, Document, IpynbDocument, Output
+from .document import (
+    Cell,
+    CodeCell,
+    DisplayDataOutput,
+    Document,
+    ErrorOutput,
+    ExecuteResultOutput,
+    IpynbDocument,
+    MarkdownCell,
+    MimeBundle,
+    NotebookOutput,
+    Output,
+    RawCell,
+    StreamOutput,
+    UnknownCell,
+    UnknownOutput,
+    cell_from_dict,
+    output_from_dict,
+)
 from .output import (
     add_output_representation,
     get_output_representation,
@@ -7,10 +25,23 @@ from .output import (
 
 __all__ = [
     "Cell",
+    "CodeCell",
+    "DisplayDataOutput",
     "Document",
+    "ErrorOutput",
+    "ExecuteResultOutput",
     "IpynbDocument",
+    "MarkdownCell",
+    "MimeBundle",
+    "NotebookOutput",
     "Output",
+    "RawCell",
+    "StreamOutput",
+    "UnknownCell",
+    "UnknownOutput",
     "add_output_representation",
+    "cell_from_dict",
     "get_output_representation",
+    "output_from_dict",
     "remove_output_mime_type",
 ]

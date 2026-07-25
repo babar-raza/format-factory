@@ -43343,9 +43343,58 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_nbformat_core.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-TYPED-MODEL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-TYPED-MODEL-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-MODEL-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-121BE1F7FB462D30,SAL-IPYNB-OBL-A416086282D30BB9,SAL-IPYNB-OBL-CA94E60DA1A97571",
+      "capability_refs": [
+        "foss_python.ipynb.typed_cell_hierarchy",
+        "foss_python.ipynb.typed_output_hierarchy",
+        "foss_python.ipynb.typed_mime_bundle",
+        "foss_python.ipynb.logical_multiline_source",
+        "foss_python.ipynb.unknown_preservation_nodes",
+        "foss_python.ipynb.typed_cell_search"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.IpynbDocument.cell_objects",
+        "format_factory.ipynb.IpynbDocument.find_cells",
+        "format_factory.ipynb.Cell.source",
+        "format_factory.ipynb.Cell.raw_source",
+        "format_factory.ipynb.MimeBundle",
+        "format_factory.ipynb.NotebookOutput"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "97fa3bd9ceff0513fb8763d77abfd6a345a7f395be33ec60465c29c9e15c9aca"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "35e4b5f40c7f105235af9a97afa7dc0f75b6561c95a01bad9aaf1818e24d0e86"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "fc5d05b43549aebbd32d007c54632295bcdb88fc1c9736f1596d1ded5c5bb768"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_typed_model.py",
+          "state": "present",
+          "sha256": "08061434a33cc6f112f9b184e26127b1fd42b1ec55fa833b4958433f929d6782"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_typed_model.py"
     }
   ],
-  "total_entries": 2765,
+  "total_entries": 2766,
   "changes": [
     {
       "file": "src/python/dif/models.py",
