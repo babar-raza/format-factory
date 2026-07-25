@@ -19,30 +19,44 @@ CELL_ID_PATTERN = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
 Source = str | bytes | PathLike[str] | TextIO
 
 
-def _depth(value: Any, current: int = 0) -> int:
-    if isinstance(value, dict):
-        return max((_depth(item, current + 1) for item in value.values()), default=current)
-    if isinstance(value, list):
-        return max((_depth(item, current + 1) for item in value), default=current)
-    return current
+def _enforce_structure(value: Any, limits: ResourceLimits) -> None:
+    """Measure hostile JSON iteratively so the limiter cannot recurse."""
+    stack: list[tuple[Any, int]] = [(value, 0)]
+    entries = 0
+    while stack:
+        current, depth = stack.pop()
+        limits.enforce("max_nesting_depth", depth)
+        if isinstance(current, dict):
+            entries += len(current)
+            limits.enforce("max_entries", entries)
+            stack.extend((item, depth + 1) for item in current.values())
+        elif isinstance(current, list):
+            entries += len(current)
+            limits.enforce("max_entries", entries)
+            stack.extend((item, depth + 1) for item in current)
+
+
+def _enforce_text_size(text: str, limits: ResourceLimits) -> str:
+    encoded_size = len(text.encode("utf-8"))
+    limits.enforce("max_input_bytes", encoded_size)
+    limits.enforce("max_decompressed_bytes", encoded_size)
+    return text
 
 
 def _read_source(source: Source, limits: ResourceLimits) -> str:
     if isinstance(source, bytes):
         limits.enforce("max_input_bytes", len(source))
         try:
-            return source.decode("utf-8")
+            return _enforce_text_size(source.decode("utf-8"), limits)
         except UnicodeDecodeError as exc:
             raise IpynbParseError(f"notebook is not valid UTF-8: {exc}") from exc
     if hasattr(source, "read"):
         text = source.read()
         if not isinstance(text, str):
             raise TypeError("notebook text stream read() must return str")
-        limits.enforce("max_input_bytes", len(text.encode("utf-8")))
-        return text
+        return _enforce_text_size(text, limits)
     if isinstance(source, str) and source.lstrip().startswith(("{", "[")):
-        limits.enforce("max_input_bytes", len(source.encode("utf-8")))
-        return source
+        return _enforce_text_size(source, limits)
     path = Path(source)
     try:
         size = path.stat().st_size
@@ -50,7 +64,7 @@ def _read_source(source: Source, limits: ResourceLimits) -> str:
         raise IpynbParseError(f"cannot read notebook source {source!r}: {exc}") from exc
     limits.enforce("max_input_bytes", size)
     try:
-        return path.read_text(encoding="utf-8")
+        return _enforce_text_size(path.read_text(encoding="utf-8"), limits)
     except (OSError, UnicodeDecodeError) as exc:
         raise IpynbParseError(f"cannot read notebook source {source!r}: {exc}") from exc
 
@@ -105,12 +119,11 @@ def _parse(
         data = json.loads(text)
     except json.JSONDecodeError as exc:
         raise IpynbParseError(f"invalid JSON: {exc}") from exc
+    except (RecursionError, MemoryError) as exc:
+        raise IpynbParseError("JSON complexity exceeds safe parser limits") from exc
     if not isinstance(data, dict):
         raise IpynbParseError("notebook root must be a JSON object")
-    if _depth(data) > limits.max_nesting_depth:
-        raise IpynbParseError(
-            f"notebook nesting exceeds configured limit {limits.max_nesting_depth}"
-        )
+    _enforce_structure(data, limits)
     if "nbformat" not in data:
         raise IpynbParseError("missing required key: nbformat")
     major = data.get("nbformat")

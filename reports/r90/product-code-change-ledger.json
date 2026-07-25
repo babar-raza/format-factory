@@ -43392,9 +43392,41 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_typed_model.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SEC-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E,SAL-IPYNB-OBL-9544ABFA3D62EC79",
+      "capability_refs": [
+        "foss_python.ipynb.iterative_complexity_measurement",
+        "foss_python.ipynb.entry_depth_and_payload_limits",
+        "foss_python.ipynb.controlled_json_complexity_failure"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.IPYNB_DEFAULT_LIMITS"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "972fc74488f5336e4f7a829572de4e7d5bd3f8348ebcfeabdb176b498cdc5596"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_security_limits.py",
+          "state": "present",
+          "sha256": "f528f523ba5f49d527571962230383ae16ed30fb74ed2a7601a3e6ccba411a02"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_security_limits.py"
     }
   ],
-  "total_entries": 2766,
+  "total_entries": 2767,
   "changes": [
     {
       "file": "src/python/dif/models.py",
