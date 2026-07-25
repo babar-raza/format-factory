@@ -664,6 +664,7 @@ def test_one_executed_result_satisfies_only_its_bound_obligation(
         polarity="positive",
         test_paths=[test_path.relative_to(_repo).as_posix()],
         fixture_paths=[],
+        package_paths=[],
         command=[sys.executable, "-c", "print('executed')"],
     )
     evidence = program.audit_implementation("ipynb")
@@ -691,6 +692,7 @@ def test_changed_or_deleted_test_revokes_executed_proof(
         polarity="positive",
         test_paths=[test_path.relative_to(repo).as_posix()],
         fixture_paths=[],
+        package_paths=[],
         command=[sys.executable, "-c", "print('executed')"],
     )
 
@@ -724,6 +726,7 @@ def test_wrong_polarity_and_nonzero_command_cannot_record_proof(
         "obligation_id": positive["obligation_id"],
         "test_paths": [test_path.relative_to(repo).as_posix()],
         "fixture_paths": [],
+        "package_paths": [],
     }
 
     with pytest.raises(ValueError, match="requires positive proof"):
@@ -761,10 +764,89 @@ def test_input_modified_during_execution_is_rejected(
             polarity="positive",
             test_paths=[test_path.relative_to(repo).as_posix()],
             fixture_paths=[fixture.relative_to(repo).as_posix()],
+            package_paths=[],
             command=[
                 sys.executable,
                 "-c",
                 "from pathlib import Path; Path('samples/input.bin').write_bytes(b'after')",
+            ],
+        )
+    assert program.proofs == {}
+
+
+def test_package_and_executed_environment_are_digest_bound(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    package = repo / ".local" / "packages" / "format_factory_ipynb.whl"
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b"wheel-one")
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+
+    proof = program.execute_proof(
+        "ipynb",
+        positive["obligation_id"],
+        polarity="positive",
+        test_paths=[test_path.relative_to(repo).as_posix()],
+        fixture_paths=[],
+        package_paths=[package.relative_to(repo).as_posix()],
+        command=[sys.executable, "-c", "print('installed wheel exercised')"],
+    )
+
+    assert proof["package_paths"] == (
+        ".local/packages/format_factory_ipynb.whl",
+    )
+    assert proof["package_digest"]
+    assert proof["environment"]["executable_sha256"]
+    assert proof["environment"]["runtime"]["python"]
+    program.audit_implementation("ipynb")
+    node_types = {
+        json.loads(line)["node_type"]
+        for line in (
+            program.graph_root / "ipynb" / "nodes.jsonl"
+        ).read_text(encoding="utf-8").splitlines()
+    }
+    assert {"BuiltPackage", "InstalledPackageResult"} <= node_types
+
+    package.write_bytes(b"wheel-two")
+    evidence = program.audit_implementation("ipynb")
+    assert evidence["promotion"]["state"] == "INVALIDATED"
+    assert positive["obligation_id"] in evidence["stale_proof_obligations"]
+
+
+def test_package_modified_during_execution_is_rejected(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    package = repo / ".local" / "packages" / "format_factory_ipynb.whl"
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b"before")
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+
+    with pytest.raises(ValueError, match="inputs changed during execution"):
+        program.execute_proof(
+            "ipynb",
+            positive["obligation_id"],
+            polarity="positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[],
+            package_paths=[package.relative_to(repo).as_posix()],
+            command=[
+                sys.executable,
+                "-c",
+                (
+                    "from pathlib import Path; "
+                    "Path('.local/packages/format_factory_ipynb.whl')"
+                    ".write_bytes(b'after')"
+                ),
             ],
         )
     assert program.proofs == {}

@@ -13,6 +13,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -283,6 +284,9 @@ class ExecutedProof:
     exit_code: int
     stdout_sha256: str
     stderr_sha256: str
+    package_paths: tuple[str, ...] = ()
+    package_digest: str = ""
+    environment: dict[str, Any] = field(default_factory=dict)
     executed: bool = True
 
 
@@ -327,6 +331,9 @@ class ProductionProgram:
                         "test_paths": tuple(item["test_paths"]),
                         "fixture_paths": tuple(item["fixture_paths"]),
                         "dependency_paths": tuple(item["dependency_paths"]),
+                        "package_paths": tuple(item.get("package_paths", ())),
+                        "package_digest": str(item.get("package_digest", "")),
+                        "environment": dict(item.get("environment", {})),
                         "command": tuple(item["command"]),
                     }
                 )
@@ -370,7 +377,7 @@ class ProductionProgram:
         self._atomic_json(
             self.proofs_path,
             {
-                "schema": "format-factory/executed-proof@1",
+                "schema": "format-factory/executed-proof@2",
                 "proofs": [
                     asdict(proof)
                     for proof in sorted(self.proofs.values(), key=lambda item: item.proof_id)
@@ -476,6 +483,77 @@ class ProductionProgram:
                 }
             )
         ).hexdigest()
+
+    @staticmethod
+    def _execution_environment(command: list[str]) -> dict[str, Any]:
+        """Capture the interpreter/tool environment that will execute a proof.
+
+        The controller process is not necessarily the proof process.  Querying
+        the command executable prevents a tooling venv from lending its
+        dependency identity to an installed-wheel test running elsewhere.
+        Absolute paths are deliberately omitted; the executable bytes and the
+        complete installed-distribution projection are content addressed.
+        """
+
+        executable = Path(command[0])
+        if not executable.is_absolute():
+            located = shutil.which(command[0])
+            if located is None:
+                raise ValueError(f"proof executable cannot be resolved: {command[0]}")
+            executable = Path(located)
+        executable = executable.resolve()
+        if not executable.is_file():
+            raise ValueError(f"proof executable is not a file: {command[0]}")
+
+        probe = """
+import importlib.metadata
+import json
+import platform
+
+distributions = sorted(
+    (
+        str(item.metadata.get("Name", "")).lower().replace("_", "-"),
+        item.version,
+    )
+    for item in importlib.metadata.distributions()
+)
+print(json.dumps({
+    "python": platform.python_version(),
+    "implementation": platform.python_implementation(),
+    "os": platform.system(),
+    "architecture": platform.machine(),
+    "distributions": distributions,
+}, sort_keys=True, separators=(",", ":")))
+""".strip()
+        result = subprocess.run(
+            [str(executable), "-c", probe],
+            capture_output=True,
+            check=False,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            raise ValueError(
+                "proof executable cannot report its environment: "
+                f"{executable.name} exited {result.returncode}"
+            )
+        try:
+            runtime = json.loads(result.stdout)
+        except json.JSONDecodeError as error:
+            raise ValueError(
+                f"proof executable returned an invalid environment manifest: {executable.name}"
+            ) from error
+        if not isinstance(runtime, dict):
+            raise ValueError("proof environment manifest must be a JSON object")
+        return {
+            "executable_name": executable.name,
+            "executable_sha256": sha256_path(executable),
+            "runtime": runtime,
+            "deterministic_environment": {
+                "PYTHONHASHSEED": "0",
+                "SOURCE_DATE_EPOCH": "0",
+                "TZ": "UTC",
+            },
+        }
 
     @staticmethod
     def _canonical_command(command: list[str]) -> tuple[str, ...]:
@@ -637,6 +715,7 @@ class ProductionProgram:
         polarity: str,
         test_paths: list[str],
         fixture_paths: list[str],
+        package_paths: list[str],
         command: list[str],
     ) -> dict[str, Any]:
         """Execute one digest-bound proof command and persist only a live PASS."""
@@ -687,14 +766,22 @@ class ProductionProgram:
                     f"test input must be under tests/: {path.relative_to(REPO_ROOT)}"
                 ) from error
         fixtures = self._repo_inputs(fixture_paths, label="fixture")
+        packages = self._repo_inputs(package_paths, label="package")
+        for package in packages:
+            if not package.is_file():
+                raise ValueError(
+                    f"package input must be a file: {package.relative_to(REPO_ROOT)}"
+                )
         dependencies = self._dependency_inputs(target)
         before = {
             "source": tree_digest(source_inputs),
             "tests": tree_digest(tests),
             "fixtures": tree_digest(fixtures),
+            "packages": tree_digest(packages),
             "dependencies": tree_digest(dependencies),
         }
-        environment_digest = self._environment_digest()
+        environment = self._execution_environment(command)
+        environment_digest = hashlib.sha256(canonical_bytes(environment)).hexdigest()
         run_environment = {
             **os.environ,
             "PYTHONHASHSEED": "0",
@@ -712,10 +799,14 @@ class ProductionProgram:
             "source": tree_digest(source_inputs),
             "tests": tree_digest(tests),
             "fixtures": tree_digest(fixtures),
+            "packages": tree_digest(packages),
             "dependencies": tree_digest(dependencies),
         }
+        environment_after = self._execution_environment(command)
         if before != after:
             raise ValueError("proof inputs changed during execution")
+        if environment != environment_after:
+            raise ValueError("proof execution environment changed during execution")
         if result.returncode != 0:
             raise RuntimeError(
                 f"proof command failed with exit code {result.returncode}; result not recorded"
@@ -732,9 +823,12 @@ class ProductionProgram:
             "test_digest": before["tests"],
             "fixture_paths": self._relative_paths(fixtures),
             "fixture_digest": before["fixtures"],
+            "package_paths": self._relative_paths(packages),
+            "package_digest": before["packages"],
             "dependency_paths": self._relative_paths(dependencies),
             "dependency_digest": before["dependencies"],
             "environment_digest": environment_digest,
+            "environment": environment,
             "command": self._canonical_command(command),
             "exit_code": result.returncode,
             "stdout_sha256": hashlib.sha256(result.stdout).hexdigest(),
@@ -754,9 +848,12 @@ class ProductionProgram:
             test_digest=before["tests"],
             fixture_paths=self._relative_paths(fixtures),
             fixture_digest=before["fixtures"],
+            package_paths=self._relative_paths(packages),
+            package_digest=before["packages"],
             dependency_paths=self._relative_paths(dependencies),
             dependency_digest=before["dependencies"],
             environment_digest=environment_digest,
+            environment=environment,
             command=self._canonical_command(command),
             exit_code=result.returncode,
             stdout_sha256=hashlib.sha256(result.stdout).hexdigest(),
@@ -847,6 +944,7 @@ class ProductionProgram:
                 source_paths = self._repo_inputs(proof.source_paths, label="source")
                 test_paths = self._repo_inputs(proof.test_paths, label="test")
                 fixture_paths = self._repo_inputs(proof.fixture_paths, label="fixture")
+                package_paths = self._repo_inputs(proof.package_paths, label="package")
                 dependency_paths = self._repo_inputs(
                     proof.dependency_paths, label="dependency"
                 )
@@ -858,18 +956,22 @@ class ProductionProgram:
                 "source": tree_digest(source_paths),
                 "tests": tree_digest(test_paths),
                 "fixtures": tree_digest(fixture_paths),
+                "packages": tree_digest(package_paths),
                 "dependencies": tree_digest(dependency_paths),
-                "environment": self._environment_digest(),
+                "environment": hashlib.sha256(
+                    canonical_bytes(proof.environment)
+                ).hexdigest(),
             }
             recorded = {
                 "contract": proof.contract_digest,
                 "source": proof.source_digest,
                 "tests": proof.test_digest,
                 "fixtures": proof.fixture_digest,
+                "packages": proof.package_digest,
                 "dependencies": proof.dependency_digest,
                 "environment": proof.environment_digest,
             }
-            if live != recorded:
+            if not proof.environment or live != recorded:
                 stale_obligations.add(proof.obligation_id)
                 continue
             obligation_node = obligation_nodes.get(proof.obligation_id)
@@ -901,6 +1003,38 @@ class ProductionProgram:
             )
             if source_node is not None:
                 graph.add_dependency(result_node, source_node)
+            package_nodes = []
+            for package_path in package_paths:
+                relative = package_path.relative_to(REPO_ROOT).as_posix()
+                package_key = f"package:{format_id}:{relative}"
+                package_sha256 = sha256_path(package_path)
+                current[package_key] = package_sha256
+                package_nodes.append(
+                    graph.add_content_node(
+                        "BuiltPackage",
+                        relative,
+                        {
+                            "format_id": format_id,
+                            "path": relative,
+                            "sha256": package_sha256,
+                        },
+                        input_digests={package_key: package_sha256},
+                    )
+                )
+            if package_nodes:
+                installed_node = graph.add_content_node(
+                    "InstalledPackageResult",
+                    proof.proof_id,
+                    {
+                        "format_id": format_id,
+                        "outcome": "PASS",
+                        "executed": proof.executed,
+                        "environment_digest": proof.environment_digest,
+                    },
+                    input_digests=input_digests,
+                )
+                graph.add_dependencies(installed_node, package_nodes)
+                graph.add_dependency(result_node, installed_node)
         return graph, current, stale_obligations
 
     @staticmethod
@@ -1373,6 +1507,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--polarity", choices=("positive", "negative"))
     parser.add_argument("--test", action="append", default=[])
     parser.add_argument("--fixture", action="append", default=[])
+    parser.add_argument("--package", action="append", default=[])
     parser.add_argument("--run", nargs=argparse.REMAINDER, default=[])
     args = parser.parse_args(argv)
     program = ProductionProgram(args.state_dir)
@@ -1396,6 +1531,7 @@ def main(argv: list[str] | None = None) -> int:
             polarity=args.polarity,
             test_paths=args.test,
             fixture_paths=args.fixture,
+            package_paths=args.package,
             command=args.run,
         )
         payload = {

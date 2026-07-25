@@ -1,0 +1,126 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-package-closure-001",
+  "execution_id": "ff6-materialize-production-proof-package-closure-001",
+  "task_id": "TC-FF6-MACH-PACKAGE-PROOF-CLOSURE-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-PACKAGE-PROOF-CLOSURE-001",
+  "requested_operation": "bind built wheel artifacts and the actual executed environment into canonical production proof",
+  "inputs": {
+    "defect_id": "FF6-PROOF-PACKAGE-ENV-CLOSURE-001",
+    "failing_regression": "An installed-wheel proof could close a mandatory obligation without recording the wheel bytes, while environment_digest described the controller interpreter rather than the command interpreter.",
+    "invalidation_input": "built package bytes and executed command environment",
+    "target_product": "safetensors",
+    "base_git_commit": "2f54fbcd57b631736b1a187c5a6cfd3d082cf168"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-package-closure-001.json",
+    ".local/production-program/state.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-package-closure-001.json",
+    ".local/production-program/state.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl"
+  ],
+  "behavior_added": [
+    "prove accepts explicit package artifacts and records package paths plus an aggregate digest",
+    "proof execution captures the command executable hash, Python/runtime identity, complete installed distribution versions, and deterministic environment",
+    "the execution environment is sampled before and after the proof and environment drift fails closed",
+    "built package and installed package result nodes are added to the canonical proof graph",
+    "changed or deleted package bytes invalidate the proof and descendants",
+    "legacy executed-proof schema v1 records lacking an environment manifest remain historical and are invalidated until replayed"
+  ],
+  "tests_run": [
+    "pytest tests/production_program/test_production_program.py -q: 34 passed",
+    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 84 passed",
+    "ruff check tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
+    "three complete bootstrap projections: byte-identical canonical state, gaps, executed proofs, and 12 graph files",
+    "SafeTensors official oracle: 1 passed",
+    "SafeTensors installed production regression: 40 passed",
+    "SafeTensors complete compatibility regression: 273 passed"
+  ],
+  "validations": {
+    "mandatory_obligations_materialized": "PASS",
+    "presence_is_not_proof": "PASS",
+    "one_obligation_per_executed_result": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "changed_test_or_fixture_invalidates": "PASS",
+    "changed_package_invalidates": "PASS",
+    "deleted_input_revokes_proof": "PASS",
+    "nonzero_execution_rejected": "PASS",
+    "three_run_determinism": "PASS",
+    "manual_promotion_cannot_override": "PASS"
+  },
+  "proof": {
+    "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
+    "proof_id": "PROOF-E96AD28DA8ECCBCE2638063D69CB1FF88DE20DA1AFAA8F7AE04ECAE594B02773",
+    "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
+    "environment_digest": "e690597b0bd36942643305c78d19457b81e40a8e551550c171659a02140c7d09",
+    "graph_digest": "9604bd0affe86eb37c4e43b73f355eade629d2ee9821a8a5842b5ad5fb9bef30",
+    "command_exit_code": 0
+  },
+  "current_projection": {
+    "open_gap_count": 616,
+    "blocked_gap_count": 1,
+    "safetensors_unmet_obligation_count": 85,
+    "safetensors_state": "IMPLEMENT",
+    "computed_promotion": "INVALIDATED",
+    "invalidation_reason": "One legacy schema-v1 SafeTensors proof lacks package/executed-environment closure and must be replayed."
+  },
+  "memory_reconciliation": {
+    "files_read": [
+      "memory/00-index.md",
+      "memory/02-standing-operating-rules.md",
+      "memory/27-r85-product-factory-direction.md",
+      "memory/65-r90-product-factory-acceleration-20260602.md"
+    ],
+    "authority_use": "Context only; live repository governance, the active-plan lock, and the user-approved mission control execution.",
+    "contradictions_logged": [
+      "memory/02 says commits always require a separate human request; the newer locked autonomous mission explicitly requires successful bounded work to be committed to the owned integration branch, and the current user explicitly ordered plan execution.",
+      "memory/02 says every gate is human-only; current AGENTS.md D1/D1a permits evidence-backed delegated execution for Gates 1-9 while preserving human-only Gate 10/business authority."
+    ],
+    "memory_update_trigger": "No memory mutation: the contradictions are historical supersession, recorded here without rewriting context-only memory."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded machinery repair and SafeTensors proof",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for package/environment closure; no library certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES; canonical live state was inspected before continuation",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES",
+    "14_memory_update_trigger": "NOT APPLICABLE; no current-authority memory update trigger",
+    "15_human_review_requested": "NOT APPLICABLE; no human review requested"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "PACKAGE_AND_EXECUTION_ENVIRONMENT_CLOSURE_IMPLEMENTED_CURRENT_OBLIGATION_PROVED_NOT_CERTIFIED",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

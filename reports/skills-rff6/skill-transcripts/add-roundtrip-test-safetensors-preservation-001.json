@@ -1,0 +1,89 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-add-roundtrip-test-safetensors-preservation-001",
+  "execution_id": "ff6-add-roundtrip-test-safetensors-preservation-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PRESERVE-001",
+  "skill_id": "add-roundtrip-test",
+  "selected_skill_ids": ["add-roundtrip-test"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-SAFETENSORS-PRESERVE-001",
+  "requested_operation": "add a discriminating installed-wheel preservation roundtrip against official safetensors 0.8.0",
+  "inputs": {
+    "format_id": "safetensors",
+    "language": "python",
+    "roundtrip_scope": "unknown descriptor fields, metadata semantics, tensor descriptor, and payload bytes",
+    "edit_operation": "preserve an unknown descriptor field across load, save, and reload",
+    "exact_test_paths": [
+      "tests/python/safetensors/test_official_interop.py"
+    ],
+    "focused_test_command": "pytest tests/python/safetensors/test_official_interop.py -q",
+    "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
+    "base_git_commit": "2f54fbcd"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_official_interop.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-safetensors-preservation-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_official_interop.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-safetensors-preservation-001.json"
+  ],
+  "test_results": {
+    "focused": {
+      "result": "PASS",
+      "passed": 1,
+      "failed": 0,
+      "official_distribution": "safetensors==0.8.0",
+      "format_factory_import": "installed site-packages"
+    },
+    "broader_installed_regression": {
+      "result": "BLOCKED_STALE_INSTALLED_WHEEL",
+      "detail": "test_lazy_io collection requires PayloadAccessMode, which is present in current source but absent from the previously built installed wheel"
+    }
+  },
+  "tests_run": [
+    "installed-wheel official-oracle focused test: 1 passed",
+    "broader installed-wheel collection: blocked because the preexisting wheel predates PayloadAccessMode"
+  ],
+  "behavior_proven_by_focused_test": [
+    "unknown JSON descriptor fields survive preservation-mode write and reload",
+    "absent and empty metadata remain semantically empty",
+    "string-map metadata survives",
+    "official safetensors 0.8.0 deserializes the rebuilt tensor and exact payload bytes",
+    "the test imports Format Factory from site-packages rather than the source tree"
+  ],
+  "open_gaps": [
+    "The remaining SafeTensors mandatory obligations require their own discriminating positive or negative executed proofs.",
+    "The pre-package-closure proof for SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6 is now correctly invalidated and must be replayed through executed-proof schema v2."
+  ],
+  "resume_execution": {
+    "date": "2026-07-25",
+    "git_head": "2f54fbcd57b631736b1a187c5a6cfd3d082cf168",
+    "focused_official_oracle": "1 passed",
+    "installed_production_regression": "40 passed",
+    "complete_compatibility_regression": "273 passed",
+    "installed_imports": {
+      "format_factory_safetensors": ".local/venvs/safetensors-current-proof/Lib/site-packages/format_factory/safetensors/__init__.py",
+      "official_safetensors": ".local/venvs/safetensors-current-proof/Lib/site-packages/safetensors/__init__.py"
+    },
+    "built_wheels": {
+      "format_factory_core_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+      "format_factory_safetensors_sha256": "7e959303d64a4cadaae239af2eb29f20a64703986dc8731bab4f0062837ceca7"
+    },
+    "proof_id": "PROOF-E96AD28DA8ECCBCE2638063D69CB1FF88DE20DA1AFAA8F7AE04ECAE594B02773",
+    "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
+    "environment_digest": "e690597b0bd36942643305c78d19457b81e40a8e551550c171659a02140c7d09",
+    "controller_open_gap_count_after_proof": 616,
+    "obligation_gap_resolved": true
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "verdict": "PROCEED",
+  "final_outcome": "INSTALLED_WHEEL_EXTERNAL_ORACLE_PROOF_MATERIALIZED_NOT_CERTIFIED",
+  "timestamp": "2026-07-24T04:20:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
