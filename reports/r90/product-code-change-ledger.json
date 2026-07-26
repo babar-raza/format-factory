@@ -43707,9 +43707,57 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_attachment_management.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-STRUCTURE-DIFF-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-009",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-DIFF-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-6790961797EE55CD,SAL-IPYNB-OBL-7B453CA0FD8BCD5D",
+      "capability_refs": [
+        "foss_python.ipynb.stable_identity_diff",
+        "foss_python.ipynb.minimum_move_detection",
+        "foss_python.ipynb.field_distinguished_changes",
+        "foss_python.ipynb.explicit_ignore_policy",
+        "foss_python.ipynb.machine_applicable_patch",
+        "foss_python.ipynb.patch_preconditions",
+        "foss_python.ipynb.ignored_value_preservation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellChange",
+        "format_factory.ipynb.CellField",
+        "format_factory.ipynb.DiffPolicy",
+        "format_factory.ipynb.FieldChange",
+        "format_factory.ipynb.NotebookDiff",
+        "format_factory.ipynb.NotebookFieldChange",
+        "format_factory.ipynb.NotebookPatch",
+        "format_factory.ipynb.PatchPreconditionError",
+        "format_factory.ipynb.diff_notebooks"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "8308b8b8af9b3f93940ad0a1d2a4815e871cc7b0c4aff9a5fc1d0c98230b5474"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "8a8e8caa0e6e1296a2f66fa6decf655cab72eb09a5ed9dfcbe038de196f45029"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/diff.py",
+          "state": "present",
+          "sha256": "fb554f435bc058a07afbf23299d62d7bed30c4d163549df2310d1086d638d831"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_structure_diff.py"
     }
   ],
-  "total_entries": 2773,
+  "total_entries": 2774,
   "changes": [
     {
       "file": "src/python/dif/models.py",

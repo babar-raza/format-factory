@@ -114,6 +114,31 @@ source string/list representation. Removal refuses to create dangling
 references unless `AttachmentReferencePolicy.LEAVE_DANGLING` is explicitly
 selected. Every operation supports `dry_run=True`.
 
+## Structure-aware diff and guarded patches
+
+Notebook diffs match cells by mandatory stable ID, so a moved and edited cell
+is reported once with its old/new position and field-level changes:
+
+```python
+from format_factory.ipynb import DiffPolicy, diff_notebooks
+
+result = diff_notebooks(
+    base,
+    target,
+    policy=DiffPolicy(
+        ignore_outputs=True,
+        ignore_execution_counts=True,
+        ignored_metadata_keys=("execution",),
+    ),
+)
+updated = result.to_patch().apply(base)
+```
+
+Patches are atomic and carry a SHA-256 precondition over the policy-visible
+base. They reject concurrent visible edits. Fields ignored by policy are
+preserved from existing cells when a patch is applied; new cells retain their
+complete target representation.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level
