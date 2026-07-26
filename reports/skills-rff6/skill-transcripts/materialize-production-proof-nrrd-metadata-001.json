@@ -1,0 +1,25 @@
+{
+  "invocation_id": "materialize-production-proof-nrrd-metadata-001",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "GAP-717E7DC79D5E436B",
+    "failing_regression": "Metadata fidelity had no live digest-bound positive proof.",
+    "invalidation_input": "The dedicated installed-wheel metadata test is bound to the current NRRD source, contract, fixture, package, and environment digests.",
+    "target_product": "nrrd"
+  },
+  "tests_run": [
+    "installed-wheel metadata obligation test: 1 passed"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "format_id": "nrrd",
+    "obligation_id": "SAL-NRRD-OBL-11C804021E000822",
+    "proof_id": "PROOF-8685C3EE5E4B5EDABC9E961CB466888AA210BB77AAFB9EAECC695CBA0C98D5BC",
+    "source_digest": "768f94babb72fc4edb8a2063263993e4c78b6c2fdcf3267adc084bf09e9c2ba4",
+    "package_digest": "c1c129cde29c7464cbfb0251520d71c2129d5a03496b3b9cde6e9a35a07f07aa",
+    "graph_digest": "83342ff590aa194d81c4a2d151a3f7976d5d8f5c1b1215aa21b76582f088b911",
+    "open_nrrd_obligations_after": 88,
+    "computed_promotion": "IMPLEMENTATION_IN_PROGRESS"
+  }
+}
