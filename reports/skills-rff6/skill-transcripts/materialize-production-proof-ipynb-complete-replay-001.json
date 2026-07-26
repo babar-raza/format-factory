@@ -1,0 +1,39 @@
+{
+  "invocation_id": "materialize-production-proof-ipynb-complete-replay-001",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "AUTO-IPYNB-PROOF-REPLAY-001",
+    "failing_regression": "Historical IPYNB proof records were invalidated by a changed proof-controller input and could not retain promotion credit.",
+    "invalidation_input": "tools/supervisor/production_program.py changed after the earlier replay; each IPYNB obligation therefore required a fresh digest-bound execution.",
+    "target_product": "ipynb"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-ipynb-complete-replay-001.json",
+    ".local/production-program/**"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [
+    "98 controller-mediated, installed-wheel obligation proofs: all passed",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/ipynb -q (387 passed)",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/production_program/test_production_program.py -q (43 passed)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-26T05:08:00+00:00",
+  "evidence": {
+    "mandatory_obligations": 98,
+    "fresh_executed_proofs": 98,
+    "polarity": "positive",
+    "packages": {
+      "format-factory-core": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+      "format-factory-ipynb": "0e9635f74b0ba850d2b811e1da062e5db5d15deb402bac9e1f288e7657fbe180"
+    },
+    "graph_digest": "faec722e8ae8e090a48577cf2d0a4a893e042a53de3f26b0e236e021f44ddf39",
+    "computed_promotion": "RELEASE_CANDIDATE",
+    "controller_state_after_replay": "CERTIFY",
+    "unmet_mandatory_obligations": 0,
+    "stale_proof_obligations": [],
+    "scope_limit": "This establishes current implementation evidence and installed-wheel behavior. Cross-platform matrices, fuzzing, mutation, SBOM/provenance/signature, extraction, and the human-only release gate remain separate certification/release-preparation obligations."
+  }
+}
