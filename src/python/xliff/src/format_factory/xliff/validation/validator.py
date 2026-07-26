@@ -19,6 +19,7 @@ from ..model import (
 )
 
 _STATES = frozenset({"", "initial", "translated", "reviewed", "final"})
+_TARGET_REQUIRED_STATES = frozenset({"translated", "reviewed", "final"})
 
 
 def _inline_elements(content: list[InlineNode]) -> list[InlineElement]:
@@ -153,6 +154,16 @@ def validate(
                         Diagnostic(
                             "xliff.segment.state.invalid",
                             f"invalid segment state {segment.state!r}",
+                        )
+                    )
+                elif (
+                    segment.state in _TARGET_REQUIRED_STATES
+                    and segment.target is None
+                ):
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.segment.state.target_required",
+                            f"segment {segment.id!r} in state {segment.state!r} requires a target",
                         )
                     )
                 _validate_inline(segment, diagnostics)

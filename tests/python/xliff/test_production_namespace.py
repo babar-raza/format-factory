@@ -156,6 +156,54 @@ def test_validation_detects_duplicate_ids_and_unpaired_inline_codes() -> None:
     } <= codes
 
 
+@pytest.mark.parametrize("state", ["translated", "reviewed", "final"])
+def test_advanced_translation_state_requires_target(state: str) -> None:
+    document = XliffDocument(
+        version="2.1",
+        source_language="en",
+        target_language="fr",
+        children=[
+            XliffFile(
+                id="f",
+                children=[Unit(id="u", children=[Segment("s", ["Hello"], state=state)])],
+            )
+        ],
+    )
+
+    codes = {item.code for item in validate(document).diagnostics}
+
+    assert "xliff.segment.state.target_required" in codes
+
+
+def test_initial_state_and_advanced_state_with_target_are_valid() -> None:
+    document = XliffDocument(
+        version="2.1",
+        source_language="en",
+        target_language="fr",
+        children=[
+            XliffFile(
+                id="f",
+                children=[
+                    Unit(
+                        id="u",
+                        children=[
+                            Segment("initial", ["Source"]),
+                            Segment(
+                                "translated",
+                                ["Source"],
+                                target=["Target"],
+                                state="translated",
+                            ),
+                        ],
+                    )
+                ],
+            )
+        ],
+    )
+
+    assert validate(document).is_valid
+
+
 def test_resource_limits_apply_before_xml_processing() -> None:
     limits = ResourceLimits(max_input_bytes=32)
     with pytest.raises(Exception, match="max_input_bytes"):

@@ -44135,9 +44135,41 @@
       "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q; tools/run_package_install_proof.py --format xliff",
       "result": "186 XLIFF tests passed; installed wheel proof PASS (2 passed, 1 skipped)",
       "rollback": "Remove token-aware text-editing API and source/target child attributes, then restore the previous model, reader, writer, exports, and tests."
+    },
+    {
+      "entry_id": "FF6-XLIFF-STATE-TARGET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "TC-FF6-XLIFF-STATE-001",
+      "capability": "XLIFF-STATE-001",
+      "capability_refs": [
+        "XLIFF-STATE-001",
+        "SAL-XLIFF-00018"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.validate"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Advanced translation states translated, reviewed, and final require a target; initial/default state remains valid without one.",
+      "git_head": "5bdfd727",
+      "skill": "format-feature-expansion",
+      "task_id": "TC-FF6-XLIFF-STATE-001",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+          "state": "present",
+          "sha256": "82e472fba0627f62ac86077bea966810ab03027e9319f11baf85e2f3e2579e6a"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff -q",
+      "result": "190 passed",
+      "rollback": "Remove the advanced-state target diagnostic and its focused tests, then remove this ledger entry."
     }
   ],
-  "total_entries": 2781,
+  "total_entries": 2782,
   "changes": [
     {
       "file": "src/python/dif/models.py",
