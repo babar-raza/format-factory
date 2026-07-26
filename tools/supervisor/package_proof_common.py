@@ -21,6 +21,18 @@ PROOF_RUNTIME_INPUTS = (
     "tools/supervisor/package_proof_common.py",
     "tests/python/packaging/test_package_install_proof_all_formats.py",
 )
+_TRANSIENT_ROOT_DIRECTORIES = frozenset({"build", "dist", ".mypy_cache", ".ruff_cache"})
+
+
+def _is_transient_tree_path(relative: Path) -> bool:
+    """Exclude deterministic build byproducts, never authored package inputs."""
+    parts = relative.parts
+    return (
+        bool(parts and parts[0] in _TRANSIENT_ROOT_DIRECTORIES)
+        or "__pycache__" in parts
+        or relative.suffix == ".pyc"
+        or any(part.endswith(".egg-info") for part in parts)
+    )
 
 
 def package_proof_id(entry: dict[str, Any]) -> str:
@@ -60,7 +72,7 @@ def _update_tree(hasher: Any, repo_root: Path, relative_root: str) -> None:
         if path.is_dir():
             continue
         relative = path.relative_to(root).as_posix()
-        if "__pycache__" in relative or relative.endswith(".pyc") or ".egg-info" in relative:
+        if _is_transient_tree_path(Path(relative)):
             continue
         hasher.update(f"{relative_root.rstrip('/')}/{relative}".encode("utf-8"))
         hasher.update(b"\0")
@@ -118,7 +130,7 @@ def source_digest(repo_root: Path, fmt: str, *, committed: bool = False) -> str:
         if path.is_dir():
             continue
         rel = path.relative_to(src).as_posix()
-        if "__pycache__" in rel or rel.endswith(".pyc") or ".egg-info" in rel:
+        if _is_transient_tree_path(Path(rel)):
             continue
         h.update(rel.encode("utf-8"))
         h.update(path.read_bytes())

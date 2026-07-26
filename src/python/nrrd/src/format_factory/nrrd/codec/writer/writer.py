@@ -52,7 +52,9 @@ def dumps(
 
     active_limits = effective_limits(limits)
     value = _coerce_document(document)
-    selected = profile or "NRRD0005"
+    # Default serialization preserves the version declared by the document.
+    # Callers may deliberately request an explicit target profile to convert it.
+    selected = profile or f"NRRD000{value.version}"
     if selected not in {f"NRRD000{version}" for version in range(1, 6)}:
         raise NrrdWriteError(f"unsupported NRRD profile: {selected!r}")
     if value.encoding not in SUPPORTED_ENCODINGS:

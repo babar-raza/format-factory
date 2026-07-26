@@ -277,5 +277,24 @@ def test_waived_known_failure_warns_not_blocks(tmp_path):
     assert "no proof entry" in result["summary"]
 
 
+def test_source_and_proof_input_digests_ignore_root_build_byproducts(tmp_path):
+    """A native build must not invalidate the proof by writing ``build/``."""
+    repo = _make_repo(tmp_path, ["fods"])
+    package = next(
+        item for item in yaml.safe_load(
+            (repo / "packaging" / "python" / "package-matrix.yaml").read_text()
+        )["packages"]
+        if item["format_id"] == "fods"
+    )
+    before_source = source_digest(repo, "fods")
+    before_input = proof_input_digest(repo, package)
+    generated = repo / "src" / "python" / "fods" / "build" / "lib"
+    generated.mkdir(parents=True)
+    (generated / "generated.py").write_text("build output", encoding="utf-8")
+
+    assert source_digest(repo, "fods") == before_source
+    assert proof_input_digest(repo, package) == before_input
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))

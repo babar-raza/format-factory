@@ -77,7 +77,8 @@ def test_big_endian_decode_and_default_profile() -> None:
         array=[258, -2],
     )
     encoded = dumps(document)
-    assert encoded.startswith(b"NRRD0005\n")
+    assert encoded.startswith(b"NRRD0001\n")
+    assert dumps(document, profile="NRRD0005").startswith(b"NRRD0005\n")
     assert encoded[-4:] == b"\x01\x02\xff\xfe"
     assert loads(encoded).array == [258, -2]
 

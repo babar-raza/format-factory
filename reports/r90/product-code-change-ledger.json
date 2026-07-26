@@ -44207,6 +44207,37 @@
       "change_type": "ADD_GAP_CLOSURE_TESTS",
       "gap_ref": "GAP-DIF-FOSS-DIF_BOOLEAN_-001,GAP-DIF-FOSS-DIF_DECLARED-001,GAP-DIF-FOSS-DIF_SPECIAL_-001",
       "tests": "tests/python/dif/test_r1292_dif_gap_closure_cell_counts.py"
+    },
+    {
+      "entry_id": "FF6-NRRD-LIFECYCLE-VERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-NRRD-LIFECYCLE-VERSION-001",
+      "capability": "NRRD-LIFECYCLE-001",
+      "capability_refs": [
+        "NRRD-LIFECYCLE-001",
+        "SAL-NRRD-OBL-028C0109E783B8F3"
+      ],
+      "api_symbols": [
+        "format_factory.nrrd.dumps"
+      ],
+      "product": "NRRD Python production package",
+      "format": "NRRD",
+      "test_delta": "Preservation and explicit conversion assertions for declared NRRD version.",
+      "git_head": "2114f944",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "e8aa5d3e7efc03065752429c17281225b14d4c54c9e12d49fc5841a7f05b1c87"
+        }
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_production_namespace.py"
+      ],
+      "validation_command": ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py -q",
+      "result": "11 passed",
+      "rollback": "Restore the default writer profile to NRRD0005, remove the explicit preservation assertion, and remove this ledger entry."
     }
   ]
 }
