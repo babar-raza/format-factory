@@ -100,9 +100,11 @@ def _write_segment(parent: ET.Element, value: Segment) -> None:
         element, value.attributes, reserved={"id", "state", "subState"}
     )
     source = ET.SubElement(element, f"{{{XLIFF_NAMESPACE}}}source")
+    _set_attributes(source, value.source_attributes)
     _serialize_inline(source, value.source)
     if value.target is not None:
         target = ET.SubElement(element, f"{{{XLIFF_NAMESPACE}}}target")
+        _set_attributes(target, value.target_attributes)
         _serialize_inline(target, value.target)
     for extension in value.extensions:
         _append_extension(element, extension)

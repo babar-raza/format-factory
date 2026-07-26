@@ -38,9 +38,12 @@ from .model import (
     Unit,
     XliffDocument,
     XliffFile,
+    copy_source_to_target,
     flatten_inline_content,
     join_segments,
+    replace_text_slots,
     split_segment,
+    text_slots,
 )
 from .security import XLIFF_DEFAULT_LIMITS
 from .validation import validate
@@ -64,6 +67,7 @@ __all__ = [
     "XliffValidationError",
     "XliffWriteError",
     "average_source_length",
+    "copy_source_to_target",
     "dump",
     "dumps",
     "flatten_inline_content",
@@ -76,8 +80,10 @@ __all__ = [
     "loads",
     "probe",
     "probe_xliff",
+    "replace_text_slots",
     "roundtrip",
     "split_segment",
+    "text_slots",
     "translated_segment_count",
     "untranslated_segment_count",
     "validate",

@@ -125,16 +125,20 @@ def _parse_notes(element: ET.Element) -> list[Note]:
 def _parse_segment(element: ET.Element) -> Segment:
     source: list[InlineNode] | None = None
     target: list[InlineNode] | None = None
+    source_attributes: dict[str, str] = {}
+    target_attributes: dict[str, str] = {}
     extensions: list[ExtensionNode] = []
     for child in element:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}source":
             if source is not None:
                 raise XliffParseError("segment has duplicate source elements")
             source = _parse_inline(child)
+            source_attributes = dict(child.attrib)
         elif child.tag == f"{{{XLIFF_NAMESPACE}}}target":
             if target is not None:
                 raise XliffParseError("segment has duplicate target elements")
             target = _parse_inline(child)
+            target_attributes = dict(child.attrib)
         else:
             extensions.append(_extension(child))
     if source is None:
@@ -147,6 +151,8 @@ def _parse_segment(element: ET.Element) -> Segment:
         state=element.get("state", ""),
         sub_state=element.get("subState", ""),
         attributes=_unknown_attributes(element, {"id", "state", "subState"}),
+        source_attributes=source_attributes,
+        target_attributes=target_attributes,
         extensions=extensions,
     )
 

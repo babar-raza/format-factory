@@ -37,6 +37,8 @@ class Segment:
     state: str = ""
     sub_state: str = ""
     attributes: dict[str, str] = field(default_factory=dict)
+    source_attributes: dict[str, str] = field(default_factory=dict)
+    target_attributes: dict[str, str] = field(default_factory=dict)
     extensions: list[ExtensionNode] = field(default_factory=list)
 
 

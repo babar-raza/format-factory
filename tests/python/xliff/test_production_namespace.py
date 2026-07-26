@@ -16,6 +16,7 @@ from format_factory.xliff import (
     XliffFile,
     XliffParseError,
     XliffValidationError,
+    copy_source_to_target,
     dump,
     dumps,
     flatten_inline_content,
@@ -23,6 +24,8 @@ from format_factory.xliff import (
     loads,
     probe,
     join_segments,
+    replace_text_slots,
+    text_slots,
     validate,
     split_segment,
 )
@@ -231,3 +234,43 @@ def test_segment_split_rejects_boundary_that_orphans_a_spanning_code() -> None:
         split_segment(unit, "s1", source_index=1, first_id="s1a", second_id="s1b")
 
     assert [segment.id for segment in unit.segments] == ["s1"]
+
+
+def test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes() -> None:
+    source = b'''<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0"
+        version="2.1" srcLang="en" trgLang="fr"><file id="f"><unit id="u"><segment id="s">
+        <source xml:lang="en-GB" xml:space="preserve">Hello <pc id="code">world</pc>!</source>
+        </segment></unit></file></xliff>'''
+    document = loads(source)
+    segment = next(document.iter_units()).segments[0]
+
+    copy_source_to_target(
+        segment, code_copy_policy="all", target_language="fr-FR"
+    )
+
+    assert segment.source_attributes == {
+        "{http://www.w3.org/XML/1998/namespace}lang": "en-GB",
+        "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+    }
+    assert segment.target_attributes == {
+        "{http://www.w3.org/XML/1998/namespace}lang": "fr-FR",
+        "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+    }
+    assert text_slots(segment.target or []) == ("Hello ", "world", "!")
+    replace_text_slots(segment, ["Bonjour ", "monde", "!"], target=True)
+    assert flatten_inline_content(segment.target or []) == "Bonjour monde!"
+    assert isinstance((segment.target or [])[1], InlineElement)
+    assert dumps(document) == dumps(loads(dumps(document)))
+
+
+def test_text_editing_rejects_implicit_code_loss_or_slot_mismatch() -> None:
+    segment = Segment(
+        id="s",
+        source=["Hello ", InlineElement("pc", {"id": "code"}, ["world"]), "!"],
+    )
+
+    with pytest.raises(XliffValidationError, match="code_copy_policy"):
+        copy_source_to_target(segment, code_copy_policy="invalid")
+    with pytest.raises(XliffValidationError, match="text slots"):
+        replace_text_slots(segment, ["only one"], target=False)
+    assert segment.target is None

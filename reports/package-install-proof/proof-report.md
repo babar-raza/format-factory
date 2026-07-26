@@ -31,7 +31,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 22 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 32/33 |
 | 23 | ubl | format-factory-ubl | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
 | 24 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
-| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 17/17 |
+| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 18/18 |
 | 26 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 17/17 |
 
 **25/26 PASS**

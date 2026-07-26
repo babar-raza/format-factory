@@ -1,0 +1,64 @@
+{
+  "invocation_id": "format-feature-expansion-xliff-text-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "profile_id": "production",
+    "obligation_id": "SAL-XLIFF-OBL-E428FA846AA270C8",
+    "contract_digest": "670416ada043c6c4962ea41812c4e449655d4207a44ebc32c8e242a7ff4e20cd",
+    "authority_digests": [
+      "SRC-XLF-002:73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-XLIFF-001:56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0"
+    ],
+    "affected_layer": "model",
+    "planned_paths": [
+      "src/python/xliff/src/format_factory/xliff/model/text_editing.py",
+      "src/python/xliff/src/format_factory/xliff/model/document.py",
+      "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+      "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+      "tests/python/xliff/test_production_namespace.py"
+    ],
+    "proof_inputs": [
+      "tests/python/xliff",
+      "reports/package-install-proof/transcripts/package-install-proof-xliff.json"
+    ],
+    "task_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-TEXT-001"
+  },
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/text_editing.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-text-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/text_editing.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-text-001.json"
+  ],
+  "tests_run": [
+    "failing-first: tests/python/xliff/test_production_namespace.py failed collection because copy_source_to_target was absent",
+    "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff/test_production_namespace.py -q (13 passed)",
+    "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q (186 passed)",
+    "tools/run_package_install_proof.py --format xliff (installed wheel PASS: 2 passed, 1 skipped)"
+  ],
+  "ledger_entry_id": "FF6-XLIFF-TEXT-001",
+  "result": "PASS",
+  "evidence": {
+    "capability": "XLIFF-TEXT-001",
+    "scope": "Create targets with explicit all-or-none inline-code copying; edit exact text slots without changing inline structure; retain source/target XML language and whitespace attributes through parsing and canonical writing.",
+    "package_proof_id": "PACKAGE-PROOF-5FA4674ED3B04A8AF16DA0A85638BF9D930ED87A17D9A93C5B269D6EC752F651",
+    "scope_limit": "Text replacement is deliberately token-aware. A free-form plain-text setter is excluded because it cannot place existing inline codes safely without a separately specified mapping policy."
+  }
+}
