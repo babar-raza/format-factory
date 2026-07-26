@@ -1,0 +1,32 @@
+{
+  "invocation_id": "materialize-production-proof-nrrd-enc-001",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "GAP-0E1C4CFD7E8719FC",
+    "failing_regression": "The mandatory NRRD encoding obligation had no live digest-bound executed positive result.",
+    "invalidation_input": "No existing execution bound the installed package, current NRRD source tree, encoding matrix test, and immutable fixture to SAL-NRRD-OBL-09FD9B976DEEA254.",
+    "target_product": "nrrd"
+  },
+  "allowed_files": [
+    ".local/production-program/**",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-nrrd-enc-001.json"
+  ],
+  "tests_run": [
+    ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip -q (5 passed; installed-wheel imports)"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "format_id": "nrrd",
+    "obligation_id": "SAL-NRRD-OBL-09FD9B976DEEA254",
+    "polarity": "positive",
+    "proof_id": "PROOF-F77155531547E69C78562988DE5570DD0AEDCEAC3C5059BD9E9F8526CB41EDB5",
+    "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5",
+    "source_digest": "7082043d22603fdc362146919d2b051d5593b1ea3ca9f87039ef9ca3d980cb4e",
+    "package_sha256": "ddb3da7e9795c574d63ce45e13aff485c59a7beeab44ecbee50c0501db721da1",
+    "graph_digest": "171b30bc6ccf8645c9840130095842871ab9b0f3ae1ceca4a770ae7796cc38bf",
+    "open_nrrd_obligations_after": 90,
+    "computed_promotion": "IMPLEMENTATION_IN_PROGRESS",
+    "scope_limit": "This proof covers the encoding round-trip matrix; hostile inputs and remaining NRRD obligations require their own independent proof."
+  }
+}

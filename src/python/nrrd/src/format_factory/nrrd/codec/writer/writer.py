@@ -46,12 +46,27 @@ def dumps(
     document: NrrdDocument | Mapping[str, Any],
     *,
     profile: str | None = None,
+    mode: str = "canonical",
     limits: ResourceLimits | None = None,
 ) -> bytes:
-    """Serialize an attached document with canonical header ordering."""
+    """Serialize an attached document in canonical or exact-preservation mode."""
 
     active_limits = effective_limits(limits)
     value = _coerce_document(document)
+    if mode not in {"canonical", "lossless"}:
+        raise NrrdWriteError("mode must be 'canonical' or 'lossless'")
+    if mode == "lossless":
+        if profile is not None:
+            raise NrrdWriteError(
+                "lossless output cannot convert the declared NRRD profile"
+            )
+        report = value.preservation_report()
+        if not report.is_lossless:
+            detail = "; ".join(issue.message for issue in report.issues)
+            raise NrrdWriteError(f"lossless output unavailable: {detail}")
+        assert value.source_bytes is not None
+        active_limits.enforce("max_output_bytes", len(value.source_bytes))
+        return value.source_bytes
     # Default serialization preserves the version declared by the document.
     # Callers may deliberately request an explicit target profile to convert it.
     selected = profile or f"NRRD000{value.version}"
@@ -79,11 +94,12 @@ def dump(
     destination: BinaryDestination,
     *,
     profile: str | None = None,
+    mode: str = "canonical",
     limits: ResourceLimits | None = None,
 ) -> None:
     """Write an attached NRRD to a path or binary stream."""
 
-    data = dumps(document, profile=profile, limits=limits)
+    data = dumps(document, profile=profile, mode=mode, limits=limits)
     if isinstance(destination, (str, PathLike)):
         try:
             Path(destination).write_bytes(data)

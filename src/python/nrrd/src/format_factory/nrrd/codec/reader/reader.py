@@ -260,4 +260,9 @@ def _load(source: BinarySource, *, limits: ResourceLimits) -> NrrdDocument:
         array=array,
         source_path=str(source_path) if source_path else None,
         data_offset=data_offset,
+        source_bytes=data if "data file" not in header else None,
+        _original_header=dict(header),
+        _original_comments=list(comments),
+        _original_key_value_pairs=dict(key_values),
+        _original_array=list(array),
     )

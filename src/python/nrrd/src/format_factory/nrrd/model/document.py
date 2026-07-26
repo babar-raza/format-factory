@@ -9,6 +9,25 @@ from typing import Any, Mapping
 DOMAIN_KINDS = frozenset({"domain", "space", "time"})
 
 
+@dataclass(frozen=True, slots=True)
+class PreservationIssue:
+    """A construct that prevents an exact source-preserving write."""
+
+    code: str
+    message: str
+
+
+@dataclass(frozen=True, slots=True)
+class PreservationReport:
+    """Explicit result of evaluating whether a document can be written losslessly."""
+
+    issues: tuple[PreservationIssue, ...] = ()
+
+    @property
+    def is_lossless(self) -> bool:
+        return not self.issues
+
+
 @dataclass(slots=True)
 class NrrdDocument:
     """A decoded NRRD document with preserved headers and comments."""
@@ -22,6 +41,13 @@ class NrrdDocument:
     raw_header: bytes = b""
     source_path: str | None = None
     data_offset: int = 0
+    source_bytes: bytes | None = field(default=None, repr=False, compare=False)
+    _original_header: dict[str, str] | None = field(default=None, repr=False, compare=False)
+    _original_comments: list[str] | None = field(default=None, repr=False, compare=False)
+    _original_key_value_pairs: dict[str, str] | None = field(
+        default=None, repr=False, compare=False
+    )
+    _original_array: list[Any] | None = field(default=None, repr=False, compare=False)
 
     @property
     def dimension(self) -> int:
@@ -79,6 +105,42 @@ class NrrdDocument:
     def space(self) -> str:
         return self.header.get("space", "")
 
+    def preservation_report(self) -> PreservationReport:
+        """Report whether the original byte representation can be replayed safely.
+
+        Canonical output preserves represented NRRD semantics. Exact preservation
+        is available only for an attached source document whose semantic state has
+        not been modified after load.
+        """
+
+        issues: list[PreservationIssue] = []
+        if self.source_bytes is None:
+            issues.append(PreservationIssue(
+                "nrrd.lossless.source_unavailable",
+                "no attached source bytes are available for lossless output",
+            ))
+        if "data file" in self.header:
+            issues.append(PreservationIssue(
+                "nrrd.lossless.detached_payload",
+                "detached payloads require an explicit detached writer",
+            ))
+        if self._original_header is None:
+            issues.append(PreservationIssue(
+                "nrrd.lossless.snapshot_unavailable",
+                "the document was not loaded from a preservable source",
+            ))
+        elif (
+            self.header != self._original_header
+            or self.comments != self._original_comments
+            or self.key_value_pairs != self._original_key_value_pairs
+            or self.array != self._original_array
+        ):
+            issues.append(PreservationIssue(
+                "nrrd.lossless.document_modified",
+                "header, metadata, comments, or array values changed after load",
+            ))
+        return PreservationReport(tuple(issues))
+
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> NrrdDocument:
         """Migrate a legacy model mapping without performing I/O."""
@@ -108,6 +170,11 @@ class NrrdDocument:
                 else None
             ),
             data_offset=int(value.get("data_offset", 0)),
+            source_bytes=(
+                bytes(value["source_bytes"])
+                if isinstance(value.get("source_bytes"), bytes)
+                else None
+            ),
         )
 
     def to_dict(self) -> dict[str, Any]:

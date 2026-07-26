@@ -1,0 +1,29 @@
+{
+  "invocation_id": "format-feature-expansion-nrrd-preservation-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "profile_id": "production",
+    "obligation_id": "SAL-NRRD-OBL-0D0DBFB306769459",
+    "root_cause": "Canonical serialization had no explicit exact-preservation mode or loss report, so a loaded source could be normalized without a caller-visible decision."
+  },
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_production_namespace.py",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json"
+  ],
+  "tests_run": [
+    "source-tree test: test_lossless_mode_replays_unchanged_source_and_reports_mutation (failed first on missing NrrdWriteError test import, then passed)",
+    "source-tree production namespace suite: 12 passed",
+    "package-install-proof nrrd: PASS (2 passed, 1 skipped)",
+    "installed-wheel preservation test: 1 passed"
+  ],
+  "result": "PASS",
+  "timestamp": "2026-07-26T08:10:00+00:00"
+}

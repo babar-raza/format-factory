@@ -11,7 +11,13 @@ from .analytics import axis_sizes, element_count, is_compressed
 from .codec import dump, dumps, load, loads, probe
 from .codec.payload import decode_binary, encode_binary
 from .errors import NrrdError, NrrdParseError, NrrdWriteError
-from .model import DOMAIN_KINDS, NrrdDocument, reshape_nrrd_array
+from .model import (
+    DOMAIN_KINDS,
+    NrrdDocument,
+    PreservationIssue,
+    PreservationReport,
+    reshape_nrrd_array,
+)
 from .security import NRRD_DEFAULT_LIMITS
 from .validation import validate
 
@@ -20,7 +26,8 @@ __all__ = [
     "NrrdParseError", "NrrdWriteError", "axis_sizes", "decode_nrrd_data",
     "dump", "dumps", "element_count", "encode_nrrd_data", "get_array",
     "get_dimension", "get_encoding", "is_compressed", "load", "load_nrrd",
-    "loads", "nrrd_installed_workflow", "probe", "probe_nrrd",
+    "loads", "nrrd_installed_workflow", "preservation_report", "probe",
+    "probe_nrrd", "PreservationIssue", "PreservationReport",
     "reshape_nrrd_array", "roundtrip", "validate", "write_nrrd",
 ]
 
@@ -95,6 +102,13 @@ def get_dimension(model: NrrdDocument | Mapping[str, Any]) -> int:
 def get_encoding(model: NrrdDocument | Mapping[str, Any]) -> str:
     value = model if isinstance(model, NrrdDocument) else NrrdDocument.from_mapping(model)
     return value.encoding
+
+
+def preservation_report(model: NrrdDocument | Mapping[str, Any]) -> PreservationReport:
+    """Describe whether ``model`` can be emitted in exact-preservation mode."""
+
+    value = model if isinstance(model, NrrdDocument) else NrrdDocument.from_mapping(model)
+    return value.preservation_report()
 
 
 def roundtrip(source: BinarySource, destination: str | Path) -> dict[str, Any]:

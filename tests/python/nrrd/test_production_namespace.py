@@ -11,10 +11,12 @@ from format_factory.core import ResourceLimits
 from format_factory.nrrd import (
     NrrdDocument,
     NrrdParseError,
+    NrrdWriteError,
     dump,
     dumps,
     load,
     loads,
+    preservation_report,
     probe,
     validate,
 )
@@ -61,6 +63,29 @@ def test_lifecycle_api_and_stream_destination() -> None:
     stream = BytesIO()
     dump(document, stream)
     assert loads(stream.getvalue()).array == document.array
+
+
+def test_lossless_mode_replays_unchanged_source_and_reports_mutation() -> None:
+    source = (
+        b"NRRD0004\r\n"
+        b"vendor field: retained\r\n"
+        b"type: uint8\r\n"
+        b"dimension: 1\r\n"
+        b"sizes: 2\r\n"
+        b"encoding: raw\r\n"
+        b"vendor:=value\r\n\r\n\x01\x02"
+    )
+    document = loads(source, mode="preservation")
+    assert preservation_report(document).is_lossless
+    assert dumps(document, mode="lossless") == source
+
+    document.header["vendor field"] = "changed"
+    report = preservation_report(document)
+    assert [issue.code for issue in report.issues] == [
+        "nrrd.lossless.document_modified"
+    ]
+    with pytest.raises(NrrdWriteError, match="lossless output unavailable"):
+        dumps(document, mode="lossless")
 
 
 def test_big_endian_decode_and_default_profile() -> None:
