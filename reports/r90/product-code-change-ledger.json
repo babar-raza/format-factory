@@ -43896,9 +43896,86 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_version_conversion.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-OFFICIAL-SCHEMA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-013",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SCHEMA-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1F8C3D9742EBC830,SAL-IPYNB-OBL-7217D5542A605065,SAL-IPYNB-OBL-FE413358B1144149",
+      "capability_refs": [
+        "foss_python.ipynb.exact_minor_official_schema_validation",
+        "foss_python.ipynb.digest_checked_schema_resources",
+        "foss_python.ipynb.strict_load_schema_boundary",
+        "foss_python.ipynb.stable_schema_diagnostic_paths",
+        "foss_python.ipynb.future_minor_semantic_baseline",
+        "foss_python.ipynb.bounded_mapping_validation",
+        "foss_python.ipynb.vendored_schema_license_notice"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.load",
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.validate"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "c8d8afe1f5686374d98cee6cf3a220c9a211dcc88e9cfd5ae5d3e20b844e50e7"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+          "state": "present",
+          "sha256": "8d416053618ab3a6ae09fd7ed36894bbb7f5ea4f9c63758cf1d288637a57a80d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schema.py",
+          "state": "present",
+          "sha256": "92dd8279ded4c4ebacb0e2f8dd65e10532ad9047cb979f966a61b4a69efcb152"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.0.schema.json",
+          "state": "present",
+          "sha256": "573477534050198c20629c0dc2ef2b543479a41d5dbc87b3ba614e85a191c2de"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.1.schema.json",
+          "state": "present",
+          "sha256": "eea4f3b35fae4fd3afafe96fa6ceebe64686e3457b3035ed43c0e7999bb30be0"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.2.schema.json",
+          "state": "present",
+          "sha256": "08b23013c5148935f39184245ac96dbc001d526f2321ad82eb8dd98dabf732fd"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.3.schema.json",
+          "state": "present",
+          "sha256": "1441b5c14cd69f0dc7de0e7ef85471b41119beb2dc401c209ca2433cfbd398a3"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.4.schema.json",
+          "state": "present",
+          "sha256": "dddf3bff4c0bd42bd467117321d72bceddb8de7361b0cc9581bd8318e9b4d3c8"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.5.schema.json",
+          "state": "present",
+          "sha256": "523e3578ddbfcad52933d2423dc5951114ef73f48df180b6a601498ba5ca071a"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+          "state": "present",
+          "sha256": "0d9f010090dbc7238d5445fb543ec6018b488a91b4f1f8a2822f52694774ee9e"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_official_schema_validation.py"
     }
   ],
-  "total_entries": 2777,
+  "total_entries": 2778,
   "changes": [
     {
       "file": "src/python/dif/models.py",

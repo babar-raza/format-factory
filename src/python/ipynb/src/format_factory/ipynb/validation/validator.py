@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from format_factory.core import ResourceLimits, ValidationReport
+from format_factory.core import ResourceLimitError, ResourceLimits, ValidationReport
 
 from ..codec.reader import Source, load
 from ..errors import IpynbError, IpynbValidationError
 from ..model import IpynbDocument
+from ..security.limits import effective_limits, enforce_structure
 from .rules import (
     KNOWN_CELL_TYPES,
     KNOWN_OUTPUT_TYPES,
@@ -16,6 +17,7 @@ from .rules import (
     select_profile,
     validate_model,
 )
+from .schema import schema_diagnostics
 
 VALID_CELL_TYPES = KNOWN_CELL_TYPES
 VALID_OUTPUT_TYPES = KNOWN_OUTPUT_TYPES
@@ -53,11 +55,21 @@ def validate(
     """
 
     try:
-        model = _mapping(value, limits=limits)
+        selected_limits = effective_limits(limits)
+        model = _mapping(value, limits=selected_limits)
+        enforce_structure(model, selected_limits)
+    except ResourceLimitError as exc:
+        return ValidationReport(
+            [diagnostic("IPYNB_RESOURCE_LIMIT", str(exc), ())]
+        )
     except (IpynbError, OSError, TypeError, ValueError) as exc:
         return ValidationReport([diagnostic("IPYNB_PARSE", str(exc), ())])
 
     selected, diagnostics = select_profile(model, profile)
+    if not selected.allow_forward:
+        diagnostics.extend(
+            schema_diagnostics(model, minor=selected.expected_minor)
+        )
     diagnostics.extend(validate_model(model, selected))
     return ValidationReport(diagnostics)
 

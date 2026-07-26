@@ -38,6 +38,22 @@ dump(document, "notebook-edited.ipynb")
 JSON members. The library parses notebook structure only and never executes
 code.
 
+## Validation profiles
+
+Strict loading and `validate()` use the exact official nbformat 4.0–4.5 JSON
+schema selected by the declared or requested profile, followed by semantic
+checks for unique cell IDs, attachment references, tag rules, and
+forward-compatibility diagnostics. The six vendored schema resources come from
+`nbformat` 5.10.4 and are SHA-256 checked before use; a missing or changed
+schema fails closed. Their BSD license is retained in
+`THIRD_PARTY_NOTICES.md`.
+
+A supported 4.0–4.5 document that violates its schema is rejected by strict
+load. `mode="preservation"` can still carry structurally unknown JSON without
+claiming validity. For a future 4.x minor, declared-profile validation uses the
+known 4.5 semantic baseline and reports preserved unknown constructs as
+warnings rather than pretending that a future schema is understood.
+
 ## Explicit version conversion
 
 Upgrades from nbformat 4.0 through 4.4 to 4.5 are explicit and return an
@@ -212,6 +228,7 @@ process are documented in `SECURITY.md`.
 ## Current scope
 
 - Typed notebook, cell, and output views
+- Digest-checked official nbformat 4.0–4.5 schema validation
 - Deterministic JSON serialization
 - Cell-ID normalization and structural validation
 - Unknown JSON-member preservation

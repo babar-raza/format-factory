@@ -54,7 +54,7 @@ def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> Non
     source = json.dumps(
         {
             "nbformat": 4,
-            "nbformat_minor": 5,
+            "nbformat_minor": 6,
             "metadata": {"vendor": {"enabled": True}},
             "cells": [
                 {
@@ -70,17 +70,17 @@ def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> Non
     )
     result = probe(source)
     assert result.matched
-    assert result.profile == "nbformat-4.5"
+    assert result.profile == "nbformat-4.6"
 
-    document = loads(source)
+    document = loads(source, mode="preservation")
     assert isinstance(document, IpynbDocument)
     assert validate(document).is_valid
     assert document.raw["vendor_root"] == ["retained"]
     assert document.cells[0]["vendor_cell"] == {"retained": 1}
 
     destination = tmp_path / "roundtrip.ipynb"
-    dump(document, destination)
-    reloaded = load(destination)
+    dump(document, destination, profile="declared")
+    reloaded = load(destination, mode="preservation")
     assert reloaded.raw["vendor_root"] == ["retained"]
     assert reloaded.cells[0]["vendor_cell"] == {"retained": 1}
 
@@ -118,14 +118,14 @@ def test_default_writer_emits_45_and_rejects_nonfinite_json() -> None:
                 "source": "",
                 "outputs": [],
                 "execution_count": None,
-                "value": float("nan"),
             }
         ],
     }
+    document["metadata"]["nonfinite"] = float("nan")
     with pytest.raises(Exception, match="serialize"):
         dumps(document)
 
-    document["cells"][0].pop("value")
+    document["metadata"].pop("nonfinite")
     serialized = json.loads(dumps(document))
     assert (serialized["nbformat"], serialized["nbformat_minor"]) == (4, 5)
     assert serialized["cells"][0]["id"] == "nan-cell"

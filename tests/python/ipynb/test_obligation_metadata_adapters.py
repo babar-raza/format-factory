@@ -65,7 +65,7 @@ def _document() -> IpynbDocument:
                             "iopub.execute_input": "2026-07-26T00:00:01Z",
                             "shell.execute_reply.started": "2026-07-26T00:00:02Z",
                             "shell.execute_reply": "2026-07-26T00:00:03Z",
-                            "vendor_timing": 4,
+                            "vendor_timing": "4",
                         },
                         "org.example": {"cell": "keep"},
                     },
@@ -142,7 +142,7 @@ def test_cell_and_output_adapters_cover_common_namespaces() -> None:
         cell_adapter.execution.shell_execute_reply
         == "2026-07-26T00:00:03Z"
     )
-    assert cell_adapter.execution.extras == {"vendor_timing": 4}
+    assert cell_adapter.execution.extras == {"vendor_timing": "4"}
     assert cell_adapter.extras == {"org.example": {"cell": "keep"}}
 
     html = output_adapter.mime("text/html")

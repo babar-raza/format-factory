@@ -14,27 +14,10 @@ from format_factory.core import ProbeResult, ResourceLimits
 
 from ...errors import IpynbParseError
 from ...model import IpynbDocument, NotebookVersion, RecoveryAction
-from ...security import effective_limits
+from ...security.limits import effective_limits, enforce_structure
 
 CELL_ID_PATTERN = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
 Source = str | bytes | PathLike[str] | TextIO
-
-
-def _enforce_structure(value: Any, limits: ResourceLimits) -> None:
-    """Measure hostile JSON iteratively so the limiter cannot recurse."""
-    stack: list[tuple[Any, int]] = [(value, 0)]
-    entries = 0
-    while stack:
-        current, depth = stack.pop()
-        limits.enforce("max_nesting_depth", depth)
-        if isinstance(current, dict):
-            entries += len(current)
-            limits.enforce("max_entries", entries)
-            stack.extend((item, depth + 1) for item in current.values())
-        elif isinstance(current, list):
-            entries += len(current)
-            limits.enforce("max_entries", entries)
-            stack.extend((item, depth + 1) for item in current)
 
 
 def _enforce_text_size(text: str, limits: ResourceLimits) -> str:
@@ -155,7 +138,7 @@ def _parse(
         ) from exc
     if not isinstance(data, dict):
         _raise_parse("IPYNB_ROOT", "notebook root must be a JSON object")
-    _enforce_structure(data, limits)
+    enforce_structure(data, limits)
     if "nbformat" not in data:
         _raise_parse(
             "IPYNB_VERSION",
@@ -391,6 +374,20 @@ def _parse(
                     (*cell_path, "id"),
                 )
             used_ids.add(cell_id)
+
+    if mode == "strict":
+        from ...validation.schema import schema_diagnostics
+
+        if not isinstance(minor, int):
+            raise AssertionError("strict mode must have an integer minor version")
+        schema_errors = schema_diagnostics(notebook, minor=minor)
+        if schema_errors:
+            first = schema_errors[0]
+            _raise_parse(
+                first.code,
+                first.message,
+                first.location.path if first.location is not None else (),
+            )
 
     detected_version = NotebookVersion(
         major,
