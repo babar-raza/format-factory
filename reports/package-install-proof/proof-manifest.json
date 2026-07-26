@@ -583,29 +583,33 @@
       "wheel_sha256": "b7514cd4ea134c4c17a284230b5f8d964a87ebee8dd06f90bc80fb6a525b49ad"
     },
     "xliff": {
-      "build_mode": "legacy_staging",
+      "build_mode": "native_pyproject",
       "deep_import": {
-        "failed": 2,
-        "failing_modules": {
-          "xliff._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
-          "xliff.xliff_to_csv": "ModuleNotFoundError: No module named 'src'"
-        },
-        "total": 18
+        "failed": 0,
+        "failing_modules": {},
+        "total": 17
       },
       "import_result": "PASS",
       "install_result": "PASS",
-      "local_dependencies": [],
-      "module_import": "xliff",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "c2180091e94db95474e24494fba89bd8f1cd4ba51814743e29070b5c5907d2bc"
+        }
+      ],
+      "module_import": "format_factory.xliff",
       "package_name": "format-factory-xliff",
-      "proof_id": "PACKAGE-PROOF-164EC705C42049EB9BE784F37C917FE6594AF9F6FF2B6AD1590A8684C2B1DD9E",
-      "proof_input_digest": "2e58956ff90af7bda009bc0aa8ab9e5a59f76a80698a1403fba7f758bd318409",
+      "proof_id": "PACKAGE-PROOF-93A5D9A51D033AC6EC852F8769DA2FCB52D2A4E89A27394EA88B3CC0C5283266",
+      "proof_input_digest": "0fbc8d50becc751f85c0a2fb44faf29b367abc9d54331d8b5e09f55ca5463dc1",
       "smoke_result": "PASS",
-      "smoke_test": "xliff.xliff_codec.load_xliff on samples/by-format/xliff/valid/minimal.xliff",
-      "source_digest": "b1b7a724ef583fd57aea912124089635d4cd2eb37e2a0ac6a570634af7b3d845",
+      "smoke_test": "format_factory.xliff.load on samples/by-format/xliff/valid/minimal.xliff",
+      "source_digest": "031e592d3faf29dc1b9111e17546fa5d8e421c1bd3c2d8b7ae6dd1d2cecec297",
       "verdict": "PASS",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_xliff-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "613a6ec624dc5d7b6959d0fa0f5bd618f08d198c4691413f4300417bf886b579"
+      "version": "0.2.0.dev0",
+      "wheel_file": "format_factory_xliff-0.2.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "9c8bd150736a6df72c646f91d47617b1e1bb1ae042ed3585c5124f1fb2d6c55b"
     },
     "zst": {
       "build_mode": "legacy_staging",
@@ -633,7 +637,7 @@
   "generated_by": "tools/run_package_install_proof.py",
   "last_run": {
     "formats": [
-      "nrrd"
+      "xliff"
     ],
     "full_fleet": false
   },

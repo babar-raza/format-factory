@@ -31,7 +31,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 22 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 32/33 |
 | 23 | ubl | format-factory-ubl | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
 | 24 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
-| 25 | xliff | format-factory-xliff | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
+| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 17/17 |
 | 26 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 17/17 |
 
 **25/26 PASS**
@@ -60,7 +60,6 @@ covers package import + primary API; these are registered as a separate gap.
 - **toml**: 1/33 failing — toml.toml_to_csv
 - **tsv**: 1/33 failing — tsv.tsv_to_csv
 - **ubl**: 2/18 failing — ubl._build_backend, ubl.ubl_to_csv
-- **xliff**: 2/18 failing — xliff._build_backend, xliff.xliff_to_csv
 
 ## Evidence chain
 

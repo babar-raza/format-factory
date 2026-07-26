@@ -44034,9 +44034,52 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_corpus_integrity.py"
+    },
+    {
+      "entry_id": "FF6-XLIFF-SEGMENTATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-SEG-001",
+      "capability": "XLIFF-SEG-001",
+      "capability_refs": [
+        "XLIFF-SEG-001",
+        "SAL-XLIFF-OBL-420141532D90D385"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.split_segment",
+        "format_factory.xliff.join_segments",
+        "format_factory.xliff.SegmentMapping"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Split/join mapping reports preserve tokenized inline content and reject boundaries that orphan spanning inline pairs.",
+      "git_head": "03889149",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+          "state": "present",
+          "sha256": "03bb31c8121a9c892b7850e13c0076e67af5d569462c7c09b3b00896955f3b42"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "12d0a9fd4eef8cbf32bc3f918538e5915609e8d1a43b34c1eae7cbf90810fc20"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "265c9cc3906306d19976d8140db707038bd6788e0a564ef3af2b65f21ee307b5"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff/test_production_namespace.py -q",
+      "result": "11 passed",
+      "rollback": "Remove the segmentation module and public exports, restore the namespace test, and remove this ledger entry."
     }
   ],
-  "total_entries": 2779,
+  "total_entries": 2780,
   "changes": [
     {
       "file": "src/python/dif/models.py",

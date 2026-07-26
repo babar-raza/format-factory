@@ -15,13 +15,16 @@ from format_factory.xliff import (
     XliffDocument,
     XliffFile,
     XliffParseError,
+    XliffValidationError,
     dump,
     dumps,
     flatten_inline_content,
     load,
     loads,
     probe,
+    join_segments,
     validate,
+    split_segment,
 )
 
 
@@ -159,3 +162,72 @@ def test_resource_limits_apply_before_xml_processing() -> None:
 def test_production_package_has_no_parent_namespace_initializer() -> None:
     package = Path(__file__).parents[3] / "src/python/xliff/src/format_factory"
     assert not (package / "__init__.py").exists()
+
+
+def test_segment_split_join_reports_mapping_and_preserves_inline_content() -> None:
+    unit = Unit(
+        id="u1",
+        children=[
+            Segment(
+                id="s1",
+                source=[
+                    "Hello ",
+                    InlineElement("pc", {"id": "code"}, ["world"]),
+                    "!",
+                ],
+                target=[
+                    "Bonjour ",
+                    InlineElement("pc", {"id": "code"}, ["monde"]),
+                    "!",
+                ],
+                state="translated",
+            )
+        ],
+    )
+
+    split = split_segment(
+        unit,
+        "s1",
+        source_index=1,
+        target_index=1,
+        first_id="s1a",
+        second_id="s1b",
+    )
+
+    assert split.operation == "split"
+    assert split.replacements == {"s1": ("s1a", "s1b")}
+    assert [segment.id for segment in unit.segments] == ["s1a", "s1b"]
+    assert flatten_inline_content(unit.segments[0].source) == "Hello "
+    assert flatten_inline_content(unit.segments[1].source) == "world!"
+    assert validate(
+        XliffDocument("2.1", "en", "fr", [XliffFile("f1", [unit])])
+    ).is_valid
+
+    joined = join_segments(unit, "s1a", "s1b", new_id="s1")
+
+    assert joined.operation == "join"
+    assert joined.replacements == {"s1a": ("s1",), "s1b": ("s1",)}
+    assert [segment.id for segment in unit.segments] == ["s1"]
+    assert flatten_inline_content(unit.segments[0].source) == "Hello world!"
+    assert flatten_inline_content(unit.segments[0].target or []) == "Bonjour monde!"
+
+
+def test_segment_split_rejects_boundary_that_orphans_a_spanning_code() -> None:
+    unit = Unit(
+        id="u1",
+        children=[
+            Segment(
+                id="s1",
+                source=[
+                    InlineElement("sc", {"id": "open"}),
+                    "inside",
+                    InlineElement("ec", {"startRef": "open"}),
+                ],
+            )
+        ],
+    )
+
+    with pytest.raises(XliffValidationError, match="paired inline code"):
+        split_segment(unit, "s1", source_index=1, first_id="s1a", second_id="s1b")
+
+    assert [segment.id for segment in unit.segments] == ["s1"]
