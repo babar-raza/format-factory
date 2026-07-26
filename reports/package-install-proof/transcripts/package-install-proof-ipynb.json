@@ -1,5 +1,5 @@
 {
-  "invocation_id": "PACKAGE-PROOF-AFD32293AB780507CF06E09837634424D110C0ABFE1BD7CDEED167BE9DCF6A9A-ipynb",
+  "invocation_id": "PACKAGE-PROOF-5A8FC4B30A28F487FFADA3D428D1BA74B7532A2CE91DD33FB9EF286D534C84ED-ipynb",
   "skill_id": "package-install-proof",
   "skill_version": "3.0",
   "mode": "live",
@@ -23,16 +23,16 @@
     "deep installed-submodule import scan"
   ],
   "ledger_entry_id": null,
-  "result": "PASS",
-  "timestamp": "2026-07-25T22:08:25+00:00",
+  "result": "FAIL",
+  "timestamp": "2026-07-26T04:53:38+00:00",
   "format_id": "ipynb",
   "package_name": "format-factory-ipynb",
   "package_version": "0.2.0.dev0",
   "wheel_path": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041",
-  "proof_id": "PACKAGE-PROOF-AFD32293AB780507CF06E09837634424D110C0ABFE1BD7CDEED167BE9DCF6A9A",
-  "source_digest": "61f59be686e188211033ee21d8f307048d1d2297750d81760fcb0f5fc2bab1a4",
-  "proof_input_digest": "1526f1da77a760b20da5a05331bafe3539fb23d241187ade13ec02da261b67fb",
+  "wheel_sha256": "0e9635f74b0ba850d2b811e1da062e5db5d15deb402bac9e1f288e7657fbe180",
+  "proof_id": "PACKAGE-PROOF-5A8FC4B30A28F487FFADA3D428D1BA74B7532A2CE91DD33FB9EF286D534C84ED",
+  "source_digest": "6bfe5022486d3c9fde906250b4fd2d1b383dd027208dc5613b4cdb638152ac4f",
+  "proof_input_digest": "2959a20c36d9e7930b96f2e2fc57ebddfebf2cbc5e7d0e80785bd5d9a41d0760",
   "local_dependencies": [
     {
       "package_name": "format-factory-core",
@@ -43,13 +43,13 @@
   ],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
-  "import_result": "PASS",
+  "import_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
   "import_statement": "import format_factory.ipynb",
-  "smoke_result": "PASS",
+  "smoke_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
   "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
-  "verdict": "PASS",
+  "verdict": "FAIL",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-25T22:08:25+00:00",
+  "generated_at": "2026-07-26T04:53:38+00:00",
   "worker_agent": "codex"
 }

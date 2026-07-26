@@ -15,7 +15,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 6 | fods | format-factory-fods | 0.1.0.dev0 | PASS | PASS | **PASS** | 85/88 |
 | 7 | fodt | format-factory-fodt | 0.1.0.dev0 | PASS | PASS | **PASS** | 54/55 |
 | 8 | gnumeric | format-factory-gnumeric | 0.1.0.dev0 | PASS | PASS | **PASS** | 30/31 |
-| 9 | ipynb | format-factory-ipynb | 0.2.0.dev0 | PASS | PASS | **PASS** | 18/18 |
+| 9 | ipynb | format-factory-ipynb | 0.2.0.dev0 | FAIL | FAIL | **FAIL** | 0/0 |
 | 10 | mtlx | format-factory-mtlx | 0.1.0.dev0 | PASS | PASS | **PASS** | 21/22 |
 | 11 | ndjson | format-factory-ndjson | 0.1.0.dev0 | PASS | PASS | **PASS** | 32/33 |
 | 12 | nrrd | format-factory-nrrd | 0.1.0.dev0 | PASS | PASS | **PASS** | 12/14 |
@@ -34,11 +34,12 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 25 | xliff | format-factory-xliff | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
 | 26 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 17/17 |
 
-**25/26 PASS**
+**24/26 PASS**
 
 ## Failures
 
 - **csv**: import=FAIL: AssertionError: csv resolved to C:\Python313\Lib\csv.py, not to site-packages C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\worktrees\ff-six-python-production\.local\package-install-p smoke=FAIL: ModuleNotFoundError: No module named 'csv.csv_parser'; 'csv' is not a package
+- **ipynb**: import=FAIL: ModuleNotFoundError: No module named 'jsonschema' smoke=FAIL: ModuleNotFoundError: No module named 'jsonschema'
 
 ## Deep-import findings (non-verdict; converter modules assuming repo layout)
 

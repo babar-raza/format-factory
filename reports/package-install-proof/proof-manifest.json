@@ -197,9 +197,10 @@
       "deep_import": {
         "failed": 0,
         "failing_modules": {},
-        "total": 18
+        "package_import_error": "ModuleNotFoundError: No module named 'jsonschema'",
+        "total": 0
       },
-      "import_result": "PASS",
+      "import_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
       "install_result": "PASS",
       "local_dependencies": [
         {
@@ -211,15 +212,15 @@
       ],
       "module_import": "format_factory.ipynb",
       "package_name": "format-factory-ipynb",
-      "proof_id": "PACKAGE-PROOF-AFD32293AB780507CF06E09837634424D110C0ABFE1BD7CDEED167BE9DCF6A9A",
-      "proof_input_digest": "1526f1da77a760b20da5a05331bafe3539fb23d241187ade13ec02da261b67fb",
-      "smoke_result": "PASS",
+      "proof_id": "PACKAGE-PROOF-5A8FC4B30A28F487FFADA3D428D1BA74B7532A2CE91DD33FB9EF286D534C84ED",
+      "proof_input_digest": "2959a20c36d9e7930b96f2e2fc57ebddfebf2cbc5e7d0e80785bd5d9a41d0760",
+      "smoke_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
       "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
-      "source_digest": "61f59be686e188211033ee21d8f307048d1d2297750d81760fcb0f5fc2bab1a4",
-      "verdict": "PASS",
+      "source_digest": "6bfe5022486d3c9fde906250b4fd2d1b383dd027208dc5613b4cdb638152ac4f",
+      "verdict": "FAIL",
       "version": "0.2.0.dev0",
       "wheel_file": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041"
+      "wheel_sha256": "0e9635f74b0ba850d2b811e1da062e5db5d15deb402bac9e1f288e7657fbe180"
     },
     "mtlx": {
       "build_mode": "legacy_staging",
