@@ -70,3 +70,31 @@ documents could pass the package's public `validate()` API.
 
 This closes only the state-to-target validation slice. XLIFF remains in
 implementation because its other mandatory obligations remain open.
+
+## Self-Challenge Record
+
+1. Yes — the contract-backed state-to-target rule, focused regression, suite,
+   and installed-wheel proof were completed.
+2. Yes — all evidence required for this bounded slice is present; the
+   repository-wide ledger migration remains separately open.
+3. Yes — red/green tests and physical-wheel proof are sufficient for this
+   semantic validation rule.
+4. No — the primary OASIS source is pinned through `SRC-XLF-002` and its SAL
+   assertion, not replaced by a secondary authority.
+5. No — only XLIFF source/tests plus task/proof records were changed.
+6. No — no gate or release status was self-approved.
+7. No — the work remained within XLIFF implementation/verification.
+8. No — commits were authorized by the user's explicit autonomous execution
+   instruction and were guarded by the coordination pre-commit check.
+9. Yes — the persisted transcript and canonical package-proof manifest were
+   inspected before this taskcard was closed.
+10. No — the transient misplaced ledger entry was corrected before commit and
+    recorded by this self-challenge; the pre-existing ledger migration gap
+    remains explicitly documented in `TC-FI-033-LEDGER-VALIDATOR-001`.
+11. Yes — the applicable knowledge registry and production-package contract
+    were read before source work.
+12. Yes — those contracts were used as context while the ProductContract and
+    pinned OASIS fact remained semantic authority.
+13. Yes — no contradiction affecting this narrow rule was found.
+14. Not applicable — no memory-update trigger occurred.
+15. Not applicable — no human review or approval was requested.
