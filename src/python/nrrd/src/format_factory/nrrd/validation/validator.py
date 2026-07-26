@@ -6,7 +6,13 @@ from typing import Any, Mapping
 
 from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
 
-from ..codec.payload import checked_element_count, dtype_info
+from ..codec.payload import (
+    checked_element_count,
+    dtype_info,
+    is_block_type,
+    parse_block_size,
+)
+from ..errors import NrrdParseError
 from ..model import NrrdDocument
 from ..security import effective_limits
 
@@ -42,7 +48,18 @@ def validate(
                     "dimension does not equal the number of axis sizes",
                 )
             )
-        dtype_info(document.nrrd_type)
+        block_size = None
+        if is_block_type(document.nrrd_type):
+            block_size = parse_block_size(document.header.get("block size"))
+            if document.encoding in {"ascii", "text", "txt"}:
+                diagnostics.append(
+                    Diagnostic(
+                        "nrrd.block.encoding",
+                        "block type is not valid with ASCII encoding",
+                    )
+                )
+        else:
+            dtype_info(document.nrrd_type)
         count = checked_element_count(sizes, effective_limits(limits))
         if len(document.array) != count:
             diagnostics.append(
@@ -58,6 +75,6 @@ def validate(
                     "kinds must contain one entry per axis",
                 )
             )
-    except (KeyError, TypeError, ValueError) as exc:
+    except (KeyError, TypeError, ValueError, NrrdParseError) as exc:
         diagnostics.append(Diagnostic("nrrd.header.invalid", str(exc)))
     return ValidationReport(diagnostics)

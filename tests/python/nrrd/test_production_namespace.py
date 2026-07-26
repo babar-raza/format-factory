@@ -116,6 +116,83 @@ def test_big_endian_decode_and_default_profile() -> None:
     assert loads(encoded).array == [258, -2]
 
 
+def test_block_type_roundtrips_and_rejects_invalid_combinations() -> None:
+    document = NrrdDocument(
+        version=5,
+        header={
+            "type": "block",
+            "block size": "2",
+            "dimension": "1",
+            "sizes": "2",
+            "encoding": "raw",
+        },
+        payload=b"",
+        array=[b"\x01\x02", b"\x03\x04"],
+    )
+    assert loads(dumps(document)).array == [b"\x01\x02", b"\x03\x04"]
+
+    invalid_encoding = NrrdDocument(
+        version=5,
+        header={**document.header, "encoding": "ascii"},
+        payload=b"",
+        array=list(document.array),
+    )
+    with pytest.raises(NrrdWriteError, match="block"):
+        dumps(invalid_encoding)
+
+    missing_block_size = b"\n".join(
+        [
+            b"NRRD0005",
+            b"type: block",
+            b"dimension: 1",
+            b"sizes: 1",
+            b"encoding: raw",
+            b"",
+            b"\x01",
+        ]
+    )
+    with pytest.raises(NrrdParseError, match="block size"):
+        loads(missing_block_size)
+
+
+@pytest.mark.parametrize(
+    ("nrrd_type", "value"),
+    [
+        ("signed char", -7), ("int8", -7), ("int8_t", -7),
+        ("uchar", 7), ("unsigned char", 7), ("uint8", 7), ("uint8_t", 7),
+        ("short", -7), ("short int", -7), ("signed short", -7),
+        ("signed short int", -7), ("int16", -7), ("int16_t", -7),
+        ("ushort", 7), ("unsigned short", 7), ("unsigned short int", 7),
+        ("uint16", 7), ("uint16_t", 7), ("int", -7), ("signed int", -7),
+        ("int32", -7), ("int32_t", -7), ("uint", 7), ("unsigned int", 7),
+        ("uint32", 7), ("uint32_t", 7), ("longlong", -7),
+        ("long long", -7), ("long long int", -7),
+        ("signed long long", -7), ("signed long long int", -7),
+        ("int64", -7), ("int64_t", -7), ("ulonglong", 7),
+        ("unsigned long long", 7), ("unsigned long long int", 7),
+        ("uint64", 7), ("uint64_t", 7), ("float", 1.25), ("double", 1.25),
+    ],
+)
+def test_every_normative_scalar_type_alias_roundtrips(
+    nrrd_type: str, value: int | float
+) -> None:
+    document = NrrdDocument(
+        version=5,
+        header={
+            "type": nrrd_type,
+            "dimension": "1",
+            "sizes": "1",
+            "encoding": "raw",
+            "endian": "little",
+        },
+        payload=b"",
+        array=[value],
+    )
+    reloaded = loads(dumps(document))
+    assert reloaded.header["type"] == nrrd_type
+    assert reloaded.array == [value]
+
+
 def test_detached_single_payload_is_bounded_and_path_safe(tmp_path: Path) -> None:
     (tmp_path / "data.raw").write_bytes(b"\x01\x02\x03\x04")
     header = (

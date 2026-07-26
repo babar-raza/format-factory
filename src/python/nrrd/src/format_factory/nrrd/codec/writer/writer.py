@@ -8,10 +8,16 @@ from typing import Any, Mapping
 
 from format_factory.core import BinaryDestination, ResourceLimits
 
-from ...errors import NrrdWriteError
+from ...errors import NrrdParseError, NrrdWriteError
 from ...model import NrrdDocument
 from ...security import effective_limits
-from ..payload import SUPPORTED_ENCODINGS, encode_binary, encode_encoding
+from ..payload import (
+    SUPPORTED_ENCODINGS,
+    encode_binary,
+    encode_encoding,
+    is_block_type,
+    parse_block_size,
+)
 
 _FIELD_ORDER = (
     "type", "dimension", "space", "sizes", "space directions", "kinds",
@@ -74,12 +80,23 @@ def dumps(
         raise NrrdWriteError(f"unsupported NRRD profile: {selected!r}")
     if value.encoding not in SUPPORTED_ENCODINGS:
         raise NrrdWriteError(f"unsupported NRRD encoding: {value.encoding!r}")
+    try:
+        block_size = (
+            parse_block_size(value.header.get("block size"))
+            if is_block_type(value.nrrd_type)
+            else None
+        )
+    except NrrdParseError as exc:
+        raise NrrdWriteError(str(exc)) from exc
+    if block_size is not None and value.encoding in {"ascii", "text", "txt"}:
+        raise NrrdWriteError("block type is not valid with ASCII encoding")
     binary = encode_binary(
         value.nrrd_type,
         value.sizes,
         value.array,
         endian=value.header.get("endian"),
         limits=active_limits,
+        block_size=block_size,
     )
     payload = encode_encoding(
         binary, value.array, value.encoding, limits=active_limits

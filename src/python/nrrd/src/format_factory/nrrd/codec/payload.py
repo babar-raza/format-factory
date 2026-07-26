@@ -24,8 +24,10 @@ _DTYPE_ALIASES: Final[dict[str, tuple[str, int]]] = {
     "signed int": ("i", 4), "int32": ("i", 4), "int32_t": ("i", 4),
     "uint": ("I", 4), "unsigned int": ("I", 4), "uint32": ("I", 4),
     "uint32_t": ("I", 4), "longlong": ("q", 8), "long long": ("q", 8),
-    "signed long long": ("q", 8), "int64": ("q", 8), "int64_t": ("q", 8),
+    "long long int": ("q", 8), "signed long long": ("q", 8),
+    "signed long long int": ("q", 8), "int64": ("q", 8), "int64_t": ("q", 8),
     "ulonglong": ("Q", 8), "unsigned long long": ("Q", 8),
+    "unsigned long long int": ("Q", 8),
     "uint64": ("Q", 8), "uint64_t": ("Q", 8), "float": ("f", 4),
     "double": ("d", 8),
 }
@@ -33,6 +35,26 @@ _DTYPE_ALIASES: Final[dict[str, tuple[str, int]]] = {
 SUPPORTED_ENCODINGS = frozenset(
     {"raw", "ascii", "text", "txt", "hex", "gzip", "gz", "bzip2", "bz2"}
 )
+
+
+def is_block_type(type_name: str) -> bool:
+    """Return whether a declared NRRD type stores opaque fixed-size blocks."""
+
+    return type_name.strip().lower() == "block"
+
+
+def parse_block_size(value: str | int | None) -> int:
+    """Validate the mandatory byte width for an opaque NRRD block value."""
+
+    if value is None:
+        raise NrrdParseError("block type requires a block size field")
+    try:
+        block_size = int(value)
+    except ValueError as exc:
+        raise NrrdParseError("block size must be a positive integer") from exc
+    if block_size <= 0:
+        raise NrrdParseError("block size must be a positive integer")
+    return block_size
 
 
 def dtype_info(type_name: str) -> tuple[str, int]:
@@ -58,9 +80,17 @@ def checked_element_count(sizes: list[int], limits: ResourceLimits) -> int:
 
 
 def expected_binary_size(
-    type_name: str, sizes: list[int], limits: ResourceLimits
+    type_name: str,
+    sizes: list[int],
+    limits: ResourceLimits,
+    *,
+    block_size: int | None = None,
 ) -> int:
-    _, item_size = dtype_info(type_name)
+    item_size = (
+        parse_block_size(block_size)
+        if is_block_type(type_name)
+        else dtype_info(type_name)[1]
+    )
     expected = checked_element_count(sizes, limits) * item_size
     limits.enforce("max_decompressed_bytes", expected)
     return expected
@@ -86,14 +116,20 @@ def decode_binary(
     *,
     endian: str | None,
     limits: ResourceLimits,
+    block_size: int | None = None,
 ) -> list[Any]:
-    fmt, item_size = dtype_info(type_name)
     count = checked_element_count(sizes, limits)
-    expected = expected_binary_size(type_name, sizes, limits)
+    expected = expected_binary_size(
+        type_name, sizes, limits, block_size=block_size
+    )
     if len(payload) != expected:
         raise NrrdParseError(
             f"payload length mismatch: expected {expected} bytes, got {len(payload)}"
         )
+    if is_block_type(type_name):
+        width = parse_block_size(block_size)
+        return [payload[index : index + width] for index in range(0, expected, width)]
+    fmt, item_size = dtype_info(type_name)
     try:
         return list(struct.unpack(f"{_endian_prefix(endian, item_size)}{count}{fmt}", payload))
     except struct.error as exc:
@@ -107,13 +143,31 @@ def encode_binary(
     *,
     endian: str | None,
     limits: ResourceLimits,
+    block_size: int | None = None,
 ) -> bytes:
-    fmt, item_size = dtype_info(type_name)
     count = checked_element_count(sizes, limits)
     if len(values) != count:
         raise NrrdWriteError(
             f"array length mismatch: expected {count} elements, got {len(values)}"
         )
+    if is_block_type(type_name):
+        width = parse_block_size(block_size)
+        blocks: list[bytes] = []
+        for index, value in enumerate(values):
+            if not isinstance(value, (bytes, bytearray, memoryview)):
+                raise NrrdWriteError(
+                    f"block value {index} must be bytes-like, not {type(value).__name__}"
+                )
+            block = bytes(value)
+            if len(block) != width:
+                raise NrrdWriteError(
+                    f"block value {index} has {len(block)} bytes; expected {width}"
+                )
+            blocks.append(block)
+        result = b"".join(blocks)
+        limits.enforce("max_output_bytes", len(result))
+        return result
+    fmt, item_size = dtype_info(type_name)
     try:
         result = struct.pack(
             f"{_endian_prefix(endian, item_size)}{count}{fmt}", *values

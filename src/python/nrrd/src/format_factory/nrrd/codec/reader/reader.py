@@ -18,6 +18,8 @@ from ..payload import (
     decode_encoding,
     encode_binary,
     expected_binary_size,
+    is_block_type,
+    parse_block_size,
 )
 
 _REQUIRED_FIELDS = frozenset({"type", "dimension", "sizes", "encoding"})
@@ -246,6 +248,13 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
     encoding = header["encoding"].lower()
     if encoding not in SUPPORTED_ENCODINGS:
         raise NrrdParseError(f"unsupported NRRD encoding: {encoding!r}")
+    block_size = (
+        parse_block_size(header.get("block size"))
+        if is_block_type(header["type"])
+        else None
+    )
+    if block_size is not None and encoding in {"ascii", "text", "txt"}:
+        raise NrrdParseError("block type is not valid with ASCII encoding")
     payload = (
         _safe_detached_payload(
             header["data file"], source_path=source_path, limits=limits
@@ -257,7 +266,9 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
     if header.get("byte skip", header.get("byteskip")) == "-1":
         if encoding != "raw":
             raise NrrdParseError("byte skip -1 is valid only for raw encoding")
-        expected = expected_binary_size(header["type"], sizes, limits)
+        expected = expected_binary_size(
+            header["type"], sizes, limits, block_size=block_size
+        )
         if expected > len(payload):
             raise NrrdParseError("byte skip -1 payload is truncated")
         payload = payload[-expected:]
@@ -270,6 +281,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             array,
             endian=header.get("endian"),
             limits=limits,
+            block_size=block_size,
         )
     else:
         binary = decode_encoding(payload, encoding, limits=limits)
@@ -279,6 +291,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             binary,
             endian=header.get("endian"),
             limits=limits,
+            block_size=block_size,
         )
     return NrrdDocument(
         version=version,

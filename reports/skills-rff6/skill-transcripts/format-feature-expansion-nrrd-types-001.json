@@ -1,0 +1,66 @@
+{
+  "generated_by": "codex",
+  "invocation_id": "format-feature-expansion-nrrd-types-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
+  "format_id": "nrrd",
+  "profile_id": "production",
+  "obligation_id": "SAL-NRRD-OBL-1F6D4A8035175E6A",
+  "inputs": {
+    "format_id": "nrrd",
+    "profile_id": "production",
+    "obligation_id": "SAL-NRRD-OBL-1F6D4A8035175E6A",
+    "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5",
+    "authority_digests": "shared/sal-facts/evidence/nrrd.yaml=e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4",
+    "affected_layer": "codec and validation",
+    "planned_paths": "NRRD payload, reader, writer, validator, and production namespace tests",
+    "proof_inputs": "installed wheel, test source, production contract",
+    "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001"
+  },
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_production_namespace.py"
+  ],
+  "result": "PASS",
+  "authority_facts": [
+    "SAL-NRRD-00003",
+    "SAL-NRRD-00006",
+    "SAL-NRRD-00009",
+    "SAL-NRRD-00011",
+    "SAL-NRRD-00016",
+    "SAL-NRRD-00017"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_production_namespace.py"
+  ],
+  "tests_run": [
+    "276 source NRRD tests",
+    "41 installed-wheel targeted tests",
+    "package install proof: 2 passed, 1 skipped"
+  ],
+  "ledger_entry_id": "FF6-NRRD-TYPES-001",
+  "before_evidence": {
+    "command": "python -m pytest tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations -q",
+    "result": "FAIL",
+    "reason": "type: block was rejected as an unsupported scalar type"
+  },
+  "after_evidence": {
+    "source_regression": "276 passed",
+    "installed_wheel_targeted": "41 passed",
+    "package_install_proof": "PASS (2 passed, 1 skipped)",
+    "proof_id": "PROOF-04F8C2083D0486990551CAF4D0F777B18535AEDAC9FD1C7F14D92711F610918C",
+    "proof_graph_digest": "cee88389d5b6f652a7ab54fb6439cbde5d965905bfc187e005a5015ef43e7220"
+  },
+  "limitations": [
+    "Ruff, mypy, and pyright were not installed in the isolated proof environment and therefore have no passing evidence from this task.",
+    "This proof closes one NRRD type obligation only; the controller invalidated dependent historical NRRD proofs after the source change, which require replay."
+  ]
+}

@@ -44238,6 +44238,27 @@
       "validation_command": ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py -q",
       "result": "11 passed",
       "rollback": "Restore the default writer profile to NRRD0005, remove the explicit preservation assertion, and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-NRRD-TYPES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
+      "product": "Nearly Raw Raster Data Python production package",
+      "format": "NRRD",
+      "capability_refs": ["NRRD-TYPES-001"],
+      "api_symbols": ["parse_block_size", "is_block_type", "encode_binary", "decode_binary"],
+      "source_files": [
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py", "state": "present", "sha256": "68a0b92c89982ba7ff04ddd804d80a7df1068c919c4069fc0e4e18570eb54ff8"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py", "state": "present", "sha256": "dadd98a328bf3cfa1b3e8cff39e6ed9eadacb1d8ba61a8a1c0de3376536d4455"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py", "state": "present", "sha256": "9e0ab540e46dd0117c98f52de7540a5ab0cf6dda24f5c56a49bede43f8af5bf4"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "3f564315c16236801347f40b38eb0e3681135039cfb8ae76903c0a19a6372ec1"}
+      ],
+      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "validation_command": "package-install-proof plus installed-wheel type/block tests",
+      "result": "276 source tests; 41 installed-wheel targeted tests; package proof PASS",
+      "rollback": "Revert this bounded NRRD type implementation and remove this ledger entry."
     }
   ]
 }
