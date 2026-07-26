@@ -1,0 +1,41 @@
+{
+  "invocation_id": "materialize-production-proof-nrrd-header-002",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "GAP-3358BD5C48EDA1E7",
+    "failing_regression": "The prior header proof was invalidated after the NRRD writer source changed.",
+    "invalidation_input": "src/python/nrrd source digest changed from 92ec6a214942b9696aecb691747e100c5e58f37eb29cfeb294f17ef1c7b56390 to 7082043d22603fdc362146919d2b051d5593b1ea3ca9f87039ef9ca3d980cb4e.",
+    "target_product": "nrrd"
+  },
+  "allowed_files": [
+    ".local/production-program/**",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-nrrd-header-002.json"
+  ],
+  "actual_files_changed": [
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/nrrd/edges.jsonl",
+    ".local/production-program/proof-graphs/nrrd/nodes.jsonl",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-nrrd-header-002.json"
+  ],
+  "tests_run": [
+    ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py -q (11 passed; installed-wheel imports)",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/production_program/test_production_program.py -q (43 passed)"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "format_id": "nrrd",
+    "obligation_id": "SAL-NRRD-OBL-00DC4239C8859F7A",
+    "polarity": "positive",
+    "proof_id": "PROOF-564F9BEBF32D243B2FE3F5979D98698AD17008FCDBA23E8D39657E7A209B9CFD",
+    "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5",
+    "source_digest": "7082043d22603fdc362146919d2b051d5593b1ea3ca9f87039ef9ca3d980cb4e",
+    "package_sha256": "ddb3da7e9795c574d63ce45e13aff485c59a7beeab44ecbee50c0501db721da1",
+    "graph_digest": "0a0d4ce6143c739cb279199fd6e7fd185821f34f9e1e8e5cb056b6a6654f9633",
+    "open_nrrd_obligations_after": 91,
+    "computed_promotion": "IMPLEMENTATION_IN_PROGRESS",
+    "scope_limit": "This replay restores one live positive proof. It does not certify the remaining 91 mandatory NRRD obligations or release readiness."
+  }
+}
