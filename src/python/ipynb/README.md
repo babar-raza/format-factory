@@ -38,6 +38,42 @@ dump(document, "notebook-edited.ipynb")
 JSON members. The library parses notebook structure only and never executes
 code.
 
+## Active-content handling
+
+Notebook Markdown, attachments, and output MIME bundles can carry active
+HTML, SVG, JavaScript, and external resource references. Sanitization is
+therefore explicit and reportable:
+
+```python
+from format_factory.ipynb import (
+    SanitizationMode,
+    SanitizationPolicy,
+    sanitize,
+)
+
+preview = sanitize(document)  # lossless: reports, never changes content
+if preview.findings:
+    report = sanitize(
+        document,
+        policy=SanitizationPolicy(mode=SanitizationMode.QUARANTINE),
+    )
+```
+
+The available modes are:
+
+- `LOSSLESS`: preserve content exactly and report every classified payload.
+- `REMOVE`: remove each unsafe renderable payload while retaining safe MIME
+  alternatives.
+- `QUARANTINE`: move unsafe payloads into non-rendered
+  `metadata.format_factory.security.quarantine` entries.
+- `MARK_UNTRUSTED`: retain payloads and add digest-only untrusted markers.
+
+`dry_run=True` previews mutating modes. Classification is bounded by
+`ResourceLimits` and never renders, executes, imports, opens, or resolves
+content. Removal is deliberately conservative: the complete renderable
+payload is removed rather than partially rewriting arbitrary markup and
+claiming that the remainder is safe.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level
@@ -57,6 +93,7 @@ process are documented in `SECURITY.md`.
 - Cell-ID normalization and structural validation
 - Unknown JSON-member preservation
 - MIME-bundle helpers and structural mutation
+- Explicit active-content classification, removal, quarantine, and marking
 - Installed-package CLI and analytics in isolated modules
 
 Version conversion and complete differential certification against the

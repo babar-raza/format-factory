@@ -43573,9 +43573,54 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_cleanup.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-SANITIZATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-006",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-SANITIZE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-F581800E69395375",
+      "capability_refs": [
+        "foss_python.ipynb.active_content_classification",
+        "foss_python.ipynb.lossless_security_reporting",
+        "foss_python.ipynb.active_payload_removal",
+        "foss_python.ipynb.active_payload_quarantine",
+        "foss_python.ipynb.untrusted_content_marking",
+        "foss_python.ipynb.external_reference_classification",
+        "foss_python.ipynb.bounded_non_rendering_sanitization"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.sanitize",
+        "format_factory.ipynb.SanitizationMode",
+        "format_factory.ipynb.SanitizationPolicy",
+        "format_factory.ipynb.SanitizationFinding",
+        "format_factory.ipynb.SanitizationReport",
+        "format_factory.ipynb.DEFAULT_ACTIVE_MIME_TYPES"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "4139a259497cf64648ff6bb0c52f264fc1734e9764d0a10070e6d134b57df2f3"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+          "state": "present",
+          "sha256": "c73d09ece31f0cd1dc57fed94623cf378cab2b81b1a757982c10b1ef8be161e6"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py",
+          "state": "present",
+          "sha256": "36e4fd39c3313caaa34ca280e43ba19cb2de7810cf8cf16dd40651c38d001f41"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_sanitization.py"
     }
   ],
-  "total_entries": 2770,
+  "total_entries": 2771,
   "changes": [
     {
       "file": "src/python/dif/models.py",

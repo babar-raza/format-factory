@@ -1,0 +1,161 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-sanitization-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-sanitization-001",
+  "task_id": "AUTO-IPYNB-SANITIZE-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The older generic product_deepening route is object-model-specific and does not contain the production proof requirements.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-006",
+  "pre_mutation_guard_authorization_id": "c629aae8545c30ca",
+  "requested_operation": "implement bounded, configurable, non-rendering active-content classification with explicit lossless, removal, quarantine, and preserve-but-mark modes",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-SANITIZE-001",
+    "obligation_id": "SAL-IPYNB-OBL-F581800E69395375",
+    "capability_id": "IPYNB-SANITIZE-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "7c685d81ce287de6811292f0f05d52840b21d546b249ca06675c2534d2c85579",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The production package warned that notebooks can contain active MIME output but exposed no programmatic classifier or explicit handling policy. Consumers therefore had to choose between rendering unclassified content, deleting data ad hoc without a loss record, or relying on isolated prompt conventions.",
+    "affected_layer": "IPYNB security boundary, public API, package security documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py",
+      "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "src/python/ipynb/SECURITY.md",
+      "tests/python/ipynb/test_obligation_sanitization.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-sanitization-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/policy/family-packs/executable_document.yaml",
+      "tests/python/ipynb/test_obligation_sanitization.py",
+      ".local/build/ipynb-sanitization-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "b8c5611f8b24f7ae226d367e82f511c5a37daed8"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "tests/python/ipynb/test_obligation_sanitization.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-sanitization-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "tests/python/ipynb/test_obligation_sanitization.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-sanitization-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "command": "pytest -q tests/python/ipynb/test_obligation_sanitization.py",
+    "outcome": "Test collection failed because format_factory.ipynb exported no SanitizationMode, SanitizationPolicy, or sanitize API."
+  },
+  "implementation": {
+    "catalog": "The default active catalog covers HTML, SVG, JavaScript, and ECMAScript MIME types and is caller-configurable.",
+    "classification": "Markdown/raw markup hazards, event handlers, active elements, and external resource references are identified without rendering or resolving them.",
+    "lossless": "LOSSLESS is the default; it does not mutate or mark content and returns path-, hazard-, reference-, and digest-bound findings.",
+    "removal": "REMOVE deletes each complete unsafe renderable payload while retaining safe alternatives in the same MIME bundle.",
+    "quarantine": "QUARANTINE moves complete unsafe payloads into a non-rendered reserved metadata catalog with source paths and digests.",
+    "marking": "MARK_UNTRUSTED preserves payloads and writes idempotent digest-only markers; it never copies hostile payloads into the marker catalog.",
+    "boundedness": "Payload bytes, active observations, finding entries, and projected mutated output bytes are enforced through caller-supplied or safe default ResourceLimits.",
+    "preservation": "Safe MIME representations and unrelated or unknown metadata remain unchanged; incompatible reserved metadata fails closed rather than being overwritten.",
+    "tradeoff": "Removal and quarantine operate on complete renderable payloads. The implementation does not claim that partial regex-based rewriting can make arbitrary browser markup safe."
+  },
+  "tests_run": [
+    "failure-first sanitization test: collection failed because SanitizationMode did not exist",
+    "focused sanitization obligation tests: 8 passed",
+    "focused security, cleanup, validation, and sanitization regression: 16 passed before the final configurable-catalog case was added",
+    "final focused security, cleanup, validation, and sanitization regression: 17 passed",
+    "production control-plane and production-skill regression: 43 passed",
+    "source-tree format regression excluding installed-origin assertions: 282 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and sanitization test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 23 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 87a8b31d2a4098783441bdd51985b483379df8604412b2aca41d6ede6f6bacaa",
+    "installed-wheel full tests/python/ipynb suite: 285 passed",
+    "repository real-ledger test: expected non-strict xfail because 160 historical entries use the legacy string source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-SANITIZATION-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "lossless_no_mutation": "PASS",
+    "explicit_per_mode_behavior": "PASS",
+    "dry_run_apply_equivalence": "PASS",
+    "safe_mime_and_unknown_metadata_preservation": "PASS",
+    "quarantine_non_renderable_location": "PASS",
+    "marking_idempotence": "PASS",
+    "configurable_catalog": "PASS",
+    "external_reference_no_network": "PASS",
+    "resource_limit_enforcement": "PASS",
+    "reserved_metadata_collision": "PASS: fail closed without overwrite",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "declared_regression_tier": "PASS: 285 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: validator raises on historical mixed-schema source_files entries; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "4139a259497cf64648ff6bb0c52f264fc1734e9764d0a10070e6d134b57df2f3",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py": "c73d09ece31f0cd1dc57fed94623cf378cab2b81b1a757982c10b1ef8be161e6",
+    "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "36e4fd39c3313caaa34ca280e43ba19cb2de7810cf8cf16dd40651c38d001f41",
+    "src/python/ipynb/README.md": "4188f0e866e699fd31bc7e91fdc938c851abfe0e67fc814b01116a0a1a1bb22a",
+    "src/python/ipynb/SECURITY.md": "d29c04c9699f1ad01ceac7009bf90e7314cfbfe1bfdc0366e40b744e785243f1",
+    "tests/python/ipynb/test_obligation_sanitization.py": "b5b61dad3fff3e42dd2bcd33b7a23d5f46bd183a83fe4b5b6c432d7d71a7bacd",
+    "reports/r90/product-code-change-ledger.json": "175084269780198bfdcb3d6044cb730bac7ec27a95356b1e8e82b0ff8d66de8c",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "87a8b31d2a4098783441bdd51985b483379df8604412b2aca41d6ede6f6bacaa"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_ACTIVE_CONTENT_SANITIZATION_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T01:38:41.0564574Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

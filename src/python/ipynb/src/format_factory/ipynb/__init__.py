@@ -61,7 +61,15 @@ from .model import (
     remove_output_mime_type,
     upgrade,
 )
-from .security import IPYNB_DEFAULT_LIMITS
+from .security import (
+    DEFAULT_ACTIVE_MIME_TYPES,
+    IPYNB_DEFAULT_LIMITS,
+    SanitizationFinding,
+    SanitizationMode,
+    SanitizationPolicy,
+    SanitizationReport,
+    sanitize,
+)
 from .validation import validate, validate_notebook, validate_notebook_schema
 
 __all__ = [
@@ -76,6 +84,7 @@ __all__ = [
     "ConversionResult",
     "DisplayDataOutput",
     "Document",
+    "DEFAULT_ACTIVE_MIME_TYPES",
     "ErrorOutput",
     "ExecuteResultOutput",
     "IPYNB_DEFAULT_LIMITS",
@@ -91,6 +100,10 @@ __all__ = [
     "Output",
     "RawCell",
     "RecoveryAction",
+    "SanitizationFinding",
+    "SanitizationMode",
+    "SanitizationPolicy",
+    "SanitizationReport",
     "StreamOutput",
     "UnknownCell",
     "UnknownOutput",
@@ -116,6 +129,7 @@ __all__ = [
     "probe_ipynb",
     "output_from_dict",
     "roundtrip",
+    "sanitize",
     "remove_output_mime_type",
     "validate",
     "validate_notebook",
