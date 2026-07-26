@@ -1,0 +1,175 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-cell-editor-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-cell-editor-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-EDIT-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The historical reconciler's depth-complete label was rejected because the source only exposed limited index-based mutations.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-010",
+  "pre_mutation_guard_authorization_id": "b1be1963d85d0655",
+  "requested_operation": "implement stable-ID cell insert, move, copy, replace, remove, combined search, and bulk removal with atomic validation, deterministic change reports, dry-run behavior, and save/reload stability",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-EDIT-001",
+    "obligation_id": "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C"
+    ],
+    "capability_id": "IPYNB-EDIT-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "e33340b8d1a9ee1b299d51140c1dc8079386000cab2b294f8aaa2a2f91d49cad",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "independent_oracle": {
+      "distribution": "nbformat",
+      "version": "5.10.4"
+    },
+    "root_cause": "The existing document exposed add_cell, remove_cell, and clear_outputs by numeric index plus a limited search helper. It had no stable-ID move/copy/replace lifecycle, no metadata query, no bulk change report, and no dry-run or atomic post-edit validation. Presence-based reconciliation nevertheless marked the capability complete.",
+    "affected_layer": "IPYNB pure model editing, public API, preservation guarantees, save/reload behavior, and package documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/editor.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "tests/python/ipynb/test_obligation_cell_editor.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cell-editor-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_cell_editor.py",
+      ".local/build/ipynb-editor-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-editor-b/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "094a787f7fc451956cad2b70687131f597d880ac"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/editor.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_cell_editor.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cell-editor-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/editor.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_cell_editor.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-cell-editor-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED_AND_INTERMEDIATE_FALSE_SUCCESS_CAUGHT",
+    "observations": [
+      "The failure-first test could not collect because format_factory.ipynb exported no CellEditOperation or governed editor.",
+      "The first implementation then failed 3 of 10 focused tests: its cell-list validation built a detached list, so reports claimed applied changes while the document remained unchanged.",
+      "The implementation was repaired to validate and return the owned list itself; the expanded 16-test matrix now compares every dry run with its applied operation and save/reload result."
+    ]
+  },
+  "implementation": {
+    "compatibility": "Existing IpynbDocument.add_cell, remove_cell, clear_outputs, and find_cells behavior is unchanged; edit_cells is an additive pre-1.0 lifecycle.",
+    "targeting": "Mutations resolve required unique schema-valid cell IDs and reject missing, duplicate, or invalid IDs before changing state.",
+    "crud": "Insert, replace, remove, move, and copy operate on deep-copied notebook state. Replace preserves the selected ID; copy generates deterministic collision-free IDs unless an explicit ID is supplied.",
+    "search": "CellQuery combines ID, cell type, tag, recursive metadata subset, and logical source-text criteria.",
+    "bulk_safety": "remove_where returns one ordered change per removed cell and refuses a query without a meaningful criterion, including an empty metadata mapping.",
+    "atomicity": "Each candidate notebook is validated through the declared-profile validator before the original document is committed. Validation or selection failure leaves the document unchanged.",
+    "dry_run": "Every mutation executes against the same isolated candidate and returns an equivalent immutable report without committing.",
+    "roundtrip": "All six mutation classes are serialized and loaded through the production lifecycle with stable cell IDs and exact semantic state.",
+    "forward_preservation": "An unrelated move in a future-minor notebook preserves unknown cell types and nested vendor fields unchanged.",
+    "tradeoff": "Each mutation deep-copies and validates the complete notebook, making single edits O(document bytes). This provides atomicity and preservation safety; high-volume consumers should prefer the implemented bulk operation rather than repeated single removals."
+  },
+  "tests_run": [
+    "failure-first cell-editor test: collection failed because CellEditOperation did not exist",
+    "intermediate focused run: 3 failed and 7 passed, exposing detached-list false-success behavior",
+    "focused cell-editor obligation tests after repair and expansion: 16 passed",
+    "source-tree format regression excluding installed-origin assertions: 329 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and cell-editor test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 27 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 db2f72df7cce17e3a3c20746a88242e04135947e8fd8142355ecc42c6fc16d8f",
+    "installed-wheel full tests/python/ipynb suite: 332 passed",
+    "installed official oracle sequence: insert/move/copy/replace/bulk-remove accepted and round-tripped by nbformat 5.10.4",
+    "installed 10,000-cell bulk scale check: 5,000 selected cells removed in one validated operation in 0.087 seconds",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-CELL-EDITOR-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_and_format_integrity": "PASS: current IPYNB-EDIT-001 required-behavior obligation",
+    "failure_first": "PASS",
+    "intermediate_false_success_detected": "PASS",
+    "stable_id_insert_move_copy_replace_remove": "PASS",
+    "combined_search_criteria": "PASS",
+    "recursive_metadata_subset_search": "PASS",
+    "deterministic_copy_ids": "PASS",
+    "bulk_change_reports_and_empty_query_guard": "PASS",
+    "atomic_validation_failure": "PASS",
+    "dry_run_apply_equivalence_all_mutations": "PASS",
+    "save_reload_all_mutations": "PASS",
+    "unknown_future_cell_preservation": "PASS",
+    "official_nbformat_validation_and_roundtrip": "PASS",
+    "installed_bulk_scale_behavior": "PASS: 10,000 input cells",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "public_api_blast_radius": "PASS: six additive pre-1.0 symbols; no existing symbol removed or renamed",
+    "declared_regression_tier": "PASS: 332 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/editor.py": "6dce55f6a3b30024dee870f85a94186efa43f4da8b339877725235c8423387bf",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "2d70e531e63aff12537d3f01c88c109c612a2622ae74f76daae1cfe2b4ca7c28",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "70ff2b076f070c149f7ae98cc494b5ee6dc35b3a7fb084f659a4c3e624a6f350",
+    "src/python/ipynb/README.md": "62b1f92cdc8b88b3b6dd5eb933a50b6cd474e245a0927ce3eb354b6c086177a9",
+    "tests/python/ipynb/test_obligation_cell_editor.py": "f3375df77545dacb2b989f49d4ab3ee3980037803590627d9a84a52ef7b6482a",
+    "reports/r90/product-code-change-ledger.json": "cbef0c37de92e00b692c8fc45462c5328ab9a40e1a35123453bc2cadda58cc02",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "db2f72df7cce17e3a3c20746a88242e04135947e8fd8142355ecc42c6fc16d8f"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_STABLE_ID_CELL_EDITOR_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T02:27:47.1833576Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

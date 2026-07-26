@@ -139,6 +139,24 @@ base. They reject concurrent visible edits. Fields ignored by policy are
 preserved from existing cells when a patch is applied; new cells retain their
 complete target representation.
 
+## Stable-ID cell collection editing
+
+The governed editor keeps existing index-based methods compatible while
+providing stable-ID insert, move, copy, replace, remove, search, and bulk
+operations:
+
+```python
+from format_factory.ipynb import CellQuery, edit_cells
+
+editor = edit_cells(document)
+preview = editor.remove_where(CellQuery(tag="transient"), dry_run=True)
+```
+
+Every mutation validates the resulting notebook before committing and returns
+an immutable report. Copy IDs are deterministic, replacement preserves the
+selected ID, and bulk removal refuses an empty query. Dry-run and applied
+reports are equivalent while dry-run leaves the document untouched.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level

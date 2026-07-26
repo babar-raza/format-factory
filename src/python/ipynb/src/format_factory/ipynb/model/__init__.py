@@ -17,6 +17,14 @@ from .diff import (
     PatchPreconditionError,
     diff_notebooks,
 )
+from .editor import (
+    CellEdit,
+    CellEditOperation,
+    CellEditReport,
+    CellEditor,
+    CellQuery,
+    edit_cells,
+)
 from .document import (
     Cell,
     CodeCell,
@@ -57,7 +65,12 @@ __all__ = [
     "AttachmentReport",
     "Cell",
     "CellChange",
+    "CellEdit",
+    "CellEditOperation",
+    "CellEditReport",
+    "CellEditor",
     "CellField",
+    "CellQuery",
     "CellIdRewrite",
     "Change",
     "ChangeReport",
@@ -90,6 +103,7 @@ __all__ = [
     "cell_from_dict",
     "cleanup",
     "diff_notebooks",
+    "edit_cells",
     "get_output_representation",
     "manage_attachments",
     "output_from_dict",

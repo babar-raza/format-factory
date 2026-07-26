@@ -43755,9 +43755,54 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_structure_diff.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CELL-EDITOR-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-010",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-EDIT-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C",
+      "capability_refs": [
+        "foss_python.ipynb.stable_id_cell_crud",
+        "foss_python.ipynb.cell_move_copy_replace",
+        "foss_python.ipynb.metadata_aware_cell_search",
+        "foss_python.ipynb.bulk_cell_change_reports",
+        "foss_python.ipynb.atomic_validated_edits",
+        "foss_python.ipynb.deterministic_copy_ids",
+        "foss_python.ipynb.dry_run_cell_edits"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellEdit",
+        "format_factory.ipynb.CellEditOperation",
+        "format_factory.ipynb.CellEditReport",
+        "format_factory.ipynb.CellEditor",
+        "format_factory.ipynb.CellQuery",
+        "format_factory.ipynb.edit_cells"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "70ff2b076f070c149f7ae98cc494b5ee6dc35b3a7fb084f659a4c3e624a6f350"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "2d70e531e63aff12537d3f01c88c109c612a2622ae74f76daae1cfe2b4ca7c28"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/editor.py",
+          "state": "present",
+          "sha256": "6dce55f6a3b30024dee870f85a94186efa43f4da8b339877725235c8423387bf"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_cell_editor.py"
     }
   ],
-  "total_entries": 2774,
+  "total_entries": 2775,
   "changes": [
     {
       "file": "src/python/dif/models.py",
